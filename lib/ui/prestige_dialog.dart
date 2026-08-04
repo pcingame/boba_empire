@@ -1,0 +1,98 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../core/balance.dart';
+import '../state/game_providers.dart';
+
+/// Mở dialog Nhượng quyền (prestige).
+Future<void> showPrestigeDialog(BuildContext context) {
+  return showDialog<void>(
+    context: context,
+    builder: (_) => const _PrestigeDialog(),
+  );
+}
+
+int _percent(int stars) => (stars * Balance.bonusPerStar * 100).round();
+
+/// ConsumerWidget để các con số cập nhật trực tiếp khi thu nhập tăng lúc dialog
+/// đang mở (số Sao khả dụng phụ thuộc tổng thu nhập cả đời).
+class _PrestigeDialog extends ConsumerWidget {
+  const _PrestigeDialog();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final stars =
+        ref.watch(gameControllerProvider.select((s) => s.prestigeStars));
+    final available = ref.watch(
+      gameControllerProvider.select((s) => s.prestigeStarsAvailable),
+    );
+    final canPrestige = available > 0;
+    final theme = Theme.of(context);
+
+    return AlertDialog(
+      title: const Text('Nhượng Quyền 🏪'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Mỗi ⭐ Sao cho +${_percent(1)}% thu nhập vĩnh viễn.'),
+          const SizedBox(height: 16),
+          _row('Sao hiện có', '$stars ⭐  (+${_percent(stars)}%)'),
+          _row('Nhượng quyền bây giờ', '+$available ⭐'),
+          const Divider(),
+          _row(
+            'Tổng bonus sau đó',
+            '+${_percent(stars + available)}%',
+            highlight: true,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            '⚠️ Sẽ reset toàn bộ Xu và cấp nâng cấp hiện tại.',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.error,
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Huỷ'),
+        ),
+        FilledButton(
+          key: const Key('prestige-confirm'),
+          onPressed: canPrestige ? () => _confirm(context, ref) : null,
+          child: Text(canPrestige ? 'Nhượng quyền (+$available ⭐)' : 'Chưa đủ'),
+        ),
+      ],
+    );
+  }
+
+  void _confirm(BuildContext context, WidgetRef ref) {
+    final messenger = ScaffoldMessenger.of(context);
+    final gained = ref.read(gameControllerProvider.notifier).doPrestige();
+    Navigator.of(context).pop();
+    if (gained > 0) {
+      messenger.showSnackBar(
+        SnackBar(content: Text('Nhượng quyền thành công! +$gained ⭐')),
+      );
+    }
+  }
+
+  Widget _row(String label, String value, {bool highlight = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Expanded(child: Text(label)),
+          Text(
+            value,
+            style: highlight
+                ? const TextStyle(fontWeight: FontWeight.bold)
+                : null,
+          ),
+        ],
+      ),
+    );
+  }
+}

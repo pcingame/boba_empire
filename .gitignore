@@ -43,3 +43,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# CodeGraph local index (per-developer tooling, not part of the project)
+.codegraph/
