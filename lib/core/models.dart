@@ -14,6 +14,7 @@ class GeneratorConfig {
     required this.baseCost,
     required this.costGrowth,
     required this.incomePerLevelPerSecond,
+    this.stage = 1,
   });
 
   /// Khóa ổn định để tra cứu trong [GameState.levels] và khi serialize.
@@ -30,6 +31,27 @@ class GeneratorConfig {
 
   /// Thu nhập mỗi giây cộng thêm cho mỗi cấp của nguồn thu này.
   final double incomePerLevelPerSecond;
+
+  /// Giai đoạn mở khóa nguồn thu này (1..3).
+  final int stage;
+}
+
+/// Cấu hình một giai đoạn kinh doanh (Xe đẩy → Kiosk → Chuỗi cafe).
+class StageConfig {
+  const StageConfig({
+    required this.stage,
+    required this.name,
+    required this.unlockCost,
+  });
+
+  /// Số thứ tự giai đoạn (1..3).
+  final int stage;
+
+  /// Tên hiển thị.
+  final String name;
+
+  /// Số Xu cần để mở khóa giai đoạn này (giai đoạn 1 = 0, có sẵn).
+  final double unlockCost;
 }
 
 /// Toàn bộ trạng thái động của một ván chơi.
@@ -48,6 +70,7 @@ class GameState {
     required this.lastSeenMillis,
     required this.gemBoostLevel,
     required this.offlineCapLevel,
+    required this.stage,
   });
 
   /// Ván mới tinh.
@@ -61,6 +84,7 @@ class GameState {
         lastSeenMillis: nowMillis ?? DateTime.now().millisecondsSinceEpoch,
         gemBoostLevel: 0,
         offlineCapLevel: 0,
+        stage: 1,
       );
 
   /// Tiền tệ thường (Xu). Dùng `double` để không tràn ở số lớn (mục 10).
@@ -90,6 +114,9 @@ class GameState {
   /// Cấp vật phẩm "Kho lạnh offline" (nâng trần tiền offline).
   int offlineCapLevel;
 
+  /// Giai đoạn kinh doanh hiện tại (1..3).
+  int stage;
+
   Map<String, dynamic> toJson() => {
         'money': money,
         'gems': gems,
@@ -100,6 +127,7 @@ class GameState {
         'lastSeenMillis': lastSeenMillis,
         'gemBoostLevel': gemBoostLevel,
         'offlineCapLevel': offlineCapLevel,
+        'stage': stage,
       };
 
   factory GameState.fromJson(Map<String, dynamic> json) => GameState(
@@ -115,5 +143,6 @@ class GameState {
         // Mặc định 0 cho save cũ chưa có các trường này.
         gemBoostLevel: (json['gemBoostLevel'] as num?)?.toInt() ?? 0,
         offlineCapLevel: (json['offlineCapLevel'] as num?)?.toInt() ?? 0,
+        stage: (json['stage'] as num?)?.toInt() ?? 1,
       );
 }

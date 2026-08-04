@@ -18,6 +18,7 @@ class GameSnapshot {
     required this.vipVisible,
     required this.gemBoostLevel,
     required this.offlineCapLevel,
+    required this.stage,
     required Map<String, int> levels,
   }) : _levels = levels;
 
@@ -48,6 +49,9 @@ class GameSnapshot {
   /// Cấp vật phẩm Kim Cương "Tăng thu nhập" / "Kho lạnh offline".
   final int gemBoostLevel;
   final int offlineCapLevel;
+
+  /// Giai đoạn kinh doanh hiện tại (1..3).
+  final int stage;
 
   final Map<String, int> _levels;
 

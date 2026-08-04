@@ -242,12 +242,19 @@ class _TapArea extends ConsumerWidget {
   }
 }
 
-/// Danh sách nâng cấp.
-class _Shop extends StatelessWidget {
+/// Danh sách nâng cấp — chỉ hiện nguồn thu của các giai đoạn đã mở khóa, có
+/// tiêu đề giai đoạn + nút mở khóa, và cuộn được khi nhiều mục.
+class _Shop extends ConsumerWidget {
   const _Shop();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final stage = ref.watch(gameControllerProvider.select((s) => s.stage));
+    final unlocked = [
+      for (final config in Balance.generators)
+        if (config.stage <= stage) config,
+    ];
+
     return Material(
       elevation: 8,
       child: SafeArea(
@@ -255,9 +262,56 @@ class _Shop extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            for (final config in Balance.generators) _ShopTile(config),
+            const _StageHeader(),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxHeight: 260),
+              child: ListView(
+                shrinkWrap: true,
+                padding: EdgeInsets.zero,
+                children: [
+                  for (final config in unlocked) _ShopTile(config),
+                ],
+              ),
+            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Tiêu đề giai đoạn hiện tại + nút mở khóa giai đoạn kế (nếu còn).
+class _StageHeader extends ConsumerWidget {
+  const _StageHeader();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final stage = ref.watch(gameControllerProvider.select((s) => s.stage));
+    final money = ref.watch(gameControllerProvider.select((s) => s.money));
+    final theme = Theme.of(context);
+    final next = Balance.nextStageConfig(stage);
+
+    return Container(
+      width: double.infinity,
+      color: theme.colorScheme.surfaceContainerHighest,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              '🏪 ${Balance.stageConfig(stage).name}',
+              style: theme.textTheme.titleMedium,
+            ),
+          ),
+          if (next != null)
+            FilledButton(
+              key: const Key('unlock-stage'),
+              onPressed: money >= next.unlockCost
+                  ? () => ref.read(gameControllerProvider.notifier).unlockStage()
+                  : null,
+              child: Text('Mở khóa ${formatNumber(next.unlockCost)} Xu'),
+            ),
+        ],
       ),
     );
   }

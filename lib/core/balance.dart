@@ -67,21 +67,46 @@ class Balance {
   static const int offlineCapBaseCost = 10;
   static const int offlineCapPerLevelSeconds = 2 * 60 * 60;
 
-  /// Danh sách nguồn thu, theo thứ tự mở khóa (chủ đề trà sữa).
+  /// Ba giai đoạn kinh doanh (index = stage - 1). Giai đoạn 1 có sẵn.
+  static const List<StageConfig> stages = [
+    StageConfig(stage: 1, name: 'Xe đẩy vỉa hè', unlockCost: 0),
+    StageConfig(stage: 2, name: 'Kiosk cửa hàng nhỏ', unlockCost: 2000),
+    StageConfig(stage: 3, name: 'Chuỗi cafe sang trọng', unlockCost: 500000),
+  ];
+
+  static StageConfig stageConfig(int stage) => stages[stage - 1];
+
+  /// Cấu hình giai đoạn kế tiếp, hoặc null nếu đã ở giai đoạn cuối.
+  static StageConfig? nextStageConfig(int currentStage) =>
+      currentStage < stages.length ? stages[currentStage] : null;
+
+  /// Danh sách nguồn thu, gắn theo giai đoạn mở khóa (chủ đề trà sữa).
   static const List<GeneratorConfig> generators = [
+    // Giai đoạn 1 — Xe đẩy vỉa hè.
     GeneratorConfig(
       id: 'tra_den',
       name: 'Trà đen',
       baseCost: 15,
       costGrowth: 1.15,
       incomePerLevelPerSecond: 0.5,
+      stage: 1,
     ),
+    // Giai đoạn 2 — Kiosk (topping).
     GeneratorConfig(
       id: 'tran_chau',
       name: 'Trân châu',
       baseCost: 100,
       costGrowth: 1.15,
       incomePerLevelPerSecond: 4,
+      stage: 2,
+    ),
+    GeneratorConfig(
+      id: 'thach',
+      name: 'Thạch',
+      baseCost: 330,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 14,
+      stage: 2,
     ),
     GeneratorConfig(
       id: 'pudding',
@@ -89,6 +114,16 @@ class Balance {
       baseCost: 1100,
       costGrowth: 1.15,
       incomePerLevelPerSecond: 45,
+      stage: 2,
+    ),
+    // Giai đoạn 3 — Chuỗi cafe sang trọng (cao cấp).
+    GeneratorConfig(
+      id: 'kem_nuong',
+      name: 'Trà sữa kem nướng',
+      baseCost: 4000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 160,
+      stage: 3,
     ),
     GeneratorConfig(
       id: 'matcha',
@@ -96,6 +131,7 @@ class Balance {
       baseCost: 12000,
       costGrowth: 1.15,
       incomePerLevelPerSecond: 500,
+      stage: 3,
     ),
   ];
 }

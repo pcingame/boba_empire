@@ -166,6 +166,16 @@ class GameController extends Notifier<GameSnapshot> {
     return ok;
   }
 
+  /// Mở khóa giai đoạn kế tiếp bằng tiền. Trả về true nếu thành công.
+  bool unlockStage() {
+    final ok = unlockNextStage(_game);
+    if (ok) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return ok;
+  }
+
   /// Mua vật phẩm Kim Cương "Tăng thu nhập". Lưu ngay vì gems là premium.
   bool buyGemBoostUpgrade() {
     final ok = buyGemBoost(_game);
@@ -288,6 +298,7 @@ class GameController extends Notifier<GameSnapshot> {
       vipVisible: _vipVisible,
       gemBoostLevel: _game.gemBoostLevel,
       offlineCapLevel: _game.offlineCapLevel,
+      stage: _game.stage,
       levels: _game.levels,
     );
   }

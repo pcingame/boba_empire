@@ -39,18 +39,31 @@ void tick(
   _credit(state, income);
 }
 
-/// Nâng một nguồn thu lên 1 cấp nếu đủ tiền. Trả về true nếu mua thành công.
+/// Nâng một nguồn thu lên 1 cấp nếu đủ tiền và đã mở khóa giai đoạn. Trả về
+/// true nếu mua thành công.
 bool buyUpgrade(
   GameState state,
   String generatorId, {
   List<GeneratorConfig> configs = Balance.generators,
 }) {
   final config = configs.firstWhere((c) => c.id == generatorId);
+  if (config.stage > state.stage) return false; // chưa mở khóa
   final level = state.levels[generatorId] ?? 0;
   final cost = nextLevelCost(config, level);
   if (state.money < cost) return false;
   state.money -= cost;
   state.levels[generatorId] = level + 1;
+  return true;
+}
+
+/// Mở khóa giai đoạn kế tiếp bằng tiền. Trả về true nếu đủ tiền và còn giai
+/// đoạn để mở.
+bool unlockNextStage(GameState state) {
+  final next = Balance.nextStageConfig(state.stage);
+  if (next == null) return false;
+  if (state.money < next.unlockCost) return false;
+  state.money -= next.unlockCost;
+  state.stage = next.stage;
   return true;
 }
 
