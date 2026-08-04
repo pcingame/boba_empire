@@ -10,6 +10,7 @@ import '../state/game_providers.dart';
 import 'gem_shop.dart';
 import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
+import 'widgets/mascot.dart';
 
 /// Màn hình chính MVP: đầu trang hiển thị tiền, giữa là nút chạm pha trà,
 /// dưới là shop nâng cấp. Cũng lo phần lifecycle (lưu khi app vào nền).
@@ -231,7 +232,8 @@ class _TapArea extends ConsumerWidget {
           child: const Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('🧋', style: TextStyle(fontSize: 56)),
+              // Animation nếu có assets/anim/cup.json, ngược lại emoji 🧋.
+              Mascot(asset: 'assets/anim/cup.json', emoji: '🧋', size: 80),
               SizedBox(height: 4),
               Text('Chạm pha trà', style: TextStyle(fontSize: 16)),
             ],
