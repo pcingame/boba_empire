@@ -1,17 +1,27 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'audio/audio_service.dart';
+import 'audio/flame_audio_service.dart';
 import 'state/game_providers.dart';
 import 'ui/home_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
+  final audio = FlameAudioService();
+  unawaited(audio.preload());
   runApp(
     ProviderScope(
-      // Bơm SharedPreferences đã khởi tạo cho tầng state.
-      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+      overrides: [
+        // Bơm SharedPreferences đã khởi tạo cho tầng state.
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        // Âm thanh thật (test giữ SilentAudioService mặc định).
+        audioServiceProvider.overrideWithValue(audio),
+      ],
       child: const BobaEmpireApp(),
     ),
   );

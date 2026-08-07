@@ -1,0 +1,39 @@
+/// Trừu tượng hoá âm thanh hiệu ứng (SFX).
+///
+/// Tầng UI chỉ phụ thuộc interface này nên test/chạy được mà không cần asset
+/// hay plugin. Mặc định là [SilentAudioService] (không phát gì); `main()`
+/// override bằng bản thật dựa trên flame_audio (xem flame_audio_service.dart) —
+/// đúng như cách [adServiceProvider] đổi sang Admob thật.
+library;
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+/// Các hiệu ứng âm thanh trong game. Giá trị = tên file trong `assets/audio/`.
+enum Sfx {
+  tap('tap.mp3'),
+  buy('buy.mp3'),
+  unlock('unlock.mp3'),
+  prestige('prestige.mp3'),
+  vip('vip.mp3'),
+  reward('reward.mp3');
+
+  const Sfx(this.file);
+  final String file;
+}
+
+abstract interface class AudioService {
+  /// Phát một SFX (fire-and-forget). Không được ném lỗi.
+  void play(Sfx sfx);
+}
+
+/// Không phát gì — an toàn ở test và làm mặc định khi chưa gắn bản thật.
+class SilentAudioService implements AudioService {
+  const SilentAudioService();
+
+  @override
+  void play(Sfx sfx) {}
+}
+
+/// Mặc định im lặng; override trong `main()` bằng FlameAudioService.
+final audioServiceProvider =
+    Provider<AudioService>((ref) => const SilentAudioService());

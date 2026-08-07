@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../audio/audio_service.dart';
 import '../core/balance.dart';
 import '../core/economy.dart';
 import '../core/format.dart';
@@ -208,6 +209,7 @@ class _MoneyHeader extends ConsumerWidget {
     if (outcome != RewardOutcome.earned) return;
     final reward = controller.claimInstantCash();
     if (reward > 0) {
+      ref.read(audioServiceProvider).play(Sfx.reward);
       messenger.showSnackBar(
         SnackBar(content: Text('Tiền tức thì! +${formatNumber(reward)} Xu')),
       );
@@ -226,6 +228,7 @@ class _TapArea extends ConsumerWidget {
       child: GestureDetector(
         onTap: () {
           ref.read(gameControllerProvider.notifier).tapCup();
+          ref.read(audioServiceProvider).play(Sfx.tap);
           playEffect(context, AnimAssets.coins, size: 140);
         },
         child: Container(
@@ -320,6 +323,7 @@ class _StageHeader extends ConsumerWidget {
                       if (ref
                           .read(gameControllerProvider.notifier)
                           .unlockStage()) {
+                        ref.read(audioServiceProvider).play(Sfx.unlock);
                         playEffect(context, AnimAssets.celebration, size: 280);
                       }
                     }
@@ -360,6 +364,7 @@ class _ShopTile extends ConsumerWidget {
                 if (ref
                     .read(gameControllerProvider.notifier)
                     .buy(config.id)) {
+                  ref.read(audioServiceProvider).play(Sfx.buy);
                   playEffect(context, AnimAssets.confetti, size: 160);
                 }
               }
@@ -417,6 +422,7 @@ class _GoldenCat extends ConsumerWidget {
           final outcome = await ads.showRewardedAd();
           if (outcome == RewardOutcome.earned) {
             controller.activateGoldenRush();
+            ref.read(audioServiceProvider).play(Sfx.reward);
           }
         },
         child: Container(
@@ -454,6 +460,7 @@ class _VipCustomer extends ConsumerWidget {
           final messenger = ScaffoldMessenger.of(context);
           final reward = ref.read(gameControllerProvider.notifier).collectVip();
           if (reward.gems > 0) {
+            ref.read(audioServiceProvider).play(Sfx.vip);
             messenger.showSnackBar(
               SnackBar(
                 content: Text(

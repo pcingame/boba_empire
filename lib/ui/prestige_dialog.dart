@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../audio/audio_service.dart';
 import '../core/balance.dart';
 import '../state/game_providers.dart';
 import 'widgets/anim_assets.dart';
@@ -74,6 +75,7 @@ class _PrestigeDialog extends ConsumerWidget {
     final messenger = ScaffoldMessenger.of(context);
     final gained = ref.read(gameControllerProvider.notifier).doPrestige();
     if (gained > 0) {
+      ref.read(audioServiceProvider).play(Sfx.prestige);
       // Chèn vào overlay gốc trước khi đóng dialog → pháo hoa nổ trên màn chính.
       playEffect(context, AnimAssets.fireworks, size: 320);
     }
