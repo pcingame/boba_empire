@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../audio/audio_service.dart';
 import '../core/balance.dart';
+import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/one_shot_lottie.dart';
@@ -31,26 +32,28 @@ class _PrestigeDialog extends ConsumerWidget {
     );
     final canPrestige = available > 0;
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return AlertDialog(
-      title: const Text('Nhượng Quyền 🏪'),
+      title: Text(l10n.prestigeTitle),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Mỗi ⭐ Sao cho +${_percent(1)}% thu nhập vĩnh viễn.'),
+          Text(l10n.prestigeIntro(_percent(1))),
           const SizedBox(height: 16),
-          _row('Sao hiện có', '$stars ⭐  (+${_percent(stars)}%)'),
-          _row('Nhượng quyền bây giờ', '+$available ⭐'),
+          _row(l10n.prestigeStarsNow,
+              l10n.prestigeStarsValue(stars, _percent(stars))),
+          _row(l10n.prestigeNow, l10n.prestigeGain(available)),
           const Divider(),
           _row(
-            'Tổng bonus sau đó',
-            '+${_percent(stars + available)}%',
+            l10n.prestigeTotalBonus,
+            l10n.prestigeTotalValue(_percent(stars + available)),
             highlight: true,
           ),
           const SizedBox(height: 16),
           Text(
-            '⚠️ Sẽ reset toàn bộ Xu và cấp nâng cấp hiện tại.',
+            l10n.prestigeWarning,
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.error,
             ),
@@ -60,12 +63,14 @@ class _PrestigeDialog extends ConsumerWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Huỷ'),
+          child: Text(l10n.cancel),
         ),
         FilledButton(
           key: const Key('prestige-confirm'),
           onPressed: canPrestige ? () => _confirm(context, ref) : null,
-          child: Text(canPrestige ? 'Nhượng quyền (+$available ⭐)' : 'Chưa đủ'),
+          child: Text(
+            canPrestige ? l10n.prestigeConfirm(available) : l10n.prestigeNotEnough,
+          ),
         ),
       ],
     );
@@ -79,10 +84,11 @@ class _PrestigeDialog extends ConsumerWidget {
       // Chèn vào overlay gốc trước khi đóng dialog → pháo hoa nổ trên màn chính.
       playEffect(context, AnimAssets.fireworks, size: 320);
     }
+    final l10n = AppLocalizations.of(context)!;
     Navigator.of(context).pop();
     if (gained > 0) {
       messenger.showSnackBar(
-        SnackBar(content: Text('Nhượng quyền thành công! +$gained ⭐')),
+        SnackBar(content: Text(l10n.prestigeSuccess(gained))),
       );
     }
   }

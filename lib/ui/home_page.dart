@@ -11,6 +11,8 @@ import '../ads/ad_service.dart';
 import '../core/models.dart';
 import '../iap/iap_products.dart';
 import '../iap/iap_service.dart';
+import '../l10n/app_localizations.dart';
+import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import 'gem_shop.dart';
 import 'offline_dialog.dart';
@@ -60,19 +62,20 @@ class _HomePageState extends ConsumerState<HomePage>
   /// khi restore lặp lại lúc mở app.
   void _onPurchase(IapProduct product) {
     final controller = ref.read(gameControllerProvider.notifier);
+    final l10n = AppLocalizations.of(context)!;
     String message;
     switch (product) {
       case IapProduct.gems:
         controller.grantGemsPurchase(Balance.iapGemsSmall);
-        message = 'Đã nhận +${formatNumber(Balance.iapGemsSmall)} 💎';
+        message = l10n.iapGemsSnack(formatNumber(Balance.iapGemsSmall));
       case IapProduct.removeAds:
         final already = ref.read(gameControllerProvider).adsRemoved;
         controller.applyRemoveAds();
         if (already) return; // chỉ khôi phục lại, không báo trùng.
-        message = 'Đã gỡ quảng cáo. Cảm ơn bạn!';
+        message = l10n.iapRemoveAdsSnack;
       case IapProduct.starterPack:
         if (!controller.applyStarterPack()) return; // đã sở hữu.
-        message = 'Gói khởi động: +${formatNumber(Balance.iapStarterGems)} 💎';
+        message = l10n.iapStarterSnack(formatNumber(Balance.iapStarterGems));
     }
     ref.read(audioServiceProvider).play(Sfx.reward);
     if (mounted) {
@@ -119,7 +122,7 @@ class _HomePageState extends ConsumerState<HomePage>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Đế Chế Trà Sữa'),
+        title: Text(AppLocalizations.of(context)!.appTitle),
         centerTitle: true,
         actions: const [_GemShopButton(), _PrestigeButton()],
       ),
@@ -195,6 +198,7 @@ class _MoneyHeader extends ConsumerWidget {
         ref.watch(gameControllerProvider.select((s) => s.incomePerSecond));
     final gems = ref.watch(gameControllerProvider.select((s) => s.gems));
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Container(
       width: double.infinity,
@@ -204,14 +208,14 @@ class _MoneyHeader extends ConsumerWidget {
         children: [
           AnimatedCount(
             money,
-            suffix: ' Xu',
+            suffix: l10n.coinsSuffix,
             style: theme.textTheme.displaySmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: theme.colorScheme.onPrimaryContainer,
             ),
           ),
           Text(
-            '+${formatNumber(income)} / giây',
+            l10n.incomePerSecond(formatNumber(income)),
             style: theme.textTheme.titleMedium?.copyWith(
               color: theme.colorScheme.onPrimaryContainer,
             ),
@@ -229,7 +233,7 @@ class _MoneyHeader extends ConsumerWidget {
               key: const Key('instant-cash'),
               onPressed: () => _claimInstantCash(context, ref),
               icon: const Icon(Icons.card_giftcard),
-              label: const Text('Tiền tức thì'),
+              label: Text(l10n.instantCashButton),
             ),
           ],
         ],
@@ -241,6 +245,7 @@ class _MoneyHeader extends ConsumerWidget {
     final ads = ref.read(adServiceProvider);
     final controller = ref.read(gameControllerProvider.notifier);
     final messenger = ScaffoldMessenger.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final adsRemoved = ref.read(gameControllerProvider).adsRemoved;
     final outcome =
         adsRemoved ? RewardOutcome.earned : await ads.showRewardedAd();
@@ -249,7 +254,7 @@ class _MoneyHeader extends ConsumerWidget {
     if (reward > 0) {
       ref.read(audioServiceProvider).play(Sfx.reward);
       messenger.showSnackBar(
-        SnackBar(content: Text('Tiền tức thì! +${formatNumber(reward)} Xu')),
+        SnackBar(content: Text(l10n.instantCashSnack(formatNumber(reward)))),
       );
     }
   }
@@ -277,13 +282,16 @@ class _TapArea extends ConsumerWidget {
             color: Theme.of(context).colorScheme.secondaryContainer,
           ),
           alignment: Alignment.center,
-          child: const Column(
+          child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               // Animation nếu có file, ngược lại emoji 🧋.
-              Mascot(asset: AnimAssets.cup, emoji: '🧋', size: 80),
-              SizedBox(height: 4),
-              Text('Chạm pha trà', style: TextStyle(fontSize: 16)),
+              const Mascot(asset: AnimAssets.cup, emoji: '🧋', size: 80),
+              const SizedBox(height: 4),
+              Text(
+                AppLocalizations.of(context)!.tapBrew,
+                style: const TextStyle(fontSize: 16),
+              ),
             ],
           ),
         ),
@@ -339,6 +347,7 @@ class _StageHeader extends ConsumerWidget {
     final stage = ref.watch(gameControllerProvider.select((s) => s.stage));
     final money = ref.watch(gameControllerProvider.select((s) => s.money));
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final next = Balance.nextStageConfig(stage);
 
     return Container(
@@ -349,7 +358,7 @@ class _StageHeader extends ConsumerWidget {
         children: [
           Expanded(
             child: Text(
-              '🏪 ${Balance.stageConfig(stage).name}',
+              l10n.stageHeader(stageName(l10n, stage)),
               style: theme.textTheme.titleMedium,
             ),
           ),
@@ -366,7 +375,7 @@ class _StageHeader extends ConsumerWidget {
                       }
                     }
                   : null,
-              child: Text('Mở khóa ${formatNumber(next.unlockCost)} Xu'),
+              child: Text(l10n.unlockStageButton(formatNumber(next.unlockCost))),
             ),
         ],
       ),
@@ -389,12 +398,13 @@ class _ShopTile extends ConsumerWidget {
         ref.watch(gameControllerProvider.select((s) => s.money));
     final cost = nextLevelCost(config, level);
     final canAfford = money >= cost;
+    final l10n = AppLocalizations.of(context)!;
 
     return ListTile(
       leading: CircleAvatar(child: Text('$level')),
-      title: Text(config.name),
+      title: Text(generatorName(l10n, config.id)),
       subtitle: Text(
-        '+${formatNumber(config.incomePerLevelPerSecond)} Xu/giây mỗi cấp',
+        l10n.generatorSubtitle(formatNumber(config.incomePerLevelPerSecond)),
       ),
       trailing: FilledButton(
         onPressed: canAfford
@@ -407,7 +417,7 @@ class _ShopTile extends ConsumerWidget {
                 }
               }
             : null,
-        child: Text('${formatNumber(cost)} Xu'),
+        child: Text(l10n.buyButton(formatNumber(cost))),
       ),
     );
   }
@@ -431,7 +441,7 @@ class _BoostIndicator extends ConsumerWidget {
       child: Center(
         child: Chip(
           backgroundColor: Colors.amber,
-          label: Text('🔥 x3 · ${remaining.ceil()}s'),
+          label: Text(AppLocalizations.of(context)!.boostChip(remaining.ceil())),
         ),
       ),
     );
@@ -505,8 +515,8 @@ class _VipCustomer extends ConsumerWidget {
             messenger.showSnackBar(
               SnackBar(
                 content: Text(
-                  'Khách VIP! +${formatNumber(reward.cash)} Xu, '
-                  '+${reward.gems} 💎',
+                  AppLocalizations.of(context)!
+                      .vipSnack(formatNumber(reward.cash), reward.gems),
                 ),
               ),
             );

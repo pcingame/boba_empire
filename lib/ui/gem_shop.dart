@@ -6,6 +6,8 @@ import '../core/economy.dart';
 import '../core/format.dart';
 import '../iap/iap_products.dart';
 import '../iap/iap_service.dart';
+import '../l10n/app_localizations.dart';
+import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 
 /// Mở Cửa hàng Kim Cương — chỗ tiêu gems kiếm từ VIP, và nạp bằng tiền thật.
@@ -42,28 +44,29 @@ class _GemShopState extends ConsumerState<_GemShop> {
     final starterOwned =
         ref.watch(gameControllerProvider.select((s) => s.starterPackOwned));
 
+    final l10n = AppLocalizations.of(context)!;
     final boostPercent = (Balance.gemBoostPerLevel * 100).round();
     final capHours = Balance.offlineCapPerLevelSeconds ~/ 3600;
 
     return AlertDialog(
-      title: Text('Cửa Hàng 💎 (có ${formatNumber(gems)})'),
+      title: Text(l10n.gemShopTitle(formatNumber(gems))),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             _GemItem(
-              name: 'Tăng thu nhập',
+              name: l10n.gemBoostName,
               level: boostLevel,
-              description: '+$boostPercent% thu nhập vĩnh viễn mỗi cấp',
+              description: l10n.gemBoostDesc(boostPercent),
               cost: gemBoostCost(boostLevel),
               gems: gems,
               onBuy: controller.buyGemBoostUpgrade,
             ),
             const Divider(),
             _GemItem(
-              name: 'Kho lạnh offline',
+              name: l10n.offlineCapName,
               level: capLevel,
-              description: '+$capHours giờ trần tiền offline mỗi cấp',
+              description: l10n.offlineCapDesc(capHours),
               cost: offlineCapCost(capLevel),
               gems: gems,
               onBuy: controller.buyOfflineCapUpgrade,
@@ -82,7 +85,7 @@ class _GemShopState extends ConsumerState<_GemShop> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Đóng'),
+          child: Text(l10n.close),
         ),
       ],
     );
@@ -95,6 +98,7 @@ class _GemShopState extends ConsumerState<_GemShop> {
     required bool starterOwned,
   }) {
     final iap = ref.read(iapServiceProvider);
+    final l10n = AppLocalizations.of(context)!;
 
     final products = [
       for (final p in IapProduct.values)
@@ -111,15 +115,15 @@ class _GemShopState extends ConsumerState<_GemShop> {
         Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            'Nạp bằng tiền thật',
+            l10n.iapSectionTitle,
             style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
         for (final p in products)
           ListTile(
             contentPadding: EdgeInsets.zero,
-            title: Text(p.title),
-            subtitle: Text(p.description),
+            title: Text(iapTitle(l10n, p)),
+            subtitle: Text(iapDescription(l10n, p)),
             trailing: FilledButton.tonal(
               key: Key('iap-buy-${p.id}'),
               onPressed: () => iap.buy(p),
@@ -128,7 +132,7 @@ class _GemShopState extends ConsumerState<_GemShop> {
           ),
         TextButton(
           onPressed: () => iap.restore(),
-          child: const Text('Khôi phục giao dịch'),
+          child: Text(l10n.restorePurchases),
         ),
       ],
     );
@@ -155,14 +159,15 @@ class _GemItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final canAfford = gems >= cost;
+    final l10n = AppLocalizations.of(context)!;
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      title: Text('$name  Lv.$level'),
+      title: Text(l10n.gemItemLevel(name, level)),
       subtitle: Text(description),
       trailing: FilledButton(
         key: Key('gem-buy-$name'),
         onPressed: canAfford ? onBuy : null,
-        child: Text('$cost 💎'),
+        child: Text(l10n.gemCost(cost)),
       ),
     );
   }

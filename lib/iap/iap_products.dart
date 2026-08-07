@@ -8,23 +8,18 @@ enum IapKind { consumable, nonConsumable }
 
 enum IapProduct {
   /// Gói Kim Cương — mua lại nhiều lần.
-  gems('boba_gems_small', IapKind.consumable, 'Túi Kim Cương',
-      'Nạp thêm Kim Cương để mua vật phẩm trong Cửa hàng.'),
+  gems('boba_gems_small', IapKind.consumable),
 
   /// Gỡ quảng cáo — mua một lần, vĩnh viễn.
-  removeAds('boba_remove_ads', IapKind.nonConsumable, 'Gỡ quảng cáo',
-      'Bỏ qua mọi quảng cáo — vẫn nhận đủ thưởng, không cần xem.'),
+  removeAds('boba_remove_ads', IapKind.nonConsumable),
 
   /// Gói khởi động — mua một lần.
-  starterPack('boba_starter_pack', IapKind.nonConsumable, 'Gói khởi động',
-      'Một lần: nhận ngay một túi Kim Cương lớn.');
+  starterPack('boba_starter_pack', IapKind.nonConsumable);
 
-  const IapProduct(this.id, this.kind, this.title, this.description);
+  const IapProduct(this.id, this.kind);
 
   final String id;
   final IapKind kind;
-  final String title;
-  final String description;
 
   static IapProduct? byId(String id) {
     for (final p in values) {

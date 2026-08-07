@@ -1,0 +1,71 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "Boba Empire",
+
+  "tapBrew": "Tap to brew",
+  "coinsSuffix": " Coins",
+  "incomePerSecond": "+{amount} / sec",
+  "instantCashButton": "Instant cash",
+  "instantCashSnack": "Instant cash! +{amount} Coins",
+
+  "stageHeader": "🏪 {name}",
+  "unlockStageButton": "Unlock {cost} Coins",
+  "generatorSubtitle": "+{amount} Coins/sec per level",
+  "buyButton": "{cost} Coins",
+  "boostChip": "🔥 x3 · {seconds}s",
+  "vipSnack": "VIP customer! +{cash} Coins, +{gems} 💎",
+
+  "iapGemsSnack": "Received +{amount} 💎",
+  "iapRemoveAdsSnack": "Ads removed. Thank you!",
+  "iapStarterSnack": "Starter pack: +{amount} 💎",
+
+  "genTraDen": "Black Tea",
+  "genTranChau": "Boba Pearls",
+  "genThach": "Grass Jelly",
+  "genPudding": "Pudding",
+  "genKemNuong": "Crème Brûlée Milk Tea",
+  "genMatcha": "Bucket Matcha",
+
+  "stage1": "Street Cart",
+  "stage2": "Small Kiosk",
+  "stage3": "Luxury Cafe Chain",
+
+  "gemShopTitle": "Shop 💎 (you have {gems})",
+  "gemBoostName": "Income boost",
+  "gemBoostDesc": "+{percent}% permanent income per level",
+  "offlineCapName": "Offline cooler",
+  "offlineCapDesc": "+{hours}h offline cap per level",
+  "gemItemLevel": "{name}  Lv.{level}",
+  "gemCost": "{cost} 💎",
+  "iapSectionTitle": "Buy with real money",
+  "restorePurchases": "Restore purchases",
+  "close": "Close",
+
+  "iapGemsTitle": "Gem Pouch",
+  "iapGemsDesc": "Top up Gems to buy items in the Shop.",
+  "iapRemoveAdsTitle": "Remove ads",
+  "iapRemoveAdsDesc": "Skip all ads — you still get every reward, no watching needed.",
+  "iapStarterTitle": "Starter pack",
+  "iapStarterDesc": "One-time: get a big pouch of Gems right away.",
+
+  "prestigeTitle": "Franchise 🏪",
+  "prestigeIntro": "Each ⭐ Star gives +{percent}% permanent income.",
+  "prestigeStarsNow": "Current stars",
+  "prestigeStarsValue": "{stars} ⭐  (+{percent}%)",
+  "prestigeNow": "Franchise now",
+  "prestigeGain": "+{stars} ⭐",
+  "prestigeTotalBonus": "Total bonus after",
+  "prestigeTotalValue": "+{percent}%",
+  "prestigeWarning": "⚠️ This resets all your Coins and current upgrade levels.",
+  "cancel": "Cancel",
+  "prestigeConfirm": "Franchise (+{stars} ⭐)",
+  "prestigeNotEnough": "Not enough",
+  "prestigeSuccess": "Franchise successful! +{stars} ⭐",
+
+  "offlineTitle": "Welcome back! 🧋",
+  "offlineBody": "The shop kept selling while you were away.\nYou earned {amount} Coins.",
+  "offlineClaim": "Claim",
+  "offlineDoubleButton": "Watch ad ×2",
+  "offlineDoubleSnack": "Doubled! +{amount} Coins"
+}
