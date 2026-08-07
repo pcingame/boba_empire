@@ -36,7 +36,8 @@ void main() {
 
     expect(find.text('0 Xu'), findsOneWidget);
     await tester.tap(find.text('Chạm pha trà'));
-    await tester.pump();
+    await tester.pump(); // frame cho cú chạm
+    await tester.pump(const Duration(milliseconds: 600)); // đợi counter chạy xong
     expect(find.text('1 Xu'), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox());

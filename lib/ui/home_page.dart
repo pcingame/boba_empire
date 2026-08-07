@@ -11,6 +11,7 @@ import 'gem_shop.dart';
 import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
 import 'widgets/anim_assets.dart';
+import 'widgets/animated_count.dart';
 import 'widgets/mascot.dart';
 import 'widgets/one_shot_lottie.dart';
 
@@ -164,8 +165,9 @@ class _MoneyHeader extends ConsumerWidget {
       color: theme.colorScheme.primaryContainer,
       child: Column(
         children: [
-          Text(
-            '${formatNumber(money)} Xu',
+          AnimatedCount(
+            money,
+            suffix: ' Xu',
             style: theme.textTheme.displaySmall?.copyWith(
               fontWeight: FontWeight.bold,
               color: theme.colorScheme.onPrimaryContainer,
