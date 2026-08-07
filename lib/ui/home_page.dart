@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../audio/audio_service.dart';
@@ -248,15 +249,23 @@ class _MoneyHeader extends ConsumerWidget {
               color: theme.colorScheme.onPrimaryContainer,
             ),
           ),
-          if (income > 0) ...[
-            const SizedBox(height: 8),
-            FilledButton.tonalIcon(
-              key: const Key('instant-cash'),
-              onPressed: () => _claimInstantCash(context, ref),
-              icon: const Icon(Icons.card_giftcard),
-              label: Text(l10n.instantCashButton),
-            ),
-          ],
+          // AnimatedSize: header giãn mượt khi nút xuất hiện (lần mua đầu) thay
+          // vì nhảy giật.
+          AnimatedSize(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+            child: income > 0
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: FilledButton.tonalIcon(
+                      key: const Key('instant-cash'),
+                      onPressed: () => _claimInstantCash(context, ref),
+                      icon: const Icon(Icons.card_giftcard),
+                      label: Text(l10n.instantCashButton),
+                    ),
+                  )
+                : const SizedBox(width: double.infinity),
+          ),
         ],
       ),
     );
@@ -273,6 +282,7 @@ class _MoneyHeader extends ConsumerWidget {
     if (outcome != RewardOutcome.earned) return;
     final reward = controller.claimInstantCash();
     if (reward > 0) {
+      HapticFeedback.mediumImpact();
       ref.read(audioServiceProvider).play(Sfx.reward);
       messenger.showSnackBar(
         SnackBar(content: Text(l10n.instantCashSnack(formatNumber(reward)))),
@@ -281,47 +291,84 @@ class _MoneyHeader extends ConsumerWidget {
   }
 }
 
-/// Vùng giữa: nút lớn để chạm pha trà. Không watch state nào nên không rebuild
-/// theo tick — chỉ đọc notifier để gọi hành động.
-class _TapArea extends ConsumerWidget {
+/// Vùng giữa: nút lớn để chạm pha trà. Có hiệu ứng nhấn (thu nhỏ + bật lại) và
+/// rung nhẹ để "đã tay" — yếu tố quan trọng nhất của game chạm.
+class _TapArea extends ConsumerStatefulWidget {
   const _TapArea();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_TapArea> createState() => _TapAreaState();
+}
+
+class _TapAreaState extends ConsumerState<_TapArea>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _press = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 90),
+    lowerBound: 0.0,
+    upperBound: 0.12,
+  );
+
+  @override
+  void dispose() {
+    _press.dispose();
+    super.dispose();
+  }
+
+  void _onTap() {
+    // Thu nhỏ rồi bật lại (hữu hạn nên pumpAndSettle không treo).
+    _press.forward().then((_) => _press.reverse());
+    HapticFeedback.lightImpact();
+    ref.read(gameControllerProvider.notifier).tapCup();
+    ref.read(audioServiceProvider).play(Sfx.tap);
+    playEffect(context, AnimAssets.coins, size: 140);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
-        onTap: () {
-          ref.read(gameControllerProvider.notifier).tapCup();
-          ref.read(audioServiceProvider).play(Sfx.tap);
-          playEffect(context, AnimAssets.coins, size: 140);
-        },
-        child: Container(
-          width: 160,
-          height: 160,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: Theme.of(context).colorScheme.secondaryContainer,
-          ),
-          alignment: Alignment.center,
-          padding: const EdgeInsets.all(8),
-          // Co lại khi vòng bị ép nhỏ (ngôn ngữ dài) thay vì tràn.
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Animation nếu có file, ngược lại emoji 🧋.
-                const Mascot(asset: AnimAssets.cup, emoji: '🧋', size: 72),
-                const SizedBox(height: 4),
-                SizedBox(
-                  width: 150,
-                  child: Text(
-                    AppLocalizations.of(context)!.tapBrew,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 15),
-                  ),
+        onTap: _onTap,
+        child: ScaleTransition(
+          scale: Tween<double>(begin: 1.0, end: 0.88).animate(_press),
+          child: Container(
+            width: 160,
+            height: 160,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Theme.of(context).colorScheme.secondaryContainer,
+              boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .shadow
+                      .withValues(alpha: 0.25),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
                 ),
               ],
+            ),
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(8),
+            // Co lại khi vòng bị ép nhỏ (ngôn ngữ dài) thay vì tràn.
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Animation nếu có file, ngược lại emoji 🧋.
+                  const Mascot(asset: AnimAssets.cup, emoji: '🧋', size: 72),
+                  const SizedBox(height: 4),
+                  SizedBox(
+                    width: 150,
+                    child: Text(
+                      AppLocalizations.of(context)!.tapBrew,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -404,6 +451,7 @@ class _StageHeader extends ConsumerWidget {
                         if (ref
                             .read(gameControllerProvider.notifier)
                             .unlockStage()) {
+                          HapticFeedback.mediumImpact();
                           ref.read(audioServiceProvider).play(Sfx.unlock);
                           playEffect(context, AnimAssets.celebration,
                               size: 280);
@@ -423,6 +471,16 @@ class _StageHeader extends ConsumerWidget {
   }
 }
 
+/// Emoji minh họa cho từng nguồn thu (không phụ thuộc ngôn ngữ).
+const Map<String, String> _generatorEmoji = {
+  'tra_den': '🍵',
+  'tran_chau': '🧋',
+  'thach': '🍮',
+  'pudding': '🍰',
+  'kem_nuong': '🔥',
+  'matcha': '🍵',
+};
+
 /// Một dòng shop. Watch riêng cấp của nó + tiền (để bật/mờ nút mua).
 class _ShopTile extends ConsumerWidget {
   const _ShopTile(this.config);
@@ -439,9 +497,21 @@ class _ShopTile extends ConsumerWidget {
     final cost = nextLevelCost(config, level);
     final canAfford = money >= cost;
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
 
     return ListTile(
-      leading: CircleAvatar(child: Text('$level')),
+      // Emoji + huy hiệu cấp để đọc lướt nhanh.
+      leading: Badge(
+        label: Text('$level'),
+        isLabelVisible: level > 0,
+        child: CircleAvatar(
+          backgroundColor: theme.colorScheme.secondaryContainer,
+          child: Text(
+            _generatorEmoji[config.id] ?? '🧋',
+            style: const TextStyle(fontSize: 20),
+          ),
+        ),
+      ),
       title: Text(generatorName(l10n, config.id)),
       subtitle: Text(
         l10n.generatorSubtitle(formatNumber(config.incomePerLevelPerSecond)),
@@ -452,6 +522,7 @@ class _ShopTile extends ConsumerWidget {
                 if (ref
                     .read(gameControllerProvider.notifier)
                     .buy(config.id)) {
+                  HapticFeedback.selectionClick();
                   ref.read(audioServiceProvider).play(Sfx.buy);
                   playEffect(context, AnimAssets.confetti, size: 160);
                 }
@@ -488,6 +559,48 @@ class _BoostIndicator extends ConsumerWidget {
   }
 }
 
+/// Nhấp nháy (scale in/out lặp) để hút mắt vào cơ hội giới hạn thời gian (mèo
+/// may mắn / khách VIP). Tắt trong test qua [debugDisableMascotAnimation] để
+/// pumpAndSettle không treo bởi ticker lặp vô hạn.
+class _Pulse extends StatefulWidget {
+  const _Pulse({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_Pulse> createState() => _PulseState();
+}
+
+class _PulseState extends State<_Pulse>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 700),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    if (!debugDisableMascotAnimation) _controller.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ScaleTransition(
+      scale: Tween<double>(begin: 1.0, end: 1.12).animate(
+        CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+      ),
+      child: widget.child,
+    );
+  }
+}
+
 /// Con mèo may mắn: hiện khi có sự kiện, chạm để kích hoạt Mưa vàng.
 class _GoldenCat extends ConsumerWidget {
   const _GoldenCat();
@@ -513,19 +626,22 @@ class _GoldenCat extends ConsumerWidget {
               adsRemoved ? RewardOutcome.earned : await ads.showRewardedAd();
           if (outcome == RewardOutcome.earned) {
             controller.activateGoldenRush();
+            HapticFeedback.mediumImpact();
             ref.read(audioServiceProvider).play(Sfx.reward);
           }
         },
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.amber,
-            boxShadow: [
-              BoxShadow(color: Colors.amber, blurRadius: 24, spreadRadius: 4),
-            ],
+        child: _Pulse(
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.amber,
+              boxShadow: [
+                BoxShadow(color: Colors.amber, blurRadius: 24, spreadRadius: 4),
+              ],
+            ),
+            child: const Mascot(asset: AnimAssets.cat, emoji: '🐱', size: 56),
           ),
-          child: const Mascot(asset: AnimAssets.cat, emoji: '🐱', size: 56),
         ),
       ),
     );
@@ -551,6 +667,7 @@ class _VipCustomer extends ConsumerWidget {
           final messenger = ScaffoldMessenger.of(context);
           final reward = ref.read(gameControllerProvider.notifier).collectVip();
           if (reward.gems > 0) {
+            HapticFeedback.mediumImpact();
             ref.read(audioServiceProvider).play(Sfx.vip);
             messenger.showSnackBar(
               SnackBar(
@@ -562,20 +679,22 @@ class _VipCustomer extends ConsumerWidget {
             );
           }
         },
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.deepPurple,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.deepPurpleAccent,
-                blurRadius: 24,
-                spreadRadius: 4,
-              ),
-            ],
+        child: _Pulse(
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.deepPurple,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.deepPurpleAccent,
+                  blurRadius: 24,
+                  spreadRadius: 4,
+                ),
+              ],
+            ),
+            child: const Mascot(asset: AnimAssets.car, emoji: '🚗', size: 56),
           ),
-          child: const Mascot(asset: AnimAssets.car, emoji: '🚗', size: 56),
         ),
       ),
     );
