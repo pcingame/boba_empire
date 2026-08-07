@@ -282,17 +282,26 @@ class _TapArea extends ConsumerWidget {
             color: Theme.of(context).colorScheme.secondaryContainer,
           ),
           alignment: Alignment.center,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Animation nếu có file, ngược lại emoji 🧋.
-              const Mascot(asset: AnimAssets.cup, emoji: '🧋', size: 80),
-              const SizedBox(height: 4),
-              Text(
-                AppLocalizations.of(context)!.tapBrew,
-                style: const TextStyle(fontSize: 16),
-              ),
-            ],
+          padding: const EdgeInsets.all(8),
+          // Co lại khi vòng bị ép nhỏ (ngôn ngữ dài) thay vì tràn.
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Animation nếu có file, ngược lại emoji 🧋.
+                const Mascot(asset: AnimAssets.cup, emoji: '🧋', size: 72),
+                const SizedBox(height: 4),
+                SizedBox(
+                  width: 150,
+                  child: Text(
+                    AppLocalizations.of(context)!.tapBrew,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 15),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -360,22 +369,32 @@ class _StageHeader extends ConsumerWidget {
             child: Text(
               l10n.stageHeader(stageName(l10n, stage)),
               style: theme.textTheme.titleMedium,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
+          const SizedBox(width: 8),
           if (next != null)
-            FilledButton(
-              key: const Key('unlock-stage'),
-              onPressed: money >= next.unlockCost
-                  ? () {
-                      if (ref
-                          .read(gameControllerProvider.notifier)
-                          .unlockStage()) {
-                        ref.read(audioServiceProvider).play(Sfx.unlock);
-                        playEffect(context, AnimAssets.celebration, size: 280);
+            Flexible(
+              child: FilledButton(
+                key: const Key('unlock-stage'),
+                onPressed: money >= next.unlockCost
+                    ? () {
+                        if (ref
+                            .read(gameControllerProvider.notifier)
+                            .unlockStage()) {
+                          ref.read(audioServiceProvider).play(Sfx.unlock);
+                          playEffect(context, AnimAssets.celebration,
+                              size: 280);
+                        }
                       }
-                    }
-                  : null,
-              child: Text(l10n.unlockStageButton(formatNumber(next.unlockCost))),
+                    : null,
+                child: Text(
+                  l10n.unlockStageButton(formatNumber(next.unlockCost)),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
             ),
         ],
       ),

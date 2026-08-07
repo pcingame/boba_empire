@@ -1,0 +1,71 @@
+{
+  "@@locale": "th",
+
+  "appTitle": "Boba Empire",
+
+  "tapBrew": "แตะเพื่อชงชา",
+  "coinsSuffix": " เหรียญ",
+  "incomePerSecond": "+{amount} / วินาที",
+  "instantCashButton": "เงินทันที",
+  "instantCashSnack": "เงินทันที! +{amount} เหรียญ",
+
+  "stageHeader": "🏪 {name}",
+  "unlockStageButton": "ปลดล็อก {cost} เหรียญ",
+  "generatorSubtitle": "+{amount} เหรียญ/วินาที ต่อระดับ",
+  "buyButton": "{cost} เหรียญ",
+  "boostChip": "🔥 x3 · {seconds} วิ",
+  "vipSnack": "ลูกค้า VIP! +{cash} เหรียญ, +{gems} 💎",
+
+  "iapGemsSnack": "ได้รับ +{amount} 💎",
+  "iapRemoveAdsSnack": "ลบโฆษณาแล้ว ขอบคุณ!",
+  "iapStarterSnack": "แพ็กเริ่มต้น: +{amount} 💎",
+
+  "genTraDen": "ชาดำ",
+  "genTranChau": "ไข่มุก",
+  "genThach": "เฉาก๊วย",
+  "genPudding": "พุดดิ้ง",
+  "genKemNuong": "ชานมครีมบรูเล่",
+  "genMatcha": "มัทฉะถัง",
+
+  "stage1": "รถเข็นริมทาง",
+  "stage2": "คีออสก์เล็ก",
+  "stage3": "เครือคาเฟ่หรู",
+
+  "gemShopTitle": "ร้านค้า 💎 (มี {gems})",
+  "gemBoostName": "เพิ่มรายได้",
+  "gemBoostDesc": "+{percent}% รายได้ถาวรต่อระดับ",
+  "offlineCapName": "ตู้เย็นออฟไลน์",
+  "offlineCapDesc": "+{hours} ชม. เพดานออฟไลน์ต่อระดับ",
+  "gemItemLevel": "{name}  Lv.{level}",
+  "gemCost": "{cost} 💎",
+  "iapSectionTitle": "ซื้อด้วยเงินจริง",
+  "restorePurchases": "กู้คืนการซื้อ",
+  "close": "ปิด",
+
+  "iapGemsTitle": "ถุงเพชร",
+  "iapGemsDesc": "เติมเพชรเพื่อซื้อไอเทมในร้านค้า",
+  "iapRemoveAdsTitle": "ลบโฆษณา",
+  "iapRemoveAdsDesc": "ข้ามโฆษณาทั้งหมด — ยังได้รับรางวัลครบโดยไม่ต้องดู",
+  "iapStarterTitle": "แพ็กเริ่มต้น",
+  "iapStarterDesc": "ครั้งเดียว: รับถุงเพชรใบใหญ่ทันที",
+
+  "prestigeTitle": "แฟรนไชส์ 🏪",
+  "prestigeIntro": "⭐ ดาวแต่ละดวงให้ +{percent}% รายได้ถาวร",
+  "prestigeStarsNow": "ดาวปัจจุบัน",
+  "prestigeStarsValue": "{stars} ⭐  (+{percent}%)",
+  "prestigeNow": "แฟรนไชส์เลย",
+  "prestigeGain": "+{stars} ⭐",
+  "prestigeTotalBonus": "โบนัสรวมหลังจากนั้น",
+  "prestigeTotalValue": "+{percent}%",
+  "prestigeWarning": "⚠️ จะรีเซ็ตเหรียญและระดับอัปเกรดปัจจุบันทั้งหมด",
+  "cancel": "ยกเลิก",
+  "prestigeConfirm": "แฟรนไชส์ (+{stars} ⭐)",
+  "prestigeNotEnough": "ไม่พอ",
+  "prestigeSuccess": "แฟรนไชส์สำเร็จ! +{stars} ⭐",
+
+  "offlineTitle": "ยินดีต้อนรับกลับ! 🧋",
+  "offlineBody": "ร้านยังขายต่อขณะที่คุณไม่อยู่\nคุณได้รับ {amount} เหรียญ",
+  "offlineClaim": "รับ",
+  "offlineDoubleButton": "ดูโฆษณา ×2",
+  "offlineDoubleSnack": "เพิ่มเป็นสองเท่า! +{amount} เหรียญ"
+}

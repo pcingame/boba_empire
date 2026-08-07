@@ -1,0 +1,71 @@
+{
+  "@@locale": "es",
+
+  "appTitle": "Boba Empire",
+
+  "tapBrew": "Toca para preparar",
+  "coinsSuffix": " Monedas",
+  "incomePerSecond": "+{amount} / seg",
+  "instantCashButton": "Dinero instantáneo",
+  "instantCashSnack": "¡Dinero instantáneo! +{amount} Monedas",
+
+  "stageHeader": "🏪 {name}",
+  "unlockStageButton": "Desbloquear {cost} Monedas",
+  "generatorSubtitle": "+{amount} Monedas/seg por nivel",
+  "buyButton": "{cost} Monedas",
+  "boostChip": "🔥 x3 · {seconds}s",
+  "vipSnack": "¡Cliente VIP! +{cash} Monedas, +{gems} 💎",
+
+  "iapGemsSnack": "Recibido +{amount} 💎",
+  "iapRemoveAdsSnack": "Anuncios eliminados. ¡Gracias!",
+  "iapStarterSnack": "Paquete inicial: +{amount} 💎",
+
+  "genTraDen": "Té Negro",
+  "genTranChau": "Perlas de Tapioca",
+  "genThach": "Gelatina de Hierbas",
+  "genPudding": "Pudín",
+  "genKemNuong": "Té con Leche Crème Brûlée",
+  "genMatcha": "Cubo de Matcha",
+
+  "stage1": "Carrito Callejero",
+  "stage2": "Quiosco Pequeño",
+  "stage3": "Cadena de Cafés de Lujo",
+
+  "gemShopTitle": "Tienda 💎 (tienes {gems})",
+  "gemBoostName": "Aumento de ingresos",
+  "gemBoostDesc": "+{percent}% de ingresos permanentes por nivel",
+  "offlineCapName": "Refrigerador sin conexión",
+  "offlineCapDesc": "+{hours}h de límite sin conexión por nivel",
+  "gemItemLevel": "{name}  Nv.{level}",
+  "gemCost": "{cost} 💎",
+  "iapSectionTitle": "Comprar con dinero real",
+  "restorePurchases": "Restaurar compras",
+  "close": "Cerrar",
+
+  "iapGemsTitle": "Bolsa de Gemas",
+  "iapGemsDesc": "Recarga Gemas para comprar objetos en la Tienda.",
+  "iapRemoveAdsTitle": "Quitar anuncios",
+  "iapRemoveAdsDesc": "Omite todos los anuncios: sigues recibiendo todas las recompensas, sin verlos.",
+  "iapStarterTitle": "Paquete inicial",
+  "iapStarterDesc": "Una vez: recibe una gran bolsa de Gemas al instante.",
+
+  "prestigeTitle": "Franquicia 🏪",
+  "prestigeIntro": "Cada ⭐ Estrella da +{percent}% de ingresos permanentes.",
+  "prestigeStarsNow": "Estrellas actuales",
+  "prestigeStarsValue": "{stars} ⭐  (+{percent}%)",
+  "prestigeNow": "Franquiciar ahora",
+  "prestigeGain": "+{stars} ⭐",
+  "prestigeTotalBonus": "Bono total después",
+  "prestigeTotalValue": "+{percent}%",
+  "prestigeWarning": "⚠️ Esto reinicia todas tus Monedas y los niveles de mejora actuales.",
+  "cancel": "Cancelar",
+  "prestigeConfirm": "Franquiciar (+{stars} ⭐)",
+  "prestigeNotEnough": "Insuficiente",
+  "prestigeSuccess": "¡Franquicia exitosa! +{stars} ⭐",
+
+  "offlineTitle": "¡Bienvenido de vuelta! 🧋",
+  "offlineBody": "La tienda siguió vendiendo mientras no estabas.\nGanaste {amount} Monedas.",
+  "offlineClaim": "Reclamar",
+  "offlineDoubleButton": "Ver anuncio ×2",
+  "offlineDoubleSnack": "¡Duplicado! +{amount} Monedas"
+}

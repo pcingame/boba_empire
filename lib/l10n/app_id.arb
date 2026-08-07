@@ -1,0 +1,71 @@
+{
+  "@@locale": "id",
+
+  "appTitle": "Boba Empire",
+
+  "tapBrew": "Ketuk untuk menyeduh",
+  "coinsSuffix": " Koin",
+  "incomePerSecond": "+{amount} / dtk",
+  "instantCashButton": "Uang instan",
+  "instantCashSnack": "Uang instan! +{amount} Koin",
+
+  "stageHeader": "🏪 {name}",
+  "unlockStageButton": "Buka {cost} Koin",
+  "generatorSubtitle": "+{amount} Koin/dtk per level",
+  "buyButton": "{cost} Koin",
+  "boostChip": "🔥 x3 · {seconds}s",
+  "vipSnack": "Pelanggan VIP! +{cash} Koin, +{gems} 💎",
+
+  "iapGemsSnack": "Menerima +{amount} 💎",
+  "iapRemoveAdsSnack": "Iklan dihapus. Terima kasih!",
+  "iapStarterSnack": "Paket awal: +{amount} 💎",
+
+  "genTraDen": "Teh Hitam",
+  "genTranChau": "Mutiara Boba",
+  "genThach": "Cincau",
+  "genPudding": "Puding",
+  "genKemNuong": "Teh Susu Crème Brûlée",
+  "genMatcha": "Matcha Seember",
+
+  "stage1": "Gerobak Kaki Lima",
+  "stage2": "Kios Kecil",
+  "stage3": "Jaringan Kafe Mewah",
+
+  "gemShopTitle": "Toko 💎 (punya {gems})",
+  "gemBoostName": "Peningkatan pendapatan",
+  "gemBoostDesc": "+{percent}% pendapatan permanen per level",
+  "offlineCapName": "Pendingin offline",
+  "offlineCapDesc": "+{hours} jam batas offline per level",
+  "gemItemLevel": "{name}  Lv.{level}",
+  "gemCost": "{cost} 💎",
+  "iapSectionTitle": "Beli dengan uang asli",
+  "restorePurchases": "Pulihkan pembelian",
+  "close": "Tutup",
+
+  "iapGemsTitle": "Kantong Permata",
+  "iapGemsDesc": "Isi Permata untuk membeli item di Toko.",
+  "iapRemoveAdsTitle": "Hapus iklan",
+  "iapRemoveAdsDesc": "Lewati semua iklan — kamu tetap dapat semua hadiah tanpa menonton.",
+  "iapStarterTitle": "Paket awal",
+  "iapStarterDesc": "Sekali saja: langsung dapat sekantong besar Permata.",
+
+  "prestigeTitle": "Waralaba 🏪",
+  "prestigeIntro": "Setiap ⭐ Bintang memberi +{percent}% pendapatan permanen.",
+  "prestigeStarsNow": "Bintang saat ini",
+  "prestigeStarsValue": "{stars} ⭐  (+{percent}%)",
+  "prestigeNow": "Waralabakan sekarang",
+  "prestigeGain": "+{stars} ⭐",
+  "prestigeTotalBonus": "Total bonus setelahnya",
+  "prestigeTotalValue": "+{percent}%",
+  "prestigeWarning": "⚠️ Ini mereset semua Koin dan level peningkatan kamu saat ini.",
+  "cancel": "Batal",
+  "prestigeConfirm": "Waralabakan (+{stars} ⭐)",
+  "prestigeNotEnough": "Tidak cukup",
+  "prestigeSuccess": "Waralaba berhasil! +{stars} ⭐",
+
+  "offlineTitle": "Selamat datang kembali! 🧋",
+  "offlineBody": "Toko tetap berjualan saat kamu pergi.\nKamu mendapat {amount} Koin.",
+  "offlineClaim": "Ambil",
+  "offlineDoubleButton": "Tonton iklan ×2",
+  "offlineDoubleSnack": "Digandakan! +{amount} Koin"
+}
