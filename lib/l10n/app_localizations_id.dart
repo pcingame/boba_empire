@@ -230,4 +230,38 @@ class AppLocalizationsId extends AppLocalizations {
   String offlineDoubleSnack(String amount) {
     return 'Digandakan! +$amount Koin';
   }
+
+  @override
+  String get howToPlayTitle => 'Cara bermain';
+
+  @override
+  String get htpTap =>
+      '🧋 Ketuk gelas untuk menyeduh teh dan mendapatkan Koin.';
+
+  @override
+  String get htpBuy =>
+      '🛒 Beli peningkatan untuk pendapatan otomatis setiap detik.';
+
+  @override
+  String get htpStage =>
+      '🏪 Kumpulkan Koin untuk membuka tahap baru dengan minuman lebih mewah.';
+
+  @override
+  String get htpCat =>
+      '🐱 Ketuk kucing keberuntungan untuk Hujan Emas ×3 sesaat.';
+
+  @override
+  String get htpVip => '🚗 Layani pelanggan VIP untuk mendapatkan Permata 💎.';
+
+  @override
+  String get htpGems =>
+      '💎 Gunakan Permata di Toko untuk peningkatan permanen.';
+
+  @override
+  String get htpPrestige =>
+      '⭐ Waralabakan untuk mengulang dan dapat Bintang — bonus pendapatan permanen.';
+
+  @override
+  String get htpOffline =>
+      '😴 Toko tetap berjualan saat kamu pergi — kembali untuk mengambil uang offline.';
 }

@@ -86,6 +86,18 @@ void main() {
       await tester.pumpWidget(const SizedBox());
     });
 
+    testWidgets('[$locale] bảng Cách chơi không tràn', (tester) async {
+      await _pump(
+        tester,
+        locale: locale,
+        seed: GameState.newGame(nowMillis: 0),
+      );
+      await tester.tap(find.byKey(const Key('how-to-play-button')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('how-to-play-close')), findsOneWidget);
+      await tester.pumpWidget(const SizedBox());
+    });
+
     testWidgets('[$locale] popup offline không tràn', (tester) async {
       await _pump(
         tester,

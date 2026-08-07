@@ -21,6 +21,7 @@ class GameSnapshot {
     required this.stage,
     required this.adsRemoved,
     required this.starterPackOwned,
+    required this.tutorialSeen,
     required Map<String, int> levels,
   }) : _levels = levels;
 
@@ -60,6 +61,9 @@ class GameSnapshot {
 
   /// Đã sở hữu "Gói khởi động" — cửa hàng ẩn/khoá mục này.
   final bool starterPackOwned;
+
+  /// Đã xem hướng dẫn "Cách chơi" — quyết định có tự hiện lần đầu không.
+  final bool tutorialSeen;
 
   final Map<String, int> _levels;
 

@@ -67,5 +67,15 @@
   "offlineBody": "The shop kept selling while you were away.\nYou earned {amount} Coins.",
   "offlineClaim": "Claim",
   "offlineDoubleButton": "Watch ad ×2",
-  "offlineDoubleSnack": "Doubled! +{amount} Coins"
+  "offlineDoubleSnack": "Doubled! +{amount} Coins",
+
+  "howToPlayTitle": "How to play",
+  "htpTap": "🧋 Tap the cup to brew tea and earn Coins.",
+  "htpBuy": "🛒 Buy upgrades for automatic income every second.",
+  "htpStage": "🏪 Save up Coins to unlock new stages with fancier drinks.",
+  "htpCat": "🐱 Tap the lucky cat for a short ×3 Golden Rush.",
+  "htpVip": "🚗 Serve the VIP customer to earn Gems 💎.",
+  "htpGems": "💎 Spend Gems in the Shop on permanent upgrades.",
+  "htpPrestige": "⭐ Franchise to restart and earn Stars — a permanent income bonus.",
+  "htpOffline": "😴 The shop keeps selling while you're away — come back for offline cash."
 }

@@ -148,6 +148,11 @@ void setAdsRemoved(GameState state) {
   state.adsRemoved = true;
 }
 
+/// Đánh dấu đã xem hướng dẫn (để không tự hiện lại ở các lần mở sau).
+void setTutorialSeen(GameState state) {
+  state.tutorialSeen = true;
+}
+
 /// Trao "Gói khởi động" đúng MỘT lần: cộng gems rồi đánh dấu đã sở hữu. Trả về
 /// true nếu vừa trao (false nếu đã sở hữu — chống trao trùng khi restore).
 bool claimStarterPack(GameState state, double gems) {

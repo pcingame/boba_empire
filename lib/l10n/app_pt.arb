@@ -67,5 +67,15 @@
   "offlineBody": "A loja continuou vendendo enquanto você estava fora.\nVocê ganhou {amount} Moedas.",
   "offlineClaim": "Receber",
   "offlineDoubleButton": "Ver anúncio ×2",
-  "offlineDoubleSnack": "Dobrado! +{amount} Moedas"
+  "offlineDoubleSnack": "Dobrado! +{amount} Moedas",
+
+  "howToPlayTitle": "Como jogar",
+  "htpTap": "🧋 Toque no copo para preparar chá e ganhar Moedas.",
+  "htpBuy": "🛒 Compre melhorias para ter renda automática a cada segundo.",
+  "htpStage": "🏪 Junte Moedas para desbloquear novas fases com bebidas melhores.",
+  "htpCat": "🐱 Toque no gato da sorte para uma Chuva de Ouro ×3 rápida.",
+  "htpVip": "🚗 Atenda o cliente VIP para ganhar Gemas 💎.",
+  "htpGems": "💎 Gaste Gemas na Loja em melhorias permanentes.",
+  "htpPrestige": "⭐ Franquie para recomeçar e ganhar Estrelas — bônus de renda permanente.",
+  "htpOffline": "😴 A loja continua vendendo enquanto você está fora — volte para pegar o dinheiro offline."
 }

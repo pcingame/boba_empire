@@ -90,5 +90,15 @@
   "offlineClaim": "Nhận",
   "offlineDoubleButton": "Xem QC ×2",
   "offlineDoubleSnack": "Nhân đôi! +{amount} Xu",
-  "@offlineDoubleSnack": { "placeholders": { "amount": { "type": "String" } } }
+  "@offlineDoubleSnack": { "placeholders": { "amount": { "type": "String" } } },
+
+  "howToPlayTitle": "Cách chơi",
+  "htpTap": "🧋 Chạm ly để pha trà và kiếm Xu.",
+  "htpBuy": "🛒 Mua nâng cấp để có thu nhập tự động mỗi giây.",
+  "htpStage": "🏪 Đủ Xu thì mở khóa giai đoạn mới, bán món cao cấp hơn.",
+  "htpCat": "🐱 Chạm mèo may mắn để nhận Mưa vàng ×3 trong chốc lát.",
+  "htpVip": "🚗 Đón khách VIP đi ô tô để nhận Kim Cương 💎.",
+  "htpGems": "💎 Dùng Kim Cương trong Cửa hàng mua nâng cấp vĩnh viễn.",
+  "htpPrestige": "⭐ Nhượng quyền để chơi lại và nhận Sao — bonus thu nhập vĩnh viễn.",
+  "htpOffline": "😴 Quán vẫn bán khi bạn thoát — quay lại nhận tiền offline."
 }

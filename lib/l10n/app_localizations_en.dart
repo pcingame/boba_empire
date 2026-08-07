@@ -229,4 +229,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String offlineDoubleSnack(String amount) {
     return 'Doubled! +$amount Coins';
   }
+
+  @override
+  String get howToPlayTitle => 'How to play';
+
+  @override
+  String get htpTap => '🧋 Tap the cup to brew tea and earn Coins.';
+
+  @override
+  String get htpBuy => '🛒 Buy upgrades for automatic income every second.';
+
+  @override
+  String get htpStage =>
+      '🏪 Save up Coins to unlock new stages with fancier drinks.';
+
+  @override
+  String get htpCat => '🐱 Tap the lucky cat for a short ×3 Golden Rush.';
+
+  @override
+  String get htpVip => '🚗 Serve the VIP customer to earn Gems 💎.';
+
+  @override
+  String get htpGems => '💎 Spend Gems in the Shop on permanent upgrades.';
+
+  @override
+  String get htpPrestige =>
+      '⭐ Franchise to restart and earn Stars — a permanent income bonus.';
+
+  @override
+  String get htpOffline =>
+      '😴 The shop keeps selling while you\'re away — come back for offline cash.';
 }

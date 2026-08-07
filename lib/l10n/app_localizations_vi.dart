@@ -230,4 +230,36 @@ class AppLocalizationsVi extends AppLocalizations {
   String offlineDoubleSnack(String amount) {
     return 'Nhân đôi! +$amount Xu';
   }
+
+  @override
+  String get howToPlayTitle => 'Cách chơi';
+
+  @override
+  String get htpTap => '🧋 Chạm ly để pha trà và kiếm Xu.';
+
+  @override
+  String get htpBuy => '🛒 Mua nâng cấp để có thu nhập tự động mỗi giây.';
+
+  @override
+  String get htpStage =>
+      '🏪 Đủ Xu thì mở khóa giai đoạn mới, bán món cao cấp hơn.';
+
+  @override
+  String get htpCat =>
+      '🐱 Chạm mèo may mắn để nhận Mưa vàng ×3 trong chốc lát.';
+
+  @override
+  String get htpVip => '🚗 Đón khách VIP đi ô tô để nhận Kim Cương 💎.';
+
+  @override
+  String get htpGems =>
+      '💎 Dùng Kim Cương trong Cửa hàng mua nâng cấp vĩnh viễn.';
+
+  @override
+  String get htpPrestige =>
+      '⭐ Nhượng quyền để chơi lại và nhận Sao — bonus thu nhập vĩnh viễn.';
+
+  @override
+  String get htpOffline =>
+      '😴 Quán vẫn bán khi bạn thoát — quay lại nhận tiền offline.';
 }

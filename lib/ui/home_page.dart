@@ -15,12 +15,18 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import 'gem_shop.dart';
+import 'how_to_play_dialog.dart';
 import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/animated_count.dart';
 import 'widgets/mascot.dart';
 import 'widgets/one_shot_lottie.dart';
+
+/// Cho phép tự hiện "Cách chơi" ở lần chơi đầu. App luôn bật; test tắt qua
+/// flutter_test_config để dialog modal không che thao tác, và test hướng dẫn
+/// bật lại để kiểm. (Giống [debugDisableMascotAnimation].)
+bool debugAutoShowTutorial = true;
 
 /// Màn hình chính MVP: đầu trang hiển thị tiền, giữa là nút chạm pha trà,
 /// dưới là shop nâng cấp. Cũng lo phần lifecycle (lưu khi app vào nền).
@@ -46,8 +52,16 @@ class _HomePageState extends ConsumerState<HomePage>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // Khôi phục sản phẩm non-consumable (Gỡ QC / Gói khởi động) đã mua.
       unawaited(ref.read(iapServiceProvider).restore());
-      final earned = ref.read(gameControllerProvider).offlineEarned;
-      if (earned > 0) _showOfflineDialog(earned);
+      final state = ref.read(gameControllerProvider);
+      // Lần chơi đầu (chưa xem hướng dẫn, không vướng popup offline): mở "Cách
+      // chơi". Nếu đang có tiền offline thì nhường popup đó, để hướng dẫn lần sau.
+      if (debugAutoShowTutorial &&
+          !state.tutorialSeen &&
+          state.offlineEarned <= 0) {
+        ref.read(gameControllerProvider.notifier).markTutorialSeen();
+        showHowToPlay(context);
+      }
+      if (state.offlineEarned > 0) _showOfflineDialog(state.offlineEarned);
     });
   }
 
@@ -122,6 +136,11 @@ class _HomePageState extends ConsumerState<HomePage>
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          key: const Key('how-to-play-button'),
+          icon: const Icon(Icons.help_outline),
+          onPressed: () => showHowToPlay(context),
+        ),
         title: Text(AppLocalizations.of(context)!.appTitle),
         centerTitle: true,
         actions: const [_GemShopButton(), _PrestigeButton()],

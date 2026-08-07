@@ -230,4 +230,36 @@ class AppLocalizationsEs extends AppLocalizations {
   String offlineDoubleSnack(String amount) {
     return '¡Duplicado! +$amount Monedas';
   }
+
+  @override
+  String get howToPlayTitle => 'Cómo jugar';
+
+  @override
+  String get htpTap => '🧋 Toca el vaso para preparar té y ganar Monedas.';
+
+  @override
+  String get htpBuy =>
+      '🛒 Compra mejoras para tener ingresos automáticos cada segundo.';
+
+  @override
+  String get htpStage =>
+      '🏪 Junta Monedas para desbloquear nuevas etapas con bebidas mejores.';
+
+  @override
+  String get htpCat =>
+      '🐱 Toca el gato de la suerte para una Lluvia Dorada ×3 breve.';
+
+  @override
+  String get htpVip => '🚗 Atiende al cliente VIP para ganar Gemas 💎.';
+
+  @override
+  String get htpGems => '💎 Gasta Gemas en la Tienda en mejoras permanentes.';
+
+  @override
+  String get htpPrestige =>
+      '⭐ Franquicia para reiniciar y ganar Estrellas — un bono de ingresos permanente.';
+
+  @override
+  String get htpOffline =>
+      '😴 La tienda sigue vendiendo mientras no estás — vuelve por el dinero sin conexión.';
 }

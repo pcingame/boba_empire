@@ -278,6 +278,14 @@ class GameController extends Notifier<GameSnapshot> {
     return granted;
   }
 
+  /// Đánh dấu đã xem hướng dẫn "Cách chơi". Lưu ngay để lần sau không tự hiện.
+  void markTutorialSeen() {
+    if (_game.tutorialSeen) return;
+    setTutorialSeen(_game);
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
   /// Xóa save và bắt đầu ván mới (nút chơi lại / debug).
   Future<void> resetGame() async {
     await _storage.clear();
@@ -326,6 +334,7 @@ class GameController extends Notifier<GameSnapshot> {
       stage: _game.stage,
       adsRemoved: _game.adsRemoved,
       starterPackOwned: _game.starterPackOwned,
+      tutorialSeen: _game.tutorialSeen,
       levels: _game.levels,
     );
   }

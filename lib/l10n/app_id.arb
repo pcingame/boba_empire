@@ -67,5 +67,15 @@
   "offlineBody": "Toko tetap berjualan saat kamu pergi.\nKamu mendapat {amount} Koin.",
   "offlineClaim": "Ambil",
   "offlineDoubleButton": "Tonton iklan ×2",
-  "offlineDoubleSnack": "Digandakan! +{amount} Koin"
+  "offlineDoubleSnack": "Digandakan! +{amount} Koin",
+
+  "howToPlayTitle": "Cara bermain",
+  "htpTap": "🧋 Ketuk gelas untuk menyeduh teh dan mendapatkan Koin.",
+  "htpBuy": "🛒 Beli peningkatan untuk pendapatan otomatis setiap detik.",
+  "htpStage": "🏪 Kumpulkan Koin untuk membuka tahap baru dengan minuman lebih mewah.",
+  "htpCat": "🐱 Ketuk kucing keberuntungan untuk Hujan Emas ×3 sesaat.",
+  "htpVip": "🚗 Layani pelanggan VIP untuk mendapatkan Permata 💎.",
+  "htpGems": "💎 Gunakan Permata di Toko untuk peningkatan permanen.",
+  "htpPrestige": "⭐ Waralabakan untuk mengulang dan dapat Bintang — bonus pendapatan permanen.",
+  "htpOffline": "😴 Toko tetap berjualan saat kamu pergi — kembali untuk mengambil uang offline."
 }

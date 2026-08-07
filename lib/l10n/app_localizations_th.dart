@@ -229,4 +229,34 @@ class AppLocalizationsTh extends AppLocalizations {
   String offlineDoubleSnack(String amount) {
     return 'เพิ่มเป็นสองเท่า! +$amount เหรียญ';
   }
+
+  @override
+  String get howToPlayTitle => 'วิธีเล่น';
+
+  @override
+  String get htpTap => '🧋 แตะแก้วเพื่อชงชาและรับเหรียญ';
+
+  @override
+  String get htpBuy => '🛒 ซื้ออัปเกรดเพื่อรับรายได้อัตโนมัติทุกวินาที';
+
+  @override
+  String get htpStage =>
+      '🏪 สะสมเหรียญเพื่อปลดล็อกด่านใหม่ที่มีเครื่องดื่มหรูขึ้น';
+
+  @override
+  String get htpCat => '🐱 แตะแมวนำโชคเพื่อรับโกลเด้นรัช ×3 ชั่วครู่';
+
+  @override
+  String get htpVip => '🚗 บริการลูกค้า VIP เพื่อรับเพชร 💎';
+
+  @override
+  String get htpGems => '💎 ใช้เพชรในร้านค้าเพื่อซื้ออัปเกรดถาวร';
+
+  @override
+  String get htpPrestige =>
+      '⭐ แฟรนไชส์เพื่อเริ่มใหม่และรับดาว — โบนัสรายได้ถาวร';
+
+  @override
+  String get htpOffline =>
+      '😴 ร้านยังขายต่อขณะที่คุณไม่อยู่ — กลับมารับเงินออฟไลน์';
 }

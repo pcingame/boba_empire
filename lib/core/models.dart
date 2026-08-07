@@ -73,6 +73,7 @@ class GameState {
     required this.stage,
     this.adsRemoved = false,
     this.starterPackOwned = false,
+    this.tutorialSeen = false,
   });
 
   /// Ván mới tinh.
@@ -125,6 +126,9 @@ class GameState {
   /// Đã nhận "Gói khởi động" (IAP non-consumable, một lần) — chống trao trùng.
   bool starterPackOwned;
 
+  /// Đã xem hướng dẫn "Cách chơi" (tự hiện lần đầu, sau đó chỉ mở bằng nút ?).
+  bool tutorialSeen;
+
   Map<String, dynamic> toJson() => {
         'money': money,
         'gems': gems,
@@ -138,6 +142,7 @@ class GameState {
         'stage': stage,
         'adsRemoved': adsRemoved,
         'starterPackOwned': starterPackOwned,
+        'tutorialSeen': tutorialSeen,
       };
 
   factory GameState.fromJson(Map<String, dynamic> json) => GameState(
@@ -156,5 +161,6 @@ class GameState {
         stage: (json['stage'] as num?)?.toInt() ?? 1,
         adsRemoved: (json['adsRemoved'] as bool?) ?? false,
         starterPackOwned: (json['starterPackOwned'] as bool?) ?? false,
+        tutorialSeen: (json['tutorialSeen'] as bool?) ?? false,
       );
 }

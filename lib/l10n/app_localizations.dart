@@ -453,6 +453,60 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Nhân đôi! +{amount} Xu'**
   String offlineDoubleSnack(String amount);
+
+  /// No description provided for @howToPlayTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cách chơi'**
+  String get howToPlayTitle;
+
+  /// No description provided for @htpTap.
+  ///
+  /// In vi, this message translates to:
+  /// **'🧋 Chạm ly để pha trà và kiếm Xu.'**
+  String get htpTap;
+
+  /// No description provided for @htpBuy.
+  ///
+  /// In vi, this message translates to:
+  /// **'🛒 Mua nâng cấp để có thu nhập tự động mỗi giây.'**
+  String get htpBuy;
+
+  /// No description provided for @htpStage.
+  ///
+  /// In vi, this message translates to:
+  /// **'🏪 Đủ Xu thì mở khóa giai đoạn mới, bán món cao cấp hơn.'**
+  String get htpStage;
+
+  /// No description provided for @htpCat.
+  ///
+  /// In vi, this message translates to:
+  /// **'🐱 Chạm mèo may mắn để nhận Mưa vàng ×3 trong chốc lát.'**
+  String get htpCat;
+
+  /// No description provided for @htpVip.
+  ///
+  /// In vi, this message translates to:
+  /// **'🚗 Đón khách VIP đi ô tô để nhận Kim Cương 💎.'**
+  String get htpVip;
+
+  /// No description provided for @htpGems.
+  ///
+  /// In vi, this message translates to:
+  /// **'💎 Dùng Kim Cương trong Cửa hàng mua nâng cấp vĩnh viễn.'**
+  String get htpGems;
+
+  /// No description provided for @htpPrestige.
+  ///
+  /// In vi, this message translates to:
+  /// **'⭐ Nhượng quyền để chơi lại và nhận Sao — bonus thu nhập vĩnh viễn.'**
+  String get htpPrestige;
+
+  /// No description provided for @htpOffline.
+  ///
+  /// In vi, this message translates to:
+  /// **'😴 Quán vẫn bán khi bạn thoát — quay lại nhận tiền offline.'**
+  String get htpOffline;
 }
 
 class _AppLocalizationsDelegate
