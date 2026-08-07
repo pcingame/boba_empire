@@ -2,6 +2,7 @@
 /// dịch. Gom một chỗ để tầng core/Balance khỏi giữ tên hiển thị.
 library;
 
+import '../core/format.dart';
 import '../iap/iap_products.dart';
 import 'app_localizations.dart';
 
@@ -23,13 +24,13 @@ String stageName(AppLocalizations l10n, int stage) => switch (stage) {
     };
 
 String iapTitle(AppLocalizations l10n, IapProduct p) => switch (p) {
-      IapProduct.gems => l10n.iapGemsTitle,
       IapProduct.removeAds => l10n.iapRemoveAdsTitle,
       IapProduct.starterPack => l10n.iapStarterTitle,
+      _ => '${formatNumber(p.gems)} 💎', // gói gems: hiện luôn số lượng
     };
 
 String iapDescription(AppLocalizations l10n, IapProduct p) => switch (p) {
-      IapProduct.gems => l10n.iapGemsDesc,
       IapProduct.removeAds => l10n.iapRemoveAdsDesc,
       IapProduct.starterPack => l10n.iapStarterDesc,
+      _ => l10n.iapGemsDesc,
     };

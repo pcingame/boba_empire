@@ -39,20 +39,44 @@ Product ID phải **khớp** hằng trong `lib/iap/iap_products.dart`:
 | Product ID          | Loại            | Trao gì (`Balance`)         |
 | ------------------- | --------------- | --------------------------- |
 | `boba_gems_small`   | Consumable      | +`iapGemsSmall` (100) 💎     |
+| `boba_gems_medium`  | Consumable      | +`iapGemsMedium` (600) 💎    |
+| `boba_gems_large`   | Consumable      | +`iapGemsLarge` (1300) 💎    |
 | `boba_remove_ads`   | Non-consumable  | bật `adsRemoved`            |
 | `boba_starter_pack` | Non-consumable  | +`iapStarterGems` (300) 💎, một lần |
 
 ### Android (Play Console)
-1. Tạo app, **Monetize → Products → In-app products / Subscriptions**, thêm 3
-   product với đúng ID trên, đặt giá.
+1. Tạo app, **Monetize → Products → In-app products / Subscriptions**, thêm 5
+   product với đúng ID trên, đặt giá (xem [Giá đề xuất](#gia-de-xuat)).
 2. Upload một bản build (internal testing) — IAP chỉ hoạt động với app đã ký &
    đúng applicationId, cài qua Play.
 3. Thêm **License testers** (Play Console → Setup → License testing) để mua thử
    không mất tiền.
 
 ### iOS (App Store Connect)
-1. Tạo 3 In-App Purchase với cùng product ID, điền metadata + giá.
+1. Tạo 5 In-App Purchase với cùng product ID, điền metadata + giá.
 2. Test bằng **Sandbox tester**.
+
+### Giá đề xuất {#gia-de-xuat}
+
+App **miễn phí** (free-to-play + ads + IAP). Mốc giá gốc (USD):
+
+| Product | Giá gốc | Vai trò |
+| --- | --- | --- |
+| `boba_starter_pack` | **$0.99** | "Mồi" chuyển đổi lần mua đầu — rẻ, giá trị rõ (300 💎). |
+| `boba_gems_small` | **$0.99–$1.99** | Gói gems nhỏ nhất (100 💎). |
+| `boba_gems_medium` | **$4.99** | 600 💎 (đã tính bonus theo giá). |
+| `boba_gems_large` | **$9.99** | 1300 💎 (bonus cao hơn → đẩy lên gói to). |
+| `boba_remove_ads` | **$2.99** (hoặc $1.99) | Trụ doanh thu ổn định nhất ở game casual. |
+
+**Giá theo vùng (quan trọng với tier-2):** cả Play lẫn App Store cho đặt giá từng
+nước. ĐỪNG để chỉ quy đổi tỷ giá — **hạ giá ở thị trường sức mua thấp**
+(Indonesia/Brazil/Thái/Việt) thì chuyển đổi tốt hơn. Lấy giá gợi ý local của
+store làm mốc rồi **giảm ~20–40%**, làm tròn số đẹp. Tham khảo (remove-ads /
+starter): 🇮🇩 ~Rp 39.000 / Rp 9.000 · 🇧🇷 ~R$ 9,90 / R$ 2,90 · 🇹🇭 ~฿69 / ฿19 ·
+🇻🇳 ~49.000đ / 15.000đ.
+
+**Neo giá:** bonus % gems tăng dần theo bậc (600 ở $4.99 "lời" hơn 100 ở $0.99)
+để đẩy người chơi lên gói cao. Chỉnh số 💎 mỗi bậc ở `Balance.iapGems*`.
 
 ### ⚠️ Xác thực biên nhận (bảo mật)
 `RealIapService` hiện trao thưởng NGAY khi store báo `purchased` (client-only) —

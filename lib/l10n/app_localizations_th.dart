@@ -141,9 +141,6 @@ class AppLocalizationsTh extends AppLocalizations {
   String get close => 'ปิด';
 
   @override
-  String get iapGemsTitle => 'ถุงเพชร';
-
-  @override
   String get iapGemsDesc => 'เติมเพชรเพื่อซื้อไอเทมในร้านค้า';
 
   @override

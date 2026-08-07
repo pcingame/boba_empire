@@ -141,9 +141,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get close => 'Tutup';
 
   @override
-  String get iapGemsTitle => 'Kantong Permata';
-
-  @override
   String get iapGemsDesc => 'Isi Permata untuk membeli item di Toko.';
 
   @override

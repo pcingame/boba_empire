@@ -310,12 +310,6 @@ abstract class AppLocalizations {
   /// **'Đóng'**
   String get close;
 
-  /// No description provided for @iapGemsTitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Túi Kim Cương'**
-  String get iapGemsTitle;
-
   /// No description provided for @iapGemsDesc.
   ///
   /// In vi, this message translates to:

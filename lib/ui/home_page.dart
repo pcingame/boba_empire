@@ -79,9 +79,11 @@ class _HomePageState extends ConsumerState<HomePage>
     final l10n = AppLocalizations.of(context)!;
     String message;
     switch (product) {
-      case IapProduct.gems:
-        controller.grantGemsPurchase(Balance.iapGemsSmall);
-        message = l10n.iapGemsSnack(formatNumber(Balance.iapGemsSmall));
+      case IapProduct.gemsSmall ||
+            IapProduct.gemsMedium ||
+            IapProduct.gemsLarge:
+        controller.grantGemsPurchase(product.gems);
+        message = l10n.iapGemsSnack(formatNumber(product.gems));
       case IapProduct.removeAds:
         final already = ref.read(gameControllerProvider).adsRemoved;
         controller.applyRemoveAds();

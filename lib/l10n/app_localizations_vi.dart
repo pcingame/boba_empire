@@ -141,9 +141,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get close => 'Đóng';
 
   @override
-  String get iapGemsTitle => 'Túi Kim Cương';
-
-  @override
   String get iapGemsDesc =>
       'Nạp thêm Kim Cương để mua vật phẩm trong Cửa hàng.';
 

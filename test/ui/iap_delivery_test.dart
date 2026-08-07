@@ -45,15 +45,26 @@ Future<ProviderContainer> _pump(WidgetTester tester, _FakeIap iap) async {
 }
 
 void main() {
-  testWidgets('mua gems → cộng Kim Cương', (tester) async {
+  testWidgets('mua gói gems nhỏ → +100 Kim Cương', (tester) async {
     final iap = _FakeIap();
     final container = await _pump(tester, iap);
     expect(container.read(gameControllerProvider).gems, 0);
 
-    iap.emit(IapProduct.gems);
+    iap.emit(IapProduct.gemsSmall);
     await tester.pump();
 
     expect(container.read(gameControllerProvider).gems, 100);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('mua gói gems lớn → cộng đúng số của bậc đó', (tester) async {
+    final iap = _FakeIap();
+    final container = await _pump(tester, iap);
+
+    iap.emit(IapProduct.gemsLarge);
+    await tester.pump();
+
+    expect(container.read(gameControllerProvider).gems, IapProduct.gemsLarge.gems);
     await tester.pumpWidget(const SizedBox());
   });
 

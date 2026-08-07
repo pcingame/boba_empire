@@ -141,9 +141,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get close => 'Fechar';
 
   @override
-  String get iapGemsTitle => 'Bolsa de Gemas';
-
-  @override
   String get iapGemsDesc => 'Recarregue Gemas para comprar itens na Loja.';
 
   @override

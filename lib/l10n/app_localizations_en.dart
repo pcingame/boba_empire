@@ -141,9 +141,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get close => 'Close';
 
   @override
-  String get iapGemsTitle => 'Gem Pouch';
-
-  @override
   String get iapGemsDesc => 'Top up Gems to buy items in the Shop.';
 
   @override
