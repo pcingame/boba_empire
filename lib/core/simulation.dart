@@ -137,6 +137,26 @@ void grantBonus(GameState state, double amount) {
   _credit(state, amount);
 }
 
+/// Cộng thẳng [amount] Kim Cương (mua bằng tiền thật / quà tặng).
+void grantGems(GameState state, double amount) {
+  if (amount <= 0) return;
+  state.gems += amount;
+}
+
+/// Bật cờ "Gỡ quảng cáo" (idempotent — khôi phục nhiều lần vẫn đúng).
+void setAdsRemoved(GameState state) {
+  state.adsRemoved = true;
+}
+
+/// Trao "Gói khởi động" đúng MỘT lần: cộng gems rồi đánh dấu đã sở hữu. Trả về
+/// true nếu vừa trao (false nếu đã sở hữu — chống trao trùng khi restore).
+bool claimStarterPack(GameState state, double gems) {
+  if (state.starterPackOwned) return false;
+  state.gems += gems;
+  state.starterPackOwned = true;
+  return true;
+}
+
 /// Cộng [amount] Xu và ghi nhận vào tổng thu nhập cả đời.
 void _credit(GameState state, double amount) {
   state.money += amount;

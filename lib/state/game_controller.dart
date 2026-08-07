@@ -253,6 +253,31 @@ class GameController extends Notifier<GameSnapshot> {
     return reward;
   }
 
+  /// Trao Kim Cương mua bằng tiền thật (IAP consumable). Lưu ngay vì premium.
+  void grantGemsPurchase(double amount) {
+    grantGems(_game, amount);
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Bật "Gỡ quảng cáo" (IAP). Idempotent — an toàn khi khôi phục nhiều lần.
+  void applyRemoveAds() {
+    setAdsRemoved(_game);
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Trao "Gói khởi động" đúng một lần (chống trùng khi restore). Trả về true
+  /// nếu vừa trao (để UI báo), false nếu đã sở hữu.
+  bool applyStarterPack() {
+    final granted = claimStarterPack(_game, Balance.iapStarterGems);
+    if (granted) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return granted;
+  }
+
   /// Xóa save và bắt đầu ván mới (nút chơi lại / debug).
   Future<void> resetGame() async {
     await _storage.clear();
@@ -299,6 +324,8 @@ class GameController extends Notifier<GameSnapshot> {
       gemBoostLevel: _game.gemBoostLevel,
       offlineCapLevel: _game.offlineCapLevel,
       stage: _game.stage,
+      adsRemoved: _game.adsRemoved,
+      starterPackOwned: _game.starterPackOwned,
       levels: _game.levels,
     );
   }

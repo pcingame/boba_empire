@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -7,6 +9,8 @@ import '../core/economy.dart';
 import '../core/format.dart';
 import '../ads/ad_service.dart';
 import '../core/models.dart';
+import '../iap/iap_products.dart';
+import '../iap/iap_service.dart';
 import '../state/game_providers.dart';
 import 'gem_shop.dart';
 import 'offline_dialog.dart';
@@ -27,13 +31,19 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage>
     with WidgetsBindingObserver {
+  StreamSubscription<IapProduct>? _iapSub;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    // Nghe kết quả mua hàng để trao thưởng (stub phát rỗng → an toàn).
+    _iapSub = ref.read(iapServiceProvider).purchases.listen(_onPurchase);
     // Tiền offline lúc mở app lạnh: ref.listen chỉ bắt thay đổi nên xử lý
     // giá trị ban đầu ở đây, sau frame đầu.
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Khôi phục sản phẩm non-consumable (Gỡ QC / Gói khởi động) đã mua.
+      unawaited(ref.read(iapServiceProvider).restore());
       final earned = ref.read(gameControllerProvider).offlineEarned;
       if (earned > 0) _showOfflineDialog(earned);
     });
@@ -41,8 +51,34 @@ class _HomePageState extends ConsumerState<HomePage>
 
   @override
   void dispose() {
+    _iapSub?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  /// Trao thưởng cho một sản phẩm vừa mua/khôi phục. Idempotent: không báo trùng
+  /// khi restore lặp lại lúc mở app.
+  void _onPurchase(IapProduct product) {
+    final controller = ref.read(gameControllerProvider.notifier);
+    String message;
+    switch (product) {
+      case IapProduct.gems:
+        controller.grantGemsPurchase(Balance.iapGemsSmall);
+        message = 'Đã nhận +${formatNumber(Balance.iapGemsSmall)} 💎';
+      case IapProduct.removeAds:
+        final already = ref.read(gameControllerProvider).adsRemoved;
+        controller.applyRemoveAds();
+        if (already) return; // chỉ khôi phục lại, không báo trùng.
+        message = 'Đã gỡ quảng cáo. Cảm ơn bạn!';
+      case IapProduct.starterPack:
+        if (!controller.applyStarterPack()) return; // đã sở hữu.
+        message = 'Gói khởi động: +${formatNumber(Balance.iapStarterGems)} 💎';
+    }
+    ref.read(audioServiceProvider).play(Sfx.reward);
+    if (mounted) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
+    }
   }
 
   @override
@@ -205,7 +241,9 @@ class _MoneyHeader extends ConsumerWidget {
     final ads = ref.read(adServiceProvider);
     final controller = ref.read(gameControllerProvider.notifier);
     final messenger = ScaffoldMessenger.of(context);
-    final outcome = await ads.showRewardedAd();
+    final adsRemoved = ref.read(gameControllerProvider).adsRemoved;
+    final outcome =
+        adsRemoved ? RewardOutcome.earned : await ads.showRewardedAd();
     if (outcome != RewardOutcome.earned) return;
     final reward = controller.claimInstantCash();
     if (reward > 0) {
@@ -416,10 +454,13 @@ class _GoldenCat extends ConsumerWidget {
       child: GestureDetector(
         key: const Key('golden-cat'),
         onTap: () async {
-          // Xem quảng cáo thưởng để nhận Mưa vàng (đúng thiết kế GDD).
+          // Xem quảng cáo thưởng để nhận Mưa vàng (đúng thiết kế GDD). Nếu đã
+          // mua "Gỡ quảng cáo" thì trao ngay, không cần xem.
           final ads = ref.read(adServiceProvider);
           final controller = ref.read(gameControllerProvider.notifier);
-          final outcome = await ads.showRewardedAd();
+          final adsRemoved = ref.read(gameControllerProvider).adsRemoved;
+          final outcome =
+              adsRemoved ? RewardOutcome.earned : await ads.showRewardedAd();
           if (outcome == RewardOutcome.earned) {
             controller.activateGoldenRush();
             ref.read(audioServiceProvider).play(Sfx.reward);

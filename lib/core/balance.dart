@@ -67,6 +67,14 @@ class Balance {
   static const int offlineCapBaseCost = 10;
   static const int offlineCapPerLevelSeconds = 2 * 60 * 60;
 
+  // --- Mua bằng tiền thật (IAP) ---
+
+  /// Kim Cương nhận khi mua gói gems (consumable).
+  static const double iapGemsSmall = 100;
+
+  /// Kim Cương tặng kèm trong "Gói khởi động" (một lần).
+  static const double iapStarterGems = 300;
+
   /// Ba giai đoạn kinh doanh (index = stage - 1). Giai đoạn 1 có sẵn.
   static const List<StageConfig> stages = [
     StageConfig(stage: 1, name: 'Xe đẩy vỉa hè', unlockCost: 0),

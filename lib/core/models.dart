@@ -71,6 +71,8 @@ class GameState {
     required this.gemBoostLevel,
     required this.offlineCapLevel,
     required this.stage,
+    this.adsRemoved = false,
+    this.starterPackOwned = false,
   });
 
   /// Ván mới tinh.
@@ -117,6 +119,12 @@ class GameState {
   /// Giai đoạn kinh doanh hiện tại (1..3).
   int stage;
 
+  /// Đã mua "Gỡ quảng cáo" (IAP non-consumable) — bỏ qua QC, tự trao thưởng.
+  bool adsRemoved;
+
+  /// Đã nhận "Gói khởi động" (IAP non-consumable, một lần) — chống trao trùng.
+  bool starterPackOwned;
+
   Map<String, dynamic> toJson() => {
         'money': money,
         'gems': gems,
@@ -128,6 +136,8 @@ class GameState {
         'gemBoostLevel': gemBoostLevel,
         'offlineCapLevel': offlineCapLevel,
         'stage': stage,
+        'adsRemoved': adsRemoved,
+        'starterPackOwned': starterPackOwned,
       };
 
   factory GameState.fromJson(Map<String, dynamic> json) => GameState(
@@ -144,5 +154,7 @@ class GameState {
         gemBoostLevel: (json['gemBoostLevel'] as num?)?.toInt() ?? 0,
         offlineCapLevel: (json['offlineCapLevel'] as num?)?.toInt() ?? 0,
         stage: (json['stage'] as num?)?.toInt() ?? 1,
+        adsRemoved: (json['adsRemoved'] as bool?) ?? false,
+        starterPackOwned: (json['starterPackOwned'] as bool?) ?? false,
       );
 }

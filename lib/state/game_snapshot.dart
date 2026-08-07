@@ -19,6 +19,8 @@ class GameSnapshot {
     required this.gemBoostLevel,
     required this.offlineCapLevel,
     required this.stage,
+    required this.adsRemoved,
+    required this.starterPackOwned,
     required Map<String, int> levels,
   }) : _levels = levels;
 
@@ -52,6 +54,12 @@ class GameSnapshot {
 
   /// Giai đoạn kinh doanh hiện tại (1..3).
   final int stage;
+
+  /// Đã mua "Gỡ quảng cáo" — UI bỏ qua QC và tự trao thưởng.
+  final bool adsRemoved;
+
+  /// Đã sở hữu "Gói khởi động" — cửa hàng ẩn/khoá mục này.
+  final bool starterPackOwned;
 
   final Map<String, int> _levels;
 
