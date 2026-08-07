@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+/// Test bật cờ này để tắt animation lặp (ticker lặp làm pumpAndSettle treo).
+/// App thật luôn để false. Xem test/flutter_test_config.dart.
+bool debugDisableMascotAnimation = false;
+
 /// Hiển thị animation Lottie nếu asset tồn tại, ngược lại về [emoji] fallback.
 ///
 /// Nhờ [Lottie.asset]'s errorBuilder, widget vẫn chạy bình thường khi CHƯA có
@@ -33,6 +37,7 @@ class Mascot extends StatelessWidget {
       child: Lottie.asset(
         asset,
         fit: BoxFit.contain,
+        animate: !debugDisableMascotAnimation,
         errorBuilder: (context, error, stackTrace) => Center(
           child: Text(emoji, style: TextStyle(fontSize: size * 0.7)),
         ),

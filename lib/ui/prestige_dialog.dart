@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/balance.dart';
 import '../state/game_providers.dart';
+import 'widgets/anim_assets.dart';
+import 'widgets/one_shot_lottie.dart';
 
 /// Mở dialog Nhượng quyền (prestige).
 Future<void> showPrestigeDialog(BuildContext context) {
@@ -71,6 +73,10 @@ class _PrestigeDialog extends ConsumerWidget {
   void _confirm(BuildContext context, WidgetRef ref) {
     final messenger = ScaffoldMessenger.of(context);
     final gained = ref.read(gameControllerProvider.notifier).doPrestige();
+    if (gained > 0) {
+      // Chèn vào overlay gốc trước khi đóng dialog → pháo hoa nổ trên màn chính.
+      playEffect(context, AnimAssets.fireworks, size: 320);
+    }
     Navigator.of(context).pop();
     if (gained > 0) {
       messenger.showSnackBar(

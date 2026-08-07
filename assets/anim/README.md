@@ -1,17 +1,32 @@
-# Animation Lottie cho nhân vật
+# Animation Lottie cho game
 
-Thả file `.json` (Lottie) vào thư mục này để thay emoji bằng animation.
+Thả file `.json` (Lottie) đúng tên vào thư mục này là game tự dùng.
+Chưa có file → tự bỏ qua (hiệu ứng) hoặc về emoji (nhân vật). Không phải sửa code.
 
-Tên file mà game sẽ tự tìm (chưa có thì dùng emoji fallback):
+Sau khi thêm file: `flutter pub get` rồi hot **restart** (không phải hot reload).
 
-| File | Nhân vật | Emoji fallback |
-|------|----------|----------------|
-| `cup.json` | Ly trà sữa (nút "Chạm pha trà") | 🧋 |
+## Nhân vật (lặp — thiếu file thì về emoji)
 
-Sau khi thêm file: chạy `flutter pub get` rồi hot **restart** (không phải hot reload).
+| File | Chỗ dùng | Emoji | Từ khóa LottieFiles |
+|------|----------|-------|---------------------|
+| `bubbletea.json` | Ly "Chạm pha trà" | 🧋 | `bubble tea`, `boba` |
+| `cat.json` | Mèo Mưa vàng | 🐱 | `lucky cat`, `maneki neko`, `waving cat` |
+| `car.json` | Khách VIP | 🚗 | `luxury car`, `sports car` |
 
-## Nguồn asset free
-- https://lottiefiles.com/free-animations/bubble-tea
-- License: Lottie Simple License — được dùng thương mại, không bắt buộc ghi công.
+## Hiệu ứng một lần (thiếu file thì bỏ qua, không lỗi)
 
-Xem `lib/ui/widgets/mascot.dart` để biết cách thêm nhân vật mới.
+| File | Kích hoạt khi | Từ khóa LottieFiles |
+|------|---------------|---------------------|
+| `coins.json` | Chạm pha trà | `coins`, `coin burst`, `gold coins` |
+| `confetti.json` | Mua nâng cấp | `confetti`, `success`, `party popper` |
+| `celebration.json` | Mở khóa giai đoạn | `grand opening`, `celebration`, `level up` |
+| `fireworks.json` | Nhượng quyền (prestige) | `fireworks`, `star burst` |
+
+## Nguồn & license
+- https://lottiefiles.com/free-animations/ (search từ khóa ở trên)
+- **Lottie Simple License** (bản free): dùng thương mại OK, không bắt buộc ghi công.
+- Ưu tiên file nhẹ (< ~300KB) nếu hiển thị nhiều cái cùng lúc.
+
+## Code liên quan
+- Nhân vật lặp: `lib/ui/widgets/mascot.dart` (+ đường dẫn ở `anim_assets.dart`)
+- Hiệu ứng một lần: `lib/ui/widgets/one_shot_lottie.dart` — gọi `playEffect(context, AnimAssets.xxx)`

@@ -10,7 +10,9 @@ import '../state/game_providers.dart';
 import 'gem_shop.dart';
 import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
+import 'widgets/anim_assets.dart';
 import 'widgets/mascot.dart';
+import 'widgets/one_shot_lottie.dart';
 
 /// Màn hình chính MVP: đầu trang hiển thị tiền, giữa là nút chạm pha trà,
 /// dưới là shop nâng cấp. Cũng lo phần lifecycle (lưu khi app vào nền).
@@ -220,7 +222,10 @@ class _TapArea extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: GestureDetector(
-        onTap: () => ref.read(gameControllerProvider.notifier).tapCup(),
+        onTap: () {
+          ref.read(gameControllerProvider.notifier).tapCup();
+          playEffect(context, AnimAssets.coins, size: 140);
+        },
         child: Container(
           width: 160,
           height: 160,
@@ -232,8 +237,8 @@ class _TapArea extends ConsumerWidget {
           child: const Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Animation nếu có assets/anim/cup.json, ngược lại emoji 🧋.
-              Mascot(asset: 'assets/anim/cup.json', emoji: '🧋', size: 80),
+              // Animation nếu có file, ngược lại emoji 🧋.
+              Mascot(asset: AnimAssets.cup, emoji: '🧋', size: 80),
               SizedBox(height: 4),
               Text('Chạm pha trà', style: TextStyle(fontSize: 16)),
             ],
@@ -309,7 +314,13 @@ class _StageHeader extends ConsumerWidget {
             FilledButton(
               key: const Key('unlock-stage'),
               onPressed: money >= next.unlockCost
-                  ? () => ref.read(gameControllerProvider.notifier).unlockStage()
+                  ? () {
+                      if (ref
+                          .read(gameControllerProvider.notifier)
+                          .unlockStage()) {
+                        playEffect(context, AnimAssets.celebration, size: 280);
+                      }
+                    }
                   : null,
               child: Text('Mở khóa ${formatNumber(next.unlockCost)} Xu'),
             ),
@@ -343,7 +354,13 @@ class _ShopTile extends ConsumerWidget {
       ),
       trailing: FilledButton(
         onPressed: canAfford
-            ? () => ref.read(gameControllerProvider.notifier).buy(config.id)
+            ? () {
+                if (ref
+                    .read(gameControllerProvider.notifier)
+                    .buy(config.id)) {
+                  playEffect(context, AnimAssets.confetti, size: 160);
+                }
+              }
             : null,
         child: Text('${formatNumber(cost)} Xu'),
       ),
@@ -409,7 +426,7 @@ class _GoldenCat extends ConsumerWidget {
               BoxShadow(color: Colors.amber, blurRadius: 24, spreadRadius: 4),
             ],
           ),
-          child: const Text('🐱', style: TextStyle(fontSize: 48)),
+          child: const Mascot(asset: AnimAssets.cat, emoji: '🐱', size: 56),
         ),
       ),
     );
@@ -458,7 +475,7 @@ class _VipCustomer extends ConsumerWidget {
               ),
             ],
           ),
-          child: const Text('🚗', style: TextStyle(fontSize: 48)),
+          child: const Mascot(asset: AnimAssets.car, emoji: '🚗', size: 56),
         ),
       ),
     );
