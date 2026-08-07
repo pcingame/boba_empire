@@ -1,0 +1,138 @@
+# RELEASE CHECKLIST — đẩy Boba Empire lên store
+
+Danh sách việc để phát hành. Ưu tiên **Android (Google Play)** trước; ghi chú iOS
+ở cuối. Xem chi tiết ads/IAP ở [SETUP.md](SETUP.md), nội dung listing ở
+[STORE_LISTING.md](STORE_LISTING.md).
+
+Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
+
+---
+
+## 0. Chặn phát hành — phát hiện trong repo (làm trước tiên)
+
+- [ ] 🔴 **Đổi applicationId** `com.example.boba_empire` → domain thật (vd
+  `com.pcingame.bobaempire`). Play **từ chối** `com.example`. Sửa ở
+  `android/app/build.gradle.kts` (`applicationId`) và namespace nếu cần.
+  ⚠️ ĐỔI 1 LẦN — sau khi phát hành KHÔNG đổi được nữa.
+- [ ] 🔴 **Tạo keystore ký release** (chưa có; đang ký bằng `debug`). Xem [mục 6](#6-ký--build-release).
+- [ ] 🔴 **Icon app thật** (đang dùng icon Flutter mặc định). Xem [mục 5](#5-assets--store-listing).
+- [ ] 🟡 **Đổi label app** `android:label="boba_empire"` → `Boba Empire`
+  (`android/app/src/main/AndroidManifest.xml`). Đây là tên dưới icon.
+- [ ] 🔴 **Thay AdMob TEST ID → ID thật** (3 chỗ, xem SETUP.md mục 1). Bấm QC
+  thật trên test unit = vi phạm chính sách.
+
+---
+
+## 1. Chuẩn bị code / build
+
+- [ ] 🟡 Đặt `version:` trong `pubspec.yaml` cho lần phát hành (hiện `1.0.0+1`).
+  Mỗi lần nộp phải tăng build number (`+2`, `+3`...).
+- [ ] 🟡 Kiểm tra `targetSdk` đạt yêu cầu Play hiện hành (Google bắt buộc target
+  API mới trong ~1 năm gần nhất). Đang dùng `flutter.targetSdkVersion` — chạy
+  `flutter build appbundle` sẽ báo nếu thiếu.
+- [ ] 🟡 `flutter analyze` sạch + `flutter test` xanh (hiện 124/124).
+- [ ] 🟢 Cân nhắc `flutter_launcher_icons` + `flutter_native_splash` để sinh
+  icon/splash mọi độ phân giải từ 1 file.
+- [ ] 🟢 Bật R8/shrink (mặc định có ở release) — kiểm APK size hợp lý.
+
+## 2. Tài khoản & console
+
+- [ ] 🔴 Đăng ký **Google Play Console** (phí $25 một lần).
+- [ ] 🔴 Tạo app trong Play Console, chọn **Game**, miễn phí.
+- [ ] 🟢 (iOS) Apple Developer Program ($99/năm) nếu định lên App Store.
+
+## 3. AdMob (xem SETUP.md mục 1)
+
+- [ ] 🔴 Tạo tài khoản AdMob + app (Android & iOS riêng).
+- [ ] 🔴 Tạo **Rewarded ad unit**, thay ID thật vào `lib/ads/ad_config.dart` +
+  manifest + Info.plist.
+- [ ] 🔴 Cấu hình **UMP / GDPR message** trong AdMob (Privacy & messaging) —
+  code đã gọi ConsentForm, nhưng message phải tạo trong console.
+- [ ] 🟡 Test bằng **test device ID** trước khi bật ID thật.
+- [ ] 🟡 Liên kết AdMob ↔ Play Console (đo lường doanh thu).
+
+## 4. In-app purchase (xem SETUP.md mục 2)
+
+- [ ] 🔴 Tạo **5 product** đúng ID: `boba_gems_small/medium/large`,
+  `boba_remove_ads`, `boba_starter_pack`. Đặt giá theo mục "Giá đề xuất".
+- [ ] 🔴 Bật giá **theo vùng** (hạ cho ID/BR/TH/VN — SETUP.md).
+- [ ] 🔴 Upload 1 build lên **internal testing** (IAP chỉ chạy với app đã ký &
+  cài qua Play).
+- [ ] 🔴 Thêm **License testers** để mua thử không mất tiền.
+- [ ] 🟡 **Verify receipt server-side** trước khi bán thật (hiện client-only, dễ
+  bị giả mạo — điểm chèn trong `real_iap_service.dart`).
+
+## 5. Assets & store listing
+
+- [ ] 🔴 **Icon** 512×512 (Play) + adaptive icon Android.
+- [ ] 🔴 **Feature graphic** 1024×500 (Play bắt buộc).
+- [ ] 🔴 **Screenshot** tối thiểu 2 (nên 4–8), điện thoại dọc. Chụp cả sáng/tối,
+  màn shop, prestige, offline. Ảnh hưởng lượt cài mạnh nhất.
+- [ ] 🔴 **Store listing** (tên/mô tả ngắn/mô tả đầy đủ) — dán từ
+  STORE_LISTING.md, cho từng ngôn ngữ (vi/en/pt/es/id/th).
+- [ ] 🟡 Nhờ **người bản ngữ soát** bản dịch in-app + listing.
+- [ ] 🟢 Video trailer (tăng chuyển đổi, không bắt buộc).
+
+## 6. Chính sách & pháp lý
+
+- [ ] 🔴 **Privacy Policy** (URL công khai) — bắt buộc vì có ads + IAP thu thập
+  dữ liệu. Khai trong Play Console.
+- [ ] 🔴 **Data safety form** (Play): khai AdMob thu thập Ad ID, v.v.
+- [ ] 🔴 **Target audience & content**: khai **13+** (General, KHÔNG child-directed
+  — đúng cấu hình hiện tại; xem SETUP.md mục 3).
+- [ ] 🔴 **Ads declaration**: có quảng cáo → "Yes".
+- [ ] 🔴 **Content rating** (bảng câu hỏi IARC trong Play Console).
+- [ ] 🟡 (iOS) App Privacy + `NSUserTrackingUsageDescription` (đã có trong plist).
+
+## 7. Ký & build release {#6-ký--build-release}
+
+- [ ] 🔴 Tạo keystore:
+  ```
+  keytool -genkey -v -keystore ~/boba-upload.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+  ```
+- [ ] 🔴 Tạo `android/key.properties` (KHÔNG commit — thêm vào .gitignore):
+  ```
+  storePassword=...
+  keyPassword=...
+  keyAlias=upload
+  storeFile=C:/Users/.../boba-upload.jks
+  ```
+- [ ] 🔴 Trỏ `signingConfigs.release` trong `build.gradle.kts` đọc từ
+  key.properties, và `buildTypes.release { signingConfig = signingConfigs.release }`.
+- [ ] 🔴 Bật **Play App Signing** khi tạo app (Google giữ khóa ký cuối; bạn giữ
+  upload key).
+- [ ] 🔴 Build bundle: `flutter build appbundle --release` → `.aab`.
+- [ ] 🟢 (iOS) `flutter build ipa` (cần macOS + Xcode + chứng chỉ).
+
+## 8. Test trước khi phát hành
+
+- [ ] 🔴 Cài **bản release đã ký** lên thiết bị Android thật, chơi thử end-to-end.
+- [ ] 🔴 Test **mua IAP thật** qua license tester (cả 5 product + Khôi phục).
+- [ ] 🔴 Test **quảng cáo thưởng** hiển thị + trao thưởng (test device ID).
+- [ ] 🟡 Test **đổi ngôn ngữ máy** (6 ngôn ngữ) không vỡ layout.
+- [ ] 🟡 Test **dark mode** trên máy thật.
+- [ ] 🟡 Test lifecycle: thoát app → mở lại nhận tiền offline; kill app → save.
+- [ ] 🟢 Chạy qua **Play Console → Pre-launch report** (test tự động nhiều máy).
+
+## 9. Phát hành
+
+- [ ] 🟡 Internal testing → Closed testing (Play yêu cầu 1 giai đoạn test kín với
+  vài tester trước Production đối với tài khoản cá nhân mới).
+- [ ] 🔴 Điền đủ **Main store listing + Content rating + Data safety + Target
+  audience + Ads** (Play chặn nếu thiếu).
+- [ ] 🔴 Tạo **Production release**, upload `.aab`, viết release notes.
+- [ ] 🟡 Chọn **quốc gia phát hành** (ưu tiên VN + 5 thị trường đã localize).
+- [ ] 🟢 Chọn **staged rollout** (vd 20%) để theo dõi crash trước khi 100%.
+- [ ] 🟡 Sau phát hành: theo dõi **Crashlytics/ANR, doanh thu ads/IAP, retention**;
+  cân bằng lại kinh tế nếu cần.
+
+---
+
+## Ước lượng đường tới hạn (critical path)
+
+1. Đổi applicationId + label + icon → 2. Tạo keystore + signing → 3. AdMob/IAP ID
+thật + tạo product → 4. Privacy policy + các form Play → 5. Screenshot + listing →
+6. Build `.aab` ký release → 7. Internal/closed test → 8. Production.
+
+> Điểm dễ quên nhất: **verify receipt server-side** (bảo mật IAP) và **giá theo
+> vùng** cho thị trường tier-2 — hai thứ ảnh hưởng trực tiếp doanh thu.
