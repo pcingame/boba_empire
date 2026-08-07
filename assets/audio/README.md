@@ -1,19 +1,34 @@
 # SFX — hiệu ứng âm thanh
 
-Thả các file `.mp3` vào đây với **đúng tên** để game tự dùng (khai báo ở
+Các file `.wav` ở đây được game tự dùng theo **đúng tên** (khai báo ở
 `lib/audio/audio_service.dart`, enum `Sfx`):
 
-| File           | Khi nào phát                                  |
-| -------------- | --------------------------------------------- |
-| `tap.mp3`      | Chạm ly pha trà                               |
-| `buy.mp3`      | Mua/nâng cấp nguồn thu                         |
-| `unlock.mp3`   | Mở khóa giai đoạn mới                          |
-| `prestige.mp3` | Nhượng quyền thành công                        |
-| `vip.mp3`      | Thu khách VIP (nhận Kim Cương)                 |
-| `reward.mp3`   | Nhận thưởng (Mưa vàng / Tiền tức thì)          |
+| File           | Khi nào phát                          | Nguồn (file gốc)     |
+| -------------- | ------------------------------------- | -------------------- |
+| `tap.wav`      | Chạm ly pha trà                       | glass_002            |
+| `buy.wav`      | Mua/nâng cấp nguồn thu                 | confirmation_001     |
+| `unlock.wav`   | Mở khóa giai đoạn mới                  | open_002             |
+| `prestige.wav` | Nhượng quyền thành công                | bong_001             |
+| `vip.wav`      | Thu khách VIP (nhận Kim Cương)         | pluck_001            |
+| `reward.wav`   | Nhận thưởng (Mưa vàng / Tiền tức thì)  | select_005           |
 
-- Chưa có file thì **game vẫn chạy im lặng** — thiếu asset được bỏ qua, không
-  lỗi (xem `flame_audio_service.dart`).
-- Nên dùng SFX ngắn (< 1s), nhẹ. Nguồn miễn phí thương mại: freesound.org
-  (lọc CC0), mixkit.co, pixabay.com/sound-effects.
-- Đổi file phải **hot RESTART** (không phải hot reload) để nạp lại cache.
+## Nguồn & giấy phép
+
+Bộ mặc định lấy từ Kenney **Interface Sounds** (đóng gói bởi Calinou),
+giấy phép **CC0-1.0** — miễn phí hoàn toàn, dùng thương mại, **không cần ghi
+công**. <https://github.com/Calinou/kenney-interface-sounds>
+
+## Tải lại / đổi bộ tiếng
+
+```
+bash scripts/fetch_sfx.sh
+```
+
+Muốn đổi tiếng khác: sửa bảng ánh xạ trong `scripts/fetch_sfx.sh` (vế phải là
+tên file trong repo nguồn) rồi chạy lại.
+
+- Đổi/thêm file phải **HOT RESTART** (không phải hot reload) để nạp lại cache.
+- Thiếu file nào thì phần đó chạy **im lặng**, không lỗi
+  (xem `lib/audio/flame_audio_service.dart`).
+- Nguồn khác dùng thương mại: pixabay.com/sound-effects, mixkit.co, kenney.nl,
+  freesound.org (lọc CC0).

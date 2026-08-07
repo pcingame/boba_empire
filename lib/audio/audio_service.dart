@@ -10,12 +10,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Các hiệu ứng âm thanh trong game. Giá trị = tên file trong `assets/audio/`.
 enum Sfx {
-  tap('tap.mp3'),
-  buy('buy.mp3'),
-  unlock('unlock.mp3'),
-  prestige('prestige.mp3'),
-  vip('vip.mp3'),
-  reward('reward.mp3');
+  tap('tap.wav'),
+  buy('buy.wav'),
+  unlock('unlock.wav'),
+  prestige('prestige.wav'),
+  vip('vip.wav'),
+  reward('reward.wav');
 
   const Sfx(this.file);
   final String file;

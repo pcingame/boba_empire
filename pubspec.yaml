@@ -65,9 +65,9 @@ flutter:
   # chưa có file thì UI tự về emoji fallback (xem lib/ui/widgets/mascot.dart).
   assets:
     - assets/anim/
-    # Thả file SFX (.mp3) vào assets/audio/ với đúng tên trong lib/audio/
-    # audio_service.dart (tap/buy/unlock/prestige/vip/reward.mp3); chưa có file
-    # thì game vẫn chạy im lặng (bỏ qua asset thiếu).
+    # File SFX (.wav) trong assets/audio/ đặt đúng tên theo lib/audio/
+    # audio_service.dart (tap/buy/unlock/prestige/vip/reward.wav); tải bộ CC0
+    # sẵn bằng scripts/fetch_sfx.sh. Thiếu file thì game chạy im lặng.
     - assets/audio/
 
   # An image asset can refer to one or more resolution-specific "variants", see
