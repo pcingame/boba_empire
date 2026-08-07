@@ -10,14 +10,14 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
 
 ## 0. Chặn phát hành — phát hiện trong repo (làm trước tiên)
 
-- [ ] 🔴 **Đổi applicationId** `com.example.boba_empire` → domain thật (vd
-  `com.pcingame.bobaempire`). Play **từ chối** `com.example`. Sửa ở
-  `android/app/build.gradle.kts` (`applicationId`) và namespace nếu cần.
-  ⚠️ ĐỔI 1 LẦN — sau khi phát hành KHÔNG đổi được nữa.
-- [ ] 🔴 **Tạo keystore ký release** (chưa có; đang ký bằng `debug`). Xem [mục 6](#6-ký--build-release).
+- [x] 🔴 **Đổi applicationId** → `com.pcingame.bobaempire` (đã đổi cả namespace +
+  di chuyển MainActivity, build APK verify OK). ⚠️ ĐỪNG đổi lại sau khi phát hành.
+- [~] 🔴 **Tạo keystore ký release** — CODE đã sẵn: `build.gradle.kts` đọc
+  `android/key.properties` (mẫu ở `android/key.properties.example`), có thì ký
+  release, không thì rơi về debug. BẠN chỉ cần tạo keystore + điền key.properties.
+  Xem [mục 6](#6-ký--build-release).
 - [ ] 🔴 **Icon app thật** (đang dùng icon Flutter mặc định). Xem [mục 5](#5-assets--store-listing).
-- [ ] 🟡 **Đổi label app** `android:label="boba_empire"` → `Boba Empire`
-  (`android/app/src/main/AndroidManifest.xml`). Đây là tên dưới icon.
+- [x] 🟡 **Đổi label app** → `Boba Empire` (đã sửa AndroidManifest).
 - [ ] 🔴 **Thay AdMob TEST ID → ID thật** (3 chỗ, xem SETUP.md mục 1). Bấm QC
   thật trên test unit = vi phạm chính sách.
 
@@ -90,15 +90,16 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
   ```
   keytool -genkey -v -keystore ~/boba-upload.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
   ```
-- [ ] 🔴 Tạo `android/key.properties` (KHÔNG commit — thêm vào .gitignore):
+- [ ] 🔴 Copy `android/key.properties.example` → `android/key.properties` rồi
+  điền (đã .gitignore sẵn):
   ```
   storePassword=...
   keyPassword=...
   keyAlias=upload
   storeFile=C:/Users/.../boba-upload.jks
   ```
-- [ ] 🔴 Trỏ `signingConfigs.release` trong `build.gradle.kts` đọc từ
-  key.properties, và `buildTypes.release { signingConfig = signingConfigs.release }`.
+- [x] 🔴 `signingConfigs.release` trong `build.gradle.kts` đã đọc từ
+  key.properties (có file → ký release, không → debug). Không cần sửa gradle nữa.
 - [ ] 🔴 Bật **Play App Signing** khi tạo app (Google giữ khóa ký cuối; bạn giữ
   upload key).
 - [ ] 🔴 Build bundle: `flutter build appbundle --release` → `.aab`.

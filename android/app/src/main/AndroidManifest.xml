@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="boba_empire"
+        android:label="Boba Empire"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <!-- AdMob App ID — ĐANG DÙNG TEST ID CỦA GOOGLE. Thay bằng App ID thật
