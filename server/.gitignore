@@ -1,0 +1,6 @@
+.dart_tool/
+pubspec.lock
+# Không commit credential
+*.json.key
+service-account*.json
+.env

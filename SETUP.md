@@ -79,10 +79,19 @@ starter): 🇮🇩 ~Rp 39.000 / Rp 9.000 · 🇧🇷 ~R$ 9,90 / R$ 2,90 · 🇹�
 để đẩy người chơi lên gói cao. Chỉnh số 💎 mỗi bậc ở `Balance.iapGems*`.
 
 ### ⚠️ Xác thực biên nhận (bảo mật)
-`RealIapService` hiện trao thưởng NGAY khi store báo `purchased` (client-only) —
-có thể bị giả mạo. Trước khi phát hành nên thêm **verify receipt phía server**
-(Google Play Developer API / App Store `verifyReceipt`) rồi mới trao. Điểm chèn:
-`lib/iap/real_iap_service.dart` → `_onPurchases` (verify trước khi `_delivered.add`).
+Đã có **skeleton backend** ở `server/` (Dart shelf) và wiring client sẵn:
+`RealIapService` gọi `ReceiptVerifier` TRƯỚC khi trao thưởng
+(`lib/iap/real_iap_service.dart` → `_onPurchases`).
+
+- Mặc định `NoopReceiptVerifier` (client-only như cũ) khi chưa cấu hình endpoint.
+- Bật xác thực server: build app với
+  `--dart-define=IAP_VERIFY_ENDPOINT=https://<server>/verify` → dùng
+  `HttpReceiptVerifier`. Chính sách **fail-open**: chỉ chặn khi server trả
+  `200 {"valid": false}`; lỗi mạng/timeout vẫn trao (ưu tiên người mua thật).
+- Server: `server/README.md` hướng dẫn chạy dev (`VERIFY_MODE=dev` chấp nhận mọi
+  biên nhận để test wiring) và bật prod (Google Play / App Store) qua biến môi
+  trường. Việc CÒN THIẾU cho production: chống replay (lưu orderId/transaction_id
+  đã trao), acknowledge/consume Play, chuyển App Store Server API cho StoreKit 2.
 
 ---
 

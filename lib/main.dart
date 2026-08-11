@@ -14,8 +14,11 @@ import 'ads/ad_service.dart';
 import 'ads/real_ad_service.dart';
 import 'audio/audio_service.dart';
 import 'audio/flame_audio_service.dart';
+import 'iap/http_receipt_verifier.dart';
+import 'iap/iap_config.dart';
 import 'iap/iap_service.dart';
 import 'iap/real_iap_service.dart';
+import 'iap/receipt_verifier.dart';
 import 'state/game_providers.dart';
 import 'ui/home_page.dart';
 
@@ -34,7 +37,14 @@ Future<void> main() async {
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
     await AdBootstrap.initialize();
     overrides.add(adServiceProvider.overrideWithValue(RealAdService()));
-    overrides.add(iapServiceProvider.overrideWithValue(RealIapService()));
+    // Có cấu hình endpoint (qua --dart-define IAP_VERIFY_ENDPOINT) thì xác thực
+    // biên nhận phía server trước khi trao; rỗng thì giữ client-only.
+    final ReceiptVerifier verifier = IapConfig.receiptVerifyEndpoint.isEmpty
+        ? const NoopReceiptVerifier()
+        : HttpReceiptVerifier(Uri.parse(IapConfig.receiptVerifyEndpoint));
+    overrides.add(
+      iapServiceProvider.overrideWithValue(RealIapService(verifier: verifier)),
+    );
   }
 
   runApp(
