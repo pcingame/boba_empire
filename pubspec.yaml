@@ -45,6 +45,13 @@ dependencies:
   in_app_purchase: ^3.3.0
   http: ^1.2.0
 
+# path_provider_android 2.3.x chuyển sang jni/jni_flutter, làm hỏng build Android
+# (module jni_flutter báo "Plugin with id 'com.android.library' not found"). App
+# chỉ dùng path_provider gián tiếp qua audioplayers → ghim về bản 2.2.x cuối
+# không dùng jni. Gỡ override khi chuỗi jni ổn định trên AGP của project.
+dependency_overrides:
+  path_provider_android: 2.2.23
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
