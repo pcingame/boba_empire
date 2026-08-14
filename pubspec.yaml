@@ -95,6 +95,9 @@ flutter:
   # chưa có file thì UI tự về emoji fallback (xem lib/ui/widgets/mascot.dart).
   assets:
     - assets/anim/
+    # Cảnh quán theo giai đoạn (Xe đẩy → Kiosk → Chuỗi cafe), làm backdrop vùng
+    # chạm; sinh bằng scripts/make_scenes.py.
+    - assets/scene/
     # File SFX (.wav) trong assets/audio/ đặt đúng tên theo lib/audio/
     # audio_service.dart (tap/buy/unlock/prestige/vip/reward.wav); tải bộ CC0
     # sẵn bằng scripts/fetch_sfx.sh. Thiếu file thì game chạy im lặng.

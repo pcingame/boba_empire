@@ -163,7 +163,7 @@ class _HomePageState extends ConsumerState<HomePage>
           Column(
             children: [
               _MoneyHeader(),
-              Expanded(child: _TapArea()),
+              Expanded(child: _StageScene()),
               _Shop(),
             ],
           ),
@@ -298,6 +298,43 @@ class _MoneyHeader extends ConsumerWidget {
         SnackBar(content: Text(l10n.instantCashSnack(formatNumber(reward)))),
       );
     }
+  }
+}
+
+/// Backdrop cảnh quán theo giai đoạn (Xe đẩy → Kiosk → Chuỗi cafe) với vùng
+/// chạm nổi lên trên. Đổi cảnh mượt (crossfade) khi mở khóa giai đoạn mới —
+/// phần thưởng thị giác cho tiến trình.
+class _StageScene extends ConsumerWidget {
+  const _StageScene();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final stage = ref.watch(gameControllerProvider.select((s) => s.stage));
+    final theme = Theme.of(context);
+    final n = stage.clamp(1, 3);
+
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          child: Image.asset(
+            'assets/scene/stage$n.png',
+            key: ValueKey(n),
+            fit: BoxFit.cover,
+            alignment: Alignment.bottomCenter,
+            // Thiếu asset (vd môi trường test) thì nền trơn thay vì vỡ.
+            errorBuilder: (context, error, stack) => const SizedBox.shrink(),
+          ),
+        ),
+        // Dark mode: phủ lớp mờ để cảnh sáng hoà với nền tối + cup nổi rõ.
+        if (theme.brightness == Brightness.dark)
+          ColoredBox(
+            color: theme.colorScheme.surface.withValues(alpha: 0.4),
+          ),
+        const _TapArea(),
+      ],
+    );
   }
 }
 
