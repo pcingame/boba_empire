@@ -71,8 +71,9 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
   `assets/icon/playstore_icon_512.png` (upload lên Play) + adaptive icon đã sinh.
 - [x] 🔴 **Feature graphic** 1024×500 (Play bắt buộc) — `assets/store/feature_graphic.png`
   (sinh bằng scripts/make_feature.py).
-- [ ] 🔴 **Screenshot** tối thiểu 2 (nên 4–8), điện thoại dọc. Chụp cả sáng/tối,
-  màn shop, prestige, offline. Ảnh hưởng lượt cài mạnh nhất.
+- [x] 🔴 **Screenshot** — 5 ảnh 1080×2160 (2:1, hợp lệ Play, đã bỏ status bar)
+  ở `assets/store/screenshots/`: home (sáng), cửa hàng 💎, nhượng quyền, cách
+  chơi, home (tối). Chụp từ máy thật, tiếng Việt, state seed đẹp.
 - [ ] 🔴 **Store listing** (tên/mô tả ngắn/mô tả đầy đủ) — dán từ
   STORE_LISTING.md, cho từng ngôn ngữ (vi/en/pt/es/id/th).
 - [ ] 🟡 Nhờ **người bản ngữ soát** bản dịch in-app + listing.
