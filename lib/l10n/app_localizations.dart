@@ -513,6 +513,36 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Theo hệ thống'**
   String get languageSystem;
+
+  /// No description provided for @dailyTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Điểm danh hằng ngày'**
+  String get dailyTitle;
+
+  /// No description provided for @dailyPrompt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận quà đăng nhập hôm nay!'**
+  String get dailyPrompt;
+
+  /// No description provided for @dailyClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận quà'**
+  String get dailyClaim;
+
+  /// No description provided for @dailyReward.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{gems} 💎'**
+  String dailyReward(String gems);
+
+  /// No description provided for @dailyStreak.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuỗi {days} ngày 🔥'**
+  String dailyStreak(int days);
 }
 
 class _AppLocalizationsDelegate

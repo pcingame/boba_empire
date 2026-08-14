@@ -267,4 +267,23 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get languageSystem => 'Bawaan sistem';
+
+  @override
+  String get dailyTitle => 'Check-in harian';
+
+  @override
+  String get dailyPrompt => 'Ambil hadiah login hari ini!';
+
+  @override
+  String get dailyClaim => 'Ambil';
+
+  @override
+  String dailyReward(String gems) {
+    return '+$gems 💎';
+  }
+
+  @override
+  String dailyStreak(int days) {
+    return 'Streak $days hari 🔥';
+  }
 }

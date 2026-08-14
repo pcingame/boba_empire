@@ -13,6 +13,8 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
   // Không tự mở "Cách chơi" trong test (dialog modal che thao tác); test hướng
   // dẫn bật lại cục bộ.
   debugAutoShowTutorial = false;
+  // Không tự mở popup điểm danh hằng ngày trong test (dialog modal che thao tác).
+  debugAutoShowDaily = false;
   // Chạy MỌI test ở locale tiếng Việt để các assertion chuỗi VI hiện có giữ
   // nguyên. Đặt lại trong setUp vì binding reset test-values sau mỗi test.
   setUp(() {

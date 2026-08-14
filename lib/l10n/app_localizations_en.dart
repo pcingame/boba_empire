@@ -262,4 +262,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageSystem => 'System default';
+
+  @override
+  String get dailyTitle => 'Daily check-in';
+
+  @override
+  String get dailyPrompt => 'Claim today\'s login gift!';
+
+  @override
+  String get dailyClaim => 'Claim';
+
+  @override
+  String dailyReward(String gems) {
+    return '+$gems 💎';
+  }
+
+  @override
+  String dailyStreak(int days) {
+    return '$days-day streak 🔥';
+  }
 }

@@ -74,6 +74,8 @@ class GameState {
     this.adsRemoved = false,
     this.starterPackOwned = false,
     this.tutorialSeen = false,
+    this.lastDailyDay = 0,
+    this.dailyStreak = 0,
   });
 
   /// Ván mới tinh.
@@ -129,6 +131,12 @@ class GameState {
   /// Đã xem hướng dẫn "Cách chơi" (tự hiện lần đầu, sau đó chỉ mở bằng nút ?).
   bool tutorialSeen;
 
+  /// Chỉ số ngày (UTC) của lần nhận thưởng đăng nhập gần nhất; 0 = chưa nhận.
+  int lastDailyDay;
+
+  /// Chuỗi ngày điểm danh liên tiếp hiện tại.
+  int dailyStreak;
+
   Map<String, dynamic> toJson() => {
         'money': money,
         'gems': gems,
@@ -143,6 +151,8 @@ class GameState {
         'adsRemoved': adsRemoved,
         'starterPackOwned': starterPackOwned,
         'tutorialSeen': tutorialSeen,
+        'lastDailyDay': lastDailyDay,
+        'dailyStreak': dailyStreak,
       };
 
   factory GameState.fromJson(Map<String, dynamic> json) => GameState(
@@ -162,5 +172,7 @@ class GameState {
         adsRemoved: (json['adsRemoved'] as bool?) ?? false,
         starterPackOwned: (json['starterPackOwned'] as bool?) ?? false,
         tutorialSeen: (json['tutorialSeen'] as bool?) ?? false,
+        lastDailyDay: (json['lastDailyDay'] as num?)?.toInt() ?? 0,
+        dailyStreak: (json['dailyStreak'] as num?)?.toInt() ?? 0,
       );
 }

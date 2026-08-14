@@ -16,6 +16,7 @@ import '../iap/iap_service.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
+import 'daily_dialog.dart';
 import 'gem_shop.dart';
 import 'how_to_play_dialog.dart';
 import 'language_dialog.dart';
@@ -30,6 +31,10 @@ import 'widgets/one_shot_lottie.dart';
 /// flutter_test_config để dialog modal không che thao tác, và test hướng dẫn
 /// bật lại để kiểm. (Giống [debugDisableMascotAnimation].)
 bool debugAutoShowTutorial = true;
+
+/// Cho phép tự hiện popup điểm danh hằng ngày khi mở app. Test tắt để dialog
+/// modal không che thao tác.
+bool debugAutoShowDaily = true;
 
 /// Màn hình chính MVP: đầu trang hiển thị tiền, giữa là nút chạm pha trà,
 /// dưới là shop nâng cấp. Cũng lo phần lifecycle (lưu khi app vào nền).
@@ -63,8 +68,12 @@ class _HomePageState extends ConsumerState<HomePage>
           state.offlineEarned <= 0) {
         ref.read(gameControllerProvider.notifier).markTutorialSeen();
         showHowToPlay(context);
+      } else if (state.offlineEarned > 0) {
+        _showOfflineDialog(state.offlineEarned);
+      } else if (debugAutoShowDaily && state.dailyAvailable) {
+        // Điểm danh: chỉ khi không vướng hướng dẫn/offline để tránh chồng dialog.
+        showDailyReward(context);
       }
-      if (state.offlineEarned > 0) _showOfflineDialog(state.offlineEarned);
     });
   }
 

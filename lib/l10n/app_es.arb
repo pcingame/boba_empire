@@ -78,5 +78,10 @@
   "htpPrestige": "⭐ Franquicia para reiniciar y ganar Estrellas — un bono de ingresos permanente.",
   "htpOffline": "😴 La tienda sigue vendiendo mientras no estás — vuelve por el dinero sin conexión.",
   "language": "Idioma",
-  "languageSystem": "Predeterminado del sistema"
+  "languageSystem": "Predeterminado del sistema",
+  "dailyTitle": "Registro diario",
+  "dailyPrompt": "¡Reclama el regalo de hoy!",
+  "dailyClaim": "Reclamar",
+  "dailyReward": "+{gems} 💎",
+  "dailyStreak": "Racha de {days} días 🔥"
 }

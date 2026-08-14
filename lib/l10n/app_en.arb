@@ -78,5 +78,10 @@
   "htpPrestige": "⭐ Franchise to restart and earn Stars — a permanent income bonus.",
   "htpOffline": "😴 The shop keeps selling while you're away — come back for offline cash.",
   "language": "Language",
-  "languageSystem": "System default"
+  "languageSystem": "System default",
+  "dailyTitle": "Daily check-in",
+  "dailyPrompt": "Claim today's login gift!",
+  "dailyClaim": "Claim",
+  "dailyReward": "+{gems} 💎",
+  "dailyStreak": "{days}-day streak 🔥"
 }

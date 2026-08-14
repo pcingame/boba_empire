@@ -78,5 +78,10 @@
   "htpPrestige": "⭐ Franquie para recomeçar e ganhar Estrelas — bônus de renda permanente.",
   "htpOffline": "😴 A loja continua vendendo enquanto você está fora — volte para pegar o dinheiro offline.",
   "language": "Idioma",
-  "languageSystem": "Padrão do sistema"
+  "languageSystem": "Padrão do sistema",
+  "dailyTitle": "Check-in diário",
+  "dailyPrompt": "Resgate o presente de hoje!",
+  "dailyClaim": "Resgatar",
+  "dailyReward": "+{gems} 💎",
+  "dailyStreak": "Sequência de {days} dias 🔥"
 }

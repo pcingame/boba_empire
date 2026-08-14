@@ -78,5 +78,10 @@
   "htpPrestige": "⭐ Waralabakan untuk mengulang dan dapat Bintang — bonus pendapatan permanen.",
   "htpOffline": "😴 Toko tetap berjualan saat kamu pergi — kembali untuk mengambil uang offline.",
   "language": "Bahasa",
-  "languageSystem": "Bawaan sistem"
+  "languageSystem": "Bawaan sistem",
+  "dailyTitle": "Check-in harian",
+  "dailyPrompt": "Ambil hadiah login hari ini!",
+  "dailyClaim": "Ambil",
+  "dailyReward": "+{gems} 💎",
+  "dailyStreak": "Streak {days} hari 🔥"
 }

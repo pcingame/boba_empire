@@ -22,6 +22,7 @@ class GameSnapshot {
     required this.adsRemoved,
     required this.starterPackOwned,
     required this.tutorialSeen,
+    required this.dailyAvailable,
     required Map<String, int> levels,
   }) : _levels = levels;
 
@@ -64,6 +65,9 @@ class GameSnapshot {
 
   /// Đã xem hướng dẫn "Cách chơi" — quyết định có tự hiện lần đầu không.
   final bool tutorialSeen;
+
+  /// Có phần thưởng đăng nhập hằng ngày chờ nhận (đã sang ngày mới).
+  final bool dailyAvailable;
 
   final Map<String, int> _levels;
 

@@ -265,4 +265,23 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get languageSystem => 'Theo hệ thống';
+
+  @override
+  String get dailyTitle => 'Điểm danh hằng ngày';
+
+  @override
+  String get dailyPrompt => 'Nhận quà đăng nhập hôm nay!';
+
+  @override
+  String get dailyClaim => 'Nhận quà';
+
+  @override
+  String dailyReward(String gems) {
+    return '+$gems 💎';
+  }
+
+  @override
+  String dailyStreak(int days) {
+    return 'Chuỗi $days ngày 🔥';
+  }
 }

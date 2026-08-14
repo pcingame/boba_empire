@@ -101,5 +101,12 @@
   "htpPrestige": "⭐ Nhượng quyền để chơi lại và nhận Sao — bonus thu nhập vĩnh viễn.",
   "htpOffline": "😴 Quán vẫn bán khi bạn thoát — quay lại nhận tiền offline.",
   "language": "Ngôn ngữ",
-  "languageSystem": "Theo hệ thống"
+  "languageSystem": "Theo hệ thống",
+  "dailyTitle": "Điểm danh hằng ngày",
+  "dailyPrompt": "Nhận quà đăng nhập hôm nay!",
+  "dailyClaim": "Nhận quà",
+  "dailyReward": "+{gems} 💎",
+  "@dailyReward": { "placeholders": { "gems": { "type": "String" } } },
+  "dailyStreak": "Chuỗi {days} ngày 🔥",
+  "@dailyStreak": { "placeholders": { "days": { "type": "int" } } }
 }

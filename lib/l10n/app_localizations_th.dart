@@ -262,4 +262,23 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get languageSystem => 'ค่าเริ่มต้นของระบบ';
+
+  @override
+  String get dailyTitle => 'เช็คอินรายวัน';
+
+  @override
+  String get dailyPrompt => 'รับของขวัญเข้าสู่ระบบวันนี้!';
+
+  @override
+  String get dailyClaim => 'รับ';
+
+  @override
+  String dailyReward(String gems) {
+    return '+$gems 💎';
+  }
+
+  @override
+  String dailyStreak(int days) {
+    return 'สตรีค $days วัน 🔥';
+  }
 }

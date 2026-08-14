@@ -12,6 +12,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/balance.dart';
+import '../core/daily.dart';
 import '../core/economy.dart';
 import '../core/models.dart';
 import '../core/simulation.dart';
@@ -198,6 +199,17 @@ class GameController extends Notifier<GameSnapshot> {
     return ok;
   }
 
+  /// Nhận thưởng đăng nhập hằng ngày. Trả về (gems nhận, streak mới); gems=0
+  /// nếu chưa tới ngày mới. Lưu ngay vì gems là premium.
+  ({int gems, int streak}) claimDailyReward() {
+    final gems = claimDaily(_game, _clock());
+    if (gems > 0) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return (gems: gems, streak: _game.dailyStreak);
+  }
+
   /// Nhượng quyền. Trả về số Sao vừa nhận (0 nếu chưa đủ).
   int doPrestige() {
     final gained = prestige(_game);
@@ -337,6 +349,7 @@ class GameController extends Notifier<GameSnapshot> {
       adsRemoved: _game.adsRemoved,
       starterPackOwned: _game.starterPackOwned,
       tutorialSeen: _game.tutorialSeen,
+      dailyAvailable: dailyAvailable(_game, _clock()),
       levels: _game.levels,
     );
   }

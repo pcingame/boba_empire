@@ -265,4 +265,23 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get languageSystem => 'Padrão do sistema';
+
+  @override
+  String get dailyTitle => 'Check-in diário';
+
+  @override
+  String get dailyPrompt => 'Resgate o presente de hoje!';
+
+  @override
+  String get dailyClaim => 'Resgatar';
+
+  @override
+  String dailyReward(String gems) {
+    return '+$gems 💎';
+  }
+
+  @override
+  String dailyStreak(int days) {
+    return 'Sequência de $days dias 🔥';
+  }
 }
