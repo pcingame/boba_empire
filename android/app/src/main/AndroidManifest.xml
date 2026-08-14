@@ -4,11 +4,10 @@
         android:label="Boba Empire"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <!-- AdMob App ID — ĐANG DÙNG TEST ID CỦA GOOGLE. Thay bằng App ID thật
-             từ AdMob console trước khi phát hành (xem SETUP.md). -->
+        <!-- AdMob App ID thật (com.pcingame.bobaempire). -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-9748541552219348~2417193584"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
