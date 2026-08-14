@@ -18,8 +18,10 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
   Xem [mục 6](#6-ký--build-release).
 - [ ] 🔴 **Icon app thật** (đang dùng icon Flutter mặc định). Xem [mục 5](#5-assets--store-listing).
 - [x] 🟡 **Đổi label app** → `Boba Empire` (đã sửa AndroidManifest).
-- [ ] 🔴 **Thay AdMob TEST ID → ID thật** (3 chỗ, xem SETUP.md mục 1). Bấm QC
-  thật trên test unit = vi phạm chính sách.
+- [~] 🔴 **Thay AdMob TEST ID → ID thật** (3 chỗ, xem SETUP.md mục 1). Bấm QC
+  thật trên test unit = vi phạm chính sách. ✅ Android xong (App ID manifest +
+  rewarded unit trong ad_config, tách debug=test/release=thật). ❌ iOS Info.plist
+  còn test — chỉ cần khi phát hành iOS.
 
 ---
 
@@ -30,7 +32,7 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
 - [ ] 🟡 Kiểm tra `targetSdk` đạt yêu cầu Play hiện hành (Google bắt buộc target
   API mới trong ~1 năm gần nhất). Đang dùng `flutter.targetSdkVersion` — chạy
   `flutter build appbundle` sẽ báo nếu thiếu.
-- [ ] 🟡 `flutter analyze` sạch + `flutter test` xanh (hiện 124/124).
+- [ ] 🟡 `flutter analyze` sạch + `flutter test` xanh (hiện 132/132).
 - [ ] 🟢 Cân nhắc `flutter_launcher_icons` + `flutter_native_splash` để sinh
   icon/splash mọi độ phân giải từ 1 file.
 - [ ] 🟢 Bật R8/shrink (mặc định có ở release) — kiểm APK size hợp lý.
@@ -43,9 +45,9 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
 
 ## 3. AdMob (xem SETUP.md mục 1)
 
-- [ ] 🔴 Tạo tài khoản AdMob + app (Android & iOS riêng).
-- [ ] 🔴 Tạo **Rewarded ad unit**, thay ID thật vào `lib/ads/ad_config.dart` +
-  manifest + Info.plist.
+- [~] 🔴 Tạo tài khoản AdMob + app (✅ Android xong; iOS chưa).
+- [~] 🔴 Tạo **Rewarded ad unit**, thay ID thật vào `lib/ads/ad_config.dart` +
+  manifest + Info.plist. ✅ Android xong; ❌ iOS còn test.
 - [ ] 🔴 Cấu hình **UMP / GDPR message** trong AdMob (Privacy & messaging) —
   code đã gọi ConsentForm, nhưng message phải tạo trong console.
 - [ ] 🟡 Test bằng **test device ID** trước khi bật ID thật.
