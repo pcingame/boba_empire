@@ -16,7 +16,8 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
   `C:/Users/24h/keys/boba-upload.jks` (alias `upload`), `android/key.properties`
   đã điền (gitignore). Verify: `.aab` ký bằng `CN=Doan Thanh Phuong` (không phải
   debug). ⚠️ Backup file .jks + nhớ mật khẩu; bật Play App Signing khi tạo app.
-- [ ] 🔴 **Icon app thật** (đang dùng icon Flutter mặc định). Xem [mục 5](#5-assets--store-listing).
+- [x] 🔴 **Icon app thật** — cốc trà sữa cute, nền kem (assets/icon/, sinh bằng
+  scripts/make_icon.py). Đã chạy flutter_launcher_icons → mipmap + adaptive icon.
 - [x] 🟡 **Đổi label app** → `Boba Empire` (đã sửa AndroidManifest).
 - [~] 🔴 **Thay AdMob TEST ID → ID thật** (3 chỗ, xem SETUP.md mục 1). Bấm QC
   thật trên test unit = vi phạm chính sách. ✅ Android xong (App ID manifest +
@@ -66,7 +67,8 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
 
 ## 5. Assets & store listing
 
-- [ ] 🔴 **Icon** 512×512 (Play) + adaptive icon Android.
+- [x] 🔴 **Icon** 512×512 (Play) + adaptive icon Android — có
+  `assets/icon/playstore_icon_512.png` (upload lên Play) + adaptive icon đã sinh.
 - [ ] 🔴 **Feature graphic** 1024×500 (Play bắt buộc).
 - [ ] 🔴 **Screenshot** tối thiểu 2 (nên 4–8), điện thoại dọc. Chụp cả sáng/tối,
   màn shop, prestige, offline. Ảnh hưởng lượt cài mạnh nhất.

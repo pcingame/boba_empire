@@ -63,6 +63,20 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
 
+  # Sinh launcher icon mọi độ phân giải (Android mipmap + adaptive, iOS) từ
+  # assets/icon/. Chạy: dart run flutter_launcher_icons
+  flutter_launcher_icons: ^0.14.4
+
+# Cấu hình icon. Nguồn ở assets/icon/ (tạo bằng scripts/make_icon.py).
+flutter_launcher_icons:
+  image_path: "assets/icon/app_icon.png"
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  min_sdk_android: 21
+  adaptive_icon_background: "assets/icon/app_icon_bg.png"
+  adaptive_icon_foreground: "assets/icon/app_icon_foreground.png"
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
