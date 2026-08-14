@@ -259,4 +259,10 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get htpOffline =>
       '😴 A loja continua vendendo enquanto você está fora — volte para pegar o dinheiro offline.';
+
+  @override
+  String get language => 'Idioma';
+
+  @override
+  String get languageSystem => 'Padrão do sistema';
 }

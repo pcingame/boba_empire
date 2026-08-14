@@ -501,6 +501,18 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'😴 Quán vẫn bán khi bạn thoát — quay lại nhận tiền offline.'**
   String get htpOffline;
+
+  /// No description provided for @language.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngôn ngữ'**
+  String get language;
+
+  /// No description provided for @languageSystem.
+  ///
+  /// In vi, this message translates to:
+  /// **'Theo hệ thống'**
+  String get languageSystem;
 }
 
 class _AppLocalizationsDelegate

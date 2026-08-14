@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'l10n/app_localizations.dart';
+import 'l10n/locale_provider.dart';
 
 import 'ads/ad_bootstrap.dart';
 import 'ads/ad_service.dart';
@@ -52,14 +53,15 @@ Future<void> main() async {
   );
 }
 
-class BobaEmpireApp extends StatelessWidget {
+class BobaEmpireApp extends ConsumerWidget {
   const BobaEmpireApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
       debugShowCheckedModeBanner: false,
+      locale: ref.watch(localeProvider),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

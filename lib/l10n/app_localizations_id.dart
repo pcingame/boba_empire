@@ -261,4 +261,10 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get htpOffline =>
       '😴 Toko tetap berjualan saat kamu pergi — kembali untuk mengambil uang offline.';
+
+  @override
+  String get language => 'Bahasa';
+
+  @override
+  String get languageSystem => 'Bawaan sistem';
 }

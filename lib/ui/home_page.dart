@@ -17,6 +17,7 @@ import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import 'gem_shop.dart';
 import 'how_to_play_dialog.dart';
+import 'language_dialog.dart';
 import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
 import 'widgets/anim_assets.dart';
@@ -146,7 +147,15 @@ class _HomePageState extends ConsumerState<HomePage>
         ),
         title: Text(AppLocalizations.of(context)!.appTitle),
         centerTitle: true,
-        actions: const [_GemShopButton(), _PrestigeButton()],
+        actions: [
+          IconButton(
+            key: const Key('language-button'),
+            icon: const Icon(Icons.language),
+            onPressed: () => showLanguageDialog(context),
+          ),
+          const _GemShopButton(),
+          const _PrestigeButton(),
+        ],
       ),
       body: const Stack(
         children: [

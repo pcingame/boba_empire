@@ -259,4 +259,10 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get htpOffline =>
       '😴 Quán vẫn bán khi bạn thoát — quay lại nhận tiền offline.';
+
+  @override
+  String get language => 'Ngôn ngữ';
+
+  @override
+  String get languageSystem => 'Theo hệ thống';
 }

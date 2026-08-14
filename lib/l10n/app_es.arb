@@ -76,5 +76,7 @@
   "htpVip": "🚗 Atiende al cliente VIP para ganar Gemas 💎.",
   "htpGems": "💎 Gasta Gemas en la Tienda en mejoras permanentes.",
   "htpPrestige": "⭐ Franquicia para reiniciar y ganar Estrellas — un bono de ingresos permanente.",
-  "htpOffline": "😴 La tienda sigue vendiendo mientras no estás — vuelve por el dinero sin conexión."
+  "htpOffline": "😴 La tienda sigue vendiendo mientras no estás — vuelve por el dinero sin conexión.",
+  "language": "Idioma",
+  "languageSystem": "Predeterminado del sistema"
 }

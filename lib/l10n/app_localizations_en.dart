@@ -256,4 +256,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get htpOffline =>
       '😴 The shop keeps selling while you\'re away — come back for offline cash.';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get languageSystem => 'System default';
 }

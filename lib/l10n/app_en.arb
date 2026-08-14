@@ -76,5 +76,7 @@
   "htpVip": "🚗 Serve the VIP customer to earn Gems 💎.",
   "htpGems": "💎 Spend Gems in the Shop on permanent upgrades.",
   "htpPrestige": "⭐ Franchise to restart and earn Stars — a permanent income bonus.",
-  "htpOffline": "😴 The shop keeps selling while you're away — come back for offline cash."
+  "htpOffline": "😴 The shop keeps selling while you're away — come back for offline cash.",
+  "language": "Language",
+  "languageSystem": "System default"
 }

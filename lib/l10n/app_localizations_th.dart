@@ -256,4 +256,10 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get htpOffline =>
       '😴 ร้านยังขายต่อขณะที่คุณไม่อยู่ — กลับมารับเงินออฟไลน์';
+
+  @override
+  String get language => 'ภาษา';
+
+  @override
+  String get languageSystem => 'ค่าเริ่มต้นของระบบ';
 }
