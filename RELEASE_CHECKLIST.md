@@ -12,10 +12,10 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
 
 - [x] 🔴 **Đổi applicationId** → `com.pcingame.bobaempire` (đã đổi cả namespace +
   di chuyển MainActivity, build APK verify OK). ⚠️ ĐỪNG đổi lại sau khi phát hành.
-- [~] 🔴 **Tạo keystore ký release** — CODE đã sẵn: `build.gradle.kts` đọc
-  `android/key.properties` (mẫu ở `android/key.properties.example`), có thì ký
-  release, không thì rơi về debug. BẠN chỉ cần tạo keystore + điền key.properties.
-  Xem [mục 6](#6-ký--build-release).
+- [x] 🔴 **Tạo keystore ký release** — ĐÃ XONG: keystore tại
+  `C:/Users/24h/keys/boba-upload.jks` (alias `upload`), `android/key.properties`
+  đã điền (gitignore). Verify: `.aab` ký bằng `CN=Doan Thanh Phuong` (không phải
+  debug). ⚠️ Backup file .jks + nhớ mật khẩu; bật Play App Signing khi tạo app.
 - [ ] 🔴 **Icon app thật** (đang dùng icon Flutter mặc định). Xem [mục 5](#5-assets--store-listing).
 - [x] 🟡 **Đổi label app** → `Boba Empire` (đã sửa AndroidManifest).
 - [~] 🔴 **Thay AdMob TEST ID → ID thật** (3 chỗ, xem SETUP.md mục 1). Bấm QC
@@ -88,23 +88,15 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
 
 ## 7. Ký & build release {#6-ký--build-release}
 
-- [ ] 🔴 Tạo keystore:
-  ```
-  keytool -genkey -v -keystore ~/boba-upload.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
-  ```
-- [ ] 🔴 Copy `android/key.properties.example` → `android/key.properties` rồi
-  điền (đã .gitignore sẵn):
-  ```
-  storePassword=...
-  keyPassword=...
-  keyAlias=upload
-  storeFile=C:/Users/.../boba-upload.jks
-  ```
+- [x] 🔴 Tạo keystore → `C:/Users/24h/keys/boba-upload.jks` (alias `upload`).
+- [x] 🔴 `android/key.properties` đã điền (gitignore) — verify `.aab` ký bằng
+  key thật (`CN=Doan Thanh Phuong`).
 - [x] 🔴 `signingConfigs.release` trong `build.gradle.kts` đã đọc từ
   key.properties (có file → ký release, không → debug). Không cần sửa gradle nữa.
 - [ ] 🔴 Bật **Play App Signing** khi tạo app (Google giữ khóa ký cuối; bạn giữ
   upload key).
-- [ ] 🔴 Build bundle: `flutter build appbundle --release` → `.aab`.
+- [x] 🔴 Build bundle: `flutter build appbundle --release` → `.aab` (ký release
+  OK; rebuild lại khi bump version/đổi asset).
 - [ ] 🟢 (iOS) `flutter build ipa` (cần macOS + Xcode + chứng chỉ).
 
 ## 8. Test trước khi phát hành
