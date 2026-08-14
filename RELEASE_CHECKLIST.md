@@ -80,8 +80,11 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
 
 ## 6. Chính sách & pháp lý
 
-- [ ] 🔴 **Privacy Policy** (URL công khai) — bắt buộc vì có ads + IAP thu thập
-  dữ liệu. Khai trong Play Console.
+- [~] 🔴 **Privacy Policy** (URL công khai) — bắt buộc vì có ads + IAP. NỘI DUNG
+  XONG: `PRIVACY_POLICY.md` + `docs/privacy-policy.html` (song ngữ Việt–Anh, dev
+  pcingame, liên hệ phuongtdoan2008@gmail.com). CÒN LẠI: host lấy URL (bật GitHub
+  Pages cho /docs → https://pcingame.github.io/boba_empire/privacy-policy.html)
+  rồi dán URL vào Play Console (App content → Privacy policy) + AdMob.
 - [ ] 🔴 **Data safety form** (Play): khai AdMob thu thập Ad ID, v.v.
 - [ ] 🔴 **Target audience & content**: khai **13+** (General, KHÔNG child-directed
   — đúng cấu hình hiện tại; xem SETUP.md mục 3).
