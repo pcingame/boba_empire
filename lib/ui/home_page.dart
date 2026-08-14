@@ -16,6 +16,7 @@ import '../iap/iap_service.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
+import 'achievements_dialog.dart';
 import 'daily_dialog.dart';
 import 'gem_shop.dart';
 import 'how_to_play_dialog.dart';
@@ -148,6 +149,17 @@ class _HomePageState extends ConsumerState<HomePage>
       },
     );
 
+    // Mở khoá thành tựu → chỉ chơi âm thanh; chấm đỏ trên nút 🏆 mời người chơi
+    // xem (tránh snackbar tranh chỗ với thông báo hành động khác).
+    ref.listen(
+      gameControllerProvider.select((s) => s.newAchievements.length),
+      (previous, next) {
+        if (next > (previous ?? 0)) {
+          ref.read(audioServiceProvider).play(Sfx.reward);
+        }
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -155,9 +167,14 @@ class _HomePageState extends ConsumerState<HomePage>
           icon: const Icon(Icons.help_outline),
           onPressed: () => showHowToPlay(context),
         ),
-        title: Text(AppLocalizations.of(context)!.appTitle),
-        centerTitle: true,
+        title: Text(
+          AppLocalizations.of(context)!.appTitle,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        ),
+        titleSpacing: 0,
         actions: [
+          const _AchievementsButton(),
           IconButton(
             key: const Key('language-button'),
             icon: const Icon(Icons.language),
@@ -180,6 +197,29 @@ class _HomePageState extends ConsumerState<HomePage>
           _GoldenCat(),
           _VipCustomer(),
         ],
+      ),
+    );
+  }
+}
+
+/// Nút mở bảng Thành tựu; chấm đỏ khi có thành tựu vừa mở khoá chưa xem.
+class _AchievementsButton extends ConsumerWidget {
+  const _AchievementsButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final hasNew = ref.watch(
+      gameControllerProvider.select((s) => s.newAchievements.isNotEmpty),
+    );
+    return IconButton(
+      key: const Key('achievements-button'),
+      onPressed: () {
+        ref.read(gameControllerProvider.notifier).acknowledgeAchievements();
+        showAchievements(context);
+      },
+      icon: Badge(
+        isLabelVisible: hasNew,
+        child: const Icon(Icons.emoji_events_outlined),
       ),
     );
   }

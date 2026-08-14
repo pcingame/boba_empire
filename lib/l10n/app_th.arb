@@ -83,5 +83,11 @@
   "dailyPrompt": "รับของขวัญเข้าสู่ระบบวันนี้!",
   "dailyClaim": "รับ",
   "dailyReward": "+{gems} 💎",
-  "dailyStreak": "สตรีค {days} วัน 🔥"
+  "dailyStreak": "สตรีค {days} วัน 🔥",
+  "achievementsTitle": "ความสำเร็จ",
+  "achEarn": "หาเงินรวม {amount} เหรียญ",
+  "achStage": "ไปถึงระยะ {n}",
+  "achLevels": "มีเลเวลอัปเกรดรวม {n}",
+  "achPrestige": "แฟรนไชส์ ({n}★ ขึ้นไป)",
+  "achUnlocked": "🏆 ปลดล็อกความสำเร็จ! +{gems} 💎"
 }

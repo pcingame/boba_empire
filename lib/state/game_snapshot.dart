@@ -5,6 +5,8 @@
 /// đúng phần dữ liệu mình quan tâm (mục tối ưu Riverpod).
 library;
 
+import '../core/achievements.dart';
+
 class GameSnapshot {
   const GameSnapshot({
     required this.money,
@@ -23,6 +25,9 @@ class GameSnapshot {
     required this.starterPackOwned,
     required this.tutorialSeen,
     required this.dailyAvailable,
+    required this.newAchievements,
+    required this.lifetimeEarnings,
+    required this.achievementsClaimed,
     required Map<String, int> levels,
   }) : _levels = levels;
 
@@ -68,6 +73,15 @@ class GameSnapshot {
 
   /// Có phần thưởng đăng nhập hằng ngày chờ nhận (đã sang ngày mới).
   final bool dailyAvailable;
+
+  /// Thành tựu vừa mở khoá (chờ UI báo rồi gọi acknowledgeAchievements()).
+  final List<Achievement> newAchievements;
+
+  /// Tổng thu nhập cả đời — dùng cho tiến độ thành tựu "Kiếm X Xu".
+  final double lifetimeEarnings;
+
+  /// Id thành tựu đã mở khoá — để bảng Thành tựu tô đã đạt/khoá.
+  final List<String> achievementsClaimed;
 
   final Map<String, int> _levels;
 

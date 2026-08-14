@@ -286,4 +286,32 @@ class AppLocalizationsId extends AppLocalizations {
   String dailyStreak(int days) {
     return 'Streak $days hari 🔥';
   }
+
+  @override
+  String get achievementsTitle => 'Pencapaian';
+
+  @override
+  String achEarn(String amount) {
+    return 'Kumpulkan total $amount Koin';
+  }
+
+  @override
+  String achStage(int n) {
+    return 'Capai tahap $n';
+  }
+
+  @override
+  String achLevels(int n) {
+    return 'Miliki total $n level peningkatan';
+  }
+
+  @override
+  String achPrestige(int n) {
+    return 'Waralaba ($n★ atau lebih)';
+  }
+
+  @override
+  String achUnlocked(String gems) {
+    return '🏆 Pencapaian terbuka! +$gems 💎';
+  }
 }

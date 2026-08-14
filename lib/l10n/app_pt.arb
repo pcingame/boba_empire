@@ -83,5 +83,11 @@
   "dailyPrompt": "Resgate o presente de hoje!",
   "dailyClaim": "Resgatar",
   "dailyReward": "+{gems} 💎",
-  "dailyStreak": "Sequência de {days} dias 🔥"
+  "dailyStreak": "Sequência de {days} dias 🔥",
+  "achievementsTitle": "Conquistas",
+  "achEarn": "Ganhe {amount} Moedas no total",
+  "achStage": "Alcance o estágio {n}",
+  "achLevels": "Tenha {n} níveis de melhoria no total",
+  "achPrestige": "Franquia ({n}★ ou mais)",
+  "achUnlocked": "🏆 Conquista desbloqueada! +{gems} 💎"
 }

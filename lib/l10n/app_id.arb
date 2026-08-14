@@ -83,5 +83,11 @@
   "dailyPrompt": "Ambil hadiah login hari ini!",
   "dailyClaim": "Ambil",
   "dailyReward": "+{gems} 💎",
-  "dailyStreak": "Streak {days} hari 🔥"
+  "dailyStreak": "Streak {days} hari 🔥",
+  "achievementsTitle": "Pencapaian",
+  "achEarn": "Kumpulkan total {amount} Koin",
+  "achStage": "Capai tahap {n}",
+  "achLevels": "Miliki total {n} level peningkatan",
+  "achPrestige": "Waralaba ({n}★ atau lebih)",
+  "achUnlocked": "🏆 Pencapaian terbuka! +{gems} 💎"
 }

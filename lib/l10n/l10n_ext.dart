@@ -2,6 +2,7 @@
 /// dịch. Gom một chỗ để tầng core/Balance khỏi giữ tên hiển thị.
 library;
 
+import '../core/achievements.dart';
 import '../core/format.dart';
 import '../iap/iap_products.dart';
 import 'app_localizations.dart';
@@ -33,4 +34,14 @@ String iapDescription(AppLocalizations l10n, IapProduct p) => switch (p) {
       IapProduct.removeAds => l10n.iapRemoveAdsDesc,
       IapProduct.starterPack => l10n.iapStarterDesc,
       _ => l10n.iapGemsDesc,
+    };
+
+/// Mô tả hiển thị của một thành tựu (dựng từ template + ngưỡng).
+String achievementDesc(AppLocalizations l10n, Achievement a) =>
+    switch (a.metric) {
+      AchievementMetric.earn =>
+        l10n.achEarn(formatNumber(a.threshold.toDouble())),
+      AchievementMetric.stage => l10n.achStage(a.threshold.toInt()),
+      AchievementMetric.levels => l10n.achLevels(a.threshold.toInt()),
+      AchievementMetric.prestige => l10n.achPrestige(a.threshold.toInt()),
     };

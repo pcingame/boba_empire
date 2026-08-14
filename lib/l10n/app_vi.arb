@@ -108,5 +108,16 @@
   "dailyReward": "+{gems} 💎",
   "@dailyReward": { "placeholders": { "gems": { "type": "String" } } },
   "dailyStreak": "Chuỗi {days} ngày 🔥",
-  "@dailyStreak": { "placeholders": { "days": { "type": "int" } } }
+  "@dailyStreak": { "placeholders": { "days": { "type": "int" } } },
+  "achievementsTitle": "Thành tựu",
+  "achEarn": "Kiếm tổng {amount} Xu",
+  "@achEarn": { "placeholders": { "amount": { "type": "String" } } },
+  "achStage": "Đạt giai đoạn {n}",
+  "@achStage": { "placeholders": { "n": { "type": "int" } } },
+  "achLevels": "Sở hữu tổng {n} cấp nâng cấp",
+  "@achLevels": { "placeholders": { "n": { "type": "int" } } },
+  "achPrestige": "Nhượng quyền ({n}★ trở lên)",
+  "@achPrestige": { "placeholders": { "n": { "type": "int" } } },
+  "achUnlocked": "🏆 Mở khoá thành tựu! +{gems} 💎",
+  "@achUnlocked": { "placeholders": { "gems": { "type": "String" } } }
 }

@@ -281,4 +281,32 @@ class AppLocalizationsEn extends AppLocalizations {
   String dailyStreak(int days) {
     return '$days-day streak 🔥';
   }
+
+  @override
+  String get achievementsTitle => 'Achievements';
+
+  @override
+  String achEarn(String amount) {
+    return 'Earn $amount Coins total';
+  }
+
+  @override
+  String achStage(int n) {
+    return 'Reach stage $n';
+  }
+
+  @override
+  String achLevels(int n) {
+    return 'Own $n upgrade levels total';
+  }
+
+  @override
+  String achPrestige(int n) {
+    return 'Franchise ($n★ or more)';
+  }
+
+  @override
+  String achUnlocked(String gems) {
+    return '🏆 Achievement unlocked! +$gems 💎';
+  }
 }

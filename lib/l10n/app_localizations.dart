@@ -543,6 +543,42 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Chuỗi {days} ngày 🔥'**
   String dailyStreak(int days);
+
+  /// No description provided for @achievementsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thành tựu'**
+  String get achievementsTitle;
+
+  /// No description provided for @achEarn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiếm tổng {amount} Xu'**
+  String achEarn(String amount);
+
+  /// No description provided for @achStage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đạt giai đoạn {n}'**
+  String achStage(int n);
+
+  /// No description provided for @achLevels.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sở hữu tổng {n} cấp nâng cấp'**
+  String achLevels(int n);
+
+  /// No description provided for @achPrestige.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhượng quyền ({n}★ trở lên)'**
+  String achPrestige(int n);
+
+  /// No description provided for @achUnlocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'🏆 Mở khoá thành tựu! +{gems} 💎'**
+  String achUnlocked(String gems);
 }
 
 class _AppLocalizationsDelegate

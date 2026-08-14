@@ -11,6 +11,7 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/achievements.dart';
 import '../core/balance.dart';
 import '../core/daily.dart';
 import '../core/economy.dart';
@@ -33,6 +34,9 @@ class GameController extends Notifier<GameSnapshot> {
   Timer? _timer;
   int _ticksSinceSave = 0;
   double _offlineEarned = 0;
+
+  /// Thành tựu vừa mở khoá, chờ UI hiển thị (xoá qua acknowledgeAchievements).
+  List<Achievement> _newAchievements = const [];
 
   final Random _random = Random();
 
@@ -62,6 +66,7 @@ class GameController extends Notifier<GameSnapshot> {
     _scheduleNextVip(_clock());
     _timer = Timer.periodic(tickInterval, (_) => _onTick());
     ref.onDispose(() => _timer?.cancel());
+    _awardAchievements(); // thành tựu đạt sẵn từ trước / qua tiền offline
     return _snapshot();
   }
 
@@ -165,7 +170,10 @@ class GameController extends Notifier<GameSnapshot> {
   /// Nâng cấp một nguồn thu. Trả về true nếu đủ tiền và mua thành công.
   bool buy(String generatorId) {
     final ok = buyUpgrade(_game, generatorId);
-    if (ok) state = _snapshot();
+    if (ok) {
+      _awardAchievements();
+      state = _snapshot();
+    }
     return ok;
   }
 
@@ -173,6 +181,7 @@ class GameController extends Notifier<GameSnapshot> {
   bool unlockStage() {
     final ok = unlockNextStage(_game);
     if (ok) {
+      _awardAchievements();
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -214,6 +223,7 @@ class GameController extends Notifier<GameSnapshot> {
   int doPrestige() {
     final gained = prestige(_game);
     if (gained > 0) {
+      _awardAchievements();
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -237,6 +247,24 @@ class GameController extends Notifier<GameSnapshot> {
   void acknowledgeOffline() {
     if (_offlineEarned == 0) return;
     _offlineEarned = 0;
+    state = _snapshot();
+  }
+
+  /// Trao mọi thành tựu vừa đạt (nếu có) và xếp hàng cho UI báo. Gọi ở các điểm
+  /// state đổi (mua, mở giai đoạn, prestige, tick). KHÔNG tự phát snapshot —
+  /// người gọi phát ngay sau đó.
+  void _awardAchievements() {
+    final newly = grantNewAchievements(_game);
+    if (newly.isNotEmpty) {
+      _newAchievements = [..._newAchievements, ...newly];
+      unawaited(saveNow());
+    }
+  }
+
+  /// UI gọi sau khi đã hiển thị thông báo mở khoá thành tựu.
+  void acknowledgeAchievements() {
+    if (_newAchievements.isEmpty) return;
+    _newAchievements = const [];
     state = _snapshot();
   }
 
@@ -319,6 +347,7 @@ class GameController extends Notifier<GameSnapshot> {
     }
     _updateCat(now);
     _updateVip(now);
+    _awardAchievements(); // bắt các mốc lifetimeEarnings tăng theo thời gian
     if (++_ticksSinceSave >= autoSaveEveryTicks) {
       _ticksSinceSave = 0;
       unawaited(saveNow());
@@ -350,6 +379,9 @@ class GameController extends Notifier<GameSnapshot> {
       starterPackOwned: _game.starterPackOwned,
       tutorialSeen: _game.tutorialSeen,
       dailyAvailable: dailyAvailable(_game, _clock()),
+      newAchievements: _newAchievements,
+      lifetimeEarnings: _game.lifetimeEarnings,
+      achievementsClaimed: _game.achievementsClaimed,
       levels: _game.levels,
     );
   }

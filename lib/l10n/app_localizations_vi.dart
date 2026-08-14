@@ -284,4 +284,32 @@ class AppLocalizationsVi extends AppLocalizations {
   String dailyStreak(int days) {
     return 'Chuỗi $days ngày 🔥';
   }
+
+  @override
+  String get achievementsTitle => 'Thành tựu';
+
+  @override
+  String achEarn(String amount) {
+    return 'Kiếm tổng $amount Xu';
+  }
+
+  @override
+  String achStage(int n) {
+    return 'Đạt giai đoạn $n';
+  }
+
+  @override
+  String achLevels(int n) {
+    return 'Sở hữu tổng $n cấp nâng cấp';
+  }
+
+  @override
+  String achPrestige(int n) {
+    return 'Nhượng quyền ($n★ trở lên)';
+  }
+
+  @override
+  String achUnlocked(String gems) {
+    return '🏆 Mở khoá thành tựu! +$gems 💎';
+  }
 }

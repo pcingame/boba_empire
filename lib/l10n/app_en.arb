@@ -83,5 +83,11 @@
   "dailyPrompt": "Claim today's login gift!",
   "dailyClaim": "Claim",
   "dailyReward": "+{gems} 💎",
-  "dailyStreak": "{days}-day streak 🔥"
+  "dailyStreak": "{days}-day streak 🔥",
+  "achievementsTitle": "Achievements",
+  "achEarn": "Earn {amount} Coins total",
+  "achStage": "Reach stage {n}",
+  "achLevels": "Own {n} upgrade levels total",
+  "achPrestige": "Franchise ({n}★ or more)",
+  "achUnlocked": "🏆 Achievement unlocked! +{gems} 💎"
 }

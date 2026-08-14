@@ -281,4 +281,32 @@ class AppLocalizationsTh extends AppLocalizations {
   String dailyStreak(int days) {
     return 'สตรีค $days วัน 🔥';
   }
+
+  @override
+  String get achievementsTitle => 'ความสำเร็จ';
+
+  @override
+  String achEarn(String amount) {
+    return 'หาเงินรวม $amount เหรียญ';
+  }
+
+  @override
+  String achStage(int n) {
+    return 'ไปถึงระยะ $n';
+  }
+
+  @override
+  String achLevels(int n) {
+    return 'มีเลเวลอัปเกรดรวม $n';
+  }
+
+  @override
+  String achPrestige(int n) {
+    return 'แฟรนไชส์ ($n★ ขึ้นไป)';
+  }
+
+  @override
+  String achUnlocked(String gems) {
+    return '🏆 ปลดล็อกความสำเร็จ! +$gems 💎';
+  }
 }

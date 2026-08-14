@@ -83,5 +83,11 @@
   "dailyPrompt": "¡Reclama el regalo de hoy!",
   "dailyClaim": "Reclamar",
   "dailyReward": "+{gems} 💎",
-  "dailyStreak": "Racha de {days} días 🔥"
+  "dailyStreak": "Racha de {days} días 🔥",
+  "achievementsTitle": "Logros",
+  "achEarn": "Gana {amount} Monedas en total",
+  "achStage": "Alcanza la etapa {n}",
+  "achLevels": "Ten {n} niveles de mejora en total",
+  "achPrestige": "Franquicia ({n}★ o más)",
+  "achUnlocked": "🏆 ¡Logro desbloqueado! +{gems} 💎"
 }
