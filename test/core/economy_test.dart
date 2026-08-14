@@ -63,6 +63,33 @@ void main() {
     });
   });
 
+  group('mốc nhân bội (milestone)', () {
+    test('cấp 0..24 = ×1 (không đổi cân bằng đầu game)', () {
+      expect(generatorMilestoneMultiplier(0), 1);
+      expect(generatorMilestoneMultiplier(24), 1);
+    });
+
+    test('mỗi 25 cấp ×2 (25→×2, 50→×4, 75→×8)', () {
+      expect(generatorMilestoneMultiplier(25), 2);
+      expect(generatorMilestoneMultiplier(50), 4);
+      expect(generatorMilestoneMultiplier(75), 8);
+    });
+
+    test('levelsToNextMilestone đếm ngược đúng', () {
+      expect(levelsToNextMilestone(0), 25);
+      expect(levelsToNextMilestone(24), 1);
+      expect(levelsToNextMilestone(25), 25);
+      expect(levelsToNextMilestone(26), 24);
+    });
+
+    test('baseIncome áp mốc nhân bội vào từng nguồn', () {
+      final at25 = GameState.newGame(nowMillis: 0)..levels['x'] = 25;
+      expect(baseIncomePerSecond(at25, const [_g]), closeTo(2 * 25 * 2, 1e-9));
+      final at50 = GameState.newGame(nowMillis: 0)..levels['x'] = 50;
+      expect(baseIncomePerSecond(at50, const [_g]), closeTo(2 * 50 * 4, 1e-9));
+    });
+  });
+
   group('starsForLifetimeEarnings', () {
     test('0 khi chưa kiếm được gì', () {
       expect(starsForLifetimeEarnings(0, Balance.prestigeK), 0);

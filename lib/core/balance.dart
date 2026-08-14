@@ -20,6 +20,12 @@ class Balance {
   /// Placeholder — cần tune bằng bảng số ở giai đoạn balancing.
   static const double prestigeK = 0.05;
 
+  /// Mốc nhân bội cho mỗi nguồn thu: cứ mỗi [milestoneStep] cấp, thu nhập của
+  /// nguồn đó ×[milestoneFactor] (25→×2, 50→×4, 75→×8...). Đây là "củ cà rốt"
+  /// khiến người chơi dồn cấp một nguồn thay vì rải đều — chiều sâu tối ưu.
+  static const int milestoneStep = 25;
+  static const double milestoneFactor = 2.0;
+
   // --- Sự kiện Mưa vàng (Golden Rush) ---
 
   /// Hệ số tăng tốc khi kích hoạt Mưa vàng.

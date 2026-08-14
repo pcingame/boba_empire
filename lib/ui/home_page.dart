@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -310,7 +311,7 @@ class _TapArea extends ConsumerStatefulWidget {
 }
 
 class _TapAreaState extends ConsumerState<_TapArea>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   late final AnimationController _press = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 90),
@@ -318,9 +319,26 @@ class _TapAreaState extends ConsumerState<_TapArea>
     upperBound: 0.12,
   );
 
+  // Combo: mỗi cú chạm khi controller còn chạy sẽ +1; ngừng chạm ~1.1s thì
+  // controller kết thúc và combo ẩn đi. Dùng AnimationController (không Timer)
+  // để pumpAndSettle trong test không bị treo/kẹt timer.
+  late final AnimationController _combo = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1100),
+  )..addStatusListener((s) {
+      if (s == AnimationStatus.completed && mounted) {
+        setState(() => _comboCount = 0);
+      }
+    });
+  int _comboCount = 0;
+
+  final math.Random _rng = math.Random();
+  final List<_Floater> _floaters = [];
+
   @override
   void dispose() {
     _press.dispose();
+    _combo.dispose();
     super.dispose();
   }
 
@@ -328,58 +346,153 @@ class _TapAreaState extends ConsumerState<_TapArea>
     // Thu nhỏ rồi bật lại (hữu hạn nên pumpAndSettle không treo).
     _press.forward().then((_) => _press.reverse());
     HapticFeedback.lightImpact();
-    ref.read(gameControllerProvider.notifier).tapCup();
+    final gained = ref.read(gameControllerProvider.notifier).tapCup();
     ref.read(audioServiceProvider).play(Sfx.tap);
     playEffect(context, AnimAssets.coins, size: 140);
+
+    final key = UniqueKey();
+    setState(() {
+      _comboCount = _combo.isAnimating ? _comboCount + 1 : 1;
+      _floaters.add(_Floater(
+        key: key,
+        text: '+${formatNumber(gained)}',
+        dx: (_rng.nextDouble() - 0.5) * 0.7,
+        onDone: () {
+          if (mounted) setState(() => _floaters.removeWhere((f) => f.key == key));
+        },
+      ));
+    });
+    _combo.forward(from: 0);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: GestureDetector(
-        onTap: _onTap,
-        child: ScaleTransition(
-          scale: Tween<double>(begin: 1.0, end: 0.88).animate(_press),
-          child: Container(
-            width: 160,
-            height: 160,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Theme.of(context).colorScheme.secondaryContainer,
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .shadow
-                      .withValues(alpha: 0.25),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
+    final theme = Theme.of(context);
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        ..._floaters,
+        if (_comboCount >= 2)
+          Align(
+            alignment: const Alignment(0, -0.62),
+            child: AnimatedBuilder(
+              animation: _combo,
+              builder: (context, child) => Opacity(
+                opacity: (1 - _combo.value * _combo.value).clamp(0.0, 1.0),
+                child: Transform.scale(
+                  scale: 1 + 0.25 * (1 - _combo.value),
+                  child: child,
                 ),
-              ],
-            ),
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(8),
-            // Co lại khi vòng bị ép nhỏ (ngôn ngữ dài) thay vì tràn.
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // Animation nếu có file, ngược lại emoji 🧋.
-                  const Mascot(asset: AnimAssets.cup, emoji: '🧋', size: 72),
-                  const SizedBox(height: 4),
-                  SizedBox(
-                    width: 150,
-                    child: Text(
-                      AppLocalizations.of(context)!.tapBrew,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 15),
-                    ),
-                  ),
-                ],
+              ),
+              child: Text(
+                'COMBO ×$_comboCount',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w900,
+                  color: theme.colorScheme.tertiary,
+                ),
               ),
             ),
           ),
+        Center(
+          child: GestureDetector(
+            onTap: _onTap,
+            child: ScaleTransition(
+              scale: Tween<double>(begin: 1.0, end: 0.88).animate(_press),
+              child: Container(
+                width: 160,
+                height: 160,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: theme.colorScheme.secondaryContainer,
+                  boxShadow: [
+                    BoxShadow(
+                      color:
+                          theme.colorScheme.shadow.withValues(alpha: 0.25),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(8),
+                // Co lại khi vòng bị ép nhỏ (ngôn ngữ dài) thay vì tràn.
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Animation nếu có file, ngược lại emoji 🧋.
+                      const Mascot(
+                          asset: AnimAssets.cup, emoji: '🧋', size: 72),
+                      const SizedBox(height: 4),
+                      SizedBox(
+                        width: 150,
+                        child: Text(
+                          AppLocalizations.of(context)!.tapBrew,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Số "+X" bay lên và mờ dần khi chạm ly — phản hồi tức thì cho mỗi cú chạm.
+class _Floater extends StatefulWidget {
+  const _Floater({
+    required super.key,
+    required this.text,
+    required this.dx,
+    required this.onDone,
+  });
+
+  final String text;
+  final double dx;
+  final VoidCallback onDone;
+
+  @override
+  State<_Floater> createState() => _FloaterState();
+}
+
+class _FloaterState extends State<_Floater>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _c = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 850),
+  )..forward().whenComplete(widget.onDone);
+
+  @override
+  void dispose() {
+    _c.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return AnimatedBuilder(
+      animation: _c,
+      builder: (context, child) {
+        final t = _c.value;
+        return Align(
+          alignment: Alignment(widget.dx, -0.05 - t * 0.55),
+          child: Opacity(opacity: (1 - t).clamp(0.0, 1.0), child: child),
+        );
+      },
+      child: Text(
+        widget.text,
+        style: theme.textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.w800,
+          color: theme.colorScheme.primary,
+          shadows: const [Shadow(blurRadius: 4, color: Colors.black26)],
         ),
       ),
     );
@@ -522,8 +635,17 @@ class _ShopTile extends ConsumerWidget {
         ),
       ),
       title: Text(generatorName(l10n, config.id)),
-      subtitle: Text(
-        l10n.generatorSubtitle(formatNumber(config.incomePerLevelPerSecond)),
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            l10n.generatorSubtitle(
+                formatNumber(config.incomePerLevelPerSecond)),
+          ),
+          const SizedBox(height: 5),
+          _MilestoneBar(level: level),
+        ],
       ),
       trailing: FilledButton(
         onPressed: canAfford
@@ -539,6 +661,60 @@ class _ShopTile extends ConsumerWidget {
             : null,
         child: Text(l10n.buyButton(formatNumber(cost))),
       ),
+    );
+  }
+}
+
+/// Huy hiệu mốc nhân bội của một nguồn thu: chip ×N hiện tại + thanh tiến độ
+/// tới mốc kế → ×target. Thuần số/ký hiệu nên không cần dịch.
+class _MilestoneBar extends StatelessWidget {
+  const _MilestoneBar({required this.level});
+
+  final int level;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final mult = generatorMilestoneMultiplier(level).round();
+    final target = (mult * Balance.milestoneFactor).round();
+    final progress = (level % Balance.milestoneStep) / Balance.milestoneStep;
+
+    return Row(
+      children: [
+        if (mult > 1) ...[
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+            decoration: BoxDecoration(
+              color: theme.colorScheme.tertiaryContainer,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              '×$mult',
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.onTertiaryContainer,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const SizedBox(width: 6),
+        ],
+        Expanded(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 5,
+              backgroundColor: theme.colorScheme.surfaceContainerHighest,
+            ),
+          ),
+        ),
+        const SizedBox(width: 6),
+        Text(
+          '→×$target',
+          style: theme.textTheme.labelSmall
+              ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+        ),
+      ],
     );
   }
 }

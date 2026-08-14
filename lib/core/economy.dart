@@ -50,12 +50,25 @@ int offlineCapSeconds(int offlineCapLevel) =>
     Balance.maxOfflineSeconds +
     offlineCapLevel * Balance.offlineCapPerLevelSeconds;
 
-/// Thu nhập tự động mỗi giây, CHƯA tính bonus prestige.
+/// Hệ số nhân thu nhập của MỘT nguồn thu theo mốc cấp: cứ mỗi
+/// [Balance.milestoneStep] cấp lại ×[Balance.milestoneFactor] (25→×2, 50→×4...).
+/// Cấp 0..24 = ×1, nên không đổi cân bằng ở giai đoạn đầu.
+double generatorMilestoneMultiplier(int level) =>
+    pow(Balance.milestoneFactor, level ~/ Balance.milestoneStep).toDouble();
+
+/// Số cấp còn thiếu để chạm mốc nhân bội kế tiếp (1..milestoneStep).
+int levelsToNextMilestone(int level) =>
+    Balance.milestoneStep - (level % Balance.milestoneStep);
+
+/// Thu nhập tự động mỗi giây, CHƯA tính bonus prestige. Đã gồm mốc nhân bội
+/// riêng của từng nguồn thu.
 double baseIncomePerSecond(GameState state, List<GeneratorConfig> configs) {
   var total = 0.0;
   for (final config in configs) {
     final level = state.levels[config.id] ?? 0;
-    total += config.incomePerLevelPerSecond * level;
+    total += config.incomePerLevelPerSecond *
+        level *
+        generatorMilestoneMultiplier(level);
   }
   return total;
 }
