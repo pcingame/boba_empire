@@ -69,7 +69,8 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
 
 - [x] 🔴 **Icon** 512×512 (Play) + adaptive icon Android — có
   `assets/icon/playstore_icon_512.png` (upload lên Play) + adaptive icon đã sinh.
-- [ ] 🔴 **Feature graphic** 1024×500 (Play bắt buộc).
+- [x] 🔴 **Feature graphic** 1024×500 (Play bắt buộc) — `assets/store/feature_graphic.png`
+  (sinh bằng scripts/make_feature.py).
 - [ ] 🔴 **Screenshot** tối thiểu 2 (nên 4–8), điện thoại dọc. Chụp cả sáng/tối,
   màn shop, prestige, offline. Ảnh hưởng lượt cài mạnh nhất.
 - [ ] 🔴 **Store listing** (tên/mô tả ngắn/mô tả đầy đủ) — dán từ

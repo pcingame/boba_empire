@@ -31,6 +31,8 @@ STRAW = (0xF0, 0x8A, 0x6E)
 STRAW_HI = (0xF9, 0xBA, 0xAB)
 FACE = (0x3A, 0x24, 0x1A)
 BLUSH = (0xEC, 0x90, 0x78)
+CREAM_TOP = (0xF6, 0xE4, 0xCB)
+CREAM_BOT = (0xE9, 0xC9, 0xA2)
 
 
 def build_cup():
@@ -101,23 +103,22 @@ def compose(cup, with_bg, cup_frac, cy_frac=0.5, bg=None):
     return canvas.resize((U, U), Image.LANCZOS)
 
 
-out = r"D:\Code\boba_empire\boba_empire\assets\icon"
-os.makedirs(out, exist_ok=True)
-cup = build_cup()
+if __name__ == "__main__":
+  out = os.path.join(os.path.dirname(__file__), "..", "assets", "icon")
+  out = os.path.abspath(out)
+  os.makedirs(out, exist_ok=True)
+  cup = build_cup()
 
-CREAM_TOP = (0xF6, 0xE4, 0xCB)
-CREAM_BOT = (0xE9, 0xC9, 0xA2)
+  # Master (iOS + legacy Android): nền kem bo góc + cốc.
+  master = compose(cup, True, 0.66, 0.52, bg=(CREAM_TOP, CREAM_BOT))
+  master.convert("RGB").save(os.path.join(out, "app_icon.png"))
 
-# Master (iOS + legacy Android): nền kem bo góc + cốc.
-master = compose(cup, True, 0.66, 0.52, bg=(CREAM_TOP, CREAM_BOT))
-master.convert("RGB").save(os.path.join(out, "app_icon.png"))
+  # Adaptive background: nền kem FULL-BLEED (không bo góc — hệ thống tự mask).
+  bg_full = vgrad(U, U, CREAM_TOP, CREAM_BOT)
+  bg_full.save(os.path.join(out, "app_icon_bg.png"))
 
-# Adaptive background: nền kem FULL-BLEED (không bo góc — hệ thống tự mask).
-bg_full = vgrad(U, U, CREAM_TOP, CREAM_BOT)
-bg_full.save(os.path.join(out, "app_icon_bg.png"))
+  # Adaptive foreground: chỉ cốc, trong suốt, trong vùng an toàn.
+  fg = compose(cup, False, 0.60, 0.50)
+  fg.save(os.path.join(out, "app_icon_foreground.png"))
 
-# Adaptive foreground: chỉ cốc, trong suốt, trong vùng an toàn.
-fg = compose(cup, False, 0.60, 0.50)
-fg.save(os.path.join(out, "app_icon_foreground.png"))
-
-print("saved:", sorted(os.listdir(out)))
+  print("saved:", sorted(os.listdir(out)))
