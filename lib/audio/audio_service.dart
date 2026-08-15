@@ -30,6 +30,23 @@ abstract interface class AudioService {
   void play(Sfx sfx);
 }
 
+/// Gộp các lần phát CÙNG một SFX quá gần nhau (click/mua dồn dập) để tránh tiếng
+/// chồng thành ồn và giảm tải. Thuần logic (không plugin) nên test được.
+class SfxGate {
+  SfxGate({required this.minGapMs});
+
+  /// Khoảng cách tối thiểu (ms) giữa 2 lần phát cùng một SFX.
+  final int minGapMs;
+  final Map<Sfx, int> _lastMs = {};
+
+  /// Cho phép phát [sfx] tại thời điểm [nowMs] không? Nếu có thì ghi lại mốc.
+  bool allow(Sfx sfx, int nowMs) {
+    if (nowMs - (_lastMs[sfx] ?? (nowMs - minGapMs)) < minGapMs) return false;
+    _lastMs[sfx] = nowMs;
+    return true;
+  }
+}
+
 /// Không phát gì — an toàn ở test và làm mặc định khi chưa gắn bản thật.
 class SilentAudioService implements AudioService {
   const SilentAudioService();
