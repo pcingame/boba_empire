@@ -356,4 +356,40 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get questClaim => 'Ambil';
+
+  @override
+  String get iapDoubleTitle => 'x2 Pendapatan (permanen)';
+
+  @override
+  String get iapDoubleDesc => 'Gandakan semua pendapatan pasif, selamanya';
+
+  @override
+  String get iapDoubleSnack => 'x2 pendapatan permanen aktif!';
+
+  @override
+  String get rewardsTitle => 'Dapat lebih 🎁';
+
+  @override
+  String get rewardX2Name => 'x2 pendapatan 24 jam';
+
+  @override
+  String rewardX2Active(int hours) {
+    return 'Aktif · sisa ${hours}j';
+  }
+
+  @override
+  String get rewardX2Snack => 'x2 pendapatan 24 jam aktif!';
+
+  @override
+  String rewardGemsName(int gems) {
+    return 'Dapatkan $gems 💎';
+  }
+
+  @override
+  String rewardTimeSkip(int hours) {
+    return 'Percepat $hours jam';
+  }
+
+  @override
+  String get watchAd => 'Tonton iklan';
 }

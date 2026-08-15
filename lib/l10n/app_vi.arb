@@ -135,5 +135,18 @@
   "@questTap": { "placeholders": { "n": { "type": "int" } } },
   "questBuy": "Mua {n} nâng cấp",
   "@questBuy": { "placeholders": { "n": { "type": "int" } } },
-  "questClaim": "Nhận"
+  "questClaim": "Nhận",
+  "iapDoubleTitle": "x2 Thu nhập (vĩnh viễn)",
+  "iapDoubleDesc": "Gấp đôi mọi thu nhập tự động, mãi mãi",
+  "iapDoubleSnack": "Đã bật x2 thu nhập vĩnh viễn!",
+  "rewardsTitle": "Kiếm thêm 🎁",
+  "rewardX2Name": "x2 thu nhập 24 giờ",
+  "rewardX2Active": "Đang bật · còn {hours}h",
+  "@rewardX2Active": { "placeholders": { "hours": { "type": "int" } } },
+  "rewardX2Snack": "Đã bật x2 thu nhập 24 giờ!",
+  "rewardGemsName": "Nhận {gems} 💎",
+  "@rewardGemsName": { "placeholders": { "gems": { "type": "int" } } },
+  "rewardTimeSkip": "Tua nhanh {hours} giờ",
+  "@rewardTimeSkip": { "placeholders": { "hours": { "type": "int" } } },
+  "watchAd": "Xem QC"
 }

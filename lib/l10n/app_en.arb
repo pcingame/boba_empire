@@ -99,5 +99,15 @@
   "prestigeStarCost": "{cost} ⭐",
   "questTap": "Tap to brew {n} times",
   "questBuy": "Buy {n} upgrades",
-  "questClaim": "Claim"
+  "questClaim": "Claim",
+  "iapDoubleTitle": "x2 Income (permanent)",
+  "iapDoubleDesc": "Double all passive income, forever",
+  "iapDoubleSnack": "x2 permanent income enabled!",
+  "rewardsTitle": "Earn more 🎁",
+  "rewardX2Name": "x2 income for 24h",
+  "rewardX2Active": "Active · {hours}h left",
+  "rewardX2Snack": "x2 income for 24h enabled!",
+  "rewardGemsName": "Get {gems} 💎",
+  "rewardTimeSkip": "Fast-forward {hours}h",
+  "watchAd": "Watch ad"
 }

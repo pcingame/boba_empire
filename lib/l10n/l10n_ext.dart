@@ -28,12 +28,14 @@ String stageName(AppLocalizations l10n, int stage) => switch (stage) {
 String iapTitle(AppLocalizations l10n, IapProduct p) => switch (p) {
       IapProduct.removeAds => l10n.iapRemoveAdsTitle,
       IapProduct.starterPack => l10n.iapStarterTitle,
+      IapProduct.doubleIncome => l10n.iapDoubleTitle,
       _ => '${formatNumber(p.gems)} 💎', // gói gems: hiện luôn số lượng
     };
 
 String iapDescription(AppLocalizations l10n, IapProduct p) => switch (p) {
       IapProduct.removeAds => l10n.iapRemoveAdsDesc,
       IapProduct.starterPack => l10n.iapStarterDesc,
+      IapProduct.doubleIncome => l10n.iapDoubleDesc,
       _ => l10n.iapGemsDesc,
     };
 

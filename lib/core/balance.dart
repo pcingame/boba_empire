@@ -83,6 +83,15 @@ class Balance {
   /// Kim Cương tặng kèm trong "Gói khởi động" (một lần).
   static const double iapStarterGems = 300;
 
+  // --- Kiếm thêm (rewarded ads) ---
+  /// "x2 thu nhập" tạm thời khi xem QC: hệ số + thời lượng.
+  static const double rewardedX2Multiplier = 2.0;
+  static const int rewardedX2DurationMs = 24 * 60 * 60 * 1000; // 24 giờ
+  /// Kim Cương nhận mỗi lần xem QC ở mục "Nhận 💎 miễn phí".
+  static const int rewardedFreeGems = 15;
+  /// "Tua nhanh": xem QC nhận ngay chừng này giây sản xuất.
+  static const int rewardedTimeSkipSeconds = 4 * 60 * 60; // 4 giờ
+
   // --- Kho Sao (tiêu ⭐ prestige mua perk vĩnh viễn) ---
   // Giá mỗi cấp = base * 2^cấp. Passive +2%/sao GIỮ NGUYÊN; tiêu Sao ở đây là
   // "chi tiêu" riêng (spendable = tổng Sao - đã tiêu), không đụng accounting

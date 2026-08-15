@@ -354,4 +354,40 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get questClaim => 'Resgatar';
+
+  @override
+  String get iapDoubleTitle => 'x2 Renda (permanente)';
+
+  @override
+  String get iapDoubleDesc => 'Dobre toda a renda passiva, para sempre';
+
+  @override
+  String get iapDoubleSnack => 'x2 renda permanente ativado!';
+
+  @override
+  String get rewardsTitle => 'Ganhe mais 🎁';
+
+  @override
+  String get rewardX2Name => 'x2 renda por 24h';
+
+  @override
+  String rewardX2Active(int hours) {
+    return 'Ativo · restam ${hours}h';
+  }
+
+  @override
+  String get rewardX2Snack => 'x2 renda por 24h ativado!';
+
+  @override
+  String rewardGemsName(int gems) {
+    return 'Ganhe $gems 💎';
+  }
+
+  @override
+  String rewardTimeSkip(int hours) {
+    return 'Avançar ${hours}h';
+  }
+
+  @override
+  String get watchAd => 'Ver anúncio';
 }

@@ -81,6 +81,8 @@ class GameState {
     this.tapCount = 0,
     this.buyCount = 0,
     this.questIndex = 0,
+    this.doubleIncomeOwned = false,
+    this.x2IncomeUntilMillis = 0,
     List<String>? achievementsClaimed,
   }) : achievementsClaimed = achievementsClaimed ?? [];
 
@@ -159,6 +161,12 @@ class GameState {
   /// Số nhiệm vụ đã hoàn thành (= chỉ số nhiệm vụ hiện tại trong chuỗi).
   int questIndex;
 
+  /// Đã mua IAP "x2 thu nhập vĩnh viễn" — nhân đôi mọi thu nhập tự động.
+  bool doubleIncomeOwned;
+
+  /// Mốc (epoch ms) hết hạn boost "x2 thu nhập 24h" từ xem QC; 0 = không có.
+  int x2IncomeUntilMillis;
+
   Map<String, dynamic> toJson() => {
         'money': money,
         'gems': gems,
@@ -181,6 +189,8 @@ class GameState {
         'tapCount': tapCount,
         'buyCount': buyCount,
         'questIndex': questIndex,
+        'doubleIncomeOwned': doubleIncomeOwned,
+        'x2IncomeUntilMillis': x2IncomeUntilMillis,
       };
 
   factory GameState.fromJson(Map<String, dynamic> json) => GameState(
@@ -210,5 +220,8 @@ class GameState {
         tapCount: (json['tapCount'] as num?)?.toInt() ?? 0,
         buyCount: (json['buyCount'] as num?)?.toInt() ?? 0,
         questIndex: (json['questIndex'] as num?)?.toInt() ?? 0,
+        doubleIncomeOwned: (json['doubleIncomeOwned'] as bool?) ?? false,
+        x2IncomeUntilMillis:
+            (json['x2IncomeUntilMillis'] as num?)?.toInt() ?? 0,
       );
 }

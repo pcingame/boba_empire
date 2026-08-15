@@ -18,6 +18,9 @@ enum IapProduct {
   /// Gỡ quảng cáo — mua một lần, vĩnh viễn.
   removeAds('boba_remove_ads', IapKind.nonConsumable),
 
+  /// x2 thu nhập vĩnh viễn — mua một lần, nhân đôi mọi thu nhập tự động.
+  doubleIncome('boba_double_income', IapKind.nonConsumable),
+
   /// Gói khởi động — mua một lần.
   starterPack('boba_starter_pack', IapKind.nonConsumable);
 

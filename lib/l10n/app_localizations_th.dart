@@ -351,4 +351,40 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get questClaim => 'รับ';
+
+  @override
+  String get iapDoubleTitle => 'x2 รายได้ (ถาวร)';
+
+  @override
+  String get iapDoubleDesc => 'เพิ่มรายได้อัตโนมัติเป็นสองเท่า ตลอดไป';
+
+  @override
+  String get iapDoubleSnack => 'เปิด x2 รายได้ถาวรแล้ว!';
+
+  @override
+  String get rewardsTitle => 'หาเพิ่ม 🎁';
+
+  @override
+  String get rewardX2Name => 'x2 รายได้ 24 ชม.';
+
+  @override
+  String rewardX2Active(int hours) {
+    return 'กำลังใช้ · เหลือ $hours ชม.';
+  }
+
+  @override
+  String get rewardX2Snack => 'เปิด x2 รายได้ 24 ชม. แล้ว!';
+
+  @override
+  String rewardGemsName(int gems) {
+    return 'รับ $gems 💎';
+  }
+
+  @override
+  String rewardTimeSkip(int hours) {
+    return 'เร่งเวลา $hours ชม.';
+  }
+
+  @override
+  String get watchAd => 'ดูโฆษณา';
 }

@@ -354,4 +354,40 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get questClaim => 'Nhận';
+
+  @override
+  String get iapDoubleTitle => 'x2 Thu nhập (vĩnh viễn)';
+
+  @override
+  String get iapDoubleDesc => 'Gấp đôi mọi thu nhập tự động, mãi mãi';
+
+  @override
+  String get iapDoubleSnack => 'Đã bật x2 thu nhập vĩnh viễn!';
+
+  @override
+  String get rewardsTitle => 'Kiếm thêm 🎁';
+
+  @override
+  String get rewardX2Name => 'x2 thu nhập 24 giờ';
+
+  @override
+  String rewardX2Active(int hours) {
+    return 'Đang bật · còn ${hours}h';
+  }
+
+  @override
+  String get rewardX2Snack => 'Đã bật x2 thu nhập 24 giờ!';
+
+  @override
+  String rewardGemsName(int gems) {
+    return 'Nhận $gems 💎';
+  }
+
+  @override
+  String rewardTimeSkip(int hours) {
+    return 'Tua nhanh $hours giờ';
+  }
+
+  @override
+  String get watchAd => 'Xem QC';
 }

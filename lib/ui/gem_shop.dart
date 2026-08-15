@@ -44,6 +44,8 @@ class _GemShopState extends ConsumerState<_GemShop> {
         ref.watch(gameControllerProvider.select((s) => s.adsRemoved));
     final starterOwned =
         ref.watch(gameControllerProvider.select((s) => s.starterPackOwned));
+    final doubleOwned =
+        ref.watch(gameControllerProvider.select((s) => s.doubleIncomeOwned));
 
     final l10n = AppLocalizations.of(context)!;
     final boostPercent = (Balance.gemBoostPerLevel * 100).round();
@@ -77,6 +79,7 @@ class _GemShopState extends ConsumerState<_GemShop> {
                 snap.data ?? const {},
                 adsRemoved: adsRemoved,
                 starterOwned: starterOwned,
+                doubleOwned: doubleOwned,
               ),
             ),
           ],
@@ -96,6 +99,7 @@ class _GemShopState extends ConsumerState<_GemShop> {
     Map<IapProduct, String> prices, {
     required bool adsRemoved,
     required bool starterOwned,
+    required bool doubleOwned,
   }) {
     final iap = ref.read(iapServiceProvider);
     final l10n = AppLocalizations.of(context)!;
@@ -103,7 +107,8 @@ class _GemShopState extends ConsumerState<_GemShop> {
     final products = [
       for (final p in IapProduct.values)
         if (!(p == IapProduct.removeAds && adsRemoved) &&
-            !(p == IapProduct.starterPack && starterOwned))
+            !(p == IapProduct.starterPack && starterOwned) &&
+            !(p == IapProduct.doubleIncome && doubleOwned))
           p,
     ];
     if (prices.isEmpty || products.isEmpty) return const SizedBox.shrink();

@@ -109,6 +109,7 @@ double effectiveIncomePerSecond(
     prestigeMultiplier(state.prestigeStars, bonusPerStar) *
     permanentMultiplier(state.gemBoostLevel) *
     prestigeIncomeMultiplier(state.prestigeIncomeLevel) *
+    (state.doubleIncomeOwned ? 2.0 : 1.0) *
     boostMultiplier;
 
 /// Số Sao nhượng quyền tương ứng với tổng thu nhập cả đời.

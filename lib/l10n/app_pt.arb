@@ -99,5 +99,15 @@
   "prestigeStarCost": "{cost} ⭐",
   "questTap": "Toque para preparar {n} vezes",
   "questBuy": "Compre {n} melhorias",
-  "questClaim": "Resgatar"
+  "questClaim": "Resgatar",
+  "iapDoubleTitle": "x2 Renda (permanente)",
+  "iapDoubleDesc": "Dobre toda a renda passiva, para sempre",
+  "iapDoubleSnack": "x2 renda permanente ativado!",
+  "rewardsTitle": "Ganhe mais 🎁",
+  "rewardX2Name": "x2 renda por 24h",
+  "rewardX2Active": "Ativo · restam {hours}h",
+  "rewardX2Snack": "x2 renda por 24h ativado!",
+  "rewardGemsName": "Ganhe {gems} 💎",
+  "rewardTimeSkip": "Avançar {hours}h",
+  "watchAd": "Ver anúncio"
 }

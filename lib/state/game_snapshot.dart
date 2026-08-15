@@ -35,6 +35,8 @@ class GameSnapshot {
     required this.currentQuest,
     required this.questProgress,
     required this.questDone,
+    required this.doubleIncomeOwned,
+    required this.x2IncomeRemainingSeconds,
     required Map<String, int> levels,
   }) : _levels = levels;
 
@@ -101,6 +103,10 @@ class GameSnapshot {
   final Quest? currentQuest;
   final num questProgress;
   final bool questDone;
+
+  /// Đã mua x2 thu nhập vĩnh viễn (IAP) & số giây còn lại của x2 24h (xem QC).
+  final bool doubleIncomeOwned;
+  final double x2IncomeRemainingSeconds;
 
   final Map<String, int> _levels;
 

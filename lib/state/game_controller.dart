@@ -71,9 +71,15 @@ class GameController extends Notifier<GameSnapshot> {
     return _snapshot();
   }
 
-  /// Hệ số boost đang áp dụng (×3 khi Mưa vàng còn hiệu lực, ngược lại 1.0).
-  double _boostMultiplier() =>
-      _clock() < _boostUntilMillis ? Balance.goldenRushMultiplier : 1.0;
+  /// Hệ số boost thời gian đang áp dụng: ×3 Mưa vàng và/hoặc ×2 "thu nhập 24h"
+  /// (xem QC). Cộng dồn nếu trùng.
+  double _boostMultiplier() {
+    final now = _clock();
+    var m = 1.0;
+    if (now < _boostUntilMillis) m *= Balance.goldenRushMultiplier;
+    if (now < _game.x2IncomeUntilMillis) m *= Balance.rewardedX2Multiplier;
+    return m;
+  }
 
   /// Người chơi chạm con mèo → kích hoạt Mưa vàng ×3 trong 2 phút.
   void activateGoldenRush() {
@@ -329,6 +335,46 @@ class GameController extends Notifier<GameSnapshot> {
     return reward;
   }
 
+  /// Bật "x2 thu nhập 24h" (sau khi xem QC). Cộng dồn thời gian nếu đang có.
+  void activateX2Income() {
+    final now = _clock();
+    final from =
+        now > _game.x2IncomeUntilMillis ? now : _game.x2IncomeUntilMillis;
+    _game.x2IncomeUntilMillis = from + Balance.rewardedX2DurationMs;
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Tua nhanh (xem QC): thưởng [Balance.rewardedTimeSkipSeconds] giây sản xuất
+  /// theo nhịp cơ bản. Trả về số Xu thưởng (0 nếu chưa có thu nhập).
+  double claimTimeSkip() {
+    final reward = effectiveIncomePerSecond(
+          _game,
+          Balance.generators,
+          bonusPerStar: Balance.bonusPerStar,
+        ) *
+        Balance.rewardedTimeSkipSeconds;
+    if (reward <= 0) return 0;
+    grantBonus(_game, reward);
+    state = _snapshot();
+    return reward;
+  }
+
+  /// Nhận Kim Cương miễn phí (sau khi xem QC). Lưu ngay vì gems là premium.
+  void grantFreeGems() {
+    grantGems(_game, Balance.rewardedFreeGems.toDouble());
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Bật "x2 thu nhập vĩnh viễn" (IAP). Idempotent — restore nhiều lần vẫn đúng.
+  void applyDoubleIncome() {
+    if (_game.doubleIncomeOwned) return;
+    _game.doubleIncomeOwned = true;
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
   /// Trao Kim Cương mua bằng tiền thật (IAP consumable). Lưu ngay vì premium.
   void grantGemsPurchase(double amount) {
     grantGems(_game, amount);
@@ -424,6 +470,9 @@ class GameController extends Notifier<GameSnapshot> {
           ? 0
           : questProgress(_game, currentQuest(_game)!.metric),
       questDone: currentQuestDone(_game),
+      doubleIncomeOwned: _game.doubleIncomeOwned,
+      x2IncomeRemainingSeconds:
+          max(0, (_game.x2IncomeUntilMillis - _clock()) / 1000.0),
       levels: _game.levels,
     );
   }

@@ -639,6 +639,66 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Nhận'**
   String get questClaim;
+
+  /// No description provided for @iapDoubleTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'x2 Thu nhập (vĩnh viễn)'**
+  String get iapDoubleTitle;
+
+  /// No description provided for @iapDoubleDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gấp đôi mọi thu nhập tự động, mãi mãi'**
+  String get iapDoubleDesc;
+
+  /// No description provided for @iapDoubleSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã bật x2 thu nhập vĩnh viễn!'**
+  String get iapDoubleSnack;
+
+  /// No description provided for @rewardsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiếm thêm 🎁'**
+  String get rewardsTitle;
+
+  /// No description provided for @rewardX2Name.
+  ///
+  /// In vi, this message translates to:
+  /// **'x2 thu nhập 24 giờ'**
+  String get rewardX2Name;
+
+  /// No description provided for @rewardX2Active.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang bật · còn {hours}h'**
+  String rewardX2Active(int hours);
+
+  /// No description provided for @rewardX2Snack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã bật x2 thu nhập 24 giờ!'**
+  String get rewardX2Snack;
+
+  /// No description provided for @rewardGemsName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {gems} 💎'**
+  String rewardGemsName(int gems);
+
+  /// No description provided for @rewardTimeSkip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tua nhanh {hours} giờ'**
+  String rewardTimeSkip(int hours);
+
+  /// No description provided for @watchAd.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem QC'**
+  String get watchAd;
 }
 
 class _AppLocalizationsDelegate

@@ -23,6 +23,7 @@ import 'how_to_play_dialog.dart';
 import 'language_dialog.dart';
 import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
+import 'rewards_dialog.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/animated_count.dart';
 import 'widgets/clay.dart';
@@ -106,6 +107,11 @@ class _HomePageState extends ConsumerState<HomePage>
       case IapProduct.starterPack:
         if (!controller.applyStarterPack()) return; // đã sở hữu.
         message = l10n.iapStarterSnack(formatNumber(Balance.iapStarterGems));
+      case IapProduct.doubleIncome:
+        final already = ref.read(gameControllerProvider).doubleIncomeOwned;
+        controller.applyDoubleIncome();
+        if (already) return; // chỉ khôi phục, không báo trùng.
+        message = l10n.iapDoubleSnack;
     }
     ref.read(audioServiceProvider).play(Sfx.reward);
     if (mounted) {
@@ -312,18 +318,33 @@ class _MoneyHeader extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          // Chip Kim Cương ở góc phải.
-          Align(
-            alignment: Alignment.centerRight,
-            child: ClayChip(
-              child: Text(
-                '💎 ${formatNumber(gems)}',
-                style: theme.textTheme.titleSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: onContainer,
+          // Hàng trên: nút "Ưu đãi" (xem QC thưởng) bên trái, chip 💎 bên phải.
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                borderRadius: BorderRadius.circular(24),
+                onTap: () => showRewards(context),
+                child: ClayChip(
+                  child: Text(
+                    AppLocalizations.of(context)!.rewardsTitle,
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: onContainer,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              ClayChip(
+                child: Text(
+                  '💎 ${formatNumber(gems)}',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: onContainer,
+                  ),
+                ),
+              ),
+            ],
           ),
           AnimatedCount(
             money,

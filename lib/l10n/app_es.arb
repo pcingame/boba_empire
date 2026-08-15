@@ -99,5 +99,15 @@
   "prestigeStarCost": "{cost} ⭐",
   "questTap": "Toca para preparar {n} veces",
   "questBuy": "Compra {n} mejoras",
-  "questClaim": "Reclamar"
+  "questClaim": "Reclamar",
+  "iapDoubleTitle": "x2 Ingresos (permanente)",
+  "iapDoubleDesc": "Duplica todos los ingresos pasivos, para siempre",
+  "iapDoubleSnack": "¡x2 ingresos permanentes activado!",
+  "rewardsTitle": "Gana más 🎁",
+  "rewardX2Name": "x2 ingresos por 24h",
+  "rewardX2Active": "Activo · quedan {hours}h",
+  "rewardX2Snack": "¡x2 ingresos por 24h activado!",
+  "rewardGemsName": "Consigue {gems} 💎",
+  "rewardTimeSkip": "Avanzar {hours}h",
+  "watchAd": "Ver anuncio"
 }
