@@ -662,58 +662,66 @@ class _TapAreaState extends ConsumerState<_TapArea>
             ),
           ),
         Center(
-          child: GestureDetector(
-            onTap: _onTap,
-            child: ScaleTransition(
-              scale: _popScale,
-              child: Container(
-                width: 160,
-                height: 160,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: theme.colorScheme.secondaryContainer,
-                  boxShadow: [
-                    BoxShadow(
-                      color:
-                          theme.colorScheme.shadow.withValues(alpha: 0.25),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              // Vòng chạm co theo chiều cao vùng cảnh: giai đoạn sau shop cao
+              // hơn → cảnh thấp lại, nếu để cố định 160 sẽ bị Stack cắt phần
+              // trên. Chừa 44px cho bóng + chữ COMBO phía trên.
+              final side = (constraints.maxHeight - 44).clamp(96.0, 160.0);
+              return GestureDetector(
+                onTap: _onTap,
+                child: ScaleTransition(
+                  scale: _popScale,
+                  child: Container(
+                    width: side,
+                    height: side,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: theme.colorScheme.secondaryContainer,
+                      boxShadow: [
+                        BoxShadow(
+                          color:
+                              theme.colorScheme.shadow.withValues(alpha: 0.25),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(8),
-                // Co lại khi vòng bị ép nhỏ (ngôn ngữ dài) thay vì tràn.
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Animation nếu có file, ngược lại emoji 🧋. Bob nhẹ cho có hồn.
-                      AnimatedBuilder(
-                        animation: _bob,
-                        builder: (context, child) => Transform.translate(
-                          offset: Offset(
-                              0, -7 * Curves.easeInOut.transform(_bob.value)),
-                          child: child,
-                        ),
-                        child: const Mascot(
-                            asset: AnimAssets.cup, emoji: '🧋', size: 72),
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(8),
+                    // Co lại khi vòng bị ép nhỏ (ngôn ngữ dài / vòng nhỏ) thay vì tràn.
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Animation nếu có file, ngược lại emoji 🧋. Bob nhẹ cho có hồn.
+                          AnimatedBuilder(
+                            animation: _bob,
+                            builder: (context, child) => Transform.translate(
+                              offset: Offset(0,
+                                  -7 * Curves.easeInOut.transform(_bob.value)),
+                              child: child,
+                            ),
+                            child: const Mascot(
+                                asset: AnimAssets.cup, emoji: '🧋', size: 72),
+                          ),
+                          const SizedBox(height: 4),
+                          SizedBox(
+                            width: 150,
+                            child: Text(
+                              AppLocalizations.of(context)!.tapBrew,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 15),
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 4),
-                      SizedBox(
-                        width: 150,
-                        child: Text(
-                          AppLocalizations.of(context)!.tapBrew,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 15),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ),
       ],
