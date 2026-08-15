@@ -16,6 +16,7 @@ import '../iap/iap_service.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
+import '../state/game_snapshot.dart';
 import 'achievements_dialog.dart';
 import 'daily_dialog.dart';
 import 'gem_shop.dart';
@@ -38,6 +39,13 @@ bool debugAutoShowTutorial = true;
 /// Cho phép tự hiện popup điểm danh hằng ngày khi mở app. Test tắt để dialog
 /// modal không che thao tác.
 bool debugAutoShowDaily = true;
+
+/// Có nên tắt animation trang trí (thở/nhấp nháy/crossfade) không: khi test HOẶC
+/// khi người dùng bật "giảm chuyển động" ở hệ điều hành (accessibility).
+bool get _reduceMotion =>
+    debugDisableMascotAnimation ||
+    WidgetsBinding.instance.platformDispatcher.accessibilityFeatures
+        .disableAnimations;
 
 /// Màn hình chính MVP: đầu trang hiển thị tiền, giữa là nút chạm pha trà,
 /// dưới là shop nâng cấp. Cũng lo phần lifecycle (lưu khi app vào nền).
@@ -210,8 +218,6 @@ class _HomePageState extends ConsumerState<HomePage>
             ],
           ),
           _BoostIndicator(),
-          _GoldenCat(),
-          _VipCustomer(),
         ],
       ),
       bottomNavigationBar: const _BottomBar(),
@@ -414,18 +420,32 @@ class _MoneyHeader extends ConsumerWidget {
               ),
             ],
           ),
-          AnimatedCount(
-            money,
-            suffix: l10n.coinsSuffix,
-            style: theme.textTheme.displaySmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: onContainer,
+          // Icon xu là widget riêng (không nhét vào chuỗi số) để text tiền vẫn
+          // đúng "X Xu" cho test và đọc màn hình. FittedBox co vừa bề ngang khi
+          // số lớn hoặc ngôn ngữ dài (không tràn header).
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('🪙', style: TextStyle(fontSize: 26)),
+                const SizedBox(width: 6),
+                AnimatedCount(
+                  money,
+                  suffix: l10n.coinsSuffix,
+                  style: theme.textTheme.displaySmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: onContainer,
+                  ),
+                ),
+              ],
             ),
           ),
           Text(
             l10n.incomePerSecond(formatNumber(income)),
             style: theme.textTheme.titleMedium?.copyWith(
-              color: onContainer.withValues(alpha: 0.85),
+              color: onContainer.withValues(alpha: 0.92),
+              fontWeight: FontWeight.w600,
             ),
           ),
           // AnimatedSize: header giãn mượt khi nút xuất hiện (lần mua đầu) thay
@@ -486,7 +506,8 @@ class _StageScene extends ConsumerWidget {
       fit: StackFit.expand,
       children: [
         AnimatedSwitcher(
-          duration: const Duration(milliseconds: 500),
+          duration:
+              _reduceMotion ? Duration.zero : const Duration(milliseconds: 500),
           child: Image.asset(
             'assets/scene/stage$n.png',
             key: ValueKey(n),
@@ -502,6 +523,9 @@ class _StageScene extends ConsumerWidget {
             color: theme.colorScheme.surface.withValues(alpha: 0.4),
           ),
         const _TapArea(),
+        // Cơ hội giới hạn thời gian: neo trong vùng cảnh (không đè panel Shop).
+        const _GoldenCat(),
+        const _VipCustomer(),
       ],
     );
   }
@@ -565,7 +589,7 @@ class _TapAreaState extends ConsumerState<_TapArea>
   @override
   void initState() {
     super.initState();
-    if (!debugDisableMascotAnimation) _bob.repeat(reverse: true);
+    if (!_reduceMotion) _bob.repeat(reverse: true);
   }
 
   @override
@@ -741,6 +765,32 @@ class _FloaterState extends State<_Floater>
   }
 }
 
+/// Hệ số nhân thu nhập toàn cục ở trạng thái ổn định (KHÔNG tính boost tạm thời)
+/// — dùng để quy đổi thu nhập biên "cơ bản" của mỗi nguồn thu ra giá trị thật.
+double _globalIncomeMult(GameSnapshot s) =>
+    prestigeMultiplier(s.prestigeStars, Balance.bonusPerStar) *
+    permanentMultiplier(s.gemBoostLevel) *
+    prestigeIncomeMultiplier(s.prestigeIncomeLevel) *
+    (s.doubleIncomeOwned ? 2.0 : 1.0);
+
+/// Id nguồn thu ĐÁNG MUA nhất (thu nhập thêm / chi phí cao nhất) trong các mục đã
+/// mở khóa. Không phụ thuộc số tiền hiện có → chỉ đổi khi cấp thay đổi, tránh
+/// nhấp nháy gợi ý mỗi giây khi tiền tăng.
+String? _bestBuyId(GameSnapshot s) {
+  String? best;
+  var bestEff = 0.0;
+  for (final c in Balance.generators) {
+    if (c.stage > s.stage) continue;
+    final level = s.levelOf(c.id);
+    final eff = marginalIncomePerSecond(c, level) / nextLevelCost(c, level);
+    if (eff > bestEff) {
+      bestEff = eff;
+      best = c.id;
+    }
+  }
+  return best;
+}
+
 /// Danh sách nâng cấp — chỉ hiện nguồn thu của các giai đoạn đã mở khóa, có
 /// tiêu đề giai đoạn + nút mở khóa, và cuộn được khi nhiều mục.
 class _Shop extends ConsumerWidget {
@@ -749,6 +799,10 @@ class _Shop extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final stage = ref.watch(gameControllerProvider.select((s) => s.stage));
+    // Hệ số toàn cục + gợi ý "đáng mua nhất": đổi hiếm nên rebuild shop hiếm.
+    final globalMult =
+        ref.watch(gameControllerProvider.select(_globalIncomeMult));
+    final bestBuyId = ref.watch(gameControllerProvider.select(_bestBuyId));
     final unlocked = [
       for (final config in Balance.generators)
         if (config.stage <= stage) config,
@@ -769,7 +823,12 @@ class _Shop extends ConsumerWidget {
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 children: [
-                  for (final config in unlocked) _ShopTile(config),
+                  for (final config in unlocked)
+                    _ShopTile(
+                      config,
+                      globalMult: globalMult,
+                      isBest: config.id == bestBuyId,
+                    ),
                 ],
               ),
             ),
@@ -941,9 +1000,15 @@ const Map<String, String> _generatorEmoji = {
 
 /// Một dòng shop. Watch riêng cấp của nó + tiền (để bật/mờ nút mua).
 class _ShopTile extends ConsumerWidget {
-  const _ShopTile(this.config);
+  const _ShopTile(this.config, {required this.globalMult, required this.isBest});
 
   final GeneratorConfig config;
+
+  /// Hệ số nhân thu nhập toàn cục hiện tại — để hiện thu nhập thật khi mua.
+  final double globalMult;
+
+  /// Nguồn thu đáng mua nhất lúc này → tô viền gợi ý.
+  final bool isBest;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -954,12 +1019,11 @@ class _ShopTile extends ConsumerWidget {
         ref.watch(gameControllerProvider.select((s) => s.money));
     final cost = nextLevelCost(config, level);
     final canAfford = money >= cost;
+    final gain = marginalIncomePerSecond(config, level) * globalMult;
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
-      child: ClayCard(
+    final card = ClayCard(
         radius: 18,
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         child: Row(
@@ -988,10 +1052,19 @@ class _ShopTile extends ConsumerWidget {
                     style: theme.textTheme.titleMedium
                         ?.copyWith(fontWeight: FontWeight.w600),
                   ),
+                  // Thu nhập thật TĂNG THÊM khi mua 1 cấp (đã tính mốc + toàn
+                  // cục) — trong cột Expanded nên tự bó chiều rộng, không tràn.
                   Text(
-                    l10n.generatorSubtitle(
-                        formatNumber(config.incomePerLevelPerSecond)),
-                    style: theme.textTheme.bodySmall,
+                    gain > 0
+                        ? l10n.incomePerSecond(formatNumber(gain))
+                        : l10n.generatorSubtitle(
+                            formatNumber(config.incomePerLevelPerSecond)),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: gain > 0 ? theme.colorScheme.primary : null,
+                      fontWeight: gain > 0 ? FontWeight.w700 : null,
+                    ),
                   ),
                   const SizedBox(height: 6),
                   _MilestoneBar(level: level),
@@ -1015,7 +1088,20 @@ class _ShopTile extends ConsumerWidget {
             ),
           ],
         ),
-      ),
+      );
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
+      // Gợi ý "đáng mua nhất": viền màu nhấn quanh thẻ (tô nhẹ, không đổi layout).
+      child: isBest
+          ? Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: theme.colorScheme.tertiary, width: 2),
+              ),
+              child: card,
+            )
+          : card,
     );
   }
 }
@@ -1121,7 +1207,7 @@ class _PulseState extends State<_Pulse>
   @override
   void initState() {
     super.initState();
-    if (!debugDisableMascotAnimation) _controller.repeat(reverse: true);
+    if (!_reduceMotion) _controller.repeat(reverse: true);
   }
 
   @override

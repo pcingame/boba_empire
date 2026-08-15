@@ -84,6 +84,14 @@ double generatorMilestoneMultiplier(int level) =>
 int levelsToNextMilestone(int level) =>
     Balance.milestoneStep - (level % Balance.milestoneStep);
 
+/// Thu nhập/giây TĂNG THÊM khi nâng một nguồn thu từ [level] lên [level]+1,
+/// CHƯA nhân hệ số toàn cục (prestige/gem/x2). Có tính mốc nhân bội, nên cấp
+/// chạm mốc cho phần tăng lớn hơn hẳn.
+double marginalIncomePerSecond(GeneratorConfig config, int level) =>
+    config.incomePerLevelPerSecond *
+    ((level + 1) * generatorMilestoneMultiplier(level + 1) -
+        level * generatorMilestoneMultiplier(level));
+
 /// Thu nhập tự động mỗi giây, CHƯA tính bonus prestige. Đã gồm mốc nhân bội
 /// riêng của từng nguồn thu.
 double baseIncomePerSecond(GameState state, List<GeneratorConfig> configs) {

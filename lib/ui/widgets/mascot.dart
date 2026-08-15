@@ -37,7 +37,11 @@ class Mascot extends StatelessWidget {
       child: Lottie.asset(
         asset,
         fit: BoxFit.contain,
-        animate: !debugDisableMascotAnimation,
+        // Tắt animation lặp khi test HOẶC người dùng bật "giảm chuyển động".
+        animate: !debugDisableMascotAnimation &&
+            !WidgetsBinding
+                .instance.platformDispatcher.accessibilityFeatures
+                .disableAnimations,
         errorBuilder: (context, error, stackTrace) => Center(
           child: Text(emoji, style: TextStyle(fontSize: size * 0.7)),
         ),
