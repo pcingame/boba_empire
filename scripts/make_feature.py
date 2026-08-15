@@ -1,56 +1,118 @@
-"""Vẽ Feature Graphic 1024x500 cho Google Play (banner đầu trang listing).
-Tái dùng cốc trà sữa từ make_icon.py. Render 2x rồi thu nhỏ cho nét chữ + cạnh.
+"""Vẽ Feature Graphic 1024x500 cho Google Play — phong cách claymorphism khớp UI
+mới: nền kem cozy, cup bóng mềm, chip gem/sao/xu nổi, tiêu đề Fredoka.
 Chạy: python scripts/make_feature.py"""
 import os
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 import make_icon as mi
 
 FSS = 2
 W, H = 1024, 500
 CW, CH = W * FSS, H * FSS
 
-BROWN_TOP = (0xA8, 0x6B, 0x3B)
-BROWN_BOT = (0x63, 0x38, 0x18)
-TITLE = (0xFF, 0xF4, 0xE2)
-SUB = (0xF0, 0xD7, 0xB4)
-SHADOW = (0x3A, 0x20, 0x0E)
+def px(v): return int(round(v * FSS))
 
+# palette (kem trà sữa + accent)
+BG_TOP = (0xFB, 0xEA, 0xD5)
+BG_BOT = (0xF1, 0xD3, 0xB0)
+BROWN = (0x6E, 0x3F, 0x1C)
+BROWN2 = (0x8D, 0x55, 0x24)
+GEM = (0x7F, 0xC7, 0xE8)
+GEM_HI = (0xCF, 0xEC, 0xF7)
+GOLD = (0xFF, 0xCB, 0x5C)
+GOLD_D = (0xF2, 0xA6, 0x3A)
+WHITE = (0xFF, 0xFB, 0xF4)
 
-def font(path, size):
-    return ImageFont.truetype(rf"C:\Windows\Fonts\{path}", size)
+FONT = os.path.join(os.path.dirname(__file__), "..", "assets", "fonts", "Fredoka.ttf")
 
+# Fredoka (variable) THIẾU block Vietnamese precomposed (U+1Exx) — trong app OK
+# nhờ fallback Roboto, nhưng PIL không fallback nên chữ có dấu ra ô vuông. Vì vậy:
+# tiêu đề "Boba Empire" (không dấu) dùng Fredoka; phần tiếng Việt dùng Segoe UI Bold.
+def font(size):
+    return ImageFont.truetype(FONT, size)
 
-def text_shadow(d, xy, s, f, fill, anchor="lm", dxy=(3 * FSS, 3 * FSS)):
-    d.text((xy[0] + dxy[0], xy[1] + dxy[1]), s, font=f, fill=SHADOW + (140,), anchor=anchor)
-    d.text(xy, s, font=f, fill=fill, anchor=anchor)
+def font_vi(size):
+    return ImageFont.truetype(r"C:\Windows\Fonts\segoeuib.ttf", size)
 
+def soft_shadow(size, draw_fn, blur, alpha=90):
+    """Trả layer RGBA có bóng mờ (vẽ shape đen rồi blur)."""
+    lay = Image.new("RGBA", size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(lay)
+    draw_fn(d)
+    lay = lay.filter(ImageFilter.GaussianBlur(blur))
+    # tăng độ đậm
+    r, g, b, a = lay.split()
+    a = a.point(lambda v: min(255, int(v * alpha / 60)))
+    return Image.merge("RGBA", (r, g, b, a))
 
-# nền gradient nâu
-canvas = mi.vgrad(CW, CH, BROWN_TOP, BROWN_BOT).convert("RGBA")
+def star(d, cx, cy, r, fill):
+    import math
+    pts = []
+    for i in range(10):
+        ang = -math.pi / 2 + i * math.pi / 5
+        rad = r if i % 2 == 0 else r * 0.45
+        pts.append((cx + rad * math.cos(ang), cy + rad * math.sin(ang)))
+    d.polygon(pts, fill=fill)
+
+def diamond(d, cx, cy, r, fill, hi):
+    d.polygon([(cx, cy - r), (cx + r * 0.8, cy), (cx, cy + r), (cx - r * 0.8, cy)], fill=fill)
+    d.polygon([(cx, cy - r), (cx + r * 0.35, cy - r * 0.35), (cx - r * 0.35, cy - r * 0.35)], fill=hi)
+
+def coin(d, cx, cy, r):
+    d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=GOLD)
+    d.ellipse([cx - r * 0.62, cy - r * 0.62, cx + r * 0.62, cy + r * 0.62],
+              outline=GOLD_D, width=px(3))
+
+# ---- nền gradient + blob mềm ----
+canvas = mi.vgrad(CW, CH, BG_TOP, BG_BOT).convert("RGBA")
 d = ImageDraw.Draw(canvas)
+for cx, cy, r in [(120, 120, 150), (930, 400, 180), (760, 70, 90)]:
+    d.ellipse([px(cx - r), px(cy - r), px(cx + r), px(cy + r)],
+              fill=(255, 255, 255, 26))
 
-# bong bóng trang trí (vòng tròn mờ) rải góc
-for cx, cy, r, a in [(180, 90, 70, 26), (320, 430, 46, 22), (930, 120, 90, 20),
-                     (860, 440, 40, 24), (60, 300, 34, 20), (700, 60, 30, 18)]:
-    d.ellipse([(cx - r) * FSS, (cy - r) * FSS, (cx + r) * FSS, (cy + r) * FSS],
-              outline=(255, 255, 255, a), width=6 * FSS)
-
-# cốc trà sữa bên phải
+# ---- cup + bóng mềm (đất sét) ----
 cup = mi.build_cup()
-cup_h = int(0.84 * CH)
+cup_h = int(0.82 * CH)
 cup = cup.resize((int(cup.width * cup_h / cup.height), cup_h), Image.LANCZOS)
-canvas.alpha_composite(cup, (int(0.76 * CW - cup.width / 2), int(0.54 * CH - cup.height / 2)))
+cx = int(0.75 * CW - cup.width / 2)
+cy = int(0.52 * CH - cup.height / 2)
+# bóng ellipse dưới đáy cup
+sh = soft_shadow(
+    (CW, CH),
+    lambda dd: dd.ellipse(
+        [cx + px(20), cy + cup.height - px(40), cx + cup.width - px(20),
+         cy + cup.height + px(46)], fill=(0, 0, 0, 120)),
+    blur=px(14), alpha=70)
+canvas.alpha_composite(sh)
+canvas.alpha_composite(cup, (cx, cy))
 
-# trân châu rải quanh cốc
-for cx, cy, r in [(560, 400, 16), (600, 450, 12), (985, 350, 14), (930, 300, 11)]:
-    d.ellipse([(cx - r) * FSS, (cy - r) * FSS, (cx + r) * FSS, (cy + r) * FSS], fill=mi.PEARL)
+# ---- chip gem/sao/xu nổi quanh cup ----
+def chip(cx_, cy_, r, kind):
+    sh = soft_shadow((CW, CH),
+        lambda dd: dd.ellipse([px(cx_ - r), px(cy_ - r + 6), px(cx_ + r), px(cy_ + r + 6)],
+                              fill=(0, 0, 0, 120)), blur=px(8), alpha=60)
+    canvas.alpha_composite(sh)
+    d.ellipse([px(cx_ - r), px(cy_ - r), px(cx_ + r), px(cy_ + r)], fill=WHITE)
+    if kind == "gem":
+        diamond(d, px(cx_), px(cy_), px(r * 0.6), GEM, GEM_HI)
+    elif kind == "star":
+        star(d, px(cx_), px(cy_), px(r * 0.7), GOLD)
+    else:
+        coin(d, px(cx_), px(cy_), px(r * 0.66))
 
-# chữ bên trái
-mx = 70 * FSS
-text_shadow(d, (mx, 200 * FSS), "Boba Empire", font("seguibl.ttf", 80 * FSS), TITLE, "lm")
-text_shadow(d, (mx, 280 * FSS), "Đế Chế Trà Sữa", font("segoeuib.ttf", 42 * FSS), SUB, "lm")
-text_shadow(d, (mx, 336 * FSS), "Chạm pha trà · Xây đế chế",
-            font("segoeuib.ttf", 27 * FSS), SUB, "lm", dxy=(2 * FSS, 2 * FSS))
+chip(605, 150, 38, "gem")
+chip(940, 250, 34, "star")
+chip(910, 120, 28, "coin")
+
+# ---- chữ ----
+def text(x, y, s, f, fill, anchor="lm", shadow=True):
+    if shadow:
+        d.text((x + px(3), y + px(4)), s, font=f, fill=(0x5A, 0x33, 0x14, 120), anchor=anchor)
+    d.text((x, y), s, font=f, fill=fill, anchor=anchor)
+
+mx = px(64)
+text(mx, px(190), "Boba Empire", font(px(84)), BROWN, "lm")
+text(mx, px(266), "Đế Chế Trà Sữa", font_vi(px(38)), BROWN2, "lm")
+text(mx, px(328), "Chạm · Nâng cấp · Xây đế chế", font_vi(px(25)), BROWN2, "lm", shadow=False)
 
 out = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "assets", "store"))
 os.makedirs(out, exist_ok=True)
