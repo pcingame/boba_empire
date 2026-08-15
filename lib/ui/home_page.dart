@@ -352,7 +352,7 @@ class _MoneyHeader extends ConsumerWidget {
     final onContainer = theme.colorScheme.onPrimaryContainer;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(16, 10, 16, 18),
+      padding: const EdgeInsets.fromLTRB(16, 6, 16, 10),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -455,9 +455,12 @@ class _MoneyHeader extends ConsumerWidget {
             curve: Curves.easeOut,
             child: income > 0
                 ? Padding(
-                    padding: const EdgeInsets.only(top: 8),
+                    padding: const EdgeInsets.only(top: 4),
                     child: FilledButton.tonalIcon(
                       key: const Key('instant-cash'),
+                      style: FilledButton.styleFrom(
+                        visualDensity: VisualDensity.compact,
+                      ),
                       onPressed: () => _claimInstantCash(context, ref),
                       icon: const Icon(Icons.card_giftcard),
                       label: Text(l10n.instantCashButton),
@@ -661,13 +664,16 @@ class _TapAreaState extends ConsumerState<_TapArea>
               ),
             ),
           ),
-        Center(
+        // Neo hơi thấp để cup NGỒI TRÊN QUẦY (không nổi giữa/đè kệ) và lấp
+        // khoảng trống phía dưới.
+        Align(
+          alignment: const Alignment(0, 0.12),
           child: LayoutBuilder(
             builder: (context, constraints) {
               // Vòng chạm co theo chiều cao vùng cảnh: giai đoạn sau shop cao
-              // hơn → cảnh thấp lại, nếu để cố định 160 sẽ bị Stack cắt phần
-              // trên. Chừa 44px cho bóng + chữ COMBO phía trên.
-              final side = (constraints.maxHeight - 44).clamp(96.0, 160.0);
+              // hơn → cảnh thấp lại, nếu để cố định 160 sẽ bị Stack cắt. Chừa
+              // 36px cho bóng; đã neo thấp nên vẫn vừa mép dưới.
+              final side = (constraints.maxHeight - 36).clamp(120.0, 172.0);
               return GestureDetector(
                 onTap: _onTap,
                 child: ScaleTransition(
