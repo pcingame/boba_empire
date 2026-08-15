@@ -78,6 +78,9 @@ class GameState {
     this.dailyStreak = 0,
     this.prestigeIncomeLevel = 0,
     this.prestigeTapLevel = 0,
+    this.tapCount = 0,
+    this.buyCount = 0,
+    this.questIndex = 0,
     List<String>? achievementsClaimed,
   }) : achievementsClaimed = achievementsClaimed ?? [];
 
@@ -149,6 +152,13 @@ class GameState {
   /// Cấp perk "Siêu chạm" mua bằng ⭐ Sao — +% giá trị mỗi lần chạm vĩnh viễn.
   int prestigeTapLevel;
 
+  /// Số lần chạm ly & số nâng cấp đã mua (đếm cho nhiệm vụ).
+  int tapCount;
+  int buyCount;
+
+  /// Số nhiệm vụ đã hoàn thành (= chỉ số nhiệm vụ hiện tại trong chuỗi).
+  int questIndex;
+
   Map<String, dynamic> toJson() => {
         'money': money,
         'gems': gems,
@@ -168,6 +178,9 @@ class GameState {
         'achievementsClaimed': achievementsClaimed,
         'prestigeIncomeLevel': prestigeIncomeLevel,
         'prestigeTapLevel': prestigeTapLevel,
+        'tapCount': tapCount,
+        'buyCount': buyCount,
+        'questIndex': questIndex,
       };
 
   factory GameState.fromJson(Map<String, dynamic> json) => GameState(
@@ -194,5 +207,8 @@ class GameState {
         prestigeIncomeLevel:
             (json['prestigeIncomeLevel'] as num?)?.toInt() ?? 0,
         prestigeTapLevel: (json['prestigeTapLevel'] as num?)?.toInt() ?? 0,
+        tapCount: (json['tapCount'] as num?)?.toInt() ?? 0,
+        buyCount: (json['buyCount'] as num?)?.toInt() ?? 0,
+        questIndex: (json['questIndex'] as num?)?.toInt() ?? 0,
       );
 }

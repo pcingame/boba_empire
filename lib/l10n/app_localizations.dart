@@ -621,6 +621,24 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'{cost} ⭐'**
   String prestigeStarCost(int cost);
+
+  /// No description provided for @questTap.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chạm pha trà {n} lần'**
+  String questTap(int n);
+
+  /// No description provided for @questBuy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua {n} nâng cấp'**
+  String questBuy(int n);
+
+  /// No description provided for @questClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận'**
+  String get questClaim;
 }
 
 class _AppLocalizationsDelegate

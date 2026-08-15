@@ -6,6 +6,7 @@
 library;
 
 import '../core/achievements.dart';
+import '../core/quests.dart';
 
 class GameSnapshot {
   const GameSnapshot({
@@ -31,6 +32,9 @@ class GameSnapshot {
     required this.prestigeStarsSpendable,
     required this.prestigeIncomeLevel,
     required this.prestigeTapLevel,
+    required this.currentQuest,
+    required this.questProgress,
+    required this.questDone,
     required Map<String, int> levels,
   }) : _levels = levels;
 
@@ -92,6 +96,11 @@ class GameSnapshot {
   /// Cấp perk "Siêu thu nhập" / "Siêu chạm" (kho Sao).
   final int prestigeIncomeLevel;
   final int prestigeTapLevel;
+
+  /// Nhiệm vụ hiện tại (null = đã xong chuỗi), tiến độ, và đã đủ điều kiện nhận.
+  final Quest? currentQuest;
+  final num questProgress;
+  final bool questDone;
 
   final Map<String, int> _levels;
 

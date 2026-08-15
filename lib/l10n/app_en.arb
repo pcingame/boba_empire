@@ -96,5 +96,8 @@
   "prestigeIncomeDesc": "+{percent}% permanent income per level",
   "prestigeTapName": "Mega tap",
   "prestigeTapDesc": "+{percent}% tap value per level",
-  "prestigeStarCost": "{cost} ⭐"
+  "prestigeStarCost": "{cost} ⭐",
+  "questTap": "Tap to brew {n} times",
+  "questBuy": "Buy {n} upgrades",
+  "questClaim": "Claim"
 }

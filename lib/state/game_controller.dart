@@ -16,6 +16,7 @@ import '../core/balance.dart';
 import '../core/daily.dart';
 import '../core/economy.dart';
 import '../core/models.dart';
+import '../core/quests.dart';
 import '../core/simulation.dart';
 import '../data/game_storage.dart';
 import 'game_providers.dart';
@@ -162,6 +163,7 @@ class GameController extends Notifier<GameSnapshot> {
   /// Chạm ly → +tiền (nhân boost Mưa vàng nếu đang có). Trả về số Xu vừa nhận
   /// để UI hiện hiệu ứng "+X" bay lên.
   double tapCup() {
+    _game.tapCount++;
     final gained = tap(_game, boostMultiplier: _boostMultiplier());
     state = _snapshot();
     return gained;
@@ -171,10 +173,22 @@ class GameController extends Notifier<GameSnapshot> {
   bool buy(String generatorId) {
     final ok = buyUpgrade(_game, generatorId);
     if (ok) {
+      _game.buyCount++;
       _awardAchievements();
       state = _snapshot();
     }
     return ok;
+  }
+
+  /// Nhận thưởng nhiệm vụ hiện tại (nếu đã đạt) và sang nhiệm vụ kế. Trả về gems
+  /// nhận (0 nếu chưa đạt). Lưu ngay vì gems premium.
+  int claimCurrentQuest() {
+    final gems = claimQuest(_game);
+    if (gems > 0) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return gems;
   }
 
   /// Mở khóa giai đoạn kế tiếp bằng tiền. Trả về true nếu thành công.
@@ -405,6 +419,11 @@ class GameController extends Notifier<GameSnapshot> {
       prestigeStarsSpendable: prestigeStarsSpendable(_game),
       prestigeIncomeLevel: _game.prestigeIncomeLevel,
       prestigeTapLevel: _game.prestigeTapLevel,
+      currentQuest: currentQuest(_game),
+      questProgress: currentQuest(_game) == null
+          ? 0
+          : questProgress(_game, currentQuest(_game)!.metric),
+      questDone: currentQuestDone(_game),
       levels: _game.levels,
     );
   }

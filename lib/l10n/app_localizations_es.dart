@@ -341,4 +341,17 @@ class AppLocalizationsEs extends AppLocalizations {
   String prestigeStarCost(int cost) {
     return '$cost ⭐';
   }
+
+  @override
+  String questTap(int n) {
+    return 'Toca para preparar $n veces';
+  }
+
+  @override
+  String questBuy(int n) {
+    return 'Compra $n mejoras';
+  }
+
+  @override
+  String get questClaim => 'Reclamar';
 }

@@ -605,6 +605,7 @@ class _Shop extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const _QuestBar(),
             const _StageHeader(),
             ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 260),
@@ -618,6 +619,92 @@ class _Shop extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Thanh nhiệm vụ hiện tại: mô tả + tiến độ; đủ điều kiện thì hiện nút "Nhận".
+/// Ẩn khi đã hoàn thành toàn bộ chuỗi.
+class _QuestBar extends ConsumerWidget {
+  const _QuestBar();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final quest =
+        ref.watch(gameControllerProvider.select((s) => s.currentQuest));
+    if (quest == null) return const SizedBox.shrink();
+    final progress =
+        ref.watch(gameControllerProvider.select((s) => s.questProgress));
+    final done = ref.watch(gameControllerProvider.select((s) => s.questDone));
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final ratio = (progress / quest.threshold).clamp(0.0, 1.0).toDouble();
+    final cur = progress > quest.threshold ? quest.threshold : progress;
+
+    return Container(
+      width: double.infinity,
+      color: theme.colorScheme.tertiaryContainer,
+      padding: const EdgeInsets.fromLTRB(16, 6, 12, 6),
+      child: Row(
+        children: [
+          const Text('🎯', style: TextStyle(fontSize: 18)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  questDesc(l10n, quest),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onTertiaryContainer,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(4),
+                  child: LinearProgressIndicator(
+                    value: ratio,
+                    minHeight: 5,
+                    backgroundColor: theme.colorScheme.onTertiaryContainer
+                        .withValues(alpha: 0.15),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          if (done)
+            FilledButton(
+              key: const Key('quest-claim'),
+              style: FilledButton.styleFrom(
+                visualDensity: VisualDensity.compact,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+              ),
+              onPressed: () {
+                if (ref
+                        .read(gameControllerProvider.notifier)
+                        .claimCurrentQuest() >
+                    0) {
+                  HapticFeedback.mediumImpact();
+                  ref.read(audioServiceProvider).play(Sfx.reward);
+                }
+              },
+              child: Text('${l10n.questClaim} +${quest.rewardGems}💎'),
+            )
+          else
+            Text(
+              '${formatNumber(cur.toDouble())}/'
+              '${formatNumber(quest.threshold.toDouble())}',
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: theme.colorScheme.onTertiaryContainer,
+              ),
+            ),
+        ],
       ),
     );
   }

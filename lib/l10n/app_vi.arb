@@ -130,5 +130,10 @@
   "prestigeTapDesc": "+{percent}% giá trị chạm mỗi cấp",
   "@prestigeTapDesc": { "placeholders": { "percent": { "type": "int" } } },
   "prestigeStarCost": "{cost} ⭐",
-  "@prestigeStarCost": { "placeholders": { "cost": { "type": "int" } } }
+  "@prestigeStarCost": { "placeholders": { "cost": { "type": "int" } } },
+  "questTap": "Chạm pha trà {n} lần",
+  "@questTap": { "placeholders": { "n": { "type": "int" } } },
+  "questBuy": "Mua {n} nâng cấp",
+  "@questBuy": { "placeholders": { "n": { "type": "int" } } },
+  "questClaim": "Nhận"
 }

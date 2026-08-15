@@ -338,4 +338,17 @@ class AppLocalizationsTh extends AppLocalizations {
   String prestigeStarCost(int cost) {
     return '$cost ⭐';
   }
+
+  @override
+  String questTap(int n) {
+    return 'แตะชงชา $n ครั้ง';
+  }
+
+  @override
+  String questBuy(int n) {
+    return 'ซื้ออัปเกรด $n รายการ';
+  }
+
+  @override
+  String get questClaim => 'รับ';
 }

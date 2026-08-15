@@ -343,4 +343,17 @@ class AppLocalizationsId extends AppLocalizations {
   String prestigeStarCost(int cost) {
     return '$cost ⭐';
   }
+
+  @override
+  String questTap(int n) {
+    return 'Ketuk untuk menyeduh $n kali';
+  }
+
+  @override
+  String questBuy(int n) {
+    return 'Beli $n peningkatan';
+  }
+
+  @override
+  String get questClaim => 'Ambil';
 }

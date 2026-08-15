@@ -4,6 +4,7 @@ library;
 
 import '../core/achievements.dart';
 import '../core/format.dart';
+import '../core/quests.dart';
 import '../iap/iap_products.dart';
 import 'app_localizations.dart';
 
@@ -34,6 +35,16 @@ String iapDescription(AppLocalizations l10n, IapProduct p) => switch (p) {
       IapProduct.removeAds => l10n.iapRemoveAdsDesc,
       IapProduct.starterPack => l10n.iapStarterDesc,
       _ => l10n.iapGemsDesc,
+    };
+
+/// Mô tả hiển thị của một nhiệm vụ (tái dùng template thành tựu cho các mốc chung).
+String questDesc(AppLocalizations l10n, Quest q) => switch (q.metric) {
+      QuestMetric.tap => l10n.questTap(q.threshold.toInt()),
+      QuestMetric.buy => l10n.questBuy(q.threshold.toInt()),
+      QuestMetric.earn => l10n.achEarn(formatNumber(q.threshold.toDouble())),
+      QuestMetric.levels => l10n.achLevels(q.threshold.toInt()),
+      QuestMetric.stage => l10n.achStage(q.threshold.toInt()),
+      QuestMetric.prestige => l10n.achPrestige(q.threshold.toInt()),
     };
 
 /// Mô tả hiển thị của một thành tựu (dựng từ template + ngưỡng).

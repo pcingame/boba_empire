@@ -96,5 +96,8 @@
   "prestigeIncomeDesc": "+{percent}% รายได้ถาวรต่อเลเวล",
   "prestigeTapName": "แตะสุดยอด",
   "prestigeTapDesc": "+{percent}% ค่าการแตะต่อเลเวล",
-  "prestigeStarCost": "{cost} ⭐"
+  "prestigeStarCost": "{cost} ⭐",
+  "questTap": "แตะชงชา {n} ครั้ง",
+  "questBuy": "ซื้ออัปเกรด {n} รายการ",
+  "questClaim": "รับ"
 }

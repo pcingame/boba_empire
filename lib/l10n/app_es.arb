@@ -96,5 +96,8 @@
   "prestigeIncomeDesc": "+{percent}% de ingresos permanentes por nivel",
   "prestigeTapName": "Megatoque",
   "prestigeTapDesc": "+{percent}% de valor de toque por nivel",
-  "prestigeStarCost": "{cost} ⭐"
+  "prestigeStarCost": "{cost} ⭐",
+  "questTap": "Toca para preparar {n} veces",
+  "questBuy": "Compra {n} mejoras",
+  "questClaim": "Reclamar"
 }

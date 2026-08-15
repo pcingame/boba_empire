@@ -96,5 +96,8 @@
   "prestigeIncomeDesc": "+{percent}% pendapatan permanen per level",
   "prestigeTapName": "Mega ketuk",
   "prestigeTapDesc": "+{percent}% nilai ketukan per level",
-  "prestigeStarCost": "{cost} ⭐"
+  "prestigeStarCost": "{cost} ⭐",
+  "questTap": "Ketuk untuk menyeduh {n} kali",
+  "questBuy": "Beli {n} peningkatan",
+  "questClaim": "Ambil"
 }

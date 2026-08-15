@@ -341,4 +341,17 @@ class AppLocalizationsVi extends AppLocalizations {
   String prestigeStarCost(int cost) {
     return '$cost ⭐';
   }
+
+  @override
+  String questTap(int n) {
+    return 'Chạm pha trà $n lần';
+  }
+
+  @override
+  String questBuy(int n) {
+    return 'Mua $n nâng cấp';
+  }
+
+  @override
+  String get questClaim => 'Nhận';
 }

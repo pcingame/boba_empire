@@ -338,4 +338,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String prestigeStarCost(int cost) {
     return '$cost ⭐';
   }
+
+  @override
+  String questTap(int n) {
+    return 'Tap to brew $n times';
+  }
+
+  @override
+  String questBuy(int n) {
+    return 'Buy $n upgrades';
+  }
+
+  @override
+  String get questClaim => 'Claim';
 }
