@@ -103,6 +103,13 @@ flutter:
     # sẵn bằng scripts/fetch_sfx.sh. Thiếu file thì game chạy im lặng.
     - assets/audio/
 
+  # Font tiêu đề Fredoka (bo tròn, hợp game trà sữa). Dùng cho bề mặt hiển thị
+  # lớn (số tiền, tiêu đề); body giữ font hệ thống để đủ mọi ngôn ngữ.
+  fonts:
+    - family: Fredoka
+      fonts:
+        - asset: assets/fonts/Fredoka.ttf
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

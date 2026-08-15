@@ -58,6 +58,11 @@ class BobaEmpireApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Đổi tông màu theo giai đoạn (xe đẩy → kiosk → cafe). `select` để chỉ đổi
+    // theme khi stage đổi, không rebuild theo từng tick tiền.
+    final stage =
+        ref.watch(gameControllerProvider.select((s) => s.stage));
+    final seed = _seedForStage(stage);
     return MaterialApp(
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
       debugShowCheckedModeBanner: false,
@@ -70,19 +75,24 @@ class BobaEmpireApp extends ConsumerWidget {
       ],
       supportedLocales: AppLocalizations.supportedLocales,
       themeMode: ThemeMode.system,
-      theme: _buildTheme(Brightness.light),
-      darkTheme: _buildTheme(Brightness.dark),
+      theme: _buildTheme(Brightness.light, seed),
+      darkTheme: _buildTheme(Brightness.dark, seed),
       home: const HomePage(),
     );
   }
 
-  // Chủ đề nâu-kem trà sữa, dùng chung cho sáng/tối để đồng nhất thương hiệu.
-  static ThemeData _buildTheme(Brightness brightness) {
-    final scheme = ColorScheme.fromSeed(
-      seedColor: const Color(0xFF8D5524), // nâu trà sữa
-      brightness: brightness,
-    );
-    return ThemeData(
+  // Seed màu theo giai đoạn: nâu trà sữa → matcha → taro (cao cấp dần).
+  static Color _seedForStage(int stage) => switch (stage) {
+        2 => const Color(0xFF3E7C68), // matcha (kiosk)
+        3 => const Color(0xFF7A4FA3), // taro (chuỗi cafe)
+        _ => const Color(0xFF8D5524), // nâu trà sữa (xe đẩy)
+      };
+
+  // Chủ đề trà sữa, [seed] đổi theo giai đoạn. Font Fredoka cho bề mặt hiển thị
+  // lớn; body giữ font hệ thống (fallback) để đủ glyph mọi ngôn ngữ.
+  static ThemeData _buildTheme(Brightness brightness, Color seed) {
+    final scheme = ColorScheme.fromSeed(seedColor: seed, brightness: brightness);
+    final base = ThemeData(
       colorScheme: scheme,
       useMaterial3: true,
       snackBarTheme: const SnackBarThemeData(
@@ -94,6 +104,21 @@ class BobaEmpireApp extends ConsumerWidget {
             borderRadius: BorderRadius.circular(12),
           ),
         ),
+      ),
+    );
+
+    const fallback = ['Roboto'];
+    final display = base.textTheme
+        .apply(fontFamily: 'Fredoka', fontFamilyFallback: fallback);
+    return base.copyWith(
+      textTheme: base.textTheme.copyWith(
+        displayLarge: display.displayLarge,
+        displayMedium: display.displayMedium,
+        displaySmall: display.displaySmall,
+        headlineLarge: display.headlineLarge,
+        headlineMedium: display.headlineMedium,
+        headlineSmall: display.headlineSmall,
+        titleLarge: display.titleLarge,
       ),
     );
   }

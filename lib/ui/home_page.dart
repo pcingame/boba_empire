@@ -170,7 +170,12 @@ class _HomePageState extends ConsumerState<HomePage>
         title: Text(
           AppLocalizations.of(context)!.appTitle,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            fontFamily: 'Fredoka',
+            fontFamilyFallback: ['Roboto'],
+          ),
         ),
         titleSpacing: 0,
         actions: [
@@ -418,13 +423,26 @@ class _TapAreaState extends ConsumerState<_TapArea>
     });
   int _comboCount = 0;
 
+  // Nhịp "thở" nhẹ của ly (mascot có sức sống). Tắt trong test (ticker lặp).
+  late final AnimationController _bob = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1400),
+  );
+
   final math.Random _rng = math.Random();
   final List<_Floater> _floaters = [];
+
+  @override
+  void initState() {
+    super.initState();
+    if (!debugDisableMascotAnimation) _bob.repeat(reverse: true);
+  }
 
   @override
   void dispose() {
     _press.dispose();
     _combo.dispose();
+    _bob.dispose();
     super.dispose();
   }
 
@@ -507,9 +525,17 @@ class _TapAreaState extends ConsumerState<_TapArea>
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Animation nếu có file, ngược lại emoji 🧋.
-                      const Mascot(
-                          asset: AnimAssets.cup, emoji: '🧋', size: 72),
+                      // Animation nếu có file, ngược lại emoji 🧋. Bob nhẹ cho có hồn.
+                      AnimatedBuilder(
+                        animation: _bob,
+                        builder: (context, child) => Transform.translate(
+                          offset: Offset(
+                              0, -7 * Curves.easeInOut.transform(_bob.value)),
+                          child: child,
+                        ),
+                        child: const Mascot(
+                            asset: AnimAssets.cup, emoji: '🧋', size: 72),
+                      ),
                       const SizedBox(height: 4),
                       SizedBox(
                         width: 150,
