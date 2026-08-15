@@ -25,6 +25,10 @@ enum IapProduct {
   /// đầy lại). Số gems trao là biến (theo heo lúc mua), không cố định.
   piggyBreak('boba_piggy', IapKind.consumable),
 
+  /// VIP Pass 30 ngày (gỡ QC + x2 thu nhập + 💎/ngày + trần offline). Consumable
+  /// để mua lại khi hết hạn; app lưu mốc hết hạn (client-only, không cần server).
+  vip30('boba_vip30', IapKind.consumable),
+
   /// Gói khởi động — mua một lần.
   starterPack('boba_starter_pack', IapKind.nonConsumable);
 

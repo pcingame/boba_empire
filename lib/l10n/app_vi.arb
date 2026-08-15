@@ -152,5 +152,8 @@
   "piggyName": "Heo đất",
   "piggyBreak": "Đập",
   "piggySnack": "Đập heo: +{gems} 💎",
-  "@piggySnack": { "placeholders": { "gems": { "type": "String" } } }
+  "@piggySnack": { "placeholders": { "gems": { "type": "String" } } },
+  "iapVipTitle": "VIP Pass 30 ngày 👑",
+  "iapVipDesc": "Gỡ QC + x2 thu nhập + 50💎/ngày + trần offline+",
+  "iapVipSnack": "Đã kích hoạt VIP 30 ngày! 👑"
 }

@@ -112,5 +112,8 @@
   "watchAd": "ดูโฆษณา",
   "piggyName": "กระปุกออมสิน",
   "piggyBreak": "ทุบ",
-  "piggySnack": "กระปุก: +{gems} 💎"
+  "piggySnack": "กระปุก: +{gems} 💎",
+  "iapVipTitle": "VIP Pass (30 วัน) 👑",
+  "iapVipDesc": "ไม่มีโฆษณา + x2 รายได้ + 50💎/วัน + เพดานออฟไลน์+",
+  "iapVipSnack": "เปิด VIP 30 วันแล้ว! 👑"
 }

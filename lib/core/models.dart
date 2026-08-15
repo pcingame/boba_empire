@@ -84,6 +84,8 @@ class GameState {
     this.doubleIncomeOwned = false,
     this.x2IncomeUntilMillis = 0,
     this.piggyGems = 0,
+    this.vipUntilMillis = 0,
+    this.vipLastGemDay = 0,
     List<String>? achievementsClaimed,
   }) : achievementsClaimed = achievementsClaimed ?? [];
 
@@ -171,6 +173,12 @@ class GameState {
   /// Kim Cương đã tích trong heo đất (chờ "đập" bằng IAP). Trần ở Balance.
   double piggyGems;
 
+  /// Mốc (epoch ms) hết hạn VIP Pass; VIP còn hiệu lực khi now < mốc này.
+  int vipUntilMillis;
+
+  /// Chỉ số ngày (UTC) lần cuối nhận Kim Cương VIP hằng ngày.
+  int vipLastGemDay;
+
   Map<String, dynamic> toJson() => {
         'money': money,
         'gems': gems,
@@ -196,6 +204,8 @@ class GameState {
         'doubleIncomeOwned': doubleIncomeOwned,
         'x2IncomeUntilMillis': x2IncomeUntilMillis,
         'piggyGems': piggyGems,
+        'vipUntilMillis': vipUntilMillis,
+        'vipLastGemDay': vipLastGemDay,
       };
 
   factory GameState.fromJson(Map<String, dynamic> json) => GameState(
@@ -229,5 +239,7 @@ class GameState {
         x2IncomeUntilMillis:
             (json['x2IncomeUntilMillis'] as num?)?.toInt() ?? 0,
         piggyGems: (json['piggyGems'] as num?)?.toDouble() ?? 0,
+        vipUntilMillis: (json['vipUntilMillis'] as num?)?.toInt() ?? 0,
+        vipLastGemDay: (json['vipLastGemDay'] as num?)?.toInt() ?? 0,
       );
 }

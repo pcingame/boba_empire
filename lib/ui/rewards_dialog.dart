@@ -36,8 +36,8 @@ class _RewardsDialogState extends ConsumerState<_RewardsDialog> {
   Future<void> _watch(void Function() onEarned) async {
     if (_busy) return;
     setState(() => _busy = true);
-    final adsRemoved = ref.read(gameControllerProvider).adsRemoved;
-    final outcome = adsRemoved
+    final adFree = ref.read(gameControllerProvider).adFree;
+    final outcome = adFree
         ? RewardOutcome.earned
         : await ref.read(adServiceProvider).showRewardedAd();
     if (outcome == RewardOutcome.earned) {

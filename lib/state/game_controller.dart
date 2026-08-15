@@ -18,6 +18,7 @@ import '../core/economy.dart';
 import '../core/models.dart';
 import '../core/quests.dart';
 import '../core/simulation.dart';
+import '../core/vip.dart';
 import '../data/game_storage.dart';
 import 'game_providers.dart';
 import 'game_snapshot.dart';
@@ -61,8 +62,9 @@ class GameController extends Notifier<GameSnapshot> {
     _offlineEarned = applyOfflineEarnings(
       _game,
       _clock(),
-      maxOfflineSeconds: offlineCapSeconds(_game.offlineCapLevel),
+      maxOfflineSeconds: _offlineCap(),
     );
+    claimVipDailyGems(_game, _clock()); // Kim Cương VIP nếu sang ngày mới
     _scheduleNextCat(_clock());
     _scheduleNextVip(_clock());
     _timer = Timer.periodic(tickInterval, (_) => _onTick());
@@ -78,8 +80,14 @@ class GameController extends Notifier<GameSnapshot> {
     var m = 1.0;
     if (now < _boostUntilMillis) m *= Balance.goldenRushMultiplier;
     if (now < _game.x2IncomeUntilMillis) m *= Balance.rewardedX2Multiplier;
+    if (vipActive(_game, now)) m *= Balance.vipIncomeMultiplier;
     return m;
   }
+
+  /// Trần offline (giây) đã tính cấp "Kho lạnh" + cộng thưởng VIP nếu đang VIP.
+  int _offlineCap() =>
+      offlineCapSeconds(_game.offlineCapLevel) +
+      (vipActive(_game, _clock()) ? Balance.vipOfflineBonusSeconds : 0);
 
   /// Người chơi chạm con mèo → kích hoạt Mưa vàng ×3 trong 2 phút.
   void activateGoldenRush() {
@@ -278,8 +286,9 @@ class GameController extends Notifier<GameSnapshot> {
     _offlineEarned = applyOfflineEarnings(
       _game,
       _clock(),
-      maxOfflineSeconds: offlineCapSeconds(_game.offlineCapLevel),
+      maxOfflineSeconds: _offlineCap(),
     );
+    claimVipDailyGems(_game, _clock());
     state = _snapshot();
   }
 
@@ -371,6 +380,14 @@ class GameController extends Notifier<GameSnapshot> {
   void applyDoubleIncome() {
     if (_game.doubleIncomeOwned) return;
     _game.doubleIncomeOwned = true;
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Kích hoạt/gia hạn VIP Pass 30 ngày (IAP). Nhận luôn Kim Cương VIP hôm nay.
+  void buyVip() {
+    activateVip(_game, _clock());
+    claimVipDailyGems(_game, _clock());
     unawaited(saveNow());
     state = _snapshot();
   }
@@ -486,6 +503,10 @@ class GameController extends Notifier<GameSnapshot> {
       x2IncomeRemainingSeconds:
           max(0, (_game.x2IncomeUntilMillis - _clock()) / 1000.0),
       piggyGems: _game.piggyGems,
+      adFree: _game.adsRemoved || vipActive(_game, _clock()),
+      vipActive: vipActive(_game, _clock()),
+      vipRemainingSeconds:
+          max(0, (_game.vipUntilMillis - _clock()) / 1000.0),
       levels: _game.levels,
     );
   }

@@ -32,8 +32,8 @@ class _OfflineDialogState extends ConsumerState<_OfflineDialog> {
     final messenger = ScaffoldMessenger.of(context);
     final navigator = Navigator.of(context);
     final l10n = AppLocalizations.of(context)!;
-    final adsRemoved = ref.read(gameControllerProvider).adsRemoved;
-    final outcome = adsRemoved
+    final adFree = ref.read(gameControllerProvider).adFree;
+    final outcome = adFree
         ? RewardOutcome.earned
         : await ref.read(adServiceProvider).showRewardedAd();
     double bonus = 0;

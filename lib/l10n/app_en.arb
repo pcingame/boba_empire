@@ -112,5 +112,8 @@
   "watchAd": "Watch ad",
   "piggyName": "Piggy Bank",
   "piggyBreak": "Break",
-  "piggySnack": "Piggy: +{gems} 💎"
+  "piggySnack": "Piggy: +{gems} 💎",
+  "iapVipTitle": "VIP Pass (30 days) 👑",
+  "iapVipDesc": "No ads + x2 income + 50💎/day + offline cap+",
+  "iapVipSnack": "VIP activated for 30 days! 👑"
 }

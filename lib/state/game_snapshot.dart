@@ -38,6 +38,9 @@ class GameSnapshot {
     required this.doubleIncomeOwned,
     required this.x2IncomeRemainingSeconds,
     required this.piggyGems,
+    required this.adFree,
+    required this.vipActive,
+    required this.vipRemainingSeconds,
     required Map<String, int> levels,
   }) : _levels = levels;
 
@@ -111,6 +114,13 @@ class GameSnapshot {
 
   /// Kim Cương đang tích trong heo đất (chờ "đập" bằng IAP).
   final double piggyGems;
+
+  /// Được bỏ qua quảng cáo (đã mua Gỡ QC HOẶC đang VIP) — dùng để gate rewarded.
+  final bool adFree;
+
+  /// Đang VIP Pass & số giây còn lại của VIP.
+  final bool vipActive;
+  final double vipRemainingSeconds;
 
   final Map<String, int> _levels;
 

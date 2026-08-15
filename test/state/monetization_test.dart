@@ -6,13 +6,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<ProviderContainer> _ctl(GameState seed) async {
+Future<ProviderContainer> _ctl(GameState seed, {int clock = 0}) async {
   SharedPreferences.setMockInitialValues({});
   final prefs = await SharedPreferences.getInstance();
-  await GameStorage(prefs).save(seed, nowMillis: 0);
+  await GameStorage(prefs).save(seed, nowMillis: clock);
   final c = ProviderContainer(overrides: [
     sharedPreferencesProvider.overrideWithValue(prefs),
-    clockProvider.overrideWithValue(() => 0),
+    clockProvider.overrideWithValue(() => clock),
   ]);
   addTearDown(c.dispose);
   return c;
@@ -70,5 +70,22 @@ void main() {
     expect(gained, 50);
     expect(c.read(gameControllerProvider).gems, before + 50);
     expect(c.read(gameControllerProvider).piggyGems, 0);
+  });
+
+  test('VIP: mua → adFree + income x2 + gems VIP hôm nay + còn hạn', () async {
+    const day = 24 * 60 * 60 * 1000;
+    final c = await _ctl(
+      GameState.newGame(nowMillis: 5 * day)..levels['tra_den'] = 10,
+      clock: 5 * day,
+    );
+    final beforeIncome = c.read(gameControllerProvider).incomePerSecond;
+    final beforeGems = c.read(gameControllerProvider).gems;
+    c.read(gameControllerProvider.notifier).buyVip();
+    final snap = c.read(gameControllerProvider);
+    expect(snap.vipActive, isTrue);
+    expect(snap.adFree, isTrue);
+    expect(snap.vipRemainingSeconds, greaterThan(0));
+    expect(snap.incomePerSecond, closeTo(beforeIncome * 2, 1e-6));
+    expect(snap.gems, beforeGems + Balance.vipDailyGems);
   });
 }

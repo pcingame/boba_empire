@@ -401,4 +401,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String piggySnack(String gems) {
     return 'Đập heo: +$gems 💎';
   }
+
+  @override
+  String get iapVipTitle => 'VIP Pass 30 ngày 👑';
+
+  @override
+  String get iapVipDesc => 'Gỡ QC + x2 thu nhập + 50💎/ngày + trần offline+';
+
+  @override
+  String get iapVipSnack => 'Đã kích hoạt VIP 30 ngày! 👑';
 }

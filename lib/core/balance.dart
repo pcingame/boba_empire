@@ -100,6 +100,13 @@ class Balance {
   /// Cần tích tối thiểu chừng này mới cho đập (để không mua heo rỗng).
   static const double piggyMinBreak = 40;
 
+  // --- VIP Pass (vé 30 ngày, mua lại) ---
+  static const int vipDurationMs = 30 * 24 * 60 * 60 * 1000; // 30 ngày
+  /// Trong lúc VIP: nhân đôi thu nhập + gỡ QC + trần offline + Kim Cương/ngày.
+  static const double vipIncomeMultiplier = 2.0;
+  static const int vipDailyGems = 50;
+  static const int vipOfflineBonusSeconds = 4 * 60 * 60; // +4h trần offline
+
   // --- Kho Sao (tiêu ⭐ prestige mua perk vĩnh viễn) ---
   // Giá mỗi cấp = base * 2^cấp. Passive +2%/sao GIỮ NGUYÊN; tiêu Sao ở đây là
   // "chi tiêu" riêng (spendable = tổng Sao - đã tiêu), không đụng accounting

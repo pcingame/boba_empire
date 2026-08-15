@@ -112,5 +112,8 @@
   "watchAd": "Ver anúncio",
   "piggyName": "Cofrinho",
   "piggyBreak": "Quebrar",
-  "piggySnack": "Cofrinho: +{gems} 💎"
+  "piggySnack": "Cofrinho: +{gems} 💎",
+  "iapVipTitle": "Passe VIP (30 dias) 👑",
+  "iapVipDesc": "Sem anúncios + x2 renda + 50💎/dia + limite offline+",
+  "iapVipSnack": "VIP ativado por 30 dias! 👑"
 }

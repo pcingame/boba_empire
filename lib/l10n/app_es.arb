@@ -112,5 +112,8 @@
   "watchAd": "Ver anuncio",
   "piggyName": "Alcancía",
   "piggyBreak": "Romper",
-  "piggySnack": "Alcancía: +{gems} 💎"
+  "piggySnack": "Alcancía: +{gems} 💎",
+  "iapVipTitle": "Pase VIP (30 días) 👑",
+  "iapVipDesc": "Sin anuncios + x2 ingresos + 50💎/día + límite offline+",
+  "iapVipSnack": "¡VIP activado por 30 días! 👑"
 }

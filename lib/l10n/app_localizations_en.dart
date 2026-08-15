@@ -398,4 +398,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String piggySnack(String gems) {
     return 'Piggy: +$gems 💎';
   }
+
+  @override
+  String get iapVipTitle => 'VIP Pass (30 days) 👑';
+
+  @override
+  String get iapVipDesc => 'No ads + x2 income + 50💎/day + offline cap+';
+
+  @override
+  String get iapVipSnack => 'VIP activated for 30 days! 👑';
 }

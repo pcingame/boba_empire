@@ -116,6 +116,9 @@ class _HomePageState extends ConsumerState<HomePage>
         final gained = controller.breakPiggy();
         if (gained <= 0) return;
         message = l10n.piggySnack(formatNumber(gained));
+      case IapProduct.vip30:
+        controller.buyVip();
+        message = l10n.iapVipSnack;
     }
     ref.read(audioServiceProvider).play(Sfx.reward);
     if (mounted) {
@@ -294,6 +297,7 @@ class _MoneyHeader extends ConsumerWidget {
     final income =
         ref.watch(gameControllerProvider.select((s) => s.incomePerSecond));
     final gems = ref.watch(gameControllerProvider.select((s) => s.gems));
+    final vip = ref.watch(gameControllerProvider.select((s) => s.vipActive));
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
 
@@ -339,14 +343,32 @@ class _MoneyHeader extends ConsumerWidget {
                   ),
                 ),
               ),
-              ClayChip(
-                child: Text(
-                  '💎 ${formatNumber(gems)}',
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: onContainer,
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (vip) ...[
+                    ClayChip(
+                      color: Colors.amber.shade200,
+                      child: Text(
+                        '👑 VIP',
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.brown.shade800,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
+                  ClayChip(
+                    child: Text(
+                      '💎 ${formatNumber(gems)}',
+                      style: theme.textTheme.titleSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: onContainer,
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
@@ -391,9 +413,9 @@ class _MoneyHeader extends ConsumerWidget {
     final controller = ref.read(gameControllerProvider.notifier);
     final messenger = ScaffoldMessenger.of(context);
     final l10n = AppLocalizations.of(context)!;
-    final adsRemoved = ref.read(gameControllerProvider).adsRemoved;
+    final adFree = ref.read(gameControllerProvider).adFree;
     final outcome =
-        adsRemoved ? RewardOutcome.earned : await ads.showRewardedAd();
+        adFree ? RewardOutcome.earned : await ads.showRewardedAd();
     if (outcome != RewardOutcome.earned) return;
     final reward = controller.claimInstantCash();
     if (reward > 0) {
@@ -1091,9 +1113,9 @@ class _GoldenCat extends ConsumerWidget {
           // mua "Gỡ quảng cáo" thì trao ngay, không cần xem.
           final ads = ref.read(adServiceProvider);
           final controller = ref.read(gameControllerProvider.notifier);
-          final adsRemoved = ref.read(gameControllerProvider).adsRemoved;
+          final adFree = ref.read(gameControllerProvider).adFree;
           final outcome =
-              adsRemoved ? RewardOutcome.earned : await ads.showRewardedAd();
+              adFree ? RewardOutcome.earned : await ads.showRewardedAd();
           if (outcome == RewardOutcome.earned) {
             controller.activateGoldenRush();
             HapticFeedback.mediumImpact();

@@ -717,6 +717,24 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đập heo: +{gems} 💎'**
   String piggySnack(String gems);
+
+  /// No description provided for @iapVipTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'VIP Pass 30 ngày 👑'**
+  String get iapVipTitle;
+
+  /// No description provided for @iapVipDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gỡ QC + x2 thu nhập + 50💎/ngày + trần offline+'**
+  String get iapVipDesc;
+
+  /// No description provided for @iapVipSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã kích hoạt VIP 30 ngày! 👑'**
+  String get iapVipSnack;
 }
 
 class _AppLocalizationsDelegate

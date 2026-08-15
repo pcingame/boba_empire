@@ -402,4 +402,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String piggySnack(String gems) {
     return 'Alcancía: +$gems 💎';
   }
+
+  @override
+  String get iapVipTitle => 'Pase VIP (30 días) 👑';
+
+  @override
+  String get iapVipDesc =>
+      'Sin anuncios + x2 ingresos + 50💎/día + límite offline+';
+
+  @override
+  String get iapVipSnack => '¡VIP activado por 30 días! 👑';
 }
