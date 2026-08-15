@@ -92,18 +92,43 @@ class BobaEmpireApp extends ConsumerWidget {
   // lớn; body giữ font hệ thống (fallback) để đủ glyph mọi ngôn ngữ.
   static ThemeData _buildTheme(Brightness brightness, Color seed) {
     final scheme = ColorScheme.fromSeed(seedColor: seed, brightness: brightness);
+    // Nút "chunky đất sét": bo tròn dày, chữ đậm, có độ nổi nhẹ; dialog bo tròn
+    // to — phong cách casual game (claymorphism).
+    final buttonShape =
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(16));
+    const buttonText = TextStyle(fontWeight: FontWeight.w700, fontSize: 15);
+    const buttonPad = EdgeInsets.symmetric(horizontal: 18, vertical: 12);
     final base = ThemeData(
       colorScheme: scheme,
       useMaterial3: true,
-      snackBarTheme: const SnackBarThemeData(
+      snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          shape: buttonShape,
+          padding: buttonPad,
+          textStyle: buttonText,
+          elevation: 2,
         ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          shape: buttonShape,
+          padding: buttonPad,
+          textStyle: buttonText,
+          elevation: 2,
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(textStyle: buttonText),
+      ),
+      dialogTheme: DialogThemeData(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
+      ),
+      cardTheme: CardThemeData(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
     );
 

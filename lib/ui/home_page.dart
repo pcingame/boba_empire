@@ -25,6 +25,7 @@ import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/animated_count.dart';
+import 'widgets/clay.dart';
 import 'widgets/mascot.dart';
 import 'widgets/one_shot_lottie.dart';
 
@@ -286,31 +287,56 @@ class _MoneyHeader extends ConsumerWidget {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
 
+    final onContainer = theme.colorScheme.onPrimaryContainer;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      color: theme.colorScheme.primaryContainer,
+      padding: const EdgeInsets.fromLTRB(16, 10, 16, 18),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            theme.colorScheme.primaryContainer,
+            theme.colorScheme.primaryContainer.withValues(alpha: 0.55),
+          ],
+        ),
+        borderRadius:
+            const BorderRadius.vertical(bottom: Radius.circular(28)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.10),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: Column(
         children: [
+          // Chip Kim Cương ở góc phải.
+          Align(
+            alignment: Alignment.centerRight,
+            child: ClayChip(
+              child: Text(
+                '💎 ${formatNumber(gems)}',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: onContainer,
+                ),
+              ),
+            ),
+          ),
           AnimatedCount(
             money,
             suffix: l10n.coinsSuffix,
             style: theme.textTheme.displaySmall?.copyWith(
               fontWeight: FontWeight.bold,
-              color: theme.colorScheme.onPrimaryContainer,
+              color: onContainer,
             ),
           ),
           Text(
             l10n.incomePerSecond(formatNumber(income)),
             style: theme.textTheme.titleMedium?.copyWith(
-              color: theme.colorScheme.onPrimaryContainer,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            '💎 ${formatNumber(gems)}',
-            style: theme.textTheme.titleMedium?.copyWith(
-              color: theme.colorScheme.onPrimaryContainer,
+              color: onContainer.withValues(alpha: 0.85),
             ),
           ),
           // AnimatedSize: header giãn mượt khi nút xuất hiện (lần mua đầu) thay
@@ -670,8 +696,8 @@ class _QuestBar extends ConsumerWidget {
 
     return Container(
       width: double.infinity,
-      color: theme.colorScheme.tertiaryContainer,
-      padding: const EdgeInsets.fromLTRB(16, 6, 12, 6),
+      color: theme.colorScheme.secondaryContainer,
+      padding: const EdgeInsets.fromLTRB(16, 8, 12, 8),
       child: Row(
         children: [
           const Text('🎯', style: TextStyle(fontSize: 18)),
@@ -686,17 +712,17 @@ class _QuestBar extends ConsumerWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onTertiaryContainer,
+                    color: theme.colorScheme.onSecondaryContainer,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 3),
+                const SizedBox(height: 4),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(6),
                   child: LinearProgressIndicator(
                     value: ratio,
-                    minHeight: 5,
-                    backgroundColor: theme.colorScheme.onTertiaryContainer
+                    minHeight: 6,
+                    backgroundColor: theme.colorScheme.onSecondaryContainer
                         .withValues(alpha: 0.15),
                   ),
                 ),
@@ -727,7 +753,8 @@ class _QuestBar extends ConsumerWidget {
               '${formatNumber(cur.toDouble())}/'
               '${formatNumber(quest.threshold.toDouble())}',
               style: theme.textTheme.labelMedium?.copyWith(
-                color: theme.colorScheme.onTertiaryContainer,
+                color: theme.colorScheme.onSecondaryContainer,
+                fontWeight: FontWeight.w600,
               ),
             ),
         ],
@@ -820,45 +847,64 @@ class _ShopTile extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
-    return ListTile(
-      // Emoji + huy hiệu cấp để đọc lướt nhanh.
-      leading: Badge(
-        label: Text('$level'),
-        isLabelVisible: level > 0,
-        child: CircleAvatar(
-          backgroundColor: theme.colorScheme.secondaryContainer,
-          child: Text(
-            _generatorEmoji[config.id] ?? '🧋',
-            style: const TextStyle(fontSize: 20),
-          ),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
+      child: ClayCard(
+        radius: 18,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        child: Row(
+          children: [
+            // Emoji + huy hiệu cấp để đọc lướt nhanh.
+            Badge(
+              label: Text('$level'),
+              isLabelVisible: level > 0,
+              child: CircleAvatar(
+                radius: 22,
+                backgroundColor: theme.colorScheme.secondaryContainer,
+                child: Text(
+                  _generatorEmoji[config.id] ?? '🧋',
+                  style: const TextStyle(fontSize: 22),
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    generatorName(l10n, config.id),
+                    style: theme.textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    l10n.generatorSubtitle(
+                        formatNumber(config.incomePerLevelPerSecond)),
+                    style: theme.textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: 6),
+                  _MilestoneBar(level: level),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            FilledButton(
+              onPressed: canAfford
+                  ? () {
+                      if (ref
+                          .read(gameControllerProvider.notifier)
+                          .buy(config.id)) {
+                        HapticFeedback.selectionClick();
+                        ref.read(audioServiceProvider).play(Sfx.buy);
+                        playEffect(context, AnimAssets.confetti, size: 160);
+                      }
+                    }
+                  : null,
+              child: Text(l10n.buyButton(formatNumber(cost))),
+            ),
+          ],
         ),
-      ),
-      title: Text(generatorName(l10n, config.id)),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            l10n.generatorSubtitle(
-                formatNumber(config.incomePerLevelPerSecond)),
-          ),
-          const SizedBox(height: 5),
-          _MilestoneBar(level: level),
-        ],
-      ),
-      trailing: FilledButton(
-        onPressed: canAfford
-            ? () {
-                if (ref
-                    .read(gameControllerProvider.notifier)
-                    .buy(config.id)) {
-                  HapticFeedback.selectionClick();
-                  ref.read(audioServiceProvider).play(Sfx.buy);
-                  playEffect(context, AnimAssets.confetti, size: 160);
-                }
-              }
-            : null,
-        child: Text(l10n.buyButton(formatNumber(cost))),
       ),
     );
   }
