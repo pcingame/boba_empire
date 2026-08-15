@@ -789,6 +789,54 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đế chế toàn cầu'**
   String get stage6;
+
+  /// No description provided for @settingsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cài đặt'**
+  String get settingsTitle;
+
+  /// No description provided for @settingsSound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Âm thanh'**
+  String get settingsSound;
+
+  /// No description provided for @settingsReset.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chơi lại từ đầu'**
+  String get settingsReset;
+
+  /// No description provided for @settingsResetConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xoá toàn bộ tiến trình và bắt đầu lại?'**
+  String get settingsResetConfirm;
+
+  /// No description provided for @navHome.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhà'**
+  String get navHome;
+
+  /// No description provided for @navShop.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cửa hàng'**
+  String get navShop;
+
+  /// No description provided for @navPrestige.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhượng quyền'**
+  String get navPrestige;
+
+  /// No description provided for @navAchievements.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thành tựu'**
+  String get navAchievements;
 }
 
 class _AppLocalizationsDelegate

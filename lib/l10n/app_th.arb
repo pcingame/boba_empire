@@ -124,5 +124,13 @@
   "genGalaxy": "ชานมกาแล็กซี",
   "stage4": "โรงงานบรูเล่",
   "stage5": "โรงงานชีสโฟม",
-  "stage6": "อาณาจักรระดับโลก"
+  "stage6": "อาณาจักรระดับโลก",
+  "settingsTitle": "ตั้งค่า",
+  "settingsSound": "เสียง",
+  "settingsReset": "เริ่มใหม่",
+  "settingsResetConfirm": "ลบความคืบหน้าทั้งหมดและเริ่มใหม่?",
+  "navHome": "หน้าหลัก",
+  "navShop": "ร้านค้า",
+  "navPrestige": "เพรสทีจ",
+  "navAchievements": "รางวัล"
 }

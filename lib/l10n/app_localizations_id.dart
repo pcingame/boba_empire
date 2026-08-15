@@ -440,4 +440,28 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get stage6 => 'Imperium Global';
+
+  @override
+  String get settingsTitle => 'Pengaturan';
+
+  @override
+  String get settingsSound => 'Suara';
+
+  @override
+  String get settingsReset => 'Mulai ulang';
+
+  @override
+  String get settingsResetConfirm => 'Hapus semua progres dan mulai dari awal?';
+
+  @override
+  String get navHome => 'Beranda';
+
+  @override
+  String get navShop => 'Toko';
+
+  @override
+  String get navPrestige => 'Prestise';
+
+  @override
+  String get navAchievements => 'Prestasi';
 }

@@ -26,6 +26,7 @@ import 'ui/home_page.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
+  audioMuted = !(prefs.getBool('sound_on') ?? true); // khôi phục cài đặt tắt tiếng
   final audio = FlameAudioService();
   unawaited(audio.preload());
 

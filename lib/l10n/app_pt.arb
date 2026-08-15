@@ -124,5 +124,13 @@
   "genGalaxy": "Chá com Leite Galáxia",
   "stage4": "Oficina Brûlée",
   "stage5": "Fábrica de Espuma de Queijo",
-  "stage6": "Império Global"
+  "stage6": "Império Global",
+  "settingsTitle": "Configurações",
+  "settingsSound": "Som",
+  "settingsReset": "Recomeçar",
+  "settingsResetConfirm": "Apagar todo o progresso e recomeçar?",
+  "navHome": "Início",
+  "navShop": "Loja",
+  "navPrestige": "Prestígio",
+  "navAchievements": "Prêmios"
 }

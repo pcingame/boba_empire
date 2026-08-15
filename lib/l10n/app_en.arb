@@ -124,5 +124,13 @@
   "genGalaxy": "Galaxy Milk Tea",
   "stage4": "Brûlée Workshop",
   "stage5": "Cheese Foam Factory",
-  "stage6": "Global Empire"
+  "stage6": "Global Empire",
+  "settingsTitle": "Settings",
+  "settingsSound": "Sound",
+  "settingsReset": "Reset game",
+  "settingsResetConfirm": "Erase all progress and start over?",
+  "navHome": "Home",
+  "navShop": "Shop",
+  "navPrestige": "Prestige",
+  "navAchievements": "Awards"
 }

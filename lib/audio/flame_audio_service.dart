@@ -21,6 +21,7 @@ class FlameAudioService implements AudioService {
 
   @override
   void play(Sfx sfx) {
+    if (audioMuted) return;
     _safePlay(sfx.file);
   }
 

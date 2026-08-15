@@ -164,5 +164,13 @@
   "genGalaxy": "Trà sữa ngân hà",
   "stage4": "Xưởng trà sữa nướng",
   "stage5": "Nhà máy phô mai tươi",
-  "stage6": "Đế chế toàn cầu"
+  "stage6": "Đế chế toàn cầu",
+  "settingsTitle": "Cài đặt",
+  "settingsSound": "Âm thanh",
+  "settingsReset": "Chơi lại từ đầu",
+  "settingsResetConfirm": "Xoá toàn bộ tiến trình và bắt đầu lại?",
+  "navHome": "Nhà",
+  "navShop": "Cửa hàng",
+  "navPrestige": "Nhượng quyền",
+  "navAchievements": "Thành tựu"
 }

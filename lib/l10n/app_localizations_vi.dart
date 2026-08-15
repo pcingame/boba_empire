@@ -437,4 +437,28 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get stage6 => 'Đế chế toàn cầu';
+
+  @override
+  String get settingsTitle => 'Cài đặt';
+
+  @override
+  String get settingsSound => 'Âm thanh';
+
+  @override
+  String get settingsReset => 'Chơi lại từ đầu';
+
+  @override
+  String get settingsResetConfirm => 'Xoá toàn bộ tiến trình và bắt đầu lại?';
+
+  @override
+  String get navHome => 'Nhà';
+
+  @override
+  String get navShop => 'Cửa hàng';
+
+  @override
+  String get navPrestige => 'Nhượng quyền';
+
+  @override
+  String get navAchievements => 'Thành tựu';
 }

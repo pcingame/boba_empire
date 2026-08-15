@@ -438,4 +438,28 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get stage6 => 'Império Global';
+
+  @override
+  String get settingsTitle => 'Configurações';
+
+  @override
+  String get settingsSound => 'Som';
+
+  @override
+  String get settingsReset => 'Recomeçar';
+
+  @override
+  String get settingsResetConfirm => 'Apagar todo o progresso e recomeçar?';
+
+  @override
+  String get navHome => 'Início';
+
+  @override
+  String get navShop => 'Loja';
+
+  @override
+  String get navPrestige => 'Prestígio';
+
+  @override
+  String get navAchievements => 'Prêmios';
 }

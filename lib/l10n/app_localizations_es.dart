@@ -439,4 +439,29 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get stage6 => 'Imperio Global';
+
+  @override
+  String get settingsTitle => 'Ajustes';
+
+  @override
+  String get settingsSound => 'Sonido';
+
+  @override
+  String get settingsReset => 'Reiniciar juego';
+
+  @override
+  String get settingsResetConfirm =>
+      '¿Borrar todo el progreso y empezar de nuevo?';
+
+  @override
+  String get navHome => 'Inicio';
+
+  @override
+  String get navShop => 'Tienda';
+
+  @override
+  String get navPrestige => 'Prestigio';
+
+  @override
+  String get navAchievements => 'Logros';
 }

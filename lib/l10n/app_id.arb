@@ -124,5 +124,13 @@
   "genGalaxy": "Teh Susu Galaksi",
   "stage4": "Bengkel Brûlée",
   "stage5": "Pabrik Cheese Foam",
-  "stage6": "Imperium Global"
+  "stage6": "Imperium Global",
+  "settingsTitle": "Pengaturan",
+  "settingsSound": "Suara",
+  "settingsReset": "Mulai ulang",
+  "settingsResetConfirm": "Hapus semua progres dan mulai dari awal?",
+  "navHome": "Beranda",
+  "navShop": "Toko",
+  "navPrestige": "Prestise",
+  "navAchievements": "Prestasi"
 }

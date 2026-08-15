@@ -124,5 +124,13 @@
   "genGalaxy": "Té con Leche Galaxia",
   "stage4": "Taller Brûlée",
   "stage5": "Fábrica de Espuma de Queso",
-  "stage6": "Imperio Global"
+  "stage6": "Imperio Global",
+  "settingsTitle": "Ajustes",
+  "settingsSound": "Sonido",
+  "settingsReset": "Reiniciar juego",
+  "settingsResetConfirm": "¿Borrar todo el progreso y empezar de nuevo?",
+  "navHome": "Inicio",
+  "navShop": "Tienda",
+  "navPrestige": "Prestigio",
+  "navAchievements": "Logros"
 }

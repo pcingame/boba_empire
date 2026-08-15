@@ -20,10 +20,10 @@ import 'achievements_dialog.dart';
 import 'daily_dialog.dart';
 import 'gem_shop.dart';
 import 'how_to_play_dialog.dart';
-import 'language_dialog.dart';
 import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
 import 'rewards_dialog.dart';
+import 'settings_dialog.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/animated_count.dart';
 import 'widgets/clay.dart';
@@ -193,14 +193,11 @@ class _HomePageState extends ConsumerState<HomePage>
         ),
         titleSpacing: 0,
         actions: [
-          const _AchievementsButton(),
           IconButton(
-            key: const Key('language-button'),
-            icon: const Icon(Icons.language),
-            onPressed: () => showLanguageDialog(context),
+            key: const Key('settings-button'),
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => showSettings(context),
           ),
-          const _GemShopButton(),
-          const _PrestigeButton(),
         ],
       ),
       body: const Stack(
@@ -217,68 +214,113 @@ class _HomePageState extends ConsumerState<HomePage>
           _VipCustomer(),
         ],
       ),
+      bottomNavigationBar: const _BottomBar(),
     );
   }
 }
 
-/// Nút mở bảng Thành tựu; chấm đỏ khi có thành tựu vừa mở khoá chưa xem.
-class _AchievementsButton extends ConsumerWidget {
-  const _AchievementsButton();
+/// Thanh điều hướng dưới cùng: Nhà · Cửa hàng · Nhượng quyền · Thành tựu. Các
+/// mục (trừ Nhà) mở dialog tương ứng; giữ key cũ để test/quen thao tác.
+class _BottomBar extends ConsumerWidget {
+  const _BottomBar();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hasNew = ref.watch(
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    final stars =
+        ref.watch(gameControllerProvider.select((s) => s.prestigeStars));
+    final starsAvail = ref.watch(
+      gameControllerProvider.select((s) => s.prestigeStarsAvailable),
+    );
+    final newAch = ref.watch(
       gameControllerProvider.select((s) => s.newAchievements.isNotEmpty),
     );
-    return IconButton(
-      key: const Key('achievements-button'),
-      onPressed: () {
-        ref.read(gameControllerProvider.notifier).acknowledgeAchievements();
-        showAchievements(context);
-      },
-      icon: Badge(
-        isLabelVisible: hasNew,
-        child: const Icon(Icons.emoji_events_outlined),
+
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.12),
+            blurRadius: 10,
+            offset: const Offset(0, -3),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        top: false,
+        child: SizedBox(
+          height: 62,
+          child: Row(
+            children: [
+              _navItem(theme, icon: Icons.home_rounded, label: l10n.navHome,
+                  onTap: () {}),
+              _navItem(theme,
+                  buttonKey: const Key('gem-shop-button'),
+                  icon: Icons.storefront,
+                  label: l10n.navShop,
+                  onTap: () => showGemShop(context)),
+              _navItem(theme,
+                  buttonKey: const Key('prestige-button'),
+                  icon: Icons.star_rounded,
+                  label: l10n.navPrestige,
+                  badgeCount: stars > 0 ? '$stars' : null,
+                  highlight: starsAvail > 0,
+                  onTap: () => showPrestigeDialog(context)),
+              _navItem(theme,
+                  buttonKey: const Key('achievements-button'),
+                  icon: Icons.emoji_events,
+                  label: l10n.navAchievements,
+                  badge: newAch,
+                  onTap: () {
+                    ref
+                        .read(gameControllerProvider.notifier)
+                        .acknowledgeAchievements();
+                    showAchievements(context);
+                  }),
+            ],
+          ),
+        ),
       ),
     );
   }
-}
 
-/// Nút mở Cửa hàng Kim Cương ở AppBar.
-class _GemShopButton extends StatelessWidget {
-  const _GemShopButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-      key: const Key('gem-shop-button'),
-      onPressed: () => showGemShop(context),
-      icon: const Icon(Icons.diamond),
-    );
-  }
-}
-
-/// Nút Sao ở AppBar: hiện số Sao, chấm đỏ khi có thể nhượng quyền, mở dialog.
-class _PrestigeButton extends ConsumerWidget {
-  const _PrestigeButton();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final stars =
-        ref.watch(gameControllerProvider.select((s) => s.prestigeStars));
-    final available = ref.watch(
-      gameControllerProvider.select((s) => s.prestigeStarsAvailable),
-    );
-
-    return IconButton(
-      key: const Key('prestige-button'),
-      onPressed: () => showPrestigeDialog(context),
-      icon: Badge(
-        label: Text('$stars'),
-        isLabelVisible: stars > 0,
-        child: Icon(
-          Icons.star,
-          color: available > 0 ? Colors.amberAccent : null,
+  Widget _navItem(
+    ThemeData theme, {
+    Key? buttonKey,
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+    bool badge = false,
+    String? badgeCount,
+    bool highlight = false,
+  }) {
+    return Expanded(
+      child: InkWell(
+        key: buttonKey,
+        onTap: onTap,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Badge(
+              label: badgeCount != null ? Text(badgeCount) : null,
+              isLabelVisible: badgeCount != null || badge,
+              child: Icon(
+                icon,
+                color: highlight ? Colors.amber : theme.colorScheme.primary,
+                size: 26,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.labelSmall
+                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+            ),
+          ],
         ),
       ),
     );

@@ -8,6 +8,10 @@ library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// Cờ tắt tiếng toàn cục (giống [debugDisableMascotAnimation]). Cài đặt bật/tắt
+/// qua [soundOnProvider]; bản thật kiểm cờ này trước khi phát.
+bool audioMuted = false;
+
 /// Các hiệu ứng âm thanh trong game. Giá trị = tên file trong `assets/audio/`.
 enum Sfx {
   tap('tap.wav'),

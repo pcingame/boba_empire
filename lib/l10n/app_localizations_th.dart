@@ -434,4 +434,28 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get stage6 => 'อาณาจักรระดับโลก';
+
+  @override
+  String get settingsTitle => 'ตั้งค่า';
+
+  @override
+  String get settingsSound => 'เสียง';
+
+  @override
+  String get settingsReset => 'เริ่มใหม่';
+
+  @override
+  String get settingsResetConfirm => 'ลบความคืบหน้าทั้งหมดและเริ่มใหม่?';
+
+  @override
+  String get navHome => 'หน้าหลัก';
+
+  @override
+  String get navShop => 'ร้านค้า';
+
+  @override
+  String get navPrestige => 'เพรสทีจ';
+
+  @override
+  String get navAchievements => 'รางวัล';
 }

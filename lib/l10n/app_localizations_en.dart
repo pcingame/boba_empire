@@ -434,4 +434,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stage6 => 'Global Empire';
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsSound => 'Sound';
+
+  @override
+  String get settingsReset => 'Reset game';
+
+  @override
+  String get settingsResetConfirm => 'Erase all progress and start over?';
+
+  @override
+  String get navHome => 'Home';
+
+  @override
+  String get navShop => 'Shop';
+
+  @override
+  String get navPrestige => 'Prestige';
+
+  @override
+  String get navAchievements => 'Awards';
 }
