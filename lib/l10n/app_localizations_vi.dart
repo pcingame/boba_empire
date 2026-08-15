@@ -312,4 +312,33 @@ class AppLocalizationsVi extends AppLocalizations {
   String achUnlocked(String gems) {
     return '🏆 Mở khoá thành tựu! +$gems 💎';
   }
+
+  @override
+  String get prestigeShopTitle => 'Kho Sao ⭐';
+
+  @override
+  String prestigeShopSpendable(int stars) {
+    return 'Còn $stars ⭐ để tiêu';
+  }
+
+  @override
+  String get prestigeIncomeName => 'Siêu thu nhập';
+
+  @override
+  String prestigeIncomeDesc(int percent) {
+    return '+$percent% thu nhập vĩnh viễn mỗi cấp';
+  }
+
+  @override
+  String get prestigeTapName => 'Siêu chạm';
+
+  @override
+  String prestigeTapDesc(int percent) {
+    return '+$percent% giá trị chạm mỗi cấp';
+  }
+
+  @override
+  String prestigeStarCost(int cost) {
+    return '$cost ⭐';
+  }
 }

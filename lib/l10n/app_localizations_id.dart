@@ -314,4 +314,33 @@ class AppLocalizationsId extends AppLocalizations {
   String achUnlocked(String gems) {
     return '🏆 Pencapaian terbuka! +$gems 💎';
   }
+
+  @override
+  String get prestigeShopTitle => 'Toko Bintang ⭐';
+
+  @override
+  String prestigeShopSpendable(int stars) {
+    return '$stars ⭐ untuk dibelanjakan';
+  }
+
+  @override
+  String get prestigeIncomeName => 'Mega pendapatan';
+
+  @override
+  String prestigeIncomeDesc(int percent) {
+    return '+$percent% pendapatan permanen per level';
+  }
+
+  @override
+  String get prestigeTapName => 'Mega ketuk';
+
+  @override
+  String prestigeTapDesc(int percent) {
+    return '+$percent% nilai ketukan per level';
+  }
+
+  @override
+  String prestigeStarCost(int cost) {
+    return '$cost ⭐';
+  }
 }

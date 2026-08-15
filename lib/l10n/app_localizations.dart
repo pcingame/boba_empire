@@ -579,6 +579,48 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'🏆 Mở khoá thành tựu! +{gems} 💎'**
   String achUnlocked(String gems);
+
+  /// No description provided for @prestigeShopTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kho Sao ⭐'**
+  String get prestigeShopTitle;
+
+  /// No description provided for @prestigeShopSpendable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn {stars} ⭐ để tiêu'**
+  String prestigeShopSpendable(int stars);
+
+  /// No description provided for @prestigeIncomeName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Siêu thu nhập'**
+  String get prestigeIncomeName;
+
+  /// No description provided for @prestigeIncomeDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{percent}% thu nhập vĩnh viễn mỗi cấp'**
+  String prestigeIncomeDesc(int percent);
+
+  /// No description provided for @prestigeTapName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Siêu chạm'**
+  String get prestigeTapName;
+
+  /// No description provided for @prestigeTapDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{percent}% giá trị chạm mỗi cấp'**
+  String prestigeTapDesc(int percent);
+
+  /// No description provided for @prestigeStarCost.
+  ///
+  /// In vi, this message translates to:
+  /// **'{cost} ⭐'**
+  String prestigeStarCost(int cost);
 }
 
 class _AppLocalizationsDelegate

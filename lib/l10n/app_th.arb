@@ -89,5 +89,12 @@
   "achStage": "ไปถึงระยะ {n}",
   "achLevels": "มีเลเวลอัปเกรดรวม {n}",
   "achPrestige": "แฟรนไชส์ ({n}★ ขึ้นไป)",
-  "achUnlocked": "🏆 ปลดล็อกความสำเร็จ! +{gems} 💎"
+  "achUnlocked": "🏆 ปลดล็อกความสำเร็จ! +{gems} 💎",
+  "prestigeShopTitle": "ร้านดาว ⭐",
+  "prestigeShopSpendable": "เหลือ {stars} ⭐ ให้ใช้",
+  "prestigeIncomeName": "รายได้สุดยอด",
+  "prestigeIncomeDesc": "+{percent}% รายได้ถาวรต่อเลเวล",
+  "prestigeTapName": "แตะสุดยอด",
+  "prestigeTapDesc": "+{percent}% ค่าการแตะต่อเลเวล",
+  "prestigeStarCost": "{cost} ⭐"
 }

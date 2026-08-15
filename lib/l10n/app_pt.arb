@@ -89,5 +89,12 @@
   "achStage": "Alcance o estágio {n}",
   "achLevels": "Tenha {n} níveis de melhoria no total",
   "achPrestige": "Franquia ({n}★ ou mais)",
-  "achUnlocked": "🏆 Conquista desbloqueada! +{gems} 💎"
+  "achUnlocked": "🏆 Conquista desbloqueada! +{gems} 💎",
+  "prestigeShopTitle": "Loja de Estrelas ⭐",
+  "prestigeShopSpendable": "{stars} ⭐ para gastar",
+  "prestigeIncomeName": "Megarrenda",
+  "prestigeIncomeDesc": "+{percent}% de renda permanente por nível",
+  "prestigeTapName": "Megatoque",
+  "prestigeTapDesc": "+{percent}% de valor de toque por nível",
+  "prestigeStarCost": "{cost} ⭐"
 }

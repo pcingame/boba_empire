@@ -119,5 +119,16 @@
   "achPrestige": "Nhượng quyền ({n}★ trở lên)",
   "@achPrestige": { "placeholders": { "n": { "type": "int" } } },
   "achUnlocked": "🏆 Mở khoá thành tựu! +{gems} 💎",
-  "@achUnlocked": { "placeholders": { "gems": { "type": "String" } } }
+  "@achUnlocked": { "placeholders": { "gems": { "type": "String" } } },
+  "prestigeShopTitle": "Kho Sao ⭐",
+  "prestigeShopSpendable": "Còn {stars} ⭐ để tiêu",
+  "@prestigeShopSpendable": { "placeholders": { "stars": { "type": "int" } } },
+  "prestigeIncomeName": "Siêu thu nhập",
+  "prestigeIncomeDesc": "+{percent}% thu nhập vĩnh viễn mỗi cấp",
+  "@prestigeIncomeDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "prestigeTapName": "Siêu chạm",
+  "prestigeTapDesc": "+{percent}% giá trị chạm mỗi cấp",
+  "@prestigeTapDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "prestigeStarCost": "{cost} ⭐",
+  "@prestigeStarCost": { "placeholders": { "cost": { "type": "int" } } }
 }

@@ -219,6 +219,26 @@ class GameController extends Notifier<GameSnapshot> {
     return (gems: gems, streak: _game.dailyStreak);
   }
 
+  /// Nâng perk "Siêu thu nhập" bằng ⭐ Sao. Lưu ngay (premium). True nếu mua được.
+  bool buyPrestigeIncomeUpgrade() {
+    final ok = buyPrestigeIncome(_game);
+    if (ok) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return ok;
+  }
+
+  /// Nâng perk "Siêu chạm" bằng ⭐ Sao. Lưu ngay (premium). True nếu mua được.
+  bool buyPrestigeTapUpgrade() {
+    final ok = buyPrestigeTap(_game);
+    if (ok) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return ok;
+  }
+
   /// Nhượng quyền. Trả về số Sao vừa nhận (0 nếu chưa đủ).
   int doPrestige() {
     final gained = prestige(_game);
@@ -382,6 +402,9 @@ class GameController extends Notifier<GameSnapshot> {
       newAchievements: _newAchievements,
       lifetimeEarnings: _game.lifetimeEarnings,
       achievementsClaimed: _game.achievementsClaimed,
+      prestigeStarsSpendable: prestigeStarsSpendable(_game),
+      prestigeIncomeLevel: _game.prestigeIncomeLevel,
+      prestigeTapLevel: _game.prestigeTapLevel,
       levels: _game.levels,
     );
   }

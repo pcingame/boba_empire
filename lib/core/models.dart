@@ -76,6 +76,8 @@ class GameState {
     this.tutorialSeen = false,
     this.lastDailyDay = 0,
     this.dailyStreak = 0,
+    this.prestigeIncomeLevel = 0,
+    this.prestigeTapLevel = 0,
     List<String>? achievementsClaimed,
   }) : achievementsClaimed = achievementsClaimed ?? [];
 
@@ -141,6 +143,12 @@ class GameState {
   /// Id các thành tựu đã mở khoá & nhận thưởng (chống trao trùng).
   final List<String> achievementsClaimed;
 
+  /// Cấp perk "Siêu thu nhập" mua bằng ⭐ Sao (kho prestige) — +% income vĩnh viễn.
+  int prestigeIncomeLevel;
+
+  /// Cấp perk "Siêu chạm" mua bằng ⭐ Sao — +% giá trị mỗi lần chạm vĩnh viễn.
+  int prestigeTapLevel;
+
   Map<String, dynamic> toJson() => {
         'money': money,
         'gems': gems,
@@ -158,6 +166,8 @@ class GameState {
         'lastDailyDay': lastDailyDay,
         'dailyStreak': dailyStreak,
         'achievementsClaimed': achievementsClaimed,
+        'prestigeIncomeLevel': prestigeIncomeLevel,
+        'prestigeTapLevel': prestigeTapLevel,
       };
 
   factory GameState.fromJson(Map<String, dynamic> json) => GameState(
@@ -181,5 +191,8 @@ class GameState {
         dailyStreak: (json['dailyStreak'] as num?)?.toInt() ?? 0,
         achievementsClaimed:
             (json['achievementsClaimed'] as List?)?.cast<String>().toList(),
+        prestigeIncomeLevel:
+            (json['prestigeIncomeLevel'] as num?)?.toInt() ?? 0,
+        prestigeTapLevel: (json['prestigeTapLevel'] as num?)?.toInt() ?? 0,
       );
 }

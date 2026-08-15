@@ -28,6 +28,9 @@ class GameSnapshot {
     required this.newAchievements,
     required this.lifetimeEarnings,
     required this.achievementsClaimed,
+    required this.prestigeStarsSpendable,
+    required this.prestigeIncomeLevel,
+    required this.prestigeTapLevel,
     required Map<String, int> levels,
   }) : _levels = levels;
 
@@ -82,6 +85,13 @@ class GameSnapshot {
 
   /// Id thành tựu đã mở khoá — để bảng Thành tựu tô đã đạt/khoá.
   final List<String> achievementsClaimed;
+
+  /// Số ⭐ Sao còn có thể tiêu trong kho prestige.
+  final int prestigeStarsSpendable;
+
+  /// Cấp perk "Siêu thu nhập" / "Siêu chạm" (kho Sao).
+  final int prestigeIncomeLevel;
+  final int prestigeTapLevel;
 
   final Map<String, int> _levels;
 

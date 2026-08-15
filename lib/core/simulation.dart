@@ -16,6 +16,7 @@ double tap(GameState state, {double boostMultiplier = 1.0}) {
   final gain = state.tapValue *
       prestigeMultiplier(state.prestigeStars, Balance.bonusPerStar) *
       permanentMultiplier(state.gemBoostLevel) *
+      prestigeTapMultiplier(state.prestigeTapLevel) *
       boostMultiplier;
   _credit(state, gain);
   return gain;
@@ -73,6 +74,24 @@ bool buyGemBoost(GameState state) {
   if (state.gems < cost) return false;
   state.gems -= cost;
   state.gemBoostLevel += 1;
+  return true;
+}
+
+/// Nâng perk "Siêu thu nhập" bằng ⭐ Sao (kho prestige). True nếu đủ Sao khả dụng.
+bool buyPrestigeIncome(GameState state) {
+  final cost =
+      prestigeShopCost(Balance.prestigeIncomeBaseCost, state.prestigeIncomeLevel);
+  if (prestigeStarsSpendable(state) < cost) return false;
+  state.prestigeIncomeLevel += 1;
+  return true;
+}
+
+/// Nâng perk "Siêu chạm" bằng ⭐ Sao. True nếu đủ Sao khả dụng.
+bool buyPrestigeTap(GameState state) {
+  final cost =
+      prestigeShopCost(Balance.prestigeTapBaseCost, state.prestigeTapLevel);
+  if (prestigeStarsSpendable(state) < cost) return false;
+  state.prestigeTapLevel += 1;
   return true;
 }
 

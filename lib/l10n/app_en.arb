@@ -89,5 +89,12 @@
   "achStage": "Reach stage {n}",
   "achLevels": "Own {n} upgrade levels total",
   "achPrestige": "Franchise ({n}★ or more)",
-  "achUnlocked": "🏆 Achievement unlocked! +{gems} 💎"
+  "achUnlocked": "🏆 Achievement unlocked! +{gems} 💎",
+  "prestigeShopTitle": "Star Shop ⭐",
+  "prestigeShopSpendable": "{stars} ⭐ to spend",
+  "prestigeIncomeName": "Mega income",
+  "prestigeIncomeDesc": "+{percent}% permanent income per level",
+  "prestigeTapName": "Mega tap",
+  "prestigeTapDesc": "+{percent}% tap value per level",
+  "prestigeStarCost": "{cost} ⭐"
 }

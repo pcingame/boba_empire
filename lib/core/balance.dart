@@ -83,6 +83,19 @@ class Balance {
   /// Kim Cương tặng kèm trong "Gói khởi động" (một lần).
   static const double iapStarterGems = 300;
 
+  // --- Kho Sao (tiêu ⭐ prestige mua perk vĩnh viễn) ---
+  // Giá mỗi cấp = base * 2^cấp. Passive +2%/sao GIỮ NGUYÊN; tiêu Sao ở đây là
+  // "chi tiêu" riêng (spendable = tổng Sao - đã tiêu), không đụng accounting
+  // prestige nên không thể "tiêu rồi prestige lấy lại".
+
+  /// "Siêu thu nhập": +25% thu nhập tự động vĩnh viễn mỗi cấp.
+  static const int prestigeIncomeBaseCost = 3;
+  static const double prestigeIncomePerLevel = 0.25;
+
+  /// "Siêu chạm": +100% giá trị mỗi lần chạm vĩnh viễn mỗi cấp.
+  static const int prestigeTapBaseCost = 5;
+  static const double prestigeTapPerLevel = 1.0;
+
   /// Ba giai đoạn kinh doanh (index = stage - 1). Giai đoạn 1 có sẵn.
   static const List<StageConfig> stages = [
     StageConfig(stage: 1, name: 'Xe đẩy vỉa hè', unlockCost: 0),

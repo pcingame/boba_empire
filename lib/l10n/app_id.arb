@@ -89,5 +89,12 @@
   "achStage": "Capai tahap {n}",
   "achLevels": "Miliki total {n} level peningkatan",
   "achPrestige": "Waralaba ({n}★ atau lebih)",
-  "achUnlocked": "🏆 Pencapaian terbuka! +{gems} 💎"
+  "achUnlocked": "🏆 Pencapaian terbuka! +{gems} 💎",
+  "prestigeShopTitle": "Toko Bintang ⭐",
+  "prestigeShopSpendable": "{stars} ⭐ untuk dibelanjakan",
+  "prestigeIncomeName": "Mega pendapatan",
+  "prestigeIncomeDesc": "+{percent}% pendapatan permanen per level",
+  "prestigeTapName": "Mega ketuk",
+  "prestigeTapDesc": "+{percent}% nilai ketukan per level",
+  "prestigeStarCost": "{cost} ⭐"
 }

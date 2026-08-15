@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../audio/audio_service.dart';
 import '../core/balance.dart';
+import '../core/economy.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import 'widgets/anim_assets.dart';
@@ -37,29 +38,32 @@ class _PrestigeDialog extends ConsumerWidget {
 
     return AlertDialog(
       title: Text(l10n.prestigeTitle),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(l10n.prestigeIntro(_percent(1))),
-          const SizedBox(height: 16),
-          _row(l10n.prestigeStarsNow,
-              l10n.prestigeStarsValue(stars, _percent(stars))),
-          _row(l10n.prestigeNow, l10n.prestigeGain(available)),
-          const Divider(),
-          _row(
-            l10n.prestigeTotalBonus,
-            l10n.prestigeTotalValue(_percent(stars + available)),
-            highlight: true,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            l10n.prestigeWarning,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.error,
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.prestigeIntro(_percent(1))),
+            const SizedBox(height: 16),
+            _row(l10n.prestigeStarsNow,
+                l10n.prestigeStarsValue(stars, _percent(stars))),
+            _row(l10n.prestigeNow, l10n.prestigeGain(available)),
+            const Divider(),
+            _row(
+              l10n.prestigeTotalBonus,
+              l10n.prestigeTotalValue(_percent(stars + available)),
+              highlight: true,
             ),
-          ),
-        ],
+            const SizedBox(height: 12),
+            Text(
+              l10n.prestigeWarning,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.error,
+              ),
+            ),
+            const _StarShop(),
+          ],
+        ),
       ),
       actions: [
         TextButton(
@@ -108,6 +112,100 @@ class _PrestigeDialog extends ConsumerWidget {
                 : null,
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Kho Sao: tiêu ⭐ mua perk vĩnh viễn. Passive +2%/sao vẫn giữ; đây là chi tiêu
+/// riêng (Sao khả dụng = tổng - đã tiêu).
+class _StarShop extends ConsumerWidget {
+  const _StarShop();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final spendable = ref.watch(
+      gameControllerProvider.select((s) => s.prestigeStarsSpendable),
+    );
+    final incomeLv = ref.watch(
+      gameControllerProvider.select((s) => s.prestigeIncomeLevel),
+    );
+    final tapLv = ref.watch(
+      gameControllerProvider.select((s) => s.prestigeTapLevel),
+    );
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final controller = ref.read(gameControllerProvider.notifier);
+
+    void buy(bool Function() action) {
+      if (action()) {
+        HapticFeedback.selectionClick();
+        ref.read(audioServiceProvider).play(Sfx.buy);
+      }
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Divider(),
+        Text(l10n.prestigeShopTitle, style: theme.textTheme.titleMedium),
+        Text(
+          l10n.prestigeShopSpendable(spendable),
+          style: theme.textTheme.bodySmall,
+        ),
+        _PerkRow(
+          name: l10n.prestigeIncomeName,
+          level: incomeLv,
+          desc: l10n.prestigeIncomeDesc(
+              (Balance.prestigeIncomePerLevel * 100).round()),
+          cost: prestigeShopCost(Balance.prestigeIncomeBaseCost, incomeLv),
+          spendable: spendable,
+          onBuy: () => buy(controller.buyPrestigeIncomeUpgrade),
+        ),
+        _PerkRow(
+          name: l10n.prestigeTapName,
+          level: tapLv,
+          desc: l10n
+              .prestigeTapDesc((Balance.prestigeTapPerLevel * 100).round()),
+          cost: prestigeShopCost(Balance.prestigeTapBaseCost, tapLv),
+          spendable: spendable,
+          onBuy: () => buy(controller.buyPrestigeTapUpgrade),
+        ),
+      ],
+    );
+  }
+}
+
+class _PerkRow extends StatelessWidget {
+  const _PerkRow({
+    required this.name,
+    required this.level,
+    required this.desc,
+    required this.cost,
+    required this.spendable,
+    required this.onBuy,
+  });
+
+  final String name;
+  final int level;
+  final String desc;
+  final int cost;
+  final int spendable;
+  final VoidCallback onBuy;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      dense: true,
+      title: Text(l10n.gemItemLevel(name, level)),
+      subtitle: Text(desc),
+      trailing: FilledButton.tonal(
+        key: Key('prestige-perk-$name'),
+        onPressed: spendable >= cost ? onBuy : null,
+        child: Text(l10n.prestigeStarCost(cost)),
       ),
     );
   }

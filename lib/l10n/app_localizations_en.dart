@@ -309,4 +309,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String achUnlocked(String gems) {
     return '🏆 Achievement unlocked! +$gems 💎';
   }
+
+  @override
+  String get prestigeShopTitle => 'Star Shop ⭐';
+
+  @override
+  String prestigeShopSpendable(int stars) {
+    return '$stars ⭐ to spend';
+  }
+
+  @override
+  String get prestigeIncomeName => 'Mega income';
+
+  @override
+  String prestigeIncomeDesc(int percent) {
+    return '+$percent% permanent income per level';
+  }
+
+  @override
+  String get prestigeTapName => 'Mega tap';
+
+  @override
+  String prestigeTapDesc(int percent) {
+    return '+$percent% tap value per level';
+  }
+
+  @override
+  String prestigeStarCost(int cost) {
+    return '$cost ⭐';
+  }
 }

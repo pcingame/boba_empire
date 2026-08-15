@@ -35,6 +35,30 @@ double prestigeMultiplier(int stars, double bonusPerStar) =>
 double permanentMultiplier(int gemBoostLevel) =>
     1 + gemBoostLevel * Balance.gemBoostPerLevel;
 
+/// Giá (Sao) nâng một perk kho prestige từ [level] lên cấp kế: base * 2^level.
+int prestigeShopCost(int baseCost, int level) => baseCost * (1 << level);
+
+/// Tổng Sao đã tiêu cho một perk đạt [level] (tổng cấp số nhân, growth 2).
+int _prestigeSpentFor(int baseCost, int level) => baseCost * ((1 << level) - 1);
+
+/// Tổng Sao đã tiêu trong kho prestige (mọi perk).
+int prestigeStarsSpent(GameState s) =>
+    _prestigeSpentFor(Balance.prestigeIncomeBaseCost, s.prestigeIncomeLevel) +
+    _prestigeSpentFor(Balance.prestigeTapBaseCost, s.prestigeTapLevel);
+
+/// Số Sao còn có thể tiêu (tổng Sao trừ đã tiêu). KHÔNG đụng số Sao dùng cho
+/// passive/accounting prestige → tiêu rồi prestige cũng không lấy lại được.
+int prestigeStarsSpendable(GameState s) =>
+    s.prestigeStars - prestigeStarsSpent(s);
+
+/// Hệ số nhân thu nhập từ perk "Siêu thu nhập".
+double prestigeIncomeMultiplier(int level) =>
+    1 + level * Balance.prestigeIncomePerLevel;
+
+/// Hệ số nhân giá trị chạm từ perk "Siêu chạm".
+double prestigeTapMultiplier(int level) =>
+    1 + level * Balance.prestigeTapPerLevel;
+
 /// Giá (Kim Cương) để nâng vật phẩm "Tăng thu nhập" lên cấp kế tiếp.
 int gemBoostCost(int currentLevel) =>
     (Balance.gemBoostBaseCost * pow(Balance.gemCostGrowth, currentLevel))
@@ -84,6 +108,7 @@ double effectiveIncomePerSecond(
     baseIncomePerSecond(state, configs) *
     prestigeMultiplier(state.prestigeStars, bonusPerStar) *
     permanentMultiplier(state.gemBoostLevel) *
+    prestigeIncomeMultiplier(state.prestigeIncomeLevel) *
     boostMultiplier;
 
 /// Số Sao nhượng quyền tương ứng với tổng thu nhập cả đời.
