@@ -508,6 +508,16 @@ class _StageScene extends ConsumerWidget {
         AnimatedSwitcher(
           duration:
               _reduceMotion ? Duration.zero : const Duration(milliseconds: 500),
+          // Mặc định layoutBuilder căn giữa với ràng buộc LỎNG → ảnh tự co về
+          // kích thước gốc (BoxFit.cover mất tác dụng, nền co thành ô vuông có
+          // lề). Ép StackFit.expand để ảnh luôn lấp đầy khung, cover đúng.
+          layoutBuilder: (currentChild, previousChildren) => Stack(
+            fit: StackFit.expand,
+            children: [
+              ...previousChildren,
+              ?currentChild,
+            ],
+          ),
           child: Image.asset(
             'assets/scene/stage$n.png',
             key: ValueKey(n),
