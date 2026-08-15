@@ -9,6 +9,7 @@ import '../iap/iap_service.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
+import 'widgets/clay.dart';
 
 /// Mở Cửa hàng Kim Cương — chỗ tiêu gems kiếm từ VIP, và nạp bằng tiền thật.
 Future<void> showGemShop(BuildContext context) {
@@ -62,7 +63,6 @@ class _GemShopState extends ConsumerState<_GemShop> {
               gems: gems,
               onBuy: controller.buyGemBoostUpgrade,
             ),
-            const Divider(),
             _GemItem(
               name: l10n.offlineCapName,
               level: capLevel,
@@ -160,14 +160,31 @@ class _GemItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final canAfford = gems >= cost;
     final l10n = AppLocalizations.of(context)!;
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      title: Text(l10n.gemItemLevel(name, level)),
-      subtitle: Text(description),
-      trailing: FilledButton(
-        key: Key('gem-buy-$name'),
-        onPressed: canAfford ? onBuy : null,
-        child: Text(l10n.gemCost(cost)),
+    final theme = Theme.of(context);
+    return ClayTile(
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  l10n.gemItemLevel(name, level),
+                  style: theme.textTheme.titleSmall
+                      ?.copyWith(fontWeight: FontWeight.w600),
+                ),
+                Text(description, style: theme.textTheme.bodySmall),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          FilledButton(
+            key: Key('gem-buy-$name'),
+            onPressed: canAfford ? onBuy : null,
+            child: Text(l10n.gemCost(cost)),
+          ),
+        ],
       ),
     );
   }

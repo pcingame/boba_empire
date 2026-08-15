@@ -7,6 +7,7 @@ import '../core/format.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
+import 'widgets/clay.dart';
 
 /// Bảng Thành tựu: liệt kê mốc, tô đã đạt (✓) hoặc khoá kèm tiến độ + thưởng.
 Future<void> showAchievements(BuildContext context) {
@@ -83,26 +84,44 @@ class _AchievementRow extends StatelessWidget {
     final ratio = (progress / a.threshold).clamp(0.0, 1.0).toDouble();
 
     return Opacity(
-      opacity: unlocked ? 1.0 : 0.75,
-      child: ListTile(
-        contentPadding: EdgeInsets.zero,
-        leading: Text(a.emoji, style: const TextStyle(fontSize: 26)),
-        title: Text(achievementDesc(l10n, a)),
-        subtitle: unlocked
-            ? null
-            : Padding(
-                padding: const EdgeInsets.only(top: 4),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
-                  child: LinearProgressIndicator(value: ratio, minHeight: 5),
-                ),
+      opacity: unlocked ? 1.0 : 0.8,
+      child: ClayTile(
+        child: Row(
+          children: [
+            Text(a.emoji, style: const TextStyle(fontSize: 24)),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    achievementDesc(l10n, a),
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  if (!unlocked) ...[
+                    const SizedBox(height: 5),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: LinearProgressIndicator(
+                          value: ratio, minHeight: 6),
+                    ),
+                  ],
+                ],
               ),
-        trailing: unlocked
-            ? Icon(Icons.check_circle, color: theme.colorScheme.primary)
-            : Text(
-                l10n.dailyReward(formatNumber(a.rewardGems.toDouble())),
-                style: theme.textTheme.labelMedium,
-              ),
+            ),
+            const SizedBox(width: 10),
+            unlocked
+                ? Icon(Icons.check_circle,
+                    color: theme.colorScheme.primary, size: 28)
+                : Text(
+                    l10n.dailyReward(formatNumber(a.rewardGems.toDouble())),
+                    style: theme.textTheme.labelMedium
+                        ?.copyWith(fontWeight: FontWeight.w600),
+                  ),
+          ],
+        ),
       ),
     );
   }

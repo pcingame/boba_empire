@@ -44,6 +44,42 @@ class ClayCard extends StatelessWidget {
   }
 }
 
+/// Ô mềm nhẹ cho các dòng trong dialog (mục shop, thành tựu...): nền tô + bo
+/// tròn + bóng rất nhẹ. Nhẹ hơn [ClayCard] để không nặng nề trong dialog.
+class ClayTile extends StatelessWidget {
+  const ClayTile({
+    super.key,
+    required this.child,
+    this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+    this.margin = const EdgeInsets.symmetric(vertical: 4),
+  });
+
+  final Widget child;
+  final EdgeInsetsGeometry padding;
+  final EdgeInsetsGeometry margin;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      margin: margin,
+      padding: padding,
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 6,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: child,
+    );
+  }
+}
+
 /// Chip "đất sét" nhỏ gọn — dùng cho số Kim Cương/Xu ở đầu trang.
 class ClayChip extends StatelessWidget {
   const ClayChip({super.key, required this.child, this.color});

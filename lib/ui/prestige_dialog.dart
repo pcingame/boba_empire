@@ -8,6 +8,7 @@ import '../core/economy.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import 'widgets/anim_assets.dart';
+import 'widgets/clay.dart';
 import 'widgets/one_shot_lottie.dart';
 
 /// Mở dialog Nhượng quyền (prestige).
@@ -197,15 +198,31 @@ class _PerkRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return ListTile(
-      contentPadding: EdgeInsets.zero,
-      dense: true,
-      title: Text(l10n.gemItemLevel(name, level)),
-      subtitle: Text(desc),
-      trailing: FilledButton.tonal(
-        key: Key('prestige-perk-$name'),
-        onPressed: spendable >= cost ? onBuy : null,
-        child: Text(l10n.prestigeStarCost(cost)),
+    final theme = Theme.of(context);
+    return ClayTile(
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  l10n.gemItemLevel(name, level),
+                  style: theme.textTheme.titleSmall
+                      ?.copyWith(fontWeight: FontWeight.w600),
+                ),
+                Text(desc, style: theme.textTheme.bodySmall),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          FilledButton.tonal(
+            key: Key('prestige-perk-$name'),
+            onPressed: spendable >= cost ? onBuy : null,
+            child: Text(l10n.prestigeStarCost(cost)),
+          ),
+        ],
       ),
     );
   }

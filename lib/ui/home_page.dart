@@ -429,12 +429,27 @@ class _TapArea extends ConsumerStatefulWidget {
 
 class _TapAreaState extends ConsumerState<_TapArea>
     with TickerProviderStateMixin {
-  late final AnimationController _press = AnimationController(
+  // Chạm → "squish rồi bật vượt" (0.9 → 1.06 → 1.0) cho cảm giác đã tay.
+  late final AnimationController _pop = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 90),
-    lowerBound: 0.0,
-    upperBound: 0.12,
+    duration: const Duration(milliseconds: 240),
   );
+  late final Animation<double> _popScale = TweenSequence<double>([
+    TweenSequenceItem(
+      tween: Tween(begin: 1.0, end: 0.9).chain(CurveTween(curve: Curves.easeOut)),
+      weight: 28,
+    ),
+    TweenSequenceItem(
+      tween:
+          Tween(begin: 0.9, end: 1.06).chain(CurveTween(curve: Curves.easeOut)),
+      weight: 40,
+    ),
+    TweenSequenceItem(
+      tween:
+          Tween(begin: 1.06, end: 1.0).chain(CurveTween(curve: Curves.easeIn)),
+      weight: 32,
+    ),
+  ]).animate(_pop);
 
   // Combo: mỗi cú chạm khi controller còn chạy sẽ +1; ngừng chạm ~1.1s thì
   // controller kết thúc và combo ẩn đi. Dùng AnimationController (không Timer)
@@ -466,15 +481,15 @@ class _TapAreaState extends ConsumerState<_TapArea>
 
   @override
   void dispose() {
-    _press.dispose();
+    _pop.dispose();
     _combo.dispose();
     _bob.dispose();
     super.dispose();
   }
 
   void _onTap() {
-    // Thu nhỏ rồi bật lại (hữu hạn nên pumpAndSettle không treo).
-    _press.forward().then((_) => _press.reverse());
+    // Squish rồi bật vượt (hữu hạn nên pumpAndSettle không treo).
+    _pop.forward(from: 0);
     HapticFeedback.lightImpact();
     final gained = ref.read(gameControllerProvider.notifier).tapCup();
     ref.read(audioServiceProvider).play(Sfx.tap);
@@ -527,7 +542,7 @@ class _TapAreaState extends ConsumerState<_TapArea>
           child: GestureDetector(
             onTap: _onTap,
             child: ScaleTransition(
-              scale: Tween<double>(begin: 1.0, end: 0.88).animate(_press),
+              scale: _popScale,
               child: Container(
                 width: 160,
                 height: 160,

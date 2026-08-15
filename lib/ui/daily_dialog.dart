@@ -100,14 +100,25 @@ class _WeekRow extends StatelessWidget {
       children: [
         for (int i = 0; i < dailyRewardGems.length; i++)
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
             decoration: BoxDecoration(
               color: i == active
                   ? theme.colorScheme.primaryContainer
-                  : theme.colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(8),
+                  : theme.colorScheme.surfaceContainerHighest
+                      .withValues(alpha: 0.6),
+              borderRadius: BorderRadius.circular(12),
               border: i == active
                   ? Border.all(color: theme.colorScheme.primary, width: 2)
+                  : null,
+              boxShadow: i == active
+                  ? [
+                      BoxShadow(
+                        color: theme.colorScheme.primary
+                            .withValues(alpha: 0.35),
+                        blurRadius: 8,
+                        offset: const Offset(0, 3),
+                      ),
+                    ]
                   : null,
             ),
             child: Text(
