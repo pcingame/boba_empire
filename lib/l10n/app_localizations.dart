@@ -699,6 +699,24 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Xem QC'**
   String get watchAd;
+
+  /// No description provided for @piggyName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Heo đất'**
+  String get piggyName;
+
+  /// No description provided for @piggyBreak.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đập'**
+  String get piggyBreak;
+
+  /// No description provided for @piggySnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đập heo: +{gems} 💎'**
+  String piggySnack(String gems);
 }
 
 class _AppLocalizationsDelegate

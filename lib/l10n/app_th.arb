@@ -109,5 +109,8 @@
   "rewardX2Snack": "เปิด x2 รายได้ 24 ชม. แล้ว!",
   "rewardGemsName": "รับ {gems} 💎",
   "rewardTimeSkip": "เร่งเวลา {hours} ชม.",
-  "watchAd": "ดูโฆษณา"
+  "watchAd": "ดูโฆษณา",
+  "piggyName": "กระปุกออมสิน",
+  "piggyBreak": "ทุบ",
+  "piggySnack": "กระปุก: +{gems} 💎"
 }

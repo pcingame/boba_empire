@@ -92,6 +92,14 @@ class Balance {
   /// "Tua nhanh": xem QC nhận ngay chừng này giây sản xuất.
   static const int rewardedTimeSkipSeconds = 4 * 60 * 60; // 4 giờ
 
+  // --- Heo đất (Piggy Bank) ---
+  /// Heo tự tích Kim Cương theo Xu kiếm được (fill nhanh dần khi thu nhập cao),
+  /// tới trần thì dừng — đầy thì trả tiền "đập" (IAP boba_piggy) nhận hết.
+  static const double piggyGemsPerCoin = 0.0001;
+  static const double piggyMaxGems = 300;
+  /// Cần tích tối thiểu chừng này mới cho đập (để không mua heo rỗng).
+  static const double piggyMinBreak = 40;
+
   // --- Kho Sao (tiêu ⭐ prestige mua perk vĩnh viễn) ---
   // Giá mỗi cấp = base * 2^cấp. Passive +2%/sao GIỮ NGUYÊN; tiêu Sao ở đây là
   // "chi tiêu" riêng (spendable = tổng Sao - đã tiêu), không đụng accounting

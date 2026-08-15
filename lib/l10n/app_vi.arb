@@ -148,5 +148,9 @@
   "@rewardGemsName": { "placeholders": { "gems": { "type": "int" } } },
   "rewardTimeSkip": "Tua nhanh {hours} giờ",
   "@rewardTimeSkip": { "placeholders": { "hours": { "type": "int" } } },
-  "watchAd": "Xem QC"
+  "watchAd": "Xem QC",
+  "piggyName": "Heo đất",
+  "piggyBreak": "Đập",
+  "piggySnack": "Đập heo: +{gems} 💎",
+  "@piggySnack": { "placeholders": { "gems": { "type": "String" } } }
 }

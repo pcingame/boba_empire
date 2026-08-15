@@ -392,4 +392,15 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get watchAd => 'Tonton iklan';
+
+  @override
+  String get piggyName => 'Celengan';
+
+  @override
+  String get piggyBreak => 'Pecahkan';
+
+  @override
+  String piggySnack(String gems) {
+    return 'Celengan: +$gems 💎';
+  }
 }

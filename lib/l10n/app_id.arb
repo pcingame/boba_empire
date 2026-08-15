@@ -109,5 +109,8 @@
   "rewardX2Snack": "x2 pendapatan 24 jam aktif!",
   "rewardGemsName": "Dapatkan {gems} 💎",
   "rewardTimeSkip": "Percepat {hours} jam",
-  "watchAd": "Tonton iklan"
+  "watchAd": "Tonton iklan",
+  "piggyName": "Celengan",
+  "piggyBreak": "Pecahkan",
+  "piggySnack": "Celengan: +{gems} 💎"
 }

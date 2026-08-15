@@ -112,6 +112,10 @@ class _HomePageState extends ConsumerState<HomePage>
         controller.applyDoubleIncome();
         if (already) return; // chỉ khôi phục, không báo trùng.
         message = l10n.iapDoubleSnack;
+      case IapProduct.piggyBreak:
+        final gained = controller.breakPiggy();
+        if (gained <= 0) return;
+        message = l10n.piggySnack(formatNumber(gained));
     }
     ref.read(audioServiceProvider).play(Sfx.reward);
     if (mounted) {

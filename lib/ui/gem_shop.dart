@@ -106,7 +106,9 @@ class _GemShopState extends ConsumerState<_GemShop> {
 
     final products = [
       for (final p in IapProduct.values)
-        if (!(p == IapProduct.removeAds && adsRemoved) &&
+        // Heo đất có UI riêng ở dialog "Kiếm thêm" → không liệt kê ở đây.
+        if (p != IapProduct.piggyBreak &&
+            !(p == IapProduct.removeAds && adsRemoved) &&
             !(p == IapProduct.starterPack && starterOwned) &&
             !(p == IapProduct.doubleIncome && doubleOwned))
           p,

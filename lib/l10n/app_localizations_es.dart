@@ -391,4 +391,15 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get watchAd => 'Ver anuncio';
+
+  @override
+  String get piggyName => 'Alcancía';
+
+  @override
+  String get piggyBreak => 'Romper';
+
+  @override
+  String piggySnack(String gems) {
+    return 'Alcancía: +$gems 💎';
+  }
 }

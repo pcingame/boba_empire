@@ -109,5 +109,8 @@
   "rewardX2Snack": "x2 renda por 24h ativado!",
   "rewardGemsName": "Ganhe {gems} 💎",
   "rewardTimeSkip": "Avançar {hours}h",
-  "watchAd": "Ver anúncio"
+  "watchAd": "Ver anúncio",
+  "piggyName": "Cofrinho",
+  "piggyBreak": "Quebrar",
+  "piggySnack": "Cofrinho: +{gems} 💎"
 }

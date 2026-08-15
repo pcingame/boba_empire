@@ -387,4 +387,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get watchAd => 'Watch ad';
+
+  @override
+  String get piggyName => 'Piggy Bank';
+
+  @override
+  String get piggyBreak => 'Break';
+
+  @override
+  String piggySnack(String gems) {
+    return 'Piggy: +$gems 💎';
+  }
 }

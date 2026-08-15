@@ -37,6 +37,7 @@ class GameSnapshot {
     required this.questDone,
     required this.doubleIncomeOwned,
     required this.x2IncomeRemainingSeconds,
+    required this.piggyGems,
     required Map<String, int> levels,
   }) : _levels = levels;
 
@@ -107,6 +108,9 @@ class GameSnapshot {
   /// Đã mua x2 thu nhập vĩnh viễn (IAP) & số giây còn lại của x2 24h (xem QC).
   final bool doubleIncomeOwned;
   final double x2IncomeRemainingSeconds;
+
+  /// Kim Cương đang tích trong heo đất (chờ "đập" bằng IAP).
+  final double piggyGems;
 
   final Map<String, int> _levels;
 

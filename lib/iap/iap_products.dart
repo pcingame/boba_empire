@@ -21,6 +21,10 @@ enum IapProduct {
   /// x2 thu nhập vĩnh viễn — mua một lần, nhân đôi mọi thu nhập tự động.
   doubleIncome('boba_double_income', IapKind.nonConsumable),
 
+  /// Đập heo đất — nhận toàn bộ Kim Cương đã tích. Consumable (mua lại khi heo
+  /// đầy lại). Số gems trao là biến (theo heo lúc mua), không cố định.
+  piggyBreak('boba_piggy', IapKind.consumable),
+
   /// Gói khởi động — mua một lần.
   starterPack('boba_starter_pack', IapKind.nonConsumable);
 

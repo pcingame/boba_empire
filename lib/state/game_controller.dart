@@ -375,6 +375,18 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
+  /// "Đập heo đất" (IAP): trao toàn bộ Kim Cương đã tích rồi reset heo. Trả về
+  /// số gems trao (0 nếu heo rỗng). Lưu ngay vì gems premium.
+  double breakPiggy() {
+    final gained = _game.piggyGems;
+    if (gained <= 0) return 0;
+    grantGems(_game, gained);
+    _game.piggyGems = 0;
+    unawaited(saveNow());
+    state = _snapshot();
+    return gained;
+  }
+
   /// Trao Kim Cương mua bằng tiền thật (IAP consumable). Lưu ngay vì premium.
   void grantGemsPurchase(double amount) {
     grantGems(_game, amount);
@@ -473,6 +485,7 @@ class GameController extends Notifier<GameSnapshot> {
       doubleIncomeOwned: _game.doubleIncomeOwned,
       x2IncomeRemainingSeconds:
           max(0, (_game.x2IncomeUntilMillis - _clock()) / 1000.0),
+      piggyGems: _game.piggyGems,
       levels: _game.levels,
     );
   }

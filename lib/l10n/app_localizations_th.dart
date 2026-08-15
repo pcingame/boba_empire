@@ -387,4 +387,15 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get watchAd => 'ดูโฆษณา';
+
+  @override
+  String get piggyName => 'กระปุกออมสิน';
+
+  @override
+  String get piggyBreak => 'ทุบ';
+
+  @override
+  String piggySnack(String gems) {
+    return 'กระปุก: +$gems 💎';
+  }
 }

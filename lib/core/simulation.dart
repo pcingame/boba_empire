@@ -181,8 +181,13 @@ bool claimStarterPack(GameState state, double gems) {
   return true;
 }
 
-/// Cộng [amount] Xu và ghi nhận vào tổng thu nhập cả đời.
+/// Cộng [amount] Xu và ghi nhận vào tổng thu nhập cả đời. Đồng thời tích thêm
+/// Kim Cương vào heo đất (theo Xu kiếm được, tới trần).
 void _credit(GameState state, double amount) {
   state.money += amount;
   state.lifetimeEarnings += amount;
+  state.piggyGems = min(
+    Balance.piggyMaxGems,
+    state.piggyGems + amount * Balance.piggyGemsPerCoin,
+  );
 }

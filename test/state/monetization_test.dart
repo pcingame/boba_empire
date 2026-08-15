@@ -56,4 +56,19 @@ void main() {
     expect(snap.x2IncomeRemainingSeconds, greaterThan(0));
     expect(snap.incomePerSecond, closeTo(before * 2, 1e-6));
   });
+
+  test('heo đất: chạm ly kiếm Xu → tích thêm gems', () async {
+    final c = await _ctl(GameState.newGame(nowMillis: 0)..tapValue = 10000);
+    c.read(gameControllerProvider.notifier).tapCup();
+    expect(c.read(gameControllerProvider).piggyGems, greaterThan(0));
+  });
+
+  test('heo đất: đập trao toàn bộ gems đã tích rồi reset', () async {
+    final c = await _ctl(GameState.newGame(nowMillis: 0)..piggyGems = 50);
+    final before = c.read(gameControllerProvider).gems;
+    final gained = c.read(gameControllerProvider.notifier).breakPiggy();
+    expect(gained, 50);
+    expect(c.read(gameControllerProvider).gems, before + 50);
+    expect(c.read(gameControllerProvider).piggyGems, 0);
+  });
 }

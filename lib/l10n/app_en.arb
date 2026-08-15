@@ -109,5 +109,8 @@
   "rewardX2Snack": "x2 income for 24h enabled!",
   "rewardGemsName": "Get {gems} 💎",
   "rewardTimeSkip": "Fast-forward {hours}h",
-  "watchAd": "Watch ad"
+  "watchAd": "Watch ad",
+  "piggyName": "Piggy Bank",
+  "piggyBreak": "Break",
+  "piggySnack": "Piggy: +{gems} 💎"
 }

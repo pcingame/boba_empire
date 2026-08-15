@@ -83,6 +83,7 @@ class GameState {
     this.questIndex = 0,
     this.doubleIncomeOwned = false,
     this.x2IncomeUntilMillis = 0,
+    this.piggyGems = 0,
     List<String>? achievementsClaimed,
   }) : achievementsClaimed = achievementsClaimed ?? [];
 
@@ -167,6 +168,9 @@ class GameState {
   /// Mốc (epoch ms) hết hạn boost "x2 thu nhập 24h" từ xem QC; 0 = không có.
   int x2IncomeUntilMillis;
 
+  /// Kim Cương đã tích trong heo đất (chờ "đập" bằng IAP). Trần ở Balance.
+  double piggyGems;
+
   Map<String, dynamic> toJson() => {
         'money': money,
         'gems': gems,
@@ -191,6 +195,7 @@ class GameState {
         'questIndex': questIndex,
         'doubleIncomeOwned': doubleIncomeOwned,
         'x2IncomeUntilMillis': x2IncomeUntilMillis,
+        'piggyGems': piggyGems,
       };
 
   factory GameState.fromJson(Map<String, dynamic> json) => GameState(
@@ -223,5 +228,6 @@ class GameState {
         doubleIncomeOwned: (json['doubleIncomeOwned'] as bool?) ?? false,
         x2IncomeUntilMillis:
             (json['x2IncomeUntilMillis'] as num?)?.toInt() ?? 0,
+        piggyGems: (json['piggyGems'] as num?)?.toDouble() ?? 0,
       );
 }

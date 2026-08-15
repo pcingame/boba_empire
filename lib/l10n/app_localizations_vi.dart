@@ -390,4 +390,15 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get watchAd => 'Xem QC';
+
+  @override
+  String get piggyName => 'Heo đất';
+
+  @override
+  String get piggyBreak => 'Đập';
+
+  @override
+  String piggySnack(String gems) {
+    return 'Đập heo: +$gems 💎';
+  }
 }

@@ -56,9 +56,10 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
 
 ## 4. In-app purchase (xem SETUP.md mục 2)
 
-- [ ] 🔴 Tạo **6 product** đúng ID: `boba_gems_small/medium/large`,
+- [ ] 🔴 Tạo **7 product** đúng ID: `boba_gems_small/medium/large`,
   `boba_remove_ads`, `boba_starter_pack`, `boba_double_income` (x2 thu nhập
-  vĩnh viễn, non-consumable). Đặt giá theo mục "Giá đề xuất" (x2 ~ $2.99).
+  vĩnh viễn, non-consumable, ~$2.99), `boba_piggy` (đập heo đất, **consumable**,
+  ~$1.99). Đặt giá theo mục "Giá đề xuất".
 - [ ] 🔴 Bật giá **theo vùng** (hạ cho ID/BR/TH/VN — SETUP.md).
 - [ ] 🔴 Upload 1 build lên **internal testing** (IAP chỉ chạy với app đã ký &
   cài qua Play).
