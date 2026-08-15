@@ -525,7 +525,9 @@ class _StageScene extends ConsumerWidget {
             'assets/scene/stage$n.png',
             key: ValueKey(n),
             fit: BoxFit.cover,
-            alignment: Alignment.bottomCenter,
+            // Khung rộng-thấp → cover cắt bớt chiều dọc. Căn GIỮA (thay vì đáy)
+            // để giữ thân quán (mái hiên → quầy) thay vì cắt mất, chừa sàn trống.
+            alignment: Alignment.center,
             // Thiếu asset (vd môi trường test) thì nền trơn thay vì vỡ.
             errorBuilder: (context, error, stack) => const SizedBox.shrink(),
           ),
