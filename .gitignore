@@ -46,3 +46,6 @@ app.*.map.json
 
 # CodeGraph local index (per-developer tooling, not part of the project)
 .codegraph/
+
+# VS Code (per-developer editor settings, machine-specific paths)
+.vscode/
