@@ -461,4 +461,13 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get navAchievements => 'Thành tựu';
+
+  @override
+  String get wheelName => 'Vòng quay may mắn 🎡';
+
+  @override
+  String get spinFree => 'Quay miễn phí';
+
+  @override
+  String get spinAd => 'Xem QC để quay';
 }

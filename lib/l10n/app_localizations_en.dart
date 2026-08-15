@@ -458,4 +458,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navAchievements => 'Awards';
+
+  @override
+  String get wheelName => 'Lucky Wheel 🎡';
+
+  @override
+  String get spinFree => 'Free spin';
+
+  @override
+  String get spinAd => 'Watch ad to spin';
 }

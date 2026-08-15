@@ -458,4 +458,13 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get navAchievements => 'รางวัล';
+
+  @override
+  String get wheelName => 'วงล้อนำโชค 🎡';
+
+  @override
+  String get spinFree => 'หมุนฟรี';
+
+  @override
+  String get spinAd => 'ดูโฆษณาเพื่อหมุน';
 }

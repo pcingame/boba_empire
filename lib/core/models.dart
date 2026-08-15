@@ -86,6 +86,7 @@ class GameState {
     this.piggyGems = 0,
     this.vipUntilMillis = 0,
     this.vipLastGemDay = 0,
+    this.lastFreeSpinDay = 0,
     List<String>? achievementsClaimed,
   }) : achievementsClaimed = achievementsClaimed ?? [];
 
@@ -179,6 +180,9 @@ class GameState {
   /// Chỉ số ngày (UTC) lần cuối nhận Kim Cương VIP hằng ngày.
   int vipLastGemDay;
 
+  /// Chỉ số ngày (UTC) lần cuối quay Vòng quay miễn phí.
+  int lastFreeSpinDay;
+
   Map<String, dynamic> toJson() => {
         'money': money,
         'gems': gems,
@@ -206,6 +210,7 @@ class GameState {
         'piggyGems': piggyGems,
         'vipUntilMillis': vipUntilMillis,
         'vipLastGemDay': vipLastGemDay,
+        'lastFreeSpinDay': lastFreeSpinDay,
       };
 
   factory GameState.fromJson(Map<String, dynamic> json) => GameState(
@@ -241,5 +246,6 @@ class GameState {
         piggyGems: (json['piggyGems'] as num?)?.toDouble() ?? 0,
         vipUntilMillis: (json['vipUntilMillis'] as num?)?.toInt() ?? 0,
         vipLastGemDay: (json['vipLastGemDay'] as num?)?.toInt() ?? 0,
+        lastFreeSpinDay: (json['lastFreeSpinDay'] as num?)?.toInt() ?? 0,
       );
 }

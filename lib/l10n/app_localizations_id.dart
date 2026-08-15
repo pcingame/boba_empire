@@ -464,4 +464,13 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get navAchievements => 'Prestasi';
+
+  @override
+  String get wheelName => 'Roda Keberuntungan 🎡';
+
+  @override
+  String get spinFree => 'Putar gratis';
+
+  @override
+  String get spinAd => 'Tonton iklan untuk memutar';
 }

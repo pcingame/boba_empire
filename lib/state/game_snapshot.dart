@@ -41,6 +41,7 @@ class GameSnapshot {
     required this.adFree,
     required this.vipActive,
     required this.vipRemainingSeconds,
+    required this.freeSpinAvailable,
     required Map<String, int> levels,
   }) : _levels = levels;
 
@@ -121,6 +122,9 @@ class GameSnapshot {
   /// Đang VIP Pass & số giây còn lại của VIP.
   final bool vipActive;
   final double vipRemainingSeconds;
+
+  /// Còn lượt quay Vòng quay miễn phí hôm nay không.
+  final bool freeSpinAvailable;
 
   final Map<String, int> _levels;
 

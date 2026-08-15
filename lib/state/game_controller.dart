@@ -19,6 +19,7 @@ import '../core/models.dart';
 import '../core/quests.dart';
 import '../core/simulation.dart';
 import '../core/vip.dart';
+import '../core/wheel.dart';
 import '../data/game_storage.dart';
 import 'game_providers.dart';
 import 'game_snapshot.dart';
@@ -369,6 +370,37 @@ class GameController extends Notifier<GameSnapshot> {
     return reward;
   }
 
+  /// Quay Vòng quay may mắn. [free]=true đánh dấu đã dùng lượt free hôm nay. Trả
+  /// về (chỉ số ô trúng, loại thưởng, giá trị đã nhận) để UI quay + báo.
+  ({int index, WheelKind kind, double value}) spin({required bool free}) {
+    final i = spinWheel(_random.nextDouble());
+    final p = wheelPrizes[i];
+    double value = 0;
+    switch (p.kind) {
+      case WheelKind.coins:
+        value = effectiveIncomePerSecond(
+              _game,
+              Balance.generators,
+              bonusPerStar: Balance.bonusPerStar,
+            ) *
+            p.amount;
+        grantBonus(_game, value);
+      case WheelKind.gems:
+        value = p.amount.toDouble();
+        grantGems(_game, value);
+      case WheelKind.x2:
+        final now = _clock();
+        final from =
+            now > _game.x2IncomeUntilMillis ? now : _game.x2IncomeUntilMillis;
+        _game.x2IncomeUntilMillis = from + Balance.rewardedX2DurationMs;
+        value = Balance.rewardedX2DurationMs / 3600000; // giờ
+    }
+    if (free) _game.lastFreeSpinDay = dayIndex(_clock());
+    unawaited(saveNow());
+    state = _snapshot();
+    return (index: i, kind: p.kind, value: value);
+  }
+
   /// Nhận Kim Cương miễn phí (sau khi xem QC). Lưu ngay vì gems là premium.
   void grantFreeGems() {
     grantGems(_game, Balance.rewardedFreeGems.toDouble());
@@ -507,6 +539,7 @@ class GameController extends Notifier<GameSnapshot> {
       vipActive: vipActive(_game, _clock()),
       vipRemainingSeconds:
           max(0, (_game.vipUntilMillis - _clock()) / 1000.0),
+      freeSpinAvailable: dayIndex(_clock()) > _game.lastFreeSpinDay,
       levels: _game.levels,
     );
   }

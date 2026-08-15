@@ -132,5 +132,8 @@
   "navHome": "Inicio",
   "navShop": "Tienda",
   "navPrestige": "Prestigio",
-  "navAchievements": "Logros"
+  "navAchievements": "Logros",
+  "wheelName": "Ruleta de la suerte 🎡",
+  "spinFree": "Giro gratis",
+  "spinAd": "Ver anuncio para girar"
 }

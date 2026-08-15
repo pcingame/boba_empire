@@ -837,6 +837,24 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Thành tựu'**
   String get navAchievements;
+
+  /// No description provided for @wheelName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vòng quay may mắn 🎡'**
+  String get wheelName;
+
+  /// No description provided for @spinFree.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay miễn phí'**
+  String get spinFree;
+
+  /// No description provided for @spinAd.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem QC để quay'**
+  String get spinAd;
 }
 
 class _AppLocalizationsDelegate

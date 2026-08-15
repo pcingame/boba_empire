@@ -9,6 +9,7 @@ import '../iap/iap_products.dart';
 import '../iap/iap_service.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
+import 'wheel_dialog.dart';
 import 'widgets/clay.dart';
 
 /// "Kiếm thêm 🎁" — các ưu đãi xem quảng cáo thưởng: x2 thu nhập 24h, nhận Kim
@@ -29,8 +30,9 @@ class _RewardsDialog extends ConsumerStatefulWidget {
 
 class _RewardsDialogState extends ConsumerState<_RewardsDialog> {
   bool _busy = false;
-  late final Future<Map<IapProduct, String>> _prices =
-      ref.read(iapServiceProvider).loadPrices();
+  late final Future<Map<IapProduct, String>> _prices = ref
+      .read(iapServiceProvider)
+      .loadPrices();
 
   /// Xem QC (hoặc bỏ qua nếu đã mua Gỡ QC) → nếu nhận thưởng thì gọi [onEarned].
   Future<void> _watch(void Function() onEarned) async {
@@ -48,8 +50,7 @@ class _RewardsDialogState extends ConsumerState<_RewardsDialog> {
   }
 
   void _snack(String msg) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(msg)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
   }
 
   @override
@@ -60,57 +61,67 @@ class _RewardsDialogState extends ConsumerState<_RewardsDialog> {
       gameControllerProvider.select((s) => s.x2IncomeRemainingSeconds),
     );
     final x2Hours = (x2sec / 3600).ceil();
-    final piggy = ref.watch(
-      gameControllerProvider.select((s) => s.piggyGems),
+    final piggy = ref.watch(gameControllerProvider.select((s) => s.piggyGems));
+    final freeSpin = ref.watch(
+      gameControllerProvider.select((s) => s.freeSpinAvailable),
     );
 
     return AlertDialog(
       title: Text(l10n.rewardsTitle),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Heo đất (IAP) — nổi bật ở trên cùng.
-          FutureBuilder<Map<IapProduct, String>>(
-            future: _prices,
-            builder: (context, snap) => _PiggyCard(
-              gems: piggy,
-              price: snap.data?[IapProduct.piggyBreak],
-              onBreak: () =>
-                  ref.read(iapServiceProvider).buy(IapProduct.piggyBreak),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Vòng quay may mắn — có badge "miễn phí" khi còn lượt hôm nay.
+            _WheelRow(free: freeSpin, onTap: () => showWheel(context)),
+            // Heo đất (IAP) — nổi bật ở trên cùng.
+            FutureBuilder<Map<IapProduct, String>>(
+              future: _prices,
+              builder: (context, snap) => _PiggyCard(
+                gems: piggy,
+                price: snap.data?[IapProduct.piggyBreak],
+                onBreak: () =>
+                    ref.read(iapServiceProvider).buy(IapProduct.piggyBreak),
+              ),
             ),
-          ),
-          _OfferRow(
-            emoji: '⚡',
-            name: l10n.rewardX2Name,
-            note: x2sec > 0 ? l10n.rewardX2Active(x2Hours) : null,
-            busy: _busy,
-            onWatch: () => _watch(() {
-              controller.activateX2Income();
-              _snack(l10n.rewardX2Snack);
-            }),
-          ),
-          _OfferRow(
-            emoji: '💎',
-            name: l10n.rewardGemsName(Balance.rewardedFreeGems),
-            busy: _busy,
-            onWatch: () => _watch(() {
-              controller.grantFreeGems();
-              _snack(l10n.iapGemsSnack(
-                  formatNumber(Balance.rewardedFreeGems.toDouble())));
-            }),
-          ),
-          _OfferRow(
-            emoji: '⏩',
-            name: l10n.rewardTimeSkip(Balance.rewardedTimeSkipSeconds ~/ 3600),
-            busy: _busy,
-            onWatch: () => _watch(() {
-              final reward = controller.claimTimeSkip();
-              if (reward > 0) {
-                _snack(l10n.instantCashSnack(formatNumber(reward)));
-              }
-            }),
-          ),
-        ],
+            _OfferRow(
+              emoji: '⚡',
+              name: l10n.rewardX2Name,
+              note: x2sec > 0 ? l10n.rewardX2Active(x2Hours) : null,
+              busy: _busy,
+              onWatch: () => _watch(() {
+                controller.activateX2Income();
+                _snack(l10n.rewardX2Snack);
+              }),
+            ),
+            _OfferRow(
+              emoji: '💎',
+              name: l10n.rewardGemsName(Balance.rewardedFreeGems),
+              busy: _busy,
+              onWatch: () => _watch(() {
+                controller.grantFreeGems();
+                _snack(
+                  l10n.iapGemsSnack(
+                    formatNumber(Balance.rewardedFreeGems.toDouble()),
+                  ),
+                );
+              }),
+            ),
+            _OfferRow(
+              emoji: '⏩',
+              name: l10n.rewardTimeSkip(
+                Balance.rewardedTimeSkipSeconds ~/ 3600,
+              ),
+              busy: _busy,
+              onWatch: () => _watch(() {
+                final reward = controller.claimTimeSkip();
+                if (reward > 0) {
+                  _snack(l10n.instantCashSnack(formatNumber(reward)));
+                }
+              }),
+            ),
+          ],
+        ),
       ),
       actions: [
         TextButton(
@@ -118,6 +129,58 @@ class _RewardsDialogState extends ConsumerState<_RewardsDialog> {
           child: Text(l10n.close),
         ),
       ],
+    );
+  }
+}
+
+/// Hàng "Vòng quay may mắn" mở dialog quay; badge sáng khi còn lượt miễn phí.
+class _WheelRow extends StatelessWidget {
+  const _WheelRow({required this.free, required this.onTap});
+
+  final bool free;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+    return ClayTile(
+      child: Row(
+        children: [
+          const Text('🎡', style: TextStyle(fontSize: 24)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  l10n.wheelName,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                if (free)
+                  Text(
+                    l10n.spinFree,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          // Nút icon-only mở dialog: nhãn free/ad dài theo ngôn ngữ nên chỉ
+          // hiển thị trong subtitle + trong dialog để hàng không tràn ngang.
+          IconButton.filled(
+            key: const Key('open-wheel'),
+            onPressed: onTap,
+            tooltip: l10n.wheelName,
+            icon: const Icon(Icons.casino),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -153,14 +216,16 @@ class _OfferRow extends StatelessWidget {
               children: [
                 Text(
                   name,
-                  style: theme.textTheme.titleSmall
-                      ?.copyWith(fontWeight: FontWeight.w600),
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 if (note != null)
                   Text(
                     note!,
-                    style: theme.textTheme.bodySmall
-                        ?.copyWith(color: theme.colorScheme.primary),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.primary,
+                    ),
                   ),
               ],
             ),
@@ -209,8 +274,9 @@ class _PiggyCard extends StatelessWidget {
               children: [
                 Text(
                   l10n.piggyName,
-                  style: theme.textTheme.titleSmall
-                      ?.copyWith(fontWeight: FontWeight.w600),
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 Text(
                   '${formatNumber(gems)} / ${formatNumber(Balance.piggyMaxGems)} 💎',
