@@ -15,6 +15,12 @@ String generatorName(AppLocalizations l10n, String id) => switch (id) {
       'pudding' => l10n.genPudding,
       'kem_nuong' => l10n.genKemNuong,
       'matcha' => l10n.genMatcha,
+      'duong_den' => l10n.genDuongDen,
+      'brulee' => l10n.genBrulee,
+      'cheese_foam' => l10n.genCheeseFoam,
+      'tra_trai_cay' => l10n.genTraTraiCay,
+      'boba_vang' => l10n.genBobaVang,
+      'galaxy' => l10n.genGalaxy,
       _ => id,
     };
 
@@ -22,6 +28,9 @@ String stageName(AppLocalizations l10n, int stage) => switch (stage) {
       1 => l10n.stage1,
       2 => l10n.stage2,
       3 => l10n.stage3,
+      4 => l10n.stage4,
+      5 => l10n.stage5,
+      6 => l10n.stage6,
       _ => '',
     };
 

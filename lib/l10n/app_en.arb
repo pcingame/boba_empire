@@ -115,5 +115,14 @@
   "piggySnack": "Piggy: +{gems} 💎",
   "iapVipTitle": "VIP Pass (30 days) 👑",
   "iapVipDesc": "No ads + x2 income + 50💎/day + offline cap+",
-  "iapVipSnack": "VIP activated for 30 days! 👑"
+  "iapVipSnack": "VIP activated for 30 days! 👑",
+  "genDuongDen": "Brown Sugar Milk",
+  "genBrulee": "Brûlée Milk Tea",
+  "genCheeseFoam": "Cheese Foam",
+  "genTraTraiCay": "Fruit Tea",
+  "genBobaVang": "Golden Boba",
+  "genGalaxy": "Galaxy Milk Tea",
+  "stage4": "Brûlée Workshop",
+  "stage5": "Cheese Foam Factory",
+  "stage6": "Global Empire"
 }

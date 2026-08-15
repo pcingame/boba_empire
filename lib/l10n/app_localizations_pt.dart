@@ -411,4 +411,31 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get iapVipSnack => 'VIP ativado por 30 dias! 👑';
+
+  @override
+  String get genDuongDen => 'Leite com Açúcar Mascavo';
+
+  @override
+  String get genBrulee => 'Chá com Leite Brûlée';
+
+  @override
+  String get genCheeseFoam => 'Espuma de Queijo';
+
+  @override
+  String get genTraTraiCay => 'Chá de Frutas';
+
+  @override
+  String get genBobaVang => 'Boba Dourada';
+
+  @override
+  String get genGalaxy => 'Chá com Leite Galáxia';
+
+  @override
+  String get stage4 => 'Oficina Brûlée';
+
+  @override
+  String get stage5 => 'Fábrica de Espuma de Queijo';
+
+  @override
+  String get stage6 => 'Império Global';
 }

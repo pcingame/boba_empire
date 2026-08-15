@@ -115,5 +115,14 @@
   "piggySnack": "Celengan: +{gems} 💎",
   "iapVipTitle": "VIP Pass (30 hari) 👑",
   "iapVipDesc": "Tanpa iklan + x2 pendapatan + 50💎/hari + batas offline+",
-  "iapVipSnack": "VIP aktif 30 hari! 👑"
+  "iapVipSnack": "VIP aktif 30 hari! 👑",
+  "genDuongDen": "Susu Gula Aren",
+  "genBrulee": "Teh Susu Brûlée",
+  "genCheeseFoam": "Cheese Foam",
+  "genTraTraiCay": "Teh Buah",
+  "genBobaVang": "Boba Emas",
+  "genGalaxy": "Teh Susu Galaksi",
+  "stage4": "Bengkel Brûlée",
+  "stage5": "Pabrik Cheese Foam",
+  "stage6": "Imperium Global"
 }

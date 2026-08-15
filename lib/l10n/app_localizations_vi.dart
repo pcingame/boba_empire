@@ -410,4 +410,31 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get iapVipSnack => 'Đã kích hoạt VIP 30 ngày! 👑';
+
+  @override
+  String get genDuongDen => 'Sữa tươi đường đen';
+
+  @override
+  String get genBrulee => 'Trà sữa nướng';
+
+  @override
+  String get genCheeseFoam => 'Kem phô mai';
+
+  @override
+  String get genTraTraiCay => 'Trà trái cây';
+
+  @override
+  String get genBobaVang => 'Boba vàng';
+
+  @override
+  String get genGalaxy => 'Trà sữa ngân hà';
+
+  @override
+  String get stage4 => 'Xưởng trà sữa nướng';
+
+  @override
+  String get stage5 => 'Nhà máy phô mai tươi';
+
+  @override
+  String get stage6 => 'Đế chế toàn cầu';
 }

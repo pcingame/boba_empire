@@ -407,4 +407,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get iapVipSnack => 'VIP activated for 30 days! 👑';
+
+  @override
+  String get genDuongDen => 'Brown Sugar Milk';
+
+  @override
+  String get genBrulee => 'Brûlée Milk Tea';
+
+  @override
+  String get genCheeseFoam => 'Cheese Foam';
+
+  @override
+  String get genTraTraiCay => 'Fruit Tea';
+
+  @override
+  String get genBobaVang => 'Golden Boba';
+
+  @override
+  String get genGalaxy => 'Galaxy Milk Tea';
+
+  @override
+  String get stage4 => 'Brûlée Workshop';
+
+  @override
+  String get stage5 => 'Cheese Foam Factory';
+
+  @override
+  String get stage6 => 'Global Empire';
 }

@@ -407,4 +407,31 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get iapVipSnack => 'เปิด VIP 30 วันแล้ว! 👑';
+
+  @override
+  String get genDuongDen => 'นมสดน้ำตาลดำ';
+
+  @override
+  String get genBrulee => 'ชานมบรูเล่';
+
+  @override
+  String get genCheeseFoam => 'ชีสโฟม';
+
+  @override
+  String get genTraTraiCay => 'ชาผลไม้';
+
+  @override
+  String get genBobaVang => 'โบบาทองคำ';
+
+  @override
+  String get genGalaxy => 'ชานมกาแล็กซี';
+
+  @override
+  String get stage4 => 'โรงงานบรูเล่';
+
+  @override
+  String get stage5 => 'โรงงานชีสโฟม';
+
+  @override
+  String get stage6 => 'อาณาจักรระดับโลก';
 }

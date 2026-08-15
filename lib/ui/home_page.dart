@@ -438,7 +438,7 @@ class _StageScene extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final stage = ref.watch(gameControllerProvider.select((s) => s.stage));
     final theme = Theme.of(context);
-    final n = stage.clamp(1, 3);
+    final n = stage.clamp(1, 6);
 
     return Stack(
       fit: StackFit.expand,
@@ -889,6 +889,12 @@ const Map<String, String> _generatorEmoji = {
   'pudding': '🍰',
   'kem_nuong': '🔥',
   'matcha': '🍵',
+  'duong_den': '🥤',
+  'brulee': '🍯',
+  'cheese_foam': '🧀',
+  'tra_trai_cay': '🍓',
+  'boba_vang': '🌟',
+  'galaxy': '🌌',
 };
 
 /// Một dòng shop. Watch riêng cấp của nó + tiền (để bật/mờ nút mua).

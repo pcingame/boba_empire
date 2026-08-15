@@ -735,6 +735,60 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đã kích hoạt VIP 30 ngày! 👑'**
   String get iapVipSnack;
+
+  /// No description provided for @genDuongDen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sữa tươi đường đen'**
+  String get genDuongDen;
+
+  /// No description provided for @genBrulee.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa nướng'**
+  String get genBrulee;
+
+  /// No description provided for @genCheeseFoam.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kem phô mai'**
+  String get genCheeseFoam;
+
+  /// No description provided for @genTraTraiCay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà trái cây'**
+  String get genTraTraiCay;
+
+  /// No description provided for @genBobaVang.
+  ///
+  /// In vi, this message translates to:
+  /// **'Boba vàng'**
+  String get genBobaVang;
+
+  /// No description provided for @genGalaxy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa ngân hà'**
+  String get genGalaxy;
+
+  /// No description provided for @stage4.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xưởng trà sữa nướng'**
+  String get stage4;
+
+  /// No description provided for @stage5.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhà máy phô mai tươi'**
+  String get stage5;
+
+  /// No description provided for @stage6.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đế chế toàn cầu'**
+  String get stage6;
 }
 
 class _AppLocalizationsDelegate

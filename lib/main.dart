@@ -81,10 +81,14 @@ class BobaEmpireApp extends ConsumerWidget {
     );
   }
 
-  // Seed màu theo giai đoạn: nâu trà sữa → matcha → taro (cao cấp dần).
+  // Seed màu theo giai đoạn: nâu → matcha → taro → đường đen → hồng phô mai →
+  // vàng đế chế (cao cấp dần).
   static Color _seedForStage(int stage) => switch (stage) {
         2 => const Color(0xFF3E7C68), // matcha (kiosk)
         3 => const Color(0xFF7A4FA3), // taro (chuỗi cafe)
+        4 => const Color(0xFF6E3F1C), // đường đen nướng
+        5 => const Color(0xFFC65B7C), // hồng phô mai/dâu
+        6 => const Color(0xFFB8860B), // vàng gold đế chế
         _ => const Color(0xFF8D5524), // nâu trà sữa (xe đẩy)
       };
 

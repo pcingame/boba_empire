@@ -115,5 +115,14 @@
   "piggySnack": "Cofrinho: +{gems} 💎",
   "iapVipTitle": "Passe VIP (30 dias) 👑",
   "iapVipDesc": "Sem anúncios + x2 renda + 50💎/dia + limite offline+",
-  "iapVipSnack": "VIP ativado por 30 dias! 👑"
+  "iapVipSnack": "VIP ativado por 30 dias! 👑",
+  "genDuongDen": "Leite com Açúcar Mascavo",
+  "genBrulee": "Chá com Leite Brûlée",
+  "genCheeseFoam": "Espuma de Queijo",
+  "genTraTraiCay": "Chá de Frutas",
+  "genBobaVang": "Boba Dourada",
+  "genGalaxy": "Chá com Leite Galáxia",
+  "stage4": "Oficina Brûlée",
+  "stage5": "Fábrica de Espuma de Queijo",
+  "stage6": "Império Global"
 }

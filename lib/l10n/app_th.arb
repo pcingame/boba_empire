@@ -115,5 +115,14 @@
   "piggySnack": "กระปุก: +{gems} 💎",
   "iapVipTitle": "VIP Pass (30 วัน) 👑",
   "iapVipDesc": "ไม่มีโฆษณา + x2 รายได้ + 50💎/วัน + เพดานออฟไลน์+",
-  "iapVipSnack": "เปิด VIP 30 วันแล้ว! 👑"
+  "iapVipSnack": "เปิด VIP 30 วันแล้ว! 👑",
+  "genDuongDen": "นมสดน้ำตาลดำ",
+  "genBrulee": "ชานมบรูเล่",
+  "genCheeseFoam": "ชีสโฟม",
+  "genTraTraiCay": "ชาผลไม้",
+  "genBobaVang": "โบบาทองคำ",
+  "genGalaxy": "ชานมกาแล็กซี",
+  "stage4": "โรงงานบรูเล่",
+  "stage5": "โรงงานชีสโฟม",
+  "stage6": "อาณาจักรระดับโลก"
 }

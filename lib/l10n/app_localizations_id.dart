@@ -413,4 +413,31 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get iapVipSnack => 'VIP aktif 30 hari! 👑';
+
+  @override
+  String get genDuongDen => 'Susu Gula Aren';
+
+  @override
+  String get genBrulee => 'Teh Susu Brûlée';
+
+  @override
+  String get genCheeseFoam => 'Cheese Foam';
+
+  @override
+  String get genTraTraiCay => 'Teh Buah';
+
+  @override
+  String get genBobaVang => 'Boba Emas';
+
+  @override
+  String get genGalaxy => 'Teh Susu Galaksi';
+
+  @override
+  String get stage4 => 'Bengkel Brûlée';
+
+  @override
+  String get stage5 => 'Pabrik Cheese Foam';
+
+  @override
+  String get stage6 => 'Imperium Global';
 }

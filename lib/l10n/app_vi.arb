@@ -155,5 +155,14 @@
   "@piggySnack": { "placeholders": { "gems": { "type": "String" } } },
   "iapVipTitle": "VIP Pass 30 ngày 👑",
   "iapVipDesc": "Gỡ QC + x2 thu nhập + 50💎/ngày + trần offline+",
-  "iapVipSnack": "Đã kích hoạt VIP 30 ngày! 👑"
+  "iapVipSnack": "Đã kích hoạt VIP 30 ngày! 👑",
+  "genDuongDen": "Sữa tươi đường đen",
+  "genBrulee": "Trà sữa nướng",
+  "genCheeseFoam": "Kem phô mai",
+  "genTraTraiCay": "Trà trái cây",
+  "genBobaVang": "Boba vàng",
+  "genGalaxy": "Trà sữa ngân hà",
+  "stage4": "Xưởng trà sữa nướng",
+  "stage5": "Nhà máy phô mai tươi",
+  "stage6": "Đế chế toàn cầu"
 }

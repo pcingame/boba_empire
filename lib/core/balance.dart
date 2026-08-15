@@ -125,6 +125,9 @@ class Balance {
     StageConfig(stage: 1, name: 'Xe đẩy vỉa hè', unlockCost: 0),
     StageConfig(stage: 2, name: 'Kiosk cửa hàng nhỏ', unlockCost: 2000),
     StageConfig(stage: 3, name: 'Chuỗi cafe sang trọng', unlockCost: 500000),
+    StageConfig(stage: 4, name: 'Xưởng trà sữa nướng', unlockCost: 50000000),
+    StageConfig(stage: 5, name: 'Nhà máy phô mai tươi', unlockCost: 5000000000),
+    StageConfig(stage: 6, name: 'Đế chế toàn cầu', unlockCost: 500000000000),
   ];
 
   static StageConfig stageConfig(int stage) => stages[stage - 1];
@@ -185,6 +188,57 @@ class Balance {
       costGrowth: 1.15,
       incomePerLevelPerSecond: 500,
       stage: 3,
+    ),
+    // Giai đoạn 4 — Xưởng trà sữa nướng (trend đường đen / brûlée).
+    GeneratorConfig(
+      id: 'duong_den',
+      name: 'Sữa tươi đường đen',
+      baseCost: 40000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 1600,
+      stage: 4,
+    ),
+    GeneratorConfig(
+      id: 'brulee',
+      name: 'Trà sữa nướng',
+      baseCost: 130000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 5000,
+      stage: 4,
+    ),
+    // Giai đoạn 5 — Nhà máy phô mai tươi (cheese foam / trà trái cây).
+    GeneratorConfig(
+      id: 'cheese_foam',
+      name: 'Kem phô mai',
+      baseCost: 430000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 16000,
+      stage: 5,
+    ),
+    GeneratorConfig(
+      id: 'tra_trai_cay',
+      name: 'Trà trái cây',
+      baseCost: 1400000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 50000,
+      stage: 5,
+    ),
+    // Giai đoạn 6 — Đế chế toàn cầu (cao cấp nhất).
+    GeneratorConfig(
+      id: 'boba_vang',
+      name: 'Boba vàng',
+      baseCost: 4600000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 160000,
+      stage: 6,
+    ),
+    GeneratorConfig(
+      id: 'galaxy',
+      name: 'Trà sữa ngân hà',
+      baseCost: 15000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 520000,
+      stage: 6,
     ),
   ];
 }
