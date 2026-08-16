@@ -497,7 +497,12 @@ class GameController extends Notifier<GameSnapshot> {
   }
 
   GameSnapshot _snapshot() {
-    final remainingMs = _boostUntilMillis - _clock();
+    // Tính một lần các giá trị dùng nhiều lần trong snapshot (chạy mỗi giây).
+    final now = _clock();
+    final quest = currentQuest(_game);
+    final qp = quest == null ? 0 : questProgress(_game, quest.metric);
+    final vip = vipActive(_game, now);
+    final remainingMs = _boostUntilMillis - now;
     return GameSnapshot(
       money: _game.money,
       gems: _game.gems,
@@ -519,27 +524,24 @@ class GameController extends Notifier<GameSnapshot> {
       adsRemoved: _game.adsRemoved,
       starterPackOwned: _game.starterPackOwned,
       tutorialSeen: _game.tutorialSeen,
-      dailyAvailable: dailyAvailable(_game, _clock()),
+      dailyAvailable: dailyAvailable(_game, now),
       newAchievements: _newAchievements,
       lifetimeEarnings: _game.lifetimeEarnings,
       achievementsClaimed: _game.achievementsClaimed,
       prestigeStarsSpendable: prestigeStarsSpendable(_game),
       prestigeIncomeLevel: _game.prestigeIncomeLevel,
       prestigeTapLevel: _game.prestigeTapLevel,
-      currentQuest: currentQuest(_game),
-      questProgress: currentQuest(_game) == null
-          ? 0
-          : questProgress(_game, currentQuest(_game)!.metric),
-      questDone: currentQuestDone(_game),
+      currentQuest: quest,
+      questProgress: qp,
+      questDone: quest != null && qp >= quest.threshold,
       doubleIncomeOwned: _game.doubleIncomeOwned,
       x2IncomeRemainingSeconds:
-          max(0, (_game.x2IncomeUntilMillis - _clock()) / 1000.0),
+          max(0, (_game.x2IncomeUntilMillis - now) / 1000.0),
       piggyGems: _game.piggyGems,
-      adFree: _game.adsRemoved || vipActive(_game, _clock()),
-      vipActive: vipActive(_game, _clock()),
-      vipRemainingSeconds:
-          max(0, (_game.vipUntilMillis - _clock()) / 1000.0),
-      freeSpinAvailable: dayIndex(_clock()) > _game.lastFreeSpinDay,
+      adFree: _game.adsRemoved || vip,
+      vipActive: vip,
+      vipRemainingSeconds: max(0, (_game.vipUntilMillis - now) / 1000.0),
+      freeSpinAvailable: dayIndex(now) > _game.lastFreeSpinDay,
       levels: _game.levels,
     );
   }

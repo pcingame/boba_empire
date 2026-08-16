@@ -423,22 +423,26 @@ class _MoneyHeader extends ConsumerWidget {
           // Icon xu là widget riêng (không nhét vào chuỗi số) để text tiền vẫn
           // đúng "X Xu" cho test và đọc màn hình. FittedBox co vừa bề ngang khi
           // số lớn hoặc ngôn ngữ dài (không tràn header).
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text('🪙', style: TextStyle(fontSize: 26)),
-                const SizedBox(width: 6),
-                AnimatedCount(
-                  money,
-                  suffix: l10n.coinsSuffix,
-                  style: theme.textTheme.displaySmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: onContainer,
+          // RepaintBoundary: số đếm mượt mỗi frame → không repaint gradient
+          // header theo.
+          RepaintBoundary(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('🪙', style: TextStyle(fontSize: 26)),
+                  const SizedBox(width: 6),
+                  AnimatedCount(
+                    money,
+                    suffix: l10n.coinsSuffix,
+                    style: theme.textTheme.displaySmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: onContainer,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Text(
@@ -508,7 +512,10 @@ class _StageScene extends ConsumerWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        AnimatedSwitcher(
+        // RepaintBoundary: ảnh nền lớn thành layer cache riêng, không repaint
+        // theo cup/mèo/VIP đang động phía trên.
+        RepaintBoundary(
+            child: AnimatedSwitcher(
           duration:
               _reduceMotion ? Duration.zero : const Duration(milliseconds: 500),
           // Mặc định layoutBuilder căn giữa với ràng buộc LỎNG → ảnh tự co về
@@ -531,7 +538,7 @@ class _StageScene extends ConsumerWidget {
             // Thiếu asset (vd môi trường test) thì nền trơn thay vì vỡ.
             errorBuilder: (context, error, stack) => const SizedBox.shrink(),
           ),
-        ),
+        )),
         // Dark mode: phủ lớp mờ để cảnh sáng hoà với nền tối + cup nổi rõ.
         if (theme.brightness == Brightness.dark)
           ColoredBox(
@@ -678,7 +685,9 @@ class _TapAreaState extends ConsumerState<_TapArea>
               final side = (constraints.maxHeight - 36).clamp(120.0, 172.0);
               return GestureDetector(
                 onTap: _onTap,
-                child: ScaleTransition(
+                // RepaintBoundary: pop/thở của cup lặp mỗi frame → cô lập layer.
+                child: RepaintBoundary(
+                    child: ScaleTransition(
                   scale: _popScale,
                   child: Container(
                     width: side,
@@ -727,7 +736,7 @@ class _TapAreaState extends ConsumerState<_TapArea>
                       ),
                     ),
                   ),
-                ),
+                )),
               );
             },
           ),
@@ -770,7 +779,8 @@ class _FloaterState extends State<_Floater>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return AnimatedBuilder(
+    return RepaintBoundary(
+        child: AnimatedBuilder(
       animation: _c,
       builder: (context, child) {
         final t = _c.value;
@@ -787,7 +797,7 @@ class _FloaterState extends State<_Floater>
           shadows: const [Shadow(blurRadius: 4, color: Colors.black26)],
         ),
       ),
-    );
+    ));
   }
 }
 
@@ -1244,11 +1254,13 @@ class _PulseState extends State<_Pulse>
 
   @override
   Widget build(BuildContext context) {
-    return ScaleTransition(
-      scale: Tween<double>(begin: 1.0, end: 1.12).animate(
-        CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    return RepaintBoundary(
+      child: ScaleTransition(
+        scale: Tween<double>(begin: 1.0, end: 1.12).animate(
+          CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+        ),
+        child: widget.child,
       ),
-      child: widget.child,
     );
   }
 }
