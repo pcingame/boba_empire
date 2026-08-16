@@ -1,0 +1,49 @@
+# Codemagic CI/CD — build iOS trên máy Mac của Codemagic (không cần Mac riêng).
+# Docs: https://docs.codemagic.io/yaml-quick-start/building-a-flutter-app/
+#
+# TRƯỚC KHI CHẠY, set trong Codemagic UI (xem hướng dẫn kèm):
+#   1. Kết nối repo GitHub pcingame/boba_empire.
+#   2. Thêm App Store Connect API key, ĐẶT TÊN đúng bằng biến bên dưới:
+#        integrations.app_store_connect: CODEMAGIC_ASC_API_KEY
+#   3. Sửa APP_STORE_APPLE_ID = Apple ID (dạng SỐ) của app trong App Store Connect
+#      (App Information → General → Apple ID). Trước lần build đầu phải đã TẠO app
+#      trong App Store Connect với bundle id com.pcingame.bobaempire.
+
+workflows:
+  ios-testflight:
+    name: iOS – TestFlight
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    integrations:
+      app_store_connect: CODEMAGIC_ASC_API_KEY
+    environment:
+      ios_signing:
+        distribution_type: app_store          # ký để phát hành (managed signing)
+        bundle_identifier: com.pcingame.bobaempire
+      vars:
+        APP_STORE_APPLE_ID: 0000000000         # ⬅️ THAY = Apple ID (số) của app
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Get Flutter packages
+        script: flutter pub get
+      - name: Set up code signing (managed profiles)
+        script: xcode-project use-profiles
+      - name: Flutter build ipa
+        script: |
+          # build-number tự tăng theo TestFlight (mỗi bản upload cần số mới);
+          # nếu app chưa có bản nào → mặc định 1.
+          BN=$(( $(app-store-connect get-latest-testflight-build-number "$APP_STORE_APPLE_ID" 2>/dev/null || echo 0) + 1 ))
+          flutter build ipa --release \
+            --build-number=$BN \
+            --export-options-plist=/Users/builder/export_options.plist
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - flutter_drive.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true             # tự đẩy lên TestFlight sau khi build
+        # submit_to_app_store: false           # bật khi muốn nộp thẳng App Review
