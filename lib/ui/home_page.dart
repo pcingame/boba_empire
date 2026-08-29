@@ -47,6 +47,11 @@ bool get _reduceMotion =>
     WidgetsBinding.instance.platformDispatcher.accessibilityFeatures
         .disableAnimations;
 
+/// Ảnh scene là banner 2:1; khung lại gần vuông. Phóng to ảnh (fitWidth) chừng
+/// này để xe đẩy choán khung cho "đã mắt" mà chỉ cắt nhẹ hai mép (mất mây, giữ
+/// nguyên thân xe + bánh). [_TapArea] cũng đọc số này để neo cup ngồi trên quầy.
+const double _sceneZoom = 1.5;
+
 /// Màn hình chính MVP: đầu trang hiển thị tiền, giữa là nút chạm pha trà,
 /// dưới là shop nâng cấp. Cũng lo phần lifecycle (lưu khi app vào nền).
 class HomePage extends ConsumerStatefulWidget {
@@ -521,15 +526,19 @@ class _StageScene extends ConsumerWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
+        // Nền phủ kín phần trên khi ảnh (banner 2:1) không cao bằng khung — màu
+        // lấy đúng nền trời của scene (#FAE9D4) nên nhìn như trời kéo dài lên.
+        ColoredBox(
+          color: theme.brightness == Brightness.dark
+              ? theme.colorScheme.surface
+              : const Color(0xFFFAE9D4),
+        ),
         // RepaintBoundary: ảnh nền lớn thành layer cache riêng, không repaint
         // theo cup/mèo/VIP đang động phía trên.
         RepaintBoundary(
             child: AnimatedSwitcher(
           duration:
               _reduceMotion ? Duration.zero : const Duration(milliseconds: 500),
-          // Mặc định layoutBuilder căn giữa với ràng buộc LỎNG → ảnh tự co về
-          // kích thước gốc (BoxFit.cover mất tác dụng, nền co thành ô vuông có
-          // lề). Ép StackFit.expand để ảnh luôn lấp đầy khung, cover đúng.
           layoutBuilder: (currentChild, previousChildren) => Stack(
             fit: StackFit.expand,
             children: [
@@ -537,15 +546,23 @@ class _StageScene extends ConsumerWidget {
               ?currentChild,
             ],
           ),
-          child: Image.asset(
-            'assets/scene/stage$n.png',
+          child: ClipRect(
             key: ValueKey(n),
-            fit: BoxFit.cover,
-            // Khung rộng-thấp → cover cắt bớt chiều dọc. Căn GIỮA (thay vì đáy)
-            // để giữ thân quán (mái hiên → quầy) thay vì cắt mất, chừa sàn trống.
-            alignment: Alignment.center,
-            // Thiếu asset (vd môi trường test) thì nền trơn thay vì vỡ.
-            errorBuilder: (context, error, stack) => const SizedBox.shrink(),
+            // fitWidth + phóng [_sceneZoom] rồi căn đáy: xe đẩy choán khung,
+            // bánh xe trên "sàn" ở mép dưới, chỉ cắt nhẹ hai mép. Khoảng trống
+            // còn lại phía trên do [ColoredBox] nền trời lấp.
+            child: Transform.scale(
+              scale: _sceneZoom,
+              alignment: Alignment.bottomCenter,
+              child: Image.asset(
+                'assets/scene/stage$n.png',
+                fit: BoxFit.fitWidth,
+                alignment: Alignment.bottomCenter,
+                // Thiếu asset (vd môi trường test) → nền trơn thay vì vỡ.
+                errorBuilder: (context, error, stack) =>
+                    const SizedBox.shrink(),
+              ),
+            ),
           ),
         )),
         // Dark mode: phủ lớp mờ để cảnh sáng hoà với nền tối + cup nổi rõ.
@@ -682,17 +699,20 @@ class _TapAreaState extends ConsumerState<_TapArea>
               ),
             ),
           ),
-        // Neo hơi thấp để cup NGỒI TRÊN QUẦY (không nổi giữa/đè kệ) và lấp
-        // khoảng trống phía dưới.
-        Align(
-          alignment: const Alignment(0, 0.12),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              // Vòng chạm co theo chiều cao vùng cảnh: giai đoạn sau shop cao
-              // hơn → cảnh thấp lại, nếu để cố định 160 sẽ bị Stack cắt. Chừa
-              // 36px cho bóng; đã neo thấp nên vẫn vừa mép dưới.
-              final side = (constraints.maxHeight - 36).clamp(120.0, 172.0);
-              return GestureDetector(
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final h = constraints.maxHeight;
+            // Vòng chạm co theo chiều cao vùng cảnh: giai đoạn sau shop cao hơn
+            // → cảnh thấp lại, nếu để cố định sẽ bị Stack cắt. Chừa 36px cho bóng.
+            final side = (h - 36).clamp(120.0, 172.0);
+            // Ảnh scene neo đáy, cao ~ (w/2)·[_sceneZoom]; quầy ở ~58% chiều
+            // cao ảnh. Neo cup NGỒI TRÊN QUẦY theo trục dọc thực tế của khung.
+            final imgH = constraints.maxWidth / 2 * _sceneZoom;
+            final counterY = (h - imgH) + imgH * 0.58;
+            final av = (2 * counterY / h - 1).clamp(-0.4, 0.78);
+            return Align(
+              alignment: Alignment(0, av),
+              child: GestureDetector(
                 onTap: _onTap,
                 // RepaintBoundary: pop/thở của cup lặp mỗi frame → cô lập layer.
                 child: RepaintBoundary(
@@ -746,9 +766,9 @@ class _TapAreaState extends ConsumerState<_TapArea>
                     ),
                   ),
                 )),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ],
     );
