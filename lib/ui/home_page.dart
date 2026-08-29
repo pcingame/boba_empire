@@ -853,19 +853,29 @@ class _Shop extends ConsumerWidget {
           children: [
             const _QuestBar(),
             const _StageHeader(),
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 260),
-              child: ListView(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                children: [
-                  for (final config in unlocked)
-                    _ShopTile(
-                      config,
-                      globalMult: globalMult,
-                      isBest: config.id == bestBuyId,
-                    ),
-                ],
+            // AnimatedSize: mở khóa giai đoạn mới thêm nhiều dòng cùng lúc (vd
+            // giai đoạn 2 thêm 3 nguồn thu) khiến danh sách chạm trần 260 ngay
+            // lập tức — không bọc AnimatedSize thì _Shop phình đột ngột, ăn
+            // luôn không gian của _StageScene (Expanded) phía trên, làm nền
+            // quán trông như "co lại" trong 1 frame.
+            AnimatedSize(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+              alignment: Alignment.topCenter,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxHeight: 260),
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  children: [
+                    for (final config in unlocked)
+                      _ShopTile(
+                        config,
+                        globalMult: globalMult,
+                        isBest: config.id == bestBuyId,
+                      ),
+                  ],
+                ),
               ),
             ),
           ],

@@ -175,6 +175,13 @@ class GameController extends Notifier<GameSnapshot> {
   @visibleForTesting
   void debugTick() => _onTick();
 
+  /// Cộng tiền ngay (chỉ dùng cho test).
+  @visibleForTesting
+  void debugGrantCash(double amount) {
+    grantBonus(_game, amount);
+    state = _snapshot();
+  }
+
   /// Chạm ly → +tiền (nhân boost Mưa vàng nếu đang có). Trả về số Xu vừa nhận
   /// để UI hiện hiệu ứng "+X" bay lên.
   double tapCup() {
