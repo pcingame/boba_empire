@@ -399,6 +399,7 @@ class _MoneyHeader extends ConsumerWidget {
                       color: Colors.amber.shade200,
                       child: Text(
                         '👑 VIP',
+                        semanticsLabel: 'VIP',
                         style: theme.textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.brown.shade800,
@@ -431,7 +432,9 @@ class _MoneyHeader extends ConsumerWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('🪙', style: TextStyle(fontSize: 26)),
+                  const ExcludeSemantics(
+                    child: Text('🪙', style: TextStyle(fontSize: 26)),
+                  ),
                   const SizedBox(width: 6),
                   AnimatedCount(
                     money,
@@ -453,11 +456,10 @@ class _MoneyHeader extends ConsumerWidget {
             ),
           ),
           // AnimatedSize: header giãn mượt khi nút xuất hiện (lần mua đầu) thay
-          // vì nhảy giật.
-          AnimatedSize(
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeOut,
-            child: income > 0
+          // vì nhảy giật. Bỏ hẳn khi giảm chuyển động (AnimatedSize không nhận
+          // Duration.zero).
+          Builder(builder: (context) {
+            final slot = income > 0
                 ? Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: FilledButton.tonalIcon(
@@ -470,8 +472,15 @@ class _MoneyHeader extends ConsumerWidget {
                       label: Text(l10n.instantCashButton),
                     ),
                   )
-                : const SizedBox(width: double.infinity),
-          ),
+                : const SizedBox(width: double.infinity);
+            return _reduceMotion
+                ? slot
+                : AnimatedSize(
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.easeOut,
+                    child: slot,
+                  );
+          }),
         ],
       ),
     );
@@ -844,6 +853,39 @@ class _Shop extends ConsumerWidget {
         if (config.stage <= stage) config,
     ];
 
+    // Trần chiều cao shop co theo màn hình: máy nhỏ đỡ chật cảnh quán phía trên,
+    // máy lớn không chừa khoảng trống thừa.
+    final maxShopH =
+        math.min(260.0, MediaQuery.sizeOf(context).height * 0.32);
+    // Ước lượng 1 dòng ~96px; nhiều hơn sức chứa → danh sách cuộn được.
+    final scrollable = unlocked.length * 96 > maxShopH;
+
+    Widget list = ListView(
+      shrinkWrap: true,
+      padding: EdgeInsets.zero,
+      children: [
+        for (final config in unlocked)
+          _ShopTile(
+            config,
+            globalMult: globalMult,
+            isBest: config.id == bestBuyId,
+          ),
+      ],
+    );
+    if (scrollable) {
+      // Mờ dần mép dưới để gợi ý "còn nữa, cuộn xuống".
+      list = ShaderMask(
+        shaderCallback: (rect) => const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.black, Colors.black, Colors.transparent],
+          stops: [0.0, 0.9, 1.0],
+        ).createShader(rect),
+        blendMode: BlendMode.dstIn,
+        child: list,
+      );
+    }
+
     return Material(
       elevation: 8,
       child: SafeArea(
@@ -854,30 +896,26 @@ class _Shop extends ConsumerWidget {
             const _QuestBar(),
             const _StageHeader(),
             // AnimatedSize: mở khóa giai đoạn mới thêm nhiều dòng cùng lúc (vd
-            // giai đoạn 2 thêm 3 nguồn thu) khiến danh sách chạm trần 260 ngay
-            // lập tức — không bọc AnimatedSize thì _Shop phình đột ngột, ăn
-            // luôn không gian của _StageScene (Expanded) phía trên, làm nền
-            // quán trông như "co lại" trong 1 frame.
-            AnimatedSize(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut,
-              alignment: Alignment.topCenter,
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxHeight: 260),
-                child: ListView(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.zero,
-                  children: [
-                    for (final config in unlocked)
-                      _ShopTile(
-                        config,
-                        globalMult: globalMult,
-                        isBest: config.id == bestBuyId,
-                      ),
-                  ],
+            // giai đoạn 2 thêm 3 nguồn thu) khiến danh sách chạm trần ngay lập
+            // tức — không bọc AnimatedSize thì _Shop phình đột ngột, ăn luôn
+            // không gian của _StageScene (Expanded) phía trên, làm nền quán
+            // trông như "co lại" trong 1 frame. Bỏ hẳn khi giảm chuyển động
+            // (AnimatedSize không nhận Duration.zero — tự dirty trong layout).
+            if (_reduceMotion)
+              ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: maxShopH),
+                child: list,
+              )
+            else
+              AnimatedSize(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeOut,
+                alignment: Alignment.topCenter,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxHeight: maxShopH),
+                  child: list,
                 ),
               ),
-            ),
           ],
         ),
       ),
@@ -909,7 +947,7 @@ class _QuestBar extends ConsumerWidget {
       padding: const EdgeInsets.fromLTRB(16, 8, 12, 8),
       child: Row(
         children: [
-          const Text('🎯', style: TextStyle(fontSize: 18)),
+          const ExcludeSemantics(child: Text('🎯', style: TextStyle(fontSize: 18))),
           const SizedBox(width: 8),
           Expanded(
             child: Column(
@@ -928,11 +966,18 @@ class _QuestBar extends ConsumerWidget {
                 const SizedBox(height: 4),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(6),
-                  child: LinearProgressIndicator(
-                    value: ratio,
-                    minHeight: 6,
-                    backgroundColor: theme.colorScheme.onSecondaryContainer
-                        .withValues(alpha: 0.15),
+                  child: TweenAnimationBuilder<double>(
+                    tween: Tween(end: ratio),
+                    duration: _reduceMotion
+                        ? Duration.zero
+                        : const Duration(milliseconds: 400),
+                    curve: Curves.easeOut,
+                    builder: (context, value, _) => LinearProgressIndicator(
+                      value: value,
+                      minHeight: 6,
+                      backgroundColor: theme.colorScheme.onSecondaryContainer
+                          .withValues(alpha: 0.15),
+                    ),
                   ),
                 ),
               ],
@@ -1081,9 +1126,11 @@ class _ShopTile extends ConsumerWidget {
               child: CircleAvatar(
                 radius: 22,
                 backgroundColor: theme.colorScheme.secondaryContainer,
-                child: Text(
-                  _generatorEmoji[config.id] ?? '🧋',
-                  style: const TextStyle(fontSize: 22),
+                child: ExcludeSemantics(
+                  child: Text(
+                    _generatorEmoji[config.id] ?? '🧋',
+                    style: const TextStyle(fontSize: 22),
+                  ),
                 ),
               ),
             ),
@@ -1138,14 +1185,35 @@ class _ShopTile extends ConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
-      // Gợi ý "đáng mua nhất": viền màu nhấn quanh thẻ (tô nhẹ, không đổi layout).
+      // Gợi ý "đáng mua nhất": viền màu + huy hiệu ⭐ (hình sao, không chỉ dựa
+      // vào màu → người mù màu vẫn nhận ra).
       child: isBest
-          ? Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(18),
-                border: Border.all(color: theme.colorScheme.tertiary, width: 2),
-              ),
-              child: card,
+          ? Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(
+                        color: theme.colorScheme.tertiary, width: 2),
+                  ),
+                  child: card,
+                ),
+                Positioned(
+                  top: 4,
+                  right: 6,
+                  child: ExcludeSemantics(
+                    child: Container(
+                      padding: const EdgeInsets.all(3),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.tertiary,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(Icons.star_rounded,
+                          size: 14, color: theme.colorScheme.onTertiary),
+                    ),
+                  ),
+                ),
+              ],
             )
           : card,
     );
@@ -1188,10 +1256,17 @@ class _MilestoneBar extends StatelessWidget {
         Expanded(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(4),
-            child: LinearProgressIndicator(
-              value: progress,
-              minHeight: 5,
-              backgroundColor: theme.colorScheme.surfaceContainerHighest,
+            child: TweenAnimationBuilder<double>(
+              tween: Tween(end: progress),
+              duration: _reduceMotion
+                  ? Duration.zero
+                  : const Duration(milliseconds: 400),
+              curve: Curves.easeOut,
+              builder: (context, value, _) => LinearProgressIndicator(
+                value: value,
+                minHeight: 5,
+                backgroundColor: theme.colorScheme.surfaceContainerHighest,
+              ),
             ),
           ),
         ),
