@@ -363,6 +363,8 @@ class _MoneyHeader extends ConsumerWidget {
         ref.watch(gameControllerProvider.select((s) => s.incomePerSecond));
     final gems = ref.watch(gameControllerProvider.select((s) => s.gems));
     final vip = ref.watch(gameControllerProvider.select((s) => s.vipActive));
+    final globalPercent = ref.watch(gameControllerProvider
+        .select((s) => ((s.globalMilestoneMult - 1) * 100).round()));
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
 
@@ -465,39 +467,42 @@ class _MoneyHeader extends ConsumerWidget {
               ),
             ),
           ),
-          Text(
-            l10n.incomePerSecond(formatNumber(income)),
-            style: theme.textTheme.titleMedium?.copyWith(
-              color: onContainer.withValues(alpha: 0.92),
-              fontWeight: FontWeight.w600,
+          // Dòng "thu nhập/giây" gộp chip "Mốc vàng" (🌐 +%) và nút "Tiền tức
+          // thì" cùng hàng — tiết kiệm chiều cao, trả chỗ cho cảnh quán.
+          Padding(
+            padding: const EdgeInsets.only(top: 2),
+            child: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    l10n.incomePerSecond(formatNumber(income)),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: onContainer.withValues(alpha: 0.92),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                if (globalPercent > 0) ...[
+                  const SizedBox(width: 8),
+                  _GlobalBonusChip(globalPercent),
+                ],
+                const Spacer(),
+                if (income > 0)
+                  FilledButton.tonalIcon(
+                    key: const Key('instant-cash'),
+                    style: FilledButton.styleFrom(
+                      visualDensity: VisualDensity.compact,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                    ),
+                    onPressed: () => _claimInstantCash(context, ref),
+                    icon: const Icon(Icons.card_giftcard, size: 18),
+                    label: Text(l10n.instantCashButton),
+                  ),
+              ],
             ),
           ),
-          // AnimatedSize: header giãn mượt khi nút xuất hiện (lần mua đầu) thay
-          // vì nhảy giật. Bỏ hẳn khi giảm chuyển động (AnimatedSize không nhận
-          // Duration.zero).
-          Builder(builder: (context) {
-            final slot = income > 0
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: FilledButton.tonalIcon(
-                      key: const Key('instant-cash'),
-                      style: FilledButton.styleFrom(
-                        visualDensity: VisualDensity.compact,
-                      ),
-                      onPressed: () => _claimInstantCash(context, ref),
-                      icon: const Icon(Icons.card_giftcard),
-                      label: Text(l10n.instantCashButton),
-                    ),
-                  )
-                : const SizedBox(width: double.infinity);
-            return _reduceMotion
-                ? slot
-                : AnimatedSize(
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.easeOut,
-                    child: slot,
-                  );
-          }),
         ],
       ),
     );
@@ -1139,6 +1144,32 @@ class _QuestBar extends ConsumerWidget {
   }
 }
 
+/// Chip "Mốc vàng" (🌐 +X% thu nhập toàn cục) — dùng ở dòng thu nhập header.
+class _GlobalBonusChip extends StatelessWidget {
+  const _GlobalBonusChip(this.percent);
+
+  final int percent;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.tertiaryContainer,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        AppLocalizations.of(context)!.globalBonusChip(percent),
+        style: theme.textTheme.labelSmall?.copyWith(
+          color: theme.colorScheme.onTertiaryContainer,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+}
+
 /// Tiêu đề giai đoạn hiện tại + nút mở khóa giai đoạn kế (nếu còn).
 class _StageHeader extends ConsumerWidget {
   const _StageHeader();
@@ -1147,12 +1178,9 @@ class _StageHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final stage = ref.watch(gameControllerProvider.select((s) => s.stage));
     final money = ref.watch(gameControllerProvider.select((s) => s.money));
-    final globalMult = ref.watch(
-        gameControllerProvider.select((s) => s.globalMilestoneMult));
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     final next = Balance.nextStageConfig(stage);
-    final globalPercent = ((globalMult - 1) * 100).round();
 
     return Container(
       width: double.infinity,
@@ -1160,60 +1188,45 @@ class _StageHeader extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          Expanded(
-            child: Row(
-              children: [
-                Flexible(
-                  child: Text(
-                    l10n.stageHeader(stageName(l10n, stage)),
-                    style: theme.textTheme.titleMedium,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                // "Mốc vàng": +% thu nhập toàn cục từ việc dồn sâu nguồn thu.
-                if (globalPercent > 0) ...[
-                  const SizedBox(width: 6),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.tertiaryContainer,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      l10n.globalBonusChip(globalPercent),
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: theme.colorScheme.onTertiaryContainer,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ],
+          // Tên giai đoạn co lại (ellipsis); nút mở khóa (chứa giá tiền — quan
+          // trọng hơn) lấy phần còn lại.
+          Flexible(
+            child: Text(
+              l10n.stageHeader(stageName(l10n, stage)),
+              style: theme.textTheme.titleMedium,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           const SizedBox(width: 8),
           if (next != null)
-            Flexible(
-              child: FilledButton(
-                key: const Key('unlock-stage'),
-                onPressed: money >= next.unlockCost
-                    ? () {
-                        if (ref
-                            .read(gameControllerProvider.notifier)
-                            .unlockStage()) {
-                          HapticFeedback.mediumImpact();
-                          ref.read(audioServiceProvider).play(Sfx.unlock);
-                          playEffect(context, AnimAssets.celebration,
-                              size: 280);
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: FilledButton(
+                  key: const Key('unlock-stage'),
+                  // Padding gọn để nhãn (có giá tiền) đủ chỗ trên máy hẹp.
+                  style: FilledButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    visualDensity: VisualDensity.compact,
+                  ),
+                  onPressed: money >= next.unlockCost
+                      ? () {
+                          if (ref
+                              .read(gameControllerProvider.notifier)
+                              .unlockStage()) {
+                            HapticFeedback.mediumImpact();
+                            ref.read(audioServiceProvider).play(Sfx.unlock);
+                            playEffect(context, AnimAssets.celebration,
+                                size: 280);
+                          }
                         }
-                      }
-                    : null,
-                child: Text(
-                  l10n.unlockStageButton(formatNumber(next.unlockCost)),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                      : null,
+                  child: Text(
+                    l10n.unlockStageButton(formatNumber(next.unlockCost)),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
             ),
@@ -1462,6 +1475,7 @@ class _BoostIndicator extends ConsumerWidget {
       gameControllerProvider.select((s) => s.boostRemainingSeconds),
     );
     if (remaining <= 0) return const SizedBox.shrink();
+    final dark = Theme.of(context).brightness == Brightness.dark;
 
     return Positioned(
       top: 8,
@@ -1469,8 +1483,18 @@ class _BoostIndicator extends ConsumerWidget {
       right: 0,
       child: Center(
         child: Chip(
-          backgroundColor: Colors.amber,
-          label: Text(AppLocalizations.of(context)!.boostChip(remaining.ceil())),
+          // "Vàng nóng" cho Mưa vàng nhưng trầm lại ở dark mode để đỡ chói.
+          backgroundColor:
+              dark ? const Color(0xFF6B4F1A) : Colors.amber.shade300,
+          side: BorderSide.none,
+          visualDensity: VisualDensity.compact,
+          label: Text(
+            AppLocalizations.of(context)!.boostChip(remaining.ceil()),
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              color: dark ? const Color(0xFFFFE08A) : Colors.brown.shade900,
+            ),
+          ),
         ),
       ),
     );
