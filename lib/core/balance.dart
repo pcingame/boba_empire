@@ -33,6 +33,11 @@ class Balance {
   static const int milestoneGlobalFreeTiers = 1;
   static const double milestoneGlobalBonus = 0.03;
 
+  /// Nhiệm vụ LẶP LẠI sau khi hết chuỗi 10 bước: "kiếm thêm X Xu" với X =
+  /// [questRepeatBaseEarn] · 10^vòng. Thưởng cố định [questRepeatRewardGems] 💎.
+  static const double questRepeatBaseEarn = 50000000; // 50M
+  static const int questRepeatRewardGems = 30;
+
   // --- Sự kiện Mưa vàng (Golden Rush) ---
 
   /// Hệ số tăng tốc khi kích hoạt Mưa vàng.
@@ -160,6 +165,10 @@ class Balance {
   static const int prestigeDiscountBaseCost = 5;
   static const double prestigeDiscountPerLevel = 0.03;
   static const double prestigeDiscountFloor = 0.4;
+
+  /// "Tự động mua": mở khoá công tắc auto-buy nguồn "đáng mua nhất". 1 cấp.
+  static const int prestigeAutoBuyBaseCost = 12;
+  static const int prestigeAutoBuyMaxLevel = 1;
 
   /// Ba giai đoạn kinh doanh (index = stage - 1). Giai đoạn 1 có sẵn.
   static const List<StageConfig> stages = [

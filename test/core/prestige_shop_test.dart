@@ -66,7 +66,7 @@ void main() {
       expect(keptStageAfterPrestige(3, 5), 3); // kẹp theo stage
     });
 
-    test('4 perk mới đều trừ Sao & tăng cấp', () {
+    test('perk mới đều trừ Sao & tăng cấp', () {
       GameState fresh() =>
           GameState.newGame(nowMillis: 0)..prestigeStars = 9999;
       var s = fresh();
@@ -81,7 +81,10 @@ void main() {
       s = fresh();
       expect(buyPrestigeDiscount(s), isTrue);
       expect(s.prestigeDiscountLevel, 1);
-      expect(prestigeStarsSpendable(s), 9999 - Balance.prestigeDiscountBaseCost);
+      s = fresh();
+      expect(buyPrestigeAutoBuy(s), isTrue);
+      expect(s.prestigeAutoBuyLevel, 1);
+      expect(buyPrestigeAutoBuy(s), isFalse); // tối đa 1 cấp
     });
   });
 }

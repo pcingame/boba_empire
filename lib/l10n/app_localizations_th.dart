@@ -394,6 +394,16 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get prestigeAutoBuyName => 'ซื้ออัตโนมัติ';
+
+  @override
+  String get prestigeAutoBuyDesc =>
+      'ปลดล็อกสวิตช์ซื้อแหล่งที่คุ้มที่สุดอัตโนมัติ';
+
+  @override
+  String get autoBuyLabel => 'อัตโนมัติ';
+
+  @override
   String prestigeStarCost(int cost) {
     return '$cost ⭐';
   }
@@ -406,6 +416,11 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String questBuy(int n) {
     return 'ซื้ออัปเกรด $n รายการ';
+  }
+
+  @override
+  String questRepeatEarn(String amount) {
+    return 'หาเงินเพิ่มอีก $amount Coin';
   }
 
   @override

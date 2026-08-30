@@ -335,6 +335,17 @@ class GameController extends Notifier<GameSnapshot> {
   /// Nâng perk "Mua sỉ" bằng ⭐ Sao. True nếu mua được.
   bool buyPrestigeDiscountUpgrade() => _buyPerk(() => buyPrestigeDiscount(_game));
 
+  /// Mở khoá perk "Tự động mua" bằng ⭐ Sao. True nếu mua được.
+  bool buyPrestigeAutoBuyUpgrade() => _buyPerk(() => buyPrestigeAutoBuy(_game));
+
+  /// Bật/tắt công tắc auto-buy (chỉ có tác dụng khi có perk). Lưu ngay.
+  void setAutoBuy(bool on) {
+    if (_game.autoBuyEnabled == on) return;
+    _game.autoBuyEnabled = on;
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
   bool _buyPerk(bool Function() action) {
     final ok = action();
     if (ok) {
@@ -563,6 +574,7 @@ class GameController extends Notifier<GameSnapshot> {
       // tính offline kế tiếp không đếm trùng thời gian online.
       _game.lastSeenMillis = now;
     }
+    _game.buyCount += autoBuyBest(_game); // perk "Tự động mua" (no-op nếu tắt)
     _updateCat(now);
     _updateVip(now);
     _awardAchievements(); // bắt các mốc lifetimeEarnings tăng theo thời gian
@@ -576,8 +588,7 @@ class GameController extends Notifier<GameSnapshot> {
   GameSnapshot _snapshot() {
     // Tính một lần các giá trị dùng nhiều lần trong snapshot (chạy mỗi giây).
     final now = _clock();
-    final quest = currentQuest(_game);
-    final qp = quest == null ? 0 : questProgress(_game, quest.metric);
+    final qp = currentQuestProgress(_game);
     final vip = vipActive(_game, now);
     final remainingMs = _boostUntilMillis - now;
     return GameSnapshot(
@@ -614,9 +625,11 @@ class GameController extends Notifier<GameSnapshot> {
       prestigeDiscountLevel: _game.prestigeDiscountLevel,
       upgradeCostMult: upgradeCostMultiplier(_game.prestigeDiscountLevel),
       globalMilestoneMult: globalMilestoneMultiplier(_game),
-      currentQuest: quest,
+      currentQuest: currentQuest(_game),
       questProgress: qp,
-      questDone: quest != null && qp >= quest.threshold,
+      questDone: currentQuestDone(_game),
+      prestigeAutoBuyLevel: _game.prestigeAutoBuyLevel,
+      autoBuyEnabled: _game.autoBuyEnabled,
       doubleIncomeOwned: _game.doubleIncomeOwned,
       x2IncomeRemainingSeconds:
           max(0, (_game.x2IncomeUntilMillis - now) / 1000.0),

@@ -146,6 +146,9 @@ class _StarShop extends ConsumerWidget {
     final discountLv = ref.watch(
       gameControllerProvider.select((s) => s.prestigeDiscountLevel),
     );
+    final autoBuyLv = ref.watch(
+      gameControllerProvider.select((s) => s.prestigeAutoBuyLevel),
+    );
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final controller = ref.read(gameControllerProvider.notifier);
@@ -222,6 +225,16 @@ class _StarShop extends ConsumerWidget {
                 Balance.prestigeKeepStageBaseCost, keepStageLv),
             spendable: spendable,
             onBuy: () => buy(controller.buyPrestigeKeepStageUpgrade),
+          ),
+        if (autoBuyLv < Balance.prestigeAutoBuyMaxLevel)
+          _PerkRow(
+            name: l10n.prestigeAutoBuyName,
+            level: autoBuyLv,
+            desc: l10n.prestigeAutoBuyDesc,
+            cost: prestigeShopCost(
+                Balance.prestigeAutoBuyBaseCost, autoBuyLv),
+            spendable: spendable,
+            onBuy: () => buy(controller.buyPrestigeAutoBuyUpgrade),
           ),
       ],
     );

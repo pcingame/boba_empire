@@ -157,6 +157,37 @@ bool buyPrestigeDiscount(GameState state) {
   return true;
 }
 
+/// Mở khoá perk "Tự động mua" bằng ⭐ Sao (tối đa
+/// [Balance.prestigeAutoBuyMaxLevel] = 1). True nếu đủ Sao và chưa mở.
+bool buyPrestigeAutoBuy(GameState state) {
+  if (state.prestigeAutoBuyLevel >= Balance.prestigeAutoBuyMaxLevel) {
+    return false;
+  }
+  final cost = prestigeShopCost(
+      Balance.prestigeAutoBuyBaseCost, state.prestigeAutoBuyLevel);
+  if (prestigeStarsSpendable(state) < cost) return false;
+  state.prestigeAutoBuyLevel += 1;
+  return true;
+}
+
+/// Tự động mua nguồn "đáng mua nhất" tới khi hết tiền (hoặc chạm [maxBuys] để
+/// chặn vòng lặp bệnh lý). Chỉ chạy khi có perk + cờ [GameState.autoBuyEnabled].
+/// Trả về số lần mua.
+int autoBuyBest(
+  GameState state, {
+  List<GeneratorConfig> configs = Balance.generators,
+  int maxBuys = 200,
+}) {
+  if (state.prestigeAutoBuyLevel == 0 || !state.autoBuyEnabled) return 0;
+  var n = 0;
+  while (n < maxBuys) {
+    final id = bestBuyGeneratorId(state, configs);
+    if (id == null || !buyUpgrade(state, id, configs: configs)) break;
+    n++;
+  }
+  return n;
+}
+
 /// Mua/nâng vật phẩm "Kho lạnh offline" bằng Kim Cương. True nếu đủ gems.
 bool buyOfflineCap(GameState state) {
   final cost = offlineCapCost(state.offlineCapLevel);

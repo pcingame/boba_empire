@@ -706,6 +706,24 @@ abstract class AppLocalizations {
   /// **'−{percent}% giá nâng cấp nguồn thu mỗi cấp'**
   String prestigeDiscountDesc(int percent);
 
+  /// No description provided for @prestigeAutoBuyName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự động mua'**
+  String get prestigeAutoBuyName;
+
+  /// No description provided for @prestigeAutoBuyDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở khoá công tắc tự mua nguồn đáng mua nhất'**
+  String get prestigeAutoBuyDesc;
+
+  /// No description provided for @autoBuyLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự động mua'**
+  String get autoBuyLabel;
+
   /// No description provided for @prestigeStarCost.
   ///
   /// In vi, this message translates to:
@@ -723,6 +741,12 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Mua {n} nâng cấp'**
   String questBuy(int n);
+
+  /// No description provided for @questRepeatEarn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiếm thêm {amount} Xu'**
+  String questRepeatEarn(String amount);
 
   /// No description provided for @questClaim.
   ///

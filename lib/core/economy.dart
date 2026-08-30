@@ -50,6 +50,26 @@ int maxAffordableLevels(
   return n;
 }
 
+/// Id nguồn thu "đáng mua nhất" (thu nhập thêm / giá cao nhất) trong các nguồn
+/// đã mở khóa. `null` nếu không có nguồn nào. Dùng cho gợi ý UI + auto-buy.
+String? bestBuyGeneratorId(
+  GameState state, [
+  List<GeneratorConfig> configs = Balance.generators,
+]) {
+  String? best;
+  var bestEff = 0.0;
+  for (final c in configs) {
+    if (c.stage > state.stage) continue;
+    final level = state.levels[c.id] ?? 0;
+    final eff = marginalIncomePerSecond(c, level) / nextLevelCost(c, level);
+    if (eff > bestEff) {
+      bestEff = eff;
+      best = c.id;
+    }
+  }
+  return best;
+}
+
 /// Thu nhập/giây TĂNG THÊM khi nâng một nguồn thu từ [fromLevel] lên
 /// [fromLevel]+[count] (đã tính mốc nhân bội, CHƯA nhân hệ số toàn cục).
 double bulkIncomeGain(GeneratorConfig config, int fromLevel, int count) {
@@ -85,7 +105,9 @@ int prestigeStarsSpent(GameState s) =>
     _prestigeSpentFor(
         Balance.prestigeKeepStageBaseCost, s.prestigeKeepStageLevel) +
     _prestigeSpentFor(
-        Balance.prestigeDiscountBaseCost, s.prestigeDiscountLevel);
+        Balance.prestigeDiscountBaseCost, s.prestigeDiscountLevel) +
+    _prestigeSpentFor(
+        Balance.prestigeAutoBuyBaseCost, s.prestigeAutoBuyLevel);
 
 /// Số Sao còn có thể tiêu (tổng Sao trừ đã tiêu). KHÔNG đụng số Sao dùng cho
 /// passive/accounting prestige → tiêu rồi prestige cũng không lấy lại được.

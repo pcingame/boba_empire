@@ -397,6 +397,16 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get prestigeAutoBuyName => 'Compra automática';
+
+  @override
+  String get prestigeAutoBuyDesc =>
+      'Desbloquea un interruptor que compra la mejor fuente';
+
+  @override
+  String get autoBuyLabel => 'Auto';
+
+  @override
   String prestigeStarCost(int cost) {
     return '$cost ⭐';
   }
@@ -409,6 +419,11 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String questBuy(int n) {
     return 'Compra $n mejoras';
+  }
+
+  @override
+  String questRepeatEarn(String amount) {
+    return 'Gana $amount Monedas más';
   }
 
   @override

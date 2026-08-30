@@ -397,6 +397,16 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get prestigeAutoBuyName => 'Tự động mua';
+
+  @override
+  String get prestigeAutoBuyDesc =>
+      'Mở khoá công tắc tự mua nguồn đáng mua nhất';
+
+  @override
+  String get autoBuyLabel => 'Tự động mua';
+
+  @override
   String prestigeStarCost(int cost) {
     return '$cost ⭐';
   }
@@ -409,6 +419,11 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String questBuy(int n) {
     return 'Mua $n nâng cấp';
+  }
+
+  @override
+  String questRepeatEarn(String amount) {
+    return 'Kiếm thêm $amount Xu';
   }
 
   @override

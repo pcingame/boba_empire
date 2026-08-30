@@ -399,6 +399,16 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get prestigeAutoBuyName => 'Beli otomatis';
+
+  @override
+  String get prestigeAutoBuyDesc =>
+      'Buka sakelar yang otomatis beli sumber terbaik';
+
+  @override
+  String get autoBuyLabel => 'Otomatis';
+
+  @override
   String prestigeStarCost(int cost) {
     return '$cost ⭐';
   }
@@ -411,6 +421,11 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String questBuy(int n) {
     return 'Beli $n peningkatan';
+  }
+
+  @override
+  String questRepeatEarn(String amount) {
+    return 'Dapatkan $amount Koin lagi';
   }
 
   @override

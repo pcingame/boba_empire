@@ -185,6 +185,36 @@ void main() {
     });
   });
 
+  group('autoBuyBest', () {
+    const cfgs = [
+      GeneratorConfig(
+          id: 'a', name: 'A', baseCost: 10, costGrowth: 1.1,
+          incomePerLevelPerSecond: 1),
+      GeneratorConfig(
+          id: 'b', name: 'B', baseCost: 10, costGrowth: 1.1,
+          incomePerLevelPerSecond: 5),
+    ];
+
+    test('không perk / tắt cờ → không mua', () {
+      final s = GameState.newGame(nowMillis: 0)..money = 1e9;
+      expect(autoBuyBest(s, configs: cfgs), 0);
+      s.prestigeAutoBuyLevel = 1; // có perk nhưng chưa bật
+      expect(autoBuyBest(s, configs: cfgs), 0);
+    });
+
+    test('bật → mua tới khi hết tiền, ưu tiên nguồn đáng mua nhất', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..money = 100
+        ..prestigeAutoBuyLevel = 1
+        ..autoBuyEnabled = true;
+      final n = autoBuyBest(s, configs: cfgs);
+      expect(n, greaterThan(0));
+      expect(s.money, lessThan(10)); // gần cạn (cấp rẻ nhất giá 10)
+      // B thu nhập/giá tốt hơn → được mua nhiều hơn.
+      expect((s.levels['b'] ?? 0), greaterThan(s.levels['a'] ?? 0));
+    });
+  });
+
   group('buyUpgradeBulk', () {
     test('mua đúng count cấp, trừ tổng chi phí chuỗi', () {
       final s = GameState.newGame(nowMillis: 0)..money = 100000;
@@ -278,7 +308,10 @@ void main() {
         ..prestigeOfflineLevel = 2
         ..prestigeStartCashLevel = 1
         ..prestigeKeepStageLevel = 3
-        ..prestigeDiscountLevel = 4;
+        ..prestigeDiscountLevel = 4
+        ..prestigeAutoBuyLevel = 1
+        ..autoBuyEnabled = true
+        ..repeatQuestBaseline = 12345.0;
       final round = GameState.fromJson(s.toJson());
       expect(round.money, 42.5);
       expect(round.gems, 3);
@@ -291,6 +324,9 @@ void main() {
       expect(round.prestigeStartCashLevel, 1);
       expect(round.prestigeKeepStageLevel, 3);
       expect(round.prestigeDiscountLevel, 4);
+      expect(round.prestigeAutoBuyLevel, 1);
+      expect(round.autoBuyEnabled, isTrue);
+      expect(round.repeatQuestBaseline, 12345.0);
     });
   });
 

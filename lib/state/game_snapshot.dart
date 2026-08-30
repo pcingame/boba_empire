@@ -36,6 +36,8 @@ class GameSnapshot {
     required this.prestigeStartCashLevel,
     required this.prestigeKeepStageLevel,
     required this.prestigeDiscountLevel,
+    required this.prestigeAutoBuyLevel,
+    required this.autoBuyEnabled,
     required this.upgradeCostMult,
     required this.globalMilestoneMult,
     required this.currentQuest,
@@ -114,6 +116,10 @@ class GameSnapshot {
   final int prestigeKeepStageLevel;
   final int prestigeDiscountLevel;
 
+  /// Perk "Tự động mua" (0/1) + công tắc auto-buy đang bật.
+  final int prestigeAutoBuyLevel;
+  final bool autoBuyEnabled;
+
   /// Hệ số nhân giá nâng cấp nguồn thu (≤ 1) từ perk "Mua sỉ" — UI nhân vào giá
   /// hiển thị + kiểm tra đủ tiền.
   final double upgradeCostMult;
@@ -121,8 +127,9 @@ class GameSnapshot {
   /// Hệ số thu nhập toàn cục từ "mốc vàng" (≥ 1) — hiển thị ở đầu shop.
   final double globalMilestoneMult;
 
-  /// Nhiệm vụ hiện tại (null = đã xong chuỗi), tiến độ, và đã đủ điều kiện nhận.
-  final Quest? currentQuest;
+  /// Nhiệm vụ hiện tại (luôn có — sau chuỗi 10 bước là chuỗi "kiếm thêm" vô hạn),
+  /// tiến độ, và đã đủ điều kiện nhận.
+  final Quest currentQuest;
   final num questProgress;
   final bool questDone;
 

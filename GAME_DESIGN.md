@@ -149,6 +149,7 @@ mới trong shop (panel tự giãn mượt bằng `AnimatedSize`).
   | **Vốn khởi nghiệp** | sau prestige nhận Xu = `50 · 25^cấp` | 4 |
   | **Mua sỉ** | −3% giá nâng cấp mọi nguồn thu / cấp (sàn ×0.4) | 5 |
   | **Giữ giai đoạn** | sau prestige giữ tới GĐ `1 + cấp` (tối đa 5 cấp) | 8 |
+  | **Tự động mua** | mở khoá công tắc auto-buy nguồn "đáng mua nhất" (1 cấp) | 12 |
 
 ---
 
@@ -201,7 +202,9 @@ Trạng thái mèo/VIP là **runtime, không persist** — thoát app giữa Gol
 
 ### Nhiệm vụ (chuỗi tuyến tính, `lib/core/quests.dart`)
 
-Làm lần lượt, thanh nhiệm vụ ở đầu panel shop; xong hết chuỗi → **ẩn vĩnh viễn**.
+Làm lần lượt, thanh nhiệm vụ ở đầu panel shop. Xong chuỗi 10 bước → chuyển sang
+**chuỗi lặp vô hạn**: "kiếm thêm `50M · 10^vòng` Xu", thưởng cố định 30 💎 —
+đếm "kiếm THÊM" từ mốc `repeatQuestBaseline` (chốt lại mỗi lần nhận).
 
 | # | Điều kiện | 💎 | # | Điều kiện | 💎 |
 |---|---|---:|---|---|---:|
@@ -362,7 +365,7 @@ lib/ads · lib/iap            interface trừu tượng + impl thật; stub trê
 | 5 | ~~Nhỏ (doc)~~ ✅ P3 | ~~Comment ghi stage "1..3"~~ → sửa thành "1..6". |
 | 6 | Trung bình | Save **local-only** (SharedPreferences, 1 blob). Không cloud sync, `_schemaVersion` có nhưng **không có code migrate** → save cũ/hỏng = ván mới. Gỡ app = mất sạch. | Thêm cloud save (Play Games / Game Center / Firebase) trước khi scale; viết migration path. |
 | 7 | Nhỏ (UX) | `tapValue` cố định 1, chỉ scale qua perk "Siêu chạm"/boost → nút "Chạm pha trà" (hero interaction) mất ý nghĩa kinh tế sau ~1 phút. | Bình thường với thể loại; cân nhắc 1 nâng cấp "giá trị chạm" bằng Xu để giữ nút sống. |
-| 8 | Nhỏ (UX) | Chuỗi nhiệm vụ hữu hạn (10 bước, dừng ở "kiếm 10M") → thanh nhiệm vụ ẩn vĩnh viễn ở mid/late game. | Thêm nhiệm vụ lặp lại / nhiệm vụ ngày. |
+| 8 | ~~Nhỏ (UX)~~ ✅ P5 | ~~Chuỗi nhiệm vụ hữu hạn~~ → sau 10 bước là chuỗi "kiếm thêm" vô hạn (mục 9). |
 
 ---
 
@@ -407,8 +410,19 @@ lib/ads · lib/iap            interface trừu tượng + impl thật; stub trê
   qua N cấp — hiện đúng ở dòng shop). Tất cả tôn trọng perk "Mua sỉ".
 - Chế độ mua lưu ở phiên (không persist), mặc định ×1.
 
-**Còn lại (chưa làm)**: auto-buy, auto-tap (finding #7), nhiệm vụ lặp lại
-(finding #8). Có thể làm ở phase sau nếu cần.
+### Phase 5 — Auto-buy + nhiệm vụ lặp lại (đã làm)
+
+- **Perk "Tự động mua"** (kho Sao, 12 ⭐, 1 cấp): mở khoá công tắc trong shop
+  (`_AutoBuyToggle`). Bật → mỗi tick `autoBuyBest` mua nguồn "đáng mua nhất"
+  (`bestBuyGeneratorId`) tới khi hết tiền (cap 200 lượt/tick).
+- **Nhiệm vụ lặp lại** (fix finding #8): sau chuỗi 10, `currentQuest` trả nhiệm
+  vụ "kiếm thêm `50M·10^vòng` Xu" (30 💎/vòng); tiến độ đếm từ
+  `repeatQuestBaseline`. Thanh nhiệm vụ giờ **luôn hiển thị**.
+- `GameState` +3 field (`prestigeAutoBuyLevel`, `autoBuyEnabled`,
+  `repeatQuestBaseline`), JSON back-compat.
+
+**Còn lại**: auto-tap (finding #7 — chưa làm), persist Golden Rush (finding #3),
+cloud save (finding #6).
 
 ---
 

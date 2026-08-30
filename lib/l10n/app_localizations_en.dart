@@ -394,6 +394,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get prestigeAutoBuyName => 'Auto-buy';
+
+  @override
+  String get prestigeAutoBuyDesc =>
+      'Unlock a switch that auto-buys the best-value source';
+
+  @override
+  String get autoBuyLabel => 'Auto-buy';
+
+  @override
   String prestigeStarCost(int cost) {
     return '$cost ⭐';
   }
@@ -406,6 +416,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String questBuy(int n) {
     return 'Buy $n upgrades';
+  }
+
+  @override
+  String questRepeatEarn(String amount) {
+    return 'Earn $amount more Coins';
   }
 
   @override

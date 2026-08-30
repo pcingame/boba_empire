@@ -82,6 +82,9 @@ class GameState {
     this.prestigeStartCashLevel = 0,
     this.prestigeKeepStageLevel = 0,
     this.prestigeDiscountLevel = 0,
+    this.prestigeAutoBuyLevel = 0,
+    this.autoBuyEnabled = false,
+    this.repeatQuestBaseline = 0,
     this.tapCount = 0,
     this.buyCount = 0,
     this.questIndex = 0,
@@ -174,6 +177,16 @@ class GameState {
   /// Cấp perk "Mua sỉ" — giảm % giá nâng cấp mọi nguồn thu.
   int prestigeDiscountLevel;
 
+  /// Cấp perk "Tự động mua" (0/1) — mở khoá công tắc [autoBuyEnabled].
+  int prestigeAutoBuyLevel;
+
+  /// Công tắc auto-buy đang bật (chỉ có tác dụng khi có perk).
+  bool autoBuyEnabled;
+
+  /// Mốc `lifetimeEarnings` khi bắt đầu vùng nhiệm vụ lặp lại — nhiệm vụ lặp đếm
+  /// "kiếm THÊM" từ mốc này.
+  double repeatQuestBaseline;
+
   /// Số lần chạm ly & số nâng cấp đã mua (đếm cho nhiệm vụ).
   int tapCount;
   int buyCount;
@@ -222,6 +235,9 @@ class GameState {
         'prestigeStartCashLevel': prestigeStartCashLevel,
         'prestigeKeepStageLevel': prestigeKeepStageLevel,
         'prestigeDiscountLevel': prestigeDiscountLevel,
+        'prestigeAutoBuyLevel': prestigeAutoBuyLevel,
+        'autoBuyEnabled': autoBuyEnabled,
+        'repeatQuestBaseline': repeatQuestBaseline,
         'tapCount': tapCount,
         'buyCount': buyCount,
         'questIndex': questIndex,
@@ -265,6 +281,11 @@ class GameState {
             (json['prestigeKeepStageLevel'] as num?)?.toInt() ?? 0,
         prestigeDiscountLevel:
             (json['prestigeDiscountLevel'] as num?)?.toInt() ?? 0,
+        prestigeAutoBuyLevel:
+            (json['prestigeAutoBuyLevel'] as num?)?.toInt() ?? 0,
+        autoBuyEnabled: (json['autoBuyEnabled'] as bool?) ?? false,
+        repeatQuestBaseline:
+            (json['repeatQuestBaseline'] as num?)?.toDouble() ?? 0,
         tapCount: (json['tapCount'] as num?)?.toInt() ?? 0,
         buyCount: (json['buyCount'] as num?)?.toInt() ?? 0,
         questIndex: (json['questIndex'] as num?)?.toInt() ?? 0,

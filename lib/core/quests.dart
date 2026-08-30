@@ -2,16 +2,24 @@
 /// tiến độ suy từ [GameState] (có thêm tapCount/buyCount), chỉ persist questIndex.
 library;
 
+import 'dart:math';
+
+import 'balance.dart';
 import 'models.dart';
 
 enum QuestMetric { tap, buy, earn, levels, stage, prestige }
 
 class Quest {
-  const Quest(this.metric, this.threshold, this.rewardGems);
+  const Quest(this.metric, this.threshold, this.rewardGems,
+      {this.repeatable = false});
 
   final QuestMetric metric;
   final num threshold;
   final int rewardGems;
+
+  /// Nhiệm vụ "kiếm THÊM" thuộc vùng lặp lại (sau chuỗi 10 bước) — tiến độ đếm
+  /// từ [GameState.repeatQuestBaseline] chứ không từ 0.
+  final bool repeatable;
 }
 
 /// Chuỗi nhiệm vụ (làm theo thứ tự). Đầu game nhỏ & nhanh, sau tăng dần.
@@ -37,22 +45,40 @@ num questProgress(GameState s, QuestMetric metric) => switch (metric) {
       QuestMetric.prestige => s.prestigeStars,
     };
 
-/// Nhiệm vụ hiện tại (null nếu đã xong hết chuỗi).
-Quest? currentQuest(GameState s) =>
-    s.questIndex < quests.length ? quests[s.questIndex] : null;
+/// Nhiệm vụ LẶP LẠI thứ [cycle] (0, 1, 2…): "kiếm thêm base·10^cycle Xu".
+Quest _repeatQuest(int cycle) => Quest(
+      QuestMetric.earn,
+      Balance.questRepeatBaseEarn * pow(10, cycle),
+      Balance.questRepeatRewardGems,
+      repeatable: true,
+    );
 
-/// Nhiệm vụ hiện tại đã đủ điều kiện để nhận chưa.
-bool currentQuestDone(GameState s) {
+/// Nhiệm vụ hiện tại. Sau chuỗi 10 bước → chuỗi "kiếm thêm" vô hạn.
+Quest currentQuest(GameState s) => s.questIndex < quests.length
+    ? quests[s.questIndex]
+    : _repeatQuest(s.questIndex - quests.length);
+
+/// Tiến độ nhiệm vụ hiện tại (nhiệm vụ lặp đếm "kiếm thêm" từ baseline).
+num currentQuestProgress(GameState s) {
   final q = currentQuest(s);
-  return q != null && questProgress(s, q.metric) >= q.threshold;
+  if (q.repeatable) return s.lifetimeEarnings - s.repeatQuestBaseline;
+  return questProgress(s, q.metric);
 }
 
+/// Nhiệm vụ hiện tại đã đủ điều kiện để nhận chưa.
+bool currentQuestDone(GameState s) =>
+    currentQuestProgress(s) >= currentQuest(s).threshold;
+
 /// Nhận thưởng nhiệm vụ hiện tại nếu đã đạt: cộng gems + sang nhiệm vụ kế. Trả
-/// về gems nhận (0 nếu chưa đạt / hết chuỗi). MUTATE [s].
+/// về gems nhận (0 nếu chưa đạt). MUTATE [s].
 int claimQuest(GameState s) {
   if (!currentQuestDone(s)) return 0;
-  final gems = quests[s.questIndex].rewardGems;
+  final gems = currentQuest(s).rewardGems;
   s.gems += gems;
   s.questIndex += 1;
+  // Vào/tiến trong vùng lặp → chốt mốc để nhiệm vụ kế đếm "kiếm thêm" từ 0.
+  if (s.questIndex >= quests.length) {
+    s.repeatQuestBaseline = s.lifetimeEarnings;
+  }
   return gems;
 }

@@ -929,6 +929,7 @@ class _Shop extends ConsumerWidget {
             const _QuestBar(),
             const _StageHeader(),
             const _BuyModeSelector(),
+            const _AutoBuyToggle(),
             // AnimatedSize: mở khóa giai đoạn mới thêm nhiều dòng cùng lúc (vd
             // giai đoạn 2 thêm 3 nguồn thu) khiến danh sách chạm trần ngay lập
             // tức — không bọc AnimatedSize thì _Shop phình đột ngột, ăn luôn
@@ -1009,8 +1010,44 @@ class _BuyModeSelector extends ConsumerWidget {
   }
 }
 
+/// Công tắc auto-buy — chỉ hiện khi đã mở perk "Tự động mua" (kho Sao).
+class _AutoBuyToggle extends ConsumerWidget {
+  const _AutoBuyToggle();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final unlocked = ref.watch(
+        gameControllerProvider.select((s) => s.prestigeAutoBuyLevel > 0));
+    if (!unlocked) return const SizedBox.shrink();
+    final on =
+        ref.watch(gameControllerProvider.select((s) => s.autoBuyEnabled));
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+
+    return Container(
+      color: theme.colorScheme.surfaceContainerHighest,
+      padding: const EdgeInsets.fromLTRB(16, 0, 8, 4),
+      child: Row(
+        children: [
+          const Icon(Icons.autorenew, size: 18),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(l10n.autoBuyLabel, style: theme.textTheme.labelLarge),
+          ),
+          Switch(
+            value: on,
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            onChanged: (v) =>
+                ref.read(gameControllerProvider.notifier).setAutoBuy(v),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// Thanh nhiệm vụ hiện tại: mô tả + tiến độ; đủ điều kiện thì hiện nút "Nhận".
-/// Ẩn khi đã hoàn thành toàn bộ chuỗi.
+/// Sau chuỗi 10 bước là chuỗi "kiếm thêm" vô hạn nên luôn hiển thị.
 class _QuestBar extends ConsumerWidget {
   const _QuestBar();
 
@@ -1018,7 +1055,6 @@ class _QuestBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final quest =
         ref.watch(gameControllerProvider.select((s) => s.currentQuest));
-    if (quest == null) return const SizedBox.shrink();
     final progress =
         ref.watch(gameControllerProvider.select((s) => s.questProgress));
     final done = ref.watch(gameControllerProvider.select((s) => s.questDone));
