@@ -118,6 +118,29 @@ double generatorMilestoneMultiplier(int level) =>
 int levelsToNextMilestone(int level) =>
     Balance.milestoneStep - (level % Balance.milestoneStep);
 
+/// Tổng số "mốc vàng" mọi nguồn thu đã vượt — chỉ tính từ mốc thứ
+/// ([Balance.milestoneGlobalFreeTiers]+1) trở lên. Mỗi mốc vàng cộng
+/// [Balance.milestoneGlobalBonus] vào hệ số thu nhập toàn cục.
+int globalMilestoneTiers(
+  GameState state, [
+  List<GeneratorConfig> configs = Balance.generators,
+]) {
+  var n = 0;
+  for (final config in configs) {
+    final tiers = (state.levels[config.id] ?? 0) ~/ Balance.milestoneStep;
+    final counted = tiers - Balance.milestoneGlobalFreeTiers;
+    if (counted > 0) n += counted;
+  }
+  return n;
+}
+
+/// Hệ số thu nhập TOÀN CỤC từ "mốc vàng" (xem [globalMilestoneTiers]).
+double globalMilestoneMultiplier(
+  GameState state, [
+  List<GeneratorConfig> configs = Balance.generators,
+]) =>
+    1 + globalMilestoneTiers(state, configs) * Balance.milestoneGlobalBonus;
+
 /// Thu nhập/giây TĂNG THÊM khi nâng một nguồn thu từ [level] lên [level]+1,
 /// CHƯA nhân hệ số toàn cục (prestige/gem/x2). Có tính mốc nhân bội, nên cấp
 /// chạm mốc cho phần tăng lớn hơn hẳn.
@@ -148,6 +171,7 @@ double effectiveIncomePerSecond(
   double boostMultiplier = 1.0,
 }) =>
     baseIncomePerSecond(state, configs) *
+    globalMilestoneMultiplier(state, configs) *
     prestigeMultiplier(state.prestigeStars, bonusPerStar) *
     permanentMultiplier(state.gemBoostLevel) *
     prestigeIncomeMultiplier(state.prestigeIncomeLevel) *

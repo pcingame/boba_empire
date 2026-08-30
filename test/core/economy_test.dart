@@ -90,6 +90,42 @@ void main() {
     });
   });
 
+  group('mốc vàng (global milestone)', () {
+    test('mốc đầu (cấp 25) miễn phí — chưa cộng toàn cục', () {
+      final s = GameState.newGame(nowMillis: 0)..levels['x'] = 25;
+      expect(globalMilestoneTiers(s, const [_g]), 0);
+      expect(globalMilestoneMultiplier(s, const [_g]), 1.0);
+    });
+
+    test('từ mốc 2 (cấp 50) trở đi cộng dồn +bonus/mốc', () {
+      final s = GameState.newGame(nowMillis: 0)..levels['x'] = 50;
+      expect(globalMilestoneTiers(s, const [_g]), 1);
+      expect(globalMilestoneMultiplier(s, const [_g]),
+          closeTo(1 + Balance.milestoneGlobalBonus, 1e-9));
+      s.levels['x'] = 100; // 4 mốc → 3 tính điểm
+      expect(globalMilestoneTiers(s, const [_g]), 3);
+    });
+
+    test('cộng qua nhiều nguồn thu', () {
+      const g2 = GeneratorConfig(
+          id: 'y', name: 'Y', baseCost: 1, costGrowth: 1.1,
+          incomePerLevelPerSecond: 1);
+      final s = GameState.newGame(nowMillis: 0)
+        ..levels['x'] = 50 // 1 điểm
+        ..levels['y'] = 75; // 2 điểm
+      expect(globalMilestoneTiers(s, const [_g, g2]), 3);
+    });
+
+    test('nhân vào effectiveIncomePerSecond', () {
+      final s = GameState.newGame(nowMillis: 0)..levels['x'] = 50;
+      final base = baseIncomePerSecond(s, const [_g]);
+      expect(
+        effectiveIncomePerSecond(s, const [_g], bonusPerStar: 0.02),
+        closeTo(base * (1 + Balance.milestoneGlobalBonus), 1e-6),
+      );
+    });
+  });
+
   group('starsForLifetimeEarnings', () {
     test('0 khi chưa kiếm được gì', () {
       expect(starsForLifetimeEarnings(0, Balance.prestigeK), 0);

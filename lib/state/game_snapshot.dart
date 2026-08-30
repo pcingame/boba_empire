@@ -37,6 +37,7 @@ class GameSnapshot {
     required this.prestigeKeepStageLevel,
     required this.prestigeDiscountLevel,
     required this.upgradeCostMult,
+    required this.globalMilestoneMult,
     required this.currentQuest,
     required this.questProgress,
     required this.questDone,
@@ -78,7 +79,7 @@ class GameSnapshot {
   final int gemBoostLevel;
   final int offlineCapLevel;
 
-  /// Giai đoạn kinh doanh hiện tại (1..3).
+  /// Giai đoạn kinh doanh hiện tại (1..6).
   final int stage;
 
   /// Đã mua "Gỡ quảng cáo" — UI bỏ qua QC và tự trao thưởng.
@@ -116,6 +117,9 @@ class GameSnapshot {
   /// Hệ số nhân giá nâng cấp nguồn thu (≤ 1) từ perk "Mua sỉ" — UI nhân vào giá
   /// hiển thị + kiểm tra đủ tiền.
   final double upgradeCostMult;
+
+  /// Hệ số thu nhập toàn cục từ "mốc vàng" (≥ 1) — hiển thị ở đầu shop.
+  final double globalMilestoneMult;
 
   /// Nhiệm vụ hiện tại (null = đã xong chuỗi), tiến độ, và đã đủ điều kiện nhận.
   final Quest? currentQuest;

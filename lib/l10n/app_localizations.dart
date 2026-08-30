@@ -154,6 +154,12 @@ abstract class AppLocalizations {
   /// **'Mở khóa {cost} Xu'**
   String unlockStageButton(String cost);
 
+  /// No description provided for @globalBonusChip.
+  ///
+  /// In vi, this message translates to:
+  /// **'🌐 +{percent}%'**
+  String globalBonusChip(int percent);
+
   /// No description provided for @generatorSubtitle.
   ///
   /// In vi, this message translates to:

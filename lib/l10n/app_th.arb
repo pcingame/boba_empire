@@ -11,6 +11,7 @@
 
   "stageHeader": "🏪 {name}",
   "unlockStageButton": "ปลดล็อก {cost} เหรียญ",
+  "globalBonusChip": "🌐 +{percent}%",
   "generatorSubtitle": "+{amount} เหรียญ/วินาที ต่อระดับ",
   "buyButton": "{cost} เหรียญ",
   "boostChip": "🔥 x3 · {seconds} วิ",

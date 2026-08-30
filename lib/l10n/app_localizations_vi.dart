@@ -41,6 +41,11 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String globalBonusChip(int percent) {
+    return '🌐 +$percent%';
+  }
+
+  @override
   String generatorSubtitle(String amount) {
     return '+$amount Xu/giây mỗi cấp';
   }

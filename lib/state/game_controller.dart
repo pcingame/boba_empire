@@ -590,6 +590,7 @@ class GameController extends Notifier<GameSnapshot> {
       prestigeKeepStageLevel: _game.prestigeKeepStageLevel,
       prestigeDiscountLevel: _game.prestigeDiscountLevel,
       upgradeCostMult: upgradeCostMultiplier(_game.prestigeDiscountLevel),
+      globalMilestoneMult: globalMilestoneMultiplier(_game),
       currentQuest: quest,
       questProgress: qp,
       questDone: quest != null && qp >= quest.threshold,

@@ -26,6 +26,13 @@ class Balance {
   static const int milestoneStep = 25;
   static const double milestoneFactor = 2.0;
 
+  /// Hiệu ứng thứ 2 của mốc ("Mốc vàng"): từ mốc thứ [milestoneGlobalFreeTiers]+1
+  /// (mặc định = mốc cấp 50) trở đi, MỖI mốc bất kỳ nguồn thu đạt cộng thêm
+  /// [milestoneGlobalBonus] vào hệ số thu nhập TOÀN CỤC (cộng dồn, vĩnh viễn).
+  /// → thưởng cho việc dồn sâu 1 nguồn mà KHÔNG đổi đường cong income của nguồn.
+  static const int milestoneGlobalFreeTiers = 1;
+  static const double milestoneGlobalBonus = 0.03;
+
   // --- Sự kiện Mưa vàng (Golden Rush) ---
 
   /// Hệ số tăng tốc khi kích hoạt Mưa vàng.

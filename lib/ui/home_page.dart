@@ -833,6 +833,7 @@ class _FloaterState extends State<_Floater>
 /// Hệ số nhân thu nhập toàn cục ở trạng thái ổn định (KHÔNG tính boost tạm thời)
 /// — dùng để quy đổi thu nhập biên "cơ bản" của mỗi nguồn thu ra giá trị thật.
 double _globalIncomeMult(GameSnapshot s) =>
+    s.globalMilestoneMult *
     prestigeMultiplier(s.prestigeStars, Balance.bonusPerStar) *
     permanentMultiplier(s.gemBoostLevel) *
     prestigeIncomeMultiplier(s.prestigeIncomeLevel) *
@@ -1045,9 +1046,12 @@ class _StageHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final stage = ref.watch(gameControllerProvider.select((s) => s.stage));
     final money = ref.watch(gameControllerProvider.select((s) => s.money));
+    final globalMult = ref.watch(
+        gameControllerProvider.select((s) => s.globalMilestoneMult));
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     final next = Balance.nextStageConfig(stage);
+    final globalPercent = ((globalMult - 1) * 100).round();
 
     return Container(
       width: double.infinity,
@@ -1055,7 +1059,7 @@ class _StageHeader extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          Expanded(
+          Flexible(
             child: Text(
               l10n.stageHeader(stageName(l10n, stage)),
               style: theme.textTheme.titleMedium,
@@ -1063,6 +1067,25 @@ class _StageHeader extends ConsumerWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
+          // "Mốc vàng": +% thu nhập toàn cục từ việc dồn sâu các nguồn thu.
+          if (globalPercent > 0) ...[
+            const SizedBox(width: 6),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.tertiaryContainer,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                l10n.globalBonusChip(globalPercent),
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onTertiaryContainer,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+          const Spacer(),
           const SizedBox(width: 8),
           if (next != null)
             Flexible(
@@ -1294,7 +1317,10 @@ class _MilestoneBar extends StatelessWidget {
         ),
         const SizedBox(width: 6),
         Text(
-          '→×$target',
+          // Mốc kế còn cộng +% toàn cục nếu vượt số mốc "miễn phí".
+          level ~/ Balance.milestoneStep >= Balance.milestoneGlobalFreeTiers
+              ? '→×$target 🌐'
+              : '→×$target',
           style: theme.textTheme.labelSmall
               ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
         ),

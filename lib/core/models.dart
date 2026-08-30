@@ -32,11 +32,11 @@ class GeneratorConfig {
   /// Thu nhập mỗi giây cộng thêm cho mỗi cấp của nguồn thu này.
   final double incomePerLevelPerSecond;
 
-  /// Giai đoạn mở khóa nguồn thu này (1..3).
+  /// Giai đoạn mở khóa nguồn thu này (1..6).
   final int stage;
 }
 
-/// Cấu hình một giai đoạn kinh doanh (Xe đẩy → Kiosk → Chuỗi cafe).
+/// Cấu hình một giai đoạn kinh doanh (Xe đẩy → Kiosk → … → Đế chế toàn cầu).
 class StageConfig {
   const StageConfig({
     required this.stage,
@@ -44,7 +44,7 @@ class StageConfig {
     required this.unlockCost,
   });
 
-  /// Số thứ tự giai đoạn (1..3).
+  /// Số thứ tự giai đoạn (1..6).
   final int stage;
 
   /// Tên hiển thị.
@@ -135,7 +135,7 @@ class GameState {
   /// Cấp vật phẩm "Kho lạnh offline" (nâng trần tiền offline).
   int offlineCapLevel;
 
-  /// Giai đoạn kinh doanh hiện tại (1..3).
+  /// Giai đoạn kinh doanh hiện tại (1..6).
   int stage;
 
   /// Đã mua "Gỡ quảng cáo" (IAP non-consumable) — bỏ qua QC, tự trao thưởng.

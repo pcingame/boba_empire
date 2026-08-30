@@ -11,6 +11,7 @@
 
   "stageHeader": "🏪 {name}",
   "unlockStageButton": "Unlock {cost} Coins",
+  "globalBonusChip": "🌐 +{percent}%",
   "generatorSubtitle": "+{amount} Coins/sec per level",
   "buyButton": "{cost} Coins",
   "boostChip": "🔥 x3 · {seconds}s",

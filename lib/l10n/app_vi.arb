@@ -15,6 +15,8 @@
   "@stageHeader": { "placeholders": { "name": { "type": "String" } } },
   "unlockStageButton": "Mở khóa {cost} Xu",
   "@unlockStageButton": { "placeholders": { "cost": { "type": "String" } } },
+  "globalBonusChip": "🌐 +{percent}%",
+  "@globalBonusChip": { "placeholders": { "percent": { "type": "int" } } },
   "generatorSubtitle": "+{amount} Xu/giây mỗi cấp",
   "@generatorSubtitle": { "placeholders": { "amount": { "type": "String" } } },
   "buyButton": "{cost} Xu",

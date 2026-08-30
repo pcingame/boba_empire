@@ -11,6 +11,7 @@
 
   "stageHeader": "🏪 {name}",
   "unlockStageButton": "Desbloquear {cost} Moedas",
+  "globalBonusChip": "🌐 +{percent}%",
   "generatorSubtitle": "+{amount} Moedas/seg por nível",
   "buyButton": "{cost} Moedas",
   "boostChip": "🔥 x3 · {seconds}s",

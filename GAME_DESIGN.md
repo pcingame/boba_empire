@@ -65,15 +65,23 @@ Mỗi nguồn thu (`GeneratorConfig`) có: `baseCost`, `costGrowth = 1.15`,
 
 - **Giá nâng cấp**: `cost(L) = baseCost · 1.15^L`
 - **Thu nhập/giây của 1 nguồn**: `incomePerLevel · L · milestone(L)`
-- **Mốc nhân bội (milestone)**: cứ mỗi **25 cấp** → nguồn đó **×2** thu nhập
-  (L25 →×2, L50 →×4, L75 →×8…). Cấp 0–24 = ×1 (không đổi cân bằng đầu game).
-  Đây là "củ cà rốt" khiến người chơi **dồn cấp một nguồn** thay vì rải đều.
+- **Mốc nhân bội (milestone)** — 2 hiệu ứng mỗi mốc (25 cấp):
+  1. **Cục bộ**: nguồn đó **×2** thu nhập (L25 →×2, L50 →×4, L75 →×8…).
+     Cấp 0–24 = ×1 (không đổi cân bằng đầu game).
+  2. **"Mốc vàng" (toàn cục)**: từ **mốc thứ 2** (L50) trở đi, MỖI mốc bất kỳ
+     nguồn thu đạt cộng **+3%** vào hệ số thu nhập **toàn cục** (cộng dồn, vĩnh
+     viễn — kể cả sau prestige nếu vẫn còn cấp đó… thực ra prestige xoá cấp nên
+     phải cày lại). Hiện ở chip `🌐 +X%` trên `_StageHeader`; `_MilestoneBar`
+     đánh dấu `🌐` khi mốc kế đóng góp toàn cục.
+  → Milestone giờ là trục tối ưu thật: dồn 1 nguồn tới L50/75/100 vừa ×2 cục bộ
+  vừa +% mọi nguồn.
 - UI gợi ý **"đáng mua nhất"** = nguồn có `thu nhập thêm / giá` cao nhất (viền + ⭐).
 
 **Hệ số nhân toàn cục** (áp lên tổng thu nhập tự động):
 
 ```
-income/s = Σ(nguồn) × (1 + sao·0.02)          ← prestige passive
+income/s = Σ(nguồn) × (1 + mốc_vàng·0.03)      ← "Mốc vàng" (mục trên)
+                     × (1 + sao·0.02)          ← prestige passive
                      × (1 + gemBoostLv·0.10)   ← Cửa hàng 💎 "Tăng thu nhập"
                      × (1 + prestigeIncomeLv·0.25) ← Kho Sao "Siêu thu nhập"
                      × (doubleIncomeOwned ? 2 : 1)  ← IAP x2 vĩnh viễn
@@ -351,7 +359,7 @@ lib/ads · lib/iap            interface trừu tượng + impl thật; stub trê
 | 2 | ~~Trung bình~~ ✅ P2 | ~~**VIP ×2** không áp thu nhập offline~~ → đã cho VIP ×2 + perk "Siêu offline" áp offline. x2-24h (QC) vẫn không áp (chủ ý — boost lúc chơi). |
 | 3 | Nhỏ | **Golden Rush ×3** runtime-only, không persist → kill app giữa chừng là mất. | Persist `_boostUntilMillis` nếu muốn "công bằng". |
 | 4 | ~~Nhỏ (doc)~~ ✅ P2 | ~~Prestige "soft" nhưng "Cách chơi" nói "restart"~~ → prestige giờ hard-reset stage; giữ giai đoạn là perk kho Sao tuỳ chọn. |
-| 5 | Nhỏ (doc) | Comment trong `models.dart` / `game_snapshot.dart` ghi stage "1..3" — thực tế **6 giai đoạn**. | Sửa comment. |
+| 5 | ~~Nhỏ (doc)~~ ✅ P3 | ~~Comment ghi stage "1..3"~~ → sửa thành "1..6". |
 | 6 | Trung bình | Save **local-only** (SharedPreferences, 1 blob). Không cloud sync, `_schemaVersion` có nhưng **không có code migrate** → save cũ/hỏng = ván mới. Gỡ app = mất sạch. | Thêm cloud save (Play Games / Game Center / Firebase) trước khi scale; viết migration path. |
 | 7 | Nhỏ (UX) | `tapValue` cố định 1, chỉ scale qua perk "Siêu chạm"/boost → nút "Chạm pha trà" (hero interaction) mất ý nghĩa kinh tế sau ~1 phút. | Bình thường với thể loại; cân nhắc 1 nâng cấp "giá trị chạm" bằng Xu để giữ nút sống. |
 | 8 | Nhỏ (UX) | Chuỗi nhiệm vụ hữu hạn (10 bước, dừng ở "kiếm 10M") → thanh nhiệm vụ ẩn vĩnh viễn ở mid/late game. | Thêm nhiệm vụ lặp lại / nhiệm vụ ngày. |
@@ -381,10 +389,14 @@ lib/ads · lib/iap            interface trừu tượng + impl thật; stub trê
 - **VIP ×2 + Siêu offline áp cho thu nhập offline** (`applyOfflineEarnings`). Fix
   finding #2.
 
-### Phase 3 — Chiều sâu generator (kế hoạch)
+### Phase 3 — Chiều sâu generator (đã làm)
 
-Milestone đa hiệu ứng (giữ ×2 income + thêm: auto-produce, −giá, buff chéo) —
-**không** thêm generator / đổi đường cong.
+- Milestone giờ **2 hiệu ứng**: giữ **×2 cục bộ** + thêm **"Mốc vàng"** — từ mốc
+  thứ 2 (L50) mỗi mốc bất kỳ nguồn thu đạt cộng **+3% thu nhập toàn cục** (cộng
+  dồn). `globalMilestoneMultiplier` nhân vào `effectiveIncomePerSecond`.
+- **Không** thêm generator / đổi đường cong income của từng nguồn.
+- UI: chip `🌐 +X%` ở `_StageHeader`, dấu `🌐` trên `_MilestoneBar`; gợi ý "thu
+  nhập thêm khi mua" (`_globalIncomeMult`) đã tính cả hệ số này.
 
 ### Phase 4 — QoL (kế hoạch)
 

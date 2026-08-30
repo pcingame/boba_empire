@@ -11,6 +11,7 @@
 
   "stageHeader": "🏪 {name}",
   "unlockStageButton": "Buka {cost} Koin",
+  "globalBonusChip": "🌐 +{percent}%",
   "generatorSubtitle": "+{amount} Koin/dtk per level",
   "buyButton": "{cost} Koin",
   "boostChip": "🔥 x3 · {seconds}s",
