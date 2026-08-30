@@ -230,8 +230,10 @@ class _HomePageState extends ConsumerState<HomePage>
           Column(
             children: [
               _MoneyHeader(),
-              Expanded(child: _StageScene()),
-              _Shop(),
+              // Chia phần còn lại theo tỷ lệ: cảnh quán không bao giờ bị "co"
+              // biến mất, shop luôn có chỗ (danh sách tự cuộn nếu nhiều dòng).
+              Expanded(flex: 42, child: _StageScene()),
+              Expanded(flex: 58, child: _Shop()),
             ],
           ),
           _BoostIndicator(),
@@ -891,71 +893,46 @@ class _Shop extends ConsumerWidget {
         if (config.stage <= stage) config,
     ];
 
-    // Trần chiều cao shop co theo màn hình: máy nhỏ đỡ chật cảnh quán phía trên,
-    // máy lớn không chừa khoảng trống thừa.
-    final maxShopH =
-        math.min(260.0, MediaQuery.sizeOf(context).height * 0.32);
-    // Ước lượng 1 dòng ~96px; nhiều hơn sức chứa → danh sách cuộn được.
-    final scrollable = unlocked.length * 96 > maxShopH;
-
-    Widget list = ListView(
-      shrinkWrap: true,
-      padding: EdgeInsets.zero,
-      children: [
-        for (final config in unlocked)
-          _ShopTile(
-            config,
-            globalMult: globalMult,
-            isBest: config.id == bestBuyId,
-          ),
-      ],
-    );
-    if (scrollable) {
-      // Mờ dần mép dưới để gợi ý "còn nữa, cuộn xuống".
-      list = ShaderMask(
-        shaderCallback: (rect) => const LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Colors.black, Colors.black, Colors.transparent],
-          stops: [0.0, 0.9, 1.0],
-        ).createShader(rect),
-        blendMode: BlendMode.dstIn,
-        child: list,
-      );
-    }
+    final tiles = [
+      for (final config in unlocked)
+        _ShopTile(
+          config,
+          globalMult: globalMult,
+          isBest: config.id == bestBuyId,
+        ),
+    ];
 
     return Material(
       elevation: 8,
       child: SafeArea(
         top: false,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
             const _QuestBar(),
             const _StageHeader(),
             const _BuyModeSelector(),
             const _AutoBuyToggle(),
-            // AnimatedSize: mở khóa giai đoạn mới thêm nhiều dòng cùng lúc (vd
-            // giai đoạn 2 thêm 3 nguồn thu) khiến danh sách chạm trần ngay lập
-            // tức — không bọc AnimatedSize thì _Shop phình đột ngột, ăn luôn
-            // không gian của _StageScene (Expanded) phía trên, làm nền quán
-            // trông như "co lại" trong 1 frame. Bỏ hẳn khi giảm chuyển động
-            // (AnimatedSize không nhận Duration.zero — tự dirty trong layout).
-            if (_reduceMotion)
-              ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: maxShopH),
-                child: list,
-              )
-            else
-              AnimatedSize(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeOut,
-                alignment: Alignment.topCenter,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(maxHeight: maxShopH),
-                  child: list,
-                ),
+            // Danh sách lấp phần _Shop còn lại và tự cuộn — mở giai đoạn mới chỉ
+            // thêm dòng, KHÔNG "ăn" chỗ của _StageScene nữa (bố cục theo flex).
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, c) {
+                  final list = ListView(padding: EdgeInsets.zero, children: tiles);
+                  // Mờ mép dưới gợi ý cuộn khi nội dung tràn khung.
+                  if (unlocked.length * 96 <= c.maxHeight) return list;
+                  return ShaderMask(
+                    shaderCallback: (rect) => const LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Colors.black, Colors.black, Colors.transparent],
+                      stops: [0.0, 0.92, 1.0],
+                    ).createShader(rect),
+                    blendMode: BlendMode.dstIn,
+                    child: list,
+                  );
+                },
               ),
+            ),
           ],
         ),
       ),

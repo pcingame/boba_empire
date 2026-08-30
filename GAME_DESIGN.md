@@ -99,8 +99,9 @@ income/s = Σ(nguồn) × (1 + mốc_vàng·0.03)      ← "Mốc vàng" (mục 
 | 5 — Nhà máy phô mai tươi | 5 000 000 000 | Kem phô mai (430 000, 16 000) · Trà trái cây (1 400 000, 50 000) |
 | 6 — Đế chế toàn cầu | 500 000 000 000 | Boba vàng (4 600 000, 160 000) · Trà sữa ngân hà (15 000 000, 520 000) |
 
-Mở giai đoạn = trừ Xu, `stage++`, đổi ảnh nền + tông màu theme, hiện các nguồn thu
-mới trong shop (panel tự giãn mượt bằng `AnimatedSize`).
+Mở giai đoạn = trừ Xu, `stage++`, đổi ảnh nền + tông màu theme, thêm các nguồn thu
+mới vào shop. Bố cục màn chính chia theo flex (cảnh quán 42 / shop 58 phần chỗ
+còn lại) nên shop chỉ thêm dòng & tự cuộn — không "ăn" chỗ của cảnh quán.
 
 ---
 
