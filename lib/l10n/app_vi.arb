@@ -21,6 +21,7 @@
   "@generatorSubtitle": { "placeholders": { "amount": { "type": "String" } } },
   "buyButton": "{cost} Xu",
   "@buyButton": { "placeholders": { "cost": { "type": "String" } } },
+  "buyModeMax": "MAX",
   "boostChip": "🔥 x3 · {seconds}s",
   "@boostChip": { "placeholders": { "seconds": { "type": "int" } } },
   "vipSnack": "Khách VIP! +{cash} Xu, +{gems} 💎",

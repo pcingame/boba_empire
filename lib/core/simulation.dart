@@ -58,6 +58,27 @@ bool buyUpgrade(
   return true;
 }
 
+/// Mua liền [count] cấp một nguồn thu (nút "×10 / MAX"). Trừ tổng chi phí chuỗi
+/// (đã tính perk "Mua sỉ"). Trả về số cấp thực mua (0 nếu thiếu tiền / chưa mở
+/// khóa / count ≤ 0). Không mua từng phần — thiếu tiền cho trọn [count] thì huỷ.
+int buyUpgradeBulk(
+  GameState state,
+  String generatorId,
+  int count, {
+  List<GeneratorConfig> configs = Balance.generators,
+}) {
+  if (count <= 0) return 0;
+  final config = configs.firstWhere((c) => c.id == generatorId);
+  if (config.stage > state.stage) return 0;
+  final level = state.levels[generatorId] ?? 0;
+  final cost = bulkCost(config, level, count) *
+      upgradeCostMultiplier(state.prestigeDiscountLevel);
+  if (state.money < cost) return 0;
+  state.money -= cost;
+  state.levels[generatorId] = level + count;
+  return count;
+}
+
 /// Mở khóa giai đoạn kế tiếp bằng tiền. Trả về true nếu đủ tiền và còn giai
 /// đoạn để mở.
 bool unlockNextStage(GameState state) {

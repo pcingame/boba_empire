@@ -185,6 +185,34 @@ void main() {
     });
   });
 
+  group('buyUpgradeBulk', () {
+    test('mua đúng count cấp, trừ tổng chi phí chuỗi', () {
+      final s = GameState.newGame(nowMillis: 0)..money = 100000;
+      final cost = bulkCost(_configs.first, 0, 10);
+      final bought = buyUpgradeBulk(s, 'x', 10, configs: _configs);
+      expect(bought, 10);
+      expect(s.levels['x'], 10);
+      expect(s.money, closeTo(100000 - cost, 1e-6));
+    });
+
+    test('thiếu tiền cho trọn count → huỷ, không mua từng phần', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..money = bulkCost(_configs.first, 0, 5) - 1;
+      expect(buyUpgradeBulk(s, 'x', 5, configs: _configs), 0);
+      expect(s.levels['x'] ?? 0, 0);
+    });
+
+    test('chưa mở khoá giai đoạn → 0', () {
+      final s = GameState.newGame(nowMillis: 0)..money = 1e9;
+      const locked = [
+        GeneratorConfig(
+            id: 'z', name: 'Z', baseCost: 1, costGrowth: 1.1,
+            incomePerLevelPerSecond: 1, stage: 3),
+      ];
+      expect(buyUpgradeBulk(s, 'z', 3, configs: locked), 0);
+    });
+  });
+
   group('prestige', () {
     test('chưa đủ lifetime -> không nhận sao, không reset', () {
       final s = GameState.newGame(nowMillis: 0)

@@ -14,6 +14,7 @@
   "globalBonusChip": "🌐 +{percent}%",
   "generatorSubtitle": "+{amount} เหรียญ/วินาที ต่อระดับ",
   "buyButton": "{cost} เหรียญ",
+  "buyModeMax": "MAX",
   "boostChip": "🔥 x3 · {seconds} วิ",
   "vipSnack": "ลูกค้า VIP! +{cash} เหรียญ, +{gems} 💎",
 

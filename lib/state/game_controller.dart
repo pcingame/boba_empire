@@ -204,6 +204,29 @@ class GameController extends Notifier<GameSnapshot> {
     return ok;
   }
 
+  /// Mua liền [count] cấp (nút "×10"). Trả về số cấp thực mua (0 nếu thiếu tiền).
+  int buyBulk(String generatorId, int count) {
+    final bought = buyUpgradeBulk(_game, generatorId, count);
+    if (bought > 0) {
+      _game.buyCount += bought;
+      _awardAchievements();
+      state = _snapshot();
+    }
+    return bought;
+  }
+
+  /// Mua tối đa số cấp có thể (nút "MAX"). Trả về số cấp thực mua.
+  int buyMax(String generatorId) {
+    final config = Balance.generators.firstWhere((c) => c.id == generatorId);
+    final count = maxAffordableLevels(
+      config,
+      _game.levels[generatorId] ?? 0,
+      _game.money,
+      upgradeCostMultiplier(_game.prestigeDiscountLevel),
+    );
+    return buyBulk(generatorId, count);
+  }
+
   /// Nhận thưởng nhiệm vụ hiện tại (nếu đã đạt) và sang nhiệm vụ kế. Trả về gems
   /// nhận (0 nếu chưa đạt). Lưu ngay vì gems premium.
   int claimCurrentQuest() {

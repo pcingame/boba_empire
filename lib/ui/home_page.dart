@@ -52,6 +52,18 @@ bool get _reduceMotion =>
 /// nguyên thân xe + bánh). [_TapArea] cũng đọc số này để neo cup ngồi trên quầy.
 const double _sceneZoom = 1.5;
 
+/// Chế độ mua trong shop: 1 cấp · 10 cấp · tối đa. Lưu ở phiên (không persist).
+enum _BuyMode { x1, x10, max }
+
+final _buyModeProvider =
+    NotifierProvider<_BuyModeNotifier, _BuyMode>(_BuyModeNotifier.new);
+
+class _BuyModeNotifier extends Notifier<_BuyMode> {
+  @override
+  _BuyMode build() => _BuyMode.x1;
+  void select(_BuyMode m) => state = m;
+}
+
 /// Màn hình chính MVP: đầu trang hiển thị tiền, giữa là nút chạm pha trà,
 /// dưới là shop nâng cấp. Cũng lo phần lifecycle (lưu khi app vào nền).
 class HomePage extends ConsumerStatefulWidget {
@@ -916,6 +928,7 @@ class _Shop extends ConsumerWidget {
           children: [
             const _QuestBar(),
             const _StageHeader(),
+            const _BuyModeSelector(),
             // AnimatedSize: mở khóa giai đoạn mới thêm nhiều dòng cùng lúc (vd
             // giai đoạn 2 thêm 3 nguồn thu) khiến danh sách chạm trần ngay lập
             // tức — không bọc AnimatedSize thì _Shop phình đột ngột, ăn luôn
@@ -937,6 +950,58 @@ class _Shop extends ConsumerWidget {
                   child: list,
                 ),
               ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Chọn chế độ mua (×1 · ×10 · MAX) cho mọi dòng shop.
+class _BuyModeSelector extends ConsumerWidget {
+  const _BuyModeSelector();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final mode = ref.watch(_buyModeProvider);
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+
+    Widget seg(_BuyMode m, String label) {
+      final on = mode == m;
+      return Expanded(
+        child: InkWell(
+          onTap: () => ref.read(_buyModeProvider.notifier).select(m),
+          child: Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            color: on
+                ? theme.colorScheme.primary
+                : theme.colorScheme.surfaceContainerHigh,
+            child: Text(
+              label,
+              style: theme.textTheme.labelMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: on
+                    ? theme.colorScheme.onPrimary
+                    : theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      color: theme.colorScheme.surfaceContainerHighest,
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 6),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Row(
+          children: [
+            seg(_BuyMode.x1, '×1'),
+            seg(_BuyMode.x10, '×10'),
+            seg(_BuyMode.max, l10n.buyModeMax),
           ],
         ),
       ),
@@ -1059,33 +1124,39 @@ class _StageHeader extends ConsumerWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          Flexible(
-            child: Text(
-              l10n.stageHeader(stageName(l10n, stage)),
-              style: theme.textTheme.titleMedium,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+          Expanded(
+            child: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    l10n.stageHeader(stageName(l10n, stage)),
+                    style: theme.textTheme.titleMedium,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                // "Mốc vàng": +% thu nhập toàn cục từ việc dồn sâu nguồn thu.
+                if (globalPercent > 0) ...[
+                  const SizedBox(width: 6),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.tertiaryContainer,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      l10n.globalBonusChip(globalPercent),
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        color: theme.colorScheme.onTertiaryContainer,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ],
             ),
           ),
-          // "Mốc vàng": +% thu nhập toàn cục từ việc dồn sâu các nguồn thu.
-          if (globalPercent > 0) ...[
-            const SizedBox(width: 6),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.tertiaryContainer,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Text(
-                l10n.globalBonusChip(globalPercent),
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: theme.colorScheme.onTertiaryContainer,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-          const Spacer(),
           const SizedBox(width: 8),
           if (next != null)
             Flexible(
@@ -1153,11 +1224,22 @@ class _ShopTile extends ConsumerWidget {
         ref.watch(gameControllerProvider.select((s) => s.money));
     final costMult =
         ref.watch(gameControllerProvider.select((s) => s.upgradeCostMult));
-    final cost = nextLevelCost(config, level) * costMult;
-    final canAfford = money >= cost;
-    final gain = marginalIncomePerSecond(config, level) * globalMult;
+    final mode = ref.watch(_buyModeProvider);
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
+
+    // Số cấp sẽ mua theo chế độ; "MAX" = nhiều nhất mua nổi (tối thiểu 1 để nút
+    // vẫn hiện giá, disable nếu không đủ cho 1 cấp).
+    final count = switch (mode) {
+      _BuyMode.x1 => 1,
+      _BuyMode.x10 => 10,
+      _BuyMode.max =>
+        math.max(1, maxAffordableLevels(config, level, money, costMult)),
+    };
+    final cost = bulkCost(config, level, count) * costMult;
+    final canAfford = money >= cost;
+    final gain = bulkIncomeGain(config, level, count) * globalMult;
+    final countLabel = count > 1 ? ' ×$count' : '';
 
     final card = ClayCard(
         radius: 18,
@@ -1213,16 +1295,21 @@ class _ShopTile extends ConsumerWidget {
             FilledButton(
               onPressed: canAfford
                   ? () {
-                      if (ref
-                          .read(gameControllerProvider.notifier)
-                          .buy(config.id)) {
+                      final ctrl =
+                          ref.read(gameControllerProvider.notifier);
+                      final bought = switch (mode) {
+                        _BuyMode.x1 => ctrl.buy(config.id) ? 1 : 0,
+                        _BuyMode.x10 => ctrl.buyBulk(config.id, 10),
+                        _BuyMode.max => ctrl.buyMax(config.id),
+                      };
+                      if (bought > 0) {
                         HapticFeedback.selectionClick();
                         ref.read(audioServiceProvider).play(Sfx.buy);
                         playEffect(context, AnimAssets.confetti, size: 160);
                       }
                     }
                   : null,
-              child: Text(l10n.buyButton(formatNumber(cost))),
+              child: Text('${l10n.buyButton(formatNumber(cost))}$countLabel'),
             ),
           ],
         ),

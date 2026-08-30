@@ -40,6 +40,35 @@ void main() {
     });
   });
 
+  group('maxAffordableLevels', () {
+    test('đúng số cấp mua nổi', () {
+      // Từ cấp 0, tiền = giá 3 cấp đầu → mua được đúng 3.
+      final money = bulkCost(_g, 0, 3);
+      expect(maxAffordableLevels(_g, 0, money, 1.0), 3);
+      expect(maxAffordableLevels(_g, 0, money - 0.01, 1.0), 2);
+    });
+
+    test('không đủ 1 cấp → 0', () {
+      expect(maxAffordableLevels(_g, 0, nextLevelCost(_g, 0) - 1, 1.0), 0);
+    });
+
+    test('perk "Mua sỉ" (costMult < 1) cho mua nhiều hơn', () {
+      final money = bulkCost(_g, 0, 3);
+      expect(maxAffordableLevels(_g, 0, money, 0.5), greaterThan(3));
+    });
+  });
+
+  group('bulkIncomeGain', () {
+    test('= chênh lệch thu nhập giữa 2 cấp (có mốc)', () {
+      final s = GameState.newGame(nowMillis: 0);
+      s.levels['x'] = 0;
+      final before = baseIncomePerSecond(s, const [_g]);
+      s.levels['x'] = 10;
+      final after = baseIncomePerSecond(s, const [_g]);
+      expect(bulkIncomeGain(_g, 0, 10), closeTo(after - before, 1e-6));
+    });
+  });
+
   group('income', () {
     test('cộng dồn theo cấp của từng nguồn', () {
       final state = GameState.newGame(nowMillis: 0)..levels['x'] = 5;

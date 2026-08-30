@@ -14,6 +14,7 @@
   "globalBonusChip": "🌐 +{percent}%",
   "generatorSubtitle": "+{amount} Monedas/seg por nivel",
   "buyButton": "{cost} Monedas",
+  "buyModeMax": "MAX",
   "boostChip": "🔥 x3 · {seconds}s",
   "vipSnack": "¡Cliente VIP! +{cash} Monedas, +{gems} 💎",
 

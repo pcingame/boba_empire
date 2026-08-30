@@ -56,6 +56,9 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get buyModeMax => 'MAX';
+
+  @override
   String boostChip(int seconds) {
     return '🔥 x3 · $seconds วิ';
   }

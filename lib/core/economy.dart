@@ -27,6 +27,39 @@ double bulkCost(GeneratorConfig config, int fromLevel, int count) {
   return first * (pow(g, count).toDouble() - 1) / (g - 1);
 }
 
+/// Số cấp NHIỀU NHẤT có thể mua liền từ [fromLevel] với [money] Xu (giá đã nhân
+/// [costMult] từ perk "Mua sỉ"). Đảo công thức chuỗi cấp số nhân.
+int maxAffordableLevels(
+  GeneratorConfig config,
+  int fromLevel,
+  double money,
+  double costMult,
+) {
+  if (money <= 0) return 0;
+  final g = config.costGrowth;
+  final first = config.baseCost * pow(g, fromLevel).toDouble() * costMult;
+  if (money < first) return 0;
+  if (g == 1) return (money / first).floor();
+  // money ≥ first · (gⁿ − 1)/(g − 1)  ⇒  n ≤ log_g(1 + money·(g−1)/first)
+  var n = (log(1 + money * (g - 1) / first) / log(g)).floor();
+  // Chỉnh sai số dấu phẩy động ở biên bằng cách đối chiếu lại tổng chính xác.
+  if (bulkCost(config, fromLevel, n + 1) * costMult <= money) n += 1;
+  while (n > 0 && bulkCost(config, fromLevel, n) * costMult > money) {
+    n -= 1;
+  }
+  return n;
+}
+
+/// Thu nhập/giây TĂNG THÊM khi nâng một nguồn thu từ [fromLevel] lên
+/// [fromLevel]+[count] (đã tính mốc nhân bội, CHƯA nhân hệ số toàn cục).
+double bulkIncomeGain(GeneratorConfig config, int fromLevel, int count) {
+  if (count <= 0) return 0;
+  final to = fromLevel + count;
+  return config.incomePerLevelPerSecond *
+      (to * generatorMilestoneMultiplier(to) -
+          fromLevel * generatorMilestoneMultiplier(fromLevel));
+}
+
 /// Hệ số nhân thu nhập vĩnh viễn từ prestige: 1 + sao * bonus.
 double prestigeMultiplier(int stars, double bonusPerStar) =>
     1 + stars * bonusPerStar;

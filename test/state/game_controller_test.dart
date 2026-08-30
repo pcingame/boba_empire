@@ -66,6 +66,30 @@ void main() {
     expect(snap.levelOf('tra_den'), 1);
   });
 
+  test('buyBulk / buyMax mua nhiều cấp một lần', () async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    await GameStorage(prefs).save(
+      GameState.newGame(nowMillis: 0)..money = 100000,
+      nowMillis: 0,
+    );
+    final container = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(() => 0),
+    ]);
+    addTearDown(container.dispose);
+    final ctrl = container.read(gameControllerProvider.notifier);
+
+    expect(ctrl.buyBulk('tra_den', 10), 10);
+    expect(container.read(gameControllerProvider).levelOf('tra_den'), 10);
+
+    final maxed = ctrl.buyMax('tra_den');
+    expect(maxed, greaterThan(0));
+    expect(container.read(gameControllerProvider).levelOf('tra_den'), 10 + maxed);
+    // Đã tiêu gần hết tiền — không mua thêm được cấp nào.
+    expect(ctrl.buyMax('tra_den'), 0);
+  });
+
   test('build tính tiền offline theo đồng hồ', () async {
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();

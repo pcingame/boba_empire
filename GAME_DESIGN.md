@@ -355,7 +355,7 @@ lib/ads · lib/iap            interface trừu tượng + impl thật; stub trê
 
 | # | Mức | Mô tả | Gợi ý |
 |---|---|---|---|
-| 1 | Trung bình | `economy.bulkCost()` + `levelsToNextMilestone()` đã code (comment ghi "cho nút mua ×10 / mua max") nhưng **không widget nào gọi** — `_ShopTile` chỉ `buy()` 1 cấp. | Nối nút "×10 / MAX" (QoL lớn cho idle) hoặc bỏ code chết. |
+| 1 | ~~Trung bình~~ ✅ P4 | ~~`bulkCost()` không widget nào gọi~~ → nối nút chọn chế độ **×1 / ×10 / MAX** trong shop (`_BuyModeSelector`); `buyUpgradeBulk` + `maxAffordableLevels`. |
 | 2 | ~~Trung bình~~ ✅ P2 | ~~**VIP ×2** không áp thu nhập offline~~ → đã cho VIP ×2 + perk "Siêu offline" áp offline. x2-24h (QC) vẫn không áp (chủ ý — boost lúc chơi). |
 | 3 | Nhỏ | **Golden Rush ×3** runtime-only, không persist → kill app giữa chừng là mất. | Persist `_boostUntilMillis` nếu muốn "công bằng". |
 | 4 | ~~Nhỏ (doc)~~ ✅ P2 | ~~Prestige "soft" nhưng "Cách chơi" nói "restart"~~ → prestige giờ hard-reset stage; giữ giai đoạn là perk kho Sao tuỳ chọn. |
@@ -398,10 +398,17 @@ lib/ads · lib/iap            interface trừu tượng + impl thật; stub trê
 - UI: chip `🌐 +X%` ở `_StageHeader`, dấu `🌐` trên `_MilestoneBar`; gợi ý "thu
   nhập thêm khi mua" (`_globalIncomeMult`) đã tính cả hệ số này.
 
-### Phase 4 — QoL (kế hoạch)
+### Phase 4 — QoL: mua ×10 / MAX (đã làm)
 
-Nút mua ×10 / MAX (nối `bulkCost` sẵn có — finding #1), auto-buy, nhiệm vụ lặp lại
-(finding #8), toggle auto-tap.
+- Thanh chọn **×1 / ×10 / MAX** (`_BuyModeSelector`) giữa `_StageHeader` và danh
+  sách shop; áp cho MỌI dòng. Fix finding #1.
+- `buyUpgradeBulk` (mua trọn N cấp, huỷ nếu thiếu tiền), `maxAffordableLevels`
+  (đảo chuỗi cấp số nhân, có chỉnh sai số FP), `bulkIncomeGain` (thu nhập thêm
+  qua N cấp — hiện đúng ở dòng shop). Tất cả tôn trọng perk "Mua sỉ".
+- Chế độ mua lưu ở phiên (không persist), mặc định ×1.
+
+**Còn lại (chưa làm)**: auto-buy, auto-tap (finding #7), nhiệm vụ lặp lại
+(finding #8). Có thể làm ở phase sau nếu cần.
 
 ---
 

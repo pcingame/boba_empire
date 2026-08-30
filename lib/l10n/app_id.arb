@@ -14,6 +14,7 @@
   "globalBonusChip": "🌐 +{percent}%",
   "generatorSubtitle": "+{amount} Koin/dtk per level",
   "buyButton": "{cost} Koin",
+  "buyModeMax": "MAX",
   "boostChip": "🔥 x3 · {seconds}s",
   "vipSnack": "Pelanggan VIP! +{cash} Koin, +{gems} 💎",
 

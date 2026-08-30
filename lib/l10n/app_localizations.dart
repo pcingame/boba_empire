@@ -172,6 +172,12 @@ abstract class AppLocalizations {
   /// **'{cost} Xu'**
   String buyButton(String cost);
 
+  /// No description provided for @buyModeMax.
+  ///
+  /// In vi, this message translates to:
+  /// **'MAX'**
+  String get buyModeMax;
+
   /// No description provided for @boostChip.
   ///
   /// In vi, this message translates to:
