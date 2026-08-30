@@ -1,4 +1,5 @@
 import 'package:boba_empire/core/balance.dart';
+import 'package:boba_empire/core/economy.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/core/simulation.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -104,6 +105,24 @@ void main() {
       applyOfflineEarnings(s, 3600 * 1000, configs: _configs); // 1 giờ
       expect(s.piggyGems, greaterThan(0));
     });
+
+    test('perk "Siêu offline" nhân thu nhập lúc vắng', () {
+      final base = GameState.newGame(nowMillis: 0)..levels['x'] = 1; // 10/s
+      final e0 = applyOfflineEarnings(base, 5000, configs: _configs);
+      final s = GameState.newGame(nowMillis: 0)
+        ..levels['x'] = 1
+        ..prestigeOfflineLevel = 2; // +50%
+      final e1 = applyOfflineEarnings(s, 5000, configs: _configs);
+      expect(e1, closeTo(e0 * 1.5, 1e-6));
+    });
+
+    test('VIP ×2 áp cho thu nhập offline', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..levels['x'] = 1
+        ..vipUntilMillis = 999999999;
+      final earned = applyOfflineEarnings(s, 5000, configs: _configs);
+      expect(earned, closeTo(50 * 2, 1e-6)); // 10/s * 5s * VIP ×2
+    });
   });
 
   group('fillPiggy', () {
@@ -176,9 +195,10 @@ void main() {
       expect(s.money, 500);
     });
 
-    test('nhận sao, reset tiền+cấp, giữ lifetime và sao', () {
+    test('nhận sao, reset tiền+cấp+giai đoạn, giữ lifetime và sao', () {
       final s = GameState.newGame(nowMillis: 0)
         ..money = 9999
+        ..stage = 5
         ..levels['x'] = 7
         ..lifetimeEarnings = 1000000; // -> 50 sao
       expect(prestigeStarsAvailable(s), 50);
@@ -186,7 +206,26 @@ void main() {
       expect(s.prestigeStars, 50);
       expect(s.money, 0);
       expect(s.levels, isEmpty);
+      expect(s.stage, 1); // hard reset về giai đoạn 1
       expect(s.lifetimeEarnings, 1000000); // KHÔNG reset
+    });
+
+    test('perk "Giữ giai đoạn" chặn reset stage', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..stage = 5
+        ..prestigeKeepStageLevel = 2 // giữ tới GĐ 3
+        ..lifetimeEarnings = 1000000;
+      prestige(s);
+      expect(s.stage, 3);
+    });
+
+    test('perk "Vốn khởi nghiệp" cấp Xu sau prestige', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..prestigeStartCashLevel = 1
+        ..lifetimeEarnings = 1000000;
+      prestige(s);
+      expect(s.money, startCashAfterPrestige(1));
+      expect(s.money, greaterThan(0));
     });
 
     test('prestige lần 2 chỉ nhận phần sao chênh lệch', () {
@@ -207,7 +246,11 @@ void main() {
         ..tapValue = 2
         ..levels['x'] = 4
         ..lifetimeEarnings = 999.5
-        ..prestigeStars = 7;
+        ..prestigeStars = 7
+        ..prestigeOfflineLevel = 2
+        ..prestigeStartCashLevel = 1
+        ..prestigeKeepStageLevel = 3
+        ..prestigeDiscountLevel = 4;
       final round = GameState.fromJson(s.toJson());
       expect(round.money, 42.5);
       expect(round.gems, 3);
@@ -216,6 +259,10 @@ void main() {
       expect(round.lifetimeEarnings, 999.5);
       expect(round.prestigeStars, 7);
       expect(round.lastSeenMillis, 1234);
+      expect(round.prestigeOfflineLevel, 2);
+      expect(round.prestigeStartCashLevel, 1);
+      expect(round.prestigeKeepStageLevel, 3);
+      expect(round.prestigeDiscountLevel, 4);
     });
   });
 

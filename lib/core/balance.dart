@@ -136,6 +136,24 @@ class Balance {
   static const int prestigeTapBaseCost = 5;
   static const double prestigeTapPerLevel = 1.0;
 
+  /// "Siêu offline": +25% thu nhập lúc vắng mặt mỗi cấp.
+  static const int prestigeOfflineBaseCost = 3;
+  static const double prestigeOfflinePerLevel = 0.25;
+
+  /// "Vốn khởi nghiệp": sau khi Nhượng quyền nhận ngay Xu = 50 · 25^cấp (cấp 0 =
+  /// 0) — mua lại các cấp đầu tức thì, giảm cảm giác "về mo".
+  static const int prestigeStartCashBaseCost = 4;
+
+  /// "Giữ giai đoạn": sau Nhượng quyền giữ lại tới giai đoạn (1 + cấp). Cấp 5 =
+  /// giữ trọn 6 giai đoạn. Không có perk này → prestige reset về giai đoạn 1.
+  static const int prestigeKeepStageBaseCost = 8;
+  static const int prestigeKeepStageMaxLevel = 5;
+
+  /// "Mua sỉ": −3% giá nâng cấp mọi nguồn thu mỗi cấp (sàn ×0.4).
+  static const int prestigeDiscountBaseCost = 5;
+  static const double prestigeDiscountPerLevel = 0.03;
+  static const double prestigeDiscountFloor = 0.4;
+
   /// Ba giai đoạn kinh doanh (index = stage - 1). Giai đoạn 1 có sẵn.
   static const List<StageConfig> stages = [
     StageConfig(stage: 1, name: 'Xe đẩy vỉa hè', unlockCost: 0),

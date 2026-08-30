@@ -44,7 +44,15 @@ int _prestigeSpentFor(int baseCost, int level) => baseCost * ((1 << level) - 1);
 /// Tổng Sao đã tiêu trong kho prestige (mọi perk).
 int prestigeStarsSpent(GameState s) =>
     _prestigeSpentFor(Balance.prestigeIncomeBaseCost, s.prestigeIncomeLevel) +
-    _prestigeSpentFor(Balance.prestigeTapBaseCost, s.prestigeTapLevel);
+    _prestigeSpentFor(Balance.prestigeTapBaseCost, s.prestigeTapLevel) +
+    _prestigeSpentFor(
+        Balance.prestigeOfflineBaseCost, s.prestigeOfflineLevel) +
+    _prestigeSpentFor(
+        Balance.prestigeStartCashBaseCost, s.prestigeStartCashLevel) +
+    _prestigeSpentFor(
+        Balance.prestigeKeepStageBaseCost, s.prestigeKeepStageLevel) +
+    _prestigeSpentFor(
+        Balance.prestigeDiscountBaseCost, s.prestigeDiscountLevel);
 
 /// Số Sao còn có thể tiêu (tổng Sao trừ đã tiêu). KHÔNG đụng số Sao dùng cho
 /// passive/accounting prestige → tiêu rồi prestige cũng không lấy lại được.
@@ -58,6 +66,25 @@ double prestigeIncomeMultiplier(int level) =>
 /// Hệ số nhân giá trị chạm từ perk "Siêu chạm".
 double prestigeTapMultiplier(int level) =>
     1 + level * Balance.prestigeTapPerLevel;
+
+/// Hệ số nhân thu nhập offline từ perk "Siêu offline".
+double prestigeOfflineMultiplier(int level) =>
+    1 + level * Balance.prestigeOfflinePerLevel;
+
+/// Xu nhận ngay sau Nhượng quyền từ perk "Vốn khởi nghiệp" (cấp 0 → 0).
+double startCashAfterPrestige(int level) =>
+    level <= 0 ? 0 : 50 * pow(25, level).toDouble();
+
+/// Giai đoạn giữ lại sau Nhượng quyền: `1 + cấp perk "Giữ giai đoạn"`, kẹp
+/// trong [1, stageHiện tại].
+int keptStageAfterPrestige(int currentStage, int keepStageLevel) =>
+    (1 + keepStageLevel).clamp(1, currentStage);
+
+/// Hệ số nhân giá nâng cấp nguồn thu từ perk "Mua sỉ" (≤ 1, sàn floor).
+double upgradeCostMultiplier(int discountLevel) {
+  final m = 1 - discountLevel * Balance.prestigeDiscountPerLevel;
+  return m < Balance.prestigeDiscountFloor ? Balance.prestigeDiscountFloor : m;
+}
 
 /// Giá (Kim Cương) để nâng vật phẩm "Tăng thu nhập" lên cấp kế tiếp.
 int gemBoostCost(int currentLevel) =>

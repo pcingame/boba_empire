@@ -121,18 +121,26 @@ mới trong shop (panel tự giãn mượt bằng `AnimatedSize`).
   | 4 000 000 | 100 (= +200% income) |
   | 100 000 000 | 500 |
 
-- **Khi prestige** (`prestige()` trong `simulation.dart`):
-  - **Reset**: `money = 0`, `levels.clear()` (mọi nguồn thu về cấp 0).
-  - **Giữ**: `stage` (không phải mua lại giai đoạn!), `prestigeStars`,
-    `lifetimeEarnings`, `gemBoostLevel`, `offlineCapLevel`, IAP, `questIndex`,
-    `tapCount`, `buyCount`, thành tựu.
-  - → Đây là **"soft prestige"**: giữ tiến trình cấu trúc, chỉ làm lại phần cày Xu,
-    lần này nhanh hơn nhờ +2%/sao.
+- **Khi prestige** (`prestige()` trong `simulation.dart`) — **hard reset**:
+  - **Reset**: `money`, `levels`, **`stage` về 1** (trừ perk "Giữ giai đoạn").
+  - **Giữ**: `prestigeStars`, `lifetimeEarnings`, `gemBoostLevel`,
+    `offlineCapLevel`, cấp perk kho Sao, IAP, `questIndex`, `tapCount`,
+    `buyCount`, thành tựu.
+  - → Mỗi vòng **tái trải nghiệm mở giai đoạn**; re-climb nhanh nhờ +2%/sao +
+    perk kho Sao (giảm giá, vốn khởi nghiệp, giữ giai đoạn).
 
 - **Kho Sao** (tiêu ⭐ mua perk vĩnh viễn — `spendable = tổng Sao − đã tiêu`;
-  không đụng accounting prestige nên "tiêu rồi prestige" không lấy lại được):
-  - **Siêu thu nhập**: +25% thu nhập tự động / cấp. Giá `3 · 2^cấp` Sao (3, 6, 12…).
-  - **Siêu chạm**: +100% giá trị chạm / cấp. Giá `5 · 2^cấp` Sao (5, 10, 20…).
+  không đụng accounting prestige nên "tiêu rồi prestige" không lấy lại được).
+  Giá cấp = `base · 2^cấp` Sao:
+
+  | Perk | Hiệu ứng | base |
+  |---|---|---:|
+  | **Siêu thu nhập** | +25% thu nhập tự động / cấp | 3 |
+  | **Siêu chạm** | +100% giá trị chạm / cấp | 5 |
+  | **Siêu offline** | +25% thu nhập lúc vắng / cấp | 3 |
+  | **Vốn khởi nghiệp** | sau prestige nhận Xu = `50 · 25^cấp` | 4 |
+  | **Mua sỉ** | −3% giá nâng cấp mọi nguồn thu / cấp (sàn ×0.4) | 5 |
+  | **Giữ giai đoạn** | sau prestige giữ tới GĐ `1 + cấp` (tối đa 5 cấp) | 8 |
 
 ---
 
@@ -175,8 +183,9 @@ Trạng thái mèo/VIP là **runtime, không persist** — thoát app giữa Gol
 - **Cap**: `8 giờ` (base) `+ 2h/cấp Kho lạnh` `+ 4h nếu đang VIP`.
 - **Chống lùi giờ**: `Δt ≤ 0` → cộng 0, chỉ cập nhật mốc.
 - Popup "Bạn kiếm được X khi vắng mặt" → có nút **xem QC nhân đôi** (`claimDoubleOffline`).
-- ⚠️ Offline **chỉ áp** hệ số vĩnh viễn (sao, gemBoost, prestigeIncome, IAP x2).
-  **Không áp** Golden Rush ×3, x2-24h (QC), **và VIP ×2** (xem [Vấn đề #2](#12-vấn-đề-phát-hiện)).
+- Offline áp: hệ số vĩnh viễn (sao, gemBoost, prestigeIncome, IAP x2) **+ perk
+  "Siêu offline" (+25%/cấp) + VIP ×2 nếu còn hạn**. Không áp boost tạm thời
+  (Golden Rush ×3, x2-24h QC) — đó là thưởng cho lúc chơi.
 
 ---
 
@@ -339,9 +348,9 @@ lib/ads · lib/iap            interface trừu tượng + impl thật; stub trê
 | # | Mức | Mô tả | Gợi ý |
 |---|---|---|---|
 | 1 | Trung bình | `economy.bulkCost()` + `levelsToNextMilestone()` đã code (comment ghi "cho nút mua ×10 / mua max") nhưng **không widget nào gọi** — `_ShopTile` chỉ `buy()` 1 cấp. | Nối nút "×10 / MAX" (QoL lớn cho idle) hoặc bỏ code chết. |
-| 2 | Trung bình | **VIP ×2** và **x2-24h (QC)** không áp cho thu nhập offline (chỉ IAP x2 vĩnh viễn áp). `applyOfflineEarnings` gọi `effectiveIncomePerSecond` với `boostMultiplier` mặc định 1.0. VIP là perk trả phí → mất ×2 lúc vắng dễ bị coi là lỗi; boost 24h cũng phí nếu đóng app. | Ít nhất cho **VIP ×2** áp offline; cân nhắc x2-24h. |
+| 2 | ~~Trung bình~~ ✅ P2 | ~~**VIP ×2** không áp thu nhập offline~~ → đã cho VIP ×2 + perk "Siêu offline" áp offline. x2-24h (QC) vẫn không áp (chủ ý — boost lúc chơi). |
 | 3 | Nhỏ | **Golden Rush ×3** runtime-only, không persist → kill app giữa chừng là mất. | Persist `_boostUntilMillis` nếu muốn "công bằng". |
-| 4 | Nhỏ (doc) | Prestige là **soft** (giữ `stage`, `questIndex`, tap/buy count; chỉ xóa `money` + `levels`) nhưng "Cách chơi" nói "restart". | Làm rõ trong tooltip/how-to-play là "giữ giai đoạn". |
+| 4 | ~~Nhỏ (doc)~~ ✅ P2 | ~~Prestige "soft" nhưng "Cách chơi" nói "restart"~~ → prestige giờ hard-reset stage; giữ giai đoạn là perk kho Sao tuỳ chọn. |
 | 5 | Nhỏ (doc) | Comment trong `models.dart` / `game_snapshot.dart` ghi stage "1..3" — thực tế **6 giai đoạn**. | Sửa comment. |
 | 6 | Trung bình | Save **local-only** (SharedPreferences, 1 blob). Không cloud sync, `_schemaVersion` có nhưng **không có code migrate** → save cũ/hỏng = ván mới. Gỡ app = mất sạch. | Thêm cloud save (Play Games / Game Center / Firebase) trước khi scale; viết migration path. |
 | 7 | Nhỏ (UX) | `tapValue` cố định 1, chỉ scale qua perk "Siêu chạm"/boost → nút "Chạm pha trà" (hero interaction) mất ý nghĩa kinh tế sau ~1 phút. | Bình thường với thể loại; cân nhắc 1 nâng cấp "giá trị chạm" bằng Xu để giữ nút sống. |
@@ -363,11 +372,14 @@ lib/ads · lib/iap            interface trừu tượng + impl thật; stub trê
 - **Cap boost**: `Balance.maxTimeBoostMultiplier = 12` chặn stack Mưa vàng ×3 ·
   x2-24h · VIP ×2 vượt tay.
 
-### Phase 2 — Chiều sâu prestige (kế hoạch)
+### Phase 2 — Chiều sâu prestige (đã làm)
 
-Hard-reset stage khi prestige + mở rộng Kho Sao 2 → ~7 perk (offline %, tiền khởi
-đầu, mua rẻ, milestone nhanh, auto-buy…) để bù việc reset nặng hơn. Sửa luôn
-finding #2 (VIP ×2 áp offline) và #4 (từ nay prestige đúng nghĩa "restart").
+- **Prestige hard-reset stage** (`stage` → 1). Mỗi vòng tái trải nghiệm mở giai
+  đoạn. Fix finding #4.
+- **Kho Sao 2 → 6 perk**: thêm *Siêu offline*, *Vốn khởi nghiệp*, *Mua sỉ*
+  (−giá nâng cấp), *Giữ giai đoạn* (bù việc reset nặng) — xem bảng mục 5.
+- **VIP ×2 + Siêu offline áp cho thu nhập offline** (`applyOfflineEarnings`). Fix
+  finding #2.
 
 ### Phase 3 — Chiều sâu generator (kế hoạch)
 

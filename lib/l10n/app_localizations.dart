@@ -421,7 +421,7 @@ abstract class AppLocalizations {
   /// No description provided for @prestigeWarning.
   ///
   /// In vi, this message translates to:
-  /// **'⚠️ Sẽ reset toàn bộ Xu và cấp nâng cấp hiện tại.'**
+  /// **'⚠️ Reset Xu, cấp nâng cấp và giai đoạn (perk kho Sao có thể giữ lại một phần).'**
   String get prestigeWarning;
 
   /// No description provided for @cancel.
@@ -645,6 +645,54 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'+{percent}% giá trị chạm mỗi cấp'**
   String prestigeTapDesc(int percent);
+
+  /// No description provided for @prestigeOfflineName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Siêu offline'**
+  String get prestigeOfflineName;
+
+  /// No description provided for @prestigeOfflineDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{percent}% thu nhập lúc vắng mỗi cấp'**
+  String prestigeOfflineDesc(int percent);
+
+  /// No description provided for @prestigeStartCashName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vốn khởi nghiệp'**
+  String get prestigeStartCashName;
+
+  /// No description provided for @prestigeStartCashDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận Xu ngay sau Nhượng quyền (tăng mỗi cấp)'**
+  String get prestigeStartCashDesc;
+
+  /// No description provided for @prestigeKeepStageName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giữ giai đoạn'**
+  String get prestigeKeepStageName;
+
+  /// No description provided for @prestigeKeepStageDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sau Nhượng quyền giữ thêm 1 giai đoạn mỗi cấp'**
+  String get prestigeKeepStageDesc;
+
+  /// No description provided for @prestigeDiscountName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua sỉ'**
+  String get prestigeDiscountName;
+
+  /// No description provided for @prestigeDiscountDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'−{percent}% giá nâng cấp nguồn thu mỗi cấp'**
+  String prestigeDiscountDesc(int percent);
 
   /// No description provided for @prestigeStarCost.
   ///

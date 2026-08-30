@@ -78,6 +78,10 @@ class GameState {
     this.dailyStreak = 0,
     this.prestigeIncomeLevel = 0,
     this.prestigeTapLevel = 0,
+    this.prestigeOfflineLevel = 0,
+    this.prestigeStartCashLevel = 0,
+    this.prestigeKeepStageLevel = 0,
+    this.prestigeDiscountLevel = 0,
     this.tapCount = 0,
     this.buyCount = 0,
     this.questIndex = 0,
@@ -158,6 +162,18 @@ class GameState {
   /// Cấp perk "Siêu chạm" mua bằng ⭐ Sao — +% giá trị mỗi lần chạm vĩnh viễn.
   int prestigeTapLevel;
 
+  /// Cấp perk "Siêu offline" — +% thu nhập lúc vắng mặt.
+  int prestigeOfflineLevel;
+
+  /// Cấp perk "Vốn khởi nghiệp" — Xu nhận ngay sau Nhượng quyền.
+  int prestigeStartCashLevel;
+
+  /// Cấp perk "Giữ giai đoạn" — giữ tới giai đoạn (1 + cấp) sau Nhượng quyền.
+  int prestigeKeepStageLevel;
+
+  /// Cấp perk "Mua sỉ" — giảm % giá nâng cấp mọi nguồn thu.
+  int prestigeDiscountLevel;
+
   /// Số lần chạm ly & số nâng cấp đã mua (đếm cho nhiệm vụ).
   int tapCount;
   int buyCount;
@@ -202,6 +218,10 @@ class GameState {
         'achievementsClaimed': achievementsClaimed,
         'prestigeIncomeLevel': prestigeIncomeLevel,
         'prestigeTapLevel': prestigeTapLevel,
+        'prestigeOfflineLevel': prestigeOfflineLevel,
+        'prestigeStartCashLevel': prestigeStartCashLevel,
+        'prestigeKeepStageLevel': prestigeKeepStageLevel,
+        'prestigeDiscountLevel': prestigeDiscountLevel,
         'tapCount': tapCount,
         'buyCount': buyCount,
         'questIndex': questIndex,
@@ -237,6 +257,14 @@ class GameState {
         prestigeIncomeLevel:
             (json['prestigeIncomeLevel'] as num?)?.toInt() ?? 0,
         prestigeTapLevel: (json['prestigeTapLevel'] as num?)?.toInt() ?? 0,
+        prestigeOfflineLevel:
+            (json['prestigeOfflineLevel'] as num?)?.toInt() ?? 0,
+        prestigeStartCashLevel:
+            (json['prestigeStartCashLevel'] as num?)?.toInt() ?? 0,
+        prestigeKeepStageLevel:
+            (json['prestigeKeepStageLevel'] as num?)?.toInt() ?? 0,
+        prestigeDiscountLevel:
+            (json['prestigeDiscountLevel'] as num?)?.toInt() ?? 0,
         tapCount: (json['tapCount'] as num?)?.toInt() ?? 0,
         buyCount: (json['buyCount'] as num?)?.toInt() ?? 0,
         questIndex: (json['questIndex'] as num?)?.toInt() ?? 0,

@@ -50,7 +50,8 @@ bool buyUpgrade(
   final config = configs.firstWhere((c) => c.id == generatorId);
   if (config.stage > state.stage) return false; // chưa mở khóa
   final level = state.levels[generatorId] ?? 0;
-  final cost = nextLevelCost(config, level);
+  final cost = nextLevelCost(config, level) *
+      upgradeCostMultiplier(state.prestigeDiscountLevel);
   if (state.money < cost) return false;
   state.money -= cost;
   state.levels[generatorId] = level + 1;
@@ -92,6 +93,46 @@ bool buyPrestigeTap(GameState state) {
       prestigeShopCost(Balance.prestigeTapBaseCost, state.prestigeTapLevel);
   if (prestigeStarsSpendable(state) < cost) return false;
   state.prestigeTapLevel += 1;
+  return true;
+}
+
+/// Nâng perk "Siêu offline" bằng ⭐ Sao. True nếu đủ Sao khả dụng.
+bool buyPrestigeOffline(GameState state) {
+  final cost = prestigeShopCost(
+      Balance.prestigeOfflineBaseCost, state.prestigeOfflineLevel);
+  if (prestigeStarsSpendable(state) < cost) return false;
+  state.prestigeOfflineLevel += 1;
+  return true;
+}
+
+/// Nâng perk "Vốn khởi nghiệp" bằng ⭐ Sao. True nếu đủ Sao khả dụng.
+bool buyPrestigeStartCash(GameState state) {
+  final cost = prestigeShopCost(
+      Balance.prestigeStartCashBaseCost, state.prestigeStartCashLevel);
+  if (prestigeStarsSpendable(state) < cost) return false;
+  state.prestigeStartCashLevel += 1;
+  return true;
+}
+
+/// Nâng perk "Giữ giai đoạn" bằng ⭐ Sao (tối đa
+/// [Balance.prestigeKeepStageMaxLevel]). True nếu đủ Sao và chưa tối đa.
+bool buyPrestigeKeepStage(GameState state) {
+  if (state.prestigeKeepStageLevel >= Balance.prestigeKeepStageMaxLevel) {
+    return false;
+  }
+  final cost = prestigeShopCost(
+      Balance.prestigeKeepStageBaseCost, state.prestigeKeepStageLevel);
+  if (prestigeStarsSpendable(state) < cost) return false;
+  state.prestigeKeepStageLevel += 1;
+  return true;
+}
+
+/// Nâng perk "Mua sỉ" bằng ⭐ Sao. True nếu đủ Sao khả dụng.
+bool buyPrestigeDiscount(GameState state) {
+  final cost = prestigeShopCost(
+      Balance.prestigeDiscountBaseCost, state.prestigeDiscountLevel);
+  if (prestigeStarsSpendable(state) < cost) return false;
+  state.prestigeDiscountLevel += 1;
   return true;
 }
 
@@ -153,11 +194,18 @@ double applyOfflineEarnings(
   state.lastSeenMillis = nowMillis;
   if (elapsedMs <= 0) return 0; // đồng hồ bị lùi hoặc không đổi
   final elapsedSec = min(elapsedMs / 1000.0, maxOfflineSeconds.toDouble());
+  // Offline áp: perk "Siêu offline" + VIP ×2 (nếu còn hạn). KHÔNG áp boost tạm
+  // (Mưa vàng / x2-24h) — đó là thưởng cho lúc chơi.
+  final vipMult = nowMillis < state.vipUntilMillis
+      ? Balance.vipIncomeMultiplier
+      : 1.0;
   final earned = effectiveIncomePerSecond(
         state,
         configs,
         bonusPerStar: Balance.bonusPerStar,
       ) *
+      prestigeOfflineMultiplier(state.prestigeOfflineLevel) *
+      vipMult *
       elapsedSec;
   _credit(state, earned);
   fillPiggy(state, elapsedSec); // heo cũng tích cho khoảng vắng (đã cap)
@@ -181,14 +229,18 @@ int prestigeStarsAvailable(GameState state) {
   return max(0, total - state.prestigeStars);
 }
 
-/// Thực hiện Nhượng quyền: nhận Sao, reset ván (tiền + cấp) nhưng GIỮ
-/// lifetimeEarnings và Sao. Trả về số Sao vừa nhận (0 nếu chưa đủ).
+/// Thực hiện Nhượng quyền: nhận Sao, reset ván (tiền + cấp + giai đoạn) nhưng
+/// GIỮ lifetimeEarnings và Sao. Perk kho Sao có thể giữ lại giai đoạn ("Giữ
+/// giai đoạn") và cấp vốn khởi đầu ("Vốn khởi nghiệp"). Trả về số Sao vừa nhận
+/// (0 nếu chưa đủ).
 int prestige(GameState state) {
   final gained = prestigeStarsAvailable(state);
   if (gained <= 0) return 0;
   state.prestigeStars += gained;
-  state.money = 0;
   state.levels.clear();
+  state.stage =
+      keptStageAfterPrestige(state.stage, state.prestigeKeepStageLevel);
+  state.money = startCashAfterPrestige(state.prestigeStartCashLevel);
   // lifetimeEarnings KHÔNG reset — đó là nền tảng của mô hình Sao tích lũy.
   return gained;
 }

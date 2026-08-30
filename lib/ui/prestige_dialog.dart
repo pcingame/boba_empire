@@ -134,6 +134,18 @@ class _StarShop extends ConsumerWidget {
     final tapLv = ref.watch(
       gameControllerProvider.select((s) => s.prestigeTapLevel),
     );
+    final offlineLv = ref.watch(
+      gameControllerProvider.select((s) => s.prestigeOfflineLevel),
+    );
+    final startCashLv = ref.watch(
+      gameControllerProvider.select((s) => s.prestigeStartCashLevel),
+    );
+    final keepStageLv = ref.watch(
+      gameControllerProvider.select((s) => s.prestigeKeepStageLevel),
+    );
+    final discountLv = ref.watch(
+      gameControllerProvider.select((s) => s.prestigeDiscountLevel),
+    );
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final controller = ref.read(gameControllerProvider.notifier);
@@ -173,6 +185,44 @@ class _StarShop extends ConsumerWidget {
           spendable: spendable,
           onBuy: () => buy(controller.buyPrestigeTapUpgrade),
         ),
+        _PerkRow(
+          name: l10n.prestigeOfflineName,
+          level: offlineLv,
+          desc: l10n.prestigeOfflineDesc(
+              (Balance.prestigeOfflinePerLevel * 100).round()),
+          cost: prestigeShopCost(Balance.prestigeOfflineBaseCost, offlineLv),
+          spendable: spendable,
+          onBuy: () => buy(controller.buyPrestigeOfflineUpgrade),
+        ),
+        _PerkRow(
+          name: l10n.prestigeStartCashName,
+          level: startCashLv,
+          desc: l10n.prestigeStartCashDesc,
+          cost:
+              prestigeShopCost(Balance.prestigeStartCashBaseCost, startCashLv),
+          spendable: spendable,
+          onBuy: () => buy(controller.buyPrestigeStartCashUpgrade),
+        ),
+        _PerkRow(
+          name: l10n.prestigeDiscountName,
+          level: discountLv,
+          desc: l10n.prestigeDiscountDesc(
+              (Balance.prestigeDiscountPerLevel * 100).round()),
+          cost:
+              prestigeShopCost(Balance.prestigeDiscountBaseCost, discountLv),
+          spendable: spendable,
+          onBuy: () => buy(controller.buyPrestigeDiscountUpgrade),
+        ),
+        if (keepStageLv < Balance.prestigeKeepStageMaxLevel)
+          _PerkRow(
+            name: l10n.prestigeKeepStageName,
+            level: keepStageLv,
+            desc: l10n.prestigeKeepStageDesc,
+            cost: prestigeShopCost(
+                Balance.prestigeKeepStageBaseCost, keepStageLv),
+            spendable: spendable,
+            onBuy: () => buy(controller.buyPrestigeKeepStageUpgrade),
+          ),
       ],
     );
   }

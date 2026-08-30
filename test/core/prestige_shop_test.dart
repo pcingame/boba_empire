@@ -51,5 +51,37 @@ void main() {
       final s = GameState.newGame(nowMillis: 0)..prestigeTapLevel = 1; // ×2
       expect(tap(s), closeTo(2, 1e-9));
     });
+
+    test('Mua sỉ giảm giá nâng cấp (sàn ×0.4)', () {
+      expect(upgradeCostMultiplier(0), 1.0);
+      expect(upgradeCostMultiplier(5), closeTo(0.85, 1e-9)); // -15%
+      expect(upgradeCostMultiplier(100), Balance.prestigeDiscountFloor);
+    });
+
+    test('Giữ giai đoạn: tối đa maxLevel, kẹp theo stage hiện tại', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..prestigeStars = 9999
+        ..prestigeKeepStageLevel = Balance.prestigeKeepStageMaxLevel;
+      expect(buyPrestigeKeepStage(s), isFalse); // đã tối đa
+      expect(keptStageAfterPrestige(3, 5), 3); // kẹp theo stage
+    });
+
+    test('4 perk mới đều trừ Sao & tăng cấp', () {
+      GameState fresh() =>
+          GameState.newGame(nowMillis: 0)..prestigeStars = 9999;
+      var s = fresh();
+      expect(buyPrestigeOffline(s), isTrue);
+      expect(s.prestigeOfflineLevel, 1);
+      s = fresh();
+      expect(buyPrestigeStartCash(s), isTrue);
+      expect(s.prestigeStartCashLevel, 1);
+      s = fresh();
+      expect(buyPrestigeKeepStage(s), isTrue);
+      expect(s.prestigeKeepStageLevel, 1);
+      s = fresh();
+      expect(buyPrestigeDiscount(s), isTrue);
+      expect(s.prestigeDiscountLevel, 1);
+      expect(prestigeStarsSpendable(s), 9999 - Balance.prestigeDiscountBaseCost);
+    });
   });
 }

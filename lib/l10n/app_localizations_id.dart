@@ -212,7 +212,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get prestigeWarning =>
-      '⚠️ Ini mereset semua Koin dan level peningkatan kamu saat ini.';
+      '⚠️ Reset Koin, level upgrade, dan tahap (perk Bintang bisa menyimpan sebagian).';
 
   @override
   String get cancel => 'Batal';
@@ -358,6 +358,36 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String prestigeTapDesc(int percent) {
     return '+$percent% nilai ketukan per level';
+  }
+
+  @override
+  String get prestigeOfflineName => 'Super offline';
+
+  @override
+  String prestigeOfflineDesc(int percent) {
+    return '+$percent% penghasilan saat pergi per level';
+  }
+
+  @override
+  String get prestigeStartCashName => 'Modal awal';
+
+  @override
+  String get prestigeStartCashDesc =>
+      'Dapat Koin langsung setelah Waralaba (naik per level)';
+
+  @override
+  String get prestigeKeepStageName => 'Simpan tahap';
+
+  @override
+  String get prestigeKeepStageDesc =>
+      'Simpan 1 tahap lagi setelah Waralaba per level';
+
+  @override
+  String get prestigeDiscountName => 'Beli borongan';
+
+  @override
+  String prestigeDiscountDesc(int percent) {
+    return '-$percent% biaya upgrade per level';
   }
 
   @override

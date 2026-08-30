@@ -32,6 +32,11 @@ class GameSnapshot {
     required this.prestigeStarsSpendable,
     required this.prestigeIncomeLevel,
     required this.prestigeTapLevel,
+    required this.prestigeOfflineLevel,
+    required this.prestigeStartCashLevel,
+    required this.prestigeKeepStageLevel,
+    required this.prestigeDiscountLevel,
+    required this.upgradeCostMult,
     required this.currentQuest,
     required this.questProgress,
     required this.questDone,
@@ -100,9 +105,17 @@ class GameSnapshot {
   /// Số ⭐ Sao còn có thể tiêu trong kho prestige.
   final int prestigeStarsSpendable;
 
-  /// Cấp perk "Siêu thu nhập" / "Siêu chạm" (kho Sao).
+  /// Cấp các perk kho Sao.
   final int prestigeIncomeLevel;
   final int prestigeTapLevel;
+  final int prestigeOfflineLevel;
+  final int prestigeStartCashLevel;
+  final int prestigeKeepStageLevel;
+  final int prestigeDiscountLevel;
+
+  /// Hệ số nhân giá nâng cấp nguồn thu (≤ 1) từ perk "Mua sỉ" — UI nhân vào giá
+  /// hiển thị + kiểm tra đủ tiền.
+  final double upgradeCostMult;
 
   /// Nhiệm vụ hiện tại (null = đã xong chuỗi), tiến độ, và đã đủ điều kiện nhận.
   final Quest? currentQuest;

@@ -1128,7 +1128,9 @@ class _ShopTile extends ConsumerWidget {
     );
     final money =
         ref.watch(gameControllerProvider.select((s) => s.money));
-    final cost = nextLevelCost(config, level);
+    final costMult =
+        ref.watch(gameControllerProvider.select((s) => s.upgradeCostMult));
+    final cost = nextLevelCost(config, level) * costMult;
     final canAfford = money >= cost;
     final gain = marginalIncomePerSecond(config, level) * globalMult;
     final l10n = AppLocalizations.of(context)!;

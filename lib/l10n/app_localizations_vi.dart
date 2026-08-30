@@ -212,7 +212,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get prestigeWarning =>
-      '⚠️ Sẽ reset toàn bộ Xu và cấp nâng cấp hiện tại.';
+      '⚠️ Reset Xu, cấp nâng cấp và giai đoạn (perk kho Sao có thể giữ lại một phần).';
 
   @override
   String get cancel => 'Huỷ';
@@ -356,6 +356,36 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String prestigeTapDesc(int percent) {
     return '+$percent% giá trị chạm mỗi cấp';
+  }
+
+  @override
+  String get prestigeOfflineName => 'Siêu offline';
+
+  @override
+  String prestigeOfflineDesc(int percent) {
+    return '+$percent% thu nhập lúc vắng mỗi cấp';
+  }
+
+  @override
+  String get prestigeStartCashName => 'Vốn khởi nghiệp';
+
+  @override
+  String get prestigeStartCashDesc =>
+      'Nhận Xu ngay sau Nhượng quyền (tăng mỗi cấp)';
+
+  @override
+  String get prestigeKeepStageName => 'Giữ giai đoạn';
+
+  @override
+  String get prestigeKeepStageDesc =>
+      'Sau Nhượng quyền giữ thêm 1 giai đoạn mỗi cấp';
+
+  @override
+  String get prestigeDiscountName => 'Mua sỉ';
+
+  @override
+  String prestigeDiscountDesc(int percent) {
+    return '−$percent% giá nâng cấp nguồn thu mỗi cấp';
   }
 
   @override

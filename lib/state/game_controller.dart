@@ -298,6 +298,29 @@ class GameController extends Notifier<GameSnapshot> {
     return ok;
   }
 
+  /// Nâng perk "Siêu offline" bằng ⭐ Sao. True nếu mua được.
+  bool buyPrestigeOfflineUpgrade() => _buyPerk(() => buyPrestigeOffline(_game));
+
+  /// Nâng perk "Vốn khởi nghiệp" bằng ⭐ Sao. True nếu mua được.
+  bool buyPrestigeStartCashUpgrade() =>
+      _buyPerk(() => buyPrestigeStartCash(_game));
+
+  /// Nâng perk "Giữ giai đoạn" bằng ⭐ Sao. True nếu mua được.
+  bool buyPrestigeKeepStageUpgrade() =>
+      _buyPerk(() => buyPrestigeKeepStage(_game));
+
+  /// Nâng perk "Mua sỉ" bằng ⭐ Sao. True nếu mua được.
+  bool buyPrestigeDiscountUpgrade() => _buyPerk(() => buyPrestigeDiscount(_game));
+
+  bool _buyPerk(bool Function() action) {
+    final ok = action();
+    if (ok) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return ok;
+  }
+
   /// Nhượng quyền. Trả về số Sao vừa nhận (0 nếu chưa đủ).
   int doPrestige() {
     final gained = prestige(_game);
@@ -562,6 +585,11 @@ class GameController extends Notifier<GameSnapshot> {
       prestigeStarsSpendable: prestigeStarsSpendable(_game),
       prestigeIncomeLevel: _game.prestigeIncomeLevel,
       prestigeTapLevel: _game.prestigeTapLevel,
+      prestigeOfflineLevel: _game.prestigeOfflineLevel,
+      prestigeStartCashLevel: _game.prestigeStartCashLevel,
+      prestigeKeepStageLevel: _game.prestigeKeepStageLevel,
+      prestigeDiscountLevel: _game.prestigeDiscountLevel,
+      upgradeCostMult: upgradeCostMultiplier(_game.prestigeDiscountLevel),
       currentQuest: quest,
       questProgress: qp,
       questDone: quest != null && qp >= quest.threshold,

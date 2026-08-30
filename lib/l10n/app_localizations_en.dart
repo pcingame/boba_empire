@@ -211,7 +211,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get prestigeWarning =>
-      '⚠️ This resets all your Coins and current upgrade levels.';
+      '⚠️ Resets Coins, upgrade levels and stage (Star shop perks can keep some).';
 
   @override
   String get cancel => 'Cancel';
@@ -353,6 +353,36 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String prestigeTapDesc(int percent) {
     return '+$percent% tap value per level';
+  }
+
+  @override
+  String get prestigeOfflineName => 'Super offline';
+
+  @override
+  String prestigeOfflineDesc(int percent) {
+    return '+$percent% away-earnings per level';
+  }
+
+  @override
+  String get prestigeStartCashName => 'Seed capital';
+
+  @override
+  String get prestigeStartCashDesc =>
+      'Get Coins right after Franchise (more per level)';
+
+  @override
+  String get prestigeKeepStageName => 'Keep stage';
+
+  @override
+  String get prestigeKeepStageDesc =>
+      'Keep 1 more stage after Franchise per level';
+
+  @override
+  String get prestigeDiscountName => 'Bulk buy';
+
+  @override
+  String prestigeDiscountDesc(int percent) {
+    return '-$percent% upgrade cost per level';
   }
 
   @override

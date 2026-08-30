@@ -212,7 +212,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get prestigeWarning =>
-      '⚠️ Esto reinicia todas tus Monedas y los niveles de mejora actuales.';
+      '⚠️ Reinicia Monedas, niveles de mejora y fase (las mejoras de Estrellas pueden conservar algo).';
 
   @override
   String get cancel => 'Cancelar';
@@ -356,6 +356,36 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String prestigeTapDesc(int percent) {
     return '+$percent% de valor de toque por nivel';
+  }
+
+  @override
+  String get prestigeOfflineName => 'Súper offline';
+
+  @override
+  String prestigeOfflineDesc(int percent) {
+    return '+$percent% de ganancias ausente por nivel';
+  }
+
+  @override
+  String get prestigeStartCashName => 'Capital inicial';
+
+  @override
+  String get prestigeStartCashDesc =>
+      'Recibe Monedas justo tras Franquiciar (más por nivel)';
+
+  @override
+  String get prestigeKeepStageName => 'Conservar fase';
+
+  @override
+  String get prestigeKeepStageDesc =>
+      'Conserva 1 fase más tras Franquiciar por nivel';
+
+  @override
+  String get prestigeDiscountName => 'Compra al por mayor';
+
+  @override
+  String prestigeDiscountDesc(int percent) {
+    return '-$percent% coste de mejora por nivel';
   }
 
   @override

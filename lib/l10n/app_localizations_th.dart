@@ -211,7 +211,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get prestigeWarning =>
-      '⚠️ จะรีเซ็ตเหรียญและระดับอัปเกรดปัจจุบันทั้งหมด';
+      '⚠️ รีเซ็ต Coin เลเวลอัปเกรด และด่าน (เพิร์ก Star เก็บบางส่วนได้)';
 
   @override
   String get cancel => 'ยกเลิก';
@@ -353,6 +353,36 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String prestigeTapDesc(int percent) {
     return '+$percent% ค่าการแตะต่อเลเวล';
+  }
+
+  @override
+  String get prestigeOfflineName => 'ซุปเปอร์ออฟไลน์';
+
+  @override
+  String prestigeOfflineDesc(int percent) {
+    return '+$percent% รายได้ตอนไม่อยู่ ต่อเลเวล';
+  }
+
+  @override
+  String get prestigeStartCashName => 'เงินทุนตั้งต้น';
+
+  @override
+  String get prestigeStartCashDesc =>
+      'รับ Coin ทันทีหลังแฟรนไชส์ (เพิ่มต่อเลเวล)';
+
+  @override
+  String get prestigeKeepStageName => 'เก็บด่าน';
+
+  @override
+  String get prestigeKeepStageDesc =>
+      'เก็บด่านเพิ่ม 1 ด่านหลังแฟรนไชส์ ต่อเลเวล';
+
+  @override
+  String get prestigeDiscountName => 'ซื้อยกล็อต';
+
+  @override
+  String prestigeDiscountDesc(int percent) {
+    return '-$percent% ค่าอัปเกรด ต่อเลเวล';
   }
 
   @override
