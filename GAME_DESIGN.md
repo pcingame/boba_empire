@@ -138,12 +138,21 @@ mới trong shop (panel tự giãn mượt bằng `AnimatedSize`).
 
 ## 6. Cửa hàng Kim Cương
 
-Mở từ tab **"Cửa hàng"** ở thanh dưới. Hai vật phẩm nâng bằng 💎 (giá `base · 2^cấp`):
+Mở từ tab **"Cửa hàng"** ở thanh dưới.
+
+**Nâng cấp** (giá `base · 2^cấp`):
 
 | Vật phẩm | Hiệu ứng | Giá cấp đầu |
 |---|---|---:|
 | **Tăng thu nhập** | +10% thu nhập tự động vĩnh viễn / cấp | 5 💎 |
 | **Kho lạnh offline** | +2 giờ trần tiền offline / cấp | 10 💎 |
+
+**Hành động** (dùng ngay, lặp lại — sink 💎 chính):
+
+| Vật phẩm | Hiệu ứng | Giá |
+|---|---|---:|
+| **Mở giai đoạn tức thì** | mở giai đoạn kế **bỏ qua chi phí Xu** | 40 / 120 / 300 / 700 / 1500 💎 (GĐ 2→6) |
+| **Tua nhanh 💎** | +4 giờ sản xuất ngay, không cần xem QC | 30 💎 |
 
 Dialog này cũng liệt kê các **gói IAP** (mục 11) + nút "Khôi phục mua hàng".
 
@@ -245,8 +254,9 @@ Chỉ dùng **rewarded ad** (không interstitial/banner). Người đã mua **G�
 | `boba_starter_pack` | non-consumable | Một lần: +300 💎 |
 | `boba_piggy` | consumable | **Đập heo đất**: nhận toàn bộ 💎 đã tích (biến động) |
 
-**Heo đất** (`lib/core/balance.dart` › Piggy): tự tích `0.0001 💎 / Xu` kiếm được
-(gồm cả offline & bonus), trần **300 💎**. Cần tích ≥ **40 💎** mới cho đập
+**Heo đất** (`lib/core/balance.dart` › Piggy): tự tích **theo thời gian** chơi/vắng
+(≈ đầy sau `piggyFillHours = 24` giờ), **không theo Xu** — vì thu nhập lớn thì fill
+tức thì, mất cảm giác chờ. Trần **300 💎**. Cần tích ≥ **40 💎** mới cho đập
 (chống mua heo rỗng). Đập xong reset về 0.
 
 **Xác thực biên nhận**: có `HttpReceiptVerifier` (bật qua `--dart-define
@@ -336,6 +346,38 @@ lib/ads · lib/iap            interface trừu tượng + impl thật; stub trê
 | 6 | Trung bình | Save **local-only** (SharedPreferences, 1 blob). Không cloud sync, `_schemaVersion` có nhưng **không có code migrate** → save cũ/hỏng = ván mới. Gỡ app = mất sạch. | Thêm cloud save (Play Games / Game Center / Firebase) trước khi scale; viết migration path. |
 | 7 | Nhỏ (UX) | `tapValue` cố định 1, chỉ scale qua perk "Siêu chạm"/boost → nút "Chạm pha trà" (hero interaction) mất ý nghĩa kinh tế sau ~1 phút. | Bình thường với thể loại; cân nhắc 1 nâng cấp "giá trị chạm" bằng Xu để giữ nút sống. |
 | 8 | Nhỏ (UX) | Chuỗi nhiệm vụ hữu hạn (10 bước, dừng ở "kiếm 10M") → thanh nhiệm vụ ẩn vĩnh viễn ở mid/late game. | Thêm nhiệm vụ lặp lại / nhiệm vụ ngày. |
+
+---
+
+## 15. Lịch sử tối ưu cơ chế
+
+> ⚠️ Các con số mới **cần playtest** — đặt theo ước lượng, chưa tune bằng dữ liệu.
+
+### Phase 1 — Sink 💎 & sửa số (đã làm)
+
+- **Cửa hàng 💎** thêm 2 "hành động" (mục 6): *Mở giai đoạn tức thì* (40–1500 💎, bỏ
+  qua tường Xu — sink lớn nhất) và *Tua nhanh 💎* (30 💎 / 4h, sink lặp lại). Giải
+  quyết "💎 dồn đống không chỗ tiêu".
+- **Heo đất**: đổi từ tích-theo-Xu (`0.0001/Xu` → đầy trong ~3 giây với thu nhập
+  lớn) sang **tích-theo-thời-gian** (`piggyFillHours = 24`), cả khi chơi lẫn vắng.
+- **Cap boost**: `Balance.maxTimeBoostMultiplier = 12` chặn stack Mưa vàng ×3 ·
+  x2-24h · VIP ×2 vượt tay.
+
+### Phase 2 — Chiều sâu prestige (kế hoạch)
+
+Hard-reset stage khi prestige + mở rộng Kho Sao 2 → ~7 perk (offline %, tiền khởi
+đầu, mua rẻ, milestone nhanh, auto-buy…) để bù việc reset nặng hơn. Sửa luôn
+finding #2 (VIP ×2 áp offline) và #4 (từ nay prestige đúng nghĩa "restart").
+
+### Phase 3 — Chiều sâu generator (kế hoạch)
+
+Milestone đa hiệu ứng (giữ ×2 income + thêm: auto-produce, −giá, buff chéo) —
+**không** thêm generator / đổi đường cong.
+
+### Phase 4 — QoL (kế hoạch)
+
+Nút mua ×10 / MAX (nối `bulkCost` sẵn có — finding #1), auto-buy, nhiệm vụ lặp lại
+(finding #8), toggle auto-tap.
 
 ---
 

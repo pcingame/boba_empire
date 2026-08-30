@@ -57,9 +57,15 @@ void main() {
     expect(snap.incomePerSecond, closeTo(before * 2, 1e-6));
   });
 
-  test('heo đất: chạm ly kiếm Xu → tích thêm gems', () async {
-    final c = await _ctl(GameState.newGame(nowMillis: 0)..tapValue = 10000);
-    c.read(gameControllerProvider.notifier).tapCup();
+  test('heo đất: tích theo thời gian vắng, không theo Xu', () async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    await GameStorage(prefs).save(GameState.newGame(nowMillis: 0), nowMillis: 0);
+    final c = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(() => 2 * 3600 * 1000), // vắng 2 giờ
+    ]);
+    addTearDown(c.dispose);
     expect(c.read(gameControllerProvider).piggyGems, greaterThan(0));
   });
 

@@ -73,6 +73,15 @@ class Balance {
   static const int offlineCapBaseCost = 10;
   static const int offlineCapPerLevelSeconds = 2 * 60 * 60;
 
+  /// "Mở giai đoạn tức thì" bằng 💎 — bỏ qua bức tường Xu. Giá theo giai đoạn sắp
+  /// mở (index = stage - 2, tức mở GĐ2 tốn `[0]`). Là chỗ tiêu 💎 lớn nhất.
+  static const List<int> instantStageGemCost = [40, 120, 300, 700, 1500];
+
+  /// "Tua nhanh" bằng 💎 (không cần xem QC): giá cố định cho mỗi lần nhận
+  /// [gemTimeSkipSeconds] giây sản xuất. Sink 💎 lặp lại.
+  static const int gemTimeSkipCost = 30;
+  static const int gemTimeSkipSeconds = 4 * 60 * 60; // 4 giờ
+
   // --- Mua bằng tiền thật (IAP) ---
 
   /// Kim Cương nhận theo từng gói gems (consumable) — bậc giá tăng dần.
@@ -82,6 +91,10 @@ class Balance {
 
   /// Kim Cương tặng kèm trong "Gói khởi động" (một lần).
   static const double iapStarterGems = 300;
+
+  /// Trần hệ số boost thời gian cộng dồn (Mưa vàng ×3 · x2-24h · VIP ×2). Chặn
+  /// stack quá tay nếu sau này thêm nguồn boost.
+  static const double maxTimeBoostMultiplier = 12.0;
 
   // --- Kiếm thêm (rewarded ads) ---
   /// "x2 thu nhập" tạm thời khi xem QC: hệ số + thời lượng.
@@ -93,10 +106,13 @@ class Balance {
   static const int rewardedTimeSkipSeconds = 4 * 60 * 60; // 4 giờ
 
   // --- Heo đất (Piggy Bank) ---
-  /// Heo tự tích Kim Cương theo Xu kiếm được (fill nhanh dần khi thu nhập cao),
-  /// tới trần thì dừng — đầy thì trả tiền "đập" (IAP boba_piggy) nhận hết.
-  static const double piggyGemsPerCoin = 0.0001;
+  /// Heo tự tích Kim Cương theo THỜI GIAN chơi/vắng (không theo Xu — vì thu nhập
+  /// lớn thì fill tức thì, mất cảm giác chờ). Đầy sau [piggyFillHours] giờ; tới
+  /// trần thì dừng — đầy thì trả tiền "đập" (IAP boba_piggy) nhận hết.
   static const double piggyMaxGems = 300;
+  static const double piggyFillHours = 24;
+  static double get piggyGemsPerSecond =>
+      piggyMaxGems / (piggyFillHours * 3600);
   /// Cần tích tối thiểu chừng này mới cho đập (để không mua heo rỗng).
   static const double piggyMinBreak = 40;
 

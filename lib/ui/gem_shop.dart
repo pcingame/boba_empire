@@ -31,6 +31,10 @@ class _GemShopState extends ConsumerState<_GemShop> {
   late final Future<Map<IapProduct, String>> _prices =
       ref.read(iapServiceProvider).loadPrices();
 
+  void _snack(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  }
+
   @override
   Widget build(BuildContext context) {
     final gems = ref.watch(gameControllerProvider.select((s) => s.gems));
@@ -38,7 +42,9 @@ class _GemShopState extends ConsumerState<_GemShop> {
         ref.watch(gameControllerProvider.select((s) => s.gemBoostLevel));
     final capLevel =
         ref.watch(gameControllerProvider.select((s) => s.offlineCapLevel));
+    final stage = ref.watch(gameControllerProvider.select((s) => s.stage));
     final controller = ref.read(gameControllerProvider.notifier);
+    final nextStage = Balance.nextStageConfig(stage);
 
     final adsRemoved =
         ref.watch(gameControllerProvider.select((s) => s.adsRemoved));
@@ -72,6 +78,33 @@ class _GemShopState extends ConsumerState<_GemShop> {
               cost: offlineCapCost(capLevel),
               gems: gems,
               onBuy: controller.buyOfflineCapUpgrade,
+            ),
+            if (nextStage != null)
+              _GemAction(
+                name: l10n.gemInstantStageName,
+                description: l10n.gemInstantStageDesc(
+                    stageName(l10n, nextStage.stage)),
+                cost: instantStageGemCost(stage),
+                gems: gems,
+                buttonKey: const Key('gem-instant-stage'),
+                onBuy: () {
+                  if (controller.buyInstantStage()) {
+                    _snack(l10n.gemStageUnlockedSnack(
+                        stageName(l10n, nextStage.stage)));
+                  }
+                },
+              ),
+            _GemAction(
+              name: l10n.gemTimeSkipName,
+              description: l10n.gemTimeSkipDesc(
+                  Balance.gemTimeSkipSeconds ~/ 3600),
+              cost: Balance.gemTimeSkipCost,
+              gems: gems,
+              buttonKey: const Key('gem-time-skip'),
+              onBuy: () {
+                final r = controller.buyGemTimeSkipReward();
+                if (r > 0) _snack(l10n.instantCashSnack(formatNumber(r)));
+              },
             ),
             FutureBuilder<Map<IapProduct, String>>(
               future: _prices,
@@ -142,6 +175,58 @@ class _GemShopState extends ConsumerState<_GemShop> {
           child: Text(l10n.restorePurchases),
         ),
       ],
+    );
+  }
+}
+
+/// Mục "hành động" trong Cửa hàng 💎 (mua giai đoạn / tua nhanh): không có cấp,
+/// bấm là dùng ngay. Nút mờ khi không đủ 💎.
+class _GemAction extends StatelessWidget {
+  const _GemAction({
+    required this.name,
+    required this.description,
+    required this.cost,
+    required this.gems,
+    required this.onBuy,
+    required this.buttonKey,
+  });
+
+  final String name;
+  final String description;
+  final int cost;
+  final double gems;
+  final VoidCallback onBuy;
+  final Key buttonKey;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    return ClayTile(
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  name,
+                  style: theme.textTheme.titleSmall
+                      ?.copyWith(fontWeight: FontWeight.w600),
+                ),
+                Text(description, style: theme.textTheme.bodySmall),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          FilledButton(
+            key: buttonKey,
+            onPressed: gems >= cost ? onBuy : null,
+            child: Text(l10n.gemCost(cost)),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -132,6 +132,27 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get gemInstantStageName => 'ปลดล็อกด่านทันที';
+
+  @override
+  String gemInstantStageDesc(String stage) {
+    return 'ปลดล็อก $stage เลย ข้ามค่า Coin';
+  }
+
+  @override
+  String gemStageUnlockedSnack(String stage) {
+    return 'ปลดล็อก $stage แล้ว!';
+  }
+
+  @override
+  String get gemTimeSkipName => 'เร่งเวลา 💎';
+
+  @override
+  String gemTimeSkipDesc(int hours) {
+    return 'รับผลผลิต $hours ชม. ทันที';
+  }
+
+  @override
   String get iapSectionTitle => 'ซื้อด้วยเงินจริง';
 
   @override

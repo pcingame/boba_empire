@@ -98,6 +98,72 @@ void main() {
       expect(s.money, 0);
       expect(s.lastSeenMillis, 5000);
     });
+
+    test('cũng tích heo đất cho khoảng vắng', () {
+      final s = GameState.newGame(nowMillis: 0)..levels['x'] = 1;
+      applyOfflineEarnings(s, 3600 * 1000, configs: _configs); // 1 giờ
+      expect(s.piggyGems, greaterThan(0));
+    });
+  });
+
+  group('fillPiggy', () {
+    test('tích theo giây trôi, tới trần thì dừng', () {
+      final s = GameState.newGame(nowMillis: 0);
+      fillPiggy(s, 3600);
+      expect(s.piggyGems, closeTo(Balance.piggyGemsPerSecond * 3600, 1e-6));
+      fillPiggy(s, 1000000);
+      expect(s.piggyGems, Balance.piggyMaxGems);
+    });
+
+    test('dt <= 0 -> không đổi', () {
+      final s = GameState.newGame(nowMillis: 0)..piggyGems = 5;
+      fillPiggy(s, 0);
+      fillPiggy(s, -10);
+      expect(s.piggyGems, 5);
+    });
+  });
+
+  group('buyInstantStageUnlock', () {
+    test('trừ 💎, lên giai đoạn, không đụng Xu', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..gems = 100
+        ..money = 5;
+      expect(buyInstantStageUnlock(s), isTrue);
+      expect(s.stage, 2);
+      expect(s.money, 5);
+      expect(s.gems, 100 - Balance.instantStageGemCost[0]);
+    });
+
+    test('thiếu 💎 -> false, không đổi', () {
+      final s = GameState.newGame(nowMillis: 0)..gems = 1;
+      expect(buyInstantStageUnlock(s), isFalse);
+      expect(s.stage, 1);
+    });
+
+    test('giai đoạn cuối -> false', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..stage = 6
+        ..gems = 99999;
+      expect(buyInstantStageUnlock(s), isFalse);
+    });
+  });
+
+  group('buyGemTimeSkip', () {
+    test('trừ 💎 + cộng income × thời lượng', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..levels['x'] = 1 // 10/s
+        ..gems = 100;
+      final r = buyGemTimeSkip(s, configs: _configs);
+      expect(r, closeTo(10 * Balance.gemTimeSkipSeconds, 1e-3));
+      expect(s.gems, 100 - Balance.gemTimeSkipCost);
+      expect(s.money, closeTo(r, 1e-3));
+    });
+
+    test('chưa có thu nhập -> 0, không trừ 💎', () {
+      final s = GameState.newGame(nowMillis: 0)..gems = 100;
+      expect(buyGemTimeSkip(s, configs: _configs), 0);
+      expect(s.gems, 100);
+    });
   });
 
   group('prestige', () {

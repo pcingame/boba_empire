@@ -82,7 +82,9 @@ class GameController extends Notifier<GameSnapshot> {
     if (now < _boostUntilMillis) m *= Balance.goldenRushMultiplier;
     if (now < _game.x2IncomeUntilMillis) m *= Balance.rewardedX2Multiplier;
     if (vipActive(_game, now)) m *= Balance.vipIncomeMultiplier;
-    return m;
+    return m > Balance.maxTimeBoostMultiplier
+        ? Balance.maxTimeBoostMultiplier
+        : m;
   }
 
   /// Trần offline (giây) đã tính cấp "Kho lạnh" + cộng thưởng VIP nếu đang VIP.
@@ -242,6 +244,27 @@ class GameController extends Notifier<GameSnapshot> {
       state = _snapshot();
     }
     return ok;
+  }
+
+  /// "Mở giai đoạn tức thì" bằng 💎. Trả về true nếu thành công.
+  bool buyInstantStage() {
+    final ok = buyInstantStageUnlock(_game);
+    if (ok) {
+      _awardAchievements();
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return ok;
+  }
+
+  /// "Tua nhanh" bằng 💎. Trả về số Xu vừa cộng (0 nếu thiếu 💎 / chưa có thu nhập).
+  double buyGemTimeSkipReward() {
+    final reward = buyGemTimeSkip(_game);
+    if (reward > 0) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return reward;
   }
 
   /// Nhận thưởng đăng nhập hằng ngày. Trả về (gems nhận, streak mới); gems=0
@@ -489,6 +512,7 @@ class GameController extends Notifier<GameSnapshot> {
     final dt = (now - _game.lastSeenMillis) / 1000.0;
     if (dt > 0) {
       tick(_game, dt, boostMultiplier: _boostMultiplier());
+      fillPiggy(_game, dt); // heo đất tích theo thời gian chơi
       // Giữ mốc "đã tính tiền tới đây" luôn cập nhật trong lúc chơi, để lần
       // tính offline kế tiếp không đếm trùng thời gian online.
       _game.lastSeenMillis = now;

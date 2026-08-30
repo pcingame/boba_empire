@@ -104,6 +104,38 @@ bool buyOfflineCap(GameState state) {
   return true;
 }
 
+/// "Mở giai đoạn tức thì" bằng 💎 — bỏ qua chi phí Xu. Trả về true nếu còn giai
+/// đoạn để mở và đủ 💎.
+bool buyInstantStageUnlock(GameState state) {
+  final next = Balance.nextStageConfig(state.stage);
+  if (next == null) return false;
+  final cost = instantStageGemCost(state.stage);
+  if (state.gems < cost) return false;
+  state.gems -= cost;
+  state.stage = next.stage;
+  return true;
+}
+
+/// "Tua nhanh" bằng 💎: trừ [Balance.gemTimeSkipCost] 💎, cộng ngay
+/// [Balance.gemTimeSkipSeconds] giây sản xuất (nhịp cơ bản, không boost). Trả về
+/// số Xu vừa cộng (0 nếu thiếu 💎 hoặc chưa có thu nhập).
+double buyGemTimeSkip(
+  GameState state, {
+  List<GeneratorConfig> configs = Balance.generators,
+}) {
+  if (state.gems < Balance.gemTimeSkipCost) return 0;
+  final reward = effectiveIncomePerSecond(
+        state,
+        configs,
+        bonusPerStar: Balance.bonusPerStar,
+      ) *
+      Balance.gemTimeSkipSeconds;
+  if (reward <= 0) return 0;
+  state.gems -= Balance.gemTimeSkipCost;
+  _credit(state, reward);
+  return reward;
+}
+
 /// Tính tiền kiếm được lúc offline khi mở lại app.
 ///
 /// - Chống lùi giờ (mục 8): nếu [nowMillis] < lastSeen thì coi như 0 và chỉ
@@ -128,7 +160,18 @@ double applyOfflineEarnings(
       ) *
       elapsedSec;
   _credit(state, earned);
+  fillPiggy(state, elapsedSec); // heo cũng tích cho khoảng vắng (đã cap)
   return earned;
+}
+
+/// Tích Kim Cương vào heo đất theo [dtSeconds] thời gian trôi (chơi hoặc vắng),
+/// tới trần [Balance.piggyMaxGems]. Gọi mỗi tick và khi tính offline.
+void fillPiggy(GameState state, double dtSeconds) {
+  if (dtSeconds <= 0) return;
+  state.piggyGems = min(
+    Balance.piggyMaxGems,
+    state.piggyGems + dtSeconds * Balance.piggyGemsPerSecond,
+  );
 }
 
 /// Số Sao sẽ NHẬN THÊM nếu prestige ngay bây giờ (để UI xem trước, không mutate).
@@ -181,13 +224,9 @@ bool claimStarterPack(GameState state, double gems) {
   return true;
 }
 
-/// Cộng [amount] Xu và ghi nhận vào tổng thu nhập cả đời. Đồng thời tích thêm
-/// Kim Cương vào heo đất (theo Xu kiếm được, tới trần).
+/// Cộng [amount] Xu và ghi nhận vào tổng thu nhập cả đời. (Heo đất tích theo
+/// thời gian ở [fillPiggy], không theo Xu.)
 void _credit(GameState state, double amount) {
   state.money += amount;
   state.lifetimeEarnings += amount;
-  state.piggyGems = min(
-    Balance.piggyMaxGems,
-    state.piggyGems + amount * Balance.piggyGemsPerCoin,
-  );
 }

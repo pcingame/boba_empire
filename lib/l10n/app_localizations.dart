@@ -292,6 +292,36 @@ abstract class AppLocalizations {
   /// **'{cost} 💎'**
   String gemCost(int cost);
 
+  /// No description provided for @gemInstantStageName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở giai đoạn tức thì'**
+  String get gemInstantStageName;
+
+  /// No description provided for @gemInstantStageDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở {stage} ngay, bỏ qua chi phí Xu'**
+  String gemInstantStageDesc(String stage);
+
+  /// No description provided for @gemStageUnlockedSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã mở {stage}!'**
+  String gemStageUnlockedSnack(String stage);
+
+  /// No description provided for @gemTimeSkipName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tua nhanh 💎'**
+  String get gemTimeSkipName;
+
+  /// No description provided for @gemTimeSkipDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận ngay {hours} giờ sản xuất'**
+  String gemTimeSkipDesc(int hours);
+
   /// No description provided for @iapSectionTitle.
   ///
   /// In vi, this message translates to:

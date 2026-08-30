@@ -1,3 +1,4 @@
+import 'package:boba_empire/core/achievements.dart';
 import 'package:boba_empire/core/balance.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/data/game_storage.dart';
@@ -38,6 +39,41 @@ void main() {
     expect(snap.gems, 0);
     expect(snap.gemBoostLevel, 1);
     expect(snap.incomePerSecond, closeTo(1.1, 1e-9)); // +10%
+  });
+
+  test('Mở giai đoạn tức thì bằng 💎: lên stage, không đụng Xu', () async {
+    final container = await _container(
+      GameState.newGame(nowMillis: 0)..gems = 100,
+      0,
+    );
+    addTearDown(container.dispose);
+    final ctrl = container.read(gameControllerProvider.notifier);
+
+    expect(ctrl.buyInstantStage(), isTrue);
+    final snap = container.read(gameControllerProvider);
+    expect(snap.stage, 2);
+    expect(snap.money, 0);
+    // Trừ giá 💎, cộng lại thưởng thành tựu "stage_2" vừa mở khoá.
+    final achReward =
+        achievements.firstWhere((a) => a.id == 'stage_2').rewardGems;
+    expect(snap.gems, 100 - Balance.instantStageGemCost[0] + achReward);
+  });
+
+  test('Tua nhanh bằng 💎: trừ 💎 + cộng Xu', () async {
+    final container = await _container(
+      GameState.newGame(nowMillis: 0)
+        ..gems = 100
+        ..levels['tra_den'] = 10,
+      0,
+    );
+    addTearDown(container.dispose);
+    final ctrl = container.read(gameControllerProvider.notifier);
+    final income = container.read(gameControllerProvider).incomePerSecond;
+
+    final reward = ctrl.buyGemTimeSkipReward();
+    expect(reward, closeTo(income * Balance.gemTimeSkipSeconds, 1e-3));
+    expect(container.read(gameControllerProvider).gems,
+        100 - Balance.gemTimeSkipCost);
   });
 
   test('Kho lạnh offline nâng trần tiền offline', () async {

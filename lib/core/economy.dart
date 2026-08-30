@@ -69,6 +69,13 @@ int offlineCapCost(int currentLevel) =>
     (Balance.offlineCapBaseCost * pow(Balance.gemCostGrowth, currentLevel))
         .ceil();
 
+/// Giá 💎 để "mở giai đoạn tức thì" khi đang ở [currentStage] (mở sang
+/// currentStage+1). Trả về giá phần tử cuối nếu vượt bảng.
+int instantStageGemCost(int currentStage) {
+  final i = (currentStage - 1).clamp(0, Balance.instantStageGemCost.length - 1);
+  return Balance.instantStageGemCost[i];
+}
+
 /// Trần thời gian offline (giây) sau khi tính cấp "Kho lạnh offline".
 int offlineCapSeconds(int offlineCapLevel) =>
     Balance.maxOfflineSeconds +

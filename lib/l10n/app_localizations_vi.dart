@@ -132,6 +132,27 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get gemInstantStageName => 'Mở giai đoạn tức thì';
+
+  @override
+  String gemInstantStageDesc(String stage) {
+    return 'Mở $stage ngay, bỏ qua chi phí Xu';
+  }
+
+  @override
+  String gemStageUnlockedSnack(String stage) {
+    return 'Đã mở $stage!';
+  }
+
+  @override
+  String get gemTimeSkipName => 'Tua nhanh 💎';
+
+  @override
+  String gemTimeSkipDesc(int hours) {
+    return 'Nhận ngay $hours giờ sản xuất';
+  }
+
+  @override
   String get iapSectionTitle => 'Nạp bằng tiền thật';
 
   @override

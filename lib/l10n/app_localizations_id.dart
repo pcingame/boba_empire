@@ -132,6 +132,27 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get gemInstantStageName => 'Buka tahap instan';
+
+  @override
+  String gemInstantStageDesc(String stage) {
+    return 'Buka $stage sekarang, lewati biaya Koin';
+  }
+
+  @override
+  String gemStageUnlockedSnack(String stage) {
+    return '$stage terbuka!';
+  }
+
+  @override
+  String get gemTimeSkipName => 'Percepat 💎';
+
+  @override
+  String gemTimeSkipDesc(int hours) {
+    return 'Dapat $hours jam produksi seketika';
+  }
+
+  @override
   String get iapSectionTitle => 'Beli dengan uang asli';
 
   @override

@@ -132,6 +132,27 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get gemInstantStageName => 'Instant stage unlock';
+
+  @override
+  String gemInstantStageDesc(String stage) {
+    return 'Unlock $stage now, skip the Coin cost';
+  }
+
+  @override
+  String gemStageUnlockedSnack(String stage) {
+    return '$stage unlocked!';
+  }
+
+  @override
+  String get gemTimeSkipName => 'Fast-forward 💎';
+
+  @override
+  String gemTimeSkipDesc(int hours) {
+    return 'Get ${hours}h of production instantly';
+  }
+
+  @override
   String get iapSectionTitle => 'Buy with real money';
 
   @override
