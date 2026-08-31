@@ -1,7 +1,8 @@
 # RELEASE CHECKLIST — đẩy Boba Empire lên store
 
-Danh sách việc để phát hành. Ưu tiên **Android (Google Play)** trước; ghi chú iOS
-ở cuối. Xem chi tiết ads/IAP ở [SETUP.md](SETUP.md), nội dung listing ở
+Danh sách việc để phát hành. Ưu tiên **Android (Google Play)** trước; việc riêng
+**iOS / App Store** ở [IOS_APP_STORE_CHECKLIST.md](IOS_APP_STORE_CHECKLIST.md).
+Xem chi tiết ads/IAP ở [SETUP.md](SETUP.md), nội dung listing ở
 [STORE_LISTING.md](STORE_LISTING.md).
 
 Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
