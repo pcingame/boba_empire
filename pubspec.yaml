@@ -105,13 +105,21 @@ flutter:
     # sẵn bằng scripts/fetch_sfx.sh. Thiếu file thì game chạy im lặng.
     - assets/audio/
 
-  # Font tiêu đề Baloo 2 (bo tròn chunky, hợp game trà sữa). Dùng cho bề mặt
-  # hiển thị lớn (số tiền, tiêu đề); body giữ font hệ thống để đủ mọi ngôn ngữ.
-  # Baloo 2 có subset `vietnamese` (Fredoka thì KHÔNG — chữ Việt bị vỡ font).
+  # Font tiêu đề (bề mặt hiển thị lớn: số tiền, tiêu đề); body giữ font hệ thống.
+  #  - Baloo 2: bo tròn chunky, hợp game trà sữa. Có subset `vietnamese`
+  #    (Fredoka thì KHÔNG — chữ Việt bị vỡ font).
+  #  - Mitr: fallback cho tiếng Thái (Baloo 2 không có glyph Thái). Cùng "nhà"
+  #    Cadson Demak, geometric thân thiện — khớp tông với Baloo 2.
   fonts:
     - family: Baloo 2
       fonts:
         - asset: assets/fonts/Baloo2.ttf
+    - family: Mitr
+      fonts:
+        - asset: assets/fonts/Mitr-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Mitr-SemiBold.ttf
+          weight: 600
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

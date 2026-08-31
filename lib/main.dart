@@ -97,7 +97,7 @@ class BobaEmpireApp extends ConsumerWidget {
       };
 
   // Chủ đề trà sữa, [seed] đổi theo giai đoạn. Font Baloo 2 cho bề mặt hiển thị
-  // lớn; body giữ font hệ thống (fallback) để đủ glyph mọi ngôn ngữ.
+  // lớn (fallback Mitr cho tiếng Thái); body giữ font hệ thống để đủ mọi ngôn ngữ.
   static ThemeData _buildTheme(Brightness brightness, Color seed) {
     final scheme = ColorScheme.fromSeed(seedColor: seed, brightness: brightness);
     // Nút "chunky đất sét": bo tròn dày, chữ đậm, có độ nổi nhẹ; dialog bo tròn
@@ -140,7 +140,7 @@ class BobaEmpireApp extends ConsumerWidget {
       ),
     );
 
-    const fallback = ['Roboto'];
+    const fallback = ['Mitr', 'Roboto'];
     final display = base.textTheme
         .apply(fontFamily: 'Baloo 2', fontFamilyFallback: fallback);
     return base.copyWith(

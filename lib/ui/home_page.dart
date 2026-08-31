@@ -302,7 +302,7 @@ class _HomePageState extends ConsumerState<HomePage>
             fontSize: 20,
             fontWeight: FontWeight.w600,
             fontFamily: 'Baloo 2',
-            fontFamilyFallback: ['Roboto'],
+            fontFamilyFallback: ['Mitr', 'Roboto'],
           ),
         ),
         titleSpacing: 0,
