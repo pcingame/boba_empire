@@ -155,6 +155,44 @@ void main() {
     });
   });
 
+  group('perk lựa chọn cốt truyện', () {
+    test('mặc định không có perk → hệ số 1.0', () {
+      final s = GameState.newGame(nowMillis: 0);
+      expect(storyChoiceTapMultiplier(s), 1.0);
+      expect(storyChoiceIncomeMultiplier(s), 1.0);
+    });
+
+    test('"craft"/"identity" cộng vào trục chạm; "scale"/"acquire" vào thu nhập',
+        () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..storyChoiceA = 'craft'
+        ..storyChoiceB = 'acquire';
+      expect(storyChoiceTapMultiplier(s), 1 + Balance.storyPerkBonus);
+      expect(storyChoiceIncomeMultiplier(s), 1 + Balance.storyPerkBonus);
+      s
+        ..storyChoiceA = 'scale'
+        ..storyChoiceB = 'identity';
+      expect(storyChoiceTapMultiplier(s), 1 + Balance.storyPerkBonus);
+      expect(storyChoiceIncomeMultiplier(s), 1 + Balance.storyPerkBonus);
+    });
+
+    test('cả hai nhánh cùng trục → cộng dồn', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..storyChoiceA = 'scale'
+        ..storyChoiceB = 'acquire';
+      expect(storyChoiceIncomeMultiplier(s),
+          closeTo(1 + 2 * Balance.storyPerkBonus, 1e-9));
+    });
+
+    test('fold vào effectiveIncomePerSecond', () {
+      final s = GameState.newGame(nowMillis: 0)..levels['x'] = 3;
+      final before = effectiveIncomePerSecond(s, const [_g], bonusPerStar: 0.02);
+      s.storyChoiceA = 'scale';
+      final after = effectiveIncomePerSecond(s, const [_g], bonusPerStar: 0.02);
+      expect(after, closeTo(before * (1 + Balance.storyPerkBonus), 1e-6));
+    });
+  });
+
   group('starsForLifetimeEarnings', () {
     test('0 khi chưa kiếm được gì', () {
       expect(starsForLifetimeEarnings(0, Balance.prestigeK), 0);

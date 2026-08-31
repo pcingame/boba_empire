@@ -547,4 +547,42 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get spinAd => 'Tonton iklan untuk memutar';
+
+  @override
+  String storyChapterLabel(int n) {
+    return 'Bab $n';
+  }
+
+  @override
+  String get storyContinue => 'Lanjut';
+
+  @override
+  String get storyChoosePrompt => 'Pilih jalanmu — tidak bisa dibatalkan:';
+
+  @override
+  String get storyLogTitle => 'Cerita';
+
+  @override
+  String get storyLogLocked => 'Belum terbuka';
+
+  @override
+  String get rivalEventTitle => 'Pesaing menyerang!';
+
+  @override
+  String get rivalEventIgnore => 'Abaikan';
+
+  @override
+  String get rivalMeterAhead => 'Unggul';
+
+  @override
+  String get rivalMeterEven => 'Seimbang';
+
+  @override
+  String get rivalMeterBehind => 'Tertinggal';
+
+  @override
+  String get rivalResolvedSnack => 'Ditangani. Pesaing mundur.';
+
+  @override
+  String get rivalIgnoredSnack => 'Kamu biarkan saja — pesaing makin unggul.';
 }

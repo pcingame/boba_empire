@@ -11,6 +11,7 @@ import '../core/economy.dart';
 import '../core/format.dart';
 import '../ads/ad_service.dart';
 import '../core/models.dart';
+import '../core/rival.dart';
 import '../iap/iap_products.dart';
 import '../iap/iap_service.dart';
 import '../l10n/app_localizations.dart';
@@ -24,7 +25,10 @@ import 'how_to_play_dialog.dart';
 import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
 import 'rewards_dialog.dart';
+import 'rival_event_dialog.dart';
 import 'settings_dialog.dart';
+import 'story_dialog.dart';
+import 'story_log_dialog.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/animated_count.dart';
 import 'widgets/clay.dart';
@@ -39,6 +43,10 @@ bool debugAutoShowTutorial = true;
 /// Cho phép tự hiện popup điểm danh hằng ngày khi mở app. Test tắt để dialog
 /// modal không che thao tác.
 bool debugAutoShowDaily = true;
+
+/// Cho phép tự hiện cutscene cốt truyện khi có chương chờ. Test tắt để dialog
+/// modal không che thao tác; test cốt truyện bật lại.
+bool debugAutoShowStory = true;
 
 /// Có nên tắt animation trang trí (thở/nhấp nháy/crossfade) không: khi test HOẶC
 /// khi người dùng bật "giảm chuyển động" ở hệ điều hành (accessibility).
@@ -85,7 +93,7 @@ class _HomePageState extends ConsumerState<HomePage>
     _iapSub = ref.read(iapServiceProvider).purchases.listen(_onPurchase);
     // Tiền offline lúc mở app lạnh: ref.listen chỉ bắt thay đổi nên xử lý
     // giá trị ban đầu ở đây, sau frame đầu.
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       // Khôi phục sản phẩm non-consumable (Gỡ QC / Gói khởi động) đã mua.
       unawaited(ref.read(iapServiceProvider).restore());
       final state = ref.read(gameControllerProvider);
@@ -95,13 +103,17 @@ class _HomePageState extends ConsumerState<HomePage>
           !state.tutorialSeen &&
           state.offlineEarned <= 0) {
         ref.read(gameControllerProvider.notifier).markTutorialSeen();
-        showHowToPlay(context);
+        await showHowToPlay(context);
       } else if (state.offlineEarned > 0) {
-        _showOfflineDialog(state.offlineEarned);
+        await _showOfflineDialog(state.offlineEarned);
       } else if (debugAutoShowDaily && state.dailyAvailable) {
-        // Điểm danh: chỉ khi không vướng hướng dẫn/offline để tránh chồng dialog.
-        showDailyReward(context);
+        await showDailyReward(context);
       }
+      // Cutscene cốt truyện: sau khi popup mở-app (nếu có) đóng — không đứng
+      // chung chuỗi else-if để không bị điểm danh/hướng dẫn "nuốt" mất.
+      if (!mounted) return;
+      final chapter = ref.read(gameControllerProvider).pendingStoryChapterId;
+      if (debugAutoShowStory && chapter != null) _showStoryBeat(chapter);
     });
   }
 
@@ -178,6 +190,62 @@ class _HomePageState extends ConsumerState<HomePage>
     ref.read(gameControllerProvider.notifier).acknowledgeOffline();
   }
 
+  bool _storyDialogOpen = false;
+
+  /// Bật cutscene chương [chapterId]. Chương thường: "Tiếp tục" → bump con trỏ.
+  /// Chương lựa chọn: chọn → ghi nhánh (dialog tự re-trigger nếu chưa chọn).
+  ///
+  /// Sau khi đóng, tự "rút" tiếp chương/sự kiện còn chờ — vì `ref.listen` chỉ
+  /// bắt lúc GIÁ TRỊ ĐỔI, nên nhiều chương dồn (mở app sau khi vắng, nhảy nhiều
+  /// giai đoạn) sẽ không tự nối nếu không có bước này.
+  Future<void> _showStoryBeat(int chapterId) async {
+    if (_storyDialogOpen || !mounted) return;
+    _storyDialogOpen = true;
+    final ctrl = ref.read(gameControllerProvider.notifier);
+    await showStoryBeat(
+      context,
+      chapterId: chapterId,
+      onContinue: ctrl.acknowledgeStoryBeat,
+      onChoose: (key) {
+        ctrl.makeStoryChoice(key);
+        ref.read(audioServiceProvider).play(Sfx.unlock);
+      },
+    );
+    _storyDialogOpen = false;
+    if (!mounted || !debugAutoShowStory) return;
+    final snap = ref.read(gameControllerProvider);
+    if (snap.pendingStoryChapterId != null) {
+      _showStoryBeat(snap.pendingStoryChapterId!);
+    } else if (snap.pendingRivalEvent != null) {
+      _showRivalEvent(snap.pendingRivalEvent!);
+    }
+  }
+
+  bool _rivalDialogOpen = false;
+
+  Future<void> _showRivalEvent(RivalEventType type) async {
+    if (_rivalDialogOpen || !mounted) return;
+    _rivalDialogOpen = true;
+    final ctrl = ref.read(gameControllerProvider.notifier);
+    final l10n = AppLocalizations.of(context)!;
+    final messenger = ScaffoldMessenger.of(context);
+    final choice = await showRivalEvent(
+      context,
+      type: type,
+      options: ctrl.pendingRivalOptions(),
+      affordable: [ctrl.rivalOptionAffordable(0), ctrl.rivalOptionAffordable(1)],
+    );
+    _rivalDialogOpen = false;
+    if (!mounted) return;
+    if (choice == null) {
+      ctrl.ignoreRivalEvent();
+      messenger.showSnackBar(SnackBar(content: Text(l10n.rivalIgnoredSnack)));
+    } else if (ctrl.resolveRivalEvent(choice)) {
+      ref.read(audioServiceProvider).play(Sfx.reward);
+      messenger.showSnackBar(SnackBar(content: Text(l10n.rivalResolvedSnack)));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Tiền offline lúc app trở lại foreground (giá trị đổi từ 0 -> X).
@@ -195,6 +263,27 @@ class _HomePageState extends ConsumerState<HomePage>
       (previous, next) {
         if (next > (previous ?? 0)) {
           ref.read(audioServiceProvider).play(Sfx.reward);
+        }
+      },
+    );
+
+    // Chương cốt truyện tới hạn trong lúc chơi (mở giai đoạn, prestige, hạ đối
+    // thủ) → bật cutscene.
+    ref.listen(
+      gameControllerProvider.select((s) => s.pendingStoryChapterId),
+      (previous, next) {
+        if (debugAutoShowStory && next != null) _showStoryBeat(next);
+      },
+    );
+
+    // Sự kiện đối thủ mới → bật dialog đối phó (nhường nếu đang có cutscene).
+    ref.listen(
+      gameControllerProvider.select((s) => s.pendingRivalEvent),
+      (previous, next) {
+        if (next != null &&
+            !_storyDialogOpen &&
+            ref.read(gameControllerProvider).pendingStoryChapterId == null) {
+          _showRivalEvent(next);
         }
       },
     );
@@ -218,6 +307,12 @@ class _HomePageState extends ConsumerState<HomePage>
         ),
         titleSpacing: 0,
         actions: [
+          IconButton(
+            key: const Key('story-log-button'),
+            icon: const Icon(Icons.auto_stories_outlined),
+            tooltip: AppLocalizations.of(context)!.storyLogTitle,
+            onPressed: () => showStoryLog(context),
+          ),
           IconButton(
             key: const Key('settings-button'),
             icon: const Icon(Icons.settings_outlined),
@@ -383,8 +478,6 @@ class _MoneyHeader extends ConsumerWidget {
             theme.colorScheme.primaryContainer.withValues(alpha: 0.55),
           ],
         ),
-        borderRadius:
-            const BorderRadius.vertical(bottom: Radius.circular(28)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.10),
@@ -1147,6 +1240,36 @@ class _GlobalBonusChip extends StatelessWidget {
   }
 }
 
+/// Chip ⚔️ thế trận với đối thủ — nhỏ gọn (màu tải nghĩa, chi tiết ở tooltip)
+/// để không chen chỗ tên giai đoạn + nút mở khoá trên máy hẹp.
+class _RivalChip extends StatelessWidget {
+  const _RivalChip(this.standing);
+
+  final RivalStanding standing;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final (Color color, String label) = switch (standing) {
+      RivalStanding.ahead => (Colors.green.shade600, l10n.rivalMeterAhead),
+      RivalStanding.even => (Colors.amber.shade700, l10n.rivalMeterEven),
+      RivalStanding.behind => (Colors.red.shade600, l10n.rivalMeterBehind),
+    };
+    return Tooltip(
+      message: label,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+        decoration: BoxDecoration(
+          color: color.withValues(alpha: 0.18),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text('⚔️', style: TextStyle(fontSize: 12, color: color),
+            semanticsLabel: label),
+      ),
+    );
+  }
+}
+
 /// Tiêu đề giai đoạn hiện tại + nút mở khóa giai đoạn kế (nếu còn).
 class _StageHeader extends ConsumerWidget {
   const _StageHeader();
@@ -1155,6 +1278,10 @@ class _StageHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final stage = ref.watch(gameControllerProvider.select((s) => s.stage));
     final money = ref.watch(gameControllerProvider.select((s) => s.money));
+    final rivalActive =
+        ref.watch(gameControllerProvider.select((s) => s.rivalActive));
+    final standing = ref
+        .watch(gameControllerProvider.select((s) => s.rivalStanding));
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     final next = Balance.nextStageConfig(stage);
@@ -1175,6 +1302,10 @@ class _StageHeader extends ConsumerWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
+          if (rivalActive) ...[
+            const SizedBox(width: 6),
+            _RivalChip(standing),
+          ],
           const SizedBox(width: 8),
           if (next != null)
             Expanded(

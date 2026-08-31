@@ -154,5 +154,18 @@
   "navAchievements": "Awards",
   "wheelName": "Lucky Wheel 🎡",
   "spinFree": "Free spin",
-  "spinAd": "Watch ad to spin"
+  "spinAd": "Watch ad to spin",
+
+  "storyChapterLabel": "Chapter {n}",
+  "storyContinue": "Continue",
+  "storyChoosePrompt": "Choose your path — this can't be undone:",
+  "storyLogTitle": "Story",
+  "storyLogLocked": "Not unlocked yet",
+  "rivalEventTitle": "The rival strikes!",
+  "rivalEventIgnore": "Ignore",
+  "rivalMeterAhead": "Ahead",
+  "rivalMeterEven": "Neck and neck",
+  "rivalMeterBehind": "Losing ground",
+  "rivalResolvedSnack": "Handled. The rival backs off.",
+  "rivalIgnoredSnack": "You let it slide — the rival gains ground."
 }

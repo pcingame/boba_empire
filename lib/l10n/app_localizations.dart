@@ -969,6 +969,78 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Xem QC để quay'**
   String get spinAd;
+
+  /// No description provided for @storyChapterLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chương {n}'**
+  String storyChapterLabel(int n);
+
+  /// No description provided for @storyContinue.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp tục'**
+  String get storyContinue;
+
+  /// No description provided for @storyChoosePrompt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn hướng đi — không đổi lại được:'**
+  String get storyChoosePrompt;
+
+  /// No description provided for @storyLogTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cốt truyện'**
+  String get storyLogTitle;
+
+  /// No description provided for @storyLogLocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chương chưa mở'**
+  String get storyLogLocked;
+
+  /// No description provided for @rivalEventTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đối thủ ra tay!'**
+  String get rivalEventTitle;
+
+  /// No description provided for @rivalEventIgnore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phớt lờ'**
+  String get rivalEventIgnore;
+
+  /// No description provided for @rivalMeterAhead.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang dẫn trước'**
+  String get rivalMeterAhead;
+
+  /// No description provided for @rivalMeterEven.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngang sức'**
+  String get rivalMeterEven;
+
+  /// No description provided for @rivalMeterBehind.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang bị lấn'**
+  String get rivalMeterBehind;
+
+  /// No description provided for @rivalResolvedSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đối phó. Đối thủ chùn lại.'**
+  String get rivalResolvedSnack;
+
+  /// No description provided for @rivalIgnoredSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn làm ngơ — đối thủ được đà lấn tới.'**
+  String get rivalIgnoredSnack;
 }
 
 class _AppLocalizationsDelegate

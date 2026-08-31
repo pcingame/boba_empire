@@ -544,4 +544,42 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get spinAd => 'Xem QC để quay';
+
+  @override
+  String storyChapterLabel(int n) {
+    return 'Chương $n';
+  }
+
+  @override
+  String get storyContinue => 'Tiếp tục';
+
+  @override
+  String get storyChoosePrompt => 'Chọn hướng đi — không đổi lại được:';
+
+  @override
+  String get storyLogTitle => 'Cốt truyện';
+
+  @override
+  String get storyLogLocked => 'Chương chưa mở';
+
+  @override
+  String get rivalEventTitle => 'Đối thủ ra tay!';
+
+  @override
+  String get rivalEventIgnore => 'Phớt lờ';
+
+  @override
+  String get rivalMeterAhead => 'Đang dẫn trước';
+
+  @override
+  String get rivalMeterEven => 'Ngang sức';
+
+  @override
+  String get rivalMeterBehind => 'Đang bị lấn';
+
+  @override
+  String get rivalResolvedSnack => 'Đã đối phó. Đối thủ chùn lại.';
+
+  @override
+  String get rivalIgnoredSnack => 'Bạn làm ngơ — đối thủ được đà lấn tới.';
 }

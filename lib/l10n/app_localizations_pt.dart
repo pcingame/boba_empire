@@ -544,4 +544,42 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get spinAd => 'Ver anúncio para girar';
+
+  @override
+  String storyChapterLabel(int n) {
+    return 'Capítulo $n';
+  }
+
+  @override
+  String get storyContinue => 'Continuar';
+
+  @override
+  String get storyChoosePrompt => 'Escolha seu caminho — não dá para desfazer:';
+
+  @override
+  String get storyLogTitle => 'História';
+
+  @override
+  String get storyLogLocked => 'Ainda não desbloqueado';
+
+  @override
+  String get rivalEventTitle => 'O rival ataca!';
+
+  @override
+  String get rivalEventIgnore => 'Ignorar';
+
+  @override
+  String get rivalMeterAhead => 'À frente';
+
+  @override
+  String get rivalMeterEven => 'Empatados';
+
+  @override
+  String get rivalMeterBehind => 'Perdendo terreno';
+
+  @override
+  String get rivalResolvedSnack => 'Resolvido. O rival recua.';
+
+  @override
+  String get rivalIgnoredSnack => 'Você deixa passar — o rival ganha terreno.';
 }

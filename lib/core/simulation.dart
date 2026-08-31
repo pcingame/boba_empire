@@ -17,6 +17,7 @@ double tap(GameState state, {double boostMultiplier = 1.0}) {
       prestigeMultiplier(state.prestigeStars, Balance.bonusPerStar) *
       permanentMultiplier(state.gemBoostLevel) *
       prestigeTapMultiplier(state.prestigeTapLevel) *
+      storyChoiceTapMultiplier(state) *
       boostMultiplier;
   _credit(state, gain);
   return gain;
@@ -294,6 +295,8 @@ int prestige(GameState state) {
       keptStageAfterPrestige(state.stage, state.prestigeKeepStageLevel);
   state.money = startCashAfterPrestige(state.prestigeStartCashLevel);
   // lifetimeEarnings KHÔNG reset — đó là nền tảng của mô hình Sao tích lũy.
+  // Cốt truyện & đối thủ (storyChapter, storyChoiceA/B, rivalDefeated,
+  // rivalPressureSeconds) cũng KHÔNG đụng tới — là tiến trình meta, giữ nguyên.
   return gained;
 }
 

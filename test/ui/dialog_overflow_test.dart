@@ -1,11 +1,13 @@
 import 'dart:ui' as ui;
 
 import 'package:boba_empire/core/models.dart';
+import 'package:boba_empire/core/rival.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/iap/iap_products.dart';
 import 'package:boba_empire/iap/iap_service.dart';
 import 'package:boba_empire/main.dart';
 import 'package:boba_empire/state/game_providers.dart';
+import 'package:boba_empire/ui/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -106,6 +108,39 @@ void main() {
         clock: 60000, // mở sau 60s → có tiền offline, popup tự hiện
       );
       expect(find.byKey(const Key('offline-double')), findsOneWidget);
+      await tester.pumpWidget(const SizedBox());
+    });
+
+    testWidgets('[$locale] cutscene chương lựa chọn không tràn', (tester) async {
+      debugAutoShowStory = true;
+      addTearDown(() => debugAutoShowStory = false);
+      await _pump(
+        tester,
+        locale: locale,
+        seed: GameState.newGame(nowMillis: 0)
+          ..storyChapter = 5
+          ..stage = 5, // Chương 6 (2 nút lựa chọn, prose dài nhất)
+      );
+      expect(find.byKey(const Key('story-choice-0')), findsOneWidget);
+      expect(find.byKey(const Key('story-choice-1')), findsOneWidget);
+      await tester.pumpWidget(const SizedBox());
+    });
+
+    testWidgets('[$locale] dialog sự kiện đối thủ không tràn', (tester) async {
+      await _pump(
+        tester,
+        locale: locale,
+        seed: GameState.newGame(nowMillis: 0)
+          ..storyChapter = 3
+          ..money = 100000
+          ..gems = 100,
+      );
+      final ctrl = ProviderScope.containerOf(
+        tester.element(find.byType(HomePage)),
+      ).read(gameControllerProvider.notifier);
+      ctrl.debugSpawnRivalEvent(RivalEventType.smearCampaign);
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('rival-ignore')), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
     });
   }

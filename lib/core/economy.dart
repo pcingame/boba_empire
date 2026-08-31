@@ -84,6 +84,21 @@ double bulkIncomeGain(GeneratorConfig config, int fromLevel, int count) {
 double prestigeMultiplier(int stars, double bonusPerStar) =>
     1 + stars * bonusPerStar;
 
+/// Hệ số nhân GIÁ TRỊ CHẠM vĩnh viễn từ lựa chọn cốt truyện (Chương 6 "thủ công"
+/// và/hoặc Chương 8 "giữ bản sắc"). Không reset khi prestige.
+double storyChoiceTapMultiplier(GameState s) =>
+    1 +
+    (s.storyChoiceA == 'craft' ? Balance.storyPerkBonus : 0) +
+    (s.storyChoiceB == 'identity' ? Balance.storyPerkBonus : 0);
+
+/// Hệ số nhân THU NHẬP TỰ ĐỘNG vĩnh viễn từ lựa chọn cốt truyện (Chương 6 "thần
+/// tốc" và/hoặc Chương 8 "thâu tóm"). Áp cả offline (nằm trong
+/// [effectiveIncomePerSecond]).
+double storyChoiceIncomeMultiplier(GameState s) =>
+    1 +
+    (s.storyChoiceA == 'scale' ? Balance.storyPerkBonus : 0) +
+    (s.storyChoiceB == 'acquire' ? Balance.storyPerkBonus : 0);
+
 /// Hệ số nhân thu nhập vĩnh viễn từ vật phẩm Kim Cương "Tăng thu nhập".
 double permanentMultiplier(int gemBoostLevel) =>
     1 + gemBoostLevel * Balance.gemBoostPerLevel;
@@ -230,6 +245,7 @@ double effectiveIncomePerSecond(
     prestigeMultiplier(state.prestigeStars, bonusPerStar) *
     permanentMultiplier(state.gemBoostLevel) *
     prestigeIncomeMultiplier(state.prestigeIncomeLevel) *
+    storyChoiceIncomeMultiplier(state) *
     (state.doubleIncomeOwned ? 2.0 : 1.0) *
     boostMultiplier;
 

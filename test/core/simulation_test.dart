@@ -294,6 +294,26 @@ void main() {
       expect(prestige(s), 50);
       expect(s.prestigeStars, 100);
     });
+
+    test('cốt truyện & đối thủ KHÔNG reset khi prestige', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..stage = 6
+        ..levels['x'] = 9
+        ..lifetimeEarnings = 1000000
+        ..storyChapter = 7
+        ..storyChoiceA = 'craft'
+        ..storyChoiceB = 'acquire'
+        ..rivalDefeated = true
+        ..rivalPressureSeconds = 1234;
+      prestige(s);
+      expect(s.stage, 1); // vẫn hard reset
+      expect(s.levels, isEmpty);
+      expect(s.storyChapter, 7);
+      expect(s.storyChoiceA, 'craft');
+      expect(s.storyChoiceB, 'acquire');
+      expect(s.rivalDefeated, isTrue);
+      expect(s.rivalPressureSeconds, 1234);
+    });
   });
 
   group('serialize', () {
@@ -311,6 +331,10 @@ void main() {
         ..prestigeDiscountLevel = 4
         ..prestigeAutoBuyLevel = 1
         ..autoBuyEnabled = true
+        ..storyChapter = 6
+        ..storyChoiceA = 'scale'
+        ..rivalDefeated = true
+        ..rivalPressureSeconds = 777.5
         ..repeatQuestBaseline = 12345.0;
       final round = GameState.fromJson(s.toJson());
       expect(round.money, 42.5);
@@ -326,7 +350,26 @@ void main() {
       expect(round.prestigeDiscountLevel, 4);
       expect(round.prestigeAutoBuyLevel, 1);
       expect(round.autoBuyEnabled, isTrue);
+      expect(round.storyChapter, 6);
+      expect(round.storyChoiceA, 'scale');
+      expect(round.storyChoiceB, isNull);
+      expect(round.rivalDefeated, isTrue);
+      expect(round.rivalPressureSeconds, 777.5);
       expect(round.repeatQuestBaseline, 12345.0);
+    });
+
+    test('save cũ (thiếu field cốt truyện) → mặc định', () {
+      final old = GameState.newGame(nowMillis: 0).toJson()
+        ..remove('storyChapter')
+        ..remove('storyChoiceA')
+        ..remove('storyChoiceB')
+        ..remove('rivalDefeated')
+        ..remove('rivalPressureSeconds');
+      final s = GameState.fromJson(old);
+      expect(s.storyChapter, 0);
+      expect(s.storyChoiceA, isNull);
+      expect(s.rivalDefeated, isFalse);
+      expect(s.rivalPressureSeconds, 0);
     });
   });
 

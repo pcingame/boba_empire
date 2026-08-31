@@ -134,7 +134,8 @@ còn lại) nên shop chỉ thêm dòng & tự cuộn — không "ăn" chỗ c�
   - **Reset**: `money`, `levels`, **`stage` về 1** (trừ perk "Giữ giai đoạn").
   - **Giữ**: `prestigeStars`, `lifetimeEarnings`, `gemBoostLevel`,
     `offlineCapLevel`, cấp perk kho Sao, IAP, `questIndex`, `tapCount`,
-    `buyCount`, thành tựu.
+    `buyCount`, thành tựu, **cốt truyện** (`storyChapter`, `storyChoiceA/B`,
+    `rivalDefeated`, `rivalPressureSeconds` — xem §16).
   - → Mỗi vòng **tái trải nghiệm mở giai đoạn**; re-climb nhanh nhờ +2%/sao +
     perk kho Sao (giảm giá, vốn khởi nghiệp, giữ giai đoạn).
 
@@ -347,8 +348,8 @@ lib/data/game_storage.dart   1 blob JSON qua SharedPreferences (local, schema v1
 lib/ads · lib/iap            interface trừu tượng + impl thật; stub trên desktop/web
 ```
 
-- **Tick**: mỗi 1s cộng `income/s × dt`, cập nhật mèo/VIP, xét thành tựu, tự lưu
-  mỗi 10 tick. Lưu ngay khi mua bằng 💎/⭐ hoặc app vào nền.
+- **Tick**: mỗi 1s cộng `income/s × dt`, cập nhật mèo/VIP/đối thủ, xét thành tựu,
+  tự lưu mỗi 10 tick. Lưu ngay khi mua bằng 💎/⭐ hoặc app vào nền.
 - **Save**: đóng dấu `lastSeenMillis` = lúc lưu → mốc "đã tính tiền tới đây".
   Save hỏng → coi như ván mới (không crash). **Chưa có** migration cho `_schemaVersion`.
 - **Không có cloud save** — gỡ app = mất tiến trình.
@@ -365,7 +366,7 @@ lib/ads · lib/iap            interface trừu tượng + impl thật; stub trê
 | 4 | ~~Nhỏ (doc)~~ ✅ P2 | ~~Prestige "soft" nhưng "Cách chơi" nói "restart"~~ → prestige giờ hard-reset stage; giữ giai đoạn là perk kho Sao tuỳ chọn. |
 | 5 | ~~Nhỏ (doc)~~ ✅ P3 | ~~Comment ghi stage "1..3"~~ → sửa thành "1..6". |
 | 6 | Trung bình | Save **local-only** (SharedPreferences, 1 blob). Không cloud sync, `_schemaVersion` có nhưng **không có code migrate** → save cũ/hỏng = ván mới. Gỡ app = mất sạch. | Thêm cloud save (Play Games / Game Center / Firebase) trước khi scale; viết migration path. |
-| 7 | Nhỏ (UX) | `tapValue` cố định 1, chỉ scale qua perk "Siêu chạm"/boost → nút "Chạm pha trà" (hero interaction) mất ý nghĩa kinh tế sau ~1 phút. | Bình thường với thể loại; cân nhắc 1 nâng cấp "giá trị chạm" bằng Xu để giữ nút sống. |
+| 7 | ~~Nhỏ (UX)~~ ✅ | ~~mid/late game mất hook~~ → thêm **cốt truyện 8 chương + đối thủ cạnh tranh** (§16): chương gắn vào mốc giai đoạn/prestige, sự kiện đối thủ định kỳ, 2 điểm rẽ nhánh cho perk nhỏ. `tapValue` vẫn cố định 1 (bình thường với thể loại). |
 | 8 | ~~Nhỏ (UX)~~ ✅ P5 | ~~Chuỗi nhiệm vụ hữu hạn~~ → sau 10 bước là chuỗi "kiếm thêm" vô hạn (mục 9). |
 
 ---
@@ -422,8 +423,63 @@ lib/ads · lib/iap            interface trừu tượng + impl thật; stub trê
 - `GameState` +3 field (`prestigeAutoBuyLevel`, `autoBuyEnabled`,
   `repeatQuestBaseline`), JSON back-compat.
 
-**Còn lại**: auto-tap (finding #7 — chưa làm), persist Golden Rush (finding #3),
-cloud save (finding #6).
+**Còn lại**: persist Golden Rush (finding #3), cloud save (finding #6).
+
+---
+
+## 16. Cốt truyện & Đối thủ cạnh tranh
+
+> ⚠️ Số rival + perk nhánh đặt theo ước lượng — **cần playtest**.
+
+### Cốt truyện (`lib/core/story.dart`, prose ở `story_content.dart`)
+
+8 chương, trigger bằng mốc **có sẵn** (không thêm mốc mới):
+
+| # | Trigger | Nhân vật | Ghi chú |
+|---|---|---|---|
+| 1 | mở game | 👵 Bà Tư | luôn chờ ở ván mới |
+| 2 | `stage ≥ 2` | 🧋 Bạn | |
+| 3 | `stage ≥ 3` | 😼 Hải "Trân Châu" | **đối thủ vào truyện** (`rivalActive`) |
+| 4 | `prestigeStars > 0` | ⭐ Bà Tư | |
+| 5 | `stage ≥ 4` | 😼 Hải | |
+| 6 | `stage ≥ 5` | 🤔 Bạn | **CHỌN A**: `craft` (+8% chạm) / `scale` (+8% thu nhập) |
+| 7 | `stage ≥ 6` | 🌍 Bà Tư | |
+| 8 | `rivalDefeated` | 🏆 Hải | **CHỌN B**: `acquire` (+8% thu nhập) / `identity` (+8% chạm) |
+
+- Chương mở **tuần tự** (`pendingChapterId` dừng ở chương chưa thoả — không nhảy
+  cóc). Chương lựa chọn **re-show** tới khi chọn (chống kẹt khi kill app giữa
+  dialog); dialog modal, `barrierDismissible: false`.
+- Cutscene = emoji lớn trong vòng tròn (không asset). Nút 📖 trên AppBar mở
+  `story_log_dialog` để đọc lại chương đã mở.
+- Perk nhánh fold vào `economy.storyChoice{Tap,Income}Multiplier` → `tap()` và
+  `effectiveIncomePerSecond` (áp cả offline). Cộng dồn nếu 2 nhánh cùng trục.
+- `es/id/pt/th` tạm fallback prose sang `en` — dịch sau. Chrome (nút, nhãn) đã
+  dịch đủ 6 ngôn ngữ trong ARB.
+
+### Đối thủ (`lib/core/rival.dart`)
+
+- **Sức ép** = `sqrt(rivalPressureSeconds) · rivalPowerK`. `rivalPressureSeconds`
+  **KHÔNG** cộng theo tổng thời gian chơi — chỉ: (a) +1/s khi có sự kiện đang
+  chờ trả lời, (b) `pressureDelta` (âm) khi đối phó, (c) `+2400s` khi phớt lờ.
+  → không phụ thuộc cày lâu/ngắn, dễ tune.
+- **Thế trận** (`rivalStanding`): so sức ép với `Balance.rivalExpectedPower[stage]`
+  → ahead / even / behind. Chip `⚔️` màu ở `_StageHeader` (Chương 3+, chưa hạ).
+- **Sự kiện** (`RivalEventType`: priceWar / poachStaff / smearCampaign) nổ mỗi
+  5–8 phút (khuôn mèo/VIP trong `game_controller`). Mỗi sự kiện 2 lựa chọn:
+  - Option 0: trả **% Xu hiện có**, đẩy lùi vừa (`pressureDelta` −1500..−1800).
+  - Option 1: trả **💎**, đẩy lùi mạnh + **buff tạm** (×1.15–1.2 trong ~3 phút).
+  - Phớt lờ: đối thủ +2400s sức ép + **debuff tạm** ×0.9 trong 2 phút.
+- Buff/debuff tạm là **runtime-only** (`_rivalModifier`, giống Golden Rush —
+  kill app là mất; debuff mất khi kill là có lợi cho người chơi). Áp thu nhập
+  online + chạm, **không** áp offline.
+- **Hạ đối thủ** (`rivalDefeatable`): tới `stage 6` mà vẫn `ahead` → chốt
+  `rivalDefeated = true`, dừng sự kiện, mở Chương 8.
+
+### `GameState` +5 field (persisted, **giữ qua prestige**)
+
+`storyChapter`, `storyChoiceA`, `storyChoiceB`, `rivalDefeated`,
+`rivalPressureSeconds`. JSON back-compat (`?? 0 / ?? null / ?? false`).
+`prestige()` không đụng tới (chỉ chạm money/levels/stage).
 
 ---
 

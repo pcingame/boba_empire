@@ -154,5 +154,18 @@
   "navAchievements": "รางวัล",
   "wheelName": "วงล้อนำโชค 🎡",
   "spinFree": "หมุนฟรี",
-  "spinAd": "ดูโฆษณาเพื่อหมุน"
+  "spinAd": "ดูโฆษณาเพื่อหมุน",
+
+  "storyChapterLabel": "บทที่ {n}",
+  "storyContinue": "ต่อไป",
+  "storyChoosePrompt": "เลือกเส้นทางของคุณ — เปลี่ยนใจไม่ได้:",
+  "storyLogTitle": "เนื้อเรื่อง",
+  "storyLogLocked": "ยังไม่ปลดล็อก",
+  "rivalEventTitle": "คู่แข่งลงมือแล้ว!",
+  "rivalEventIgnore": "เพิกเฉย",
+  "rivalMeterAhead": "นำอยู่",
+  "rivalMeterEven": "สูสี",
+  "rivalMeterBehind": "กำลังเสียเปรียบ",
+  "rivalResolvedSnack": "จัดการแล้ว คู่แข่งถอย",
+  "rivalIgnoredSnack": "คุณปล่อยผ่าน — คู่แข่งได้ใจ"
 }

@@ -154,5 +154,18 @@
   "navAchievements": "Logros",
   "wheelName": "Ruleta de la suerte 🎡",
   "spinFree": "Giro gratis",
-  "spinAd": "Ver anuncio para girar"
+  "spinAd": "Ver anuncio para girar",
+
+  "storyChapterLabel": "Capítulo {n}",
+  "storyContinue": "Continuar",
+  "storyChoosePrompt": "Elige tu camino — no se puede deshacer:",
+  "storyLogTitle": "Historia",
+  "storyLogLocked": "Aún no desbloqueado",
+  "rivalEventTitle": "¡El rival ataca!",
+  "rivalEventIgnore": "Ignorar",
+  "rivalMeterAhead": "Por delante",
+  "rivalMeterEven": "Cara a cara",
+  "rivalMeterBehind": "Perdiendo terreno",
+  "rivalResolvedSnack": "Resuelto. El rival retrocede.",
+  "rivalIgnoredSnack": "Lo dejas pasar — el rival gana terreno."
 }

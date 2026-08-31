@@ -7,6 +7,7 @@ library;
 
 import '../core/achievements.dart';
 import '../core/quests.dart';
+import '../core/rival.dart';
 
 class GameSnapshot {
   const GameSnapshot({
@@ -50,6 +51,17 @@ class GameSnapshot {
     required this.vipActive,
     required this.vipRemainingSeconds,
     required this.freeSpinAvailable,
+    required this.storyChapter,
+    required this.pendingStoryChapterId,
+    required this.storyChoiceA,
+    required this.storyChoiceB,
+    required this.rivalActive,
+    required this.rivalDefeated,
+    required this.rivalStanding,
+    required this.rivalPowerRatio,
+    required this.pendingRivalEvent,
+    required this.rivalModifierRemainingSeconds,
+    required this.rivalModifierMult,
     required Map<String, int> levels,
   }) : _levels = levels;
 
@@ -149,6 +161,31 @@ class GameSnapshot {
 
   /// Còn lượt quay Vòng quay miễn phí hôm nay không.
   final bool freeSpinAvailable;
+
+  /// Chương cốt truyện cao nhất đã xem, và chương cần hiển thị ngay (null nếu
+  /// không có) — UI bật cutscene rồi gọi `acknowledgeStoryBeat()` / `makeStoryChoice()`.
+  final int storyChapter;
+  final int? pendingStoryChapterId;
+
+  /// Lựa chọn nhánh đã ghi (Chương 6 / Chương 8) — null nếu chưa chọn.
+  final String? storyChoiceA;
+  final String? storyChoiceB;
+
+  /// Đối thủ đang "hoạt động" (Chương 3+ và chưa bị hạ) & đã bị hạ.
+  final bool rivalActive;
+  final bool rivalDefeated;
+
+  /// Thế trận + tỉ số sức_ép/kỳ_vọng (cho chip ⚔️ và thanh đo ở header).
+  final RivalStanding rivalStanding;
+  final double rivalPowerRatio;
+
+  /// Sự kiện đối thủ đang chờ trả lời (null nếu không) — UI bật dialog rồi gọi
+  /// `resolveRivalEvent()` / `ignoreRivalEvent()`.
+  final RivalEventType? pendingRivalEvent;
+
+  /// Buff/debuff tạm sau lựa chọn đối phó: số giây còn lại + hệ số (1.0 = không).
+  final double rivalModifierRemainingSeconds;
+  final double rivalModifierMult;
 
   final Map<String, int> _levels;
 

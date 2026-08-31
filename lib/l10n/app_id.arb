@@ -154,5 +154,18 @@
   "navAchievements": "Prestasi",
   "wheelName": "Roda Keberuntungan 🎡",
   "spinFree": "Putar gratis",
-  "spinAd": "Tonton iklan untuk memutar"
+  "spinAd": "Tonton iklan untuk memutar",
+
+  "storyChapterLabel": "Bab {n}",
+  "storyContinue": "Lanjut",
+  "storyChoosePrompt": "Pilih jalanmu — tidak bisa dibatalkan:",
+  "storyLogTitle": "Cerita",
+  "storyLogLocked": "Belum terbuka",
+  "rivalEventTitle": "Pesaing menyerang!",
+  "rivalEventIgnore": "Abaikan",
+  "rivalMeterAhead": "Unggul",
+  "rivalMeterEven": "Seimbang",
+  "rivalMeterBehind": "Tertinggal",
+  "rivalResolvedSnack": "Ditangani. Pesaing mundur.",
+  "rivalIgnoredSnack": "Kamu biarkan saja — pesaing makin unggul."
 }

@@ -170,6 +170,38 @@ class Balance {
   static const int prestigeAutoBuyBaseCost = 12;
   static const int prestigeAutoBuyMaxLevel = 1;
 
+  // --- Cốt truyện: perk từ lựa chọn nhánh (Chương 6 & 8) ---
+  // Mỗi nhánh cộng thêm chừng này vào MỘT trục (thu nhập hoặc chạm), vĩnh viễn,
+  // KHÔNG reset khi prestige. Giữ nhỏ để không phá cân bằng — cần playtest.
+  static const double storyPerkBonus = 0.08; // +8%
+
+  // --- Đối thủ cạnh tranh (rival) ---
+  // "Sức ép" của đối thủ = sqrt(rivalPressureSeconds) · [rivalPowerK]. Giây sức
+  // ép KHÔNG cộng theo tổng thời gian chơi — chỉ nhích khi có sự kiện đang chờ
+  // trả lời, và nhảy/giảm theo cách người chơi đối phó. → không phụ thuộc việc
+  // cày lâu hay ngắn, dễ tune.
+  static const double rivalPowerK = 1.0;
+
+  /// Mốc sức ép "hoà" kỳ vọng theo giai đoạn (index = stage - 1). Giai đoạn 1–2
+  /// đối thủ chưa xuất hiện nên để lớn. Vượt [rivalBehindRatio] lần mốc này =
+  /// "đang thua"; dưới [rivalAheadRatio] lần = "đang thắng".
+  static const List<double> rivalExpectedPower = [999, 999, 60, 90, 120, 150];
+  static const double rivalAheadRatio = 0.8;
+  static const double rivalBehindRatio = 1.2;
+
+  /// Sự kiện đối thủ xuất hiện cách nhau ngẫu nhiên trong khoảng này (như VIP).
+  static const int rivalEventSpawnMinMs = 5 * 60 * 1000;
+  static const int rivalEventSpawnMaxMs = 8 * 60 * 1000;
+
+  /// Trong lúc sự kiện đang chờ trả lời, đối thủ "lấn tới": +1 giây sức ép mỗi
+  /// giây trôi. Nhỏ — chủ yếu tạo cảm giác gấp.
+  static const double rivalPendingPressurePerSecond = 1.0;
+
+  /// Phớt lờ một sự kiện: đối thủ cộng chừng này giây sức ép + debuff tạm.
+  static const double rivalIgnorePressureSeconds = 2400;
+  static const double rivalIgnoreDebuffMult = 0.9;
+  static const int rivalIgnoreDebuffSeconds = 120;
+
   /// Ba giai đoạn kinh doanh (index = stage - 1). Giai đoạn 1 có sẵn.
   static const List<StageConfig> stages = [
     StageConfig(stage: 1, name: 'Xe đẩy vỉa hè', unlockCost: 0),

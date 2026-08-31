@@ -17,7 +17,9 @@ import '../core/daily.dart';
 import '../core/economy.dart';
 import '../core/models.dart';
 import '../core/quests.dart';
+import '../core/rival.dart';
 import '../core/simulation.dart';
+import '../core/story.dart';
 import '../core/vip.dart';
 import '../core/wheel.dart';
 import '../data/game_storage.dart';
@@ -54,6 +56,14 @@ class GameController extends Notifier<GameSnapshot> {
   int _vipShownAtMillis = 0;
   int _nextVipMillis = 0;
 
+  /// Đối thủ cạnh tranh — sự kiện đang chờ trả lời (runtime, giống mèo/VIP) +
+  /// buff/debuff tạm sau lựa chọn đối phó (runtime như Mưa vàng — kill app là mất,
+  /// khớp cách xử lý boost hiện có).
+  RivalEventType? _rivalEventPending;
+  int _nextRivalEventMillis = 0;
+  int _rivalModUntilMillis = 0;
+  double _rivalModMult = 1.0;
+
   @override
   GameSnapshot build() {
     _storage = ref.read(gameStorageProvider);
@@ -68,6 +78,7 @@ class GameController extends Notifier<GameSnapshot> {
     claimVipDailyGems(_game, _clock()); // Kim Cương VIP nếu sang ngày mới
     _scheduleNextCat(_clock());
     _scheduleNextVip(_clock());
+    if (rivalActive(_game)) _scheduleNextRivalEvent(_clock());
     _timer = Timer.periodic(tickInterval, (_) => _onTick());
     ref.onDispose(() => _timer?.cancel());
     _awardAchievements(); // thành tựu đạt sẵn từ trước / qua tiền offline
@@ -86,6 +97,11 @@ class GameController extends Notifier<GameSnapshot> {
         ? Balance.maxTimeBoostMultiplier
         : m;
   }
+
+  /// Buff/debuff tạm của đối thủ (1.0 nếu đã hết hạn). Áp cho thu nhập tự động
+  /// khi ĐANG CHƠI và giá trị chạm — KHÔNG áp offline (giống boost tạm).
+  double _rivalModifier() =>
+      _clock() < _rivalModUntilMillis ? _rivalModMult : 1.0;
 
   /// Trần offline (giây) đã tính cấp "Kho lạnh" + cộng thưởng VIP nếu đang VIP.
   int _offlineCap() =>
@@ -173,6 +189,123 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
+  // --- Đối thủ cạnh tranh ---
+
+  void _scheduleNextRivalEvent(int now) {
+    final span =
+        Balance.rivalEventSpawnMaxMs - Balance.rivalEventSpawnMinMs;
+    _nextRivalEventMillis =
+        now + Balance.rivalEventSpawnMinMs + _random.nextInt(span + 1);
+  }
+
+  /// Vòng đời sự kiện đối thủ mỗi tick: tới giờ & chưa có sự kiện chờ → tung một
+  /// sự kiện ngẫu nhiên. Đồng thời chốt "hạ đối thủ" khi đủ điều kiện.
+  void _updateRival(int now) {
+    if (!rivalActive(_game)) return;
+    if (_rivalEventPending == null && now >= _nextRivalEventMillis) {
+      _rivalEventPending = RivalEventType
+          .values[_random.nextInt(RivalEventType.values.length)];
+    }
+    if (rivalDefeatable(_game)) {
+      _game.rivalDefeated = true;
+      _rivalEventPending = null;
+      unawaited(saveNow());
+    }
+  }
+
+  void _applyRivalOutcome(RivalOutcome o) {
+    _game.money -= o.spendMoney;
+    _game.gems -= o.spendGems;
+    _game.rivalPressureSeconds =
+        max(0.0, _game.rivalPressureSeconds + o.pressureDelta);
+    if (o.modifierSeconds > 0) {
+      _rivalModMult = o.modifierMult;
+      _rivalModUntilMillis = _clock() + o.modifierSeconds * 1000;
+    }
+  }
+
+  /// Hai lựa chọn đối phó cho sự kiện đối thủ đang chờ (rỗng nếu không có sự
+  /// kiện). Chi phí theo % Xu hiện có nên tính lúc gọi.
+  List<RivalOutcome> pendingRivalOptions() {
+    final type = _rivalEventPending;
+    return type == null ? const [] : rivalOptions(_game, type);
+  }
+
+  /// Lựa chọn [optionIndex] có đủ tài nguyên để chọn không.
+  bool rivalOptionAffordable(int optionIndex) {
+    final opts = pendingRivalOptions();
+    return optionIndex >= 0 &&
+        optionIndex < opts.length &&
+        opts[optionIndex].affordableFor(_game);
+  }
+
+  /// Đối phó sự kiện đối thủ bằng lựa chọn [optionIndex] (0/1). Trả về false nếu
+  /// không đủ tài nguyên hoặc không có sự kiện. Lưu ngay (có tiêu 💎).
+  bool resolveRivalEvent(int optionIndex) {
+    final type = _rivalEventPending;
+    if (type == null) return false;
+    final outcome = rivalOptions(_game, type)[optionIndex];
+    if (!outcome.affordableFor(_game)) return false;
+    _applyRivalOutcome(outcome);
+    _rivalEventPending = null;
+    _scheduleNextRivalEvent(_clock());
+    if (rivalDefeatable(_game)) _game.rivalDefeated = true;
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
+  /// Phớt lờ sự kiện đối thủ: đối thủ lấn tới + debuff tạm.
+  void ignoreRivalEvent() {
+    if (_rivalEventPending == null) return;
+    _applyRivalOutcome(rivalIgnoreOutcome);
+    _rivalEventPending = null;
+    _scheduleNextRivalEvent(_clock());
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// UI đã hiển thị xong một chương truyện (nút "Tiếp tục"): bump con trỏ chương.
+  /// Với chương lựa chọn, con trỏ vẫn bump nhưng `pendingStoryChapterId` còn trả
+  /// lại chính nó tới khi [makeStoryChoice] được gọi.
+  void acknowledgeStoryBeat() {
+    final id = pendingChapterId(_game);
+    if (id == null) return;
+    final firstTime = id > _game.storyChapter;
+    markChapterSeen(_game, id);
+    if (firstTime && id == rivalIntroChapter) {
+      _scheduleNextRivalEvent(_clock());
+    }
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Ghi lựa chọn nhánh cho chương đang hiển thị. Trả về true nếu vừa ghi.
+  bool makeStoryChoice(String optionKey) {
+    final id = pendingChapterId(_game);
+    if (id == null) return false;
+    if (!applyStoryChoice(_game, id, optionKey)) return false;
+    markChapterSeen(_game, id);
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
+  /// Ép con trỏ chương (chỉ dùng cho test).
+  @visibleForTesting
+  void debugSetStoryChapter(int chapter) {
+    _game.storyChapter = chapter;
+    if (rivalActive(_game)) _scheduleNextRivalEvent(_clock());
+    state = _snapshot();
+  }
+
+  /// Ép hiện một sự kiện đối thủ ngay (chỉ dùng cho test).
+  @visibleForTesting
+  void debugSpawnRivalEvent(RivalEventType type) {
+    _rivalEventPending = type;
+    state = _snapshot();
+  }
+
   /// Chạy một nhịp tick (chỉ dùng cho test, thay cho việc chờ timer thật).
   @visibleForTesting
   void debugTick() => _onTick();
@@ -188,7 +321,8 @@ class GameController extends Notifier<GameSnapshot> {
   /// để UI hiện hiệu ứng "+X" bay lên.
   double tapCup() {
     _game.tapCount++;
-    final gained = tap(_game, boostMultiplier: _boostMultiplier());
+    final gained =
+        tap(_game, boostMultiplier: _boostMultiplier() * _rivalModifier());
     state = _snapshot();
     return gained;
   }
@@ -568,8 +702,14 @@ class GameController extends Notifier<GameSnapshot> {
     final now = _clock();
     final dt = (now - _game.lastSeenMillis) / 1000.0;
     if (dt > 0) {
-      tick(_game, dt, boostMultiplier: _boostMultiplier());
+      tick(_game, dt,
+          boostMultiplier: _boostMultiplier() * _rivalModifier());
       fillPiggy(_game, dt); // heo đất tích theo thời gian chơi
+      // Sự kiện đối thủ đang chờ trả lời → đối thủ "lấn tới" (nhỏ, tạo cảm giác gấp).
+      if (_rivalEventPending != null && rivalActive(_game)) {
+        _game.rivalPressureSeconds +=
+            dt * Balance.rivalPendingPressurePerSecond;
+      }
       // Giữ mốc "đã tính tiền tới đây" luôn cập nhật trong lúc chơi, để lần
       // tính offline kế tiếp không đếm trùng thời gian online.
       _game.lastSeenMillis = now;
@@ -577,6 +717,7 @@ class GameController extends Notifier<GameSnapshot> {
     _game.buyCount += autoBuyBest(_game); // perk "Tự động mua" (no-op nếu tắt)
     _updateCat(now);
     _updateVip(now);
+    _updateRival(now);
     _awardAchievements(); // bắt các mốc lifetimeEarnings tăng theo thời gian
     if (++_ticksSinceSave >= autoSaveEveryTicks) {
       _ticksSinceSave = 0;
@@ -598,7 +739,7 @@ class GameController extends Notifier<GameSnapshot> {
         _game,
         Balance.generators,
         bonusPerStar: Balance.bonusPerStar,
-        boostMultiplier: _boostMultiplier(),
+        boostMultiplier: _boostMultiplier() * _rivalModifier(),
       ),
       prestigeStars: _game.prestigeStars,
       prestigeStarsAvailable: prestigeStarsAvailable(_game),
@@ -638,6 +779,18 @@ class GameController extends Notifier<GameSnapshot> {
       vipActive: vip,
       vipRemainingSeconds: max(0, (_game.vipUntilMillis - now) / 1000.0),
       freeSpinAvailable: dayIndex(now) > _game.lastFreeSpinDay,
+      storyChapter: _game.storyChapter,
+      pendingStoryChapterId: pendingChapterId(_game),
+      storyChoiceA: _game.storyChoiceA,
+      storyChoiceB: _game.storyChoiceB,
+      rivalActive: rivalActive(_game),
+      rivalDefeated: _game.rivalDefeated,
+      rivalStanding: rivalStanding(_game),
+      rivalPowerRatio: rivalPowerRatio(_game),
+      pendingRivalEvent: _rivalEventPending,
+      rivalModifierRemainingSeconds:
+          max(0, (_rivalModUntilMillis - now) / 1000.0),
+      rivalModifierMult: _rivalModifier(),
       levels: _game.levels,
     );
   }

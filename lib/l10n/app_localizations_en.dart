@@ -541,4 +541,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get spinAd => 'Watch ad to spin';
+
+  @override
+  String storyChapterLabel(int n) {
+    return 'Chapter $n';
+  }
+
+  @override
+  String get storyContinue => 'Continue';
+
+  @override
+  String get storyChoosePrompt => 'Choose your path — this can\'t be undone:';
+
+  @override
+  String get storyLogTitle => 'Story';
+
+  @override
+  String get storyLogLocked => 'Not unlocked yet';
+
+  @override
+  String get rivalEventTitle => 'The rival strikes!';
+
+  @override
+  String get rivalEventIgnore => 'Ignore';
+
+  @override
+  String get rivalMeterAhead => 'Ahead';
+
+  @override
+  String get rivalMeterEven => 'Neck and neck';
+
+  @override
+  String get rivalMeterBehind => 'Losing ground';
+
+  @override
+  String get rivalResolvedSnack => 'Handled. The rival backs off.';
+
+  @override
+  String get rivalIgnoredSnack => 'You let it slide — the rival gains ground.';
 }

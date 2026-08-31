@@ -541,4 +541,42 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get spinAd => 'ดูโฆษณาเพื่อหมุน';
+
+  @override
+  String storyChapterLabel(int n) {
+    return 'บทที่ $n';
+  }
+
+  @override
+  String get storyContinue => 'ต่อไป';
+
+  @override
+  String get storyChoosePrompt => 'เลือกเส้นทางของคุณ — เปลี่ยนใจไม่ได้:';
+
+  @override
+  String get storyLogTitle => 'เนื้อเรื่อง';
+
+  @override
+  String get storyLogLocked => 'ยังไม่ปลดล็อก';
+
+  @override
+  String get rivalEventTitle => 'คู่แข่งลงมือแล้ว!';
+
+  @override
+  String get rivalEventIgnore => 'เพิกเฉย';
+
+  @override
+  String get rivalMeterAhead => 'นำอยู่';
+
+  @override
+  String get rivalMeterEven => 'สูสี';
+
+  @override
+  String get rivalMeterBehind => 'กำลังเสียเปรียบ';
+
+  @override
+  String get rivalResolvedSnack => 'จัดการแล้ว คู่แข่งถอย';
+
+  @override
+  String get rivalIgnoredSnack => 'คุณปล่อยผ่าน — คู่แข่งได้ใจ';
 }

@@ -84,6 +84,11 @@ class GameState {
     this.prestigeDiscountLevel = 0,
     this.prestigeAutoBuyLevel = 0,
     this.autoBuyEnabled = false,
+    this.storyChapter = 0,
+    this.storyChoiceA,
+    this.storyChoiceB,
+    this.rivalDefeated = false,
+    this.rivalPressureSeconds = 0,
     this.repeatQuestBaseline = 0,
     this.tapCount = 0,
     this.buyCount = 0,
@@ -183,6 +188,25 @@ class GameState {
   /// Công tắc auto-buy đang bật (chỉ có tác dụng khi có perk).
   bool autoBuyEnabled;
 
+  /// Chương cốt truyện cao nhất đã xem (0 = chưa có gì). KHÔNG reset khi prestige
+  /// — cốt truyện là tiến trình meta, giống thành tựu / lifetimeEarnings.
+  int storyChapter;
+
+  /// Lựa chọn nhánh Chương 6 ('craft' | 'scale' | null) và Chương 8
+  /// ('acquire' | 'identity' | null). Ghi một lần, không đổi được. Mỗi lựa chọn
+  /// cộng một perk nhỏ vĩnh viễn (xem [Balance.storyPerkBonus]).
+  String? storyChoiceA;
+  String? storyChoiceB;
+
+  /// Đã "hạ" đối thủ (đạt điều kiện ở giai đoạn 6) — chốt lại, mở Chương 8 và
+  /// dừng các sự kiện đối thủ.
+  bool rivalDefeated;
+
+  /// "Giây sức ép" tích lại của đối thủ (xem [Balance.rivalPowerK]). Chỉ nhích
+  /// khi có sự kiện đang chờ trả lời, và nhảy/giảm theo cách đối phó — không cộng
+  /// theo tổng thời gian chơi.
+  double rivalPressureSeconds;
+
   /// Mốc `lifetimeEarnings` khi bắt đầu vùng nhiệm vụ lặp lại — nhiệm vụ lặp đếm
   /// "kiếm THÊM" từ mốc này.
   double repeatQuestBaseline;
@@ -237,6 +261,11 @@ class GameState {
         'prestigeDiscountLevel': prestigeDiscountLevel,
         'prestigeAutoBuyLevel': prestigeAutoBuyLevel,
         'autoBuyEnabled': autoBuyEnabled,
+        'storyChapter': storyChapter,
+        'storyChoiceA': storyChoiceA,
+        'storyChoiceB': storyChoiceB,
+        'rivalDefeated': rivalDefeated,
+        'rivalPressureSeconds': rivalPressureSeconds,
         'repeatQuestBaseline': repeatQuestBaseline,
         'tapCount': tapCount,
         'buyCount': buyCount,
@@ -284,6 +313,12 @@ class GameState {
         prestigeAutoBuyLevel:
             (json['prestigeAutoBuyLevel'] as num?)?.toInt() ?? 0,
         autoBuyEnabled: (json['autoBuyEnabled'] as bool?) ?? false,
+        storyChapter: (json['storyChapter'] as num?)?.toInt() ?? 0,
+        storyChoiceA: json['storyChoiceA'] as String?,
+        storyChoiceB: json['storyChoiceB'] as String?,
+        rivalDefeated: (json['rivalDefeated'] as bool?) ?? false,
+        rivalPressureSeconds:
+            (json['rivalPressureSeconds'] as num?)?.toDouble() ?? 0,
         repeatQuestBaseline:
             (json['repeatQuestBaseline'] as num?)?.toDouble() ?? 0,
         tapCount: (json['tapCount'] as num?)?.toInt() ?? 0,
