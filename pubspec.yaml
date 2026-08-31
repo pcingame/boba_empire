@@ -105,12 +105,13 @@ flutter:
     # sẵn bằng scripts/fetch_sfx.sh. Thiếu file thì game chạy im lặng.
     - assets/audio/
 
-  # Font tiêu đề Fredoka (bo tròn, hợp game trà sữa). Dùng cho bề mặt hiển thị
-  # lớn (số tiền, tiêu đề); body giữ font hệ thống để đủ mọi ngôn ngữ.
+  # Font tiêu đề Baloo 2 (bo tròn chunky, hợp game trà sữa). Dùng cho bề mặt
+  # hiển thị lớn (số tiền, tiêu đề); body giữ font hệ thống để đủ mọi ngôn ngữ.
+  # Baloo 2 có subset `vietnamese` (Fredoka thì KHÔNG — chữ Việt bị vỡ font).
   fonts:
-    - family: Fredoka
+    - family: Baloo 2
       fonts:
-        - asset: assets/fonts/Fredoka.ttf
+        - asset: assets/fonts/Baloo2.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

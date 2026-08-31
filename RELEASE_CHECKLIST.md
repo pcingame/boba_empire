@@ -77,7 +77,7 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
 - [x] 🔴 **Screenshot** — 6 ảnh 1080×2160 (2:1, hợp lệ Play, đã bỏ status bar)
   ở `assets/store/screenshots/`: home sáng, điểm danh, cửa hàng 💎, kho Sao,
   thành tựu, home tối. Chụp từ máy thật, tiếng Việt, UI claymorphic mới (font
-  Fredoka + màu theo stage). Chụp lại bằng seed+adb khi UI đổi.
+  Baloo 2 + màu theo stage). Chụp lại bằng seed+adb khi UI đổi.
 - [ ] 🔴 **Store listing** (tên/mô tả ngắn/mô tả đầy đủ) — dán từ
   STORE_LISTING.md, cho từng ngôn ngữ (vi/en/pt/es/id/th).
 - [ ] 🟡 Nhờ **người bản ngữ soát** bản dịch in-app + listing.

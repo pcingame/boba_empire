@@ -82,18 +82,21 @@ class BobaEmpireApp extends ConsumerWidget {
     );
   }
 
-  // Seed màu theo giai đoạn: nâu → matcha → taro → đường đen → hồng phô mai →
-  // vàng đế chế (cao cấp dần).
+  // Seed màu theo giai đoạn: caramel → matcha → taro → đường đen → dâu phô mai →
+  // vàng đế chế. Cân bằng lại để độ tươi/độ sáng đồng đều, hue đi vòng cung
+  // (ấm → lục → tím → cam → hồng → vàng) và KHÔNG tụt lùi ở GĐ4 (trước là nâu
+  // tối gần trùng GĐ1). GĐ1 nhạt & dịu (khởi đầu khiêm tốn), các GĐ sau tươi
+  // và rực dần (cảm giác lên đời).
   static Color _seedForStage(int stage) => switch (stage) {
-        2 => const Color(0xFF3E7C68), // matcha (kiosk)
-        3 => const Color(0xFF7A4FA3), // taro (chuỗi cafe)
-        4 => const Color(0xFF6E3F1C), // đường đen nướng
-        5 => const Color(0xFFC65B7C), // hồng phô mai/dâu
-        6 => const Color(0xFFB8860B), // vàng gold đế chế
-        _ => const Color(0xFF8D5524), // nâu trà sữa (xe đẩy)
+        2 => const Color(0xFF5B9137), // matcha (kiosk) — lục ngả vàng
+        3 => const Color(0xFF7B4FBB), // taro (chuỗi cafe) — tím lavender
+        4 => const Color(0xFFB87029), // đường đen nướng — hổ phách rực
+        5 => const Color(0xFFC85A7B), // dâu / phô mai — hồng rose
+        6 => const Color(0xFFC0982F), // vàng gold đế chế — vàng ấm sâu
+        _ => const Color(0xFFA06A45), // trà sữa caramel (xe đẩy) — nâu dịu
       };
 
-  // Chủ đề trà sữa, [seed] đổi theo giai đoạn. Font Fredoka cho bề mặt hiển thị
+  // Chủ đề trà sữa, [seed] đổi theo giai đoạn. Font Baloo 2 cho bề mặt hiển thị
   // lớn; body giữ font hệ thống (fallback) để đủ glyph mọi ngôn ngữ.
   static ThemeData _buildTheme(Brightness brightness, Color seed) {
     final scheme = ColorScheme.fromSeed(seedColor: seed, brightness: brightness);
@@ -139,7 +142,7 @@ class BobaEmpireApp extends ConsumerWidget {
 
     const fallback = ['Roboto'];
     final display = base.textTheme
-        .apply(fontFamily: 'Fredoka', fontFamilyFallback: fallback);
+        .apply(fontFamily: 'Baloo 2', fontFamilyFallback: fallback);
     return base.copyWith(
       textTheme: base.textTheme.copyWith(
         displayLarge: display.displayLarge,

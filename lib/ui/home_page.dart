@@ -301,7 +301,7 @@ class _HomePageState extends ConsumerState<HomePage>
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
-            fontFamily: 'Fredoka',
+            fontFamily: 'Baloo 2',
             fontFamilyFallback: ['Roboto'],
           ),
         ),
