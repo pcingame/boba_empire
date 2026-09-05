@@ -19,11 +19,9 @@ Trạng thái: `[ ]` chưa · `[~]` một phần · `[x]` xong.
 - [ ] 🔴 **Rewarded unit iOS còn test** — `lib/ads/ad_config.dart`:
   `_iosRewardedProd = _iosRewardedTest`. Tạo app + unit iOS trong AdMob, thay ID
   thật (mục 3).
-- [ ] 🟡 **Quyết định iPhone-only hay Universal.** `TARGETED_DEVICE_FAMILY = "1,2"`
-  (đang là **Universal** → Apple **bắt buộc screenshot iPad** + app phải chạy đẹp
-  trên iPad). Nếu chỉ nhắm iPhone: đổi thành `"1"` trong
-  `ios/Runner.xcodeproj/project.pbxproj` (3 chỗ) + bỏ block
-  `UISupportedInterfaceOrientations~ipad` trong Info.plist.
+- [x] 🟡 **iPhone-only** (đã quyết định) — `TARGETED_DEVICE_FAMILY = "1"` (3 chỗ
+  trong `project.pbxproj`) + bỏ `UISupportedInterfaceOrientations~ipad` khỏi
+  Info.plist. Khỏi cần screenshot/test iPad nữa.
 - [x] 🟢 **ITSAppUsesNonExemptEncryption = false** — đã thêm vào Info.plist (app
   chỉ dùng HTTPS chuẩn → miễn khai export compliance mỗi lần nộp).
 
@@ -184,8 +182,7 @@ app này (có AdMob + ATT + shared_preferences):
   - **6.9"** (iPhone 16 Pro Max, 1320×2868) — bắt buộc.
   - **6.5"** (iPhone 8 Plus era, 1242×2688) — bắt buộc (hoặc để 6.9" tự scale
     tùy đợt, nhưng an toàn cứ nộp cả 2).
-  - **13" iPad** (2064×2752) — **bắt buộc NẾU Universal** (xem mục 0). Bỏ nếu
-    đổi về iPhone-only.
+  - ~~13" iPad~~ — không cần (đã chốt iPhone-only, mục 0).
   - 3–10 ảnh mỗi cỡ. Ảnh Play hiện là 1080×2160 (2:1) → **KHÔNG hợp App Store**,
     phải chụp lại. Dùng simulator đúng model + `xcrun simctl io booted screenshot`.
   - Nội dung: home (matcha/caramel), cutscene cốt truyện, cửa hàng 💎, vòng quay,
