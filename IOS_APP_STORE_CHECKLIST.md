@@ -11,8 +11,9 @@ Trạng thái: `[ ]` chưa · `[~]` một phần · `[x]` xong.
 
 ## 0. Chặn nộp — phát hiện trong repo (làm trước)
 
-- [ ] 🔴 **PrivacyInfo.xcprivacy CHƯA có** — Apple bắt buộc từ 05/2024. Không có
-  → App Store Connect từ chối upload. Tạo qua Xcode (mục 2.5).
+- [x] 🔴 **PrivacyInfo.xcprivacy** — đã thêm (`ios/Runner/PrivacyInfo.xcprivacy`,
+  đăng ký vào target Runner, verify có mặt trong `.app` build ra). Nội dung ở
+  mục 2.5 — vẫn nên đối chiếu domain tracking với tài liệu AdMob mới nhất.
 - [ ] 🔴 **GADApplicationIdentifier còn TEST ID** trong `ios/Runner/Info.plist`
   (`ca-app-pub-3940256099942544~1458002511`). Phải là App ID iOS thật từ AdMob.
   Ship test ad = vi phạm chính sách Google → khóa tài khoản.
@@ -60,11 +61,10 @@ Trạng thái: `[ ]` chưa · `[~]` một phần · `[x]` xong.
 - [ ] 🟡 **Launch screen** — `LaunchScreen.storyboard`. Đảm bảo không giống
   splash/quảng cáo (Apple guideline 2.3.x); nền đơn giản + logo là được.
 
-### 2.5. PrivacyInfo.xcprivacy (🔴 bắt buộc)
+### 2.5. PrivacyInfo.xcprivacy — ✅ đã có
 
-Trong Xcode: **File → New → File → App Privacy** → lưu vào group `Runner`
-(`ios/Runner/PrivacyInfo.xcprivacy`), tick target Runner. Nội dung tối thiểu cho
-app này (có AdMob + ATT + shared_preferences):
+`ios/Runner/PrivacyInfo.xcprivacy` đã tạo + đăng ký vào target Runner (đã build
+thử, xác nhận có trong `.app`). Nội dung hiện tại (AdMob + ATT + shared_preferences):
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>

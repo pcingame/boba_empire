@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>NSPrivacyTracking</key>
+  <true/>
+  <key>NSPrivacyTrackingDomains</key>
+  <array>
+    <!-- App dùng Google Mobile Ads (AdMob) cho quảng cáo cá nhân hóa (ATT).
+         Pod google_mobile_ads tự kèm PrivacyInfo.xcprivacy riêng cho SDK khi
+         `pod install` — app-level chỉ cần khai NSPrivacyTracking = true.
+         Nếu App Store Connect cảnh báo thiếu domain khi phân tích, đối chiếu
+         danh sách hiện hành tại:
+         https://developers.google.com/admob/ios/privacy/manifest -->
+  </array>
+  <key>NSPrivacyCollectedDataTypes</key>
+  <array/>
+  <key>NSPrivacyAccessedAPITypes</key>
+  <array>
+    <dict>
+      <key>NSPrivacyAccessedAPIType</key>
+      <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+      <key>NSPrivacyAccessedAPITypeReasons</key>
+      <array>
+        <string>CA92.1</string>
+      </array>
+    </dict>
+  </array>
+</dict>
+</plist>
