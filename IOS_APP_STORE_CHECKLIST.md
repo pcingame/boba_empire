@@ -14,12 +14,10 @@ Trạng thái: `[ ]` chưa · `[~]` một phần · `[x]` xong.
 - [x] 🔴 **PrivacyInfo.xcprivacy** — đã thêm (`ios/Runner/PrivacyInfo.xcprivacy`,
   đăng ký vào target Runner, verify có mặt trong `.app` build ra). Nội dung ở
   mục 2.5 — vẫn nên đối chiếu domain tracking với tài liệu AdMob mới nhất.
-- [ ] 🔴 **GADApplicationIdentifier còn TEST ID** trong `ios/Runner/Info.plist`
-  (`ca-app-pub-3940256099942544~1458002511`). Phải là App ID iOS thật từ AdMob.
-  Ship test ad = vi phạm chính sách Google → khóa tài khoản.
-- [ ] 🔴 **Rewarded unit iOS còn test** — `lib/ads/ad_config.dart`:
-  `_iosRewardedProd = _iosRewardedTest`. Tạo app + unit iOS trong AdMob, thay ID
-  thật (mục 3).
+- [x] 🔴 **GADApplicationIdentifier** — đã thay ID thật
+  (`ca-app-pub-9748541552219348~3516109108`) trong `ios/Runner/Info.plist`.
+- [x] 🔴 **Rewarded unit iOS** — đã thay ID thật
+  (`ca-app-pub-9748541552219348/7263782428`) trong `lib/ads/ad_config.dart`.
 - [x] 🟡 **iPhone-only** (đã quyết định) — `TARGETED_DEVICE_FAMILY = "1"` (3 chỗ
   trong `project.pbxproj`) + bỏ `UISupportedInterfaceOrientations~ipad` khỏi
   Info.plist. Khỏi cần screenshot/test iPad nữa.
@@ -32,22 +30,21 @@ Trạng thái: `[ ]` chưa · `[~]` một phần · `[x]` xong.
 
 - [ ] 🔴 **Apple Developer Program** — $99/năm, cần duyệt 24–48h. (Cá nhân hay
   Organization đều được; game này đang ký team `P3MPHWPJ62`.)
-- [ ] 🔴 **App ID** `com.pcingame.bobaempire` trong Certificates, IDs & Profiles
-  → bật capability **In-App Purchase** (và **App Attest**/không cần).
-- [ ] 🔴 Tạo app trong **App Store Connect**: Platform iOS, tên
-  `Đế Chế Trà Sữa` / `Boba Empire`, primary language `Vietnamese`, bundle ID
-  chọn đúng, SKU tùy ý.
+- [x] 🔴 **App ID** `com.pcingame.bobaempire` trong Certificates, IDs & Profiles
+  → capability **In-App Purchase** đã bật.
+- [x] 🔴 Tạo app trong **App Store Connect**: Platform iOS, tên `Đế Chế Trà Sữa`,
+  primary language Vietnamese, bundle ID `com.pcingame.bobaempire`.
 - [ ] 🟡 **App Store Connect API key** (nếu muốn upload bằng CI/Transporter CLI
   thay vì Xcode Organizer).
 
 ## 2. Cấu hình Xcode project
 
-- [ ] 🔴 **Signing** — mở `ios/Runner.xcworkspace`, target Runner → Signing &
-  Capabilities: tick "Automatically manage signing", chọn Team `P3MPHWPJ62`.
-  Xcode sẽ tạo **Apple Distribution certificate** + **App Store provisioning
-  profile**. (Hiện `CODE_SIGN_STYLE = Automatic` — OK.)
-- [ ] 🔴 **Capability: In-App Purchase** — thêm trong Signing & Capabilities
-  (plugin `in_app_purchase_storekit` cần entitlement này).
+- [x] 🔴 **Signing** — `Automatically manage signing` bật, Team `Phuong Doan
+  Thanh (P3MPHWPJ62)`, Bundle ID `com.pcingame.bobaempire`, provisioning profile
+  Xcode Managed. (Certificate hiện là Apple Development — Xcode sẽ tự tạo Apple
+  Distribution certificate lúc **Archive** cho App Store, không cần làm tay.)
+- [x] 🔴 **Capability: In-App Purchase** — đã thêm trong Signing & Capabilities,
+  không còn cảnh báo.
 - [ ] 🟡 **Version / build** — `pubspec.yaml` đang `1.0.0+1`. Info.plist đọc
   `$(FLUTTER_BUILD_NAME)` / `$(FLUTTER_BUILD_NUMBER)` từ đây. ⚠️ pbxproj có
   hardcode `MARKETING_VERSION = 1.0` / `CURRENT_PROJECT_VERSION = 1` ở vài config
@@ -55,9 +52,9 @@ Trạng thái: `[ ]` chưa · `[~]` một phần · `[x]` xong.
   (`1.0.0+2`…), không được trùng.
 - [ ] 🟡 **Bỏ NSAllowsArbitraryLoads nếu có** — Info.plist hiện KHÔNG có ATS
   ngoại lệ (tốt).
-- [ ] 🔴 **SKAdNetworkItems** — Info.plist chỉ có 1 ID của Google. Thêm danh sách
-  đầy đủ (~100+) từ [Google's SKAdNetwork list](https://developers.google.com/admob/ios/3p-skadnetwork)
-  để đo lường & doanh thu ad không bị thiếu hụt.
+- [x] 🔴 **SKAdNetworkItems** — đã thêm đủ 50 ID từ trang chính thức Google
+  (`developers.google.com/admob/ios/ios14`). Nên đối chiếu lại 1 lần trước khi
+  nộp bản chính thức (Google có thể cập nhật thêm ID mới theo thời gian).
 - [ ] 🟡 **Launch screen** — `LaunchScreen.storyboard`. Đảm bảo không giống
   splash/quảng cáo (Apple guideline 2.3.x); nền đơn giản + logo là được.
 
@@ -101,24 +98,28 @@ thử, xác nhận có trong `.app`). Nội dung hiện tại (AdMob + ATT + sha
 
 ## 3. AdMob iOS
 
-- [ ] 🔴 Tạo **app iOS** trong AdMob (khác app Android) → lấy **App ID iOS**,
+- [x] 🔴 Tạo **app iOS** trong AdMob (khác app Android) → lấy **App ID iOS**,
   thay vào `GADApplicationIdentifier` (Info.plist).
-- [ ] 🔴 Tạo **Rewarded ad unit iOS** → thay `_iosRewardedProd` trong
-  `lib/ads/ad_config.dart` (bỏ dòng `= _iosRewardedTest`).
-- [ ] 🔴 **UMP / GDPR consent message** — `ad_bootstrap.dart` đã gọi
-  `ConsentForm.loadAndShowConsentFormIfRequired`, nhưng message phải tạo trong
-  AdMob → Privacy & messaging → (GDPR + **US states / ATT**). Bật cả **ATT
-  explainer** trong UMP nếu dùng UMP để trigger ATT.
-- [ ] 🟡 **App Tracking Transparency** — `NSUserTrackingUsageDescription` đã có
-  ("Dùng để hiển thị quảng cáo phù hợp hơn với bạn."). Kiểm popup ATT **thật sự
-  hiện** khi mở app lần đầu (không phải chỉ pre-prompt). Pre-prompt "stay free"
-  không được có nút giống hệt hệ thống / gây hiểu nhầm (guideline 5.1.1(iv)).
+- [x] 🔴 Tạo **Rewarded ad unit iOS** → thay `_iosRewardedProd` trong
+  `lib/ads/ad_config.dart`.
+- [x] 🔴 **UMP / GDPR consent message** — đã tạo + publish trong AdMob → Privacy
+  & messaging cho cả app Android + iOS:
+  - **European regulations** (GDPR/EEA+UK+Switzerland) — template mặc định của
+    Google, Privacy policy URL = `https://pcingame.github.io/boba_empire/privacy-policy.html`.
+  - **US state regulations** (CCPA/CPRA) — template "My data preferences" mặc định.
+  - **IDFA explainer** (chỉ app iOS) — pre-prompt "Our app wants to stay free
+    for you" + nút "Continue" (không trùng nút hệ thống → an toàn guideline
+    5.1.1(iv)), trigger popup ATT thật của iOS sau khi user bấm Continue.
+- [ ] 🟡 **Verify trên máy thật/TestFlight** — xoá app cài lại, xem đúng thứ tự:
+  GDPR message (nếu ở EEA) → IDFA explainer → popup ATT hệ thống thật (không
+  chỉ dừng ở pre-prompt). `NSUserTrackingUsageDescription` đã có sẵn trong
+  Info.plist.
 - [ ] 🟡 Test bằng **AdMob test device ID** trên máy thật trước khi bật ID thật.
 - [ ] 🟢 Liên kết AdMob ↔ App Store Connect (đo doanh thu).
 
 ## 4. In-App Purchase (App Store Connect — khác Play)
 
-- [ ] 🔴 Tạo **8 sản phẩm** trong App Store Connect → Features → In-App Purchases,
+- [x] 🔴 Tạo **8 sản phẩm** trong App Store Connect → In-App Purchases — xong,
   ĐÚNG product ID (giống Play):
 
   | ID | Loại App Store | Ghi chú |
@@ -130,15 +131,19 @@ thử, xác nhận có trong `.app`). Nội dung hiện tại (AdMob + ATT + sha
   | `boba_piggy` | Consumable | đập heo |
   | `boba_vip30` | Consumable | ⚠️ "VIP 30 ngày" — Apple **có thể** yêu cầu đổi sang **Auto-Renewable Subscription**. Consumable không tự gia hạn thì được, nhưng chuẩn bị lý do (giống battle-pass mùa). |
 
-- [ ] 🔴 Mỗi sản phẩm: **Reference Name**, **Price** (chọn tier), **Display Name**
-  + **Description** cho từng ngôn ngữ (vi/en/es/pt/id/th), **Review screenshot**
-  (ảnh chụp màn mua trong app — Apple bắt buộc, thiếu là reject).
-- [ ] 🔴 **StoreKit config / Sandbox tester** — tạo Sandbox Apple ID trong ASC →
-  Users and Access → Sandbox → Testers. Test mua + **Khôi phục mua hàng** trên
-  TestFlight/Sandbox.
-- [ ] 🔴 **Paid Apps agreement** — App Store Connect → Agreements, Tax, and
-  Banking: ký "Paid Applications" + điền thuế + ngân hàng (không ký → IAP không
-  bán được).
+- [x] 🔴 Mỗi sản phẩm: **Reference Name**, **Price**, **Display Name** +
+  **Description** (tiếng Việt), **Review screenshot** — đã điền đủ cho cả 8
+  sản phẩm, đều "Ready for Review". Lưu ý: Description IAP không nhận emoji,
+  giới hạn ~55 ký tự — dùng chữ thuần + dấu tiếng Việt bình thường.
+  ⚠️ Còn thiếu: **Description cho en/es/pt/id/th** (mới chỉ có vi) — nên bổ
+  sung trước khi nhắm tới các thị trường đó, không bắt buộc để submit.
+- [x] 🔴 **Sandbox tester** — đã tạo `phuongtdoan2008+test1@gmail.com` (Vietnam)
+  trong Users and Access → Sandbox → Testers.
+- [ ] 🟡 Test mua + **Khôi phục mua hàng** trên TestFlight/thiết bị thật (đăng
+  nhập sandbox account trong Settings → App Store → Sandbox Account, hoặc
+  đăng nhập ngay khi popup mua hàng hiện ra trong app).
+- [x] 🔴 **Paid Apps agreement** — **Active** (Bank Account "Doan Thanh Phuong
+  (2012)" VND/USD cũng Active). Đủ điều kiện tạo + bán IAP.
 - [ ] 🟡 **Verify receipt server-side** — hiện client-only
   (`real_iap_service.dart`), dễ giả mạo. iOS dùng App Store Server API /
   `verifyReceipt`. Nên làm trước khi doanh thu lớn.
@@ -147,46 +152,41 @@ thử, xác nhận có trong `.app`). Nội dung hiện tại (AdMob + ATT + sha
 
 ## 5. App Privacy (nhãn dinh dưỡng) + tracking
 
-- [ ] 🔴 **App Privacy** trong App Store Connect (bắt buộc, khai trước khi nộp):
-  - **Identifiers → Device ID**: Có, dùng cho **Third-Party Advertising** +
-    **Tracking**.
-  - **Usage Data → Product Interaction**: Có (AdMob analytics).
-  - **Diagnostics → Crash / Performance**: nếu SDK ads gửi.
-  - **Purchases → Purchase History**: Có (IAP).
-  - **"Used for tracking"**: **YES** (có ATT + ads cá nhân hóa).
-  - Không thu thập: tên, email, vị trí chính xác, danh bạ, ảnh.
+- [x] 🔴 **App Privacy** trong App Store Connect — đã publish:
+  - **Identifiers → Device ID**: Third-Party Advertising + Tracking purposes.
+  - **Purchases → Purchase History**: App Functionality.
+  - **Usage Data → Product Interaction**: Analytics.
+  - Không khai thêm gì khác (không có Diagnostics/Crash SDK, không Contact
+    Info/Location/Contacts/Photos — khớp đúng code, không có Firebase/Analytics
+    package nào ngoài AdMob).
 - [ ] 🟡 Đối chiếu khai báo với PrivacyInfo.xcprivacy + Data safety form bên Play
   (phải nhất quán).
 
 ## 6. Phân loại độ tuổi & nội dung
 
-- [ ] 🔴 **Age Rating questionnaire** (ASC — bản mới 2025: 4+/9+/13+/16+/18+):
-  - Simulated Gambling: **None** — "Vòng quay may mắn" chỉ cho tiền/💎 trong game,
-    miễn phí/theo QC, không mua lượt quay bằng tiền thật → không tính gambling.
-    (Nếu Apple hỏi thêm: nêu rõ không có real-money stakes.)
-  - Contests: None. Bạo lực/tình dục/ngôn từ: None.
-  - **In-app purchases + ads**: khai Có.
-  - Kết quả kỳ vọng: **4+** hoặc **9+** (do ads). Game khai **13+ General, KHÔNG
-    child-directed** (khớp cấu hình hiện tại — xem SETUP.md mục 3).
-- [ ] 🔴 **"Does your app contain loot boxes?"** → mô tả cơ chế ngẫu nhiên (vòng
-  quay). Apple guideline 3.1.1: nếu có **IAP hộp ngẫu nhiên** phải công bố tỉ lệ
-  — vòng quay KHÔNG bán bằng tiền thật nên không thuộc diện này, nhưng khai trung
-  thực. `boba_piggy` (đập heo) tích theo thời gian, không ngẫu nhiên khi mua.
+- [x] 🔴 **Age Rating questionnaire** (ASC — bản mới 2025, 7 bước) — đã hoàn tất:
+  - In-App Controls (Parental Controls, Age Assurance): No.
+  - Unrestricted Web Access / UGC / Social Media / Messaging: No. Advertising: Yes.
+  - Mature Themes / Sexuality / Violence: None cho tất cả.
+  - Simulated Gambling: **None** — vòng quay may mắn (`lib/ui/wheel_dialog.dart`)
+    chỉ 1 lượt free/ngày hoặc xem QC để quay thêm, không tốn coin/gem/tiền thật
+    → không có "wagering". Contests: None (không có leaderboard). Gambling
+    (tiền thật) / Loot Boxes: No.
+  - **Kết quả: 4+**. Age Category Override: Not Applicable (không chọn "Made
+    for Kids" — khớp AdMob non-child-directed).
 
 ## 7. Assets & Store listing
 
 - [ ] 🔴 **App Icon 1024×1024** (không alpha, không bo góc) —
   `ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png` đã có
   (flutter_launcher_icons + `remove_alpha_ios: true`). Kiểm không viền trắng.
-- [ ] 🔴 **Screenshots** — App Store yêu cầu **theo kích thước thiết bị**:
-  - **6.9"** (iPhone 16 Pro Max, 1320×2868) — bắt buộc.
-  - **6.5"** (iPhone 8 Plus era, 1242×2688) — bắt buộc (hoặc để 6.9" tự scale
-    tùy đợt, nhưng an toàn cứ nộp cả 2).
-  - ~~13" iPad~~ — không cần (đã chốt iPhone-only, mục 0).
-  - 3–10 ảnh mỗi cỡ. Ảnh Play hiện là 1080×2160 (2:1) → **KHÔNG hợp App Store**,
-    phải chụp lại. Dùng simulator đúng model + `xcrun simctl io booted screenshot`.
-  - Nội dung: home (matcha/caramel), cutscene cốt truyện, cửa hàng 💎, vòng quay,
-    kho Sao, dark mode. Tiếng Việt.
+- [x] 🔴 **Screenshots** — ASC "Prepare for Submission" chỉ yêu cầu 1 khung cỡ
+  **1242×2688** (6.5"). Đã chụp đủ **10 ảnh** tiếng Việt bằng simulator
+  "iPhone 11 Pro Max (6.5in)" (`xcrun simctl io <udid> screenshot`), lưu ở
+  `assets/store/screenshots_ios/6.5in/`: home sáng, vòng quay may mắn, cửa
+  hàng 💎, nhượng quyền/kho Sao, home dark mode, thành tựu, cách chơi, cốt
+  truyện, dialog "Kiếm thêm", home stage 2 (theme xanh). Còn phải **kéo thả
+  vào ASC** (chưa upload).
 - [ ] 🟡 **App Preview video** (tùy chọn, tăng chuyển đổi) — 15–30s, quay từ
   thiết bị/simulator.
 - [ ] 🔴 **Name** ≤ 30, **Subtitle** ≤ 30, **Keywords** ≤ 100 (phẩy),
@@ -205,37 +205,42 @@ thử, xác nhận có trong `.app`). Nội dung hiện tại (AdMob + ATT + sha
 
 ## 9. Build & upload
 
-- [ ] 🔴 `flutter build ipa --release` (cần macOS + Xcode). Ra
-  `build/ios/ipa/*.ipa` + Xcode archive.
-- [ ] 🔴 Upload: **Xcode → Window → Organizer → Distribute App → App Store
-  Connect**, HOẶC app **Transporter** (Mac App Store) với file `.ipa`.
-- [ ] 🟡 Chờ **"Processing"** trong ASC (10–60 phút) → build hiện ở TestFlight.
+- [x] 🔴 `flutter build ipa --release` — thành công, `build/ios/ipa/*.ipa`
+  (24.1MB), archive tại `build/ios/archive/Runner.xcarchive` (188.9MB). Cảnh báo
+  không chặn: "Launch image is default placeholder" — app dùng
+  `LaunchScreen.storyboard` riêng nên không ảnh hưởng thực tế, có thể bỏ qua.
+- [x] 🔴 Upload qua **Apple Transporter app** — thành công (`UPLOAD SUCCEEDED
+  with no errors`, 24MB, ~12.5s). Build ID `9cfa620c-...`, trạng thái server:
+  **PROCESSING**.
+- [ ] 🟡 Chờ **"Processing"** xong trong ASC (10–60 phút) → build hiện ở
+  TestFlight. Kiểm lại tab TestFlight trong ASC.
 - [ ] 🟡 Nếu bị **email cảnh báo** (ITMS-xxxx) về privacy manifest / SDK ký thiếu
   → sửa theo hướng dẫn rồi bump build, upload lại.
+- [x] Build 1 (version 1.0.0) đã qua Processing → trạng thái **"Ready to
+  Submit"** trong TestFlight.
 
 ## 10. TestFlight (khuyên trước Production)
 
-- [ ] 🟡 **Internal testing** — thêm tối đa 100 thành viên team, không cần Apple
-  duyệt, test ngay.
+- [x] 🟡 **Internal testing** — đã tạo group "Internal", thêm tester
+  `phuongtdoan2008@gmail.com` (Account Holder), cài thành công build 1.0.0
+  trên iPhone 15 Pro thật qua TestFlight.
 - [ ] 🟢 **External testing** — cần Apple review (1 lần, ~1 ngày) → mời tối đa
   10.000 người qua link công khai.
-- [ ] 🔴 Trên TestFlight: chơi end-to-end, **mua thử cả 8 IAP + Khôi phục**,
-  xem **QC thưởng** trao đúng, đổi **6 ngôn ngữ** không vỡ layout, **dark mode**,
-  lifecycle (offline/kill-save), **cutscene cốt truyện + sự kiện đối thủ**.
+- [~] 🟡 Trên TestFlight: **bỏ qua** (quyết định của dev, chấp nhận rủi ro Apple
+  reviewer có thể gặp bug IAP lúc duyệt → reject nếu có lỗi). Nên test sau khi
+  build được duyệt, trước khi release rộng.
 
 ## 11. Nộp duyệt (Submit for Review)
 
-- [ ] 🔴 Điền đủ: build, screenshots (mọi cỡ bắt buộc), listing mọi ngôn ngữ,
-  App Privacy, Age Rating, giá + Availability (quốc gia), IAP kèm build.
-- [ ] 🔴 **App Review Information**:
-  - Sign-in: **không cần** (no account).
-  - **Notes for Reviewer**: nêu rõ — game idle offline, có QC thưởng (rewarded,
-    không ép xem), IAP là vật phẩm ảo, "Vòng quay may mắn" chỉ thưởng tiền trong
-    game (không bán lượt quay), ATT dùng cho ads cá nhân hóa. Nếu reviewer ở vùng
-    không tải được QC test: QC có thể không hiện — thưởng vẫn trao (adFree path).
-  - Contact: tên + email + phone.
-- [ ] 🟡 **Version release**: chọn "Manually release" để chủ động, hoặc
-  "Automatically after approval".
+- [x] 🔴 Điền đủ: build, screenshots, listing (vi), App Privacy + Privacy Policy
+  URL, Age Rating, Price tier (Free), Category (Games), Content Rights, 8 IAP
+  kèm build.
+- [x] 🔴 **App Review Information** — Sign-in: No. Notes for Reviewer đã điền
+  (idle offline, rewarded ads không ép xem, IAP vật phẩm ảo, vòng quay không
+  bán bằng tiền thật). Contact info đã điền.
+- [x] **Đã "Add for Review" thành công — trạng thái "Waiting for Review".**
+- [ ] 🟡 **Version release**: kiểm đã chọn "Manually release" hay "Automatically
+  after approval" — xem lại nếu muốn đổi trước khi được duyệt.
 - [ ] 🟢 **Phased release** (7 ngày) để theo dõi crash trước khi 100%.
 
 ## 12. Sau phát hành
@@ -261,3 +266,50 @@ thử, xác nhận có trong `.app`). Nội dung hiện tại (AdMob + ATT + sha
 
 > Ba thứ dễ bị reject nhất ở iOS: **thiếu PrivacyInfo.xcprivacy**, **thiếu review
 > screenshot cho IAP**, và **ATT/pre-prompt gây hiểu nhầm**. Xử ba cái này kỹ.
+
+---
+
+## Lưu ý quan trọng (đúc kết từ lần nộp thực tế, 2026-09)
+
+- **Screenshot size**: ASC hiện chỉ bắt khung **6.5" (1242×2688)** cho "Prepare
+  for Submission" — không cần 6.9" nữa (kiểm lại tiêu đề khung upload mỗi lần
+  vì Apple có thể đổi yêu cầu theo thời gian). Chụp bằng simulator
+  `iPhone 11 Pro Max` + `xcrun simctl io <udid> screenshot`. Đủ 3-10 ảnh, không
+  cần đúng 10 — nhưng nếu ASC báo "cần 10" thì làm đủ.
+- **Support URL / Marketing URL / Promotional Text / Description / Keywords**:
+  nằm ở trang **App Store → "1.0 Prepare for Submission"** (version cụ thể),
+  KHÔNG nằm ở "App Information" (trang đó chỉ có tên app, bundle ID, category,
+  age rating, content rights).
+- **Promotional Text / IAP Description không nhận emoji và dấu gạch ngang dài
+  "—"** → dùng chữ thuần + dấu câu cơ bản (dấu tiếng Việt có dấu vẫn được).
+  IAP Description giới hạn ngắn (~45-55 ký tự tuỳ thời điểm).
+- **Copyright field** cũng có thể từ chối ký tự `©` — dùng dạng chữ
+  `2026 Tên Bạn` thay vì `© 2026 Tên Bạn`.
+- **Paid Apps Agreement** cần làm theo đúng thứ tự: **Legal Entity** → **DSA
+  trader compliance** (Business → Compliance, bắt buộc nếu bán ở EU) → ký
+  **Paid Apps Agreement** → điền **Bank Account** + **Tax Forms** (W-8BEN cho
+  cá nhân ngoài Mỹ + "Certificate of Foreign Status" — 2 form riêng biệt, cả 2
+  phải Active). Bank Account "Processing" vài phút tới vài ngày mới Active.
+- **Nộp 8 IAP cùng bản build đầu tiên**: KHÔNG dùng nút "Submit for Review"
+  riêng lẻ trên từng sản phẩm khi app chưa có bản build nào (báo lỗi "Unable to
+  Submit — add an app version"). Cách đúng: gắn build vào version trước, rồi
+  vào **Monetization → In-App Purchases** → tick chọn tất cả → **Add for
+  Review** (nút này tự gộp vào submission của version hiện tại).
+- **"Add for Review" của app version** sẽ liệt kê rõ **tất cả field còn thiếu**
+  (Privacy Policy URL trong App Privacy, Copyright, Content Rights Information,
+  Price tier trong Pricing, Primary Category) — cứ bấm thử để ASC tự chỉ ra,
+  đỡ phải đoán.
+- **Content Rights Information**: chọn "No, it does not contain/show/access
+  third-party content" nếu asset (hình, âm thanh) là tự làm/mua bản quyền,
+  không phải nội dung xin phép bên thứ ba.
+- **In-App Purchase capability trong Xcode**: chỉ cần bật ở App ID
+  (developer.apple.com) là đủ để code chạy; Xcode có thể không hiện khối
+  riêng trong Signing & Capabilities ngay lập tức, nhưng khi Archive xong,
+  `project.pbxproj` sẽ tự link thêm `StoreKit.framework` — đó là bằng chứng
+  capability đã được áp dụng đúng.
+- **Simulator không test được mua IAP thật** — `loadPrices()` trả rỗng nên nút
+  mua tự ẩn (xem `lib/ui/gem_shop.dart`). Phải dùng **Sandbox tester** trên
+  thiết bị thật hoặc TestFlight để thấy nút mua + test luồng StoreKit.
+- **SKAdNetwork list** lấy qua công cụ fetch tự động có rủi ro nhỏ sai lệch —
+  nên đối chiếu lại 1 lần thủ công với trang Google trước khi nộp bản chính
+  thức, vì danh sách có thể được cập nhật thêm theo thời gian.

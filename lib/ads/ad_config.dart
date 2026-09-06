@@ -19,10 +19,10 @@ class AdConfig {
       'ca-app-pub-3940256099942544/1712485313';
 
   /// Rewarded unit id THẬT dùng ở bản release.
-  /// iOS chưa tạo app AdMob → tạm dùng test cho tới khi phát hành iOS.
   static const String _androidRewardedProd =
       'ca-app-pub-9748541552219348/6536401991';
-  static const String _iosRewardedProd = _iosRewardedTest;
+  static const String _iosRewardedProd =
+      'ca-app-pub-9748541552219348/7263782428';
 
   /// Unit id rewarded theo nền tảng; debug → test, release → thật.
   static String get rewardedUnitId {

@@ -27,6 +27,7 @@ Bản dịch do máy soạn — **nên nhờ người bản ngữ soát** trư�
 **Mô tả ngắn (Play):** `Chạm pha trà, gây dựng đế chế trà sữa! Game idle tycoon thư giãn.`
 **Subtitle (App Store):** `Idle tycoon trà sữa`
 **Keywords (App Store):** `idle,tycoon,clicker,boba,trà sữa,trà,cafe,kinh doanh,tap,thư giãn,nhàn rỗi`
+**Promotional Text (App Store):** `Chạm pha trà, gây dựng đế chế trà sữa của riêng bạn! Game idle tycoon thư giãn: nâng cấp cửa hàng, kiếm Xu cả khi offline. Bắt đầu ly trà đầu tiên ngay hôm nay!`
 
 **Mô tả đầy đủ:**
 ```
