@@ -3,15 +3,17 @@
 <plist version="1.0">
 <dict>
   <key>NSPrivacyTracking</key>
-  <true/>
+  <false/>
   <key>NSPrivacyTrackingDomains</key>
   <array>
-    <!-- App dùng Google Mobile Ads (AdMob) cho quảng cáo cá nhân hóa (ATT).
-         Pod google_mobile_ads tự kèm PrivacyInfo.xcprivacy riêng cho SDK khi
-         `pod install` — app-level chỉ cần khai NSPrivacyTracking = true.
-         Nếu App Store Connect cảnh báo thiếu domain khi phân tích, đối chiếu
-         danh sách hiện hành tại:
-         https://developers.google.com/admob/ios/privacy/manifest -->
+    <!-- App không tự gọi network tới domain tracking nào — mọi request quảng
+         cáo/tracking đều nằm trong SDK Google Mobile Ads (AdMob), SDK đó tự
+         kèm PrivacyInfo.xcprivacy riêng (bundle trong pod google_mobile_ads),
+         khai NSPrivacyTracking/NSPrivacyTrackingDomains của chính nó. Apple
+         gộp manifest của app + mọi SDK khi build, nên app-level phải khai
+         false/rỗng để nhất quán nội bộ (ITMS-91064: true bắt buộc domains
+         không rỗng). ATT permission vẫn xin bình thường qua UMP (ad_bootstrap.dart)
+         vì đó là quyền hệ thống, độc lập với khai báo manifest này. -->
   </array>
   <key>NSPrivacyCollectedDataTypes</key>
   <array/>

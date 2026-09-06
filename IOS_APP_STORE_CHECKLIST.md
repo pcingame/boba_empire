@@ -239,6 +239,14 @@ thử, xác nhận có trong `.app`). Nội dung hiện tại (AdMob + ATT + sha
   (idle offline, rewarded ads không ép xem, IAP vật phẩm ảo, vòng quay không
   bán bằng tiền thật). Contact info đã điền.
 - [x] **Đã "Add for Review" thành công — trạng thái "Waiting for Review".**
+- [x] 🔴 **ITMS-91064 (rejected)** — `PrivacyInfo.xcprivacy` khai
+  `NSPrivacyTracking=true` nhưng `NSPrivacyTrackingDomains` rỗng → không nhất
+  quán. Fix: app-level không tự gọi network tới domain tracking (AdMob SDK tự
+  có manifest riêng cho việc đó) → đổi `NSPrivacyTracking` thành `false`. Build
+  `1.0.0+2` đã build + upload thành công (`UPLOAD SUCCEEDED`), đang PROCESSING.
+- [x] 🔴 Build 2 hết Processing → "remove this version from review" → đổi
+  chọn build 2 → **"Add for Review"** lại → trạng thái **"Waiting for
+  Review"**. Đã nộp lại thành công.
 - [ ] 🟡 **Version release**: kiểm đã chọn "Manually release" hay "Automatically
   after approval" — xem lại nếu muốn đổi trước khi được duyệt.
 - [ ] 🟢 **Phased release** (7 ngày) để theo dõi crash trước khi 100%.
