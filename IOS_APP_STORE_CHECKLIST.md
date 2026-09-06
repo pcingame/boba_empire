@@ -321,3 +321,20 @@ thử, xác nhận có trong `.app`). Nội dung hiện tại (AdMob + ATT + sha
 - **SKAdNetwork list** lấy qua công cụ fetch tự động có rủi ro nhỏ sai lệch —
   nên đối chiếu lại 1 lần thủ công với trang Google trước khi nộp bản chính
   thức, vì danh sách có thể được cập nhật thêm theo thời gian.
+- **ITMS-91064 (Invalid tracking information)** — Apple reject build vì
+  `PrivacyInfo.xcprivacy` khai `NSPrivacyTracking = true` nhưng
+  `NSPrivacyTrackingDomains` rỗng (2 trường này phải nhất quán trong CÙNG 1
+  manifest). Vì app không tự gọi network tới domain tracking nào — mọi
+  request quảng cáo/tracking nằm trong SDK Google Mobile Ads (SDK đó tự có
+  manifest riêng khai domain của chính nó, Apple gộp mọi manifest lại khi
+  build) — nên **app-level phải khai `NSPrivacyTracking = false`**, không phải
+  thêm domain giả vào cho đủ. Đây là lỗi dễ mắc nếu copy template có sẵn
+  `NSPrivacyTracking=true` mà không thực sự điền domain.
+- **Sau khi build bị reject (ITMS-xxxx qua email)**: sửa lỗi → **tăng build
+  number** trong `pubspec.yaml` (vd `1.0.0+1` → `1.0.0+2`, Apple không nhận
+  build trùng số) → `flutter build ipa --release` → upload lại qua Transporter.
+  Chờ build mới hết **Processing** (nhận mail TestFlight báo "ready to test")
+  → quay lại trang version, bấm link **"remove this version from review"**
+  (banner xanh) để mở khoá chỉnh sửa → đổi mục **Build** sang build mới →
+  bấm lại **"Add for Review"**. Không cần điền lại metadata/screenshots/IAP,
+  chỉ cần đổi build.
