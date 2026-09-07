@@ -352,3 +352,9 @@ thử, xác nhận có trong `.app`). Nội dung hiện tại (AdMob + ATT + sha
   quyền chia sẻ "Anyone with the link" → dán link vào câu trả lời (test link ở
   cửa sổ ẩn danh trước khi gửi). Lưu ý: video mới upload Drive cần vài phút
   xử lý transcode trước khi phát được — không phải lỗi.
+- **Reply trong Resolution Center KHÔNG tự làm Apple tiếp tục review** — sau
+  khi trả lời "Information Needed", trạng thái vẫn ở **"Rejected / Unresolved
+  Issues"** cho tới khi bạn chủ động vào **App Review → View Submission →
+  "Resubmit to App Review"** (nút này khác "Add for Review" ban đầu — xuất
+  hiện khi có submission cũ bị reject cần nộp lại nguyên cụm 9 item gồm app +
+  8 IAP cùng lúc).
