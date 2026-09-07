@@ -338,3 +338,17 @@ thử, xác nhận có trong `.app`). Nội dung hiện tại (AdMob + ATT + sha
   (banner xanh) để mở khoá chỉnh sửa → đổi mục **Build** sang build mới →
   bấm lại **"Add for Review"**. Không cần điền lại metadata/screenshots/IAP,
   chỉ cần đổi build.
+- **Guideline 2.1 "Information Needed"** — reject KHÔNG phải bug, chỉ là thủ
+  tục chuẩn với tài khoản dev mới (ít lịch sử review). Apple yêu cầu 7 mục:
+  (1) screen recording quay trên **thiết bị thật** (không phải simulator) thể
+  hiện luồng chơi chính, (2) mục đích/đối tượng app, (3) hướng dẫn dùng (app
+  không cần login → ghi rõ), (4) dịch vụ bên thứ ba dùng (AdMob, StoreKit,
+  backend riêng verify receipt), (5) khác biệt theo vùng (không có, chỉ đổi
+  ngôn ngữ), (6) ngành bị quản lý/nội dung bên thứ ba (không áp dụng), (7)
+  tổng quan IAP + cách vào màn mua. Trả lời ở **cả 2 chỗ**: Reply trong
+  **Resolution Center** VÀ copy y hệt vào **Notes** của App Review Information
+  (Apple yêu cầu lưu cho các lần nộp sau). Video quay bằng Control Center →
+  Screen Recording trên iPhone cài qua TestFlight, upload Google Drive → đổi
+  quyền chia sẻ "Anyone with the link" → dán link vào câu trả lời (test link ở
+  cửa sổ ẩn danh trước khi gửi). Lưu ý: video mới upload Drive cần vài phút
+  xử lý transcode trước khi phát được — không phải lỗi.
