@@ -8,6 +8,7 @@
   "incomePerSecond": "+{amount} / seg",
   "instantCashButton": "Dinero instantáneo",
   "instantCashSnack": "¡Dinero instantáneo! +{amount} Monedas",
+  "adNotReadySnack": "El anuncio aún no está listo, inténtalo de nuevo en un momento",
 
   "stageHeader": "🏪 {name}",
   "unlockStageButton": "Desbloquear {cost} Monedas",

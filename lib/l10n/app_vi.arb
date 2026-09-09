@@ -10,6 +10,7 @@
   "instantCashButton": "Tiền tức thì",
   "instantCashSnack": "Tiền tức thì! +{amount} Xu",
   "@instantCashSnack": { "placeholders": { "amount": { "type": "String" } } },
+  "adNotReadySnack": "Quảng cáo chưa sẵn sàng, thử lại sau nhé",
 
   "stageHeader": "🏪 {name}",
   "@stageHeader": { "placeholders": { "name": { "type": "String" } } },

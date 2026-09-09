@@ -611,7 +611,10 @@ class _MoneyHeader extends ConsumerWidget {
     final adFree = ref.read(gameControllerProvider).adFree;
     final outcome =
         adFree ? RewardOutcome.earned : await ads.showRewardedAd();
-    if (outcome != RewardOutcome.earned) return;
+    if (outcome != RewardOutcome.earned) {
+      messenger.showSnackBar(SnackBar(content: Text(l10n.adNotReadySnack)));
+      return;
+    }
     final reward = controller.claimInstantCash();
     if (reward > 0) {
       HapticFeedback.mediumImpact();
