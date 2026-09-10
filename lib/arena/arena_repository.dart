@@ -30,9 +30,17 @@ class ArenaRepository {
 
   /// Gọi `arena_join_queue()` — trả về trận đang/mới ghép được, hoặc null nếu
   /// vẫn đang chờ (client tự gọi lại, xem [ArenaController]).
+  ///
+  /// ⚠️ Khi hàm SQL `return null` cho kiểu trả về là ROW (`arena_matches`),
+  /// PostgREST KHÔNG serialize thành JSON `null` trơn — nó trả về 1 object
+  /// với TẤT CẢ field đều null (`{"id":null,"player_a":null,...}`). Đã verify
+  /// trực tiếp bằng curl. Nếu chỉ check `row == null` sẽ luôn sai ở đúng
+  /// trường hợp phổ biến nhất (đang chờ ghép) và ném lỗi ép kiểu khi
+  /// `ArenaMatch.fromRow` gặp `id: null`.
   Future<ArenaMatch?> joinQueue() async {
     final row = await _client.rpc('arena_join_queue') as Map<String, dynamic>?;
-    return row == null ? null : ArenaMatch.fromRow(row);
+    if (row == null || row['id'] == null) return null;
+    return ArenaMatch.fromRow(row);
   }
 
   Future<void> leaveQueue() => _client.rpc('arena_leave_queue');
