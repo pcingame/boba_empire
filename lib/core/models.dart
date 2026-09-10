@@ -279,7 +279,7 @@ class GameState {
       };
 
   factory GameState.fromJson(Map<String, dynamic> json) => GameState(
-        money: (json['money'] as num).toDouble(),
+        money: _sanitizeMoney(json['money'] as num),
         gems: (json['gems'] as num).toDouble(),
         tapValue: (json['tapValue'] as num).toDouble(),
         levels: (json['levels'] as Map).map(
@@ -332,4 +332,11 @@ class GameState {
         vipLastGemDay: (json['vipLastGemDay'] as num?)?.toInt() ?? 0,
         lastFreeSpinDay: (json['lastFreeSpinDay'] as num?)?.toInt() ?? 0,
       );
+}
+
+/// Vá lỗi save cũ bị âm/NaN/Infinity (tràn số double do công thức mốc nhân bội
+/// tăng vô hạn ở cấp rất cao) — coi save hỏng như 0 Xu thay vì hiển thị số âm.
+double _sanitizeMoney(num raw) {
+  final v = raw.toDouble();
+  return v.isFinite && v >= 0 ? v : 0;
 }

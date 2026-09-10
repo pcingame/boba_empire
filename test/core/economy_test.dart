@@ -56,6 +56,17 @@ void main() {
       final money = bulkCost(_g, 0, 3);
       expect(maxAffordableLevels(_g, 0, money, 0.5), greaterThan(3));
     });
+
+    test('money không hữu hạn (NaN/Infinity, save hỏng) → 0, không crash', () {
+      // log()/.floor() ném lỗi với NaN/Infinity — money phải hợp lệ trước đó,
+      // nhưng hàm thuần này vẫn cần tự vệ nếu lỡ nhận input hỏng.
+      expect(maxAffordableLevels(_g, 0, double.infinity, 1.0), 0);
+      expect(maxAffordableLevels(_g, 0, double.nan, 1.0), 0);
+    });
+
+    test('cấp hiện tại quá cao khiến giá tràn số (Infinity) → 0, không crash', () {
+      expect(maxAffordableLevels(_g, 100000, 1e300, 1.0), 0);
+    });
   });
 
   group('bulkIncomeGain', () {

@@ -35,7 +35,9 @@ int maxAffordableLevels(
   double money,
   double costMult,
 ) {
-  if (money <= 0) return 0;
+  // !isFinite chặn NaN/Infinity: log()/.floor() bên dưới ném lỗi với 2 giá trị
+  // này (Dart: "Infinity or NaN toInt"), nên phải loại trước khi tính tiếp.
+  if (money <= 0 || !money.isFinite) return 0;
   final g = config.costGrowth;
   final first = config.baseCost * pow(g, fromLevel).toDouble() * costMult;
   if (money < first) return 0;
