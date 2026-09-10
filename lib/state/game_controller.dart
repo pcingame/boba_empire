@@ -664,6 +664,15 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
+  /// Trao Kim Cương thưởng sau trận Đấu Trường (thắng/thua) — xem
+  /// `lib/arena/arena_controller.dart`. Module Đấu Trường không đụng trực
+  /// tiếp vào `GameState`, chỉ gọi qua đây, giống đường quest/IAP/ads.
+  void grantArenaReward(int gems) {
+    grantGems(_game, gems.toDouble());
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
   /// Bật "Gỡ quảng cáo" (IAP). Idempotent — an toàn khi khôi phục nhiều lần.
   void applyRemoveAds() {
     setAdsRemoved(_game);

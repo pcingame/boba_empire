@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'arena/arena_config.dart';
 import 'l10n/app_localizations.dart';
 import 'l10n/locale_provider.dart';
 
@@ -25,6 +27,13 @@ import 'ui/home_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Đấu Trường (Arena PvP) — xem PROPOSAL_ARENA_PVP.md. Khởi tạo sớm, trước
+  // cả `runApp`, để `ArenaRepository`/`ArenaController` luôn có sẵn
+  // `Supabase.instance.client` khi người chơi mở màn Đấu Trường.
+  await Supabase.initialize(
+    url: ArenaConfig.supabaseUrl,
+    publishableKey: ArenaConfig.supabasePublishableKey,
+  );
   final prefs = await SharedPreferences.getInstance();
   audioMuted = !(prefs.getBool('sound_on') ?? true); // khôi phục cài đặt tắt tiếng
   final audio = FlameAudioService();

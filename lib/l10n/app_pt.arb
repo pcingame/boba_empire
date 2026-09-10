@@ -167,5 +167,26 @@
   "rivalMeterEven": "Empatados",
   "rivalMeterBehind": "Perdendo terreno",
   "rivalResolvedSnack": "Resolvido. O rival recua.",
-  "rivalIgnoredSnack": "Você deixa passar — o rival ganha terreno."
+  "rivalIgnoredSnack": "Você deixa passar — o rival ganha terreno.",
+
+  "navArena": "Arena",
+  "arenaTitle": "Arena",
+  "arenaIntro": "Duelo 1x1 de 60 segundos — quem ganhar mais Moedas vence!",
+  "arenaStartButton": "Procurar rival",
+  "arenaQueueWaiting": "Procurando rival…",
+  "arenaCancelButton": "Cancelar",
+  "arenaTapButton": "Toque no copo",
+  "arenaResolving": "Encerrando a partida…",
+  "arenaTierButton": "Melhorar ×2 ({cost} Moedas)",
+  "@arenaTierButton": { "placeholders": { "cost": { "type": "String" } } },
+  "arenaTimeLeft": "Faltam {seconds}s",
+  "@arenaTimeLeft": { "placeholders": { "seconds": { "type": "int" } } },
+  "arenaYourScore": "Sua pontuação",
+  "arenaOpponentScore": "Rival",
+  "arenaResultWin": "Você venceu! 🎉",
+  "arenaResultLose": "Você perdeu",
+  "arenaResultDraw": "Empate",
+  "arenaResultReward": "+{gems} 💎",
+  "@arenaResultReward": { "placeholders": { "gems": { "type": "int" } } },
+  "arenaCloseButton": "Fechar"
 }

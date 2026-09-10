@@ -582,4 +582,62 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get rivalIgnoredSnack => 'Bạn làm ngơ — đối thủ được đà lấn tới.';
+
+  @override
+  String get navArena => 'Đấu Trường';
+
+  @override
+  String get arenaTitle => 'Đấu Trường';
+
+  @override
+  String get arenaIntro =>
+      'Đấu 1v1 trong 60 giây — ai kiếm nhiều Xu hơn thắng!';
+
+  @override
+  String get arenaStartButton => 'Tìm đối thủ';
+
+  @override
+  String get arenaQueueWaiting => 'Đang tìm đối thủ…';
+
+  @override
+  String get arenaCancelButton => 'Huỷ';
+
+  @override
+  String get arenaTapButton => 'Chạm ly';
+
+  @override
+  String get arenaResolving => 'Đang chốt trận…';
+
+  @override
+  String arenaTierButton(String cost) {
+    return 'Nâng ×2 ($cost Xu)';
+  }
+
+  @override
+  String arenaTimeLeft(int seconds) {
+    return 'Còn ${seconds}s';
+  }
+
+  @override
+  String get arenaYourScore => 'Điểm của bạn';
+
+  @override
+  String get arenaOpponentScore => 'Đối thủ';
+
+  @override
+  String get arenaResultWin => 'Bạn thắng! 🎉';
+
+  @override
+  String get arenaResultLose => 'Bạn thua rồi';
+
+  @override
+  String get arenaResultDraw => 'Hoà';
+
+  @override
+  String arenaResultReward(int gems) {
+    return '+$gems 💎';
+  }
+
+  @override
+  String get arenaCloseButton => 'Đóng';
 }

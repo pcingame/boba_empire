@@ -167,5 +167,26 @@
   "rivalMeterEven": "Seimbang",
   "rivalMeterBehind": "Tertinggal",
   "rivalResolvedSnack": "Ditangani. Pesaing mundur.",
-  "rivalIgnoredSnack": "Kamu biarkan saja — pesaing makin unggul."
+  "rivalIgnoredSnack": "Kamu biarkan saja — pesaing makin unggul.",
+
+  "navArena": "Arena",
+  "arenaTitle": "Arena",
+  "arenaIntro": "Duel 1v1, 60 detik — siapa dapat Koin terbanyak menang!",
+  "arenaStartButton": "Cari lawan",
+  "arenaQueueWaiting": "Mencari lawan…",
+  "arenaCancelButton": "Batal",
+  "arenaTapButton": "Ketuk gelas",
+  "arenaResolving": "Menutup pertandingan…",
+  "arenaTierButton": "Tingkatkan ×2 ({cost} Koin)",
+  "@arenaTierButton": { "placeholders": { "cost": { "type": "String" } } },
+  "arenaTimeLeft": "Sisa {seconds}s",
+  "@arenaTimeLeft": { "placeholders": { "seconds": { "type": "int" } } },
+  "arenaYourScore": "Skor kamu",
+  "arenaOpponentScore": "Lawan",
+  "arenaResultWin": "Kamu menang! 🎉",
+  "arenaResultLose": "Kamu kalah",
+  "arenaResultDraw": "Seri",
+  "arenaResultReward": "+{gems} 💎",
+  "@arenaResultReward": { "placeholders": { "gems": { "type": "int" } } },
+  "arenaCloseButton": "Tutup"
 }

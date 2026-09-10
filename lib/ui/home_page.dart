@@ -19,6 +19,7 @@ import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
 import 'achievements_dialog.dart';
+import 'arena_page.dart';
 import 'daily_dialog.dart';
 import 'gem_shop.dart';
 import 'how_to_play_dialog.dart';
@@ -339,8 +340,9 @@ class _HomePageState extends ConsumerState<HomePage>
   }
 }
 
-/// Thanh điều hướng dưới cùng: Nhà · Cửa hàng · Nhượng quyền · Thành tựu. Các
-/// mục (trừ Nhà) mở dialog tương ứng; giữ key cũ để test/quen thao tác.
+/// Thanh điều hướng dưới cùng: Nhà · Cửa hàng · Nhượng quyền · Thành tựu ·
+/// Đấu Trường. Các mục (trừ Nhà) mở dialog/trang tương ứng; giữ key cũ để
+/// test/quen thao tác.
 class _BottomBar extends ConsumerWidget {
   const _BottomBar();
 
@@ -399,6 +401,11 @@ class _BottomBar extends ConsumerWidget {
                         .acknowledgeAchievements();
                     showAchievements(context);
                   }),
+              _navItem(theme,
+                  buttonKey: const Key('arena-button'),
+                  icon: Icons.sports_kabaddi,
+                  label: l10n.navArena,
+                  onTap: () => showArenaPage(context)),
             ],
           ),
         ),

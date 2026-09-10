@@ -1041,6 +1041,108 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Bạn làm ngơ — đối thủ được đà lấn tới.'**
   String get rivalIgnoredSnack;
+
+  /// No description provided for @navArena.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đấu Trường'**
+  String get navArena;
+
+  /// No description provided for @arenaTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đấu Trường'**
+  String get arenaTitle;
+
+  /// No description provided for @arenaIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đấu 1v1 trong 60 giây — ai kiếm nhiều Xu hơn thắng!'**
+  String get arenaIntro;
+
+  /// No description provided for @arenaStartButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm đối thủ'**
+  String get arenaStartButton;
+
+  /// No description provided for @arenaQueueWaiting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang tìm đối thủ…'**
+  String get arenaQueueWaiting;
+
+  /// No description provided for @arenaCancelButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Huỷ'**
+  String get arenaCancelButton;
+
+  /// No description provided for @arenaTapButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chạm ly'**
+  String get arenaTapButton;
+
+  /// No description provided for @arenaResolving.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang chốt trận…'**
+  String get arenaResolving;
+
+  /// No description provided for @arenaTierButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nâng ×2 ({cost} Xu)'**
+  String arenaTierButton(String cost);
+
+  /// No description provided for @arenaTimeLeft.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn {seconds}s'**
+  String arenaTimeLeft(int seconds);
+
+  /// No description provided for @arenaYourScore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Điểm của bạn'**
+  String get arenaYourScore;
+
+  /// No description provided for @arenaOpponentScore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đối thủ'**
+  String get arenaOpponentScore;
+
+  /// No description provided for @arenaResultWin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn thắng! 🎉'**
+  String get arenaResultWin;
+
+  /// No description provided for @arenaResultLose.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn thua rồi'**
+  String get arenaResultLose;
+
+  /// No description provided for @arenaResultDraw.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoà'**
+  String get arenaResultDraw;
+
+  /// No description provided for @arenaResultReward.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{gems} 💎'**
+  String arenaResultReward(int gems);
+
+  /// No description provided for @arenaCloseButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng'**
+  String get arenaCloseButton;
 }
 
 class _AppLocalizationsDelegate
