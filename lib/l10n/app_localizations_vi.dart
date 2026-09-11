@@ -712,4 +712,39 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get cloudSaveRetry => 'Thử lại';
+
+  @override
+  String get leaderboardMenuTitle => 'Bảng xếp hạng';
+
+  @override
+  String get leaderboardTitle => 'Bảng xếp hạng';
+
+  @override
+  String get leaderboardNicknameIntro =>
+      'Đặt tên hiển thị trên bảng xếp hạng (đổi được sau):';
+
+  @override
+  String get leaderboardNicknameHint => 'Tên của bạn';
+
+  @override
+  String get leaderboardSubmit => 'Xác nhận';
+
+  @override
+  String leaderboardYourRank(int rank) {
+    return 'Hạng của bạn: #$rank';
+  }
+
+  @override
+  String leaderboardStars(int stars) {
+    return '$stars ⭐';
+  }
+
+  @override
+  String get leaderboardEmpty => 'Chưa có ai trên bảng xếp hạng — là bạn đây!';
+
+  @override
+  String get leaderboardChangeName => 'Đổi tên';
+
+  @override
+  String get leaderboardRetry => 'Thử lại';
 }

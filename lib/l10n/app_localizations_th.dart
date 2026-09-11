@@ -708,4 +708,39 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get cloudSaveRetry => 'ลองอีกครั้ง';
+
+  @override
+  String get leaderboardMenuTitle => 'อันดับ';
+
+  @override
+  String get leaderboardTitle => 'อันดับ';
+
+  @override
+  String get leaderboardNicknameIntro =>
+      'ตั้งชื่อที่จะแสดงบนกระดานอันดับ (เปลี่ยนทีหลังได้):';
+
+  @override
+  String get leaderboardNicknameHint => 'ชื่อของคุณ';
+
+  @override
+  String get leaderboardSubmit => 'ยืนยัน';
+
+  @override
+  String leaderboardYourRank(int rank) {
+    return 'อันดับของคุณ: #$rank';
+  }
+
+  @override
+  String leaderboardStars(int stars) {
+    return '$stars ⭐';
+  }
+
+  @override
+  String get leaderboardEmpty => 'ยังไม่มีใครในกระดานอันดับ — คือคุณเลย!';
+
+  @override
+  String get leaderboardChangeName => 'เปลี่ยนชื่อ';
+
+  @override
+  String get leaderboardRetry => 'ลองอีกครั้ง';
 }

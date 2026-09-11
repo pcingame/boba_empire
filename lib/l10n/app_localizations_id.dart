@@ -715,4 +715,40 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cloudSaveRetry => 'Coba lagi';
+
+  @override
+  String get leaderboardMenuTitle => 'Papan Peringkat';
+
+  @override
+  String get leaderboardTitle => 'Papan Peringkat';
+
+  @override
+  String get leaderboardNicknameIntro =>
+      'Pilih nama tampilan untuk papan peringkat (bisa diganti nanti):';
+
+  @override
+  String get leaderboardNicknameHint => 'Nama kamu';
+
+  @override
+  String get leaderboardSubmit => 'Konfirmasi';
+
+  @override
+  String leaderboardYourRank(int rank) {
+    return 'Peringkat kamu: #$rank';
+  }
+
+  @override
+  String leaderboardStars(int stars) {
+    return '$stars ⭐';
+  }
+
+  @override
+  String get leaderboardEmpty =>
+      'Belum ada siapa-siapa di papan peringkat — itu kamu!';
+
+  @override
+  String get leaderboardChangeName => 'Ganti nama';
+
+  @override
+  String get leaderboardRetry => 'Coba lagi';
 }

@@ -713,4 +713,39 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get cloudSaveRetry => 'Tentar de novo';
+
+  @override
+  String get leaderboardMenuTitle => 'Classificação';
+
+  @override
+  String get leaderboardTitle => 'Classificação';
+
+  @override
+  String get leaderboardNicknameIntro =>
+      'Escolha um nome para a classificação (pode mudar depois):';
+
+  @override
+  String get leaderboardNicknameHint => 'Seu nome';
+
+  @override
+  String get leaderboardSubmit => 'Confirmar';
+
+  @override
+  String leaderboardYourRank(int rank) {
+    return 'Sua posição: #$rank';
+  }
+
+  @override
+  String leaderboardStars(int stars) {
+    return '$stars ⭐';
+  }
+
+  @override
+  String get leaderboardEmpty => 'Ainda ninguém na classificação — é você!';
+
+  @override
+  String get leaderboardChangeName => 'Mudar nome';
+
+  @override
+  String get leaderboardRetry => 'Tentar de novo';
 }

@@ -214,5 +214,18 @@
   "cloudSaveLinkedStatus": "Linked: {email}",
   "@cloudSaveLinkedStatus": { "placeholders": { "email": { "type": "String" } } },
   "cloudSaveDisconnect": "Disconnect",
-  "cloudSaveRetry": "Retry"
+  "cloudSaveRetry": "Retry",
+
+  "leaderboardMenuTitle": "Leaderboard",
+  "leaderboardTitle": "Leaderboard",
+  "leaderboardNicknameIntro": "Pick a display name for the leaderboard (you can change it later):",
+  "leaderboardNicknameHint": "Your name",
+  "leaderboardSubmit": "Confirm",
+  "leaderboardYourRank": "Your rank: #{rank}",
+  "@leaderboardYourRank": { "placeholders": { "rank": { "type": "int" } } },
+  "leaderboardStars": "{stars} ⭐",
+  "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
+  "leaderboardEmpty": "No one on the leaderboard yet — that's you!",
+  "leaderboardChangeName": "Change name",
+  "leaderboardRetry": "Retry"
 }
