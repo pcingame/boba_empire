@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../data/cloud_save_controller.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
+import 'cloud_save_dialog.dart';
 import 'language_dialog.dart';
 
 /// Cài đặt: đổi ngôn ngữ, bật/tắt âm thanh, chơi lại từ đầu.
@@ -21,6 +23,7 @@ class _SettingsDialog extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final soundOn = ref.watch(soundOnProvider);
+    final cloudSave = ref.watch(cloudSaveControllerProvider);
 
     return AlertDialog(
       title: Text(l10n.settingsTitle),
@@ -33,6 +36,18 @@ class _SettingsDialog extends ConsumerWidget {
             title: Text(l10n.language),
             trailing: const Icon(Icons.chevron_right),
             onTap: () => showLanguageDialog(context),
+          ),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: Icon(cloudSave is CloudSaveLinked ? Icons.cloud_done : Icons.cloud_outlined),
+            title: Text(l10n.cloudSaveMenuTitle),
+            subtitle: Text(
+              cloudSave is CloudSaveLinked
+                  ? l10n.cloudSaveMenuLinked(cloudSave.email)
+                  : l10n.cloudSaveMenuUnlinked,
+            ),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => showCloudSaveDialog(context),
           ),
           SwitchListTile(
             key: const Key('settings-sound'),

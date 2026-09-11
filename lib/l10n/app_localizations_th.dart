@@ -636,4 +636,73 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get arenaCloseButton => 'ปิด';
+
+  @override
+  String get cloudSaveMenuTitle => 'บันทึกบนคลาวด์';
+
+  @override
+  String cloudSaveMenuLinked(String email) {
+    return 'เชื่อมต่อแล้ว: $email';
+  }
+
+  @override
+  String get cloudSaveMenuUnlinked =>
+      'ยังไม่เชื่อมต่อ — อาจเสียความคืบหน้าถ้าถอนการติดตั้ง';
+
+  @override
+  String get cloudSaveTitle => 'บันทึกบนคลาวด์';
+
+  @override
+  String get cloudSaveIntro =>
+      'เชื่อมอีเมลเพื่อกู้คืนความคืบหน้าได้ถ้าถอนแอปหรือเปลี่ยนเครื่อง';
+
+  @override
+  String get cloudSaveEmailHint => 'อีเมลของคุณ';
+
+  @override
+  String get cloudSaveSendCode => 'ส่งรหัส';
+
+  @override
+  String cloudSaveCodeSentTo(String email) {
+    return 'ส่งรหัส 6 หลักไปที่ $email แล้ว';
+  }
+
+  @override
+  String get cloudSaveCodeHint => 'รหัส 6 หลัก';
+
+  @override
+  String get cloudSaveVerify => 'ยืนยัน';
+
+  @override
+  String get cloudSaveChangeEmail => 'ใช้อีเมลอื่น';
+
+  @override
+  String get cloudSaveConflictTitle => 'พบข้อมูลบันทึกอื่นบนคลาวด์';
+
+  @override
+  String cloudSaveConflictLocal(String amount) {
+    return 'เครื่องนี้: $amount เหรียญสะสมทั้งหมด';
+  }
+
+  @override
+  String cloudSaveConflictCloud(String amount) {
+    return 'บนคลาวด์: $amount เหรียญสะสมทั้งหมด';
+  }
+
+  @override
+  String get cloudSaveRestoreButton => 'กู้คืนจากคลาวด์';
+
+  @override
+  String get cloudSaveKeepLocalButton => 'ใช้เครื่องนี้ต่อ';
+
+  @override
+  String cloudSaveLinkedStatus(String email) {
+    return 'เชื่อมต่อแล้ว: $email';
+  }
+
+  @override
+  String get cloudSaveDisconnect => 'ยกเลิกการเชื่อมต่อ';
+
+  @override
+  String get cloudSaveRetry => 'ลองอีกครั้ง';
 }
