@@ -48,8 +48,10 @@ class GameController extends Notifier<GameSnapshot> {
 
   final Random _random = Random();
 
-  /// Mưa vàng (runtime, KHÔNG persist): boost kết thúc lúc nào, mèo có đang hiện.
-  int _boostUntilMillis = 0;
+  /// Mưa vàng: mèo có đang hiện hay không vẫn runtime-only (không cần
+  /// persist — mèo tự spawn lại). Lúc boost kết thúc thì persist trong
+  /// `_game.boostUntilMillis` (xem GameState) để kill app giữa buff không
+  /// mất — trước đây là field runtime riêng, đã gộp vào GameState.
   bool _catVisible = false;
   int _catShownAtMillis = 0;
   int _nextCatMillis = 0;
@@ -93,7 +95,7 @@ class GameController extends Notifier<GameSnapshot> {
   double _boostMultiplier() {
     final now = _clock();
     var m = 1.0;
-    if (now < _boostUntilMillis) m *= Balance.goldenRushMultiplier;
+    if (now < _game.boostUntilMillis) m *= Balance.goldenRushMultiplier;
     if (now < _game.x2IncomeUntilMillis) m *= Balance.rewardedX2Multiplier;
     if (vipActive(_game, now)) m *= Balance.vipIncomeMultiplier;
     return m > Balance.maxTimeBoostMultiplier
@@ -115,9 +117,10 @@ class GameController extends Notifier<GameSnapshot> {
   void activateGoldenRush() {
     if (!_catVisible) return;
     final now = _clock();
-    _boostUntilMillis = now + Balance.goldenRushDurationMs;
+    _game.boostUntilMillis = now + Balance.goldenRushDurationMs;
     _catVisible = false;
     _scheduleNextCat(now);
+    unawaited(saveNow()); // lưu ngay — persist boostUntilMillis, không đợi 10s
     state = _snapshot();
   }
 
@@ -776,7 +779,7 @@ class GameController extends Notifier<GameSnapshot> {
     final now = _clock();
     final qp = currentQuestProgress(_game);
     final vip = vipActive(_game, now);
-    final remainingMs = _boostUntilMillis - now;
+    final remainingMs = _game.boostUntilMillis - now;
     return GameSnapshot(
       money: _game.money,
       gems: _game.gems,

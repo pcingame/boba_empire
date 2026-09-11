@@ -64,6 +64,37 @@ void main() {
     expect(snap.incomePerSecond, closeTo(1, 1e-9)); // trở lại base
   });
 
+  test('boost sống sót qua "kill app giữa buff" (persist boostUntilMillis)',
+      () async {
+    // tra_den cấp 2 = 1.0 Xu/s base.
+    final (container, setNow) = await _harness(
+      GameState.newGame(nowMillis: 0)..levels['tra_den'] = 2,
+    );
+    addTearDown(container.dispose);
+    final ctrl = container.read(gameControllerProvider.notifier);
+
+    ctrl.debugSpawnCat();
+    ctrl.activateGoldenRush(); // boost tới t=120000, đã lưu ngay
+    setNow(5000); // 5s sau, vẫn trong buff
+
+    // Giả lập "kill app": dựng GameController MỚI, cùng đồng hồ đang chạy,
+    // cùng storage (đã lưu khi activateGoldenRush) — như mở lại app.
+    final freshContainer = ProviderContainer(
+      overrides: [
+        sharedPreferencesProvider
+            .overrideWithValue(container.read(sharedPreferencesProvider)),
+        clockProvider.overrideWithValue(() => 5000),
+      ],
+    );
+    addTearDown(freshContainer.dispose);
+    final snap = freshContainer.read(gameControllerProvider);
+
+    // Trước fix: boostUntilMillis chỉ ở runtime, ván mới sẽ mất buff → 0/1.0.
+    // Sau fix: đọc lại đúng boostUntilMillis đã lưu, còn ~115s và ×3.
+    expect(snap.boostRemainingSeconds, closeTo(115, 1e-9));
+    expect(snap.incomePerSecond, closeTo(3, 1e-9));
+  });
+
   test('mèo tự biến mất sau catLinger nếu không chạm', () async {
     final (container, setNow) = await _harness(GameState.newGame(nowMillis: 0));
     addTearDown(container.dispose);

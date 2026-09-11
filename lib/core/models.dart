@@ -95,6 +95,7 @@ class GameState {
     this.questIndex = 0,
     this.doubleIncomeOwned = false,
     this.x2IncomeUntilMillis = 0,
+    this.boostUntilMillis = 0,
     this.piggyGems = 0,
     this.vipUntilMillis = 0,
     this.vipLastGemDay = 0,
@@ -224,6 +225,11 @@ class GameState {
   /// Mốc (epoch ms) hết hạn boost "x2 thu nhập 24h" từ xem QC; 0 = không có.
   int x2IncomeUntilMillis;
 
+  /// Mốc (epoch ms) hết hạn Mưa vàng ×3 (chạm mèo); 0 = không có. Trước đây
+  /// runtime-only ở GameController, kill app giữa buff là mất — nay persist
+  /// giống x2IncomeUntilMillis (xem GAME_DESIGN.md §14.3).
+  int boostUntilMillis;
+
   /// Kim Cương đã tích trong heo đất (chờ "đập" bằng IAP). Trần ở Balance.
   double piggyGems;
 
@@ -272,6 +278,7 @@ class GameState {
         'questIndex': questIndex,
         'doubleIncomeOwned': doubleIncomeOwned,
         'x2IncomeUntilMillis': x2IncomeUntilMillis,
+        'boostUntilMillis': boostUntilMillis,
         'piggyGems': piggyGems,
         'vipUntilMillis': vipUntilMillis,
         'vipLastGemDay': vipLastGemDay,
@@ -327,6 +334,7 @@ class GameState {
         doubleIncomeOwned: (json['doubleIncomeOwned'] as bool?) ?? false,
         x2IncomeUntilMillis:
             (json['x2IncomeUntilMillis'] as num?)?.toInt() ?? 0,
+        boostUntilMillis: (json['boostUntilMillis'] as num?)?.toInt() ?? 0,
         piggyGems: (json['piggyGems'] as num?)?.toDouble() ?? 0,
         vipUntilMillis: (json['vipUntilMillis'] as num?)?.toInt() ?? 0,
         vipLastGemDay: (json['vipLastGemDay'] as num?)?.toInt() ?? 0,

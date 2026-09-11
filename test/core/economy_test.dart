@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:boba_empire/core/balance.dart';
 import 'package:boba_empire/core/economy.dart';
 import 'package:boba_empire/core/models.dart';
@@ -64,8 +66,62 @@ void main() {
       expect(maxAffordableLevels(_g, 0, double.nan, 1.0), 0);
     });
 
-    test('cấp hiện tại quá cao khiến giá tràn số (Infinity) → 0, không crash', () {
-      expect(maxAffordableLevels(_g, 100000, 1e300, 1.0), 0);
+    test('cấp đã ở/vượt trần cứng (Balance.maxGeneratorLevel) → luôn 0, '
+        'kể cả tiền cực lớn — không crash', () {
+      expect(maxAffordableLevels(_g, Balance.maxGeneratorLevel, 10, 1.0), 0);
+      expect(
+        maxAffordableLevels(_g, Balance.maxGeneratorLevel, 1e300, 1.0),
+        0,
+      );
+      expect(
+        maxAffordableLevels(_g, Balance.maxGeneratorLevel + 500, 1e300, 1.0),
+        0,
+      );
+    });
+
+    test('gần trần cứng + tiền cực lớn → chỉ mua tới ĐÚNG trần, không hơn '
+        '(hồi quy: maxAffordableLevels từng tự tính giá thô bỏ qua trần ở '
+        'nextLevelCost, và trước khi có trần cứng thì count lớn tuỳ tiện có '
+        'thể phá vỡ tính đơn điệu giá của bulkCost)', () {
+      final fromLevel = Balance.maxGeneratorLevel - 5;
+      final n = maxAffordableLevels(_g, fromLevel, 1e300, 1.0);
+      expect(n, 5); // đúng bằng số cấp còn lại tới trần, không vượt
+      expect(fromLevel + n, Balance.maxGeneratorLevel);
+    });
+  });
+
+  group('trần chống tràn số (economyOverflowGuardCap)', () {
+    // Gốc rễ bug "Xu âm" cũ: nextLevelCost/bulkCost/generatorMilestoneMultiplier
+    // dùng pow() không giới hạn, tràn thành Infinity ở cấp cực cao (đủ đạt
+    // được qua chơi dài hạn, không phải chỉ lý thuyết). Test này khoá lại:
+    // (a) không đổi gì ở dải cấp người chơi bình thường chạm tới,
+    // (b) không bao giờ vượt/bằng Infinity dù cấp cực đoan tới đâu.
+    test('cấp bình thường (0..200): không bị ảnh hưởng bởi trần', () {
+      for (final level in [0, 1, 25, 50, 100, 200]) {
+        expect(nextLevelCost(_g, level), lessThan(Balance.economyOverflowGuardCap));
+        expect(generatorMilestoneMultiplier(level),
+            pow(Balance.milestoneFactor, level ~/ Balance.milestoneStep).toDouble());
+      }
+    });
+
+    test('nextLevelCost không bao giờ vượt trần, dù cấp cực cao', () {
+      for (final level in [5000, 10000, 100000, 10000000]) {
+        final cost = nextLevelCost(_g, level);
+        expect(cost.isFinite, isTrue, reason: 'level $level');
+        expect(cost, lessThanOrEqualTo(Balance.economyOverflowGuardCap));
+      }
+    });
+
+    test('bulkCost không bao giờ vượt trần, dù mua số lượng cực lớn', () {
+      final cost = bulkCost(_g, 100000, 1000000);
+      expect(cost.isFinite, isTrue);
+      expect(cost, lessThanOrEqualTo(Balance.economyOverflowGuardCap));
+    });
+
+    test('generatorMilestoneMultiplier không bao giờ vượt trần', () {
+      final m = generatorMilestoneMultiplier(1000000000);
+      expect(m.isFinite, isTrue);
+      expect(m, lessThanOrEqualTo(Balance.economyOverflowGuardCap));
     });
   });
 

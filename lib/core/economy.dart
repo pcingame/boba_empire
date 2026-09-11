@@ -12,19 +12,28 @@ import 'models.dart';
 
 /// Giá để nâng nguồn thu từ [currentLevel] lên cấp kế tiếp.
 ///
-/// chi_phí = base * growth^level  (đúng công thức trong GDD).
-double nextLevelCost(GeneratorConfig config, int currentLevel) =>
-    config.baseCost * pow(config.costGrowth, currentLevel).toDouble();
+/// chi_phí = base * growth^level  (đúng công thức trong GDD), chặn trần ở
+/// [Balance.economyOverflowGuardCap] — xem ghi chú tại hằng số đó.
+double nextLevelCost(GeneratorConfig config, int currentLevel) => min(
+      config.baseCost * pow(config.costGrowth, currentLevel).toDouble(),
+      Balance.economyOverflowGuardCap,
+    );
 
 /// Tổng giá để mua liền [count] cấp bắt đầu từ [fromLevel] (chuỗi cấp số nhân).
 ///
-/// Dùng cho nút "mua x10 / mua tối đa" — tính một lần thay vì cộng dồn.
+/// Dùng cho nút "mua x10 / mua tối đa" — tính một lần thay vì cộng dồn. Chặn
+/// trần như [nextLevelCost] (cùng lý do — xem [Balance.economyOverflowGuardCap]).
 double bulkCost(GeneratorConfig config, int fromLevel, int count) {
   if (count <= 0) return 0;
   final g = config.costGrowth;
-  final first = config.baseCost * pow(g, fromLevel).toDouble();
-  if (g == 1) return first * count;
-  return first * (pow(g, count).toDouble() - 1) / (g - 1);
+  final first = min(
+    config.baseCost * pow(g, fromLevel).toDouble(),
+    Balance.economyOverflowGuardCap,
+  );
+  final total = g == 1
+      ? first * count
+      : first * (pow(g, count).toDouble() - 1) / (g - 1);
+  return min(total, Balance.economyOverflowGuardCap);
 }
 
 /// Số cấp NHIỀU NHẤT có thể mua liền từ [fromLevel] với [money] Xu (giá đã nhân
@@ -38,10 +47,18 @@ int maxAffordableLevels(
   // !isFinite chặn NaN/Infinity: log()/.floor() bên dưới ném lỗi với 2 giá trị
   // này (Dart: "Infinity or NaN toInt"), nên phải loại trước khi tính tiếp.
   if (money <= 0 || !money.isFinite) return 0;
+  // Trần cứng an toàn (xem Balance.maxGeneratorLevel) — nút "MAX" không được
+  // đề xuất mua vượt trần, khớp buyUpgrade/buyUpgradeBulk.
+  final levelsUntilCap = Balance.maxGeneratorLevel - fromLevel;
+  if (levelsUntilCap <= 0) return 0;
   final g = config.costGrowth;
-  final first = config.baseCost * pow(g, fromLevel).toDouble() * costMult;
+  // Dùng lại nextLevelCost (đã chặn trần) thay vì tính thô lại pow(g,
+  // fromLevel) — tính thô riêng ở đây từng làm trần ở nextLevelCost vô tác
+  // dụng (first vẫn tràn thành Infinity dù nextLevelCost đã chặn), khiến
+  // hàm này trả 0 sai ngay cả khi money thừa sức mua.
+  final first = nextLevelCost(config, fromLevel) * costMult;
   if (money < first) return 0;
-  if (g == 1) return (money / first).floor();
+  if (g == 1) return min((money / first).floor(), levelsUntilCap);
   // money ≥ first · (gⁿ − 1)/(g − 1)  ⇒  n ≤ log_g(1 + money·(g−1)/first)
   var n = (log(1 + money * (g - 1) / first) / log(g)).floor();
   // Chỉnh sai số dấu phẩy động ở biên bằng cách đối chiếu lại tổng chính xác.
@@ -49,7 +66,7 @@ int maxAffordableLevels(
   while (n > 0 && bulkCost(config, fromLevel, n) * costMult > money) {
     n -= 1;
   }
-  return n;
+  return min(n, levelsUntilCap);
 }
 
 /// Id nguồn thu "đáng mua nhất" (thu nhập thêm / giá cao nhất) trong các nguồn
@@ -182,9 +199,13 @@ int offlineCapSeconds(int offlineCapLevel) =>
 
 /// Hệ số nhân thu nhập của MỘT nguồn thu theo mốc cấp: cứ mỗi
 /// [Balance.milestoneStep] cấp lại ×[Balance.milestoneFactor] (25→×2, 50→×4...).
-/// Cấp 0..24 = ×1, nên không đổi cân bằng ở giai đoạn đầu.
-double generatorMilestoneMultiplier(int level) =>
-    pow(Balance.milestoneFactor, level ~/ Balance.milestoneStep).toDouble();
+/// Cấp 0..24 = ×1, nên không đổi cân bằng ở giai đoạn đầu. Chặn trần ở
+/// [Balance.economyOverflowGuardCap] — xem ghi chú tại hằng số đó (gốc rễ
+/// bug Xu âm cũ: công thức này trước đây tăng vô hạn theo cấp số nhân).
+double generatorMilestoneMultiplier(int level) => min(
+      pow(Balance.milestoneFactor, level ~/ Balance.milestoneStep).toDouble(),
+      Balance.economyOverflowGuardCap,
+    );
 
 /// Số cấp còn thiếu để chạm mốc nhân bội kế tiếp (1..milestoneStep).
 int levelsToNextMilestone(int level) =>
