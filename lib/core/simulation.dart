@@ -53,7 +53,7 @@ bool buyUpgrade(
   final level = state.levels[generatorId] ?? 0;
   final cost = nextLevelCost(config, level) *
       upgradeCostMultiplier(state.prestigeDiscountLevel);
-  if (state.money < cost) return false;
+  if (!cost.isFinite || state.money < cost) return false;
   state.money -= cost;
   state.levels[generatorId] = level + 1;
   return true;
@@ -74,7 +74,7 @@ int buyUpgradeBulk(
   final level = state.levels[generatorId] ?? 0;
   final cost = bulkCost(config, level, count) *
       upgradeCostMultiplier(state.prestigeDiscountLevel);
-  if (state.money < cost) return 0;
+  if (!cost.isFinite || state.money < cost) return 0;
   state.money -= cost;
   state.levels[generatorId] = level + count;
   return count;
@@ -334,6 +334,11 @@ bool claimStarterPack(GameState state, double gems) {
 /// Cộng [amount] Xu và ghi nhận vào tổng thu nhập cả đời. (Heo đất tích theo
 /// thời gian ở [fillPiggy], không theo Xu.)
 void _credit(GameState state, double amount) {
-  state.money += amount;
-  state.lifetimeEarnings += amount;
+  if (!amount.isFinite) return; // chặn NaN/Infinity (tràn số double) lan vào state
+  // Phép cộng tự nó cũng có thể tràn thành Infinity dù amount hữu hạn (money đã
+  // gần double.maxFinite) — bỏ qua thay vì để money biến thành Infinity.
+  final newMoney = state.money + amount;
+  final newLifetime = state.lifetimeEarnings + amount;
+  if (newMoney.isFinite) state.money = newMoney;
+  if (newLifetime.isFinite) state.lifetimeEarnings = newLifetime;
 }

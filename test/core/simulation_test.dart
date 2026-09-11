@@ -48,6 +48,17 @@ void main() {
     });
   });
 
+  group('grantBonus', () {
+    test('money đã ở double.maxFinite: cộng thêm tràn thành Infinity → bỏ qua, giữ nguyên', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..money = double.maxFinite
+        ..lifetimeEarnings = double.maxFinite;
+      grantBonus(s, double.maxFinite); // maxFinite + maxFinite = Infinity
+      expect(s.money, double.maxFinite);
+      expect(s.lifetimeEarnings, double.maxFinite);
+    });
+  });
+
   group('buyUpgrade', () {
     test('mua được khi đủ tiền, trừ đúng giá, lên cấp', () {
       final s = GameState.newGame(nowMillis: 0)..money = 100;
@@ -69,6 +80,18 @@ void main() {
       expect(buyUpgrade(s, 'x', configs: _configs), isTrue); // -115 -> 0
       expect(s.levels['x'], 2);
       expect(s.money, closeTo(0, 1e-9));
+    });
+
+    test('không mua khi giá tràn số (Infinity) dù money cũng là Infinity', () {
+      // Cấp cực cao khiến pow(costGrowth, level) tràn double -> Infinity.
+      // Trước đây `money < cost` (Infinity < Infinity = false) khiến lệnh mua
+      // vẫn "thành công" và trừ Infinity vào money, để lại NaN/số âm sai lệch.
+      final s = GameState.newGame(nowMillis: 0)
+        ..money = double.infinity
+        ..levels['x'] = 100000;
+      expect(buyUpgrade(s, 'x', configs: _configs), isFalse);
+      expect(s.money, double.infinity);
+      expect(s.levels['x'], 100000);
     });
   });
 
@@ -356,6 +379,15 @@ void main() {
       expect(round.rivalDefeated, isTrue);
       expect(round.rivalPressureSeconds, 777.5);
       expect(round.repeatQuestBaseline, 12345.0);
+    });
+
+    test('save hỏng có money âm/NaN → vá về 0 thay vì hiển thị số âm', () {
+      final negative = GameState.newGame(nowMillis: 0).toJson()
+        ..['money'] = -87420000000000000000.0;
+      expect(GameState.fromJson(negative).money, 0);
+
+      final nan = GameState.newGame(nowMillis: 0).toJson()..['money'] = double.nan;
+      expect(GameState.fromJson(nan).money, 0);
     });
 
     test('save cũ (thiếu field cốt truyện) → mặc định', () {
