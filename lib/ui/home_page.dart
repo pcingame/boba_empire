@@ -172,6 +172,7 @@ class _HomePageState extends ConsumerState<HomePage>
       case AppLifecycleState.paused:
       case AppLifecycleState.hidden:
         controller.saveNow(); // bắt cả trường hợp vuốt tắt app
+        controller.endSession(); // ghi thời lượng session (analytics nhẹ)
       case AppLifecycleState.resumed:
         controller.handleResume(); // bù tiền cho lúc ở nền
       case AppLifecycleState.inactive:

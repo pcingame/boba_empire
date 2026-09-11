@@ -23,6 +23,7 @@ import '../core/simulation.dart';
 import '../core/story.dart';
 import '../core/vip.dart';
 import '../core/wheel.dart';
+import '../data/analytics_repository.dart';
 import '../data/cloud_save_repository.dart';
 import '../data/game_storage.dart';
 import 'game_providers.dart';
@@ -38,6 +39,8 @@ class GameController extends Notifier<GameSnapshot> {
   late final GameStorage _storage;
   late final int Function() _clock;
   CloudSaveRepository? _cloudSaveRepo;
+  AnalyticsRepository? _analyticsRepo;
+  int _sessionStartMillis = 0;
   late GameState _game;
   Timer? _timer;
   int _ticksSinceSave = 0;
@@ -87,6 +90,12 @@ class GameController extends Notifier<GameSnapshot> {
     _timer = Timer.periodic(tickInterval, (_) => _onTick());
     ref.onDispose(() => _timer?.cancel());
     _awardAchievements(); // thành tựu đạt sẵn từ trước / qua tiền offline
+    _sessionStartMillis = _clock();
+    unawaited(_analytics?.log('session_start', {
+      'stage': _game.stage,
+      'prestigeStars': _game.prestigeStars,
+      'lifetimeEarnings': _game.lifetimeEarnings,
+    }));
     return _snapshot();
   }
 
@@ -384,6 +393,7 @@ class GameController extends Notifier<GameSnapshot> {
     if (ok) {
       _awardAchievements();
       unawaited(saveNow());
+      unawaited(_analytics?.log('stage_reached', {'stage': _game.stage}));
       state = _snapshot();
     }
     return ok;
@@ -501,9 +511,25 @@ class GameController extends Notifier<GameSnapshot> {
     if (gained > 0) {
       _awardAchievements();
       unawaited(saveNow());
+      unawaited(_analytics?.log('prestige', {
+        'starsGained': gained,
+        'totalStars': _game.prestigeStars,
+      }));
       state = _snapshot();
     }
     return gained;
+  }
+
+  /// UI gọi khi app chuyển nền (AppLifecycleState.paused/hidden), CẠNH
+  /// saveNow() chứ không thay — ghi thời lượng session vừa chơi. Reset mốc
+  /// bắt đầu ngay để lần resume sau tính đúng (app không tự tạo phiên mới
+  /// qua build() nếu chỉ resume, không kill hẳn).
+  void endSession() {
+    final seconds = (_clock() - _sessionStartMillis) / 1000;
+    if (seconds > 0) {
+      unawaited(_analytics?.log('session_end', {'seconds': seconds}));
+    }
+    _sessionStartMillis = _clock();
   }
 
   /// Lưu ngay — UI gọi khi app chuyển nền (AppLifecycleState.paused). Đẩy
@@ -524,6 +550,20 @@ class GameController extends Notifier<GameSnapshot> {
     if (_cloudSaveRepo != null) return _cloudSaveRepo;
     try {
       return _cloudSaveRepo = CloudSaveRepository(Supabase.instance.client);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Cùng nguyên tắc lazy + tự bắt lỗi như [_cloudSave] — analytics KHÔNG
+  /// BAO GIỜ được phép ảnh hưởng gameplay (xem AnalyticsRepository).
+  AnalyticsRepository? get _analytics {
+    if (_analyticsRepo != null) return _analyticsRepo;
+    try {
+      return _analyticsRepo = AnalyticsRepository(
+        Supabase.instance.client,
+        ref.read(sharedPreferencesProvider),
+      );
     } catch (_) {
       return null;
     }
