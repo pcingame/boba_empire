@@ -645,7 +645,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get arenaCloseButton => 'Đóng';
 
   @override
-  String get cloudSaveMenuTitle => 'Đồng bộ đám mây';
+  String get cloudSaveMenuTitle => 'Sao lưu tiến trình';
 
   @override
   String cloudSaveMenuLinked(String email) {
@@ -657,7 +657,7 @@ class AppLocalizationsVi extends AppLocalizations {
       'Chưa liên kết — có thể mất tiến trình nếu gỡ app';
 
   @override
-  String get cloudSaveTitle => 'Đồng bộ đám mây';
+  String get cloudSaveTitle => 'Sao lưu tiến trình';
 
   @override
   String get cloudSaveIntro =>

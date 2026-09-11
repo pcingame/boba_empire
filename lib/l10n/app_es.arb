@@ -191,11 +191,11 @@
   "@arenaResultReward": { "placeholders": { "gems": { "type": "int" } } },
   "arenaCloseButton": "Cerrar",
 
-  "cloudSaveMenuTitle": "Guardado en la nube",
+  "cloudSaveMenuTitle": "Copia de seguridad",
   "cloudSaveMenuLinked": "Vinculado: {email}",
   "@cloudSaveMenuLinked": { "placeholders": { "email": { "type": "String" } } },
   "cloudSaveMenuUnlinked": "Sin vincular — podrías perder tu progreso si desinstalas",
-  "cloudSaveTitle": "Guardado en la nube",
+  "cloudSaveTitle": "Copia de seguridad",
   "cloudSaveIntro": "Vincula un email para recuperar tu progreso si desinstalas o cambias de dispositivo.",
   "cloudSaveEmailHint": "Tu email",
   "cloudSaveSendCode": "Enviar código",

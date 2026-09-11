@@ -191,11 +191,11 @@
   "@arenaResultReward": { "placeholders": { "gems": { "type": "int" } } },
   "arenaCloseButton": "Close",
 
-  "cloudSaveMenuTitle": "Cloud save",
+  "cloudSaveMenuTitle": "Backup progress",
   "cloudSaveMenuLinked": "Linked: {email}",
   "@cloudSaveMenuLinked": { "placeholders": { "email": { "type": "String" } } },
   "cloudSaveMenuUnlinked": "Not linked — you may lose progress if you uninstall",
-  "cloudSaveTitle": "Cloud save",
+  "cloudSaveTitle": "Backup progress",
   "cloudSaveIntro": "Link an email to recover your progress if you uninstall or switch devices.",
   "cloudSaveEmailHint": "Your email",
   "cloudSaveSendCode": "Send code",

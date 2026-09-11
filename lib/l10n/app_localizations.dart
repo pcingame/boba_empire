@@ -1153,7 +1153,7 @@ abstract class AppLocalizations {
   /// No description provided for @cloudSaveMenuTitle.
   ///
   /// In vi, this message translates to:
-  /// **'Đồng bộ đám mây'**
+  /// **'Sao lưu tiến trình'**
   String get cloudSaveMenuTitle;
 
   /// No description provided for @cloudSaveMenuLinked.
@@ -1171,7 +1171,7 @@ abstract class AppLocalizations {
   /// No description provided for @cloudSaveTitle.
   ///
   /// In vi, this message translates to:
-  /// **'Đồng bộ đám mây'**
+  /// **'Sao lưu tiến trình'**
   String get cloudSaveTitle;
 
   /// No description provided for @cloudSaveIntro.

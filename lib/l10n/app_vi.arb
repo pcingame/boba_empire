@@ -239,11 +239,11 @@
   "@arenaResultReward": { "placeholders": { "gems": { "type": "int" } } },
   "arenaCloseButton": "Đóng",
 
-  "cloudSaveMenuTitle": "Đồng bộ đám mây",
+  "cloudSaveMenuTitle": "Sao lưu tiến trình",
   "cloudSaveMenuLinked": "Đã liên kết: {email}",
   "@cloudSaveMenuLinked": { "placeholders": { "email": { "type": "String" } } },
   "cloudSaveMenuUnlinked": "Chưa liên kết — có thể mất tiến trình nếu gỡ app",
-  "cloudSaveTitle": "Đồng bộ đám mây",
+  "cloudSaveTitle": "Sao lưu tiến trình",
   "cloudSaveIntro": "Liên kết email để khôi phục được tiến trình nếu gỡ app hoặc đổi máy.",
   "cloudSaveEmailHint": "Email của bạn",
   "cloudSaveSendCode": "Gửi mã",
