@@ -214,5 +214,18 @@
   "cloudSaveLinkedStatus": "Terhubung: {email}",
   "@cloudSaveLinkedStatus": { "placeholders": { "email": { "type": "String" } } },
   "cloudSaveDisconnect": "Putuskan",
-  "cloudSaveRetry": "Coba lagi"
+  "cloudSaveRetry": "Coba lagi",
+
+  "leaderboardMenuTitle": "Papan Peringkat",
+  "leaderboardTitle": "Papan Peringkat",
+  "leaderboardNicknameIntro": "Pilih nama tampilan untuk papan peringkat (bisa diganti nanti):",
+  "leaderboardNicknameHint": "Nama kamu",
+  "leaderboardSubmit": "Konfirmasi",
+  "leaderboardYourRank": "Peringkat kamu: #{rank}",
+  "@leaderboardYourRank": { "placeholders": { "rank": { "type": "int" } } },
+  "leaderboardStars": "{stars} ⭐",
+  "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
+  "leaderboardEmpty": "Belum ada siapa-siapa di papan peringkat — itu kamu!",
+  "leaderboardChangeName": "Ganti nama",
+  "leaderboardRetry": "Coba lagi"
 }

@@ -214,5 +214,18 @@
   "cloudSaveLinkedStatus": "Vinculado: {email}",
   "@cloudSaveLinkedStatus": { "placeholders": { "email": { "type": "String" } } },
   "cloudSaveDisconnect": "Desvincular",
-  "cloudSaveRetry": "Tentar de novo"
+  "cloudSaveRetry": "Tentar de novo",
+
+  "leaderboardMenuTitle": "Classificação",
+  "leaderboardTitle": "Classificação",
+  "leaderboardNicknameIntro": "Escolha um nome para a classificação (pode mudar depois):",
+  "leaderboardNicknameHint": "Seu nome",
+  "leaderboardSubmit": "Confirmar",
+  "leaderboardYourRank": "Sua posição: #{rank}",
+  "@leaderboardYourRank": { "placeholders": { "rank": { "type": "int" } } },
+  "leaderboardStars": "{stars} ⭐",
+  "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
+  "leaderboardEmpty": "Ainda ninguém na classificação — é você!",
+  "leaderboardChangeName": "Mudar nome",
+  "leaderboardRetry": "Tentar de novo"
 }

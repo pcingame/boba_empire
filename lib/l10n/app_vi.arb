@@ -262,5 +262,18 @@
   "cloudSaveLinkedStatus": "Đã liên kết: {email}",
   "@cloudSaveLinkedStatus": { "placeholders": { "email": { "type": "String" } } },
   "cloudSaveDisconnect": "Ngắt kết nối",
-  "cloudSaveRetry": "Thử lại"
+  "cloudSaveRetry": "Thử lại",
+
+  "leaderboardMenuTitle": "Bảng xếp hạng",
+  "leaderboardTitle": "Bảng xếp hạng",
+  "leaderboardNicknameIntro": "Đặt tên hiển thị trên bảng xếp hạng (đổi được sau):",
+  "leaderboardNicknameHint": "Tên của bạn",
+  "leaderboardSubmit": "Xác nhận",
+  "leaderboardYourRank": "Hạng của bạn: #{rank}",
+  "@leaderboardYourRank": { "placeholders": { "rank": { "type": "int" } } },
+  "leaderboardStars": "{stars} ⭐",
+  "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
+  "leaderboardEmpty": "Chưa có ai trên bảng xếp hạng — là bạn đây!",
+  "leaderboardChangeName": "Đổi tên",
+  "leaderboardRetry": "Thử lại"
 }

@@ -214,5 +214,18 @@
   "cloudSaveLinkedStatus": "เชื่อมต่อแล้ว: {email}",
   "@cloudSaveLinkedStatus": { "placeholders": { "email": { "type": "String" } } },
   "cloudSaveDisconnect": "ยกเลิกการเชื่อมต่อ",
-  "cloudSaveRetry": "ลองอีกครั้ง"
+  "cloudSaveRetry": "ลองอีกครั้ง",
+
+  "leaderboardMenuTitle": "อันดับ",
+  "leaderboardTitle": "อันดับ",
+  "leaderboardNicknameIntro": "ตั้งชื่อที่จะแสดงบนกระดานอันดับ (เปลี่ยนทีหลังได้):",
+  "leaderboardNicknameHint": "ชื่อของคุณ",
+  "leaderboardSubmit": "ยืนยัน",
+  "leaderboardYourRank": "อันดับของคุณ: #{rank}",
+  "@leaderboardYourRank": { "placeholders": { "rank": { "type": "int" } } },
+  "leaderboardStars": "{stars} ⭐",
+  "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
+  "leaderboardEmpty": "ยังไม่มีใครในกระดานอันดับ — คือคุณเลย!",
+  "leaderboardChangeName": "เปลี่ยนชื่อ",
+  "leaderboardRetry": "ลองอีกครั้ง"
 }

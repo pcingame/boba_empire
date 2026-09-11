@@ -1263,6 +1263,66 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Thử lại'**
   String get cloudSaveRetry;
+
+  /// No description provided for @leaderboardMenuTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảng xếp hạng'**
+  String get leaderboardMenuTitle;
+
+  /// No description provided for @leaderboardTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảng xếp hạng'**
+  String get leaderboardTitle;
+
+  /// No description provided for @leaderboardNicknameIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt tên hiển thị trên bảng xếp hạng (đổi được sau):'**
+  String get leaderboardNicknameIntro;
+
+  /// No description provided for @leaderboardNicknameHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên của bạn'**
+  String get leaderboardNicknameHint;
+
+  /// No description provided for @leaderboardSubmit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận'**
+  String get leaderboardSubmit;
+
+  /// No description provided for @leaderboardYourRank.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạng của bạn: #{rank}'**
+  String leaderboardYourRank(int rank);
+
+  /// No description provided for @leaderboardStars.
+  ///
+  /// In vi, this message translates to:
+  /// **'{stars} ⭐'**
+  String leaderboardStars(int stars);
+
+  /// No description provided for @leaderboardEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có ai trên bảng xếp hạng — là bạn đây!'**
+  String get leaderboardEmpty;
+
+  /// No description provided for @leaderboardChangeName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi tên'**
+  String get leaderboardChangeName;
+
+  /// No description provided for @leaderboardRetry.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử lại'**
+  String get leaderboardRetry;
 }
 
 class _AppLocalizationsDelegate
