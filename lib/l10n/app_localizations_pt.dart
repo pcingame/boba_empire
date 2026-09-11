@@ -31,6 +31,10 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get adNotReadySnack =>
+      'Anúncio ainda não está pronto, tente novamente em instantes';
+
+  @override
   String stageHeader(String name) {
     return '🏪 $name';
   }

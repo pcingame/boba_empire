@@ -31,6 +31,9 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get adNotReadySnack => 'Iklan belum siap, coba lagi sebentar lagi';
+
+  @override
   String stageHeader(String name) {
     return '🏪 $name';
   }

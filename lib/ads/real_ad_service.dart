@@ -3,6 +3,7 @@
 library;
 
 import 'dart:async';
+import 'dart:developer' as developer;
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -29,6 +30,10 @@ class RealAdService implements AdService {
           _loading = false;
         },
         onAdFailedToLoad: (error) {
+          developer.log(
+            'Rewarded ad failed to load: $error',
+            name: 'AdService',
+          );
           _ad = null;
           _loading = false;
         },
@@ -40,6 +45,7 @@ class RealAdService implements AdService {
   Future<RewardOutcome> showRewardedAd() async {
     final ad = _ad;
     if (ad == null) {
+      developer.log('Rewarded ad not ready when requested', name: 'AdService');
       _load(); // chưa sẵn: bỏ qua lần này, nạp cho lần sau.
       return RewardOutcome.dismissed;
     }
@@ -58,6 +64,10 @@ class RealAdService implements AdService {
         }
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
+        developer.log(
+          'Rewarded ad failed to show: $error',
+          name: 'AdService',
+        );
         ad.dispose();
         _load();
         if (!completer.isCompleted) completer.complete(RewardOutcome.dismissed);

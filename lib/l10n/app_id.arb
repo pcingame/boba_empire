@@ -8,6 +8,7 @@
   "incomePerSecond": "+{amount} / dtk",
   "instantCashButton": "Uang instan",
   "instantCashSnack": "Uang instan! +{amount} Koin",
+  "adNotReadySnack": "Iklan belum siap, coba lagi sebentar lagi",
 
   "stageHeader": "🏪 {name}",
   "unlockStageButton": "Buka {cost} Koin",

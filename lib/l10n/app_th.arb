@@ -8,6 +8,7 @@
   "incomePerSecond": "+{amount} / วินาที",
   "instantCashButton": "เงินทันที",
   "instantCashSnack": "เงินทันที! +{amount} เหรียญ",
+  "adNotReadySnack": "โฆษณายังไม่พร้อม ลองใหม่อีกสักครู่นะ",
 
   "stageHeader": "🏪 {name}",
   "unlockStageButton": "ปลดล็อก {cost} เหรียญ",

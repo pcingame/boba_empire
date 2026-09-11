@@ -142,6 +142,12 @@ abstract class AppLocalizations {
   /// **'Tiền tức thì! +{amount} Xu'**
   String instantCashSnack(String amount);
 
+  /// No description provided for @adNotReadySnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quảng cáo chưa sẵn sàng, thử lại sau nhé'**
+  String get adNotReadySnack;
+
   /// No description provided for @stageHeader.
   ///
   /// In vi, this message translates to:

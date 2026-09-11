@@ -31,6 +31,9 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get adNotReadySnack => 'Quảng cáo chưa sẵn sàng, thử lại sau nhé';
+
+  @override
   String stageHeader(String name) {
     return '🏪 $name';
   }
