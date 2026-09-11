@@ -640,4 +640,73 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get arenaCloseButton => 'Close';
+
+  @override
+  String get cloudSaveMenuTitle => 'Cloud save';
+
+  @override
+  String cloudSaveMenuLinked(String email) {
+    return 'Linked: $email';
+  }
+
+  @override
+  String get cloudSaveMenuUnlinked =>
+      'Not linked — you may lose progress if you uninstall';
+
+  @override
+  String get cloudSaveTitle => 'Cloud save';
+
+  @override
+  String get cloudSaveIntro =>
+      'Link an email to recover your progress if you uninstall or switch devices.';
+
+  @override
+  String get cloudSaveEmailHint => 'Your email';
+
+  @override
+  String get cloudSaveSendCode => 'Send code';
+
+  @override
+  String cloudSaveCodeSentTo(String email) {
+    return 'Sent a 6-digit code to $email';
+  }
+
+  @override
+  String get cloudSaveCodeHint => '6-digit code';
+
+  @override
+  String get cloudSaveVerify => 'Verify';
+
+  @override
+  String get cloudSaveChangeEmail => 'Use a different email';
+
+  @override
+  String get cloudSaveConflictTitle => 'Found a different save on the cloud';
+
+  @override
+  String cloudSaveConflictLocal(String amount) {
+    return 'This device: $amount Coins lifetime';
+  }
+
+  @override
+  String cloudSaveConflictCloud(String amount) {
+    return 'On the cloud: $amount Coins lifetime';
+  }
+
+  @override
+  String get cloudSaveRestoreButton => 'Restore from cloud';
+
+  @override
+  String get cloudSaveKeepLocalButton => 'Keep this device';
+
+  @override
+  String cloudSaveLinkedStatus(String email) {
+    return 'Linked: $email';
+  }
+
+  @override
+  String get cloudSaveDisconnect => 'Disconnect';
+
+  @override
+  String get cloudSaveRetry => 'Retry';
 }

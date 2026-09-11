@@ -644,4 +644,73 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get arenaCloseButton => 'Fechar';
+
+  @override
+  String get cloudSaveMenuTitle => 'Salvamento na nuvem';
+
+  @override
+  String cloudSaveMenuLinked(String email) {
+    return 'Vinculado: $email';
+  }
+
+  @override
+  String get cloudSaveMenuUnlinked =>
+      'Não vinculado — pode perder o progresso ao desinstalar';
+
+  @override
+  String get cloudSaveTitle => 'Salvamento na nuvem';
+
+  @override
+  String get cloudSaveIntro =>
+      'Vincule um email para recuperar seu progresso ao desinstalar ou trocar de aparelho.';
+
+  @override
+  String get cloudSaveEmailHint => 'Seu email';
+
+  @override
+  String get cloudSaveSendCode => 'Enviar código';
+
+  @override
+  String cloudSaveCodeSentTo(String email) {
+    return 'Código de 6 dígitos enviado para $email';
+  }
+
+  @override
+  String get cloudSaveCodeHint => 'Código de 6 dígitos';
+
+  @override
+  String get cloudSaveVerify => 'Verificar';
+
+  @override
+  String get cloudSaveChangeEmail => 'Usar outro email';
+
+  @override
+  String get cloudSaveConflictTitle => 'Encontramos outro salvamento na nuvem';
+
+  @override
+  String cloudSaveConflictLocal(String amount) {
+    return 'Este aparelho: $amount Moedas totais';
+  }
+
+  @override
+  String cloudSaveConflictCloud(String amount) {
+    return 'Na nuvem: $amount Moedas totais';
+  }
+
+  @override
+  String get cloudSaveRestoreButton => 'Restaurar da nuvem';
+
+  @override
+  String get cloudSaveKeepLocalButton => 'Manter este aparelho';
+
+  @override
+  String cloudSaveLinkedStatus(String email) {
+    return 'Vinculado: $email';
+  }
+
+  @override
+  String get cloudSaveDisconnect => 'Desvincular';
+
+  @override
+  String get cloudSaveRetry => 'Tentar de novo';
 }

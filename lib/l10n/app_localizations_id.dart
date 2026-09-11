@@ -646,4 +646,73 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get arenaCloseButton => 'Tutup';
+
+  @override
+  String get cloudSaveMenuTitle => 'Simpan cloud';
+
+  @override
+  String cloudSaveMenuLinked(String email) {
+    return 'Terhubung: $email';
+  }
+
+  @override
+  String get cloudSaveMenuUnlinked =>
+      'Belum terhubung — progres bisa hilang jika uninstall';
+
+  @override
+  String get cloudSaveTitle => 'Simpan cloud';
+
+  @override
+  String get cloudSaveIntro =>
+      'Hubungkan email untuk memulihkan progres jika uninstall atau ganti perangkat.';
+
+  @override
+  String get cloudSaveEmailHint => 'Email kamu';
+
+  @override
+  String get cloudSaveSendCode => 'Kirim kode';
+
+  @override
+  String cloudSaveCodeSentTo(String email) {
+    return 'Kode 6 digit terkirim ke $email';
+  }
+
+  @override
+  String get cloudSaveCodeHint => 'Kode 6 digit';
+
+  @override
+  String get cloudSaveVerify => 'Verifikasi';
+
+  @override
+  String get cloudSaveChangeEmail => 'Pakai email lain';
+
+  @override
+  String get cloudSaveConflictTitle => 'Ditemukan save lain di cloud';
+
+  @override
+  String cloudSaveConflictLocal(String amount) {
+    return 'Perangkat ini: $amount Koin seumur hidup';
+  }
+
+  @override
+  String cloudSaveConflictCloud(String amount) {
+    return 'Di cloud: $amount Koin seumur hidup';
+  }
+
+  @override
+  String get cloudSaveRestoreButton => 'Pulihkan dari cloud';
+
+  @override
+  String get cloudSaveKeepLocalButton => 'Pakai perangkat ini';
+
+  @override
+  String cloudSaveLinkedStatus(String email) {
+    return 'Terhubung: $email';
+  }
+
+  @override
+  String get cloudSaveDisconnect => 'Putuskan';
+
+  @override
+  String get cloudSaveRetry => 'Coba lagi';
 }

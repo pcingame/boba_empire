@@ -643,4 +643,73 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get arenaCloseButton => 'Đóng';
+
+  @override
+  String get cloudSaveMenuTitle => 'Đồng bộ đám mây';
+
+  @override
+  String cloudSaveMenuLinked(String email) {
+    return 'Đã liên kết: $email';
+  }
+
+  @override
+  String get cloudSaveMenuUnlinked =>
+      'Chưa liên kết — có thể mất tiến trình nếu gỡ app';
+
+  @override
+  String get cloudSaveTitle => 'Đồng bộ đám mây';
+
+  @override
+  String get cloudSaveIntro =>
+      'Liên kết email để khôi phục được tiến trình nếu gỡ app hoặc đổi máy.';
+
+  @override
+  String get cloudSaveEmailHint => 'Email của bạn';
+
+  @override
+  String get cloudSaveSendCode => 'Gửi mã';
+
+  @override
+  String cloudSaveCodeSentTo(String email) {
+    return 'Đã gửi mã 6 số tới $email';
+  }
+
+  @override
+  String get cloudSaveCodeHint => 'Mã 6 số';
+
+  @override
+  String get cloudSaveVerify => 'Xác nhận';
+
+  @override
+  String get cloudSaveChangeEmail => 'Đổi email khác';
+
+  @override
+  String get cloudSaveConflictTitle => 'Tìm thấy save khác trên cloud';
+
+  @override
+  String cloudSaveConflictLocal(String amount) {
+    return 'Máy này: $amount Xu cả đời';
+  }
+
+  @override
+  String cloudSaveConflictCloud(String amount) {
+    return 'Trên cloud: $amount Xu cả đời';
+  }
+
+  @override
+  String get cloudSaveRestoreButton => 'Khôi phục từ cloud';
+
+  @override
+  String get cloudSaveKeepLocalButton => 'Giữ máy này';
+
+  @override
+  String cloudSaveLinkedStatus(String email) {
+    return 'Đã liên kết: $email';
+  }
+
+  @override
+  String get cloudSaveDisconnect => 'Ngắt kết nối';
+
+  @override
+  String get cloudSaveRetry => 'Thử lại';
 }

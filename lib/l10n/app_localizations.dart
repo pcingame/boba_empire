@@ -1149,6 +1149,120 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đóng'**
   String get arenaCloseButton;
+
+  /// No description provided for @cloudSaveMenuTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đồng bộ đám mây'**
+  String get cloudSaveMenuTitle;
+
+  /// No description provided for @cloudSaveMenuLinked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã liên kết: {email}'**
+  String cloudSaveMenuLinked(String email);
+
+  /// No description provided for @cloudSaveMenuUnlinked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa liên kết — có thể mất tiến trình nếu gỡ app'**
+  String get cloudSaveMenuUnlinked;
+
+  /// No description provided for @cloudSaveTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đồng bộ đám mây'**
+  String get cloudSaveTitle;
+
+  /// No description provided for @cloudSaveIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Liên kết email để khôi phục được tiến trình nếu gỡ app hoặc đổi máy.'**
+  String get cloudSaveIntro;
+
+  /// No description provided for @cloudSaveEmailHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Email của bạn'**
+  String get cloudSaveEmailHint;
+
+  /// No description provided for @cloudSaveSendCode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi mã'**
+  String get cloudSaveSendCode;
+
+  /// No description provided for @cloudSaveCodeSentTo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gửi mã 6 số tới {email}'**
+  String cloudSaveCodeSentTo(String email);
+
+  /// No description provided for @cloudSaveCodeHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã 6 số'**
+  String get cloudSaveCodeHint;
+
+  /// No description provided for @cloudSaveVerify.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận'**
+  String get cloudSaveVerify;
+
+  /// No description provided for @cloudSaveChangeEmail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi email khác'**
+  String get cloudSaveChangeEmail;
+
+  /// No description provided for @cloudSaveConflictTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm thấy save khác trên cloud'**
+  String get cloudSaveConflictTitle;
+
+  /// No description provided for @cloudSaveConflictLocal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Máy này: {amount} Xu cả đời'**
+  String cloudSaveConflictLocal(String amount);
+
+  /// No description provided for @cloudSaveConflictCloud.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trên cloud: {amount} Xu cả đời'**
+  String cloudSaveConflictCloud(String amount);
+
+  /// No description provided for @cloudSaveRestoreButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khôi phục từ cloud'**
+  String get cloudSaveRestoreButton;
+
+  /// No description provided for @cloudSaveKeepLocalButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giữ máy này'**
+  String get cloudSaveKeepLocalButton;
+
+  /// No description provided for @cloudSaveLinkedStatus.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã liên kết: {email}'**
+  String cloudSaveLinkedStatus(String email);
+
+  /// No description provided for @cloudSaveDisconnect.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngắt kết nối'**
+  String get cloudSaveDisconnect;
+
+  /// No description provided for @cloudSaveRetry.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử lại'**
+  String get cloudSaveRetry;
 }
 
 class _AppLocalizationsDelegate

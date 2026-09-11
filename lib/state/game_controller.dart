@@ -10,6 +10,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../core/achievements.dart';
 import '../core/balance.dart';
@@ -22,6 +23,7 @@ import '../core/simulation.dart';
 import '../core/story.dart';
 import '../core/vip.dart';
 import '../core/wheel.dart';
+import '../data/cloud_save_repository.dart';
 import '../data/game_storage.dart';
 import 'game_providers.dart';
 import 'game_snapshot.dart';
@@ -35,6 +37,7 @@ class GameController extends Notifier<GameSnapshot> {
 
   late final GameStorage _storage;
   late final int Function() _clock;
+  CloudSaveRepository? _cloudSaveRepo;
   late GameState _game;
   Timer? _timer;
   int _ticksSinceSave = 0;
@@ -500,8 +503,41 @@ class GameController extends Notifier<GameSnapshot> {
     return gained;
   }
 
-  /// Lưu ngay — UI gọi khi app chuyển nền (AppLifecycleState.paused).
-  Future<void> saveNow() => _storage.save(_game, nowMillis: _clock());
+  /// Lưu ngay — UI gọi khi app chuyển nền (AppLifecycleState.paused). Đẩy
+  /// kèm lên cloud (no-op nếu chưa liên kết email, hoặc nếu Supabase chưa
+  /// init — VD chạy test không qua `main()` — xem [_cloudSave]).
+  Future<void> saveNow() async {
+    await _storage.save(_game, nowMillis: _clock());
+    final cloud = _cloudSave;
+    if (cloud != null) unawaited(cloud.push(_game.toJson()));
+  }
+
+  /// Lazy + tự bắt lỗi: `Supabase.instance` ném assert nếu chưa gọi
+  /// `Supabase.initialize()` (luôn đúng trong test, vì test dựng
+  /// GameController thẳng qua ProviderScope, không qua `main()`). Đồng bộ
+  /// cloud là tiện ích cộng thêm — KHÔNG được phép làm hỏng save local hay
+  /// làm crash bất kỳ chỗ nào gọi saveNow() nếu Supabase có vấn đề.
+  CloudSaveRepository? get _cloudSave {
+    if (_cloudSaveRepo != null) return _cloudSaveRepo;
+    try {
+      return _cloudSaveRepo = CloudSaveRepository(Supabase.instance.client);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Xuất save hiện tại dạng JSON — dùng cho Đồng bộ đám mây (đẩy save máy
+  /// này lên cloud lần đầu liên kết / khi chọn "Giữ máy này" lúc xung đột).
+  Map<String, dynamic> exportSaveJson() => _game.toJson();
+
+  /// Ghi đè toàn bộ ván hiện tại bằng save khôi phục từ cloud (người chơi
+  /// chọn "Khôi phục" ở dialog Đồng bộ đám mây khi phát hiện save khác trên
+  /// cloud). Lưu local ngay để không mất nếu app bị tắt giữa chừng.
+  void restoreFromCloud(Map<String, dynamic> json) {
+    _game = GameState.fromJson(json)..lastSeenMillis = _clock();
+    unawaited(saveNow());
+    state = _snapshot();
+  }
 
   /// UI gọi khi app trở lại foreground: bù tiền cho khoảng vừa ở nền.
   void handleResume() {
