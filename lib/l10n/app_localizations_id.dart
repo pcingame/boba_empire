@@ -674,11 +674,11 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String cloudSaveCodeSentTo(String email) {
-    return 'Kode 6 digit terkirim ke $email';
+    return 'Kode konfirmasi terkirim ke $email';
   }
 
   @override
-  String get cloudSaveCodeHint => 'Kode 6 digit';
+  String get cloudSaveCodeHint => 'Kode konfirmasi';
 
   @override
   String get cloudSaveVerify => 'Verifikasi';

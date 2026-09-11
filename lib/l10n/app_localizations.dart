@@ -1195,13 +1195,13 @@ abstract class AppLocalizations {
   /// No description provided for @cloudSaveCodeSentTo.
   ///
   /// In vi, this message translates to:
-  /// **'Đã gửi mã 6 số tới {email}'**
+  /// **'Đã gửi mã xác nhận tới {email}'**
   String cloudSaveCodeSentTo(String email);
 
   /// No description provided for @cloudSaveCodeHint.
   ///
   /// In vi, this message translates to:
-  /// **'Mã 6 số'**
+  /// **'Mã xác nhận'**
   String get cloudSaveCodeHint;
 
   /// No description provided for @cloudSaveVerify.

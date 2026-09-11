@@ -668,11 +668,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String cloudSaveCodeSentTo(String email) {
-    return 'Sent a 6-digit code to $email';
+    return 'Sent a confirmation code to $email';
   }
 
   @override
-  String get cloudSaveCodeHint => '6-digit code';
+  String get cloudSaveCodeHint => 'Confirmation code';
 
   @override
   String get cloudSaveVerify => 'Verify';

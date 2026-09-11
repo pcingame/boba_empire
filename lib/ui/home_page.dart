@@ -23,6 +23,7 @@ import 'arena_page.dart';
 import 'daily_dialog.dart';
 import 'gem_shop.dart';
 import 'how_to_play_dialog.dart';
+import 'leaderboard_page.dart';
 import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
 import 'rewards_dialog.dart';
@@ -342,8 +343,8 @@ class _HomePageState extends ConsumerState<HomePage>
 }
 
 /// Thanh điều hướng dưới cùng: Nhà · Cửa hàng · Nhượng quyền · Thành tựu ·
-/// Đấu Trường. Các mục (trừ Nhà) mở dialog/trang tương ứng; giữ key cũ để
-/// test/quen thao tác.
+/// Đấu Trường · Bảng xếp hạng. Các mục (trừ Nhà) mở dialog/trang tương
+/// ứng; giữ key cũ để test/quen thao tác.
 class _BottomBar extends ConsumerWidget {
   const _BottomBar();
 
@@ -407,6 +408,11 @@ class _BottomBar extends ConsumerWidget {
                   icon: Icons.sports_kabaddi,
                   label: l10n.navArena,
                   onTap: () => showArenaPage(context)),
+              _navItem(theme,
+                  buttonKey: const Key('leaderboard-button'),
+                  icon: Icons.leaderboard,
+                  label: l10n.leaderboardMenuTitle,
+                  onTap: () => showLeaderboardPage(context)),
             ],
           ),
         ),

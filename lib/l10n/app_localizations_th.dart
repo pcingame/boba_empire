@@ -667,11 +667,11 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String cloudSaveCodeSentTo(String email) {
-    return 'ส่งรหัส 6 หลักไปที่ $email แล้ว';
+    return 'ส่งรหัสยืนยันไปที่ $email แล้ว';
   }
 
   @override
-  String get cloudSaveCodeHint => 'รหัส 6 หลัก';
+  String get cloudSaveCodeHint => 'รหัสยืนยัน';
 
   @override
   String get cloudSaveVerify => 'ยืนยัน';

@@ -144,7 +144,9 @@ class _CodeForm extends ConsumerWidget {
           controller: codeCtrl,
           keyboardType: TextInputType.number,
           autofillHints: const [AutofillHints.oneTimeCode],
-          maxLength: 6,
+          // Không ép cứng độ dài — mã Supabase gửi thực tế có thể dài hơn 6
+          // số (đã gặp thật mã 8 số lúc verify), và không có gì đảm bảo độ
+          // dài cố định về sau.
           decoration: InputDecoration(
             labelText: l10n.cloudSaveCodeHint,
             border: const OutlineInputBorder(),
