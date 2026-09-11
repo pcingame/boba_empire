@@ -51,6 +51,7 @@ bool buyUpgrade(
   final config = configs.firstWhere((c) => c.id == generatorId);
   if (config.stage > state.stage) return false; // chưa mở khóa
   final level = state.levels[generatorId] ?? 0;
+  if (level >= Balance.maxGeneratorLevel) return false; // trần cứng an toàn
   final cost = nextLevelCost(config, level) *
       upgradeCostMultiplier(state.prestigeDiscountLevel);
   if (!cost.isFinite || state.money < cost) return false;
@@ -72,6 +73,12 @@ int buyUpgradeBulk(
   final config = configs.firstWhere((c) => c.id == generatorId);
   if (config.stage > state.stage) return 0;
   final level = state.levels[generatorId] ?? 0;
+  // Trần cứng an toàn — không mua từng phần cho tới trần, huỷ cả count nếu
+  // vượt (khớp "không mua từng phần" của hàm này).
+  if (level >= Balance.maxGeneratorLevel ||
+      level + count > Balance.maxGeneratorLevel) {
+    return 0;
+  }
   final cost = bulkCost(config, level, count) *
       upgradeCostMultiplier(state.prestigeDiscountLevel);
   if (!cost.isFinite || state.money < cost) return 0;

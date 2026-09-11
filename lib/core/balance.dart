@@ -26,6 +26,27 @@ class Balance {
   static const int milestoneStep = 25;
   static const double milestoneFactor = 2.0;
 
+  /// Trần an toàn kỹ thuật cho `nextLevelCost`/`bulkCost`/
+  /// `generatorMilestoneMultiplier` (lib/core/economy.dart) — CHẶN TRÀN SỐ
+  /// double, KHÔNG phải số cân bằng (không ai nên chạm được trần này qua
+  /// chơi bình thường). `costGrowth^level` (1.15^level) tràn double quanh
+  /// cấp ~5077, `2^(level/25)` tràn quanh cấp ~25650 — cả hai đều thấp hơn
+  /// nhiều so với double.maxFinite (~1.8e308) nếu không chặn, dẫn tới bug
+  /// Xu âm đã gặp (xem memory "negative-money-overflow-bug"). Đặt ở 1e100
+  /// để còn dư RẤT nhiều khoảng trống nhân thêm prestige/gem/x2 phía trên
+  /// mà vẫn không chạm Infinity.
+  static const double economyOverflowGuardCap = 1e100;
+
+  /// Trần CỨNG số cấp tối đa 1 nguồn thu có thể mua tới — phòng thủ chính,
+  /// đơn giản và triệt để hơn hẳn việc chỉ ép trần giá trị trả về của công
+  /// thức: giữ `level` luôn trong phạm vi mà `costGrowth^level` (tràn ~cấp
+  /// 5077) KHÔNG BAO GIỜ cần ép trần — nghĩa là `bulkCost` mua số lượng lớn
+  /// vẫn tăng đơn điệu đúng bản chất kinh tế (mua nhiều hơn luôn đắt hơn),
+  /// không bị vỡ tính đơn điệu như khi chỉ ép trần tổng giá cho count lớn.
+  /// Đặt xa mọi tiến trình người chơi bình thường chạm tới (mốc nhân bội chỉ
+  /// mới ×2^40 ở cấp 1000) — không phải số cân bằng, chỉ là lưới an toàn.
+  static const int maxGeneratorLevel = 1000;
+
   /// Hiệu ứng thứ 2 của mốc ("Mốc vàng"): từ mốc thứ [milestoneGlobalFreeTiers]+1
   /// (mặc định = mốc cấp 50) trở đi, MỖI mốc bất kỳ nguồn thu đạt cộng thêm
   /// [milestoneGlobalBonus] vào hệ số thu nhập TOÀN CỤC (cộng dồn, vĩnh viễn).

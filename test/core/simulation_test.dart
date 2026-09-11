@@ -86,12 +86,25 @@ void main() {
       // Cấp cực cao khiến pow(costGrowth, level) tràn double -> Infinity.
       // Trước đây `money < cost` (Infinity < Infinity = false) khiến lệnh mua
       // vẫn "thành công" và trừ Infinity vào money, để lại NaN/số âm sai lệch.
+      // (Nay chặn ngay từ đầu bởi trần cứng Balance.maxGeneratorLevel — cấp
+      // 100000 đã vượt xa trần — nhưng vẫn giữ money=Infinity trong test để
+      // đảm bảo dù trần cứng có đổi, cost.isFinite vẫn là lưới an toàn thứ 2.)
       final s = GameState.newGame(nowMillis: 0)
         ..money = double.infinity
         ..levels['x'] = 100000;
       expect(buyUpgrade(s, 'x', configs: _configs), isFalse);
       expect(s.money, double.infinity);
       expect(s.levels['x'], 100000);
+    });
+
+    test('không mua vượt trần cứng Balance.maxGeneratorLevel, dù thừa tiền',
+        () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..money = 1e300
+        ..levels['x'] = Balance.maxGeneratorLevel;
+      expect(buyUpgrade(s, 'x', configs: _configs), isFalse);
+      expect(s.levels['x'], Balance.maxGeneratorLevel); // không đổi
+      expect(s.money, 1e300); // không trừ tiền
     });
   });
 
@@ -263,6 +276,21 @@ void main() {
             incomePerLevelPerSecond: 1, stage: 3),
       ];
       expect(buyUpgradeBulk(s, 'z', 3, configs: locked), 0);
+    });
+
+    test('count đưa cấp vượt trần cứng → huỷ cả count, không mua từng phần',
+        () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..money = 1e300
+        ..levels['x'] = Balance.maxGeneratorLevel - 3;
+      // Còn đúng 3 cấp tới trần — xin mua 4 phải bị huỷ hết, không mua 3 rồi bỏ 1.
+      expect(buyUpgradeBulk(s, 'x', 4, configs: _configs), 0);
+      expect(s.levels['x'], Balance.maxGeneratorLevel - 3); // không đổi
+      expect(s.money, 1e300); // không trừ tiền
+
+      // Xin đúng 3 (vừa khít trần) thì mua được.
+      expect(buyUpgradeBulk(s, 'x', 3, configs: _configs), 3);
+      expect(s.levels['x'], Balance.maxGeneratorLevel);
     });
   });
 
