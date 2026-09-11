@@ -191,11 +191,11 @@
   "@arenaResultReward": { "placeholders": { "gems": { "type": "int" } } },
   "arenaCloseButton": "ปิด",
 
-  "cloudSaveMenuTitle": "บันทึกบนคลาวด์",
+  "cloudSaveMenuTitle": "สำรองความคืบหน้า",
   "cloudSaveMenuLinked": "เชื่อมต่อแล้ว: {email}",
   "@cloudSaveMenuLinked": { "placeholders": { "email": { "type": "String" } } },
   "cloudSaveMenuUnlinked": "ยังไม่เชื่อมต่อ — อาจเสียความคืบหน้าถ้าถอนการติดตั้ง",
-  "cloudSaveTitle": "บันทึกบนคลาวด์",
+  "cloudSaveTitle": "สำรองความคืบหน้า",
   "cloudSaveIntro": "เชื่อมอีเมลเพื่อกู้คืนความคืบหน้าได้ถ้าถอนแอปหรือเปลี่ยนเครื่อง",
   "cloudSaveEmailHint": "อีเมลของคุณ",
   "cloudSaveSendCode": "ส่งรหัส",

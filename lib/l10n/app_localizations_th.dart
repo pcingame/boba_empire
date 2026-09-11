@@ -641,7 +641,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get arenaCloseButton => 'ปิด';
 
   @override
-  String get cloudSaveMenuTitle => 'บันทึกบนคลาวด์';
+  String get cloudSaveMenuTitle => 'สำรองความคืบหน้า';
 
   @override
   String cloudSaveMenuLinked(String email) {
@@ -653,7 +653,7 @@ class AppLocalizationsTh extends AppLocalizations {
       'ยังไม่เชื่อมต่อ — อาจเสียความคืบหน้าถ้าถอนการติดตั้ง';
 
   @override
-  String get cloudSaveTitle => 'บันทึกบนคลาวด์';
+  String get cloudSaveTitle => 'สำรองความคืบหน้า';
 
   @override
   String get cloudSaveIntro =>

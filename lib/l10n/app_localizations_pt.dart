@@ -646,7 +646,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get arenaCloseButton => 'Fechar';
 
   @override
-  String get cloudSaveMenuTitle => 'Salvamento na nuvem';
+  String get cloudSaveMenuTitle => 'Backup do progresso';
 
   @override
   String cloudSaveMenuLinked(String email) {
@@ -658,7 +658,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Não vinculado — pode perder o progresso ao desinstalar';
 
   @override
-  String get cloudSaveTitle => 'Salvamento na nuvem';
+  String get cloudSaveTitle => 'Backup do progresso';
 
   @override
   String get cloudSaveIntro =>

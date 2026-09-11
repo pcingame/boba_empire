@@ -191,11 +191,11 @@
   "@arenaResultReward": { "placeholders": { "gems": { "type": "int" } } },
   "arenaCloseButton": "Tutup",
 
-  "cloudSaveMenuTitle": "Simpan cloud",
+  "cloudSaveMenuTitle": "Cadangkan progres",
   "cloudSaveMenuLinked": "Terhubung: {email}",
   "@cloudSaveMenuLinked": { "placeholders": { "email": { "type": "String" } } },
   "cloudSaveMenuUnlinked": "Belum terhubung — progres bisa hilang jika uninstall",
-  "cloudSaveTitle": "Simpan cloud",
+  "cloudSaveTitle": "Cadangkan progres",
   "cloudSaveIntro": "Hubungkan email untuk memulihkan progres jika uninstall atau ganti perangkat.",
   "cloudSaveEmailHint": "Email kamu",
   "cloudSaveSendCode": "Kirim kode",

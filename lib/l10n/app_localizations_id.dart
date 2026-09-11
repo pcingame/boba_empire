@@ -648,7 +648,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get arenaCloseButton => 'Tutup';
 
   @override
-  String get cloudSaveMenuTitle => 'Simpan cloud';
+  String get cloudSaveMenuTitle => 'Cadangkan progres';
 
   @override
   String cloudSaveMenuLinked(String email) {
@@ -660,7 +660,7 @@ class AppLocalizationsId extends AppLocalizations {
       'Belum terhubung — progres bisa hilang jika uninstall';
 
   @override
-  String get cloudSaveTitle => 'Simpan cloud';
+  String get cloudSaveTitle => 'Cadangkan progres';
 
   @override
   String get cloudSaveIntro =>
