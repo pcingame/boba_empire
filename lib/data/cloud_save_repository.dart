@@ -29,7 +29,8 @@ class CloudSaveRepository {
 
   String? get linkedEmail => isLinked ? _client.auth.currentUser?.email : null;
 
-  /// Gửi mã 6 số tới [email]. Ném lỗi nếu Supabase từ chối (VD gửi quá
+  /// Gửi mã xác nhận tới [email] (độ dài do Supabase quyết định, đã gặp cả
+  /// 8 số thực tế — đừng giả định cố định 6 số). Ném lỗi nếu Supabase từ chối (VD gửi quá
   /// nhanh liên tiếp — server tự giới hạn, không cần tự làm cooldown ở đây).
   Future<void> sendCode(String email) => _client.auth.signInWithOtp(email: email);
 

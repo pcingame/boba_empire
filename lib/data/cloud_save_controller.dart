@@ -1,4 +1,4 @@
-/// Điều phối luồng UI "Đồng bộ đám mây": nhập email → nhập mã 6 số → (nếu
+/// Điều phối luồng UI "Đồng bộ đám mây": nhập email → nhập mã xác nhận → (nếu
 /// cloud đã có save khác) hỏi khôi phục hay giữ máy này → liên kết xong.
 ///
 /// Giống cách `ArenaController` không đụng trực tiếp `GameState` — module

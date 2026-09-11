@@ -672,11 +672,11 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String cloudSaveCodeSentTo(String email) {
-    return 'Código de 6 dígitos enviado para $email';
+    return 'Código de confirmação enviado para $email';
   }
 
   @override
-  String get cloudSaveCodeHint => 'Código de 6 dígitos';
+  String get cloudSaveCodeHint => 'Código de confirmação';
 
   @override
   String get cloudSaveVerify => 'Verificar';

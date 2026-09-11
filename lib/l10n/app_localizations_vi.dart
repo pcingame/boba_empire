@@ -671,11 +671,11 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String cloudSaveCodeSentTo(String email) {
-    return 'Đã gửi mã 6 số tới $email';
+    return 'Đã gửi mã xác nhận tới $email';
   }
 
   @override
-  String get cloudSaveCodeHint => 'Mã 6 số';
+  String get cloudSaveCodeHint => 'Mã xác nhận';
 
   @override
   String get cloudSaveVerify => 'Xác nhận';

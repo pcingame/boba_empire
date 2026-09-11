@@ -7,7 +7,6 @@ import '../core/balance.dart';
 import '../core/economy.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
-import 'leaderboard_page.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
 import 'widgets/one_shot_lottie.dart';
@@ -46,16 +45,7 @@ class _PrestigeDialog extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(l10n.prestigeIntro(_percent(1))),
-            const SizedBox(height: 8),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: TextButton.icon(
-                onPressed: () => showLeaderboardPage(context),
-                icon: const Icon(Icons.leaderboard),
-                label: Text(l10n.leaderboardMenuTitle),
-              ),
-            ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 16),
             _row(l10n.prestigeStarsNow,
                 l10n.prestigeStarsValue(stars, _percent(stars))),
             _row(l10n.prestigeNow, l10n.prestigeGain(available)),
