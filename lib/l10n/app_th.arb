@@ -168,5 +168,26 @@
   "rivalMeterEven": "สูสี",
   "rivalMeterBehind": "กำลังเสียเปรียบ",
   "rivalResolvedSnack": "จัดการแล้ว คู่แข่งถอย",
-  "rivalIgnoredSnack": "คุณปล่อยผ่าน — คู่แข่งได้ใจ"
+  "rivalIgnoredSnack": "คุณปล่อยผ่าน — คู่แข่งได้ใจ",
+
+  "navArena": "สนามประลอง",
+  "arenaTitle": "สนามประลอง",
+  "arenaIntro": "ดวล 1v1 60 วินาที ใครได้เหรียญเยอะกว่าชนะ!",
+  "arenaStartButton": "หาคู่แข่ง",
+  "arenaQueueWaiting": "กำลังหาคู่แข่ง…",
+  "arenaCancelButton": "ยกเลิก",
+  "arenaTapButton": "แตะแก้ว",
+  "arenaResolving": "กำลังสรุปผล…",
+  "arenaTierButton": "อัปเกรด ×2 ({cost} เหรียญ)",
+  "@arenaTierButton": { "placeholders": { "cost": { "type": "String" } } },
+  "arenaTimeLeft": "เหลือ {seconds} วิ",
+  "@arenaTimeLeft": { "placeholders": { "seconds": { "type": "int" } } },
+  "arenaYourScore": "คะแนนคุณ",
+  "arenaOpponentScore": "คู่แข่ง",
+  "arenaResultWin": "คุณชนะ! 🎉",
+  "arenaResultLose": "คุณแพ้",
+  "arenaResultDraw": "เสมอ",
+  "arenaResultReward": "+{gems} 💎",
+  "@arenaResultReward": { "placeholders": { "gems": { "type": "int" } } },
+  "arenaCloseButton": "ปิด"
 }

@@ -216,5 +216,26 @@
   "rivalMeterEven": "Ngang sức",
   "rivalMeterBehind": "Đang bị lấn",
   "rivalResolvedSnack": "Đã đối phó. Đối thủ chùn lại.",
-  "rivalIgnoredSnack": "Bạn làm ngơ — đối thủ được đà lấn tới."
+  "rivalIgnoredSnack": "Bạn làm ngơ — đối thủ được đà lấn tới.",
+
+  "navArena": "Đấu Trường",
+  "arenaTitle": "Đấu Trường",
+  "arenaIntro": "Đấu 1v1 trong 60 giây — ai kiếm nhiều Xu hơn thắng!",
+  "arenaStartButton": "Tìm đối thủ",
+  "arenaQueueWaiting": "Đang tìm đối thủ…",
+  "arenaCancelButton": "Huỷ",
+  "arenaTapButton": "Chạm ly",
+  "arenaResolving": "Đang chốt trận…",
+  "arenaTierButton": "Nâng ×2 ({cost} Xu)",
+  "@arenaTierButton": { "placeholders": { "cost": { "type": "String" } } },
+  "arenaTimeLeft": "Còn {seconds}s",
+  "@arenaTimeLeft": { "placeholders": { "seconds": { "type": "int" } } },
+  "arenaYourScore": "Điểm của bạn",
+  "arenaOpponentScore": "Đối thủ",
+  "arenaResultWin": "Bạn thắng! 🎉",
+  "arenaResultLose": "Bạn thua rồi",
+  "arenaResultDraw": "Hoà",
+  "arenaResultReward": "+{gems} 💎",
+  "@arenaResultReward": { "placeholders": { "gems": { "type": "int" } } },
+  "arenaCloseButton": "Đóng"
 }

@@ -168,5 +168,26 @@
   "rivalMeterEven": "Neck and neck",
   "rivalMeterBehind": "Losing ground",
   "rivalResolvedSnack": "Handled. The rival backs off.",
-  "rivalIgnoredSnack": "You let it slide — the rival gains ground."
+  "rivalIgnoredSnack": "You let it slide — the rival gains ground.",
+
+  "navArena": "Arena",
+  "arenaTitle": "Arena",
+  "arenaIntro": "1v1 duel, 60 seconds — whoever earns more Coins wins!",
+  "arenaStartButton": "Find opponent",
+  "arenaQueueWaiting": "Finding an opponent…",
+  "arenaCancelButton": "Cancel",
+  "arenaTapButton": "Tap the cup",
+  "arenaResolving": "Wrapping up the match…",
+  "arenaTierButton": "Upgrade ×2 ({cost} Coins)",
+  "@arenaTierButton": { "placeholders": { "cost": { "type": "String" } } },
+  "arenaTimeLeft": "{seconds}s left",
+  "@arenaTimeLeft": { "placeholders": { "seconds": { "type": "int" } } },
+  "arenaYourScore": "Your score",
+  "arenaOpponentScore": "Opponent",
+  "arenaResultWin": "You win! 🎉",
+  "arenaResultLose": "You lost",
+  "arenaResultDraw": "Draw",
+  "arenaResultReward": "+{gems} 💎",
+  "@arenaResultReward": { "placeholders": { "gems": { "type": "int" } } },
+  "arenaCloseButton": "Close"
 }

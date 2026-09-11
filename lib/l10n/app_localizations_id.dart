@@ -588,4 +588,62 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get rivalIgnoredSnack => 'Kamu biarkan saja — pesaing makin unggul.';
+
+  @override
+  String get navArena => 'Arena';
+
+  @override
+  String get arenaTitle => 'Arena';
+
+  @override
+  String get arenaIntro =>
+      'Duel 1v1, 60 detik — siapa dapat Koin terbanyak menang!';
+
+  @override
+  String get arenaStartButton => 'Cari lawan';
+
+  @override
+  String get arenaQueueWaiting => 'Mencari lawan…';
+
+  @override
+  String get arenaCancelButton => 'Batal';
+
+  @override
+  String get arenaTapButton => 'Ketuk gelas';
+
+  @override
+  String get arenaResolving => 'Menutup pertandingan…';
+
+  @override
+  String arenaTierButton(String cost) {
+    return 'Tingkatkan ×2 ($cost Koin)';
+  }
+
+  @override
+  String arenaTimeLeft(int seconds) {
+    return 'Sisa ${seconds}s';
+  }
+
+  @override
+  String get arenaYourScore => 'Skor kamu';
+
+  @override
+  String get arenaOpponentScore => 'Lawan';
+
+  @override
+  String get arenaResultWin => 'Kamu menang! 🎉';
+
+  @override
+  String get arenaResultLose => 'Kamu kalah';
+
+  @override
+  String get arenaResultDraw => 'Seri';
+
+  @override
+  String arenaResultReward(int gems) {
+    return '+$gems 💎';
+  }
+
+  @override
+  String get arenaCloseButton => 'Tutup';
 }

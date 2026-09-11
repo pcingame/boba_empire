@@ -589,4 +589,62 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get rivalIgnoredSnack => 'Lo dejas pasar — el rival gana terreno.';
+
+  @override
+  String get navArena => 'Arena';
+
+  @override
+  String get arenaTitle => 'Arena';
+
+  @override
+  String get arenaIntro =>
+      'Duelo 1v1 de 60 segundos — ¡gana quien consiga más Monedas!';
+
+  @override
+  String get arenaStartButton => 'Buscar rival';
+
+  @override
+  String get arenaQueueWaiting => 'Buscando rival…';
+
+  @override
+  String get arenaCancelButton => 'Cancelar';
+
+  @override
+  String get arenaTapButton => 'Toca el vaso';
+
+  @override
+  String get arenaResolving => 'Cerrando la partida…';
+
+  @override
+  String arenaTierButton(String cost) {
+    return 'Mejorar ×2 ($cost Monedas)';
+  }
+
+  @override
+  String arenaTimeLeft(int seconds) {
+    return 'Quedan ${seconds}s';
+  }
+
+  @override
+  String get arenaYourScore => 'Tu puntuación';
+
+  @override
+  String get arenaOpponentScore => 'Rival';
+
+  @override
+  String get arenaResultWin => '¡Ganaste! 🎉';
+
+  @override
+  String get arenaResultLose => 'Perdiste';
+
+  @override
+  String get arenaResultDraw => 'Empate';
+
+  @override
+  String arenaResultReward(int gems) {
+    return '+$gems 💎';
+  }
+
+  @override
+  String get arenaCloseButton => 'Cerrar';
 }

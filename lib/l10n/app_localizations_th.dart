@@ -582,4 +582,61 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get rivalIgnoredSnack => 'คุณปล่อยผ่าน — คู่แข่งได้ใจ';
+
+  @override
+  String get navArena => 'สนามประลอง';
+
+  @override
+  String get arenaTitle => 'สนามประลอง';
+
+  @override
+  String get arenaIntro => 'ดวล 1v1 60 วินาที ใครได้เหรียญเยอะกว่าชนะ!';
+
+  @override
+  String get arenaStartButton => 'หาคู่แข่ง';
+
+  @override
+  String get arenaQueueWaiting => 'กำลังหาคู่แข่ง…';
+
+  @override
+  String get arenaCancelButton => 'ยกเลิก';
+
+  @override
+  String get arenaTapButton => 'แตะแก้ว';
+
+  @override
+  String get arenaResolving => 'กำลังสรุปผล…';
+
+  @override
+  String arenaTierButton(String cost) {
+    return 'อัปเกรด ×2 ($cost เหรียญ)';
+  }
+
+  @override
+  String arenaTimeLeft(int seconds) {
+    return 'เหลือ $seconds วิ';
+  }
+
+  @override
+  String get arenaYourScore => 'คะแนนคุณ';
+
+  @override
+  String get arenaOpponentScore => 'คู่แข่ง';
+
+  @override
+  String get arenaResultWin => 'คุณชนะ! 🎉';
+
+  @override
+  String get arenaResultLose => 'คุณแพ้';
+
+  @override
+  String get arenaResultDraw => 'เสมอ';
+
+  @override
+  String arenaResultReward(int gems) {
+    return '+$gems 💎';
+  }
+
+  @override
+  String get arenaCloseButton => 'ปิด';
 }
