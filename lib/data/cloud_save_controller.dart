@@ -64,7 +64,18 @@ class CloudSaveController extends Notifier<CloudSaveViewState> {
   /// UI gán trước khi gọi bất kỳ hành động nào (xem `cloud_save_dialog.dart`).
   Map<String, dynamic> Function()? getLocalSave;
   double Function()? getLocalLifetimeEarnings;
-  void Function(Map<String, dynamic> json)? onRestore;
+  void Function(Map<String, dynamic> json, int cloudVersion)? onRestore;
+
+  /// true nếu GameController vừa phát hiện xung đột chưa xử lý ở lần lưu
+  /// nền gần nhất (xem GameController.cloudConflictPending) — [build] không
+  /// tự kiểm tra (đồng bộ, không await được); UI gọi [recheckConflict] sau
+  /// frame đầu nếu cờ này true, giống cách các trang khác gọi `refresh()`.
+  bool Function()? getLocalConflictPending;
+
+  /// Báo cho GameController biết version cloud mới sau 1 lần push/pull
+  /// thành công (xem GameController.applyCloudSyncVersion) — để lần lưu
+  /// nền kế tiếp so sánh đúng mốc, không báo xung đột giả.
+  void Function(int version)? onSyncVersionKnown;
 
   @override
   CloudSaveViewState build() {
@@ -122,7 +133,7 @@ class CloudSaveController extends Notifier<CloudSaveViewState> {
   void restoreFromCloud() {
     final current = state;
     if (current is! CloudSaveConflict) return;
-    onRestore?.call(current.cloud.data);
+    onRestore?.call(current.cloud.data, current.cloud.version);
     state = CloudSaveLinked(_repository.linkedEmail!);
   }
 
@@ -137,7 +148,8 @@ class CloudSaveController extends Notifier<CloudSaveViewState> {
     final save = getLocalSave?.call();
     if (save != null) {
       try {
-        await _repository.push(save);
+        final version = await _repository.push(save);
+        onSyncVersionKnown?.call(version);
       } catch (e) {
         // Không chặn liên kết chỉ vì 1 lần push đầu lỗi mạng — saveNow() ở
         // GameController sẽ tự đẩy lại trong lần lưu kế tiếp.
@@ -145,6 +157,23 @@ class CloudSaveController extends Notifier<CloudSaveViewState> {
             name: 'CloudSave');
       }
     }
+    state = CloudSaveLinked(_repository.linkedEmail!);
+  }
+
+  /// UI gọi khi mở dialog VÀ [getLocalConflictPending] báo true — nghĩa là
+  /// lần lưu nền gần nhất phát hiện version cloud đã đổi (máy khác vừa lưu)
+  /// nhưng chưa được xử lý. Tải lại cloud, so sánh — nếu thật sự khác biệt
+  /// thì hỏi lại (tái dùng đúng `CloudSaveConflict` như lúc liên kết lần
+  /// đầu); nếu hoá ra không khác biệt đáng kể (VD race hiếm giữa 2 lần lưu
+  /// gần nhau) thì âm thầm đồng bộ lại version, không làm phiền.
+  Future<void> recheckConflict() async {
+    final cloud = await _repository.pull();
+    final localLifetime = getLocalLifetimeEarnings?.call() ?? 0;
+    if (cloud != null && _looksDifferent(cloud, localLifetime)) {
+      state = CloudSaveConflict(localLifetimeEarnings: localLifetime, cloud: cloud);
+      return;
+    }
+    if (cloud != null) onSyncVersionKnown?.call(cloud.version);
     state = CloudSaveLinked(_repository.linkedEmail!);
   }
 

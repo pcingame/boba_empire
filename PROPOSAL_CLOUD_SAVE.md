@@ -85,3 +85,19 @@ không bao giờ được phép chặn/làm hỏng luồng lưu game chính.**
 - Chưa giới hạn tần suất push (đẩy theo đúng nhịp `saveNow()`, ~10s/lần khi
   đang chơi) — đủ rẻ ở quy mô nhỏ, cân nhắc throttle riêng nếu chi phí
   Supabase đáng kể sau này.
+
+**ĐÃ SỬA (2026-09-12):** trước đây xung đột chỉ được kiểm tra ĐÚNG 1 LẦN lúc
+liên kết — mọi lần lưu nền sau đó (`saveNow()`, ~10s/lần) ghi đè cloud MÙ,
+không kiểm tra gì. Máy A chơi → liên kết → tự đẩy save liên tục; máy B (cùng
+email) liên kết sau, được hỏi 1 lần, rồi CŨNG tự đẩy liên tục; nếu người
+chơi quay lại máy A, máy A không hề biết máy B đã tiến bộ hơn — lần lưu nền
+kế tiếp của máy A âm thầm ghi đè mất tiến trình của máy B. Đã sửa bằng
+optimistic concurrency: cột `version` mới trên `player_saves` (server tự
+tăng mỗi lần UPDATE qua trigger), mỗi lần `saveNow()` đẩy save kèm "tôi
+tưởng version hiện tại là N" (`CloudSaveRepository.pushIfCurrent`) — ghi chỉ
+thành công nếu đúng; sai thì đánh dấu `cloudConflictPending` (lưu cục bộ,
+tách khỏi `GameState` — xem `GameStorage.saveCloudVersion`/
+`saveCloudConflictPending`) thay vì ghi đè, và dialog Đồng bộ đám mây tự
+kiểm tra lại + hỏi người chơi (tái dùng đúng UI xung đột đã có) ở lần mở kế
+tiếp. Vẫn CHƯA merge 2 chiều (bullet đầu ở trên) — chỉ là phát hiện xung đột
+đúng lúc thay vì chỉ 1 lần, để người chơi tự chọn bên nào giữ.
