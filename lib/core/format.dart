@@ -9,7 +9,11 @@ const List<String> _suffixes = [
 ];
 
 /// Ví dụ: 0 -> "0", 950 -> "950", 1500 -> "1.50K", 2.5e6 -> "2.50M".
-String formatNumber(double value) {
+///
+/// [decimals] chỉnh số lẻ sau hậu tố (mặc định 2); dùng để rút gọn chuỗi cho
+/// chỗ hiển thị chật (VD huy hiệu góc icon — xem `_CountBadge` trong
+/// home_page.dart).
+String formatNumber(double value, {int decimals = 2}) {
   if (value.isNaN || value.isInfinite) return '0';
   final negative = value < 0;
   var n = value.abs();
@@ -23,6 +27,6 @@ String formatNumber(double value) {
     n /= 1000;
     tier++;
   }
-  final s = '${n.toStringAsFixed(2)}${_suffixes[tier]}';
+  final s = '${n.toStringAsFixed(decimals)}${_suffixes[tier]}';
   return negative ? '-$s' : s;
 }

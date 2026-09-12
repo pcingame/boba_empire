@@ -17,13 +17,27 @@ class Balance {
   static const double bonusPerStar = 0.02; // +2%/sao
 
   /// Hệ số quy đổi Sao: sao = floor(k * sqrt(tổng_thu_nhập_cả_đời)).
-  /// Placeholder — cần tune bằng bảng số ở giai đoạn balancing.
-  static const double prestigeK = 0.05;
+  /// Giảm từ 0.05 → 0.02 (2026-09-12): phản hồi trực tiếp từ chơi thật —
+  /// Sao tăng quá nhanh (save test lên tới ~7,3 TỶ Sao = +146 tỷ % thu
+  /// nhập, rõ ràng lệch xa ý đồ "mỗi Sao +2%, đáng kể nhưng không phá vỡ
+  /// game"). Còn phải giảm hơn nữa hay không cần xem sau khi có dữ liệu
+  /// phiên chơi thật (xem PROPOSAL_ANALYTICS.md) — đây là điều chỉnh dựa
+  /// trên quan sát chơi thật, không phải đoán mù, nhưng vẫn chưa phải số
+  /// liệu thống kê đầy đủ.
+  static const double prestigeK = 0.02;
 
   /// Mốc nhân bội cho mỗi nguồn thu: cứ mỗi [milestoneStep] cấp, thu nhập của
-  /// nguồn đó ×[milestoneFactor] (25→×2, 50→×4, 75→×8...). Đây là "củ cà rốt"
-  /// khiến người chơi dồn cấp một nguồn thay vì rải đều — chiều sâu tối ưu.
-  static const int milestoneStep = 25;
+  /// nguồn đó ×[milestoneFactor] (mặc định mới: 50→×2, 100→×4, 150→×8...).
+  /// Đây là "củ cà rốt" khiến người chơi dồn cấp một nguồn thay vì rải đều —
+  /// chiều sâu tối ưu.
+  ///
+  /// milestoneStep tăng 25 → 50 (2026-09-12, cùng đợt với prestigeK ở trên):
+  /// đây là công thức TĂNG NHANH NHẤT trong toàn bộ nền kinh tế — số nhân
+  /// ở cấp cao (VD cấp 1000, trần Balance.maxGeneratorLevel) từng là
+  /// 2^(1000/25)=2^40≈1,1 nghìn tỷ; giờ chỉ còn 2^(1000/50)=2^20≈1 triệu.
+  /// Đây chính là nguồn gốc khiến Xu cả đời (và do đó Sao, vì Sao = f(Xu
+  /// cả đời)) tăng phi mã theo phản hồi chơi thật.
+  static const int milestoneStep = 50;
   static const double milestoneFactor = 2.0;
 
   /// Trần an toàn kỹ thuật cho `nextLevelCost`/`bulkCost`/

@@ -298,7 +298,7 @@ void main() {
     test('chưa đủ lifetime -> không nhận sao, không reset', () {
       final s = GameState.newGame(nowMillis: 0)
         ..money = 500
-        ..lifetimeEarnings = 100; // 0.05*sqrt(100)=0.5 -> floor 0
+        ..lifetimeEarnings = 100; // 0.02*sqrt(100)=0.2 -> floor 0
       expect(prestigeStarsAvailable(s), 0);
       expect(prestige(s), 0);
       expect(s.money, 500);
@@ -309,14 +309,14 @@ void main() {
         ..money = 9999
         ..stage = 5
         ..levels['x'] = 7
-        ..lifetimeEarnings = 1000000; // -> 50 sao
+        ..lifetimeEarnings = 6250000; // 0.02*sqrt(6250000)=0.02*2500=50 sao
       expect(prestigeStarsAvailable(s), 50);
       expect(prestige(s), 50);
       expect(s.prestigeStars, 50);
       expect(s.money, 0);
       expect(s.levels, isEmpty);
       expect(s.stage, 1); // hard reset về giai đoạn 1
-      expect(s.lifetimeEarnings, 1000000); // KHÔNG reset
+      expect(s.lifetimeEarnings, 6250000); // KHÔNG reset
     });
 
     test('perk "Giữ giai đoạn" chặn reset stage', () {
@@ -340,7 +340,7 @@ void main() {
     test('prestige lần 2 chỉ nhận phần sao chênh lệch', () {
       final s = GameState.newGame(nowMillis: 0)
         ..prestigeStars = 50
-        ..lifetimeEarnings = 4000000; // 0.05*2000=100 -> còn 50 sao mới
+        ..lifetimeEarnings = 25000000; // 0.02*sqrt(25e6)=0.02*5000=100 -> còn 50 sao mới
       expect(prestigeStarsAvailable(s), 50);
       expect(prestige(s), 50);
       expect(s.prestigeStars, 100);

@@ -395,7 +395,7 @@ class _BottomBar extends ConsumerWidget {
                   buttonKey: const Key('prestige-button'),
                   icon: Icons.star_rounded,
                   label: l10n.navPrestige,
-                  badgeCount: stars > 0 ? '$stars' : null,
+                  badgeValue: stars > 0 ? stars : null,
                   highlight: starsAvail > 0,
                   onTap: () => showPrestigeDialog(context)),
               _navItem(theme,
@@ -428,7 +428,7 @@ class _BottomBar extends ConsumerWidget {
     required String label,
     required VoidCallback onTap,
     bool badge = false,
-    String? badgeCount,
+    int? badgeValue,
     bool highlight = false,
   }) {
     return Expanded(
@@ -438,14 +438,38 @@ class _BottomBar extends ConsumerWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Badge(
-              label: badgeCount != null ? Text(badgeCount) : null,
-              isLabelVisible: badgeCount != null || badge,
-              child: Icon(
-                icon,
-                color: highlight ? Colors.amber : theme.colorScheme.primary,
-                size: 26,
-              ),
+            // Stack tự vẽ thay vì Badge mặc định của Flutter: Badge không
+            // giới hạn chiều rộng nhãn, nên số Sao nhiều chữ số (bug thật
+            // gặp trên máy: hàng chục tỷ Sao) tràn hẳn sang icon tab kế
+            // bên. _CountBadge co chữ vừa khung cố định thay vì tràn.
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Icon(
+                  icon,
+                  color: highlight ? Colors.amber : theme.colorScheme.primary,
+                  size: 26,
+                ),
+                if (badgeValue != null)
+                  Positioned(
+                    right: -10,
+                    top: -6,
+                    child: _CountBadge(badgeValue),
+                  )
+                else if (badge)
+                  Positioned(
+                    right: -1,
+                    top: -1,
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.error,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+              ],
             ),
             const SizedBox(height: 2),
             Text(
@@ -1362,6 +1386,47 @@ class _StageHeader extends ConsumerWidget {
   }
 }
 
+/// Huy hiệu số nhỏ (cấp nguồn thu / số Sao) đặt ở góc icon/avatar — bọc
+/// trong khung chiều rộng cố định + [FittedBox] co chữ, không bao giờ tràn
+/// sang phần tử bên cạnh dù số bao nhiêu chữ số. Rút gọn qua [formatNumber]
+/// trước (cấp nguồn thu lẫn số Sao đều không có trần thấp, có thể lên hàng
+/// chục tỷ) — bỏ số lẻ (`decimals: 0`) vì đây chỉ là con số ước lượng nhanh,
+/// không cần chính xác, để chữ không phải co quá nhỏ mới vừa khung.
+class _CountBadge extends StatelessWidget {
+  const _CountBadge(this.value);
+
+  final num value;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 36, minHeight: 18),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.error,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        alignment: Alignment.center,
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            formatNumber(value.toDouble(), decimals: 0),
+            maxLines: 1,
+            style: TextStyle(
+              color: theme.colorScheme.onError,
+              fontSize: 12,
+              height: 1,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// Emoji minh họa cho từng nguồn thu (không phụ thuộc ngôn ngữ).
 const Map<String, String> _generatorEmoji = {
   'tra_den': '🍵',
@@ -1421,20 +1486,26 @@ class _ShopTile extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         child: Row(
           children: [
-            // Emoji + huy hiệu cấp để đọc lướt nhanh.
-            Badge(
-              label: Text('$level'),
-              isLabelVisible: level > 0,
-              child: CircleAvatar(
-                radius: 22,
-                backgroundColor: theme.colorScheme.secondaryContainer,
-                child: ExcludeSemantics(
-                  child: Text(
-                    _generatorEmoji[config.id] ?? '🧋',
-                    style: const TextStyle(fontSize: 22),
+            // Emoji + huy hiệu cấp để đọc lướt nhanh. Stack tự vẽ thay vì
+            // Badge mặc định: Badge không giới hạn chiều rộng nhãn, nên cấp
+            // 3+ chữ số (bug thật gặp trên máy: "283" đè lên tên "Trà đen")
+            // tràn ra ngoài avatar. _CountBadge co chữ vừa khung cố định.
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                CircleAvatar(
+                  radius: 22,
+                  backgroundColor: theme.colorScheme.secondaryContainer,
+                  child: ExcludeSemantics(
+                    child: Text(
+                      _generatorEmoji[config.id] ?? '🧋',
+                      style: const TextStyle(fontSize: 22),
+                    ),
                   ),
                 ),
-              ),
+                if (level > 0)
+                  Positioned(right: -6, top: -6, child: _CountBadge(level)),
+              ],
             ),
             const SizedBox(width: 12),
             Expanded(

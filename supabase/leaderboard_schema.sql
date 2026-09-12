@@ -17,10 +17,20 @@ create table if not exists leaderboard_entries (
   user_id          uuid primary key references auth.users(id) on delete cascade,
   nickname         text not null check (char_length(nickname) between 1 and 20),
   lifetime_earnings numeric not null default 0 check (lifetime_earnings >= 0),
-  prestige_stars   integer not null default 0 check (prestige_stars >= 0),
+  prestige_stars   bigint not null default 0 check (prestige_stars >= 0),
   stage            integer not null default 1 check (stage >= 1),
   updated_at       timestamptz not null default now()
 );
+
+-- 2026-09-12: prestige_stars từng là `integer` (int4, trần ~2,14 tỷ) — bug
+-- thật gặp trên máy: save có ~16,6 tỷ Sao (từ trước khi Balance.prestigeK
+-- được giảm) khiến MỌI lần nộp điểm bị Postgres từ chối
+-- ("value out of range for type integer"), app luôn rơi vào màn lỗi. Đổi
+-- sang bigint (int8, trần ~9,2 tỷ tỷ) khớp kiểu int 64-bit của Dart.
+-- ALTER an toàn để chạy lại trên bảng đã tồn tại (CREATE TABLE IF NOT EXISTS
+-- ở trên không tự đổi kiểu cột cũ).
+alter table leaderboard_entries
+  alter column prestige_stars type bigint;
 
 create index if not exists leaderboard_entries_lifetime_idx
   on leaderboard_entries (lifetime_earnings desc);
@@ -78,12 +88,16 @@ create trigger leaderboard_entries_set_updated_at
 -- logic xếp hạng, chạy đúng quyền người gọi là đủ.
 -- ─────────────────────────────────────────────────────────────────────────
 
+-- drop trước vì đổi kiểu trả về (prestige_stars integer -> bigint):
+-- `create or replace function` từ chối đổi return type của hàm đã tồn tại.
+drop function if exists leaderboard_around_me(integer);
+
 create or replace function leaderboard_around_me(p_window integer default 5)
 returns table (
   user_id           uuid,
   nickname          text,
   lifetime_earnings numeric,
-  prestige_stars    integer,
+  prestige_stars    bigint,
   stage             integer,
   rank              bigint
 )

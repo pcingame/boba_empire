@@ -160,45 +160,46 @@ void main() {
   });
 
   group('mốc nhân bội (milestone)', () {
-    test('cấp 0..24 = ×1 (không đổi cân bằng đầu game)', () {
+    test('cấp 0..49 = ×1 (không đổi cân bằng đầu game)', () {
       expect(generatorMilestoneMultiplier(0), 1);
-      expect(generatorMilestoneMultiplier(24), 1);
+      expect(generatorMilestoneMultiplier(49), 1);
     });
 
-    test('mỗi 25 cấp ×2 (25→×2, 50→×4, 75→×8)', () {
-      expect(generatorMilestoneMultiplier(25), 2);
-      expect(generatorMilestoneMultiplier(50), 4);
-      expect(generatorMilestoneMultiplier(75), 8);
+    test('mỗi 50 cấp ×2 (50→×2, 100→×4, 150→×8)', () {
+      expect(generatorMilestoneMultiplier(50), 2);
+      expect(generatorMilestoneMultiplier(100), 4);
+      expect(generatorMilestoneMultiplier(150), 8);
     });
 
     test('levelsToNextMilestone đếm ngược đúng', () {
-      expect(levelsToNextMilestone(0), 25);
-      expect(levelsToNextMilestone(24), 1);
-      expect(levelsToNextMilestone(25), 25);
-      expect(levelsToNextMilestone(26), 24);
+      expect(levelsToNextMilestone(0), 50);
+      expect(levelsToNextMilestone(49), 1);
+      expect(levelsToNextMilestone(50), 50);
+      expect(levelsToNextMilestone(51), 49);
     });
 
     test('baseIncome áp mốc nhân bội vào từng nguồn', () {
-      final at25 = GameState.newGame(nowMillis: 0)..levels['x'] = 25;
-      expect(baseIncomePerSecond(at25, const [_g]), closeTo(2 * 25 * 2, 1e-9));
       final at50 = GameState.newGame(nowMillis: 0)..levels['x'] = 50;
-      expect(baseIncomePerSecond(at50, const [_g]), closeTo(2 * 50 * 4, 1e-9));
+      expect(baseIncomePerSecond(at50, const [_g]), closeTo(2 * 50 * 2, 1e-9));
+      final at100 = GameState.newGame(nowMillis: 0)..levels['x'] = 100;
+      expect(
+          baseIncomePerSecond(at100, const [_g]), closeTo(2 * 100 * 4, 1e-9));
     });
   });
 
   group('mốc vàng (global milestone)', () {
-    test('mốc đầu (cấp 25) miễn phí — chưa cộng toàn cục', () {
-      final s = GameState.newGame(nowMillis: 0)..levels['x'] = 25;
+    test('mốc đầu (cấp 50) miễn phí — chưa cộng toàn cục', () {
+      final s = GameState.newGame(nowMillis: 0)..levels['x'] = 50;
       expect(globalMilestoneTiers(s, const [_g]), 0);
       expect(globalMilestoneMultiplier(s, const [_g]), 1.0);
     });
 
-    test('từ mốc 2 (cấp 50) trở đi cộng dồn +bonus/mốc', () {
-      final s = GameState.newGame(nowMillis: 0)..levels['x'] = 50;
+    test('từ mốc 2 (cấp 100) trở đi cộng dồn +bonus/mốc', () {
+      final s = GameState.newGame(nowMillis: 0)..levels['x'] = 100;
       expect(globalMilestoneTiers(s, const [_g]), 1);
       expect(globalMilestoneMultiplier(s, const [_g]),
           closeTo(1 + Balance.milestoneGlobalBonus, 1e-9));
-      s.levels['x'] = 100; // 4 mốc → 3 tính điểm
+      s.levels['x'] = 200; // 4 mốc → 3 tính điểm
       expect(globalMilestoneTiers(s, const [_g]), 3);
     });
 
@@ -207,13 +208,13 @@ void main() {
           id: 'y', name: 'Y', baseCost: 1, costGrowth: 1.1,
           incomePerLevelPerSecond: 1);
       final s = GameState.newGame(nowMillis: 0)
-        ..levels['x'] = 50 // 1 điểm
-        ..levels['y'] = 75; // 2 điểm
+        ..levels['x'] = 100 // 1 điểm
+        ..levels['y'] = 150; // 2 điểm
       expect(globalMilestoneTiers(s, const [_g, g2]), 3);
     });
 
     test('nhân vào effectiveIncomePerSecond', () {
-      final s = GameState.newGame(nowMillis: 0)..levels['x'] = 50;
+      final s = GameState.newGame(nowMillis: 0)..levels['x'] = 100;
       final base = baseIncomePerSecond(s, const [_g]);
       expect(
         effectiveIncomePerSecond(s, const [_g], bonusPerStar: 0.02),
