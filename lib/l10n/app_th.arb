@@ -44,7 +44,7 @@
   "gemInstantStageName": "ปลดล็อกด่านทันที",
   "gemInstantStageDesc": "ปลดล็อก {stage} เลย ข้ามค่า Coin",
   "gemStageUnlockedSnack": "ปลดล็อก {stage} แล้ว!",
-  "gemTimeSkipName": "เร่งเวลา 💎",
+  "gemTimeSkipName": "เร่งเวลา",
   "gemTimeSkipDesc": "รับผลผลิต {hours} ชม. ทันที",
   "iapSectionTitle": "ซื้อด้วยเงินจริง",
   "restorePurchases": "กู้คืนการซื้อ",

@@ -157,7 +157,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get gemTimeSkipName => 'Avanzar 💎';
+  String get gemTimeSkipName => 'Avanzar';
 
   @override
   String gemTimeSkipDesc(int hours) {
