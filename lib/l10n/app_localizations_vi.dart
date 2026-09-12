@@ -590,6 +590,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get navArena => 'Đấu Trường';
 
   @override
+  String get navCompete => 'Thi đấu';
+
+  @override
   String get arenaTitle => 'Đấu Trường';
 
   @override

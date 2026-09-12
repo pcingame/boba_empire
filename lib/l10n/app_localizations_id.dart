@@ -593,6 +593,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get navArena => 'Arena';
 
   @override
+  String get navCompete => 'Kompetisi';
+
+  @override
   String get arenaTitle => 'Arena';
 
   @override

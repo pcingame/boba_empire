@@ -19,11 +19,10 @@ import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
 import 'achievements_dialog.dart';
-import 'arena_page.dart';
+import 'compete_hub_dialog.dart';
 import 'daily_dialog.dart';
 import 'gem_shop.dart';
 import 'how_to_play_dialog.dart';
-import 'leaderboard_page.dart';
 import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
 import 'rewards_dialog.dart';
@@ -342,14 +341,18 @@ class _HomePageState extends ConsumerState<HomePage>
   }
 }
 
-/// Thanh điều hướng dưới cùng: Cửa hàng · Nhượng quyền · Thành tựu · Đấu
-/// Trường · Bảng xếp hạng. Mỗi mục mở dialog/trang tương ứng; giữ key cũ
-/// để test/quen thao tác.
+/// Thanh điều hướng dưới cùng: Cửa hàng · Nhượng quyền · Thành tựu · Thi
+/// đấu. Mỗi mục mở dialog/trang tương ứng; giữ key cũ để test/quen thao
+/// tác.
 ///
-/// Bỏ mục "Nhà" (từng ở đầu, `onTap: () {}` — thuần trang trí, không có
-/// chức năng điều hướng thật vì màn hình chính luôn hiện phía sau mọi
-/// dialog/trang khác) để đỡ chật khi đã lên 6 mục — phản hồi user lúc test
-/// máy thật.
+/// Lược sử rút gọn (phản hồi user lúc test máy thật, cả 2 lần đều để đỡ
+/// chật thanh điều hướng):
+/// - Bỏ mục "Nhà" (từng ở đầu, `onTap: () {}` — thuần trang trí, không có
+///   chức năng điều hướng thật vì màn hình chính luôn hiện phía sau mọi
+///   dialog/trang khác).
+/// - Gộp "Đấu Trường" + "Bảng xếp hạng" (từng là 2 mục riêng) thành 1 mục
+///   "Thi đấu" mở `compete_hub_dialog.dart` — dialog nhỏ cho chọn 1 trong
+///   2, thay vì mỗi tính năng chiếm 1 icon.
 class _BottomBar extends ConsumerWidget {
   const _BottomBar();
 
@@ -407,15 +410,10 @@ class _BottomBar extends ConsumerWidget {
                     showAchievements(context);
                   }),
               _navItem(theme,
-                  buttonKey: const Key('arena-button'),
+                  buttonKey: const Key('compete-button'),
                   icon: Icons.sports_kabaddi,
-                  label: l10n.navArena,
-                  onTap: () => showArenaPage(context)),
-              _navItem(theme,
-                  buttonKey: const Key('leaderboard-button'),
-                  icon: Icons.leaderboard,
-                  label: l10n.leaderboardMenuTitle,
-                  onTap: () => showLeaderboardPage(context)),
+                  label: l10n.navCompete,
+                  onTap: () => showCompeteHub(context)),
             ],
           ),
         ),
