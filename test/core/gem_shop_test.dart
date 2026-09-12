@@ -56,6 +56,21 @@ void main() {
       expect(s.offlineCapLevel, 0);
       expect(s.gems, 9);
     });
+
+    test(
+        'buyGemBoost/buyOfflineCap: chặn ở Balance.maxGemShopLevel dù thừa '
+        'gems — gemBoostCost()/offlineCapCost() tràn double.infinity ở cấp '
+        'cao (growth 2.0/cấp), .ceil() sẽ ném lỗi thay vì bão hoà êm nếu '
+        'không chặn trước', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..gems = 1e300
+        ..gemBoostLevel = Balance.maxGemShopLevel
+        ..offlineCapLevel = Balance.maxGemShopLevel;
+      expect(buyGemBoost(s), isFalse);
+      expect(s.gemBoostLevel, Balance.maxGemShopLevel);
+      expect(buyOfflineCap(s), isFalse);
+      expect(s.offlineCapLevel, Balance.maxGemShopLevel);
+    });
   });
 
   test('gemBoostLevel làm tăng thu nhập thực tế', () {
