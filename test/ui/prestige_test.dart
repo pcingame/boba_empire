@@ -51,7 +51,7 @@ void main() {
       GameState.newGame(nowMillis: 0)
         ..money = 500
         ..levels['tra_den'] = 3
-        ..lifetimeEarnings = 1000000, // 0.05*sqrt(1e6)=50 sao
+        ..lifetimeEarnings = 6250000, // 0.02*sqrt(6.25e6)=50 sao
     );
 
     expect(find.text('500 Xu'), findsOneWidget);
