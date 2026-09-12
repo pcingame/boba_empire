@@ -70,4 +70,26 @@ void main() {
 
     await tester.pumpWidget(const SizedBox());
   });
+
+  testWidgets(
+      'save đã có Sao/lifetimeEarnings cực lớn (VD save lâu năm): dialog '
+      'không tràn/wrap từng ký tự — bug thật gặp trên máy (screenshot: nhãn '
+      '"Sao hiện có" bị ép xuống dọc từng chữ vì số +14656098994% quá dài)',
+      (tester) async {
+    await _pumpWithSave(
+      tester,
+      GameState.newGame(nowMillis: 0)
+        ..prestigeStars = 7328049497 // khớp gần đúng số liệu trong ảnh chụp
+        ..lifetimeEarnings = 1e22, // đủ để "Sao khả dụng" cũng là số hàng tỷ
+    );
+
+    await tester.tap(find.byKey(const Key('prestige-button')));
+    await tester.pumpAndSettle(); // ném FlutterError nếu RenderFlex tràn
+
+    // Nhãn phải còn nguyên 1 dòng — không bị framework tách thành widget Text
+    // riêng cho từng ký tự (dấu hiệu của bug wrap-từng-chữ đã gặp).
+    expect(find.text('Sao hiện có'), findsOneWidget);
+
+    await tester.pumpWidget(const SizedBox());
+  });
 }

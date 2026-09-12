@@ -101,16 +101,33 @@ class _PrestigeDialog extends ConsumerWidget {
   }
 
   Widget _row(String label, String value, {bool highlight = false}) {
+    // CẢ HAI bên đều có thể quá dài, không chỉ 1 bên: [value] phình to ở cấp
+    // cao (số Sao/% hàng tỷ — lỗi gặp trên máy, nhãn bị ép wrap từng ký tự
+    // khi Expanded chỉ đặt ở [label]); nhưng [label] cũng có thể dài hơn hẳn
+    // ở id/th (test dialog_overflow_test.dart bắt được: đổi ngược Expanded
+    // sang value một mình lại tràn RenderFlex vì label id/th dài, màn hẹp).
+    // Flexible + ellipsis ở CẢ HAI bên: dù bên nào dài cũng chỉ co lại/rút
+    // gọn bằng "…", không bao giờ tràn hay wrap từng chữ.
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          Expanded(child: Text(label)),
-          Text(
-            value,
-            style: highlight
-                ? const TextStyle(fontWeight: FontWeight.bold)
-                : null,
+          Flexible(
+            flex: 3,
+            child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
+          ),
+          const SizedBox(width: 8),
+          Flexible(
+            flex: 2,
+            child: Text(
+              value,
+              textAlign: TextAlign.end,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: highlight
+                  ? const TextStyle(fontWeight: FontWeight.bold)
+                  : null,
+            ),
           ),
         ],
       ),
