@@ -123,10 +123,22 @@ double permanentMultiplier(int gemBoostLevel) =>
     1 + gemBoostLevel * Balance.gemBoostPerLevel;
 
 /// Giá (Sao) nâng một perk kho prestige từ [level] lên cấp kế: base * 2^level.
-int prestigeShopCost(int baseCost, int level) => baseCost * (1 << level);
+///
+/// Dùng double + pow() thay vì `1 << level` (dịch bit trên int 64-bit): bit-
+/// shift LẬT DẤU thành số ÂM quanh level ~63 thay vì bão hoà như mọi công
+/// thức Xu khác trong game, biến giá thành free/mua vô hạn (`spendable >=
+/// cost` luôn đúng với cost âm) — phát hiện lúc audit lib/ui cho lớp bug
+/// tràn số 2026-09-12, chưa khai thác được vì cần ~9.2e18 Sao (xem
+/// known-issues-backlog memory). double.round() trên số vượt int64 chỉ bão
+/// hoà dương về int64.max ("quá đắt, không mua nổi"), không lật dấu — an
+/// toàn, và cho kết quả giống hệt `1 << level` ở mọi cấp thực tế đạt được
+/// (double biểu diễn đúng số nguyên tới 2^53).
+int prestigeShopCost(int baseCost, int level) =>
+    (baseCost * pow(2.0, level)).round();
 
 /// Tổng Sao đã tiêu cho một perk đạt [level] (tổng cấp số nhân, growth 2).
-int _prestigeSpentFor(int baseCost, int level) => baseCost * ((1 << level) - 1);
+int _prestigeSpentFor(int baseCost, int level) =>
+    (baseCost * (pow(2.0, level) - 1)).round();
 
 /// Tổng Sao đã tiêu trong kho prestige (mọi perk).
 int prestigeStarsSpent(GameState s) =>

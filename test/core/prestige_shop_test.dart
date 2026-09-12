@@ -86,5 +86,22 @@ void main() {
       expect(s.prestigeAutoBuyLevel, 1);
       expect(buyPrestigeAutoBuy(s), isFalse); // tối đa 1 cấp
     });
+
+    test(
+        'giá không lật dấu ở cấp cực cao (từng dùng 1 << level, bit-shift '
+        'int 64-bit lật âm quanh cấp 63 → mua miễn phí/vô hạn)', () {
+      // Bug thật phát hiện lúc audit lib/ui cho lớp bug tràn số 2026-09-12:
+      // 1 << 63 tràn dấu int64, ra số ÂM → `spendable >= cost` luôn đúng.
+      // Chưa khai thác được trong game thật (cần ~9.2e18 Sao), nhưng công
+      // thức phải an toàn bất kể cấp bao nhiêu, không tin vào "chưa ai đạt
+      // tới" — cùng triết lý với Balance.economyOverflowGuardCap.
+      expect(prestigeShopCost(3, 63), greaterThan(0));
+      expect(prestigeShopCost(3, 70), greaterThan(0));
+      expect(prestigeShopCost(3, 1000), greaterThan(0));
+
+      // Cấp thực tế vẫn ra đúng số như công thức cũ (base * 2^level).
+      expect(prestigeShopCost(3, 0), 3);
+      expect(prestigeShopCost(3, 10), 3 * 1024);
+    });
   });
 }
