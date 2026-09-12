@@ -103,16 +103,29 @@ begin
   -- (3) Trần tăng trưởng GIỮA 2 LẦN NỘP theo thời gian thực trôi qua —
   -- không áp dụng cho lần nộp đầu (đã có check (2) ở trên; người chơi có
   -- thể đã tích luỹ rất nhiều TRƯỚC KHI lần đầu mở Bảng xếp hạng, không
-  -- phải gian lận). Trần trung bình 1e19 Xu/giây kể từ lần nộp trước —
-  -- rộng hơn hẳn thu nhập tối đa lý thuyết ở cấp trần (xem
-  -- Balance.maxGeneratorLevel/milestoneStep) nhân mọi hệ số nhân "có
-  -- trần" đã biết (mốc vàng, VIP/IAP/quảng cáo x2, Golden Rush x3...) —
-  -- chỉ KHÔNG tính hệ số Sao (bonusPerStar) vì bản thân nó tăng không
-  -- giới hạn theo thời gian thật, nên không thể có 1 trần "đúng tuyệt đối
-  -- mãi mãi" cho riêng chỉ số này.
+  -- phải gian lận).
+  --
+  -- SỬA 2026-09-12 (bug thật gặp ngay sau khi thêm check này): trần lúc
+  -- đầu là 1 hằng số CỐ ĐỊNH (1e19 Xu/giây), không tính hệ số nhân thu
+  -- nhập từ chính số Sao (`1 + prestige_stars * bonusPerStar` — xem
+  -- effectiveIncomePerSecond() trong lib/core/economy.dart) — với người
+  -- chơi có ~16,6 tỷ Sao, riêng hệ số này đã ×332 triệu lần, khiến MỌI
+  -- lần nộp lại (dù hoàn toàn hợp lệ) đều vượt trần cố định và bị từ
+  -- chối. Verify bằng curl: delta 1e20 trong 3 giây (hợp lý cho whale
+  -- này) bị chặn nhầm với trần cũ.
+  --
+  -- Sửa: nhân trần với ĐÚNG hệ số đó — vì new.prestige_stars đã được xác
+  -- minh khớp new.lifetime_earnings ở check (1) phía trên rồi, dùng nó ở
+  -- đây an toàn (không mở thêm lỗ hổng: hệ số càng lớn chỉ khi Sao càng
+  -- lớn, mà Sao đã bị chặn ở check (1)). base_rate=1e17 Xu/giây là trần
+  -- cho các hệ số nhân "có trần" khác cộng lại (mốc vàng, VIP/IAP/quảng
+  -- cáo x2, Golden Rush x3, mốc nhân bội ở cấp trần...) — rộng rãi với
+  -- biên độ lớn so với ước tính lý thuyết tối đa (~8,8e16, xem
+  -- known-issues-backlog memory).
   if TG_OP = 'UPDATE' and new.lifetime_earnings > old.lifetime_earnings then
     elapsed_seconds := greatest(extract(epoch from (now() - old.updated_at)), 1);
-    if (new.lifetime_earnings - old.lifetime_earnings) > 1e19 * elapsed_seconds then
+    if (new.lifetime_earnings - old.lifetime_earnings)
+        > 1e17 * (1 + new.prestige_stars * 0.02) * elapsed_seconds then
       raise exception 'lifetime_earnings tăng bất thường trong khoảng thời gian quá ngắn';
     end if;
   end if;
