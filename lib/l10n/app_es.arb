@@ -44,7 +44,7 @@
   "gemInstantStageName": "Desbloqueo de fase instantáneo",
   "gemInstantStageDesc": "Desbloquea {stage} ya, sin coste en Monedas",
   "gemStageUnlockedSnack": "¡{stage} desbloqueada!",
-  "gemTimeSkipName": "Avanzar 💎",
+  "gemTimeSkipName": "Avanzar",
   "gemTimeSkipDesc": "Recibe {hours}h de producción al instante",
   "iapSectionTitle": "Comprar con dinero real",
   "restorePurchases": "Restaurar compras",

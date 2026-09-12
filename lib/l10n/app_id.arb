@@ -44,7 +44,7 @@
   "gemInstantStageName": "Buka tahap instan",
   "gemInstantStageDesc": "Buka {stage} sekarang, lewati biaya Koin",
   "gemStageUnlockedSnack": "{stage} terbuka!",
-  "gemTimeSkipName": "Percepat 💎",
+  "gemTimeSkipName": "Percepat",
   "gemTimeSkipDesc": "Dapat {hours} jam produksi seketika",
   "iapSectionTitle": "Beli dengan uang asli",
   "restorePurchases": "Pulihkan pembelian",

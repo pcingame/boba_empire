@@ -331,7 +331,7 @@ abstract class AppLocalizations {
   /// No description provided for @gemTimeSkipName.
   ///
   /// In vi, this message translates to:
-  /// **'Tua nhanh 💎'**
+  /// **'Tua nhanh'**
   String get gemTimeSkipName;
 
   /// No description provided for @gemTimeSkipDesc.

@@ -157,7 +157,7 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get gemTimeSkipName => 'Avançar 💎';
+  String get gemTimeSkipName => 'Avançar';
 
   @override
   String gemTimeSkipDesc(int hours) {

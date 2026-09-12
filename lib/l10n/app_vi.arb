@@ -62,7 +62,7 @@
   "@gemInstantStageDesc": { "placeholders": { "stage": { "type": "String" } } },
   "gemStageUnlockedSnack": "Đã mở {stage}!",
   "@gemStageUnlockedSnack": { "placeholders": { "stage": { "type": "String" } } },
-  "gemTimeSkipName": "Tua nhanh 💎",
+  "gemTimeSkipName": "Tua nhanh",
   "gemTimeSkipDesc": "Nhận ngay {hours} giờ sản xuất",
   "@gemTimeSkipDesc": { "placeholders": { "hours": { "type": "int" } } },
   "iapSectionTitle": "Nạp bằng tiền thật",

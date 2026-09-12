@@ -156,7 +156,7 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
-  String get gemTimeSkipName => 'เร่งเวลา 💎';
+  String get gemTimeSkipName => 'เร่งเวลา';
 
   @override
   String gemTimeSkipDesc(int hours) {
