@@ -27,11 +27,16 @@ class RealIapService implements IapService {
   final ReceiptVerifier _verifier;
   final StreamController<IapProduct> _delivered =
       StreamController<IapProduct>.broadcast();
+  final StreamController<IapProduct> _failed =
+      StreamController<IapProduct>.broadcast();
   final Map<IapProduct, ProductDetails> _details = {};
   late final StreamSubscription<List<PurchaseDetails>> _sub;
 
   @override
   Stream<IapProduct> get purchases => _delivered.stream;
+
+  @override
+  Stream<IapProduct> get purchaseFailed => _failed.stream;
 
   @override
   Future<Map<IapProduct, String>> loadPrices() async {
@@ -67,12 +72,17 @@ class RealIapService implements IapService {
 
   Future<void> _onPurchases(List<PurchaseDetails> purchases) async {
     for (final pd in purchases) {
+      final product = IapProduct.byId(pd.productID);
       if (pd.status == PurchaseStatus.purchased ||
           pd.status == PurchaseStatus.restored) {
-        final product = IapProduct.byId(pd.productID);
         if (product != null && await _verified(pd)) {
           _delivered.add(product);
         }
+      } else if (pd.status == PurchaseStatus.error ||
+          pd.status == PurchaseStatus.canceled) {
+        // Lỗi hoặc người chơi tự huỷ ở màn thanh toán — báo cho UI tắt
+        // trạng thái "đang xử lý" (xem [purchaseFailed]), không trao thưởng.
+        if (product != null) _failed.add(product);
       }
       // Luôn hoàn tất giao dịch đang chờ, nếu không store sẽ gửi lại mãi.
       if (pd.pendingCompletePurchase) {
@@ -95,5 +105,6 @@ class RealIapService implements IapService {
   void dispose() {
     _sub.cancel();
     _delivered.close();
+    _failed.close();
   }
 }

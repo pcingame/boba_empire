@@ -21,6 +21,8 @@ class _PricedIap implements IapService {
   @override
   Stream<IapProduct> get purchases => const Stream.empty();
   @override
+  Stream<IapProduct> get purchaseFailed => const Stream.empty();
+  @override
   void buy(IapProduct product) {}
   @override
   Future<void> restore() async {}

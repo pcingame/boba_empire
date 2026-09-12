@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -30,6 +32,53 @@ class _GemShopState extends ConsumerState<_GemShop> {
   // Tải giá một lần khi mở dialog (stub trả rỗng → mục IAP tự ẩn nút mua).
   late final Future<Map<IapProduct, String>> _prices =
       ref.read(iapServiceProvider).loadPrices();
+
+  // Từ lúc bấm "mua" tới lúc màn thanh toán của store hiện ra có 1 khoảng
+  // chờ (gọi API store, có thể vài trăm ms tới vài giây) mà trước đây UI im
+  // lặng hoàn toàn — trông như treo máy. Theo dõi sản phẩm đang xử lý để
+  // hiện vòng xoay, tắt khi CÓ 1 TRONG 2 stream báo về (thành công/thất bại
+  // — xem IapService.purchaseFailed) hoặc hết thời gian chờ an toàn (phòng
+  // trường hợp không có tín hiệu nào quay lại).
+  IapProduct? _pendingPurchase;
+  bool _restoring = false;
+  StreamSubscription<IapProduct>? _purchaseSub;
+  StreamSubscription<IapProduct>? _purchaseFailedSub;
+  Timer? _safetyTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    final iap = ref.read(iapServiceProvider);
+    _purchaseSub = iap.purchases.listen(_clearPending);
+    _purchaseFailedSub = iap.purchaseFailed.listen(_clearPending);
+  }
+
+  void _clearPending(IapProduct p) {
+    _safetyTimer?.cancel();
+    if (mounted && _pendingPurchase == p) {
+      setState(() => _pendingPurchase = null);
+    }
+  }
+
+  void _startBuy(IapProduct p) {
+    setState(() => _pendingPurchase = p);
+    ref.read(iapServiceProvider).buy(p);
+    // Lưới an toàn: không để nút kẹt loading mãi nếu vì lý do gì đó không
+    // có tín hiệu thành công/thất bại nào quay lại. Dùng Timer (huỷ được ở
+    // dispose) thay vì Future.delayed trần — nếu không huỷ, test framework
+    // báo "Timer is still pending" khi dialog đóng trước khi hết giờ.
+    _safetyTimer?.cancel();
+    _safetyTimer =
+        Timer(const Duration(seconds: 10), () => _clearPending(p));
+  }
+
+  @override
+  void dispose() {
+    _purchaseSub?.cancel();
+    _purchaseFailedSub?.cancel();
+    _safetyTimer?.cancel();
+    super.dispose();
+  }
 
   void _snack(String msg) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
@@ -166,13 +215,39 @@ class _GemShopState extends ConsumerState<_GemShop> {
             subtitle: Text(iapDescription(l10n, p)),
             trailing: FilledButton.tonal(
               key: Key('iap-buy-${p.id}'),
-              onPressed: () => iap.buy(p),
-              child: Text(prices[p] ?? '—'),
+              // Chặn bấm tiếp trong lúc CÓ BẤT KỲ lượt mua nào đang xử lý
+              // (màn thanh toán của store vốn đã modal, tránh bấm chồng gây
+              // rối luồng plugin) hoặc đang khôi phục.
+              onPressed: _pendingPurchase == null && !_restoring
+                  ? () => _startBuy(p)
+                  : null,
+              child: _pendingPurchase == p
+                  ? const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : Text(prices[p] ?? '—'),
             ),
           ),
         TextButton(
-          onPressed: () => iap.restore(),
-          child: Text(l10n.restorePurchases),
+          onPressed: _pendingPurchase == null && !_restoring
+              ? () async {
+                  setState(() => _restoring = true);
+                  try {
+                    await iap.restore();
+                  } finally {
+                    if (mounted) setState(() => _restoring = false);
+                  }
+                }
+              : null,
+          child: _restoring
+              ? const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : Text(l10n.restorePurchases),
         ),
       ],
     );
