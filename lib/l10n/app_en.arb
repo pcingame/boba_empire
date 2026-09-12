@@ -85,6 +85,7 @@
   "htpGems": "💎 Spend Gems in the Shop on permanent upgrades.",
   "htpPrestige": "⭐ Franchise to restart and earn Stars — a permanent income bonus.",
   "htpOffline": "😴 The shop keeps selling while you're away — come back for offline cash.",
+  "htpNumberFormat": "🔢 Big numbers use suffixes: K=thousand, M=million, B=billion, T=trillion, then aa, bb, cc... — each step is 1,000× the one before.",
   "language": "Language",
   "languageSystem": "System default",
   "dailyTitle": "Daily check-in",

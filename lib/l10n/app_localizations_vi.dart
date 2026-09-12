@@ -293,6 +293,10 @@ class AppLocalizationsVi extends AppLocalizations {
       '😴 Quán vẫn bán khi bạn thoát — quay lại nhận tiền offline.';
 
   @override
+  String get htpNumberFormat =>
+      '🔢 Số lớn viết tắt: K=nghìn, M=triệu, B=tỷ, T=nghìn tỷ, rồi tới aa, bb, cc... — mỗi bước gấp 1.000 lần bước trước.';
+
+  @override
   String get language => 'Ngôn ngữ';
 
   @override

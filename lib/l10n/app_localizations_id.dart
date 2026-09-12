@@ -295,6 +295,10 @@ class AppLocalizationsId extends AppLocalizations {
       '😴 Toko tetap berjualan saat kamu pergi — kembali untuk mengambil uang offline.';
 
   @override
+  String get htpNumberFormat =>
+      '🔢 Angka besar pakai singkatan: K=ribu, M=juta, B=miliar, T=triliun, lalu aa, bb, cc... — tiap tingkat 1.000× dari sebelumnya.';
+
+  @override
   String get language => 'Bahasa';
 
   @override

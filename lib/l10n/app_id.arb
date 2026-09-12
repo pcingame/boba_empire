@@ -85,6 +85,7 @@
   "htpGems": "💎 Gunakan Permata di Toko untuk peningkatan permanen.",
   "htpPrestige": "⭐ Waralabakan untuk mengulang dan dapat Bintang — bonus pendapatan permanen.",
   "htpOffline": "😴 Toko tetap berjualan saat kamu pergi — kembali untuk mengambil uang offline.",
+  "htpNumberFormat": "🔢 Angka besar pakai singkatan: K=ribu, M=juta, B=miliar, T=triliun, lalu aa, bb, cc... — tiap tingkat 1.000× dari sebelumnya.",
   "language": "Bahasa",
   "languageSystem": "Bawaan sistem",
   "dailyTitle": "Check-in harian",

@@ -26,6 +26,7 @@ class _HowToPlayDialog extends StatelessWidget {
       l10n.htpGems,
       l10n.htpPrestige,
       l10n.htpOffline,
+      l10n.htpNumberFormat,
     ];
 
     return AlertDialog(
