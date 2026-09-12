@@ -1479,6 +1479,30 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Chưa có ai hoàn thành cốt truyện — là bạn đây!'**
   String get storySpeedrunEmpty;
+
+  /// No description provided for @arenaLeaderboardMenuTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảng xếp hạng PK'**
+  String get arenaLeaderboardMenuTitle;
+
+  /// No description provided for @arenaLeaderboardTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảng xếp hạng PK'**
+  String get arenaLeaderboardTitle;
+
+  /// No description provided for @arenaLeaderboardNotPlayedYet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa đấu trận nào — thắng 1 trận Đấu Trường để xuất hiện ở đây.'**
+  String get arenaLeaderboardNotPlayedYet;
+
+  /// No description provided for @arenaLeaderboardRecord.
+  ///
+  /// In vi, this message translates to:
+  /// **'{wins} thắng - {losses} bại'**
+  String arenaLeaderboardRecord(int wins, int losses);
 }
 
 class _AppLocalizationsDelegate

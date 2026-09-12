@@ -836,4 +836,19 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get storySpeedrunEmpty =>
       'Belum ada yang menyelesaikan cerita — jadilah yang pertama!';
+
+  @override
+  String get arenaLeaderboardMenuTitle => 'Papan Peringkat PK';
+
+  @override
+  String get arenaLeaderboardTitle => 'Papan Peringkat PK';
+
+  @override
+  String get arenaLeaderboardNotPlayedYet =>
+      'Kamu belum bertanding di Arena — menangkan satu pertandingan untuk muncul di sini.';
+
+  @override
+  String arenaLeaderboardRecord(int wins, int losses) {
+    return '${wins}M - ${losses}K';
+  }
 }

@@ -6,6 +6,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
+import 'arena_leaderboard_page.dart';
 import 'arena_page.dart';
 import 'leaderboard_page.dart';
 import 'story_speedrun_page.dart';
@@ -53,6 +54,15 @@ class _CompeteHubDialog extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
               showStorySpeedrunPage(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.military_tech),
+            title: Text(l10n.arenaLeaderboardMenuTitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              Navigator.of(context).pop();
+              showArenaLeaderboardPage(context);
             },
           ),
         ],

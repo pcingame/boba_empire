@@ -304,5 +304,11 @@
   "storySpeedrunMenuTitle": "Tốc độ hoàn thành",
   "storySpeedrunTitle": "Bảng xếp hạng tốc độ",
   "storySpeedrunNotCompletedYet": "Bạn chưa hoàn thành cốt truyện — hoàn thành Chương 18 để được xếp hạng.",
-  "storySpeedrunEmpty": "Chưa có ai hoàn thành cốt truyện — là bạn đây!"
+  "storySpeedrunEmpty": "Chưa có ai hoàn thành cốt truyện — là bạn đây!",
+
+  "arenaLeaderboardMenuTitle": "Bảng xếp hạng PK",
+  "arenaLeaderboardTitle": "Bảng xếp hạng PK",
+  "arenaLeaderboardNotPlayedYet": "Bạn chưa đấu trận nào — thắng 1 trận Đấu Trường để xuất hiện ở đây.",
+  "arenaLeaderboardRecord": "{wins} thắng - {losses} bại",
+  "@arenaLeaderboardRecord": { "placeholders": { "wins": { "type": "int" }, "losses": { "type": "int" } } }
 }
