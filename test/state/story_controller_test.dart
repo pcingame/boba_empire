@@ -158,4 +158,30 @@ void main() {
     expect(b.ctrl.makeStoryChoice('global'), isFalse);
     expect(b.snap().storyCompleteSeconds, 500);
   });
+
+  test(
+      'Save cũ đã hoàn thành Chương 18 TỪ TRƯỚC lúc sửa bug (storyChapter=18, '
+      'storyCompleteSeconds vẫn null vì mốc chưa từng được ghi) — build() '
+      'phải bù mốc ngay khi mở app, không để mãi mãi null (không bao giờ lên '
+      'được Bảng xếp hạng tốc độ)', () async {
+    final seed = GameState.newGame(nowMillis: 1000)
+      ..storyChapter = 18
+      ..storyChoiceD = 'soul'
+      ..stage = 12;
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    await GameStorage(prefs).save(seed, nowMillis: 1000);
+    // Đặt đồng hồ TRƯỚC KHI build() chạy (khác _boot() — helper đó luôn tạo
+    // đồng hồ ở mặc định 0 rồi mới trigger build lúc container.read).
+    final clock = _Clock()..now = 1000 + 777000; // mở app 777s sau khi tạo save
+    final container = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(() => clock.now),
+    ]);
+    addTearDown(container.dispose);
+
+    final snap = container.read(gameControllerProvider);
+    expect(snap.storyChapter, 18);
+    expect(snap.storyCompleteSeconds, 777);
+  });
 }
