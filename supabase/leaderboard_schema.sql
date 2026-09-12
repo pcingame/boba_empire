@@ -71,12 +71,26 @@ create policy leaderboard_entries_update_own on leaderboard_entries
 -- (tự sửa số gửi lên), chấp nhận rủi ro hiếm gặp báo lỗi nhầm cho người
 -- chơi hợp lệ tiến bộ cực nhanh — họ chỉ cần thử nộp lại sau, không bị
 -- cấm vĩnh viễn.
+--
+-- BỎ check "trần tăng trưởng theo thời gian thực trôi qua" (2026-09-12,
+-- từng có ở đây, bug thật gặp lại NGAY TRÊN SAVE THẬT của người dùng — báo
+-- "Không tải được bảng xếp hạng" liên tục): check đó giả định lifetime_
+-- earnings chỉ tăng theo NHỊP LIÊN TỤC (Xu/giây × giây thực trôi qua từ lần
+-- nộp trước), nhưng game có `buyGemTimeSkip()` (nút "Tua nhanh" ở Cửa hàng
+-- 💎, xem lib/core/simulation.dart) — cộng NGAY LẬP TỨC
+-- Balance.gemTimeSkipSeconds (4 giờ) giây sản xuất, KHÔNG GIỚI HẠN số lần
+-- mua liên tiếp (chỉ tốn 💎, không có trần/ngày). Một người chơi hợp lệ
+-- gom 💎 rồi mua nhiều lần liền tay (y hệt tình huống dev tự test) có thể
+-- cộng dồn hàng chục/hàng trăm giờ sản xuất vào lifetime_earnings chỉ
+-- trong vài GIÂY THỰC — không có hằng số trần nào vừa đủ rộng để cho phép
+-- việc này vừa đủ hẹp để còn ý nghĩa chống gian lận (mua thêm vài lần nữa
+-- là lại vượt bất kỳ trần nào). Giữ lại check (1)+(2) — đó là bất biến
+-- TOÁN HỌC không phụ thuộc thời gian, không bị phá bởi bất kỳ cách chơi
+-- hợp lệ nào (kể cả tua nhanh dồn dập).
 create or replace function leaderboard_entries_validate()
 returns trigger
 language plpgsql
 as $$
-declare
-  elapsed_seconds double precision;
 begin
   -- (1) Bất biến ĐÚNG theo công thức game — không phải suy đoán, xem
   -- starsForLifetimeEarnings() trong lib/core/economy.dart: tổng Sao không
@@ -93,41 +107,11 @@ begin
     raise exception 'prestige_stars vượt quá mức tối đa có thể có với lifetime_earnings này';
   end if;
 
-  -- (2) Trần tuyệt đối cho LẦN NỘP ĐẦU TIÊN (không có mốc nào để so sánh
-  -- theo thời gian) — rất rộng rãi, chỉ chặn số bịa kiểu "gửi thẳng 1e100"
-  -- chứ không nhằm giới hạn người chơi thật giỏi.
+  -- (2) Trần tuyệt đối — rất rộng rãi, chỉ chặn số bịa kiểu "gửi thẳng
+  -- 1e100" chứ không nhằm giới hạn người chơi thật giỏi (kể cả tua nhanh
+  -- dồn dập nhiều lần).
   if new.lifetime_earnings > 1e50 then
     raise exception 'lifetime_earnings vượt xa mức có thể đạt được';
-  end if;
-
-  -- (3) Trần tăng trưởng GIỮA 2 LẦN NỘP theo thời gian thực trôi qua —
-  -- không áp dụng cho lần nộp đầu (đã có check (2) ở trên; người chơi có
-  -- thể đã tích luỹ rất nhiều TRƯỚC KHI lần đầu mở Bảng xếp hạng, không
-  -- phải gian lận).
-  --
-  -- SỬA 2026-09-12 (bug thật gặp ngay sau khi thêm check này): trần lúc
-  -- đầu là 1 hằng số CỐ ĐỊNH (1e19 Xu/giây), không tính hệ số nhân thu
-  -- nhập từ chính số Sao (`1 + prestige_stars * bonusPerStar` — xem
-  -- effectiveIncomePerSecond() trong lib/core/economy.dart) — với người
-  -- chơi có ~16,6 tỷ Sao, riêng hệ số này đã ×332 triệu lần, khiến MỌI
-  -- lần nộp lại (dù hoàn toàn hợp lệ) đều vượt trần cố định và bị từ
-  -- chối. Verify bằng curl: delta 1e20 trong 3 giây (hợp lý cho whale
-  -- này) bị chặn nhầm với trần cũ.
-  --
-  -- Sửa: nhân trần với ĐÚNG hệ số đó — vì new.prestige_stars đã được xác
-  -- minh khớp new.lifetime_earnings ở check (1) phía trên rồi, dùng nó ở
-  -- đây an toàn (không mở thêm lỗ hổng: hệ số càng lớn chỉ khi Sao càng
-  -- lớn, mà Sao đã bị chặn ở check (1)). base_rate=1e17 Xu/giây là trần
-  -- cho các hệ số nhân "có trần" khác cộng lại (mốc vàng, VIP/IAP/quảng
-  -- cáo x2, Golden Rush x3, mốc nhân bội ở cấp trần...) — rộng rãi với
-  -- biên độ lớn so với ước tính lý thuyết tối đa (~8,8e16, xem
-  -- known-issues-backlog memory).
-  if TG_OP = 'UPDATE' and new.lifetime_earnings > old.lifetime_earnings then
-    elapsed_seconds := greatest(extract(epoch from (now() - old.updated_at)), 1);
-    if (new.lifetime_earnings - old.lifetime_earnings)
-        > 1e17 * (1 + new.prestige_stars * 0.02) * elapsed_seconds then
-      raise exception 'lifetime_earnings tăng bất thường trong khoảng thời gian quá ngắn';
-    end if;
   end if;
 
   return new;
