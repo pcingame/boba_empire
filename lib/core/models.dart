@@ -102,6 +102,8 @@ class GameState {
     this.vipUntilMillis = 0,
     this.vipLastGemDay = 0,
     this.lastFreeSpinDay = 0,
+    this.gemTimeSkipDay = 0,
+    this.gemTimeSkipUsedToday = 0,
     int? firstPlayedMillis,
     this.storyCompleteSeconds,
     List<String>? achievementsClaimed,
@@ -263,6 +265,15 @@ class GameState {
   /// Chỉ số ngày (UTC) lần cuối quay Vòng quay miễn phí.
   int lastFreeSpinDay;
 
+  /// Chỉ số ngày (UTC) mà [gemTimeSkipUsedToday] đang đếm cho — reset về 0
+  /// khi sang ngày mới (xem gemTimeSkipRemainingToday() trong simulation.dart).
+  int gemTimeSkipDay;
+
+  /// Số lần đã mua "Tua nhanh" (💎) trong ngày [gemTimeSkipDay] — trần
+  /// [Balance.maxGemTimeSkipPerDay], thêm 2026-09-12 vì đây là nguồn thưởng
+  /// DUY NHẤT không có cổng nhịp độ nào (xem Balance.maxGemTimeSkipPerDay).
+  int gemTimeSkipUsedToday;
+
   Map<String, dynamic> toJson() => {
         'money': money,
         'gems': gems,
@@ -308,6 +319,8 @@ class GameState {
         'vipUntilMillis': vipUntilMillis,
         'vipLastGemDay': vipLastGemDay,
         'lastFreeSpinDay': lastFreeSpinDay,
+        'gemTimeSkipDay': gemTimeSkipDay,
+        'gemTimeSkipUsedToday': gemTimeSkipUsedToday,
       };
 
   factory GameState.fromJson(Map<String, dynamic> json) => GameState(
@@ -375,6 +388,9 @@ class GameState {
         vipUntilMillis: (json['vipUntilMillis'] as num?)?.toInt() ?? 0,
         vipLastGemDay: (json['vipLastGemDay'] as num?)?.toInt() ?? 0,
         lastFreeSpinDay: (json['lastFreeSpinDay'] as num?)?.toInt() ?? 0,
+        gemTimeSkipDay: (json['gemTimeSkipDay'] as num?)?.toInt() ?? 0,
+        gemTimeSkipUsedToday:
+            (json['gemTimeSkipUsedToday'] as num?)?.toInt() ?? 0,
       );
 }
 

@@ -46,6 +46,7 @@
   "gemStageUnlockedSnack": "{stage} unlocked!",
   "gemTimeSkipName": "Fast-forward",
   "gemTimeSkipDesc": "Get {hours}h of production instantly",
+  "gemTimeSkipRemaining": "{remaining}/{max} left today",
   "iapSectionTitle": "Buy with real money",
   "restorePurchases": "Restore purchases",
   "close": "Close",

@@ -46,6 +46,7 @@
   "gemStageUnlockedSnack": "{stage} desbloqueada!",
   "gemTimeSkipName": "Avançar",
   "gemTimeSkipDesc": "Receba {hours}h de produção na hora",
+  "gemTimeSkipRemaining": "Restam {remaining}/{max} hoje",
   "iapSectionTitle": "Comprar com dinheiro real",
   "restorePurchases": "Restaurar compras",
   "close": "Fechar",

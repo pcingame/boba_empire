@@ -76,6 +76,32 @@ void main() {
         100 - Balance.gemTimeSkipCost);
   });
 
+  test(
+      'Tua nhanh: hết Balance.maxGemTimeSkipPerDay lượt/ngày thì khoá, '
+      'snapshot.gemTimeSkipRemainingToday phản ánh đúng', () async {
+    final container = await _container(
+      GameState.newGame(nowMillis: 0)
+        ..gems = 100000
+        ..levels['tra_den'] = 10,
+      0,
+    );
+    addTearDown(container.dispose);
+    final ctrl = container.read(gameControllerProvider.notifier);
+
+    for (var i = 0; i < Balance.maxGemTimeSkipPerDay; i++) {
+      expect(
+        container.read(gameControllerProvider).gemTimeSkipRemainingToday,
+        Balance.maxGemTimeSkipPerDay - i,
+      );
+      expect(ctrl.buyGemTimeSkipReward(), greaterThan(0));
+    }
+    expect(container.read(gameControllerProvider).gemTimeSkipRemainingToday, 0);
+
+    final gemsBefore = container.read(gameControllerProvider).gems;
+    expect(ctrl.buyGemTimeSkipReward(), 0); // hết lượt -> không trừ 💎 nữa
+    expect(container.read(gameControllerProvider).gems, gemsBefore);
+  });
+
   test('Kho lạnh offline nâng trần tiền offline', () async {
     // 30000s vắng mặt: > trần gốc 8h (28800s) nhưng < 8h + 2h khi có cấp 1.
     final gapSeconds = 30000;

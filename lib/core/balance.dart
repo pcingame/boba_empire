@@ -154,6 +154,16 @@ class Balance {
   static const int gemTimeSkipCost = 30;
   static const int gemTimeSkipSeconds = 4 * 60 * 60; // 4 giờ
 
+  /// Trần số lần mua "Tua nhanh" mỗi ngày (2026-09-12) — trước đây KHÔNG có
+  /// giới hạn, khác MỌI nguồn thưởng tương tự khác trong game (thưởng ngày:
+  /// 1 lần/ngày; VIP: hẹn giờ; quảng cáo thưởng: phụ thuộc mạng quảng cáo có
+  /// sẵn hay không; Vòng quay: 1 lượt free/ngày) — người nhiều 💎 có thể mua
+  /// liên tiếp không giới hạn để bỏ qua hoàn toàn nhịp chờ vốn có của game
+  /// idle. 8 lần/ngày = tối đa 32 giờ sản xuất/ngày qua đường này, vẫn là
+  /// sink 💎 hấp dẫn nhưng không xoá sạch nhịp độ. Xem
+  /// gemTimeSkipRemainingToday() trong simulation.dart.
+  static const int maxGemTimeSkipPerDay = 8;
+
   // --- Mua bằng tiền thật (IAP) ---
 
   /// Kim Cương nhận theo từng gói gems (consumable) — bậc giá tăng dần.

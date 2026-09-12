@@ -340,6 +340,12 @@ abstract class AppLocalizations {
   /// **'Nhận ngay {hours} giờ sản xuất'**
   String gemTimeSkipDesc(int hours);
 
+  /// No description provided for @gemTimeSkipRemaining.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn {remaining}/{max} lượt hôm nay'**
+  String gemTimeSkipRemaining(int remaining, int max);
+
   /// No description provided for @iapSectionTitle.
   ///
   /// In vi, this message translates to:

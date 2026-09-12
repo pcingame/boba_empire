@@ -164,6 +164,11 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String gemTimeSkipRemaining(int remaining, int max) {
+    return 'Còn $remaining/$max lượt hôm nay';
+  }
+
+  @override
   String get iapSectionTitle => 'Nạp bằng tiền thật';
 
   @override
