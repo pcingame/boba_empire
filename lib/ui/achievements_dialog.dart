@@ -7,6 +7,7 @@ import '../core/format.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
+import '../state/game_snapshot.dart';
 import 'widgets/clay.dart';
 
 /// Bảng Thành tựu: liệt kê mốc, tô đã đạt (✓) hoặc khoá kèm tiến độ + thưởng.
@@ -17,39 +18,28 @@ Future<void> showAchievements(BuildContext context) {
   );
 }
 
-class _AchievementsDialog extends ConsumerWidget {
+class _AchievementsDialog extends StatelessWidget {
   const _AchievementsDialog();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final s = ref.watch(gameControllerProvider);
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-
-    final totalLevels =
-        Balance.generators.fold<int>(0, (a, c) => a + s.levelOf(c.id));
-    num progressOf(Achievement a) => switch (a.metric) {
-          AchievementMetric.earn => s.lifetimeEarnings,
-          AchievementMetric.stage => s.stage,
-          AchievementMetric.levels => totalLevels,
-          AchievementMetric.prestige => s.prestigeStars,
-        };
 
     return AlertDialog(
       title: Text(l10n.achievementsTitle),
       content: SizedBox(
         width: double.maxFinite,
+        // Không đọc GameSnapshot ở tầng này — mỗi hàng tự theo dõi đúng chỉ
+        // số của nó (xem _AchievementRow) để tránh rebuild TOÀN BỘ danh sách
+        // mỗi giây (lifetimeEarnings đổi mỗi tick) trong khi phần lớn thành
+        // tựu (stage/levels/prestige, hoặc đã đạt) không đổi thường xuyên
+        // vậy — nguyên nhân giật khi mở bảng này lúc đang chơi.
         child: ListView(
           shrinkWrap: true,
           children: [
             for (final a in achievements)
-              _AchievementRow(
-                achievement: a,
-                unlocked: s.achievementsClaimed.contains(a.id),
-                progress: progressOf(a),
-                l10n: l10n,
-                theme: theme,
-              ),
+              _AchievementRow(achievement: a, l10n: l10n, theme: theme),
           ],
         ),
       ),
@@ -63,24 +53,36 @@ class _AchievementsDialog extends ConsumerWidget {
   }
 }
 
-class _AchievementRow extends StatelessWidget {
+class _AchievementRow extends ConsumerWidget {
   const _AchievementRow({
     required this.achievement,
-    required this.unlocked,
-    required this.progress,
     required this.l10n,
     required this.theme,
   });
 
   final Achievement achievement;
-  final bool unlocked;
-  final num progress;
   final AppLocalizations l10n;
   final ThemeData theme;
 
+  static num _metricValue(GameSnapshot s, Achievement a) => switch (a.metric) {
+        AchievementMetric.earn => s.lifetimeEarnings,
+        AchievementMetric.stage => s.stage,
+        AchievementMetric.levels =>
+          Balance.generators.fold<int>(0, (acc, c) => acc + s.levelOf(c.id)),
+        AchievementMetric.prestige => s.prestigeStars,
+      };
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final a = achievement;
+    // select riêng từng phần: 1 khi đã đạt (achievementsClaimed chỉ tăng,
+    // không giảm) thì cờ này không đổi nữa — Riverpod tự bỏ qua rebuild cho
+    // hàng đó mãi mãi, dù snapshot tổng thể vẫn đổi mỗi giây.
+    final unlocked = ref.watch(
+      gameControllerProvider.select((s) => s.achievementsClaimed.contains(a.id)),
+    );
+    final progress =
+        ref.watch(gameControllerProvider.select((s) => _metricValue(s, a)));
     final ratio = (progress / a.threshold).clamp(0.0, 1.0).toDouble();
 
     return Opacity(
