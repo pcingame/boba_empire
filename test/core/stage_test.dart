@@ -33,28 +33,29 @@ void main() {
 
     test('unlockNextStage: ở giai đoạn cuối trả false', () {
       final s = GameState.newGame(nowMillis: 0)
-        ..stage = 6
-        ..money = 1e15;
+        ..stage = 12
+        ..money = 1e25;
       expect(unlockNextStage(s), isFalse);
-      expect(s.stage, 6);
+      expect(s.stage, 12);
     });
   });
 
   group('cấu hình giai đoạn', () {
-    test('có đúng 6 giai đoạn, giai đoạn 1 miễn phí', () {
-      expect(Balance.stages.length, 6);
+    test('có đúng 12 giai đoạn, giai đoạn 1 miễn phí', () {
+      expect(Balance.stages.length, 12);
       expect(Balance.stageConfig(1).unlockCost, 0);
     });
 
     test('nextStageConfig trỏ đúng và null ở cuối', () {
       expect(Balance.nextStageConfig(1)!.stage, 2);
       expect(Balance.nextStageConfig(5)!.stage, 6);
-      expect(Balance.nextStageConfig(6), isNull);
+      expect(Balance.nextStageConfig(11)!.stage, 12);
+      expect(Balance.nextStageConfig(12), isNull);
     });
 
-    test('mỗi generator gắn stage 1..6', () {
+    test('mỗi generator gắn stage 1..12', () {
       for (final g in Balance.generators) {
-        expect(g.stage, inInclusiveRange(1, 6));
+        expect(g.stage, inInclusiveRange(1, 12));
       }
     });
   });

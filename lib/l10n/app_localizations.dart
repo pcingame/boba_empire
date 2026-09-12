@@ -892,6 +892,78 @@ abstract class AppLocalizations {
   /// **'Trà sữa ngân hà'**
   String get genGalaxy;
 
+  /// No description provided for @genQuantumTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa lượng tử'**
+  String get genQuantumTea;
+
+  /// No description provided for @genAiTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa AI'**
+  String get genAiTea;
+
+  /// No description provided for @genParallelTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa vũ trụ song song'**
+  String get genParallelTea;
+
+  /// No description provided for @genNftTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa NFT'**
+  String get genNftTea;
+
+  /// No description provided for @genTimeTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa xuyên thời gian'**
+  String get genTimeTea;
+
+  /// No description provided for @genMultidimTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa đa chiều'**
+  String get genMultidimTea;
+
+  /// No description provided for @genBlackholeTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa hố đen'**
+  String get genBlackholeTea;
+
+  /// No description provided for @genLightTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa ánh sáng'**
+  String get genLightTea;
+
+  /// No description provided for @genRobotTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa robot'**
+  String get genRobotTea;
+
+  /// No description provided for @genHologramTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa hologram'**
+  String get genHologramTea;
+
+  /// No description provided for @genLegendTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa huyền thoại'**
+  String get genLegendTea;
+
+  /// No description provided for @genEternalTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa vĩnh cửu'**
+  String get genEternalTea;
+
   /// No description provided for @stage4.
   ///
   /// In vi, this message translates to:
@@ -909,6 +981,42 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đế chế toàn cầu'**
   String get stage6;
+
+  /// No description provided for @stage7.
+  ///
+  /// In vi, this message translates to:
+  /// **'Niêm yết sàn chứng khoán'**
+  String get stage7;
+
+  /// No description provided for @stage8.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tập đoàn đa ngành'**
+  String get stage8;
+
+  /// No description provided for @stage9.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quỹ đầu tư toàn cầu'**
+  String get stage9;
+
+  /// No description provided for @stage10.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuỗi cung ứng nông trại'**
+  String get stage10;
+
+  /// No description provided for @stage11.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đế chế công nghệ AI'**
+  String get stage11;
+
+  /// No description provided for @stage12.
+  ///
+  /// In vi, this message translates to:
+  /// **'Huyền thoại trà sữa'**
+  String get stage12;
 
   /// No description provided for @settingsTitle.
   ///

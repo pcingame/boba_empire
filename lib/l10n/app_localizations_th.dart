@@ -504,6 +504,42 @@ class AppLocalizationsTh extends AppLocalizations {
   String get genGalaxy => 'ชานมกาแล็กซี';
 
   @override
+  String get genQuantumTea => 'ชานมควอนตัม';
+
+  @override
+  String get genAiTea => 'ชานมเอไอ';
+
+  @override
+  String get genParallelTea => 'ชานมจักรวาลคู่ขนาน';
+
+  @override
+  String get genNftTea => 'ชานมเอ็นเอฟที';
+
+  @override
+  String get genTimeTea => 'ชานมข้ามเวลา';
+
+  @override
+  String get genMultidimTea => 'ชานมหลายมิติ';
+
+  @override
+  String get genBlackholeTea => 'ชานมหลุมดำ';
+
+  @override
+  String get genLightTea => 'ชานมความเร็วแสง';
+
+  @override
+  String get genRobotTea => 'ชานมหุ่นยนต์';
+
+  @override
+  String get genHologramTea => 'ชานมโฮโลแกรม';
+
+  @override
+  String get genLegendTea => 'ชานมตำนาน';
+
+  @override
+  String get genEternalTea => 'ชานมนิรันดร์';
+
+  @override
   String get stage4 => 'โรงงานบรูเล่';
 
   @override
@@ -511,6 +547,24 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get stage6 => 'อาณาจักรระดับโลก';
+
+  @override
+  String get stage7 => 'เข้าตลาดหลักทรัพย์';
+
+  @override
+  String get stage8 => 'กลุ่มบริษัทข้ามธุรกิจ';
+
+  @override
+  String get stage9 => 'กองทุนการลงทุนระดับโลก';
+
+  @override
+  String get stage10 => 'ห่วงโซ่อุปทานฟาร์ม';
+
+  @override
+  String get stage11 => 'อาณาจักรเทคโนโลยีเอไอ';
+
+  @override
+  String get stage12 => 'ตำนานชานม';
 
   @override
   String get settingsTitle => 'ตั้งค่า';

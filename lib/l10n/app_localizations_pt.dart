@@ -508,6 +508,42 @@ class AppLocalizationsPt extends AppLocalizations {
   String get genGalaxy => 'Chá com Leite Galáxia';
 
   @override
+  String get genQuantumTea => 'Chá com Leite Quântico';
+
+  @override
+  String get genAiTea => 'Chá com Leite IA';
+
+  @override
+  String get genParallelTea => 'Chá com Leite Universo Paralelo';
+
+  @override
+  String get genNftTea => 'Chá com Leite NFT';
+
+  @override
+  String get genTimeTea => 'Chá com Leite Viagem no Tempo';
+
+  @override
+  String get genMultidimTea => 'Chá com Leite Multidimensional';
+
+  @override
+  String get genBlackholeTea => 'Chá com Leite Buraco Negro';
+
+  @override
+  String get genLightTea => 'Chá com Leite Velocidade da Luz';
+
+  @override
+  String get genRobotTea => 'Chá com Leite Robô';
+
+  @override
+  String get genHologramTea => 'Chá com Leite Holograma';
+
+  @override
+  String get genLegendTea => 'Chá com Leite Lendário';
+
+  @override
+  String get genEternalTea => 'Chá com Leite Eterno';
+
+  @override
   String get stage4 => 'Oficina Brûlée';
 
   @override
@@ -515,6 +551,24 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get stage6 => 'Império Global';
+
+  @override
+  String get stage7 => 'Abertura de Capital (IPO)';
+
+  @override
+  String get stage8 => 'Conglomerado';
+
+  @override
+  String get stage9 => 'Fundo de Investimento Global';
+
+  @override
+  String get stage10 => 'Cadeia de Suprimentos Agrícola';
+
+  @override
+  String get stage11 => 'Império Tecnológico de IA';
+
+  @override
+  String get stage12 => 'Lenda do Chá com Leite';
 
   @override
   String get settingsTitle => 'Configurações';

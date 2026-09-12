@@ -1,6 +1,12 @@
-/// Cốt truyện "Đế Chế Trà Sữa" — 8 chương gắn vào các mốc SẴN CÓ (giai đoạn,
+/// Cốt truyện "Đế Chế Trà Sữa" — 18 chương gắn vào các mốc SẴN CÓ (giai đoạn,
 /// prestige, hạ đối thủ). Hàm thuần + vài hàm mutate nhỏ (giống [quests.dart]:
 /// `claimQuest`). Prose nằm ở [story_content.dart], không ở ARB.
+///
+/// Chương 9-18 (2026-09-12, mở rộng thế giới): tiếp nối sau "Đế chế toàn cầu"
+/// (giai đoạn 6) với hồi truyện IPO/tập đoàn đa ngành + đối thủ mới "Vy -
+/// Golden Orb" (thuần narrative, KHÔNG có cơ chế sự kiện đối thủ song song
+/// như Hải — xem ghi chú ở [rivalDefeatable] trong rival.dart, cơ chế đó vẫn
+/// chỉ gắn với giai đoạn 1-6/Hải).
 library;
 
 import 'models.dart';
@@ -8,8 +14,9 @@ import 'models.dart';
 /// Điều kiện kích hoạt một chương.
 enum StoryTrigger { gameStart, stage, firstPrestige, rivalDefeated }
 
-/// Trục nào của lựa chọn nhánh (A = Chương 6, B = Chương 8).
-enum StoryChoiceAxis { a, b }
+/// Trục nào của lựa chọn nhánh (A = Chương 6, B = Chương 8, C = Chương 13,
+/// D = Chương 18).
+enum StoryChoiceAxis { a, b, c, d }
 
 /// Một điểm rẽ nhánh: ghi [optionA] hoặc [optionB] vào [axis]. Mỗi lựa chọn
 /// cộng một perk nhỏ vĩnh viễn (xem [economy.storyChoiceTapMultiplier] /
@@ -31,7 +38,7 @@ class StoryChapter {
     this.choice,
   });
 
-  /// 1..8 — cũng là số hiển thị "Chương {id}".
+  /// 1..18 — cũng là số hiển thị "Chương {id}".
   final int id;
 
   /// Biểu tượng nhân vật/bối cảnh (không phụ thuộc ngôn ngữ).
@@ -70,6 +77,29 @@ const List<StoryChapter> storyChapters = [
     trigger: StoryTrigger.rivalDefeated,
     choice: StoryChoiceSpec(StoryChoiceAxis.b, 'acquire', 'identity'),
   ),
+  // --- Mở rộng thế giới (2026-09-12): giai đoạn 7-12, đối thủ mới "Vy". ---
+  StoryChapter(id: 9, emoji: '📈', trigger: StoryTrigger.stage, stageValue: 7),
+  StoryChapter(id: 10, emoji: '🏢', trigger: StoryTrigger.stage, stageValue: 8),
+  StoryChapter(id: 11, emoji: '💼', trigger: StoryTrigger.stage, stageValue: 8),
+  StoryChapter(id: 12, emoji: '⚔️', trigger: StoryTrigger.stage, stageValue: 9),
+  StoryChapter(
+    id: 13,
+    emoji: '🧭',
+    trigger: StoryTrigger.stage,
+    stageValue: 9,
+    choice: StoryChoiceSpec(StoryChoiceAxis.c, 'independent', 'merger'),
+  ),
+  StoryChapter(id: 14, emoji: '🌾', trigger: StoryTrigger.stage, stageValue: 10),
+  StoryChapter(id: 15, emoji: '🌐', trigger: StoryTrigger.stage, stageValue: 10),
+  StoryChapter(id: 16, emoji: '🤖', trigger: StoryTrigger.stage, stageValue: 11),
+  StoryChapter(id: 17, emoji: '🤝', trigger: StoryTrigger.stage, stageValue: 12),
+  StoryChapter(
+    id: 18,
+    emoji: '👑',
+    trigger: StoryTrigger.stage,
+    stageValue: 12,
+    choice: StoryChoiceSpec(StoryChoiceAxis.d, 'soul', 'global'),
+  ),
 ];
 
 StoryChapter chapterById(int id) =>
@@ -85,8 +115,12 @@ bool _triggerMet(StoryChapter c, GameState s) => switch (c.trigger) {
       StoryTrigger.rivalDefeated => s.rivalDefeated,
     };
 
-String? _choiceValue(GameState s, StoryChoiceAxis axis) =>
-    axis == StoryChoiceAxis.a ? s.storyChoiceA : s.storyChoiceB;
+String? _choiceValue(GameState s, StoryChoiceAxis axis) => switch (axis) {
+      StoryChoiceAxis.a => s.storyChoiceA,
+      StoryChoiceAxis.b => s.storyChoiceB,
+      StoryChoiceAxis.c => s.storyChoiceC,
+      StoryChoiceAxis.d => s.storyChoiceD,
+    };
 
 /// Chương cần hiển thị ngay bây giờ, hoặc null nếu không có.
 ///
@@ -124,12 +158,19 @@ bool applyStoryChoice(GameState s, int chapterId, String optionKey) {
   final choice = chapterById(chapterId).choice;
   if (choice == null) return false;
   if (optionKey != choice.optionA && optionKey != choice.optionB) return false;
-  if (choice.axis == StoryChoiceAxis.a) {
-    if (s.storyChoiceA != null) return false;
-    s.storyChoiceA = optionKey;
-  } else {
-    if (s.storyChoiceB != null) return false;
-    s.storyChoiceB = optionKey;
+  switch (choice.axis) {
+    case StoryChoiceAxis.a:
+      if (s.storyChoiceA != null) return false;
+      s.storyChoiceA = optionKey;
+    case StoryChoiceAxis.b:
+      if (s.storyChoiceB != null) return false;
+      s.storyChoiceB = optionKey;
+    case StoryChoiceAxis.c:
+      if (s.storyChoiceC != null) return false;
+      s.storyChoiceC = optionKey;
+    case StoryChoiceAxis.d:
+      if (s.storyChoiceD != null) return false;
+      s.storyChoiceD = optionKey;
   }
   return true;
 }

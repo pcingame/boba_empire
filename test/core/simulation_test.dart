@@ -197,7 +197,7 @@ void main() {
 
     test('giai đoạn cuối -> false', () {
       final s = GameState.newGame(nowMillis: 0)
-        ..stage = 6
+        ..stage = 12
         ..gems = 99999;
       expect(buyInstantStageUnlock(s), isFalse);
     });
