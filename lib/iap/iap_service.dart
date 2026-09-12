@@ -16,7 +16,16 @@ abstract interface class IapService {
   /// Các sản phẩm đã mua/khôi phục THÀNH CÔNG — nghe để trao thưởng.
   Stream<IapProduct> get purchases;
 
-  /// Bắt đầu luồng mua một sản phẩm (kết quả về qua [purchases]).
+  /// Phát ra khi 1 lượt mua KẾT THÚC mà KHÔNG thành công (lỗi hoặc người
+  /// chơi tự huỷ ở màn thanh toán) — TÁCH RIÊNG khỏi [purchases] (chỉ báo
+  /// giao hàng thành công) vì mục đích khác hẳn: cái này chỉ để UI tắt
+  /// trạng thái "đang xử lý" cục bộ (VD gem_shop.dart), không phải để trao
+  /// thưởng. Từ lúc gọi [buy] tới lúc CÓ 1 TRONG 2 stream này phát ra là
+  /// khoảng chờ mở màn thanh toán của store — trước đây UI im lặng suốt
+  /// khoảng này, trông như treo máy.
+  Stream<IapProduct> get purchaseFailed;
+
+  /// Bắt đầu luồng mua một sản phẩm (kết quả về qua [purchases]/[purchaseFailed]).
   void buy(IapProduct product);
 
   /// Khôi phục sản phẩm non-consumable đã mua (Gỡ QC / Gói khởi động).
@@ -32,6 +41,9 @@ class StubIapService implements IapService {
 
   @override
   Stream<IapProduct> get purchases => const Stream.empty();
+
+  @override
+  Stream<IapProduct> get purchaseFailed => const Stream.empty();
 
   @override
   void buy(IapProduct product) {}

@@ -17,6 +17,8 @@ class _FakeIap implements IapService {
   @override
   Stream<IapProduct> get purchases => _c.stream;
   @override
+  Stream<IapProduct> get purchaseFailed => const Stream.empty();
+  @override
   Future<Map<IapProduct, String>> loadPrices() async => const {};
   @override
   void buy(IapProduct product) {}
