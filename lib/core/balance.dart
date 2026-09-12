@@ -123,6 +123,20 @@ class Balance {
   /// Hệ số tăng giá gems mỗi cấp (dùng chung cho các vật phẩm).
   static const double gemCostGrowth = 2.0;
 
+  /// Trần CỨNG số cấp tối đa cho "Tăng thu nhập"/"Kho lạnh offline" — cùng
+  /// nguyên tắc phòng thủ với [maxGeneratorLevel], nhưng SỐ KHÁC HẲN vì hai
+  /// công thức tăng nhanh khác nhau nhiều: gemBoostCost/offlineCapCost dùng
+  /// growth=2.0 (gấp đôi mỗi cấp) nên tràn thành `double.infinity` sớm hơn
+  /// NHIỀU so với các nguồn thu chính (growth chỉ 1.15) — verify thực tế:
+  /// `5 * pow(2.0, 1023)` đã là Infinity, và `.ceil()` trên Infinity NÉM LỖI
+  /// (`UnsupportedError`) thay vì bão hoà êm như các phép tính khác trong
+  /// game — nghĩa là chỉ cần MỞ Cửa hàng Kim Cương (không cần đủ gems để
+  /// mua) cũng đã crash nếu cấp vượt trần này. Chưa ai đạt tới trong thực tế
+  /// (gems tích rất chậm), nhưng đây đúng lớp lỗi gốc đã gây bug "Xu âm" đầu
+  /// phiên — không nên tin "chưa ai đạt tới" mãi mãi. 200 dư sức an toàn xa
+  /// mốc 1023 mà vẫn dư thừa so với tiến trình gems bình thường.
+  static const int maxGemShopLevel = 200;
+
   /// Vật phẩm "Tăng thu nhập": +10% thu nhập vĩnh viễn mỗi cấp.
   static const int gemBoostBaseCost = 5;
   static const double gemBoostPerLevel = 0.10;

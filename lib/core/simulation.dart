@@ -98,8 +98,11 @@ bool unlockNextStage(GameState state) {
   return true;
 }
 
-/// Mua/nâng vật phẩm "Tăng thu nhập" bằng Kim Cương. True nếu đủ gems.
+/// Mua/nâng vật phẩm "Tăng thu nhập" bằng Kim Cương. True nếu đủ gems hoặc đã
+/// đạt trần cấp (xem Balance.maxGemShopLevel — gemBoostCost() tràn
+/// double.infinity ở cấp cao, .ceil() ném lỗi thay vì bão hoà êm).
 bool buyGemBoost(GameState state) {
+  if (state.gemBoostLevel >= Balance.maxGemShopLevel) return false;
   final cost = gemBoostCost(state.gemBoostLevel);
   if (state.gems < cost) return false;
   state.gems -= cost;
@@ -196,8 +199,10 @@ int autoBuyBest(
   return n;
 }
 
-/// Mua/nâng vật phẩm "Kho lạnh offline" bằng Kim Cương. True nếu đủ gems.
+/// Mua/nâng vật phẩm "Kho lạnh offline" bằng Kim Cương. True nếu đủ gems hoặc
+/// đã đạt trần cấp (xem Balance.maxGemShopLevel — cùng lý do buyGemBoost).
 bool buyOfflineCap(GameState state) {
+  if (state.offlineCapLevel >= Balance.maxGemShopLevel) return false;
   final cost = offlineCapCost(state.offlineCapLevel);
   if (state.gems < cost) return false;
   state.gems -= cost;
