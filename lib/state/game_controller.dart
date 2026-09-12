@@ -84,6 +84,19 @@ class GameController extends Notifier<GameSnapshot> {
     _game = _storage.load() ?? GameState.newGame(nowMillis: _clock());
     _cloudVersion = _storage.loadCloudVersion();
     _cloudConflictPending = _storage.loadCloudConflictPending();
+    // Bù mốc cho save đã hoàn thành Chương 18 TỪ TRƯỚC lúc sửa bug 2026-09-12
+    // (makeStoryChoice() không chốt storyCompleteSeconds cho chương lựa chọn
+    // CUỐI — xem story-speedrun-completion-never-fired memory): người chơi
+    // đã chọn nhánh xong (storyChapter đã lên 18) nhưng mốc chưa từng được
+    // ghi, nên KHÔNG BAO GIỜ hiện lên Bảng xếp hạng tốc độ dù đã hoàn thành
+    // thật. Không có cách nào biết lại đúng thời điểm họ thực sự hoàn thành
+    // (không được ghi lúc đó) — dùng thời điểm mở app NÀY làm mốc best-effort
+    // (số giây sẽ cao hơn thực tế, nhưng còn hơn không bao giờ xuất hiện được).
+    if (_game.storyChapter >= storyChapters.last.id &&
+        _game.storyCompleteSeconds == null) {
+      _game.storyCompleteSeconds =
+          max(1, (_clock() - _game.firstPlayedMillis) ~/ 1000);
+    }
     // Tính tiền kiếm được lúc app tắt (có cap + chống lùi giờ ở tầng core).
     _offlineEarned = applyOfflineEarnings(
       _game,
