@@ -297,10 +297,20 @@ class _PerkRow extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          FilledButton.tonal(
-            key: Key('prestige-perk-$name'),
-            onPressed: spendable >= cost ? onBuy : null,
-            child: Text(l10n.prestigeStarCost(cost)),
+          // Flexible + FittedBox: hầu hết perk ở đây KHÔNG có trần cấp (giá
+          // Sao tăng gấp đôi mỗi cấp mãi mãi) — cấp đủ cao thì `cost` (int
+          // thô, không qua formatNumber) có thể dài hàng chục chữ số và làm
+          // nút tự giãn tràn hàng, cùng lớp bug đã gặp ở _ShopTile (xem
+          // shop-tile-overflow-pattern memory).
+          Flexible(
+            child: FilledButton.tonal(
+              key: Key('prestige-perk-$name'),
+              onPressed: spendable >= cost ? onBuy : null,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(l10n.prestigeStarCost(cost)),
+              ),
+            ),
           ),
         ],
       ),
