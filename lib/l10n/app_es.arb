@@ -256,5 +256,11 @@
   "storySpeedrunMenuTitle": "Speedrun",
   "storySpeedrunTitle": "Clasificación de Speedrun",
   "storySpeedrunNotCompletedYet": "Aún no has terminado la historia — completa el Capítulo 18 para entrar en la clasificación.",
-  "storySpeedrunEmpty": "Nadie ha terminado la historia todavía — ¡sé el primero!"
+  "storySpeedrunEmpty": "Nadie ha terminado la historia todavía — ¡sé el primero!",
+
+  "arenaLeaderboardMenuTitle": "Clasificación PK",
+  "arenaLeaderboardTitle": "Clasificación PK",
+  "arenaLeaderboardNotPlayedYet": "Aún no has jugado ninguna partida de la Arena — gana una para aparecer aquí.",
+  "arenaLeaderboardRecord": "{wins}V - {losses}D",
+  "@arenaLeaderboardRecord": { "placeholders": { "wins": { "type": "int" }, "losses": { "type": "int" } } }
 }

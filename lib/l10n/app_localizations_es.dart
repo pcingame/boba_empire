@@ -837,4 +837,19 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get storySpeedrunEmpty =>
       'Nadie ha terminado la historia todavía — ¡sé el primero!';
+
+  @override
+  String get arenaLeaderboardMenuTitle => 'Clasificación PK';
+
+  @override
+  String get arenaLeaderboardTitle => 'Clasificación PK';
+
+  @override
+  String get arenaLeaderboardNotPlayedYet =>
+      'Aún no has jugado ninguna partida de la Arena — gana una para aparecer aquí.';
+
+  @override
+  String arenaLeaderboardRecord(int wins, int losses) {
+    return '${wins}V - ${losses}D';
+  }
 }

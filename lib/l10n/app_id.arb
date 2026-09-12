@@ -256,5 +256,11 @@
   "storySpeedrunMenuTitle": "Speedrun",
   "storySpeedrunTitle": "Papan Peringkat Speedrun",
   "storySpeedrunNotCompletedYet": "Anda belum menyelesaikan cerita — selesaikan Bab 18 untuk masuk peringkat.",
-  "storySpeedrunEmpty": "Belum ada yang menyelesaikan cerita — jadilah yang pertama!"
+  "storySpeedrunEmpty": "Belum ada yang menyelesaikan cerita — jadilah yang pertama!",
+
+  "arenaLeaderboardMenuTitle": "Papan Peringkat PK",
+  "arenaLeaderboardTitle": "Papan Peringkat PK",
+  "arenaLeaderboardNotPlayedYet": "Kamu belum bertanding di Arena — menangkan satu pertandingan untuk muncul di sini.",
+  "arenaLeaderboardRecord": "{wins}M - {losses}K",
+  "@arenaLeaderboardRecord": { "placeholders": { "wins": { "type": "int" }, "losses": { "type": "int" } } }
 }

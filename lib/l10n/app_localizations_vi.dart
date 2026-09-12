@@ -832,4 +832,19 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get storySpeedrunEmpty =>
       'Chưa có ai hoàn thành cốt truyện — là bạn đây!';
+
+  @override
+  String get arenaLeaderboardMenuTitle => 'Bảng xếp hạng PK';
+
+  @override
+  String get arenaLeaderboardTitle => 'Bảng xếp hạng PK';
+
+  @override
+  String get arenaLeaderboardNotPlayedYet =>
+      'Bạn chưa đấu trận nào — thắng 1 trận Đấu Trường để xuất hiện ở đây.';
+
+  @override
+  String arenaLeaderboardRecord(int wins, int losses) {
+    return '$wins thắng - $losses bại';
+  }
 }

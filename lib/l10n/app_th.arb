@@ -256,5 +256,11 @@
   "storySpeedrunMenuTitle": "สปีดรัน",
   "storySpeedrunTitle": "อันดับสปีดรัน",
   "storySpeedrunNotCompletedYet": "คุณยังไม่จบเนื้อเรื่อง — จบตอนที่ 18 เพื่อขึ้นอันดับ",
-  "storySpeedrunEmpty": "ยังไม่มีใครจบเนื้อเรื่อง — เป็นคนแรกสิ!"
+  "storySpeedrunEmpty": "ยังไม่มีใครจบเนื้อเรื่อง — เป็นคนแรกสิ!",
+
+  "arenaLeaderboardMenuTitle": "อันดับ PK",
+  "arenaLeaderboardTitle": "อันดับ PK",
+  "arenaLeaderboardNotPlayedYet": "คุณยังไม่เคยแข่งขันในสนามประลอง — ชนะสักครั้งเพื่อปรากฏที่นี่",
+  "arenaLeaderboardRecord": "{wins}ชนะ - {losses}แพ้",
+  "@arenaLeaderboardRecord": { "placeholders": { "wins": { "type": "int" }, "losses": { "type": "int" } } }
 }

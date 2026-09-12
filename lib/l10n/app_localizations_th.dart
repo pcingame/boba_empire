@@ -827,4 +827,19 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get storySpeedrunEmpty => 'ยังไม่มีใครจบเนื้อเรื่อง — เป็นคนแรกสิ!';
+
+  @override
+  String get arenaLeaderboardMenuTitle => 'อันดับ PK';
+
+  @override
+  String get arenaLeaderboardTitle => 'อันดับ PK';
+
+  @override
+  String get arenaLeaderboardNotPlayedYet =>
+      'คุณยังไม่เคยแข่งขันในสนามประลอง — ชนะสักครั้งเพื่อปรากฏที่นี่';
+
+  @override
+  String arenaLeaderboardRecord(int wins, int losses) {
+    return '$winsชนะ - $lossesแพ้';
+  }
 }

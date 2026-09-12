@@ -256,5 +256,11 @@
   "storySpeedrunMenuTitle": "Speedrun",
   "storySpeedrunTitle": "Speedrun Leaderboard",
   "storySpeedrunNotCompletedYet": "You haven't finished the story yet — complete Chapter 18 to get ranked.",
-  "storySpeedrunEmpty": "No one has finished the story yet — be the first!"
+  "storySpeedrunEmpty": "No one has finished the story yet — be the first!",
+
+  "arenaLeaderboardMenuTitle": "PK Leaderboard",
+  "arenaLeaderboardTitle": "PK Leaderboard",
+  "arenaLeaderboardNotPlayedYet": "You haven't fought any Arena matches yet — win one to appear here.",
+  "arenaLeaderboardRecord": "{wins}W - {losses}L",
+  "@arenaLeaderboardRecord": { "placeholders": { "wins": { "type": "int" }, "losses": { "type": "int" } } }
 }
