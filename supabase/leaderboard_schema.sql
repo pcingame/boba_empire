@@ -202,3 +202,67 @@ as $$
 $$;
 
 grant execute on function leaderboard_around_me(integer) to authenticated;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Thưởng Kim Cương cho top hạng (2026-09-12) — không gắn với "mùa/tuần"
+-- (leaderboard này không reset định kỳ, xem known-issues-backlog memory):
+-- thay vì thưởng 1 lần rồi thôi (dần vô nghĩa vì top luôn là cùng vài
+-- người), đây là thưởng LẶP LẠI mỗi [reward_cooldown] giờ NẾU vẫn còn giữ
+-- hạng đủ cao lúc kiểm tra — top giữ hạng càng lâu thì nhận càng nhiều lần,
+-- nhưng phải quay lại đúng nhịp thay vì nhận 1 lần xong bỏ quên.
+--
+-- KHÔNG cần security definer: bảng đã cho SELECT công khai, và policy
+-- update-own-row đã cho phép tự ghi last_reward_claimed_at của chính mình
+-- — hàm chạy đúng quyền người gọi là đủ, không cần bypass RLS.
+alter table leaderboard_entries
+  add column if not exists last_reward_claimed_at timestamptz;
+
+-- Trả về số Kim Cương vừa nhận (0 nếu chưa đủ điều kiện: chưa từng nộp
+-- điểm, hạng chưa đủ cao, hoặc còn trong 24h kể từ lần nhận trước). Bậc
+-- thưởng: hạng 1 = 100💎, hạng 2-3 = 50💎, hạng 4-10 = 20💎 — PHẢI khớp
+-- Balance.leaderboardRewardTiers (lib/core/balance.dart, chỉ dùng để HIỂN
+-- THỊ gợi ý trên UI, không phải nguồn thật cấp Kim Cương — đổi 1 bên thì
+-- đổi cả hai).
+create or replace function leaderboard_claim_reward()
+returns integer
+language plpgsql
+as $$
+declare
+  my_rank bigint;
+  last_claim timestamptz;
+  reward integer;
+begin
+  select r.rank, e.last_reward_claimed_at into my_rank, last_claim
+  from (
+    select user_id, row_number() over (order by lifetime_earnings desc) as rank
+    from leaderboard_entries
+  ) r
+  join leaderboard_entries e on e.user_id = r.user_id
+  where r.user_id = auth.uid();
+
+  if my_rank is null then
+    return 0; -- chưa từng nộp điểm lên bảng xếp hạng
+  end if;
+
+  if last_claim is not null and now() - last_claim < interval '24 hours' then
+    return 0; -- còn trong thời gian chờ giữa 2 lần nhận
+  end if;
+
+  reward := case
+    when my_rank = 1 then 100
+    when my_rank between 2 and 3 then 50
+    when my_rank between 4 and 10 then 20
+    else 0
+  end;
+
+  if reward > 0 then
+    update leaderboard_entries
+      set last_reward_claimed_at = now()
+      where user_id = auth.uid();
+  end if;
+
+  return reward;
+end;
+$$;
+
+grant execute on function leaderboard_claim_reward() to authenticated;

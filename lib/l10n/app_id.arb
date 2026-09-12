@@ -245,6 +245,10 @@
   "leaderboardStars": "{stars} ⭐",
   "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
   "leaderboardEmpty": "Belum ada siapa-siapa di papan peringkat — itu kamu!",
+  "leaderboardRewardSnack": "🎉 Anda berada di peringkat atas! +{gems} 💎",
+  "@leaderboardRewardSnack": { "placeholders": { "gems": { "type": "int" } } },
+  "leaderboardRewardInfo": "Top 1: {top1}💎 · Top 2-3: {top23}💎 · Top 4-10: {top410}💎 — tiap 24 jam selama masih peringkat",
+  "@leaderboardRewardInfo": { "placeholders": { "top1": { "type": "int" }, "top23": { "type": "int" }, "top410": { "type": "int" } } },
   "leaderboardChangeName": "Ganti nama",
   "leaderboardRetry": "Coba lagi",
 

@@ -245,6 +245,10 @@
   "leaderboardStars": "{stars} ⭐",
   "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
   "leaderboardEmpty": "ยังไม่มีใครในกระดานอันดับ — คือคุณเลย!",
+  "leaderboardRewardSnack": "🎉 คุณอยู่ในอันดับต้น ๆ! +{gems} 💎",
+  "@leaderboardRewardSnack": { "placeholders": { "gems": { "type": "int" } } },
+  "leaderboardRewardInfo": "อันดับ 1: {top1}💎 · อันดับ 2-3: {top23}💎 · อันดับ 4-10: {top410}💎 — ทุก 24 ชม. ถ้ายังติดอันดับ",
+  "@leaderboardRewardInfo": { "placeholders": { "top1": { "type": "int" }, "top23": { "type": "int" }, "top410": { "type": "int" } } },
   "leaderboardChangeName": "เปลี่ยนชื่อ",
   "leaderboardRetry": "ลองอีกครั้ง",
 

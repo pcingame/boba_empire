@@ -806,6 +806,16 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
+  /// Trao Kim Cương thưởng giữ hạng cao trên Bảng xếp hạng — xem
+  /// `lib/leaderboard/leaderboard_controller.dart`. Cùng nguyên tắc với
+  /// [grantArenaReward]: module Bảng xếp hạng không đụng trực tiếp
+  /// GameState, chỉ gọi qua đây.
+  void grantLeaderboardReward(int gems) {
+    grantGems(_game, gems.toDouble());
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
   /// Bật "Gỡ quảng cáo" (IAP). Idempotent — an toàn khi khôi phục nhiều lần.
   void applyRemoveAds() {
     setAdsRemoved(_game);

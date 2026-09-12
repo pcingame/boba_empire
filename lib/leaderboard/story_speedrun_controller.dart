@@ -8,11 +8,13 @@
 /// đặt tên ở đâu (kể cả Bảng xếp hạng chính — dùng chung 1 tên).
 library;
 
+import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../data/analytics_repository.dart';
 import '../state/game_providers.dart';
 import 'story_speedrun_repository.dart';
 
@@ -51,6 +53,7 @@ class StorySpeedrunError extends StorySpeedrunViewState {
 
 class StorySpeedrunController extends Notifier<StorySpeedrunViewState> {
   StorySpeedrunRepository? _repo;
+  AnalyticsRepository? _analyticsRepo;
 
   /// UI gán trước khi gọi [refresh]/[submitNickname] — trả về số giây hoàn
   /// thành (null nếu chưa hoàn thành cốt truyện).
@@ -64,8 +67,23 @@ class StorySpeedrunController extends Notifier<StorySpeedrunViewState> {
         ref.read(sharedPreferencesProvider),
       );
 
+  /// Lazy + tự bắt lỗi giống GameController._analytics — không bao giờ được
+  /// phép ảnh hưởng tới việc xem bảng xếp hạng nếu Supabase có vấn đề.
+  AnalyticsRepository? get _analytics {
+    if (_analyticsRepo != null) return _analyticsRepo;
+    try {
+      return _analyticsRepo = AnalyticsRepository(
+        Supabase.instance.client,
+        ref.read(sharedPreferencesProvider),
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<void> refresh() async {
     state = const StorySpeedrunLoading();
+    unawaited(_analytics?.log('speedrun_viewed'));
     try {
       final completeSeconds = getMyCompleteSeconds?.call();
       if (completeSeconds != null) {

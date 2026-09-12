@@ -103,4 +103,14 @@ class LeaderboardRepository {
     ) as List;
     return rows.map((r) => LeaderboardEntry.fromRow(r as Map<String, dynamic>)).toList();
   }
+
+  /// Thử nhận thưởng Kim Cương theo hạng — trả về số Kim Cương vừa nhận (0
+  /// nếu chưa đủ điều kiện: hạng chưa đủ cao, hoặc còn trong thời gian chờ
+  /// giữa 2 lần nhận). An toàn gọi lại nhiều lần — server tự kiểm tra điều
+  /// kiện, không phải lỗi nếu trả về 0. Xem `leaderboard_claim_reward()`
+  /// trong leaderboard_schema.sql cho bậc thưởng/thời gian chờ thật.
+  Future<int> claimReward() async {
+    final result = await _client.rpc('leaderboard_claim_reward');
+    return (result as num).toInt();
+  }
 }

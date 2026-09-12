@@ -16,6 +16,17 @@ class Balance {
   /// % thu nhập cộng thêm cho mỗi Sao nhượng quyền (bonus vĩnh viễn).
   static const double bonusPerStar = 0.02; // +2%/sao
 
+  /// Bậc thưởng Kim Cương theo hạng trên Bảng xếp hạng (lặp lại mỗi 24h nếu
+  /// còn giữ hạng — xem `leaderboard_claim_reward()` trong
+  /// leaderboard_schema.sql). CHỈ dùng để HIỂN THỊ gợi ý trên UI — Kim
+  /// Cương thật do server cấp qua hàm đó; đổi 1 bên thì PHẢI đổi cả hai.
+  /// (rank tối đa, số Kim Cương) — tra theo thứ tự, hạng đầu tiên khớp.
+  static const List<(int, int)> leaderboardRewardTiers = [
+    (1, 100),
+    (3, 50),
+    (10, 20),
+  ];
+
   /// Hệ số quy đổi Sao: sao = floor(k * sqrt(tổng_thu_nhập_cả_đời)).
   /// Giảm từ 0.05 → 0.02 (2026-09-12): phản hồi trực tiếp từ chơi thật —
   /// Sao tăng quá nhanh (save test lên tới ~7,3 TỶ Sao = +146 tỷ % thu

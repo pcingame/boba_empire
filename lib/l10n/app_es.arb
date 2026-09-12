@@ -245,6 +245,10 @@
   "leaderboardStars": "{stars} ⭐",
   "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
   "leaderboardEmpty": "Aún no hay nadie en la clasificación — ¡eres tú!",
+  "leaderboardRewardSnack": "🎉 ¡Estás en un puesto alto! +{gems} 💎",
+  "@leaderboardRewardSnack": { "placeholders": { "gems": { "type": "int" } } },
+  "leaderboardRewardInfo": "Top 1: {top1}💎 · Top 2-3: {top23}💎 · Top 4-10: {top410}💎 — cada 24h mientras estés en el ranking",
+  "@leaderboardRewardInfo": { "placeholders": { "top1": { "type": "int" }, "top23": { "type": "int" }, "top410": { "type": "int" } } },
   "leaderboardChangeName": "Cambiar nombre",
   "leaderboardRetry": "Reintentar",
 

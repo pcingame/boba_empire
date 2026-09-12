@@ -6,11 +6,13 @@
 /// `leaderboard_page.dart`), giữ tách biệt khỏi `game_controller.dart`.
 library;
 
+import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../data/analytics_repository.dart';
 import '../state/game_providers.dart';
 import 'leaderboard_repository.dart';
 
@@ -56,9 +58,15 @@ class LeaderboardError extends LeaderboardViewState {
 
 class LeaderboardController extends Notifier<LeaderboardViewState> {
   LeaderboardRepository? _repo;
+  AnalyticsRepository? _analyticsRepo;
 
   /// UI gán trước khi gọi [refresh]/[submitNickname].
   LocalStats Function()? getLocalStats;
+
+  /// UI gán để nhận Kim Cương thưởng hạng (nếu có) — gọi ĐÚNG 1 LẦN khi vừa
+  /// nhận thành công trong [_submitAndLoad], giống cách ArenaController
+  /// dùng `onRewardGems` để không đụng trực tiếp GameState.
+  void Function(int gems)? onRewardGems;
 
   @override
   LeaderboardViewState build() => const LeaderboardLoading();
@@ -68,10 +76,25 @@ class LeaderboardController extends Notifier<LeaderboardViewState> {
         ref.read(sharedPreferencesProvider),
       );
 
+  /// Lazy + tự bắt lỗi giống GameController._analytics — không bao giờ được
+  /// phép ảnh hưởng tới việc xem/nộp bảng xếp hạng nếu Supabase có vấn đề.
+  AnalyticsRepository? get _analytics {
+    if (_analyticsRepo != null) return _analyticsRepo;
+    try {
+      return _analyticsRepo = AnalyticsRepository(
+        Supabase.instance.client,
+        ref.read(sharedPreferencesProvider),
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
   /// Gọi khi mở màn Bảng xếp hạng. Đã có tên → tự nộp điểm mới nhất rồi
   /// tải danh sách. Chưa có tên → chuyển sang màn hỏi tên trước.
   Future<void> refresh() async {
     state = const LeaderboardLoading();
+    unawaited(_analytics?.log('leaderboard_viewed'));
     try {
       final nickname = _repository.cachedNickname;
       if (nickname == null) {
@@ -120,6 +143,15 @@ class LeaderboardController extends Notifier<LeaderboardViewState> {
       myRank: myRank,
       myUserId: myUserId,
     );
+    // Thử nhận thưởng hạng SAU KHI đã hiện danh sách — server tự kiểm tra
+    // điều kiện (hạng đủ cao + qua thời gian chờ), trả 0 nếu chưa đủ, không
+    // phải lỗi. Không chặn/làm chậm việc hiện danh sách nếu bước này lỗi.
+    try {
+      final gems = await _repository.claimReward();
+      if (gems > 0) onRewardGems?.call(gems);
+    } catch (e) {
+      developer.log('nhận thưởng hạng lỗi (bỏ qua): $e', name: 'Leaderboard');
+    }
   }
 
   void _fail(Object error) {

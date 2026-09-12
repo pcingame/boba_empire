@@ -293,6 +293,10 @@
   "leaderboardStars": "{stars} ⭐",
   "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
   "leaderboardEmpty": "Chưa có ai trên bảng xếp hạng — là bạn đây!",
+  "leaderboardRewardSnack": "🎉 Bạn đang giữ hạng cao! +{gems} 💎",
+  "@leaderboardRewardSnack": { "placeholders": { "gems": { "type": "int" } } },
+  "leaderboardRewardInfo": "Top 1: {top1}💎 · Top 2-3: {top23}💎 · Top 4-10: {top410}💎 — mỗi 24 giờ nếu còn giữ hạng",
+  "@leaderboardRewardInfo": { "placeholders": { "top1": { "type": "int" }, "top23": { "type": "int" }, "top410": { "type": "int" } } },
   "leaderboardChangeName": "Đổi tên",
   "leaderboardRetry": "Thử lại",
 

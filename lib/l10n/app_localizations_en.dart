@@ -797,6 +797,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get leaderboardEmpty => 'No one on the leaderboard yet — that\'s you!';
 
   @override
+  String leaderboardRewardSnack(int gems) {
+    return '🎉 You\'re holding a top rank! +$gems 💎';
+  }
+
+  @override
+  String leaderboardRewardInfo(int top1, int top23, int top410) {
+    return 'Top 1: $top1💎 · Top 2-3: $top23💎 · Top 4-10: $top410💎 — every 24h while ranked';
+  }
+
+  @override
   String get leaderboardChangeName => 'Change name';
 
   @override
