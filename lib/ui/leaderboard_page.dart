@@ -141,15 +141,27 @@ class _LeaderboardList extends ConsumerWidget {
                           SizedBox(
                             width: 44,
                             child: Text('#${entry.rank}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                                 style: theme.textTheme.titleMedium),
                           ),
                           Expanded(
                             child: Text(entry.nickname,
                                 maxLines: 1, overflow: TextOverflow.ellipsis),
                           ),
-                          Text(l10n.leaderboardStars(entry.prestigeStars)),
+                          // Flexible + ellipsis: prestige_stars/lifetime_earnings
+                          // của 1 hàng khác (VD whale hàng tỷ Sao) có thể rất dài
+                          // — cùng lớp bug RenderFlex overflow đã gặp ở
+                          // _ShopTile (xem shop-tile-overflow-pattern memory).
+                          Flexible(
+                            child: Text(l10n.leaderboardStars(entry.prestigeStars),
+                                maxLines: 1, overflow: TextOverflow.ellipsis),
+                          ),
                           const SizedBox(width: 8),
-                          Text(formatNumber(entry.lifetimeEarnings)),
+                          Flexible(
+                            child: Text(formatNumber(entry.lifetimeEarnings),
+                                maxLines: 1, overflow: TextOverflow.ellipsis),
+                          ),
                         ],
                       ),
                     );

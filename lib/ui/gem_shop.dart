@@ -271,10 +271,20 @@ class _GemItem extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          FilledButton(
-            key: Key('gem-buy-$name'),
-            onPressed: canAfford ? onBuy : null,
-            child: Text(l10n.gemCost(cost)),
+          // Flexible + FittedBox: giá tăng theo cấp số nhân KHÔNG có trần cấp
+          // (khác các nguồn thu chính đã có Balance.maxGeneratorLevel) — cấp
+          // đủ cao thì `cost` (int thô, không qua formatNumber) có thể dài
+          // hàng chục chữ số và làm nút tự giãn tràn hàng, cùng lớp bug đã
+          // gặp ở _ShopTile (xem shop-tile-overflow-pattern memory).
+          Flexible(
+            child: FilledButton(
+              key: Key('gem-buy-$name'),
+              onPressed: canAfford ? onBuy : null,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(l10n.gemCost(cost)),
+              ),
+            ),
           ),
         ],
       ),

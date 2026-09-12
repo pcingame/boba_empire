@@ -144,4 +144,41 @@ void main() {
       await tester.pumpWidget(const SizedBox());
     });
   }
+
+  // Không locale-loop — đây là bug do ĐỘ LỚN SỐ (không có trần cấp cho các
+  // mục này, khác các nguồn thu chính đã có Balance.maxGeneratorLevel), gặp
+  // được ở bất kỳ ngôn ngữ nào. Xem shop-tile-overflow-pattern memory.
+  testWidgets('Cửa hàng Kim Cương: giá cực lớn (chưa có trần cấp) không tràn',
+      (tester) async {
+    await _pump(
+      tester,
+      locale: 'vi',
+      // gemBoostCost = 5 * 2^level — cấp 40 -> giá ~13 chữ số, đủ để lộ bug
+      // FilledButton không bọc Flexible nếu còn tồn tại.
+      seed: GameState.newGame(nowMillis: 0)
+        ..gems = 5
+        ..gemBoostLevel = 40,
+    );
+    await tester.tap(find.byKey(const Key('gem-shop-button')));
+    await tester.pumpAndSettle(); // ném FlutterError nếu RenderFlex tràn
+    expect(find.byType(AlertDialog), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets(
+      'Kho Sao (Nhượng quyền): giá perk cực lớn (chưa có trần cấp) không tràn',
+      (tester) async {
+    await _pump(
+      tester,
+      locale: 'vi',
+      // prestigeShopCost = 3 * 2^level — cấp 40 -> giá ~13 chữ số.
+      seed: GameState.newGame(nowMillis: 0)
+        ..lifetimeEarnings = 6250000
+        ..prestigeIncomeLevel = 40,
+    );
+    await tester.tap(find.byKey(const Key('prestige-button')));
+    await tester.pumpAndSettle(); // ném FlutterError nếu RenderFlex tràn
+    expect(find.byKey(const Key('prestige-confirm')), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+  });
 }
