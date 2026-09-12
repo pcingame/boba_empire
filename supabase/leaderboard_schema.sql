@@ -58,6 +58,74 @@ create policy leaderboard_entries_update_own on leaderboard_entries
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
 
+-- ─────────────────────────────────────────────────────────────────────────
+-- Chống gian lận (2026-09-12): điểm số vốn do CLIENT tự báo, chỉ có RLS
+-- kiểm tra "đúng hàng của mình" chứ không kiểm tra SỐ có hợp lý không — ai
+-- đó có thể sửa số rồi gửi thẳng lên REST API để leo top (verify được
+-- bằng chính curl trong lúc debug bug "vượt trần integer"). Đây là kiểm
+-- tra HEURISTIC hợp lý, KHÔNG PHẢI xác thực toán học chặt chẽ như
+-- arena_compute_score (Đấu Trường re-play lại log hành động) — nền kinh tế
+-- chính (offline earning, IAP, boost...) phức tạp hơn nhiều so với 1 trận
+-- Đấu Trường 60 giây, mô phỏng lại đầy đủ trên server không đáng công cho
+-- 1 bảng xếp hạng phụ. Mục tiêu chỉ là chặn kiểu gian lận rẻ tiền nhất
+-- (tự sửa số gửi lên), chấp nhận rủi ro hiếm gặp báo lỗi nhầm cho người
+-- chơi hợp lệ tiến bộ cực nhanh — họ chỉ cần thử nộp lại sau, không bị
+-- cấm vĩnh viễn.
+create or replace function leaderboard_entries_validate()
+returns trigger
+language plpgsql
+as $$
+declare
+  elapsed_seconds double precision;
+begin
+  -- (1) Bất biến ĐÚNG theo công thức game — không phải suy đoán, xem
+  -- starsForLifetimeEarnings() trong lib/core/economy.dart: tổng Sao không
+  -- bao giờ vượt quá floor(k * sqrt(lifetime_earnings)).
+  --
+  -- QUAN TRỌNG: dùng k=0.05 (giá trị GỐC/CAO NHẤT Balance.prestigeK từng
+  -- có, trước khi giảm xuống 0.02 ngày 2026-09-12 để làm chậm tốc độ tích
+  -- Sao) — KHÔNG dùng giá trị hiện tại. Người chơi cũ đã tích Sao dưới
+  -- công thức k cũ (cao hơn) vẫn hợp lệ; nếu dùng k=0.02 làm ngưỡng sẽ
+  -- chặn NHẦM chính những save đó (đã xác minh: save thật ~16,6 tỷ Sao của
+  -- người dùng suýt bị chặn nhầm nếu dùng k hiện tại). Nếu sau này
+  -- Balance.prestigeK từng tăng vượt 0.05, phải nâng hằng số này theo.
+  if new.prestige_stars > floor(0.05 * sqrt(new.lifetime_earnings)) then
+    raise exception 'prestige_stars vượt quá mức tối đa có thể có với lifetime_earnings này';
+  end if;
+
+  -- (2) Trần tuyệt đối cho LẦN NỘP ĐẦU TIÊN (không có mốc nào để so sánh
+  -- theo thời gian) — rất rộng rãi, chỉ chặn số bịa kiểu "gửi thẳng 1e100"
+  -- chứ không nhằm giới hạn người chơi thật giỏi.
+  if new.lifetime_earnings > 1e50 then
+    raise exception 'lifetime_earnings vượt xa mức có thể đạt được';
+  end if;
+
+  -- (3) Trần tăng trưởng GIỮA 2 LẦN NỘP theo thời gian thực trôi qua —
+  -- không áp dụng cho lần nộp đầu (đã có check (2) ở trên; người chơi có
+  -- thể đã tích luỹ rất nhiều TRƯỚC KHI lần đầu mở Bảng xếp hạng, không
+  -- phải gian lận). Trần trung bình 1e19 Xu/giây kể từ lần nộp trước —
+  -- rộng hơn hẳn thu nhập tối đa lý thuyết ở cấp trần (xem
+  -- Balance.maxGeneratorLevel/milestoneStep) nhân mọi hệ số nhân "có
+  -- trần" đã biết (mốc vàng, VIP/IAP/quảng cáo x2, Golden Rush x3...) —
+  -- chỉ KHÔNG tính hệ số Sao (bonusPerStar) vì bản thân nó tăng không
+  -- giới hạn theo thời gian thật, nên không thể có 1 trần "đúng tuyệt đối
+  -- mãi mãi" cho riêng chỉ số này.
+  if TG_OP = 'UPDATE' and new.lifetime_earnings > old.lifetime_earnings then
+    elapsed_seconds := greatest(extract(epoch from (now() - old.updated_at)), 1);
+    if (new.lifetime_earnings - old.lifetime_earnings) > 1e19 * elapsed_seconds then
+      raise exception 'lifetime_earnings tăng bất thường trong khoảng thời gian quá ngắn';
+    end if;
+  end if;
+
+  return new;
+end;
+$$;
+
+drop trigger if exists leaderboard_entries_validate on leaderboard_entries;
+create trigger leaderboard_entries_validate
+  before insert or update on leaderboard_entries
+  for each row execute function leaderboard_entries_validate();
+
 -- Server tự đóng dấu updated_at (không tin đồng hồ client), giống
 -- cloud_save_schema.sql.
 create or replace function leaderboard_entries_set_updated_at()
