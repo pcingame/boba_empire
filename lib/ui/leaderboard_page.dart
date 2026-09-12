@@ -177,18 +177,25 @@ class _LeaderboardList extends ConsumerWidget {
                             child: Text(entry.nickname,
                                 maxLines: 1, overflow: TextOverflow.ellipsis),
                           ),
-                          // Flexible + ellipsis: prestige_stars/lifetime_earnings
+                          // Flexible + FittedBox: prestige_stars/lifetime_earnings
                           // của 1 hàng khác (VD whale hàng tỷ Sao) có thể rất dài
-                          // — cùng lớp bug RenderFlex overflow đã gặp ở
-                          // _ShopTile (xem shop-tile-overflow-pattern memory).
+                          // — cùng lớp bug RenderFlex overflow đã gặp ở _ShopTile
+                          // (xem shop-tile-overflow-pattern memory). Trước đây
+                          // dùng maxLines+ellipsis: hết tràn nhưng số bị cắt còn
+                          // "…", không đọc được giá trị thật — co chữ lại bằng
+                          // FittedBox thay vì cắt, giống cách _ShopTile xử lý.
                           Flexible(
-                            child: Text(l10n.leaderboardStars(entry.prestigeStars),
-                                maxLines: 1, overflow: TextOverflow.ellipsis),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(l10n.leaderboardStars(entry.prestigeStars)),
+                            ),
                           ),
                           const SizedBox(width: 8),
                           Flexible(
-                            child: Text(formatNumber(entry.lifetimeEarnings),
-                                maxLines: 1, overflow: TextOverflow.ellipsis),
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(formatNumber(entry.lifetimeEarnings)),
+                            ),
                           ),
                         ],
                       ),
