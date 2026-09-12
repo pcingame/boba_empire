@@ -208,7 +208,7 @@ void main() {
       final s = GameState.newGame(nowMillis: 0)
         ..levels['x'] = 1 // 10/s
         ..gems = 100;
-      final r = buyGemTimeSkip(s, configs: _configs);
+      final r = buyGemTimeSkip(s, 0, configs: _configs);
       expect(r, closeTo(10 * Balance.gemTimeSkipSeconds, 1e-3));
       expect(s.gems, 100 - Balance.gemTimeSkipCost);
       expect(s.money, closeTo(r, 1e-3));
@@ -216,8 +216,27 @@ void main() {
 
     test('chưa có thu nhập -> 0, không trừ 💎', () {
       final s = GameState.newGame(nowMillis: 0)..gems = 100;
-      expect(buyGemTimeSkip(s, configs: _configs), 0);
+      expect(buyGemTimeSkip(s, 0, configs: _configs), 0);
       expect(s.gems, 100);
+    });
+
+    test('trần Balance.maxGemTimeSkipPerDay lượt/ngày — lượt kế tiếp trong '
+        'CÙNG NGÀY trả 0, không trừ 💎', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..levels['x'] = 1
+        ..gems = 100000;
+      for (var i = 0; i < Balance.maxGemTimeSkipPerDay; i++) {
+        expect(buyGemTimeSkip(s, 0, configs: _configs), greaterThan(0));
+      }
+      expect(gemTimeSkipRemainingToday(s, 0), 0);
+      final gemsBefore = s.gems;
+      expect(buyGemTimeSkip(s, 0, configs: _configs), 0);
+      expect(s.gems, gemsBefore); // hết lượt -> không trừ 💎 nữa
+
+      // Sang ngày mới -> reset lượt.
+      final nextDay = 24 * 60 * 60 * 1000;
+      expect(gemTimeSkipRemainingToday(s, nextDay), Balance.maxGemTimeSkipPerDay);
+      expect(buyGemTimeSkip(s, nextDay, configs: _configs), greaterThan(0));
     });
   });
 

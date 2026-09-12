@@ -164,6 +164,11 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String gemTimeSkipRemaining(int remaining, int max) {
+    return 'เหลือ $remaining/$max ครั้งวันนี้';
+  }
+
+  @override
   String get iapSectionTitle => 'ซื้อด้วยเงินจริง';
 
   @override

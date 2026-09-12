@@ -51,6 +51,7 @@ class GameSnapshot {
     required this.vipActive,
     required this.vipRemainingSeconds,
     required this.freeSpinAvailable,
+    required this.gemTimeSkipRemainingToday,
     required this.storyChapter,
     required this.pendingStoryChapterId,
     required this.storyChoiceA,
@@ -162,6 +163,9 @@ class GameSnapshot {
 
   /// Còn lượt quay Vòng quay miễn phí hôm nay không.
   final bool freeSpinAvailable;
+
+  /// Số lượt "Tua nhanh" (💎) còn lại hôm nay (xem Balance.maxGemTimeSkipPerDay).
+  final int gemTimeSkipRemainingToday;
 
   /// Chương cốt truyện cao nhất đã xem, và chương cần hiển thị ngay (null nếu
   /// không có) — UI bật cutscene rồi gọi `acknowledgeStoryBeat()` / `makeStoryChoice()`.

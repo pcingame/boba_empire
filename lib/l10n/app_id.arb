@@ -46,6 +46,7 @@
   "gemStageUnlockedSnack": "{stage} terbuka!",
   "gemTimeSkipName": "Percepat",
   "gemTimeSkipDesc": "Dapat {hours} jam produksi seketika",
+  "gemTimeSkipRemaining": "Tersisa {remaining}/{max} hari ini",
   "iapSectionTitle": "Beli dengan uang asli",
   "restorePurchases": "Pulihkan pembelian",
   "close": "Tutup",

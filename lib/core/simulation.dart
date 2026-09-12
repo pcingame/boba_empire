@@ -8,6 +8,7 @@ library;
 import 'dart:math';
 
 import 'balance.dart';
+import 'daily.dart';
 import 'economy.dart';
 import 'models.dart';
 
@@ -222,13 +223,31 @@ bool buyInstantStageUnlock(GameState state) {
   return true;
 }
 
+/// Số lần "Tua nhanh" đã dùng HÔM NAY (0 nếu [state.gemTimeSkipDay] không
+/// phải hôm nay — bộ đếm reset tự nhiên qua ngày mới, không cần mutate ở đây).
+int gemTimeSkipUsedToday(GameState state, int nowMillis) =>
+    state.gemTimeSkipDay == dayIndex(nowMillis) ? state.gemTimeSkipUsedToday : 0;
+
+/// Số lượt "Tua nhanh" còn lại hôm nay (0..[Balance.maxGemTimeSkipPerDay]) —
+/// dùng để UI hiện/khoá nút, xem gem_shop.dart.
+int gemTimeSkipRemainingToday(GameState state, int nowMillis) =>
+    Balance.maxGemTimeSkipPerDay - gemTimeSkipUsedToday(state, nowMillis);
+
 /// "Tua nhanh" bằng 💎: trừ [Balance.gemTimeSkipCost] 💎, cộng ngay
-/// [Balance.gemTimeSkipSeconds] giây sản xuất (nhịp cơ bản, không boost). Trả về
-/// số Xu vừa cộng (0 nếu thiếu 💎 hoặc chưa có thu nhập).
+/// [Balance.gemTimeSkipSeconds] giây sản xuất (nhịp cơ bản, không boost). Trả
+/// về số Xu vừa cộng (0 nếu thiếu 💎, chưa có thu nhập, hoặc đã hết lượt hôm
+/// nay — xem [Balance.maxGemTimeSkipPerDay]).
 double buyGemTimeSkip(
-  GameState state, {
+  GameState state,
+  int nowMillis, {
   List<GeneratorConfig> configs = Balance.generators,
 }) {
+  final today = dayIndex(nowMillis);
+  if (state.gemTimeSkipDay != today) {
+    state.gemTimeSkipDay = today;
+    state.gemTimeSkipUsedToday = 0;
+  }
+  if (state.gemTimeSkipUsedToday >= Balance.maxGemTimeSkipPerDay) return 0;
   if (state.gems < Balance.gemTimeSkipCost) return 0;
   final reward = effectiveIncomePerSecond(
         state,
@@ -238,6 +257,7 @@ double buyGemTimeSkip(
       Balance.gemTimeSkipSeconds;
   if (reward <= 0) return 0;
   state.gems -= Balance.gemTimeSkipCost;
+  state.gemTimeSkipUsedToday++;
   _credit(state, reward);
   return reward;
 }

@@ -65,6 +65,8 @@
   "gemTimeSkipName": "Tua nhanh",
   "gemTimeSkipDesc": "Nhận ngay {hours} giờ sản xuất",
   "@gemTimeSkipDesc": { "placeholders": { "hours": { "type": "int" } } },
+  "gemTimeSkipRemaining": "Còn {remaining}/{max} lượt hôm nay",
+  "@gemTimeSkipRemaining": { "placeholders": { "remaining": { "type": "int" }, "max": { "type": "int" } } },
   "iapSectionTitle": "Nạp bằng tiền thật",
   "restorePurchases": "Khôi phục giao dịch",
   "close": "Đóng",

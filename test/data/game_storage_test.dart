@@ -57,6 +57,18 @@ void main() {
     expect(loaded.storyCompleteSeconds, 12345);
   });
 
+  test('save rồi load giữ nguyên gemTimeSkipDay/gemTimeSkipUsedToday',
+      () async {
+    final storage = await _storage();
+    final state = GameState.newGame(nowMillis: 0)
+      ..gemTimeSkipDay = 3
+      ..gemTimeSkipUsedToday = 5;
+    await storage.save(state, nowMillis: 1000);
+    final loaded = storage.load()!;
+    expect(loaded.gemTimeSkipDay, 3);
+    expect(loaded.gemTimeSkipUsedToday, 5);
+  });
+
   test(
       'save cũ (trước khi có firstPlayedMillis) -> tự lấy lastSeenMillis làm '
       'mốc gần đúng', () {

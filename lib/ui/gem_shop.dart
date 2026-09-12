@@ -92,6 +92,8 @@ class _GemShopState extends ConsumerState<_GemShop> {
     final capLevel =
         ref.watch(gameControllerProvider.select((s) => s.offlineCapLevel));
     final stage = ref.watch(gameControllerProvider.select((s) => s.stage));
+    final timeSkipRemaining = ref
+        .watch(gameControllerProvider.select((s) => s.gemTimeSkipRemainingToday));
     final controller = ref.read(gameControllerProvider.notifier);
     final nextStage = Balance.nextStageConfig(stage);
 
@@ -145,10 +147,12 @@ class _GemShopState extends ConsumerState<_GemShop> {
               ),
             _GemAction(
               name: l10n.gemTimeSkipName,
-              description: l10n.gemTimeSkipDesc(
-                  Balance.gemTimeSkipSeconds ~/ 3600),
+              description:
+                  '${l10n.gemTimeSkipDesc(Balance.gemTimeSkipSeconds ~/ 3600)}\n'
+                  '${l10n.gemTimeSkipRemaining(timeSkipRemaining, Balance.maxGemTimeSkipPerDay)}',
               cost: Balance.gemTimeSkipCost,
               gems: gems,
+              enabled: timeSkipRemaining > 0,
               buttonKey: const Key('gem-time-skip'),
               onBuy: () {
                 final r = controller.buyGemTimeSkipReward();
@@ -264,6 +268,7 @@ class _GemAction extends StatelessWidget {
     required this.gems,
     required this.onBuy,
     required this.buttonKey,
+    this.enabled = true,
   });
 
   final String name;
@@ -272,6 +277,10 @@ class _GemAction extends StatelessWidget {
   final double gems;
   final VoidCallback onBuy;
   final Key buttonKey;
+
+  /// false khi mục này còn 1 điều kiện khác (ngoài đủ 💎) chưa thoả — VD hết
+  /// lượt "Tua nhanh" hôm nay (xem Balance.maxGemTimeSkipPerDay).
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -304,7 +313,7 @@ class _GemAction extends StatelessWidget {
             width: _priceButtonWidth,
             child: FilledButton(
               key: buttonKey,
-              onPressed: gems >= cost ? onBuy : null,
+              onPressed: (gems >= cost && enabled) ? onBuy : null,
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(l10n.gemCost(cost)),

@@ -164,6 +164,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String gemTimeSkipRemaining(int remaining, int max) {
+    return '$remaining/$max left today';
+  }
+
+  @override
   String get iapSectionTitle => 'Buy with real money';
 
   @override

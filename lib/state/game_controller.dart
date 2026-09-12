@@ -476,7 +476,7 @@ class GameController extends Notifier<GameSnapshot> {
 
   /// "Tua nhanh" bằng 💎. Trả về số Xu vừa cộng (0 nếu thiếu 💎 / chưa có thu nhập).
   double buyGemTimeSkipReward() {
-    final reward = buyGemTimeSkip(_game);
+    final reward = buyGemTimeSkip(_game, _clock());
     if (reward > 0) {
       unawaited(saveNow());
       state = _snapshot();
@@ -959,6 +959,7 @@ class GameController extends Notifier<GameSnapshot> {
       vipActive: vip,
       vipRemainingSeconds: max(0, (_game.vipUntilMillis - now) / 1000.0),
       freeSpinAvailable: dayIndex(now) > _game.lastFreeSpinDay,
+      gemTimeSkipRemainingToday: gemTimeSkipRemainingToday(_game, now),
       storyChapter: _game.storyChapter,
       pendingStoryChapterId: pendingChapterId(_game),
       storyChoiceA: _game.storyChoiceA,
