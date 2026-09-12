@@ -102,8 +102,11 @@ class GameState {
     this.vipUntilMillis = 0,
     this.vipLastGemDay = 0,
     this.lastFreeSpinDay = 0,
+    int? firstPlayedMillis,
+    this.storyCompleteSeconds,
     List<String>? achievementsClaimed,
-  }) : achievementsClaimed = achievementsClaimed ?? [];
+  })  : achievementsClaimed = achievementsClaimed ?? [],
+        firstPlayedMillis = firstPlayedMillis ?? lastSeenMillis;
 
   /// Ván mới tinh.
   factory GameState.newGame({int? nowMillis}) => GameState(
@@ -207,6 +210,16 @@ class GameState {
   String? storyChoiceC;
   String? storyChoiceD;
 
+  /// Mốc thời gian (epoch ms) lần đầu tạo save — đặt 1 lần ở [GameState.newGame],
+  /// KHÔNG đổi sau đó (kể cả prestige). Dùng làm mốc "bắt đầu" để tính
+  /// [storyCompleteSeconds] cho bảng xếp hạng tốc độ hoàn thành cốt truyện.
+  int firstPlayedMillis;
+
+  /// Số giây thực tế (epoch, không phải giờ chơi) từ [firstPlayedMillis] tới
+  /// lúc xem xong Chương 18 lần đầu — null nếu chưa hoàn thành cốt truyện.
+  /// Ghi một lần, không đổi được (giống storyChoiceA/B/C/D).
+  int? storyCompleteSeconds;
+
   /// Đã "hạ" đối thủ (đạt điều kiện ở giai đoạn 6) — chốt lại, mở Chương 8 và
   /// dừng các sự kiện đối thủ.
   bool rivalDefeated;
@@ -280,6 +293,8 @@ class GameState {
         'storyChoiceB': storyChoiceB,
         'storyChoiceC': storyChoiceC,
         'storyChoiceD': storyChoiceD,
+        'firstPlayedMillis': firstPlayedMillis,
+        'storyCompleteSeconds': storyCompleteSeconds,
         'rivalDefeated': rivalDefeated,
         'rivalPressureSeconds': rivalPressureSeconds,
         'repeatQuestBaseline': repeatQuestBaseline,
@@ -335,6 +350,15 @@ class GameState {
         storyChoiceB: json['storyChoiceB'] as String?,
         storyChoiceC: json['storyChoiceC'] as String?,
         storyChoiceD: json['storyChoiceD'] as String?,
+        // Save cũ (trước khi có trường này) không có firstPlayedMillis — dùng
+        // lastSeenMillis của chính save đó làm mốc gần đúng nhất có sẵn (biết
+        // là ước tính hụt, không phải lúc thật sự bắt đầu chơi; chấp nhận vì
+        // đây chỉ ảnh hưởng bảng xếp hạng tốc độ hoàn thành cốt truyện, không
+        // ảnh hưởng gameplay chính).
+        firstPlayedMillis: (json['firstPlayedMillis'] as num?)?.toInt() ??
+            (json['lastSeenMillis'] as num).toInt(),
+        storyCompleteSeconds:
+            (json['storyCompleteSeconds'] as num?)?.toInt(),
         rivalDefeated: (json['rivalDefeated'] as bool?) ?? false,
         rivalPressureSeconds:
             (json['rivalPressureSeconds'] as num?)?.toDouble() ?? 0,

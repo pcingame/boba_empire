@@ -46,6 +46,29 @@ void main() {
     expect(storage.load()!.lastSeenMillis, 42000);
   });
 
+  test('save rồi load giữ nguyên firstPlayedMillis/storyCompleteSeconds',
+      () async {
+    final storage = await _storage();
+    final state = GameState.newGame(nowMillis: 1000)
+      ..storyCompleteSeconds = 12345;
+    await storage.save(state, nowMillis: 2000);
+    final loaded = storage.load()!;
+    expect(loaded.firstPlayedMillis, 1000);
+    expect(loaded.storyCompleteSeconds, 12345);
+  });
+
+  test(
+      'save cũ (trước khi có firstPlayedMillis) -> tự lấy lastSeenMillis làm '
+      'mốc gần đúng', () {
+    final oldSaveJson = (GameState.newGame(nowMillis: 777)
+          ..lastSeenMillis = 999)
+        .toJson()
+      ..remove('firstPlayedMillis');
+    final loaded = GameState.fromJson(oldSaveJson);
+    expect(loaded.firstPlayedMillis, 999); // = lastSeenMillis, không phải 777
+    expect(loaded.storyCompleteSeconds, isNull);
+  });
+
   test('vòng save -> load -> offline tính đúng khoảng vắng', () async {
     final storage = await _storage();
     final state = GameState.newGame(nowMillis: 0)..levels['tra_den'] = 2;

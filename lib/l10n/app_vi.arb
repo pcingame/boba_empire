@@ -294,5 +294,10 @@
   "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
   "leaderboardEmpty": "Chưa có ai trên bảng xếp hạng — là bạn đây!",
   "leaderboardChangeName": "Đổi tên",
-  "leaderboardRetry": "Thử lại"
+  "leaderboardRetry": "Thử lại",
+
+  "storySpeedrunMenuTitle": "Tốc độ hoàn thành",
+  "storySpeedrunTitle": "Bảng xếp hạng tốc độ",
+  "storySpeedrunNotCompletedYet": "Bạn chưa hoàn thành cốt truyện — hoàn thành Chương 18 để được xếp hạng.",
+  "storySpeedrunEmpty": "Chưa có ai hoàn thành cốt truyện — là bạn đây!"
 }

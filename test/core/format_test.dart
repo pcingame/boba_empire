@@ -22,4 +22,30 @@ void main() {
   test('số âm giữ dấu', () {
     expect(formatNumber(-2500), '-2.50K');
   });
+
+  group('formatDuration', () {
+    test('dưới 1 phút -> giây', () {
+      expect(formatDuration(0), '0s');
+      expect(formatDuration(45), '45s');
+    });
+
+    test('dưới 1 giờ -> phút + giây lẻ', () {
+      expect(formatDuration(60), '1m 0s');
+      expect(formatDuration(125), '2m 5s');
+    });
+
+    test('dưới 1 ngày -> giờ + phút lẻ', () {
+      expect(formatDuration(3600), '1h 0m');
+      expect(formatDuration(3660 + 300), '1h 6m');
+    });
+
+    test('từ 1 ngày trở lên -> ngày + giờ lẻ', () {
+      expect(formatDuration(86400), '1d 0h');
+      expect(formatDuration(86400 * 3 + 3600 * 5), '3d 5h');
+    });
+
+    test('số âm coi như 0 (không hiển thị thời lượng âm)', () {
+      expect(formatDuration(-10), '0s');
+    });
+  });
 }

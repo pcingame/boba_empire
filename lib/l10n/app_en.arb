@@ -246,5 +246,10 @@
   "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
   "leaderboardEmpty": "No one on the leaderboard yet — that's you!",
   "leaderboardChangeName": "Change name",
-  "leaderboardRetry": "Retry"
+  "leaderboardRetry": "Retry",
+
+  "storySpeedrunMenuTitle": "Speedrun",
+  "storySpeedrunTitle": "Speedrun Leaderboard",
+  "storySpeedrunNotCompletedYet": "You haven't finished the story yet — complete Chapter 18 to get ranked.",
+  "storySpeedrunEmpty": "No one has finished the story yet — be the first!"
 }

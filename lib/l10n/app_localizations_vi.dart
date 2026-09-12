@@ -804,4 +804,18 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get leaderboardRetry => 'Thử lại';
+
+  @override
+  String get storySpeedrunMenuTitle => 'Tốc độ hoàn thành';
+
+  @override
+  String get storySpeedrunTitle => 'Bảng xếp hạng tốc độ';
+
+  @override
+  String get storySpeedrunNotCompletedYet =>
+      'Bạn chưa hoàn thành cốt truyện — hoàn thành Chương 18 để được xếp hạng.';
+
+  @override
+  String get storySpeedrunEmpty =>
+      'Chưa có ai hoàn thành cốt truyện — là bạn đây!';
 }

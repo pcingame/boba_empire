@@ -1437,6 +1437,30 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Thử lại'**
   String get leaderboardRetry;
+
+  /// No description provided for @storySpeedrunMenuTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tốc độ hoàn thành'**
+  String get storySpeedrunMenuTitle;
+
+  /// No description provided for @storySpeedrunTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảng xếp hạng tốc độ'**
+  String get storySpeedrunTitle;
+
+  /// No description provided for @storySpeedrunNotCompletedYet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa hoàn thành cốt truyện — hoàn thành Chương 18 để được xếp hạng.'**
+  String get storySpeedrunNotCompletedYet;
+
+  /// No description provided for @storySpeedrunEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có ai hoàn thành cốt truyện — là bạn đây!'**
+  String get storySpeedrunEmpty;
 }
 
 class _AppLocalizationsDelegate

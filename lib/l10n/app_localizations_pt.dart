@@ -805,4 +805,18 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get leaderboardRetry => 'Tentar de novo';
+
+  @override
+  String get storySpeedrunMenuTitle => 'Speedrun';
+
+  @override
+  String get storySpeedrunTitle => 'Classificação de Speedrun';
+
+  @override
+  String get storySpeedrunNotCompletedYet =>
+      'Você ainda não terminou a história — complete o Capítulo 18 para entrar na classificação.';
+
+  @override
+  String get storySpeedrunEmpty =>
+      'Ninguém terminou a história ainda — seja o primeiro!';
 }

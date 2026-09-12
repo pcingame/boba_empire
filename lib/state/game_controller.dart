@@ -291,6 +291,15 @@ class GameController extends Notifier<GameSnapshot> {
     if (firstTime && id == rivalIntroChapter) {
       _scheduleNextRivalEvent(_clock());
     }
+    // Vừa xem xong chương cuối lần đầu — chốt mốc thời gian hoàn thành cốt
+    // truyện (giây thực tế kể từ firstPlayedMillis), dùng cho Bảng xếp hạng
+    // tốc độ. Ghi 1 lần, không đổi lại (giống storyChoiceA/B/C/D).
+    if (firstTime &&
+        id == storyChapters.last.id &&
+        _game.storyCompleteSeconds == null) {
+      _game.storyCompleteSeconds =
+          max(1, (_clock() - _game.firstPlayedMillis) ~/ 1000);
+    }
     unawaited(saveNow());
     state = _snapshot();
   }
@@ -871,6 +880,7 @@ class GameController extends Notifier<GameSnapshot> {
       pendingStoryChapterId: pendingChapterId(_game),
       storyChoiceA: _game.storyChoiceA,
       storyChoiceB: _game.storyChoiceB,
+      storyCompleteSeconds: _game.storyCompleteSeconds,
       rivalActive: rivalActive(_game),
       rivalDefeated: _game.rivalDefeated,
       rivalStanding: rivalStanding(_game),
