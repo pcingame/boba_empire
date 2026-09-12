@@ -40,6 +40,11 @@ class GameController extends Notifier<GameSnapshot> {
   late final int Function() _clock;
   CloudSaveRepository? _cloudSaveRepo;
   AnalyticsRepository? _analyticsRepo;
+
+  /// Bookkeeping đồng bộ cloud cục bộ — xem GameStorage.loadCloudVersion()/
+  /// loadCloudConflictPending() cho lý do tách riêng khỏi [_game].
+  int _cloudVersion = 0;
+  bool _cloudConflictPending = false;
   int _sessionStartMillis = 0;
   late GameState _game;
   Timer? _timer;
@@ -77,6 +82,8 @@ class GameController extends Notifier<GameSnapshot> {
     _storage = ref.read(gameStorageProvider);
     _clock = ref.read(clockProvider);
     _game = _storage.load() ?? GameState.newGame(nowMillis: _clock());
+    _cloudVersion = _storage.loadCloudVersion();
+    _cloudConflictPending = _storage.loadCloudConflictPending();
     // Tính tiền kiếm được lúc app tắt (có cap + chống lùi giờ ở tầng core).
     _offlineEarned = applyOfflineEarnings(
       _game,
@@ -547,8 +554,45 @@ class GameController extends Notifier<GameSnapshot> {
   Future<void> saveNow() async {
     await _storage.save(_game, nowMillis: _clock());
     final cloud = _cloudSave;
-    if (cloud != null) unawaited(cloud.push(_game.toJson()));
+    if (cloud != null) unawaited(_syncCloud(cloud));
   }
+
+  /// Đẩy save lên cloud CÓ ĐIỀU KIỆN (xem
+  /// CloudSaveRepository.pushIfCurrent) — KHÔNG ghi đè mù như trước đây.
+  /// Nếu version cloud đã đổi (máy khác vừa lưu sau lần đồng bộ gần nhất
+  /// của máy này), đánh dấu [_cloudConflictPending] thay vì âm thầm ghi đè
+  /// — dialog Đồng bộ đám mây tự phát hiện cờ này và hỏi lại người chơi
+  /// (khôi phục / giữ máy này) ở lần mở kế tiếp, tái dùng đúng luồng xung
+  /// đột đã có lúc liên kết lần đầu. Xem known-issues-backlog memory mục 7.
+  Future<void> _syncCloud(CloudSaveRepository cloud) async {
+    if (!cloud.isLinked) return;
+    try {
+      final newVersion = await cloud.pushIfCurrent(_game.toJson(), _cloudVersion);
+      if (newVersion != null) {
+        applyCloudSyncVersion(newVersion);
+      } else if (!_cloudConflictPending) {
+        _cloudConflictPending = true;
+        unawaited(_storage.saveCloudConflictPending(true));
+      }
+    } catch (_) {
+      // Lỗi mạng — bỏ qua, saveNow() lần kế tiếp tự thử lại.
+    }
+  }
+
+  /// Ghi nhận mốc đồng bộ cloud mới (sau push/pull thành công) + xoá cờ
+  /// xung đột nếu có. Gọi từ [_syncCloud] và từ CloudSaveController (qua
+  /// `onSyncVersionKnown`/`onRestore`) sau khi người chơi giải quyết xung
+  /// đột (khôi phục hoặc giữ máy này) hoặc sau lần liên kết đầu tiên.
+  void applyCloudSyncVersion(int version) {
+    _cloudVersion = version;
+    _cloudConflictPending = false;
+    unawaited(_storage.saveCloudVersion(version));
+    unawaited(_storage.saveCloudConflictPending(false));
+  }
+
+  /// true nếu lần lưu nền gần nhất phát hiện xung đột chưa xử lý — dialog
+  /// Đồng bộ đám mây đọc qua đây để tự hỏi lại khi mở.
+  bool get cloudConflictPending => _cloudConflictPending;
 
   /// Lazy + tự bắt lỗi: `Supabase.instance` ném assert nếu chưa gọi
   /// `Supabase.initialize()` (luôn đúng trong test, vì test dựng
@@ -585,8 +629,9 @@ class GameController extends Notifier<GameSnapshot> {
   /// Ghi đè toàn bộ ván hiện tại bằng save khôi phục từ cloud (người chơi
   /// chọn "Khôi phục" ở dialog Đồng bộ đám mây khi phát hiện save khác trên
   /// cloud). Lưu local ngay để không mất nếu app bị tắt giữa chừng.
-  void restoreFromCloud(Map<String, dynamic> json) {
+  void restoreFromCloud(Map<String, dynamic> json, {required int cloudVersion}) {
     _game = GameState.fromJson(json)..lastSeenMillis = _clock();
+    applyCloudSyncVersion(cloudVersion);
     unawaited(saveNow());
     state = _snapshot();
   }

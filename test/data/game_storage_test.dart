@@ -69,6 +69,28 @@ void main() {
     expect(loaded.storyCompleteSeconds, isNull);
   });
 
+  group('bookkeeping đồng bộ cloud (cố ý tách khỏi GameState)', () {
+    test('mặc định: version=0, chưa có xung đột', () async {
+      final storage = await _storage();
+      expect(storage.loadCloudVersion(), 0);
+      expect(storage.loadCloudConflictPending(), isFalse);
+    });
+
+    test('lưu/đọc version và cờ xung đột độc lập, không đụng save chính',
+        () async {
+      final storage = await _storage();
+      final state = GameState.newGame(nowMillis: 0)..money = 500;
+      await storage.save(state, nowMillis: 0);
+
+      await storage.saveCloudVersion(7);
+      await storage.saveCloudConflictPending(true);
+
+      expect(storage.loadCloudVersion(), 7);
+      expect(storage.loadCloudConflictPending(), isTrue);
+      expect(storage.load()!.money, 500); // save chính không bị ảnh hưởng
+    });
+  });
+
   test('vòng save -> load -> offline tính đúng khoảng vắng', () async {
     final storage = await _storage();
     final state = GameState.newGame(nowMillis: 0)..levels['tra_den'] = 2;

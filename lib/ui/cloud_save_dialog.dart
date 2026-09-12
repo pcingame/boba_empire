@@ -27,6 +27,7 @@ class _CloudSaveDialog extends ConsumerStatefulWidget {
 class _CloudSaveDialogState extends ConsumerState<_CloudSaveDialog> {
   final _emailCtrl = TextEditingController();
   final _codeCtrl = TextEditingController();
+  bool _checkedConflict = false;
 
   @override
   void dispose() {
@@ -46,8 +47,25 @@ class _CloudSaveDialogState extends ConsumerState<_CloudSaveDialog> {
         () => ref.read(gameControllerProvider.notifier).exportSaveJson();
     notifier.getLocalLifetimeEarnings =
         () => ref.read(gameControllerProvider).lifetimeEarnings;
-    notifier.onRestore =
-        (json) => ref.read(gameControllerProvider.notifier).restoreFromCloud(json);
+    notifier.onRestore = (json, cloudVersion) => ref
+        .read(gameControllerProvider.notifier)
+        .restoreFromCloud(json, cloudVersion: cloudVersion);
+    notifier.getLocalConflictPending =
+        () => ref.read(gameControllerProvider.notifier).cloudConflictPending;
+    notifier.onSyncVersionKnown = (version) => ref
+        .read(gameControllerProvider.notifier)
+        .applyCloudSyncVersion(version);
+
+    // Mở dialog lúc đang liên kết VÀ lần lưu nền gần nhất phát hiện xung đột
+    // chưa xử lý (máy khác vừa lưu) — tự kiểm tra lại 1 lần sau frame đầu,
+    // giống cách leaderboard_page.dart/story_speedrun_page.dart gọi refresh().
+    if (!_checkedConflict) {
+      _checkedConflict = true;
+      if (notifier.getLocalConflictPending!()) {
+        WidgetsBinding.instance
+            .addPostFrameCallback((_) => notifier.recheckConflict());
+      }
+    }
 
     final viewState = ref.watch(cloudSaveControllerProvider);
 

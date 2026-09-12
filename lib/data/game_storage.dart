@@ -54,4 +54,30 @@ class GameStorage {
 
   /// Xóa save (dùng cho nút "chơi lại từ đầu" / debug).
   Future<void> clear() => _prefs.remove(_key);
+
+  // --- Bookkeeping đồng bộ cloud (2026-09-12) ---
+  //
+  // CỐ Ý tách riêng khỏi save chính ([GameState]/[_key] ở trên): đây là
+  // trạng thái ĐỒNG BỘ cục bộ của THIẾT BỊ này (mốc version cloud gần nhất
+  // đã xác nhận khớp, có đang chờ xử lý xung đột hay không) — không phải
+  // dữ liệu ván chơi. Gộp chung vào GameState sẽ khiến giá trị này bị đẩy
+  // theo mỗi lần push/pull save lên/từ cloud (vòng lặp vô nghĩa, dễ nhầm
+  // "version của máy A" thành "version của máy B" khi khôi phục). Xem
+  // CloudSaveRepository.pushIfCurrent() / known-issues-backlog memory mục 7.
+
+  static const _cloudVersionKey = 'cloud_sync_version';
+  static const _cloudConflictKey = 'cloud_sync_conflict_pending';
+
+  /// Version cloud gần nhất máy này xác nhận khớp (0 = chưa từng đồng bộ).
+  int loadCloudVersion() => _prefs.getInt(_cloudVersionKey) ?? 0;
+
+  Future<void> saveCloudVersion(int version) =>
+      _prefs.setInt(_cloudVersionKey, version);
+
+  /// True nếu lần đẩy save nền gần nhất phát hiện version cloud đã đổi (máy
+  /// khác vừa lưu) mà chưa được người chơi xử lý (khôi phục / giữ máy này).
+  bool loadCloudConflictPending() => _prefs.getBool(_cloudConflictKey) ?? false;
+
+  Future<void> saveCloudConflictPending(bool value) =>
+      _prefs.setBool(_cloudConflictKey, value);
 }
