@@ -1467,24 +1467,33 @@ class _ShopTile extends ConsumerWidget {
               ),
             ),
             const SizedBox(width: 10),
-            FilledButton(
-              onPressed: canAfford
-                  ? () {
-                      final ctrl =
-                          ref.read(gameControllerProvider.notifier);
-                      final bought = switch (mode) {
-                        _BuyMode.x1 => ctrl.buy(config.id) ? 1 : 0,
-                        _BuyMode.x10 => ctrl.buyBulk(config.id, 10),
-                        _BuyMode.max => ctrl.buyMax(config.id),
-                      };
-                      if (bought > 0) {
-                        HapticFeedback.selectionClick();
-                        ref.read(audioServiceProvider).play(Sfx.buy);
-                        playEffect(context, AnimAssets.confetti, size: 160);
+            // Flexible + FittedBox: giá/số cấp mua (VD "135.26bb Xu ×21") có
+            // thể rất dài ở cấp cao — không bọc thì nút tự giãn theo nội
+            // dung và tràn hàng (RenderFlex overflow thật đã gặp). Co chữ
+            // lại thay vì tràn, giống cách _TapArea xử lý ở màn hình chính.
+            Flexible(
+              child: FilledButton(
+                onPressed: canAfford
+                    ? () {
+                        final ctrl =
+                            ref.read(gameControllerProvider.notifier);
+                        final bought = switch (mode) {
+                          _BuyMode.x1 => ctrl.buy(config.id) ? 1 : 0,
+                          _BuyMode.x10 => ctrl.buyBulk(config.id, 10),
+                          _BuyMode.max => ctrl.buyMax(config.id),
+                        };
+                        if (bought > 0) {
+                          HapticFeedback.selectionClick();
+                          ref.read(audioServiceProvider).play(Sfx.buy);
+                          playEffect(context, AnimAssets.confetti, size: 160);
+                        }
                       }
-                    }
-                  : null,
-              child: Text('${l10n.buyButton(formatNumber(cost))}$countLabel'),
+                    : null,
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text('${l10n.buyButton(formatNumber(cost))}$countLabel'),
+                ),
+              ),
             ),
           ],
         ),
@@ -1537,8 +1546,15 @@ class _MilestoneBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final mult = generatorMilestoneMultiplier(level).round();
-    final target = (mult * Balance.milestoneFactor).round();
+    // Giữ dạng double, KHÔNG ép .round() ra int — generatorMilestoneMultiplier
+    // có trần Balance.economyOverflowGuardCap (1e100), vượt xa int64
+    // (~9.2e18) nên .round() sẽ bão hoà về int64.max, hiện ra chuỗi số dài
+    // vô nghĩa thay vì "aa/bb..." như mọi số Xu khác trong game. Chỉ thực
+    // sự chạm mốc này với save cũ/hỏng từ trước khi có Balance.maxGeneratorLevel
+    // (cấp bình thường tối đa hiện tại chỉ ra mult ~2^40, vô hại) — vẫn nên
+    // an toàn thay vì tin cấp luôn hợp lệ.
+    final mult = generatorMilestoneMultiplier(level);
+    final target = mult * Balance.milestoneFactor;
     final progress = (level % Balance.milestoneStep) / Balance.milestoneStep;
 
     return Row(
@@ -1551,7 +1567,7 @@ class _MilestoneBar extends StatelessWidget {
               borderRadius: BorderRadius.circular(6),
             ),
             child: Text(
-              '×$mult',
+              '×${formatNumber(mult)}',
               style: theme.textTheme.labelSmall?.copyWith(
                 color: theme.colorScheme.onTertiaryContainer,
                 fontWeight: FontWeight.bold,
@@ -1581,8 +1597,10 @@ class _MilestoneBar extends StatelessWidget {
         Text(
           // Mốc kế còn cộng +% toàn cục nếu vượt số mốc "miễn phí".
           level ~/ Balance.milestoneStep >= Balance.milestoneGlobalFreeTiers
-              ? '→×$target 🌐'
-              : '→×$target',
+              ? '→×${formatNumber(target)} 🌐'
+              : '→×${formatNumber(target)}',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: theme.textTheme.labelSmall
               ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
         ),
