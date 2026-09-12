@@ -342,9 +342,14 @@ class _HomePageState extends ConsumerState<HomePage>
   }
 }
 
-/// Thanh điều hướng dưới cùng: Nhà · Cửa hàng · Nhượng quyền · Thành tựu ·
-/// Đấu Trường · Bảng xếp hạng. Các mục (trừ Nhà) mở dialog/trang tương
-/// ứng; giữ key cũ để test/quen thao tác.
+/// Thanh điều hướng dưới cùng: Cửa hàng · Nhượng quyền · Thành tựu · Đấu
+/// Trường · Bảng xếp hạng. Mỗi mục mở dialog/trang tương ứng; giữ key cũ
+/// để test/quen thao tác.
+///
+/// Bỏ mục "Nhà" (từng ở đầu, `onTap: () {}` — thuần trang trí, không có
+/// chức năng điều hướng thật vì màn hình chính luôn hiện phía sau mọi
+/// dialog/trang khác) để đỡ chật khi đã lên 6 mục — phản hồi user lúc test
+/// máy thật.
 class _BottomBar extends ConsumerWidget {
   const _BottomBar();
 
@@ -378,8 +383,6 @@ class _BottomBar extends ConsumerWidget {
           height: 62,
           child: Row(
             children: [
-              _navItem(theme, icon: Icons.home_rounded, label: l10n.navHome,
-                  onTap: () {}),
               _navItem(theme,
                   buttonKey: const Key('gem-shop-button'),
                   icon: Icons.storefront,
