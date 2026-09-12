@@ -44,7 +44,7 @@ class StageConfig {
     required this.unlockCost,
   });
 
-  /// Số thứ tự giai đoạn (1..6).
+  /// Số thứ tự giai đoạn (1..12).
   final int stage;
 
   /// Tên hiển thị.
@@ -87,6 +87,8 @@ class GameState {
     this.storyChapter = 0,
     this.storyChoiceA,
     this.storyChoiceB,
+    this.storyChoiceC,
+    this.storyChoiceD,
     this.rivalDefeated = false,
     this.rivalPressureSeconds = 0,
     this.repeatQuestBaseline = 0,
@@ -144,7 +146,7 @@ class GameState {
   /// Cấp vật phẩm "Kho lạnh offline" (nâng trần tiền offline).
   int offlineCapLevel;
 
-  /// Giai đoạn kinh doanh hiện tại (1..6).
+  /// Giai đoạn kinh doanh hiện tại (1..12).
   int stage;
 
   /// Đã mua "Gỡ quảng cáo" (IAP non-consumable) — bỏ qua QC, tự trao thưởng.
@@ -198,6 +200,12 @@ class GameState {
   /// cộng một perk nhỏ vĩnh viễn (xem [Balance.storyPerkBonus]).
   String? storyChoiceA;
   String? storyChoiceB;
+
+  /// Lựa chọn nhánh Chương 13 ('independent' | 'merger' | null) và Chương 18
+  /// ('soul' | 'global' | null) — hồi truyện mở rộng (mục "thế giới lớn hơn"),
+  /// cùng cơ chế/perk như storyChoiceA/B.
+  String? storyChoiceC;
+  String? storyChoiceD;
 
   /// Đã "hạ" đối thủ (đạt điều kiện ở giai đoạn 6) — chốt lại, mở Chương 8 và
   /// dừng các sự kiện đối thủ.
@@ -270,6 +278,8 @@ class GameState {
         'storyChapter': storyChapter,
         'storyChoiceA': storyChoiceA,
         'storyChoiceB': storyChoiceB,
+        'storyChoiceC': storyChoiceC,
+        'storyChoiceD': storyChoiceD,
         'rivalDefeated': rivalDefeated,
         'rivalPressureSeconds': rivalPressureSeconds,
         'repeatQuestBaseline': repeatQuestBaseline,
@@ -323,6 +333,8 @@ class GameState {
         storyChapter: (json['storyChapter'] as num?)?.toInt() ?? 0,
         storyChoiceA: json['storyChoiceA'] as String?,
         storyChoiceB: json['storyChoiceB'] as String?,
+        storyChoiceC: json['storyChoiceC'] as String?,
+        storyChoiceD: json['storyChoiceD'] as String?,
         rivalDefeated: (json['rivalDefeated'] as bool?) ?? false,
         rivalPressureSeconds:
             (json['rivalPressureSeconds'] as num?)?.toDouble() ?? 0,

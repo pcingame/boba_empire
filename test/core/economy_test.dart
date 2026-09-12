@@ -252,6 +252,27 @@ void main() {
           closeTo(1 + 2 * Balance.storyPerkBonus, 1e-9));
     });
 
+    test(
+        '"independent"/"soul" (Chương 13/18, mở rộng thế giới) cộng vào trục '
+        'chạm; "merger"/"global" vào thu nhập', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..storyChoiceC = 'independent'
+        ..storyChoiceD = 'global';
+      expect(storyChoiceTapMultiplier(s), 1 + Balance.storyPerkBonus);
+      expect(storyChoiceIncomeMultiplier(s), 1 + Balance.storyPerkBonus);
+    });
+
+    test('cả 4 trục A/B/C/D cùng cộng dồn vào đúng hệ số', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..storyChoiceA = 'craft'
+        ..storyChoiceB = 'identity'
+        ..storyChoiceC = 'independent'
+        ..storyChoiceD = 'soul';
+      expect(storyChoiceTapMultiplier(s),
+          closeTo(1 + 4 * Balance.storyPerkBonus, 1e-9));
+      expect(storyChoiceIncomeMultiplier(s), 1.0);
+    });
+
     test('fold vào effectiveIncomePerSecond', () {
       final s = GameState.newGame(nowMillis: 0)..levels['x'] = 3;
       final before = effectiveIncomePerSecond(s, const [_g], bonusPerStar: 0.02);

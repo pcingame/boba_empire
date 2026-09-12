@@ -504,6 +504,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String get genGalaxy => 'Galaxy Milk Tea';
 
   @override
+  String get genQuantumTea => 'Quantum Milk Tea';
+
+  @override
+  String get genAiTea => 'AI Milk Tea';
+
+  @override
+  String get genParallelTea => 'Parallel-Universe Milk Tea';
+
+  @override
+  String get genNftTea => 'NFT Milk Tea';
+
+  @override
+  String get genTimeTea => 'Time-Travel Milk Tea';
+
+  @override
+  String get genMultidimTea => 'Multidimensional Milk Tea';
+
+  @override
+  String get genBlackholeTea => 'Black-Hole Milk Tea';
+
+  @override
+  String get genLightTea => 'Light-Speed Milk Tea';
+
+  @override
+  String get genRobotTea => 'Robot Milk Tea';
+
+  @override
+  String get genHologramTea => 'Hologram Milk Tea';
+
+  @override
+  String get genLegendTea => 'Legendary Milk Tea';
+
+  @override
+  String get genEternalTea => 'Eternal Milk Tea';
+
+  @override
   String get stage4 => 'Brûlée Workshop';
 
   @override
@@ -511,6 +547,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get stage6 => 'Global Empire';
+
+  @override
+  String get stage7 => 'Stock Market IPO';
+
+  @override
+  String get stage8 => 'Conglomerate';
+
+  @override
+  String get stage9 => 'Global Investment Fund';
+
+  @override
+  String get stage10 => 'Farm Supply Chain';
+
+  @override
+  String get stage11 => 'AI Tech Empire';
+
+  @override
+  String get stage12 => 'Milk Tea Legend';
 
   @override
   String get settingsTitle => 'Settings';

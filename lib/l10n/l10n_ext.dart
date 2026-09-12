@@ -21,6 +21,18 @@ String generatorName(AppLocalizations l10n, String id) => switch (id) {
       'tra_trai_cay' => l10n.genTraTraiCay,
       'boba_vang' => l10n.genBobaVang,
       'galaxy' => l10n.genGalaxy,
+      'quantum_tea' => l10n.genQuantumTea,
+      'ai_tea' => l10n.genAiTea,
+      'parallel_tea' => l10n.genParallelTea,
+      'nft_tea' => l10n.genNftTea,
+      'time_tea' => l10n.genTimeTea,
+      'multidim_tea' => l10n.genMultidimTea,
+      'blackhole_tea' => l10n.genBlackholeTea,
+      'light_tea' => l10n.genLightTea,
+      'robot_tea' => l10n.genRobotTea,
+      'hologram_tea' => l10n.genHologramTea,
+      'legend_tea' => l10n.genLegendTea,
+      'eternal_tea' => l10n.genEternalTea,
       _ => id,
     };
 
@@ -31,6 +43,12 @@ String stageName(AppLocalizations l10n, int stage) => switch (stage) {
       4 => l10n.stage4,
       5 => l10n.stage5,
       6 => l10n.stage6,
+      7 => l10n.stage7,
+      8 => l10n.stage8,
+      9 => l10n.stage9,
+      10 => l10n.stage10,
+      11 => l10n.stage11,
+      12 => l10n.stage12,
       _ => '',
     };
 

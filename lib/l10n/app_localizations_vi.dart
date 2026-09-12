@@ -507,6 +507,42 @@ class AppLocalizationsVi extends AppLocalizations {
   String get genGalaxy => 'Trà sữa ngân hà';
 
   @override
+  String get genQuantumTea => 'Trà sữa lượng tử';
+
+  @override
+  String get genAiTea => 'Trà sữa AI';
+
+  @override
+  String get genParallelTea => 'Trà sữa vũ trụ song song';
+
+  @override
+  String get genNftTea => 'Trà sữa NFT';
+
+  @override
+  String get genTimeTea => 'Trà sữa xuyên thời gian';
+
+  @override
+  String get genMultidimTea => 'Trà sữa đa chiều';
+
+  @override
+  String get genBlackholeTea => 'Trà sữa hố đen';
+
+  @override
+  String get genLightTea => 'Trà sữa ánh sáng';
+
+  @override
+  String get genRobotTea => 'Trà sữa robot';
+
+  @override
+  String get genHologramTea => 'Trà sữa hologram';
+
+  @override
+  String get genLegendTea => 'Trà sữa huyền thoại';
+
+  @override
+  String get genEternalTea => 'Trà sữa vĩnh cửu';
+
+  @override
   String get stage4 => 'Xưởng trà sữa nướng';
 
   @override
@@ -514,6 +550,24 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get stage6 => 'Đế chế toàn cầu';
+
+  @override
+  String get stage7 => 'Niêm yết sàn chứng khoán';
+
+  @override
+  String get stage8 => 'Tập đoàn đa ngành';
+
+  @override
+  String get stage9 => 'Quỹ đầu tư toàn cầu';
+
+  @override
+  String get stage10 => 'Chuỗi cung ứng nông trại';
+
+  @override
+  String get stage11 => 'Đế chế công nghệ AI';
+
+  @override
+  String get stage12 => 'Huyền thoại trà sữa';
 
   @override
   String get settingsTitle => 'Cài đặt';

@@ -103,20 +103,25 @@ double bulkIncomeGain(GeneratorConfig config, int fromLevel, int count) {
 double prestigeMultiplier(int stars, double bonusPerStar) =>
     1 + stars * bonusPerStar;
 
-/// Hệ số nhân GIÁ TRỊ CHẠM vĩnh viễn từ lựa chọn cốt truyện (Chương 6 "thủ công"
-/// và/hoặc Chương 8 "giữ bản sắc"). Không reset khi prestige.
+/// Hệ số nhân GIÁ TRỊ CHẠM vĩnh viễn từ lựa chọn cốt truyện (Chương 6 "thủ
+/// công", Chương 8 "giữ bản sắc", Chương 13 "giữ độc lập", Chương 18 "giữ hồn
+/// quán nhỏ"). Không reset khi prestige.
 double storyChoiceTapMultiplier(GameState s) =>
     1 +
     (s.storyChoiceA == 'craft' ? Balance.storyPerkBonus : 0) +
-    (s.storyChoiceB == 'identity' ? Balance.storyPerkBonus : 0);
+    (s.storyChoiceB == 'identity' ? Balance.storyPerkBonus : 0) +
+    (s.storyChoiceC == 'independent' ? Balance.storyPerkBonus : 0) +
+    (s.storyChoiceD == 'soul' ? Balance.storyPerkBonus : 0);
 
-/// Hệ số nhân THU NHẬP TỰ ĐỘNG vĩnh viễn từ lựa chọn cốt truyện (Chương 6 "thần
-/// tốc" và/hoặc Chương 8 "thâu tóm"). Áp cả offline (nằm trong
-/// [effectiveIncomePerSecond]).
+/// Hệ số nhân THU NHẬP TỰ ĐỘNG vĩnh viễn từ lựa chọn cốt truyện (Chương 6
+/// "thần tốc", Chương 8 "thâu tóm", Chương 13 "sáp nhập", Chương 18 "phủ khắp
+/// thế giới"). Áp cả offline (nằm trong [effectiveIncomePerSecond]).
 double storyChoiceIncomeMultiplier(GameState s) =>
     1 +
     (s.storyChoiceA == 'scale' ? Balance.storyPerkBonus : 0) +
-    (s.storyChoiceB == 'acquire' ? Balance.storyPerkBonus : 0);
+    (s.storyChoiceB == 'acquire' ? Balance.storyPerkBonus : 0) +
+    (s.storyChoiceC == 'merger' ? Balance.storyPerkBonus : 0) +
+    (s.storyChoiceD == 'global' ? Balance.storyPerkBonus : 0);
 
 /// Hệ số nhân thu nhập vĩnh viễn từ vật phẩm Kim Cương "Tăng thu nhập".
 double permanentMultiplier(int gemBoostLevel) =>

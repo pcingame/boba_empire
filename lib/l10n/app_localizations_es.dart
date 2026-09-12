@@ -510,6 +510,42 @@ class AppLocalizationsEs extends AppLocalizations {
   String get genGalaxy => 'Té con Leche Galaxia';
 
   @override
+  String get genQuantumTea => 'Té con Leche Cuántico';
+
+  @override
+  String get genAiTea => 'Té con Leche IA';
+
+  @override
+  String get genParallelTea => 'Té con Leche Universo Paralelo';
+
+  @override
+  String get genNftTea => 'Té con Leche NFT';
+
+  @override
+  String get genTimeTea => 'Té con Leche Viaje en el Tiempo';
+
+  @override
+  String get genMultidimTea => 'Té con Leche Multidimensional';
+
+  @override
+  String get genBlackholeTea => 'Té con Leche Agujero Negro';
+
+  @override
+  String get genLightTea => 'Té con Leche Velocidad de la Luz';
+
+  @override
+  String get genRobotTea => 'Té con Leche Robot';
+
+  @override
+  String get genHologramTea => 'Té con Leche Holograma';
+
+  @override
+  String get genLegendTea => 'Té con Leche Legendario';
+
+  @override
+  String get genEternalTea => 'Té con Leche Eterno';
+
+  @override
   String get stage4 => 'Taller Brûlée';
 
   @override
@@ -517,6 +553,24 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get stage6 => 'Imperio Global';
+
+  @override
+  String get stage7 => 'Salida a Bolsa';
+
+  @override
+  String get stage8 => 'Conglomerado';
+
+  @override
+  String get stage9 => 'Fondo de Inversión Global';
+
+  @override
+  String get stage10 => 'Cadena de Suministro Agrícola';
+
+  @override
+  String get stage11 => 'Imperio Tecnológico IA';
+
+  @override
+  String get stage12 => 'Leyenda del Té con Leche';
 
   @override
   String get settingsTitle => 'Ajustes';

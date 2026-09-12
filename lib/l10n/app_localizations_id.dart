@@ -510,6 +510,42 @@ class AppLocalizationsId extends AppLocalizations {
   String get genGalaxy => 'Teh Susu Galaksi';
 
   @override
+  String get genQuantumTea => 'Teh Susu Kuantum';
+
+  @override
+  String get genAiTea => 'Teh Susu AI';
+
+  @override
+  String get genParallelTea => 'Teh Susu Alam Semesta Paralel';
+
+  @override
+  String get genNftTea => 'Teh Susu NFT';
+
+  @override
+  String get genTimeTea => 'Teh Susu Lintas Waktu';
+
+  @override
+  String get genMultidimTea => 'Teh Susu Multidimensi';
+
+  @override
+  String get genBlackholeTea => 'Teh Susu Lubang Hitam';
+
+  @override
+  String get genLightTea => 'Teh Susu Kecepatan Cahaya';
+
+  @override
+  String get genRobotTea => 'Teh Susu Robot';
+
+  @override
+  String get genHologramTea => 'Teh Susu Hologram';
+
+  @override
+  String get genLegendTea => 'Teh Susu Legendaris';
+
+  @override
+  String get genEternalTea => 'Teh Susu Abadi';
+
+  @override
   String get stage4 => 'Bengkel Brûlée';
 
   @override
@@ -517,6 +553,24 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get stage6 => 'Imperium Global';
+
+  @override
+  String get stage7 => 'Penawaran Umum Saham';
+
+  @override
+  String get stage8 => 'Konglomerat';
+
+  @override
+  String get stage9 => 'Dana Investasi Global';
+
+  @override
+  String get stage10 => 'Rantai Pasok Pertanian';
+
+  @override
+  String get stage11 => 'Imperium Teknologi AI';
+
+  @override
+  String get stage12 => 'Legenda Teh Susu';
 
   @override
   String get settingsTitle => 'Pengaturan';

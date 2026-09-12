@@ -237,7 +237,11 @@ class Balance {
   static const double rivalIgnoreDebuffMult = 0.9;
   static const int rivalIgnoreDebuffSeconds = 120;
 
-  /// Ba giai đoạn kinh doanh (index = stage - 1). Giai đoạn 1 có sẵn.
+  /// Giai đoạn kinh doanh (index = stage - 1). Giai đoạn 1 có sẵn.
+  ///
+  /// Giai đoạn 7-12 (2026-09-12, mở rộng thế giới): tiếp nối sau "Đế chế toàn
+  /// cầu" bằng hồi truyện IPO/tập đoàn đa ngành — xem story.dart chương 9-18.
+  /// unlockCost tiếp tục đúng nhịp ×100 đã có từ giai đoạn 3 trở đi.
   static const List<StageConfig> stages = [
     StageConfig(stage: 1, name: 'Xe đẩy vỉa hè', unlockCost: 0),
     StageConfig(stage: 2, name: 'Kiosk cửa hàng nhỏ', unlockCost: 2000),
@@ -245,6 +249,14 @@ class Balance {
     StageConfig(stage: 4, name: 'Xưởng trà sữa nướng', unlockCost: 50000000),
     StageConfig(stage: 5, name: 'Nhà máy phô mai tươi', unlockCost: 5000000000),
     StageConfig(stage: 6, name: 'Đế chế toàn cầu', unlockCost: 500000000000),
+    StageConfig(
+        stage: 7, name: 'Niêm yết sàn chứng khoán', unlockCost: 5e13),
+    StageConfig(stage: 8, name: 'Tập đoàn đa ngành', unlockCost: 5e15),
+    StageConfig(stage: 9, name: 'Quỹ đầu tư toàn cầu', unlockCost: 5e17),
+    StageConfig(
+        stage: 10, name: 'Chuỗi cung ứng nông trại', unlockCost: 5e19),
+    StageConfig(stage: 11, name: 'Đế chế công nghệ AI', unlockCost: 5e21),
+    StageConfig(stage: 12, name: 'Huyền thoại trà sữa', unlockCost: 5e23),
   ];
 
   static StageConfig stageConfig(int stage) => stages[stage - 1];
@@ -356,6 +368,110 @@ class Balance {
       costGrowth: 1.15,
       incomePerLevelPerSecond: 520000,
       stage: 6,
+    ),
+    // Giai đoạn 7-12 (2026-09-12, mở rộng thế giới) — tiếp đúng nhịp tăng
+    // ~×3.3 (giá)/×3.2 (thu nhập) đã có từ "galaxy" trở về trước.
+    // Giai đoạn 7 — Niêm yết sàn chứng khoán.
+    GeneratorConfig(
+      id: 'quantum_tea',
+      name: 'Trà sữa lượng tử',
+      baseCost: 50000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 1700000,
+      stage: 7,
+    ),
+    GeneratorConfig(
+      id: 'ai_tea',
+      name: 'Trà sữa AI',
+      baseCost: 160000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 5500000,
+      stage: 7,
+    ),
+    // Giai đoạn 8 — Tập đoàn đa ngành.
+    GeneratorConfig(
+      id: 'parallel_tea',
+      name: 'Trà sữa vũ trụ song song',
+      baseCost: 530000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 18000000,
+      stage: 8,
+    ),
+    GeneratorConfig(
+      id: 'nft_tea',
+      name: 'Trà sữa NFT',
+      baseCost: 1700000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 58000000,
+      stage: 8,
+    ),
+    // Giai đoạn 9 — Quỹ đầu tư toàn cầu.
+    GeneratorConfig(
+      id: 'time_tea',
+      name: 'Trà sữa xuyên thời gian',
+      baseCost: 5600000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 190000000,
+      stage: 9,
+    ),
+    GeneratorConfig(
+      id: 'multidim_tea',
+      name: 'Trà sữa đa chiều',
+      baseCost: 18000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 610000000,
+      stage: 9,
+    ),
+    // Giai đoạn 10 — Chuỗi cung ứng nông trại.
+    GeneratorConfig(
+      id: 'blackhole_tea',
+      name: 'Trà sữa hố đen',
+      baseCost: 60000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 2000000000,
+      stage: 10,
+    ),
+    GeneratorConfig(
+      id: 'light_tea',
+      name: 'Trà sữa ánh sáng',
+      baseCost: 200000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 6400000000,
+      stage: 10,
+    ),
+    // Giai đoạn 11 — Đế chế công nghệ AI.
+    GeneratorConfig(
+      id: 'robot_tea',
+      name: 'Trà sữa robot',
+      baseCost: 660000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 20000000000,
+      stage: 11,
+    ),
+    GeneratorConfig(
+      id: 'hologram_tea',
+      name: 'Trà sữa hologram',
+      baseCost: 2200000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 64000000000,
+      stage: 11,
+    ),
+    // Giai đoạn 12 — Huyền thoại trà sữa.
+    GeneratorConfig(
+      id: 'legend_tea',
+      name: 'Trà sữa huyền thoại',
+      baseCost: 7200000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 200000000000,
+      stage: 12,
+    ),
+    GeneratorConfig(
+      id: 'eternal_tea',
+      name: 'Trà sữa vĩnh cửu',
+      baseCost: 24000000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 640000000000,
+      stage: 12,
     ),
   ];
 }
