@@ -316,7 +316,22 @@ class GameController extends Notifier<GameSnapshot> {
     final id = pendingChapterId(_game);
     if (id == null) return false;
     if (!applyStoryChoice(_game, id, optionKey)) return false;
+    final firstTime = id > _game.storyChapter;
     markChapterSeen(_game, id);
+    // Bug thật (2026-09-12): Chương 18 (chương CUỐI) cũng là chương lựa chọn
+    // — story_dialog.dart không hề render nút "Tiếp tục" cho chương lựa chọn
+    // (actions: isChoice ? null : [...]), chỉ có 2 nút chọn nhánh gọi
+    // onChoose → hàm này. Trước đây mốc storyCompleteSeconds CHỈ được chốt ở
+    // acknowledgeStoryBeat() (nhánh "Tiếp tục") — nghĩa là không người chơi
+    // thật nào từng kích hoạt được nó khi hoàn thành cốt truyện thật sự, làm
+    // Bảng xếp hạng tốc độ hoàn thành không bao giờ có dữ liệu thật. Chốt
+    // cùng logic ở đây, giống hệt acknowledgeStoryBeat.
+    if (firstTime &&
+        id == storyChapters.last.id &&
+        _game.storyCompleteSeconds == null) {
+      _game.storyCompleteSeconds =
+          max(1, (_clock() - _game.firstPlayedMillis) ~/ 1000);
+    }
     unawaited(saveNow());
     state = _snapshot();
     return true;

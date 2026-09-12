@@ -136,4 +136,26 @@ void main() {
     b.ctrl.acknowledgeStoryBeat();
     expect(b.snap().storyCompleteSeconds, 500);
   });
+
+  test(
+      'Chương 18 CŨNG là chương lựa chọn — đường thật của người chơi là '
+      'makeStoryChoice (không có nút "Tiếp tục" cho chương lựa chọn, xem '
+      'story_dialog.dart), vẫn phải ghi storyCompleteSeconds ở đây', () async {
+    final seed = GameState.newGame(nowMillis: 1000)
+      ..storyChapter = 17
+      ..stage = 12;
+    final b = await _boot(seed);
+    b.clock.now = 1000 + 500000; // 500s sau khi tạo save
+    expect(b.snap().pendingStoryChapterId, 18);
+    expect(b.snap().storyCompleteSeconds, isNull);
+
+    expect(b.ctrl.makeStoryChoice('soul'), isTrue);
+    expect(b.snap().storyChapter, 18);
+    expect(b.snap().storyCompleteSeconds, 500);
+
+    // Gọi lại (không nên xảy ra vì đã chọn rồi, nhưng an toàn) — mốc không đổi.
+    b.clock.now = 1000 + 999000;
+    expect(b.ctrl.makeStoryChoice('global'), isFalse);
+    expect(b.snap().storyCompleteSeconds, 500);
+  });
 }
