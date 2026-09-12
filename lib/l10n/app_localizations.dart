@@ -1426,6 +1426,18 @@ abstract class AppLocalizations {
   /// **'Chưa có ai trên bảng xếp hạng — là bạn đây!'**
   String get leaderboardEmpty;
 
+  /// No description provided for @leaderboardRewardSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'🎉 Bạn đang giữ hạng cao! +{gems} 💎'**
+  String leaderboardRewardSnack(int gems);
+
+  /// No description provided for @leaderboardRewardInfo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Top 1: {top1}💎 · Top 2-3: {top23}💎 · Top 4-10: {top410}💎 — mỗi 24 giờ nếu còn giữ hạng'**
+  String leaderboardRewardInfo(int top1, int top23, int top410);
+
   /// No description provided for @leaderboardChangeName.
   ///
   /// In vi, this message translates to:

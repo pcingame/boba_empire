@@ -800,6 +800,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String get leaderboardEmpty => 'Chưa có ai trên bảng xếp hạng — là bạn đây!';
 
   @override
+  String leaderboardRewardSnack(int gems) {
+    return '🎉 Bạn đang giữ hạng cao! +$gems 💎';
+  }
+
+  @override
+  String leaderboardRewardInfo(int top1, int top23, int top410) {
+    return 'Top 1: $top1💎 · Top 2-3: $top23💎 · Top 4-10: $top410💎 — mỗi 24 giờ nếu còn giữ hạng';
+  }
+
+  @override
   String get leaderboardChangeName => 'Đổi tên';
 
   @override

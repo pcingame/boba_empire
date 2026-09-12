@@ -5,6 +5,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/balance.dart';
 import '../core/format.dart';
 import '../l10n/app_localizations.dart';
 import '../leaderboard/leaderboard_controller.dart';
@@ -44,6 +45,16 @@ class _LeaderboardPageState extends ConsumerState<LeaderboardPage> {
         lifetimeEarnings: snap.lifetimeEarnings,
         prestigeStars: snap.prestigeStars,
         stage: snap.stage,
+      );
+    };
+    // messenger chụp trước — an toàn dùng lại trong callback dù context lúc
+    // đó có thể không còn hợp lệ để tra cứu lại (onRewardGems chạy sau 1
+    // await bên trong controller, không phải ngay lúc build này).
+    final messenger = ScaffoldMessenger.of(context);
+    notifier.onRewardGems = (gems) {
+      ref.read(gameControllerProvider.notifier).grantLeaderboardReward(gems);
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.leaderboardRewardSnack(gems))),
       );
     };
     // Tải lần đầu khi mở màn — sau frame đầu để tránh gọi setState lúc build.
@@ -116,6 +127,10 @@ class _LeaderboardList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
+    // Gợi ý bậc thưởng — chỉ để HIỂN THỊ, số Kim Cương thật do server cấp
+    // (xem Balance.leaderboardRewardTiers, phải khớp leaderboard_claim_reward
+    // trong leaderboard_schema.sql).
+    final tiers = Balance.leaderboardRewardTiers;
     return Column(
       children: [
         if (view.myRank != null)
@@ -123,6 +138,19 @@ class _LeaderboardList extends ConsumerWidget {
             padding: const EdgeInsets.all(12),
             child: Chip(label: Text(l10n.leaderboardYourRank(view.myRank!))),
           ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            l10n.leaderboardRewardInfo(
+              tiers[0].$2,
+              tiers[1].$2,
+              tiers[2].$2,
+            ),
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodySmall
+                ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+          ),
+        ),
         TextButton(
           onPressed: () => ref.read(leaderboardControllerProvider.notifier).changeName(),
           child: Text(l10n.leaderboardChangeName),

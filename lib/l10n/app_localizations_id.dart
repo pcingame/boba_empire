@@ -804,6 +804,16 @@ class AppLocalizationsId extends AppLocalizations {
       'Belum ada siapa-siapa di papan peringkat — itu kamu!';
 
   @override
+  String leaderboardRewardSnack(int gems) {
+    return '🎉 Anda berada di peringkat atas! +$gems 💎';
+  }
+
+  @override
+  String leaderboardRewardInfo(int top1, int top23, int top410) {
+    return 'Top 1: $top1💎 · Top 2-3: $top23💎 · Top 4-10: $top410💎 — tiap 24 jam selama masih peringkat';
+  }
+
+  @override
   String get leaderboardChangeName => 'Ganti nama';
 
   @override
