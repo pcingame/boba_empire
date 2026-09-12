@@ -788,6 +788,15 @@ class _TapAreaState extends ConsumerState<_TapArea>
   final math.Random _rng = math.Random();
   final List<_Floater> _floaters = [];
 
+  // Chặn giật khung hình khi chạm liên tục nhanh (đúng kiểu chơi idle/
+  // clicker) — xem TapEffectGate (one_shot_lottie.dart) cho lý do.
+  final _coinsEffectGate = TapEffectGate(minGapMs: 90);
+
+  // Chặn phình vô hạn nếu chạm nhanh hơn tốc độ mỗi số bay tự biến mất
+  // (~850ms) — giữ tối đa vài số cùng lúc, đủ để nhìn vẫn "dồn dập" mà không
+  // tích luỹ hàng chục widget animation sống cùng lúc.
+  static const _maxFloaters = 12;
+
   @override
   void initState() {
     super.initState();
@@ -808,11 +817,19 @@ class _TapAreaState extends ConsumerState<_TapArea>
     HapticFeedback.lightImpact();
     final gained = ref.read(gameControllerProvider.notifier).tapCup();
     ref.read(audioServiceProvider).play(Sfx.tap);
-    playEffect(context, AnimAssets.coins, size: 140);
+
+    // ref.read(clockProvider)() thay vì DateTime.now(): dùng chung đồng hồ
+    // bơm được của cả app (test override qua clockProvider) — quyết định
+    // gộp/không gộp hiệu ứng test được xác định, không phụ thuộc tốc độ máy
+    // chạy test thật.
+    if (_coinsEffectGate.allow(ref.read(clockProvider)())) {
+      playEffect(context, AnimAssets.coins, size: 140);
+    }
 
     final key = UniqueKey();
     setState(() {
       _comboCount = _combo.isAnimating ? _comboCount + 1 : 1;
+      if (_floaters.length >= _maxFloaters) _floaters.removeAt(0);
       _floaters.add(_Floater(
         key: key,
         text: '+${formatNumber(gained)}',
