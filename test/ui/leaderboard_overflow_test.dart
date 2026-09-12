@@ -1,9 +1,17 @@
 /// Regression cho lớp bug tràn số ở danh sách Bảng xếp hạng: 1 hàng có
 /// prestige_stars/lifetime_earnings cực lớn (khớp gần đúng save whale thật
 /// gặp trên máy: ~16,6 tỷ Sao) không được làm tràn RenderFlex — xem
-/// shop-tile-overflow-pattern memory. Bug thật: `Text(l10n.leaderboardStars(
-/// entry.prestigeStars))`/`Text(formatNumber(entry.lifetimeEarnings))` là
-/// con của `Row` không có `Flexible`, sizes theo nội dung không giới hạn.
+/// shop-tile-overflow-pattern memory. Bug thật ban đầu: `Text(l10n.
+/// leaderboardStars(entry.prestigeStars))`/`Text(formatNumber(
+/// entry.lifetimeEarnings))` là con của `Row` không có `Flexible`, sizes
+/// theo nội dung không giới hạn.
+///
+/// Bug thật LẦN 2 (2026-09-12, người dùng báo "số tiền đang là ... nếu
+/// nhiều quá"): fix lần đầu bọc `Flexible` + `maxLines: 1, overflow:
+/// TextOverflow.ellipsis` — hết tràn/crash nhưng số bị CẮT thành "…", không
+/// đọc được giá trị thật. Đổi sang `FittedBox(fit: BoxFit.scaleDown)` (co
+/// chữ thay vì cắt, giống cách `_ShopTile`/nút mua ở home_page.dart xử lý) —
+/// test dưới đây giờ assert số hiện ĐẦY ĐỦ, không chỉ "không crash".
 library;
 
 import 'package:boba_empire/l10n/app_localizations.dart';
@@ -77,5 +85,10 @@ void main() {
     await tester.pumpAndSettle(); // ném FlutterError nếu RenderFlex tràn
 
     expect(find.textContaining('WhaleTest'), findsOneWidget);
+    // Số hiện ĐẦY ĐỦ (co chữ lại bằng FittedBox), không bị cắt thành "…" —
+    // đúng giá trị formatNumber(1.108e24)/"{stars} ⭐" thật, không phải chuỗi
+    // rút gọn nào khác.
+    expect(find.textContaining('1.11dd'), findsOneWidget);
+    expect(find.textContaining('16640428646'), findsOneWidget);
   });
 }
