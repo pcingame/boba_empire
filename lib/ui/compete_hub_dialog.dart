@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import 'arena_page.dart';
 import 'leaderboard_page.dart';
+import 'story_speedrun_page.dart';
 
 Future<void> showCompeteHub(BuildContext context) {
   return showDialog<void>(
@@ -43,6 +44,15 @@ class _CompeteHubDialog extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
               showLeaderboardPage(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.timer),
+            title: Text(l10n.storySpeedrunMenuTitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              Navigator.of(context).pop();
+              showStorySpeedrunPage(context);
             },
           ),
         ],

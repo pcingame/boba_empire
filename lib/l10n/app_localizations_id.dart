@@ -808,4 +808,18 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get leaderboardRetry => 'Coba lagi';
+
+  @override
+  String get storySpeedrunMenuTitle => 'Speedrun';
+
+  @override
+  String get storySpeedrunTitle => 'Papan Peringkat Speedrun';
+
+  @override
+  String get storySpeedrunNotCompletedYet =>
+      'Anda belum menyelesaikan cerita — selesaikan Bab 18 untuk masuk peringkat.';
+
+  @override
+  String get storySpeedrunEmpty =>
+      'Belum ada yang menyelesaikan cerita — jadilah yang pertama!';
 }

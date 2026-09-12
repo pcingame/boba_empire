@@ -246,5 +246,10 @@
   "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
   "leaderboardEmpty": "Aún no hay nadie en la clasificación — ¡eres tú!",
   "leaderboardChangeName": "Cambiar nombre",
-  "leaderboardRetry": "Reintentar"
+  "leaderboardRetry": "Reintentar",
+
+  "storySpeedrunMenuTitle": "Speedrun",
+  "storySpeedrunTitle": "Clasificación de Speedrun",
+  "storySpeedrunNotCompletedYet": "Aún no has terminado la historia — completa el Capítulo 18 para entrar en la clasificación.",
+  "storySpeedrunEmpty": "Nadie ha terminado la historia todavía — ¡sé el primero!"
 }

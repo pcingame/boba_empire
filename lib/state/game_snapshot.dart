@@ -55,6 +55,7 @@ class GameSnapshot {
     required this.pendingStoryChapterId,
     required this.storyChoiceA,
     required this.storyChoiceB,
+    required this.storyCompleteSeconds,
     required this.rivalActive,
     required this.rivalDefeated,
     required this.rivalStanding,
@@ -170,6 +171,10 @@ class GameSnapshot {
   /// Lựa chọn nhánh đã ghi (Chương 6 / Chương 8) — null nếu chưa chọn.
   final String? storyChoiceA;
   final String? storyChoiceB;
+
+  /// Số giây hoàn thành cốt truyện (xem Chương 18 lần đầu) — null nếu chưa
+  /// hoàn thành. Dùng cho Bảng xếp hạng tốc độ (story_speedrun_page.dart).
+  final int? storyCompleteSeconds;
 
   /// Đối thủ đang "hoạt động" (Chương 3+ và chưa bị hạ) & đã bị hạ.
   final bool rivalActive;

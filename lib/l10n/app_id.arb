@@ -246,5 +246,10 @@
   "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
   "leaderboardEmpty": "Belum ada siapa-siapa di papan peringkat — itu kamu!",
   "leaderboardChangeName": "Ganti nama",
-  "leaderboardRetry": "Coba lagi"
+  "leaderboardRetry": "Coba lagi",
+
+  "storySpeedrunMenuTitle": "Speedrun",
+  "storySpeedrunTitle": "Papan Peringkat Speedrun",
+  "storySpeedrunNotCompletedYet": "Anda belum menyelesaikan cerita — selesaikan Bab 18 untuk masuk peringkat.",
+  "storySpeedrunEmpty": "Belum ada yang menyelesaikan cerita — jadilah yang pertama!"
 }

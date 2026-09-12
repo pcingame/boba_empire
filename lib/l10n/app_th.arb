@@ -246,5 +246,10 @@
   "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
   "leaderboardEmpty": "ยังไม่มีใครในกระดานอันดับ — คือคุณเลย!",
   "leaderboardChangeName": "เปลี่ยนชื่อ",
-  "leaderboardRetry": "ลองอีกครั้ง"
+  "leaderboardRetry": "ลองอีกครั้ง",
+
+  "storySpeedrunMenuTitle": "สปีดรัน",
+  "storySpeedrunTitle": "อันดับสปีดรัน",
+  "storySpeedrunNotCompletedYet": "คุณยังไม่จบเนื้อเรื่อง — จบตอนที่ 18 เพื่อขึ้นอันดับ",
+  "storySpeedrunEmpty": "ยังไม่มีใครจบเนื้อเรื่อง — เป็นคนแรกสิ!"
 }

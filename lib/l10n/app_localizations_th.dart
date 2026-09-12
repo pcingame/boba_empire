@@ -800,4 +800,17 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get leaderboardRetry => 'ลองอีกครั้ง';
+
+  @override
+  String get storySpeedrunMenuTitle => 'สปีดรัน';
+
+  @override
+  String get storySpeedrunTitle => 'อันดับสปีดรัน';
+
+  @override
+  String get storySpeedrunNotCompletedYet =>
+      'คุณยังไม่จบเนื้อเรื่อง — จบตอนที่ 18 เพื่อขึ้นอันดับ';
+
+  @override
+  String get storySpeedrunEmpty => 'ยังไม่มีใครจบเนื้อเรื่อง — เป็นคนแรกสิ!';
 }

@@ -30,3 +30,18 @@ String formatNumber(double value, {int decimals = 2}) {
   final s = '${n.toStringAsFixed(decimals)}${_suffixes[tier]}';
   return negative ? '-$s' : s;
 }
+
+/// Thời lượng dạng gọn "3d 5h", "5h 20m", "20m 5s" — dùng cho bảng xếp hạng
+/// tốc độ hoàn thành cốt truyện. Chữ viết tắt d/h/m/s KHÔNG dịch theo ngôn
+/// ngữ, giống hậu tố K/M/B/T ở [formatNumber] — quy ước đã có trong game.
+String formatDuration(int totalSeconds) {
+  final s = totalSeconds < 0 ? 0 : totalSeconds;
+  final days = s ~/ 86400;
+  final hours = (s % 86400) ~/ 3600;
+  final minutes = (s % 3600) ~/ 60;
+  final seconds = s % 60;
+  if (days > 0) return '${days}d ${hours}h';
+  if (hours > 0) return '${hours}h ${minutes}m';
+  if (minutes > 0) return '${minutes}m ${seconds}s';
+  return '${seconds}s';
+}

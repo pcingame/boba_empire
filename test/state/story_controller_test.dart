@@ -115,4 +115,25 @@ void main() {
     expect(b.snap().rivalDefeated, isTrue);
     expect(b.snap().pendingStoryChapterId, 8);
   });
+
+  test(
+      'hoàn thành Chương 18 lần đầu -> ghi storyCompleteSeconds (giây thực '
+      'tế từ firstPlayedMillis); acknowledge lại không đổi mốc', () async {
+    final seed = GameState.newGame(nowMillis: 1000)
+      ..storyChapter = 17
+      ..stage = 12;
+    final b = await _boot(seed);
+    b.clock.now = 1000 + 500000; // 500s sau khi tạo save
+    expect(b.snap().pendingStoryChapterId, 18);
+    expect(b.snap().storyCompleteSeconds, isNull);
+
+    b.ctrl.acknowledgeStoryBeat();
+    expect(b.snap().storyChapter, 18);
+    expect(b.snap().storyCompleteSeconds, 500);
+
+    // Mở lại app / acknowledge lại sau khi đã hoàn thành — mốc không đổi.
+    b.clock.now = 1000 + 999000;
+    b.ctrl.acknowledgeStoryBeat();
+    expect(b.snap().storyCompleteSeconds, 500);
+  });
 }
