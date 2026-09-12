@@ -220,16 +220,31 @@ class _GemAction extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          FilledButton(
-            key: buttonKey,
-            onPressed: gems >= cost ? onBuy : null,
-            child: Text(l10n.gemCost(cost)),
+          // Chiều rộng cố định: bốn nút giá trong Cửa hàng Kim Cương thuộc 2
+          // widget khác nhau (_GemAction/_GemItem), mỗi nút vốn tự co theo độ
+          // dài số của riêng nó (5/10/40/30 chữ số khác nhau) nên không thẳng
+          // cột — bug thật gặp trên máy. Ép cùng 1 chiều rộng + FittedBox co
+          // chữ nếu số dài hơn (giá có thể tăng theo cấp) để luôn thẳng hàng.
+          SizedBox(
+            width: _priceButtonWidth,
+            child: FilledButton(
+              key: buttonKey,
+              onPressed: gems >= cost ? onBuy : null,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(l10n.gemCost(cost)),
+              ),
+            ),
           ),
         ],
       ),
     );
   }
 }
+
+/// Chiều rộng chung cho mọi nút giá trong Cửa hàng Kim Cương (_GemAction +
+/// _GemItem) — để 4 nút thẳng cột dù số chữ số khác nhau.
+const double _priceButtonWidth = 72;
 
 class _GemItem extends StatelessWidget {
   const _GemItem({
@@ -271,12 +286,16 @@ class _GemItem extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          // Flexible + FittedBox: giá tăng theo cấp số nhân KHÔNG có trần cấp
-          // (khác các nguồn thu chính đã có Balance.maxGeneratorLevel) — cấp
-          // đủ cao thì `cost` (int thô, không qua formatNumber) có thể dài
-          // hàng chục chữ số và làm nút tự giãn tràn hàng, cùng lớp bug đã
-          // gặp ở _ShopTile (xem shop-tile-overflow-pattern memory).
-          Flexible(
+          // Chiều rộng cố định (xem _priceButtonWidth) + FittedBox: giá tăng
+          // theo cấp số nhân KHÔNG có trần cấp (khác các nguồn thu chính đã
+          // có Balance.maxGeneratorLevel) — cấp đủ cao thì `cost` (int thô,
+          // không qua formatNumber) có thể dài hàng chục chữ số. FittedBox co
+          // chữ vừa khung cố định thay vì tràn (cùng lớp bug đã gặp ở
+          // _ShopTile, xem shop-tile-overflow-pattern memory) — an toàn hơn
+          // Flexible cũ vì khung không bao giờ cần rộng hơn 72, luôn đủ chỗ
+          // cho nút "Mở giai đoạn tức thì"/"Tua nhanh" bên trên thẳng cột.
+          SizedBox(
+            width: _priceButtonWidth,
             child: FilledButton(
               key: Key('gem-buy-$name'),
               onPressed: canAfford ? onBuy : null,
