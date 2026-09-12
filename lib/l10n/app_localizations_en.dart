@@ -290,6 +290,10 @@ class AppLocalizationsEn extends AppLocalizations {
       '😴 The shop keeps selling while you\'re away — come back for offline cash.';
 
   @override
+  String get htpNumberFormat =>
+      '🔢 Big numbers use suffixes: K=thousand, M=million, B=billion, T=trillion, then aa, bb, cc... — each step is 1,000× the one before.';
+
+  @override
   String get language => 'Language';
 
   @override

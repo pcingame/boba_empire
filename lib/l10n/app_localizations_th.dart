@@ -290,6 +290,10 @@ class AppLocalizationsTh extends AppLocalizations {
       '😴 ร้านยังขายต่อขณะที่คุณไม่อยู่ — กลับมารับเงินออฟไลน์';
 
   @override
+  String get htpNumberFormat =>
+      '🔢 ตัวเลขใหญ่ใช้ตัวย่อ: K=พัน, M=ล้าน, B=พันล้าน, T=ล้านล้าน จากนั้นเป็น aa, bb, cc... — แต่ละขั้นมากกว่าขั้นก่อนหน้า 1,000 เท่า';
+
+  @override
   String get language => 'ภาษา';
 
   @override

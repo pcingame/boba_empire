@@ -294,6 +294,10 @@ class AppLocalizationsEs extends AppLocalizations {
       '😴 La tienda sigue vendiendo mientras no estás — vuelve por el dinero sin conexión.';
 
   @override
+  String get htpNumberFormat =>
+      '🔢 Los números grandes usan sufijos: K=mil, M=millón, B=mil millones, T=billón, luego aa, bb, cc... — cada paso es 1.000× el anterior.';
+
+  @override
   String get language => 'Idioma';
 
   @override

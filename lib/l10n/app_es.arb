@@ -85,6 +85,7 @@
   "htpGems": "💎 Gasta Gemas en la Tienda en mejoras permanentes.",
   "htpPrestige": "⭐ Franquicia para reiniciar y ganar Estrellas — un bono de ingresos permanente.",
   "htpOffline": "😴 La tienda sigue vendiendo mientras no estás — vuelve por el dinero sin conexión.",
+  "htpNumberFormat": "🔢 Los números grandes usan sufijos: K=mil, M=millón, B=mil millones, T=billón, luego aa, bb, cc... — cada paso es 1.000× el anterior.",
   "language": "Idioma",
   "languageSystem": "Predeterminado del sistema",
   "dailyTitle": "Registro diario",

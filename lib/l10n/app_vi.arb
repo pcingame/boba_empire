@@ -112,6 +112,7 @@
   "htpGems": "💎 Dùng Kim Cương trong Cửa hàng mua nâng cấp vĩnh viễn.",
   "htpPrestige": "⭐ Nhượng quyền để chơi lại và nhận Sao — bonus thu nhập vĩnh viễn.",
   "htpOffline": "😴 Quán vẫn bán khi bạn thoát — quay lại nhận tiền offline.",
+  "htpNumberFormat": "🔢 Số lớn viết tắt: K=nghìn, M=triệu, B=tỷ, T=nghìn tỷ, rồi tới aa, bb, cc... — mỗi bước gấp 1.000 lần bước trước.",
   "language": "Ngôn ngữ",
   "languageSystem": "Theo hệ thống",
   "dailyTitle": "Điểm danh hằng ngày",

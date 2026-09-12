@@ -550,6 +550,12 @@ abstract class AppLocalizations {
   /// **'😴 Quán vẫn bán khi bạn thoát — quay lại nhận tiền offline.'**
   String get htpOffline;
 
+  /// No description provided for @htpNumberFormat.
+  ///
+  /// In vi, this message translates to:
+  /// **'🔢 Số lớn viết tắt: K=nghìn, M=triệu, B=tỷ, T=nghìn tỷ, rồi tới aa, bb, cc... — mỗi bước gấp 1.000 lần bước trước.'**
+  String get htpNumberFormat;
+
   /// No description provided for @language.
   ///
   /// In vi, this message translates to:
