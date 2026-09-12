@@ -587,6 +587,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get navArena => 'สนามประลอง';
 
   @override
+  String get navCompete => 'แข่งขัน';
+
+  @override
   String get arenaTitle => 'สนามประลอง';
 
   @override

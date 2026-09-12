@@ -594,6 +594,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get navArena => 'Arena';
 
   @override
+  String get navCompete => 'Competir';
+
+  @override
   String get arenaTitle => 'Arena';
 
   @override

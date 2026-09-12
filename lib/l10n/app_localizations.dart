@@ -1054,6 +1054,12 @@ abstract class AppLocalizations {
   /// **'Đấu Trường'**
   String get navArena;
 
+  /// No description provided for @navCompete.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thi đấu'**
+  String get navCompete;
+
   /// No description provided for @arenaTitle.
   ///
   /// In vi, this message translates to:
