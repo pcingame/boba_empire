@@ -209,4 +209,98 @@ void main() {
 
     expect(container.read(gameControllerProvider).storyCompleteSeconds, isNull);
   });
+
+  group('mốc Hồi 2 (Chương 28)', () {
+    test(
+        'Chương 28 là chương lựa chọn: makeStoryChoice ghi storyExtCompleteSeconds '
+        '(tổng giây từ đầu game), giữ nguyên mốc Hồi 1 đã có, chỉ ghi 1 lần', () async {
+      final seed = GameState.newGame(nowMillis: 1000)
+        ..storyChapter = 27
+        ..stage = 18
+        ..storyCompleteSeconds = 300;
+      final b = await _boot(seed);
+      b.clock.now = 1000 + 2000000; // 2000s sau khi tạo save
+      expect(b.snap().pendingStoryChapterId, 28);
+      expect(b.snap().storyExtCompleteSeconds, isNull);
+
+      expect(b.ctrl.makeStoryChoice('recipe'), isTrue);
+      expect(b.snap().storyChapter, 28);
+      expect(b.snap().storyExtCompleteSeconds, 2000);
+      expect(b.snap().storyCompleteSeconds, 300); // mốc Hồi 1 không bị đè
+
+      b.clock.now = 1000 + 9999000;
+      expect(b.ctrl.makeStoryChoice('people'), isFalse);
+      expect(b.snap().storyExtCompleteSeconds, 2000);
+    });
+
+    test('đường acknowledgeStoryBeat cũng chốt mốc Chương 28', () async {
+      final seed = GameState.newGame(nowMillis: 1000)
+        ..storyChapter = 27
+        ..stage = 18;
+      final b = await _boot(seed);
+      b.clock.now = 1000 + 800000;
+      b.ctrl.acknowledgeStoryBeat();
+      expect(b.snap().storyExtCompleteSeconds, 800);
+    });
+
+    test('xong Chương 18 chỉ chốt mốc Hồi 1, KHÔNG chốt Hồi 2', () async {
+      final seed = GameState.newGame(nowMillis: 1000)
+        ..storyChapter = 17
+        ..stage = 12;
+      final b = await _boot(seed);
+      b.clock.now = 1000 + 500000;
+      expect(b.ctrl.makeStoryChoice('soul'), isTrue);
+      expect(b.snap().storyCompleteSeconds, 500);
+      expect(b.snap().storyExtCompleteSeconds, isNull);
+    });
+
+    Future<GameSnapshot> openAt(GameState seed, {required int savedAt, required int now, bool dropFirstPlayed = false}) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      await GameStorage(prefs).save(seed, nowMillis: savedAt);
+      if (dropFirstPlayed) {
+        final payload = jsonDecode(prefs.getString('game_state')!) as Map<String, dynamic>;
+        (payload['state'] as Map<String, dynamic>).remove('firstPlayedMillis');
+        await prefs.setString('game_state', jsonEncode(payload));
+      }
+      final container = ProviderContainer(overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        clockProvider.overrideWithValue(() => now),
+      ]);
+      addTearDown(container.dispose);
+      return container.read(gameControllerProvider);
+    }
+
+    test('save đã qua Chương 28 mà chưa có mốc: mở app bù mốc cả 2 hồi', () async {
+      final seed = GameState.newGame(nowMillis: 1000)
+        ..storyChapter = 28
+        ..storyChoiceD = 'soul'
+        ..storyChoiceF = 'recipe'
+        ..stage = 18;
+      final snap = await openAt(seed, savedAt: 5000, now: 1000 + 777000);
+      expect(snap.storyExtCompleteSeconds, 777);
+      expect(snap.storyCompleteSeconds, 777);
+    });
+
+    test('save chưa tới Chương 28 (đang ở 20) không bị bù mốc Hồi 2', () async {
+      final seed = GameState.newGame(nowMillis: 1000)
+        ..storyChapter = 20
+        ..stage = 14
+        ..storyCompleteSeconds = 400;
+      final snap = await openAt(seed, savedAt: 5000, now: 1000 + 900000);
+      expect(snap.storyExtCompleteSeconds, isNull);
+      expect(snap.storyCompleteSeconds, 400);
+    });
+
+    test('HỒI QUY "1s": save cũ thiếu firstPlayedMillis (mặc định = lastSeen) KHÔNG bị bù mốc nào', () async {
+      final seed = GameState.newGame(nowMillis: 1000)
+        ..storyChapter = 28
+        ..storyChoiceD = 'soul'
+        ..storyChoiceF = 'recipe'
+        ..stage = 18;
+      final snap = await openAt(seed, savedAt: 5000, now: 6000, dropFirstPlayed: true);
+      expect(snap.storyExtCompleteSeconds, isNull);
+      expect(snap.storyCompleteSeconds, isNull);
+    });
+  });
 }

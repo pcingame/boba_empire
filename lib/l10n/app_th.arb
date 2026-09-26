@@ -282,6 +282,9 @@
   "storySpeedrunMenuTitle": "สปีดรัน",
   "storySpeedrunTitle": "อันดับสปีดรัน",
   "storySpeedrunNotCompletedYet": "คุณยังไม่จบเนื้อเรื่อง — จบตอนที่ 18 เพื่อขึ้นอันดับ",
+  "storySpeedrunTabMain": "ภาค 1",
+  "storySpeedrunTabExt": "ภาค 2",
+  "storySpeedrunExtNotCompletedYet": "คุณยังไม่จบภาค 2 — จบตอนที่ 28 เพื่อติดอันดับ",
   "storySpeedrunEmpty": "ยังไม่มีใครจบเนื้อเรื่อง — เป็นคนแรกสิ!",
 
   "arenaLeaderboardMenuTitle": "อันดับ PK",

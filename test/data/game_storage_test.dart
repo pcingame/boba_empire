@@ -57,6 +57,20 @@ void main() {
     expect(loaded.storyCompleteSeconds, 12345);
   });
 
+  test('save rồi load giữ nguyên storyExtCompleteSeconds (Hồi 2); save cũ thiếu = null', () async {
+    final storage = await _storage();
+    final state = GameState.newGame(nowMillis: 1000)
+      ..storyCompleteSeconds = 100
+      ..storyExtCompleteSeconds = 4321;
+    await storage.save(state, nowMillis: 2000);
+    final loaded = storage.load()!;
+    expect(loaded.storyExtCompleteSeconds, 4321);
+    expect(loaded.storyCompleteSeconds, 100);
+
+    final oldJson = state.toJson()..remove('storyExtCompleteSeconds');
+    expect(GameState.fromJson(oldJson).storyExtCompleteSeconds, isNull);
+  });
+
   test('save rồi load giữ nguyên gemTimeSkipDay/gemTimeSkipUsedToday',
       () async {
     final storage = await _storage();

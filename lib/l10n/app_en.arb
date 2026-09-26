@@ -282,6 +282,9 @@
   "storySpeedrunMenuTitle": "Speedrun",
   "storySpeedrunTitle": "Speedrun Leaderboard",
   "storySpeedrunNotCompletedYet": "You haven't finished the story yet — complete Chapter 18 to get ranked.",
+  "storySpeedrunTabMain": "Act 1",
+  "storySpeedrunTabExt": "Act 2",
+  "storySpeedrunExtNotCompletedYet": "You haven't finished Act 2 yet — complete Chapter 28 to be ranked.",
   "storySpeedrunEmpty": "No one has finished the story yet — be the first!",
 
   "arenaLeaderboardMenuTitle": "PK Leaderboard",

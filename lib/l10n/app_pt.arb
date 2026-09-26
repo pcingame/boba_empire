@@ -282,6 +282,9 @@
   "storySpeedrunMenuTitle": "Speedrun",
   "storySpeedrunTitle": "Classificação de Speedrun",
   "storySpeedrunNotCompletedYet": "Você ainda não terminou a história — complete o Capítulo 18 para entrar na classificação.",
+  "storySpeedrunTabMain": "Ato 1",
+  "storySpeedrunTabExt": "Ato 2",
+  "storySpeedrunExtNotCompletedYet": "Você ainda não concluiu o Ato 2 — conclua o Capítulo 28 para entrar no ranking.",
   "storySpeedrunEmpty": "Ninguém terminou a história ainda — seja o primeiro!",
 
   "arenaLeaderboardMenuTitle": "Ranking PK",

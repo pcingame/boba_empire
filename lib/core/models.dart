@@ -119,6 +119,7 @@ class GameState {
     this.gemTimeSkipUsedToday = 0,
     int? firstPlayedMillis,
     this.storyCompleteSeconds,
+    this.storyExtCompleteSeconds,
     List<String>? achievementsClaimed,
   })  : achievementsClaimed = achievementsClaimed ?? [],
         dailyProgress = dailyProgress ?? {},
@@ -271,6 +272,11 @@ class GameState {
   /// Ghi một lần, không đổi được (giống storyChoiceA/B/C/D).
   int? storyCompleteSeconds;
 
+  /// Như [storyCompleteSeconds] nhưng tới lúc xem xong Chương 28 (hồi 2, mở rộng
+  /// 2026-09-26) — cho bảng "Hồi 2". Tổng thời gian từ [firstPlayedMillis], null
+  /// nếu chưa xong. Ghi một lần, không đổi được.
+  int? storyExtCompleteSeconds;
+
   /// Đã "hạ" đối thủ (đạt điều kiện ở giai đoạn 6) — chốt lại, mở Chương 8 và
   /// dừng các sự kiện đối thủ.
   bool rivalDefeated;
@@ -368,6 +374,7 @@ class GameState {
         'storyChoiceF': storyChoiceF,
         'firstPlayedMillis': firstPlayedMillis,
         'storyCompleteSeconds': storyCompleteSeconds,
+        'storyExtCompleteSeconds': storyExtCompleteSeconds,
         'rivalDefeated': rivalDefeated,
         'rivalPressureSeconds': rivalPressureSeconds,
         'repeatQuestBaseline': repeatQuestBaseline,
@@ -453,6 +460,8 @@ class GameState {
             (json['lastSeenMillis'] as num).toInt(),
         storyCompleteSeconds:
             (json['storyCompleteSeconds'] as num?)?.toInt(),
+        storyExtCompleteSeconds:
+            (json['storyExtCompleteSeconds'] as num?)?.toInt(),
         rivalDefeated: (json['rivalDefeated'] as bool?) ?? false,
         rivalPressureSeconds:
             (json['rivalPressureSeconds'] as num?)?.toDouble() ?? 0,

@@ -581,3 +581,11 @@ Chọn dạng ở màn Đấu Trường trước khi ghép trận (hàng đợi 
   (`test/arena/match3_rules_test.dart` và khối comment cuối file SQL) + fuzz 300 ván qua RPC.
 - Thưởng 💎 và bảng xếp hạng Đấu Trường dùng chung với dạng chạm (tính từ `arena_matches.winner`).
 - Chưa làm: kẹo đặc biệt (4/5 ô), tự xáo khi hết nước đi (hiện chỉ báo "Hết nước đi!"), xem bảng đối thủ. Chưa playtest cân bằng.
+
+## 21. Bảng xếp hạng tốc độ "Hồi 2" (2026-09-26)
+
+Bảng Tốc độ cốt truyện có 2 tab: **Hồi 1** (tới Chương 18, `storyFinaleChapterId`, bảng cũ giữ nguyên) và **Hồi 2**
+(tới Chương 28, `storyExtendedFinaleChapterId`). Thời gian = tổng giây thực tế từ lần đầu chơi (`firstPlayedMillis`) tới lúc
+xem xong chương cuối, ghi 1 lần (`storyCompleteSeconds` / `storyExtCompleteSeconds`). Hai bảng Supabase riêng
+(`story_speedrun_entries` / `story_speedrun2_entries`), cùng khuôn, không anti-cheat. Save đã qua Chương 28 nhưng chưa có mốc được
+bù khi mở app (cao hơn thực tế một chút); save không có `firstPlayedMillis` thật thì không bù (tránh mốc ~1 giây).

@@ -52,6 +52,11 @@ class StorySpeedrunError extends StorySpeedrunViewState {
 }
 
 class StorySpeedrunController extends Notifier<StorySpeedrunViewState> {
+  StorySpeedrunController([this.board = SpeedrunBoard.main]);
+
+  /// Bảng Hồi 1 (Chương 18) hoặc Hồi 2 (Chương 28).
+  final SpeedrunBoard board;
+
   StorySpeedrunRepository? _repo;
   AnalyticsRepository? _analyticsRepo;
 
@@ -65,6 +70,7 @@ class StorySpeedrunController extends Notifier<StorySpeedrunViewState> {
   StorySpeedrunRepository get _repository => _repo ??= StorySpeedrunRepository(
         Supabase.instance.client,
         ref.read(sharedPreferencesProvider),
+        board,
       );
 
   /// Lazy + tự bắt lỗi giống GameController._analytics — không bao giờ được
@@ -83,7 +89,8 @@ class StorySpeedrunController extends Notifier<StorySpeedrunViewState> {
 
   Future<void> refresh({bool silent = false}) async {
     if (!silent) state = const StorySpeedrunLoading();
-    unawaited(_analytics?.log('speedrun_viewed'));
+    unawaited(_analytics?.log(
+        board == SpeedrunBoard.ext ? 'speedrun_ext_viewed' : 'speedrun_viewed'));
     try {
       final completeSeconds = getMyCompleteSeconds?.call();
       if (completeSeconds != null) {
@@ -137,6 +144,12 @@ class StorySpeedrunController extends Notifier<StorySpeedrunViewState> {
   }
 }
 
+/// Bảng Hồi 1 (mốc Chương 18).
 final storySpeedrunControllerProvider =
     NotifierProvider<StorySpeedrunController, StorySpeedrunViewState>(
         StorySpeedrunController.new);
+
+/// Bảng Hồi 2 (mốc Chương 28).
+final storySpeedrunExtControllerProvider =
+    NotifierProvider<StorySpeedrunController, StorySpeedrunViewState>(
+        () => StorySpeedrunController(SpeedrunBoard.ext));

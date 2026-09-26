@@ -331,6 +331,9 @@
   "storySpeedrunMenuTitle": "Tốc độ hoàn thành",
   "storySpeedrunTitle": "Bảng xếp hạng tốc độ",
   "storySpeedrunNotCompletedYet": "Bạn chưa hoàn thành cốt truyện — hoàn thành Chương 18 để được xếp hạng.",
+  "storySpeedrunTabMain": "Hồi 1",
+  "storySpeedrunTabExt": "Hồi 2",
+  "storySpeedrunExtNotCompletedYet": "Bạn chưa hoàn thành Hồi 2 — hoàn thành Chương 28 để được xếp hạng.",
   "storySpeedrunEmpty": "Chưa có ai hoàn thành cốt truyện — là bạn đây!",
 
   "arenaLeaderboardMenuTitle": "Bảng xếp hạng PK",

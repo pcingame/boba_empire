@@ -11,6 +11,17 @@ library;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/// Bảng nào: "Hồi 1" (tới Chương 18, `story_speedrun_schema.sql`) hay "Hồi 2"
+/// (tới Chương 28, `story_speedrun2_schema.sql`). Hai bảng riêng, cùng khuôn.
+enum SpeedrunBoard {
+  main('story_speedrun_entries', 'story_speedrun_top'),
+  ext('story_speedrun2_entries', 'story_speedrun2_top');
+
+  const SpeedrunBoard(this.table, this.topRpc);
+  final String table;
+  final String topRpc;
+}
+
 class StorySpeedrunEntry {
   const StorySpeedrunEntry({
     required this.userId,
@@ -34,10 +45,12 @@ class StorySpeedrunEntry {
 }
 
 class StorySpeedrunRepository {
-  StorySpeedrunRepository(this._client, this._prefs);
+  StorySpeedrunRepository(this._client, this._prefs,
+      [this.board = SpeedrunBoard.main]);
 
   final SupabaseClient _client;
   final SharedPreferences _prefs;
+  final SpeedrunBoard board;
 
   /// CÙNG key với leaderboard_repository.dart — 1 tên dùng chung cho cả 2
   /// bảng xếp hạng, không hỏi lại người chơi đã đặt tên rồi.
@@ -70,7 +83,7 @@ class StorySpeedrunRepository {
   }) async {
     final uid = await ensureSignedIn();
     try {
-      await _client.from('story_speedrun_entries').insert({
+      await _client.from(board.table).insert({
         'user_id': uid,
         'nickname': nickname,
         'complete_seconds': completeSeconds,
@@ -88,7 +101,7 @@ class StorySpeedrunRepository {
   /// CHƯA hoàn thành thì vốn không có hàng nào để "quanh" cả).
   Future<List<StorySpeedrunEntry>> fetchTop({int limit = 50}) async {
     final rows = await _client.rpc(
-      'story_speedrun_top',
+      board.topRpc,
       params: {'p_limit': limit},
     ) as List;
     return rows

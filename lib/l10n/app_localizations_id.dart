@@ -914,6 +914,16 @@ class AppLocalizationsId extends AppLocalizations {
       'Anda belum menyelesaikan cerita — selesaikan Bab 18 untuk masuk peringkat.';
 
   @override
+  String get storySpeedrunTabMain => 'Babak 1';
+
+  @override
+  String get storySpeedrunTabExt => 'Babak 2';
+
+  @override
+  String get storySpeedrunExtNotCompletedYet =>
+      'Kamu belum menyelesaikan Babak 2 — selesaikan Bab 28 untuk masuk peringkat.';
+
+  @override
   String get storySpeedrunEmpty =>
       'Belum ada yang menyelesaikan cerita — jadilah yang pertama!';
 

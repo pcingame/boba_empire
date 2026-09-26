@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/format.dart';
 import '../l10n/app_localizations.dart';
 import '../leaderboard/story_speedrun_controller.dart';
+import '../leaderboard/story_speedrun_repository.dart';
 import '../state/game_providers.dart';
 import 'widgets/clay.dart';
 
@@ -18,16 +19,62 @@ Future<void> showStorySpeedrunPage(BuildContext context) {
   ).push(MaterialPageRoute(builder: (_) => const StorySpeedrunPage()));
 }
 
-class StorySpeedrunPage extends ConsumerStatefulWidget {
+typedef _SpeedrunProvider
+    = NotifierProvider<StorySpeedrunController, StorySpeedrunViewState>;
+
+_SpeedrunProvider _providerFor(SpeedrunBoard board) =>
+    board == SpeedrunBoard.ext
+        ? storySpeedrunExtControllerProvider
+        : storySpeedrunControllerProvider;
+
+/// 2 tab: "Hồi 1" (tới Chương 18) và "Hồi 2" (tới Chương 28) — mỗi tab có bảng,
+/// controller và mốc thời gian riêng.
+class StorySpeedrunPage extends StatelessWidget {
   const StorySpeedrunPage({super.key});
 
   @override
-  ConsumerState<StorySpeedrunPage> createState() => _StorySpeedrunPageState();
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(l10n.storySpeedrunTitle),
+          bottom: TabBar(
+            tabs: [
+              Tab(text: l10n.storySpeedrunTabMain),
+              Tab(text: l10n.storySpeedrunTabExt),
+            ],
+          ),
+        ),
+        body: const SafeArea(
+          child: TabBarView(
+            children: [
+              _SpeedrunTab(board: SpeedrunBoard.main),
+              _SpeedrunTab(board: SpeedrunBoard.ext),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-class _StorySpeedrunPageState extends ConsumerState<StorySpeedrunPage> {
+class _SpeedrunTab extends ConsumerStatefulWidget {
+  const _SpeedrunTab({required this.board});
+  final SpeedrunBoard board;
+
+  @override
+  ConsumerState<_SpeedrunTab> createState() => _SpeedrunTabState();
+}
+
+class _SpeedrunTabState extends ConsumerState<_SpeedrunTab>
+    with AutomaticKeepAliveClientMixin {
   final _nameCtrl = TextEditingController();
   bool _loaded = false;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void dispose() {
@@ -37,41 +84,55 @@ class _StorySpeedrunPageState extends ConsumerState<StorySpeedrunPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final l10n = AppLocalizations.of(context)!;
-    final notifier = ref.read(storySpeedrunControllerProvider.notifier);
-    notifier.getMyCompleteSeconds = () =>
-        ref.read(gameControllerProvider).storyCompleteSeconds;
+    final provider = _providerFor(widget.board);
+    final notifier = ref.read(provider.notifier);
+    notifier.getMyCompleteSeconds = () {
+      final game = ref.read(gameControllerProvider);
+      return widget.board == SpeedrunBoard.ext
+          ? game.storyExtCompleteSeconds
+          : game.storyCompleteSeconds;
+    };
 
     if (!_loaded) {
       _loaded = true;
       WidgetsBinding.instance.addPostFrameCallback((_) => notifier.refresh());
     }
 
-    final viewState = ref.watch(storySpeedrunControllerProvider);
-
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.storySpeedrunTitle)),
-      body: SafeArea(
-        child: switch (viewState) {
-          StorySpeedrunLoading() => const Center(
-            child: CircularProgressIndicator(),
-          ),
-          StorySpeedrunNeedsNickname() => _NicknameForm(
-            l10n: l10n,
-            nameCtrl: _nameCtrl,
-          ),
-          StorySpeedrunLoaded() => _SpeedrunList(l10n: l10n, view: viewState),
-          StorySpeedrunError(:final message) => _ErrorView(message: message),
-        },
+    final viewState = ref.watch(provider);
+    return switch (viewState) {
+      StorySpeedrunLoading() => const Center(
+        child: CircularProgressIndicator(),
       ),
-    );
+      StorySpeedrunNeedsNickname() => _NicknameForm(
+        l10n: l10n,
+        nameCtrl: _nameCtrl,
+        provider: provider,
+      ),
+      StorySpeedrunLoaded() => _SpeedrunList(
+        l10n: l10n,
+        view: viewState,
+        provider: provider,
+        board: widget.board,
+      ),
+      StorySpeedrunError(:final message) => _ErrorView(
+        message: message,
+        provider: provider,
+      ),
+    };
   }
 }
 
 class _NicknameForm extends ConsumerWidget {
-  const _NicknameForm({required this.l10n, required this.nameCtrl});
+  const _NicknameForm({
+    required this.l10n,
+    required this.nameCtrl,
+    required this.provider,
+  });
   final AppLocalizations l10n;
   final TextEditingController nameCtrl;
+  final _SpeedrunProvider provider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -96,9 +157,7 @@ class _NicknameForm extends ConsumerWidget {
               onPressed: () {
                 final name = nameCtrl.text.trim();
                 if (name.isNotEmpty) {
-                  ref
-                      .read(storySpeedrunControllerProvider.notifier)
-                      .submitNickname(name);
+                  ref.read(provider.notifier).submitNickname(name);
                 }
               },
               child: Text(l10n.leaderboardSubmit),
@@ -111,9 +170,16 @@ class _NicknameForm extends ConsumerWidget {
 }
 
 class _SpeedrunList extends ConsumerWidget {
-  const _SpeedrunList({required this.l10n, required this.view});
+  const _SpeedrunList({
+    required this.l10n,
+    required this.view,
+    required this.provider,
+    required this.board,
+  });
   final AppLocalizations l10n;
   final StorySpeedrunLoaded view;
+  final _SpeedrunProvider provider;
+  final SpeedrunBoard board;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -124,7 +190,9 @@ class _SpeedrunList extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.all(12),
             child: Text(
-              l10n.storySpeedrunNotCompletedYet,
+              board == SpeedrunBoard.ext
+                  ? l10n.storySpeedrunExtNotCompletedYet
+                  : l10n.storySpeedrunNotCompletedYet,
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.error,
@@ -133,9 +201,7 @@ class _SpeedrunList extends ConsumerWidget {
           ),
         Expanded(
           child: RefreshIndicator(
-            onRefresh: () => ref
-                .read(storySpeedrunControllerProvider.notifier)
-                .refresh(silent: true),
+            onRefresh: () => ref.read(provider.notifier).refresh(silent: true),
             child: view.entries.isEmpty
                 ? ListView(
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -205,8 +271,9 @@ class _SpeedrunList extends ConsumerWidget {
 }
 
 class _ErrorView extends ConsumerWidget {
-  const _ErrorView({required this.message});
+  const _ErrorView({required this.message, required this.provider});
   final String message;
+  final _SpeedrunProvider provider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -221,7 +288,7 @@ class _ErrorView extends ConsumerWidget {
             const SizedBox(height: 12),
             FilledButton(
               onPressed: () =>
-                  ref.read(storySpeedrunControllerProvider.notifier).refresh(),
+                  ref.read(provider.notifier).refresh(),
               child: Text(l10n.leaderboardRetry),
             ),
           ],

@@ -96,11 +96,9 @@ class GameController extends Notifier<GameSnapshot> {
     // Save cũ không có firstPlayedMillis nên fromJson mặc định nó = lastSeenMillis;
     // khi đó `now - firstPlayed` chỉ là thời gian tắt app (~1s) — số giả làm
     // bảng xếp hạng có "phá đảo trong 1s". Không có mốc thật thì để null.
-    if (_game.storyChapter >= storyFinaleChapterId &&
-        _game.storyCompleteSeconds == null &&
-        _game.firstPlayedMillis != _game.lastSeenMillis) {
-      _game.storyCompleteSeconds =
-          max(1, (_clock() - _game.firstPlayedMillis) ~/ 1000);
+    // Cùng logic cho mốc Chương 28 (bảng "Hồi 2").
+    if (_game.firstPlayedMillis != _game.lastSeenMillis) {
+      _stampStoryFinales(_game.storyChapter, exact: false);
     }
     _rollDaily();
     // Tính tiền kiếm được lúc app tắt (có cap + chống lùi giờ ở tầng core).
@@ -322,14 +320,25 @@ class GameController extends Notifier<GameSnapshot> {
     // Vừa xem xong chương cuối lần đầu — chốt mốc thời gian hoàn thành cốt
     // truyện (giây thực tế kể từ firstPlayedMillis), dùng cho Bảng xếp hạng
     // tốc độ. Ghi 1 lần, không đổi lại (giống storyChoiceA/B/C/D).
-    if (firstTime &&
-        id == storyFinaleChapterId &&
-        _game.storyCompleteSeconds == null) {
-      _game.storyCompleteSeconds =
-          max(1, (_clock() - _game.firstPlayedMillis) ~/ 1000);
-    }
+    if (firstTime) _stampStoryFinales(id, exact: true);
     unawaited(saveNow());
     state = _snapshot();
+  }
+
+  /// Chốt mốc thời gian hoàn thành cốt truyện (giây thực tế từ firstPlayedMillis)
+  /// cho bảng "Hồi 1" (Chương 18) và "Hồi 2" (Chương 28). Mỗi mốc ghi đúng 1 lần.
+  /// [exact] = chương vừa xem xong (== mốc); false = save đã ở chương >= mốc
+  /// (bù mốc lúc mở app).
+  void _stampStoryFinales(int chapter, {required bool exact}) {
+    bool hit(int finale) => exact ? chapter == finale : chapter >= finale;
+    final seconds = max(1, (_clock() - _game.firstPlayedMillis) ~/ 1000);
+    if (hit(storyFinaleChapterId) && _game.storyCompleteSeconds == null) {
+      _game.storyCompleteSeconds = seconds;
+    }
+    if (hit(storyExtendedFinaleChapterId) &&
+        _game.storyExtCompleteSeconds == null) {
+      _game.storyExtCompleteSeconds = seconds;
+    }
   }
 
   /// Ghi lựa chọn nhánh cho chương đang hiển thị. Trả về true nếu vừa ghi.
@@ -347,12 +356,7 @@ class GameController extends Notifier<GameSnapshot> {
     // thật nào từng kích hoạt được nó khi hoàn thành cốt truyện thật sự, làm
     // Bảng xếp hạng tốc độ hoàn thành không bao giờ có dữ liệu thật. Chốt
     // cùng logic ở đây, giống hệt acknowledgeStoryBeat.
-    if (firstTime &&
-        id == storyFinaleChapterId &&
-        _game.storyCompleteSeconds == null) {
-      _game.storyCompleteSeconds =
-          max(1, (_clock() - _game.firstPlayedMillis) ~/ 1000);
-    }
+    if (firstTime) _stampStoryFinales(id, exact: true);
     unawaited(saveNow());
     state = _snapshot();
     return true;
@@ -1049,6 +1053,7 @@ class GameController extends Notifier<GameSnapshot> {
       storyChoiceA: _game.storyChoiceA,
       storyChoiceB: _game.storyChoiceB,
       storyCompleteSeconds: _game.storyCompleteSeconds,
+      storyExtCompleteSeconds: _game.storyExtCompleteSeconds,
       rivalActive: rivalActive(_game),
       rivalDefeated: _game.rivalDefeated,
       rivalStanding: rivalStanding(_game),

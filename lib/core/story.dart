@@ -22,6 +22,11 @@ import 'models.dart';
 /// entry cũ trên bảng mất ý nghĩa.
 const int storyFinaleChapterId = 18;
 
+/// Chương kết của hồi 2 (mở rộng 2026-09-26, chương 19-28) — mốc cho bảng "Hồi 2".
+/// Cùng lý do như [storyFinaleChapterId]: KHÔNG dùng `storyChapters.last.id`, để
+/// mở rộng tiếp về sau không làm trượt mốc và mất ý nghĩa entry cũ.
+const int storyExtendedFinaleChapterId = 28;
+
 /// Điều kiện kích hoạt một chương.
 enum StoryTrigger { gameStart, stage, firstPrestige, rivalDefeated }
 

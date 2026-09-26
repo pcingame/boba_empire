@@ -911,6 +911,16 @@ class AppLocalizationsPt extends AppLocalizations {
       'Você ainda não terminou a história — complete o Capítulo 18 para entrar na classificação.';
 
   @override
+  String get storySpeedrunTabMain => 'Ato 1';
+
+  @override
+  String get storySpeedrunTabExt => 'Ato 2';
+
+  @override
+  String get storySpeedrunExtNotCompletedYet =>
+      'Você ainda não concluiu o Ato 2 — conclua o Capítulo 28 para entrar no ranking.';
+
+  @override
   String get storySpeedrunEmpty =>
       'Ninguém terminou a história ainda — seja o primeiro!';
 

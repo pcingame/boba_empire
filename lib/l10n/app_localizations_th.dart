@@ -906,6 +906,16 @@ class AppLocalizationsTh extends AppLocalizations {
       'คุณยังไม่จบเนื้อเรื่อง — จบตอนที่ 18 เพื่อขึ้นอันดับ';
 
   @override
+  String get storySpeedrunTabMain => 'ภาค 1';
+
+  @override
+  String get storySpeedrunTabExt => 'ภาค 2';
+
+  @override
+  String get storySpeedrunExtNotCompletedYet =>
+      'คุณยังไม่จบภาค 2 — จบตอนที่ 28 เพื่อติดอันดับ';
+
+  @override
   String get storySpeedrunEmpty => 'ยังไม่มีใครจบเนื้อเรื่อง — เป็นคนแรกสิ!';
 
   @override
