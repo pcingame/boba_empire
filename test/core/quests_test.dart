@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:boba_empire/core/balance.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/core/quests.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -58,6 +61,42 @@ void main() {
       final s0 = GameState.newGame(nowMillis: 0)..questIndex = quests.length;
       final s1 = GameState.newGame(nowMillis: 0)..questIndex = quests.length + 1;
       expect(currentQuest(s1).threshold, currentQuest(s0).threshold * 10);
+    });
+
+    // HỒI QUY "Kiếm thêm 0 Xu nhận kim cương": pow(10, cycle) trên số nguyên tràn
+    // int64 — vòng 19 âm, vòng 64+ bằng 0 nên luôn nhận được thưởng.
+    test('ngưỡng nhiệm vụ lặp luôn dương, hữu hạn, không giảm ở MỌI vòng (kể cả vòng 19, 64, 400)', () {
+      var prev = 0.0;
+      for (var cycle = 0; cycle <= 400; cycle++) {
+        final s = GameState.newGame(nowMillis: 0)..questIndex = quests.length + cycle;
+        final t = currentQuest(s).threshold.toDouble();
+        expect(t, greaterThan(0), reason: 'vòng $cycle');
+        expect(t.isFinite, isTrue, reason: 'vòng $cycle');
+        expect(t, greaterThanOrEqualTo(prev), reason: 'vòng $cycle');
+        prev = t;
+      }
+    });
+
+    test('ngưỡng bằng đúng base·10^vòng khi còn trong tầm double chính xác, kẹp ở trần kinh tế', () {
+      for (final cycle in [0, 1, 5, 18, 19, 20, 63, 64, 65]) {
+        final s = GameState.newGame(nowMillis: 0)..questIndex = quests.length + cycle;
+        expect(currentQuest(s).threshold,
+            closeTo(Balance.questRepeatBaseEarn * pow(10.0, cycle), Balance.questRepeatBaseEarn * pow(10.0, cycle) * 1e-12),
+            reason: 'vòng $cycle');
+      }
+      final s = GameState.newGame(nowMillis: 0)..questIndex = quests.length + 400;
+      expect(currentQuest(s).threshold, Balance.economyOverflowGuardCap);
+    });
+
+    test('không thể nhận thưởng nhiệm vụ lặp khi chưa kiếm thêm gì (kể cả vòng 64+)', () {
+      for (final cycle in [19, 40, 64, 100, 400]) {
+        final s = GameState.newGame(nowMillis: 0)
+          ..questIndex = quests.length + cycle
+          ..lifetimeEarnings = 1e30
+          ..repeatQuestBaseline = 1e30;
+        expect(currentQuestDone(s), isFalse, reason: 'vòng $cycle');
+        expect(claimQuest(s), 0, reason: 'vòng $cycle');
+      }
     });
   });
 }

@@ -46,9 +46,15 @@ num questProgress(GameState s, QuestMetric metric) => switch (metric) {
     };
 
 /// Nhiệm vụ LẶP LẠI thứ [cycle] (0, 1, 2…): "kiếm thêm base·10^cycle Xu".
+///
+/// PHẢI dùng `10.0` (double): `pow(10, cycle)` với 2 số nguyên trả về INT 64-bit
+/// và tràn im lặng — từ vòng 19 ngưỡng thành số âm/sai, từ vòng 64 thành đúng 0
+/// ("Kiếm thêm 0 Xu", nhận thưởng vô hạn). Kẹp ở trần kinh tế để không thành
+/// Infinity (hiển thị "0" và so sánh sai).
 Quest _repeatQuest(int cycle) => Quest(
       QuestMetric.earn,
-      Balance.questRepeatBaseEarn * pow(10, cycle),
+      min(Balance.questRepeatBaseEarn * pow(10.0, cycle),
+          Balance.economyOverflowGuardCap),
       Balance.questRepeatRewardGems,
       repeatable: true,
     );

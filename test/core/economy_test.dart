@@ -327,4 +327,19 @@ void main() {
       expect(starsForLifetimeEarnings(1000000, 0.05), 50);
     });
   });
+
+  // HỒI QUY: pow(25, level) trên số nguyên tràn int64 từ cấp 14 (perk không có trần cấp).
+  test('startCashAfterPrestige dương, hữu hạn, không giảm ở mọi cấp (kể cả 14, 30, 300)', () {
+    expect(startCashAfterPrestige(0), 0);
+    var prev = 0.0;
+    for (var level = 1; level <= 300; level++) {
+      final v = startCashAfterPrestige(level);
+      expect(v, greaterThan(0), reason: 'cấp $level');
+      expect(v.isFinite, isTrue, reason: 'cấp $level');
+      expect(v, greaterThanOrEqualTo(prev), reason: 'cấp $level');
+      prev = v;
+    }
+    expect(startCashAfterPrestige(1), 50 * 25);
+    expect(startCashAfterPrestige(300), Balance.economyOverflowGuardCap);
+  });
 }

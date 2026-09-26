@@ -225,8 +225,12 @@ double prestigeOfflineMultiplier(int level) =>
     1 + level * Balance.prestigeOfflinePerLevel;
 
 /// Xu nhận ngay sau Nhượng quyền từ perk "Vốn khởi nghiệp" (cấp 0 → 0).
-double startCashAfterPrestige(int level) =>
-    level <= 0 ? 0 : 50 * pow(25, level).toDouble();
+///
+/// `25.0` (double), không phải `25`: `pow` của 2 số nguyên là INT 64-bit và tràn
+/// im lặng từ cấp 14 (perk không có trần cấp) — Xu khởi đầu thành số âm/sai.
+double startCashAfterPrestige(int level) => level <= 0
+    ? 0
+    : min(50 * pow(25.0, level).toDouble(), Balance.economyOverflowGuardCap);
 
 /// Giai đoạn giữ lại sau Nhượng quyền: `1 + cấp perk "Giữ giai đoạn"`, kẹp
 /// trong [1, stageHiện tại].
