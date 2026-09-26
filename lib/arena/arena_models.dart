@@ -6,6 +6,18 @@ import 'arena_rules.dart';
 
 enum ArenaMatchStatus { active, finished }
 
+/// Dạng PK — khớp cột `mode` ở `arena_matches`/`arena_queue`.
+enum ArenaMode {
+  tap('tap'),
+  blocks('blocks');
+
+  const ArenaMode(this.wire);
+  final String wire;
+
+  static ArenaMode fromWire(String? v) =>
+      v == 'blocks' ? ArenaMode.blocks : ArenaMode.tap;
+}
+
 class ArenaMatch {
   const ArenaMatch({
     required this.id,
@@ -16,6 +28,8 @@ class ArenaMatch {
     required this.scoreA,
     required this.scoreB,
     this.winner,
+    this.mode = ArenaMode.tap,
+    this.seq = const [],
   });
 
   factory ArenaMatch.fromRow(Map<String, dynamic> row) => ArenaMatch(
@@ -29,6 +43,10 @@ class ArenaMatch {
         scoreA: (row['score_a'] as num).toDouble(),
         scoreB: (row['score_b'] as num).toDouble(),
         winner: row['winner'] as String?,
+        mode: ArenaMode.fromWire(row['mode'] as String?),
+        seq: [
+          for (final v in (row['seq'] as List<dynamic>? ?? const [])) (v as num).toInt(),
+        ],
       );
 
   final String id;
@@ -39,6 +57,10 @@ class ArenaMatch {
   final double scoreA;
   final double scoreB;
   final String? winner;
+  final ArenaMode mode;
+
+  /// Chuỗi khối chung của trận (chỉ dạng blocks).
+  final List<int> seq;
 }
 
 /// Kết quả 1 trận đã kết thúc, nhìn từ góc của người chơi hiện tại.
@@ -68,5 +90,7 @@ ArenaLogEntry arenaLogEntryFromRow(Map<String, dynamic> row) => ArenaLogEntry(
         kind: ArenaActionKindJson.fromWire(row['kind'] as String),
         at: DateTime.parse(row['at'] as String),
         id: row['id'] as int,
+        rot: (row['rot'] as num?)?.toInt(),
+        col: (row['col'] as num?)?.toInt(),
       ),
     );

@@ -9,9 +9,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../arena/arena_config.dart';
 import '../arena/arena_controller.dart';
+import '../arena/arena_models.dart';
 import '../core/format.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
+import 'arena_block_board.dart';
 import 'widgets/clay.dart';
 
 Future<void> showArenaPage(BuildContext context) {
@@ -74,11 +76,23 @@ class _IdleView extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(l10n.arenaIntro, textAlign: TextAlign.center),
+        const SizedBox(height: 12),
+        Text(l10n.arenaBlocksIntro, textAlign: TextAlign.center),
         const SizedBox(height: 24),
         FilledButton(
-          onPressed: () =>
-              ref.read(arenaControllerProvider.notifier).startMatchmaking(),
-          child: Text(l10n.arenaStartButton),
+          key: const Key('arena-start-tap'),
+          onPressed: () => ref
+              .read(arenaControllerProvider.notifier)
+              .startMatchmaking(ArenaMode.tap),
+          child: Text(l10n.arenaModeTap),
+        ),
+        const SizedBox(height: 12),
+        FilledButton.tonal(
+          key: const Key('arena-start-blocks'),
+          onPressed: () => ref
+              .read(arenaControllerProvider.notifier)
+              .startMatchmaking(ArenaMode.blocks),
+          child: Text(l10n.arenaModeBlocks),
         ),
       ],
     );
@@ -137,7 +151,9 @@ class _MatchView extends ConsumerWidget {
           const CircularProgressIndicator(),
           const SizedBox(height: 8),
           Text(l10n.arenaResolving),
-        ] else ...[
+        ] else if (view.mode == ArenaMode.blocks)
+          ArenaBlockPanel(view: view, onDrop: controller.drop)
+        else ...[
           // Kích thước CỐ ĐỊNH (không phải padding-quyết-định-kích-thước) +
           // FittedBox co chữ — bản dịch dài (id/es/pt 2 từ) vẫn nằm gọn trong
           // vòng tròn thay vì méo/tràn ra ngoài. Giống cách `_TapArea` ở màn

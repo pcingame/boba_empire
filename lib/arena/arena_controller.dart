@@ -16,6 +16,7 @@ import 'arena_config.dart';
 import 'arena_models.dart';
 import 'arena_repository.dart';
 import 'arena_rules.dart';
+import 'block_rules.dart';
 
 sealed class ArenaViewState {
   const ArenaViewState();
@@ -35,7 +36,22 @@ class ArenaInMatch extends ArenaViewState {
     required this.opponentScore,
     required this.remaining,
     required this.tiersBought,
+    this.mode = ArenaMode.tap,
+    this.boardRows = const [],
+    this.currentPiece,
+    this.nextPiece,
+    this.stuck = false,
   });
+
+  final ArenaMode mode;
+
+  /// Dạng blocks: bảng của MÌNH (mặt nạ bit theo hàng, hàng 0 ở trên), khối
+  /// đang cầm / khối kế tiếp (null khi hết chuỗi), và [stuck] = không còn ô nào
+  /// đặt được khối hiện tại (tràn).
+  final List<int> boardRows;
+  final int? currentPiece;
+  final int? nextPiece;
+  final bool stuck;
 
   final double myScore;
   final double opponentScore;
@@ -67,6 +83,14 @@ class ArenaController extends Notifier<ArenaViewState> {
   final Set<int> _tiersBought = {};
   bool _resolving = false;
 
+  ArenaMode _mode = ArenaMode.tap;
+  List<int> _seq = const [];
+  BlockBoard _board = BlockBoard();
+  int _myDrops = 0;
+  int _myBlockScore = 0;
+  bool _dropInFlight = false;
+  bool _boardSynced = false;
+
   /// Gọi khi trận kết thúc để trao thưởng vào ván chính — set từ UI (nối tới
   /// `grantGems` của [GameController]) để module này không phải import
   /// `state/game_controller.dart` trực tiếp (giữ tách biệt như đề xuất).
@@ -81,8 +105,9 @@ class ArenaController extends Notifier<ArenaViewState> {
   ArenaRepository get _repository =>
       _repo ??= ArenaRepository(Supabase.instance.client);
 
-  Future<void> startMatchmaking() async {
+  Future<void> startMatchmaking([ArenaMode mode = ArenaMode.tap]) async {
     _cancelAll();
+    _mode = mode;
     _tiersBought.clear();
     state = const ArenaQueued();
     try {
@@ -110,7 +135,7 @@ class ArenaController extends Notifier<ArenaViewState> {
     if (state is! ArenaQueued) return; // đã bị huỷ giữa chừng
     ArenaMatch? match;
     try {
-      match = await _repository.joinQueue();
+      match = await _repository.joinQueue(_mode);
     } catch (e) {
       if (state is! ArenaQueued) return; // huỷ giữa lúc đang chờ mạng
       _fail(e);
@@ -131,14 +156,19 @@ class ArenaController extends Notifier<ArenaViewState> {
     _endsAt = match.endsAt;
     _log = const [];
     _resolving = false;
-    state = ArenaInMatch(
-      myScore: 0,
-      opponentScore: 0,
-      remaining: _remaining(),
-      tiersBought: const {},
-    );
+    _mode = match.mode;
+    _seq = match.seq;
+    _board = BlockBoard();
+    _myDrops = 0;
+    _myBlockScore = 0;
+    _dropInFlight = false;
+    _boardSynced = false;
+    state = _buildState(0, 0);
     _actionsSub = _repository.watchActions(match.id).listen((log) {
       _log = log;
+      // Lần đầu (hoặc vào lại trận đang dở sau khi mở lại app) dựng bảng của
+      // mình từ log server — nguồn sự thật, không phải bộ đếm cục bộ.
+      if (_mode == ArenaMode.blocks && !_boardSynced) _resyncBoard();
       _recompute();
     });
     _ticker = Timer.periodic(const Duration(milliseconds: 250), (_) => _onTick());
@@ -169,12 +199,90 @@ class ArenaController extends Notifier<ArenaViewState> {
     for (final entry in _log) {
       (entry.playerId == me ? mine : theirs).add(entry.action);
     }
-    state = ArenaInMatch(
-      myScore: arenaComputeScore(mine),
-      opponentScore: arenaComputeScore(theirs),
+    if (_mode == ArenaMode.blocks) {
+      state = _buildState(
+        _myBlockScore.toDouble(),
+        blockComputeScore(_seq, theirs).toDouble(),
+      );
+      return;
+    }
+    state = _buildState(arenaComputeScore(mine), arenaComputeScore(theirs));
+  }
+
+  ArenaInMatch _buildState(double myScore, double opponentScore) {
+    final blocks = _mode == ArenaMode.blocks;
+    final current = blocks && _myDrops < _seq.length ? _seq[_myDrops] : null;
+    final next = blocks && _myDrops + 1 < _seq.length ? _seq[_myDrops + 1] : null;
+    return ArenaInMatch(
+      myScore: myScore,
+      opponentScore: opponentScore,
       remaining: _remaining(),
       tiersBought: Set.unmodifiable(_tiersBought),
+      mode: _mode,
+      boardRows: blocks ? List<int>.unmodifiable(_board.rows) : const [],
+      currentPiece: current,
+      nextPiece: next,
+      stuck: current != null && !_canPlaceAnywhere(current),
     );
+  }
+
+  bool _canPlaceAnywhere(int piece) {
+    for (var rot = 0; rot < 4; rot++) {
+      for (var col = 0; col <= BlockBoard.maxCol(piece, rot); col++) {
+        if (_board.dropTop(piece, rot, col) != null) return true;
+      }
+    }
+    return false;
+  }
+
+  /// Dựng lại bảng + điểm của MÌNH từ log server (thứ tự `at`, rồi `id`).
+  void _resyncBoard() {
+    final me = _repository.myUserId;
+    if (me == null) return;
+    final mine = [
+      for (final e in _log)
+        if (e.playerId == me && e.action.kind == ArenaActionKind.drop) e.action,
+    ]..sort((a, b) {
+        final byTime = a.at.compareTo(b.at);
+        return byTime != 0 ? byTime : a.id.compareTo(b.id);
+      });
+    _board = BlockBoard();
+    _myBlockScore = 0;
+    var n = 0;
+    for (; n < mine.length && n < _seq.length; n++) {
+      if (_board.overflowed) break;
+      _myBlockScore +=
+          _board.drop(_seq[n], mine[n].rot ?? -1, mine[n].col ?? -1).score;
+    }
+    _myDrops = n;
+    _boardSynced = true;
+  }
+
+  /// Thả khối hiện tại ở hướng [rot], cột [col]. Cập nhật bảng cục bộ ngay
+  /// (mượt), gửi server sau; mỗi lúc chỉ 1 lần thả đang bay — vừa giữ tốc độ
+  /// thả dưới rate-limit server, vừa đảm bảo chỉ số khối cục bộ luôn khớp số
+  /// lần thả server đã nhận. Thả lỗi mạng/bị chối → dựng lại từ log.
+  Future<void> drop(int rot, int col) async {
+    final matchId = _matchId;
+    final current = state;
+    if (matchId == null || current is! ArenaInMatch) return;
+    if (_mode != ArenaMode.blocks || _dropInFlight) return;
+    if (current.remaining <= Duration.zero || _myDrops >= _seq.length) return;
+    final piece = _seq[_myDrops];
+    if (_board.dropTop(piece, rot, col) == null) return;
+    _myBlockScore += _board.drop(piece, rot, col).score;
+    _myDrops++;
+    _dropInFlight = true;
+    _recompute();
+    try {
+      await _repository.submitDrop(matchId, rot, col);
+    } catch (e) {
+      developer.log('thả khối bị chặn: $e', name: 'Arena');
+      _resyncBoard();
+    } finally {
+      _dropInFlight = false;
+      _recompute();
+    }
   }
 
   /// Chạm ly trong trận — gửi lên server "cho có" (fire-and-forget); điểm
@@ -286,6 +394,12 @@ class ArenaController extends Notifier<ArenaViewState> {
     _log = const [];
     _tiersBought.clear();
     _resolving = false;
+    _seq = const [];
+    _board = BlockBoard();
+    _myDrops = 0;
+    _myBlockScore = 0;
+    _dropInFlight = false;
+    _boardSynced = false;
   }
 }
 

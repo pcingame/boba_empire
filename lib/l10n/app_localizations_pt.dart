@@ -721,6 +721,34 @@ class AppLocalizationsPt extends AppLocalizations {
   String get arenaStartButton => 'Procurar rival';
 
   @override
+  String get arenaModeTap => 'Corrida de toques';
+
+  @override
+  String get arenaModeBlocks => 'Empilhar blocos';
+
+  @override
+  String get arenaBlocksIntro =>
+      'Empilhe blocos por 60 segundos — vence quem limpar mais linhas que o adversário!';
+
+  @override
+  String get arenaBlocksNext => 'Próximo';
+
+  @override
+  String get arenaBlocksStuck => 'Sem espaço!';
+
+  @override
+  String get arenaBlocksRotateTip => 'Girar';
+
+  @override
+  String get arenaBlocksLeftTip => 'Mover para a esquerda';
+
+  @override
+  String get arenaBlocksRightTip => 'Mover para a direita';
+
+  @override
+  String get arenaBlocksDropButton => 'Soltar';
+
+  @override
   String get arenaQueueWaiting => 'Procurando rival…';
 
   @override

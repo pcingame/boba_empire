@@ -717,6 +717,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get arenaStartButton => 'Find opponent';
 
   @override
+  String get arenaModeTap => 'Tap race';
+
+  @override
+  String get arenaModeBlocks => 'Block stack';
+
+  @override
+  String get arenaBlocksIntro =>
+      'Stack blocks for 60 seconds — clear more lines than your opponent to win!';
+
+  @override
+  String get arenaBlocksNext => 'Next';
+
+  @override
+  String get arenaBlocksStuck => 'No room left!';
+
+  @override
+  String get arenaBlocksRotateTip => 'Rotate';
+
+  @override
+  String get arenaBlocksLeftTip => 'Move left';
+
+  @override
+  String get arenaBlocksRightTip => 'Move right';
+
+  @override
+  String get arenaBlocksDropButton => 'Drop';
+
+  @override
   String get arenaQueueWaiting => 'Finding an opponent…';
 
   @override

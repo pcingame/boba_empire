@@ -37,8 +37,9 @@ class ArenaRepository {
   /// trực tiếp bằng curl. Nếu chỉ check `row == null` sẽ luôn sai ở đúng
   /// trường hợp phổ biến nhất (đang chờ ghép) và ném lỗi ép kiểu khi
   /// `ArenaMatch.fromRow` gặp `id: null`.
-  Future<ArenaMatch?> joinQueue() async {
-    final row = await _client.rpc('arena_join_queue') as Map<String, dynamic>?;
+  Future<ArenaMatch?> joinQueue([ArenaMode mode = ArenaMode.tap]) async {
+    final row = await _client
+        .rpc('arena_join_queue', params: {'p_mode': mode.wire}) as Map<String, dynamic>?;
     if (row == null || row['id'] == null) return null;
     return ArenaMatch.fromRow(row);
   }
@@ -48,6 +49,16 @@ class ArenaRepository {
   Future<void> submitAction(String matchId, ArenaActionKind kind) => _client.rpc(
         'arena_submit_action',
         params: {'p_match_id': matchId, 'p_kind': kind.wireValue},
+      );
+
+  Future<void> submitDrop(String matchId, int rot, int col) => _client.rpc(
+        'arena_submit_action',
+        params: {
+          'p_match_id': matchId,
+          'p_kind': ArenaActionKind.drop.wireValue,
+          'p_rot': rot,
+          'p_col': col,
+        },
       );
 
   /// Chốt trận (idempotent — cả 2 người có thể gọi, ai gọi trước cũng được).

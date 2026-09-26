@@ -564,3 +564,17 @@ sang ngày. Test đã mutation-check (đảo thứ tự thì fail).
 ---
 
 *Cập nhật tài liệu này khi đổi `balance.dart` hoặc thêm hệ thống.*
+
+## 20. Đấu Trường — dạng "Xếp khối" (2026-09-26)
+
+Dạng PK thứ 2 cạnh "Đua chạm". Chọn dạng ở màn Đấu Trường trước khi ghép trận (hàng đợi tách theo dạng).
+
+- **Luật**: bảng 10×20, 7 khối chuẩn. Mỗi lượt chọn (hướng xoay, cột) rồi Thả — khối rơi thẳng xuống điểm thấp
+  nhất, KHÔNG có trọng lực theo thời gian (để server replay chỉ cần `(rot, col)`). Xoá 1/2/3/4 hàng = 1/3/5/8 điểm.
+  60 giây, điểm cao hơn thắng. Hết chỗ đặt khối thì ngừng ghi điểm.
+- **Công bằng**: server sinh chuỗi 300 khối (`arena_matches.seq`) lúc ghép trận; khối thứ n của mỗi người = `seq[n]`.
+- **Chống gian lận**: như dạng chạm — server replay log `drop` (`arena_blocks_replay`), không tin điểm client.
+  Luật ở `lib/arena/block_rules.dart` ⇔ `supabase/arena_schema.sql`, khớp bằng vector vàng
+  (`test/arena/block_rules_test.dart` và khối comment cuối file SQL).
+- Thưởng 💎 và bảng xếp hạng Đấu Trường dùng chung với dạng chạm (tính từ `arena_matches.winner`).
+- Chưa playtest: độ dài 60s, bảng điểm, điều khiển bằng nút (chưa có vuốt).
