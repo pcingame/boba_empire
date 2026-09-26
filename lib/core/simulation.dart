@@ -15,7 +15,10 @@ import 'models.dart';
 /// Kết quả một lần chạm ly. [boostMultiplier] là hệ số Mưa vàng đang có.
 double tap(GameState state, {double boostMultiplier = 1.0}) {
   final gain = state.tapValue *
-      prestigeMultiplier(state.prestigeStars, Balance.bonusPerStar) *
+      prestigeMultiplier(
+          state.prestigeStars,
+          Balance.bonusPerStar *
+              ascensionStarBonusFactor(state.ascensionStarBonusLevel)) *
       permanentMultiplier(state.gemBoostLevel) *
       prestigeTapMultiplier(state.prestigeTapLevel) *
       storyChoiceTapMultiplier(state) *
@@ -309,9 +312,79 @@ void fillPiggy(GameState state, double dtSeconds) {
 
 /// Số Sao sẽ NHẬN THÊM nếu prestige ngay bây giờ (để UI xem trước, không mutate).
 int prestigeStarsAvailable(GameState state) {
-  final total =
-      starsForLifetimeEarnings(state.lifetimeEarnings, Balance.prestigeK);
+  // Tính từ lifetime kể từ lần Kỷ Nguyên gần nhất (= toàn bộ lifetime nếu chưa từng)
+  // và k hiệu dụng — nếu không, reset Sao ở [ascend] sẽ bị trả lại nguyên vẹn
+  // ở lần Nhượng quyền kế tiếp. Luôn ≤ floor(0.05·sqrt(lifetime)) (ràng buộc
+  // server) vì lifetimeThêm ≤ lifetime và k hiệu dụng ≤ 0.05 (xem Balance).
+  final total = starsForLifetimeEarnings(
+    lifetimeSinceAscension(state),
+    Balance.prestigeK * ascensionStarGainFactor(state.ascensionStarGainLevel),
+  );
   return max(0, total - state.prestigeStars);
+}
+
+/// Kỷ Nguyên hoá: đổi toàn bộ Sao + perk Kho Sao lấy Điểm Kỷ Nguyên (perk
+/// vĩnh viễn kiểu mới) rồi chơi lại từ đầu. Trả về số điểm nhận (0 = chưa đủ
+/// điều kiện, KHÔNG đổi gì). MUTATE.
+///
+/// Reset: tiền, cấp nguồn thu, giai đoạn, Sao, cấp perk Kho Sao (trừ "Tự động
+/// mua" — tiện ích, không phải sức mạnh). Giữ: lifetimeEarnings (bảng xếp
+/// hạng), 💎 + vật phẩm 💎, thành tựu, cốt truyện/đối thủ, nhiệm vụ.
+int ascend(GameState state) {
+  final gained = ascensionPointsAvailable(state);
+  if (gained <= 0) return 0;
+  state.ascensionPointsEarned += gained;
+  state.ascensionCount += 1;
+  state.ascensionLifetime = 0; // đếm lại từ đầu, xem GameState.ascensionLifetime
+  state.levels.clear();
+  state.stage = 1;
+  state.money = 0;
+  state.prestigeStars = 0;
+  state.prestigeIncomeLevel = 0;
+  state.prestigeTapLevel = 0;
+  state.prestigeOfflineLevel = 0;
+  state.prestigeStartCashLevel = 0;
+  state.prestigeKeepStageLevel = 0;
+  state.prestigeDiscountLevel = 0;
+  return gained;
+}
+
+/// Nâng perk Kỷ Nguyên "Nguồn năng lượng" (thu nhập). True nếu đủ Điểm & chưa tối đa.
+bool buyAscensionIncome(GameState state) => _buyAscension(
+    state,
+    Balance.ascensionIncomeBaseCost,
+    state.ascensionIncomeLevel,
+    Balance.ascensionIncomeMaxLevel,
+    () => state.ascensionIncomeLevel += 1);
+
+/// Nâng perk "Ngôi sao rực rỡ" (bonus mỗi Sao).
+bool buyAscensionStarBonus(GameState state) => _buyAscension(
+    state,
+    Balance.ascensionStarBonusBaseCost,
+    state.ascensionStarBonusLevel,
+    Balance.ascensionStarBonusMaxLevel,
+    () => state.ascensionStarBonusLevel += 1);
+
+/// Nâng perk "Tinh tú dồi dào" (tốc độ tích Sao) — trần cứng vì ràng buộc server.
+bool buyAscensionStarGain(GameState state) => _buyAscension(
+    state,
+    Balance.ascensionStarGainBaseCost,
+    state.ascensionStarGainLevel,
+    Balance.ascensionStarGainMaxLevel,
+    () => state.ascensionStarGainLevel += 1);
+
+bool _buyAscension(
+  GameState state,
+  int baseCost,
+  int level,
+  int maxLevel,
+  void Function() apply,
+) {
+  if (level >= maxLevel) return false;
+  final cost = (baseCost * pow(2.0, level)).round();
+  if (ascensionPointsSpendable(state) < cost) return false;
+  apply();
+  return true;
 }
 
 /// Thực hiện Nhượng quyền: nhận Sao, reset ván (tiền + cấp + giai đoạn) nhưng
@@ -373,4 +446,6 @@ void _credit(GameState state, double amount) {
   final newLifetime = state.lifetimeEarnings + amount;
   if (newMoney.isFinite) state.money = newMoney;
   if (newLifetime.isFinite) state.lifetimeEarnings = newLifetime;
+  final newSince = state.ascensionLifetime + amount;
+  if (newSince.isFinite) state.ascensionLifetime = newSince;
 }

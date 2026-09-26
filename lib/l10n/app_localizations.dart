@@ -1629,6 +1629,138 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'{wins} thắng - {losses} bại'**
   String arenaLeaderboardRecord(int wins, int losses);
+
+  /// No description provided for @ascensionTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kỷ Nguyên'**
+  String get ascensionTitle;
+
+  /// No description provided for @ascensionOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kỷ Nguyên ⏳'**
+  String get ascensionOpen;
+
+  /// No description provided for @ascensionIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi toàn bộ Sao và perk Kho Sao lấy ⏳ Điểm Kỷ Nguyên — perk vĩnh viễn mạnh hơn. Bạn sẽ chơi lại từ đầu.'**
+  String get ascensionIntro;
+
+  /// No description provided for @ascensionProgress.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiến độ tới ngưỡng mở: {percent}%'**
+  String ascensionProgress(int percent);
+
+  /// No description provided for @ascensionPointsNow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Điểm đang có'**
+  String get ascensionPointsNow;
+
+  /// No description provided for @ascensionPointsGain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận nếu Kỷ Nguyên hoá'**
+  String get ascensionPointsGain;
+
+  /// No description provided for @ascensionPointsValue.
+  ///
+  /// In vi, this message translates to:
+  /// **'{points} ⏳'**
+  String ascensionPointsValue(int points);
+
+  /// No description provided for @ascensionWarning.
+  ///
+  /// In vi, this message translates to:
+  /// **'⚠️ Reset Sao, mọi perk Kho Sao, Xu, cấp nâng cấp và giai đoạn. Giữ 💎, thành tựu, cốt truyện. Sao trên bảng xếp hạng về 0 (thứ hạng theo tổng thu nhập không đổi).'**
+  String get ascensionWarning;
+
+  /// No description provided for @ascensionConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kỷ Nguyên hoá (+{points} ⏳)'**
+  String ascensionConfirm(int points);
+
+  /// No description provided for @ascensionNotEnough.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đủ điều kiện'**
+  String get ascensionNotEnough;
+
+  /// No description provided for @ascensionSuccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắt đầu Kỷ Nguyên mới! +{points} ⏳'**
+  String ascensionSuccess(int points);
+
+  /// No description provided for @ascensionShopTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Perk Kỷ Nguyên ⏳'**
+  String get ascensionShopTitle;
+
+  /// No description provided for @ascensionShopSpendable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn {points} ⏳ để tiêu'**
+  String ascensionShopSpendable(int points);
+
+  /// No description provided for @ascensionCost.
+  ///
+  /// In vi, this message translates to:
+  /// **'{cost} ⏳'**
+  String ascensionCost(int cost);
+
+  /// No description provided for @ascensionMaxed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối đa'**
+  String get ascensionMaxed;
+
+  /// No description provided for @ascensionIncomeName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nguồn năng lượng'**
+  String get ascensionIncomeName;
+
+  /// No description provided for @ascensionIncomeDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{percent}% thu nhập mỗi cấp'**
+  String ascensionIncomeDesc(int percent);
+
+  /// No description provided for @ascensionStarBonusName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngôi sao rực rỡ'**
+  String get ascensionStarBonusName;
+
+  /// No description provided for @ascensionStarBonusDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{percent}% sức mạnh mỗi Sao, mỗi cấp'**
+  String ascensionStarBonusDesc(int percent);
+
+  /// No description provided for @ascensionStarGainName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tinh tú dồi dào'**
+  String get ascensionStarGainName;
+
+  /// No description provided for @ascensionStarGainDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{percent}% tốc độ tích Sao, mỗi cấp'**
+  String ascensionStarGainDesc(int percent);
+
+  /// No description provided for @achAscend.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kỷ Nguyên hoá lần đầu'**
+  String get achAscend;
 }
 
 class _AppLocalizationsDelegate

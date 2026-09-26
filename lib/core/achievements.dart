@@ -5,7 +5,7 @@ library;
 import 'models.dart';
 
 /// Chỉ số dùng để xét thành tựu (đều suy ra được từ state).
-enum AchievementMetric { earn, stage, levels, prestige }
+enum AchievementMetric { earn, stage, levels, prestige, ascension }
 
 class Achievement {
   const Achievement(
@@ -48,6 +48,7 @@ const List<Achievement> achievements = [
   Achievement('stage_17', AchievementMetric.stage, 17, 600, '🪐'),
   Achievement('stage_18', AchievementMetric.stage, 18, 750, '✨'),
   Achievement('prestige_1', AchievementMetric.prestige, 1, 20, '⭐'),
+  Achievement('ascend_1', AchievementMetric.ascension, 1, 500, '⏳'),
 ];
 
 /// Giá trị hiện tại của một [metric] trên [s].
@@ -57,6 +58,7 @@ num achievementProgress(GameState s, AchievementMetric metric) => switch (metric
       AchievementMetric.levels =>
         s.levels.values.fold<int>(0, (a, b) => a + b),
       AchievementMetric.prestige => s.prestigeStars,
+      AchievementMetric.ascension => s.ascensionCount,
     };
 
 /// Đã đạt điều kiện thành tựu chưa.

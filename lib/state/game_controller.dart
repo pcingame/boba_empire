@@ -564,6 +564,29 @@ class GameController extends Notifier<GameSnapshot> {
     return gained;
   }
 
+  /// Kỷ Nguyên hoá (prestige tầng 2). Trả về số Điểm vừa nhận (0 nếu chưa đủ
+  /// điều kiện — không đổi gì). Lưu NGAY: đây là reset lớn, kill app giữa
+  /// chừng mà không lưu thì mất cả Điểm lẫn tiến độ.
+  int doAscend() {
+    final gained = ascend(_game);
+    if (gained > 0) {
+      _awardAchievements();
+      unawaited(saveNow());
+      unawaited(_analytics?.log('ascend', {
+        'pointsGained': gained,
+        'ascensionCount': _game.ascensionCount,
+      }));
+      state = _snapshot();
+    }
+    return gained;
+  }
+
+  bool buyAscensionIncomeUpgrade() => _buyPerk(() => buyAscensionIncome(_game));
+  bool buyAscensionStarBonusUpgrade() =>
+      _buyPerk(() => buyAscensionStarBonus(_game));
+  bool buyAscensionStarGainUpgrade() =>
+      _buyPerk(() => buyAscensionStarGain(_game));
+
   /// UI gọi khi app chuyển nền (AppLifecycleState.paused/hidden), CẠNH
   /// saveNow() chứ không thay — ghi thời lượng session vừa chơi. Reset mốc
   /// bắt đầu ngay để lần resume sau tính đúng (app không tự tạo phiên mới
@@ -906,6 +929,14 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
+  /// Tiến độ tới ngưỡng Kỷ Nguyên theo THANG LOG (0..1): lifetime tăng theo cấp
+  /// số nhân nên thang tuyến tính gần như luôn hiển thị 0% rồi nhảy vọt.
+  double _ascensionProgress() {
+    final since = lifetimeSinceAscension(_game);
+    if (since <= 1) return 0;
+    return (log(since) / log(Balance.ascensionMinLifetime)).clamp(0.0, 1.0);
+  }
+
   GameSnapshot _snapshot() {
     // Tính một lần các giá trị dùng nhiều lần trong snapshot (chạy mỗi giây).
     final now = _clock();
@@ -973,6 +1004,13 @@ class GameController extends Notifier<GameSnapshot> {
       rivalModifierRemainingSeconds:
           max(0, (_rivalModUntilMillis - now) / 1000.0),
       rivalModifierMult: _rivalModifier(),
+      ascensionCount: _game.ascensionCount,
+      ascensionPointsAvailable: ascensionPointsAvailable(_game),
+      ascensionPointsSpendable: ascensionPointsSpendable(_game),
+      ascensionProgress: _ascensionProgress(),
+      ascensionIncomeLevel: _game.ascensionIncomeLevel,
+      ascensionStarBonusLevel: _game.ascensionStarBonusLevel,
+      ascensionStarGainLevel: _game.ascensionStarGainLevel,
       levels: _game.levels,
     );
   }

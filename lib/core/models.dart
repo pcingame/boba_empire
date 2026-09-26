@@ -83,6 +83,12 @@ class GameState {
     this.prestigeKeepStageLevel = 0,
     this.prestigeDiscountLevel = 0,
     this.prestigeAutoBuyLevel = 0,
+    this.ascensionCount = 0,
+    this.ascensionPointsEarned = 0,
+    this.ascensionLifetime = 0,
+    this.ascensionIncomeLevel = 0,
+    this.ascensionStarBonusLevel = 0,
+    this.ascensionStarGainLevel = 0,
     this.autoBuyEnabled = false,
     this.storyChapter = 0,
     this.storyChoiceA,
@@ -195,6 +201,24 @@ class GameState {
   /// Cấp perk "Tự động mua" (0/1) — mở khoá công tắc [autoBuyEnabled].
   int prestigeAutoBuyLevel;
 
+  /// Kỷ Nguyên (prestige tầng 2, xem Balance.ascension*): số lần đã Kỷ Nguyên
+  /// hoá, tổng Điểm đã nhận (đã tiêu = suy ra từ cấp perk, giống Kho Sao), và
+  /// [ascensionLifetime] — lifetime kiếm được KỂ TỪ lần Kỷ Nguyên gần nhất.
+  ///
+  /// Là bộ tích lũy RIÊNG chứ không phải `lifetimeEarnings − baseline`: sau khi
+  /// Kỷ Nguyên hoá, lifetimeEarnings đã ~1e37 nên mỗi tick cộng vài Xu bị double
+  /// nuốt hoàn toàn (ulp ~1e21) → phép trừ sẽ đứng yên ở 0 rất lâu và Sao không
+  /// tích được. Chỉ dùng khi [ascensionCount] > 0 (trước đó dùng thẳng
+  /// lifetimeEarnings, nên save cũ và test cũ không đổi). Save cũ thiếu → 0.
+  int ascensionCount;
+  int ascensionPointsEarned;
+  double ascensionLifetime;
+
+  /// Cấp 3 perk Kỷ Nguyên: thu nhập / bonus mỗi Sao / tốc độ tích Sao.
+  int ascensionIncomeLevel;
+  int ascensionStarBonusLevel;
+  int ascensionStarGainLevel;
+
   /// Công tắc auto-buy đang bật (chỉ có tác dụng khi có perk).
   bool autoBuyEnabled;
 
@@ -306,6 +330,12 @@ class GameState {
         'prestigeKeepStageLevel': prestigeKeepStageLevel,
         'prestigeDiscountLevel': prestigeDiscountLevel,
         'prestigeAutoBuyLevel': prestigeAutoBuyLevel,
+        'ascensionCount': ascensionCount,
+        'ascensionPointsEarned': ascensionPointsEarned,
+        'ascensionLifetime': ascensionLifetime,
+        'ascensionIncomeLevel': ascensionIncomeLevel,
+        'ascensionStarBonusLevel': ascensionStarBonusLevel,
+        'ascensionStarGainLevel': ascensionStarGainLevel,
         'autoBuyEnabled': autoBuyEnabled,
         'storyChapter': storyChapter,
         'storyChoiceA': storyChoiceA,
@@ -367,6 +397,17 @@ class GameState {
             (json['prestigeDiscountLevel'] as num?)?.toInt() ?? 0,
         prestigeAutoBuyLevel:
             (json['prestigeAutoBuyLevel'] as num?)?.toInt() ?? 0,
+        ascensionCount: (json['ascensionCount'] as num?)?.toInt() ?? 0,
+        ascensionPointsEarned:
+            (json['ascensionPointsEarned'] as num?)?.toInt() ?? 0,
+        ascensionLifetime:
+            (json['ascensionLifetime'] as num?)?.toDouble() ?? 0,
+        ascensionIncomeLevel:
+            (json['ascensionIncomeLevel'] as num?)?.toInt() ?? 0,
+        ascensionStarBonusLevel:
+            (json['ascensionStarBonusLevel'] as num?)?.toInt() ?? 0,
+        ascensionStarGainLevel:
+            (json['ascensionStarGainLevel'] as num?)?.toInt() ?? 0,
         autoBuyEnabled: (json['autoBuyEnabled'] as bool?) ?? false,
         storyChapter: (json['storyChapter'] as num?)?.toInt() ?? 0,
         storyChoiceA: json['storyChoiceA'] as String?,

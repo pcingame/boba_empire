@@ -169,6 +169,49 @@ int prestigeStarsSpent(GameState s) =>
 int prestigeStarsSpendable(GameState s) =>
     s.prestigeStars - prestigeStarsSpent(s);
 
+// --- Kỷ Nguyên (Ascension) — prestige tầng 2 ---
+
+/// Lifetime kiếm THÊM kể từ lần Kỷ Nguyên gần nhất. Chưa từng Kỷ Nguyên hoá thì
+/// chính là `lifetimeEarnings`; sau đó là bộ tích lũy riêng
+/// [GameState.ascensionLifetime] (xem lý do độ chính xác double ở đó).
+double lifetimeSinceAscension(GameState s) =>
+    s.ascensionCount == 0 ? s.lifetimeEarnings : s.ascensionLifetime;
+
+/// Điểm Kỷ Nguyên nhận được nếu Kỷ Nguyên hoá ngay: floor(sqrt(lifetimeThêm /
+/// ngưỡng)); 0 nếu chưa đủ ngưỡng. Cùng họ "angel investor" với Sao.
+int ascensionPointsAvailable(GameState s) {
+  final since = lifetimeSinceAscension(s);
+  if (since < Balance.ascensionMinLifetime) return 0;
+  return sqrt(since / Balance.ascensionMinLifetime).floor();
+}
+
+int _ascensionSpentFor(int baseCost, int level) =>
+    (baseCost * (pow(2.0, level) - 1)).round();
+
+/// Tổng Điểm đã tiêu cho perk Kỷ Nguyên (suy ra từ cấp, giống Kho Sao).
+int ascensionPointsSpent(GameState s) =>
+    _ascensionSpentFor(Balance.ascensionIncomeBaseCost, s.ascensionIncomeLevel) +
+    _ascensionSpentFor(
+        Balance.ascensionStarBonusBaseCost, s.ascensionStarBonusLevel) +
+    _ascensionSpentFor(
+        Balance.ascensionStarGainBaseCost, s.ascensionStarGainLevel);
+
+/// Điểm còn có thể tiêu.
+int ascensionPointsSpendable(GameState s) =>
+    s.ascensionPointsEarned - ascensionPointsSpent(s);
+
+/// Hệ số thu nhập từ perk "Nguồn năng lượng".
+double ascensionIncomeMultiplier(int level) =>
+    1 + level * Balance.ascensionIncomePerLevel;
+
+/// Hệ số nhân bonus MỖI SAO từ perk "Ngôi sao rực rỡ" (nhân vào bonusPerStar).
+double ascensionStarBonusFactor(int level) =>
+    1 + level * Balance.ascensionStarBonusPerLevel;
+
+/// Hệ số nhân tốc độ tích Sao từ perk "Tinh tú dồi dào" (nhân vào prestigeK).
+double ascensionStarGainFactor(int level) =>
+    1 + level * Balance.ascensionStarGainPerLevel;
+
 /// Hệ số nhân thu nhập từ perk "Siêu thu nhập".
 double prestigeIncomeMultiplier(int level) =>
     1 + level * Balance.prestigeIncomePerLevel;
@@ -286,7 +329,9 @@ double effectiveIncomePerSecond(
 }) =>
     baseIncomePerSecond(state, configs) *
     globalMilestoneMultiplier(state, configs) *
-    prestigeMultiplier(state.prestigeStars, bonusPerStar) *
+    prestigeMultiplier(state.prestigeStars,
+        bonusPerStar * ascensionStarBonusFactor(state.ascensionStarBonusLevel)) *
+    ascensionIncomeMultiplier(state.ascensionIncomeLevel) *
     permanentMultiplier(state.gemBoostLevel) *
     prestigeIncomeMultiplier(state.prestigeIncomeLevel) *
     storyChoiceIncomeMultiplier(state) *

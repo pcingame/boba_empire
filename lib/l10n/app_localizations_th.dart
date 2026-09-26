@@ -909,4 +909,90 @@ class AppLocalizationsTh extends AppLocalizations {
   String arenaLeaderboardRecord(int wins, int losses) {
     return '$winsชนะ - $lossesแพ้';
   }
+
+  @override
+  String get ascensionTitle => 'ยุคใหม่';
+
+  @override
+  String get ascensionOpen => 'ยุคใหม่ ⏳';
+
+  @override
+  String get ascensionIntro =>
+      'แลกดาวและเพิร์กร้านดาวทั้งหมดเป็น ⏳ แต้มยุคใหม่ — เพิร์กถาวรที่แรงขึ้น คุณจะเริ่มเล่นใหม่';
+
+  @override
+  String ascensionProgress(int percent) {
+    return 'ความคืบหน้าปลดล็อก: $percent%';
+  }
+
+  @override
+  String get ascensionPointsNow => 'แต้มที่มี';
+
+  @override
+  String get ascensionPointsGain => 'ที่จะได้รับ';
+
+  @override
+  String ascensionPointsValue(int points) {
+    return '$points ⏳';
+  }
+
+  @override
+  String get ascensionWarning =>
+      '⚠️ รีเซ็ตดาว เพิร์กร้านดาวทั้งหมด เหรียญ เลเวลอัปเกรด และด่าน เก็บ 💎 ความสำเร็จ และเนื้อเรื่องไว้ ดาวบนกระดานอันดับจะเป็น 0 (อันดับตามรายได้รวมไม่เปลี่ยน)';
+
+  @override
+  String ascensionConfirm(int points) {
+    return 'เริ่มยุคใหม่ (+$points ⏳)';
+  }
+
+  @override
+  String get ascensionNotEnough => 'ยังไม่พร้อม';
+
+  @override
+  String ascensionSuccess(int points) {
+    return 'ยุคใหม่เริ่มต้น! +$points ⏳';
+  }
+
+  @override
+  String get ascensionShopTitle => 'เพิร์กยุคใหม่ ⏳';
+
+  @override
+  String ascensionShopSpendable(int points) {
+    return 'เหลือ $points ⏳ ให้ใช้';
+  }
+
+  @override
+  String ascensionCost(int cost) {
+    return '$cost ⏳';
+  }
+
+  @override
+  String get ascensionMaxed => 'สูงสุด';
+
+  @override
+  String get ascensionIncomeName => 'แหล่งพลังงาน';
+
+  @override
+  String ascensionIncomeDesc(int percent) {
+    return '+$percent% รายได้ต่อเลเวล';
+  }
+
+  @override
+  String get ascensionStarBonusName => 'ดาวเจิดจรัส';
+
+  @override
+  String ascensionStarBonusDesc(int percent) {
+    return '+$percent% พลังต่อดาว ต่อเลเวล';
+  }
+
+  @override
+  String get ascensionStarGainName => 'ดาวอุดม';
+
+  @override
+  String ascensionStarGainDesc(int percent) {
+    return '+$percent% อัตราได้ดาว ต่อเลเวล';
+  }
+
+  @override
+  String get achAscend => 'เริ่มยุคใหม่ครั้งแรก';
 }

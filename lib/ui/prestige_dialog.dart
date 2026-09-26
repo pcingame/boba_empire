@@ -7,6 +7,7 @@ import '../core/balance.dart';
 import '../core/economy.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
+import 'ascension_dialog.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
 import 'widgets/one_shot_lottie.dart';
@@ -19,7 +20,11 @@ Future<void> showPrestigeDialog(BuildContext context) {
   );
 }
 
-int _percent(int stars) => (stars * Balance.bonusPerStar * 100).round();
+int _percent(int stars, int starBonusLevel) => (stars *
+        Balance.bonusPerStar *
+        ascensionStarBonusFactor(starBonusLevel) *
+        100)
+    .round();
 
 /// ConsumerWidget để các con số cập nhật trực tiếp khi thu nhập tăng lúc dialog
 /// đang mở (số Sao khả dụng phụ thuộc tổng thu nhập cả đời).
@@ -33,6 +38,9 @@ class _PrestigeDialog extends ConsumerWidget {
     final available = ref.watch(
       gameControllerProvider.select((s) => s.prestigeStarsAvailable),
     );
+    final starBonusLv = ref.watch(
+      gameControllerProvider.select((s) => s.ascensionStarBonusLevel),
+    );
     final canPrestige = available > 0;
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
@@ -44,15 +52,15 @@ class _PrestigeDialog extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(l10n.prestigeIntro(_percent(1))),
+            Text(l10n.prestigeIntro(_percent(1, starBonusLv))),
             const SizedBox(height: 16),
             _row(l10n.prestigeStarsNow,
-                l10n.prestigeStarsValue(stars, _percent(stars))),
+                l10n.prestigeStarsValue(stars, _percent(stars, starBonusLv))),
             _row(l10n.prestigeNow, l10n.prestigeGain(available)),
             const Divider(),
             _row(
               l10n.prestigeTotalBonus,
-              l10n.prestigeTotalValue(_percent(stars + available)),
+              l10n.prestigeTotalValue(_percent(stars + available, starBonusLv)),
               highlight: true,
             ),
             const SizedBox(height: 12),
@@ -63,6 +71,7 @@ class _PrestigeDialog extends ConsumerWidget {
               ),
             ),
             const _StarShop(),
+            const _AscensionEntry(),
           ],
         ),
       ),
@@ -130,6 +139,33 @@ class _PrestigeDialog extends ConsumerWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Lối vào Kỷ Nguyên: chỉ hiện khi người chơi đã từng Kỷ Nguyên hoá hoặc đã gần
+/// ngưỡng (thang log ≥ 0.8, ~1e29) — người mới không bị rối bởi hệ thống chưa
+/// dùng tới được.
+class _AscensionEntry extends ConsumerWidget {
+  const _AscensionEntry();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final visible = ref.watch(gameControllerProvider.select(
+      (s) => s.ascensionCount > 0 || s.ascensionProgress >= 0.8,
+    ));
+    if (!visible) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context)!;
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: SizedBox(
+        width: double.infinity,
+        child: OutlinedButton(
+          key: const Key('ascension-open'),
+          onPressed: () => showAscensionDialog(context),
+          child: Text(l10n.ascensionOpen),
+        ),
       ),
     );
   }

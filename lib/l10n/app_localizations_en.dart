@@ -911,4 +911,90 @@ class AppLocalizationsEn extends AppLocalizations {
   String arenaLeaderboardRecord(int wins, int losses) {
     return '${wins}W - ${losses}L';
   }
+
+  @override
+  String get ascensionTitle => 'Ascension';
+
+  @override
+  String get ascensionOpen => 'Ascension ⏳';
+
+  @override
+  String get ascensionIntro =>
+      'Trade all your Stars and Star Shop perks for ⏳ Ascension Points — stronger permanent perks. You start over.';
+
+  @override
+  String ascensionProgress(int percent) {
+    return 'Progress to unlock: $percent%';
+  }
+
+  @override
+  String get ascensionPointsNow => 'Points owned';
+
+  @override
+  String get ascensionPointsGain => 'Gain if you ascend';
+
+  @override
+  String ascensionPointsValue(int points) {
+    return '$points ⏳';
+  }
+
+  @override
+  String get ascensionWarning =>
+      '⚠️ Resets Stars, all Star Shop perks, Coins, upgrade levels and stage. Keeps 💎, achievements and story. Your leaderboard Stars drop to 0 (rank by lifetime earnings is unchanged).';
+
+  @override
+  String ascensionConfirm(int points) {
+    return 'Ascend (+$points ⏳)';
+  }
+
+  @override
+  String get ascensionNotEnough => 'Not yet available';
+
+  @override
+  String ascensionSuccess(int points) {
+    return 'A new era begins! +$points ⏳';
+  }
+
+  @override
+  String get ascensionShopTitle => 'Ascension perks ⏳';
+
+  @override
+  String ascensionShopSpendable(int points) {
+    return '$points ⏳ to spend';
+  }
+
+  @override
+  String ascensionCost(int cost) {
+    return '$cost ⏳';
+  }
+
+  @override
+  String get ascensionMaxed => 'Max';
+
+  @override
+  String get ascensionIncomeName => 'Power source';
+
+  @override
+  String ascensionIncomeDesc(int percent) {
+    return '+$percent% income per level';
+  }
+
+  @override
+  String get ascensionStarBonusName => 'Radiant stars';
+
+  @override
+  String ascensionStarBonusDesc(int percent) {
+    return '+$percent% power per Star, per level';
+  }
+
+  @override
+  String get ascensionStarGainName => 'Abundant stars';
+
+  @override
+  String ascensionStarGainDesc(int percent) {
+    return '+$percent% Star gain rate, per level';
+  }
+
+  @override
+  String get achAscend => 'Ascend for the first time';
 }

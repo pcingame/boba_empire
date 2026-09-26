@@ -914,4 +914,90 @@ class AppLocalizationsVi extends AppLocalizations {
   String arenaLeaderboardRecord(int wins, int losses) {
     return '$wins thắng - $losses bại';
   }
+
+  @override
+  String get ascensionTitle => 'Kỷ Nguyên';
+
+  @override
+  String get ascensionOpen => 'Kỷ Nguyên ⏳';
+
+  @override
+  String get ascensionIntro =>
+      'Đổi toàn bộ Sao và perk Kho Sao lấy ⏳ Điểm Kỷ Nguyên — perk vĩnh viễn mạnh hơn. Bạn sẽ chơi lại từ đầu.';
+
+  @override
+  String ascensionProgress(int percent) {
+    return 'Tiến độ tới ngưỡng mở: $percent%';
+  }
+
+  @override
+  String get ascensionPointsNow => 'Điểm đang có';
+
+  @override
+  String get ascensionPointsGain => 'Nhận nếu Kỷ Nguyên hoá';
+
+  @override
+  String ascensionPointsValue(int points) {
+    return '$points ⏳';
+  }
+
+  @override
+  String get ascensionWarning =>
+      '⚠️ Reset Sao, mọi perk Kho Sao, Xu, cấp nâng cấp và giai đoạn. Giữ 💎, thành tựu, cốt truyện. Sao trên bảng xếp hạng về 0 (thứ hạng theo tổng thu nhập không đổi).';
+
+  @override
+  String ascensionConfirm(int points) {
+    return 'Kỷ Nguyên hoá (+$points ⏳)';
+  }
+
+  @override
+  String get ascensionNotEnough => 'Chưa đủ điều kiện';
+
+  @override
+  String ascensionSuccess(int points) {
+    return 'Bắt đầu Kỷ Nguyên mới! +$points ⏳';
+  }
+
+  @override
+  String get ascensionShopTitle => 'Perk Kỷ Nguyên ⏳';
+
+  @override
+  String ascensionShopSpendable(int points) {
+    return 'Còn $points ⏳ để tiêu';
+  }
+
+  @override
+  String ascensionCost(int cost) {
+    return '$cost ⏳';
+  }
+
+  @override
+  String get ascensionMaxed => 'Tối đa';
+
+  @override
+  String get ascensionIncomeName => 'Nguồn năng lượng';
+
+  @override
+  String ascensionIncomeDesc(int percent) {
+    return '+$percent% thu nhập mỗi cấp';
+  }
+
+  @override
+  String get ascensionStarBonusName => 'Ngôi sao rực rỡ';
+
+  @override
+  String ascensionStarBonusDesc(int percent) {
+    return '+$percent% sức mạnh mỗi Sao, mỗi cấp';
+  }
+
+  @override
+  String get ascensionStarGainName => 'Tinh tú dồi dào';
+
+  @override
+  String ascensionStarGainDesc(int percent) {
+    return '+$percent% tốc độ tích Sao, mỗi cấp';
+  }
+
+  @override
+  String get achAscend => 'Kỷ Nguyên hoá lần đầu';
 }

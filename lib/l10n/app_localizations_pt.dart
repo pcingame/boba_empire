@@ -915,4 +915,90 @@ class AppLocalizationsPt extends AppLocalizations {
   String arenaLeaderboardRecord(int wins, int losses) {
     return '${wins}V - ${losses}D';
   }
+
+  @override
+  String get ascensionTitle => 'Ascensão';
+
+  @override
+  String get ascensionOpen => 'Ascensão ⏳';
+
+  @override
+  String get ascensionIntro =>
+      'Troque todas as Estrelas e melhorias da Loja de Estrelas por ⏳ Pontos de Ascensão — melhorias permanentes mais fortes. Você recomeça.';
+
+  @override
+  String ascensionProgress(int percent) {
+    return 'Progresso para desbloquear: $percent%';
+  }
+
+  @override
+  String get ascensionPointsNow => 'Pontos atuais';
+
+  @override
+  String get ascensionPointsGain => 'Ganha se ascender';
+
+  @override
+  String ascensionPointsValue(int points) {
+    return '$points ⏳';
+  }
+
+  @override
+  String get ascensionWarning =>
+      '⚠️ Reinicia Estrelas, todas as melhorias da Loja de Estrelas, Moedas, níveis e etapa. Mantém 💎, conquistas e história. Suas Estrelas no ranking voltam a 0 (a posição por ganhos totais não muda).';
+
+  @override
+  String ascensionConfirm(int points) {
+    return 'Ascender (+$points ⏳)';
+  }
+
+  @override
+  String get ascensionNotEnough => 'Ainda indisponível';
+
+  @override
+  String ascensionSuccess(int points) {
+    return 'Uma nova era começa! +$points ⏳';
+  }
+
+  @override
+  String get ascensionShopTitle => 'Melhorias de Ascensão ⏳';
+
+  @override
+  String ascensionShopSpendable(int points) {
+    return '$points ⏳ para gastar';
+  }
+
+  @override
+  String ascensionCost(int cost) {
+    return '$cost ⏳';
+  }
+
+  @override
+  String get ascensionMaxed => 'Máx.';
+
+  @override
+  String get ascensionIncomeName => 'Fonte de energia';
+
+  @override
+  String ascensionIncomeDesc(int percent) {
+    return '+$percent% de renda por nível';
+  }
+
+  @override
+  String get ascensionStarBonusName => 'Estrelas radiantes';
+
+  @override
+  String ascensionStarBonusDesc(int percent) {
+    return '+$percent% de poder por Estrela, por nível';
+  }
+
+  @override
+  String get ascensionStarGainName => 'Estrelas abundantes';
+
+  @override
+  String ascensionStarGainDesc(int percent) {
+    return '+$percent% de ganho de Estrelas, por nível';
+  }
+
+  @override
+  String get achAscend => 'Ascenda pela primeira vez';
 }

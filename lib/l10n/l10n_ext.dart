@@ -109,4 +109,5 @@ String achievementDesc(AppLocalizations l10n, Achievement a) =>
       AchievementMetric.stage => l10n.achStage(a.threshold.toInt()),
       AchievementMetric.levels => l10n.achLevels(a.threshold.toInt()),
       AchievementMetric.prestige => l10n.achPrestige(a.threshold.toInt()),
+      AchievementMetric.ascension => l10n.achAscend,
     };

@@ -247,6 +247,34 @@ class Balance {
   static const int prestigeAutoBuyBaseCost = 12;
   static const int prestigeAutoBuyMaxLevel = 1;
 
+  // --- Kỷ Nguyên (Ascension) — prestige tầng 2 (2026-09-26) ---
+  // ⚠️ Mọi số dưới đây là ƯỚC LƯỢNG, chưa playtest.
+
+  /// Lifetime kiếm THÊM (tính từ lần Kỷ Nguyên trước) tối thiểu để được Kỷ
+  /// Nguyên hoá — bằng đúng mức mở giai đoạn 18. Dùng lifetime chứ không dùng
+  /// `stage` vì Nhượng quyền reset stage về 1.
+  static const double ascensionMinLifetime = 5e35;
+
+  /// Điểm Kỷ Nguyên = floor(sqrt(lifetimeThêm / ascensionMinLifetime)).
+  /// Perk: giá cấp = base · 2^cấp điểm, hiệu ứng tuyến tính theo cấp, cấp có
+  /// trần (chặn vòng lặp thưởng không giới hạn → tràn số, xem
+  /// economyOverflowGuardCap).
+  static const int ascensionIncomeBaseCost = 1;
+  static const double ascensionIncomePerLevel = 0.5; // +50% thu nhập / cấp
+  static const int ascensionIncomeMaxLevel = 20;
+
+  static const int ascensionStarBonusBaseCost = 2;
+  static const double ascensionStarBonusPerLevel = 0.25; // bonus/Sao ×(1+0.25·cấp)
+  static const int ascensionStarBonusMaxLevel = 20;
+
+  static const int ascensionStarGainBaseCost = 3;
+  static const double ascensionStarGainPerLevel = 0.10; // k ×(1+0.10·cấp)
+  /// TRẦN CỨNG vì server: leaderboard_schema.sql chặn
+  /// `prestige_stars > floor(0.05·sqrt(lifetime))`. k hiệu dụng =
+  /// prestigeK·(1+0.10·10) = 0.04 < 0.05. Tăng trần này tới mức k_eff > 0.05 thì
+  /// người chơi thật bị bảng xếp hạng chặn nhầm — phải nâng SQL trước. Có test.
+  static const int ascensionStarGainMaxLevel = 10;
+
   // --- Cốt truyện: perk từ lựa chọn nhánh (Chương 6 & 8) ---
   // Mỗi nhánh cộng thêm chừng này vào MỘT trục (thu nhập hoặc chạm), vĩnh viễn,
   // KHÔNG reset khi prestige. Giữ nhỏ để không phá cân bằng — cần playtest.

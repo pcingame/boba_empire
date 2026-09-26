@@ -64,6 +64,13 @@ class GameSnapshot {
     required this.pendingRivalEvent,
     required this.rivalModifierRemainingSeconds,
     required this.rivalModifierMult,
+    required this.ascensionCount,
+    required this.ascensionPointsAvailable,
+    required this.ascensionPointsSpendable,
+    required this.ascensionProgress,
+    required this.ascensionIncomeLevel,
+    required this.ascensionStarBonusLevel,
+    required this.ascensionStarGainLevel,
     required Map<String, int> levels,
   }) : _levels = levels;
 
@@ -195,6 +202,16 @@ class GameSnapshot {
   /// Buff/debuff tạm sau lựa chọn đối phó: số giây còn lại + hệ số (1.0 = không).
   final double rivalModifierRemainingSeconds;
   final double rivalModifierMult;
+
+  /// Kỷ Nguyên (prestige tầng 2): số lần đã hoá, Điểm nhận được nếu hoá ngay,
+  /// Điểm còn tiêu được, tiến độ tới ngưỡng mở (0..1), và cấp 3 perk.
+  final int ascensionCount;
+  final int ascensionPointsAvailable;
+  final int ascensionPointsSpendable;
+  final double ascensionProgress;
+  final int ascensionIncomeLevel;
+  final int ascensionStarBonusLevel;
+  final int ascensionStarGainLevel;
 
   final Map<String, int> _levels;
 

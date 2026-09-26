@@ -918,4 +918,90 @@ class AppLocalizationsId extends AppLocalizations {
   String arenaLeaderboardRecord(int wins, int losses) {
     return '${wins}M - ${losses}K';
   }
+
+  @override
+  String get ascensionTitle => 'Ascension';
+
+  @override
+  String get ascensionOpen => 'Ascension ⏳';
+
+  @override
+  String get ascensionIntro =>
+      'Tukar semua Bintang dan perk Toko Bintang dengan ⏳ Poin Ascension — perk permanen yang lebih kuat. Kamu mulai dari awal.';
+
+  @override
+  String ascensionProgress(int percent) {
+    return 'Progres untuk membuka: $percent%';
+  }
+
+  @override
+  String get ascensionPointsNow => 'Poin dimiliki';
+
+  @override
+  String get ascensionPointsGain => 'Didapat jika ascend';
+
+  @override
+  String ascensionPointsValue(int points) {
+    return '$points ⏳';
+  }
+
+  @override
+  String get ascensionWarning =>
+      '⚠️ Reset Bintang, semua perk Toko Bintang, Koin, level upgrade, dan tahap. Menyimpan 💎, pencapaian, dan cerita. Bintang di papan peringkat jadi 0 (peringkat total pendapatan tidak berubah).';
+
+  @override
+  String ascensionConfirm(int points) {
+    return 'Ascend (+$points ⏳)';
+  }
+
+  @override
+  String get ascensionNotEnough => 'Belum tersedia';
+
+  @override
+  String ascensionSuccess(int points) {
+    return 'Era baru dimulai! +$points ⏳';
+  }
+
+  @override
+  String get ascensionShopTitle => 'Perk Ascension ⏳';
+
+  @override
+  String ascensionShopSpendable(int points) {
+    return '$points ⏳ untuk dibelanjakan';
+  }
+
+  @override
+  String ascensionCost(int cost) {
+    return '$cost ⏳';
+  }
+
+  @override
+  String get ascensionMaxed => 'Maks';
+
+  @override
+  String get ascensionIncomeName => 'Sumber energi';
+
+  @override
+  String ascensionIncomeDesc(int percent) {
+    return '+$percent% pendapatan per level';
+  }
+
+  @override
+  String get ascensionStarBonusName => 'Bintang gemilang';
+
+  @override
+  String ascensionStarBonusDesc(int percent) {
+    return '+$percent% kekuatan per Bintang, per level';
+  }
+
+  @override
+  String get ascensionStarGainName => 'Bintang melimpah';
+
+  @override
+  String ascensionStarGainDesc(int percent) {
+    return '+$percent% kecepatan dapat Bintang, per level';
+  }
+
+  @override
+  String get achAscend => 'Ascend untuk pertama kali';
 }

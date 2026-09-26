@@ -510,6 +510,36 @@ thức** prestige/offline/kinh tế.
 - **Server**: trần `lifetime_earnings` của bảng xếp hạng nâng 1e50 → 1e100
   (`supabase/leaderboard_schema.sql`) — **phải chạy lại file SQL trên Supabase**.
 
+## 18. Kỷ Nguyên (Ascension) — prestige tầng 2 (2026-09-26)
+
+> ⚠️ Mọi số là **ước lượng, chưa playtest**. Ra đời vì người chơi phá đảo nhanh:
+> cho một vòng lặp mới bọc ngoài Nhượng quyền (§5) sau khi hết nội dung (§17).
+
+- **Mở khi** `lifetime kể từ lần Kỷ Nguyên trước ≥ 5e35` (`Balance.ascensionMinLifetime`,
+  = mức mở GĐ18). Dùng lifetime chứ không dùng `stage` vì Nhượng quyền reset stage.
+- **Điểm ⏳** = `floor(sqrt(lifetimeThêm / 5e35))` (1 ở ngưỡng, ×10 khi ×100 lifetime).
+- **Reset**: Xu, cấp nguồn thu, giai đoạn, **Sao** và cấp 6 perk Kho Sao (giữ "Tự động
+  mua"). **Giữ**: `lifetimeEarnings`, 💎 + vật phẩm 💎, thành tựu, cốt truyện, nhiệm vụ.
+- **3 perk** (giá `base·2^cấp` ⏳, có trần cấp): Nguồn năng lượng (+50% thu nhập/cấp,
+  trần 20) · Ngôi sao rực rỡ (bonus/Sao ×(1+0.25·cấp), trần 20) · Tinh tú dồi dào
+  (k tích Sao ×(1+0.10·cấp), **trần 10**).
+- **Lối vào**: nút trong dialog Nhượng quyền, chỉ hiện khi đã Kỷ Nguyên hoá hoặc tiến độ
+  (thang log) ≥ 80%. Không thêm icon bottom bar.
+
+### Hai bẫy thiết kế (đã có test khoá)
+
+1. **Độ chính xác double**: sau Kỷ Nguyên `lifetimeEarnings` ~1e37 nên mỗi tick cộng vài Xu
+   bị nuốt hoàn toàn (ulp ~1e21). Vì vậy KHÔNG tính bằng `lifetime − baseline` (Sao sẽ đứng
+   yên ở 0 rất lâu) mà dùng bộ tích lũy riêng `GameState.ascensionLifetime`, tăng trong
+   `_credit()`. Trước lần Kỷ Nguyên đầu vẫn dùng thẳng `lifetimeEarnings` → save/test cũ
+   không đổi.
+2. **Ràng buộc server**: `leaderboard_schema.sql` chặn `prestige_stars > floor(0.05·√lifetime)`.
+   k hiệu dụng ở trần perk = 0.02·2 = 0.04 < 0.05, và lifetimeThêm ≤ lifetime → bất biến
+   giữ nguyên, **không cần đổi SQL**. Nâng trần perk "Tinh tú dồi dào" tới k_eff > 0.05 thì
+   phải nâng SQL trước (test `ascension_test.dart` sẽ báo).
+
+Sau Kỷ Nguyên Sao trên bảng xếp hạng về 0 (xếp hạng theo `lifetime_earnings` nên không đổi).
+
 ---
 
 *Cập nhật tài liệu này khi đổi `balance.dart` hoặc thêm hệ thống.*

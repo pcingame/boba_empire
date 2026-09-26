@@ -70,6 +70,7 @@ class _AchievementRow extends ConsumerWidget {
         AchievementMetric.levels =>
           Balance.generators.fold<int>(0, (acc, c) => acc + s.levelOf(c.id)),
         AchievementMetric.prestige => s.prestigeStars,
+        AchievementMetric.ascension => s.ascensionCount,
       };
 
   @override

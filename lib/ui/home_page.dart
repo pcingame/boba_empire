@@ -1005,7 +1005,11 @@ class _FloaterState extends State<_Floater>
 /// — dùng để quy đổi thu nhập biên "cơ bản" của mỗi nguồn thu ra giá trị thật.
 double _globalIncomeMult(GameSnapshot s) =>
     s.globalMilestoneMult *
-    prestigeMultiplier(s.prestigeStars, Balance.bonusPerStar) *
+    prestigeMultiplier(
+        s.prestigeStars,
+        Balance.bonusPerStar *
+            ascensionStarBonusFactor(s.ascensionStarBonusLevel)) *
+    ascensionIncomeMultiplier(s.ascensionIncomeLevel) *
     permanentMultiplier(s.gemBoostLevel) *
     prestigeIncomeMultiplier(s.prestigeIncomeLevel) *
     (s.doubleIncomeOwned ? 2.0 : 1.0);

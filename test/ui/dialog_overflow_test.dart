@@ -90,6 +90,28 @@ void main() {
       await tester.pumpWidget(const SizedBox());
     });
 
+    testWidgets('[$locale] dialog Kỷ Nguyên không tràn', (tester) async {
+      await _pump(
+        tester,
+        locale: locale,
+        seed: GameState.newGame(nowMillis: 0)
+          ..lifetimeEarnings = 6e37
+          ..ascensionCount = 1
+          ..ascensionLifetime = 5e37 // đủ ngưỡng -> nút xác nhận đầy chữ
+          ..ascensionPointsEarned = 12345678
+          ..ascensionIncomeLevel = 20
+          ..ascensionStarBonusLevel = 20
+          ..ascensionStarGainLevel = 10,
+      );
+      await tester.tap(find.byKey(const Key('prestige-button')));
+      await tester.pumpAndSettle();
+      await tester.ensureVisible(find.byKey(const Key('ascension-open')));
+      await tester.tap(find.byKey(const Key('ascension-open')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('ascension-confirm')), findsOneWidget);
+      await tester.pumpWidget(const SizedBox());
+    });
+
     testWidgets('[$locale] bảng Cách chơi không tràn', (tester) async {
       await _pump(
         tester,
