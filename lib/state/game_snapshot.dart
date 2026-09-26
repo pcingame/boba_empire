@@ -6,8 +6,28 @@
 library;
 
 import '../core/achievements.dart';
+import '../core/daily_quests.dart';
 import '../core/quests.dart';
 import '../core/rival.dart';
+
+/// Ảnh chụp bất biến của một nhiệm vụ ngày cho UI.
+class DailyQuestView {
+  const DailyQuestView({
+    required this.kind,
+    required this.target,
+    required this.progress,
+    required this.rewardGems,
+    required this.claimed,
+  });
+
+  final DailyQuestKind kind;
+  final double target;
+  final double progress;
+  final int rewardGems;
+  final bool claimed;
+
+  bool get done => progress >= target;
+}
 
 class GameSnapshot {
   const GameSnapshot({
@@ -64,6 +84,10 @@ class GameSnapshot {
     required this.pendingRivalEvent,
     required this.rivalModifierRemainingSeconds,
     required this.rivalModifierMult,
+    required this.dailyQuests,
+    required this.dailyBonusAvailable,
+    required this.dailyBonusClaimed,
+    required this.dailyClaimableCount,
     required this.ascensionCount,
     required this.ascensionPointsAvailable,
     required this.ascensionPointsSpendable,
@@ -205,6 +229,13 @@ class GameSnapshot {
 
   /// Kỷ Nguyên (prestige tầng 2): số lần đã hoá, Điểm nhận được nếu hoá ngay,
   /// Điểm còn tiêu được, tiến độ tới ngưỡng mở (0..1), và cấp 3 perk.
+  /// Nhiệm vụ hằng ngày hôm nay (3 mục), thưởng "xong cả bộ", và số thứ đang chờ
+  /// nhận (chấm đỏ ở màn chính).
+  final List<DailyQuestView> dailyQuests;
+  final bool dailyBonusAvailable;
+  final bool dailyBonusClaimed;
+  final int dailyClaimableCount;
+
   final int ascensionCount;
   final int ascensionPointsAvailable;
   final int ascensionPointsSpendable;

@@ -540,6 +540,27 @@ thức** prestige/offline/kinh tế.
 
 Sau Kỷ Nguyên Sao trên bảng xếp hạng về 0 (xếp hạng theo `lifetime_earnings` nên không đổi).
 
+## 19. Nhiệm vụ hằng ngày (2026-09-26)
+
+> ⚠️ Số là **ước lượng, chưa playtest**. Mục tiêu: lý do mở app mỗi ngày (retention),
+> bổ sung cho điểm danh (§9) và vòng quay 1 lượt free/ngày.
+
+- **3 nhiệm vụ/ngày**, chọn xác định theo `dayIndex` (UTC, cùng quy ước điểm danh) nên
+  kill/mở lại app không đổi bộ. 6 loại: Chạm ly (100-300) · Nâng cấp (10-40) · Kiếm Xu ·
+  Bắt mèo Mưa vàng · Phục vụ khách VIP · Quay vòng quay (3 loại cuối: 1 lần).
+- **Kiếm Xu dùng ngưỡng tương đối**: `max(500, thu nhập/giây × 30 phút)` chốt lúc sang ngày
+  (kinh tế trải ~1e2..1e80, ngưỡng cố định vô nghĩa). Đếm trong `_credit()` → gồm cả
+  thu nhập offline/thưởng.
+- **Thưởng**: 8 💎/nhiệm vụ (Kiếm Xu 10) + **15 💎** khi nhận đủ cả 3 → ~39-41 💎/ngày.
+  Cùng điểm danh (~28 💎/ngày) thì nguồn 💎 gần gấp đôi — **theo dõi lạm phát 💎**.
+- Nhận thủ công bằng nút; vào từ chip "Nhiệm vụ" ở đầu màn chính (chấm đỏ khi có thứ nhận
+  được). Không tự bật popup (chuỗi popup mở app đã dài). Không có nhiệm vụ xem quảng cáo.
+- Nhượng quyền/Kỷ Nguyên KHÔNG reset tiến độ ngày; "Nâng cấp" đếm số lần mua, không đếm cấp.
+
+**Bẫy đã gặp (có test khoá):** khi mở app, `_rollDaily()` phải chạy TRƯỚC
+`applyOfflineEarnings` — nếu sau, Xu lúc vắng cộng vào bộ của ngày cũ rồi bị xoá ngay khi
+sang ngày. Test đã mutation-check (đảo thứ tự thì fail).
+
 ---
 
 *Cập nhật tài liệu này khi đổi `balance.dart` hoặc thêm hệ thống.*

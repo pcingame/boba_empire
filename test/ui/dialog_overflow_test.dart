@@ -36,6 +36,7 @@ Future<void> _pump(
   required GameState seed,
   int clock = 0,
   IapService? iap,
+  int savedAt = 0,
 }) async {
   tester.platformDispatcher.localesTestValue = [ui.Locale(locale)];
   addTearDown(tester.platformDispatcher.clearLocalesTestValue);
@@ -43,7 +44,7 @@ Future<void> _pump(
   addTearDown(() => tester.binding.setSurfaceSize(null));
   SharedPreferences.setMockInitialValues({});
   final prefs = await SharedPreferences.getInstance();
-  await GameStorage(prefs).save(seed, nowMillis: 0);
+  await GameStorage(prefs).save(seed, nowMillis: savedAt);
   await tester.pumpWidget(
     ProviderScope(
       overrides: [
@@ -109,6 +110,25 @@ void main() {
       await tester.tap(find.byKey(const Key('ascension-open')));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('ascension-confirm')), findsOneWidget);
+      await tester.pumpWidget(const SizedBox());
+    });
+
+    testWidgets('[$locale] dialog Nhiệm vụ ngày không tràn', (tester) async {
+      // Thu nhập cực lớn -> ngưỡng "Kiếm Xu" (thu nhập × 30 phút) là số rất lớn
+      // khi ngày đó có nhiệm vụ Kiếm Xu; ngày khác thì vẫn kiểm tra layout.
+      await _pump(
+        tester,
+        locale: locale,
+        seed: GameState.newGame(nowMillis: 0)
+          ..levels['eternal_tea'] = 1000
+          ..stage = 12,
+        clock: 20003 * 24 * 60 * 60 * 1000,
+        // Lưu đúng lúc "bây giờ" để không có popup tiền offline che màn chính.
+        savedAt: 20003 * 24 * 60 * 60 * 1000,
+      );
+      await tester.tap(find.byKey(const Key('daily-quests-chip')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('daily-quest-bonus')), findsOneWidget);
       await tester.pumpWidget(const SizedBox());
     });
 

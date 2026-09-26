@@ -997,4 +997,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get achAscend => 'Ascend for the first time';
+
+  @override
+  String get dailyQuestsTitle => 'Daily quests';
+
+  @override
+  String get dailyQuestsChip => 'Quests';
+
+  @override
+  String get dailyQuestsBonusLabel => 'Finish all 3 quests';
+
+  @override
+  String dailyQuestsResetsIn(Object time) {
+    return 'New quests in $time';
+  }
+
+  @override
+  String get dailyQuestClaimed => 'Claimed';
+
+  @override
+  String dqTap(int n) {
+    return 'Tap the cup $n times';
+  }
+
+  @override
+  String dqBuy(int n) {
+    return 'Buy $n upgrades';
+  }
+
+  @override
+  String dqEarn(Object amount) {
+    return 'Earn $amount Coins';
+  }
+
+  @override
+  String get dqCat => 'Catch the Golden Cat';
+
+  @override
+  String get dqVip => 'Serve a VIP customer';
+
+  @override
+  String get dqSpin => 'Spin the Lucky Wheel';
 }

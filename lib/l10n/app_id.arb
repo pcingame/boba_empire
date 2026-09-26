@@ -315,5 +315,18 @@
   "ascensionStarGainName": "Bintang melimpah",
   "ascensionStarGainDesc": "+{percent}% kecepatan dapat Bintang, per level",
   "@ascensionStarGainDesc": { "placeholders": { "percent": { "type": "int" } } },
-  "achAscend": "Ascend untuk pertama kali"
+  "achAscend": "Ascend untuk pertama kali",
+  "dailyQuestsTitle": "Misi harian",
+  "dailyQuestsChip": "Misi",
+  "dailyQuestsBonusLabel": "Selesaikan ketiga misi",
+  "dailyQuestsResetsIn": "Misi baru dalam {time}",
+  "dailyQuestClaimed": "Diambil",
+  "dqTap": "Ketuk gelas {n} kali",
+  "@dqTap": { "placeholders": { "n": { "type": "int" } } },
+  "dqBuy": "Beli {n} upgrade",
+  "@dqBuy": { "placeholders": { "n": { "type": "int" } } },
+  "dqEarn": "Dapatkan {amount} Koin",
+  "dqCat": "Tangkap Kucing Emas",
+  "dqVip": "Layani pelanggan VIP",
+  "dqSpin": "Putar Roda Keberuntungan"
 }

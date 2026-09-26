@@ -995,4 +995,45 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get achAscend => 'เริ่มยุคใหม่ครั้งแรก';
+
+  @override
+  String get dailyQuestsTitle => 'ภารกิจรายวัน';
+
+  @override
+  String get dailyQuestsChip => 'ภารกิจ';
+
+  @override
+  String get dailyQuestsBonusLabel => 'ทำครบ 3 ภารกิจ';
+
+  @override
+  String dailyQuestsResetsIn(Object time) {
+    return 'ภารกิจใหม่ใน $time';
+  }
+
+  @override
+  String get dailyQuestClaimed => 'รับแล้ว';
+
+  @override
+  String dqTap(int n) {
+    return 'แตะแก้ว $n ครั้ง';
+  }
+
+  @override
+  String dqBuy(int n) {
+    return 'ซื้ออัปเกรด $n ครั้ง';
+  }
+
+  @override
+  String dqEarn(Object amount) {
+    return 'หาเงิน $amount เหรียญ';
+  }
+
+  @override
+  String get dqCat => 'จับแมวทอง';
+
+  @override
+  String get dqVip => 'บริการลูกค้า VIP';
+
+  @override
+  String get dqSpin => 'หมุนวงล้อนำโชค';
 }

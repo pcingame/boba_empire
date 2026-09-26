@@ -15,6 +15,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../core/achievements.dart';
 import '../core/balance.dart';
 import '../core/daily.dart';
+import '../core/daily_quests.dart';
 import '../core/economy.dart';
 import '../core/models.dart';
 import '../core/quests.dart';
@@ -97,6 +98,7 @@ class GameController extends Notifier<GameSnapshot> {
       _game.storyCompleteSeconds =
           max(1, (_clock() - _game.firstPlayedMillis) ~/ 1000);
     }
+    _rollDaily();
     // Tính tiền kiếm được lúc app tắt (có cap + chống lùi giờ ở tầng core).
     _offlineEarned = applyOfflineEarnings(
       _game,
@@ -147,6 +149,7 @@ class GameController extends Notifier<GameSnapshot> {
     if (!_catVisible) return;
     final now = _clock();
     _game.boostUntilMillis = now + Balance.goldenRushDurationMs;
+    addDailyProgress(_game, DailyQuestKind.cat, 1);
     _catVisible = false;
     _scheduleNextCat(now);
     unawaited(saveNow()); // lưu ngay — persist boostUntilMillis, không đợi 10s
@@ -194,6 +197,7 @@ class GameController extends Notifier<GameSnapshot> {
     final cash = max(production, _game.tapValue * 10); // "x10 tiền" làm sàn
     grantBonus(_game, cash);
     _game.gems += gems;
+    addDailyProgress(_game, DailyQuestKind.vip, 1);
     _vipVisible = false;
     _scheduleNextVip(now);
     state = _snapshot();
@@ -376,10 +380,52 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
+  /// Đếm số cấp nâng cấp: vừa vào [GameState.buyCount] (nhiệm vụ chuỗi) vừa vào
+  /// nhiệm vụ ngày "Nâng cấp". Đếm SỐ LẦN MUA, không đếm cấp hiện có — nên
+  /// Nhượng quyền/Kỷ Nguyên (reset cấp) không làm tiến độ ngày tụt.
+  void _addBuys(int n) {
+    if (n <= 0) return;
+    _game.buyCount += n;
+    addDailyProgress(_game, DailyQuestKind.buy, n.toDouble());
+  }
+
+  /// Sang ngày (UTC) mới thì đổi bộ nhiệm vụ ngày. Gọi TRƯỚC khi cộng tiền
+  /// offline để Xu lúc vắng tính vào ngày hôm nay, không bị xoá ngay sau đó.
+  void _rollDaily() {
+    rollDailyQuests(
+      _game,
+      _clock(),
+      effectiveIncomePerSecond(_game, Balance.generators,
+          bonusPerStar: Balance.bonusPerStar),
+    );
+  }
+
+  /// Nhận thưởng nhiệm vụ ngày thứ [index] (0..2). Trả về 💎 nhận (0 nếu chưa
+  /// xong/đã nhận). Lưu ngay vì 💎 là premium.
+  int claimDailyQuestReward(int index) {
+    final gems = claimDailyQuest(_game, index);
+    if (gems > 0) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return gems;
+  }
+
+  /// Nhận thưởng "xong cả 3 nhiệm vụ ngày".
+  int claimDailyBonus() {
+    final gems = claimDailyQuestBonus(_game);
+    if (gems > 0) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return gems;
+  }
+
   /// Chạm ly → +tiền (nhân boost Mưa vàng nếu đang có). Trả về số Xu vừa nhận
   /// để UI hiện hiệu ứng "+X" bay lên.
   double tapCup() {
     _game.tapCount++;
+    addDailyProgress(_game, DailyQuestKind.tap, 1);
     final gained =
         tap(_game, boostMultiplier: _boostMultiplier() * _rivalModifier());
     state = _snapshot();
@@ -390,7 +436,7 @@ class GameController extends Notifier<GameSnapshot> {
   bool buy(String generatorId) {
     final ok = buyUpgrade(_game, generatorId);
     if (ok) {
-      _game.buyCount++;
+      _addBuys(1);
       _awardAchievements();
       state = _snapshot();
     }
@@ -401,7 +447,7 @@ class GameController extends Notifier<GameSnapshot> {
   int buyBulk(String generatorId, int count) {
     final bought = buyUpgradeBulk(_game, generatorId, count);
     if (bought > 0) {
-      _game.buyCount += bought;
+      _addBuys(bought);
       _awardAchievements();
       state = _snapshot();
     }
@@ -689,6 +735,7 @@ class GameController extends Notifier<GameSnapshot> {
 
   /// UI gọi khi app trở lại foreground: bù tiền cho khoảng vừa ở nền.
   void handleResume() {
+    _rollDaily();
     _offlineEarned = applyOfflineEarnings(
       _game,
       _clock(),
@@ -780,6 +827,7 @@ class GameController extends Notifier<GameSnapshot> {
   ({int index, WheelKind kind, double value}) spin({required bool free}) {
     final i = spinWheel(_random.nextDouble());
     final p = wheelPrizes[i];
+    addDailyProgress(_game, DailyQuestKind.spin, 1);
     double value = 0;
     switch (p.kind) {
       case WheelKind.coins:
@@ -902,6 +950,7 @@ class GameController extends Notifier<GameSnapshot> {
   }
 
   void _onTick() {
+    _rollDaily();
     final now = _clock();
     final dt = (now - _game.lastSeenMillis) / 1000.0;
     if (dt > 0) {
@@ -917,7 +966,7 @@ class GameController extends Notifier<GameSnapshot> {
       // tính offline kế tiếp không đếm trùng thời gian online.
       _game.lastSeenMillis = now;
     }
-    _game.buyCount += autoBuyBest(_game); // perk "Tự động mua" (no-op nếu tắt)
+    _addBuys(autoBuyBest(_game)); // perk "Tự động mua" (no-op nếu tắt)
     _updateCat(now);
     _updateVip(now);
     _updateRival(now);
@@ -1004,6 +1053,19 @@ class GameController extends Notifier<GameSnapshot> {
       rivalModifierRemainingSeconds:
           max(0, (_rivalModUntilMillis - now) / 1000.0),
       rivalModifierMult: _rivalModifier(),
+      dailyQuests: [
+        for (final q in currentDailyQuests(_game))
+          DailyQuestView(
+            kind: q.kind,
+            target: q.target,
+            progress: dailyQuestProgress(_game, q.kind),
+            rewardGems: q.rewardGems,
+            claimed: dailyQuestClaimed(_game, q),
+          ),
+      ],
+      dailyBonusAvailable: dailyBonusAvailable(_game),
+      dailyBonusClaimed: _game.dailyBonusClaimed,
+      dailyClaimableCount: dailyClaimableCount(_game),
       ascensionCount: _game.ascensionCount,
       ascensionPointsAvailable: ascensionPointsAvailable(_game),
       ascensionPointsSpendable: ascensionPointsSpendable(_game),

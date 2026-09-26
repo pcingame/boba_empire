@@ -247,6 +247,19 @@ class Balance {
   static const int prestigeAutoBuyBaseCost = 12;
   static const int prestigeAutoBuyMaxLevel = 1;
 
+  // --- Nhiệm vụ hằng ngày (2026-09-26) — ⚠️ số là ƯỚC LƯỢNG, chưa playtest ---
+  static const int dailyQuestCount = 3;
+  static const int dailyQuestRewardGems = 8;
+  static const int dailyQuestEarnRewardGems = 10;
+
+  /// Thưởng thêm khi xong (và nhận) cả bộ — nhận một lần/ngày.
+  static const int dailyQuestBonusGems = 15;
+
+  /// Ngưỡng "Kiếm Xu" = max([dailyEarnMinTarget], thu nhập/giây × giây) chốt lúc
+  /// sang ngày (~30 phút thu nhập).
+  static const double dailyEarnMinTarget = 500;
+  static const int dailyEarnIncomeSeconds = 30 * 60;
+
   // --- Kỷ Nguyên (Ascension) — prestige tầng 2 (2026-09-26) ---
   // ⚠️ Mọi số dưới đây là ƯỚC LƯỢNG, chưa playtest.
 

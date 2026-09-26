@@ -83,6 +83,11 @@ class GameState {
     this.prestigeKeepStageLevel = 0,
     this.prestigeDiscountLevel = 0,
     this.prestigeAutoBuyLevel = 0,
+    this.dailyQuestDay = 0,
+    this.dailyEarnTarget = 0,
+    this.dailyBonusClaimed = false,
+    Map<String, double>? dailyProgress,
+    List<String>? dailyClaimed,
     this.ascensionCount = 0,
     this.ascensionPointsEarned = 0,
     this.ascensionLifetime = 0,
@@ -116,6 +121,8 @@ class GameState {
     this.storyCompleteSeconds,
     List<String>? achievementsClaimed,
   })  : achievementsClaimed = achievementsClaimed ?? [],
+        dailyProgress = dailyProgress ?? {},
+        dailyClaimed = dailyClaimed ?? [],
         firstPlayedMillis = firstPlayedMillis ?? lastSeenMillis;
 
   /// Ván mới tinh.
@@ -200,6 +207,16 @@ class GameState {
 
   /// Cấp perk "Tự động mua" (0/1) — mở khoá công tắc [autoBuyEnabled].
   int prestigeAutoBuyLevel;
+
+  /// Nhiệm vụ hằng ngày (xem daily_quests.dart): ngày (UTC) của bộ đang có, ngưỡng
+  /// "Kiếm Xu" đã chốt, tiến độ theo loại (khoá = DailyQuestKind.name), loại đã
+  /// nhận thưởng, và đã nhận thưởng "xong cả bộ" chưa. Reset khi sang ngày; KHÔNG
+  /// bị reset bởi Nhượng quyền/Kỷ Nguyên. Save cũ thiếu → rỗng/0.
+  int dailyQuestDay;
+  double dailyEarnTarget;
+  bool dailyBonusClaimed;
+  final Map<String, double> dailyProgress;
+  final List<String> dailyClaimed;
 
   /// Kỷ Nguyên (prestige tầng 2, xem Balance.ascension*): số lần đã Kỷ Nguyên
   /// hoá, tổng Điểm đã nhận (đã tiêu = suy ra từ cấp perk, giống Kho Sao), và
@@ -330,6 +347,11 @@ class GameState {
         'prestigeKeepStageLevel': prestigeKeepStageLevel,
         'prestigeDiscountLevel': prestigeDiscountLevel,
         'prestigeAutoBuyLevel': prestigeAutoBuyLevel,
+        'dailyQuestDay': dailyQuestDay,
+        'dailyEarnTarget': dailyEarnTarget,
+        'dailyBonusClaimed': dailyBonusClaimed,
+        'dailyProgress': dailyProgress,
+        'dailyClaimed': dailyClaimed,
         'ascensionCount': ascensionCount,
         'ascensionPointsEarned': ascensionPointsEarned,
         'ascensionLifetime': ascensionLifetime,
@@ -397,6 +419,12 @@ class GameState {
             (json['prestigeDiscountLevel'] as num?)?.toInt() ?? 0,
         prestigeAutoBuyLevel:
             (json['prestigeAutoBuyLevel'] as num?)?.toInt() ?? 0,
+        dailyQuestDay: (json['dailyQuestDay'] as num?)?.toInt() ?? 0,
+        dailyEarnTarget: (json['dailyEarnTarget'] as num?)?.toDouble() ?? 0,
+        dailyBonusClaimed: (json['dailyBonusClaimed'] as bool?) ?? false,
+        dailyProgress: (json['dailyProgress'] as Map?)
+            ?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),
+        dailyClaimed: (json['dailyClaimed'] as List?)?.cast<String>().toList(),
         ascensionCount: (json['ascensionCount'] as num?)?.toInt() ?? 0,
         ascensionPointsEarned:
             (json['ascensionPointsEarned'] as num?)?.toInt() ?? 0,

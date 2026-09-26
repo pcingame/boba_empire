@@ -364,5 +364,18 @@
   "ascensionStarGainName": "Tinh tú dồi dào",
   "ascensionStarGainDesc": "+{percent}% tốc độ tích Sao, mỗi cấp",
   "@ascensionStarGainDesc": { "placeholders": { "percent": { "type": "int" } } },
-  "achAscend": "Kỷ Nguyên hoá lần đầu"
+  "achAscend": "Kỷ Nguyên hoá lần đầu",
+  "dailyQuestsTitle": "Nhiệm vụ ngày",
+  "dailyQuestsChip": "Nhiệm vụ",
+  "dailyQuestsBonusLabel": "Xong cả 3 nhiệm vụ",
+  "dailyQuestsResetsIn": "Đổi nhiệm vụ sau {time}",
+  "dailyQuestClaimed": "Đã nhận",
+  "dqTap": "Chạm ly {n} lần",
+  "@dqTap": { "placeholders": { "n": { "type": "int" } } },
+  "dqBuy": "Nâng cấp {n} lần",
+  "@dqBuy": { "placeholders": { "n": { "type": "int" } } },
+  "dqEarn": "Kiếm {amount} Xu",
+  "dqCat": "Bắt mèo Mưa vàng",
+  "dqVip": "Phục vụ khách VIP",
+  "dqSpin": "Quay vòng quay may mắn"
 }

@@ -315,5 +315,18 @@
   "ascensionStarGainName": "Estrellas abundantes",
   "ascensionStarGainDesc": "+{percent}% de ritmo de Estrellas, por nivel",
   "@ascensionStarGainDesc": { "placeholders": { "percent": { "type": "int" } } },
-  "achAscend": "Asciende por primera vez"
+  "achAscend": "Asciende por primera vez",
+  "dailyQuestsTitle": "Misiones diarias",
+  "dailyQuestsChip": "Misiones",
+  "dailyQuestsBonusLabel": "Completa las 3 misiones",
+  "dailyQuestsResetsIn": "Nuevas misiones en {time}",
+  "dailyQuestClaimed": "Reclamado",
+  "dqTap": "Toca la taza {n} veces",
+  "@dqTap": { "placeholders": { "n": { "type": "int" } } },
+  "dqBuy": "Compra {n} mejoras",
+  "@dqBuy": { "placeholders": { "n": { "type": "int" } } },
+  "dqEarn": "Gana {amount} Monedas",
+  "dqCat": "Atrapa al Gato Dorado",
+  "dqVip": "Atiende a un cliente VIP",
+  "dqSpin": "Gira la Rueda de la Suerte"
 }

@@ -315,5 +315,18 @@
   "ascensionStarGainName": "Abundant stars",
   "ascensionStarGainDesc": "+{percent}% Star gain rate, per level",
   "@ascensionStarGainDesc": { "placeholders": { "percent": { "type": "int" } } },
-  "achAscend": "Ascend for the first time"
+  "achAscend": "Ascend for the first time",
+  "dailyQuestsTitle": "Daily quests",
+  "dailyQuestsChip": "Quests",
+  "dailyQuestsBonusLabel": "Finish all 3 quests",
+  "dailyQuestsResetsIn": "New quests in {time}",
+  "dailyQuestClaimed": "Claimed",
+  "dqTap": "Tap the cup {n} times",
+  "@dqTap": { "placeholders": { "n": { "type": "int" } } },
+  "dqBuy": "Buy {n} upgrades",
+  "@dqBuy": { "placeholders": { "n": { "type": "int" } } },
+  "dqEarn": "Earn {amount} Coins",
+  "dqCat": "Catch the Golden Cat",
+  "dqVip": "Serve a VIP customer",
+  "dqSpin": "Spin the Lucky Wheel"
 }

@@ -1000,4 +1000,45 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get achAscend => 'Kỷ Nguyên hoá lần đầu';
+
+  @override
+  String get dailyQuestsTitle => 'Nhiệm vụ ngày';
+
+  @override
+  String get dailyQuestsChip => 'Nhiệm vụ';
+
+  @override
+  String get dailyQuestsBonusLabel => 'Xong cả 3 nhiệm vụ';
+
+  @override
+  String dailyQuestsResetsIn(Object time) {
+    return 'Đổi nhiệm vụ sau $time';
+  }
+
+  @override
+  String get dailyQuestClaimed => 'Đã nhận';
+
+  @override
+  String dqTap(int n) {
+    return 'Chạm ly $n lần';
+  }
+
+  @override
+  String dqBuy(int n) {
+    return 'Nâng cấp $n lần';
+  }
+
+  @override
+  String dqEarn(Object amount) {
+    return 'Kiếm $amount Xu';
+  }
+
+  @override
+  String get dqCat => 'Bắt mèo Mưa vàng';
+
+  @override
+  String get dqVip => 'Phục vụ khách VIP';
+
+  @override
+  String get dqSpin => 'Quay vòng quay may mắn';
 }

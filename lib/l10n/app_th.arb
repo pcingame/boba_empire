@@ -315,5 +315,18 @@
   "ascensionStarGainName": "ดาวอุดม",
   "ascensionStarGainDesc": "+{percent}% อัตราได้ดาว ต่อเลเวล",
   "@ascensionStarGainDesc": { "placeholders": { "percent": { "type": "int" } } },
-  "achAscend": "เริ่มยุคใหม่ครั้งแรก"
+  "achAscend": "เริ่มยุคใหม่ครั้งแรก",
+  "dailyQuestsTitle": "ภารกิจรายวัน",
+  "dailyQuestsChip": "ภารกิจ",
+  "dailyQuestsBonusLabel": "ทำครบ 3 ภารกิจ",
+  "dailyQuestsResetsIn": "ภารกิจใหม่ใน {time}",
+  "dailyQuestClaimed": "รับแล้ว",
+  "dqTap": "แตะแก้ว {n} ครั้ง",
+  "@dqTap": { "placeholders": { "n": { "type": "int" } } },
+  "dqBuy": "ซื้ออัปเกรด {n} ครั้ง",
+  "@dqBuy": { "placeholders": { "n": { "type": "int" } } },
+  "dqEarn": "หาเงิน {amount} เหรียญ",
+  "dqCat": "จับแมวทอง",
+  "dqVip": "บริการลูกค้า VIP",
+  "dqSpin": "หมุนวงล้อนำโชค"
 }

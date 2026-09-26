@@ -20,6 +20,7 @@ import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
 import 'achievements_dialog.dart';
 import 'compete_hub_dialog.dart';
+import 'daily_quests_dialog.dart';
 import 'daily_dialog.dart';
 import 'gem_shop.dart';
 import 'how_to_play_dialog.dart';
@@ -531,19 +532,36 @@ class _MoneyHeader extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              InkWell(
-                borderRadius: BorderRadius.circular(24),
-                onTap: () => showRewards(context),
-                child: ClayChip(
-                  child: Text(
-                    AppLocalizations.of(context)!.rewardsTitle,
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: onContainer,
+              // Flexible + ellipsis: hai chip bên trái cùng cạnh chip 💎 bên phải
+              // dễ tràn ngang ở màn hẹp/chuỗi dài (id/th) — để chúng co lại.
+              Flexible(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(24),
+                        onTap: () => showRewards(context),
+                        child: ClayChip(
+                          child: Text(
+                            AppLocalizations.of(context)!.rewardsTitle,
+                            maxLines: 1,
+                            softWrap: false,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.labelLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: onContainer,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 6),
+                    const Flexible(child: _DailyQuestsChip()),
+                  ],
                 ),
               ),
+              const SizedBox(width: 8),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -623,16 +641,24 @@ class _MoneyHeader extends ConsumerWidget {
                   _GlobalBonusChip(globalPercent),
                 ],
                 const Spacer(),
+                // Flexible + ellipsis: thu nhập cực lớn + chip 🌐 + nhãn dài ở pt/es
+                // làm hàng này tràn ở màn hẹp (400px) — cho nút co lại thay vì tràn.
                 if (income > 0)
-                  FilledButton.tonalIcon(
-                    key: const Key('instant-cash'),
-                    style: FilledButton.styleFrom(
-                      visualDensity: VisualDensity.compact,
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                  Flexible(
+                    child: FilledButton.tonalIcon(
+                      key: const Key('instant-cash'),
+                      style: FilledButton.styleFrom(
+                        visualDensity: VisualDensity.compact,
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                      ),
+                      onPressed: () => _claimInstantCash(context, ref),
+                      icon: const Icon(Icons.card_giftcard, size: 18),
+                      label: Text(
+                        l10n.instantCashButton,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    onPressed: () => _claimInstantCash(context, ref),
-                    icon: const Icon(Icons.card_giftcard, size: 18),
-                    label: Text(l10n.instantCashButton),
                   ),
               ],
             ),
@@ -1413,6 +1439,44 @@ class _StageHeader extends ConsumerWidget {
 /// trước (cấp nguồn thu lẫn số Sao đều không có trần thấp, có thể lên hàng
 /// chục tỷ) — bỏ số lẻ (`decimals: 0`) vì đây chỉ là con số ước lượng nhanh,
 /// không cần chính xác, để chữ không phải co quá nhỏ mới vừa khung.
+/// Chip "Nhiệm vụ" ở đầu màn chính, có chấm đỏ khi có nhiệm vụ xong chưa nhận.
+/// Dùng `_CountBadge` tự vẽ (không dùng `Badge` mặc định — không giới hạn chiều
+/// rộng nhãn, xem shop-tile-overflow-pattern).
+class _DailyQuestsChip extends ConsumerWidget {
+  const _DailyQuestsChip();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final count = ref
+        .watch(gameControllerProvider.select((s) => s.dailyClaimableCount));
+    final theme = Theme.of(context);
+    return InkWell(
+      key: const Key('daily-quests-chip'),
+      borderRadius: BorderRadius.circular(24),
+      onTap: () => showDailyQuests(context),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          ClayChip(
+            child: Text(
+              AppLocalizations.of(context)!.dailyQuestsChip,
+              maxLines: 1,
+              softWrap: false,
+              overflow: TextOverflow.ellipsis,
+              style: theme.textTheme.labelLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.onPrimaryContainer,
+              ),
+            ),
+          ),
+          if (count > 0)
+            Positioned(right: -6, top: -6, child: _CountBadge(count)),
+        ],
+      ),
+    );
+  }
+}
+
 class _CountBadge extends StatelessWidget {
   const _CountBadge(this.value);
 

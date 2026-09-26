@@ -9,6 +9,7 @@ import 'dart:math';
 
 import 'balance.dart';
 import 'daily.dart';
+import 'daily_quests.dart';
 import 'economy.dart';
 import 'models.dart';
 
@@ -448,4 +449,5 @@ void _credit(GameState state, double amount) {
   if (newLifetime.isFinite) state.lifetimeEarnings = newLifetime;
   final newSince = state.ascensionLifetime + amount;
   if (newSince.isFinite) state.ascensionLifetime = newSince;
+  addDailyProgress(state, DailyQuestKind.earn, amount); // nhiệm vụ ngày "Kiếm Xu"
 }

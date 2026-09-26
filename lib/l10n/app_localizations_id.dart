@@ -1004,4 +1004,45 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get achAscend => 'Ascend untuk pertama kali';
+
+  @override
+  String get dailyQuestsTitle => 'Misi harian';
+
+  @override
+  String get dailyQuestsChip => 'Misi';
+
+  @override
+  String get dailyQuestsBonusLabel => 'Selesaikan ketiga misi';
+
+  @override
+  String dailyQuestsResetsIn(Object time) {
+    return 'Misi baru dalam $time';
+  }
+
+  @override
+  String get dailyQuestClaimed => 'Diambil';
+
+  @override
+  String dqTap(int n) {
+    return 'Ketuk gelas $n kali';
+  }
+
+  @override
+  String dqBuy(int n) {
+    return 'Beli $n upgrade';
+  }
+
+  @override
+  String dqEarn(Object amount) {
+    return 'Dapatkan $amount Koin';
+  }
+
+  @override
+  String get dqCat => 'Tangkap Kucing Emas';
+
+  @override
+  String get dqVip => 'Layani pelanggan VIP';
+
+  @override
+  String get dqSpin => 'Putar Roda Keberuntungan';
 }

@@ -1761,6 +1761,72 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Kỷ Nguyên hoá lần đầu'**
   String get achAscend;
+
+  /// No description provided for @dailyQuestsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiệm vụ ngày'**
+  String get dailyQuestsTitle;
+
+  /// No description provided for @dailyQuestsChip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiệm vụ'**
+  String get dailyQuestsChip;
+
+  /// No description provided for @dailyQuestsBonusLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xong cả 3 nhiệm vụ'**
+  String get dailyQuestsBonusLabel;
+
+  /// No description provided for @dailyQuestsResetsIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi nhiệm vụ sau {time}'**
+  String dailyQuestsResetsIn(Object time);
+
+  /// No description provided for @dailyQuestClaimed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận'**
+  String get dailyQuestClaimed;
+
+  /// No description provided for @dqTap.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chạm ly {n} lần'**
+  String dqTap(int n);
+
+  /// No description provided for @dqBuy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nâng cấp {n} lần'**
+  String dqBuy(int n);
+
+  /// No description provided for @dqEarn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiếm {amount} Xu'**
+  String dqEarn(Object amount);
+
+  /// No description provided for @dqCat.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắt mèo Mưa vàng'**
+  String get dqCat;
+
+  /// No description provided for @dqVip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phục vụ khách VIP'**
+  String get dqVip;
+
+  /// No description provided for @dqSpin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay vòng quay may mắn'**
+  String get dqSpin;
 }
 
 class _AppLocalizationsDelegate
