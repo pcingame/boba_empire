@@ -16,7 +16,7 @@ import 'arena_config.dart';
 import 'arena_models.dart';
 import 'arena_repository.dart';
 import 'arena_rules.dart';
-import 'block_rules.dart';
+import 'match3_rules.dart';
 
 sealed class ArenaViewState {
   const ArenaViewState();
@@ -37,20 +37,20 @@ class ArenaInMatch extends ArenaViewState {
     required this.remaining,
     required this.tiersBought,
     this.mode = ArenaMode.tap,
-    this.boardRows = const [],
-    this.currentPiece,
-    this.nextPiece,
+    this.boardCells = const [],
+    this.frames = const [],
+    this.moveId = 0,
     this.stuck = false,
   });
 
   final ArenaMode mode;
 
-  /// Dạng blocks: bảng của MÌNH (mặt nạ bit theo hàng, hàng 0 ở trên), khối
-  /// đang cầm / khối kế tiếp (null khi hết chuỗi), và [stuck] = không còn ô nào
-  /// đặt được khối hiện tại (tràn).
-  final List<int> boardRows;
-  final int? currentPiece;
-  final int? nextPiece;
+  /// Dạng match3: bảng của MÌNH (64 ô, loại 0..4), các bảng trung gian của nước
+  /// vừa đi để UI phát hoạt ảnh ([moveId] tăng mỗi nước hợp lệ), và [stuck] =
+  /// không còn nước đi hợp lệ nào.
+  final List<int> boardCells;
+  final List<List<int>> frames;
+  final int moveId;
   final bool stuck;
 
   final double myScore;
@@ -85,10 +85,12 @@ class ArenaController extends Notifier<ArenaViewState> {
 
   ArenaMode _mode = ArenaMode.tap;
   List<int> _seq = const [];
-  BlockBoard _board = BlockBoard();
-  int _myDrops = 0;
-  int _myBlockScore = 0;
-  bool _dropInFlight = false;
+  Match3Board _board = Match3Board.initial(const []);
+  int _myMatchScore = 0;
+  int _moveId = 0;
+  List<List<int>> _lastFrames = const [];
+  bool _stuck = false;
+  bool _swapInFlight = false;
   bool _boardSynced = false;
 
   /// Gọi khi trận kết thúc để trao thưởng vào ván chính — set từ UI (nối tới
@@ -158,17 +160,19 @@ class ArenaController extends Notifier<ArenaViewState> {
     _resolving = false;
     _mode = match.mode;
     _seq = match.seq;
-    _board = BlockBoard();
-    _myDrops = 0;
-    _myBlockScore = 0;
-    _dropInFlight = false;
+    _board = Match3Board.initial(_seq);
+    _myMatchScore = 0;
+    _moveId = 0;
+    _lastFrames = const [];
+    _stuck = false;
+    _swapInFlight = false;
     _boardSynced = false;
     state = _buildState(0, 0);
     _actionsSub = _repository.watchActions(match.id).listen((log) {
       _log = log;
       // Lần đầu (hoặc vào lại trận đang dở sau khi mở lại app) dựng bảng của
       // mình từ log server — nguồn sự thật, không phải bộ đếm cục bộ.
-      if (_mode == ArenaMode.blocks && !_boardSynced) _resyncBoard();
+      if (_mode == ArenaMode.match3 && !_boardSynced) _resyncBoard();
       _recompute();
     });
     _ticker = Timer.periodic(const Duration(milliseconds: 250), (_) => _onTick());
@@ -199,10 +203,10 @@ class ArenaController extends Notifier<ArenaViewState> {
     for (final entry in _log) {
       (entry.playerId == me ? mine : theirs).add(entry.action);
     }
-    if (_mode == ArenaMode.blocks) {
+    if (_mode == ArenaMode.match3) {
       state = _buildState(
-        _myBlockScore.toDouble(),
-        blockComputeScore(_seq, theirs).toDouble(),
+        _myMatchScore.toDouble(),
+        match3ComputeScore(_seq, theirs).toDouble(),
       );
       return;
     }
@@ -210,29 +214,18 @@ class ArenaController extends Notifier<ArenaViewState> {
   }
 
   ArenaInMatch _buildState(double myScore, double opponentScore) {
-    final blocks = _mode == ArenaMode.blocks;
-    final current = blocks && _myDrops < _seq.length ? _seq[_myDrops] : null;
-    final next = blocks && _myDrops + 1 < _seq.length ? _seq[_myDrops + 1] : null;
+    final match3 = _mode == ArenaMode.match3;
     return ArenaInMatch(
       myScore: myScore,
       opponentScore: opponentScore,
       remaining: _remaining(),
       tiersBought: Set.unmodifiable(_tiersBought),
       mode: _mode,
-      boardRows: blocks ? List<int>.unmodifiable(_board.rows) : const [],
-      currentPiece: current,
-      nextPiece: next,
-      stuck: current != null && !_canPlaceAnywhere(current),
+      boardCells: match3 ? List<int>.unmodifiable(_board.cells) : const [],
+      frames: _lastFrames,
+      moveId: _moveId,
+      stuck: match3 && _stuck,
     );
-  }
-
-  bool _canPlaceAnywhere(int piece) {
-    for (var rot = 0; rot < 4; rot++) {
-      for (var col = 0; col <= BlockBoard.maxCol(piece, rot); col++) {
-        if (_board.dropTop(piece, rot, col) != null) return true;
-      }
-    }
-    return false;
   }
 
   /// Dựng lại bảng + điểm của MÌNH từ log server (thứ tự `at`, rồi `id`).
@@ -241,46 +234,52 @@ class ArenaController extends Notifier<ArenaViewState> {
     if (me == null) return;
     final mine = [
       for (final e in _log)
-        if (e.playerId == me && e.action.kind == ArenaActionKind.drop) e.action,
+        if (e.playerId == me && e.action.kind == ArenaActionKind.swap) e.action,
     ]..sort((a, b) {
         final byTime = a.at.compareTo(b.at);
         return byTime != 0 ? byTime : a.id.compareTo(b.id);
       });
-    _board = BlockBoard();
-    _myBlockScore = 0;
-    var n = 0;
-    for (; n < mine.length && n < _seq.length; n++) {
-      if (_board.overflowed) break;
-      _myBlockScore +=
-          _board.drop(_seq[n], mine[n].rot ?? -1, mine[n].col ?? -1).score;
+    _board = Match3Board.initial(_seq);
+    _myMatchScore = 0;
+    for (var n = 0; n < mine.length && n < m3MaxMoves; n++) {
+      _myMatchScore += _board.trySwap(mine[n].cell ?? -1, mine[n].dir ?? -1).score;
     }
-    _myDrops = n;
+    _lastFrames = const [];
+    _stuck = !_board.hasAnyMove();
     _boardSynced = true;
   }
 
-  /// Thả khối hiện tại ở hướng [rot], cột [col]. Cập nhật bảng cục bộ ngay
-  /// (mượt), gửi server sau; mỗi lúc chỉ 1 lần thả đang bay — vừa giữ tốc độ
-  /// thả dưới rate-limit server, vừa đảm bảo chỉ số khối cục bộ luôn khớp số
-  /// lần thả server đã nhận. Thả lỗi mạng/bị chối → dựng lại từ log.
-  Future<void> drop(int rot, int col) async {
+  /// Đổi ô [cell] với hàng xóm theo [dir] (0 = phải, 1 = dưới). Trả false (và
+  /// không gửi server) nếu nước không hợp lệ. Cập nhật bảng cục bộ ngay (mượt),
+  /// gửi server sau; mỗi lúc chỉ 1 nước đang bay — vừa giữ tốc độ dưới
+  /// rate-limit server, vừa đảm bảo bảng cục bộ luôn khớp số nước server đã
+  /// nhận. Lỗi mạng/bị chối → dựng lại từ log.
+  bool swap(int cell, int dir) {
     final matchId = _matchId;
     final current = state;
-    if (matchId == null || current is! ArenaInMatch) return;
-    if (_mode != ArenaMode.blocks || _dropInFlight) return;
-    if (current.remaining <= Duration.zero || _myDrops >= _seq.length) return;
-    final piece = _seq[_myDrops];
-    if (_board.dropTop(piece, rot, col) == null) return;
-    _myBlockScore += _board.drop(piece, rot, col).score;
-    _myDrops++;
-    _dropInFlight = true;
+    if (matchId == null || current is! ArenaInMatch) return false;
+    if (_mode != ArenaMode.match3 || _swapInFlight || _stuck) return false;
+    if (current.remaining <= Duration.zero) return false;
+    final move = _board.trySwap(cell, dir);
+    if (!move.valid) return false;
+    _myMatchScore += move.score;
+    _moveId++;
+    _lastFrames = move.frames;
+    _stuck = !_board.hasAnyMove();
+    _swapInFlight = true;
     _recompute();
+    unawaited(_submitSwap(matchId, cell, dir));
+    return true;
+  }
+
+  Future<void> _submitSwap(String matchId, int cell, int dir) async {
     try {
-      await _repository.submitDrop(matchId, rot, col);
+      await _repository.submitSwap(matchId, cell, dir);
     } catch (e) {
-      developer.log('thả khối bị chặn: $e', name: 'Arena');
+      developer.log('nước đi bị chặn: $e', name: 'Arena');
       _resyncBoard();
     } finally {
-      _dropInFlight = false;
+      _swapInFlight = false;
       _recompute();
     }
   }
@@ -395,10 +394,12 @@ class ArenaController extends Notifier<ArenaViewState> {
     _tiersBought.clear();
     _resolving = false;
     _seq = const [];
-    _board = BlockBoard();
-    _myDrops = 0;
-    _myBlockScore = 0;
-    _dropInFlight = false;
+    _board = Match3Board.initial(const []);
+    _myMatchScore = 0;
+    _moveId = 0;
+    _lastFrames = const [];
+    _stuck = false;
+    _swapInFlight = false;
     _boardSynced = false;
   }
 }

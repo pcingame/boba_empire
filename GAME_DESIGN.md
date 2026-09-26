@@ -565,16 +565,19 @@ sang ngày. Test đã mutation-check (đảo thứ tự thì fail).
 
 *Cập nhật tài liệu này khi đổi `balance.dart` hoặc thêm hệ thống.*
 
-## 20. Đấu Trường — dạng "Xếp khối" (2026-09-26)
+## 20. Đấu Trường — dạng "Ghép 3" (2026-09-26)
 
-Dạng PK thứ 2 cạnh "Đua chạm". Chọn dạng ở màn Đấu Trường trước khi ghép trận (hàng đợi tách theo dạng).
+Dạng PK thứ 2 cạnh "Đua chạm". (Bản đầu là Xếp khối kiểu Tetris — hiểu nhầm yêu cầu, đã thay bằng Ghép 3; còn trong git history `30c4417`.)
+Chọn dạng ở màn Đấu Trường trước khi ghép trận (hàng đợi tách theo dạng).
 
-- **Luật**: bảng 10×20, 7 khối chuẩn. Mỗi lượt chọn (hướng xoay, cột) rồi Thả — khối rơi thẳng xuống điểm thấp
-  nhất, KHÔNG có trọng lực theo thời gian (để server replay chỉ cần `(rot, col)`). Xoá 1/2/3/4 hàng = 1/3/5/8 điểm.
-  60 giây, điểm cao hơn thắng. Hết chỗ đặt khối thì ngừng ghi điểm.
-- **Công bằng**: server sinh chuỗi 300 khối (`arena_matches.seq`) lúc ghép trận; khối thứ n của mỗi người = `seq[n]`.
-- **Chống gian lận**: như dạng chạm — server replay log `drop` (`arena_blocks_replay`), không tin điểm client.
-  Luật ở `lib/arena/block_rules.dart` ⇔ `supabase/arena_schema.sql`, khớp bằng vector vàng
-  (`test/arena/block_rules_test.dart` và khối comment cuối file SQL).
+- **Luật**: bảng 8×8, 5 loại ô (🧋 🟤 🍓 🥭 🍵). Đổi 2 ô kề nhau (chạm-chạm hoặc vuốt) để tạo dãy ≥3 cùng loại; ô xoá →
+  các ô trên rơi xuống → bù ô mới từ đỉnh → tự xoá tiếp nếu tạo dãy mới (dây chuyền). Nước không tạo dãy bị bỏ qua.
+- **Điểm**: mỗi ô xoá = 10 × số bước dây chuyền (bước 2 nhân 2, bước 3 nhân 3…). 60 giây, điểm cao hơn thắng.
+- **Công bằng**: server sinh chuỗi 2000 số (`arena_matches.seq`): 64 số đầu là bảng đầu (giống nhau cho cả 2 người,
+  không có dãy sẵn), phần còn lại là luồng bù ô của từng người.
+- **Chống gian lận**: như dạng chạm — server replay log `swap` (`arena_m3_replay`), không tin điểm client. Nước vô hiệu chỉ
+  bị bỏ qua. Trần 150 nước/người, tối đa 4 nước/giây.
+- Luật ở `lib/arena/match3_rules.dart` ⇔ `supabase/arena_schema.sql`, khớp bằng vector vàng
+  (`test/arena/match3_rules_test.dart` và khối comment cuối file SQL) + fuzz 300 ván qua RPC.
 - Thưởng 💎 và bảng xếp hạng Đấu Trường dùng chung với dạng chạm (tính từ `arena_matches.winner`).
-- Chưa playtest: độ dài 60s, bảng điểm, điều khiển bằng nút (chưa có vuốt).
+- Chưa làm: kẹo đặc biệt (4/5 ô), tự xáo khi hết nước đi (hiện chỉ báo "Hết nước đi!"), xem bảng đối thủ. Chưa playtest cân bằng.

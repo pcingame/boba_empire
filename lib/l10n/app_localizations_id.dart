@@ -726,29 +726,14 @@ class AppLocalizationsId extends AppLocalizations {
   String get arenaModeTap => 'Balap ketuk';
 
   @override
-  String get arenaModeBlocks => 'Susun blok';
+  String get arenaModeMatch3 => 'Cocokkan 3';
 
   @override
-  String get arenaBlocksIntro =>
-      'Susun blok selama 60 detik — hapus lebih banyak baris dari lawan untuk menang!';
+  String get arenaMatch3Intro =>
+      'Cocokkan 3 gambar sama selama 60 detik — raih skor lebih tinggi dari lawan untuk menang!';
 
   @override
-  String get arenaBlocksNext => 'Berikutnya';
-
-  @override
-  String get arenaBlocksStuck => 'Tidak ada ruang lagi!';
-
-  @override
-  String get arenaBlocksRotateTip => 'Putar';
-
-  @override
-  String get arenaBlocksLeftTip => 'Geser ke kiri';
-
-  @override
-  String get arenaBlocksRightTip => 'Geser ke kanan';
-
-  @override
-  String get arenaBlocksDropButton => 'Jatuhkan';
+  String get arenaMatch3Stuck => 'Tidak ada langkah lagi!';
 
   @override
   String get arenaQueueWaiting => 'Mencari lawan…';

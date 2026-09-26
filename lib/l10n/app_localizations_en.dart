@@ -720,29 +720,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get arenaModeTap => 'Tap race';
 
   @override
-  String get arenaModeBlocks => 'Block stack';
+  String get arenaModeMatch3 => 'Match 3';
 
   @override
-  String get arenaBlocksIntro =>
-      'Stack blocks for 60 seconds — clear more lines than your opponent to win!';
+  String get arenaMatch3Intro =>
+      'Match 3 in a row for 60 seconds — score more than your opponent to win!';
 
   @override
-  String get arenaBlocksNext => 'Next';
-
-  @override
-  String get arenaBlocksStuck => 'No room left!';
-
-  @override
-  String get arenaBlocksRotateTip => 'Rotate';
-
-  @override
-  String get arenaBlocksLeftTip => 'Move left';
-
-  @override
-  String get arenaBlocksRightTip => 'Move right';
-
-  @override
-  String get arenaBlocksDropButton => 'Drop';
+  String get arenaMatch3Stuck => 'No moves left!';
 
   @override
   String get arenaQueueWaiting => 'Finding an opponent…';

@@ -727,29 +727,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get arenaModeTap => 'Carrera de toques';
 
   @override
-  String get arenaModeBlocks => 'Apilar bloques';
+  String get arenaModeMatch3 => 'Combina 3';
 
   @override
-  String get arenaBlocksIntro =>
-      'Apila bloques durante 60 segundos: ¡gana quien despeje más líneas que su rival!';
+  String get arenaMatch3Intro =>
+      'Combina 3 iguales durante 60 segundos: ¡gana quien puntúe más que su rival!';
 
   @override
-  String get arenaBlocksNext => 'Siguiente';
-
-  @override
-  String get arenaBlocksStuck => '¡No queda espacio!';
-
-  @override
-  String get arenaBlocksRotateTip => 'Girar';
-
-  @override
-  String get arenaBlocksLeftTip => 'Mover a la izquierda';
-
-  @override
-  String get arenaBlocksRightTip => 'Mover a la derecha';
-
-  @override
-  String get arenaBlocksDropButton => 'Soltar';
+  String get arenaMatch3Stuck => '¡No quedan movimientos!';
 
   @override
   String get arenaQueueWaiting => 'Buscando rival…';

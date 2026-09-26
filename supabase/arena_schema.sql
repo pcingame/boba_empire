@@ -12,8 +12,8 @@
 -- ⚠️ Giá mốc nâng cấp (20 / 80 / 200) và luật ×2 tapValue mỗi mốc phải khớp
 -- với `lib/arena/arena_rules.dart` phía Flutter — đổi một bên thì đổi cả hai.
 --
--- ⚠️ Dạng 'blocks' (Xếp khối): bảng khối, kích thước 10x20 và bảng điểm 1/3/5/8
--- phải khớp `lib/arena/block_rules.dart`. Vector vàng dùng chung 2 phía ở cuối file.
+-- ⚠️ Dạng 'match3' (Ghép 3): bảng 8x8, 5 loại, thứ tự rơi/bù ô và bảng điểm phải
+-- khớp `lib/arena/match3_rules.dart`. Vector vàng dùng chung 2 phía ở cuối file.
 
 create extension if not exists pgcrypto;
 
@@ -49,19 +49,23 @@ create table if not exists arena_actions (
 
 create index if not exists arena_actions_match_idx on arena_actions (match_id);
 
--- Dạng PK (2026-09-26): 'tap' = đua chạm (mặc định, cũ), 'blocks' = Xếp khối.
--- `seq` = chuỗi khối chung của trận blocks (mỗi số 0..6 = I,O,T,S,Z,J,L); khối
--- thứ n của mỗi người chơi là seq[n]. `rot`/`col` chỉ dùng cho hành động 'drop'.
+-- Dạng PK (2026-09-26): 'tap' = đua chạm (mặc định, cũ), 'match3' = Ghép 3.
+-- `seq` = chuỗi ngẫu nhiên chung của trận match3 (mỗi số 0..4 = loại ô): 64 số
+-- đầu là bảng đầu, phần còn lại là luồng bù ô của mỗi người chơi.
+-- `cell`/`dir` chỉ dùng cho hành động 'swap' (ô 0..63; dir 0 = đổi với ô phải,
+-- 1 = ô dưới). `rot`/`col` + kind 'drop' là di sản của bản Xếp khối (Tetris) đã bỏ.
 alter table arena_queue   add column if not exists mode text not null default 'tap';
 alter table arena_matches add column if not exists mode text not null default 'tap';
 alter table arena_matches add column if not exists seq  smallint[];
 alter table arena_actions add column if not exists rot  smallint;
 alter table arena_actions add column if not exists col  smallint;
+alter table arena_actions add column if not exists cell smallint;
+alter table arena_actions add column if not exists dir  smallint;
 
 -- check của `kind` là ràng buộc không tên khi tạo bảng → tên tự sinh mặc định.
 alter table arena_actions drop constraint if exists arena_actions_kind_check;
 alter table arena_actions add constraint arena_actions_kind_check
-  check (kind in ('tap', 'buy_tier_1', 'buy_tier_2', 'buy_tier_3', 'drop'));
+  check (kind in ('tap', 'buy_tier_1', 'buy_tier_2', 'buy_tier_3', 'drop', 'swap'));
 
 -- ─────────────────────────────────────────────────────────────────────────
 -- RLS — chỉ đọc, đúng phạm vi của mình / trận của mình. Không có policy ghi
@@ -98,119 +102,185 @@ create policy arena_actions_select_match on arena_actions
 -- và lúc chốt trận, tránh 2 nơi tính lệch nhau.
 -- ─────────────────────────────────────────────────────────────────────────
 
+-- Dạng Tetris cũ đã bỏ — dọn hàm còn sót (idempotent).
+drop function if exists arena_compute_score_blocks(uuid, uuid);
+drop function if exists arena_blocks_replay(smallint[], int[], int[]);
+drop function if exists arena_blocks_fits(int[], jsonb, int, int);
+drop function if exists arena_blocks_width_of(int);
+
 -- ─────────────────────────────────────────────────────────────────────────
--- Dạng 'blocks' (Xếp khối) — khớp lib/arena/block_rules.dart.
--- Không có trọng lực theo thời gian: mỗi hành động 'drop' = (rot, col); khối
--- rơi thẳng xuống điểm thấp nhất. Bảng = 20 số nguyên 10-bit (hàng 1 ở TRÊN
--- cùng), bit x = cột x. Bảng hướng xoay được SINH TỪ block_rules.dart.
+-- Dạng 'match3' (Ghép 3) — khớp lib/arena/match3_rules.dart.
+-- Bảng 8x8 = mảng 64 số (ô r*8+c ở phần tử r*8+c+1; hàng 0 ở TRÊN), loại 0..4,
+-- -1 = ô trống. Hành động 'swap' (cell, dir) đổi ô với hàng xóm phải/dưới; chỉ
+-- có hiệu lực nếu tạo dãy >= 3 cùng loại. Dây chuyền: xoá dãy → rơi → bù (cột
+-- trái→phải, trong cột từ trên xuống, lấy seq[refill mod len]); điểm mỗi ô xoá =
+-- 10 × số bước dây chuyền. Tối đa 150 nước đầu mỗi người.
 -- ─────────────────────────────────────────────────────────────────────────
 
--- Bề ngang từng hướng, chỉ số = piece*4 + rot (0..27).
-create or replace function arena_blocks_width_of(p_idx int)
-returns int
-language sql
-immutable
-as $$
-  select (('[4,1,4,1,2,2,2,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2,3,2]'::jsonb) ->> p_idx)::int;
-$$;
-
-create or replace function arena_blocks_fits(p_board int[], p_shape jsonb, p_col int, p_top int)
-returns boolean
+create or replace function arena_m3_marks(b int[])
+returns boolean[]
 language plpgsql
 immutable
 as $$
 declare
-  h int := jsonb_array_length(p_shape);
-  i int;
+  marked boolean[] := array_fill(false, array[64]);
+  r int;
+  c int;
+  s int;
+  k int;
 begin
-  if p_top + h > 20 then
-    return false;
-  end if;
-  for i in 0..h - 1 loop
-    if (p_board[p_top + i + 1] & ((p_shape ->> i)::int << p_col)) <> 0 then
-      return false;
-    end if;
+  for r in 0..7 loop
+    s := 0;
+    for c in 1..8 loop
+      if c < 8 and b[r * 8 + c + 1] <> -1 and b[r * 8 + c + 1] = b[r * 8 + s + 1] then
+        continue;
+      end if;
+      if c - s >= 3 and b[r * 8 + s + 1] <> -1 then
+        for k in s..c - 1 loop
+          marked[r * 8 + k + 1] := true;
+        end loop;
+      end if;
+      s := c;
+    end loop;
   end loop;
-  return true;
+  for c in 0..7 loop
+    s := 0;
+    for r in 1..8 loop
+      if r < 8 and b[r * 8 + c + 1] <> -1 and b[r * 8 + c + 1] = b[s * 8 + c + 1] then
+        continue;
+      end if;
+      if r - s >= 3 and b[s * 8 + c + 1] <> -1 then
+        for k in s..r - 1 loop
+          marked[k * 8 + c + 1] := true;
+        end loop;
+      end if;
+      s := r;
+    end loop;
+  end loop;
+  return marked;
 end;
 $$;
 
--- Hàm THUẦN (không đọc bảng) để có thể test trực tiếp bằng vector vàng.
-create or replace function arena_blocks_replay(p_seq smallint[], p_rots int[], p_cols int[])
+-- Hàm THUẦN (không đọc bảng) để test trực tiếp bằng vector vàng + fuzz.
+create or replace function arena_m3_replay(p_seq smallint[], p_cells int[], p_dirs int[])
 returns int
 language plpgsql
 immutable
 set search_path = public
 as $$
 declare
-  shapes constant jsonb := '[[15],[1,1,1,1],[15],[1,1,1,1],[3,3],[3,3],[3,3],[3,3],[2,7],[1,3,1],[7,2],[2,3,2],[6,3],[1,3,2],[6,3],[1,3,2],[3,6],[2,3,1],[3,6],[2,3,1],[1,7],[3,1,1],[7,4],[2,2,3],[4,7],[1,1,3],[7,1],[3,2,2]]';
-  board int[] := array_fill(0, array[20]);
-  kept int[];
-  score int := 0;
-  total int := coalesce(array_length(p_rots, 1), 0);
   seqlen int := coalesce(array_length(p_seq, 1), 0);
-  idx int;
-  sh jsonb;
-  h int;
-  w int;
-  c int;
-  top int;
+  total int := coalesce(array_length(p_cells, 1), 0);
+  b int[] := array_fill(0, array[64]);
+  saved int[];
+  marked boolean[];
+  empties int[] := array_fill(0, array[8]);
+  refill int := 64;
+  score int := 0;
   i int;
   r int;
-  cleared int;
+  c int;
   n int;
+  t int;
+  v int;
+  k int;
+  w int;
+  other int;
+  step int;
+  cnt int;
 begin
-  for n in 1..least(total, seqlen) loop
-    -- Hành động sai (thiếu rot/col, ngoài biên) vẫn TIÊU một khối nhưng không
-    -- có tác dụng — khớp block_rules.dart.
-    if p_rots[n] is null or p_cols[n] is null
-       or p_rots[n] not between 0 and 3
-       or p_seq[n] not between 0 and 6 then
+  if seqlen = 0 then
+    return 0;
+  end if;
+
+  -- Bảng đầu: tránh bộ 3 sẵn có bằng cách tăng loại +1 (mod 5).
+  for i in 0..63 loop
+    r := i / 8;
+    c := i % 8;
+    t := p_seq[(i % seqlen) + 1] % 5;
+    while (c >= 2 and b[i] = t and b[i - 1] = t)
+       or (r >= 2 and b[i - 7] = t and b[i - 15] = t) loop
+      t := (t + 1) % 5;
+    end loop;
+    b[i + 1] := t;
+  end loop;
+
+  for n in 1..least(total, 150) loop
+    -- Nước sai (thiếu cell/dir, ngoài bảng, hai ô cùng loại, không tạo match)
+    -- bị bỏ qua — khớp match3_rules.dart.
+    if p_cells[n] is null or p_dirs[n] is null
+       or p_cells[n] not between 0 and 63
+       or p_dirs[n] not between 0 and 1 then
       continue;
     end if;
-    idx := p_seq[n] * 4 + p_rots[n];
-    sh := shapes -> idx;
-    h := jsonb_array_length(sh);
-    w := arena_blocks_width_of(idx);
-    c := p_cols[n];
-    if c < 0 or c > 10 - w then
+    i := p_cells[n];
+    if p_dirs[n] = 0 then
+      if i % 8 = 7 then continue; end if;
+      other := i + 1;
+    else
+      if i / 8 = 7 then continue; end if;
+      other := i + 8;
+    end if;
+    if b[i + 1] = b[other + 1] then
       continue;
     end if;
 
-    -- Không đặt được ngay hàng trên cùng = tràn: ngừng ghi điểm.
-    if not arena_blocks_fits(board, sh, c, 0) then
-      exit;
+    saved := b;
+    v := b[i + 1];
+    b[i + 1] := b[other + 1];
+    b[other + 1] := v;
+    marked := arena_m3_marks(b);
+    if not (true = any(marked)) then
+      b := saved;
+      continue;
     end if;
-    top := 0;
-    while arena_blocks_fits(board, sh, c, top + 1) loop
-      top := top + 1;
-    end loop;
 
-    for i in 0..h - 1 loop
-      board[top + i + 1] := board[top + i + 1] | ((sh ->> i)::int << c);
-    end loop;
+    step := 1;
+    loop
+      marked := arena_m3_marks(b);
+      cnt := 0;
+      for k in 1..64 loop
+        if marked[k] then
+          cnt := cnt + 1;
+          b[k] := -1;
+        end if;
+      end loop;
+      exit when cnt = 0;
+      score := score + cnt * 10 * step;
 
-    kept := '{}';
-    cleared := 0;
-    for r in 1..20 loop
-      if board[r] = 1023 then
-        cleared := cleared + 1;
-      else
-        kept := kept || board[r];
-      end if;
+      -- Rơi: mỗi cột dồn xuống đáy, giữ thứ tự.
+      for c in 0..7 loop
+        w := 7;
+        for r in reverse 7..0 loop
+          v := b[r * 8 + c + 1];
+          if v <> -1 then
+            b[w * 8 + c + 1] := v;
+            w := w - 1;
+          end if;
+        end loop;
+        empties[c + 1] := w + 1;
+        for r in 0..w loop
+          b[r * 8 + c + 1] := -1;
+        end loop;
+      end loop;
+
+      -- Bù: cột trái→phải, trong cột từ trên xuống.
+      for c in 0..7 loop
+        for r in 0..empties[c + 1] - 1 loop
+          b[r * 8 + c + 1] := p_seq[(refill % seqlen) + 1] % 5;
+          refill := refill + 1;
+        end loop;
+      end loop;
+      step := step + 1;
     end loop;
-    if cleared > 0 then
-      board := array_fill(0, array[cleared]) || kept;
-      score := score + (array[0, 1, 3, 5, 8])[cleared + 1];
-    end if;
   end loop;
   return score;
 end;
 $$;
 
-grant execute on function arena_blocks_replay(smallint[], int[], int[]) to authenticated;
+grant execute on function arena_m3_replay(smallint[], int[], int[]) to authenticated;
 
-create or replace function arena_compute_score_blocks(p_match_id uuid, p_player uuid)
+create or replace function arena_compute_score_match3(p_match_id uuid, p_player uuid)
 returns numeric
 language plpgsql
 security definer
@@ -218,16 +288,16 @@ set search_path = public
 as $$
 declare
   seqarr smallint[];
-  rots int[];
-  cols int[];
+  cells int[];
+  dirs int[];
 begin
   select seq into seqarr from arena_matches where id = p_match_id;
-  select coalesce(array_agg(rot::int order by at, id), '{}'),
-         coalesce(array_agg(col::int order by at, id), '{}')
-    into rots, cols
+  select coalesce(array_agg(cell::int order by at, id), '{}'),
+         coalesce(array_agg(dir::int order by at, id), '{}')
+    into cells, dirs
     from arena_actions
-    where match_id = p_match_id and player_id = p_player and kind = 'drop';
-  return arena_blocks_replay(seqarr, rots, cols);
+    where match_id = p_match_id and player_id = p_player and kind = 'swap';
+  return arena_m3_replay(seqarr, cells, dirs);
 end;
 $$;
 
@@ -244,8 +314,8 @@ declare
   m_mode text;
 begin
   select mode into m_mode from arena_matches where id = p_match_id;
-  if m_mode = 'blocks' then
-    return arena_compute_score_blocks(p_match_id, p_player);
+  if m_mode = 'match3' then
+    return arena_compute_score_match3(p_match_id, p_player);
   end if;
 
   for a in
@@ -297,7 +367,7 @@ begin
   if me is null then
     raise exception 'not authenticated';
   end if;
-  if p_mode not in ('tap', 'blocks') then
+  if p_mode not in ('tap', 'match3') then
     raise exception 'unknown mode: %', p_mode;
   end if;
 
@@ -342,10 +412,10 @@ begin
 
   delete from arena_queue where player_id in (me, opponent);
 
-  if p_mode = 'blocks' then
+  if p_mode = 'match3' then
     insert into arena_matches (player_a, player_b, mode, seq)
-      values (me, opponent, 'blocks',
-              array(select floor(random() * 7)::smallint from generate_series(1, 300)))
+      values (me, opponent, 'match3',
+              array(select floor(random() * 5)::smallint from generate_series(1, 2000)))
       returning * into m;
   else
     insert into arena_matches (player_a, player_b) values (me, opponent)
@@ -376,15 +446,18 @@ grant execute on function arena_leave_queue() to authenticated;
 -- Ghi hành động trong trận — nơi DUY NHẤT client được phép tạo dữ liệu.
 -- ─────────────────────────────────────────────────────────────────────────
 
--- Đổi chữ ký (thêm p_rot/p_col): bỏ bản cũ để client cũ (chỉ truyền
--- p_match_id, p_kind) rơi vào bản mới qua giá trị mặc định null.
+-- Đổi chữ ký (thêm p_cell/p_dir): bỏ các bản cũ để client cũ (chỉ truyền
+-- p_match_id, p_kind) rơi vào bản mới qua giá trị mặc định null. Bản (uuid, text,
+-- int, int) là của Xếp khối (p_rot/p_col) — cùng kiểu tham số nhưng khác tên nên
+-- `create or replace` không đè được, phải drop.
 drop function if exists arena_submit_action(uuid, text);
+drop function if exists arena_submit_action(uuid, text, int, int);
 
 create or replace function arena_submit_action(
   p_match_id uuid,
   p_kind text,
-  p_rot int default null,
-  p_col int default null
+  p_cell int default null,
+  p_dir int default null
 )
 returns void
 language plpgsql
@@ -397,8 +470,7 @@ declare
   recent_taps int;
   needed numeric;
   already_bought boolean;
-  my_drops int;
-  next_piece int;
+  my_swaps int;
 begin
   if me is null then
     raise exception 'not authenticated';
@@ -418,34 +490,34 @@ begin
     raise exception 'match time is up';
   end if;
 
-  if p_kind = 'drop' then
-    if m.mode <> 'blocks' then
-      raise exception 'drop is only valid in blocks mode';
+  if p_kind = 'swap' then
+    if m.mode <> 'match3' then
+      raise exception 'swap is only valid in match3 mode';
     end if;
-    if p_rot is null or p_col is null or p_rot not between 0 and 3 then
-      raise exception 'invalid drop';
+    if p_cell is null or p_dir is null
+       or p_cell not between 0 and 63 or p_dir not between 0 and 1
+       or (p_dir = 0 and p_cell % 8 = 7) or (p_dir = 1 and p_cell >= 56) then
+      raise exception 'invalid swap';
     end if;
 
-    -- Rate-limit thô: người thật khó thả quá ~5 khối/giây.
+    -- Rate-limit thô: người thật khó đi quá ~4 nước/giây (còn hoạt ảnh nữa).
     select count(*) into recent_taps from arena_actions
       where match_id = p_match_id and player_id = me
-        and kind = 'drop' and at > now() - interval '1 second';
-    if recent_taps >= 5 then
+        and kind = 'swap' and at > now() - interval '1 second';
+    if recent_taps >= 4 then
       raise exception 'rate limited';
     end if;
 
-    select count(*) into my_drops from arena_actions
-      where match_id = p_match_id and player_id = me and kind = 'drop';
-    if my_drops >= coalesce(array_length(m.seq, 1), 0) then
-      raise exception 'no more pieces';
-    end if;
-    next_piece := m.seq[my_drops + 1];
-    if p_col < 0 or p_col > 10 - arena_blocks_width_of(next_piece * 4 + p_rot) then
-      raise exception 'column out of range';
+    -- Không replay lúc nộp (sẽ O(n²)): nước vô hiệu chỉ bị replay bỏ qua nên
+    -- không giúp gian lận; trần số nước khớp `arena_m3_replay`.
+    select count(*) into my_swaps from arena_actions
+      where match_id = p_match_id and player_id = me and kind = 'swap';
+    if my_swaps >= 150 then
+      raise exception 'move limit reached';
     end if;
 
-    insert into arena_actions (match_id, player_id, kind, rot, col)
-      values (p_match_id, me, 'drop', p_rot, p_col);
+    insert into arena_actions (match_id, player_id, kind, cell, dir)
+      values (p_match_id, me, 'swap', p_cell, p_dir);
     return;
   end if;
 
@@ -564,21 +636,17 @@ end $$;
 -- ─────────────────────────────────────────────────────────────────────────
 
 -- ─────────────────────────────────────────────────────────────────────────
--- Vector vàng dạng 'blocks' — PHẢI cho kết quả giống `block_rules_test.dart`.
--- Chạy trong SQL Editor để kiểm tra luật SQL không lệch luật Dart:
+-- Vector vàng dạng 'match3' — PHẢI cho kết quả giống `match3_rules_test.dart`.
+-- Chuỗi LCG hạt giống 12345 (cùng công thức với test Dart). Chạy trong SQL Editor:
 --
---   -- (a) 10 khối I dọc ở cột 0..9 xoá 4 hàng cùng lúc  => 8
---   select arena_blocks_replay(
---     array_fill(0::smallint, array[300]),
---     array_fill(1, array[10]),
---     array[0,1,2,3,4,5,6,7,8,9]);
---
---   -- (b) I ngang cột 0, I ngang cột 4, O cột 8 lấp đầy đáy => 1
---   select arena_blocks_replay('{0,0,1}'::smallint[], '{0,0,0}', '{0,4,8}');
---
---   -- (c) 6 khối I dọc chồng một cột => tràn, ngừng tính => 0
---   select arena_blocks_replay(
---     array_fill(0::smallint, array[300]),
---     array_fill(1, array[15]),
---     array[0,0,0,0,0,0,1,2,3,4,5,6,7,8,9]);
+--   with recursive g(i, x) as (
+--     select 1, ((12345::bigint * 1103515245 + 12345) & 2147483647)
+--     union all
+--     select i + 1, (x * 1103515245 + 12345) & 2147483647 from g where i < 2000
+--   )
+--   select arena_m3_replay(
+--     array(select ((x >> 16) % 5)::smallint from g order by i),
+--     array[2,2,9,1,2,2,13,17,3,0,11,8,0,2,10,4,1,11,1,2,10,9,2,0,11],
+--     array[0,1,1,0,0,1,0,1,1,0,1,1,0,0,1,1,1,0,1,1,1,1,1,0,0]);
+--   -- kỳ vọng: 1260
 -- ─────────────────────────────────────────────────────────────────────────

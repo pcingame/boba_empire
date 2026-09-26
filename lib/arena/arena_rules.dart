@@ -8,7 +8,7 @@ library;
 import 'arena_config.dart';
 
 /// Loại hành động trong một trận — khớp cột `kind` (check constraint) ở SQL.
-enum ArenaActionKind { tap, buyTier1, buyTier2, buyTier3, drop }
+enum ArenaActionKind { tap, buyTier1, buyTier2, buyTier3, swap }
 
 extension ArenaActionKindJson on ArenaActionKind {
   String get wireValue => switch (this) {
@@ -16,7 +16,7 @@ extension ArenaActionKindJson on ArenaActionKind {
         ArenaActionKind.buyTier1 => 'buy_tier_1',
         ArenaActionKind.buyTier2 => 'buy_tier_2',
         ArenaActionKind.buyTier3 => 'buy_tier_3',
-        ArenaActionKind.drop => 'drop',
+        ArenaActionKind.swap => 'swap',
       };
 
   static ArenaActionKind fromWire(String value) => switch (value) {
@@ -24,7 +24,7 @@ extension ArenaActionKindJson on ArenaActionKind {
         'buy_tier_1' => ArenaActionKind.buyTier1,
         'buy_tier_2' => ArenaActionKind.buyTier2,
         'buy_tier_3' => ArenaActionKind.buyTier3,
-        'drop' => ArenaActionKind.drop,
+        'swap' => ArenaActionKind.swap,
         _ => throw ArgumentError('unknown arena action kind: $value'),
       };
 
@@ -33,7 +33,7 @@ extension ArenaActionKindJson on ArenaActionKind {
         ArenaActionKind.buyTier1 => 0,
         ArenaActionKind.buyTier2 => 1,
         ArenaActionKind.buyTier3 => 2,
-        ArenaActionKind.tap || ArenaActionKind.drop => null,
+        ArenaActionKind.tap || ArenaActionKind.swap => null,
       };
 }
 
@@ -44,16 +44,16 @@ class ArenaAction {
     required this.kind,
     required this.at,
     this.id = 0,
-    this.rot,
-    this.col,
+    this.cell,
+    this.dir,
   });
 
   final ArenaActionKind kind;
   final DateTime at;
 
-  /// Chỉ dùng cho [ArenaActionKind.drop]: hướng xoay (0..3) và cột trái nhất.
-  final int? rot;
-  final int? col;
+  /// Chỉ dùng cho [ArenaActionKind.swap]: ô (0..63) và hướng đổi (0 = phải, 1 = dưới).
+  final int? cell;
+  final int? dir;
 
   /// id tăng dần dùng phá thế bằng khi 2 hành động có cùng `at` (hiếm khi so
   /// sánh cục bộ, chủ yếu quan trọng ở server). Client tạo hành động local

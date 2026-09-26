@@ -723,29 +723,14 @@ class AppLocalizationsVi extends AppLocalizations {
   String get arenaModeTap => 'Đua chạm';
 
   @override
-  String get arenaModeBlocks => 'Xếp khối';
+  String get arenaModeMatch3 => 'Ghép 3';
 
   @override
-  String get arenaBlocksIntro =>
-      'Xếp khối 60 giây — xoá được nhiều hàng hơn đối thủ thì thắng!';
+  String get arenaMatch3Intro =>
+      'Ghép 3 hình giống nhau trong 60 giây — ăn nhiều điểm hơn đối thủ thì thắng!';
 
   @override
-  String get arenaBlocksNext => 'Kế tiếp';
-
-  @override
-  String get arenaBlocksStuck => 'Hết chỗ đặt khối!';
-
-  @override
-  String get arenaBlocksRotateTip => 'Xoay';
-
-  @override
-  String get arenaBlocksLeftTip => 'Sang trái';
-
-  @override
-  String get arenaBlocksRightTip => 'Sang phải';
-
-  @override
-  String get arenaBlocksDropButton => 'Thả';
+  String get arenaMatch3Stuck => 'Hết nước đi!';
 
   @override
   String get arenaQueueWaiting => 'Đang tìm đối thủ…';

@@ -719,29 +719,14 @@ class AppLocalizationsTh extends AppLocalizations {
   String get arenaModeTap => 'แข่งแตะ';
 
   @override
-  String get arenaModeBlocks => 'เรียงบล็อก';
+  String get arenaModeMatch3 => 'จับคู่ 3';
 
   @override
-  String get arenaBlocksIntro =>
-      'เรียงบล็อก 60 วินาที — ล้างแถวได้มากกว่าคู่ต่อสู้เป็นผู้ชนะ!';
+  String get arenaMatch3Intro =>
+      'จับคู่ 3 ชิ้นที่เหมือนกันใน 60 วินาที — ได้คะแนนมากกว่าคู่ต่อสู้เป็นผู้ชนะ!';
 
   @override
-  String get arenaBlocksNext => 'ถัดไป';
-
-  @override
-  String get arenaBlocksStuck => 'ไม่มีที่วางแล้ว!';
-
-  @override
-  String get arenaBlocksRotateTip => 'หมุน';
-
-  @override
-  String get arenaBlocksLeftTip => 'เลื่อนซ้าย';
-
-  @override
-  String get arenaBlocksRightTip => 'เลื่อนขวา';
-
-  @override
-  String get arenaBlocksDropButton => 'ทิ้ง';
+  String get arenaMatch3Stuck => 'ไม่มีตาเดินแล้ว!';
 
   @override
   String get arenaQueueWaiting => 'กำลังหาคู่แข่ง…';

@@ -1312,53 +1312,23 @@ abstract class AppLocalizations {
   /// **'Đua chạm'**
   String get arenaModeTap;
 
-  /// No description provided for @arenaModeBlocks.
+  /// No description provided for @arenaModeMatch3.
   ///
   /// In vi, this message translates to:
-  /// **'Xếp khối'**
-  String get arenaModeBlocks;
+  /// **'Ghép 3'**
+  String get arenaModeMatch3;
 
-  /// No description provided for @arenaBlocksIntro.
+  /// No description provided for @arenaMatch3Intro.
   ///
   /// In vi, this message translates to:
-  /// **'Xếp khối 60 giây — xoá được nhiều hàng hơn đối thủ thì thắng!'**
-  String get arenaBlocksIntro;
+  /// **'Ghép 3 hình giống nhau trong 60 giây — ăn nhiều điểm hơn đối thủ thì thắng!'**
+  String get arenaMatch3Intro;
 
-  /// No description provided for @arenaBlocksNext.
+  /// No description provided for @arenaMatch3Stuck.
   ///
   /// In vi, this message translates to:
-  /// **'Kế tiếp'**
-  String get arenaBlocksNext;
-
-  /// No description provided for @arenaBlocksStuck.
-  ///
-  /// In vi, this message translates to:
-  /// **'Hết chỗ đặt khối!'**
-  String get arenaBlocksStuck;
-
-  /// No description provided for @arenaBlocksRotateTip.
-  ///
-  /// In vi, this message translates to:
-  /// **'Xoay'**
-  String get arenaBlocksRotateTip;
-
-  /// No description provided for @arenaBlocksLeftTip.
-  ///
-  /// In vi, this message translates to:
-  /// **'Sang trái'**
-  String get arenaBlocksLeftTip;
-
-  /// No description provided for @arenaBlocksRightTip.
-  ///
-  /// In vi, this message translates to:
-  /// **'Sang phải'**
-  String get arenaBlocksRightTip;
-
-  /// No description provided for @arenaBlocksDropButton.
-  ///
-  /// In vi, this message translates to:
-  /// **'Thả'**
-  String get arenaBlocksDropButton;
+  /// **'Hết nước đi!'**
+  String get arenaMatch3Stuck;
 
   /// No description provided for @arenaQueueWaiting.
   ///

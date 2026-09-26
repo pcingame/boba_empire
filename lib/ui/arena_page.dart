@@ -13,7 +13,7 @@ import '../arena/arena_models.dart';
 import '../core/format.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
-import 'arena_block_board.dart';
+import 'arena_match3_board.dart';
 import 'widgets/clay.dart';
 
 Future<void> showArenaPage(BuildContext context) {
@@ -77,7 +77,7 @@ class _IdleView extends ConsumerWidget {
       children: [
         Text(l10n.arenaIntro, textAlign: TextAlign.center),
         const SizedBox(height: 12),
-        Text(l10n.arenaBlocksIntro, textAlign: TextAlign.center),
+        Text(l10n.arenaMatch3Intro, textAlign: TextAlign.center),
         const SizedBox(height: 24),
         FilledButton(
           key: const Key('arena-start-tap'),
@@ -88,11 +88,11 @@ class _IdleView extends ConsumerWidget {
         ),
         const SizedBox(height: 12),
         FilledButton.tonal(
-          key: const Key('arena-start-blocks'),
+          key: const Key('arena-start-match3'),
           onPressed: () => ref
               .read(arenaControllerProvider.notifier)
-              .startMatchmaking(ArenaMode.blocks),
-          child: Text(l10n.arenaModeBlocks),
+              .startMatchmaking(ArenaMode.match3),
+          child: Text(l10n.arenaModeMatch3),
         ),
       ],
     );
@@ -137,22 +137,27 @@ class _MatchView extends ConsumerWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Chip(label: Text(l10n.arenaTimeLeft(seconds.ceil()))),
-        const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _ScoreTile(label: l10n.arenaYourScore, value: view.myScore),
-            _ScoreTile(label: l10n.arenaOpponentScore, value: view.opponentScore),
-          ],
-        ),
-        const SizedBox(height: 24),
+        if (view.mode == ArenaMode.match3) ...[
+          _DuelHeader(l10n: l10n, view: view),
+          const SizedBox(height: 12),
+        ] else ...[
+          Chip(label: Text(l10n.arenaTimeLeft(seconds.ceil()))),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _ScoreTile(label: l10n.arenaYourScore, value: view.myScore),
+              _ScoreTile(label: l10n.arenaOpponentScore, value: view.opponentScore),
+            ],
+          ),
+          const SizedBox(height: 24),
+        ],
         if (resolving) ...[
           const CircularProgressIndicator(),
           const SizedBox(height: 8),
           Text(l10n.arenaResolving),
-        ] else if (view.mode == ArenaMode.blocks)
-          ArenaBlockPanel(view: view, onDrop: controller.drop)
+        ] else if (view.mode == ArenaMode.match3)
+          ArenaMatch3Panel(view: view, onSwap: controller.swap)
         else ...[
           // Kích thước CỐ ĐỊNH (không phải padding-quyết-định-kích-thước) +
           // FittedBox co chữ — bản dịch dài (id/es/pt 2 từ) vẫn nằm gọn trong
@@ -191,6 +196,117 @@ class _MatchView extends ConsumerWidget {
               ),
             ),
         ],
+      ],
+    );
+  }
+}
+
+/// Đầu màn trận Ghép 3: thanh thời gian (đỏ khi còn <= 10s), điểm hai bên đếm
+/// chạy, và thanh so điểm mình–đối thủ.
+class _DuelHeader extends StatelessWidget {
+  const _DuelHeader({required this.l10n, required this.view});
+  final AppLocalizations l10n;
+  final ArenaInMatch view;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final seconds = (view.remaining.inMilliseconds / 1000).ceil();
+    final frac = (view.remaining.inMilliseconds / (ArenaConfig.matchSeconds * 1000)).clamp(0.0, 1.0);
+    final urgent = seconds <= 10;
+    final total = view.myScore + view.opponentScore;
+    final share = total <= 0 ? 0.5 : (view.myScore / total).clamp(0.08, 0.92);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.timer_outlined, size: 20, color: urgent ? scheme.error : scheme.onSurface),
+            const SizedBox(width: 6),
+            Flexible(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  l10n.arenaTimeLeft(seconds),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: urgent ? scheme.error : null,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(6),
+          child: LinearProgressIndicator(
+            value: frac,
+            minHeight: 8,
+            color: urgent ? scheme.error : scheme.primary,
+            backgroundColor: scheme.surfaceContainerHighest,
+          ),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(child: _DuelScore(label: l10n.arenaYourScore, value: view.myScore, color: scheme.primary, end: false)),
+            const SizedBox(width: 12),
+            Expanded(child: _DuelScore(label: l10n.arenaOpponentScore, value: view.opponentScore, color: scheme.tertiary, end: true)),
+          ],
+        ),
+        const SizedBox(height: 6),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(5),
+          child: SizedBox(
+            height: 10,
+            child: LayoutBuilder(
+              builder: (context, box) => Stack(
+                children: [
+                  Positioned.fill(child: ColoredBox(color: scheme.tertiary)),
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.easeOut,
+                    width: box.maxWidth * share,
+                    color: scheme.primary,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _DuelScore extends StatelessWidget {
+  const _DuelScore({required this.label, required this.value, required this.color, required this.end});
+  final String label;
+  final double value;
+  final Color color;
+  final bool end;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context).textTheme;
+    return Column(
+      crossAxisAlignment: end ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      children: [
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(label, style: theme.labelMedium?.copyWith(color: color, fontWeight: FontWeight.w700)),
+        ),
+        TweenAnimationBuilder<double>(
+          tween: Tween(begin: value, end: value),
+          duration: const Duration(milliseconds: 350),
+          curve: Curves.easeOut,
+          builder: (context, v, _) => FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(formatNumber(v), style: theme.headlineSmall?.copyWith(fontWeight: FontWeight.w800)),
+          ),
+        ),
       ],
     );
   }

@@ -51,13 +51,13 @@ class ArenaRepository {
         params: {'p_match_id': matchId, 'p_kind': kind.wireValue},
       );
 
-  Future<void> submitDrop(String matchId, int rot, int col) => _client.rpc(
+  Future<void> submitSwap(String matchId, int cell, int dir) => _client.rpc(
         'arena_submit_action',
         params: {
           'p_match_id': matchId,
-          'p_kind': ArenaActionKind.drop.wireValue,
-          'p_rot': rot,
-          'p_col': col,
+          'p_kind': ArenaActionKind.swap.wireValue,
+          'p_cell': cell,
+          'p_dir': dir,
         },
       );
 
