@@ -59,6 +59,37 @@ Quest _repeatQuest(int cycle) => Quest(
       repeatable: true,
     );
 
+/// Vòng lặp CAO NHẤT mà một người chơi đã kiếm được [lifetime] Xu có thể đang ở:
+/// để xong vòng 0..n-1 cần tổng base·(10^n − 1)/9 Xu, nên đang ở vòng n khi
+/// tổng đó ≤ lifetime < tổng cho vòng n+1.
+int maxLegitRepeatCycle(double lifetime) {
+  if (!lifetime.isFinite || lifetime <= 0) return 0;
+  var n = 0;
+  var sum = 0.0;
+  while (n < 400) {
+    final t = min(Balance.questRepeatBaseEarn * pow(10.0, n),
+        Balance.economyOverflowGuardCap);
+    if (sum + t > lifetime) return n;
+    sum += t;
+    n++;
+  }
+  return n;
+}
+
+/// Sửa save đã bị đẩy lên vòng nhiệm vụ lặp CAO HƠN mức kiếm được (lỗi tràn
+/// `pow(10, cycle)` từng cho nhận thưởng vô hạn — xem int-pow-overflow-quest-zero):
+/// đưa về đúng vòng theo tổng Xu đã kiếm và tính "kiếm thêm" lại từ 0. Save hợp
+/// lệ không đổi (vòng của họ luôn <= [maxLegitRepeatCycle]). Trả true nếu đã sửa.
+bool sanitizeRepeatQuest(GameState s) {
+  if (s.questIndex < quests.length) return false;
+  final cycle = s.questIndex - quests.length;
+  final legit = maxLegitRepeatCycle(s.lifetimeEarnings);
+  if (cycle <= legit) return false;
+  s.questIndex = quests.length + legit;
+  s.repeatQuestBaseline = s.lifetimeEarnings;
+  return true;
+}
+
 /// Nhiệm vụ hiện tại. Sau chuỗi 10 bước → chuỗi "kiếm thêm" vô hạn.
 Quest currentQuest(GameState s) => s.questIndex < quests.length
     ? quests[s.questIndex]

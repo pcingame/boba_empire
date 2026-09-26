@@ -98,5 +98,58 @@ void main() {
         expect(claimQuest(s), 0, reason: 'vòng $cycle');
       }
     });
+
+    // Reset save đã bị lỗi tràn pow(10, cycle) đẩy lên vòng cao hơn mức kiếm được.
+    group('sanitizeRepeatQuest (sửa save đã farm bằng lỗi tràn)', () {
+      double sumBelow(int n) {
+        var sum = 0.0;
+        for (var c = 0; c < n; c++) {
+          sum += Balance.questRepeatBaseEarn * pow(10.0, c);
+        }
+        return sum;
+      }
+
+      test('maxLegitRepeatCycle đúng ở biên: đủ tổng vòng 0..n-1 thì đang ở vòng n', () {
+        expect(maxLegitRepeatCycle(0), 0);
+        expect(maxLegitRepeatCycle(double.infinity), 0);
+        for (final n in [1, 2, 5, 18, 22]) {
+          final exact = sumBelow(n);
+          expect(maxLegitRepeatCycle(exact), n, reason: 'vừa đủ $n');
+          expect(maxLegitRepeatCycle(exact * 0.999), n - 1, reason: 'thiếu chút cho $n');
+        }
+      });
+
+      test('save bị đẩy lên vòng 300 với 1e30 Xu -> về đúng vòng theo lifetime, tính lại từ 0', () {
+        final legit = maxLegitRepeatCycle(1e30);
+        final s = GameState.newGame(nowMillis: 0)
+          ..lifetimeEarnings = 1e30
+          ..questIndex = quests.length + 300
+          ..repeatQuestBaseline = 5e29;
+        expect(sanitizeRepeatQuest(s), isTrue);
+        expect(s.questIndex, quests.length + legit);
+        expect(s.repeatQuestBaseline, 1e30);
+        expect(currentQuestProgress(s), 0);
+        expect(currentQuestDone(s), isFalse);
+        expect(currentQuest(s).threshold.isFinite, isTrue);
+        expect(sanitizeRepeatQuest(s), isFalse); // idempotent
+      });
+
+      test('save hợp lệ KHÔNG bị đổi: vòng <= mức kiếm được, và chưa vào vùng lặp', () {
+        final lifetime = sumBelow(10) * 1.5;
+        final legit = maxLegitRepeatCycle(lifetime);
+        for (final cycle in [0, 3, legit]) {
+          final s = GameState.newGame(nowMillis: 0)
+            ..lifetimeEarnings = lifetime
+            ..questIndex = quests.length + cycle
+            ..repeatQuestBaseline = 123;
+          expect(sanitizeRepeatQuest(s), isFalse, reason: 'vòng $cycle');
+          expect(s.questIndex, quests.length + cycle);
+          expect(s.repeatQuestBaseline, 123);
+        }
+        final early = GameState.newGame(nowMillis: 0)..questIndex = 4;
+        expect(sanitizeRepeatQuest(early), isFalse);
+        expect(early.questIndex, 4);
+      });
+    });
   });
 }

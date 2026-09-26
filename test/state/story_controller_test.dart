@@ -303,4 +303,17 @@ void main() {
       expect(snap.storyCompleteSeconds, isNull);
     });
   });
+
+  test('mở app với save bị đẩy lên vòng nhiệm vụ lặp quá cao -> tự đưa về đúng vòng, nút Nhận tắt', () async {
+    final seed = GameState.newGame(nowMillis: 0)
+      ..lifetimeEarnings = 1e30
+      ..questIndex = 10 + 300
+      ..repeatQuestBaseline = 1e30;
+    final b = await _boot(seed);
+    final snap = b.snap();
+    expect(snap.currentQuest.threshold.isFinite, isTrue);
+    expect(snap.currentQuest.threshold, lessThan(1e100));
+    expect(snap.questDone, isFalse);
+    expect(b.ctrl.claimCurrentQuest(), 0);
+  });
 }

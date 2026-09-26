@@ -83,6 +83,7 @@ class GameController extends Notifier<GameSnapshot> {
     _storage = ref.read(gameStorageProvider);
     _clock = ref.read(clockProvider);
     _game = _storage.load() ?? GameState.newGame(nowMillis: _clock());
+    sanitizeRepeatQuest(_game);
     _cloudVersion = _storage.loadCloudVersion();
     _cloudConflictPending = _storage.loadCloudConflictPending();
     // Bù mốc cho save đã hoàn thành Chương 18 TỪ TRƯỚC lúc sửa bug 2026-09-12
@@ -736,6 +737,7 @@ class GameController extends Notifier<GameSnapshot> {
   /// cloud). Lưu local ngay để không mất nếu app bị tắt giữa chừng.
   void restoreFromCloud(Map<String, dynamic> json, {required int cloudVersion}) {
     _game = GameState.fromJson(json)..lastSeenMillis = _clock();
+    sanitizeRepeatQuest(_game);
     applyCloudSyncVersion(cloudVersion);
     unawaited(saveNow());
     state = _snapshot();
