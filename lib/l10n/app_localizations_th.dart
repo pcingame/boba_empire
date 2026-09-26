@@ -751,6 +751,11 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String arenaOnlineCount(int count) {
+    return 'ออนไลน์ $count คน';
+  }
+
+  @override
   String get arenaYourScore => 'คะแนนคุณ';
 
   @override

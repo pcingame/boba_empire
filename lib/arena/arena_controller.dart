@@ -404,5 +404,11 @@ class ArenaController extends Notifier<ArenaViewState> {
   }
 }
 
+/// Số người đang ở Đấu Trường (Realtime Presence). autoDispose: chỉ giữ kết nối
+/// khi trang Đấu Trường đang mở và có nghe.
+final arenaOnlineCountProvider = StreamProvider.autoDispose<int>(
+  (ref) => ArenaRepository(Supabase.instance.client).watchOnlineCount(),
+);
+
 final arenaControllerProvider =
     NotifierProvider<ArenaController, ArenaViewState>(ArenaController.new);

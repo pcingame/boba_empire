@@ -34,6 +34,9 @@ class ArenaPage extends ConsumerWidget {
         ref.read(gameControllerProvider.notifier).grantArenaReward(gems);
 
     final viewState = ref.watch(arenaControllerProvider);
+    // Giữ kết nối presence suốt lúc trang mở (kể cả trong trận) để người khác
+    // vẫn thấy mình đang ở đây; lỗi/đang kết nối -> null -> ẩn số.
+    final online = ref.watch(arenaOnlineCountProvider).asData?.value;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.arenaTitle)),
@@ -52,8 +55,8 @@ class ArenaPage extends ConsumerWidget {
             ),
             child: Center(
               child: switch (viewState) {
-                ArenaIdle() => _IdleView(l10n: l10n),
-                ArenaQueued() => _QueuedView(l10n: l10n),
+                ArenaIdle() => _IdleView(l10n: l10n, online: online),
+                ArenaQueued() => _QueuedView(l10n: l10n, online: online),
                 ArenaInMatch() => _MatchView(l10n: l10n, view: viewState),
                 ArenaFinished() => _ResultView(l10n: l10n, view: viewState),
                 ArenaError() => _ErrorView(l10n: l10n, view: viewState),
@@ -66,15 +69,52 @@ class ArenaPage extends ConsumerWidget {
   }
 }
 
-class _IdleView extends ConsumerWidget {
-  const _IdleView({required this.l10n});
+/// Chấm xanh + "N người đang online" (N gồm cả bạn, 1 người vẫn hiện).
+class _OnlineBadge extends StatelessWidget {
+  const _OnlineBadge({required this.count, required this.l10n});
+  final int count;
   final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      key: const Key('arena-online'),
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 9,
+          height: 9,
+          decoration: const BoxDecoration(color: Color(0xFF2ECC71), shape: BoxShape.circle),
+        ),
+        const SizedBox(width: 6),
+        Flexible(
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              l10n.arenaOnlineCount(count),
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _IdleView extends ConsumerWidget {
+  const _IdleView({required this.l10n, this.online});
+  final AppLocalizations l10n;
+  final int? online;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        if (online != null) ...[
+          _OnlineBadge(count: online!, l10n: l10n),
+          const SizedBox(height: 16),
+        ],
         Text(l10n.arenaIntro, textAlign: TextAlign.center),
         const SizedBox(height: 12),
         Text(l10n.arenaMatch3Intro, textAlign: TextAlign.center),
@@ -100,8 +140,9 @@ class _IdleView extends ConsumerWidget {
 }
 
 class _QueuedView extends ConsumerWidget {
-  const _QueuedView({required this.l10n});
+  const _QueuedView({required this.l10n, this.online});
   final AppLocalizations l10n;
+  final int? online;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -111,6 +152,10 @@ class _QueuedView extends ConsumerWidget {
         const CircularProgressIndicator(),
         const SizedBox(height: 16),
         Text(l10n.arenaQueueWaiting),
+        if (online != null) ...[
+          const SizedBox(height: 12),
+          _OnlineBadge(count: online!, l10n: l10n),
+        ],
         const SizedBox(height: 24),
         OutlinedButton(
           onPressed: () => ref.read(arenaControllerProvider.notifier).cancelQueue(),

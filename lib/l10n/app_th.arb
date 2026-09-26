@@ -225,6 +225,8 @@
   "@arenaTierButton": { "placeholders": { "cost": { "type": "String" } } },
   "arenaTimeLeft": "เหลือ {seconds} วิ",
   "@arenaTimeLeft": { "placeholders": { "seconds": { "type": "int" } } },
+  "arenaOnlineCount": "ออนไลน์ {count} คน",
+  "@arenaOnlineCount": { "placeholders": { "count": { "type": "int" } } },
   "arenaYourScore": "คะแนนคุณ",
   "arenaOpponentScore": "คู่แข่ง",
   "arenaResultWin": "คุณชนะ! 🎉",

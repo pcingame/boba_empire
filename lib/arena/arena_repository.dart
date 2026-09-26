@@ -3,6 +3,9 @@
 /// đọc bảng theo đúng hợp đồng của `supabase/arena_schema.sql`.
 library;
 
+import 'dart:async';
+import 'dart:math';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'arena_models.dart';
@@ -60,6 +63,45 @@ class ArenaRepository {
           'p_dir': dir,
         },
       );
+
+  /// Số người đang mở màn Đấu Trường (gồm cả chính mình), qua Realtime Presence
+  /// trên kênh công khai chung. Mỗi lần nghe mở 1 kết nối và tự rời kênh khi
+  /// huỷ nghe. Khoá presence là chuỗi ngẫu nhiên theo phiên nghe (không cần đăng
+  /// nhập, không tạo tài khoản ẩn danh chỉ để xem số). Kênh lỗi/không kết nối
+  /// được thì luồng đơn giản không phát gì — UI ẩn số.
+  Stream<int> watchOnlineCount() {
+    late final StreamController<int> controller;
+    RealtimeChannel? channel;
+    controller = StreamController<int>(
+      onListen: () {
+        if (channel != null) return; // đã có kênh (nghe trùng) — tránh 2 kênh cùng tên
+        final key = '${DateTime.now().microsecondsSinceEpoch}-${Random().nextInt(1 << 32)}';
+        final ch = _client.channel(
+          'arena-lobby',
+          opts: RealtimeChannelConfig(key: key),
+        );
+        channel = ch;
+        ch.onPresenceSync((_) {
+          if (!controller.isClosed) controller.add(ch.presenceState().length);
+        }).subscribe((status, error) {
+          if (status == RealtimeSubscribeStatus.subscribed) {
+            ch.track({'at': DateTime.now().toIso8601String()});
+          }
+        });
+      },
+      onCancel: () async {
+        final ch = channel;
+        channel = null;
+        if (ch != null) {
+          try {
+            await ch.untrack();
+          } catch (_) {}
+          await _client.removeChannel(ch);
+        }
+      },
+    );
+    return controller.stream;
+  }
 
   /// Chốt trận (idempotent — cả 2 người có thể gọi, ai gọi trước cũng được).
   /// Server tự chối nếu gọi sớm hơn `ends_at`.

@@ -752,6 +752,17 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String arenaOnlineCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count players online',
+      one: '1 player online',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get arenaYourScore => 'Your score';
 
   @override

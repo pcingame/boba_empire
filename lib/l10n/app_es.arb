@@ -225,6 +225,8 @@
   "@arenaTierButton": { "placeholders": { "cost": { "type": "String" } } },
   "arenaTimeLeft": "Quedan {seconds}s",
   "@arenaTimeLeft": { "placeholders": { "seconds": { "type": "int" } } },
+  "arenaOnlineCount": "{count, plural, =1{1 jugador en línea} other{{count} jugadores en línea}}",
+  "@arenaOnlineCount": { "placeholders": { "count": { "type": "int" } } },
   "arenaYourScore": "Tu puntuación",
   "arenaOpponentScore": "Rival",
   "arenaResultWin": "¡Ganaste! 🎉",

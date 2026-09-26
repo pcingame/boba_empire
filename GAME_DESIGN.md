@@ -589,3 +589,9 @@ Bảng Tốc độ cốt truyện có 2 tab: **Hồi 1** (tới Chương 18, `st
 xem xong chương cuối, ghi 1 lần (`storyCompleteSeconds` / `storyExtCompleteSeconds`). Hai bảng Supabase riêng
 (`story_speedrun_entries` / `story_speedrun2_entries`), cùng khuôn, không anti-cheat. Save đã qua Chương 28 nhưng chưa có mốc được
 bù khi mở app (cao hơn thực tế một chút); save không có `firstPlayedMillis` thật thì không bù (tránh mốc ~1 giây).
+
+## 22. Số người đang online ở Đấu Trường (2026-09-26)
+
+Màn chờ và màn ghép trận hiện "🟢 N người đang online" (N gồm cả bạn, 1 người vẫn hiện; chưa kết nối/lỗi thì ẩn). Dùng Supabase
+Realtime Presence trên kênh công khai `arena-lobby` (không có bảng/SQL): chỉ đếm người đang MỞ trang Đấu Trường, mỗi người 1 kết nối
+realtime (gói free ~200 kết nối cùng lúc). Provider `arenaOnlineCountProvider` (autoDispose) giữ kết nối suốt lúc trang mở.

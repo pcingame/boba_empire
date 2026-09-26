@@ -758,6 +758,11 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String arenaOnlineCount(int count) {
+    return '$count pemain online';
+  }
+
+  @override
   String get arenaYourScore => 'Skor kamu';
 
   @override

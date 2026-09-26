@@ -1366,6 +1366,12 @@ abstract class AppLocalizations {
   /// **'Còn {seconds}s'**
   String arenaTimeLeft(int seconds);
 
+  /// No description provided for @arenaOnlineCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} người đang online'**
+  String arenaOnlineCount(int count);
+
   /// No description provided for @arenaYourScore.
   ///
   /// In vi, this message translates to:

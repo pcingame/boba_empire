@@ -755,6 +755,11 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String arenaOnlineCount(int count) {
+    return '$count người đang online';
+  }
+
+  @override
   String get arenaYourScore => 'Điểm của bạn';
 
   @override

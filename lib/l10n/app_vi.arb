@@ -274,6 +274,8 @@
   "@arenaTierButton": { "placeholders": { "cost": { "type": "String" } } },
   "arenaTimeLeft": "Còn {seconds}s",
   "@arenaTimeLeft": { "placeholders": { "seconds": { "type": "int" } } },
+  "arenaOnlineCount": "{count} người đang online",
+  "@arenaOnlineCount": { "placeholders": { "count": { "type": "int" } } },
   "arenaYourScore": "Điểm của bạn",
   "arenaOpponentScore": "Đối thủ",
   "arenaResultWin": "Bạn thắng! 🎉",
