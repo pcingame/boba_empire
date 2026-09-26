@@ -727,7 +727,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get arenaModeTap => 'Carrera de toques';
 
   @override
-  String get arenaModeMatch3 => 'Combina 3';
+  String get arenaModeMatch3 => 'Perlas que caen';
 
   @override
   String get arenaMatch3Intro =>

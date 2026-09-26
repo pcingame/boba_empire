@@ -720,7 +720,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get arenaModeTap => 'Tap race';
 
   @override
-  String get arenaModeMatch3 => 'Match 3';
+  String get arenaModeMatch3 => 'Falling Pearls';
 
   @override
   String get arenaMatch3Intro =>

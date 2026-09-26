@@ -565,7 +565,7 @@ sang ngày. Test đã mutation-check (đảo thứ tự thì fail).
 
 *Cập nhật tài liệu này khi đổi `balance.dart` hoặc thêm hệ thống.*
 
-## 20. Đấu Trường — dạng "Ghép 3" (2026-09-26)
+## 20. Đấu Trường — dạng "Trân Châu Rơi" / Falling Pearls (2026-09-26, mã nội bộ: match3)
 
 Dạng PK thứ 2 cạnh "Đua chạm". (Bản đầu là Xếp khối kiểu Tetris — hiểu nhầm yêu cầu, đã thay bằng Ghép 3; còn trong git history `30c4417`.)
 Chọn dạng ở màn Đấu Trường trước khi ghép trận (hàng đợi tách theo dạng).

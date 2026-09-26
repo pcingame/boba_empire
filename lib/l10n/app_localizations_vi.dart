@@ -723,7 +723,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get arenaModeTap => 'Đua chạm';
 
   @override
-  String get arenaModeMatch3 => 'Ghép 3';
+  String get arenaModeMatch3 => 'Trân Châu Rơi';
 
   @override
   String get arenaMatch3Intro =>

@@ -1315,7 +1315,7 @@ abstract class AppLocalizations {
   /// No description provided for @arenaModeMatch3.
   ///
   /// In vi, this message translates to:
-  /// **'Ghép 3'**
+  /// **'Trân Châu Rơi'**
   String get arenaModeMatch3;
 
   /// No description provided for @arenaMatch3Intro.

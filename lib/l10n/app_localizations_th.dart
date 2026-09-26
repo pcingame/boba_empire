@@ -719,7 +719,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get arenaModeTap => 'แข่งแตะ';
 
   @override
-  String get arenaModeMatch3 => 'จับคู่ 3';
+  String get arenaModeMatch3 => 'ไข่มุกร่วง';
 
   @override
   String get arenaMatch3Intro =>

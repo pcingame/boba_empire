@@ -726,7 +726,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get arenaModeTap => 'Balap ketuk';
 
   @override
-  String get arenaModeMatch3 => 'Cocokkan 3';
+  String get arenaModeMatch3 => 'Mutiara Jatuh';
 
   @override
   String get arenaMatch3Intro =>
