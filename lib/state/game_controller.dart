@@ -93,8 +93,12 @@ class GameController extends Notifier<GameSnapshot> {
     // thật. Không có cách nào biết lại đúng thời điểm họ thực sự hoàn thành
     // (không được ghi lúc đó) — dùng thời điểm mở app NÀY làm mốc best-effort
     // (số giây sẽ cao hơn thực tế, nhưng còn hơn không bao giờ xuất hiện được).
+    // Save cũ không có firstPlayedMillis nên fromJson mặc định nó = lastSeenMillis;
+    // khi đó `now - firstPlayed` chỉ là thời gian tắt app (~1s) — số giả làm
+    // bảng xếp hạng có "phá đảo trong 1s". Không có mốc thật thì để null.
     if (_game.storyChapter >= storyFinaleChapterId &&
-        _game.storyCompleteSeconds == null) {
+        _game.storyCompleteSeconds == null &&
+        _game.firstPlayedMillis != _game.lastSeenMillis) {
       _game.storyCompleteSeconds =
           max(1, (_clock() - _game.firstPlayedMillis) ~/ 1000);
     }

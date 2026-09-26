@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:boba_empire/core/balance.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/core/rival.dart';
@@ -170,7 +172,7 @@ void main() {
       ..stage = 12;
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
-    await GameStorage(prefs).save(seed, nowMillis: 1000);
+    await GameStorage(prefs).save(seed, nowMillis: 5000);
     // Đặt đồng hồ TRƯỚC KHI build() chạy (khác _boot() — helper đó luôn tạo
     // đồng hồ ở mặc định 0 rồi mới trigger build lúc container.read).
     final clock = _Clock()..now = 1000 + 777000; // mở app 777s sau khi tạo save
@@ -183,5 +185,28 @@ void main() {
     final snap = container.read(gameControllerProvider);
     expect(snap.storyChapter, 18);
     expect(snap.storyCompleteSeconds, 777);
+  });
+
+  test(
+      'HỒI QUY "phá đảo 1s": save cũ thiếu firstPlayedMillis (mặc định = '
+      'lastSeen) KHÔNG được bù mốc ~1s — phải để null', () async {
+    final seed = GameState.newGame(nowMillis: 1000)
+      ..storyChapter = 18
+      ..storyChoiceD = 'soul'
+      ..stage = 12;
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    await GameStorage(prefs).save(seed, nowMillis: 5000);
+    final payload =
+        jsonDecode(prefs.getString('game_state')!) as Map<String, dynamic>;
+    (payload['state'] as Map<String, dynamic>).remove('firstPlayedMillis');
+    await prefs.setString('game_state', jsonEncode(payload));
+    final container = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(() => 5000 + 1000),
+    ]);
+    addTearDown(container.dispose);
+
+    expect(container.read(gameControllerProvider).storyCompleteSeconds, isNull);
   });
 }
