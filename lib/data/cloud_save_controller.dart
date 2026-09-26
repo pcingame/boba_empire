@@ -9,10 +9,33 @@ library;
 
 import 'dart:developer' as developer;
 
+import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'cloud_save_repository.dart';
+
+/// Thời gian chờ giữa 2 lần gửi mã (giây).
+///
+/// Không chỉ để chống bấm nhầm: mail OTP đang đi qua Gmail SMTP relay, mà
+/// Gmail **defer (lỗi tạm 4xx)** mail tự động gửi dồn dập tới cùng một người
+/// nhận — gặp thật 2026-09-26 với bounce "Quá trình gửi không hoàn tất, sẽ
+/// thử lại sau 46 giờ", trong khi mã OTP hết hạn sau vài phút nên lần thử
+/// lại đó vô dụng. Xem SETUP.md (mục SMTP) — cách sửa gốc là đổi sang
+/// provider transactional thật, cái này chỉ giảm số mail trùng.
+const int resendCodeCooldownSeconds = 60;
+
+/// Số giây còn phải chờ mới được gửi lại mã (0 = gửi được ngay).
+/// [lastSentMillis] = 0 nghĩa là chưa gửi lần nào.
+int resendCooldownRemaining(int lastSentMillis, int nowMillis) {
+  if (lastSentMillis <= 0) return 0;
+  final elapsedSeconds = (nowMillis - lastSentMillis) / 1000;
+  // Đồng hồ máy bị lùi (người chơi đổi giờ) → coi như hết hạn chờ, không để
+  // nút bị khoá kẹt.
+  if (elapsedSeconds < 0) return 0;
+  final remaining = (resendCodeCooldownSeconds - elapsedSeconds).ceil();
+  return remaining > 0 ? remaining : 0;
+}
 
 sealed class CloudSaveViewState {
   const CloudSaveViewState();
@@ -61,6 +84,18 @@ class CloudSaveError extends CloudSaveViewState {
 class CloudSaveController extends Notifier<CloudSaveViewState> {
   CloudSaveRepository? _repo;
 
+  /// Mốc gửi mã thành công gần nhất (epoch ms). Giữ ở controller chứ không ở
+  /// widget để đóng/mở lại dialog không reset được thời gian chờ.
+  int _lastCodeSentAtMillis = 0;
+
+  /// Đồng hồ (epoch ms) — test ghi đè để khỏi phải chờ thật 60 giây.
+  @visibleForTesting
+  int Function() clock = () => DateTime.now().millisecondsSinceEpoch;
+
+  /// Số giây còn phải chờ mới được gửi lại mã (0 = gửi được ngay).
+  int get resendCooldown =>
+      resendCooldownRemaining(_lastCodeSentAtMillis, clock());
+
   /// UI gán trước khi gọi bất kỳ hành động nào (xem `cloud_save_dialog.dart`).
   Map<String, dynamic> Function()? getLocalSave;
   double Function()? getLocalLifetimeEarnings;
@@ -91,10 +126,19 @@ class CloudSaveController extends Notifier<CloudSaveViewState> {
     state = const CloudSaveSendingCode();
     try {
       await _repository.sendCode(email);
+      // Chỉ tính giờ chờ khi gửi THÀNH CÔNG — gửi lỗi thì không bắt đợi.
+      _lastCodeSentAtMillis = clock();
       state = CloudSaveAwaitingCode(email);
     } catch (e) {
       _fail(e);
     }
+  }
+
+  /// Gửi lại mã (nút ở màn nhập mã). No-op nếu còn thời gian chờ — UI đã khoá
+  /// nút rồi, đây là chốt chặn thứ hai.
+  Future<void> resendCode(String email) async {
+    if (resendCooldown > 0) return;
+    await sendCode(email);
   }
 
   Future<void> verifyCode(String email, String code) async {

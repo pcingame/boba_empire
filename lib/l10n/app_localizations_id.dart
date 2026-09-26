@@ -753,6 +753,14 @@ class AppLocalizationsId extends AppLocalizations {
   String get cloudSaveChangeEmail => 'Pakai email lain';
 
   @override
+  String get cloudSaveResend => 'Kirim ulang kode';
+
+  @override
+  String cloudSaveResendIn(int seconds) {
+    return 'Kirim ulang kode (${seconds}d)';
+  }
+
+  @override
   String get cloudSaveConflictTitle => 'Ditemukan save lain di cloud';
 
   @override

@@ -1342,6 +1342,18 @@ abstract class AppLocalizations {
   /// **'Đổi email khác'**
   String get cloudSaveChangeEmail;
 
+  /// No description provided for @cloudSaveResend.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi lại mã'**
+  String get cloudSaveResend;
+
+  /// No description provided for @cloudSaveResendIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi lại mã ({seconds}s)'**
+  String cloudSaveResendIn(int seconds);
+
   /// No description provided for @cloudSaveConflictTitle.
   ///
   /// In vi, this message translates to:

@@ -746,6 +746,14 @@ class AppLocalizationsTh extends AppLocalizations {
   String get cloudSaveChangeEmail => 'ใช้อีเมลอื่น';
 
   @override
+  String get cloudSaveResend => 'ส่งรหัสอีกครั้ง';
+
+  @override
+  String cloudSaveResendIn(int seconds) {
+    return 'ส่งรหัสอีกครั้ง ($seconds วิ)';
+  }
+
+  @override
   String get cloudSaveConflictTitle => 'พบข้อมูลบันทึกอื่นบนคลาวด์';
 
   @override

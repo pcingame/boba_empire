@@ -750,6 +750,14 @@ class AppLocalizationsVi extends AppLocalizations {
   String get cloudSaveChangeEmail => 'Đổi email khác';
 
   @override
+  String get cloudSaveResend => 'Gửi lại mã';
+
+  @override
+  String cloudSaveResendIn(int seconds) {
+    return 'Gửi lại mã (${seconds}s)';
+  }
+
+  @override
   String get cloudSaveConflictTitle => 'Tìm thấy save khác trên cloud';
 
   @override

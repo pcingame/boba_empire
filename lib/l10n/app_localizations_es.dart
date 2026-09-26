@@ -754,6 +754,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cloudSaveChangeEmail => 'Usar otro email';
 
   @override
+  String get cloudSaveResend => 'Reenviar código';
+
+  @override
+  String cloudSaveResendIn(int seconds) {
+    return 'Reenviar código (${seconds}s)';
+  }
+
+  @override
   String get cloudSaveConflictTitle => 'Se encontró otro guardado en la nube';
 
   @override

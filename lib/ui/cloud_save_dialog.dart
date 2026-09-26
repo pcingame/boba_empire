@@ -2,6 +2,8 @@
 /// PROPOSAL_CLOUD_SAVE.md. Mở từ Cài đặt (`settings_dialog.dart`).
 library;
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -144,14 +146,57 @@ class _EmailForm extends ConsumerWidget {
   }
 }
 
-class _CodeForm extends ConsumerWidget {
+class _CodeForm extends ConsumerStatefulWidget {
   const _CodeForm({required this.l10n, required this.email, required this.codeCtrl});
   final AppLocalizations l10n;
   final String email;
   final TextEditingController codeCtrl;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_CodeForm> createState() => _CodeFormState();
+}
+
+class _CodeFormState extends ConsumerState<_CodeForm> {
+  /// Nhịp 1s để vẽ lại số giây còn lại trên nút "Gửi lại mã". Chỉ chạy trong
+  /// lúc còn phải chờ và TỰ HUỶ khi hết (+ huỷ ở dispose) — Timer lặp sống
+  /// mãi sẽ treo `pumpAndSettle` trong widget test, cùng lý do đã ghi ở
+  /// `gem_shop.dart` và `_TapArea`.
+  Timer? _ticker;
+
+  int get _remaining =>
+      ref.read(cloudSaveControllerProvider.notifier).resendCooldown;
+
+  @override
+  void initState() {
+    super.initState();
+    // Vào màn này là vừa gửi mã xong → gần như luôn đang trong thời gian chờ.
+    if (_remaining > 0) {
+      _ticker = Timer.periodic(const Duration(seconds: 1), (t) {
+        if (!mounted) {
+          t.cancel();
+          return;
+        }
+        setState(() {});
+        if (_remaining == 0) {
+          t.cancel();
+          _ticker = null;
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _ticker?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = widget.l10n;
+    final email = widget.email;
+    final codeCtrl = widget.codeCtrl;
+    final remaining = _remaining;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -178,6 +223,17 @@ class _CodeForm extends ConsumerWidget {
             }
           },
           child: Text(l10n.cloudSaveVerify),
+        ),
+        OutlinedButton(
+          key: const Key('cloud-resend-code'),
+          onPressed: remaining > 0
+              ? null
+              : () => ref
+                  .read(cloudSaveControllerProvider.notifier)
+                  .resendCode(email),
+          child: Text(remaining > 0
+              ? l10n.cloudSaveResendIn(remaining)
+              : l10n.cloudSaveResend),
         ),
         TextButton(
           onPressed: () => ref.read(cloudSaveControllerProvider.notifier).backToUnlinked(),
