@@ -26,6 +26,20 @@ chỉ bật trên **Android/iOS** (desktop/web giữ stub). Dưới đây là nh
 5. Test bằng thiết bị thật + [test device IDs](https://developers.google.com/admob/flutter/test-ads)
    để không bị AdMob khoá vì tự bấm quảng cáo thật.
 
+**Test trên máy thật với bản release mà không bơm traffic vào tài khoản:**
+đăng ký máy của bạn làm *test device* — máy đó nhận quảng cáo test dù build
+release đang dùng unit id thật:
+
+```
+flutter run --release --dart-define=ADMOB_TEST_DEVICES=<id1>,<id2>
+```
+
+Device ID lấy từ log SDK ở lần chạy đầu (Android logcat: *"setTestDeviceIds"*;
+iOS console: *"To get test ads on this device, set testDeviceIds"*). Tài khoản
+AdMob mới mà ít thiết bị lặp lại một máy rất dễ bị đưa vào **Limited ad
+serving** (fill rate tụt, Google tự review lại theo thời gian) — nên đừng test
+ads bằng unit id thật trên máy mình.
+
 ⚠️ **Không phát hành khi còn TEST ID** — bấm quảng cáo thật trên test unit là vi
 phạm chính sách; nhưng dùng ID thật khi phát triển cũng dễ bị khoá. Chỉ đổi sang
 ID thật ở bản release.

@@ -6,6 +6,8 @@ import 'dart:async';
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
+import 'ad_config.dart';
+
 class AdBootstrap {
   const AdBootstrap._();
 
@@ -15,6 +17,13 @@ class AdBootstrap {
     try {
       await _gatherConsent();
     } catch (_) {}
+    // Đặt test device TRƯỚC initialize để request đầu tiên đã được đánh dấu.
+    final testIds = AdConfig.testDeviceIds;
+    if (testIds.isNotEmpty) {
+      await MobileAds.instance.updateRequestConfiguration(
+        RequestConfiguration(testDeviceIds: testIds),
+      );
+    }
     await MobileAds.instance.initialize();
   }
 
