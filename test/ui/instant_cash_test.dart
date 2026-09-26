@@ -4,6 +4,7 @@ import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/main.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,6 +75,28 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('0 Xu'), findsOneWidget);
 
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets(
+      'HỒI QUY: nhãn "Tiền tức thì" hiện đủ, không bị cắt thành "Tiền tứ…"',
+      (tester) async {
+    // Bản sửa tràn RenderFlex trước đây bọc nút bằng Flexible chia đều chỗ trống
+    // với dòng thu nhập → nút bị cắt dù màn còn dư chỗ. Với thu nhập vừa phải
+    // (chỗ dư rất nhiều) nhãn phải ở kích thước gốc, KHÔNG bị thu nhỏ/cắt.
+    await _pump(
+      tester,
+      GameState.newGame(nowMillis: 0)..levels['tra_den'] = 2,
+      const _InstantAds(RewardOutcome.earned),
+    );
+    final fitted = find.descendant(
+      of: find.byKey(const Key('instant-cash')),
+      matching: find.byType(FittedBox),
+    );
+    expect(fitted, findsOneWidget);
+    final box = tester.renderObject<RenderFittedBox>(fitted);
+    expect(box.child!.size.width, lessThanOrEqualTo(box.size.width + 0.01),
+        reason: 'nhãn bị thu nhỏ dù còn dư chỗ');
     await tester.pumpWidget(const SizedBox());
   });
 }

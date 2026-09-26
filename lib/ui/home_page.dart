@@ -638,13 +638,20 @@ class _MoneyHeader extends ConsumerWidget {
                 ),
                 if (globalPercent > 0) ...[
                   const SizedBox(width: 8),
-                  _GlobalBonusChip(globalPercent),
+                  Flexible(child: _GlobalBonusChip(globalPercent)),
                 ],
                 const Spacer(),
-                // Flexible + ellipsis: thu nhập cực lớn + chip 🌐 + nhãn dài ở pt/es
-                // làm hàng này tràn ở màn hẹp (400px) — cho nút co lại thay vì tràn.
+                // Nút KHÔNG dùng Flexible: Flexible chia đều chỗ trống với dòng thu
+                // nhập nên cắt "Tiền tức thì" thành "Tiền tứ…" kể cả khi màn còn dư
+                // chỗ (gặp thật trên máy). Thay vào đó cho nút chiều rộng tự nhiên,
+                // chỉ chặn ở 55% bề rộng hàng và THU NHỎ CHỮ khi vượt — vẫn không tràn
+                // ở màn hẹp (400px) với thu nhập cực lớn + chip 🌐 + nhãn dài pt/es.
                 if (income > 0)
-                  Flexible(
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: (MediaQuery.sizeOf(context).width * 0.55)
+                          .clamp(120.0, 400.0),
+                    ),
                     child: FilledButton.tonalIcon(
                       key: const Key('instant-cash'),
                       style: FilledButton.styleFrom(
@@ -653,10 +660,9 @@ class _MoneyHeader extends ConsumerWidget {
                       ),
                       onPressed: () => _claimInstantCash(context, ref),
                       icon: const Icon(Icons.card_giftcard, size: 18),
-                      label: Text(
-                        l10n.instantCashButton,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      label: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(l10n.instantCashButton, maxLines: 1),
                       ),
                     ),
                   ),
@@ -1320,6 +1326,9 @@ class _GlobalBonusChip extends StatelessWidget {
       ),
       child: Text(
         AppLocalizations.of(context)!.globalBonusChip(percent),
+        maxLines: 1,
+        softWrap: false,
+        overflow: TextOverflow.ellipsis,
         style: theme.textTheme.labelSmall?.copyWith(
           color: theme.colorScheme.onTertiaryContainer,
           fontWeight: FontWeight.bold,
