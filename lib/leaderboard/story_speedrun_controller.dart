@@ -81,8 +81,8 @@ class StorySpeedrunController extends Notifier<StorySpeedrunViewState> {
     }
   }
 
-  Future<void> refresh() async {
-    state = const StorySpeedrunLoading();
+  Future<void> refresh({bool silent = false}) async {
+    if (!silent) state = const StorySpeedrunLoading();
     unawaited(_analytics?.log('speedrun_viewed'));
     try {
       final completeSeconds = getMyCompleteSeconds?.call();

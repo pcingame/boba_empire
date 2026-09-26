@@ -33,7 +33,7 @@ class _FakeLeaderboardController extends LeaderboardController {
   LeaderboardViewState build() => _seed;
 
   @override
-  Future<void> refresh() async {}
+  Future<void> refresh({bool silent = false}) async {}
 
   @override
   Future<void> submitNickname(String nickname) async {}

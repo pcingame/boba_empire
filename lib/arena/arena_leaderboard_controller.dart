@@ -57,8 +57,8 @@ class ArenaLeaderboardController extends Notifier<ArenaLeaderboardViewState> {
 
   /// Gọi khi mở màn Bảng xếp hạng PK. Đã có tên → tải thẳng danh sách. Chưa
   /// có tên → chuyển sang màn hỏi tên trước.
-  Future<void> refresh() async {
-    state = const ArenaLeaderboardLoading();
+  Future<void> refresh({bool silent = false}) async {
+    if (!silent) state = const ArenaLeaderboardLoading();
     try {
       final nickname = _repository.cachedNickname;
       if (nickname == null) {

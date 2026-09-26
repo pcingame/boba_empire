@@ -13,9 +13,9 @@ import '../state/game_providers.dart';
 import 'widgets/clay.dart';
 
 Future<void> showLeaderboardPage(BuildContext context) {
-  return Navigator.of(context).push(
-    MaterialPageRoute(builder: (_) => const LeaderboardPage()),
-  );
+  return Navigator.of(
+    context,
+  ).push(MaterialPageRoute(builder: (_) => const LeaderboardPage()));
 }
 
 class LeaderboardPage extends ConsumerStatefulWidget {
@@ -69,8 +69,13 @@ class _LeaderboardPageState extends ConsumerState<LeaderboardPage> {
       appBar: AppBar(title: Text(l10n.leaderboardTitle)),
       body: SafeArea(
         child: switch (viewState) {
-          LeaderboardLoading() => const Center(child: CircularProgressIndicator()),
-          LeaderboardNeedsNickname() => _NicknameForm(l10n: l10n, nameCtrl: _nameCtrl),
+          LeaderboardLoading() => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          LeaderboardNeedsNickname() => _NicknameForm(
+            l10n: l10n,
+            nameCtrl: _nameCtrl,
+          ),
           LeaderboardLoaded() => _LeaderboardList(l10n: l10n, view: viewState),
           LeaderboardError(:final message) => _ErrorView(message: message),
         },
@@ -107,7 +112,9 @@ class _NicknameForm extends ConsumerWidget {
               onPressed: () {
                 final name = nameCtrl.text.trim();
                 if (name.isNotEmpty) {
-                  ref.read(leaderboardControllerProvider.notifier).submitNickname(name);
+                  ref
+                      .read(leaderboardControllerProvider.notifier)
+                      .submitNickname(name);
                 }
               },
               child: Text(l10n.leaderboardSubmit),
@@ -141,78 +148,102 @@ class _LeaderboardList extends ConsumerWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Text(
-            l10n.leaderboardRewardInfo(
-              tiers[0].$2,
-              tiers[1].$2,
-              tiers[2].$2,
-            ),
+            l10n.leaderboardRewardInfo(tiers[0].$2, tiers[1].$2, tiers[2].$2),
             textAlign: TextAlign.center,
-            style: theme.textTheme.bodySmall
-                ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
           ),
         ),
         TextButton(
-          onPressed: () => ref.read(leaderboardControllerProvider.notifier).changeName(),
+          onPressed: () =>
+              ref.read(leaderboardControllerProvider.notifier).changeName(),
           child: Text(l10n.leaderboardChangeName),
         ),
         Expanded(
-          child: view.entries.isEmpty
-              ? Center(child: Text(l10n.leaderboardEmpty))
-              : ListView.builder(
-                  itemCount: view.entries.length,
-                  itemBuilder: (context, i) {
-                    final entry = view.entries[i];
-                    final isMe = entry.userId == view.myUserId;
-                    final tile = ClayTile(
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 44,
-                            child: Text('#${entry.rank}',
+          child: RefreshIndicator(
+            onRefresh: () => ref
+                .read(leaderboardControllerProvider.notifier)
+                .refresh(silent: true),
+            child: view.entries.isEmpty
+                ? ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      SizedBox(
+                        height: 200,
+                        child: Center(child: Text(l10n.leaderboardEmpty)),
+                      ),
+                    ],
+                  )
+                : ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: view.entries.length,
+                    itemBuilder: (context, i) {
+                      final entry = view.entries[i];
+                      final isMe = entry.userId == view.myUserId;
+                      final tile = ClayTile(
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 44,
+                              child: Text(
+                                '#${entry.rank}',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.titleMedium),
-                          ),
-                          Expanded(
-                            child: Text(entry.nickname,
-                                maxLines: 1, overflow: TextOverflow.ellipsis),
-                          ),
-                          // Flexible + FittedBox: prestige_stars/lifetime_earnings
-                          // của 1 hàng khác (VD whale hàng tỷ Sao) có thể rất dài
-                          // — cùng lớp bug RenderFlex overflow đã gặp ở _ShopTile
-                          // (xem shop-tile-overflow-pattern memory). Trước đây
-                          // dùng maxLines+ellipsis: hết tràn nhưng số bị cắt còn
-                          // "…", không đọc được giá trị thật — co chữ lại bằng
-                          // FittedBox thay vì cắt, giống cách _ShopTile xử lý.
-                          Flexible(
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(l10n.leaderboardStars(entry.prestigeStars)),
+                                style: theme.textTheme.titleMedium,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 8),
-                          Flexible(
-                            child: FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(formatNumber(entry.lifetimeEarnings)),
+                            Expanded(
+                              child: Text(
+                                entry.nickname,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
+                            // Flexible + FittedBox: prestige_stars/lifetime_earnings
+                            // của 1 hàng khác (VD whale hàng tỷ Sao) có thể rất dài
+                            // — cùng lớp bug RenderFlex overflow đã gặp ở _ShopTile
+                            // (xem shop-tile-overflow-pattern memory). Trước đây
+                            // dùng maxLines+ellipsis: hết tràn nhưng số bị cắt còn
+                            // "…", không đọc được giá trị thật — co chữ lại bằng
+                            // FittedBox thay vì cắt, giống cách _ShopTile xử lý.
+                            Flexible(
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  l10n.leaderboardStars(entry.prestigeStars),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Flexible(
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  formatNumber(entry.lifetimeEarnings),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                      // Viền nổi bật hàng của chính mình — ClayTile không có
+                      // tham số màu riêng, bọc thêm 1 lớp viền là đủ, không cần
+                      // sửa widget dùng chung ở nhiều nơi khác.
+                      if (!isMe) return tile;
+                      return Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: theme.colorScheme.primary,
+                            width: 2,
                           ),
-                        ],
-                      ),
-                    );
-                    // Viền nổi bật hàng của chính mình — ClayTile không có
-                    // tham số màu riêng, bọc thêm 1 lớp viền là đủ, không cần
-                    // sửa widget dùng chung ở nhiều nơi khác.
-                    if (!isMe) return tile;
-                    return Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: theme.colorScheme.primary, width: 2),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: tile,
-                    );
-                  },
-                ),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: tile,
+                      );
+                    },
+                  ),
+          ),
         ),
       ],
     );
@@ -235,7 +266,8 @@ class _ErrorView extends ConsumerWidget {
             Text(message, textAlign: TextAlign.center),
             const SizedBox(height: 12),
             FilledButton(
-              onPressed: () => ref.read(leaderboardControllerProvider.notifier).refresh(),
+              onPressed: () =>
+                  ref.read(leaderboardControllerProvider.notifier).refresh(),
               child: Text(l10n.leaderboardRetry),
             ),
           ],

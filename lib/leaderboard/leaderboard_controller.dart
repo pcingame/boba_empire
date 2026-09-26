@@ -92,8 +92,8 @@ class LeaderboardController extends Notifier<LeaderboardViewState> {
 
   /// Gọi khi mở màn Bảng xếp hạng. Đã có tên → tự nộp điểm mới nhất rồi
   /// tải danh sách. Chưa có tên → chuyển sang màn hỏi tên trước.
-  Future<void> refresh() async {
-    state = const LeaderboardLoading();
+  Future<void> refresh({bool silent = false}) async {
+    if (!silent) state = const LeaderboardLoading();
     unawaited(_analytics?.log('leaderboard_viewed'));
     try {
       final nickname = _repository.cachedNickname;

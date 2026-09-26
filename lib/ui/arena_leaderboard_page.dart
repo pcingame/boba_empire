@@ -10,16 +10,17 @@ import '../l10n/app_localizations.dart';
 import 'widgets/clay.dart';
 
 Future<void> showArenaLeaderboardPage(BuildContext context) {
-  return Navigator.of(context).push(
-    MaterialPageRoute(builder: (_) => const ArenaLeaderboardPage()),
-  );
+  return Navigator.of(
+    context,
+  ).push(MaterialPageRoute(builder: (_) => const ArenaLeaderboardPage()));
 }
 
 class ArenaLeaderboardPage extends ConsumerStatefulWidget {
   const ArenaLeaderboardPage({super.key});
 
   @override
-  ConsumerState<ArenaLeaderboardPage> createState() => _ArenaLeaderboardPageState();
+  ConsumerState<ArenaLeaderboardPage> createState() =>
+      _ArenaLeaderboardPageState();
 }
 
 class _ArenaLeaderboardPageState extends ConsumerState<ArenaLeaderboardPage> {
@@ -48,9 +49,17 @@ class _ArenaLeaderboardPageState extends ConsumerState<ArenaLeaderboardPage> {
       appBar: AppBar(title: Text(l10n.arenaLeaderboardTitle)),
       body: SafeArea(
         child: switch (viewState) {
-          ArenaLeaderboardLoading() => const Center(child: CircularProgressIndicator()),
-          ArenaLeaderboardNeedsNickname() => _NicknameForm(l10n: l10n, nameCtrl: _nameCtrl),
-          ArenaLeaderboardLoaded() => _ArenaLeaderboardList(l10n: l10n, view: viewState),
+          ArenaLeaderboardLoading() => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          ArenaLeaderboardNeedsNickname() => _NicknameForm(
+            l10n: l10n,
+            nameCtrl: _nameCtrl,
+          ),
+          ArenaLeaderboardLoaded() => _ArenaLeaderboardList(
+            l10n: l10n,
+            view: viewState,
+          ),
           ArenaLeaderboardError(:final message) => _ErrorView(message: message),
         },
       ),
@@ -86,7 +95,9 @@ class _NicknameForm extends ConsumerWidget {
               onPressed: () {
                 final name = nameCtrl.text.trim();
                 if (name.isNotEmpty) {
-                  ref.read(arenaLeaderboardControllerProvider.notifier).submitNickname(name);
+                  ref
+                      .read(arenaLeaderboardControllerProvider.notifier)
+                      .submitNickname(name);
                 }
               },
               child: Text(l10n.leaderboardSubmit),
@@ -119,60 +130,88 @@ class _ArenaLeaderboardList extends ConsumerWidget {
             child: Text(
               l10n.arenaLeaderboardNotPlayedYet,
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodySmall
-                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
         TextButton(
-          onPressed: () => ref.read(arenaLeaderboardControllerProvider.notifier).changeName(),
+          onPressed: () => ref
+              .read(arenaLeaderboardControllerProvider.notifier)
+              .changeName(),
           child: Text(l10n.leaderboardChangeName),
         ),
         Expanded(
-          child: view.entries.isEmpty
-              ? Center(child: Text(l10n.leaderboardEmpty))
-              : ListView.builder(
-                  itemCount: view.entries.length,
-                  itemBuilder: (context, i) {
-                    final entry = view.entries[i];
-                    final isMe = entry.userId == view.myUserId;
-                    final tile = ClayTile(
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 44,
-                            child: Text('#${entry.rank}',
+          child: RefreshIndicator(
+            onRefresh: () => ref
+                .read(arenaLeaderboardControllerProvider.notifier)
+                .refresh(silent: true),
+            child: view.entries.isEmpty
+                ? ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      SizedBox(
+                        height: 200,
+                        child: Center(child: Text(l10n.leaderboardEmpty)),
+                      ),
+                    ],
+                  )
+                : ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: view.entries.length,
+                    itemBuilder: (context, i) {
+                      final entry = view.entries[i];
+                      final isMe = entry.userId == view.myUserId;
+                      final tile = ClayTile(
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 44,
+                              child: Text(
+                                '#${entry.rank}',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.titleMedium),
-                          ),
-                          Expanded(
-                            child: Text(entry.nickname,
-                                maxLines: 1, overflow: TextOverflow.ellipsis),
-                          ),
-                          // Flexible + ellipsis: cùng lớp bug RenderFlex overflow
-                          // đã gặp ở _ShopTile (xem shop-tile-overflow-pattern
-                          // memory) — số trận của 1 hàng khác luôn có thể dài hơn.
-                          Flexible(
-                            child: Text(
-                              l10n.arenaLeaderboardRecord(entry.wins, entry.losses),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                                style: theme.textTheme.titleMedium,
+                              ),
                             ),
+                            Expanded(
+                              child: Text(
+                                entry.nickname,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            // Flexible + ellipsis: cùng lớp bug RenderFlex overflow
+                            // đã gặp ở _ShopTile (xem shop-tile-overflow-pattern
+                            // memory) — số trận của 1 hàng khác luôn có thể dài hơn.
+                            Flexible(
+                              child: Text(
+                                l10n.arenaLeaderboardRecord(
+                                  entry.wins,
+                                  entry.losses,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                      // Viền nổi bật hàng của chính mình — giống leaderboard_page.dart.
+                      if (!isMe) return tile;
+                      return Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: theme.colorScheme.primary,
+                            width: 2,
                           ),
-                        ],
-                      ),
-                    );
-                    // Viền nổi bật hàng của chính mình — giống leaderboard_page.dart.
-                    if (!isMe) return tile;
-                    return Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: theme.colorScheme.primary, width: 2),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: tile,
-                    );
-                  },
-                ),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: tile,
+                      );
+                    },
+                  ),
+          ),
         ),
       ],
     );
@@ -195,7 +234,9 @@ class _ErrorView extends ConsumerWidget {
             Text(message, textAlign: TextAlign.center),
             const SizedBox(height: 12),
             FilledButton(
-              onPressed: () => ref.read(arenaLeaderboardControllerProvider.notifier).refresh(),
+              onPressed: () => ref
+                  .read(arenaLeaderboardControllerProvider.notifier)
+                  .refresh(),
               child: Text(l10n.leaderboardRetry),
             ),
           ],

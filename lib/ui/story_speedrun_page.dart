@@ -13,9 +13,9 @@ import '../state/game_providers.dart';
 import 'widgets/clay.dart';
 
 Future<void> showStorySpeedrunPage(BuildContext context) {
-  return Navigator.of(context).push(
-    MaterialPageRoute(builder: (_) => const StorySpeedrunPage()),
-  );
+  return Navigator.of(
+    context,
+  ).push(MaterialPageRoute(builder: (_) => const StorySpeedrunPage()));
 }
 
 class StorySpeedrunPage extends ConsumerStatefulWidget {
@@ -53,10 +53,13 @@ class _StorySpeedrunPageState extends ConsumerState<StorySpeedrunPage> {
       appBar: AppBar(title: Text(l10n.storySpeedrunTitle)),
       body: SafeArea(
         child: switch (viewState) {
-          StorySpeedrunLoading() =>
-            const Center(child: CircularProgressIndicator()),
-          StorySpeedrunNeedsNickname() =>
-            _NicknameForm(l10n: l10n, nameCtrl: _nameCtrl),
+          StorySpeedrunLoading() => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          StorySpeedrunNeedsNickname() => _NicknameForm(
+            l10n: l10n,
+            nameCtrl: _nameCtrl,
+          ),
           StorySpeedrunLoaded() => _SpeedrunList(l10n: l10n, view: viewState),
           StorySpeedrunError(:final message) => _ErrorView(message: message),
         },
@@ -107,13 +110,13 @@ class _NicknameForm extends ConsumerWidget {
   }
 }
 
-class _SpeedrunList extends StatelessWidget {
+class _SpeedrunList extends ConsumerWidget {
   const _SpeedrunList({required this.l10n, required this.view});
   final AppLocalizations l10n;
   final StorySpeedrunLoaded view;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     return Column(
       children: [
@@ -123,55 +126,78 @@ class _SpeedrunList extends StatelessWidget {
             child: Text(
               l10n.storySpeedrunNotCompletedYet,
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium
-                  ?.copyWith(color: theme.colorScheme.error),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.error,
+              ),
             ),
           ),
         Expanded(
-          child: view.entries.isEmpty
-              ? Center(child: Text(l10n.storySpeedrunEmpty))
-              : ListView.builder(
-                  itemCount: view.entries.length,
-                  itemBuilder: (context, i) {
-                    final entry = view.entries[i];
-                    final isMe = entry.userId == view.myUserId;
-                    final tile = ClayTile(
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 44,
-                            child: Text('#${entry.rank}',
+          child: RefreshIndicator(
+            onRefresh: () => ref
+                .read(storySpeedrunControllerProvider.notifier)
+                .refresh(silent: true),
+            child: view.entries.isEmpty
+                ? ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: [
+                      SizedBox(
+                        height: 200,
+                        child: Center(child: Text(l10n.storySpeedrunEmpty)),
+                      ),
+                    ],
+                  )
+                : ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: view.entries.length,
+                    itemBuilder: (context, i) {
+                      final entry = view.entries[i];
+                      final isMe = entry.userId == view.myUserId;
+                      final tile = ClayTile(
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 44,
+                              child: Text(
+                                '#${entry.rank}',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.titleMedium),
-                          ),
-                          Expanded(
-                            child: Text(entry.nickname,
-                                maxLines: 1, overflow: TextOverflow.ellipsis),
-                          ),
-                          Flexible(
-                            child: Text(
-                              formatDuration(entry.completeSeconds),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.titleSmall
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                                style: theme.textTheme.titleMedium,
+                              ),
                             ),
+                            Expanded(
+                              child: Text(
+                                entry.nickname,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Flexible(
+                              child: Text(
+                                formatDuration(entry.completeSeconds),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: theme.textTheme.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                      if (!isMe) return tile;
+                      return Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: theme.colorScheme.primary,
+                            width: 2,
                           ),
-                        ],
-                      ),
-                    );
-                    if (!isMe) return tile;
-                    return Container(
-                      decoration: BoxDecoration(
-                        border:
-                            Border.all(color: theme.colorScheme.primary, width: 2),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: tile,
-                    );
-                  },
-                ),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: tile,
+                      );
+                    },
+                  ),
+          ),
         ),
       ],
     );
