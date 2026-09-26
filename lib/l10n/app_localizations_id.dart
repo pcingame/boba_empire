@@ -582,6 +582,60 @@ class AppLocalizationsId extends AppLocalizations {
   String get stage12 => 'Legenda Teh Susu';
 
   @override
+  String get stage13 => 'Akademi Teh Susu';
+
+  @override
+  String get stage14 => 'Kota Teh Susu';
+
+  @override
+  String get stage15 => 'Negara Teh Susu';
+
+  @override
+  String get stage16 => 'Aliansi Dunia';
+
+  @override
+  String get stage17 => 'Planet Teh Susu';
+
+  @override
+  String get stage18 => 'Kebenaran Teh Susu';
+
+  @override
+  String get genAcademyTea => 'Teh Susu Akademi';
+
+  @override
+  String get genScholarTea => 'Teh Susu Cendekia';
+
+  @override
+  String get genCityTea => 'Teh Susu Kota';
+
+  @override
+  String get genMetroTea => 'Teh Susu Metropolis';
+
+  @override
+  String get genNationTea => 'Teh Susu Nasional';
+
+  @override
+  String get genTreatyTea => 'Teh Susu Perjanjian';
+
+  @override
+  String get genUnionTea => 'Teh Susu Aliansi';
+
+  @override
+  String get genWorldTea => 'Teh Susu Perdamaian Dunia';
+
+  @override
+  String get genPlanetTea => 'Teh Susu Planet';
+
+  @override
+  String get genTerraformTea => 'Teh Susu Terraforming';
+
+  @override
+  String get genTruthTea => 'Teh Susu Kebenaran';
+
+  @override
+  String get genUltimateTea => 'Teh Susu Tertinggi';
+
+  @override
   String get settingsTitle => 'Pengaturan';
 
   @override

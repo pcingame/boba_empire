@@ -147,7 +147,14 @@ class Balance {
 
   /// "Mở giai đoạn tức thì" bằng 💎 — bỏ qua bức tường Xu. Giá theo giai đoạn sắp
   /// mở (index = stage - 2, tức mở GĐ2 tốn `[0]`). Là chỗ tiêu 💎 lớn nhất.
-  static const List<int> instantStageGemCost = [40, 120, 300, 700, 1500];
+  ///
+  /// GĐ2→12 giữ đúng giá cũ (GĐ6→12 đều 1500, trước đây do clamp cuối danh sách);
+  /// GĐ13→18 tăng dần vì mở giai đoạn sâu hơn thì "bỏ qua bức tường Xu" đáng
+  /// giá hơn. Danh sách PHẢI đủ (số giai đoạn - 1) phần tử — test kiểm tra.
+  static const List<int> instantStageGemCost = [
+    40, 120, 300, 700, 1500, 1500, 1500, 1500, 1500, 1500, 1500, //
+    2500, 3500, 5000, 7000, 10000, 14000,
+  ];
 
   /// "Tua nhanh" bằng 💎 (không cần xem QC): giá cố định cho mỗi lần nhận
   /// [gemTimeSkipSeconds] giây sản xuất. Sink 💎 lặp lại.
@@ -292,6 +299,18 @@ class Balance {
         stage: 10, name: 'Chuỗi cung ứng nông trại', unlockCost: 5e19),
     StageConfig(stage: 11, name: 'Đế chế công nghệ AI', unlockCost: 5e21),
     StageConfig(stage: 12, name: 'Huyền thoại trà sữa', unlockCost: 5e23),
+    StageConfig(
+        stage: 13, name: 'Học viện Trà Sữa', unlockCost: 5e25),
+    StageConfig(
+        stage: 14, name: 'Thành phố Trà Sữa', unlockCost: 5e27),
+    StageConfig(
+        stage: 15, name: 'Quốc gia Trà Sữa', unlockCost: 5e29),
+    StageConfig(
+        stage: 16, name: 'Liên minh thế giới', unlockCost: 5e31),
+    StageConfig(
+        stage: 17, name: 'Hành tinh Trà Sữa', unlockCost: 5e33),
+    StageConfig(
+        stage: 18, name: 'Chân lý Trà Sữa', unlockCost: 5e35),
   ];
 
   static StageConfig stageConfig(int stage) => stages[stage - 1];
@@ -507,6 +526,110 @@ class Balance {
       costGrowth: 1.15,
       incomePerLevelPerSecond: 640000000000,
       stage: 12,
+    ),
+    // Giai đoạn 13-18 (2026-09-26, mở rộng thế giới đợt 2) — tiếp đúng nhịp
+    // ~×3.3 (giá)/×3.2 (thu nhập) từ giai đoạn 7-12.
+    // Giai đoạn 13 — Học viện Trà Sữa.
+    GeneratorConfig(
+      id: 'academy_tea',
+      name: 'Trà sữa học viện',
+      baseCost: 79000000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 2000000000000,
+      stage: 13,
+    ),
+    GeneratorConfig(
+      id: 'scholar_tea',
+      name: 'Trà sữa học giả',
+      baseCost: 260000000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 6600000000000,
+      stage: 13,
+    ),
+    // Giai đoạn 14 — Thành phố Trà Sữa.
+    GeneratorConfig(
+      id: 'city_tea',
+      name: 'Trà sữa đô thị',
+      baseCost: 860000000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 21000000000000,
+      stage: 14,
+    ),
+    GeneratorConfig(
+      id: 'metro_tea',
+      name: 'Trà sữa siêu đô thị',
+      baseCost: 2800000000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 67000000000000,
+      stage: 14,
+    ),
+    // Giai đoạn 15 — Quốc gia Trà Sữa.
+    GeneratorConfig(
+      id: 'nation_tea',
+      name: 'Trà sữa quốc gia',
+      baseCost: 9400000000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 210000000000000,
+      stage: 15,
+    ),
+    GeneratorConfig(
+      id: 'treaty_tea',
+      name: 'Trà sữa hiệp ước',
+      baseCost: 31000000000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 690000000000000,
+      stage: 15,
+    ),
+    // Giai đoạn 16 — Liên minh thế giới.
+    GeneratorConfig(
+      id: 'union_tea',
+      name: 'Trà sữa liên minh',
+      baseCost: 100000000000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 2200000000000000,
+      stage: 16,
+    ),
+    GeneratorConfig(
+      id: 'world_tea',
+      name: 'Trà sữa hoà bình thế giới',
+      baseCost: 340000000000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 7000000000000000,
+      stage: 16,
+    ),
+    // Giai đoạn 17 — Hành tinh Trà Sữa.
+    GeneratorConfig(
+      id: 'planet_tea',
+      name: 'Trà sữa hành tinh',
+      baseCost: 1100000000000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 23000000000000000,
+      stage: 17,
+    ),
+    GeneratorConfig(
+      id: 'terraform_tea',
+      name: 'Trà sữa cải tạo hành tinh',
+      baseCost: 3700000000000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 72000000000000000,
+      stage: 17,
+    ),
+    // Giai đoạn 18 — Chân lý Trà Sữa.
+    GeneratorConfig(
+      id: 'truth_tea',
+      name: 'Trà sữa chân lý',
+      baseCost: 12000000000000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 230000000000000000,
+      stage: 18,
+    ),
+    GeneratorConfig(
+      id: 'ultimate_tea',
+      name: 'Trà sữa tối thượng',
+      baseCost: 40000000000000000000,
+      costGrowth: 1.15,
+      incomePerLevelPerSecond: 740000000000000000,
+      stage: 18,
     ),
   ];
 }

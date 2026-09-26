@@ -481,6 +481,35 @@ lib/ads · lib/iap            interface trừu tượng + impl thật; stub trê
 `rivalPressureSeconds`. JSON back-compat (`?? 0 / ?? null / ?? false`).
 `prestige()` không đụng tới (chỉ chạm money/levels/stage).
 
+## 17. Mở rộng thế giới đợt 2 — giai đoạn 13-18 (2026-09-26)
+
+> ⚠️ Số cân bằng đặt theo ước lượng — **cần playtest**. Lý do mở rộng: người chơi
+> "phá đảo" (xem hết Chương 18 / đạt GĐ12) rất nhanh.
+
+Cùng khuôn với đợt mở rộng GĐ7-12 (§16), chỉ thêm nội dung, **không đổi công
+thức** prestige/offline/kinh tế.
+
+- **6 giai đoạn mới** (mở khoá ×100 mỗi bậc): 13 Học viện Trà Sữa `5e25` · 14 Thành
+  phố Trà Sữa `5e27` · 15 Quốc gia Trà Sữa `5e29` · 16 Liên minh thế giới `5e31` ·
+  17 Hành tinh Trà Sữa `5e33` · 18 Chân lý Trà Sữa `5e35`.
+- **12 nguồn thu mới** (2/giai đoạn), tiếp nhịp ~×3.3 giá / ×3.2 thu nhập. Ở cấp trần
+  1000, giá cao nhất ~1e80 — test `stage_test.dart` khoá việc luôn dưới
+  `economyOverflowGuardCap` (1e100).
+- **10 chương mới (19-28)**, hồi "truyền nghề" sau khi hết đối thủ — thuần narrative
+  (không có sự kiện đối thủ). 2 chương lựa chọn mới: **Ch.23** (`heritage` +8% chạm
+  / `export` +8% thu nhập, trục E) và **Ch.28** (`recipe` +8% chạm / `people` +8%
+  thu nhập, trục F). Prose vi/en, es/id/pt/th fallback en.
+- **Mốc "phá đảo" của Bảng xếp hạng tốc độ vẫn là Chương 18**
+  (`storyFinaleChapterId` trong `story.dart`), KHÔNG phải chương cuối danh sách —
+  nếu để trượt theo thì entry cũ mất ý nghĩa và người vừa xong Ch.18 không được chốt.
+- **Thành tựu**: thêm `stage_7`..`stage_18` (trước chỉ tới `stage_6`). Người chơi cũ
+  đã ở GĐ12 sẽ được **trao bù ngay** thành tựu GĐ7-12 (~1260 💎) khi cập nhật.
+- `formatNumber` mở rộng hậu tố tới `zz` (~1e93); `instantStageGemCost` có bậc riêng
+  cho GĐ13-18 (2500 → 14000 💎); mỗi giai đoạn có màu theme riêng (`main.dart`).
+- **Chưa có**: art cảnh nền riêng cho GĐ7-18 (đang dùng lại `stage6.png`).
+- **Server**: trần `lifetime_earnings` của bảng xếp hạng nâng 1e50 → 1e100
+  (`supabase/leaderboard_schema.sql`) — **phải chạy lại file SQL trên Supabase**.
+
 ---
 
 *Cập nhật tài liệu này khi đổi `balance.dart` hoặc thêm hệ thống.*

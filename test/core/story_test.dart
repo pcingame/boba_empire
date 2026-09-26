@@ -160,9 +160,9 @@ void main() {
     expect(s.storyChapter, 6);
   });
 
-  test('mọi chương (1..18) có prose vi + en, không thiếu/lệch id', () {
+  test('mọi chương (1..28) có prose vi + en, không thiếu/lệch id', () {
     expect(storyChapters.map((c) => c.id).toList(),
-        List.generate(18, (i) => i + 1));
+        List.generate(28, (i) => i + 1));
     for (final c in storyChapters) {
       for (final locale in ['vi', 'en']) {
         final text = storyText(c.id, locale);
@@ -179,5 +179,64 @@ void main() {
         }
       }
     }
+  });
+
+  group('Chương 19-28 (mở rộng thế giới đợt 2, giai đoạn 13-18)', () {
+    test('chương kết của tuyến gốc vẫn là 18, không trượt theo chương mới', () {
+      // Bảng xếp hạng tốc độ cốt truyện dựa vào mốc này (storyCompleteSeconds).
+      expect(storyFinaleChapterId, 18);
+      expect(storyChapters.last.id, 28);
+    });
+
+    test('mở tuần tự theo giai đoạn 13..18, kẹt ở 23 và 28 tới khi chọn', () {
+      final s = _fresh()
+        ..storyChapter = 18
+        ..storyChoiceD = 'soul'
+        ..stage = 12;
+      expect(pendingChapterId(s), isNull); // chưa tới GĐ13 → chưa có chương mới
+      s.stage = 18; // mở hết mốc stage, chỉ còn phải lần lượt xem
+      for (final id in [19, 20, 21, 22]) {
+        expect(pendingChapterId(s), id);
+        markChapterSeen(s, id);
+      }
+      expect(pendingChapterId(s), 23);
+      markChapterSeen(s, 23);
+      expect(pendingChapterId(s), 23); // đã xem nhưng chưa chọn → re-show
+      s.storyChoiceE = 'export';
+      for (final id in [24, 25, 26, 27]) {
+        expect(pendingChapterId(s), id);
+        markChapterSeen(s, id);
+      }
+      expect(pendingChapterId(s), 28);
+      markChapterSeen(s, 28);
+      expect(pendingChapterId(s), 28);
+      s.storyChoiceF = 'people';
+      expect(pendingChapterId(s), isNull); // hết truyện
+    });
+
+    test('chương theo đúng ngưỡng giai đoạn', () {
+      final s = _fresh()
+        ..storyChapter = 20
+        ..stage = 13;
+      expect(pendingChapterId(s), isNull); // Ch.21 cần GĐ14
+      s.stage = 14;
+      expect(pendingChapterId(s), 21);
+    });
+
+    test('trục E (Chương 23) và F (Chương 28) ghi đúng, độc lập A-D', () {
+      final s = _fresh()
+        ..storyChapter = 28
+        ..storyChoiceA = 'craft'
+        ..storyChoiceD = 'soul';
+      expect(applyStoryChoice(s, 23, 'export'), isTrue);
+      expect(s.storyChoiceE, 'export');
+      expect(applyStoryChoice(s, 23, 'heritage'), isFalse); // đã chọn
+      expect(s.storyChoiceE, 'export');
+      expect(applyStoryChoice(s, 28, 'recipe'), isTrue);
+      expect(s.storyChoiceF, 'recipe');
+      expect(s.storyChoiceA, 'craft');
+      expect(s.storyChoiceD, 'soul');
+      expect(applyStoryChoice(s, 28, 'bogus'), isFalse);
+    });
   });
 }

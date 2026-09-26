@@ -21,7 +21,7 @@ class StoryText {
   final String title;
   final String body;
 
-  /// Chỉ có ở chương lựa chọn (Chương 6 & 8).
+  /// Chỉ có ở chương lựa chọn (Chương 6, 8, 13, 18, 23, 28).
   final String? optionA;
   final String? optionADesc;
   final String? optionB;
@@ -366,6 +366,212 @@ const Map<int, Map<String, StoryText>> _chapters = {
       optionB: 'Cover the World',
       optionBDesc: 'A name on every corner of the planet. +8% idle income, '
           'permanent.',
+    ),
+  },
+  19: {
+    'vi': StoryText(
+      speaker: 'Bà Tư',
+      title: 'Mở học viện',
+      body: 'Bà Tư gõ nhẹ cây muỗng lên thành ly: "Con đã đi xa hơn bà '
+          'tưởng. Giờ đến lúc dạy lại cho người khác." Nhà máy cũ được '
+          'cải tạo thành Học viện Trà Sữa — nơi ai cũng được học pha một '
+          'ly cho ra hồn.',
+    ),
+    'en': StoryText(
+      speaker: 'Grandma Tư',
+      title: 'The Academy',
+      body: 'Grandma Tư taps a spoon against a cup: "You\'ve gone further '
+          'than I ever imagined. Now it\'s time to teach others." The old '
+          'factory becomes the Milk Tea Academy — where anyone can learn '
+          'to brew a cup worth remembering.',
+    ),
+  },
+  20: {
+    'vi': StoryText(
+      speaker: 'Mộc',
+      title: 'Học trò đầu tiên',
+      body: 'Một cậu bé tên Mộc đứng chờ ở cổng từ sáng sớm, tay ôm cuốn sổ '
+          'ghi chép chi chít. "Cô ơi, tại sao trà của cô lại ngon hơn của '
+          'con dù con làm y hệt?" Bạn mỉm cười. Đó chính là câu hỏi hay '
+          'nhất mà học viện từng nhận.',
+    ),
+    'en': StoryText(
+      speaker: 'Mộc',
+      title: 'The First Student',
+      body: 'A boy named Mộc has been waiting at the gate since dawn, '
+          'clutching a notebook crammed with notes. "Why is your tea '
+          'better than mine when I do exactly the same thing?" You smile. '
+          'It is the best question the Academy has ever been asked.',
+    ),
+  },
+  21: {
+    'vi': StoryText(
+      speaker: 'Thị trưởng',
+      title: 'Con đường mang tên quán',
+      body: 'Học viện đông đến mức cả khu phố mọc lên quanh nó. Thị trưởng '
+          'đích thân đến trao bảng tên: một con đường mới mang tên quán '
+          'trà nhỏ ngày xưa. Bà Tư đứng nhìn tấm bảng rất lâu, không nói '
+          'gì, chỉ chỉnh lại cho nó thẳng.',
+    ),
+    'en': StoryText(
+      speaker: 'The Mayor',
+      title: 'A Street Named After the Shop',
+      body: 'The Academy grows so busy that a whole neighborhood sprouts '
+          'around it. The Mayor personally hands over a sign: a new '
+          'street named after the little tea shop of old. Grandma Tư '
+          'stares at it for a long time, saying nothing, only '
+          'straightening it.',
+    ),
+  },
+  22: {
+    'vi': StoryText(
+      speaker: 'Bạn',
+      title: 'Thành phố không ngủ',
+      body: 'Thành phố lớn nhanh hơn dự tính. Đêm nào cũng có người xếp '
+          'hàng, đèn đường ngả màu nâu trà. Có lúc bạn tự hỏi liệu có ai '
+          'còn nhớ lý do mình bắt đầu. Rồi Mộc mang ra một ly, nhỏ thôi, '
+          'pha tay: "Của cô đây, như ngày đầu."',
+    ),
+    'en': StoryText(
+      speaker: 'You',
+      title: 'The City That Never Sleeps',
+      body: 'The city grows faster than planned. Every night there is a '
+          'line, and the streetlights glow tea-brown. Sometimes you '
+          'wonder if anyone remembers why you started. Then Mộc brings '
+          'out one small, hand-brewed cup: "Yours, just like the first '
+          'day."',
+    ),
+  },
+  23: {
+    'vi': StoryText(
+      speaker: 'Bộ trưởng',
+      title: 'Quốc bảo hay xuất khẩu',
+      body: 'Chính phủ đề nghị công nhận trà sữa là di sản quốc gia. Đồng '
+          'thời, các nước láng giềng ngỏ ý nhập khẩu hàng loạt. Cả hai '
+          'không thể cùng lúc trọn vẹn: gìn giữ nguyên bản hay đưa đi '
+          'khắp nơi?',
+      optionA: 'Giữ làm di sản',
+      optionADesc: 'Công thức được bảo hộ, mỗi ly là một tác phẩm. +8% giá trị mỗi '
+          'lần chạm, vĩnh viễn.',
+      optionB: 'Xuất khẩu khắp nơi',
+      optionBDesc: 'Mở đường vận chuyển sang mọi quốc gia. +8% thu nhập tự động, '
+          'vĩnh viễn.',
+    ),
+    'en': StoryText(
+      speaker: 'The Minister',
+      title: 'National Treasure or Export',
+      body: 'The government offers to recognize milk tea as national '
+          'heritage. At the same time, neighboring countries want to '
+          'import it by the shipload. You cannot fully have both: '
+          'preserve the original, or send it everywhere?',
+      optionA: 'Keep it as Heritage',
+      optionADesc: 'The recipe is protected; every cup is a craft. +8% tap value, '
+          'permanent.',
+      optionB: 'Export Everywhere',
+      optionBDesc: 'Open shipping routes to every nation. +8% idle income, '
+          'permanent.',
+    ),
+  },
+  24: {
+    'vi': StoryText(
+      speaker: 'Đại sứ',
+      title: 'Ngoại giao bằng trà',
+      body: 'Các nước lập một liên minh, và trà sữa bất ngờ trở thành ngôn '
+          'ngữ chung. Hai bên đang căng thẳng cũng chịu ngồi xuống cạnh '
+          'nhau khi có một ly trong tay. Bà Tư chỉ nhún vai: "Bà đã bảo, '
+          'ai uống trà xong cũng dễ nói chuyện hơn."',
+    ),
+    'en': StoryText(
+      speaker: 'The Ambassador',
+      title: 'Diplomacy by Tea',
+      body: 'The nations form an alliance, and milk tea unexpectedly '
+          'becomes the common language. Even sides in tense standoffs '
+          'will sit beside each other with a cup in hand. Grandma Tư just '
+          'shrugs: "I always said people talk better after tea."',
+    ),
+  },
+  25: {
+    'vi': StoryText(
+      speaker: 'Vy "Golden Orb"',
+      title: 'Lá thư mời',
+      body: 'Một phong bì màu vàng đến tay bạn. Vy viết: "Tôi muốn mời bà '
+          'và cô đến hội nghị thượng đỉnh. Lần này không phải để thâu tóm '
+          '— mà để nhờ hai người dạy lại đội ngũ của tôi cách pha một ly '
+          'trà thật sự." Đối thủ cũ, giờ là đồng minh.',
+    ),
+    'en': StoryText(
+      speaker: 'Vy "Golden Orb"',
+      title: 'An Invitation',
+      body: 'A golden envelope arrives. Vy writes: "I\'d like to invite you '
+          'both to the summit. Not to buy you out this time — but to ask '
+          'you to teach my team how to brew a truly good cup." The old '
+          'rival is now an ally.',
+    ),
+  },
+  26: {
+    'vi': StoryText(
+      speaker: 'Bạn',
+      title: 'Cả hành tinh một ly trà',
+      body: 'Từ phố nhỏ đến cả hành tinh, đâu đâu cũng có người cầm một ly '
+          'trà sữa. Nhìn bản đồ đầy chấm sáng, bạn chợt nhận ra: mình '
+          'không còn cạnh tranh với ai nữa. Chỉ còn một câu hỏi, khó hơn '
+          'bất kỳ đối thủ nào: tiếp theo là gì?',
+    ),
+    'en': StoryText(
+      speaker: 'You',
+      title: 'A Planet, One Cup',
+      body: 'From a small street to the whole planet, someone everywhere '
+          'holds a cup of milk tea. Looking at a map full of glowing '
+          'dots, you realize you are no longer competing with anyone. '
+          'Only one question remains, harder than any rival: what comes '
+          'next?',
+    ),
+  },
+  27: {
+    'vi': StoryText(
+      speaker: 'Bà Tư',
+      title: 'Tờ công thức cuối',
+      body: 'Bà Tư đưa cho bạn một tờ giấy đã ố vàng, nét chữ run run. "Đây '
+          'là công thức gốc, bà chưa cho ai xem." Bạn mở ra. Trên giấy '
+          'chỉ có ba dòng: trà thật, sữa thật, và một chỗ trống để bạn tự '
+          'điền.',
+    ),
+    'en': StoryText(
+      speaker: 'Grandma Tư',
+      title: 'The Last Recipe',
+      body: 'Grandma Tư hands you a yellowed sheet of paper in shaky '
+          'handwriting. "This is the original recipe. I\'ve never shown '
+          'anyone." You unfold it. There are only three lines: real tea, '
+          'real milk, and a blank space for you to fill in.',
+    ),
+  },
+  28: {
+    'vi': StoryText(
+      speaker: 'Bà Tư',
+      title: 'Chân lý',
+      body: 'Bà Tư mỉm cười: "Vậy là con đã hiểu. Công thức không nằm trên '
+          'tờ giấy." Bây giờ chỉ còn một quyết định cuối: giữ nguyên bản '
+          'công thức làm của riêng mình, hay trao nó cho mọi người để mỗi '
+          'người tự viết thêm một dòng?',
+      optionA: 'Giữ công thức gốc',
+      optionADesc: 'Bản gốc còn nguyên, chỉ bạn giữ. +8% giá trị mỗi lần chạm, '
+          'vĩnh viễn.',
+      optionB: 'Trao cho mọi người',
+      optionBDesc: 'Ai cũng được viết tiếp công thức. +8% thu nhập tự động, vĩnh '
+          'viễn.',
+    ),
+    'en': StoryText(
+      speaker: 'Grandma Tư',
+      title: 'The Truth',
+      body: 'Grandma Tư smiles: "So you understand now. The recipe was '
+          'never on the paper." One last decision remains: keep the '
+          'original recipe as your own, or hand it to everyone so each '
+          'person can write one more line?',
+      optionA: 'Keep the Original',
+      optionADesc: 'The original stays intact, yours alone. +8% tap value, '
+          'permanent.',
+      optionB: 'Give It to Everyone',
+      optionBDesc: 'Anyone may continue the recipe. +8% idle income, permanent.',
     ),
   },
 };

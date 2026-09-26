@@ -43,5 +43,23 @@ void main() {
       final s = GameState.newGame(nowMillis: 0)..lifetimeEarnings = 500;
       expect(grantNewAchievements(s), isEmpty);
     });
+
+
+    test('có thành tựu cho từng giai đoạn 2..18, thưởng không giảm dần', () {
+      final stageAch = achievements
+          .where((a) => a.metric == AchievementMetric.stage)
+          .toList();
+      expect(stageAch.map((a) => a.threshold).toList(),
+          List.generate(17, (i) => i + 2));
+      for (var i = 1; i < stageAch.length; i++) {
+        expect(stageAch[i].rewardGems,
+            greaterThanOrEqualTo(stageAch[i - 1].rewardGems));
+      }
+    });
+
+    test('id thành tựu không trùng (achievementsClaimed dựa vào id)', () {
+      final ids = achievements.map((a) => a.id).toList();
+      expect(ids.toSet().length, ids.length);
+    });
   });
 }

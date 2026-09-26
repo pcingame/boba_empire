@@ -1030,6 +1030,114 @@ abstract class AppLocalizations {
   /// **'Huyền thoại trà sữa'**
   String get stage12;
 
+  /// No description provided for @stage13.
+  ///
+  /// In vi, this message translates to:
+  /// **'Học viện Trà Sữa'**
+  String get stage13;
+
+  /// No description provided for @stage14.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thành phố Trà Sữa'**
+  String get stage14;
+
+  /// No description provided for @stage15.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quốc gia Trà Sữa'**
+  String get stage15;
+
+  /// No description provided for @stage16.
+  ///
+  /// In vi, this message translates to:
+  /// **'Liên minh thế giới'**
+  String get stage16;
+
+  /// No description provided for @stage17.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hành tinh Trà Sữa'**
+  String get stage17;
+
+  /// No description provided for @stage18.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chân lý Trà Sữa'**
+  String get stage18;
+
+  /// No description provided for @genAcademyTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa học viện'**
+  String get genAcademyTea;
+
+  /// No description provided for @genScholarTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa học giả'**
+  String get genScholarTea;
+
+  /// No description provided for @genCityTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa đô thị'**
+  String get genCityTea;
+
+  /// No description provided for @genMetroTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa siêu đô thị'**
+  String get genMetroTea;
+
+  /// No description provided for @genNationTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa quốc gia'**
+  String get genNationTea;
+
+  /// No description provided for @genTreatyTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa hiệp ước'**
+  String get genTreatyTea;
+
+  /// No description provided for @genUnionTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa liên minh'**
+  String get genUnionTea;
+
+  /// No description provided for @genWorldTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa hoà bình thế giới'**
+  String get genWorldTea;
+
+  /// No description provided for @genPlanetTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa hành tinh'**
+  String get genPlanetTea;
+
+  /// No description provided for @genTerraformTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa cải tạo hành tinh'**
+  String get genTerraformTea;
+
+  /// No description provided for @genTruthTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa chân lý'**
+  String get genTruthTea;
+
+  /// No description provided for @genUltimateTea.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà sữa tối thượng'**
+  String get genUltimateTea;
+
   /// No description provided for @settingsTitle.
   ///
   /// In vi, this message translates to:

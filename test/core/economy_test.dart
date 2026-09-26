@@ -223,6 +223,41 @@ void main() {
     });
   });
 
+  group('perk lựa chọn cốt truyện — trục E/F (giai đoạn 13-18)', () {
+    test('"heritage"/"recipe" vào trục chạm; "export"/"people" vào thu nhập', () {
+      final tap = GameState.newGame(nowMillis: 0)
+        ..storyChoiceE = 'heritage'
+        ..storyChoiceF = 'recipe';
+      expect(storyChoiceTapMultiplier(tap),
+          closeTo(1 + 2 * Balance.storyPerkBonus, 1e-9));
+      expect(storyChoiceIncomeMultiplier(tap), 1.0);
+
+      final inc = GameState.newGame(nowMillis: 0)
+        ..storyChoiceE = 'export'
+        ..storyChoiceF = 'people';
+      expect(storyChoiceIncomeMultiplier(inc),
+          closeTo(1 + 2 * Balance.storyPerkBonus, 1e-9));
+      expect(storyChoiceTapMultiplier(inc), 1.0);
+    });
+
+    test('save cũ thiếu storyChoiceE/F → null, không crash; round-trip giữ nguyên',
+        () {
+      final old = GameState.newGame(nowMillis: 0).toJson()
+        ..remove('storyChoiceE')
+        ..remove('storyChoiceF');
+      final loaded = GameState.fromJson(old);
+      expect(loaded.storyChoiceE, isNull);
+      expect(loaded.storyChoiceF, isNull);
+
+      final s = GameState.newGame(nowMillis: 0)
+        ..storyChoiceE = 'export'
+        ..storyChoiceF = 'recipe';
+      final back = GameState.fromJson(s.toJson());
+      expect(back.storyChoiceE, 'export');
+      expect(back.storyChoiceF, 'recipe');
+    });
+  });
+
   group('perk lựa chọn cốt truyện', () {
     test('mặc định không có perk → hệ số 1.0', () {
       final s = GameState.newGame(nowMillis: 0);

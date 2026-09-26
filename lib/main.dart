@@ -102,6 +102,20 @@ class BobaEmpireApp extends ConsumerWidget {
         4 => const Color(0xFFB87029), // đường đen nướng — hổ phách rực
         5 => const Color(0xFFC85A7B), // dâu / phô mai — hồng rose
         6 => const Color(0xFFC0982F), // vàng gold đế chế — vàng ấm sâu
+        // Giai đoạn 7-18 (mở rộng thế giới): hue đi tiếp vòng cung, giữ độ tươi
+        // tương đương GĐ2-6 để không lệch tông.
+        7 => const Color(0xFF3F7F9E), // sàn chứng khoán — xanh thép
+        8 => const Color(0xFF6B6FBF), // tập đoàn đa ngành — xanh chàm
+        9 => const Color(0xFF3E9E88), // quỹ đầu tư toàn cầu — xanh ngọc
+        10 => const Color(0xFF7C9A2E), // nông trại — lục cỏ úa
+        11 => const Color(0xFF3B8FD1), // đế chế AI — xanh điện
+        12 => const Color(0xFFD1823B), // huyền thoại — cam hổ phách
+        13 => const Color(0xFF8F5FB5), // học viện — tím thư viện
+        14 => const Color(0xFF5B7FA8), // thành phố — xanh đêm phố
+        15 => const Color(0xFFB5544F), // quốc gia — đỏ gạch
+        16 => const Color(0xFF3FA37D), // liên minh — xanh hoà bình
+        17 => const Color(0xFF4F6FC4), // hành tinh — xanh đại dương
+        18 => const Color(0xFFD4A62A), // chân lý — vàng kim
         _ => const Color(0xFFA06A45), // trà sữa caramel (xe đẩy) — nâu dịu
       };
 

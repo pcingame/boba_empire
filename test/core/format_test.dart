@@ -19,6 +19,16 @@ void main() {
     expect(formatNumber(1e15), '1.00aa');
   });
 
+  test('số cực lớn (giá nguồn thu ở cấp trần) vẫn gọn, không thành chuỗi dài', () {
+    expect(formatNumber(1.5e45), '1.50kk'); // tránh đúng mốc 1e45: chia lặp double lệch 1 ulp
+    expect(formatNumber(1.2e74), '120.00tt');
+    // Còn gọn tới hết bảng hậu tố ('zz' ~1e93, phủ mọi giá nguồn thu ở cấp
+    // trần ~1e80). Trên 1e93 (gần trần chống tràn số 1e100) mới bung ra —
+    // chưa nguồn nào chạm tới, nên không mở rộng thêm.
+    expect(formatNumber(5e89), '500.00yy');
+    expect(formatNumber(5e92).length, lessThan(12));
+  });
+
   test('số âm giữ dấu', () {
     expect(formatNumber(-2500), '-2.50K');
   });

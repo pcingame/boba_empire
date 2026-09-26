@@ -582,6 +582,60 @@ class AppLocalizationsEs extends AppLocalizations {
   String get stage12 => 'Leyenda del Té con Leche';
 
   @override
+  String get stage13 => 'Academia del Té con Leche';
+
+  @override
+  String get stage14 => 'Ciudad del Té con Leche';
+
+  @override
+  String get stage15 => 'Nación del Té con Leche';
+
+  @override
+  String get stage16 => 'Alianza Mundial';
+
+  @override
+  String get stage17 => 'Planeta del Té con Leche';
+
+  @override
+  String get stage18 => 'La Verdad del Té con Leche';
+
+  @override
+  String get genAcademyTea => 'Té con Leche Académico';
+
+  @override
+  String get genScholarTea => 'Té con Leche del Erudito';
+
+  @override
+  String get genCityTea => 'Té con Leche Urbano';
+
+  @override
+  String get genMetroTea => 'Té con Leche Metrópolis';
+
+  @override
+  String get genNationTea => 'Té con Leche Nacional';
+
+  @override
+  String get genTreatyTea => 'Té con Leche del Tratado';
+
+  @override
+  String get genUnionTea => 'Té con Leche de la Alianza';
+
+  @override
+  String get genWorldTea => 'Té con Leche Paz Mundial';
+
+  @override
+  String get genPlanetTea => 'Té con Leche Planetario';
+
+  @override
+  String get genTerraformTea => 'Té con Leche Terraformado';
+
+  @override
+  String get genTruthTea => 'Té con Leche de la Verdad';
+
+  @override
+  String get genUltimateTea => 'Té con Leche Supremo';
+
+  @override
   String get settingsTitle => 'Ajustes';
 
   @override

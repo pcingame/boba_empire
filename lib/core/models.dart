@@ -89,6 +89,8 @@ class GameState {
     this.storyChoiceB,
     this.storyChoiceC,
     this.storyChoiceD,
+    this.storyChoiceE,
+    this.storyChoiceF,
     this.rivalDefeated = false,
     this.rivalPressureSeconds = 0,
     this.repeatQuestBaseline = 0,
@@ -212,6 +214,12 @@ class GameState {
   String? storyChoiceC;
   String? storyChoiceD;
 
+  /// Lựa chọn nhánh Chương 23 ('heritage' | 'export' | null) và Chương 28
+  /// ('recipe' | 'people' | null) — hồi mở rộng giai đoạn 13-18, cùng cơ chế/perk
+  /// như A-D. Save cũ thiếu 2 trường này → null (chưa chọn).
+  String? storyChoiceE;
+  String? storyChoiceF;
+
   /// Mốc thời gian (epoch ms) lần đầu tạo save — đặt 1 lần ở [GameState.newGame],
   /// KHÔNG đổi sau đó (kể cả prestige). Dùng làm mốc "bắt đầu" để tính
   /// [storyCompleteSeconds] cho bảng xếp hạng tốc độ hoàn thành cốt truyện.
@@ -304,6 +312,8 @@ class GameState {
         'storyChoiceB': storyChoiceB,
         'storyChoiceC': storyChoiceC,
         'storyChoiceD': storyChoiceD,
+        'storyChoiceE': storyChoiceE,
+        'storyChoiceF': storyChoiceF,
         'firstPlayedMillis': firstPlayedMillis,
         'storyCompleteSeconds': storyCompleteSeconds,
         'rivalDefeated': rivalDefeated,
@@ -363,6 +373,8 @@ class GameState {
         storyChoiceB: json['storyChoiceB'] as String?,
         storyChoiceC: json['storyChoiceC'] as String?,
         storyChoiceD: json['storyChoiceD'] as String?,
+        storyChoiceE: json['storyChoiceE'] as String?,
+        storyChoiceF: json['storyChoiceF'] as String?,
         // Save cũ (trước khi có trường này) không có firstPlayedMillis — dùng
         // lastSeenMillis của chính save đó làm mốc gần đúng nhất có sẵn (biết
         // là ước tính hụt, không phải lúc thật sự bắt đầu chơi; chấp nhận vì

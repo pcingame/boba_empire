@@ -580,6 +580,60 @@ class AppLocalizationsPt extends AppLocalizations {
   String get stage12 => 'Lenda do Chá com Leite';
 
   @override
+  String get stage13 => 'Academia do Chá com Leite';
+
+  @override
+  String get stage14 => 'Cidade do Chá com Leite';
+
+  @override
+  String get stage15 => 'Nação do Chá com Leite';
+
+  @override
+  String get stage16 => 'Aliança Mundial';
+
+  @override
+  String get stage17 => 'Planeta do Chá com Leite';
+
+  @override
+  String get stage18 => 'A Verdade do Chá com Leite';
+
+  @override
+  String get genAcademyTea => 'Chá com Leite Acadêmico';
+
+  @override
+  String get genScholarTea => 'Chá com Leite do Erudito';
+
+  @override
+  String get genCityTea => 'Chá com Leite Urbano';
+
+  @override
+  String get genMetroTea => 'Chá com Leite Metrópole';
+
+  @override
+  String get genNationTea => 'Chá com Leite Nacional';
+
+  @override
+  String get genTreatyTea => 'Chá com Leite do Tratado';
+
+  @override
+  String get genUnionTea => 'Chá com Leite da Aliança';
+
+  @override
+  String get genWorldTea => 'Chá com Leite Paz Mundial';
+
+  @override
+  String get genPlanetTea => 'Chá com Leite Planetário';
+
+  @override
+  String get genTerraformTea => 'Chá com Leite Terraformado';
+
+  @override
+  String get genTruthTea => 'Chá com Leite da Verdade';
+
+  @override
+  String get genUltimateTea => 'Chá com Leite Supremo';
+
+  @override
   String get settingsTitle => 'Configurações';
 
   @override

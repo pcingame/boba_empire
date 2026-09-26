@@ -576,6 +576,60 @@ class AppLocalizationsEn extends AppLocalizations {
   String get stage12 => 'Milk Tea Legend';
 
   @override
+  String get stage13 => 'Milk Tea Academy';
+
+  @override
+  String get stage14 => 'Milk Tea City';
+
+  @override
+  String get stage15 => 'Milk Tea Nation';
+
+  @override
+  String get stage16 => 'World Alliance';
+
+  @override
+  String get stage17 => 'Milk Tea Planet';
+
+  @override
+  String get stage18 => 'Truth of Milk Tea';
+
+  @override
+  String get genAcademyTea => 'Academy Milk Tea';
+
+  @override
+  String get genScholarTea => 'Scholar Milk Tea';
+
+  @override
+  String get genCityTea => 'City Milk Tea';
+
+  @override
+  String get genMetroTea => 'Metropolis Milk Tea';
+
+  @override
+  String get genNationTea => 'National Milk Tea';
+
+  @override
+  String get genTreatyTea => 'Treaty Milk Tea';
+
+  @override
+  String get genUnionTea => 'Alliance Milk Tea';
+
+  @override
+  String get genWorldTea => 'World Peace Milk Tea';
+
+  @override
+  String get genPlanetTea => 'Planetary Milk Tea';
+
+  @override
+  String get genTerraformTea => 'Terraformed Milk Tea';
+
+  @override
+  String get genTruthTea => 'Truth Milk Tea';
+
+  @override
+  String get genUltimateTea => 'Ultimate Milk Tea';
+
+  @override
   String get settingsTitle => 'Settings';
 
   @override

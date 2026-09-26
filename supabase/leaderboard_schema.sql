@@ -107,10 +107,15 @@ begin
     raise exception 'prestige_stars vượt quá mức tối đa có thể có với lifetime_earnings này';
   end if;
 
-  -- (2) Trần tuyệt đối — rất rộng rãi, chỉ chặn số bịa kiểu "gửi thẳng
-  -- 1e100" chứ không nhằm giới hạn người chơi thật giỏi (kể cả tua nhanh
-  -- dồn dập nhiều lần).
-  if new.lifetime_earnings > 1e50 then
+  -- (2) Trần tuyệt đối — rất rộng rãi, chỉ chặn số bịa chứ không nhằm giới
+  -- hạn người chơi thật giỏi (kể cả tua nhanh dồn dập nhiều lần).
+  --
+  -- 1e100 = Balance.economyOverflowGuardCap (lib/core/balance.dart), tức
+  -- KHÔNG thể có số thật nào vượt — trước đây là 1e50, nhưng giai đoạn 13-18
+  -- (mở rộng thế giới 2026-09-26) mở khoá ở 5e25..5e35 nên người chơi cuối
+  -- tuyến có thể vượt 1e50 và sẽ bị chặn nhầm khi gửi lần đầu. Đổi hằng số
+  -- này thì phải xem lại economyOverflowGuardCap và ngược lại.
+  if new.lifetime_earnings > 1e100 then
     raise exception 'lifetime_earnings vượt xa mức có thể đạt được';
   end if;
 

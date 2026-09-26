@@ -92,7 +92,7 @@ class GameController extends Notifier<GameSnapshot> {
     // thật. Không có cách nào biết lại đúng thời điểm họ thực sự hoàn thành
     // (không được ghi lúc đó) — dùng thời điểm mở app NÀY làm mốc best-effort
     // (số giây sẽ cao hơn thực tế, nhưng còn hơn không bao giờ xuất hiện được).
-    if (_game.storyChapter >= storyChapters.last.id &&
+    if (_game.storyChapter >= storyFinaleChapterId &&
         _game.storyCompleteSeconds == null) {
       _game.storyCompleteSeconds =
           max(1, (_clock() - _game.firstPlayedMillis) ~/ 1000);
@@ -315,7 +315,7 @@ class GameController extends Notifier<GameSnapshot> {
     // truyện (giây thực tế kể từ firstPlayedMillis), dùng cho Bảng xếp hạng
     // tốc độ. Ghi 1 lần, không đổi lại (giống storyChoiceA/B/C/D).
     if (firstTime &&
-        id == storyChapters.last.id &&
+        id == storyFinaleChapterId &&
         _game.storyCompleteSeconds == null) {
       _game.storyCompleteSeconds =
           max(1, (_clock() - _game.firstPlayedMillis) ~/ 1000);
@@ -340,7 +340,7 @@ class GameController extends Notifier<GameSnapshot> {
     // Bảng xếp hạng tốc độ hoàn thành không bao giờ có dữ liệu thật. Chốt
     // cùng logic ở đây, giống hệt acknowledgeStoryBeat.
     if (firstTime &&
-        id == storyChapters.last.id &&
+        id == storyFinaleChapterId &&
         _game.storyCompleteSeconds == null) {
       _game.storyCompleteSeconds =
           max(1, (_clock() - _game.firstPlayedMillis) ~/ 1000);

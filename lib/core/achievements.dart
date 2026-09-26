@@ -35,6 +35,18 @@ const List<Achievement> achievements = [
   Achievement('stage_4', AchievementMetric.stage, 4, 40, '🏭'),
   Achievement('stage_5', AchievementMetric.stage, 5, 70, '🏙️'),
   Achievement('stage_6', AchievementMetric.stage, 6, 120, '🌍'),
+  Achievement('stage_7', AchievementMetric.stage, 7, 150, '📈'),
+  Achievement('stage_8', AchievementMetric.stage, 8, 180, '🏢'),
+  Achievement('stage_9', AchievementMetric.stage, 9, 210, '💼'),
+  Achievement('stage_10', AchievementMetric.stage, 10, 240, '🌾'),
+  Achievement('stage_11', AchievementMetric.stage, 11, 280, '🤖'),
+  Achievement('stage_12', AchievementMetric.stage, 12, 320, '🏆'),
+  Achievement('stage_13', AchievementMetric.stage, 13, 360, '🎓'),
+  Achievement('stage_14', AchievementMetric.stage, 14, 400, '🏙️'),
+  Achievement('stage_15', AchievementMetric.stage, 15, 450, '🏛️'),
+  Achievement('stage_16', AchievementMetric.stage, 16, 500, '🕊️'),
+  Achievement('stage_17', AchievementMetric.stage, 17, 600, '🪐'),
+  Achievement('stage_18', AchievementMetric.stage, 18, 750, '✨'),
   Achievement('prestige_1', AchievementMetric.prestige, 1, 20, '⭐'),
 ];
 

@@ -1,4 +1,4 @@
-/// Cốt truyện "Đế Chế Trà Sữa" — 18 chương gắn vào các mốc SẴN CÓ (giai đoạn,
+/// Cốt truyện "Đế Chế Trà Sữa" — 28 chương gắn vào các mốc SẴN CÓ (giai đoạn,
 /// prestige, hạ đối thủ). Hàm thuần + vài hàm mutate nhỏ (giống [quests.dart]:
 /// `claimQuest`). Prose nằm ở [story_content.dart], không ở ARB.
 ///
@@ -7,16 +7,27 @@
 /// Golden Orb" (thuần narrative, KHÔNG có cơ chế sự kiện đối thủ song song
 /// như Hải — xem ghi chú ở [rivalDefeatable] trong rival.dart, cơ chế đó vẫn
 /// chỉ gắn với giai đoạn 1-6/Hải).
+///
+/// Chương 19-28 (2026-09-26, mở rộng thế giới đợt 2): giai đoạn 13-18, hồi
+/// "truyền nghề" sau khi hết đối thủ — thuần narrative, 2 chương lựa chọn
+/// mới (Chương 23 trục E, Chương 28 trục F).
 library;
 
 import 'models.dart';
+
+/// Chương kết của TUYẾN GỐC (giai đoạn 1-12) — mốc "phá đảo" cho Bảng xếp hạng
+/// tốc độ hoàn thành cốt truyện (`storyCompleteSeconds`). KHÔNG dùng
+/// `storyChapters.last.id`: hồi mở rộng thêm chương phía sau, nếu "chương kết"
+/// trượt theo thì người vừa xong Chương 18 không còn được chốt mốc và các
+/// entry cũ trên bảng mất ý nghĩa.
+const int storyFinaleChapterId = 18;
 
 /// Điều kiện kích hoạt một chương.
 enum StoryTrigger { gameStart, stage, firstPrestige, rivalDefeated }
 
 /// Trục nào của lựa chọn nhánh (A = Chương 6, B = Chương 8, C = Chương 13,
-/// D = Chương 18).
-enum StoryChoiceAxis { a, b, c, d }
+/// D = Chương 18, E = Chương 23, F = Chương 28).
+enum StoryChoiceAxis { a, b, c, d, e, f }
 
 /// Một điểm rẽ nhánh: ghi [optionA] hoặc [optionB] vào [axis]. Mỗi lựa chọn
 /// cộng một perk nhỏ vĩnh viễn (xem [economy.storyChoiceTapMultiplier] /
@@ -38,7 +49,7 @@ class StoryChapter {
     this.choice,
   });
 
-  /// 1..18 — cũng là số hiển thị "Chương {id}".
+  /// 1..28 — cũng là số hiển thị "Chương {id}".
   final int id;
 
   /// Biểu tượng nhân vật/bối cảnh (không phụ thuộc ngôn ngữ).
@@ -100,6 +111,29 @@ const List<StoryChapter> storyChapters = [
     stageValue: 12,
     choice: StoryChoiceSpec(StoryChoiceAxis.d, 'soul', 'global'),
   ),
+  // --- Mở rộng thế giới đợt 2 (2026-09-26): giai đoạn 13-18, hồi "truyền nghề". ---
+  StoryChapter(id: 19, emoji: '🎓', trigger: StoryTrigger.stage, stageValue: 13),
+  StoryChapter(id: 20, emoji: '🧒', trigger: StoryTrigger.stage, stageValue: 13),
+  StoryChapter(id: 21, emoji: '🏙️', trigger: StoryTrigger.stage, stageValue: 14),
+  StoryChapter(id: 22, emoji: '🚦', trigger: StoryTrigger.stage, stageValue: 14),
+  StoryChapter(
+    id: 23,
+    emoji: '🏛️',
+    trigger: StoryTrigger.stage,
+    stageValue: 15,
+    choice: StoryChoiceSpec(StoryChoiceAxis.e, 'heritage', 'export'),
+  ),
+  StoryChapter(id: 24, emoji: '🕊️', trigger: StoryTrigger.stage, stageValue: 16),
+  StoryChapter(id: 25, emoji: '✉️', trigger: StoryTrigger.stage, stageValue: 16),
+  StoryChapter(id: 26, emoji: '🪐', trigger: StoryTrigger.stage, stageValue: 17),
+  StoryChapter(id: 27, emoji: '📜', trigger: StoryTrigger.stage, stageValue: 17),
+  StoryChapter(
+    id: 28,
+    emoji: '✨',
+    trigger: StoryTrigger.stage,
+    stageValue: 18,
+    choice: StoryChoiceSpec(StoryChoiceAxis.f, 'recipe', 'people'),
+  ),
 ];
 
 StoryChapter chapterById(int id) =>
@@ -120,6 +154,8 @@ String? _choiceValue(GameState s, StoryChoiceAxis axis) => switch (axis) {
       StoryChoiceAxis.b => s.storyChoiceB,
       StoryChoiceAxis.c => s.storyChoiceC,
       StoryChoiceAxis.d => s.storyChoiceD,
+      StoryChoiceAxis.e => s.storyChoiceE,
+      StoryChoiceAxis.f => s.storyChoiceF,
     };
 
 /// Chương cần hiển thị ngay bây giờ, hoặc null nếu không có.
@@ -171,6 +207,12 @@ bool applyStoryChoice(GameState s, int chapterId, String optionKey) {
     case StoryChoiceAxis.d:
       if (s.storyChoiceD != null) return false;
       s.storyChoiceD = optionKey;
+    case StoryChoiceAxis.e:
+      if (s.storyChoiceE != null) return false;
+      s.storyChoiceE = optionKey;
+    case StoryChoiceAxis.f:
+      if (s.storyChoiceF != null) return false;
+      s.storyChoiceF = optionKey;
   }
   return true;
 }

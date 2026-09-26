@@ -579,6 +579,60 @@ class AppLocalizationsVi extends AppLocalizations {
   String get stage12 => 'Huyền thoại trà sữa';
 
   @override
+  String get stage13 => 'Học viện Trà Sữa';
+
+  @override
+  String get stage14 => 'Thành phố Trà Sữa';
+
+  @override
+  String get stage15 => 'Quốc gia Trà Sữa';
+
+  @override
+  String get stage16 => 'Liên minh thế giới';
+
+  @override
+  String get stage17 => 'Hành tinh Trà Sữa';
+
+  @override
+  String get stage18 => 'Chân lý Trà Sữa';
+
+  @override
+  String get genAcademyTea => 'Trà sữa học viện';
+
+  @override
+  String get genScholarTea => 'Trà sữa học giả';
+
+  @override
+  String get genCityTea => 'Trà sữa đô thị';
+
+  @override
+  String get genMetroTea => 'Trà sữa siêu đô thị';
+
+  @override
+  String get genNationTea => 'Trà sữa quốc gia';
+
+  @override
+  String get genTreatyTea => 'Trà sữa hiệp ước';
+
+  @override
+  String get genUnionTea => 'Trà sữa liên minh';
+
+  @override
+  String get genWorldTea => 'Trà sữa hoà bình thế giới';
+
+  @override
+  String get genPlanetTea => 'Trà sữa hành tinh';
+
+  @override
+  String get genTerraformTea => 'Trà sữa cải tạo hành tinh';
+
+  @override
+  String get genTruthTea => 'Trà sữa chân lý';
+
+  @override
+  String get genUltimateTea => 'Trà sữa tối thượng';
+
+  @override
   String get settingsTitle => 'Cài đặt';
 
   @override

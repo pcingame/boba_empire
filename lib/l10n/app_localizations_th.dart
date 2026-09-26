@@ -576,6 +576,60 @@ class AppLocalizationsTh extends AppLocalizations {
   String get stage12 => 'ตำนานชานม';
 
   @override
+  String get stage13 => 'สถาบันชานม';
+
+  @override
+  String get stage14 => 'เมืองชานม';
+
+  @override
+  String get stage15 => 'ชาติชานม';
+
+  @override
+  String get stage16 => 'พันธมิตรโลก';
+
+  @override
+  String get stage17 => 'ดาวชานม';
+
+  @override
+  String get stage18 => 'สัจธรรมชานม';
+
+  @override
+  String get genAcademyTea => 'ชานมสถาบัน';
+
+  @override
+  String get genScholarTea => 'ชานมนักปราชญ์';
+
+  @override
+  String get genCityTea => 'ชานมเมือง';
+
+  @override
+  String get genMetroTea => 'ชานมมหานคร';
+
+  @override
+  String get genNationTea => 'ชานมแห่งชาติ';
+
+  @override
+  String get genTreatyTea => 'ชานมสนธิสัญญา';
+
+  @override
+  String get genUnionTea => 'ชานมพันธมิตร';
+
+  @override
+  String get genWorldTea => 'ชานมสันติภาพโลก';
+
+  @override
+  String get genPlanetTea => 'ชานมดาวเคราะห์';
+
+  @override
+  String get genTerraformTea => 'ชานมปรับสภาพดาว';
+
+  @override
+  String get genTruthTea => 'ชานมสัจธรรม';
+
+  @override
+  String get genUltimateTea => 'ชานมสูงสุด';
+
+  @override
   String get settingsTitle => 'ตั้งค่า';
 
   @override

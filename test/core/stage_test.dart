@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:boba_empire/core/balance.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/core/simulation.dart';
@@ -41,8 +43,8 @@ void main() {
   });
 
   group('cấu hình giai đoạn', () {
-    test('có đúng 12 giai đoạn, giai đoạn 1 miễn phí', () {
-      expect(Balance.stages.length, 12);
+    test('có đúng 18 giai đoạn, giai đoạn 1 miễn phí', () {
+      expect(Balance.stages.length, 18);
       expect(Balance.stageConfig(1).unlockCost, 0);
     });
 
@@ -50,12 +52,48 @@ void main() {
       expect(Balance.nextStageConfig(1)!.stage, 2);
       expect(Balance.nextStageConfig(5)!.stage, 6);
       expect(Balance.nextStageConfig(11)!.stage, 12);
-      expect(Balance.nextStageConfig(12), isNull);
+      expect(Balance.nextStageConfig(12)!.stage, 13);
+      expect(Balance.nextStageConfig(17)!.stage, 18);
+      expect(Balance.nextStageConfig(18), isNull);
     });
 
-    test('mỗi generator gắn stage 1..12', () {
+    test('mỗi generator gắn stage 1..18, mỗi giai đoạn 13-18 có đúng 2 nguồn', () {
       for (final g in Balance.generators) {
-        expect(g.stage, inInclusiveRange(1, 12));
+        expect(g.stage, inInclusiveRange(1, 18));
+      }
+      for (var st = 13; st <= 18; st++) {
+        expect(Balance.generators.where((g) => g.stage == st).length, 2,
+            reason: 'giai đoạn $st');
+      }
+    });
+
+    test('id nguồn thu không trùng, mở khoá tăng chặt theo giai đoạn', () {
+      final ids = Balance.generators.map((g) => g.id).toList();
+      expect(ids.toSet().length, ids.length);
+      for (var i = 1; i < Balance.stages.length; i++) {
+        expect(Balance.stages[i].unlockCost,
+            greaterThan(Balance.stages[i - 1].unlockCost));
+      }
+    });
+
+    test('giá mở tức thì bằng 💎 có đủ bậc cho mọi lần mở giai đoạn', () {
+      // Số bậc = số giai đoạn - 1 (mở GĐ2..GĐ18). Thiếu bậc thì clamp cuối
+      // danh sách âm thầm dùng giá sai thay vì báo lỗi.
+      expect(Balance.instantStageGemCost.length, Balance.stages.length - 1);
+      for (var i = 1; i < Balance.instantStageGemCost.length; i++) {
+        expect(Balance.instantStageGemCost[i],
+            greaterThanOrEqualTo(Balance.instantStageGemCost[i - 1]));
+      }
+    });
+
+    test('giá ở cấp trần của MỌI nguồn thu còn dưới trần chống tràn số', () {
+      // Không tin ước lượng tay: giai đoạn 13-18 (~1e80 ở cấp trần) phải nằm
+      // xa dưới economyOverflowGuardCap (1e100) — nếu không giá bị kẹp và
+      // "mua thêm cấp" có thể thành miễn phí (bug Xu âm cũ).
+      for (final g in Balance.generators) {
+        final cost = g.baseCost * pow(g.costGrowth, Balance.maxGeneratorLevel);
+        expect(cost, lessThan(Balance.economyOverflowGuardCap / 100),
+            reason: '${g.id}: ${cost.toStringAsExponential(1)}');
       }
     });
   });

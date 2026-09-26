@@ -1,11 +1,16 @@
 /// Định dạng số lớn kiểu game idle: 1234 -> "1.23K", 5.6e9 -> "5.60B".
 ///
-/// Dùng `double` (mục 10). Sau mốc T (10^12) chuyển sang hậu tố kép aa, bb...
+/// Dùng `double` (mục 10). Sau mốc T (10^12) chuyển sang hậu tố kép aa, bb... zz
 library;
 
 const List<String> _suffixes = [
   '', 'K', 'M', 'B', 'T', //
-  'aa', 'bb', 'cc', 'dd', 'ee', 'ff', 'gg', 'hh', 'ii', 'jj',
+  'aa', 'bb', 'cc', 'dd', 'ee', 'ff', 'gg', 'hh', 'ii', 'jj', //
+  // Giá nguồn thu ở cấp trần đã ~1e74 (giai đoạn 13-18: ~1e80) — vượt xa 'jj'
+  // (~1e42) nên trước đây số hiển thị thành chuỗi dài vô nghĩa. Mở rộng tới
+  // 'zz' (~1e93), vừa phủ tới gần trần Balance.economyOverflowGuardCap (1e100).
+  'kk', 'll', 'mm', 'nn', 'oo', 'pp', 'qq', 'rr', 'ss', 'tt', 'uu', 'vv',
+  'ww', 'xx', 'yy', 'zz',
 ];
 
 /// Ví dụ: 0 -> "0", 950 -> "950", 1500 -> "1.50K", 2.5e6 -> "2.50M".
