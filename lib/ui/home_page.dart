@@ -1459,12 +1459,6 @@ class _StageHeader extends ConsumerWidget {
   }
 }
 
-/// Huy hiệu số nhỏ (cấp nguồn thu / số Sao) đặt ở góc icon/avatar — bọc
-/// trong khung chiều rộng cố định + [FittedBox] co chữ, không bao giờ tràn
-/// sang phần tử bên cạnh dù số bao nhiêu chữ số. Rút gọn qua [formatNumber]
-/// trước (cấp nguồn thu lẫn số Sao đều không có trần thấp, có thể lên hàng
-/// chục tỷ) — bỏ số lẻ (`decimals: 0`) vì đây chỉ là con số ước lượng nhanh,
-/// không cần chính xác, để chữ không phải co quá nhỏ mới vừa khung.
 /// Chip "Nhiệm vụ" ở đầu màn chính, có chấm đỏ khi có nhiệm vụ xong chưa nhận.
 /// Dùng `_CountBadge` tự vẽ (không dùng `Badge` mặc định — không giới hạn chiều
 /// rộng nhãn, xem shop-tile-overflow-pattern).
@@ -1503,6 +1497,12 @@ class _DailyQuestsChip extends ConsumerWidget {
   }
 }
 
+/// Huy hiệu số nhỏ (cấp nguồn thu / số Sao) đặt ở góc icon/avatar — bọc
+/// trong khung chiều rộng cố định + [FittedBox] co chữ, không bao giờ tràn
+/// sang phần tử bên cạnh dù số bao nhiêu chữ số. Rút gọn qua [formatNumber]
+/// trước (cấp nguồn thu lẫn số Sao đều không có trần thấp, có thể lên hàng
+/// chục tỷ) — bỏ số lẻ (`decimals: 0`) vì đây chỉ là con số ước lượng nhanh,
+/// không cần chính xác, để chữ không phải co quá nhỏ mới vừa khung.
 class _CountBadge extends StatelessWidget {
   const _CountBadge(this.value);
 

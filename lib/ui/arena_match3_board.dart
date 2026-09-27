@@ -335,15 +335,15 @@ class _ArenaMatch3PanelState extends State<ArenaMatch3Panel> {
     }
   }
 
-  void _onSwipe(int cell, Offset velocity) {
-    if (_locked || velocity.distance < 150) return;
+  void _onSwipe(int cell, Offset delta) {
+    if (_locked) return;
     final r = cell ~/ m3Size, c = cell % m3Size;
     int? target;
-    if (velocity.dx.abs() > velocity.dy.abs()) {
-      final nc = c + (velocity.dx > 0 ? 1 : -1);
+    if (delta.dx.abs() > delta.dy.abs()) {
+      final nc = c + (delta.dx > 0 ? 1 : -1);
       if (nc >= 0 && nc < m3Size) target = r * m3Size + nc;
     } else {
-      final nr = r + (velocity.dy > 0 ? 1 : -1);
+      final nr = r + (delta.dy > 0 ? 1 : -1);
       if (nr >= 0 && nr < m3Size) target = nr * m3Size + c;
     }
     if (target != null) {
@@ -529,7 +529,7 @@ class _PopupText extends StatelessWidget {
   }
 }
 
-class _HitCell extends StatelessWidget {
+class _HitCell extends StatefulWidget {
   const _HitCell({
     super.key,
     required this.size,
@@ -545,15 +545,36 @@ class _HitCell extends StatelessWidget {
   final bool flashing;
   final bool hint;
   final VoidCallback onTap;
-  final void Function(Offset velocity) onSwipe;
+  final void Function(Offset delta) onSwipe;
+
+  @override
+  State<_HitCell> createState() => _HitCellState();
+}
+
+class _HitCellState extends State<_HitCell> {
+  Offset _drag = Offset.zero;
+  bool _fired = false;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final size = widget.size, selected = widget.selected, flashing = widget.flashing, hint = widget.hint;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      onPanEnd: (d) => onSwipe(d.velocity.pixelsPerSecond),
+      onTap: widget.onTap,
+      onPanStart: (_) {
+        _drag = Offset.zero;
+        _fired = false;
+      },
+      // Đổi ngay khi ngón kéo đủ xa (~30% ô), không đợi thả tay.
+      onPanUpdate: (d) {
+        if (_fired) return;
+        _drag += d.delta;
+        if (_drag.distance >= size * 0.3) {
+          _fired = true;
+          widget.onSwipe(_drag);
+        }
+      },
       child: SizedBox(
         width: size,
         height: size,

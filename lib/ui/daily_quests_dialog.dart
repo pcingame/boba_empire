@@ -152,6 +152,12 @@ class _QuestRow extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                   child: LinearProgressIndicator(value: ratio, minHeight: 6),
                 ),
+                const SizedBox(height: 2),
+                Text(
+                  '${formatNumber(view.progress.clamp(0, view.target).toDouble(), decimals: 0)} / ${formatNumber(view.target.toDouble(), decimals: 0)}',
+                  key: Key('daily-quest-progress-${view.kind.name}'),
+                  style: theme.textTheme.bodySmall,
+                ),
               ],
             ),
           ),

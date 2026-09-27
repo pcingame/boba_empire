@@ -115,10 +115,6 @@ class _IdleView extends ConsumerWidget {
           _OnlineBadge(count: online!, l10n: l10n),
           const SizedBox(height: 16),
         ],
-        Text(l10n.arenaIntro, textAlign: TextAlign.center),
-        const SizedBox(height: 12),
-        Text(l10n.arenaMatch3Intro, textAlign: TextAlign.center),
-        const SizedBox(height: 24),
         FilledButton(
           key: const Key('arena-start-tap'),
           onPressed: () => ref
@@ -126,7 +122,9 @@ class _IdleView extends ConsumerWidget {
               .startMatchmaking(ArenaMode.tap),
           child: Text(l10n.arenaModeTap),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 6),
+        Text(l10n.arenaIntro, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodySmall),
+        const SizedBox(height: 20),
         FilledButton.tonal(
           key: const Key('arena-start-match3'),
           onPressed: () => ref
@@ -134,6 +132,8 @@ class _IdleView extends ConsumerWidget {
               .startMatchmaking(ArenaMode.match3),
           child: Text(l10n.arenaModeMatch3),
         ),
+        const SizedBox(height: 6),
+        Text(l10n.arenaMatch3Intro, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodySmall),
       ],
     );
   }

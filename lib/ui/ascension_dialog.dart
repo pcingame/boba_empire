@@ -73,13 +73,33 @@ class _AscensionDialog extends ConsumerWidget {
         ),
         FilledButton(
           key: const Key('ascension-confirm'),
-          onPressed: canAscend ? () => _confirm(context, ref) : null,
+          onPressed: canAscend ? () => _askConfirm(context, ref, available) : null,
           child: Text(canAscend
               ? l10n.ascensionConfirm(available)
               : l10n.ascensionNotEnough),
         ),
       ],
     );
+  }
+
+  Future<void> _askConfirm(BuildContext context, WidgetRef ref, int available) async {
+    final l10n = AppLocalizations.of(context)!;
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.ascensionTitle),
+        content: Text(l10n.ascensionWarning),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text(l10n.cancel)),
+          FilledButton(
+            key: const Key('ascension-confirm-yes'),
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(l10n.ascensionConfirm(available)),
+          ),
+        ],
+      ),
+    );
+    if (ok == true && context.mounted) _confirm(context, ref);
   }
 
   void _confirm(BuildContext context, WidgetRef ref) {
