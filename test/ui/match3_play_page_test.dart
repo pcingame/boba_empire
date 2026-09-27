@@ -97,6 +97,55 @@ void main() {
     c.dispose(); // dừng Timer 1 giây của GameController, không thì test báo
   });
 
+  testWidgets('qua màn → nút "Màn sau" đưa thẳng sang màn kế tiếp',
+      (tester) async {
+    // Mục tiêu 0 điểm: nước nào cũng đủ 1 sao.
+    final savedBase = Balance.m3TargetBase;
+    Balance.m3TargetBase = 1;
+    addTearDown(() => Balance.m3TargetBase = savedBase);
+
+    final c = await pumpPage(tester);
+    playOne(c);
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 2));
+
+    expect(find.text('Qua màn!'), findsOneWidget);
+    expect(find.text('Màn sau'), findsOneWidget);
+    expect(find.text('Danh sách màn'), findsNothing);
+
+    await tester.tap(find.text('Màn sau'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Màn 2'), findsOneWidget, reason: 'phải sang màn 2');
+    expect(c.read(match3ControllerProvider).level.id, 2);
+    expect(c.read(match3ControllerProvider).score, 0, reason: 'màn mới, điểm 0');
+
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
+  testWidgets('màn cuối thì không mời sang màn sau', (tester) async {
+    final savedBase = Balance.m3TargetBase;
+    final savedCount = Balance.m3LevelCount;
+    Balance.m3TargetBase = 1;
+    Balance.m3LevelCount = 1;
+    addTearDown(() {
+      Balance.m3TargetBase = savedBase;
+      Balance.m3LevelCount = savedCount;
+    });
+
+    final c = await pumpPage(tester);
+    playOne(c);
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 2));
+
+    expect(find.text('Màn sau'), findsNothing);
+    expect(find.text('Danh sách màn'), findsOneWidget);
+
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
   testWidgets('đã dùng lượt QC rồi thì lần kết thúc sau không mời nữa',
       (tester) async {
     final c = await pumpPage(tester);

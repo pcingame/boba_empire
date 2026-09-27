@@ -929,7 +929,11 @@ class GameController extends Notifier<GameSnapshot> {
       stars,
       incomePerSecond: state.incomePerSecond,
     );
-    if (reward.$1 > 0 || reward.$2 > 0) {
+    // LUÔN lưu + phát snapshot mới khi màn có sao: `applyMatch3Result` ghi
+    // `m3Stars` kể cả lúc thưởng bằng 0, và chính bản ghi đó mới là thứ mở khoá
+    // màn sau. Chỉ lưu khi có thưởng thì người chơi mới (thu nhập/giây = 0) qua
+    // màn 1 mà màn 2 vẫn khoá, mở lại app là mất sạch tiến độ.
+    if (stars > 0) {
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -1042,7 +1046,9 @@ class GameController extends Notifier<GameSnapshot> {
       offlineCapLevel: _game.offlineCapLevel,
       stage: _game.stage,
       adsRemoved: _game.adsRemoved,
-      m3Stars: _game.m3Stars,
+      // Bản sao: dùng chung instance thì `.select((s) => s.m3Stars)` so sánh
+      // ra "y nguyên" (cùng object) và UI không bao giờ rebuild.
+      m3Stars: List.unmodifiable(_game.m3Stars),
       starterPackOwned: _game.starterPackOwned,
       tutorialSeen: _game.tutorialSeen,
       dailyAvailable: dailyAvailable(_game, now),

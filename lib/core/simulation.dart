@@ -439,9 +439,13 @@ void grantBonus(GameState state, double amount) {
   if (stars <= before) return (0, 0);
   state.m3Stars[levelId - 1] = stars;
 
-  final cash = incomePerSecond *
-      Balance.m3RewardIncomeSeconds *
-      (stars - before);
+  // max(...) với mức sàn: người chơi mới chưa có thu nhập/giây thì phần tương
+  // đối bằng 0, không có sàn là qua màn mà chẳng được gì.
+  final perStar = max(
+    incomePerSecond * Balance.m3RewardIncomeSeconds,
+    Balance.m3RewardMinCash,
+  );
+  final cash = perStar * (stars - before);
   grantBonus(state, cash);
   final gems = (before < 3 && stars >= 3) ? Balance.m3ThreeStarGems : 0;
   grantGems(state, gems.toDouble());

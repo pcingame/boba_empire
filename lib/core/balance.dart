@@ -109,6 +109,11 @@ class Balance {
   /// Ngưỡng TƯƠNG ĐỐI vì kinh tế trải 1e2..1e80 (cùng cách nhiệm vụ ngày làm).
   static int m3RewardIncomeSeconds = 600;
 
+  /// Mức sàn cho thưởng trên: người chơi mới có thu nhập/giây = 0 (chưa mua
+  /// nguồn thu nào) nên công thức tương đối trả về đúng 0 — qua màn mà không
+  /// được gì. 100 Xu đủ mua nguồn thu đầu tiên (15 Xu) vài lần.
+  static double m3RewardMinCash = 100;
+
   /// Nhiệm vụ LẶP LẠI sau khi hết chuỗi 10 bước: "kiếm thêm X Xu" với X =
   /// [questRepeatBaseEarn] · 10^vòng. Thưởng cố định [questRepeatRewardGems] 💎.
   static const double questRepeatBaseEarn = 50000000; // 50M

@@ -29,6 +29,7 @@ class Match3PlayPage extends ConsumerStatefulWidget {
 class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
   bool _resultShown = false;
   bool _continuedWithAd = false;
+  bool _goingNext = false;
 
   @override
   void initState() {
@@ -113,6 +114,9 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
         .read(gameControllerProvider.notifier)
         .grantMatch3Result(widget.level.id, stars);
 
+    final hasNext =
+        stars >= 1 && widget.level.id < Balance.m3LevelCount;
+
     if (!mounted) return;
     await showDialog<void>(
       context: context,
@@ -151,17 +155,39 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
             onPressed: () => Navigator.of(dialogContext).pop(),
             child: Text(l10n.m3Retry),
           ),
-          FilledButton(
-            onPressed: () {
-              Navigator.of(dialogContext).pop();
-              Navigator.of(context).pop();
-            },
-            child: Text(l10n.m3Back),
-          ),
+          // Qua màn thì lối đi chính là MÀN SAU, không phải quay ra danh sách
+          // (mũi tên trên AppBar vẫn làm được việc đó).
+          if (hasNext)
+            FilledButton(
+              onPressed: () {
+                _goingNext = true;
+                Navigator.of(dialogContext).pop();
+              },
+              child: Text(l10n.m3Next),
+            )
+          else
+            FilledButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                Navigator.of(context).pop();
+              },
+              child: Text(l10n.m3Back),
+            ),
         ],
       ),
     );
     if (!mounted) return;
+    // Sang màn sau: thay luôn trang hiện tại để bấm Back không quay lại từng
+    // màn đã chơi, và KHÔNG nạp lại màn cũ.
+    if (_goingNext) {
+      _goingNext = false;
+      await Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => Match3PlayPage(level: Match3Level(widget.level.id + 1)),
+        ),
+      );
+      return;
+    }
     // Đã cộng nước thì chơi tiếp bàn đang dở, KHÔNG nạp lại màn.
     if (_continuedWithAd) {
       _continuedWithAd = false;
