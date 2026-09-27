@@ -1126,4 +1126,9 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get m3NoReward => 'รับรางวัลด่านนี้ไปแล้ว';
+
+  @override
+  String m3AdMoves(int n) {
+    return 'ดูโฆษณา: +$n ตา';
+  }
 }

@@ -100,6 +100,11 @@ class Balance {
   /// lại mà vẫn thưởng là máy in 💎). 60 màn x 3 = 180 💎 trọn đời.
   static int m3ThreeStarGems = 3;
 
+  /// Xem quảng cáo thưởng để chơi tiếp: cộng chừng này nước. CHỈ 1 lần mỗi lượt
+  /// chơi — không giới hạn thì xem đủ quảng cáo là qua được mọi màn, mục tiêu
+  /// điểm mất hết ý nghĩa.
+  static const int m3AdExtraMoves = 5;
+
   /// Thưởng Xu lần đầu đạt mỗi mốc sao = thu nhập/giây x chừng này giây x số sao.
   /// Ngưỡng TƯƠNG ĐỐI vì kinh tế trải 1e2..1e80 (cùng cách nhiệm vụ ngày làm).
   static int m3RewardIncomeSeconds = 600;

@@ -1138,4 +1138,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get m3NoReward => 'Você já recebeu a recompensa deste nível';
+
+  @override
+  String m3AdMoves(int n) {
+    return 'Ver anúncio: +$n jogadas';
+  }
 }

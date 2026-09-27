@@ -5,6 +5,7 @@ library;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../arena/match3_rules.dart';
+import '../core/balance.dart';
 import '../core/match3_levels.dart';
 
 class Match3PlayState {
@@ -15,6 +16,7 @@ class Match3PlayState {
     required this.score,
     this.frames = const [],
     this.moveId = 0,
+    this.adContinueUsed = false,
   });
 
   final Match3Level level;
@@ -23,6 +25,9 @@ class Match3PlayState {
   final int score;
   final List<List<int>> frames;
   final int moveId;
+
+  /// Đã dùng lượt "xem QC thêm nước" của lượt chơi này chưa (1 lần/lượt).
+  final bool adContinueUsed;
 
   int get stars => match3Stars(score, level.target);
 
@@ -38,6 +43,20 @@ class Match3Controller extends Notifier<Match3PlayState> {
 
   /// Bắt đầu (hoặc chơi lại) một màn.
   void load(Match3Level level) => state = _start(level);
+
+  /// Cộng nước sau khi xem quảng cáo thưởng. Chỉ có tác dụng một lần mỗi lượt
+  /// chơi (xem [Balance.m3AdExtraMoves]).
+  void addMovesFromAd() {
+    if (state.adContinueUsed) return;
+    state = Match3PlayState(
+      level: state.level,
+      cells: state.cells,
+      movesLeft: state.movesLeft + Balance.m3AdExtraMoves,
+      score: state.score,
+      moveId: state.moveId,
+      adContinueUsed: true,
+    );
+  }
 
   Match3PlayState _start(Match3Level level) {
     final board = Match3Board.initial(level.seq());
@@ -68,6 +87,9 @@ class Match3Controller extends Notifier<Match3PlayState> {
       score: state.score + move.score,
       frames: move.frames,
       moveId: state.moveId + 1,
+      // PHẢI mang theo: quên là cờ reset sau mỗi nước đi -> xem quảng cáo
+      // thêm nước được vô hạn.
+      adContinueUsed: state.adContinueUsed,
     );
     return true;
   }

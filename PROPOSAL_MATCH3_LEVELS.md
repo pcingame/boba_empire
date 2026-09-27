@@ -146,10 +146,15 @@ hiện tại (analytics mới có 2 device, gần như toàn máy dev) thì thu 
 `--dart-define=ADMOB_TEST_DEVICES=...` (cơ chế đã có). Banner đáng làm như hạ
 tầng sẵn sàng cho lúc có người chơi, không phải như nguồn thu ngay.
 
-**Đáng cân nhắc thêm (không thay banner)**: rewarded interstitial "xem QC để
-thêm 5 nước / chơi lại màn" — eCPM cao hơn banner nhiều lần và hợp ngữ cảnh
-match-3, dùng lại `AdService.showRewardedAd()` đã có. Nếu muốn thì đây là thứ
-thực sự ra tiền, banner chỉ là nền.
+**Rewarded "thêm nước"** ✅ ĐÃ LÀM (2026-09-28, cùng đợt): ở bảng kết quả, nếu
+chưa đạt 3★ và chưa dùng lượt nào, có nút *"Xem QC: +5 nước"* — xem xong thì
+chơi tiếp **bàn đang dở** (giữ nguyên điểm và bàn cờ), không nạp lại màn.
+**Đúng 1 lần mỗi lượt chơi** (`Balance.m3AdExtraMoves`, cờ
+`Match3PlayState.adContinueUsed`): không giới hạn thì xem đủ quảng cáo là qua
+được mọi màn, mục tiêu điểm mất hết ý nghĩa. Người đã mua "Gỡ quảng cáo" hoặc
+đang VIP được cộng thẳng, cùng khuôn với mọi chỗ dùng rewarded khác.
+eCPM rewarded cao hơn banner nhiều lần — đây mới là phần thực sự ra tiền,
+banner chỉ là nền.
 
 ## 7. Tái dùng widget bàn cờ (không viết cái thứ hai)
 

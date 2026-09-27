@@ -1131,4 +1131,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get m3NoReward => 'Đã nhận thưởng màn này rồi';
+
+  @override
+  String m3AdMoves(int n) {
+    return 'Xem QC: +$n nước';
+  }
 }

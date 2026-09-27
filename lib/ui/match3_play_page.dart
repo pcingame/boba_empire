@@ -7,7 +7,9 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../ads/ad_service.dart';
 import '../ads/banner_ad_box.dart';
+import '../core/balance.dart';
 import '../core/format.dart';
 import '../core/match3_levels.dart';
 import '../l10n/app_localizations.dart';
@@ -26,6 +28,7 @@ class Match3PlayPage extends ConsumerStatefulWidget {
 
 class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
   bool _resultShown = false;
+  bool _continuedWithAd = false;
 
   @override
   void initState() {
@@ -137,6 +140,13 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
           ],
         ),
         actions: [
+          // Chơi tiếp bằng quảng cáo: chỉ mời khi CHƯA dùng lượt này và người
+          // chơi chưa đạt 3 sao (đạt rồi thì thêm nước cũng không được gì).
+          if (!play.adContinueUsed && stars < 3)
+            TextButton(
+              onPressed: () => _continueWithAd(dialogContext),
+              child: Text(l10n.m3AdMoves(Balance.m3AdExtraMoves)),
+            ),
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(),
             child: Text(l10n.m3Retry),
@@ -152,7 +162,31 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
       ),
     );
     if (!mounted) return;
+    // Đã cộng nước thì chơi tiếp bàn đang dở, KHÔNG nạp lại màn.
+    if (_continuedWithAd) {
+      _continuedWithAd = false;
+      setState(() => _resultShown = false);
+      return;
+    }
     setState(() => _resultShown = false);
     ref.read(match3ControllerProvider.notifier).load(widget.level);
+  }
+
+  /// Xem quảng cáo thưởng để chơi tiếp. Người đã mua "Gỡ quảng cáo" (hoặc đang
+  /// VIP) được cộng thẳng — cùng khuôn với mọi chỗ dùng rewarded khác trong app.
+  Future<void> _continueWithAd(BuildContext dialogContext) async {
+    final l10n = AppLocalizations.of(context)!;
+    final messenger = ScaffoldMessenger.of(context);
+    final adFree = ref.read(gameControllerProvider).adFree;
+    final outcome = adFree
+        ? RewardOutcome.earned
+        : await ref.read(adServiceProvider).showRewardedAd();
+    if (outcome != RewardOutcome.earned) {
+      messenger.showSnackBar(SnackBar(content: Text(l10n.adNotReadySnack)));
+      return;
+    }
+    _continuedWithAd = true;
+    ref.read(match3ControllerProvider.notifier).addMovesFromAd();
+    if (dialogContext.mounted) Navigator.of(dialogContext).pop();
   }
 }

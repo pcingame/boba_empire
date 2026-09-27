@@ -407,5 +407,7 @@
   "m3Next": "Màn sau",
   "m3Back": "Danh sách màn",
   "m3Reward": "Thưởng",
-  "m3NoReward": "Đã nhận thưởng màn này rồi"
+  "m3NoReward": "Đã nhận thưởng màn này rồi",
+  "m3AdMoves": "Xem QC: +{n} nước",
+  "@m3AdMoves": { "placeholders": { "n": { "type": "int" } } }
 }

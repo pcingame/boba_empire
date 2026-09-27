@@ -620,3 +620,7 @@ Tab thứ 5 ở thanh dưới. Thiết kế đầy đủ + phần cố ý hoãn:
   giữa trận PvP là bàn lệch server. Đấu Trường vẫn kẹt như cũ (ROADMAP P2 §9).
 - **Banner quảng cáo** ở đáy cả hai màn của tab này (`lib/ads/banner_ad_box.dart`),
   tôn trọng `adFree`; unit id thật chưa tạo → release chưa hiện banner.
+- **Rewarded "xem QC: +5 nước"** ở bảng kết quả, chỉ hiện khi chưa đạt 3★ và
+  chưa dùng lượt nào. Chơi tiếp bàn đang dở (giữ điểm + bàn cờ). **1 lần mỗi
+  lượt chơi** — không giới hạn thì xem đủ quảng cáo là qua mọi màn. Dùng lại
+  `AdService.showRewardedAd()`, `adFree` được cộng thẳng.

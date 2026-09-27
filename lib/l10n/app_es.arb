@@ -355,5 +355,6 @@
   "m3Next": "Siguiente nivel",
   "m3Back": "Lista de niveles",
   "m3Reward": "Recompensa",
-  "m3NoReward": "Ya reclamaste la recompensa de este nivel"
+  "m3NoReward": "Ya reclamaste la recompensa de este nivel",
+  "m3AdMoves": "Ver anuncio: +{n} movimientos"
 }

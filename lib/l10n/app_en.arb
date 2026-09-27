@@ -355,5 +355,6 @@
   "m3Next": "Next level",
   "m3Back": "Level list",
   "m3Reward": "Reward",
-  "m3NoReward": "You already claimed this level's reward"
+  "m3NoReward": "You already claimed this level's reward",
+  "m3AdMoves": "Watch ad: +{n} moves"
 }
