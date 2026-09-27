@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:io' show Platform;
 
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:upgrader/upgrader.dart';
 
 import 'arena/arena_config.dart';
 import 'l10n/app_localizations.dart';
@@ -87,7 +88,10 @@ class BobaEmpireApp extends ConsumerWidget {
       themeMode: ThemeMode.system,
       theme: _buildTheme(Brightness.light, seed),
       darkTheme: _buildTheme(Brightness.dark, seed),
-      home: const HomePage(),
+      // Chỉ bản release: debug/test không gọi mạng hỏi store.
+      home: kReleaseMode
+          ? UpgradeAlert(child: const HomePage())
+          : const HomePage(),
     );
   }
 

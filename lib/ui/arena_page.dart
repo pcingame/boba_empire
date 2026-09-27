@@ -53,7 +53,8 @@ class ArenaPage extends ConsumerWidget {
                   kToolbarHeight -
                   40,
             ),
-            child: Center(
+            child: Align(
+              alignment: viewState is ArenaInMatch ? Alignment.topCenter : Alignment.center,
               child: switch (viewState) {
                 ArenaIdle() => _IdleView(l10n: l10n, online: online),
                 ArenaQueued() => _QueuedView(l10n: l10n, online: online),
@@ -306,6 +307,7 @@ class _DuelHeader extends StatelessWidget {
           borderRadius: BorderRadius.circular(5),
           child: SizedBox(
             height: 10,
+            width: double.infinity,
             child: LayoutBuilder(
               builder: (context, box) => Stack(
                 children: [

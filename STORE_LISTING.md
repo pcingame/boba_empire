@@ -36,7 +36,7 @@ Mọi trường dưới đây đã được kiểm tra tự động ≤ giới h
 **Mô tả ngắn (Play):** `Chạm pha trà, xây đế chế trà sữa qua 18 giai đoạn! Idle tycoon có cốt truyện.`
 **Subtitle (App Store):** `Idle tycoon trà sữa`
 **Keywords (App Store):** `idle,tycoon,clicker,boba,trà sữa,trà,cafe,kinh doanh,tap,thư giãn,nhàn rỗi,cốt truyện`
-**Promotional Text (App Store):** `Mới: Kỷ Nguyên, nhiệm vụ hằng ngày và 6 giai đoạn mới! Chạm pha trà, xây đế chế trà sữa từ xe đẩy tới huyền thoại. Kiếm Xu cả khi offline.`
+**Promotional Text (App Store):** `Mới: Đấu Trường dạng Trân Châu Rơi, Kỷ Nguyên, nhiệm vụ hằng ngày! Chạm pha trà, xây đế chế trà sữa từ xe đẩy tới huyền thoại. Kiếm Xu cả khi offline.`
 
 **Mô tả đầy đủ:**
 ```
@@ -63,7 +63,7 @@ Nhiệm vụ hằng ngày, điểm danh, vòng quay may mắn — quay lại m�
 Chạm mèo may mắn để nhận Mưa vàng ×3, đón khách VIP để thu Kim Cương.
 
 ⚔️ ĐẤU TRƯỜNG & BẢNG XẾP HẠNG
-Đấu 1v1 trong 60 giây, leo bảng xếp hạng thu nhập.
+Đấu 1v1 trong 60 giây với hai dạng: Đua chạm và Trân Châu Rơi (ghép 3). Leo bảng xếp hạng thu nhập và tốc độ phá đảo cốt truyện.
 
 ☁️ SAO LƯU TIẾN TRÌNH
 Liên kết email để giữ tiến trình khi đổi máy hoặc gỡ app.
@@ -84,7 +84,7 @@ Bắt đầu pha ly trà đầu tiên ngay hôm nay!
 **Short description (Play):** `Tap, brew & grow a bubble tea empire across 18 stages! Idle tycoon with a story.`
 **Subtitle (App Store):** `Relaxing bubble tea tycoon`
 **Keywords (App Store):** `idle,tycoon,clicker,boba,bubble tea,tea,cafe,incremental,tap,business,relaxing,story`
-**Promotional Text (App Store):** `New: Ascension, daily quests and 6 new stages! Tap, brew and grow your bubble tea empire from street cart to legend. Earn even while offline.`
+**Promotional Text (App Store):** `New: Falling Pearls arena mode, Ascension and daily quests! Tap, brew and grow your bubble tea empire from street cart to legend. Earn even while offline.`
 
 **Full description:**
 ```
@@ -111,7 +111,7 @@ Daily quests, daily check-in and a lucky wheel — return every day to collect G
 Tap the lucky cat for a x3 Golden Rush, and serve VIP customers to collect Gems.
 
 ⚔️ ARENA & LEADERBOARDS
-Duel 1v1 in 60 seconds and climb the earnings leaderboard.
+Duel 1v1 in 60 seconds in two modes: Tap race and Falling Pearls (match-3). Climb the earnings and story speedrun leaderboards.
 
 ☁️ BACK UP YOUR PROGRESS
 Link an email to keep your progress when you switch devices or reinstall.
@@ -132,7 +132,7 @@ Start brewing your Boba Empire today!
 **Descrição curta (Play):** `Toque, prepare e expanda seu império de bubble tea em 18 fases! Idle e história.`
 **Subtítulo (App Store):** `Império de bubble tea`
 **Keywords (App Store):** `idle,tycoon,clicker,boba,bubble tea,cha,cafe,incremental,negocio,relaxante,historia`
-**Promotional Text (App Store):** `Novo: Ascensão, missões diárias e 6 novas fases! Toque, prepare e expanda seu império de bubble tea do carrinho à lenda. Ganhe até offline.`
+**Promotional Text (App Store):** `Novo: Arena Pérolas Caindo, Ascensão e missões diárias! Toque, prepare e expanda seu império de bubble tea do carrinho à lenda. Ganhe até offline.`
 
 **Descrição completa:**
 ```
@@ -159,7 +159,7 @@ Missões diárias, check-in diário e roda da sorte — volte todo dia para ganh
 Toque no gato da sorte para uma Chuva Dourada ×3 e atenda clientes VIP para ganhar Gemas.
 
 ⚔️ ARENA E RANKINGS
-Duelos 1v1 de 60 segundos e suba no ranking de ganhos.
+Duelos 1v1 de 60 segundos em dois modos: Corrida de toques e Pérolas Caindo (combine 3). Suba nos rankings de ganhos e de velocidade da história.
 
 ☁️ BACKUP DO PROGRESSO
 Vincule um e-mail para manter seu progresso ao trocar de aparelho ou reinstalar.
@@ -180,7 +180,7 @@ Comece a preparar seu Boba Empire hoje!
 **Descripción corta (Play):** `¡Toca, prepara y crea tu imperio de bubble tea en 18 etapas! Idle con historia.`
 **Subtítulo (App Store):** `Imperio de bubble tea`
 **Keywords (App Store):** `idle,tycoon,clicker,boba,bubble tea,te,cafe,incremental,negocio,relajante,historia`
-**Promotional Text (App Store):** `Nuevo: Ascensión, misiones diarias y 6 etapas nuevas. Toca, prepara y haz crecer tu imperio de bubble tea del carrito a la leyenda. Gana incluso offline.`
+**Promotional Text (App Store):** `Nuevo: Arena Perlas que Caen, Ascensión y misiones diarias. Toca, prepara y haz crecer tu imperio de bubble tea del carrito a la leyenda. Gana incluso offline.`
 
 **Descripción completa:**
 ```
@@ -207,7 +207,7 @@ Misiones diarias, registro diario y ruleta de la suerte: vuelve cada día para r
 Toca al gato de la suerte para una Lluvia Dorada ×3 y atiende clientes VIP para conseguir Gemas.
 
 ⚔️ ARENA Y CLASIFICACIONES
-Duelos 1v1 de 60 segundos y sube en la clasificación de ganancias.
+Duelos 1v1 de 60 segundos en dos modos: Carrera de toques y Perlas que caen (combina 3). Sube en las clasificaciones de ganancias y de velocidad de la historia.
 
 ☁️ COPIA DE SEGURIDAD
 Vincula un correo para conservar tu progreso al cambiar de dispositivo o reinstalar.
@@ -228,7 +228,7 @@ Disponible en 6 idiomas. Ideal para fans de idle clicker, tycoon e incremental. 
 **Deskripsi singkat (Play):** `Ketuk, seduh & bangun kerajaan bubble tea di 18 tahap! Idle tycoon berkisah.`
 **Subjudul (App Store):** `Kerajaan bubble tea`
 **Keywords (App Store):** `idle,tycoon,clicker,boba,bubble tea,teh,kafe,incremental,bisnis,santai,cerita`
-**Promotional Text (App Store):** `Baru: Ascension, misi harian, dan 6 tahap baru! Ketuk, seduh, dan kembangkan kerajaan bubble tea dari gerobak sampai legenda. Cuan meski offline.`
+**Promotional Text (App Store):** `Baru: Arena Mutiara Jatuh, Ascension, dan misi harian! Ketuk, seduh, dan kembangkan kerajaan bubble tea dari gerobak sampai legenda. Cuan meski offline.`
 
 **Deskripsi lengkap:**
 ```
@@ -255,7 +255,7 @@ Misi harian, check-in harian, dan roda keberuntungan — kembali tiap hari untuk
 Ketuk kucing keberuntungan untuk Hujan Emas ×3 dan layani pelanggan VIP untuk mendapat Permata.
 
 ⚔️ ARENA & PAPAN PERINGKAT
-Duel 1v1 selama 60 detik dan naik di papan peringkat pendapatan.
+Duel 1v1 selama 60 detik dengan dua mode: Balap ketuk dan Mutiara Jatuh (cocokkan 3). Naik di papan peringkat pendapatan dan kecepatan tamat cerita.
 
 ☁️ CADANGKAN PROGRES
 Hubungkan email agar progres aman saat ganti perangkat atau install ulang.
@@ -276,7 +276,7 @@ Mulai seduh Boba Empire-mu hari ini!
 **คำอธิบายสั้น (Play):** `แตะ ชง และสร้างอาณาจักรชานมไข่มุก 18 ด่าน! เกมไอเดิลไทคูนมีเนื้อเรื่อง`
 **คำบรรยาย (App Store):** `ไทคูนชานมไข่มุก`
 **Keywords (App Store):** `idle,tycoon,clicker,boba,ชานม,ชา,คาเฟ่,incremental,ธุรกิจ,ผ่อนคลาย,เนื้อเรื่อง`
-**Promotional Text (App Store):** `ใหม่: ระบบยุคใหม่ ภารกิจรายวัน และอีก 6 ด่าน! แตะ ชง และขยายอาณาจักรชานมจากรถเข็นสู่ตำนาน หาเงินได้แม้ออฟไลน์`
+**Promotional Text (App Store):** `ใหม่: สนามประลองไข่มุกร่วง ระบบยุคใหม่ และภารกิจรายวัน! แตะ ชง และขยายอาณาจักรชานมจากรถเข็นสู่ตำนาน หาเงินได้แม้ออฟไลน์`
 
 **คำอธิบายแบบเต็ม:**
 ```
@@ -303,7 +303,7 @@ Boba Empire คือเกมไอเดิลไทคูนผ่อนค�
 แตะแมวนำโชคเพื่อรับโกลเด้นรัช ×3 และบริการลูกค้า VIP เพื่อเก็บเพชร
 
 ⚔️ สนามประลองและอันดับ
-ดวล 1 ต่อ 1 ใน 60 วินาที และไต่อันดับรายได้
+ดวล 1 ต่อ 1 ใน 60 วินาที 2 โหมด: แข่งแตะและไข่มุกร่วง (จับคู่ 3) ไต่อันดับรายได้และความเร็วจบเนื้อเรื่อง
 
 ☁️ สำรองความคืบหน้า
 ผูกอีเมลเพื่อเก็บความคืบหน้าไว้เมื่อเปลี่ยนเครื่องหรือลบแอป
