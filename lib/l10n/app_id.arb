@@ -337,5 +337,9 @@
   "dqEarn": "Dapatkan {amount} Koin",
   "dqCat": "Tangkap Kucing Emas",
   "dqVip": "Layani pelanggan VIP",
-  "dqSpin": "Putar Roda Keberuntungan"
+  "dqSpin": "Putar Roda Keberuntungan",
+  "notifyOfflineFullTitle": "Kas Koin sudah penuh! 🧋",
+  "notifyOfflineFullBody": "Kedai berhenti mengumpulkan Koin — ambil sekarang dan mulai giliran baru.",
+  "notifyDailyTitle": "Hari baru, misi baru 📋",
+  "notifyDailyBody": "Hadiah harian, 1 putaran gratis, dan 3 misi sedang menunggu."
 }

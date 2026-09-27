@@ -1064,4 +1064,18 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get dqSpin => 'หมุนวงล้อนำโชค';
+
+  @override
+  String get notifyOfflineFullTitle => 'คลังเหรียญเต็มแล้ว! 🧋';
+
+  @override
+  String get notifyOfflineFullBody =>
+      'ร้านหยุดสะสมเหรียญแล้ว — กลับมาเก็บแล้วเปิดกะใหม่กันเถอะ';
+
+  @override
+  String get notifyDailyTitle => 'วันใหม่ ภารกิจใหม่ 📋';
+
+  @override
+  String get notifyDailyBody =>
+      'รางวัลรายวัน หมุนวงล้อฟรี 1 ครั้ง และภารกิจ 3 อย่างรออยู่';
 }

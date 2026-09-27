@@ -109,6 +109,49 @@ starter): 🇮🇩 ~Rp 39.000 / Rp 9.000 · 🇧🇷 ~R$ 9,90 / R$ 2,90 · 🇹�
 
 ---
 
+## 2b. Firebase Remote Config (tune số không cần nộp bản mới)
+
+12 nút vặn cân bằng có thể ghi đè từ console — tên tham số trên console **đúng
+bằng tên field** trong `lib/core/balance.dart`, khoảng hợp lệ khai báo ở
+`lib/data/remote_balance.dart` (gõ ngoài khoảng thì app BỎ QUA, giữ số biên dịch
+sẵn — cố tình như vậy để một số 0 gõ nhầm không phá save người chơi).
+
+1. Firebase Console → project của app → **Remote Config** → *Create configuration*.
+2. Thêm tham số, kiểu **Number**, tên lấy từ danh sách dưới. Không cần thêm đủ —
+   thiếu cái nào thì cái đó dùng giá trị trong app.
+3. *Publish changes*. App lấy bản mới ở lần mở kế tiếp (cache 1 giờ), và áp ngay
+   trong phiên đó.
+
+| Tham số | Đang là | Khoảng hợp lệ | Ảnh hưởng |
+|---|---|---|---|
+| `prestigeK` | 0.02 | 0.001 – 0.05 | Tốc độ tích Sao. **Trần 0.05 là ràng buộc của trigger chống gian lận trên Supabase** — vượt là mọi người chơi bị server từ chối |
+| `milestoneStep` | 50 | 5 – 500 | Bao nhiêu cấp thì nguồn thu ×2. Công thức tăng nhanh nhất cả game |
+| `milestoneFactor` | 2.0 | 1.1 – 5 | Hệ số mỗi mốc |
+| `bonusPerStar` | 0.02 | 0.0001 – 1 | +% thu nhập mỗi Sao |
+| `milestoneGlobalBonus` | 0.03 | 0 – 1 | +% thu nhập toàn cục mỗi "mốc vàng" |
+| `maxOfflineSeconds` | 28800 | 1800 – 604800 | Trần tiền offline (giây) |
+| `catSpawnMinMs` / `catSpawnMaxMs` | 180000 / 300000 | 10s – 60p | Nhịp mèo Mưa vàng |
+| `vipSpawnMinMs` / `vipSpawnMaxMs` | 240000 / 420000 | 10s – 60p | Nhịp khách VIP |
+| `dailyQuestRewardGems` | 8 | 0 – 200 | 💎/nhiệm vụ ngày |
+| `dailyQuestBonusGems` | 15 | 0 – 500 | 💎 thưởng xong cả 3 |
+
+Chưa bật Remote Config trên console cũng không sao: fetch lỗi thì app giữ nguyên
+số biên dịch sẵn (có log `RemoteBalance`).
+
+## 2c. Thông báo nhắc quay lại
+
+Không cần console nào cả — thông báo **cục bộ** (`lib/notify/reminders.dart`),
+đặt lịch lúc app chuyển nền, xoá khi mở lại. Hai mốc: kho Xu offline đầy, và
+sang ngày mới (dời sang 10 giờ sáng giờ máy nếu nửa đêm UTC rơi vào đêm).
+
+- Quyền hỏi ở **lần quay lại app đầu tiên**, không hỏi lúc mở app lần đầu (màn
+  mở app đã có ATT + form đồng ý quảng cáo).
+- Android cần `isCoreLibraryDesugaringEnabled` + 2 receiver trong manifest — đã
+  cấu hình sẵn. Dùng alarm KHÔNG chính xác (cửa sổ ±1h) để khỏi phải xin quyền
+  `SCHEDULE_EXACT_ALARM`; nhắc trễ vài chục phút không ảnh hưởng gì.
+- iOS: chưa cho quyền thì hệ thống **im lặng bỏ qua** lịch hẹn (đã kiểm trên
+  simulator) — nên đừng bỏ bước xin quyền.
+
 ## 3. Play Families & chính sách {#play-families}
 
 App khai báo **General audience (13+)**, nên:

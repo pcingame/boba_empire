@@ -1069,4 +1069,18 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get dqSpin => 'Quay vòng quay may mắn';
+
+  @override
+  String get notifyOfflineFullTitle => 'Kho Xu đã đầy! 🧋';
+
+  @override
+  String get notifyOfflineFullBody =>
+      'Quán ngừng tích Xu mất rồi — ghé nhận và mở ca mới nào.';
+
+  @override
+  String get notifyDailyTitle => 'Ngày mới, việc mới 📋';
+
+  @override
+  String get notifyDailyBody =>
+      'Điểm danh, 1 lượt quay miễn phí và 3 nhiệm vụ hôm nay đang chờ bạn.';
 }

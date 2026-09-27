@@ -27,6 +27,7 @@ import 'iap/iap_config.dart';
 import 'iap/iap_service.dart';
 import 'iap/real_iap_service.dart';
 import 'iap/receipt_verifier.dart';
+import 'data/remote_balance.dart';
 import 'state/game_providers.dart';
 import 'ui/home_page.dart';
 
@@ -46,6 +47,9 @@ Future<void> main() async {
       FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
       return true;
     };
+    // Nút vặn cân bằng tải từ Remote Config — KHÔNG await (gọi mạng), giá trị
+    // biên dịch sẵn dùng ngay, bản mới áp khi về tới.
+    unawaited(RemoteBalance.init());
   }
   // Đấu Trường (Arena PvP) — xem PROPOSAL_ARENA_PVP.md. Khởi tạo sớm, trước
   // cả `runApp`, để `ArenaRepository`/`ArenaController` luôn có sẵn

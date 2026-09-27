@@ -277,12 +277,15 @@ double applyOfflineEarnings(
   GameState state,
   int nowMillis, {
   List<GeneratorConfig> configs = Balance.generators,
-  int maxOfflineSeconds = Balance.maxOfflineSeconds,
+  // Không để mặc định là Balance.maxOfflineSeconds được: field đó không còn
+  // `const` (Remote Config ghi đè được — xem lib/data/remote_balance.dart).
+  int? maxOfflineSeconds,
 }) {
+  final capSeconds = maxOfflineSeconds ?? Balance.maxOfflineSeconds;
   final elapsedMs = nowMillis - state.lastSeenMillis;
   state.lastSeenMillis = nowMillis;
   if (elapsedMs <= 0) return 0; // đồng hồ bị lùi hoặc không đổi
-  final elapsedSec = min(elapsedMs / 1000.0, maxOfflineSeconds.toDouble());
+  final elapsedSec = min(elapsedMs / 1000.0, capSeconds.toDouble());
   // Offline áp: perk "Siêu offline" + VIP ×2 (nếu còn hạn). KHÔNG áp boost tạm
   // (Mưa vàng / x2-24h) — đó là thưởng cho lúc chơi.
   final vipMult = nowMillis < state.vipUntilMillis

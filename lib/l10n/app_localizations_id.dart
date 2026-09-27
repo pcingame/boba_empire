@@ -1073,4 +1073,18 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get dqSpin => 'Putar Roda Keberuntungan';
+
+  @override
+  String get notifyOfflineFullTitle => 'Kas Koin sudah penuh! 🧋';
+
+  @override
+  String get notifyOfflineFullBody =>
+      'Kedai berhenti mengumpulkan Koin — ambil sekarang dan mulai giliran baru.';
+
+  @override
+  String get notifyDailyTitle => 'Hari baru, misi baru 📋';
+
+  @override
+  String get notifyDailyBody =>
+      'Hadiah harian, 1 putaran gratis, dan 3 misi sedang menunggu.';
 }

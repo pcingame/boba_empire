@@ -1875,6 +1875,30 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Quay vòng quay may mắn'**
   String get dqSpin;
+
+  /// No description provided for @notifyOfflineFullTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kho Xu đã đầy! 🧋'**
+  String get notifyOfflineFullTitle;
+
+  /// No description provided for @notifyOfflineFullBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quán ngừng tích Xu mất rồi — ghé nhận và mở ca mới nào.'**
+  String get notifyOfflineFullBody;
+
+  /// No description provided for @notifyDailyTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngày mới, việc mới 📋'**
+  String get notifyDailyTitle;
+
+  /// No description provided for @notifyDailyBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Điểm danh, 1 lượt quay miễn phí và 3 nhiệm vụ hôm nay đang chờ bạn.'**
+  String get notifyDailyBody;
 }
 
 class _AppLocalizationsDelegate

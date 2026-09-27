@@ -36,13 +36,21 @@ vào `RealAdService(ready:)`, `_load()` await nó trước khi gọi `RewardedAd
 (1 `jsonEncode`/10s), tick 1s + `.select()` đã lọc rebuild tốt (33 chỗ `.select`
 trên 28 `ref.watch` trong `home_page.dart`).
 
-## P1 — Mở khoá việc tune (chặn mọi thứ khác)
+## P1 — Mở khoá việc tune ✅ #5, #6 XONG 2026-09-28 (#7 chờ bạn)
 
 | # | Việc | Lý do |
 |---|---|---|
-| 5 | **Firebase Remote Config** override ~8 hằng số nóng trong `balance.dart` (`milestoneStep`, `prestigeK`, `bonusPerStar`, spawn rate mèo/VIP/đơn hàng, reward 💎/ngày) | Backlog #3/#12 "cần playtest" đứng im nhiều tuần vì mỗi lần đổi số = nộp store + chờ review iOS. Firebase đã init sẵn (Crashlytics) → chỉ thêm 1 dep + 1 hàm `Balance.hot(key, default)` |
-| 6 | **Thông báo local** (`flutter_local_notifications`): trần offline đã đầy · vòng quay free reset · nhiệm vụ ngày mới | Hiện **không có** kênh kéo người chơi về (pubspec không có dep thông báo nào). Với idle game đây là đòn retention lớn nhất, và không cần thêm nội dung nào |
-| 7 | Xong 5 bước còn lại trong `DOMAIN_TODO.md` (DNS Namecheap + GitHub Pages) | Landing page đã dựng mà domain chưa trỏ |
+| 5 | ✅ **Firebase Remote Config** override ~8 hằng số nóng trong `balance.dart` (`milestoneStep`, `prestigeK`, `bonusPerStar`, spawn rate mèo/VIP/đơn hàng, reward 💎/ngày) | Backlog #3/#12 "cần playtest" đứng im nhiều tuần vì mỗi lần đổi số = nộp store + chờ review iOS. Firebase đã init sẵn (Crashlytics) → chỉ thêm 1 dep + 1 hàm `Balance.hot(key, default)` |
+| 6 | ✅ **Thông báo local** (`flutter_local_notifications`): trần offline đã đầy · vòng quay free reset · nhiệm vụ ngày mới | Hiện **không có** kênh kéo người chơi về (pubspec không có dep thông báo nào). Với idle game đây là đòn retention lớn nhất, và không cần thêm nội dung nào |
+| 7 | ⏳ Xong 5 bước còn lại trong `DOMAIN_TODO.md` (DNS Namecheap + GitHub Pages) | Landing page đã dựng mà domain chưa trỏ |
+
+**Còn phải làm bằng tay để #5 có tác dụng:** tạo tham số trên Firebase Console
+(bảng tên + khoảng hợp lệ ở `SETUP.md` §2b). Chưa tạo thì app vẫn chạy bằng số
+biên dịch sẵn.
+
+**Chưa kiểm được trong máy:** thông báo lúc NỔ thật (alarm không chính xác có
+cửa sổ ±1h; máy ảo Google Play không root được để tua đồng hồ). Đã kiểm: lịch
+vào đúng AlarmManager qua receiver của plugin, đúng mốc giờ, quyền xin được.
 
 ## P2 — Mở rộng, sau khi P1 có số liệu
 

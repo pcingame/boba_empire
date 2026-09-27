@@ -337,5 +337,9 @@
   "dqEarn": "Gana {amount} Monedas",
   "dqCat": "Atrapa al Gato Dorado",
   "dqVip": "Atiende a un cliente VIP",
-  "dqSpin": "Gira la Rueda de la Suerte"
+  "dqSpin": "Gira la Rueda de la Suerte",
+  "notifyOfflineFullTitle": "¡Tu caja está llena! 🧋",
+  "notifyOfflineFullBody": "La tienda dejó de acumular monedas: pasa a recogerlas y abre otro turno.",
+  "notifyDailyTitle": "Nuevo día, nuevas misiones 📋",
+  "notifyDailyBody": "Te esperan la recompensa diaria, un giro gratis y 3 misiones."
 }

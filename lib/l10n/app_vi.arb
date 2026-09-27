@@ -386,5 +386,9 @@
   "dqEarn": "Kiếm {amount} Xu",
   "dqCat": "Bắt mèo Mưa vàng",
   "dqVip": "Phục vụ khách VIP",
-  "dqSpin": "Quay vòng quay may mắn"
+  "dqSpin": "Quay vòng quay may mắn",
+  "notifyOfflineFullTitle": "Kho Xu đã đầy! 🧋",
+  "notifyOfflineFullBody": "Quán ngừng tích Xu mất rồi — ghé nhận và mở ca mới nào.",
+  "notifyDailyTitle": "Ngày mới, việc mới 📋",
+  "notifyDailyBody": "Điểm danh, 1 lượt quay miễn phí và 3 nhiệm vụ hôm nay đang chờ bạn."
 }

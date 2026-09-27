@@ -337,5 +337,9 @@
   "dqEarn": "Earn {amount} Coins",
   "dqCat": "Catch the Golden Cat",
   "dqVip": "Serve a VIP customer",
-  "dqSpin": "Spin the Lucky Wheel"
+  "dqSpin": "Spin the Lucky Wheel",
+  "notifyOfflineFullTitle": "Your coin stash is full! 🧋",
+  "notifyOfflineFullBody": "The shop stopped piling up Coins — come collect and start a new shift.",
+  "notifyDailyTitle": "New day, new quests 📋",
+  "notifyDailyBody": "Your daily check-in, free spin and 3 quests are waiting."
 }

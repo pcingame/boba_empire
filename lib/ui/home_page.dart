@@ -16,6 +16,7 @@ import '../iap/iap_products.dart';
 import '../iap/iap_service.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
+import '../notify/reminders.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
 import 'achievements_dialog.dart';
@@ -174,12 +175,39 @@ class _HomePageState extends ConsumerState<HomePage>
       case AppLifecycleState.hidden:
         controller.saveNow(); // bắt cả trường hợp vuốt tắt app
         controller.endSession(); // ghi thời lượng session (analytics nhẹ)
+        _wasPaused = true;
+        _scheduleReminders(controller.currentOfflineCapSeconds);
       case AppLifecycleState.resumed:
         controller.handleResume(); // bù tiền cho lúc ở nền
+        Reminders.cancelAll(); // đã mở app rồi thì nhắc nữa là phiền
+        // Xin quyền thông báo ở lần quay lại đầu tiên: lúc này app đang hiện
+        // (dialog hệ thống mới bật được) và người chơi đã chơi ít nhất 1 phiên,
+        // nên lời xin có ngữ cảnh — khác hẳn xin ngay lúc mở app lần đầu.
+        if (_wasPaused && !_askedNotifyPermission) {
+          _askedNotifyPermission = true;
+          Reminders.requestPermission();
+        }
       case AppLifecycleState.inactive:
       case AppLifecycleState.detached:
         break;
     }
+  }
+
+  bool _wasPaused = false;
+  bool _askedNotifyPermission = false;
+
+  /// Hẹn 2 mốc nhắc quay lại (kho offline đầy / sang ngày mới). No-op nếu người
+  /// chơi chưa cho quyền thông báo.
+  void _scheduleReminders(int offlineCapSeconds) {
+    final l10n = AppLocalizations.of(context)!;
+    Reminders.schedule(
+      now: DateTime.now(),
+      offlineCapSeconds: offlineCapSeconds,
+      offlineTitle: l10n.notifyOfflineFullTitle,
+      offlineBody: l10n.notifyOfflineFullBody,
+      dailyTitle: l10n.notifyDailyTitle,
+      dailyBody: l10n.notifyDailyBody,
+    );
   }
 
   bool _offlineDialogOpen = false;

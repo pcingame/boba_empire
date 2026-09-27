@@ -1,7 +1,12 @@
 /// Bảng cân bằng game — toàn bộ con số nằm ở đây, tách khỏi logic (mục 9).
 ///
-/// Muốn tune game chỉ cần sửa file này; sau này có thể nạp từ JSON / Remote
-/// Config mà không đụng tới mã mô phỏng.
+/// Muốn tune game chỉ cần sửa file này, không đụng tới mã mô phỏng.
+///
+/// Một số nút vặn nóng KHÔNG `const` (bonusPerStar, prestigeK, milestoneStep,
+/// milestoneFactor, milestoneGlobalBonus, maxOfflineSeconds, cat/vipSpawn*Ms,
+/// dailyQuest*Gems): chúng có thể bị Firebase Remote Config ghi đè lúc chạy để
+/// tune mà không phải nộp bản mới lên store — xem `lib/data/remote_balance.dart`
+/// (ở đó cũng khai báo khoảng hợp lệ của từng nút).
 library;
 
 import 'models.dart';
@@ -11,10 +16,10 @@ class Balance {
 
   /// Trần thời gian tính tiền offline (8 giờ) — buộc người chơi quay lại và
   /// tạo chỗ để bán vật phẩm "tăng giới hạn offline".
-  static const int maxOfflineSeconds = 8 * 60 * 60;
+  static int maxOfflineSeconds = 8 * 60 * 60;
 
   /// % thu nhập cộng thêm cho mỗi Sao nhượng quyền (bonus vĩnh viễn).
-  static const double bonusPerStar = 0.02; // +2%/sao
+  static double bonusPerStar = 0.02; // +2%/sao
 
   /// Bậc thưởng Kim Cương theo hạng trên Bảng xếp hạng (lặp lại mỗi 24h nếu
   /// còn giữ hạng — xem `leaderboard_claim_reward()` trong
@@ -35,7 +40,7 @@ class Balance {
   /// phiên chơi thật (xem PROPOSAL_ANALYTICS.md) — đây là điều chỉnh dựa
   /// trên quan sát chơi thật, không phải đoán mù, nhưng vẫn chưa phải số
   /// liệu thống kê đầy đủ.
-  static const double prestigeK = 0.02;
+  static double prestigeK = 0.02;
 
   /// Mốc nhân bội cho mỗi nguồn thu: cứ mỗi [milestoneStep] cấp, thu nhập của
   /// nguồn đó ×[milestoneFactor] (mặc định mới: 50→×2, 100→×4, 150→×8...).
@@ -48,8 +53,8 @@ class Balance {
   /// 2^(1000/25)=2^40≈1,1 nghìn tỷ; giờ chỉ còn 2^(1000/50)=2^20≈1 triệu.
   /// Đây chính là nguồn gốc khiến Xu cả đời (và do đó Sao, vì Sao = f(Xu
   /// cả đời)) tăng phi mã theo phản hồi chơi thật.
-  static const int milestoneStep = 50;
-  static const double milestoneFactor = 2.0;
+  static int milestoneStep = 50;
+  static double milestoneFactor = 2.0;
 
   /// Trần an toàn kỹ thuật cho `nextLevelCost`/`bulkCost`/
   /// `generatorMilestoneMultiplier` (lib/core/economy.dart) — CHẶN TRÀN SỐ
@@ -77,7 +82,7 @@ class Balance {
   /// [milestoneGlobalBonus] vào hệ số thu nhập TOÀN CỤC (cộng dồn, vĩnh viễn).
   /// → thưởng cho việc dồn sâu 1 nguồn mà KHÔNG đổi đường cong income của nguồn.
   static const int milestoneGlobalFreeTiers = 1;
-  static const double milestoneGlobalBonus = 0.03;
+  static double milestoneGlobalBonus = 0.03;
 
   /// Nhiệm vụ LẶP LẠI sau khi hết chuỗi 10 bước: "kiếm thêm X Xu" với X =
   /// [questRepeatBaseEarn] · 10^vòng. Thưởng cố định [questRepeatRewardGems] 💎.
@@ -93,8 +98,8 @@ class Balance {
   static const int goldenRushDurationMs = 2 * 60 * 1000;
 
   /// Con mèo xuất hiện cách nhau ngẫu nhiên trong khoảng [min, max].
-  static const int catSpawnMinMs = 3 * 60 * 1000;
-  static const int catSpawnMaxMs = 5 * 60 * 1000;
+  static int catSpawnMinMs = 3 * 60 * 1000;
+  static int catSpawnMaxMs = 5 * 60 * 1000;
 
   /// Con mèo tự biến mất sau chừng này nếu người chơi không chạm.
   static const int catLingerMs = 12 * 1000;
@@ -105,8 +110,8 @@ class Balance {
   // --- Khách VIP (đi ô tô, tip Kim Cương) ---
 
   /// VIP xuất hiện cách nhau ngẫu nhiên trong khoảng [min, max] (hiếm hơn mèo).
-  static const int vipSpawnMinMs = 4 * 60 * 1000;
-  static const int vipSpawnMaxMs = 7 * 60 * 1000;
+  static int vipSpawnMinMs = 4 * 60 * 1000;
+  static int vipSpawnMaxMs = 7 * 60 * 1000;
 
   /// Xe VIP đợi chừng này rồi rời đi nếu không được phục vụ.
   static const int vipLingerMs = 15 * 1000;
@@ -249,11 +254,11 @@ class Balance {
 
   // --- Nhiệm vụ hằng ngày (2026-09-26) — ⚠️ số là ƯỚC LƯỢNG, chưa playtest ---
   static const int dailyQuestCount = 3;
-  static const int dailyQuestRewardGems = 8;
+  static int dailyQuestRewardGems = 8;
   static const int dailyQuestEarnRewardGems = 10;
 
   /// Thưởng thêm khi xong (và nhận) cả bộ — nhận một lần/ngày.
-  static const int dailyQuestBonusGems = 15;
+  static int dailyQuestBonusGems = 15;
 
   /// Ngưỡng "Kiếm Xu" = max([dailyEarnMinTarget], thu nhập/giây × giây) chốt lúc
   /// sang ngày (~30 phút thu nhập).

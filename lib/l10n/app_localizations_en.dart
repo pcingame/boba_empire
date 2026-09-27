@@ -1072,4 +1072,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dqSpin => 'Spin the Lucky Wheel';
+
+  @override
+  String get notifyOfflineFullTitle => 'Your coin stash is full! 🧋';
+
+  @override
+  String get notifyOfflineFullBody =>
+      'The shop stopped piling up Coins — come collect and start a new shift.';
+
+  @override
+  String get notifyDailyTitle => 'New day, new quests 📋';
+
+  @override
+  String get notifyDailyBody =>
+      'Your daily check-in, free spin and 3 quests are waiting.';
 }

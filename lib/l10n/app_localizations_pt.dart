@@ -1076,4 +1076,18 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get dqSpin => 'Gire a Roda da Sorte';
+
+  @override
+  String get notifyOfflineFullTitle => 'Seu caixa está cheio! 🧋';
+
+  @override
+  String get notifyOfflineFullBody =>
+      'A loja parou de acumular Moedas — venha recolher e abrir um novo turno.';
+
+  @override
+  String get notifyDailyTitle => 'Novo dia, novas missões 📋';
+
+  @override
+  String get notifyDailyBody =>
+      'A recompensa diária, um giro grátis e 3 missões estão à espera.';
 }

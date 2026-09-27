@@ -142,6 +142,11 @@ class GameController extends Notifier<GameSnapshot> {
   double _rivalModifier() =>
       _clock() < _rivalModUntilMillis ? _rivalModMult : 1.0;
 
+  /// Trần offline (giây) hiện tại — UI dùng để hẹn giờ thông báo "kho đã đầy"
+  /// (lib/notify/reminders.dart).
+  // Tên khác `offlineCapSeconds` của economy.dart (đã import) để khỏi che nó.
+  int get currentOfflineCapSeconds => _offlineCap();
+
   /// Trần offline (giây) đã tính cấp "Kho lạnh" + cộng thưởng VIP nếu đang VIP.
   int _offlineCap() =>
       offlineCapSeconds(_game.offlineCapLevel) +
