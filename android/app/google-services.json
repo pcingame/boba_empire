@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "411559711815",
+    "project_id": "bobaempire-1f372",
+    "storage_bucket": "bobaempire-1f372.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411559711815:android:98592d0b4bca3852a20d62",
+        "android_client_info": {
+          "package_name": "com.pcingame.bobaempire"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPzDIQwhtqfaxxlz55nhBMaVkh2hjp0Tc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

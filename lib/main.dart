@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:io' show Platform;
+import 'dart:ui' show PlatformDispatcher;
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -10,6 +13,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:upgrader/upgrader.dart';
 
 import 'arena/arena_config.dart';
+import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
 import 'l10n/locale_provider.dart';
 
@@ -28,6 +32,21 @@ import 'ui/home_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Crashlytics chỉ cấu hình cho Android/iOS (xem lib/firebase_options.dart) —
+  // web/desktop giữ nguyên, không khởi tạo Firebase.
+  if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    // Chỉ báo cáo crash ở bản release — bản debug không cần làm nhiễu console.
+    await FirebaseCrashlytics.instance
+        .setCrashlyticsCollectionEnabled(kReleaseMode);
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      return true;
+    };
+  }
   // Đấu Trường (Arena PvP) — xem PROPOSAL_ARENA_PVP.md. Khởi tạo sớm, trước
   // cả `runApp`, để `ArenaRepository`/`ArenaController` luôn có sẵn
   // `Supabase.instance.client` khi người chơi mở màn Đấu Trường.
