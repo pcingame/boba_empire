@@ -15,6 +15,7 @@ bool _playOne(Match3Controller c, Match3PlayState s) {
 }
 
 void main() {
+  _collectTests();
   late ProviderContainer container;
   setUp(() => container = ProviderContainer());
   tearDown(() => container.dispose());
@@ -72,5 +73,67 @@ void main() {
     controller().addMovesFromAd();
     expect(play().finished, isFalse);
     expect(_playOne(controller(), play()), isTrue);
+  });
+}
+
+// --- Màn thu thập: chỉ đếm ô ĐÚNG LOẠI, tiến độ tính theo ô chứ không theo điểm ---
+void _collectTests() {
+  late ProviderContainer container;
+  late int savedEvery;
+  setUp(() {
+    container = ProviderContainer();
+    savedEvery = Balance.m3CollectEvery;
+    Balance.m3CollectEvery = 3;
+  });
+  tearDown(() {
+    Balance.m3CollectEvery = savedEvery;
+    container.dispose();
+  });
+
+  Match3Controller controller() =>
+      container.read(match3ControllerProvider.notifier);
+  Match3PlayState play() => container.read(match3ControllerProvider);
+
+  test('màn thu thập: đếm ĐÚNG số ô đúng loại, không phải điểm', () {
+    // Màn 6 chứ không phải màn 3: màn 3 có collectType = 0 nên test không phân
+    // biệt được "đếm đúng loại" với "luôn đếm loại 0".
+    controller().load(const Match3Level(6));
+    expect(play().level.collectType, isNot(0));
+    expect(play().level.goal, Match3GoalKind.collect);
+    expect(play().progress, 0);
+
+    final type = play().level.collectType;
+    // Bàn "gương": cùng seq, nhận cùng nước đi nên luôn khớp bàn của controller
+    // → tự tính được số ô đúng loại mà mỗi nước xoá.
+    final mirror = Match3Board.initial(play().level.seq());
+    var expected = 0;
+    for (var i = 0; i < 5; i++) {
+      final move = mirror.findMove();
+      if (move == null) break;
+      expected += mirror.trySwap(move.$1, move.$2).cleared[type];
+      expect(controller().swap(move.$1, move.$2), isTrue);
+      expect(play().cells, mirror.cells, reason: 'hai bàn phải khớp');
+      expect(play().collected, expected, reason: 'nước ${i + 1}');
+      expect(play().progress, expected, reason: 'tiến độ = số ô thu được');
+    }
+    expect(expected, greaterThan(0), reason: 'phải thu được ít nhất vài ô');
+  });
+
+  test('màn tính điểm: không đếm thu thập', () {
+    controller().load(const Match3Level(1));
+    expect(play().level.goal, Match3GoalKind.score);
+    final move = Match3Board.fromCells(play().cells).findMove()!;
+    controller().swap(move.$1, move.$2);
+    expect(play().collected, 0);
+    expect(play().progress, play().score);
+  });
+
+  test('cộng nước bằng quảng cáo giữ nguyên tiến độ thu thập', () {
+    controller().load(const Match3Level(3));
+    final move = Match3Board.fromCells(play().cells).findMove()!;
+    controller().swap(move.$1, move.$2);
+    final collected = play().collected;
+    controller().addMovesFromAd();
+    expect(play().collected, collected);
   });
 }

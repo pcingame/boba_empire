@@ -14,6 +14,15 @@ import 'dart:math';
 import '../arena/match3_rules.dart';
 import 'balance.dart';
 
+/// Kiểu mục tiêu của một màn.
+enum Match3GoalKind {
+  /// Đạt X điểm.
+  score,
+
+  /// Thu thập N ô một loại nhất định.
+  collect,
+}
+
 class Match3Level {
   const Match3Level(this.id);
 
@@ -22,9 +31,31 @@ class Match3Level {
 
   int get moves => Balance.m3Moves;
 
-  /// Điểm cần để được 1 sao.
-  int get target =>
-      (Balance.m3TargetBase * pow(Balance.m3TargetGrowth, id - 1)).round();
+  /// Cứ [Balance.m3CollectEvery] màn thì một màn là kiểu thu thập.
+  Match3GoalKind get goal =>
+      (Balance.m3CollectEvery > 0 && id % Balance.m3CollectEvery == 0)
+          ? Match3GoalKind.collect
+          : Match3GoalKind.score;
+
+  /// Thứ tự của màn thu thập này trong dãy màn thu thập (1, 2, 3...).
+  int get _collectIndex => Balance.m3CollectEvery > 0
+      ? id ~/ Balance.m3CollectEvery
+      : 0;
+
+  /// Loại ô cần thu thập (0..4, xoay vòng qua các màn thu thập).
+  int get collectType => _collectIndex == 0 ? 0 : (_collectIndex - 1) % m3Types;
+
+  /// Ngưỡng 1 sao: điểm (màn [Match3GoalKind.score]) hoặc số ô cần thu thập.
+  ///
+  /// Cả hai kiểu dùng CHUNG thang sao của [match3Stars] (1x / 1.5x / 2x), nên
+  /// "Chơi nốt" để săn 2-3 sao hoạt động y hệt nhau.
+  int get target => switch (goal) {
+        Match3GoalKind.score =>
+          (Balance.m3TargetBase * pow(Balance.m3TargetGrowth, id - 1)).round(),
+        Match3GoalKind.collect => (Balance.m3CollectBase *
+                pow(Balance.m3CollectGrowth, _collectIndex - 1))
+            .round(),
+      };
 
   /// Số nguyên tố nhân id → bàn khác nhau rõ rệt giữa các màn, và cố định.
   int get seed => id * 7919;

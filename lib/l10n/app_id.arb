@@ -359,5 +359,7 @@
   "m3AdMoves": "Tonton iklan: +{n} langkah",
   "m3KeepPlaying": "Lanjut main",
   "m3Pause": "Istirahat",
-  "m3GoalReached": "Target tercapai!"
+  "m3GoalReached": "Target tercapai!",
+  "m3Collect": "Kumpulkan {icon}",
+  "m3CollectShort": "Ambil {icon}"
 }

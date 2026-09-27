@@ -151,6 +151,9 @@ sẵn — cố tình như vậy để một số 0 gõ nhầm không phá save n
 | `m3TargetGrowth` | 1.12 | 1.0 – 1.5 | Mục tiêu tăng bao nhiêu mỗi màn |
 | `m3LevelCount` | 60 | 1 – 500 | Tổng số màn (màn sinh bằng công thức) |
 | `m3ThreeStarGems` | 3 | 0 – 100 | 💎 thưởng lần đầu đạt 3★ một màn |
+| `m3CollectEvery` | 3 | 0 – 20 | Cứ mấy màn thì có 1 màn "thu thập" (0 = tắt) |
+| `m3CollectBase` | 12 | 3 – 500 | Số ô cần thu ở màn thu thập đầu tiên |
+| `m3CollectGrowth` | 1.1 | 1.0 – 1.3 | Số ô cần thu tăng bao nhiêu mỗi màn thu thập |
 
 Chưa bật Remote Config trên console cũng không sao: fetch lỗi thì app giữ nguyên
 số biên dịch sẵn (có log `RemoteBalance`).

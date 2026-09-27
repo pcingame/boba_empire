@@ -1149,4 +1149,14 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get m3GoalReached => 'Target tercapai!';
+
+  @override
+  String m3Collect(String icon) {
+    return 'Kumpulkan $icon';
+  }
+
+  @override
+  String m3CollectShort(String icon) {
+    return 'Ambil $icon';
+  }
 }

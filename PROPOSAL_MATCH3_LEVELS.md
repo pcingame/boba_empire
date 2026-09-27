@@ -204,9 +204,11 @@ Không test được: banner (cần SDK thật) — kiểm bằng mắt trên m�
 
 ## 10. Cố ý HOÃN
 
-- **Loại mục tiêu thứ 2** ("thu thập N ô 🍓"): cần thêm field `cleared` vào
-  `Match3Move` — thêm field là an toàn (không đổi điểm ⇒ SQL không đổi). Đây là
-  cách chữa cái nhàm ở §2, làm khi 60 màn một kiểu bắt đầu chán.
+- ~~**Loại mục tiêu thứ 2** ("thu thập N ô 🍓")~~ ✅ ĐÃ LÀM (2026-09-28). Thêm
+  `Match3Move.cleared` (đếm ô đã xoá theo loại) — chỉ thêm field, không đổi
+  điểm/rơi/bù nên SQL và vector vàng không phải đụng. Cứ 3 màn một màn thu thập,
+  loại ô xoay vòng, dùng chung thang sao nên controller/UI chỉ đổi chỗ tính
+  "tiến độ" (điểm hay số ô) chứ không phân nhánh thêm.
 - **Kẹo đặc biệt (gộp 4/5 ô)**: đổi luật ⇒ phải sửa cả `arena_m3_replay` + vector
   vàng. Đắt gấp đôi, để sau.
 - Mua thêm nước bằng 💎 (sink 💎 tốt, nhưng cân bằng riêng).

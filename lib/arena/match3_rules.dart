@@ -26,12 +26,23 @@ const int m3SeqLength = 2000;
 const int _empty = -1;
 
 class Match3Move {
-  const Match3Move({required this.valid, required this.score, required this.frames});
+  const Match3Move({
+    required this.valid,
+    required this.score,
+    required this.frames,
+    this.cleared = const [],
+  });
 
-  static const Match3Move invalid = Match3Move(valid: false, score: 0, frames: []);
+  static const Match3Move invalid =
+      Match3Move(valid: false, score: 0, frames: []);
 
   final bool valid;
   final int score;
+
+  /// Số ô đã xoá theo từng loại (dài [m3Types]) — dùng cho mục tiêu "thu thập N
+  /// ô loại X" ở chơi đơn. THÊM thông tin thôi: không đụng điểm/rơi/bù nên
+  /// `arena_m3_replay` (SQL) không phải đổi gì.
+  final List<int> cleared;
 
   /// Các bảng trung gian để UI phát hoạt ảnh: sau khi đổi, rồi với mỗi bước dây
   /// chuyền — sau khi xoá (ô trống = -1) và sau khi rơi + bù. Bảng cuối = kết quả.
@@ -152,6 +163,7 @@ class Match3Board {
       return Match3Move.invalid;
     }
     final frames = <List<int>>[[...cells]];
+    final cleared = List<int>.filled(m3Types, 0);
     var score = 0;
     for (var step = 1;; step++) {
       final marked = _findMatches();
@@ -159,13 +171,22 @@ class Match3Board {
       if (count == 0) break;
       score += count * m3TilePoints * step;
       for (var i = 0; i < m3Cells; i++) {
-        if (marked[i]) cells[i] = _empty;
+        if (marked[i]) {
+          final t = cells[i];
+          if (t >= 0 && t < m3Types) cleared[t]++;
+          cells[i] = _empty;
+        }
       }
       frames.add([...cells]);
       _gravityAndRefill();
       frames.add([...cells]);
     }
-    return Match3Move(valid: true, score: score, frames: frames);
+    return Match3Move(
+      valid: true,
+      score: score,
+      frames: frames,
+      cleared: cleared,
+    );
   }
 
   void _gravityAndRefill() {

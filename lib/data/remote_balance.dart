@@ -118,6 +118,26 @@ class RemoteBalance {
       min: 1,
       max: 500,
     ),
+    'm3CollectEvery': (
+      read: () => Balance.m3CollectEvery.toDouble(),
+      write: (v) => Balance.m3CollectEvery = v.round(),
+      // 0 = tắt hẳn màn thu thập; 1 = màn nào cũng thu thập.
+      min: 0,
+      max: 20,
+    ),
+    'm3CollectBase': (
+      read: () => Balance.m3CollectBase,
+      write: (v) => Balance.m3CollectBase = v,
+      min: 3,
+      max: 500,
+    ),
+    'm3CollectGrowth': (
+      read: () => Balance.m3CollectGrowth,
+      // Trần 1.3: màn thu thập thứ 20 = base·1.3^19 ~ 1500 ô, đã quá tay.
+      write: (v) => Balance.m3CollectGrowth = v,
+      min: 1.0,
+      max: 1.3,
+    ),
     'm3ThreeStarGems': (
       read: () => Balance.m3ThreeStarGems.toDouble(),
       write: (v) => Balance.m3ThreeStarGems = v.round(),

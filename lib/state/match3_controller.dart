@@ -14,6 +14,7 @@ class Match3PlayState {
     required this.cells,
     required this.movesLeft,
     required this.score,
+    this.collected = 0,
     this.frames = const [],
     this.moveId = 0,
     this.adContinueUsed = false,
@@ -23,16 +24,23 @@ class Match3PlayState {
   final List<int> cells;
   final int movesLeft;
   final int score;
+
+  /// Số ô loại cần thu thập đã xoá được (chỉ dùng ở màn [Match3GoalKind.collect]).
+  final int collected;
+
+  /// Tiến độ tính theo mục tiêu của màn — điểm, hoặc số ô đã thu thập.
+  int get progress =>
+      level.goal == Match3GoalKind.collect ? collected : score;
   final List<List<int>> frames;
   final int moveId;
 
   /// Đã dùng lượt "xem QC thêm nước" của lượt chơi này chưa (1 lần/lượt).
   final bool adContinueUsed;
 
-  int get stars => match3Stars(score, level.target);
+  int get stars => match3Stars(progress, level.target);
 
   /// Đã đạt mục tiêu (1 sao) — màn coi như qua, kể cả khi còn nước.
-  bool get goalReached => score >= level.target;
+  bool get goalReached => progress >= level.target;
 
   /// Hết nước → khoá bàn. KHÔNG khoá khi vừa đạt mục tiêu: người chơi có thể
   /// chọn "Chơi nốt" để dùng nốt số nước còn lại săn 2-3 sao.
@@ -57,6 +65,7 @@ class Match3Controller extends Notifier<Match3PlayState> {
       cells: state.cells,
       movesLeft: state.movesLeft + Balance.m3AdExtraMoves,
       score: state.score,
+      collected: state.collected,
       moveId: state.moveId,
       adContinueUsed: true,
     );
@@ -75,6 +84,13 @@ class Match3Controller extends Notifier<Match3PlayState> {
     );
   }
 
+  /// Số ô thuộc loại cần thu thập mà nước này xoá được (0 ở màn tính điểm).
+  int _collectedBy(Match3Move move) {
+    if (state.level.goal != Match3GoalKind.collect) return 0;
+    final type = state.level.collectType;
+    return type < move.cleared.length ? move.cleared[type] : 0;
+  }
+
   /// Trả true nếu nước hợp lệ (bàn cờ chỉ phát hoạt ảnh khi true).
   bool swap(int cell, int dir) {
     final board = _board;
@@ -89,6 +105,7 @@ class Match3Controller extends Notifier<Match3PlayState> {
       cells: [...board.cells],
       movesLeft: state.movesLeft - 1,
       score: state.score + move.score,
+      collected: state.collected + _collectedBy(move),
       frames: move.frames,
       moveId: state.moveId + 1,
       // PHẢI mang theo: quên là cờ reset sau mỗi nước đi -> xem quảng cáo

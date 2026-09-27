@@ -72,16 +72,14 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
                 // đẩy tràn hàng (lớp lỗi tràn số đã gặp nhiều lần trong app).
                 Flexible(
                   child: Text(
-                    '${l10n.m3Score}: ${formatNumber(play.score.toDouble())}',
+                    _progressLabel(l10n, play),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 const SizedBox(width: 8),
                 Flexible(
                   child: Text(
-                    l10n.m3Target(
-                      formatNumber(widget.level.target.toDouble()),
-                    ),
+                    _goalLabel(l10n, widget.level),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
@@ -145,7 +143,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
               style: const TextStyle(fontSize: 28, color: Colors.amber),
             ),
             const SizedBox(height: 8),
-            Text('${l10n.m3Score}: ${formatNumber(play.score.toDouble())}'),
+            Text(_progressLabel(l10n, play)),
             const SizedBox(height: 8),
             if (cash > 0 || gems > 0)
               Text(
@@ -230,6 +228,24 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
     _keepPlaying = false;
     setState(() => _resultShown = false);
     ref.read(match3ControllerProvider.notifier).load(widget.level);
+  }
+
+  /// "Điểm: 1.2K" ở màn tính điểm, "🍓 7/12" ở màn thu thập.
+  String _progressLabel(AppLocalizations l10n, Match3PlayState play) {
+    if (play.level.goal == Match3GoalKind.collect) {
+      final icon = match3Icons[play.level.collectType];
+      return '$icon ${play.collected}/${play.level.target}';
+    }
+    return '${l10n.m3Score}: ${formatNumber(play.score.toDouble())}';
+  }
+
+  /// "Mục tiêu 900" / "Thu thập 🍓 12".
+  String _goalLabel(AppLocalizations l10n, Match3Level level) {
+    if (level.goal == Match3GoalKind.collect) {
+      return '${l10n.m3Collect(match3Icons[level.collectType])} '
+          '${level.target}';
+    }
+    return l10n.m3Target(formatNumber(level.target.toDouble()));
   }
 
   /// Xem quảng cáo thưởng để chơi tiếp. Người đã mua "Gỡ quảng cáo" (hoặc đang

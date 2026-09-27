@@ -52,6 +52,7 @@ Match3Board _flatBoard(List<int> seq) {
 
 void main() {
   _reshuffleTests();
+  _clearedTests();
   group('bảng đầu', () {
     test('không có match sẵn, đủ 64 ô loại 0..4, cố định theo seq', () {
       for (var seed = 1; seed <= 50; seed++) {
@@ -318,5 +319,33 @@ void _reshuffleTests() {
     final board = Match3Board.fromCells(List<int>.filled(m3Cells, 1));
     board.reshuffle();
     expect(board.cells.every((v) => v == 1), isTrue);
+  });
+}
+
+// --- Đếm ô đã xoá theo loại (mục tiêu "thu thập" của chơi đơn) ---
+void _clearedTests() {
+  test('cleared đếm đúng loại và đúng số ô của nước đi', () {
+    final seq = [
+      for (var i = 0, x = 4242; i < m3SeqLength; i++)
+        (x = (x * 1103515245 + 12345) & 0x7fffffff, (x >> 16) % m3Types).$2,
+    ];
+    final board = Match3Board.initial(seq);
+    final move = board.findMove()!;
+    final result = board.trySwap(move.$1, move.$2);
+
+    expect(result.valid, isTrue);
+    expect(result.cleared.length, m3Types);
+    // Tổng ô xoá phải khớp với điểm: điểm = sum(ô xoá ở bước n) * 10 * n, nên
+    // tổng ô xoá <= điểm/10 và >= 3 (ít nhất một dãy 3).
+    final total = result.cleared.reduce((a, b) => a + b);
+    expect(total, greaterThanOrEqualTo(3));
+    expect(total * m3TilePoints, lessThanOrEqualTo(result.score));
+    expect(result.cleared.every((c) => c >= 0), isTrue);
+  });
+
+  test('nước vô hiệu không đếm gì', () {
+    final board = Match3Board.initial(const [1, 2, 3]);
+    // Ô ngoài bảng -> vô hiệu.
+    expect(board.trySwap(-1, 0).cleared, isEmpty);
   });
 }

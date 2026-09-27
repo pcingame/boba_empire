@@ -7,6 +7,7 @@ import 'package:boba_empire/core/match3_levels.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/state/match3_controller.dart';
+import 'package:boba_empire/ui/match3_board.dart';
 import 'package:boba_empire/ui/match3_play_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -67,6 +68,53 @@ void main() {
     expect(c.read(match3ControllerProvider.notifier).swap(move.$1, move.$2),
         isTrue);
   }
+
+  testWidgets('màn thu thập: HUD hiện biểu tượng ô và tiến độ N/M',
+      (tester) async {
+    final savedEvery = Balance.m3CollectEvery;
+    final savedMoves = Balance.m3Moves;
+    Balance.m3CollectEvery = 3;
+    Balance.m3Moves = 20;
+    addTearDown(() {
+      Balance.m3CollectEvery = savedEvery;
+      Balance.m3Moves = savedMoves;
+    });
+
+    await tester.binding.setSurfaceSize(const Size(420, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final c = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(() => 0),
+      adServiceProvider.overrideWithValue(const StubAdService()),
+    ]);
+    await tester.pumpWidget(UncontrolledProviderScope(
+      container: c,
+      child: const MaterialApp(
+        locale: Locale('vi'),
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Match3PlayPage(level: Match3Level(6)),
+      ),
+    ));
+    await tester.pump();
+
+    final level = c.read(match3ControllerProvider).level;
+    final icon = match3Icons[level.collectType];
+    expect(find.text('$icon 0/${level.target}'), findsOneWidget);
+    expect(find.text('Thu thập $icon ${level.target}'), findsOneWidget);
+    // Không còn nhãn "Điểm:" ở màn thu thập.
+    expect(find.textContaining('Điểm:'), findsNothing);
+
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
 
   testWidgets('hết nước → hiện bảng kết quả kèm nút xem QC thêm nước',
       (tester) async {

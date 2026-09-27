@@ -359,5 +359,7 @@
   "m3AdMoves": "ดูโฆษณา: +{n} ตา",
   "m3KeepPlaying": "เล่นต่อ",
   "m3Pause": "พักก่อน",
-  "m3GoalReached": "ถึงเป้าหมายแล้ว!"
+  "m3GoalReached": "ถึงเป้าหมายแล้ว!",
+  "m3Collect": "เก็บ {icon}",
+  "m3CollectShort": "เก็บ {icon}"
 }

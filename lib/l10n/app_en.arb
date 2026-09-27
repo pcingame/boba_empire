@@ -359,5 +359,7 @@
   "m3AdMoves": "Watch ad: +{n} moves",
   "m3KeepPlaying": "Keep playing",
   "m3Pause": "Take a break",
-  "m3GoalReached": "Goal reached!"
+  "m3GoalReached": "Goal reached!",
+  "m3Collect": "Collect {icon}",
+  "m3CollectShort": "Get {icon}"
 }

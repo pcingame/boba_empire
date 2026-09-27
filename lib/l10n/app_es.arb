@@ -359,5 +359,7 @@
   "m3AdMoves": "Ver anuncio: +{n} movimientos",
   "m3KeepPlaying": "Seguir jugando",
   "m3Pause": "Descansar",
-  "m3GoalReached": "¡Meta alcanzada!"
+  "m3GoalReached": "¡Meta alcanzada!",
+  "m3Collect": "Recoge {icon}",
+  "m3CollectShort": "Junta {icon}"
 }

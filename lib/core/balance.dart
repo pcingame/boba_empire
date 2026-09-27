@@ -96,6 +96,14 @@ class Balance {
   /// Tổng số màn. Màn sinh bằng công thức nên tăng số này là có thêm màn.
   static int m3LevelCount = 60;
 
+  /// Cứ mỗi [m3CollectEvery] màn thì có một màn kiểu "thu thập N ô loại X"
+  /// thay vì "đạt X điểm" — xen kẽ cho đỡ đơn điệu. Đặt 0 = tắt hẳn.
+  static int m3CollectEvery = 3;
+
+  /// Số ô cần thu thập ở màn thu thập đầu tiên, và hệ số tăng mỗi màn thu thập.
+  static double m3CollectBase = 12;
+  static double m3CollectGrowth = 1.1;
+
   /// Thưởng 💎 khi đạt 3 sao một màn (chỉ trả LẦN ĐẦU — bàn tất định nên chơi
   /// lại mà vẫn thưởng là máy in 💎). 60 màn x 3 = 180 💎 trọn đời.
   static int m3ThreeStarGems = 3;

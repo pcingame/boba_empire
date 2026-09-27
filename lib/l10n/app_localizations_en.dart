@@ -1148,4 +1148,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get m3GoalReached => 'Goal reached!';
+
+  @override
+  String m3Collect(String icon) {
+    return 'Collect $icon';
+  }
+
+  @override
+  String m3CollectShort(String icon) {
+    return 'Get $icon';
+  }
 }

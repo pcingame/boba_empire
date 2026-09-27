@@ -412,5 +412,9 @@
   "@m3AdMoves": { "placeholders": { "n": { "type": "int" } } },
   "m3KeepPlaying": "Chơi nốt",
   "m3Pause": "Tạm nghỉ",
-  "m3GoalReached": "Đạt mục tiêu!"
+  "m3GoalReached": "Đạt mục tiêu!",
+  "m3Collect": "Thu thập {icon}",
+  "@m3Collect": { "placeholders": { "icon": { "type": "String" } } },
+  "m3CollectShort": "Thu {icon}",
+  "@m3CollectShort": { "placeholders": { "icon": { "type": "String" } } }
 }

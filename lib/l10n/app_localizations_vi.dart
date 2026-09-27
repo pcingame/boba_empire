@@ -1145,4 +1145,14 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get m3GoalReached => 'Đạt mục tiêu!';
+
+  @override
+  String m3Collect(String icon) {
+    return 'Thu thập $icon';
+  }
+
+  @override
+  String m3CollectShort(String icon) {
+    return 'Thu $icon';
+  }
 }

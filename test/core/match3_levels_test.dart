@@ -8,6 +8,7 @@ import 'package:boba_empire/core/simulation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  _collectTests();
   test('mốc sao: đúng bằng mục tiêu là 1 sao, 1.5x là 2, 2x là 3', () {
     expect(match3Stars(999, 1000), 0);
     expect(match3Stars(1000, 1000), 1); // biên dưới
@@ -36,11 +37,17 @@ void main() {
     expect(a1.every((v) => v >= 0 && v < m3Types), isTrue);
   });
 
-  test('mục tiêu tăng dần theo màn', () {
-    expect(const Match3Level(2).target,
-        greaterThan(const Match3Level(1).target));
-    expect(const Match3Level(30).target,
-        greaterThan(const Match3Level(10).target));
+  test('mục tiêu tăng dần theo màn (trong cùng một kiểu mục tiêu)', () {
+    // Chỉ so các màn tính ĐIỂM với nhau: màn thu thập đếm số ô, so chéo hai
+    // kiểu là vô nghĩa (28 ô vs 2496 điểm).
+    final scoreLevels = [
+      for (var id = 1; id <= 40; id++)
+        if (Match3Level(id).goal == Match3GoalKind.score) Match3Level(id),
+    ];
+    for (var i = 1; i < scoreLevels.length; i++) {
+      expect(scoreLevels[i].target, greaterThan(scoreLevels[i - 1].target),
+          reason: 'màn ${scoreLevels[i].id}');
+    }
   });
 
   group('thưởng', () {
@@ -90,5 +97,58 @@ void main() {
       final json = s.toJson()..remove('m3Stars');
       expect(GameState.fromJson(json).m3Stars, isEmpty);
     });
+  });
+}
+
+// --- Màn kiểu "thu thập N ô loại X" ---
+void _collectTests() {
+  late int savedEvery;
+  setUp(() => savedEvery = Balance.m3CollectEvery);
+  tearDown(() => Balance.m3CollectEvery = savedEvery);
+
+  test('cứ m3CollectEvery màn thì một màn là thu thập', () {
+    Balance.m3CollectEvery = 3;
+    expect(const Match3Level(1).goal, Match3GoalKind.score);
+    expect(const Match3Level(2).goal, Match3GoalKind.score);
+    expect(const Match3Level(3).goal, Match3GoalKind.collect);
+    expect(const Match3Level(6).goal, Match3GoalKind.collect);
+    expect(const Match3Level(7).goal, Match3GoalKind.score);
+  });
+
+  test('đặt 0 là tắt hẳn màn thu thập (không chia cho 0)', () {
+    Balance.m3CollectEvery = 0;
+    for (var id = 1; id <= 12; id++) {
+      expect(Match3Level(id).goal, Match3GoalKind.score, reason: 'màn $id');
+    }
+  });
+
+  test('loại ô cần thu xoay vòng qua các màn thu thập', () {
+    Balance.m3CollectEvery = 3;
+    final types = [
+      for (var i = 1; i <= m3Types + 1; i++)
+        Match3Level(i * 3).collectType,
+    ];
+    expect(types.take(m3Types).toSet().length, m3Types,
+        reason: 'phải đi hết 5 loại trước khi lặp');
+    expect(types[m3Types], types[0], reason: 'rồi quay vòng');
+    expect(types.every((t) => t >= 0 && t < m3Types), isTrue);
+  });
+
+  test('số ô cần thu tăng dần và luôn dương', () {
+    Balance.m3CollectEvery = 3;
+    final a = const Match3Level(3).target;
+    final b = const Match3Level(6).target;
+    final c = const Match3Level(30).target;
+    expect(a, greaterThan(0));
+    expect(b, greaterThan(a));
+    expect(c, greaterThan(b));
+  });
+
+  test('thang sao dùng chung: 1x / 1.5x / 2x số ô cần thu', () {
+    Balance.m3CollectEvery = 3;
+    final target = const Match3Level(3).target;
+    expect(match3Stars(target - 1, target), 0);
+    expect(match3Stars(target, target), 1);
+    expect(match3Stars(target * 2, target), 3);
   });
 }

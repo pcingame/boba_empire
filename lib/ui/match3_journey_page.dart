@@ -10,6 +10,7 @@ import '../core/balance.dart';
 import '../core/match3_levels.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
+import 'match3_board.dart';
 import 'match3_play_page.dart';
 
 Future<void> showMatch3Journey(BuildContext context) {
@@ -87,7 +88,7 @@ class _LevelTile extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (unlocked)
+            if (unlocked) ...[
               // FittedBox: số màn 3 chữ số ở máy hẹp vẫn nằm gọn.
               FittedBox(
                 child: Text(
@@ -95,8 +96,15 @@ class _LevelTile extends StatelessWidget {
                   style: theme.textTheme.titleLarge
                       ?.copyWith(fontWeight: FontWeight.bold),
                 ),
-              )
-            else
+              ),
+              // Màn thu thập: hiện luôn loại ô phải thu, để nhìn lưới là biết
+              // màn nào khác kiểu.
+              if (level.goal == Match3GoalKind.collect)
+                Text(
+                  match3Icons[level.collectType],
+                  style: const TextStyle(fontSize: 12),
+                ),
+            ] else
               Icon(Icons.lock, color: theme.disabledColor),
             const SizedBox(height: 2),
             Text(
