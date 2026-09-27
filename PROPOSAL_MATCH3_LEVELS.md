@@ -57,7 +57,8 @@ class Match3Level {
 
 - `seq` (chuỗi 2000 số engine cần) sinh tại chỗ bằng `Random(seed)` — bàn màn n
   **tất định**, giống nhau trên mọi máy, chơi lại vẫn y hệt.
-- Sao: **1★** đạt `target`, **2★** đạt `1.5×`, **3★** đạt `2×`.
+- Sao: **1★** đạt `target`, **2★** đạt `m3Star2Mult×`, **3★** đạt `m3Star3Mult×`
+  (1.25× / 1.6× sau khi hạ ngày 2026-09-28; cả hai là nút vặn Remote Config).
 - Số màn Phase 1: **60**. Thêm màn = đổi một hằng số, không viết thêm data.
 - 4 hằng số (`m3Moves`, `m3TargetBase`, `m3TargetGrowth`, `m3LevelCount`) nên
   **khai báo luôn là nút vặn Remote Config** (`lib/data/remote_balance.dart`,
@@ -78,7 +79,7 @@ Danh sách màn (lưới nút, khoá dần)
 Sửa so với bản đầu (2026-09-28, sau phản hồi chơi thật): ban đầu màn chỉ kết
 thúc khi HẾT NƯỚC, nên đạt mục tiêu ở nước thứ 5 vẫn phải đốt nốt 15 nước mới
 được sang màn sau. Giờ đạt mục tiêu là báo ngay. Giữ được 2★/3★ nhờ nút "Chơi
-nốt" — đóng màn thẳng ở mốc 1★ thì 1.5x/2x không ai với tới được.
+nốt" — đóng màn thẳng ở mốc 1★ thì không ai với tới hai mốc sao trên được.
 
 **Hết nước đi hợp lệ giữa chừng (stuck)**: PvP hiện chỉ báo "Hết nước đi!" rồi
 đứng im cho hết 60 giây (ROADMAP §P2 mục 9). Ở chơi đơn điều đó là **kẹt cứng**,

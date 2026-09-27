@@ -96,6 +96,15 @@ class Balance {
   /// Tổng số màn. Màn sinh bằng công thức nên tăng số này là có thêm màn.
   static int m3LevelCount = 60;
 
+  /// Mốc 2 sao và 3 sao, tính theo bội của mục tiêu 1 sao.
+  ///
+  /// Hạ từ 1.5x/2.0x xuống 1.25x/1.6x (2026-09-28) — phản hồi chơi thật: chấm
+  /// sao khắt khe quá, gần như màn nào cũng chỉ được 1 sao. Cộng thêm việc màn
+  /// kết thúc ngay khi chạm mục tiêu, người chơi phải chủ động bấm "Chơi nốt"
+  /// mới có cơ hội lên sao, nên hai mốc này càng không nên đặt cao.
+  static double m3Star2Mult = 1.25;
+  static double m3Star3Mult = 1.6;
+
   /// Cứ mỗi [m3CollectEvery] màn thì có một màn kiểu "thu thập N ô loại X"
   /// thay vì "đạt X điểm" — xen kẽ cho đỡ đơn điệu. Đặt 0 = tắt hẳn.
   static int m3CollectEvery = 3;

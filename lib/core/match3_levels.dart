@@ -47,8 +47,8 @@ class Match3Level {
 
   /// Ngưỡng 1 sao: điểm (màn [Match3GoalKind.score]) hoặc số ô cần thu thập.
   ///
-  /// Cả hai kiểu dùng CHUNG thang sao của [match3Stars] (1x / 1.5x / 2x), nên
-  /// "Chơi nốt" để săn 2-3 sao hoạt động y hệt nhau.
+  /// Cả hai kiểu dùng CHUNG thang sao của [match3Stars], nên "Chơi nốt" để săn
+  /// 2-3 sao hoạt động y hệt nhau.
   int get target => switch (goal) {
         Match3GoalKind.score =>
           (Balance.m3TargetBase * pow(Balance.m3TargetGrowth, id - 1)).round(),
@@ -70,8 +70,8 @@ class Match3Level {
 /// Sao đạt được với [score]: 1 sao ở [target], 2 sao ở 1.5x, 3 sao ở 2x.
 int match3Stars(int score, int target) {
   if (target <= 0) return 0;
-  if (score >= target * 2) return 3;
-  if (score >= (target * 1.5).round()) return 2;
+  if (score >= (target * Balance.m3Star3Mult).round()) return 3;
+  if (score >= (target * Balance.m3Star2Mult).round()) return 2;
   if (score >= target) return 1;
   return 0;
 }

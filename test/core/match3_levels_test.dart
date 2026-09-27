@@ -9,14 +9,24 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   _collectTests();
-  test('mốc sao: đúng bằng mục tiêu là 1 sao, 1.5x là 2, 2x là 3', () {
-    expect(match3Stars(999, 1000), 0);
-    expect(match3Stars(1000, 1000), 1); // biên dưới
-    expect(match3Stars(1499, 1000), 1);
-    expect(match3Stars(1500, 1000), 2);
-    expect(match3Stars(1999, 1000), 2);
-    expect(match3Stars(2000, 1000), 3);
+  test('mốc sao bám theo Balance.m3Star2Mult/m3Star3Mult, kiểm ở BIÊN', () {
+    const target = 1000;
+    final two = (target * Balance.m3Star2Mult).round();
+    final three = (target * Balance.m3Star3Mult).round();
+
+    expect(match3Stars(target - 1, target), 0);
+    expect(match3Stars(target, target), 1); // biên dưới
+    expect(match3Stars(two - 1, target), 1);
+    expect(match3Stars(two, target), 2);
+    expect(match3Stars(three - 1, target), 2);
+    expect(match3Stars(three, target), 3);
     expect(match3Stars(100, 0), 0); // mục tiêu 0 không cho sao chùa
+  });
+
+  test('mốc sao phải tăng dần (2 sao không được dễ hơn 1, 3 không dễ hơn 2)',
+      () {
+    expect(Balance.m3Star2Mult, greaterThanOrEqualTo(1));
+    expect(Balance.m3Star3Mult, greaterThan(Balance.m3Star2Mult));
   });
 
   test('mở khoá tuần tự: phải có >= 1 sao ở màn trước', () {
@@ -149,6 +159,6 @@ void _collectTests() {
     final target = const Match3Level(3).target;
     expect(match3Stars(target - 1, target), 0);
     expect(match3Stars(target, target), 1);
-    expect(match3Stars(target * 2, target), 3);
+    expect(match3Stars((target * Balance.m3Star3Mult).ceil(), target), 3);
   });
 }

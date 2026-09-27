@@ -118,6 +118,18 @@ class RemoteBalance {
       min: 1,
       max: 500,
     ),
+    'm3Star2Mult': (
+      read: () => Balance.m3Star2Mult,
+      write: (v) => Balance.m3Star2Mult = v,
+      min: 1.0,
+      max: 5,
+    ),
+    'm3Star3Mult': (
+      read: () => Balance.m3Star3Mult,
+      write: (v) => Balance.m3Star3Mult = v,
+      min: 1.0,
+      max: 10,
+    ),
     'm3CollectEvery': (
       read: () => Balance.m3CollectEvery.toDouble(),
       write: (v) => Balance.m3CollectEvery = v.round(),

@@ -607,8 +607,10 @@ Tab thứ 5 ở thanh dưới. Thiết kế đầy đủ + phần cố ý hoãn:
   (trước là `ArenaMatch3Panel`) — bàn cờ giờ nhận `Match3View` nên Đấu Trường và
   chơi đơn cùng dùng một widget.
 - **Màn sinh bằng công thức** (`lib/core/match3_levels.dart`), không có bảng dữ
-  liệu: 60 màn, mỗi màn 20 nước, mục tiêu 1★ = `900·1.12^(n-1)`, 2★ = 1.5×,
-  3★ = 2×. Bàn tất định theo `seed = id·7919` → ai chơi màn n cũng gặp đúng bàn đó.
+  liệu: 60 màn, mỗi màn 20 nước, mục tiêu 1★ = `900·1.12^(n-1)`, 2★ =
+  `m3Star2Mult` (1.25×), 3★ = `m3Star3Mult` (1.6×). Hai mốc sao hạ từ 1.5×/2×
+  xuống (2026-09-28) vì chơi thật thấy khắt khe quá — đều là nút vặn Remote
+  Config, tune tiếp không cần nộp bản mới. Bàn tất định theo `seed = id·7919` → ai chơi màn n cũng gặp đúng bàn đó.
 - **Thưởng chỉ trả LẦN ĐẦU** đạt mỗi mốc sao (`applyMatch3Result` trong
   `simulation.dart`). Bàn tất định nên chơi lại được đúng điểm cũ — thưởng lặp
   lại là máy in Xu/💎. Xu theo ngưỡng tương đối (thu nhập/giây × 600s × số sao),
@@ -630,13 +632,14 @@ Tab thứ 5 ở thanh dưới. Thiết kế đầy đủ + phần cố ý hoãn:
   Dart↔SQL là thứ khoá điều này.
 - **Hai kiểu mục tiêu**: *đạt X điểm* (mặc định) và *thu thập N ô loại X* —
   cứ `Balance.m3CollectEvery` (3) màn thì một màn kiểu thu thập, loại ô xoay
-  vòng qua cả 5 loại. Cả hai dùng CHUNG thang sao 1x/1.5x/2x nên "Chơi nốt" và
+  vòng qua cả 5 loại. Cả hai dùng CHUNG thang sao (1× / `m3Star2Mult` /
+  `m3Star3Mult`) nên "Chơi nốt" và
   công thức thưởng không phải phân nhánh. Engine chỉ thêm `Match3Move.cleared`
   (đếm ô đã xoá theo loại) — KHÔNG đụng điểm/rơi/bù nên `arena_m3_replay` (SQL)
   không phải sửa, vector vàng vẫn khớp.
 - **Màn kết thúc ngay khi đạt mục tiêu**, không bắt đốt nốt số nước còn lại.
   Hộp thoại lúc đó có 3 lối: **Màn sau** (nút chính) · **Chơi nốt** (dùng nốt
-  số nước để săn 2★/3★ — mốc 1.5x và 2x mục tiêu, dừng ngay thì không bao giờ
+  số nước để săn 2★/3★ — dừng ngay ở mốc 1★ thì không bao giờ
   với tới) · **Tạm nghỉ**. Chọn "Chơi nốt" thì không hỏi lại mỗi nước, chỉ hiện
   lại khi hết nước.
 - **Rewarded "xem QC: +5 nước"** ở bảng kết quả, chỉ hiện khi ĐÃ HẾT nước thật (còn
