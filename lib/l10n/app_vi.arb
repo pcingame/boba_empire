@@ -390,5 +390,22 @@
   "notifyOfflineFullTitle": "Kho Xu đã đầy! 🧋",
   "notifyOfflineFullBody": "Quán ngừng tích Xu mất rồi — ghé nhận và mở ca mới nào.",
   "notifyDailyTitle": "Ngày mới, việc mới 📋",
-  "notifyDailyBody": "Điểm danh, 1 lượt quay miễn phí và 3 nhiệm vụ hôm nay đang chờ bạn."
+  "notifyDailyBody": "Điểm danh, 1 lượt quay miễn phí và 3 nhiệm vụ hôm nay đang chờ bạn.",
+  "navMatch3": "Ghép 3",
+  "m3Title": "Hành trình Ghép 3",
+  "m3Level": "Màn {n}",
+  "@m3Level": { "placeholders": { "n": { "type": "int" } } },
+  "m3Locked": "Chưa mở",
+  "m3Target": "Mục tiêu {n}",
+  "@m3Target": { "placeholders": { "n": { "type": "String" } } },
+  "m3MovesLeft": "Còn {n} nước",
+  "@m3MovesLeft": { "placeholders": { "n": { "type": "int" } } },
+  "m3Score": "Điểm",
+  "m3Win": "Qua màn!",
+  "m3Lose": "Chưa đạt mục tiêu",
+  "m3Retry": "Chơi lại",
+  "m3Next": "Màn sau",
+  "m3Back": "Danh sách màn",
+  "m3Reward": "Thưởng",
+  "m3NoReward": "Đã nhận thưởng màn này rồi"
 }

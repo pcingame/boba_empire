@@ -25,6 +25,7 @@ import 'daily_quests_dialog.dart';
 import 'daily_dialog.dart';
 import 'gem_shop.dart';
 import 'how_to_play_dialog.dart';
+import 'match3_journey_page.dart';
 import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
 import 'rewards_dialog.dart';
@@ -443,6 +444,11 @@ class _BottomBar extends ConsumerWidget {
                   icon: Icons.sports_kabaddi,
                   label: l10n.navCompete,
                   onTap: () => showCompeteHub(context)),
+              _navItem(theme,
+                  buttonKey: const Key('match3-button'),
+                  icon: Icons.grid_view_rounded,
+                  label: l10n.navMatch3,
+                  onTap: () => showMatch3Journey(context)),
             ],
           ),
         ),
@@ -501,12 +507,18 @@ class _BottomBar extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 2),
-            Text(
-              label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.labelSmall
-                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+            // Từ 5 mục trở đi mỗi ô chỉ còn ~20% bề ngang: co chữ cho vừa thay
+            // vì cắt cụt ("Thành tựu" -> "Thàn..."). Vẫn giữ ellipsis làm lưới
+            // an toàn cho bản dịch cực dài.
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.labelSmall
+                    ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              ),
             ),
           ],
         ),

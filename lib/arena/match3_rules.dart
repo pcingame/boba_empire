@@ -191,6 +191,34 @@ class Match3Board {
     }
   }
 
+  /// Xáo lại bàn khi hết nước đi: dựng bàn mới từ phần [_seq] CHƯA dùng, theo
+  /// đúng luật bảng đầu của [Match3Board.initial] (không có dãy sẵn), lặp tới
+  /// khi bàn có ít nhất một nước đi.
+  ///
+  /// CHỈ dùng cho chơi đơn. Đấu Trường KHÔNG được gọi: `arena_m3_replay`
+  /// (supabase/arena_schema.sql) replay cả trận chỉ từ seq + log nước đi và
+  /// không biết có xáo bàn — client tự xáo là bàn lệch server, mọi nước sau bị
+  /// chấm sai. Muốn Đấu Trường xáo thì phải viết cùng logic ở cả SQL.
+  ///
+  /// ponytail: thử tối đa [tries] lần rồi thôi (bàn 8x8 5 loại gần như không
+  /// bao giờ bí tới lần thứ hai); cần bảo đảm tuyệt đối thì phải dựng bàn có
+  /// chủ đích thay vì bốc ngẫu nhiên.
+  void reshuffle({int tries = 20}) {
+    if (_seq.isEmpty) return;
+    for (var t = 0; t < tries; t++) {
+      for (var i = 0; i < m3Cells; i++) {
+        final r = i ~/ m3Size, c = i % m3Size;
+        var v = _next();
+        while ((c >= 2 && cells[i - 1] == v && cells[i - 2] == v) ||
+            (r >= 2 && cells[i - m3Size] == v && cells[i - 2 * m3Size] == v)) {
+          v = (v + 1) % m3Types;
+        }
+        cells[i] = v;
+      }
+      if (hasAnyMove()) return;
+    }
+  }
+
   /// Nước hợp lệ đầu tiên (theo thứ tự ô, rồi hướng) hoặc null nếu hết nước.
   (int cell, int dir)? findMove() {
     for (var cell = 0; cell < m3Cells; cell++) {

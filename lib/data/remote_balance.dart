@@ -92,6 +92,38 @@ class RemoteBalance {
       min: 10 * 1000,
       max: 60 * 60 * 1000,
     ),
+    // Hành trình Ghép 3 (độ khó màn chơi).
+    'm3Moves': (
+      read: () => Balance.m3Moves.toDouble(),
+      write: (v) => Balance.m3Moves = v.round(),
+      min: 5,
+      max: 200,
+    ),
+    'm3TargetBase': (
+      read: () => Balance.m3TargetBase,
+      write: (v) => Balance.m3TargetBase = v,
+      min: 50,
+      max: 100000,
+    ),
+    'm3TargetGrowth': (
+      read: () => Balance.m3TargetGrowth,
+      // Trần 1.5: màn 60 = base·1.5^59 ~ 1e10, đã là không thể qua nổi.
+      write: (v) => Balance.m3TargetGrowth = v,
+      min: 1.0,
+      max: 1.5,
+    ),
+    'm3LevelCount': (
+      read: () => Balance.m3LevelCount.toDouble(),
+      write: (v) => Balance.m3LevelCount = v.round(),
+      min: 1,
+      max: 500,
+    ),
+    'm3ThreeStarGems': (
+      read: () => Balance.m3ThreeStarGems.toDouble(),
+      write: (v) => Balance.m3ThreeStarGems = v.round(),
+      min: 0,
+      max: 100,
+    ),
     // Nguồn 💎 — theo dõi lạm phát 💎 (GAME_DESIGN §19).
     'dailyQuestRewardGems': (
       read: () => Balance.dailyQuestRewardGems.toDouble(),

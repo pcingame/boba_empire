@@ -1086,4 +1086,52 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notifyDailyBody =>
       'Your daily check-in, free spin and 3 quests are waiting.';
+
+  @override
+  String get navMatch3 => 'Match 3';
+
+  @override
+  String get m3Title => 'Match-3 Journey';
+
+  @override
+  String m3Level(int n) {
+    return 'Level $n';
+  }
+
+  @override
+  String get m3Locked => 'Locked';
+
+  @override
+  String m3Target(String n) {
+    return 'Goal $n';
+  }
+
+  @override
+  String m3MovesLeft(int n) {
+    return '$n moves left';
+  }
+
+  @override
+  String get m3Score => 'Score';
+
+  @override
+  String get m3Win => 'Level clear!';
+
+  @override
+  String get m3Lose => 'Goal not reached';
+
+  @override
+  String get m3Retry => 'Retry';
+
+  @override
+  String get m3Next => 'Next level';
+
+  @override
+  String get m3Back => 'Level list';
+
+  @override
+  String get m3Reward => 'Reward';
+
+  @override
+  String get m3NoReward => 'You already claimed this level\'s reward';
 }

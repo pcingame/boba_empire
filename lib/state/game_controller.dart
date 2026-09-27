@@ -920,6 +920,22 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
+  /// Ghi kết quả một màn Ghép 3 (chơi đơn) và trao thưởng. Trả về (Xu, 💎) vừa
+  /// nhận — 0 nếu không phá được kỷ lục sao cũ của màn đó.
+  (double, int) grantMatch3Result(int levelId, int stars) {
+    final reward = applyMatch3Result(
+      _game,
+      levelId,
+      stars,
+      incomePerSecond: state.incomePerSecond,
+    );
+    if (reward.$1 > 0 || reward.$2 > 0) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return reward;
+  }
+
   /// Trao Kim Cương thưởng giữ hạng cao trên Bảng xếp hạng — xem
   /// `lib/leaderboard/leaderboard_controller.dart`. Cùng nguyên tắc với
   /// [grantArenaReward]: module Bảng xếp hạng không đụng trực tiếp
@@ -1026,6 +1042,7 @@ class GameController extends Notifier<GameSnapshot> {
       offlineCapLevel: _game.offlineCapLevel,
       stage: _game.stage,
       adsRemoved: _game.adsRemoved,
+      m3Stars: _game.m3Stars,
       starterPackOwned: _game.starterPackOwned,
       tutorialSeen: _game.tutorialSeen,
       dailyAvailable: dailyAvailable(_game, now),

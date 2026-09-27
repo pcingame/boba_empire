@@ -50,6 +50,7 @@ class GameSnapshot {
     required this.newAchievements,
     required this.lifetimeEarnings,
     required this.achievementsClaimed,
+    required this.m3Stars,
     required this.prestigeStarsSpendable,
     required this.prestigeIncomeLevel,
     required this.prestigeTapLevel,
@@ -150,6 +151,9 @@ class GameSnapshot {
 
   /// Id thành tựu đã mở khoá — để bảng Thành tựu tô đã đạt/khoá.
   final List<String> achievementsClaimed;
+
+  /// Sao Hành trình Ghép 3 (chỉ số = màn - 1, giá trị 0..3).
+  final List<int> m3Stars;
 
   /// Số ⭐ Sao còn có thể tiêu trong kho prestige.
   final int prestigeStarsSpendable;

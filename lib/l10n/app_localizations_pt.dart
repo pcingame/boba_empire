@@ -1090,4 +1090,52 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get notifyDailyBody =>
       'A recompensa diária, um giro grátis e 3 missões estão à espera.';
+
+  @override
+  String get navMatch3 => 'Match 3';
+
+  @override
+  String get m3Title => 'Jornada Match-3';
+
+  @override
+  String m3Level(int n) {
+    return 'Nível $n';
+  }
+
+  @override
+  String get m3Locked => 'Bloqueado';
+
+  @override
+  String m3Target(String n) {
+    return 'Meta $n';
+  }
+
+  @override
+  String m3MovesLeft(int n) {
+    return '$n jogadas restantes';
+  }
+
+  @override
+  String get m3Score => 'Pontos';
+
+  @override
+  String get m3Win => 'Nível concluído!';
+
+  @override
+  String get m3Lose => 'Meta não alcançada';
+
+  @override
+  String get m3Retry => 'Tentar de novo';
+
+  @override
+  String get m3Next => 'Próximo nível';
+
+  @override
+  String get m3Back => 'Lista de níveis';
+
+  @override
+  String get m3Reward => 'Recompensa';
+
+  @override
+  String get m3NoReward => 'Você já recebeu a recompensa deste nível';
 }

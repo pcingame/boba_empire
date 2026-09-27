@@ -24,6 +24,18 @@ class AdConfig {
   static const String _iosRewardedProd =
       'ca-app-pub-9748541552219348/7263782428';
 
+  /// Banner — test unit id của Google.
+  static const String _androidBannerTest =
+      'ca-app-pub-3940256099942544/6300978111';
+  static const String _iosBannerTest =
+      'ca-app-pub-3940256099942544/2934735716';
+
+  /// Banner unit id THẬT dùng ở bản release. CHƯA TẠO trên AdMob — để rỗng thì
+  /// [bannerUnitId] trả rỗng và app KHÔNG hiện banner (an toàn hơn là lỡ dùng
+  /// nhầm test id ở bản phát hành, Google coi đó là vi phạm). Xem SETUP.md §1.
+  static const String _androidBannerProd = '';
+  static const String _iosBannerProd = '';
+
   /// Test device ID (cách nhau dấu phẩy) qua `--dart-define=ADMOB_TEST_DEVICES=`.
   ///
   /// Máy có ID ở đây nhận QUẢNG CÁO TEST kể cả khi chạy bản release với unit
@@ -48,5 +60,13 @@ class AdConfig {
       return Platform.isIOS ? _iosRewardedProd : _androidRewardedProd;
     }
     return Platform.isIOS ? _iosRewardedTest : _androidRewardedTest;
+  }
+
+  /// Unit id banner; rỗng = chưa cấu hình → không hiện banner.
+  static String get bannerUnitId {
+    if (kReleaseMode) {
+      return Platform.isIOS ? _iosBannerProd : _androidBannerProd;
+    }
+    return Platform.isIOS ? _iosBannerTest : _androidBannerTest;
   }
 }

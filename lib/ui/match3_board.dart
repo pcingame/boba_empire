@@ -1,4 +1,6 @@
-/// Bàn chơi dạng "Ghép 3" của Đấu Trường: lưới 8x8 ô trà sữa/trân châu/...
+/// Bàn chơi dạng "Ghép 3": lưới 8x8 ô trà sữa/trân châu/... Dùng chung cho Đấu
+/// Trường (PvP) và Hành trình Ghép 3 (chơi đơn) — widget chỉ nhận [Match3View],
+/// không biết gì về trận đấu hay màn chơi.
 /// Chạm ô rồi chạm ô kề (hoặc vuốt sang ô kề) để đổi; luật ở
 /// `lib/arena/match3_rules.dart`, widget chỉ chọn (ô, hướng) và phát hoạt ảnh.
 ///
@@ -12,7 +14,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../arena/arena_controller.dart';
 import '../arena/match3_rules.dart';
 import '../l10n/app_localizations.dart';
 
@@ -54,20 +55,46 @@ class _Popup {
   final bool big;
 }
 
-class ArenaMatch3Panel extends StatefulWidget {
-  const ArenaMatch3Panel({super.key, required this.view, required this.onSwap});
+/// Những gì bàn cờ cần biết để vẽ — nguồn nào cũng được (trận PvP hay màn chơi
+/// đơn), miễn dựng được đủ 5 thứ này.
+class Match3View {
+  const Match3View({
+    required this.cells,
+    this.frames = const [],
+    this.moveId = 0,
+    this.stuck = false,
+    this.finished = false,
+  });
 
-  final ArenaInMatch view;
+  /// Bảng hiện tại (64 ô, loại 0..4).
+  final List<int> cells;
+
+  /// Các bảng trung gian của nước vừa đi để phát hoạt ảnh; [moveId] tăng mỗi
+  /// nước hợp lệ.
+  final List<List<int>> frames;
+  final int moveId;
+
+  /// Hết nước đi hợp lệ (chỉ Đấu Trường mới rơi vào — chơi đơn tự xáo bàn).
+  final bool stuck;
+
+  /// Hết giờ / hết lượt → khoá bàn.
+  final bool finished;
+}
+
+class Match3Panel extends StatefulWidget {
+  const Match3Panel({super.key, required this.view, required this.onSwap});
+
+  final Match3View view;
 
   /// Trả true nếu nước hợp lệ và đã được nhận.
   final bool Function(int cell, int dir) onSwap;
 
   @override
-  State<ArenaMatch3Panel> createState() => _ArenaMatch3PanelState();
+  State<Match3Panel> createState() => _Match3PanelState();
 }
 
-class _ArenaMatch3PanelState extends State<ArenaMatch3Panel> {
-  late List<_T> _tiles = _tilesFrom(widget.view.boardCells);
+class _Match3PanelState extends State<Match3Panel> {
+  late List<_T> _tiles = _tilesFrom(widget.view.cells);
   final List<_Popup> _popups = [];
   final List<Timer> _timers = [];
   int _nextId = 0;
@@ -111,19 +138,19 @@ class _ArenaMatch3PanelState extends State<ArenaMatch3Panel> {
   }
 
   @override
-  void didUpdateWidget(ArenaMatch3Panel old) {
+  void didUpdateWidget(Match3Panel old) {
     super.didUpdateWidget(old);
     final v = widget.view;
     if (v.moveId != old.view.moveId && v.frames.isNotEmpty) {
       _play(v.frames);
-    } else if (!_animating && v.boardCells.isNotEmpty) {
+    } else if (!_animating && v.cells.isNotEmpty) {
       // Dựng lại từ log (vào lại trận / server chối nước) — không có hoạt ảnh.
       var same = true;
       for (var i = 0; i < m3Cells && same; i++) {
-        same = _valueAt(i) == v.boardCells[i];
+        same = _valueAt(i) == v.cells[i];
       }
       if (!same) {
-        _tiles = _tilesFrom(v.boardCells);
+        _tiles = _tilesFrom(v.cells);
         _scheduleHint();
       }
     }
@@ -154,7 +181,7 @@ class _ArenaMatch3PanelState extends State<ArenaMatch3Panel> {
     _hintTimer?.cancel();
     if (_hintCell != null) setState(() => _hintCell = _hintOther = null);
     _hintTimer = Timer(_hintDelay, () {
-      if (!mounted || _animating || widget.view.stuck || widget.view.remaining <= Duration.zero) return;
+      if (!mounted || _animating || widget.view.stuck || widget.view.finished) return;
       final cells = [for (var i = 0; i < m3Cells; i++) _valueAt(i)];
       if (cells.contains(-1)) return;
       final move = Match3Board.fromCells(cells).findMove();
@@ -241,7 +268,7 @@ class _ArenaMatch3PanelState extends State<ArenaMatch3Panel> {
 
     if (!mounted || token != _playToken) return;
     setState(() {
-      final target = widget.view.boardCells;
+      final target = widget.view.cells;
       var same = target.isNotEmpty;
       for (var i = 0; i < m3Cells && same; i++) {
         same = _valueAt(i) == target[i];
@@ -274,7 +301,7 @@ class _ArenaMatch3PanelState extends State<ArenaMatch3Panel> {
     _timers.add(t);
   }
 
-  bool get _locked => _animating || widget.view.stuck || widget.view.remaining <= Duration.zero;
+  bool get _locked => _animating || widget.view.stuck || widget.view.finished;
 
   void _flashInvalid(int a, int b) {
     HapticFeedback.mediumImpact();

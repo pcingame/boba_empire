@@ -13,7 +13,7 @@ import '../arena/arena_models.dart';
 import '../core/format.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
-import 'arena_match3_board.dart';
+import 'match3_board.dart';
 import 'widgets/clay.dart';
 
 Future<void> showArenaPage(BuildContext context) {
@@ -203,7 +203,16 @@ class _MatchView extends ConsumerWidget {
           const SizedBox(height: 8),
           Text(l10n.arenaResolving),
         ] else if (view.mode == ArenaMode.match3)
-          ArenaMatch3Panel(view: view, onSwap: controller.swap)
+          Match3Panel(
+            view: Match3View(
+              cells: view.boardCells,
+              frames: view.frames,
+              moveId: view.moveId,
+              stuck: view.stuck,
+              finished: view.remaining <= Duration.zero,
+            ),
+            onSwap: controller.swap,
+          )
         else ...[
           // Kích thước CỐ ĐỊNH (không phải padding-quyết-định-kích-thước) +
           // FittedBox co chữ — bản dịch dài (id/es/pt 2 từ) vẫn nằm gọn trong

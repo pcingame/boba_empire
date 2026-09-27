@@ -341,5 +341,19 @@
   "notifyOfflineFullTitle": "Your coin stash is full! 🧋",
   "notifyOfflineFullBody": "The shop stopped piling up Coins — come collect and start a new shift.",
   "notifyDailyTitle": "New day, new quests 📋",
-  "notifyDailyBody": "Your daily check-in, free spin and 3 quests are waiting."
+  "notifyDailyBody": "Your daily check-in, free spin and 3 quests are waiting.",
+  "navMatch3": "Match 3",
+  "m3Title": "Match-3 Journey",
+  "m3Level": "Level {n}",
+  "m3Locked": "Locked",
+  "m3Target": "Goal {n}",
+  "m3MovesLeft": "{n} moves left",
+  "m3Score": "Score",
+  "m3Win": "Level clear!",
+  "m3Lose": "Goal not reached",
+  "m3Retry": "Retry",
+  "m3Next": "Next level",
+  "m3Back": "Level list",
+  "m3Reward": "Reward",
+  "m3NoReward": "You already claimed this level's reward"
 }

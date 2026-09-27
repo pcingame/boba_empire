@@ -341,5 +341,19 @@
   "notifyOfflineFullTitle": "Kas Koin sudah penuh! 🧋",
   "notifyOfflineFullBody": "Kedai berhenti mengumpulkan Koin — ambil sekarang dan mulai giliran baru.",
   "notifyDailyTitle": "Hari baru, misi baru 📋",
-  "notifyDailyBody": "Hadiah harian, 1 putaran gratis, dan 3 misi sedang menunggu."
+  "notifyDailyBody": "Hadiah harian, 1 putaran gratis, dan 3 misi sedang menunggu.",
+  "navMatch3": "Match 3",
+  "m3Title": "Perjalanan Match-3",
+  "m3Level": "Level {n}",
+  "m3Locked": "Terkunci",
+  "m3Target": "Target {n}",
+  "m3MovesLeft": "Sisa {n} langkah",
+  "m3Score": "Skor",
+  "m3Win": "Level selesai!",
+  "m3Lose": "Target belum tercapai",
+  "m3Retry": "Ulangi",
+  "m3Next": "Level berikutnya",
+  "m3Back": "Daftar level",
+  "m3Reward": "Hadiah",
+  "m3NoReward": "Hadiah level ini sudah diambil"
 }

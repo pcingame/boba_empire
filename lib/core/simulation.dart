@@ -415,6 +415,39 @@ void grantBonus(GameState state, double amount) {
   _credit(state, amount);
 }
 
+/// Ghi kết quả một màn Hành trình Ghép 3 và trao thưởng.
+///
+/// CHỈ thưởng cho phần sao TĂNG THÊM so với kỷ lục cũ của màn đó. Bàn cờ mỗi
+/// màn là tất định (xem `Match3Level.seed`) nên chơi lại được đúng điểm cũ —
+/// thưởng lặp lại sẽ biến mỗi màn thành máy in Xu/💎 bấm lại bao nhiêu lần
+/// cũng được.
+///
+/// Xu thưởng theo NGƯỠNG TƯƠNG ĐỐI ([incomePerSecond] nhân thời gian) vì kinh
+/// tế trải từ 1e2 tới 1e80 — số cố định vô nghĩa chỉ sau vài giờ chơi.
+/// Trả về (Xu, 💎) vừa trao. MUTATE [state].
+(double, int) applyMatch3Result(
+  GameState state,
+  int levelId,
+  int stars, {
+  required double incomePerSecond,
+}) {
+  if (levelId < 1 || stars <= 0) return (0, 0);
+  while (state.m3Stars.length < levelId) {
+    state.m3Stars.add(0);
+  }
+  final before = state.m3Stars[levelId - 1];
+  if (stars <= before) return (0, 0);
+  state.m3Stars[levelId - 1] = stars;
+
+  final cash = incomePerSecond *
+      Balance.m3RewardIncomeSeconds *
+      (stars - before);
+  grantBonus(state, cash);
+  final gems = (before < 3 && stars >= 3) ? Balance.m3ThreeStarGems : 0;
+  grantGems(state, gems.toDouble());
+  return (cash, gems);
+}
+
 /// Cộng thẳng [amount] Kim Cương (mua bằng tiền thật / quà tặng).
 void grantGems(GameState state, double amount) {
   if (amount <= 0) return;

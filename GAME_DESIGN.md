@@ -595,3 +595,28 @@ bù khi mở app (cao hơn thực tế một chút); save không có `firstPlaye
 Màn chờ và màn ghép trận hiện "🟢 N người đang online" (N gồm cả bạn, 1 người vẫn hiện; chưa kết nối/lỗi thì ẩn). Dùng Supabase
 Realtime Presence trên kênh công khai `arena-lobby` (không có bảng/SQL): chỉ đếm người đang MỞ trang Đấu Trường, mỗi người 1 kết nối
 realtime (gói free ~200 kết nối cùng lúc). Provider `arenaOnlineCountProvider` (autoDispose) giữ kết nối suốt lúc trang mở.
+
+## 23. Hành trình Ghép 3 — chơi đơn có màn (2026-09-28)
+
+> ⚠️ Số cân bằng là **ước lượng, chưa playtest** (như mọi đợt trước). Toàn bộ
+> nằm trong Remote Config nên tune được không cần nộp bản mới — xem SETUP.md §2b.
+
+Tab thứ 5 ở thanh dưới. Thiết kế đầy đủ + phần cố ý hoãn: `PROPOSAL_MATCH3_LEVELS.md`.
+
+- **Dùng lại nguyên luật** `lib/arena/match3_rules.dart` và bàn cờ `Match3Panel`
+  (trước là `ArenaMatch3Panel`) — bàn cờ giờ nhận `Match3View` nên Đấu Trường và
+  chơi đơn cùng dùng một widget.
+- **Màn sinh bằng công thức** (`lib/core/match3_levels.dart`), không có bảng dữ
+  liệu: 60 màn, mỗi màn 20 nước, mục tiêu 1★ = `900·1.12^(n-1)`, 2★ = 1.5×,
+  3★ = 2×. Bàn tất định theo `seed = id·7919` → ai chơi màn n cũng gặp đúng bàn đó.
+- **Thưởng chỉ trả LẦN ĐẦU** đạt mỗi mốc sao (`applyMatch3Result` trong
+  `simulation.dart`). Bàn tất định nên chơi lại được đúng điểm cũ — thưởng lặp
+  lại là máy in Xu/💎. Xu theo ngưỡng tương đối (thu nhập/giây × 600s × số sao),
+  💎 chỉ khi 3★ (3 💎/màn, trọn đời 180 💎).
+- `GameState.m3Stars` (chỉ số = màn − 1, giá trị 0..3), giữ qua Nhượng quyền và
+  Kỷ Nguyên, tự đi theo cloud save.
+- **Hết nước đi thì tự xáo bàn** (`Match3Board.reshuffle`). CHỈ chơi đơn được
+  dùng: `arena_m3_replay` replay cả trận chỉ từ seq + log nước đi, client tự xáo
+  giữa trận PvP là bàn lệch server. Đấu Trường vẫn kẹt như cũ (ROADMAP P2 §9).
+- **Banner quảng cáo** ở đáy cả hai màn của tab này (`lib/ads/banner_ad_box.dart`),
+  tôn trọng `adFree`; unit id thật chưa tạo → release chưa hiện banner.

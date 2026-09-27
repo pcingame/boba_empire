@@ -341,5 +341,19 @@
   "notifyOfflineFullTitle": "¡Tu caja está llena! 🧋",
   "notifyOfflineFullBody": "La tienda dejó de acumular monedas: pasa a recogerlas y abre otro turno.",
   "notifyDailyTitle": "Nuevo día, nuevas misiones 📋",
-  "notifyDailyBody": "Te esperan la recompensa diaria, un giro gratis y 3 misiones."
+  "notifyDailyBody": "Te esperan la recompensa diaria, un giro gratis y 3 misiones.",
+  "navMatch3": "Match 3",
+  "m3Title": "Viaje Match-3",
+  "m3Level": "Nivel {n}",
+  "m3Locked": "Bloqueado",
+  "m3Target": "Meta {n}",
+  "m3MovesLeft": "{n} movimientos",
+  "m3Score": "Puntos",
+  "m3Win": "¡Nivel superado!",
+  "m3Lose": "Meta no alcanzada",
+  "m3Retry": "Reintentar",
+  "m3Next": "Siguiente nivel",
+  "m3Back": "Lista de niveles",
+  "m3Reward": "Recompensa",
+  "m3NoReward": "Ya reclamaste la recompensa de este nivel"
 }

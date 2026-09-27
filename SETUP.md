@@ -109,6 +109,18 @@ starter): 🇮🇩 ~Rp 39.000 / Rp 9.000 · 🇧🇷 ~R$ 9,90 / R$ 2,90 · 🇹�
 
 ---
 
+### Banner (Hành trình Ghép 3)
+
+Banner chỉ hiện ở tab **Ghép 3** (danh sách màn + màn chơi), KHÔNG hiện trong
+Đấu Trường (trận 60 giây, chạm nhầm là thua) và tự ẩn khi người chơi đã mua
+"Gỡ quảng cáo" hoặc đang VIP.
+
+1. AdMob → app Android và app iOS → tạo **Banner ad unit** cho mỗi bên.
+2. Điền vào `lib/ads/ad_config.dart` → `_androidBannerProd`, `_iosBannerProd`.
+   **Để rỗng là bản release KHÔNG hiện banner** — cố tình như vậy, an toàn hơn
+   nhiều so với lỡ phát hành kèm test id (Google coi là vi phạm).
+3. Bản debug luôn dùng test id, không cần làm gì.
+
 ## 2b. Firebase Remote Config (tune số không cần nộp bản mới)
 
 12 nút vặn cân bằng có thể ghi đè từ console — tên tham số trên console **đúng
@@ -134,6 +146,11 @@ sẵn — cố tình như vậy để một số 0 gõ nhầm không phá save n
 | `vipSpawnMinMs` / `vipSpawnMaxMs` | 240000 / 420000 | 10s – 60p | Nhịp khách VIP |
 | `dailyQuestRewardGems` | 8 | 0 – 200 | 💎/nhiệm vụ ngày |
 | `dailyQuestBonusGems` | 15 | 0 – 500 | 💎 thưởng xong cả 3 |
+| `m3Moves` | 20 | 5 – 200 | Số nước mỗi màn Ghép 3 |
+| `m3TargetBase` | 900 | 50 – 100000 | Mục tiêu 1★ của màn 1 |
+| `m3TargetGrowth` | 1.12 | 1.0 – 1.5 | Mục tiêu tăng bao nhiêu mỗi màn |
+| `m3LevelCount` | 60 | 1 – 500 | Tổng số màn (màn sinh bằng công thức) |
+| `m3ThreeStarGems` | 3 | 0 – 100 | 💎 thưởng lần đầu đạt 3★ một màn |
 
 Chưa bật Remote Config trên console cũng không sao: fetch lỗi thì app giữ nguyên
 số biên dịch sẵn (có log `RemoteBalance`).

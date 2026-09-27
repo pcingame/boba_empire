@@ -84,6 +84,26 @@ class Balance {
   static const int milestoneGlobalFreeTiers = 1;
   static double milestoneGlobalBonus = 0.03;
 
+  // --- Hành trình Ghép 3 (chơi đơn, lib/core/match3_levels.dart) ---
+
+  /// Số nước mỗi màn. Cố định; độ khó tăng bằng mục tiêu điểm.
+  static int m3Moves = 20;
+
+  /// Mục tiêu 1 sao của màn 1, và hệ số tăng mỗi màn (màn n = base·growth^(n-1)).
+  static double m3TargetBase = 900;
+  static double m3TargetGrowth = 1.12;
+
+  /// Tổng số màn. Màn sinh bằng công thức nên tăng số này là có thêm màn.
+  static int m3LevelCount = 60;
+
+  /// Thưởng 💎 khi đạt 3 sao một màn (chỉ trả LẦN ĐẦU — bàn tất định nên chơi
+  /// lại mà vẫn thưởng là máy in 💎). 60 màn x 3 = 180 💎 trọn đời.
+  static int m3ThreeStarGems = 3;
+
+  /// Thưởng Xu lần đầu đạt mỗi mốc sao = thu nhập/giây x chừng này giây x số sao.
+  /// Ngưỡng TƯƠNG ĐỐI vì kinh tế trải 1e2..1e80 (cùng cách nhiệm vụ ngày làm).
+  static int m3RewardIncomeSeconds = 600;
+
   /// Nhiệm vụ LẶP LẠI sau khi hết chuỗi 10 bước: "kiếm thêm X Xu" với X =
   /// [questRepeatBaseEarn] · 10^vòng. Thưởng cố định [questRepeatRewardGems] 💎.
   static const double questRepeatBaseEarn = 50000000; // 50M

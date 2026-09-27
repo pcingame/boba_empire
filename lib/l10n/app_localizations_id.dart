@@ -1087,4 +1087,52 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get notifyDailyBody =>
       'Hadiah harian, 1 putaran gratis, dan 3 misi sedang menunggu.';
+
+  @override
+  String get navMatch3 => 'Match 3';
+
+  @override
+  String get m3Title => 'Perjalanan Match-3';
+
+  @override
+  String m3Level(int n) {
+    return 'Level $n';
+  }
+
+  @override
+  String get m3Locked => 'Terkunci';
+
+  @override
+  String m3Target(String n) {
+    return 'Target $n';
+  }
+
+  @override
+  String m3MovesLeft(int n) {
+    return 'Sisa $n langkah';
+  }
+
+  @override
+  String get m3Score => 'Skor';
+
+  @override
+  String get m3Win => 'Level selesai!';
+
+  @override
+  String get m3Lose => 'Target belum tercapai';
+
+  @override
+  String get m3Retry => 'Ulangi';
+
+  @override
+  String get m3Next => 'Level berikutnya';
+
+  @override
+  String get m3Back => 'Daftar level';
+
+  @override
+  String get m3Reward => 'Hadiah';
+
+  @override
+  String get m3NoReward => 'Hadiah level ini sudah diambil';
 }

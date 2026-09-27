@@ -52,6 +52,20 @@ biên dịch sẵn.
 cửa sổ ±1h; máy ảo Google Play không root được để tua đồng hồ). Đã kiểm: lịch
 vào đúng AlarmManager qua receiver của plugin, đúng mốc giờ, quyền xin được.
 
+## Ngoài kế hoạch — Hành trình Ghép 3 ✅ XONG 2026-09-28
+
+Yêu cầu trực tiếp của người dùng (dạng Ghép 3 khá ăn khách): tab thứ 5, 60 màn
+chơi đơn, banner quảng cáo trong lúc chơi. Thiết kế: `PROPOSAL_MATCH3_LEVELS.md`,
+tóm tắt vận hành: `GAME_DESIGN.md` §23.
+
+Kéo theo: mục **#9 dưới đây (tự xáo khi hết nước) vẫn CÒN** cho Đấu Trường —
+xáo bàn đã viết nhưng chỉ chơi đơn dùng được, PvP cần viết cùng logic trong
+`arena_m3_replay` (SQL) mới dùng được.
+
+Còn phải làm bằng tay: tạo **Banner ad unit** trên AdMob rồi điền vào
+`lib/ads/ad_config.dart` (SETUP.md §1) — chưa điền thì bản release không hiện
+banner (có chủ ý).
+
 ## P2 — Mở rộng, sau khi P1 có số liệu
 
 | # | Việc | Ghi chú |

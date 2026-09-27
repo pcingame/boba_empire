@@ -1078,4 +1078,52 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get notifyDailyBody =>
       'รางวัลรายวัน หมุนวงล้อฟรี 1 ครั้ง และภารกิจ 3 อย่างรออยู่';
+
+  @override
+  String get navMatch3 => 'จับคู่ 3';
+
+  @override
+  String get m3Title => 'เส้นทางจับคู่ 3';
+
+  @override
+  String m3Level(int n) {
+    return 'ด่าน $n';
+  }
+
+  @override
+  String get m3Locked => 'ยังไม่ปลดล็อก';
+
+  @override
+  String m3Target(String n) {
+    return 'เป้าหมาย $n';
+  }
+
+  @override
+  String m3MovesLeft(int n) {
+    return 'เหลือ $n ตา';
+  }
+
+  @override
+  String get m3Score => 'คะแนน';
+
+  @override
+  String get m3Win => 'ผ่านด่าน!';
+
+  @override
+  String get m3Lose => 'ยังไม่ถึงเป้าหมาย';
+
+  @override
+  String get m3Retry => 'เล่นใหม่';
+
+  @override
+  String get m3Next => 'ด่านถัดไป';
+
+  @override
+  String get m3Back => 'รายการด่าน';
+
+  @override
+  String get m3Reward => 'รางวัล';
+
+  @override
+  String get m3NoReward => 'รับรางวัลด่านนี้ไปแล้ว';
 }

@@ -1,0 +1,79 @@
+/// Trạng thái một lượt chơi màn Ghép 3. Thuần cục bộ — KHÔNG gọi mạng, khác
+/// hẳn `ArenaController` (PvP có server chấm điểm).
+library;
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../arena/match3_rules.dart';
+import '../core/match3_levels.dart';
+
+class Match3PlayState {
+  const Match3PlayState({
+    required this.level,
+    required this.cells,
+    required this.movesLeft,
+    required this.score,
+    this.frames = const [],
+    this.moveId = 0,
+  });
+
+  final Match3Level level;
+  final List<int> cells;
+  final int movesLeft;
+  final int score;
+  final List<List<int>> frames;
+  final int moveId;
+
+  int get stars => match3Stars(score, level.target);
+
+  /// Hết nước → khoá bàn và hiện bảng kết quả.
+  bool get finished => movesLeft <= 0;
+}
+
+class Match3Controller extends Notifier<Match3PlayState> {
+  Match3Board? _board;
+
+  @override
+  Match3PlayState build() => _start(const Match3Level(1));
+
+  /// Bắt đầu (hoặc chơi lại) một màn.
+  void load(Match3Level level) => state = _start(level);
+
+  Match3PlayState _start(Match3Level level) {
+    final board = Match3Board.initial(level.seq());
+    // Bàn đầu có thể bí ngay (hiếm) — xáo cho tới khi đi được.
+    if (!board.hasAnyMove()) board.reshuffle();
+    _board = board;
+    return Match3PlayState(
+      level: level,
+      cells: [...board.cells],
+      movesLeft: level.moves,
+      score: 0,
+    );
+  }
+
+  /// Trả true nếu nước hợp lệ (bàn cờ chỉ phát hoạt ảnh khi true).
+  bool swap(int cell, int dir) {
+    final board = _board;
+    if (board == null || state.finished) return false;
+    final move = board.trySwap(cell, dir);
+    if (!move.valid) return false;
+    // Hết nước đi hợp lệ thì xáo lại — chơi đơn không có server nên xáo thoải
+    // mái (xem ghi chú trong Match3Board.reshuffle).
+    if (!board.hasAnyMove()) board.reshuffle();
+    state = Match3PlayState(
+      level: state.level,
+      cells: [...board.cells],
+      movesLeft: state.movesLeft - 1,
+      score: state.score + move.score,
+      frames: move.frames,
+      moveId: state.moveId + 1,
+    );
+    return true;
+  }
+}
+
+final match3ControllerProvider =
+    NotifierProvider.autoDispose<Match3Controller, Match3PlayState>(
+  Match3Controller.new,
+);

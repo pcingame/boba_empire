@@ -1083,4 +1083,52 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get notifyDailyBody =>
       'Điểm danh, 1 lượt quay miễn phí và 3 nhiệm vụ hôm nay đang chờ bạn.';
+
+  @override
+  String get navMatch3 => 'Ghép 3';
+
+  @override
+  String get m3Title => 'Hành trình Ghép 3';
+
+  @override
+  String m3Level(int n) {
+    return 'Màn $n';
+  }
+
+  @override
+  String get m3Locked => 'Chưa mở';
+
+  @override
+  String m3Target(String n) {
+    return 'Mục tiêu $n';
+  }
+
+  @override
+  String m3MovesLeft(int n) {
+    return 'Còn $n nước';
+  }
+
+  @override
+  String get m3Score => 'Điểm';
+
+  @override
+  String get m3Win => 'Qua màn!';
+
+  @override
+  String get m3Lose => 'Chưa đạt mục tiêu';
+
+  @override
+  String get m3Retry => 'Chơi lại';
+
+  @override
+  String get m3Next => 'Màn sau';
+
+  @override
+  String get m3Back => 'Danh sách màn';
+
+  @override
+  String get m3Reward => 'Thưởng';
+
+  @override
+  String get m3NoReward => 'Đã nhận thưởng màn này rồi';
 }

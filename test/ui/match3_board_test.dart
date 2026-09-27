@@ -1,8 +1,6 @@
-import 'package:boba_empire/arena/arena_controller.dart';
-import 'package:boba_empire/arena/arena_models.dart';
 import 'package:boba_empire/arena/match3_rules.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
-import 'package:boba_empire/ui/arena_match3_board.dart';
+import 'package:boba_empire/ui/match3_board.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,23 +10,19 @@ List<int> _cells() => [
       for (var i = 0; i < m3Cells; i++) (2 * (i ~/ m3Size) + 3 * (i % m3Size)) % m3Types,
     ];
 
-ArenaInMatch _view({
+Match3View _view({
   List<int>? cells,
   List<List<int>> frames = const [],
   int moveId = 0,
   bool stuck = false,
-  Duration remaining = const Duration(seconds: 30),
+  bool finished = false,
 }) =>
-    ArenaInMatch(
-      myScore: 0,
-      opponentScore: 0,
-      remaining: remaining,
-      tiersBought: const {},
-      mode: ArenaMode.match3,
-      boardCells: cells ?? _cells(),
+    Match3View(
+      cells: cells ?? _cells(),
       frames: frames,
       moveId: moveId,
       stuck: stuck,
+      finished: finished,
     );
 
 Widget _host(Locale locale, Widget child) => MaterialApp(
@@ -59,7 +53,7 @@ void main() {
       await tester.pumpWidget(
         MediaQuery(
           data: const MediaQueryData(size: Size(320, 640), textScaler: TextScaler.linear(1.6)),
-          child: _host(locale, ArenaMatch3Panel(view: _view(stuck: true), onSwap: (_, _) => true)),
+          child: _host(locale, Match3Panel(view: _view(stuck: true), onSwap: (_, _) => true)),
         ),
       );
       await tester.pumpAndSettle(); // ném FlutterError nếu RenderFlex tràn
@@ -69,7 +63,7 @@ void main() {
   testWidgets('chạm 2 ô kề nhau gọi onSwap đúng (cell, dir) — ngang và dọc, cả hai chiều', (tester) async {
     final swaps = <(int, int)>[];
     await tester.pumpWidget(_host(const Locale('vi'),
-        ArenaMatch3Panel(view: _view(), onSwap: (c, d) => _rec(swaps, c, d))));
+        Match3Panel(view: _view(), onSwap: (c, d) => _rec(swaps, c, d))));
     await tester.tap(_tile(0));
     await tester.pump();
     await tester.tap(_tile(1));
@@ -93,7 +87,7 @@ void main() {
   testWidgets('ô không kề (chéo, cuối hàng sang đầu hàng sau) không đổi, chỉ chuyển lựa chọn', (tester) async {
     final swaps = <(int, int)>[];
     await tester.pumpWidget(_host(const Locale('vi'),
-        ArenaMatch3Panel(view: _view(), onSwap: (c, d) => _rec(swaps, c, d))));
+        Match3Panel(view: _view(), onSwap: (c, d) => _rec(swaps, c, d))));
     await tester.tap(_tile(0));
     await tester.pump();
     await tester.tap(_tile(9)); // chéo
@@ -108,7 +102,7 @@ void main() {
   testWidgets('nước bị từ chối (onSwap=false) không làm hỏng giao diện; chạm lại vẫn dùng được', (tester) async {
     var calls = 0;
     await tester.pumpWidget(_host(const Locale('vi'),
-        ArenaMatch3Panel(view: _view(), onSwap: (_, _) => ++calls < 0)));
+        Match3Panel(view: _view(), onSwap: (_, _) => ++calls < 0)));
     await tester.tap(_tile(0));
     await tester.pump();
     await tester.tap(_tile(1));
@@ -125,7 +119,7 @@ void main() {
   testWidgets('vuốt sang ô kề gọi onSwap', (tester) async {
     final swaps = <(int, int)>[];
     await tester.pumpWidget(_host(const Locale('vi'),
-        ArenaMatch3Panel(view: _view(), onSwap: (c, d) => _rec(swaps, c, d))));
+        Match3Panel(view: _view(), onSwap: (c, d) => _rec(swaps, c, d))));
     await tester.fling(_tile(10), const Offset(120, 0), 1500);
     await tester.pump();
     expect(swaps.single, (10, 0));
@@ -137,22 +131,22 @@ void main() {
   testWidgets('hết nước (stuck) hoặc hết giờ thì khoá chạm', (tester) async {
     var calls = 0;
     await tester.pumpWidget(_host(const Locale('vi'),
-        ArenaMatch3Panel(view: _view(stuck: true), onSwap: (_, _) => ++calls > 0)));
+        Match3Panel(view: _view(stuck: true), onSwap: (_, _) => ++calls > 0)));
     await tester.tap(_tile(0));
     await tester.tap(_tile(1));
     await tester.pump();
     expect(calls, 0);
 
     await tester.pumpWidget(_host(const Locale('vi'),
-        ArenaMatch3Panel(view: _view(remaining: Duration.zero), onSwap: (_, _) => ++calls > 0)));
+        Match3Panel(view: _view(finished: true), onSwap: (_, _) => ++calls > 0)));
     await tester.tap(_tile(0));
     await tester.tap(_tile(1));
     await tester.pump();
     expect(calls, 0);
   });
 
-  Future<void> playMove(WidgetTester tester, Match3Board board, ArenaInMatch Function(List<int> cells, List<List<int>> frames, int id) mk,
-      StateSetter Function() setter, void Function(ArenaInMatch) assign, int id) async {
+  Future<void> playMove(WidgetTester tester, Match3Board board, Match3View Function(List<int> cells, List<List<int>> frames, int id) mk,
+      StateSetter Function() setter, void Function(Match3View) assign, int id) async {
     final move = board.findMove()!;
     final result = board.trySwap(move.$1, move.$2);
     setter()(() => assign(mk([...board.cells], result.frames, id)));
@@ -175,7 +169,7 @@ void main() {
       const Locale('vi'),
       StatefulBuilder(builder: (context, setState) {
         setOuter = setState;
-        return ArenaMatch3Panel(view: view, onSwap: (_, _) => true);
+        return Match3Panel(view: view, onSwap: (_, _) => true);
       }),
     ));
     for (var id = 1; id <= 8; id++) {
@@ -199,7 +193,7 @@ void main() {
     expect(Match3Board.fromCells(cells).findMove(), isNotNull);
     await tester.pumpWidget(_host(
       const Locale('vi'),
-      ArenaMatch3Panel(view: _view(cells: [...cells]), onSwap: (_, _) => true),
+      Match3Panel(view: _view(cells: [...cells]), onSwap: (_, _) => true),
     ));
     int amberBorders() => tester
         .widgetList<AnimatedContainer>(find.byType(AnimatedContainer))
@@ -227,7 +221,7 @@ void main() {
       const Locale('vi'),
       StatefulBuilder(builder: (context, setState) {
         setOuter = setState;
-        return ArenaMatch3Panel(view: view, onSwap: (_, _) => ++calls > 0);
+        return Match3Panel(view: view, onSwap: (_, _) => ++calls > 0);
       }),
     ));
     final move = board.findMove()!;

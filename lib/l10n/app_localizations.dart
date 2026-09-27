@@ -1899,6 +1899,90 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Điểm danh, 1 lượt quay miễn phí và 3 nhiệm vụ hôm nay đang chờ bạn.'**
   String get notifyDailyBody;
+
+  /// No description provided for @navMatch3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghép 3'**
+  String get navMatch3;
+
+  /// No description provided for @m3Title.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hành trình Ghép 3'**
+  String get m3Title;
+
+  /// No description provided for @m3Level.
+  ///
+  /// In vi, this message translates to:
+  /// **'Màn {n}'**
+  String m3Level(int n);
+
+  /// No description provided for @m3Locked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa mở'**
+  String get m3Locked;
+
+  /// No description provided for @m3Target.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mục tiêu {n}'**
+  String m3Target(String n);
+
+  /// No description provided for @m3MovesLeft.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn {n} nước'**
+  String m3MovesLeft(int n);
+
+  /// No description provided for @m3Score.
+  ///
+  /// In vi, this message translates to:
+  /// **'Điểm'**
+  String get m3Score;
+
+  /// No description provided for @m3Win.
+  ///
+  /// In vi, this message translates to:
+  /// **'Qua màn!'**
+  String get m3Win;
+
+  /// No description provided for @m3Lose.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đạt mục tiêu'**
+  String get m3Lose;
+
+  /// No description provided for @m3Retry.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chơi lại'**
+  String get m3Retry;
+
+  /// No description provided for @m3Next.
+  ///
+  /// In vi, this message translates to:
+  /// **'Màn sau'**
+  String get m3Next;
+
+  /// No description provided for @m3Back.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh sách màn'**
+  String get m3Back;
+
+  /// No description provided for @m3Reward.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thưởng'**
+  String get m3Reward;
+
+  /// No description provided for @m3NoReward.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận thưởng màn này rồi'**
+  String get m3NoReward;
 }
 
 class _AppLocalizationsDelegate

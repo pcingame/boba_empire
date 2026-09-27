@@ -51,6 +51,7 @@ Match3Board _flatBoard(List<int> seq) {
 }
 
 void main() {
+  _reshuffleTests();
   group('bảng đầu', () {
     test('không có match sẵn, đủ 64 ô loại 0..4, cố định theo seq', () {
       for (var seed = 1; seed <= 50; seed++) {
@@ -258,5 +259,64 @@ void main() {
     expect(ArenaActionKind.swap.wireValue, 'swap');
     expect(ArenaActionKindJson.fromWire('swap'), ArenaActionKind.swap);
     expect(ArenaActionKind.swap.tierIndex, isNull);
+  });
+}
+
+// --- Xáo bàn khi hết nước (CHỈ chơi đơn dùng, xem ghi chú trong reshuffle) ---
+void _reshuffleTests() {
+  List<int> seqFrom(int seed) {
+    var x = seed;
+    return [
+      for (var i = 0; i < m3SeqLength; i++)
+        (x = (x * 1103515245 + 12345) & 0x7fffffff, (x >> 16) % m3Types).$2,
+    ];
+  }
+
+  test('bàn bí nước → xáo xong luôn có nước đi', () {
+    // Lát gạch 2x2 [[0,1],[2,3]]: không có dãy 3 sẵn, và mọi nước đổi (ngang
+    // hay dọc) đều chỉ tạo được cặp đôi, không bao giờ đủ 3.
+    final stuck = [
+      for (var i = 0; i < m3Cells; i++)
+        ((i ~/ m3Size) % 2) * 2 + ((i % m3Size) % 2),
+    ];
+    final board = Match3Board.initial(seqFrom(7));
+    board.cells.setAll(0, stuck);
+    expect(board.hasAnyMove(), isFalse, reason: 'bàn dựng ra phải đang bí');
+
+    board.reshuffle();
+    expect(board.hasAnyMove(), isTrue);
+    expect(board.cells.every((v) => v >= 0 && v < m3Types), isTrue);
+  });
+
+  test('xáo không để lại dãy 3 sẵn (không tự ăn điểm chùa)', () {
+    final board = Match3Board.initial(seqFrom(99));
+    board.reshuffle();
+    // Không có 3 ô liên tiếp cùng loại theo hàng hoặc cột.
+    for (var r = 0; r < m3Size; r++) {
+      for (var c = 0; c < m3Size; c++) {
+        final i = r * m3Size + c;
+        if (c >= 2) {
+          expect(
+            board.cells[i] == board.cells[i - 1] && board.cells[i] == board.cells[i - 2],
+            isFalse,
+            reason: 'dãy ngang ở ô $i',
+          );
+        }
+        if (r >= 2) {
+          expect(
+            board.cells[i] == board.cells[i - m3Size] &&
+                board.cells[i] == board.cells[i - 2 * m3Size],
+            isFalse,
+            reason: 'dãy dọc ở ô $i',
+          );
+        }
+      }
+    }
+  });
+
+  test('bàn không có luồng bù (fromCells) thì xáo là no-op, không ném', () {
+    final board = Match3Board.fromCells(List<int>.filled(m3Cells, 1));
+    board.reshuffle();
+    expect(board.cells.every((v) => v == 1), isTrue);
   });
 }
