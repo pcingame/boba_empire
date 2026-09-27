@@ -11,6 +11,37 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  // Cỡ chữ hệ thống phóng to là lớp lỗi riêng: ô tab chỉ rộng ~20% màn hình.
+  for (final scale in [1.0, 1.3, 2.0]) {
+    testWidgets('thanh dưới 5 mục không tràn ở 320px, cỡ chữ x$scale',
+        (tester) async {
+      await tester.binding.setSurfaceSize(const Size(320, 640));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      await GameStorage(prefs).save(
+        GameState.newGame(nowMillis: 0)..tutorialSeen = true,
+        nowMillis: 0,
+      );
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            sharedPreferencesProvider.overrideWithValue(prefs),
+            clockProvider.overrideWithValue(() => 0),
+          ],
+          child: MediaQuery(
+            data: MediaQueryData(textScaler: TextScaler.linear(scale)),
+            child: const BobaEmpireApp(),
+          ),
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(find.byKey(const Key('match3-button')), findsOneWidget);
+      await tester.pumpWidget(const SizedBox());
+    });
+  }
+
   for (final locale in ['vi', 'en', 'es', 'id', 'pt', 'th']) {
     testWidgets('thanh dưới 5 mục không tràn ở 320px — $locale',
         (tester) async {

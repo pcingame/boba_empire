@@ -85,36 +85,41 @@ class _LevelTile extends StatelessWidget {
               : theme.colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(14),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (unlocked) ...[
-              // FittedBox: số màn 3 chữ số ở máy hẹp vẫn nằm gọn.
-              FittedBox(
-                child: Text(
+        // Ô là hình vuông cố định (do gridDelegate), còn nội dung thì co giãn
+        // theo cỡ chữ hệ thống: ở cỡ chữ lớn, cột số-màn + biểu tượng + 3 sao
+        // TRÀN khỏi ô (RenderFlex overflow, nhìn như ô bị bóp). FittedBox thu
+        // cả cụm cho vừa thay vì để tràn.
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (unlocked) ...[
+                Text(
                   '${level.id}',
                   style: theme.textTheme.titleLarge
                       ?.copyWith(fontWeight: FontWeight.bold),
                 ),
-              ),
-              // Màn thu thập: hiện luôn loại ô phải thu, để nhìn lưới là biết
-              // màn nào khác kiểu.
-              if (level.goal == Match3GoalKind.collect)
-                Text(
-                  match3Icons[level.collectType],
-                  style: const TextStyle(fontSize: 12),
+                // Màn thu thập: hiện luôn loại ô phải thu, để nhìn lưới là biết
+                // màn nào khác kiểu.
+                if (level.goal == Match3GoalKind.collect)
+                  Text(
+                    match3Icons[level.collectType],
+                    style: const TextStyle(fontSize: 12),
+                  ),
+              ] else
+                Icon(Icons.lock, color: theme.disabledColor),
+              const SizedBox(height: 2),
+              Text(
+                '★' * stars + '☆' * (3 - stars),
+                style: TextStyle(
+                  fontSize: 12,
+                  color: unlocked ? Colors.amber.shade800 : theme.disabledColor,
                 ),
-            ] else
-              Icon(Icons.lock, color: theme.disabledColor),
-            const SizedBox(height: 2),
-            Text(
-              '★' * stars + '☆' * (3 - stars),
-              style: TextStyle(
-                fontSize: 12,
-                color: unlocked ? Colors.amber.shade800 : theme.disabledColor,
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
