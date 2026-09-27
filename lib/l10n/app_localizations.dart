@@ -1989,6 +1989,24 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Xem QC: +{n} nước'**
   String m3AdMoves(int n);
+
+  /// No description provided for @m3KeepPlaying.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chơi nốt'**
+  String get m3KeepPlaying;
+
+  /// No description provided for @m3Pause.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạm nghỉ'**
+  String get m3Pause;
+
+  /// No description provided for @m3GoalReached.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đạt mục tiêu!'**
+  String get m3GoalReached;
 }
 
 class _AppLocalizationsDelegate

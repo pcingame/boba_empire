@@ -1136,4 +1136,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String m3AdMoves(int n) {
     return 'Xem QC: +$n nước';
   }
+
+  @override
+  String get m3KeepPlaying => 'Chơi nốt';
+
+  @override
+  String get m3Pause => 'Tạm nghỉ';
+
+  @override
+  String get m3GoalReached => 'Đạt mục tiêu!';
 }

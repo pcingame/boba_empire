@@ -1140,4 +1140,13 @@ class AppLocalizationsId extends AppLocalizations {
   String m3AdMoves(int n) {
     return 'Tonton iklan: +$n langkah';
   }
+
+  @override
+  String get m3KeepPlaying => 'Lanjut main';
+
+  @override
+  String get m3Pause => 'Istirahat';
+
+  @override
+  String get m3GoalReached => 'Target tercapai!';
 }

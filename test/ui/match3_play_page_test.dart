@@ -51,6 +51,15 @@ void main() {
     return container;
   }
 
+  /// Điểm của nước hợp lệ đầu tiên ở màn 1. Bàn tất định nên con số này cố
+  /// định — dùng để đặt mục tiêu sao cho đi 1 nước là ĐÚNG 1 sao (đặt mục tiêu
+  /// bằng 1 thì nước nào cũng ra thẳng 3 sao, mất luôn nhánh "Chơi nốt").
+  int firstMoveScore() {
+    final board = Match3Board.initial(const Match3Level(1).seq());
+    final move = board.findMove()!;
+    return board.trySwap(move.$1, move.$2).score;
+  }
+
   /// Đi một nước hợp lệ bất kỳ qua controller (gõ toạ độ ô trong test rất giòn).
   void playOne(ProviderContainer c) {
     final state = c.read(match3ControllerProvider);
@@ -97,6 +106,69 @@ void main() {
     c.dispose(); // dừng Timer 1 giây của GameController, không thì test báo
   });
 
+  testWidgets('đạt mục tiêu giữa chừng → báo NGAY, không đốt nốt số nước',
+      (tester) async {
+    final savedBase = Balance.m3TargetBase;
+    final savedMoves = Balance.m3Moves;
+    Balance.m3TargetBase = firstMoveScore().toDouble(); // đi 1 nước = đúng 1 sao
+    Balance.m3Moves = 20; // vẫn còn rất nhiều nước
+    addTearDown(() {
+      Balance.m3TargetBase = savedBase;
+      Balance.m3Moves = savedMoves;
+    });
+
+    final c = await pumpPage(tester);
+    playOne(c);
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 2));
+
+    expect(find.text('Đạt mục tiêu!'), findsOneWidget);
+    expect(c.read(match3ControllerProvider).movesLeft, greaterThan(0),
+        reason: 'phải báo khi còn nước, không đợi hết nước');
+    // Còn nước thì không mời xem QC thêm nước (vô nghĩa).
+    expect(find.text('Xem QC: +${Balance.m3AdExtraMoves} nước'), findsNothing);
+    expect(find.text('Chơi nốt'), findsOneWidget);
+    expect(find.text('Tạm nghỉ'), findsOneWidget);
+    expect(find.text('Màn sau'), findsOneWidget);
+
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
+  testWidgets('chọn "Chơi nốt" → chơi tiếp bàn đang dở, không hỏi lại mỗi nước',
+      (tester) async {
+    final savedBase = Balance.m3TargetBase;
+    final savedMoves = Balance.m3Moves;
+    Balance.m3TargetBase = firstMoveScore().toDouble(); // đi 1 nước = đúng 1 sao
+    Balance.m3Moves = 20; // vẫn còn rất nhiều nước
+    addTearDown(() {
+      Balance.m3TargetBase = savedBase;
+      Balance.m3Moves = savedMoves;
+    });
+
+    final c = await pumpPage(tester);
+    playOne(c);
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 2));
+    await tester.tap(find.text('Chơi nốt'));
+    await tester.pumpAndSettle();
+
+    final after = c.read(match3ControllerProvider);
+    expect(after.level.id, 1);
+    expect(after.score, greaterThan(0), reason: 'giữ nguyên bàn đang dở');
+
+    // Đi thêm vài nước: KHÔNG được hỏi lại.
+    for (var i = 0; i < 3; i++) {
+      playOne(c);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 600));
+      expect(find.text('Đạt mục tiêu!'), findsNothing, reason: 'nước ${i + 1}');
+    }
+
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
   testWidgets('qua màn → nút "Màn sau" đưa thẳng sang màn kế tiếp',
       (tester) async {
     // Mục tiêu 0 điểm: nước nào cũng đủ 1 sao.
@@ -109,9 +181,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(seconds: 2));
 
-    expect(find.text('Qua màn!'), findsOneWidget);
     expect(find.text('Màn sau'), findsOneWidget);
-    expect(find.text('Danh sách màn'), findsNothing);
 
     await tester.tap(find.text('Màn sau'));
     await tester.pumpAndSettle();
@@ -140,7 +210,7 @@ void main() {
     await tester.pump(const Duration(seconds: 2));
 
     expect(find.text('Màn sau'), findsNothing);
-    expect(find.text('Danh sách màn'), findsOneWidget);
+    expect(find.text('Tạm nghỉ'), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox());
     c.dispose();

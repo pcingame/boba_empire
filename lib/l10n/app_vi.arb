@@ -409,5 +409,8 @@
   "m3Reward": "Thưởng",
   "m3NoReward": "Đã nhận thưởng màn này rồi",
   "m3AdMoves": "Xem QC: +{n} nước",
-  "@m3AdMoves": { "placeholders": { "n": { "type": "int" } } }
+  "@m3AdMoves": { "placeholders": { "n": { "type": "int" } } },
+  "m3KeepPlaying": "Chơi nốt",
+  "m3Pause": "Tạm nghỉ",
+  "m3GoalReached": "Đạt mục tiêu!"
 }

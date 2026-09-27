@@ -1143,4 +1143,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String m3AdMoves(int n) {
     return 'Ver anúncio: +$n jogadas';
   }
+
+  @override
+  String get m3KeepPlaying => 'Continuar jogando';
+
+  @override
+  String get m3Pause => 'Fazer uma pausa';
+
+  @override
+  String get m3GoalReached => 'Meta alcançada!';
 }

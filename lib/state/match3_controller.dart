@@ -31,7 +31,11 @@ class Match3PlayState {
 
   int get stars => match3Stars(score, level.target);
 
-  /// Hết nước → khoá bàn và hiện bảng kết quả.
+  /// Đã đạt mục tiêu (1 sao) — màn coi như qua, kể cả khi còn nước.
+  bool get goalReached => score >= level.target;
+
+  /// Hết nước → khoá bàn. KHÔNG khoá khi vừa đạt mục tiêu: người chơi có thể
+  /// chọn "Chơi nốt" để dùng nốt số nước còn lại săn 2-3 sao.
   bool get finished => movesLeft <= 0;
 }
 

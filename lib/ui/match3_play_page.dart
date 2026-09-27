@@ -31,6 +31,10 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
   bool _continuedWithAd = false;
   bool _goingNext = false;
 
+  /// Người chơi đã chọn "Chơi nốt" sau khi đạt mục tiêu → đừng hỏi lại mỗi
+  /// nước, chỉ hiện bảng kết quả lần nữa khi hết nước.
+  bool _keepPlaying = false;
+
   @override
   void initState() {
     super.initState();
@@ -46,7 +50,11 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
     final play = ref.watch(match3ControllerProvider);
     final controller = ref.read(match3ControllerProvider.notifier);
 
-    if (play.finished && !_resultShown && play.level.id == widget.level.id) {
+    // Kết thúc màn khi HẾT NƯỚC, hoặc ngay khi ĐẠT MỤC TIÊU — không bắt người
+    // chơi đốt nốt số nước còn lại rồi mới được sang màn sau.
+    final ended =
+        play.finished || (play.goalReached && !_keepPlaying);
+    if (ended && !_resultShown && play.level.id == widget.level.id) {
       _resultShown = true;
       WidgetsBinding.instance.addPostFrameCallback((_) => _showResult(play));
     }
@@ -114,15 +122,21 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
         .read(gameControllerProvider.notifier)
         .grantMatch3Result(widget.level.id, stars);
 
-    final hasNext =
-        stars >= 1 && widget.level.id < Balance.m3LevelCount;
+    final hasNext = stars >= 1 && widget.level.id < Balance.m3LevelCount;
+    // Còn nước = vừa đạt mục tiêu giữa chừng → mời chơi nốt để săn thêm sao
+    // (2★/3★ nằm ở 1.5x và 2x mục tiêu, dừng ngay là không bao giờ với tới).
+    final canKeepPlaying = play.movesLeft > 0 && stars < 3;
 
     if (!mounted) return;
     await showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) => AlertDialog(
-        title: Text(stars > 0 ? l10n.m3Win : l10n.m3Lose),
+        title: Text(
+          stars == 0
+              ? l10n.m3Lose
+              : (canKeepPlaying ? l10n.m3GoalReached : l10n.m3Win),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -144,34 +158,50 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
           ],
         ),
         actions: [
-          // Chơi tiếp bằng quảng cáo: chỉ mời khi CHƯA dùng lượt này và người
-          // chơi chưa đạt 3 sao (đạt rồi thì thêm nước cũng không được gì).
-          if (!play.adContinueUsed && stars < 3)
+          if (canKeepPlaying)
+            TextButton(
+              onPressed: () {
+                _keepPlaying = true;
+                Navigator.of(dialogContext).pop();
+              },
+              child: Text(l10n.m3KeepPlaying),
+            ),
+          // Thêm nước bằng quảng cáo: chỉ khi ĐÃ HẾT nước thật (còn nước mà mời
+          // thêm nước thì vô nghĩa), chưa dùng lượt nào và chưa đạt 3 sao.
+          if (!canKeepPlaying && !play.adContinueUsed && stars < 3)
             TextButton(
               onPressed: () => _continueWithAd(dialogContext),
               child: Text(l10n.m3AdMoves(Balance.m3AdExtraMoves)),
             ),
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child: Text(l10n.m3Retry),
-          ),
-          // Qua màn thì lối đi chính là MÀN SAU, không phải quay ra danh sách
-          // (mũi tên trên AppBar vẫn làm được việc đó).
-          if (hasNext)
+          if (!canKeepPlaying)
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: Text(l10n.m3Retry),
+            ),
+          // Qua màn thì lối đi chính là MÀN SAU; nếu không có màn sau thì
+          // "Tạm nghỉ" lên làm nút chính.
+          if (hasNext) ...[
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                Navigator.of(context).pop();
+              },
+              child: Text(l10n.m3Pause),
+            ),
             FilledButton(
               onPressed: () {
                 _goingNext = true;
                 Navigator.of(dialogContext).pop();
               },
               child: Text(l10n.m3Next),
-            )
-          else
+            ),
+          ] else
             FilledButton(
               onPressed: () {
                 Navigator.of(dialogContext).pop();
                 Navigator.of(context).pop();
               },
-              child: Text(l10n.m3Back),
+              child: Text(l10n.m3Pause),
             ),
         ],
       ),
@@ -188,12 +218,16 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
       );
       return;
     }
-    // Đã cộng nước thì chơi tiếp bàn đang dở, KHÔNG nạp lại màn.
-    if (_continuedWithAd) {
+    // Chơi nốt / vừa cộng nước bằng quảng cáo: chơi tiếp bàn ĐANG DỞ, KHÔNG
+    // nạp lại màn.
+    if (_continuedWithAd || _keepPlaying) {
       _continuedWithAd = false;
       setState(() => _resultShown = false);
       return;
     }
+    // Chơi lại từ đầu: mở lại cả lời mời "Chơi nốt" của lượt mới, không thì
+    // lượt sau đạt mục tiêu sẽ không báo gì.
+    _keepPlaying = false;
     setState(() => _resultShown = false);
     ref.read(match3ControllerProvider.notifier).load(widget.level);
   }

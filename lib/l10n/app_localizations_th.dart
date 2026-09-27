@@ -1131,4 +1131,13 @@ class AppLocalizationsTh extends AppLocalizations {
   String m3AdMoves(int n) {
     return 'ดูโฆษณา: +$n ตา';
   }
+
+  @override
+  String get m3KeepPlaying => 'เล่นต่อ';
+
+  @override
+  String get m3Pause => 'พักก่อน';
+
+  @override
+  String get m3GoalReached => 'ถึงเป้าหมายแล้ว!';
 }

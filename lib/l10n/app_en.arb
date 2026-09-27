@@ -356,5 +356,8 @@
   "m3Back": "Level list",
   "m3Reward": "Reward",
   "m3NoReward": "You already claimed this level's reward",
-  "m3AdMoves": "Watch ad: +{n} moves"
+  "m3AdMoves": "Watch ad: +{n} moves",
+  "m3KeepPlaying": "Keep playing",
+  "m3Pause": "Take a break",
+  "m3GoalReached": "Goal reached!"
 }

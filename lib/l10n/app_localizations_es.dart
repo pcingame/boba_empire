@@ -1147,4 +1147,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String m3AdMoves(int n) {
     return 'Ver anuncio: +$n movimientos';
   }
+
+  @override
+  String get m3KeepPlaying => 'Seguir jugando';
+
+  @override
+  String get m3Pause => 'Descansar';
+
+  @override
+  String get m3GoalReached => '¡Meta alcanzada!';
 }

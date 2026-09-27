@@ -71,8 +71,14 @@ class Match3Level {
 ```
 Danh sách màn (lưới nút, khoá dần)
   → vào bàn: 20 nước, hiện điểm/mục tiêu/số nước còn lại
-  → hết nước HOẶC đạt 3★ → bảng kết quả (sao + thưởng) → về danh sách
+  → ĐẠT MỤC TIÊU hoặc hết nước → bảng kết quả (sao + thưởng)
+      → Màn sau (nút chính) / Chơi nốt / Tạm nghỉ
 ```
+
+Sửa so với bản đầu (2026-09-28, sau phản hồi chơi thật): ban đầu màn chỉ kết
+thúc khi HẾT NƯỚC, nên đạt mục tiêu ở nước thứ 5 vẫn phải đốt nốt 15 nước mới
+được sang màn sau. Giờ đạt mục tiêu là báo ngay. Giữ được 2★/3★ nhờ nút "Chơi
+nốt" — đóng màn thẳng ở mốc 1★ thì 1.5x/2x không ai với tới được.
 
 **Hết nước đi hợp lệ giữa chừng (stuck)**: PvP hiện chỉ báo "Hết nước đi!" rồi
 đứng im cho hết 60 giây (ROADMAP §P2 mục 9). Ở chơi đơn điều đó là **kẹt cứng**,

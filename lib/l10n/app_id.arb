@@ -356,5 +356,8 @@
   "m3Back": "Daftar level",
   "m3Reward": "Hadiah",
   "m3NoReward": "Hadiah level ini sudah diambil",
-  "m3AdMoves": "Tonton iklan: +{n} langkah"
+  "m3AdMoves": "Tonton iklan: +{n} langkah",
+  "m3KeepPlaying": "Lanjut main",
+  "m3Pause": "Istirahat",
+  "m3GoalReached": "Target tercapai!"
 }

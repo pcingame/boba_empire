@@ -356,5 +356,8 @@
   "m3Back": "Lista de níveis",
   "m3Reward": "Recompensa",
   "m3NoReward": "Você já recebeu a recompensa deste nível",
-  "m3AdMoves": "Ver anúncio: +{n} jogadas"
+  "m3AdMoves": "Ver anúncio: +{n} jogadas",
+  "m3KeepPlaying": "Continuar jogando",
+  "m3Pause": "Fazer uma pausa",
+  "m3GoalReached": "Meta alcançada!"
 }

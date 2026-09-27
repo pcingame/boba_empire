@@ -51,6 +51,6 @@ void main() {
     await Future<void>.delayed(Duration.zero); // saveNow() chạy bất đồng bộ
     container.dispose();
 
-    expect(starsOf((await storage.load())!.m3Stars, 1), 2);
+    expect(starsOf(storage.load()!.m3Stars, 1), 2);
   });
 }

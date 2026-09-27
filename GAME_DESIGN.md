@@ -620,7 +620,12 @@ Tab thứ 5 ở thanh dưới. Thiết kế đầy đủ + phần cố ý hoãn:
   giữa trận PvP là bàn lệch server. Đấu Trường vẫn kẹt như cũ (ROADMAP P2 §9).
 - **Banner quảng cáo** ở đáy cả hai màn của tab này (`lib/ads/banner_ad_box.dart`),
   tôn trọng `adFree`; unit id thật chưa tạo → release chưa hiện banner.
-- **Rewarded "xem QC: +5 nước"** ở bảng kết quả, chỉ hiện khi chưa đạt 3★ và
-  chưa dùng lượt nào. Chơi tiếp bàn đang dở (giữ điểm + bàn cờ). **1 lần mỗi
+- **Màn kết thúc ngay khi đạt mục tiêu**, không bắt đốt nốt số nước còn lại.
+  Hộp thoại lúc đó có 3 lối: **Màn sau** (nút chính) · **Chơi nốt** (dùng nốt
+  số nước để săn 2★/3★ — mốc 1.5x và 2x mục tiêu, dừng ngay thì không bao giờ
+  với tới) · **Tạm nghỉ**. Chọn "Chơi nốt" thì không hỏi lại mỗi nước, chỉ hiện
+  lại khi hết nước.
+- **Rewarded "xem QC: +5 nước"** ở bảng kết quả, chỉ hiện khi ĐÃ HẾT nước thật (còn
+  nước mà mời thêm nước thì vô nghĩa), chưa đạt 3★ và chưa dùng lượt nào. Chơi tiếp bàn đang dở (giữ điểm + bàn cờ). **1 lần mỗi
   lượt chơi** — không giới hạn thì xem đủ quảng cáo là qua mọi màn. Dùng lại
   `AdService.showRewardedAd()`, `adFree` được cộng thẳng.
