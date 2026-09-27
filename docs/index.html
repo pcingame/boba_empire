@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!--
+  Landing page cho Boba Empire, host qua GitHub Pages với custom domain
+  (xem docs/CNAME). Cùng bảng màu với privacy-policy.html cho đồng bộ.
+-->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Boba Empire — Đế Chế Trà Sữa</title>
+<meta name="description" content="Chạm pha trà, xây đế chế trà sữa qua 18 giai đoạn! Idle tycoon có cốt truyện, Đấu Trường PvP và bảng xếp hạng.">
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    font: 16px/1.65 -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    max-width: 860px; margin: 0 auto; padding: 40px 20px 64px; color: #2a2320;
+    background: #fdfaf5;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { color: #e9e2da; background: #1a1613; }
+    a { color: #e0a868; }
+    hr { border-color: #3a2f28; }
+    .card { background: #241d18; border-color: #3a2f28; }
+    .badge { filter: brightness(0.9); }
+  }
+  a { color: #8d5524; word-break: break-word; }
+  hr { border: none; border-top: 1px solid #e5d8c6; margin: 2.5em 0; }
+
+  header { text-align: center; }
+  header img.icon {
+    width: 96px; height: 96px; border-radius: 22px;
+    box-shadow: 0 6px 18px rgba(0,0,0,.18);
+  }
+  h1 { font-size: 2rem; margin: .5em 0 .2em; }
+  .tagline { font-size: 1.1rem; color: #8a7a6c; max-width: 520px; margin: 0 auto; }
+
+  .stores { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 28px 0; }
+  .stores a {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 22px; border-radius: 12px; text-decoration: none;
+    font-weight: 700; color: #fff; background: #8d5524;
+  }
+  .stores a.soon { background: #b0a394; pointer-events: none; }
+
+  h2 { font-size: 1.35rem; margin-top: 1.6em; border-bottom: 2px solid #8d5524; padding-bottom: .2em; }
+
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 16px; }
+  .card {
+    background: #fff; border: 1px solid #eee1d0; border-radius: 14px;
+    padding: 16px 18px;
+  }
+  .card b { display: block; margin-bottom: 4px; }
+  .card span { color: #8a7a6c; font-size: .95rem; }
+
+  .shots { display: flex; gap: 12px; overflow-x: auto; padding: 8px 0 16px; scroll-snap-type: x mandatory; }
+  .shots img {
+    height: 340px; border-radius: 16px; scroll-snap-align: start;
+    box-shadow: 0 4px 14px rgba(0,0,0,.15); flex: none;
+  }
+
+  footer { text-align: center; color: #8a7a6c; font-size: .9rem; margin-top: 2.5em; }
+</style>
+</head>
+<body>
+
+<header>
+  <img class="icon" src="assets/icon-256.png" alt="Boba Empire icon">
+  <h1>Boba Empire — Đế Chế Trà Sữa</h1>
+  <p class="tagline">Chạm pha trà, xây đế chế trà sữa qua 18 giai đoạn — idle tycoon
+  thư giãn, có cốt truyện 28 chương, Đấu Trường PvP và bảng xếp hạng.</p>
+
+  <div class="stores">
+    <a href="https://play.google.com/store/apps/details?id=com.pcingame.bobaempire">▶ Google Play</a>
+    <a class="soon" href="#">🍎 App Store (sắp có)</a>
+  </div>
+</header>
+
+<div class="shots">
+  <img src="assets/shots/home.png" alt="Màn hình chính">
+  <img src="assets/shots/stage.png" alt="Giai đoạn nâng cấp">
+  <img src="assets/shots/arena.png" alt="Đấu Trường Trân Châu Rơi">
+  <img src="assets/shots/ascension.png" alt="Kỷ Nguyên">
+</div>
+
+<h2>Vì sao chơi Boba Empire?</h2>
+<div class="features">
+  <div class="card">
+    <b>☕ Chạm & pha trà</b>
+    <span>Chạm để bán trà sữa, mua nâng cấp để có thu nhập tự động mỗi giây.</span>
+  </div>
+  <div class="card">
+    <b>🏪 18 giai đoạn</b>
+    <span>Từ xe đẩy vỉa hè tới hành tinh trà sữa, mỗi giai đoạn một bầu không khí riêng.</span>
+  </div>
+  <div class="card">
+    <b>📖 Cốt truyện 28 chương</b>
+    <span>Cùng Bà Tư xây quán, đối đầu đối thủ, chọn nhánh rẽ ảnh hưởng sức mạnh.</span>
+  </div>
+  <div class="card">
+    <b>⭐ Nhượng quyền & Kỷ Nguyên</b>
+    <span>Chơi lại để nhận Sao và bonus vĩnh viễn, mở khóa vòng chơi mạnh hơn.</span>
+  </div>
+  <div class="card">
+    <b>⚔️ Đấu Trường & bảng xếp hạng</b>
+    <span>Đấu 1v1 dạng Đua chạm hoặc Trân Châu Rơi, leo bảng xếp hạng thu nhập.</span>
+  </div>
+  <div class="card">
+    <b>😴 Kiếm tiền offline</b>
+    <span>Quán vẫn bán khi bạn vắng mặt — quay lại nhận cả đống Xu.</span>
+  </div>
+</div>
+
+<hr>
+
+<footer>
+  <p>Boba Empire — phát triển bởi pcingame ·
+  <a href="privacy-policy.html">Chính sách quyền riêng tư</a> ·
+  <a href="mailto:support@bobaempiregame.com">support@bobaempiregame.com</a></p>
+</footer>
+
+</body>
+</html>
