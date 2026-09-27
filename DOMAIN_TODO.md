@@ -1,0 +1,48 @@
+# DOMAIN_TODO — gắn bobaempiregame.com vào GitHub Pages
+
+Ghi lại 2026-09-28 để làm tiếp, không cần hỏi lại từ đầu.
+
+## Đã xong
+- [x] Mua domain `bobaempiregame.com` (Namecheap).
+- [x] Verify domain trên Resend (DKIM + 2 CNAME SPF `rsend`/`send`).
+- [x] Đổi Supabase Auth SMTP sang Resend — **test gửi OTP tới Gmail ngoài đã
+      thành công**.
+- [x] Dựng `docs/index.html` (landing page) + `docs/CNAME` chứa
+      `bobaempiregame.com`, đã commit + push (`1b25145`).
+      `docs/privacy-policy.html` đã có link quay lại trang chủ.
+
+## Còn lại — làm ở Namecheap (Advanced DNS, tab domain `bobaempiregame.com`)
+1. **Xóa** dòng "URL Redirect Record" (Host `@`) — parking mặc định của
+   Namecheap, xung đột với bước 2.
+2. **Thêm 4 A Record**, Host `@`, mỗi dòng 1 IP:
+   - `185.199.108.153`
+   - `185.199.109.153`
+   - `185.199.110.153`
+   - `185.199.111.153`
+3. **Thêm CNAME**, Host `www`, Value `pcingame.github.io.` (có dấu chấm cuối).
+4. Bật **Email Forwarding** (Advanced DNS → Mail Settings) cho
+   `support@bobaempiregame.com` → trỏ về Gmail đang dùng — landing page đã
+   có link mail này ở footer, chưa bật thì mail sẽ bounce.
+
+## Còn lại — làm trên GitHub
+5. Repo `pcingame/boba_empire` → **Settings → Pages** → mục Custom domain nên
+   tự nhận `bobaempiregame.com` (nhờ file `docs/CNAME`); nếu chưa thấy thì gõ
+   tay + Save.
+6. Đợi DNS lan truyền (vài phút–vài giờ) rồi bật **Enforce HTTPS** khi hết mờ.
+
+## Kiểm tra cuối
+- Mở `https://bobaempiregame.com` và `https://bobaempiregame.com/privacy-policy.html`
+  — phải load được trang vừa dựng.
+- Gửi thử mail tới `support@bobaempiregame.com`, xem có về Gmail không.
+
+## Việc phụ, không gấp
+- Nút "🍎 App Store (sắp có)" trong `docs/index.html` đang là placeholder —
+  khi app lên App Store thật, sửa link `<a class="soon" href="#">` thành
+  `https://apps.apple.com/app/id<APP_ID>` (bỏ luôn class `soon`).
+- URL cũ `https://pcingame.github.io/boba_empire/privacy-policy.html` (đang
+  khai ở Google Play/AdMob) sẽ tự redirect sang domain mới sau khi DNS xong —
+  không cần sửa gì ở Play Console/AdMob, không ảnh hưởng app-ads.txt hay
+  Marketing URL (khác repo GitHub Pages, xem
+  [[admob-verification-pending]] trong memory).
+- Xóa file này (`DOMAIN_TODO.md`) sau khi làm xong hết, không cần giữ lại
+  trong repo.
