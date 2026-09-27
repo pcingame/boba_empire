@@ -66,8 +66,13 @@ Future<void> main() async {
     audioServiceProvider.overrideWithValue(audio),
   ];
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-    await AdBootstrap.initialize();
-    overrides.add(adServiceProvider.overrideWithValue(RealAdService()));
+    // KHÔNG await: init AdMob gồm form đồng ý UMP (hiện dialog, chờ người bấm)
+    // và gọi mạng — await ở đây là màn hình trắng vài giây trước frame đầu.
+    // Chạy song song, chỉ RealAdService chờ nó xong mới nạp quảng cáo.
+    final adsReady = AdBootstrap.initialize();
+    overrides.add(
+      adServiceProvider.overrideWithValue(RealAdService(ready: adsReady)),
+    );
     // Có cấu hình endpoint (qua --dart-define IAP_VERIFY_ENDPOINT) thì xác thực
     // biên nhận phía server trước khi trao; rỗng thì giữ client-only.
     final ReceiptVerifier verifier = IapConfig.receiptVerifyEndpoint.isEmpty

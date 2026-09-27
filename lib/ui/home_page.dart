@@ -1081,15 +1081,6 @@ class _Shop extends ConsumerWidget {
         if (config.stage <= stage) config,
     ];
 
-    final tiles = [
-      for (final config in unlocked)
-        _ShopTile(
-          config,
-          globalMult: globalMult,
-          isBest: config.id == bestBuyId,
-        ),
-    ];
-
     return Material(
       elevation: 8,
       child: SafeArea(
@@ -1105,18 +1096,41 @@ class _Shop extends ConsumerWidget {
             Expanded(
               child: LayoutBuilder(
                 builder: (context, c) {
-                  final list = ListView(padding: EdgeInsets.zero, children: tiles);
-                  // Mờ mép dưới gợi ý cuộn khi nội dung tràn khung.
+                  final list = ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: unlocked.length,
+                    itemBuilder: (context, i) => _ShopTile(
+                      unlocked[i],
+                      globalMult: globalMult,
+                      isBest: unlocked[i].id == bestBuyId,
+                    ),
+                  );
+                  // Mờ mép dưới gợi ý cuộn khi nội dung tràn khung. Dùng lớp
+                  // gradient phủ màu nền thay vì ShaderMask — ShaderMask bắt
+                  // saveLayer cả vùng list mỗi frame lúc cuộn.
                   if (unlocked.length * 96 <= c.maxHeight) return list;
-                  return ShaderMask(
-                    shaderCallback: (rect) => const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [Colors.black, Colors.black, Colors.transparent],
-                      stops: [0.0, 0.92, 1.0],
-                    ).createShader(rect),
-                    blendMode: BlendMode.dstIn,
-                    child: list,
+                  final bg = Theme.of(context).canvasColor; // màu Material bọc ngoài
+                  return Stack(
+                    children: [
+                      list,
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        height: c.maxHeight * 0.08,
+                        child: IgnorePointer(
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [bg.withValues(alpha: 0), bg],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),

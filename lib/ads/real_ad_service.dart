@@ -11,16 +11,22 @@ import 'ad_config.dart';
 import 'ad_service.dart';
 
 class RealAdService implements AdService {
-  RealAdService() {
+  /// [ready] là Future init AdMob ([AdBootstrap.initialize]) đang chạy song song
+  /// với `runApp` — mọi lần nạp quảng cáo phải chờ nó xong, vì `RewardedAd.load`
+  /// trước khi SDK init sẽ thất bại.
+  RealAdService({Future<void>? ready})
+      : _ready = ready ?? Future<void>.value() {
     _load(); // nạp sẵn để lần xem đầu không phải chờ.
   }
 
+  final Future<void> _ready;
   RewardedAd? _ad;
   bool _loading = false;
 
-  void _load() {
+  Future<void> _load() async {
     if (_loading || _ad != null) return;
     _loading = true;
+    await _ready;
     RewardedAd.load(
       adUnitId: AdConfig.rewardedUnitId,
       request: const AdRequest(),

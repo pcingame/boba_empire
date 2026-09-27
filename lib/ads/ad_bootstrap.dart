@@ -1,5 +1,6 @@
 /// Khởi tạo AdMob: thu thập đồng ý (UMP/GDPR) rồi init SDK. Gọi một lần ở
-/// main() TRƯỚC khi tạo RealAdService. Chỉ chạy trên Android/iOS.
+/// main() và KHÔNG await (form đồng ý + gọi mạng sẽ chặn frame đầu) — truyền
+/// Future trả về cho `RealAdService(ready:)`. Chỉ chạy trên Android/iOS.
 library;
 
 import 'dart:async';

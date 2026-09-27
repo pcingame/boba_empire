@@ -1,16 +1,37 @@
-# boba_empire
+# Đế Chế Trà Sữa (boba_empire)
 
-A new Flutter project.
+Game idle/clicker xây chuỗi trà sữa, viết bằng Flutter. Android · iOS
+(desktop/web chạy được để phát triển, quảng cáo & IAP dùng stub).
 
-## Getting Started
+<https://bobaempiregame.com>
 
-This project is a starting point for a Flutter application.
+## Chạy
 
-A few resources to get you started if this is your first Flutter project:
+```sh
+flutter pub get
+flutter run
+flutter test        # 470 test, không cần thiết bị
+flutter analyze
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Tài liệu
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+| File | Nội dung |
+|---|---|
+| `GAME_DESIGN.md` | Tài liệu gốc về vòng lặp, kinh tế, mọi hệ thống — đọc trước khi tune số |
+| `ROADMAP.md` | Việc tiếp theo, xếp theo ROI |
+| `SETUP.md` | Cấu hình AdMob / IAP thật trước khi phát hành |
+| `RELEASE_CHECKLIST.md`, `IOS_APP_STORE_CHECKLIST.md` | Quy trình nộp store |
+| `PROPOSAL_*.md` | Thiết kế của Đấu Trường, cloud save, bảng xếp hạng, analytics |
+| `supabase/*.sql` | Schema backend (chạy tay trên Supabase SQL Editor) |
+
+## Cấu trúc `lib/`
+
+```
+core/     hàm thuần, không Flutter — balance.dart giữ TẤT CẢ con số
+state/    cầu Riverpod: GameController (tick 1s) → GameSnapshot bất biến
+ui/       màn hình & dialog; home_page.dart là màn chính
+ads/ iap/ audio/     interface trừu tượng + impl thật (stub trên desktop/web)
+arena/ leaderboard/ data/   tính năng có backend Supabase
+l10n/     6 ngôn ngữ (vi/en/es/id/pt/th), sinh từ ARB
+```
