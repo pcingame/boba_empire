@@ -8,6 +8,7 @@ import 'package:boba_empire/core/simulation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  _nextStarTests();
   _collectTests();
   test('mốc sao bám theo Balance.m3Star2Mult/m3Star3Mult, kiểm ở BIÊN', () {
     const target = 1000;
@@ -160,5 +161,44 @@ void _collectTests() {
     expect(match3Stars(target - 1, target), 0);
     expect(match3Stars(target, target), 1);
     expect(match3Stars((target * Balance.m3Star3Mult).ceil(), target), 3);
+  });
+}
+
+// --- Gợi ý "còn thiếu N nữa là X sao" ---
+void _nextStarTests() {
+  test('ngưỡng từng mốc sao', () {
+    expect(match3StarThreshold(1000, 1), 1000);
+    expect(match3StarThreshold(1000, 2),
+        (1000 * Balance.m3Star2Mult).round());
+    expect(match3StarThreshold(1000, 3),
+        (1000 * Balance.m3Star3Mult).round());
+    expect(match3StarThreshold(1000, 4), 0);
+  });
+
+  test('còn thiếu bao nhiêu nữa là lên sao', () {
+    const target = 1000;
+    final two = match3StarThreshold(target, 2);
+    final three = match3StarThreshold(target, 3);
+
+    expect(match3NextStar(0, target), (1, target));
+    expect(match3NextStar(target - 10, target), (1, 10));
+    expect(match3NextStar(target, target), (2, two - target));
+    expect(match3NextStar(two, target), (3, three - two));
+  });
+
+  test('đã 3 sao thì không còn gì để săn', () {
+    const target = 1000;
+    expect(match3NextStar(match3StarThreshold(target, 3), target), isNull);
+    expect(match3NextStar(999999, target), isNull);
+  });
+
+  test('mục tiêu không hợp lệ / số thiếu không bao giờ <= 0', () {
+    expect(match3NextStar(0, 0), isNull);
+    // Ngay tại biên vừa đủ sao kế: phải báo số dương, không phải 0.
+    const target = 1000;
+    final two = match3StarThreshold(target, 2);
+    final at = match3NextStar(two - 1, target)!;
+    expect(at.$1, 2);
+    expect(at.$2, greaterThan(0));
   });
 }

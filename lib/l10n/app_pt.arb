@@ -361,5 +361,7 @@
   "m3Pause": "Fazer uma pausa",
   "m3GoalReached": "Meta alcançada!",
   "m3Collect": "Colete {icon}",
-  "m3CollectShort": "Junte {icon}"
+  "m3CollectShort": "Junte {icon}",
+  "m3NeedScore": "Faltam {n} pontos para {star}★",
+  "m3NeedCollect": "Faltam {n} {icon} para {star}★"
 }

@@ -361,5 +361,7 @@
   "m3Pause": "Istirahat",
   "m3GoalReached": "Target tercapai!",
   "m3Collect": "Kumpulkan {icon}",
-  "m3CollectShort": "Ambil {icon}"
+  "m3CollectShort": "Ambil {icon}",
+  "m3NeedScore": "Kurang {n} poin lagi untuk {star}★",
+  "m3NeedCollect": "Kurang {n} {icon} lagi untuk {star}★"
 }

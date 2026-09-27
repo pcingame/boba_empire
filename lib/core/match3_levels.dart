@@ -76,6 +76,24 @@ int match3Stars(int score, int target) {
   return 0;
 }
 
+/// Ngưỡng tiến độ cần để đạt [star] sao (1..3) ở màn có mục tiêu [target].
+int match3StarThreshold(int target, int star) => switch (star) {
+      1 => target,
+      2 => (target * Balance.m3Star2Mult).round(),
+      3 => (target * Balance.m3Star3Mult).round(),
+      _ => 0,
+    };
+
+/// Còn thiếu bao nhiêu nữa là lên được sao tiếp theo: `(sao kế, còn thiếu)`.
+/// Trả null khi đã 3 sao (hết sao để săn) hoặc mục tiêu không hợp lệ.
+(int star, int needed)? match3NextStar(int progress, int target) {
+  if (target <= 0) return null;
+  final next = match3Stars(progress, target) + 1;
+  if (next > 3) return null;
+  final needed = match3StarThreshold(target, next) - progress;
+  return (next, needed > 0 ? needed : 1);
+}
+
 /// Sao đã đạt ở màn [id] (1-based) theo bản ghi [stars] của người chơi.
 int starsOf(List<int> stars, int id) =>
     (id >= 1 && id <= stars.length) ? stars[id - 1] : 0;

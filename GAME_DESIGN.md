@@ -639,7 +639,8 @@ Tab thứ 5 ở thanh dưới. Thiết kế đầy đủ + phần cố ý hoãn:
   không phải sửa, vector vàng vẫn khớp.
 - **Màn kết thúc ngay khi đạt mục tiêu**, không bắt đốt nốt số nước còn lại.
   Hộp thoại lúc đó có 3 lối: **Màn sau** (nút chính) · **Chơi nốt** (dùng nốt
-  số nước để săn 2★/3★ — dừng ngay ở mốc 1★ thì không bao giờ
+  số nước để săn 2★/3★, kèm dòng **"còn thiếu N điểm nữa là 2★"**
+  (`match3NextStar`) để lựa chọn đó có thông tin — dừng ngay ở mốc 1★ thì không bao giờ
   với tới) · **Tạm nghỉ**. Chọn "Chơi nốt" thì không hỏi lại mỗi nước, chỉ hiện
   lại khi hết nước.
 - **Rewarded "xem QC: +5 nước"** ở bảng kết quả, chỉ hiện khi ĐÃ HẾT nước thật (còn

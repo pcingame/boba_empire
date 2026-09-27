@@ -144,6 +144,25 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
             ),
             const SizedBox(height: 8),
             Text(_progressLabel(l10n, play)),
+            // Còn nước và chưa 3 sao → nói rõ còn thiếu bao nhiêu, để "Chơi
+            // nốt" là lựa chọn có thông tin chứ không phải đoán mò.
+            if (canKeepPlaying) ...[
+              const SizedBox(height: 4),
+              Builder(builder: (context) {
+                final next = match3NextStar(play.progress, play.level.target);
+                if (next == null) return const SizedBox.shrink();
+                final (star, needed) = next;
+                return Text(
+                  play.level.goal == Match3GoalKind.collect
+                      ? l10n.m3NeedCollect(
+                          needed, match3Icons[play.level.collectType], star)
+                      : l10n.m3NeedScore(
+                          formatNumber(needed.toDouble()), star),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodySmall,
+                );
+              }),
+            ],
             const SizedBox(height: 8),
             if (cash > 0 || gems > 0)
               Text(

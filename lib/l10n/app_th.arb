@@ -361,5 +361,7 @@
   "m3Pause": "พักก่อน",
   "m3GoalReached": "ถึงเป้าหมายแล้ว!",
   "m3Collect": "เก็บ {icon}",
-  "m3CollectShort": "เก็บ {icon}"
+  "m3CollectShort": "เก็บ {icon}",
+  "m3NeedScore": "อีก {n} คะแนนได้ {star}★",
+  "m3NeedCollect": "อีก {n} {icon} ได้ {star}★"
 }

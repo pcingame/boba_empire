@@ -1155,4 +1155,14 @@ class AppLocalizationsVi extends AppLocalizations {
   String m3CollectShort(String icon) {
     return 'Thu $icon';
   }
+
+  @override
+  String m3NeedScore(String n, int star) {
+    return 'Còn thiếu $n điểm nữa là $star★';
+  }
+
+  @override
+  String m3NeedCollect(int n, String icon, int star) {
+    return 'Còn thiếu $n ô $icon nữa là $star★';
+  }
 }

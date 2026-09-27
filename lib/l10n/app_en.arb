@@ -361,5 +361,7 @@
   "m3Pause": "Take a break",
   "m3GoalReached": "Goal reached!",
   "m3Collect": "Collect {icon}",
-  "m3CollectShort": "Get {icon}"
+  "m3CollectShort": "Get {icon}",
+  "m3NeedScore": "{n} more points for {star}★",
+  "m3NeedCollect": "{n} more {icon} for {star}★"
 }

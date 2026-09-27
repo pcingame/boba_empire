@@ -416,5 +416,9 @@
   "m3Collect": "Thu thập {icon}",
   "@m3Collect": { "placeholders": { "icon": { "type": "String" } } },
   "m3CollectShort": "Thu {icon}",
-  "@m3CollectShort": { "placeholders": { "icon": { "type": "String" } } }
+  "@m3CollectShort": { "placeholders": { "icon": { "type": "String" } } },
+  "m3NeedScore": "Còn thiếu {n} điểm nữa là {star}★",
+  "@m3NeedScore": { "placeholders": { "n": { "type": "String" }, "star": { "type": "int" } } },
+  "m3NeedCollect": "Còn thiếu {n} ô {icon} nữa là {star}★",
+  "@m3NeedCollect": { "placeholders": { "n": { "type": "int" }, "icon": { "type": "String" }, "star": { "type": "int" } } }
 }

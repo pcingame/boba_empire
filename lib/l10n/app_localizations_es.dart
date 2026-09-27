@@ -1166,4 +1166,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String m3CollectShort(String icon) {
     return 'Junta $icon';
   }
+
+  @override
+  String m3NeedScore(String n, int star) {
+    return 'Faltan $n puntos para $star★';
+  }
+
+  @override
+  String m3NeedCollect(int n, String icon, int star) {
+    return 'Faltan $n $icon para $star★';
+  }
 }

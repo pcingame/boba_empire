@@ -2019,6 +2019,18 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Thu {icon}'**
   String m3CollectShort(String icon);
+
+  /// No description provided for @m3NeedScore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn thiếu {n} điểm nữa là {star}★'**
+  String m3NeedScore(String n, int star);
+
+  /// No description provided for @m3NeedCollect.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn thiếu {n} ô {icon} nữa là {star}★'**
+  String m3NeedCollect(int n, String icon, int star);
 }
 
 class _AppLocalizationsDelegate

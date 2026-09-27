@@ -176,6 +176,13 @@ void main() {
     expect(find.text('Đạt mục tiêu!'), findsOneWidget);
     expect(c.read(match3ControllerProvider).movesLeft, greaterThan(0),
         reason: 'phải báo khi còn nước, không đợi hết nước');
+
+    // Nói rõ còn thiếu bao nhiêu nữa là 2★ → "Chơi nốt" là lựa chọn có thông tin.
+    final play = c.read(match3ControllerProvider);
+    final next = match3NextStar(play.progress, play.level.target)!;
+    expect(next.$1, 2);
+    expect(find.textContaining('nữa là 2★'), findsOneWidget);
+    expect(find.textContaining('${next.$2}'), findsWidgets);
     // Còn nước thì không mời xem QC thêm nước (vô nghĩa).
     expect(find.text('Xem QC: +${Balance.m3AdExtraMoves} nước'), findsNothing);
     expect(find.text('Chơi nốt'), findsOneWidget);

@@ -1159,4 +1159,14 @@ class AppLocalizationsId extends AppLocalizations {
   String m3CollectShort(String icon) {
     return 'Ambil $icon';
   }
+
+  @override
+  String m3NeedScore(String n, int star) {
+    return 'Kurang $n poin lagi untuk $star★';
+  }
+
+  @override
+  String m3NeedCollect(int n, String icon, int star) {
+    return 'Kurang $n $icon lagi untuk $star★';
+  }
 }
