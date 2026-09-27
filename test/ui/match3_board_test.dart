@@ -45,6 +45,7 @@ bool _rec(List<(int, int)> log, int c, int d) {
 Finder _tile(int i) => find.byKey(Key('m3-tile-$i'));
 
 void main() {
+  _specialFaceTests();
   for (final locale in AppLocalizations.supportedLocales) {
     testWidgets('không tràn ở ${locale.languageCode}, máy nhỏ + chữ to', (tester) async {
       tester.view.physicalSize = const Size(320, 640);
@@ -241,5 +242,34 @@ void main() {
     await tester.tap(_tile(21));
     await tester.pump();
     expect(calls, 1);
+  });
+}
+
+// --- Kẹo đặc biệt hiển thị được (giá trị ô > 4, chỉ chơi đơn mới sinh ra) ---
+void _specialFaceTests() {
+  testWidgets('bom chéo và bom màu vẽ ra biểu tượng riêng, không vỡ bàn',
+      (tester) async {
+    final cells = _cells();
+    cells[10] = m3CrossBase + 2; // bom chéo loại 🍓
+    cells[20] = m3ColorBase + 4; // bom màu loại 🍵
+    await tester.pumpWidget(_host(
+      const Locale('vi'),
+      Match3Panel(view: _view(cells: cells), onSwap: (_, _) => true),
+    ));
+    await tester.pump();
+
+    expect(find.text('💥'), findsOneWidget);
+    expect(find.text('🌈'), findsOneWidget);
+    // Các ô còn lại vẫn là ô thường, không có ô nào mất mặt.
+    expect(find.text(match3Icons[0]).evaluate().length, greaterThan(0));
+
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  test('match3IconFor ánh xạ đúng', () {
+    expect(match3IconFor(0), match3Icons[0]);
+    expect(match3IconFor(m3CrossBase + 3), '💥');
+    expect(match3IconFor(m3ColorBase), '🌈');
+    expect(match3IconFor(-1), '');
   });
 }

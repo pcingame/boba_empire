@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:boba_empire/arena/arena_rules.dart';
 import 'package:boba_empire/arena/match3_rules.dart';
+import 'package:boba_empire/core/match3_levels.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 final _t0 = DateTime.utc(2026, 1, 1);
@@ -53,6 +54,7 @@ Match3Board _flatBoard(List<int> seq) {
 void main() {
   _reshuffleTests();
   _clearedTests();
+  _specialTests();
   group('bảng đầu', () {
     test('không có match sẵn, đủ 64 ô loại 0..4, cố định theo seq', () {
       for (var seed = 1; seed <= 50; seed++) {
@@ -347,5 +349,130 @@ void _clearedTests() {
     final board = Match3Board.initial(const [1, 2, 3]);
     // Ô ngoài bảng -> vô hiệu.
     expect(board.trySwap(-1, 0).cleared, isEmpty);
+  });
+}
+
+// --- Kẹo đặc biệt (CHỈ chơi đơn; Đấu Trường phải không đổi gì) ---
+void _specialTests() {
+  /// Bàn dựng tay: [rows] là 8 chuỗi 8 chữ số loại ô.
+  Match3Board boardOf(List<String> rows, {bool specials = true}) {
+    // Chuỗi bù ô phải ĐA DẠNG: seq toàn một loại thì ô bù luôn khớp nhau và
+    // dây chuyền không bao giờ dừng (đã đụng lúc viết test này).
+    final seq = [
+      for (var i = 0, x = 20260928; i < m3SeqLength; i++)
+        (x = (x * 1103515245 + 12345) & 0x7fffffff, (x >> 16) % m3Types).$2,
+    ];
+    final b = Match3Board.initial(seq, specials: specials);
+    final cells = [
+      for (final row in rows)
+        for (final ch in row.split('')) int.parse(ch),
+    ];
+    b.cells.setAll(0, cells);
+    return b;
+  }
+
+  test('ghép 4 sinh bom chéo tại ô người chơi vừa đổi tới', () {
+    // Hàng 0: 1 0 0 0 ... đổi ô (0,0) với (1,0)=0 -> hàng 0 thành 0 0 0 0.
+    final b = boardOf([
+      '10001234',
+      '01234123',
+      '12341234',
+      '23412341',
+      '34123412',
+      '41234123',
+      '12341234',
+      '23412341',
+    ]);
+    final move = b.trySwap(0, 1); // đổi xuống
+    expect(move.valid, isTrue);
+    final specials = b.cells.where(m3IsSpecial).toList();
+    expect(specials.length, 1, reason: 'đúng một kẹo được sinh');
+    expect(specials.first, greaterThanOrEqualTo(m3CrossBase));
+    expect(specials.first, lessThan(m3ColorBase), reason: 'ghép 4 = bom chéo');
+  });
+
+  test('ghép 5 sinh bom màu', () {
+    final b = boardOf([
+      '10000234',
+      '01234123',
+      '12341234',
+      '23412341',
+      '34123412',
+      '41234123',
+      '12341234',
+      '23412341',
+    ]);
+    final move = b.trySwap(0, 1);
+    expect(move.valid, isTrue);
+    final specials = b.cells.where(m3IsSpecial).toList();
+    expect(specials.length, 1);
+    expect(specials.first, greaterThanOrEqualTo(m3ColorBase),
+        reason: 'ghép 5 = bom màu');
+  });
+
+  test('TẮT kẹo (mặc định, như Đấu Trường) thì ghép 4 xoá sạch', () {
+    final b = boardOf([
+      '10001234',
+      '01234123',
+      '12341234',
+      '23412341',
+      '34123412',
+      '41234123',
+      '12341234',
+      '23412341',
+    ], specials: false);
+    expect(b.trySwap(0, 1).valid, isTrue);
+    expect(b.cells.any(m3IsSpecial), isFalse);
+  });
+
+  test('bom chéo nổ khi bị xoá: quét cả hàng và cột', () {
+    final b = boardOf([
+      '01234123',
+      '12341234',
+      '23412341',
+      '34123412',
+      '41234123',
+      '12341234',
+      '23412341',
+      '34123412',
+    ]);
+    // Đặt tay một bom chéo loại 0 và ba ô loại 0 quanh nó để ghép được.
+    b.cells[27] = m3CrossBase + 0; // (3,3)
+    b.cells[28] = 0;
+    b.cells[29] = 0;
+    b.cells[26] = 1;
+    b.cells[25] = 0; // đổi (3,1)<->(3,2) để có 0 0 0 từ cột 2
+    final before = b.cells.where((v) => v != -1).length;
+    final move = b.trySwap(25, 0);
+    expect(move.valid, isTrue);
+    // Bom nổ quét hàng 3 + cột 3 nên số ô bị xoá phải lớn hơn hẳn một dãy 3.
+    expect(move.cleared.reduce((a, b) => a + b), greaterThan(3));
+    expect(before, m3Cells);
+  });
+
+  test('bàn màn chơi THẬT có sinh kẹo trong lúc chơi bình thường', () {
+    // Không chỉ bàn dựng tay: chạy bàn của màn 1 và đánh 60 nước máy móc.
+    // Đo được ~3 kẹo/60 nước (người chơi nhắm ghép 4 sẽ nhiều hơn) — nếu con
+    // số này về 0 nghĩa là luật sinh kẹo đã chết ở đường đi thật.
+    final b = Match3Board.initial(const Match3Level(1).seq(), specials: true);
+    var created = 0;
+    for (var i = 0; i < 60; i++) {
+      final m = b.findMove();
+      if (m == null) break;
+      final before = b.cells.where(m3IsSpecial).length;
+      b.trySwap(m.$1, m.$2);
+      final after = b.cells.where(m3IsSpecial).length;
+      if (after > before) created += after - before;
+    }
+    expect(created, greaterThan(0));
+  });
+
+  test('m3BaseType/m3IsSpecial ánh xạ đúng', () {
+    expect(m3BaseType(3), 3);
+    expect(m3BaseType(m3CrossBase + 2), 2);
+    expect(m3BaseType(m3ColorBase + 4), 4);
+    expect(m3IsSpecial(4), isFalse);
+    expect(m3IsSpecial(m3CrossBase), isTrue);
+    expect(m3IsSpecial(m3ColorBase + 1), isTrue);
   });
 }

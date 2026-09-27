@@ -56,7 +56,10 @@ void main() {
   /// định — dùng để đặt mục tiêu sao cho đi 1 nước là ĐÚNG 1 sao (đặt mục tiêu
   /// bằng 1 thì nước nào cũng ra thẳng 3 sao, mất luôn nhánh "Chơi nốt").
   int firstMoveScore() {
-    final board = Match3Board.initial(const Match3Level(1).seq());
+    // specials: true để khớp controller — bật kẹo thì ghép 4 sinh kẹo thay vì
+    // xoá sạch, nên điểm nước đầu khác hẳn bản không bật.
+    final board =
+        Match3Board.initial(const Match3Level(1).seq(), specials: true);
     final move = board.findMove()!;
     return board.trySwap(move.$1, move.$2).score;
   }

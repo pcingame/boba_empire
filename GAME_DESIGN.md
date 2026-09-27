@@ -620,6 +620,14 @@ Tab thứ 5 ở thanh dưới. Thiết kế đầy đủ + phần cố ý hoãn:
   giữa trận PvP là bàn lệch server. Đấu Trường vẫn kẹt như cũ (ROADMAP P2 §9).
 - **Banner quảng cáo** ở đáy cả hai màn của tab này (`lib/ads/banner_ad_box.dart`),
   tôn trọng `adFree`; unit id thật chưa tạo → release chưa hiện banner.
+- **Kẹo đặc biệt** (chỉ chơi đơn): ghép 4 → 💥 **bom chéo** (nổ cả hàng và cột),
+  ghép ≥5 → 🌈 **bom màu** (nổ mọi ô cùng loại). Kẹo sinh ngay tại ô người chơi
+  vừa đổi tới, mang loại gốc nên ghép nó như ô thường; nổ dây chuyền được với
+  nhau. Mã hoá thẳng trong mảng ô (`m3CrossBase`/`m3ColorBase` + loại) nên
+  frame/hoạt ảnh không đổi kiểu dữ liệu.
+  **Đấu Trường KHÔNG bật** (`Match3Board.initial(..., specials: false)` mặc
+  định) vì `arena_m3_replay` trong SQL không biết luật kẹo — vector vàng
+  Dart↔SQL là thứ khoá điều này.
 - **Hai kiểu mục tiêu**: *đạt X điểm* (mặc định) và *thu thập N ô loại X* —
   cứ `Balance.m3CollectEvery` (3) màn thì một màn kiểu thu thập, loại ô xoay
   vòng qua cả 5 loại. Cả hai dùng CHUNG thang sao 1x/1.5x/2x nên "Chơi nốt" và

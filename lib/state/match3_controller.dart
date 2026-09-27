@@ -72,7 +72,9 @@ class Match3Controller extends Notifier<Match3PlayState> {
   }
 
   Match3PlayState _start(Match3Level level) {
-    final board = Match3Board.initial(level.seq());
+    // specials: true — kẹo đặc biệt CHỈ có ở chơi đơn. Đấu Trường không bật vì
+    // `arena_m3_replay` (SQL) không biết luật kẹo (xem match3_rules.dart).
+    final board = Match3Board.initial(level.seq(), specials: true);
     // Bàn đầu có thể bí ngay (hiếm) — xáo cho tới khi đi được.
     if (!board.hasAnyMove()) board.reshuffle();
     _board = board;

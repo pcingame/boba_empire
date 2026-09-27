@@ -209,8 +209,12 @@ Không test được: banner (cần SDK thật) — kiểm bằng mắt trên m�
   điểm/rơi/bù nên SQL và vector vàng không phải đụng. Cứ 3 màn một màn thu thập,
   loại ô xoay vòng, dùng chung thang sao nên controller/UI chỉ đổi chỗ tính
   "tiến độ" (điểm hay số ô) chứ không phân nhánh thêm.
-- **Kẹo đặc biệt (gộp 4/5 ô)**: đổi luật ⇒ phải sửa cả `arena_m3_replay` + vector
-  vàng. Đắt gấp đôi, để sau.
+- ~~**Kẹo đặc biệt (gộp 4/5 ô)**~~ ✅ ĐÃ LÀM (2026-09-28), nhưng KHÔNG theo cách
+  đã lo: thay vì sửa luật dùng chung (kéo theo `arena_m3_replay` + vector vàng),
+  đặt sau cờ `specials` **mặc định TẮT**. Đấu Trường không bật → đường đi PvP
+  không đổi một bit, và vector vàng Dart↔SQL chính là bằng chứng. Kèm theo:
+  trần số bước dây chuyền (`m3MaxCascadeSteps`) làm lưới an toàn chống treo khi
+  chuỗi bù ô suy biến — đụng phải ngay lúc viết test.
 - Mua thêm nước bằng 💎 (sink 💎 tốt, nhưng cân bằng riêng).
 - Bảng xếp hạng điểm từng màn (bàn tất định nên so sánh được — nhưng lại cần
   chống gian lận server như Đấu Trường).

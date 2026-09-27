@@ -105,7 +105,8 @@ void _collectTests() {
     final type = play().level.collectType;
     // Bàn "gương": cùng seq, nhận cùng nước đi nên luôn khớp bàn của controller
     // → tự tính được số ô đúng loại mà mỗi nước xoá.
-    final mirror = Match3Board.initial(play().level.seq());
+    final mirror =
+        Match3Board.initial(play().level.seq(), specials: true);
     var expected = 0;
     for (var i = 0; i < 5; i++) {
       final move = mirror.findMove();

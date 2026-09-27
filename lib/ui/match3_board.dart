@@ -24,6 +24,14 @@ int match3DebugFallbacks = 0;
 
 const List<String> match3Icons = ['🧋', '🟤', '🍓', '🥭', '🍵'];
 
+/// Biểu tượng của một ô, kể cả kẹo đặc biệt (chỉ chơi đơn mới có — xem
+/// `m3CrossBase`/`m3ColorBase` trong match3_rules.dart).
+String match3IconFor(int value) {
+  if (value >= m3ColorBase) return '🌈';
+  if (value >= m3CrossBase) return '💥';
+  return (value >= 0 && value < match3Icons.length) ? match3Icons[value] : '';
+}
+
 const List<Color> _tileColors = [
   Color(0xFFFFCC80),
   Color(0xFFBCAAA4),
@@ -482,8 +490,11 @@ class _TileFace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final valid = value >= 0 && value < match3Icons.length;
-    final base = valid ? _tileColors[value] : Colors.transparent;
+    // Kẹo đặc biệt giữ màu nền theo LOẠI gốc của nó, chỉ đổi biểu tượng.
+    final type = m3BaseType(value);
+    final valid = type >= 0 && type < match3Icons.length;
+    final base = valid ? _tileColors[type] : Colors.transparent;
+    final special = m3IsSpecial(value);
     return AnimatedScale(
       scale: dying ? 1.35 : 1,
       duration: _popDur,
@@ -501,6 +512,10 @@ class _TileFace extends StatelessWidget {
                 colors: [Color.lerp(Colors.white, base, 0.55)!, base],
               ),
               borderRadius: BorderRadius.circular(size * 0.24),
+              // Viền sáng cho kẹo đặc biệt: nhìn lướt là thấy ô nào khác thường.
+              border: special
+                  ? Border.all(color: Colors.white, width: size * 0.07)
+                  : null,
               boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 2, offset: Offset(0, 1.5))],
             ),
             child: valid
@@ -509,7 +524,8 @@ class _TileFace extends StatelessWidget {
                       fit: BoxFit.scaleDown,
                       child: Padding(
                         padding: EdgeInsets.all(size * 0.1),
-                        child: Text(match3Icons[value], style: TextStyle(fontSize: size * 0.58)),
+                        child: Text(match3IconFor(value),
+                            style: TextStyle(fontSize: size * 0.58)),
                       ),
                     ),
                   )
