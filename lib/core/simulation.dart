@@ -467,6 +467,11 @@ void setAdsRemoved(GameState state) {
 void setTutorialSeen(GameState state) {
   state.tutorialSeen = true;
 }
+/// Đánh dấu đã xem hướng dẫn Trân Châu Rơi.
+void setM3HowToSeen(GameState state) {
+  state.m3HowToSeen = true;
+}
+
 
 /// Trao "Gói khởi động" đúng MỘT lần: cộng gems rồi đánh dấu đã sở hữu. Trả về
 /// true nếu vừa trao (false nếu đã sở hữu — chống trao trùng khi restore).

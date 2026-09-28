@@ -920,6 +920,14 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
+  /// Đánh dấu đã xem hướng dẫn Trân Châu Rơi (để lần sau không tự hiện nữa).
+  void markM3HowToSeen() {
+    if (_game.m3HowToSeen) return;
+    setM3HowToSeen(_game);
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
   /// Ghi kết quả một màn Ghép 3 (chơi đơn) và trao thưởng. Trả về (Xu, 💎) vừa
   /// nhận — 0 nếu không phá được kỷ lục sao cũ của màn đó.
   (double, int) grantMatch3Result(int levelId, int stars) {
@@ -1049,6 +1057,7 @@ class GameController extends Notifier<GameSnapshot> {
       // Bản sao: dùng chung instance thì `.select((s) => s.m3Stars)` so sánh
       // ra "y nguyên" (cùng object) và UI không bao giờ rebuild.
       m3Stars: List.unmodifiable(_game.m3Stars),
+      m3HowToSeen: _game.m3HowToSeen,
       starterPackOwned: _game.starterPackOwned,
       tutorialSeen: _game.tutorialSeen,
       dailyAvailable: dailyAvailable(_game, now),

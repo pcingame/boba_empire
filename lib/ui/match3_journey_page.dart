@@ -11,6 +11,7 @@ import '../core/match3_levels.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import 'match3_board.dart';
+import 'match3_how_to_dialog.dart';
 import 'match3_play_page.dart';
 import 'widgets/clay.dart';
 
@@ -35,7 +36,10 @@ class _Match3JourneyPageState extends ConsumerState<Match3JourneyPage> {
     super.initState();
     // Tới màn 20-30 thì màn đang chơi nằm ngoài màn hình — tự cuộn tới đó thay
     // vì bắt người chơi tự tìm.
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToCurrent());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToCurrent();
+      _showHowToOnce();
+    });
   }
 
   @override
@@ -53,6 +57,15 @@ class _Match3JourneyPageState extends ConsumerState<Match3JourneyPage> {
     _scroll.jumpTo(target.clamp(0, _scroll.position.maxScrollExtent));
   }
 
+  /// Lần đầu mở tab thì tự bật hướng dẫn — luật ghép/kẹo/sao không đoán ra
+  /// được, để người chơi tự mò là mất mấy màn đầu.
+  Future<void> _showHowToOnce() async {
+    if (!mounted) return;
+    if (ref.read(gameControllerProvider).m3HowToSeen) return;
+    ref.read(gameControllerProvider.notifier).markM3HowToSeen();
+    await showMatch3HowTo(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -64,14 +77,32 @@ class _Match3JourneyPageState extends ConsumerState<Match3JourneyPage> {
       appBar: AppBar(
         title: Text(l10n.m3Title),
         actions: [
+          IconButton(
+            key: const Key('m3-how-to-button'),
+            icon: const Icon(Icons.help_outline),
+            tooltip: l10n.m3HowToTitle,
+            onPressed: () => showMatch3HowTo(context),
+          ),
           // Tổng sao: thứ duy nhất đo được tiến độ dài hạn ở chế độ này.
+          //
+          // ConstrainedBox + FittedBox: ở cỡ chữ hệ thống lớn, tiêu đề + nút ?
+          // + chip này làm hàng AppBar TRÀN (đo được 22px ở 320px, cỡ chữ x2).
+          // Cùng cách xử lý với _CountBadge ở thanh dưới — cho chip co lại
+          // trong khung cố định thay vì đẩy tràn hàng.
           Padding(
             padding: const EdgeInsets.only(right: 12),
             child: Center(
-              child: ClayChip(
-                child: Text(
-                  '⭐ $earned / ${Balance.m3LevelCount * 3}',
-                  style: const TextStyle(fontWeight: FontWeight.w600),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 104),
+                child: ClayChip(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      '⭐ $earned / ${Balance.m3LevelCount * 3}',
+                      maxLines: 1,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ),
                 ),
               ),
             ),

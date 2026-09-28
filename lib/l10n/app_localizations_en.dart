@@ -1153,4 +1153,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String m3NeedCollect(int n, String icon, int star) {
     return '$n more $icon for $star★';
   }
+
+  @override
+  String get m3HowToTitle => 'How to play Falling Pearls';
+
+  @override
+  String get m3HtpSwap =>
+      '🔄 Swap two ADJACENT tiles (tap one then the other, or swipe) to line up 3 or more of a kind. Swaps that make no line do not count.';
+
+  @override
+  String get m3HtpGoal =>
+      '🎯 Each level has one goal: reach a score, or collect enough tiles of one kind. The goal is shown in the bar at the top.';
+
+  @override
+  String get m3HtpMoves =>
+      '👣 Moves are limited. When they run out the level ends, so favour swaps that clear more tiles.';
+
+  @override
+  String get m3HtpChain =>
+      '⛓️ Cleared tiles make the ones above fall; if those form a new line it chains — later steps score far more.';
+
+  @override
+  String get m3HtpSpecial =>
+      '💥 Line up 4 to create a CROSS BOMB (clears its whole row and column). Line up 5 or more for a COLOUR BOMB 🌈 (clears every tile of that kind). Match them like normal tiles to set them off.';
+
+  @override
+  String get m3HtpStars =>
+      '⭐ The three stars on the bar are three tiers. Reaching the first clears the level; tap \"Keep playing\" to spend your remaining moves chasing more stars.';
+
+  @override
+  String get m3HtpReward =>
+      '🎁 Rewards are paid only the FIRST time you reach each star tier. Replaying a level for practice pays nothing extra.';
 }

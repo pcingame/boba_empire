@@ -1161,4 +1161,35 @@ class AppLocalizationsEs extends AppLocalizations {
   String m3NeedCollect(int n, String icon, int star) {
     return 'Faltan $n $icon para $star★';
   }
+
+  @override
+  String get m3HowToTitle => 'Cómo jugar a Perlas que caen';
+
+  @override
+  String get m3HtpSwap =>
+      '🔄 Intercambia dos fichas CONTIGUAS (toca una y luego la otra, o desliza) para alinear 3 o más iguales. Si no se forma línea, el movimiento no cuenta.';
+
+  @override
+  String get m3HtpGoal =>
+      '🎯 Cada nivel tiene una meta: alcanzar puntos o recoger suficientes fichas de un tipo. La meta aparece en la barra superior.';
+
+  @override
+  String get m3HtpMoves =>
+      '👣 Los movimientos son limitados. Cuando se acaban, el nivel termina: prioriza los que eliminen más fichas.';
+
+  @override
+  String get m3HtpChain =>
+      '⛓️ Las fichas eliminadas hacen caer las de arriba; si forman otra línea se encadena y los pasos siguientes puntúan mucho más.';
+
+  @override
+  String get m3HtpSpecial =>
+      '💥 Alinea 4 para crear una BOMBA EN CRUZ (limpia su fila y su columna). Con 5 o más sale una BOMBA DE COLOR 🌈 (limpia todas las fichas de ese tipo). Combínalas como fichas normales para activarlas.';
+
+  @override
+  String get m3HtpStars =>
+      '⭐ Las tres estrellas de la barra son tres niveles. Al llegar a la primera superas el nivel; pulsa \"Seguir jugando\" para gastar los movimientos restantes y ganar más estrellas.';
+
+  @override
+  String get m3HtpReward =>
+      '🎁 La recompensa se paga solo la PRIMERA vez que alcanzas cada estrella. Repetir un nivel no da nada extra.';
 }

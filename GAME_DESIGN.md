@@ -638,6 +638,10 @@ Tab thứ 5 ở thanh dưới. Tên hiển thị: **Trân Châu Rơi** — dùng
   có. Dùng lại 3 SFX sẵn có, to dần theo độ "đã": ăn lẻ `tap`, dây chuyền `buy`,
   nổ ≥8 ô (kẹo đặc biệt) `reward`. Không cần chống dồn tiếng vì hai bước dây
   chuyền cách nhau ~390ms.
+- **Hướng dẫn** (2026-09-28): `match3_how_to_dialog.dart`, 7 gạch đầu dòng —
+  đổi ô, mục tiêu, giới hạn nước, dây chuyền, kẹo đặc biệt, mốc sao + "Chơi
+  nốt", thưởng chỉ trả lần đầu. Tự hiện LẦN ĐẦU mở tab (`GameState.m3HowToSeen`,
+  cùng khuôn `tutorialSeen`), sau đó mở lại bằng nút ? trên AppBar.
 - **Giao diện**: lưới màn dùng bộ `Clay*` cho đồng bộ với phần còn lại của app,
   có chip tổng sao, viền nổi ở màn đang chơi và tự cuộn tới màn đó khi mở. Màn
   chơi có HUD gồm tiến độ + chip số nước (đổi màu khi còn ≤3) + **thanh sao** đặt

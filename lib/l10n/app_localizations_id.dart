@@ -1154,4 +1154,35 @@ class AppLocalizationsId extends AppLocalizations {
   String m3NeedCollect(int n, String icon, int star) {
     return 'Kurang $n $icon lagi untuk $star★';
   }
+
+  @override
+  String get m3HowToTitle => 'Cara main Mutiara Jatuh';
+
+  @override
+  String get m3HtpSwap =>
+      '🔄 Tukar dua kotak BERSEBELAHAN (ketuk satu lalu yang lain, atau geser) untuk membuat barisan 3 kotak sejenis atau lebih. Tukaran yang tidak membentuk barisan tidak dihitung.';
+
+  @override
+  String get m3HtpGoal =>
+      '🎯 Tiap level punya satu target: mencapai skor, atau mengumpulkan kotak jenis tertentu. Target tampil di bilah atas.';
+
+  @override
+  String get m3HtpMoves =>
+      '👣 Langkah terbatas. Kalau habis, level berakhir — utamakan langkah yang menghapus banyak kotak.';
+
+  @override
+  String get m3HtpChain =>
+      '⛓️ Kotak yang hilang membuat kotak di atasnya jatuh; kalau membentuk barisan baru terjadi rantai, dan langkah berikutnya bernilai jauh lebih besar.';
+
+  @override
+  String get m3HtpSpecial =>
+      '💥 Susun 4 untuk membuat BOM SILANG (menghapus satu baris dan satu kolom). Susun 5 atau lebih untuk BOM WARNA 🌈 (menghapus semua kotak sejenis). Cocokkan seperti kotak biasa untuk meledakkannya.';
+
+  @override
+  String get m3HtpStars =>
+      '⭐ Tiga bintang di bilah adalah tiga tingkat. Tingkat pertama berarti lolos; tekan \"Lanjut main\" untuk memakai sisa langkah mengejar bintang berikutnya.';
+
+  @override
+  String get m3HtpReward =>
+      '🎁 Hadiah hanya diberikan saat PERTAMA kali mencapai tiap bintang. Mengulang level tidak menambah hadiah.';
 }

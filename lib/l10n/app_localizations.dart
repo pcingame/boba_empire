@@ -2013,6 +2013,54 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Còn thiếu {n} ô {icon} nữa là {star}★'**
   String m3NeedCollect(int n, String icon, int star);
+
+  /// No description provided for @m3HowToTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chơi Trân Châu Rơi'**
+  String get m3HowToTitle;
+
+  /// No description provided for @m3HtpSwap.
+  ///
+  /// In vi, this message translates to:
+  /// **'🔄 Đổi hai ô KỀ NHAU (chạm ô này rồi chạm ô kia, hoặc vuốt) để xếp 3 ô cùng loại trở lên. Nước không tạo được dãy thì không tính.'**
+  String get m3HtpSwap;
+
+  /// No description provided for @m3HtpGoal.
+  ///
+  /// In vi, this message translates to:
+  /// **'🎯 Mỗi màn có một mục tiêu: đạt đủ điểm, hoặc thu thập đủ số ô của một loại. Mục tiêu hiện ngay trên thanh đầu màn.'**
+  String get m3HtpGoal;
+
+  /// No description provided for @m3HtpMoves.
+  ///
+  /// In vi, this message translates to:
+  /// **'👣 Số nước có hạn. Hết nước là kết thúc màn, nên ưu tiên nước ăn được nhiều ô.'**
+  String get m3HtpMoves;
+
+  /// No description provided for @m3HtpChain.
+  ///
+  /// In vi, this message translates to:
+  /// **'⛓️ Ô bị xoá làm các ô trên rơi xuống; nếu chúng lại tạo dãy mới thì nổ dây chuyền — bước sau ăn điểm gấp bội.'**
+  String get m3HtpChain;
+
+  /// No description provided for @m3HtpSpecial.
+  ///
+  /// In vi, this message translates to:
+  /// **'💥 Xếp 4 ô tạo BOM CHÉO (nổ cả hàng và cột). Xếp từ 5 ô tạo BOM MÀU 🌈 (nổ sạch mọi ô cùng loại). Ghép chúng như ô thường để kích nổ.'**
+  String get m3HtpSpecial;
+
+  /// No description provided for @m3HtpStars.
+  ///
+  /// In vi, this message translates to:
+  /// **'⭐ Ba ngôi sao trên thanh là ba mốc. Chạm mốc đầu là qua màn; muốn thêm sao thì bấm \"Chơi nốt\" để dùng nốt số nước còn lại.'**
+  String get m3HtpStars;
+
+  /// No description provided for @m3HtpReward.
+  ///
+  /// In vi, this message translates to:
+  /// **'🎁 Thưởng chỉ trả LẦN ĐẦU đạt mỗi mốc sao. Chơi lại màn cũ để luyện thì không nhận thêm.'**
+  String get m3HtpReward;
 }
 
 class _AppLocalizationsDelegate

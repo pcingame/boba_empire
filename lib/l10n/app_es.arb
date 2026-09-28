@@ -508,5 +508,13 @@
   "m3Pause": "Descansar",
   "m3GoalReached": "¡Meta alcanzada!",
   "m3NeedScore": "Faltan {n} puntos para {star}★",
-  "m3NeedCollect": "Faltan {n} {icon} para {star}★"
+  "m3NeedCollect": "Faltan {n} {icon} para {star}★",
+  "m3HowToTitle": "Cómo jugar a Perlas que caen",
+  "m3HtpSwap": "🔄 Intercambia dos fichas CONTIGUAS (toca una y luego la otra, o desliza) para alinear 3 o más iguales. Si no se forma línea, el movimiento no cuenta.",
+  "m3HtpGoal": "🎯 Cada nivel tiene una meta: alcanzar puntos o recoger suficientes fichas de un tipo. La meta aparece en la barra superior.",
+  "m3HtpMoves": "👣 Los movimientos son limitados. Cuando se acaban, el nivel termina: prioriza los que eliminen más fichas.",
+  "m3HtpChain": "⛓️ Las fichas eliminadas hacen caer las de arriba; si forman otra línea se encadena y los pasos siguientes puntúan mucho más.",
+  "m3HtpSpecial": "💥 Alinea 4 para crear una BOMBA EN CRUZ (limpia su fila y su columna). Con 5 o más sale una BOMBA DE COLOR 🌈 (limpia todas las fichas de ese tipo). Combínalas como fichas normales para activarlas.",
+  "m3HtpStars": "⭐ Las tres estrellas de la barra son tres niveles. Al llegar a la primera superas el nivel; pulsa \"Seguir jugando\" para gastar los movimientos restantes y ganar más estrellas.",
+  "m3HtpReward": "🎁 La recompensa se paga solo la PRIMERA vez que alcanzas cada estrella. Repetir un nivel no da nada extra."
 }

@@ -17,7 +17,11 @@ Future<ProviderContainer> _pump(WidgetTester tester, double scale) async {
   SharedPreferences.setMockInitialValues({});
   final prefs = await SharedPreferences.getInstance();
   await GameStorage(prefs).save(
-    GameState.newGame(nowMillis: 0)..m3Stars.addAll([3, 2, 1, 1]),
+    // m3HowToSeen: các test này soi LƯỚI MÀN, không muốn bảng hướng dẫn tự
+    // bật che mất (hành vi lần đầu mở tab, có test riêng bên dưới).
+    GameState.newGame(nowMillis: 0)
+      ..m3HowToSeen = true
+      ..m3Stars.addAll([3, 2, 1, 1]),
     nowMillis: 0,
   );
   final c = ProviderContainer(overrides: [
@@ -48,6 +52,7 @@ Future<ProviderContainer> _pump(WidgetTester tester, double scale) async {
 }
 
 void main() {
+  _howToTests();
   testWidgets('cuộn hết cỡ KHÔNG bật hiệu ứng kéo giãn (nó bóp méo ô vuông)',
       (tester) async {
     await tester.binding.setSurfaceSize(const Size(400, 800));
@@ -74,7 +79,11 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
       // Save đã mở vài màn, gồm cả màn thu thập (có thêm 1 dòng biểu tượng).
       await GameStorage(prefs).save(
-        GameState.newGame(nowMillis: 0)..m3Stars.addAll([3, 2, 1, 1]),
+        // m3HowToSeen: các test này soi LƯỚI MÀN, không muốn bảng hướng dẫn tự
+    // bật che mất (hành vi lần đầu mở tab, có test riêng bên dưới).
+    GameState.newGame(nowMillis: 0)
+      ..m3HowToSeen = true
+      ..m3Stars.addAll([3, 2, 1, 1]),
         nowMillis: 0,
       );
       final c = ProviderContainer(overrides: [
@@ -110,4 +119,67 @@ void main() {
       c.dispose();
     });
   }
+}
+
+// --- Bảng hướng dẫn: tự hiện LẦN ĐẦU, sau đó chỉ mở bằng nút ? ---
+void _howToTests() {
+  testWidgets('lần đầu mở tab thì tự hiện hướng dẫn, lần sau thì không',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(420, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    // Ván mới: chưa xem hướng dẫn bao giờ.
+    await GameStorage(prefs)
+        .save(GameState.newGame(nowMillis: 0), nowMillis: 0);
+    final c = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(() => 0),
+    ]);
+
+    Future<void> pump() => tester.pumpWidget(UncontrolledProviderScope(
+          container: c,
+          child: const MaterialApp(
+            locale: Locale('vi'),
+            localizationsDelegates: [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: Match3JourneyPage(),
+          ),
+        ));
+
+    await pump();
+    await tester.pumpAndSettle();
+    expect(find.text('Chơi Trân Châu Rơi'), findsOneWidget,
+        reason: 'lần đầu phải tự hiện');
+    expect(c.read(gameControllerProvider).m3HowToSeen, isTrue);
+
+    await tester.tap(find.byKey(const Key('m3-how-to-close')));
+    await tester.pumpAndSettle();
+    expect(find.text('Chơi Trân Châu Rơi'), findsNothing);
+
+    // Mở lại trang: KHÔNG tự hiện nữa.
+    await tester.pumpWidget(const SizedBox());
+    await pump();
+    await tester.pumpAndSettle();
+    expect(find.text('Chơi Trân Châu Rơi'), findsNothing,
+        reason: 'đã xem rồi thì đừng hiện lại');
+
+    // Nhưng nút ? vẫn mở được bất cứ lúc nào.
+    await tester.tap(find.byKey(const Key('m3-how-to-button')));
+    await tester.pumpAndSettle();
+    expect(find.text('Chơi Trân Châu Rơi'), findsOneWidget);
+    // Có nhắc tới kẹo đặc biệt và mốc sao — hai luật không đoán ra được.
+    expect(find.textContaining('BOM CHÉO'), findsOneWidget);
+    expect(find.textContaining('Chơi nốt'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('m3-how-to-close')));
+    await tester.pumpAndSettle();
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
 }

@@ -1157,4 +1157,35 @@ class AppLocalizationsPt extends AppLocalizations {
   String m3NeedCollect(int n, String icon, int star) {
     return 'Faltam $n $icon para $star★';
   }
+
+  @override
+  String get m3HowToTitle => 'Como jogar Pérolas Caindo';
+
+  @override
+  String get m3HtpSwap =>
+      '🔄 Troque duas peças VIZINHAS (toque numa e depois na outra, ou arraste) para alinhar 3 ou mais iguais. Trocas que não formam linha não contam.';
+
+  @override
+  String get m3HtpGoal =>
+      '🎯 Cada nível tem um objetivo: atingir pontos ou juntar peças de um tipo. O objetivo aparece na barra do topo.';
+
+  @override
+  String get m3HtpMoves =>
+      '👣 As jogadas são limitadas. Quando acabam o nível termina — prefira jogadas que limpem mais peças.';
+
+  @override
+  String get m3HtpChain =>
+      '⛓️ Peças removidas fazem cair as de cima; se formarem nova linha há reação em cadeia, e os passos seguintes valem muito mais.';
+
+  @override
+  String get m3HtpSpecial =>
+      '💥 Alinhe 4 para criar uma BOMBA EM CRUZ (limpa a linha e a coluna). Com 5 ou mais surge uma BOMBA DE COR 🌈 (limpa todas as peças daquele tipo). Combine-as como peças normais para detonar.';
+
+  @override
+  String get m3HtpStars =>
+      '⭐ As três estrelas na barra são três níveis. Chegar à primeira já conclui o nível; toque em \"Continuar jogando\" para gastar as jogadas restantes e buscar mais estrelas.';
+
+  @override
+  String get m3HtpReward =>
+      '🎁 A recompensa é paga só na PRIMEIRA vez que você alcança cada estrela. Repetir o nível não dá nada extra.';
 }
