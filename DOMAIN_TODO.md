@@ -3,8 +3,11 @@
 Ghi lại 2026-09-28 để làm tiếp, không cần hỏi lại từ đầu.
 
 > **Tự kiểm:** `bash scripts/check_domain.sh` — in ra từng bước còn thiếu gì,
-> chạy lại bao nhiêu lần cũng được trong lúc chờ DNS lan. Trạng thái lúc
-> 2026-09-28: bước 4 (email) đã xong, còn lại bước 1, 2, 3, 5.
+> chạy lại bao nhiêu lần cũng được trong lúc chờ DNS lan.
+>
+> **Trạng thái 2026-09-28 (đo thật):** DNS xong, `https://bobaempiregame.com`
+> trả 200 và chứng chỉ hợp lệ, email forwarding xong.
+> **Còn đúng một việc:** đổi CNAME `www` → `pcingame.github.io.` (xem dưới).
 
 ## Đã xong
 - [x] Mua domain `bobaempiregame.com` (Namecheap).
@@ -23,7 +26,16 @@ Ghi lại 2026-09-28 để làm tiếp, không cần hỏi lại từ đầu.
    - `185.199.109.153`
    - `185.199.110.153`
    - `185.199.111.153`
-3. **Thêm CNAME**, Host `www`, Value `pcingame.github.io.` (có dấu chấm cuối).
+3. **CNAME `www`** — ⚠️ ĐANG SAI: đang trỏ về `bobaempiregame.com.`, phải sửa
+   thành **`pcingame.github.io.`** (có dấu chấm cuối).
+
+   Trỏ về chính domain gốc thì trang vẫn chạy (301 về gốc qua HTTP), NHƯNG
+   GitHub không xác minh được `www` nên **không đưa nó vào chứng chỉ HTTPS** —
+   ai gõ `https://www.bobaempiregame.com` sẽ gặp cảnh báo bảo mật của trình
+   duyệt. Đo được ngày 2026-09-28:
+   `SSL: no alternative certificate subject name matches target host name`.
+
+   Sửa xong GitHub tự cấp lại chứng chỉ gồm cả `www` (mất tới ~1 giờ).
 4. ~~Bật **Email Forwarding**~~ ✅ ĐÃ XONG — kiểm 2026-09-28 bằng
    `bash scripts/check_domain.sh`, domain đã có MX của Namecheap
    (`eforward1..5.registrar-servers.com`). Chỉ còn tự gửi thử một mail tới

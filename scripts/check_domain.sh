@@ -6,6 +6,10 @@
 set -u
 
 DOMAIN=bobaempiregame.com
+# Hỏi DNS CÔNG CỘNG, không hỏi resolver của máy: resolver máy cache cả câu trả
+# lời RỖNG từ trước khi thêm bản ghi, nên báo "chưa có" trong khi thực tế đã có.
+RESOLVER=${RESOLVER:-1.1.1.1}
+dig() { command dig "@$RESOLVER" "$@"; }
 PAGES_IPS=(185.199.108.153 185.199.109.153 185.199.110.153 185.199.111.153)
 ok=0; fail=0
 pass() { echo "  ✅ $1"; ok=$((ok+1)); }
@@ -35,23 +39,48 @@ else
   pass "không thấy bản ghi lạ ở gốc"
 fi
 
-echo "3) CNAME www → pcingame.github.io"
+echo "3) www trỏ về đâu"
 cname=$(dig +short "www.$DOMAIN" CNAME)
+wwwips=$(dig +short "www.$DOMAIN" A | sort)
 case "$cname" in
-  pcingame.github.io.) pass "đúng" ;;
+  pcingame.github.io.) pass "CNAME → pcingame.github.io. (đúng khuyến nghị GitHub)" ;;
+  "$DOMAIN.")
+    # Trỏ về gốc cũng chạy: nó nối tiếp vào 4 A record của gốc.
+    if [ -n "$wwwips" ]; then
+      pass "CNAME → $cname rồi ra IP GitHub — chạy được"
+    else
+      bad "CNAME → $cname nhưng gốc chưa ra IP nào"
+    fi ;;
   "") bad "chưa có CNAME cho www (bước 3)" ;;
-  *) bad "đang trỏ $cname, cần pcingame.github.io." ;;
+  *) bad "đang trỏ $cname — không phải GitHub Pages" ;;
 esac
 
 echo "4) Trang web trả về gì"
-# `|| echo` sẽ nối thêm chuỗi vào mã đã in ra ("000000") — dùng biến trung gian.
-code=$(curl -s -o /dev/null -w '%{http_code}' -m 10 "https://$DOMAIN")
-[ -z "$code" ] && code=000
-case "$code" in
-  200) pass "HTTPS 200 — trang đã sống" ;;
-  000) bad "không kết nối được (DNS chưa lan, hoặc chứng chỉ HTTPS chưa cấp xong)" ;;
-  *)   bad "HTTP $code — thường là GitHub Pages chưa nhận custom domain (bước 5)" ;;
-esac
+# --resolve: đi thẳng vào IP lấy từ DNS công cộng, khỏi phụ thuộc resolver máy
+# (nó cache cả câu trả lời rỗng cũ và làm curl báo "không phân giải được").
+ip=$(dig +short "$DOMAIN" A | head -1)
+if [ -z "$ip" ]; then
+  bad "chưa có IP để thử"
+else
+  code=$(curl -s -o /dev/null -w '%{http_code}' -m 15 \
+    --resolve "$DOMAIN:443:$ip" "https://$DOMAIN")
+  [ -z "$code" ] && code=000
+  case "$code" in
+    200) pass "https://$DOMAIN trả 200 — trang sống, chứng chỉ hợp lệ" ;;
+    000) bad "HTTPS lỗi (chứng chỉ chưa cấp xong?)" ;;
+    *)   bad "HTTP $code — GitHub Pages chưa nhận custom domain (bước 5)" ;;
+  esac
+
+  # www PHẢI có trong chứng chỉ, nếu không người gõ www sẽ gặp cảnh báo bảo mật.
+  wcode=$(curl -s -o /dev/null -w '%{http_code}' -m 15 \
+    --resolve "www.$DOMAIN:443:$ip" "https://www.$DOMAIN")
+  [ -z "$wcode" ] && wcode=000
+  if [ "$wcode" = "000" ]; then
+    bad "https://www.$DOMAIN lỗi chứng chỉ — đổi CNAME www thành pcingame.github.io. (xem DOMAIN_TODO.md)"
+  else
+    pass "https://www.$DOMAIN trả $wcode"
+  fi
+fi
 
 echo "5) Email forwarding support@$DOMAIN"
 if dig +short "$DOMAIN" MX | grep -q .; then
