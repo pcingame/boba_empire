@@ -150,34 +150,32 @@ bằng tên field** trong `lib/core/balance.dart`, khoảng hợp lệ khai báo
 `lib/data/remote_balance.dart` (gõ ngoài khoảng thì app BỎ QUA, giữ số biên dịch
 sẵn — cố tình như vậy để một số 0 gõ nhầm không phá save người chơi).
 
-### Cách nhanh: dán JSON (khuyến nghị)
+### Cách làm: MỘT tham số JSON gộp
 
-Repo có sẵn `remote_config_template.json` — đủ 22 tham số, giá trị khớp y hệt
-bản đang biên dịch (có test `remote_config_template_test.dart` khoá việc đó, đổi
-số trong `balance.dart` mà quên cập nhật file này là test đỏ).
+App đọc tất cả nút vặn từ **một tham số duy nhất** tên `boba_remote_config`
+(kiểu JSON). Sửa một chỗ, publish một lần, không sợ gõ sai tên 22 tham số rời.
 
-1. Firebase Console → project của app → **Remote Config**.
-2. Lần đầu thì bấm *Create configuration* và tạo tạm 1 tham số bất kỳ để vào
-   được màn chính (console không cho mở trình soạn JSON khi template rỗng).
-3. Góc phải → biểu tượng **{ }** (*Edit as JSON* / *Chỉnh sửa ở dạng JSON*).
-4. **Xoá hết** nội dung trong ô, dán toàn bộ `remote_config_template.json` vào.
-5. *Save* → *Publish changes*.
+1. Firebase Console → project → **Remote Config** → **Add parameter**.
+2. **Parameter name:** `boba_remote_config` (đúng từng ký tự).
+3. **Data type:** chọn **JSON** (biểu tượng `{ }`).
+4. **Default value:** dán toàn bộ nội dung `remote_config_template.json` ở gốc
+   repo — file này luôn khớp giá trị app đang chạy (có test khoá).
+5. **Save** → **Publish changes**. Chưa publish thì app không thấy gì.
 
-⚠️ Trình soạn JSON **thay thế toàn bộ** template, không phải thêm vào. Nếu sau
-này đã có tham số khác (không phải cân bằng game) thì đừng dán đè — thêm tay
-từng cái theo cách dưới.
+Dán xong **game không đổi gì**: mọi số bằng đúng số app đang dùng. Đó là chủ ý —
+bạn có sẵn đủ nút vặn trên console để chỉnh sau, còn lần publish đầu an toàn
+tuyệt đối. Muốn tune thì sửa số trong chính ô JSON đó rồi Publish lại.
 
-Dán xong thì **không có gì đổi trong game**: mọi giá trị bằng đúng giá trị app
-đang dùng. Đó là chủ ý — bạn có sẵn 22 nút vặn trên console để chỉnh sau này,
-còn việc publish lần đầu thì an toàn tuyệt đối.
+Key `"_"` trong file chỉ là dòng ghi chú — app bỏ qua mọi key không phải số.
 
-### Cách thủ công: thêm từng tham số
+**Kiểm đã ăn chưa:** chạy app (bản debug) và xem log, `RemoteBalance` in ra
+`Remote Config: đọc N/22 nút vặn, đổi M`. `đọc = 22` là console đúng; `đọc = 0`
+nghĩa là chưa publish, sai tên tham số, hoặc JSON hỏng. Trên console thì mục
+*Fetches – Last 24 hours* sẽ bắt đầu có số sau khi app mới fetch lần đầu (app cũ
+chưa biết đọc tham số này nên `Fetch 0%` lúc đầu là bình thường).
 
-1. Firebase Console → project của app → **Remote Config** → *Create configuration*.
-2. *Add parameter*: **Parameter name** = đúng tên ở bảng dưới (phân biệt hoa
-   thường), **Data type** = `Number`, **Default value** = giá trị trong bảng.
-   Không cần thêm đủ 22 — thiếu cái nào thì cái đó dùng giá trị trong app.
-3. *Publish changes*.
+*(App vẫn đọc được tham số rời cùng tên nút vặn nếu ai đó tạo tay, nhưng
+`boba_remote_config` sẽ đè lên. Chỉ dùng một kiểu cho đỡ rối.)*
 
 ### Sau khi publish
 

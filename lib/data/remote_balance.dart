@@ -9,7 +9,10 @@
 /// Xu âm.
 library;
 
+import 'dart:convert';
 import 'dart:developer' as developer;
+
+import 'package:flutter/foundation.dart' show visibleForTesting;
 
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
@@ -219,7 +222,45 @@ class RemoteBalance {
     }
   }
 
+  /// Tên tham số JSON gộp trên console. Chỉ cần MỘT tham số này là tune được
+  /// tất cả — sửa một chỗ, publish một lần, không sợ gõ sai tên 22 tham số rời.
+  static const String jsonParamKey = 'boba_remote_config';
+
   static void _applyFrom(FirebaseRemoteConfig rc) {
+    // Tham số rời (nếu ai đó tạo tay) áp trước...
     applyValues({for (final k in _knobs.keys) k: rc.getDouble(k)});
+    // ...rồi tham số JSON gộp đè lên, vì đó mới là chỗ chính để tune.
+    final blob = parseJsonParam(rc.getString(jsonParamKey));
+    final changed = applyValues(blob);
+    // Log để kiểm nhanh console đã cấu hình đúng chưa: `đọc` = số nút vặn tìm
+    // thấy trong JSON (phải bằng số nút app có), `đổi` = số nút khác giá trị
+    // biên dịch. Đọc = 0 nghĩa là tham số chưa publish, sai tên, hoặc JSON hỏng.
+    developer.log(
+      'Remote Config: đọc ${blob.length}/${_knobs.length} nút vặn, đổi $changed',
+      name: 'RemoteBalance',
+    );
+  }
+
+  /// Đọc tham số JSON gộp: `{"prestigeK": 0.03, "m3Moves": 18}`.
+  ///
+  /// Bỏ qua key có giá trị KHÔNG PHẢI SỐ (ghi chú, chuỗi...) thay vì ném lỗi —
+  /// người tune hay để lại dòng ghi chú trong JSON, và một lỗi parse ở đây sẽ
+  /// nuốt luôn mọi nút vặn khác.
+  @visibleForTesting
+  static Map<String, num> parseJsonParam(String raw) {
+    if (raw.trim().isEmpty) return const {};
+    try {
+      final decoded = jsonDecode(raw);
+      if (decoded is! Map) return const {};
+      return {
+        for (final entry in decoded.entries)
+          if (entry.key is String && entry.value is num)
+            entry.key as String: entry.value as num,
+      };
+    } catch (e) {
+      developer.log('Tham số $jsonParamKey không phải JSON hợp lệ: $e',
+          name: 'RemoteBalance');
+      return const {};
+    }
   }
 }

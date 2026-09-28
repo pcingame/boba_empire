@@ -1,158 +1,25 @@
 {
-  "parameters": {
-    "bonusPerStar": {
-      "defaultValue": {
-        "value": "0.02"
-      },
-      "valueType": "NUMBER",
-      "description": "+% thu nhap moi Sao nhuong quyen | hop le: 0.0001..1"
-    },
-    "prestigeK": {
-      "defaultValue": {
-        "value": "0.02"
-      },
-      "valueType": "NUMBER",
-      "description": "Toc do tich Sao. TRAN 0.05 — trigger chong gian lan tren Supabase chan o day | hop le: 0.001..0.05"
-    },
-    "milestoneStep": {
-      "defaultValue": {
-        "value": "50"
-      },
-      "valueType": "NUMBER",
-      "description": "Bao nhieu cap thi nguon thu x2 (cong thuc tang nhanh nhat game) | hop le: 5..500"
-    },
-    "milestoneFactor": {
-      "defaultValue": {
-        "value": "2.0"
-      },
-      "valueType": "NUMBER",
-      "description": "He so nhan moi moc | hop le: 1.1..5"
-    },
-    "milestoneGlobalBonus": {
-      "defaultValue": {
-        "value": "0.03"
-      },
-      "valueType": "NUMBER",
-      "description": "+% thu nhap toan cuc moi \"moc vang\" | hop le: 0..1"
-    },
-    "maxOfflineSeconds": {
-      "defaultValue": {
-        "value": "28800"
-      },
-      "valueType": "NUMBER",
-      "description": "Tran tien offline (giay) | hop le: 1800..604800"
-    },
-    "catSpawnMinMs": {
-      "defaultValue": {
-        "value": "180000"
-      },
-      "valueType": "NUMBER",
-      "description": "Meo Mua vang xuat hien sau it nhat (ms) | hop le: 10000..3600000"
-    },
-    "catSpawnMaxMs": {
-      "defaultValue": {
-        "value": "300000"
-      },
-      "valueType": "NUMBER",
-      "description": "Meo Mua vang xuat hien sau nhieu nhat (ms) | hop le: 10000..3600000"
-    },
-    "vipSpawnMinMs": {
-      "defaultValue": {
-        "value": "240000"
-      },
-      "valueType": "NUMBER",
-      "description": "Khach VIP xuat hien sau it nhat (ms) | hop le: 10000..3600000"
-    },
-    "vipSpawnMaxMs": {
-      "defaultValue": {
-        "value": "420000"
-      },
-      "valueType": "NUMBER",
-      "description": "Khach VIP xuat hien sau nhieu nhat (ms) | hop le: 10000..3600000"
-    },
-    "m3Moves": {
-      "defaultValue": {
-        "value": "20"
-      },
-      "valueType": "NUMBER",
-      "description": "So nuoc moi man Ghep 3 | hop le: 5..200"
-    },
-    "m3TargetBase": {
-      "defaultValue": {
-        "value": "900.0"
-      },
-      "valueType": "NUMBER",
-      "description": "Muc tieu 1 sao cua man 1 | hop le: 50..100000"
-    },
-    "m3TargetGrowth": {
-      "defaultValue": {
-        "value": "1.12"
-      },
-      "valueType": "NUMBER",
-      "description": "Muc tieu tang bao nhieu moi man | hop le: 1.0..1.5"
-    },
-    "m3LevelCount": {
-      "defaultValue": {
-        "value": "60"
-      },
-      "valueType": "NUMBER",
-      "description": "Tong so man Ghep 3 | hop le: 1..500"
-    },
-    "m3Star2Mult": {
-      "defaultValue": {
-        "value": "1.25"
-      },
-      "valueType": "NUMBER",
-      "description": "Moc 2 sao = boi nay cua muc tieu 1 sao | hop le: 1.0..5"
-    },
-    "m3Star3Mult": {
-      "defaultValue": {
-        "value": "1.6"
-      },
-      "valueType": "NUMBER",
-      "description": "Moc 3 sao = boi nay cua muc tieu 1 sao | hop le: 1.0..10"
-    },
-    "m3CollectEvery": {
-      "defaultValue": {
-        "value": "3"
-      },
-      "valueType": "NUMBER",
-      "description": "Cu may man thi co 1 man \"thu thap\" (0 = tat) | hop le: 0..20"
-    },
-    "m3CollectBase": {
-      "defaultValue": {
-        "value": "12.0"
-      },
-      "valueType": "NUMBER",
-      "description": "So o can thu o man thu thap dau tien | hop le: 3..500"
-    },
-    "m3CollectGrowth": {
-      "defaultValue": {
-        "value": "1.1"
-      },
-      "valueType": "NUMBER",
-      "description": "So o can thu tang bao nhieu moi man thu thap | hop le: 1.0..1.3"
-    },
-    "m3ThreeStarGems": {
-      "defaultValue": {
-        "value": "3"
-      },
-      "valueType": "NUMBER",
-      "description": "Kim cuong thuong lan dau dat 3 sao mot man | hop le: 0..100"
-    },
-    "dailyQuestRewardGems": {
-      "defaultValue": {
-        "value": "8"
-      },
-      "valueType": "NUMBER",
-      "description": "Kim cuong moi nhiem vu ngay | hop le: 0..200"
-    },
-    "dailyQuestBonusGems": {
-      "defaultValue": {
-        "value": "15"
-      },
-      "valueType": "NUMBER",
-      "description": "Kim cuong thuong khi xong ca 3 nhiem vu ngay | hop le: 0..500"
-    }
-  }
+  "_": "Gia tri dang chay trong app. Sua so roi Publish. Ngoai khoang hop le thi app BO QUA (xem SETUP.md 2b).",
+  "bonusPerStar": 0.02,
+  "prestigeK": 0.02,
+  "milestoneStep": 50,
+  "milestoneFactor": 2.0,
+  "milestoneGlobalBonus": 0.03,
+  "maxOfflineSeconds": 28800,
+  "catSpawnMinMs": 180000,
+  "catSpawnMaxMs": 300000,
+  "vipSpawnMinMs": 240000,
+  "vipSpawnMaxMs": 420000,
+  "m3Moves": 20,
+  "m3TargetBase": 900.0,
+  "m3TargetGrowth": 1.12,
+  "m3LevelCount": 60,
+  "m3Star2Mult": 1.25,
+  "m3Star3Mult": 1.6,
+  "m3CollectEvery": 3,
+  "m3CollectBase": 12.0,
+  "m3CollectGrowth": 1.1,
+  "m3ThreeStarGems": 3,
+  "dailyQuestRewardGems": 8,
+  "dailyQuestBonusGems": 15
 }
