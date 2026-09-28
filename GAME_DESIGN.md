@@ -506,7 +506,11 @@ thức** prestige/offline/kinh tế.
   đã ở GĐ12 sẽ được **trao bù ngay** thành tựu GĐ7-12 (~1260 💎) khi cập nhật.
 - `formatNumber` mở rộng hậu tố tới `zz` (~1e93); `instantStageGemCost` có bậc riêng
   cho GĐ13-18 (2500 → 14000 💎); mỗi giai đoạn có màu theme riêng (`main.dart`).
-- **Chưa có**: art cảnh nền riêng cho GĐ7-18 (đang dùng lại `stage6.png`).
+- ~~**Chưa có**: art cảnh nền riêng cho GĐ7-18~~ ✅ xong 2026-09-28: đủ 18 cảnh
+  trong `assets/scene/`, sinh bằng `scripts/make_scenes.py`, mỗi cảnh lấy tông
+  theo màu chủ đề của giai đoạn đó trong `_seedForStage` (main.dart). GĐ17-18
+  dùng nền vũ trụ (không có dải đất). Test `stage_scene_test.dart` khoá việc
+  "mỗi giai đoạn phải có file cảnh".
 - **Server**: trần `lifetime_earnings` của bảng xếp hạng nâng 1e50 → 1e100
   (`supabase/leaderboard_schema.sql`) — **phải chạy lại file SQL trên Supabase**.
 

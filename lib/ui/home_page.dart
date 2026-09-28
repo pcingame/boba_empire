@@ -747,7 +747,10 @@ class _StageScene extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final stage = ref.watch(gameControllerProvider.select((s) => s.stage));
     final theme = Theme.of(context);
-    final n = stage.clamp(1, 6);
+    // Mỗi giai đoạn có cảnh riêng (assets/scene/stage1..18.png, sinh bằng
+    // scripts/make_scenes.py). Vẫn clamp để giai đoạn mới thêm sau mà chưa kịp
+    // vẽ cảnh thì dùng lại cảnh cuối chứ không vỡ ảnh.
+    final n = stage.clamp(1, 18);
 
     return Stack(
       fit: StackFit.expand,

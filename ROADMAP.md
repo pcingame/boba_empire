@@ -70,7 +70,7 @@ Việc tay trên AdMob console: ✅ xong 2026-09-28 — Banner ad unit đã tạ
 
 | # | Việc | Ghi chú |
 |---|---|---|
-| 8 | **Art cảnh cho GĐ7-18** — cả 12 giai đoạn đang dùng lại `stage6.png` (§17 GAME_DESIGN) | Người chơi tới GĐ7+ thấy "hết game" về mặt hình ảnh. Có `scripts/make_scenes.py` rồi → rẻ nhất nhóm này |
+| 8 | ✅ **Art cảnh cho GĐ7-18** (xong 2026-09-28) — cả 12 giai đoạn đang dùng lại `stage6.png` (§17 GAME_DESIGN) | Người chơi tới GĐ7+ thấy "hết game" về mặt hình ảnh. Có `scripts/make_scenes.py` rồi → rẻ nhất nhóm này |
 | 9 | Đấu Trường Ghép 3: **tự xáo khi hết nước đi** (giờ chỉ báo "Hết nước đi!" rồi kẹt tới hết 60s) | Lỗ UX thật, không phải tính năng thêm. Kẹo đặc biệt / xem bảng đối thủ để sau |
 | 10 | **Bảng xếp hạng tỉ lệ thắng Đấu Trường** | `arena_matches.winner` đã verify server-side → gần như chỉ là 1 view SQL + 1 tab |
 | 11 | **Sự kiện giới hạn thời gian** (cuối tuần ×2, mùa lễ) qua Remote Config ở #5 | Vòng lặp retention tái sử dụng mãi, không phải sản xuất nội dung mới mỗi đợt |
