@@ -62,9 +62,9 @@ Kéo theo: mục **#9 dưới đây (tự xáo khi hết nước) vẫn CÒN** c
 xáo bàn đã viết nhưng chỉ chơi đơn dùng được, PvP cần viết cùng logic trong
 `arena_m3_replay` (SQL) mới dùng được.
 
-Còn phải làm bằng tay: tạo **Banner ad unit** trên AdMob rồi điền vào
-`lib/ads/ad_config.dart` (SETUP.md §1) — chưa điền thì bản release không hiện
-banner (có chủ ý).
+Còn phải làm bằng tay trên AdMob console: ~~tạo Banner ad unit~~ ✅ xong
+2026-09-28 (cả 2 nền tảng, đã điền vào `lib/ads/ad_config.dart`). **Còn lại:
+đặt Automatic refresh = 90 giây cho cả hai unit** — xem SETUP.md §1.
 
 ## P2 — Mở rộng, sau khi P1 có số liệu
 

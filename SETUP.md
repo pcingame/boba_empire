@@ -124,6 +124,16 @@ Banner chỉ hiện ở tab **Ghép 3** (danh sách màn + màn chơi), KHÔNG h
    ⚠️ Dán nhầm **App ID** (có dấu `~`) vào chỗ **unit id** (có dấu `/`) là lỗi
    im lặng: quảng cáo không bao giờ tải mà chẳng báo gì. Có test khoá việc này.
 3. Bản debug luôn dùng test id, không cần làm gì.
+4. **Tần suất làm mới: 90 giây** (chốt 2026-09-28). Đặt trong console, KHÔNG có
+   trong code — AdMob → Apps → chọn app → Ad units → chọn banner unit → Edit →
+   *Automatic refresh* → 90 seconds. Phải đặt cho **cả hai** app (Android và
+   iOS); mặc định của unit mới là 60 giây.
+   - [ ] Android `.../6714171401`
+   - [ ] iOS `.../7009859888`
+
+   App KHÔNG tự tải lại banner bằng timer (tự gọi lại liên tục bị Google tính là
+   invalid traffic) — mỗi lần mở màn chỉ tải 1 lần, còn nhịp làm mới sau đó do
+   AdMob quyết định theo thiết lập trên.
 
 ⚠️ Mọi chỗ đụng SDK quảng cáo phải chờ `AdBootstrap.ready` (Future của lần init
 do `main()` gán). Gọi sớm hơn thì kênh nền tảng trả null và **im lặng** thất bại
