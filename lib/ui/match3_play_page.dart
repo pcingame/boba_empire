@@ -34,6 +34,12 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
   bool _continuedWithAd = false;
   bool _goingNext = false;
 
+  /// Đã bấm rời trang (Tạm nghỉ / Danh sách màn). Phần đuôi của [_showResult]
+  /// PHẢI dừng lại: trang đang bị gỡ mà còn setState + nạp lại màn thì có lúc
+  /// nó dựng lại bảng kết quả, và dialog đó nổi lên trên LƯỚI MÀN — đúng lỗi
+  /// người chơi báo ("bấm Tạm nghỉ mà vẫn hiện Qua màn").
+  bool _leaving = false;
+
   /// Người chơi đã chọn "Chơi nốt" sau khi đạt mục tiêu → đừng hỏi lại mỗi
   /// nước, chỉ hiện bảng kết quả lần nữa khi hết nước.
   bool _keepPlaying = false;
@@ -197,10 +203,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
           // "Tạm nghỉ" lên làm nút chính.
           if (hasNext) ...[
             TextButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-                Navigator.of(context).pop();
-              },
+              onPressed: () => _leave(dialogContext),
               child: Text(l10n.m3Pause),
             ),
             FilledButton(
@@ -212,16 +215,14 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
             ),
           ] else
             FilledButton(
-              onPressed: () {
-                Navigator.of(dialogContext).pop();
-                Navigator.of(context).pop();
-              },
+              onPressed: () => _leave(dialogContext),
               child: Text(l10n.m3Pause),
             ),
         ],
       ),
     );
-    if (!mounted) return;
+    // `_leaving`: đã rời trang thì KHÔNG đụng gì nữa (xem ghi chú ở khai báo).
+    if (!mounted || _leaving) return;
     // Sang màn sau: thay luôn trang hiện tại để bấm Back không quay lại từng
     // màn đã chơi, và KHÔNG nạp lại màn cũ.
     if (_goingNext) {
@@ -245,6 +246,13 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
     _keepPlaying = false;
     setState(() => _resultShown = false);
     ref.read(match3ControllerProvider.notifier).load(widget.level);
+  }
+
+  /// Đóng bảng kết quả rồi rời trang chơi về lưới màn.
+  void _leave(BuildContext dialogContext) {
+    _leaving = true;
+    Navigator.of(dialogContext).pop();
+    Navigator.of(context).pop();
   }
 
   /// Xem quảng cáo thưởng để chơi tiếp. Người đã mua "Gỡ quảng cáo" (hoặc đang
