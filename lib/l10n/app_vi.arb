@@ -202,7 +202,7 @@
   "@prestigeIntro": {
     "placeholders": {
       "percent": {
-        "type": "int"
+        "type": "String"
       }
     }
   },
@@ -211,10 +211,10 @@
   "@prestigeStarsValue": {
     "placeholders": {
       "stars": {
-        "type": "int"
+        "type": "String"
       },
       "percent": {
-        "type": "int"
+        "type": "String"
       }
     }
   },
@@ -223,7 +223,7 @@
   "@prestigeGain": {
     "placeholders": {
       "stars": {
-        "type": "int"
+        "type": "String"
       }
     }
   },
@@ -232,7 +232,7 @@
   "@prestigeTotalValue": {
     "placeholders": {
       "percent": {
-        "type": "int"
+        "type": "String"
       }
     }
   },
@@ -242,7 +242,7 @@
   "@prestigeConfirm": {
     "placeholders": {
       "stars": {
-        "type": "int"
+        "type": "String"
       }
     }
   },
@@ -251,7 +251,7 @@
   "@prestigeSuccess": {
     "placeholders": {
       "stars": {
-        "type": "int"
+        "type": "String"
       }
     }
   },
@@ -351,7 +351,7 @@
   "@prestigeShopSpendable": {
     "placeholders": {
       "stars": {
-        "type": "int"
+        "type": "String"
       }
     }
   },
@@ -402,7 +402,7 @@
   "@prestigeStarCost": {
     "placeholders": {
       "cost": {
-        "type": "int"
+        "type": "String"
       }
     }
   },
@@ -681,7 +681,7 @@
   "@leaderboardStars": {
     "placeholders": {
       "stars": {
-        "type": "int"
+        "type": "String"
       }
     }
   },

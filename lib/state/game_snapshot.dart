@@ -111,10 +111,10 @@ class GameSnapshot {
   /// Thu nhập tự động mỗi giây (đã tính bonus prestige) — để hiển thị "+X/s".
   final double incomePerSecond;
 
-  final int prestigeStars;
+  final double prestigeStars;
 
   /// Số Sao sẽ nhận nếu prestige ngay bây giờ (để bật/mờ nút Nhượng quyền).
-  final int prestigeStarsAvailable;
+  final double prestigeStarsAvailable;
 
   /// Con mèo Mưa vàng đang hiện trên màn hình hay không.
   final bool catVisible;
@@ -160,7 +160,7 @@ class GameSnapshot {
   final bool m3HowToSeen;
 
   /// Số ⭐ Sao còn có thể tiêu trong kho prestige.
-  final int prestigeStarsSpendable;
+  final double prestigeStarsSpendable;
 
   /// Cấp các perk kho Sao.
   final int prestigeIncomeLevel;

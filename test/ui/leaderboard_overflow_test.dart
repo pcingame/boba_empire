@@ -89,6 +89,9 @@ void main() {
     // đúng giá trị formatNumber(1.108e24)/"{stars} ⭐" thật, không phải chuỗi
     // rút gọn nào khác.
     expect(find.textContaining('1.11dd'), findsOneWidget);
-    expect(find.textContaining('16640428646'), findsOneWidget);
+    // Sao in bằng formatNumber như Xu (đổi 2026-09-29 cùng lúc bỏ trần
+    // int64): 16.640.428.646 -> "16.64B". In nguyên 11 chữ số thì hàng này
+    // tràn ngay, mà Sao cuối tuyến còn dài tới ~30 chữ số.
+    expect(find.textContaining('16.64B'), findsOneWidget);
   });
 }

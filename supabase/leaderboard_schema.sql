@@ -29,8 +29,15 @@ create table if not exists leaderboard_entries (
 -- sang bigint (int8, trần ~9,2 tỷ tỷ) khớp kiểu int 64-bit của Dart.
 -- ALTER an toàn để chạy lại trên bảng đã tồn tại (CREATE TABLE IF NOT EXISTS
 -- ở trên không tự đổi kiểu cột cũ).
+--
+-- 2026-09-29: bigint CŨNG KHÔNG ĐỦ — cùng một lớp lỗi, lần thứ hai. Sao =
+-- k·√lifetime, mà lifetime cuối tuyến đo được trên bảng này đã 1,15e68 → Sao
+-- thật ~2e32, vượt xa trần int8 (9,2e18). Phía Dart `.floor()` kẹp im lặng ở
+-- int64max nên 77/1184 hàng nộp lên đúng bằng 9223372036854775807 và xếp hạng
+-- bằng nhau hết. Đổi sang `numeric` (cùng kiểu với lifetime_earnings, không có
+-- trần) và đổi luôn kiểu trong app (GameState.prestigeStars giờ là double).
 alter table leaderboard_entries
-  alter column prestige_stars type bigint;
+  alter column prestige_stars type numeric;
 
 create index if not exists leaderboard_entries_lifetime_idx
   on leaderboard_entries (lifetime_earnings desc);
@@ -123,6 +130,19 @@ begin
 end;
 $$;
 
+-- Chữa 77 hàng đã bị kẹp trần trước khi sửa (2026-09-29): số Sao của họ đã
+-- MẤT thông tin (mọi giá trị ≥ 9,2e18 đều bị ghi thành đúng int64max). Nhưng
+-- lifetime_earnings thì vẫn đúng, mà Sao = floor(k·√lifetime) — dựng lại được
+-- bằng chính công thức game (k = 0.02 = Balance.prestigeK hiện tại).
+--
+-- Đây là ƯỚC LƯỢNG TRẦN TRÊN: đúng bằng số Sao họ có NẾU đã Nhượng quyền hết
+-- phần tích được. Lần nộp điểm kế tiếp từ app (mở bảng xếp hạng) sẽ ghi đè
+-- bằng số thật — mục đích ở đây chỉ là để họ không hiện 0 ⭐ trong lúc chờ.
+-- Không xoá cả hàng vì sẽ mất nickname. Chỉ đụng đúng các hàng bị kẹp.
+update leaderboard_entries
+  set prestige_stars = floor(0.02 * sqrt(lifetime_earnings))
+  where prestige_stars >= 9223372036854775807;
+
 drop trigger if exists leaderboard_entries_validate on leaderboard_entries;
 create trigger leaderboard_entries_validate
   before insert or update on leaderboard_entries
@@ -158,8 +178,9 @@ create trigger leaderboard_entries_set_updated_at
 -- logic xếp hạng, chạy đúng quyền người gọi là đủ.
 -- ─────────────────────────────────────────────────────────────────────────
 
--- drop trước vì đổi kiểu trả về (prestige_stars integer -> bigint):
--- `create or replace function` từ chối đổi return type của hàm đã tồn tại.
+-- drop trước vì đổi kiểu trả về (prestige_stars integer -> bigint ->
+-- numeric 2026-09-29): `create or replace function` từ chối đổi return type
+-- của hàm đã tồn tại.
 drop function if exists leaderboard_around_me(integer);
 
 create or replace function leaderboard_around_me(p_window integer default 5)
@@ -167,7 +188,7 @@ returns table (
   user_id           uuid,
   nickname          text,
   lifetime_earnings numeric,
-  prestige_stars    bigint,
+  prestige_stars    numeric,
   stage             integer,
   rank              bigint
 )

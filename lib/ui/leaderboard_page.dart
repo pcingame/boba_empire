@@ -211,7 +211,9 @@ class _LeaderboardList extends ConsumerWidget {
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
                                 child: Text(
-                                  l10n.leaderboardStars(entry.prestigeStars),
+                                  l10n.leaderboardStars(
+                                    formatNumber(entry.prestigeStars),
+                                  ),
                                 ),
                               ),
                             ),

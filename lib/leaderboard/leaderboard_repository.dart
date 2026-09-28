@@ -23,7 +23,7 @@ class LeaderboardEntry {
         userId: row['user_id'] as String,
         nickname: row['nickname'] as String,
         lifetimeEarnings: (row['lifetime_earnings'] as num).toDouble(),
-        prestigeStars: (row['prestige_stars'] as num).toInt(),
+        prestigeStars: (row['prestige_stars'] as num).toDouble(),
         stage: (row['stage'] as num).toInt(),
         rank: (row['rank'] as num).toInt(),
       );
@@ -31,7 +31,7 @@ class LeaderboardEntry {
   final String userId;
   final String nickname;
   final double lifetimeEarnings;
-  final int prestigeStars;
+  final double prestigeStars;
   final int stage;
 
   /// Hạng 1-based theo Xu cả đời — server tính sẵn (xem
@@ -76,7 +76,7 @@ class LeaderboardRepository {
   Future<void> submit({
     required String nickname,
     required double lifetimeEarnings,
-    required int prestigeStars,
+    required double prestigeStars,
     required int stage,
   }) async {
     final uid = await ensureSignedIn();

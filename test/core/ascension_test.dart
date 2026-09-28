@@ -199,7 +199,7 @@ void main() {
     test('thu nhập ở cấp perk tối đa vẫn hữu hạn và dưới trần chống tràn', () {
       final s = GameState.newGame(nowMillis: 0)
         ..levels['eternal_tea'] = Balance.maxGeneratorLevel
-        ..prestigeStars = 1 << 40
+        ..prestigeStars = (1 << 40).toDouble()
         ..ascensionIncomeLevel = Balance.ascensionIncomeMaxLevel
         ..ascensionStarBonusLevel = Balance.ascensionStarBonusMaxLevel;
       final inc = effectiveIncomePerSecond(s, Balance.generators,

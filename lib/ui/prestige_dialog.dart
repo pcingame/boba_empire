@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../audio/audio_service.dart';
 import '../core/balance.dart';
 import '../core/economy.dart';
+import '../core/format.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import 'ascension_dialog.dart';
@@ -20,11 +21,10 @@ Future<void> showPrestigeDialog(BuildContext context) {
   );
 }
 
-int _percent(int stars, int starBonusLevel) => (stars *
-        Balance.bonusPerStar *
-        ascensionStarBonusFactor(starBonusLevel) *
-        100)
-    .round();
+String _percent(double stars, int starBonusLevel) => formatNumber(stars *
+    Balance.bonusPerStar *
+    ascensionStarBonusFactor(starBonusLevel) *
+    100);
 
 /// ConsumerWidget để các con số cập nhật trực tiếp khi thu nhập tăng lúc dialog
 /// đang mở (số Sao khả dụng phụ thuộc tổng thu nhập cả đời).
@@ -55,8 +55,10 @@ class _PrestigeDialog extends ConsumerWidget {
             Text(l10n.prestigeIntro(_percent(1, starBonusLv))),
             const SizedBox(height: 16),
             _row(l10n.prestigeStarsNow,
-                l10n.prestigeStarsValue(stars, _percent(stars, starBonusLv))),
-            _row(l10n.prestigeNow, l10n.prestigeGain(available)),
+                l10n.prestigeStarsValue(
+                    formatNumber(stars), _percent(stars, starBonusLv))),
+            _row(l10n.prestigeNow,
+                l10n.prestigeGain(formatNumber(available))),
             const Divider(),
             _row(
               l10n.prestigeTotalBonus,
@@ -84,7 +86,9 @@ class _PrestigeDialog extends ConsumerWidget {
           key: const Key('prestige-confirm'),
           onPressed: canPrestige ? () => _confirm(context, ref) : null,
           child: Text(
-            canPrestige ? l10n.prestigeConfirm(available) : l10n.prestigeNotEnough,
+            canPrestige
+                ? l10n.prestigeConfirm(formatNumber(available))
+                : l10n.prestigeNotEnough,
           ),
         ),
       ],
@@ -104,7 +108,7 @@ class _PrestigeDialog extends ConsumerWidget {
     Navigator.of(context).pop();
     if (gained > 0) {
       messenger.showSnackBar(
-        SnackBar(content: Text(l10n.prestigeSuccess(gained))),
+        SnackBar(content: Text(l10n.prestigeSuccess(formatNumber(gained)))),
       );
     }
   }
@@ -220,7 +224,7 @@ class _StarShop extends ConsumerWidget {
         const Divider(),
         Text(l10n.prestigeShopTitle, style: theme.textTheme.titleMedium),
         Text(
-          l10n.prestigeShopSpendable(spendable),
+          l10n.prestigeShopSpendable(formatNumber(spendable)),
           style: theme.textTheme.bodySmall,
         ),
         _PerkRow(
@@ -307,8 +311,8 @@ class _PerkRow extends StatelessWidget {
   final String name;
   final int level;
   final String desc;
-  final int cost;
-  final int spendable;
+  final double cost;
+  final double spendable;
   final VoidCallback onBuy;
 
   @override
@@ -344,7 +348,7 @@ class _PerkRow extends StatelessWidget {
               onPressed: spendable >= cost ? onBuy : null,
               child: FittedBox(
                 fit: BoxFit.scaleDown,
-                child: Text(l10n.prestigeStarCost(cost)),
+                child: Text(l10n.prestigeStarCost(formatNumber(cost))),
               ),
             ),
           ),

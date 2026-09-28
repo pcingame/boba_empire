@@ -463,7 +463,7 @@ class _BottomBar extends ConsumerWidget {
     required String label,
     required VoidCallback onTap,
     bool badge = false,
-    int? badgeValue,
+    double? badgeValue,
     bool highlight = false,
   }) {
     return Expanded(

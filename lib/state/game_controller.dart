@@ -610,7 +610,7 @@ class GameController extends Notifier<GameSnapshot> {
   }
 
   /// Nhượng quyền. Trả về số Sao vừa nhận (0 nếu chưa đủ).
-  int doPrestige() {
+  double doPrestige() {
     final gained = prestige(_game);
     if (gained > 0) {
       _awardAchievements();

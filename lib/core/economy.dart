@@ -100,7 +100,7 @@ double bulkIncomeGain(GeneratorConfig config, int fromLevel, int count) {
 }
 
 /// Hệ số nhân thu nhập vĩnh viễn từ prestige: 1 + sao * bonus.
-double prestigeMultiplier(int stars, double bonusPerStar) =>
+double prestigeMultiplier(double stars, double bonusPerStar) =>
     1 + stars * bonusPerStar;
 
 /// Hệ số nhân GIÁ TRỊ CHẠM vĩnh viễn từ lựa chọn cốt truyện (Chương 6 "thủ
@@ -142,15 +142,18 @@ double permanentMultiplier(int gemBoostLevel) =>
 /// hoà dương về int64.max ("quá đắt, không mua nổi"), không lật dấu — an
 /// toàn, và cho kết quả giống hệt `1 << level` ở mọi cấp thực tế đạt được
 /// (double biểu diễn đúng số nguyên tới 2^53).
-int prestigeShopCost(int baseCost, int level) =>
-    (baseCost * pow(2.0, level)).round();
+/// `double`: Sao không còn trần int64 nên cấp perk leo được rất cao, mà
+/// baseCost·2^level tràn int64 từ cấp ~60 (`.round()` kẹp im lặng ở int64max
+/// → giá đứng yên, mua mãi không hết Sao). Xem [GameState.prestigeStars].
+double prestigeShopCost(int baseCost, int level) =>
+    (baseCost * pow(2.0, level)).roundToDouble();
 
 /// Tổng Sao đã tiêu cho một perk đạt [level] (tổng cấp số nhân, growth 2).
-int _prestigeSpentFor(int baseCost, int level) =>
-    (baseCost * (pow(2.0, level) - 1)).round();
+double _prestigeSpentFor(int baseCost, int level) =>
+    (baseCost * (pow(2.0, level) - 1)).roundToDouble();
 
 /// Tổng Sao đã tiêu trong kho prestige (mọi perk).
-int prestigeStarsSpent(GameState s) =>
+double prestigeStarsSpent(GameState s) =>
     _prestigeSpentFor(Balance.prestigeIncomeBaseCost, s.prestigeIncomeLevel) +
     _prestigeSpentFor(Balance.prestigeTapBaseCost, s.prestigeTapLevel) +
     _prestigeSpentFor(
@@ -166,7 +169,7 @@ int prestigeStarsSpent(GameState s) =>
 
 /// Số Sao còn có thể tiêu (tổng Sao trừ đã tiêu). KHÔNG đụng số Sao dùng cho
 /// passive/accounting prestige → tiêu rồi prestige cũng không lấy lại được.
-int prestigeStarsSpendable(GameState s) =>
+double prestigeStarsSpendable(GameState s) =>
     s.prestigeStars - prestigeStarsSpent(s);
 
 // --- Kỷ Nguyên (Ascension) — prestige tầng 2 ---
@@ -347,7 +350,9 @@ double effectiveIncomePerSecond(
 /// Mô hình tích lũy kiểu "angel investor": Sao = floor(k * sqrt(lifetime)).
 /// Vì [GameState.lifetimeEarnings] không reset khi prestige, giá trị này chỉ
 /// tăng dần; phần chênh lệch là số Sao nhận được ở lần prestige kế tiếp.
-int starsForLifetimeEarnings(double lifetimeEarnings, double k) {
+/// Trả về `double`: ở cuối tuyến k·√lifetime vượt trần int64 và `.floor()`
+/// kẹp im lặng ở 9223372036854775807 — xem [GameState.prestigeStars].
+double starsForLifetimeEarnings(double lifetimeEarnings, double k) {
   if (lifetimeEarnings <= 0) return 0;
-  return (k * sqrt(lifetimeEarnings)).floor();
+  return (k * sqrt(lifetimeEarnings)).floorToDouble();
 }

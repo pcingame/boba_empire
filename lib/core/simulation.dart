@@ -315,7 +315,7 @@ void fillPiggy(GameState state, double dtSeconds) {
 }
 
 /// Số Sao sẽ NHẬN THÊM nếu prestige ngay bây giờ (để UI xem trước, không mutate).
-int prestigeStarsAvailable(GameState state) {
+double prestigeStarsAvailable(GameState state) {
   // Tính từ lifetime kể từ lần Kỷ Nguyên gần nhất (= toàn bộ lifetime nếu chưa từng)
   // và k hiệu dụng — nếu không, reset Sao ở [ascend] sẽ bị trả lại nguyên vẹn
   // ở lần Nhượng quyền kế tiếp. Luôn ≤ floor(0.05·sqrt(lifetime)) (ràng buộc
@@ -324,7 +324,7 @@ int prestigeStarsAvailable(GameState state) {
     lifetimeSinceAscension(state),
     Balance.prestigeK * ascensionStarGainFactor(state.ascensionStarGainLevel),
   );
-  return max(0, total - state.prestigeStars);
+  return max(0.0, total - state.prestigeStars);
 }
 
 /// Kỷ Nguyên hoá: đổi toàn bộ Sao + perk Kho Sao lấy Điểm Kỷ Nguyên (perk
@@ -395,7 +395,7 @@ bool _buyAscension(
 /// GIỮ lifetimeEarnings và Sao. Perk kho Sao có thể giữ lại giai đoạn ("Giữ
 /// giai đoạn") và cấp vốn khởi đầu ("Vốn khởi nghiệp"). Trả về số Sao vừa nhận
 /// (0 nếu chưa đủ).
-int prestige(GameState state) {
+double prestige(GameState state) {
   final gained = prestigeStarsAvailable(state);
   if (gained <= 0) return 0;
   state.prestigeStars += gained;

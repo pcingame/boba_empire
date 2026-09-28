@@ -199,7 +199,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prestigeTitle => 'Franquicia 🏪';
 
   @override
-  String prestigeIntro(int percent) {
+  String prestigeIntro(String percent) {
     return 'Cada ⭐ Estrella da +$percent% de ingresos permanentes.';
   }
 
@@ -207,7 +207,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prestigeStarsNow => 'Estrellas actuales';
 
   @override
-  String prestigeStarsValue(int stars, int percent) {
+  String prestigeStarsValue(String stars, String percent) {
     return '$stars ⭐  (+$percent%)';
   }
 
@@ -215,7 +215,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prestigeNow => 'Franquiciar ahora';
 
   @override
-  String prestigeGain(int stars) {
+  String prestigeGain(String stars) {
     return '+$stars ⭐';
   }
 
@@ -223,7 +223,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prestigeTotalBonus => 'Bono total después';
 
   @override
-  String prestigeTotalValue(int percent) {
+  String prestigeTotalValue(String percent) {
     return '+$percent%';
   }
 
@@ -235,7 +235,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get cancel => 'Cancelar';
 
   @override
-  String prestigeConfirm(int stars) {
+  String prestigeConfirm(String stars) {
     return 'Franquiciar (+$stars ⭐)';
   }
 
@@ -243,7 +243,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prestigeNotEnough => 'Insuficiente';
 
   @override
-  String prestigeSuccess(int stars) {
+  String prestigeSuccess(String stars) {
     return '¡Franquicia exitosa! +$stars ⭐';
   }
 
@@ -359,7 +359,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prestigeShopTitle => 'Tienda de Estrellas ⭐';
 
   @override
-  String prestigeShopSpendable(int stars) {
+  String prestigeShopSpendable(String stars) {
     return '$stars ⭐ para gastar';
   }
 
@@ -420,7 +420,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get autoBuyLabel => 'Auto';
 
   @override
-  String prestigeStarCost(int cost) {
+  String prestigeStarCost(String cost) {
     return '$cost ⭐';
   }
 
@@ -891,7 +891,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String leaderboardStars(int stars) {
+  String leaderboardStars(String stars) {
     return '$stars ⭐';
   }
 

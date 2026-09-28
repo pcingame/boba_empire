@@ -404,7 +404,7 @@ abstract class AppLocalizations {
   ///
   /// In vi, this message translates to:
   /// **'Mỗi ⭐ Sao cho +{percent}% thu nhập vĩnh viễn.'**
-  String prestigeIntro(int percent);
+  String prestigeIntro(String percent);
 
   /// No description provided for @prestigeStarsNow.
   ///
@@ -416,7 +416,7 @@ abstract class AppLocalizations {
   ///
   /// In vi, this message translates to:
   /// **'{stars} ⭐  (+{percent}%)'**
-  String prestigeStarsValue(int stars, int percent);
+  String prestigeStarsValue(String stars, String percent);
 
   /// No description provided for @prestigeNow.
   ///
@@ -428,7 +428,7 @@ abstract class AppLocalizations {
   ///
   /// In vi, this message translates to:
   /// **'+{stars} ⭐'**
-  String prestigeGain(int stars);
+  String prestigeGain(String stars);
 
   /// No description provided for @prestigeTotalBonus.
   ///
@@ -440,7 +440,7 @@ abstract class AppLocalizations {
   ///
   /// In vi, this message translates to:
   /// **'+{percent}%'**
-  String prestigeTotalValue(int percent);
+  String prestigeTotalValue(String percent);
 
   /// No description provided for @prestigeWarning.
   ///
@@ -458,7 +458,7 @@ abstract class AppLocalizations {
   ///
   /// In vi, this message translates to:
   /// **'Nhượng quyền (+{stars} ⭐)'**
-  String prestigeConfirm(int stars);
+  String prestigeConfirm(String stars);
 
   /// No description provided for @prestigeNotEnough.
   ///
@@ -470,7 +470,7 @@ abstract class AppLocalizations {
   ///
   /// In vi, this message translates to:
   /// **'Nhượng quyền thành công! +{stars} ⭐'**
-  String prestigeSuccess(int stars);
+  String prestigeSuccess(String stars);
 
   /// No description provided for @offlineTitle.
   ///
@@ -650,7 +650,7 @@ abstract class AppLocalizations {
   ///
   /// In vi, this message translates to:
   /// **'Còn {stars} ⭐ để tiêu'**
-  String prestigeShopSpendable(int stars);
+  String prestigeShopSpendable(String stars);
 
   /// No description provided for @prestigeIncomeName.
   ///
@@ -746,7 +746,7 @@ abstract class AppLocalizations {
   ///
   /// In vi, this message translates to:
   /// **'{cost} ⭐'**
-  String prestigeStarCost(int cost);
+  String prestigeStarCost(String cost);
 
   /// No description provided for @questTap.
   ///
@@ -1580,7 +1580,7 @@ abstract class AppLocalizations {
   ///
   /// In vi, this message translates to:
   /// **'{stars} ⭐'**
-  String leaderboardStars(int stars);
+  String leaderboardStars(String stars);
 
   /// No description provided for @leaderboardEmpty.
   ///

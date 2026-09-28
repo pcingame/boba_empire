@@ -326,7 +326,7 @@
   "@leaderboardStars": {
     "placeholders": {
       "stars": {
-        "type": "int"
+        "type": "String"
       }
     }
   },

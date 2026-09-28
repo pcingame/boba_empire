@@ -23,7 +23,7 @@ class LocalStats {
     required this.stage,
   });
   final double lifetimeEarnings;
-  final int prestigeStars;
+  final double prestigeStars;
   final int stage;
 }
 

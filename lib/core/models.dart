@@ -159,7 +159,16 @@ class GameState {
   double lifetimeEarnings;
 
   /// Số "Sao nhượng quyền" đã tích lũy (bonus vĩnh viễn).
-  int prestigeStars;
+  ///
+  /// `double` chứ KHÔNG phải `int`: Sao = k·√lifetime, mà lifetime cuối tuyến
+  /// đã ~1e68 trên máy người chơi thật → Sao ~2e32, vượt xa trần int64
+  /// (9,2e18). `.floor()` trên double lớn hơn int64 KHÔNG ném lỗi mà KẸP im
+  /// lặng ở 9223372036854775807 — đo được trên 77/1184 người chơi ngày
+  /// 2026-09-29: Sao đứng yên vĩnh viễn, `prestigeStarsAvailable` = 0, Nhượng
+  /// quyền mất sạch ý nghĩa (và cộng thêm 1 là quay vòng thành SỐ ÂM).
+  /// Mất độ chính xác nguyên trên 2^53 chấp nhận được: ở mức đó Sao chỉ còn là
+  /// thang đo, UI vốn đã in bằng hậu tố.
+  double prestigeStars;
 
   /// Mốc thời gian lần cuối còn hoạt động (epoch ms) — dùng tính tiền offline.
   int lastSeenMillis;
@@ -413,7 +422,10 @@ class GameState {
           (key, value) => MapEntry(key as String, (value as num).toInt()),
         ),
         lifetimeEarnings: (json['lifetimeEarnings'] as num).toDouble(),
-        prestigeStars: (json['prestigeStars'] as num).toInt(),
+        // Đọc được cả save cũ (int, kể cả bản đã kẹp trần) — không cần
+        // migration: `prestigeStarsAvailable` = total − prestigeStars sẽ tự
+        // trả lại phần Sao bị trần nuốt ở lần Nhượng quyền kế tiếp.
+        prestigeStars: (json['prestigeStars'] as num).toDouble(),
         lastSeenMillis: (json['lastSeenMillis'] as num).toInt(),
         // Mặc định 0 cho save cũ chưa có các trường này.
         gemBoostLevel: (json['gemBoostLevel'] as num?)?.toInt() ?? 0,
