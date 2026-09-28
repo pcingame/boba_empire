@@ -363,25 +363,28 @@ class _StarBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final full = match3StarThreshold(level.target, 3);
-    // Mốc 1 và 2 sao nằm ở đâu trên thanh (mốc 3 sao chính là cuối thanh).
+    // Vị trí (0..1) của cả 3 mốc sao trên thanh. Mốc 3 sao = 1.0 nên nằm đúng
+    // cuối thanh — tính chung công thức thay vì đặt riêng bằng `right: 0`.
     final marks = [
-      for (final star in [1, 2])
+      for (final star in [1, 2, 3])
         full <= 0 ? 0.0 : match3StarThreshold(level.target, star) / full,
     ];
 
     return LayoutBuilder(builder: (context, box) {
-      const h = 14.0;
+      const barH = 14.0; // dày thanh
+      const starS = 18.0; // cạnh ngôi sao
       return SizedBox(
-        height: h + 10,
+        // Khung cao ĐÚNG bằng ngôi sao, thanh căn giữa khung: trước đây khung
+        // cao 24, thanh căn giữa (tâm y=12) còn sao đặt top:-1 (tâm y=8) nên
+        // sao lệch lên 4px so với thanh.
+        height: starS,
         child: Stack(
-          clipBehavior: Clip.none,
           children: [
             Align(
-              alignment: Alignment.centerLeft,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(h),
+                borderRadius: BorderRadius.circular(barH),
                 child: SizedBox(
-                  height: h,
+                  height: barH,
                   width: box.maxWidth,
                   child: LinearProgressIndicator(
                     value: ratio,
@@ -393,24 +396,19 @@ class _StarBar extends StatelessWidget {
             ),
             for (var i = 0; i < marks.length; i++)
               Positioned(
-                left: (box.maxWidth * marks[i] - 9)
-                    .clamp(0.0, box.maxWidth - 18),
-                top: -1,
+                // Tâm ngôi sao rơi đúng vào vị trí mốc trên thanh.
+                left: (box.maxWidth * marks[i] - starS / 2)
+                    .clamp(0.0, box.maxWidth - starS),
+                // top+bottom = 0: sao cao bằng khung nên tự nằm giữa, cùng trục
+                // với thanh.
+                top: 0,
+                bottom: 0,
                 child: Icon(
                   stars > i ? Icons.star_rounded : Icons.star_outline_rounded,
-                  size: 18,
+                  size: starS,
                   color: stars > i ? Colors.amber.shade700 : scheme.outline,
                 ),
               ),
-            Positioned(
-              right: 0,
-              top: -1,
-              child: Icon(
-                stars >= 3 ? Icons.star_rounded : Icons.star_outline_rounded,
-                size: 18,
-                color: stars >= 3 ? Colors.amber.shade700 : scheme.outline,
-              ),
-            ),
           ],
         ),
       );
