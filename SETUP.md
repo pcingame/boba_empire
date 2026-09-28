@@ -168,11 +168,23 @@ tuyệt đối. Muốn tune thì sửa số trong chính ô JSON đó rồi Publ
 
 Key `"_"` trong file chỉ là dòng ghi chú — app bỏ qua mọi key không phải số.
 
-**Kiểm đã ăn chưa:** chạy app (bản debug) và xem log, `RemoteBalance` in ra
-`Remote Config: đọc N/22 nút vặn, đổi M`. `đọc = 22` là console đúng; `đọc = 0`
-nghĩa là chưa publish, sai tên tham số, hoặc JSON hỏng. Trên console thì mục
-*Fetches – Last 24 hours* sẽ bắt đầu có số sau khi app mới fetch lần đầu (app cũ
-chưa biết đọc tham số này nên `Fetch 0%` lúc đầu là bình thường).
+**Kiểm đã ăn chưa.** App in ra `Remote Config: đọc N/22 nút vặn, đổi M`:
+`đọc = 22` là console đúng; `đọc = 0` nghĩa là chưa publish, sai tên tham số,
+hoặc JSON hỏng. `đổi` là số nút khác giá trị biên dịch sẵn (0 khi console vẫn
+đang để nguyên template).
+
+⚠️ Dòng này dùng `developer.log`, **KHÔNG hiện trong `flutter run`** (đã thử:
+trên Android luồng đó chỉ có logcat, không có log Dart). Xem bằng một trong hai
+cách:
+- **DevTools → Logging**: `flutter run` rồi mở link DevTools nó in ra, lọc theo
+  `RemoteBalance`.
+- Hoặc chèn tạm một `print(...)` cạnh dòng đó, chạy, đọc xong gỡ bỏ.
+
+Phía console, mục *Fetches – Last 24 hours* sẽ có số sau khi một bản app BIẾT
+đọc tham số này fetch lần đầu (bản cũ chưa biết nên `Fetch 0%` lúc đầu là bình
+thường).
+
+Đã kiểm 2026-09-28 trên máy ảo Android: `đọc 22/22, đổi 0`.
 
 *(App vẫn đọc được tham số rời cùng tên nút vặn nếu ai đó tạo tay, nhưng
 `boba_remote_config` sẽ đè lên. Chỉ dùng một kiểu cho đỡ rối.)*
