@@ -13,6 +13,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../audio/audio_service.dart';
 
 import '../arena/match3_rules.dart';
 import '../l10n/app_localizations.dart';
@@ -121,7 +124,7 @@ class Match3View {
   final bool finished;
 }
 
-class Match3Panel extends StatefulWidget {
+class Match3Panel extends ConsumerStatefulWidget {
   const Match3Panel({super.key, required this.view, required this.onSwap});
 
   final Match3View view;
@@ -130,10 +133,10 @@ class Match3Panel extends StatefulWidget {
   final bool Function(int cell, int dir) onSwap;
 
   @override
-  State<Match3Panel> createState() => _Match3PanelState();
+  ConsumerState<Match3Panel> createState() => _Match3PanelState();
 }
 
-class _Match3PanelState extends State<Match3Panel> {
+class _Match3PanelState extends ConsumerState<Match3Panel> {
   late List<_T> _tiles = _tilesFrom(widget.view.cells);
   final List<_Popup> _popups = [];
   final List<Timer> _timers = [];
@@ -204,6 +207,21 @@ class _Match3PanelState extends State<Match3Panel> {
       t.cancel();
     }
     super.dispose();
+  }
+
+  /// Tiếng khi ô nổ. Dùng lại 3 SFX sẵn có thay vì thêm file mới: nghe to dần
+  /// theo độ "đã" của nước đi, nên người chơi phân biệt được ngay ăn lẻ với ăn
+  /// dây chuyền mà không cần nhìn điểm.
+  ///
+  /// Không cần chống dồn tiếng: hai bước dây chuyền cách nhau ít nhất
+  /// [_popDur] + [_fallDur] (~390ms), xa hơn nhiều so với độ dài một SFX.
+  void _playClearSfx(int step, int removed) {
+    final sfx = removed >= 8
+        ? Sfx.reward // nổ lớn (kẹo đặc biệt) — tiếng "đã" nhất
+        : step >= 2
+            ? Sfx.buy // dây chuyền
+            : Sfx.tap; // ăn lẻ
+    ref.read(audioServiceProvider).play(sfx);
   }
 
   Future<bool> _sleep(Duration d, int token) {
@@ -278,6 +296,7 @@ class _Match3PanelState extends State<Match3Panel> {
         _addPopups(removed, step);
       });
       HapticFeedback.lightImpact();
+      _playClearSfx(step, removed.length);
       if (!await _sleep(_popDur, token)) return;
 
       // Rơi: ô còn lại dồn xuống đáy giữ thứ tự cột; ô mới rơi từ trên vào.

@@ -2,6 +2,7 @@ import 'package:boba_empire/arena/match3_rules.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
 import 'package:boba_empire/ui/match3_board.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -25,7 +26,13 @@ Match3View _view({
       finished: finished,
     );
 
-Widget _host(Locale locale, Widget child) => MaterialApp(
+/// Bọc ProviderScope: bàn cờ giờ đọc `audioServiceProvider` để phát tiếng khi
+/// ô nổ (mặc định là SilentAudioService nên test không kêu gì).
+Widget _host(Locale locale, Widget child) => ProviderScope(
+      child: _app(locale, child),
+    );
+
+Widget _app(Locale locale, Widget child) => MaterialApp(
       locale: locale,
       localizationsDelegates: const [
         AppLocalizations.delegate,

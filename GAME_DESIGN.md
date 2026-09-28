@@ -633,6 +633,11 @@ Tab thứ 5 ở thanh dưới. Thiết kế đầy đủ + phần cố ý hoãn:
 - **Hết nước đi thì tự xáo bàn** (`Match3Board.reshuffle`). CHỈ chơi đơn được
   dùng: `arena_m3_replay` replay cả trận chỉ từ seq + log nước đi, client tự xáo
   giữa trận PvP là bàn lệch server. Đấu Trường vẫn kẹt như cũ (ROADMAP P2 §9).
+- **Âm thanh khi ăn ô** (2026-09-28): phát ngay lúc ô nổ, cạnh rung haptic đã
+  có sẵn trong `Match3Panel._play` — một chỗ nên cả Đấu Trường lẫn chơi đơn đều
+  có. Dùng lại 3 SFX sẵn có, to dần theo độ "đã": ăn lẻ `tap`, dây chuyền `buy`,
+  nổ ≥8 ô (kẹo đặc biệt) `reward`. Không cần chống dồn tiếng vì hai bước dây
+  chuyền cách nhau ~390ms.
 - **Giao diện**: lưới màn dùng bộ `Clay*` cho đồng bộ với phần còn lại của app,
   có chip tổng sao, viền nổi ở màn đang chơi và tự cuộn tới màn đó khi mở. Màn
   chơi có HUD gồm tiến độ + chip số nước (đổi màu khi còn ≤3) + **thanh sao** đặt
