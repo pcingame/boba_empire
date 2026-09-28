@@ -117,7 +117,7 @@ Banner chỉ hiện ở tab **Ghép 3** (danh sách màn + màn chơi), KHÔNG h
 
 1. AdMob → app Android và app iOS → tạo **Banner ad unit** cho mỗi bên.
    - ✅ iOS: xong 2026-09-28 (`.../7009859888`, app id `~3516109108`).
-   - ⏳ Android (app id `~2417193584`): **chưa tạo** → bản Android chưa hiện banner.
+   - ✅ Android: xong 2026-09-28 (`.../6714171401`, app id `~2417193584`).
 2. Điền vào `lib/ads/ad_config.dart` → `_androidBannerProd`, `_iosBannerProd`.
    **Để rỗng là bản release KHÔNG hiện banner** — cố tình như vậy, an toàn hơn
    nhiều so với lỡ phát hành kèm test id (Google coi là vi phạm).

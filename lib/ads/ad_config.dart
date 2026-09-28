@@ -34,9 +34,11 @@ class AdConfig {
   /// rỗng và app KHÔNG hiện banner — an toàn hơn là lỡ dùng nhầm test id ở bản
   /// phát hành (Google coi đó là vi phạm). Xem SETUP.md §1.
   ///
-  /// iOS đã tạo 2026-09-28 (app id `~3516109108` trong ios/Runner/Info.plist).
-  /// Android (app id `~2417193584`) CHƯA tạo → bản Android chưa hiện banner.
-  static const String _androidBannerProd = '';
+  /// Cả hai tạo ngày 2026-09-28, khớp App ID của từng nền tảng:
+  /// Android `~2417193584` (AndroidManifest.xml) · iOS `~3516109108`
+  /// (ios/Runner/Info.plist).
+  static const String _androidBannerProd =
+      'ca-app-pub-9748541552219348/6714171401';
   static const String _iosBannerProd =
       'ca-app-pub-9748541552219348/7009859888';
 
