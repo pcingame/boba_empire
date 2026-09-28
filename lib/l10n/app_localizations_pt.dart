@@ -1095,7 +1095,7 @@ class AppLocalizationsPt extends AppLocalizations {
   String get navMatch3 => 'Pérolas';
 
   @override
-  String get m3Title => 'Jornada Pérolas Caindo';
+  String get m3Title => 'Pérolas Caindo';
 
   @override
   String m3Level(int n) {

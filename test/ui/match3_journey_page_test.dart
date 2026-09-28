@@ -6,6 +6,7 @@ import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/ui/match3_journey_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -13,7 +14,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
 
 /// Dựng trang danh sách màn với [scale] là cỡ chữ hệ thống.
-Future<ProviderContainer> _pump(WidgetTester tester, double scale) async {
+Future<ProviderContainer> _pump(WidgetTester tester, double scale,
+    {String locale = 'vi'}) async {
   SharedPreferences.setMockInitialValues({});
   final prefs = await SharedPreferences.getInstance();
   await GameStorage(prefs).save(
@@ -31,7 +33,7 @@ Future<ProviderContainer> _pump(WidgetTester tester, double scale) async {
   await tester.pumpWidget(UncontrolledProviderScope(
     container: c,
     child: MaterialApp(
-      locale: const Locale('vi'),
+      locale: Locale(locale),
       localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -53,6 +55,7 @@ Future<ProviderContainer> _pump(WidgetTester tester, double scale) async {
 
 void main() {
   _howToTests();
+  _titleFitTests();
   testWidgets('cuộn hết cỡ KHÔNG bật hiệu ứng kéo giãn (nó bóp méo ô vuông)',
       (tester) async {
     await tester.binding.setSurfaceSize(const Size(400, 800));
@@ -182,4 +185,46 @@ void _howToTests() {
     await tester.pumpWidget(const SizedBox());
     c.dispose();
   });
+}
+
+// --- Tiêu đề AppBar không được cắt cụt ---
+//
+// Hàng AppBar phải chứa nút quay lại + tiêu đề + nút 🏆 + nút ?. Tên dài là bị
+// "..." ngay (ảnh chụp máy thật: "Falling Pear..." khi chip tổng sao còn nằm
+// trong AppBar, tiêu đề chỉ còn 168px).
+//
+// KHÔNG đo bằng getMaxIntrinsicWidth: flutter_test vẽ bằng phông ô vuông, chữ
+// nào cũng rộng 22px trong khi phông thật ~13px — đo kiểu đó thì tên nào cũng
+// "tràn". Hai thứ đo được và không phụ thuộc phông: bề rộng CÒN LẠI cho tiêu
+// đề, và số ký tự của tên.
+const _kTitleMinWidth = 220.0; // 16 ký tự × ~13px phông thật + dư
+const _kTitleMaxChars = 16;
+
+void _titleFitTests() {
+  for (final locale in ['vi', 'en', 'es', 'id', 'pt', 'th']) {
+    testWidgets('tiêu đề Hành trình không bị cắt ở máy 412px — $locale',
+        (tester) async {
+      await tester.binding.setSurfaceSize(const Size(412, 800));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final c = await _pump(tester, 1.0, locale: locale);
+
+      final para = tester.renderObject<RenderParagraph>(
+        find
+            .descendant(
+              of: find.byType(AppBar),
+              matching: find.byType(RichText),
+            )
+            .first,
+      );
+      final title = para.text.toPlainText();
+      expect(para.size.width, greaterThanOrEqualTo(_kTitleMinWidth),
+          reason: '$locale: chỗ cho tiêu đề chỉ còn ${para.size.width}px — '
+              'có thứ gì đó mới nhét vào AppBar, bỏ bớt đi');
+      expect(title.length, lessThanOrEqualTo(_kTitleMaxChars),
+          reason: '$locale: "$title" dài ${title.length} ký tự, sẽ bị cắt cụt');
+
+      await tester.pumpWidget(const SizedBox());
+      c.dispose();
+    });
+  }
 }

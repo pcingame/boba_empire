@@ -1092,7 +1092,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get navMatch3 => 'Mutiara';
 
   @override
-  String get m3Title => 'Perjalanan Mutiara Jatuh';
+  String get m3Title => 'Mutiara Jatuh';
 
   @override
   String m3Level(int n) {

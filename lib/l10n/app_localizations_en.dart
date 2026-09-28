@@ -1091,7 +1091,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navMatch3 => 'Pearls';
 
   @override
-  String get m3Title => 'Falling Pearls Journey';
+  String get m3Title => 'Falling Pearls';
 
   @override
   String m3Level(int n) {

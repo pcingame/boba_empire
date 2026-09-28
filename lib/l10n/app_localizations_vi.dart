@@ -1088,7 +1088,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get navMatch3 => 'Trân châu';
 
   @override
-  String get m3Title => 'Hành trình Trân Châu Rơi';
+  String get m3Title => 'Trân Châu Rơi';
 
   @override
   String m3Level(int n) {

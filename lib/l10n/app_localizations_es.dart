@@ -1099,7 +1099,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get navMatch3 => 'Perlas';
 
   @override
-  String get m3Title => 'Viaje Perlas que caen';
+  String get m3Title => 'Perlas que caen';
 
   @override
   String m3Level(int n) {

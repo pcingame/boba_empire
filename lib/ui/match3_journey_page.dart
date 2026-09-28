@@ -90,34 +90,29 @@ class _Match3JourneyPageState extends ConsumerState<Match3JourneyPage> {
             tooltip: l10n.m3HowToTitle,
             onPressed: () => showMatch3HowTo(context),
           ),
-          // Tổng sao: thứ duy nhất đo được tiến độ dài hạn ở chế độ này.
-          //
-          // ConstrainedBox + FittedBox: ở cỡ chữ hệ thống lớn, tiêu đề + nút ?
-          // + chip này làm hàng AppBar TRÀN (đo được 22px ở 320px, cỡ chữ x2).
-          // Cùng cách xử lý với _CountBadge ở thanh dưới — cho chip co lại
-          // trong khung cố định thay vì đẩy tràn hàng.
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 104),
-                child: ClayChip(
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      '⭐ $earned / ${Balance.m3LevelCount * 3}',
-                      maxLines: 1,
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
         ],
       ),
       body: Column(
         children: [
+          // Tổng sao: thứ duy nhất đo được tiến độ dài hạn ở chế độ này.
+          //
+          // KHÔNG để trong AppBar: chip này ăn 116px, cộng nút quay lại + 2 nút
+          // biểu tượng thì tiêu đề chỉ còn 168px và bị cắt cụt ở MỌI ngôn ngữ
+          // ("Falling Pear..." trên máy thật).
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+            child: Row(
+              children: [
+                ClayChip(
+                  child: Text(
+                    '⭐ $earned / ${Balance.m3LevelCount * 3}',
+                    maxLines: 1,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ],
+            ),
+          ),
           Expanded(
             // Tắt hiệu ứng kéo giãn của Android (StretchingOverscrollIndicator):
             // khi cuộn hết cỡ nó BÓP nội dung ở mép — đo trên máy ảo, hàng ô

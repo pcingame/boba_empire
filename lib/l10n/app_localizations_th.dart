@@ -1083,7 +1083,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get navMatch3 => 'ไข่มุก';
 
   @override
-  String get m3Title => 'เส้นทางไข่มุกร่วง';
+  String get m3Title => 'ไข่มุกร่วง';
 
   @override
   String m3Level(int n) {
