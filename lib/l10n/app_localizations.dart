@@ -1903,7 +1903,7 @@ abstract class AppLocalizations {
   /// No description provided for @navMatch3.
   ///
   /// In vi, this message translates to:
-  /// **'Trân châu rơi'**
+  /// **'Trân châu'**
   String get navMatch3;
 
   /// No description provided for @m3Title.

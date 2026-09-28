@@ -1080,7 +1080,7 @@ class AppLocalizationsTh extends AppLocalizations {
       'รางวัลรายวัน หมุนวงล้อฟรี 1 ครั้ง และภารกิจ 3 อย่างรออยู่';
 
   @override
-  String get navMatch3 => 'ไข่มุกร่วง';
+  String get navMatch3 => 'ไข่มุก';
 
   @override
   String get m3Title => 'เส้นทางไข่มุกร่วง';
