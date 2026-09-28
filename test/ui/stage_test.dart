@@ -32,14 +32,22 @@ void main() {
     // Giai đoạn 1.
     expect(find.textContaining('Xe đẩy vỉa hè'), findsOneWidget);
     expect(find.text('Trà đen'), findsOneWidget);
-    expect(find.text('Trân châu'), findsNothing);
+    // Soi TRONG DANH SÁCH SHOP, không soi cả cây widget: tên topping có thể
+    // trùng nhãn ở chỗ khác (thanh tab từng đặt tên "Trân châu").
+    expect(
+      find.descendant(of: find.byType(ListView), matching: find.text('Trân châu')),
+      findsNothing,
+    );
 
     // Mở khóa giai đoạn 2 (đủ 2000 Xu).
     await tester.tap(find.byKey(const Key('unlock-stage')));
     await tester.pumpAndSettle();
 
     expect(find.textContaining('Kiosk cửa hàng nhỏ'), findsOneWidget);
-    expect(find.text('Trân châu'), findsOneWidget);
+    expect(
+      find.descendant(of: find.byType(ListView), matching: find.text('Trân châu')),
+      findsOneWidget,
+    );
     expect(find.text('0 Xu'), findsOneWidget); // tiền đã bị trừ
 
     await tester.pumpWidget(const SizedBox());

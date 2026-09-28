@@ -52,7 +52,7 @@ các bước ở `SETUP.md` §2b. Chưa làm thì app vẫn chạy bằng số b
 cửa sổ ±1h; máy ảo Google Play không root được để tua đồng hồ). Đã kiểm: lịch
 vào đúng AlarmManager qua receiver của plugin, đúng mốc giờ, quyền xin được.
 
-## Ngoài kế hoạch — Hành trình Ghép 3 ✅ XONG 2026-09-28
+## Ngoài kế hoạch — Hành trình Trân Châu Rơi (Ghép 3) ✅ XONG 2026-09-28
 
 Yêu cầu trực tiếp của người dùng (dạng Ghép 3 khá ăn khách): tab thứ 5, 60 màn
 chơi đơn, banner quảng cáo trong lúc chơi. Thiết kế: `PROPOSAL_MATCH3_LEVELS.md`,

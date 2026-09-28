@@ -1089,10 +1089,10 @@ class AppLocalizationsId extends AppLocalizations {
       'Hadiah harian, 1 putaran gratis, dan 3 misi sedang menunggu.';
 
   @override
-  String get navMatch3 => 'Match 3';
+  String get navMatch3 => 'Mutiara';
 
   @override
-  String get m3Title => 'Perjalanan Match-3';
+  String get m3Title => 'Perjalanan Mutiara Jatuh';
 
   @override
   String m3Level(int n) {

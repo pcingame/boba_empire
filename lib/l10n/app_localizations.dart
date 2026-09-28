@@ -1903,13 +1903,13 @@ abstract class AppLocalizations {
   /// No description provided for @navMatch3.
   ///
   /// In vi, this message translates to:
-  /// **'Ghép 3'**
+  /// **'Trân châu rơi'**
   String get navMatch3;
 
   /// No description provided for @m3Title.
   ///
   /// In vi, this message translates to:
-  /// **'Hành trình Ghép 3'**
+  /// **'Hành trình Trân Châu Rơi'**
   String get m3Title;
 
   /// No description provided for @m3Level.

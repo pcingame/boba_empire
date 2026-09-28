@@ -609,12 +609,12 @@ Màn chờ và màn ghép trận hiện "🟢 N người đang online" (N gồm 
 Realtime Presence trên kênh công khai `arena-lobby` (không có bảng/SQL): chỉ đếm người đang MỞ trang Đấu Trường, mỗi người 1 kết nối
 realtime (gói free ~200 kết nối cùng lúc). Provider `arenaOnlineCountProvider` (autoDispose) giữ kết nối suốt lúc trang mở.
 
-## 23. Hành trình Ghép 3 — chơi đơn có màn (2026-09-28)
+## 23. Hành trình Trân Châu Rơi — chơi đơn có màn (2026-09-28)
 
 > ⚠️ Số cân bằng là **ước lượng, chưa playtest** (như mọi đợt trước). Toàn bộ
 > nằm trong Remote Config nên tune được không cần nộp bản mới — xem SETUP.md §2b.
 
-Tab thứ 5 ở thanh dưới. Thiết kế đầy đủ + phần cố ý hoãn: `PROPOSAL_MATCH3_LEVELS.md`.
+Tab thứ 5 ở thanh dưới. Tên hiển thị: **Trân Châu Rơi** — dùng chung tên với dạng PK cùng lối chơi ở Đấu Trường, thay cho tên kỹ thuật "Ghép 3" (đổi 2026-09-28). Thiết kế đầy đủ + phần cố ý hoãn: `PROPOSAL_MATCH3_LEVELS.md`.
 
 - **Dùng lại nguyên luật** `lib/arena/match3_rules.dart` và bàn cờ `Match3Panel`
   (trước là `ArenaMatch3Panel`) — bàn cờ giờ nhận `Match3View` nên Đấu Trường và

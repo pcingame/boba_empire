@@ -1092,10 +1092,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'A recompensa diária, um giro grátis e 3 missões estão à espera.';
 
   @override
-  String get navMatch3 => 'Match 3';
+  String get navMatch3 => 'Pérolas';
 
   @override
-  String get m3Title => 'Jornada Match-3';
+  String get m3Title => 'Jornada Pérolas Caindo';
 
   @override
   String m3Level(int n) {

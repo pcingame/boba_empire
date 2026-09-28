@@ -1085,10 +1085,10 @@ class AppLocalizationsVi extends AppLocalizations {
       'Điểm danh, 1 lượt quay miễn phí và 3 nhiệm vụ hôm nay đang chờ bạn.';
 
   @override
-  String get navMatch3 => 'Ghép 3';
+  String get navMatch3 => 'Trân châu rơi';
 
   @override
-  String get m3Title => 'Hành trình Ghép 3';
+  String get m3Title => 'Hành trình Trân Châu Rơi';
 
   @override
   String m3Level(int n) {

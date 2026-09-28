@@ -1096,10 +1096,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Te esperan la recompensa diaria, un giro gratis y 3 misiones.';
 
   @override
-  String get navMatch3 => 'Match 3';
+  String get navMatch3 => 'Perlas';
 
   @override
-  String get m3Title => 'Viaje Match-3';
+  String get m3Title => 'Viaje Perlas que caen';
 
   @override
   String m3Level(int n) {
