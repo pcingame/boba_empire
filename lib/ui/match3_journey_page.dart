@@ -32,18 +32,26 @@ class Match3JourneyPage extends ConsumerWidget {
       body: Column(
         children: [
           Expanded(
-            child: GridView.builder(
-              padding: const EdgeInsets.all(12),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-              ),
-              itemCount: Balance.m3LevelCount,
-              itemBuilder: (context, i) => _LevelTile(
-                level: Match3Level(i + 1),
-                stars: starsOf(stars, i + 1),
-                unlocked: levelUnlocked(stars, i + 1),
+            // Tắt hiệu ứng kéo giãn của Android (StretchingOverscrollIndicator):
+            // khi cuộn hết cỡ nó BÓP nội dung ở mép lại — đo trên máy ảo, hàng
+            // ô cuối còn 150px trong khi các hàng khác 236px. Lưới ô vuông thì
+            // méo rất lộ, khác hẳn danh sách chữ.
+            child: ScrollConfiguration(
+              behavior:
+                  ScrollConfiguration.of(context).copyWith(overscroll: false),
+              child: GridView.builder(
+                padding: const EdgeInsets.all(12),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                ),
+                itemCount: Balance.m3LevelCount,
+                itemBuilder: (context, i) => _LevelTile(
+                  level: Match3Level(i + 1),
+                  stars: starsOf(stars, i + 1),
+                  unlocked: levelUnlocked(stars, i + 1),
+                ),
               ),
             ),
           ),

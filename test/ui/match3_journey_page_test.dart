@@ -12,7 +12,60 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
 
+/// Dựng trang danh sách màn với [scale] là cỡ chữ hệ thống.
+Future<ProviderContainer> _pump(WidgetTester tester, double scale) async {
+  SharedPreferences.setMockInitialValues({});
+  final prefs = await SharedPreferences.getInstance();
+  await GameStorage(prefs).save(
+    GameState.newGame(nowMillis: 0)..m3Stars.addAll([3, 2, 1, 1]),
+    nowMillis: 0,
+  );
+  final c = ProviderContainer(overrides: [
+    sharedPreferencesProvider.overrideWithValue(prefs),
+    clockProvider.overrideWithValue(() => 0),
+  ]);
+  await tester.pumpWidget(UncontrolledProviderScope(
+    container: c,
+    child: MaterialApp(
+      locale: const Locale('vi'),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context)
+            .copyWith(textScaler: TextScaler.linear(scale)),
+        child: child!,
+      ),
+      home: const Match3JourneyPage(),
+    ),
+  ));
+  await tester.pump();
+  return c;
+}
+
 void main() {
+  testWidgets('cuộn hết cỡ KHÔNG bật hiệu ứng kéo giãn (nó bóp méo ô vuông)',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 800));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    final c = await _pump(tester, 1.0);
+
+    // Kéo quá cuối danh sách: mặc định của Android sẽ dựng
+    // StretchingOverscrollIndicator và bóp nội dung ở mép.
+    await tester.fling(find.byType(GridView), const Offset(0, -6000), 8000);
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(find.byType(StretchingOverscrollIndicator), findsNothing);
+
+    await tester.pumpAndSettle();
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
   for (final scale in [1.0, 1.3, 2.0]) {
     testWidgets('lưới màn không tràn ở 320px, cỡ chữ x$scale', (tester) async {
       await tester.binding.setSurfaceSize(const Size(320, 640));
