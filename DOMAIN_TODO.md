@@ -2,6 +2,10 @@
 
 Ghi lại 2026-09-28 để làm tiếp, không cần hỏi lại từ đầu.
 
+> **Tự kiểm:** `bash scripts/check_domain.sh` — in ra từng bước còn thiếu gì,
+> chạy lại bao nhiêu lần cũng được trong lúc chờ DNS lan. Trạng thái lúc
+> 2026-09-28: bước 4 (email) đã xong, còn lại bước 1, 2, 3, 5.
+
 ## Đã xong
 - [x] Mua domain `bobaempiregame.com` (Namecheap).
 - [x] Verify domain trên Resend (DKIM + 2 CNAME SPF `rsend`/`send`).
@@ -20,9 +24,10 @@ Ghi lại 2026-09-28 để làm tiếp, không cần hỏi lại từ đầu.
    - `185.199.110.153`
    - `185.199.111.153`
 3. **Thêm CNAME**, Host `www`, Value `pcingame.github.io.` (có dấu chấm cuối).
-4. Bật **Email Forwarding** (Advanced DNS → Mail Settings) cho
-   `support@bobaempiregame.com` → trỏ về Gmail đang dùng — landing page đã
-   có link mail này ở footer, chưa bật thì mail sẽ bounce.
+4. ~~Bật **Email Forwarding**~~ ✅ ĐÃ XONG — kiểm 2026-09-28 bằng
+   `bash scripts/check_domain.sh`, domain đã có MX của Namecheap
+   (`eforward1..5.registrar-servers.com`). Chỉ còn tự gửi thử một mail tới
+   `support@bobaempiregame.com` xem có về hộp thư Gmail không.
 
 ## Còn lại — làm trên GitHub
 5. Repo `pcingame/boba_empire` → **Settings → Pages** → mục Custom domain nên
