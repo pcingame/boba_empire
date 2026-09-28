@@ -626,8 +626,10 @@ Tab thứ 5 ở thanh dưới. Thiết kế đầy đủ + phần cố ý hoãn:
   đúng vị trí tỉ lệ của 3 mốc. Qua màn thì bắn hiệu ứng có sẵn (confetti, 3 sao
   thì pháo hoa).
 - **Bàn cờ co theo CHIỀU CAO ĐƯỢC CẤP**, không theo nửa chiều cao màn hình —
-  nếu không thì banner ăn chỗ là tràn khung. Máy nằm ngang thì HUD chuyển sang
-  đứng cạnh bàn cờ (xếp dọc ở màn ngang làm bàn co còn 0.61 lần).
+  nếu không thì banner ăn chỗ là tràn khung. Khung rộng hơn cao thì HUD chuyển
+  sang đứng cạnh bàn cờ (xếp dọc ở khung ngang làm bàn co còn 0.61 lần). App
+  đã khoá màn dọc trên điện thoại (xem dưới), nhưng nhánh này vẫn dùng tới ở
+  bản desktop/web và cửa sổ chia đôi.
 - **Banner quảng cáo** ở đáy cả hai màn của tab này (`lib/ads/banner_ad_box.dart`),
   tôn trọng `adFree`; unit id thật chưa tạo → release chưa hiện banner.
 - **Kẹo đặc biệt** (chỉ chơi đơn): ghép 4 → 💥 **bom chéo** (nổ cả hàng và cột),
@@ -655,3 +657,18 @@ Tab thứ 5 ở thanh dưới. Thiết kế đầy đủ + phần cố ý hoãn:
   nước mà mời thêm nước thì vô nghĩa), chưa đạt 3★ và chưa dùng lượt nào. Chơi tiếp bàn đang dở (giữ điểm + bàn cờ). **1 lần mỗi
   lượt chơi** — không giới hạn thì xem đủ quảng cáo là qua mọi màn. Dùng lại
   `AdService.showRewardedAd()`, `adFree` được cộng thẳng.
+
+## 24. Khoá màn dọc (2026-09-28)
+
+Toàn bộ game thiết kế cho màn dọc, nên khoá ở tầng NATIVE cho cả hai nền tảng
+thay vì gọi `SystemChrome.setPreferredOrientations` lúc chạy — không có cú xoay
+loé lên lúc mở app và không tốn thêm gì ở khởi động:
+
+- Android: `android:screenOrientation="portrait"` trên `.MainActivity`
+  (khoá kể cả khi máy đang bật tự xoay).
+- iOS: `UISupportedInterfaceOrientations` chỉ còn `UIInterfaceOrientationPortrait`.
+  Không vướng yêu cầu 4 hướng của iPad vì `TARGETED_DEVICE_FAMILY = 1`
+  (chỉ iPhone).
+
+Bố cục ngang của màn chơi Ghép 3 KHÔNG bỏ đi: bản desktop/web và cửa sổ chia đôi
+vẫn có thể rộng hơn cao.

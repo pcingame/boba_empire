@@ -262,11 +262,14 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<!-- Chỉ màn dọc: toàn bộ game thiết kế cho màn dọc (màn chính, shop, Đấu
+	     Trường, Ghép 3). Khoá ở đây thay vì gọi SystemChrome lúc chạy để không
+	     có cú xoay loé lên lúc mở app và không tốn thêm gì ở khởi động.
+	     TARGETED_DEVICE_FAMILY = 1 (chỉ iPhone) nên không vướng yêu cầu 4 hướng
+	     của iPad. -->
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 </dict>
 </plist>

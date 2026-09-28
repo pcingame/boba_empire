@@ -12,10 +12,13 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-9748541552219348~2417193584"/>
+        <!-- android:screenOrientation="portrait": khoá màn dọc, kể cả khi máy
+             đang bật tự xoay. Toàn bộ game thiết kế cho màn dọc. -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:taskAffinity=""
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
