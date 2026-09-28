@@ -150,11 +150,44 @@ bằng tên field** trong `lib/core/balance.dart`, khoảng hợp lệ khai báo
 `lib/data/remote_balance.dart` (gõ ngoài khoảng thì app BỎ QUA, giữ số biên dịch
 sẵn — cố tình như vậy để một số 0 gõ nhầm không phá save người chơi).
 
+### Cách nhanh: dán JSON (khuyến nghị)
+
+Repo có sẵn `remote_config_template.json` — đủ 22 tham số, giá trị khớp y hệt
+bản đang biên dịch (có test `remote_config_template_test.dart` khoá việc đó, đổi
+số trong `balance.dart` mà quên cập nhật file này là test đỏ).
+
+1. Firebase Console → project của app → **Remote Config**.
+2. Lần đầu thì bấm *Create configuration* và tạo tạm 1 tham số bất kỳ để vào
+   được màn chính (console không cho mở trình soạn JSON khi template rỗng).
+3. Góc phải → biểu tượng **{ }** (*Edit as JSON* / *Chỉnh sửa ở dạng JSON*).
+4. **Xoá hết** nội dung trong ô, dán toàn bộ `remote_config_template.json` vào.
+5. *Save* → *Publish changes*.
+
+⚠️ Trình soạn JSON **thay thế toàn bộ** template, không phải thêm vào. Nếu sau
+này đã có tham số khác (không phải cân bằng game) thì đừng dán đè — thêm tay
+từng cái theo cách dưới.
+
+Dán xong thì **không có gì đổi trong game**: mọi giá trị bằng đúng giá trị app
+đang dùng. Đó là chủ ý — bạn có sẵn 22 nút vặn trên console để chỉnh sau này,
+còn việc publish lần đầu thì an toàn tuyệt đối.
+
+### Cách thủ công: thêm từng tham số
+
 1. Firebase Console → project của app → **Remote Config** → *Create configuration*.
-2. Thêm tham số, kiểu **Number**, tên lấy từ danh sách dưới. Không cần thêm đủ —
-   thiếu cái nào thì cái đó dùng giá trị trong app.
-3. *Publish changes*. App lấy bản mới ở lần mở kế tiếp (cache 1 giờ), và áp ngay
-   trong phiên đó.
+2. *Add parameter*: **Parameter name** = đúng tên ở bảng dưới (phân biệt hoa
+   thường), **Data type** = `Number`, **Default value** = giá trị trong bảng.
+   Không cần thêm đủ 22 — thiếu cái nào thì cái đó dùng giá trị trong app.
+3. *Publish changes*.
+
+### Sau khi publish
+
+- App lấy bản mới ở **lần mở kế tiếp** (cache 1 giờ — `minimumFetchInterval`
+  trong `remote_balance.dart`), áp luôn trong phiên đó; lần mở sau nữa thì có
+  ngay từ đầu phiên.
+- Gõ số ngoài khoảng hợp lệ thì **app bỏ qua** và giữ giá trị biên dịch sẵn —
+  không phá save người chơi, nhưng cũng nghĩa là "publish mà chẳng thấy gì đổi"
+  thường là do gõ ngoài khoảng. Khoảng hợp lệ ghi ngay trong ô *Description* của
+  từng tham số trong file JSON.
 
 | Tham số | Đang là | Khoảng hợp lệ | Ảnh hưởng |
 |---|---|---|---|
