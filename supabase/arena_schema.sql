@@ -162,6 +162,81 @@ end;
 $$;
 
 -- Hàm THUẦN (không đọc bảng) để test trực tiếp bằng vector vàng + fuzz.
+-- Còn nước đi hợp lệ nào không: thử đổi mọi ô với hàng xóm phải/dưới.
+-- Soi gương `Match3Board.hasAnyMove` trong lib/arena/match3_rules.dart.
+create or replace function arena_m3_has_move(b int[])
+returns boolean
+language plpgsql
+immutable
+set search_path = public
+as $$
+declare
+  i int; other int; v int; tmp int[]; marked boolean[];
+begin
+  for i in 0..63 loop
+    for v in 0..1 loop
+      if v = 0 then
+        if i % 8 = 7 then continue; end if;
+        other := i + 1;
+      else
+        if i / 8 = 7 then continue; end if;
+        other := i + 8;
+      end if;
+      if b[i + 1] = b[other + 1] then continue; end if;
+      tmp := b;
+      tmp[i + 1] := b[other + 1];
+      tmp[other + 1] := b[i + 1];
+      marked := arena_m3_marks(tmp);
+      if true = any(marked) then
+        return true;
+      end if;
+    end loop;
+  end loop;
+  return false;
+end;
+$$;
+
+grant execute on function arena_m3_has_move(int[]) to authenticated;
+
+-- Xáo lại bàn khi hết nước đi: dựng bàn mới từ phần chuỗi CHƯA dùng, theo đúng
+-- luật bảng đầu (không để sẵn dãy 3), thử tối đa 20 lần tới khi có nước đi.
+-- Soi gương `Match3Board.reshuffle` trong lib/arena/match3_rules.dart — lệch
+-- một ô là bàn client khác bàn server và mọi nước sau bị chấm sai.
+create or replace function arena_m3_shuffle(
+  b int[], p_seq smallint[], refill int,
+  out nb int[], out nrefill int)
+language plpgsql
+immutable
+set search_path = public
+as $$
+declare
+  seqlen int := coalesce(array_length(p_seq, 1), 0);
+  t int; i int; r int; c int; v int;
+begin
+  nb := b;
+  nrefill := refill;
+  if seqlen = 0 then
+    return;
+  end if;
+  for t in 1..20 loop
+    for i in 0..63 loop
+      r := i / 8;
+      c := i % 8;
+      v := p_seq[(nrefill % seqlen) + 1] % 5;
+      nrefill := nrefill + 1;
+      while (c >= 2 and nb[i] = v and nb[i - 1] = v)
+         or (r >= 2 and nb[i - 7] = v and nb[i - 15] = v) loop
+        v := (v + 1) % 5;
+      end loop;
+      nb[i + 1] := v;
+    end loop;
+    exit when arena_m3_has_move(nb);
+  end loop;
+end;
+$$;
+
+grant execute on function arena_m3_shuffle(int[], smallint[], int) to authenticated;
+
 create or replace function arena_m3_replay(p_seq smallint[], p_cells int[], p_dirs int[])
 returns int
 language plpgsql
@@ -273,6 +348,13 @@ begin
       end loop;
       step := step + 1;
     end loop;
+
+    -- Hết nước đi thì xáo ngay trong nước này — khớp `trySwap` ở Dart, nơi
+    -- cũng gọi reshuffle() ở đúng vị trí này.
+    if not arena_m3_has_move(b) then
+      select nb, nrefill into b, refill
+      from arena_m3_shuffle(b, p_seq, refill);
+    end if;
   end loop;
   return score;
 end;
@@ -649,4 +731,34 @@ end $$;
 --     array[2,2,9,1,2,2,13,17,3,0,11,8,0,2,10,4,1,11,1,2,10,9,2,0,11],
 --     array[0,1,1,0,0,1,0,1,1,0,1,1,0,0,1,1,1,0,1,1,1,1,1,0,0]);
 --   -- kỳ vọng: 1260
+-- ─────────────────────────────────────────────────────────────────────────
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Vector vàng cho `arena_m3_shuffle` — PHẢI khớp `Match3Board.reshuffle` ở
+-- Dart (test `match3_rules_test.dart`). Đầu vào: bàn BÍ (lát gạch 2x2, không
+-- dãy 3 và không nước đi nào), cùng chuỗi LCG 12345, refill = 64 (bằng đúng
+-- số ô của bảng đầu). Chạy trong SQL Editor:
+--
+--   with recursive g(i, x) as (
+--     select 1, ((12345::bigint * 1103515245 + 12345) & 2147483647)
+--     union all
+--     select i + 1, (x * 1103515245 + 12345) & 2147483647 from g where i < 2000
+--   )
+--   select nb from arena_m3_shuffle(
+--     array[
+--     0,1,0,1,0,1,0,1,2,3,2,3,2,3,2,3,
+--     0,1,0,1,0,1,0,1,2,3,2,3,2,3,2,3,
+--     0,1,0,1,0,1,0,1,2,3,2,3,2,3,2,3,
+--     0,1,0,1,0,1,0,1,2,3,2,3,2,3,2,3
+--     ],
+--     array(select ((x >> 16) % 5)::smallint from g order by i),
+--     64);
+--   -- kỳ vọng nb:
+--     [
+--     0,0,3,4,2,3,1,4,3,0,0,2,1,1,4,1,
+--     2,2,0,3,4,1,0,3,0,3,2,4,1,2,4,4,
+--     0,1,4,4,3,1,2,1,1,2,4,0,2,4,4,0,
+--     4,4,1,1,3,2,2,3,2,3,3,1,4,3,4,1
+--     ]
+--   -- và: select arena_m3_has_move(nb) → true
 -- ─────────────────────────────────────────────────────────────────────────

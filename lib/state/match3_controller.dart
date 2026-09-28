@@ -99,9 +99,7 @@ class Match3Controller extends Notifier<Match3PlayState> {
     if (board == null || state.finished) return false;
     final move = board.trySwap(cell, dir);
     if (!move.valid) return false;
-    // Hết nước đi hợp lệ thì xáo lại — chơi đơn không có server nên xáo thoải
-    // mái (xem ghi chú trong Match3Board.reshuffle).
-    if (!board.hasAnyMove()) board.reshuffle();
+    // Không tự xáo ở đây nữa: `trySwap` đã lo (xem ghi chú trong match3_rules).
     state = Match3PlayState(
       level: state.level,
       cells: [...board.cells],

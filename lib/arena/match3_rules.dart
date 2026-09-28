@@ -296,6 +296,15 @@ class Match3Board {
       _gravityAndRefill();
       frames.add([...cells]);
     }
+    // HẾT NƯỚC ĐI thì xáo lại ngay trong nước này. Đặt ở đây vì `trySwap` là
+    // điểm duy nhất mà CẢ BA đường đi của client đều qua (đánh trực tiếp,
+    // replay lại log khi server chối nước, tính điểm đối thủ) — và cũng là hàm
+    // mà `arena_m3_replay` trong SQL soi gương. Đặt ở chỗ khác là ba đường lệch
+    // nhau, hoặc client lệch server.
+    if (!hasAnyMove()) {
+      reshuffle();
+      frames.add([...cells]); // để UI thấy bàn mới thay vì nhảy cóc
+    }
     return Match3Move(
       valid: true,
       score: score,
@@ -331,10 +340,10 @@ class Match3Board {
   /// đúng luật bảng đầu của [Match3Board.initial] (không có dãy sẵn), lặp tới
   /// khi bàn có ít nhất một nước đi.
   ///
-  /// CHỈ dùng cho chơi đơn. Đấu Trường KHÔNG được gọi: `arena_m3_replay`
-  /// (supabase/arena_schema.sql) replay cả trận chỉ từ seq + log nước đi và
-  /// không biết có xáo bàn — client tự xáo là bàn lệch server, mọi nước sau bị
-  /// chấm sai. Muốn Đấu Trường xáo thì phải viết cùng logic ở cả SQL.
+  /// [trySwap] TỰ GỌI hàm này khi hết nước đi, nên luật xáo là một phần của
+  /// luật chơi và **phải khớp bit-for-bit với `arena_m3_shuffle` trong
+  /// supabase/arena_schema.sql** — lệch một ô là bàn client và server khác
+  /// nhau, mọi nước sau bị chấm sai. Có vector vàng khoá ở cả hai nơi.
   ///
   /// ponytail: thử tối đa [tries] lần rồi thôi (bàn 8x8 5 loại gần như không
   /// bao giờ bí tới lần thứ hai); cần bảo đảm tuyệt đối thì phải dựng bàn có

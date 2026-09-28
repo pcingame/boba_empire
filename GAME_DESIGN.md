@@ -584,7 +584,16 @@ Chọn dạng ở màn Đấu Trường trước khi ghép trận (hàng đợi 
 - Luật ở `lib/arena/match3_rules.dart` ⇔ `supabase/arena_schema.sql`, khớp bằng vector vàng
   (`test/arena/match3_rules_test.dart` và khối comment cuối file SQL) + fuzz 300 ván qua RPC.
 - Thưởng 💎 và bảng xếp hạng Đấu Trường dùng chung với dạng chạm (tính từ `arena_matches.winner`).
-- Chưa làm: kẹo đặc biệt (4/5 ô), tự xáo khi hết nước đi (hiện chỉ báo "Hết nước đi!"), xem bảng đối thủ. Chưa playtest cân bằng.
+- **Tự xáo khi hết nước** ✅ 2026-09-28: `Match3Board.trySwap` gọi `reshuffle()`
+  ngay khi nước vừa đi làm bàn hết nước, và `arena_m3_shuffle` trong SQL làm y
+  hệt (có vector vàng khoá hai bên). Đặt trong `trySwap` vì đó là điểm duy nhất
+  cả ba đường đi của client đều qua (đánh trực tiếp / replay log / tính điểm
+  đối thủ).
+  ⚠️ Đo được: quét 4000 hạt giống × 150 nước (~600k nước) KHÔNG lần nào bàn bí;
+  ép bằng chuỗi bù 2-3 loại cũng không bí. Đây là **lưới an toàn**, không phải
+  lỗi người chơi hay gặp — ghi chú cũ trong ROADMAP nói "kẹt tới hết 60 giây"
+  là đúng về lý thuyết nhưng gần như không xảy ra.
+- Chưa làm: xem bảng đối thủ. Chưa playtest cân bằng.
 
 ## 21. Bảng xếp hạng tốc độ "Hồi 2" (2026-09-26)
 

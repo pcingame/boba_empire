@@ -55,6 +55,7 @@ void main() {
   _reshuffleTests();
   _clearedTests();
   _specialTests();
+  _shuffleGoldenTest();
   group('bảng đầu', () {
     test('không có match sẵn, đủ 64 ô loại 0..4, cố định theo seq', () {
       for (var seed = 1; seed <= 50; seed++) {
@@ -474,5 +475,61 @@ void _specialTests() {
     expect(m3IsSpecial(4), isFalse);
     expect(m3IsSpecial(m3CrossBase), isTrue);
     expect(m3IsSpecial(m3ColorBase + 1), isTrue);
+  });
+}
+
+// --- Vector vàng cho reshuffle: Dart <-> SQL phải ra CÙNG một bàn ---
+void _shuffleGoldenTest() {
+  test('reshuffle vector vàng Dart<->SQL: bàn bí + LCG(12345), refill 64', () {
+    final seq = [
+      for (var i = 0, x = 12345; i < m3SeqLength; i++)
+        (x = (x * 1103515245 + 12345) & 0x7fffffff, (x >> 16) % m3Types).$2,
+    ];
+    // Lát gạch 2x2 [[0,1],[2,3]]: không dãy 3 sẵn, không nước đi nào.
+    final stuck = [
+      for (var i = 0; i < m3Cells; i++)
+        ((i ~/ m3Size) % 2) * 2 + ((i % m3Size) % 2),
+    ];
+    final board = Match3Board.initial(seq);
+    board.cells.setAll(0, stuck);
+    expect(board.hasAnyMove(), isFalse, reason: 'bàn đầu vào phải đang bí');
+
+    board.reshuffle();
+
+    // Con số này cũng nằm trong khối comment cuối supabase/arena_schema.sql.
+    // Đổi luật xáo mà quên đổi SQL (hoặc ngược lại) là test này đỏ.
+    expect(board.cells, [
+      0, 0, 3, 4, 2, 3, 1, 4, 3, 0, 0, 2, 1, 1, 4, 1, //
+      2, 2, 0, 3, 4, 1, 0, 3, 0, 3, 2, 4, 1, 2, 4, 4, //
+      0, 1, 4, 4, 3, 1, 2, 1, 1, 2, 4, 0, 2, 4, 4, 0, //
+      4, 4, 1, 1, 3, 2, 2, 3, 2, 3, 3, 1, 4, 3, 4, 1, //
+    ]);
+    expect(board.hasAnyMove(), isTrue);
+  });
+
+  test('sau MỌI nước đi bàn luôn còn nước — bất biến người chơi thấy', () {
+    // ĐO ĐƯỢC (2026-09-28): quét 4000 hạt giống x 150 nước (~600k nước) KHÔNG
+    // có lần nào bàn bí sau một nước; ép bằng chuỗi bù chỉ 2-3 loại cũng không
+    // bí. Nghĩa là nhánh xáo trong `trySwap` gần như không bao giờ chạy — nó là
+    // lưới an toàn, không phải đường đi thường. Test này vì vậy KHÔNG phủ được
+    // nhánh đó (thuật toán xáo do vector vàng ở trên khoá); nó khoá bất biến mà
+    // người chơi thực sự cảm nhận: đánh xong vẫn luôn còn nước để đi.
+    var moves = 0;
+    for (var seed = 1; seed <= 40; seed++) {
+      final seq = [
+        for (var i = 0, x = seed; i < m3SeqLength; i++)
+          (x = (x * 1103515245 + 12345) & 0x7fffffff, (x >> 16) % m3Types).$2,
+      ];
+      final board = Match3Board.initial(seq);
+      for (var n = 0; n < 40; n++) {
+        final move = board.findMove();
+        if (move == null) break;
+        expect(board.trySwap(move.$1, move.$2).valid, isTrue);
+        moves++;
+        expect(board.hasAnyMove(), isTrue,
+            reason: 'hạt giống $seed, sau nước $n bàn bí');
+      }
+    }
+    expect(moves, greaterThan(1000));
   });
 }
