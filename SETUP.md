@@ -125,6 +125,11 @@ Banner chỉ hiện ở tab **Ghép 3** (danh sách màn + màn chơi), KHÔNG h
    im lặng: quảng cáo không bao giờ tải mà chẳng báo gì. Có test khoá việc này.
 3. Bản debug luôn dùng test id, không cần làm gì.
 
+⚠️ Mọi chỗ đụng SDK quảng cáo phải chờ `AdBootstrap.ready` (Future của lần init
+do `main()` gán). Gọi sớm hơn thì kênh nền tảng trả null và **im lặng** thất bại
+— đã gặp: mở thẳng vào tab Ghép 3 lúc app vừa mở thì banner không bao giờ hiện
+cả phiên, không có log lỗi nào.
+
 ## 2b. Firebase Remote Config (tune số không cần nộp bản mới)
 
 12 nút vặn cân bằng có thể ghi đè từ console — tên tham số trên console **đúng

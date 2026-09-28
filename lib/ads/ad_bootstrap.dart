@@ -12,6 +12,12 @@ import 'ad_config.dart';
 class AdBootstrap {
   const AdBootstrap._();
 
+  /// Future của lần [initialize] đang chạy, do `main()` gán. MỌI chỗ đụng tới
+  /// SDK quảng cáo phải chờ nó trước: gọi sớm hơn thì kênh nền tảng trả về
+  /// rỗng/null và im lặng thất bại (đã gặp: banner không bao giờ hiện, không
+  /// báo lỗi gì). Null ở nền tảng không có quảng cáo — `await null` vô hại.
+  static Future<void>? ready;
+
   static Future<void> initialize() async {
     // Đồng ý là yêu cầu pháp lý ở EEA/UK cho quảng cáo cá nhân hóa. Thu thập
     // trước; lỗi thì vẫn init để game không kẹt (test ad không cần consent).

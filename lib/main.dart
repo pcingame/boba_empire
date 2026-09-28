@@ -73,7 +73,7 @@ Future<void> main() async {
     // KHÔNG await: init AdMob gồm form đồng ý UMP (hiện dialog, chờ người bấm)
     // và gọi mạng — await ở đây là màn hình trắng vài giây trước frame đầu.
     // Chạy song song, chỉ RealAdService chờ nó xong mới nạp quảng cáo.
-    final adsReady = AdBootstrap.initialize();
+    final adsReady = AdBootstrap.ready = AdBootstrap.initialize();
     overrides.add(
       adServiceProvider.overrideWithValue(RealAdService(ready: adsReady)),
     );
