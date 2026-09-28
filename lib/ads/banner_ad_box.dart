@@ -49,10 +49,19 @@ class _BannerAdBoxState extends ConsumerState<BannerAdBox> {
     // thẳng vào tab Ghép 3 lúc app vừa mở.
     await AdBootstrap.ready;
     if (!mounted) return;
-    // Adaptive banner: cao theo bề ngang máy thay vì 320x50 cứng.
+    // Anchored adaptive banner BẢN THƯỜNG: cao theo bề ngang máy, trần 15%
+    // chiều cao màn (thực tế ~50-62dp trên điện thoại).
+    //
+    // CỐ TÌNH không dùng bản `Large...` mà analyzer gợi ý: "Large" không phải
+    // đổi tên hàm, nó là ĐỊNH DẠNG QUẢNG CÁO CAO HƠN (đo trên iPhone: 320x100
+    // thay vì 320x50). Trong màn chơi Ghép 3, 100dp ăn mất chỗ của bàn cờ.
+    //
+    // ponytail: hàm này đã deprecated, google_mobile_ads đang đẩy hết sang bản
+    // Large. Khi nào nó bị xoá thật thì phải chuyển sang inline adaptive có
+    // `maxHeight` để giữ được chiều cao nhỏ.
     final media = MediaQuery.of(context);
-    final size =
-        await AdSize.getLargeAnchoredAdaptiveBannerAdSizeWithOrientation(
+    // ignore: deprecated_member_use
+    final size = await AdSize.getAnchoredAdaptiveBannerAdSize(
       media.orientation,
       media.size.width.truncate(),
     );
