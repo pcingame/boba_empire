@@ -20,21 +20,24 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
 - [x] 🔴 **Icon app thật** — cốc trà sữa cute, nền kem (assets/icon/, sinh bằng
   scripts/make_icon.py). Đã chạy flutter_launcher_icons → mipmap + adaptive icon.
 - [x] 🟡 **Đổi label app** → `Boba Empire` (đã sửa AndroidManifest).
-- [~] 🔴 **Thay AdMob TEST ID → ID thật** (3 chỗ, xem SETUP.md mục 1). Bấm QC
-  thật trên test unit = vi phạm chính sách. ✅ Android xong (App ID manifest +
-  rewarded unit trong ad_config, tách debug=test/release=thật). ❌ iOS Info.plist
-  còn test — chỉ cần khi phát hành iOS.
+- [x] 🔴 **Thay AdMob TEST ID → ID thật** (xem SETUP.md mục 1). Bấm QC thật
+  trên test unit = vi phạm chính sách. ✅ Android + ✅ iOS: App ID thật trong
+  AndroidManifest (`~2417193584`) và Info.plist (`~3516109108`); rewarded +
+  banner unit thật trong `ad_config.dart`, tách debug=test/release=thật.
 
 ---
 
 ## 1. Chuẩn bị code / build
 
-- [ ] 🟡 Đặt `version:` trong `pubspec.yaml` cho lần phát hành (hiện `1.0.0+1`).
-  Mỗi lần nộp phải tăng build number (`+2`, `+3`...).
+- [x] 🟡 Đặt `version:` trong `pubspec.yaml` cho lần phát hành — hiện
+  **`1.0.4+7`** (2026-09-29). App Store đang live `1.0.3` (từ 2026-09-27).
+  Mỗi lần nộp phải tăng build number. Ghi chú "Có gì mới" 6 ngôn ngữ đã soạn
+  sẵn ở [RELEASE_NOTES.md](RELEASE_NOTES.md).
 - [ ] 🟡 Kiểm tra `targetSdk` đạt yêu cầu Play hiện hành (Google bắt buộc target
   API mới trong ~1 năm gần nhất). Đang dùng `flutter.targetSdkVersion` — chạy
   `flutter build appbundle` sẽ báo nếu thiếu.
-- [ ] 🟡 `flutter analyze` sạch + `flutter test` xanh (hiện 132/132).
+- [x] 🟡 `flutter analyze` sạch + `flutter test` xanh — **582/582**
+  (2026-09-29). 2 cảnh báo `avoid_print` còn lại nằm ở `server/`, không vào app.
 - [ ] 🟢 Cân nhắc `flutter_launcher_icons` + `flutter_native_splash` để sinh
   icon/splash mọi độ phân giải từ 1 file.
 - [ ] 🟢 Bật R8/shrink (mặc định có ở release) — kiểm APK size hợp lý.
@@ -111,6 +114,16 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
   OK; rebuild lại khi bump version/đổi asset).
 - [ ] 🟢 (iOS) `flutter build ipa` (cần macOS + Xcode + chứng chỉ).
 
+## 7b. Schema Supabase (chỉ khi bản nộp có đổi SQL)
+
+- [x] 🔴 **1.0.4:** `supabase/leaderboard_schema.sql` — cột `prestige_stars`
+  bigint → `numeric`. Đã chạy 2026-09-29, verify bằng REST: 0 hàng còn kẹt
+  `9223372036854775807`, 77 hàng đã dựng lại (giá trị lớn nhất 2,14e32 — bigint
+  không chứa nổi ⇒ cột đúng là numeric).
+- ⚠️ Quy tắc: schema phải chạy **TRƯỚC** khi bản mới lên store. Ngược lại thì
+  client gửi số kiểu mới mà server còn kiểu cũ → Postgres từ chối, người chơi
+  cuối tuyến không nộp được điểm.
+
 ## 8. Test trước khi phát hành
 
 - [ ] 🔴 Cài **bản release đã ký** lên thiết bị Android thật, chơi thử end-to-end.
@@ -127,7 +140,9 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
   vài tester trước Production đối với tài khoản cá nhân mới).
 - [ ] 🔴 Điền đủ **Main store listing + Content rating + Data safety + Target
   audience + Ads** (Play chặn nếu thiếu).
-- [ ] 🔴 Tạo **Production release**, upload `.aab`, viết release notes.
+- [ ] 🔴 Tạo **Production release**, upload `.aab`/`.ipa`, dán release notes
+  từ [RELEASE_NOTES.md](RELEASE_NOTES.md) (đã soạn 6 ngôn ngữ, đều < 500 ký tự
+  nên dùng chung được cho cả Play lẫn App Store).
 - [ ] 🟡 Chọn **quốc gia phát hành** (ưu tiên VN + 5 thị trường đã localize).
 - [ ] 🟢 Chọn **staged rollout** (vd 20%) để theo dõi crash trước khi 100%.
 - [ ] 🟡 Sau phát hành: theo dõi **Crashlytics/ANR, doanh thu ads/IAP, retention**;
