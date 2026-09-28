@@ -1181,4 +1181,27 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get m3HtpReward =>
       '🎁 Thưởng chỉ trả LẦN ĐẦU đạt mỗi mốc sao. Chơi lại màn cũ để luyện thì không nhận thêm.';
+
+  @override
+  String get m3LbTitle => 'BXH Trân Châu Rơi';
+
+  @override
+  String m3LbStars(int n) {
+    return '$n ⭐';
+  }
+
+  @override
+  String get m3LbEmpty => 'Chưa có ai lên bảng. Chơi vài màn là bạn đứng đầu!';
+
+  @override
+  String get m3LbNoStars =>
+      'Bạn chưa có sao nào — qua một màn là được lên bảng.';
+
+  @override
+  String m3LbLevels(int n) {
+    return '$n màn';
+  }
+
+  @override
+  String get m3LbError => 'Không tải được bảng xếp hạng, thử lại sau nhé.';
 }

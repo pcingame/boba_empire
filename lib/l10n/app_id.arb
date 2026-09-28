@@ -516,5 +516,11 @@
   "m3HtpChain": "⛓️ Kotak yang hilang membuat kotak di atasnya jatuh; kalau membentuk barisan baru terjadi rantai, dan langkah berikutnya bernilai jauh lebih besar.",
   "m3HtpSpecial": "💥 Susun 4 untuk membuat BOM SILANG (menghapus satu baris dan satu kolom). Susun 5 atau lebih untuk BOM WARNA 🌈 (menghapus semua kotak sejenis). Cocokkan seperti kotak biasa untuk meledakkannya.",
   "m3HtpStars": "⭐ Tiga bintang di bilah adalah tiga tingkat. Tingkat pertama berarti lolos; tekan \"Lanjut main\" untuk memakai sisa langkah mengejar bintang berikutnya.",
-  "m3HtpReward": "🎁 Hadiah hanya diberikan saat PERTAMA kali mencapai tiap bintang. Mengulang level tidak menambah hadiah."
+  "m3HtpReward": "🎁 Hadiah hanya diberikan saat PERTAMA kali mencapai tiap bintang. Mengulang level tidak menambah hadiah.",
+  "m3LbTitle": "Peringkat Mutiara Jatuh",
+  "m3LbStars": "{n} ⭐",
+  "m3LbEmpty": "Belum ada siapa pun. Selesaikan beberapa level dan kamu jadi nomor satu!",
+  "m3LbNoStars": "Kamu belum punya bintang — selesaikan satu level untuk masuk papan.",
+  "m3LbLevels": "{n} level",
+  "m3LbError": "Tidak bisa memuat peringkat. Coba lagi nanti."
 }

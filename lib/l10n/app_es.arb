@@ -516,5 +516,11 @@
   "m3HtpChain": "⛓️ Las fichas eliminadas hacen caer las de arriba; si forman otra línea se encadena y los pasos siguientes puntúan mucho más.",
   "m3HtpSpecial": "💥 Alinea 4 para crear una BOMBA EN CRUZ (limpia su fila y su columna). Con 5 o más sale una BOMBA DE COLOR 🌈 (limpia todas las fichas de ese tipo). Combínalas como fichas normales para activarlas.",
   "m3HtpStars": "⭐ Las tres estrellas de la barra son tres niveles. Al llegar a la primera superas el nivel; pulsa \"Seguir jugando\" para gastar los movimientos restantes y ganar más estrellas.",
-  "m3HtpReward": "🎁 La recompensa se paga solo la PRIMERA vez que alcanzas cada estrella. Repetir un nivel no da nada extra."
+  "m3HtpReward": "🎁 La recompensa se paga solo la PRIMERA vez que alcanzas cada estrella. Repetir un nivel no da nada extra.",
+  "m3LbTitle": "Ranking Perlas que caen",
+  "m3LbStars": "{n} ⭐",
+  "m3LbEmpty": "Aún no hay nadie. ¡Supera unos niveles y serás el primero!",
+  "m3LbNoStars": "Aún no tienes estrellas: supera un nivel para entrar en el ranking.",
+  "m3LbLevels": "{n} niveles",
+  "m3LbError": "No se pudo cargar el ranking. Inténtalo más tarde."
 }

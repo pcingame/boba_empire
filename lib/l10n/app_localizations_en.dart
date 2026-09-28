@@ -1184,4 +1184,28 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get m3HtpReward =>
       '🎁 Rewards are paid only the FIRST time you reach each star tier. Replaying a level for practice pays nothing extra.';
+
+  @override
+  String get m3LbTitle => 'Falling Pearls ranking';
+
+  @override
+  String m3LbStars(int n) {
+    return '$n ⭐';
+  }
+
+  @override
+  String get m3LbEmpty =>
+      'Nobody on the board yet. Clear a few levels and the top spot is yours!';
+
+  @override
+  String get m3LbNoStars =>
+      'You have no stars yet — clear one level to get on the board.';
+
+  @override
+  String m3LbLevels(int n) {
+    return '$n levels';
+  }
+
+  @override
+  String get m3LbError => 'Couldn\'t load the ranking. Please try again later.';
 }

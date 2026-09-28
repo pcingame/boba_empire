@@ -2061,6 +2061,42 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'🎁 Thưởng chỉ trả LẦN ĐẦU đạt mỗi mốc sao. Chơi lại màn cũ để luyện thì không nhận thêm.'**
   String get m3HtpReward;
+
+  /// No description provided for @m3LbTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'BXH Trân Châu Rơi'**
+  String get m3LbTitle;
+
+  /// No description provided for @m3LbStars.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} ⭐'**
+  String m3LbStars(int n);
+
+  /// No description provided for @m3LbEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có ai lên bảng. Chơi vài màn là bạn đứng đầu!'**
+  String get m3LbEmpty;
+
+  /// No description provided for @m3LbNoStars.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa có sao nào — qua một màn là được lên bảng.'**
+  String get m3LbNoStars;
+
+  /// No description provided for @m3LbLevels.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} màn'**
+  String m3LbLevels(int n);
+
+  /// No description provided for @m3LbError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tải được bảng xếp hạng, thử lại sau nhé.'**
+  String get m3LbError;
 }
 
 class _AppLocalizationsDelegate

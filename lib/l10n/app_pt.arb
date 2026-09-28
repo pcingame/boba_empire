@@ -516,5 +516,11 @@
   "m3HtpChain": "⛓️ Peças removidas fazem cair as de cima; se formarem nova linha há reação em cadeia, e os passos seguintes valem muito mais.",
   "m3HtpSpecial": "💥 Alinhe 4 para criar uma BOMBA EM CRUZ (limpa a linha e a coluna). Com 5 ou mais surge uma BOMBA DE COR 🌈 (limpa todas as peças daquele tipo). Combine-as como peças normais para detonar.",
   "m3HtpStars": "⭐ As três estrelas na barra são três níveis. Chegar à primeira já conclui o nível; toque em \"Continuar jogando\" para gastar as jogadas restantes e buscar mais estrelas.",
-  "m3HtpReward": "🎁 A recompensa é paga só na PRIMEIRA vez que você alcança cada estrela. Repetir o nível não dá nada extra."
+  "m3HtpReward": "🎁 A recompensa é paga só na PRIMEIRA vez que você alcança cada estrela. Repetir o nível não dá nada extra.",
+  "m3LbTitle": "Ranking Pérolas Caindo",
+  "m3LbStars": "{n} ⭐",
+  "m3LbEmpty": "Ainda não há ninguém. Conclua alguns níveis e o topo é seu!",
+  "m3LbNoStars": "Você ainda não tem estrelas — conclua um nível para entrar no ranking.",
+  "m3LbLevels": "{n} níveis",
+  "m3LbError": "Não foi possível carregar o ranking. Tente mais tarde."
 }

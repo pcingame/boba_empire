@@ -1176,4 +1176,27 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get m3HtpReward =>
       '🎁 รางวัลจ่ายเฉพาะครั้งแรกที่ถึงดาวแต่ละดวง เล่นซ้ำด่านเดิมจะไม่ได้เพิ่ม';
+
+  @override
+  String get m3LbTitle => 'อันดับไข่มุกร่วง';
+
+  @override
+  String m3LbStars(int n) {
+    return '$n ⭐';
+  }
+
+  @override
+  String get m3LbEmpty =>
+      'ยังไม่มีใครบนกระดาน ผ่านสักสองสามด่านแล้วคุณจะเป็นที่หนึ่ง!';
+
+  @override
+  String get m3LbNoStars => 'คุณยังไม่มีดาว — ผ่านหนึ่งด่านเพื่อขึ้นกระดาน';
+
+  @override
+  String m3LbLevels(int n) {
+    return '$n ด่าน';
+  }
+
+  @override
+  String get m3LbError => 'โหลดอันดับไม่ได้ ลองใหม่ภายหลัง';
 }

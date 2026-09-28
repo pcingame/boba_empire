@@ -638,6 +638,14 @@ Tab thứ 5 ở thanh dưới. Tên hiển thị: **Trân Châu Rơi** — dùng
   có. Dùng lại 3 SFX sẵn có, to dần theo độ "đã": ăn lẻ `tap`, dây chuyền `buy`,
   nổ ≥8 ô (kẹo đặc biệt) `reward`. Không cần chống dồn tiếng vì hai bước dây
   chuyền cách nhau ~390ms.
+- **Bảng xếp hạng** (2026-09-28): xếp theo TỔNG SAO của Hành trình, vào bằng
+  nút 🏆 trên AppBar của tab. Không xếp theo "điểm cao nhất một màn" vì bàn cờ
+  tất định — điểm cao nhất chỉ đo được ai chịu chơi lại một màn nhiều lần.
+  `supabase/m3_leaderboard_schema.sql` + `lib/leaderboard/m3_leaderboard_*`,
+  cùng khuôn bảng tốc độ cốt truyện (top tuyệt đối, dùng chung tên người chơi).
+  Chặn gian lận bằng CHECK: `stars <= levels_cleared * 3` (mỗi màn tối đa 3 sao)
+  và trigger chỉ cho sao TĂNG (chơi lại bằng save cũ không đạp hạng của mình).
+  ⚠️ Phải chạy file SQL trên Supabase thì bảng mới hoạt động.
 - **Hướng dẫn** (2026-09-28): `match3_how_to_dialog.dart`, 7 gạch đầu dòng —
   đổi ô, mục tiêu, giới hạn nước, dây chuyền, kẹo đặc biệt, mốc sao + "Chơi
   nốt", thưởng chỉ trả lần đầu. Tự hiện LẦN ĐẦU mở tab (`GameState.m3HowToSeen`,

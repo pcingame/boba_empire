@@ -1185,4 +1185,28 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get m3HtpReward =>
       '🎁 Hadiah hanya diberikan saat PERTAMA kali mencapai tiap bintang. Mengulang level tidak menambah hadiah.';
+
+  @override
+  String get m3LbTitle => 'Peringkat Mutiara Jatuh';
+
+  @override
+  String m3LbStars(int n) {
+    return '$n ⭐';
+  }
+
+  @override
+  String get m3LbEmpty =>
+      'Belum ada siapa pun. Selesaikan beberapa level dan kamu jadi nomor satu!';
+
+  @override
+  String get m3LbNoStars =>
+      'Kamu belum punya bintang — selesaikan satu level untuk masuk papan.';
+
+  @override
+  String m3LbLevels(int n) {
+    return '$n level';
+  }
+
+  @override
+  String get m3LbError => 'Tidak bisa memuat peringkat. Coba lagi nanti.';
 }

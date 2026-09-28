@@ -102,6 +102,12 @@ int starsOf(List<int> stars, int id) =>
 bool levelUnlocked(List<int> stars, int id) =>
     id == 1 || starsOf(stars, id - 1) >= 1;
 
+/// Tổng sao đã kiếm được — con số đem đi xếp hạng.
+int m3TotalStars(List<int> stars) => stars.fold(0, (a, b) => a + b);
+
+/// Số màn đã qua (có ít nhất 1 sao).
+int m3LevelsCleared(List<int> stars) => stars.where((s) => s > 0).length;
+
 /// Số màn cao nhất đã mở (để cuộn tới đúng chỗ khi vào trang).
 int highestUnlocked(List<int> stars) {
   var n = 1;

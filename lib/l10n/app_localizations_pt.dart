@@ -1188,4 +1188,29 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get m3HtpReward =>
       '🎁 A recompensa é paga só na PRIMEIRA vez que você alcança cada estrela. Repetir o nível não dá nada extra.';
+
+  @override
+  String get m3LbTitle => 'Ranking Pérolas Caindo';
+
+  @override
+  String m3LbStars(int n) {
+    return '$n ⭐';
+  }
+
+  @override
+  String get m3LbEmpty =>
+      'Ainda não há ninguém. Conclua alguns níveis e o topo é seu!';
+
+  @override
+  String get m3LbNoStars =>
+      'Você ainda não tem estrelas — conclua um nível para entrar no ranking.';
+
+  @override
+  String m3LbLevels(int n) {
+    return '$n níveis';
+  }
+
+  @override
+  String get m3LbError =>
+      'Não foi possível carregar o ranking. Tente mais tarde.';
 }
