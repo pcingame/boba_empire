@@ -30,11 +30,15 @@ class AdConfig {
   static const String _iosBannerTest =
       'ca-app-pub-3940256099942544/2934735716';
 
-  /// Banner unit id THẬT dùng ở bản release. CHƯA TẠO trên AdMob — để rỗng thì
-  /// [bannerUnitId] trả rỗng và app KHÔNG hiện banner (an toàn hơn là lỡ dùng
-  /// nhầm test id ở bản phát hành, Google coi đó là vi phạm). Xem SETUP.md §1.
+  /// Banner unit id THẬT dùng ở bản release. Để RỖNG thì [bannerUnitId] trả
+  /// rỗng và app KHÔNG hiện banner — an toàn hơn là lỡ dùng nhầm test id ở bản
+  /// phát hành (Google coi đó là vi phạm). Xem SETUP.md §1.
+  ///
+  /// iOS đã tạo 2026-09-28 (app id `~3516109108` trong ios/Runner/Info.plist).
+  /// Android (app id `~2417193584`) CHƯA tạo → bản Android chưa hiện banner.
   static const String _androidBannerProd = '';
-  static const String _iosBannerProd = '';
+  static const String _iosBannerProd =
+      'ca-app-pub-9748541552219348/7009859888';
 
   /// Test device ID (cách nhau dấu phẩy) qua `--dart-define=ADMOB_TEST_DEVICES=`.
   ///
