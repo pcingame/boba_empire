@@ -620,6 +620,14 @@ Tab thứ 5 ở thanh dưới. Thiết kế đầy đủ + phần cố ý hoãn:
 - **Hết nước đi thì tự xáo bàn** (`Match3Board.reshuffle`). CHỈ chơi đơn được
   dùng: `arena_m3_replay` replay cả trận chỉ từ seq + log nước đi, client tự xáo
   giữa trận PvP là bàn lệch server. Đấu Trường vẫn kẹt như cũ (ROADMAP P2 §9).
+- **Giao diện**: lưới màn dùng bộ `Clay*` cho đồng bộ với phần còn lại của app,
+  có chip tổng sao, viền nổi ở màn đang chơi và tự cuộn tới màn đó khi mở. Màn
+  chơi có HUD gồm tiến độ + chip số nước (đổi màu khi còn ≤3) + **thanh sao** đặt
+  đúng vị trí tỉ lệ của 3 mốc. Qua màn thì bắn hiệu ứng có sẵn (confetti, 3 sao
+  thì pháo hoa).
+- **Bàn cờ co theo CHIỀU CAO ĐƯỢC CẤP**, không theo nửa chiều cao màn hình —
+  nếu không thì banner ăn chỗ là tràn khung. Máy nằm ngang thì HUD chuyển sang
+  đứng cạnh bàn cờ (xếp dọc ở màn ngang làm bàn co còn 0.61 lần).
 - **Banner quảng cáo** ở đáy cả hai màn của tab này (`lib/ads/banner_ad_box.dart`),
   tôn trọng `adFree`; unit id thật chưa tạo → release chưa hiện banner.
 - **Kẹo đặc biệt** (chỉ chơi đơn): ghép 4 → 💥 **bom chéo** (nổ cả hàng và cột),

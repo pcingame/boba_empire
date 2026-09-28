@@ -1099,11 +1099,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get m3Locked => 'Chưa mở';
 
   @override
-  String m3Target(String n) {
-    return 'Mục tiêu $n';
-  }
-
-  @override
   String m3MovesLeft(int n) {
     return 'Còn $n nước';
   }
@@ -1145,16 +1140,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get m3GoalReached => 'Đạt mục tiêu!';
-
-  @override
-  String m3Collect(String icon) {
-    return 'Thu thập $icon';
-  }
-
-  @override
-  String m3CollectShort(String icon) {
-    return 'Thu $icon';
-  }
 
   @override
   String m3NeedScore(String n, int star) {

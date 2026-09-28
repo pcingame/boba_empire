@@ -1,15 +1,12 @@
 {
   "@@locale": "th",
-
   "appTitle": "Boba Empire",
-
   "tapBrew": "แตะเพื่อชงชา",
   "coinsSuffix": " เหรียญ",
   "incomePerSecond": "+{amount} / วินาที",
   "instantCashButton": "เงินทันที",
   "instantCashSnack": "เงินทันที! +{amount} เหรียญ",
   "adNotReadySnack": "โฆษณายังไม่พร้อม ลองใหม่อีกสักครู่นะ",
-
   "stageHeader": "🏪 {name}",
   "unlockStageButton": "ปลดล็อก {cost} เหรียญ",
   "globalBonusChip": "🌐 +{percent}%",
@@ -18,22 +15,18 @@
   "buyModeMax": "MAX",
   "boostChip": "🔥 x3 · {seconds} วิ",
   "vipSnack": "ลูกค้า VIP! +{cash} เหรียญ, +{gems} 💎",
-
   "iapGemsSnack": "ได้รับ +{amount} 💎",
   "iapRemoveAdsSnack": "ลบโฆษณาแล้ว ขอบคุณ!",
   "iapStarterSnack": "แพ็กเริ่มต้น: +{amount} 💎",
-
   "genTraDen": "ชาดำ",
   "genTranChau": "ไข่มุก",
   "genThach": "เฉาก๊วย",
   "genPudding": "พุดดิ้ง",
   "genKemNuong": "ชานมครีมบรูเล่",
   "genMatcha": "มัทฉะถัง",
-
   "stage1": "รถเข็นริมทาง",
   "stage2": "คีออสก์เล็ก",
   "stage3": "เครือคาเฟ่หรู",
-
   "gemShopTitle": "ร้านค้า 💎 (มี {gems})",
   "gemBoostName": "เพิ่มรายได้",
   "gemBoostDesc": "+{percent}% รายได้ถาวรต่อระดับ",
@@ -50,13 +43,11 @@
   "iapSectionTitle": "ซื้อด้วยเงินจริง",
   "restorePurchases": "กู้คืนการซื้อ",
   "close": "ปิด",
-
   "iapGemsDesc": "เติมเพชรเพื่อซื้อไอเทมในร้านค้า",
   "iapRemoveAdsTitle": "ลบโฆษณา",
   "iapRemoveAdsDesc": "ข้ามโฆษณาทั้งหมด — ยังได้รับรางวัลครบโดยไม่ต้องดู",
   "iapStarterTitle": "แพ็กเริ่มต้น",
   "iapStarterDesc": "ครั้งเดียว: รับถุงเพชรใบใหญ่ทันที",
-
   "prestigeTitle": "แฟรนไชส์ 🏪",
   "prestigeIntro": "⭐ ดาวแต่ละดวงให้ +{percent}% รายได้ถาวร",
   "prestigeStarsNow": "ดาวปัจจุบัน",
@@ -70,13 +61,11 @@
   "prestigeConfirm": "แฟรนไชส์ (+{stars} ⭐)",
   "prestigeNotEnough": "ไม่พอ",
   "prestigeSuccess": "แฟรนไชส์สำเร็จ! +{stars} ⭐",
-
   "offlineTitle": "ยินดีต้อนรับกลับ! 🧋",
   "offlineBody": "ร้านยังขายต่อขณะที่คุณไม่อยู่\nคุณได้รับ {amount} เหรียญ",
   "offlineClaim": "รับ",
   "offlineDoubleButton": "ดูโฆษณา ×2",
   "offlineDoubleSnack": "เพิ่มเป็นสองเท่า! +{amount} เหรียญ",
-
   "howToPlayTitle": "วิธีเล่น",
   "htpTap": "🧋 แตะแก้วเพื่อชงชาและรับเหรียญ",
   "htpBuy": "🛒 ซื้ออัปเกรดเพื่อรับรายได้อัตโนมัติทุกวินาที",
@@ -194,7 +183,6 @@
   "wheelName": "วงล้อนำโชค 🎡",
   "spinFree": "หมุนฟรี",
   "spinAd": "ดูโฆษณาเพื่อหมุน",
-
   "storyChapterLabel": "บทที่ {n}",
   "storyContinue": "ต่อไป",
   "storyChoosePrompt": "เลือกเส้นทางของคุณ — เปลี่ยนใจไม่ได้:",
@@ -207,7 +195,6 @@
   "rivalMeterBehind": "กำลังเสียเปรียบ",
   "rivalResolvedSnack": "จัดการแล้ว คู่แข่งถอย",
   "rivalIgnoredSnack": "คุณปล่อยผ่าน — คู่แข่งได้ใจ",
-
   "navArena": "สนามประลอง",
   "navCompete": "แข่งขัน",
   "arenaTitle": "สนามประลอง",
@@ -222,65 +209,152 @@
   "arenaTapButton": "แตะแก้ว",
   "arenaResolving": "กำลังสรุปผล…",
   "arenaTierButton": "อัปเกรด ×2 ({cost} เหรียญ)",
-  "@arenaTierButton": { "placeholders": { "cost": { "type": "String" } } },
+  "@arenaTierButton": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
   "arenaTimeLeft": "เหลือ {seconds} วิ",
-  "@arenaTimeLeft": { "placeholders": { "seconds": { "type": "int" } } },
+  "@arenaTimeLeft": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
   "arenaOnlineCount": "ออนไลน์ {count} คน",
-  "@arenaOnlineCount": { "placeholders": { "count": { "type": "int" } } },
+  "@arenaOnlineCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "arenaYourScore": "คะแนนคุณ",
   "arenaOpponentScore": "คู่แข่ง",
   "arenaResultWin": "คุณชนะ! 🎉",
   "arenaResultLose": "คุณแพ้",
   "arenaResultDraw": "เสมอ",
   "arenaResultReward": "+{gems} 💎",
-  "@arenaResultReward": { "placeholders": { "gems": { "type": "int" } } },
+  "@arenaResultReward": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
   "arenaCloseButton": "ปิด",
-
   "cloudSaveMenuTitle": "สำรองความคืบหน้า",
   "cloudSaveMenuLinked": "เชื่อมต่อแล้ว: {email}",
-  "@cloudSaveMenuLinked": { "placeholders": { "email": { "type": "String" } } },
+  "@cloudSaveMenuLinked": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveMenuUnlinked": "ยังไม่เชื่อมต่อ — อาจเสียความคืบหน้าถ้าถอนการติดตั้ง",
   "cloudSaveTitle": "สำรองความคืบหน้า",
   "cloudSaveIntro": "เชื่อมอีเมลเพื่อกู้คืนความคืบหน้าได้ถ้าถอนแอปหรือเปลี่ยนเครื่อง",
   "cloudSaveEmailHint": "อีเมลของคุณ",
   "cloudSaveSendCode": "ส่งรหัส",
   "cloudSaveCodeSentTo": "ส่งรหัสยืนยันไปที่ {email} แล้ว",
-  "@cloudSaveCodeSentTo": { "placeholders": { "email": { "type": "String" } } },
+  "@cloudSaveCodeSentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveCodeHint": "รหัสยืนยัน",
   "cloudSaveVerify": "ยืนยัน",
   "cloudSaveChangeEmail": "ใช้อีเมลอื่น",
   "cloudSaveResend": "ส่งรหัสอีกครั้ง",
   "cloudSaveResendIn": "ส่งรหัสอีกครั้ง ({seconds} วิ)",
-  "@cloudSaveResendIn": { "placeholders": { "seconds": { "type": "int" } } },
+  "@cloudSaveResendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
   "cloudSaveConflictTitle": "พบข้อมูลบันทึกอื่นบนคลาวด์",
   "cloudSaveConflictLocal": "เครื่องนี้: {amount} เหรียญสะสมทั้งหมด",
-  "@cloudSaveConflictLocal": { "placeholders": { "amount": { "type": "String" } } },
+  "@cloudSaveConflictLocal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveConflictCloud": "บนคลาวด์: {amount} เหรียญสะสมทั้งหมด",
-  "@cloudSaveConflictCloud": { "placeholders": { "amount": { "type": "String" } } },
+  "@cloudSaveConflictCloud": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveRestoreButton": "กู้คืนจากคลาวด์",
   "cloudSaveKeepLocalButton": "ใช้เครื่องนี้ต่อ",
   "cloudSaveLinkedStatus": "เชื่อมต่อแล้ว: {email}",
-  "@cloudSaveLinkedStatus": { "placeholders": { "email": { "type": "String" } } },
+  "@cloudSaveLinkedStatus": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveDisconnect": "ยกเลิกการเชื่อมต่อ",
   "cloudSaveRetry": "ลองอีกครั้ง",
-
   "leaderboardMenuTitle": "อันดับ",
   "leaderboardTitle": "อันดับ",
   "leaderboardNicknameIntro": "ตั้งชื่อที่จะแสดงบนกระดานอันดับ (เปลี่ยนทีหลังได้):",
   "leaderboardNicknameHint": "ชื่อของคุณ",
   "leaderboardSubmit": "ยืนยัน",
   "leaderboardYourRank": "อันดับของคุณ: #{rank}",
-  "@leaderboardYourRank": { "placeholders": { "rank": { "type": "int" } } },
+  "@leaderboardYourRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardStars": "{stars} ⭐",
-  "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
+  "@leaderboardStars": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardEmpty": "ยังไม่มีใครในกระดานอันดับ — คือคุณเลย!",
   "leaderboardRewardSnack": "🎉 คุณอยู่ในอันดับต้น ๆ! +{gems} 💎",
-  "@leaderboardRewardSnack": { "placeholders": { "gems": { "type": "int" } } },
+  "@leaderboardRewardSnack": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardRewardInfo": "อันดับ 1: {top1}💎 · อันดับ 2-3: {top23}💎 · อันดับ 4-10: {top410}💎 — ทุก 24 ชม. ถ้ายังติดอันดับ",
-  "@leaderboardRewardInfo": { "placeholders": { "top1": { "type": "int" }, "top23": { "type": "int" }, "top410": { "type": "int" } } },
+  "@leaderboardRewardInfo": {
+    "placeholders": {
+      "top1": {
+        "type": "int"
+      },
+      "top23": {
+        "type": "int"
+      },
+      "top410": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardChangeName": "เปลี่ยนชื่อ",
   "leaderboardRetry": "ลองอีกครั้ง",
-
   "storySpeedrunMenuTitle": "สปีดรัน",
   "storySpeedrunTitle": "อันดับสปีดรัน",
   "storySpeedrunNotCompletedYet": "คุณยังไม่จบเนื้อเรื่อง — จบตอนที่ 18 เพื่อขึ้นอันดับ",
@@ -288,42 +362,104 @@
   "storySpeedrunTabExt": "ภาค 2",
   "storySpeedrunExtNotCompletedYet": "คุณยังไม่จบภาค 2 — จบตอนที่ 28 เพื่อติดอันดับ",
   "storySpeedrunEmpty": "ยังไม่มีใครจบเนื้อเรื่อง — เป็นคนแรกสิ!",
-
   "arenaLeaderboardMenuTitle": "อันดับ PK",
   "arenaLeaderboardTitle": "อันดับ PK",
   "arenaLeaderboardNotPlayedYet": "คุณยังไม่เคยแข่งขันในสนามประลอง — ชนะสักครั้งเพื่อปรากฏที่นี่",
   "arenaLeaderboardRecord": "{wins}ชนะ - {losses}แพ้",
-  "@arenaLeaderboardRecord": { "placeholders": { "wins": { "type": "int" }, "losses": { "type": "int" } } },
+  "@arenaLeaderboardRecord": {
+    "placeholders": {
+      "wins": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionTitle": "ยุคใหม่",
   "ascensionOpen": "ยุคใหม่ ⏳",
   "ascensionIntro": "แลกดาวและเพิร์กร้านดาวทั้งหมดเป็น ⏳ แต้มยุคใหม่ — เพิร์กถาวรที่แรงขึ้น คุณจะเริ่มเล่นใหม่",
   "ascensionProgress": "ความคืบหน้าปลดล็อก: {percent}%",
-  "@ascensionProgress": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionProgress": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionPointsNow": "แต้มที่มี",
   "ascensionPointsGain": "ที่จะได้รับ",
   "ascensionPointsValue": "{points} ⏳",
-  "@ascensionPointsValue": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionPointsValue": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionWarning": "⚠️ รีเซ็ตดาว เพิร์กร้านดาวทั้งหมด เหรียญ เลเวลอัปเกรด และด่าน เก็บ 💎 ความสำเร็จ และเนื้อเรื่องไว้ ดาวบนกระดานอันดับจะเป็น 0 (อันดับตามรายได้รวมไม่เปลี่ยน)",
   "ascensionConfirm": "เริ่มยุคใหม่ (+{points} ⏳)",
-  "@ascensionConfirm": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionConfirm": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionNotEnough": "ยังไม่พร้อม",
   "ascensionSuccess": "ยุคใหม่เริ่มต้น! +{points} ⏳",
-  "@ascensionSuccess": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionSuccess": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionShopTitle": "เพิร์กยุคใหม่ ⏳",
   "ascensionShopSpendable": "เหลือ {points} ⏳ ให้ใช้",
-  "@ascensionShopSpendable": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionShopSpendable": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionCost": "{cost} ⏳",
-  "@ascensionCost": { "placeholders": { "cost": { "type": "int" } } },
+  "@ascensionCost": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionMaxed": "สูงสุด",
   "ascensionIncomeName": "แหล่งพลังงาน",
   "ascensionIncomeDesc": "+{percent}% รายได้ต่อเลเวล",
-  "@ascensionIncomeDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionIncomeDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionStarBonusName": "ดาวเจิดจรัส",
   "ascensionStarBonusDesc": "+{percent}% พลังต่อดาว ต่อเลเวล",
-  "@ascensionStarBonusDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionStarBonusDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionStarGainName": "ดาวอุดม",
   "ascensionStarGainDesc": "+{percent}% อัตราได้ดาว ต่อเลเวล",
-  "@ascensionStarGainDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionStarGainDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "achAscend": "เริ่มยุคใหม่ครั้งแรก",
   "dailyQuestsTitle": "ภารกิจรายวัน",
   "dailyQuestsChip": "ภารกิจ",
@@ -331,9 +467,21 @@
   "dailyQuestsResetsIn": "ภารกิจใหม่ใน {time}",
   "dailyQuestClaimed": "รับแล้ว",
   "dqTap": "แตะแก้ว {n} ครั้ง",
-  "@dqTap": { "placeholders": { "n": { "type": "int" } } },
+  "@dqTap": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "dqBuy": "ซื้ออัปเกรด {n} ครั้ง",
-  "@dqBuy": { "placeholders": { "n": { "type": "int" } } },
+  "@dqBuy": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "dqEarn": "หาเงิน {amount} เหรียญ",
   "dqCat": "จับแมวทอง",
   "dqVip": "บริการลูกค้า VIP",
@@ -346,7 +494,6 @@
   "m3Title": "เส้นทางจับคู่ 3",
   "m3Level": "ด่าน {n}",
   "m3Locked": "ยังไม่ปลดล็อก",
-  "m3Target": "เป้าหมาย {n}",
   "m3MovesLeft": "เหลือ {n} ตา",
   "m3Score": "คะแนน",
   "m3Win": "ผ่านด่าน!",
@@ -360,8 +507,6 @@
   "m3KeepPlaying": "เล่นต่อ",
   "m3Pause": "พักก่อน",
   "m3GoalReached": "ถึงเป้าหมายแล้ว!",
-  "m3Collect": "เก็บ {icon}",
-  "m3CollectShort": "เก็บ {icon}",
   "m3NeedScore": "อีก {n} คะแนนได้ {star}★",
   "m3NeedCollect": "อีก {n} {icon} ได้ {star}★"
 }

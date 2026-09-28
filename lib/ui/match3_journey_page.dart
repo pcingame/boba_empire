@@ -12,6 +12,7 @@ import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import 'match3_board.dart';
 import 'match3_play_page.dart';
+import 'widgets/clay.dart';
 
 Future<void> showMatch3Journey(BuildContext context) {
   return Navigator.of(context).push(
@@ -19,28 +20,77 @@ Future<void> showMatch3Journey(BuildContext context) {
   );
 }
 
-class Match3JourneyPage extends ConsumerWidget {
+class Match3JourneyPage extends ConsumerStatefulWidget {
   const Match3JourneyPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<Match3JourneyPage> createState() => _Match3JourneyPageState();
+}
+
+class _Match3JourneyPageState extends ConsumerState<Match3JourneyPage> {
+  final _scroll = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Tới màn 20-30 thì màn đang chơi nằm ngoài màn hình — tự cuộn tới đó thay
+    // vì bắt người chơi tự tìm.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToCurrent());
+  }
+
+  @override
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
+
+  void _scrollToCurrent() {
+    if (!_scroll.hasClients) return;
+    final current = highestUnlocked(ref.read(gameControllerProvider).m3Stars);
+    final row = (current - 1) ~/ 4;
+    if (row < 2) return; // đã thấy sẵn ở đầu danh sách
+    final target = (row - 1) * 86.0; // ~ chiều cao một hàng, đặt nó gần đỉnh
+    _scroll.jumpTo(target.clamp(0, _scroll.position.maxScrollExtent));
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final stars = ref.watch(gameControllerProvider.select((s) => s.m3Stars));
+    final current = highestUnlocked(stars);
+    final earned = stars.fold<int>(0, (a, b) => a + b);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.m3Title)),
+      appBar: AppBar(
+        title: Text(l10n.m3Title),
+        actions: [
+          // Tổng sao: thứ duy nhất đo được tiến độ dài hạn ở chế độ này.
+          Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: Center(
+              child: ClayChip(
+                child: Text(
+                  '⭐ $earned / ${Balance.m3LevelCount * 3}',
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Expanded(
             // Tắt hiệu ứng kéo giãn của Android (StretchingOverscrollIndicator):
-            // khi cuộn hết cỡ nó BÓP nội dung ở mép lại — đo trên máy ảo, hàng
-            // ô cuối còn 150px trong khi các hàng khác 236px. Lưới ô vuông thì
+            // khi cuộn hết cỡ nó BÓP nội dung ở mép — đo trên máy ảo, hàng ô
+            // cuối còn 150px trong khi các hàng khác 236px. Lưới ô vuông thì
             // méo rất lộ, khác hẳn danh sách chữ.
             child: ScrollConfiguration(
               behavior:
                   ScrollConfiguration.of(context).copyWith(overscroll: false),
               child: GridView.builder(
-                padding: const EdgeInsets.all(12),
+                controller: _scroll,
+                padding: const EdgeInsets.fromLTRB(12, 12, 12, 4),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 4,
                   mainAxisSpacing: 10,
@@ -51,6 +101,7 @@ class Match3JourneyPage extends ConsumerWidget {
                   level: Match3Level(i + 1),
                   stars: starsOf(stars, i + 1),
                   unlocked: levelUnlocked(stars, i + 1),
+                  isCurrent: i + 1 == current,
                 ),
               ),
             ),
@@ -68,15 +119,27 @@ class _LevelTile extends StatelessWidget {
     required this.level,
     required this.stars,
     required this.unlocked,
+    required this.isCurrent,
   });
 
   final Match3Level level;
   final int stars;
   final bool unlocked;
 
+  /// Màn đang chơi dở / sắp chơi — được làm nổi để mắt nhìn vào là thấy ngay.
+  final bool isCurrent;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final cleared = stars > 0;
+    final bg = !unlocked
+        ? scheme.surfaceContainerHighest.withValues(alpha: 0.5)
+        : cleared
+            ? scheme.primaryContainer
+            : scheme.secondaryContainer;
+
     return InkWell(
       onTap: unlocked
           ? () => Navigator.of(context).push(
@@ -85,13 +148,23 @@ class _LevelTile extends StatelessWidget {
                 ),
               )
           : null,
-      borderRadius: BorderRadius.circular(14),
+      borderRadius: BorderRadius.circular(18),
       child: Ink(
         decoration: BoxDecoration(
-          color: unlocked
-              ? theme.colorScheme.primaryContainer
-              : theme.colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(14),
+          color: bg,
+          borderRadius: BorderRadius.circular(18),
+          border: isCurrent
+              ? Border.all(color: scheme.primary, width: 3)
+              : null,
+          boxShadow: unlocked
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.10),
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
+                  ),
+                ]
+              : null,
         ),
         // Ô là hình vuông cố định (do gridDelegate), còn nội dung thì co giãn
         // theo cỡ chữ hệ thống: ở cỡ chữ lớn, cột số-màn + biểu tượng + 3 sao
@@ -99,34 +172,34 @@ class _LevelTile extends StatelessWidget {
         // cả cụm cho vừa thay vì để tràn.
         child: FittedBox(
           fit: BoxFit.scaleDown,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (unlocked) ...[
-                Text(
-                  '${level.id}',
-                  style: theme.textTheme.titleLarge
-                      ?.copyWith(fontWeight: FontWeight.bold),
-                ),
-                // Màn thu thập: hiện luôn loại ô phải thu, để nhìn lưới là biết
-                // màn nào khác kiểu.
-                if (level.goal == Match3GoalKind.collect)
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (unlocked) ...[
                   Text(
-                    match3Icons[level.collectType],
-                    style: const TextStyle(fontSize: 12),
+                    '${level.id}',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: scheme.onPrimaryContainer,
+                    ),
                   ),
-              ] else
-                Icon(Icons.lock, color: theme.disabledColor),
-              const SizedBox(height: 2),
-              Text(
-                '★' * stars + '☆' * (3 - stars),
-                style: TextStyle(
-                  fontSize: 12,
-                  color: unlocked ? Colors.amber.shade800 : theme.disabledColor,
-                ),
-              ),
-            ],
+                  // Màn thu thập: hiện luôn loại ô phải thu, để nhìn lưới là
+                  // biết màn nào khác kiểu.
+                  if (level.goal == Match3GoalKind.collect)
+                    Text(
+                      match3Icons[level.collectType],
+                      style: const TextStyle(fontSize: 13),
+                    ),
+                ] else
+                  Icon(Icons.lock_rounded,
+                      size: 22, color: theme.disabledColor),
+                const SizedBox(height: 2),
+                Match3Stars(stars: stars, dim: !unlocked),
+              ],
+            ),
           ),
         ),
       ),

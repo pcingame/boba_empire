@@ -1110,11 +1110,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get m3Locked => 'Bloqueado';
 
   @override
-  String m3Target(String n) {
-    return 'Meta $n';
-  }
-
-  @override
   String m3MovesLeft(int n) {
     return '$n movimientos';
   }
@@ -1156,16 +1151,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get m3GoalReached => '¡Meta alcanzada!';
-
-  @override
-  String m3Collect(String icon) {
-    return 'Recoge $icon';
-  }
-
-  @override
-  String m3CollectShort(String icon) {
-    return 'Junta $icon';
-  }
 
   @override
   String m3NeedScore(String n, int star) {

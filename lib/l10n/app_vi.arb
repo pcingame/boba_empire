@@ -1,110 +1,279 @@
 {
   "@@locale": "vi",
-
   "appTitle": "Đế Chế Trà Sữa",
-
   "tapBrew": "Chạm pha trà",
   "coinsSuffix": " Xu",
   "incomePerSecond": "+{amount} / giây",
-  "@incomePerSecond": { "placeholders": { "amount": { "type": "String" } } },
+  "@incomePerSecond": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "instantCashButton": "Tiền tức thì",
   "instantCashSnack": "Tiền tức thì! +{amount} Xu",
-  "@instantCashSnack": { "placeholders": { "amount": { "type": "String" } } },
+  "@instantCashSnack": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "adNotReadySnack": "Quảng cáo chưa sẵn sàng, thử lại sau nhé",
-
   "stageHeader": "🏪 {name}",
-  "@stageHeader": { "placeholders": { "name": { "type": "String" } } },
+  "@stageHeader": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "unlockStageButton": "Mở khóa {cost} Xu",
-  "@unlockStageButton": { "placeholders": { "cost": { "type": "String" } } },
+  "@unlockStageButton": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
   "globalBonusChip": "🌐 +{percent}%",
-  "@globalBonusChip": { "placeholders": { "percent": { "type": "int" } } },
+  "@globalBonusChip": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "generatorSubtitle": "+{amount} Xu/giây mỗi cấp",
-  "@generatorSubtitle": { "placeholders": { "amount": { "type": "String" } } },
+  "@generatorSubtitle": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "buyButton": "{cost} Xu",
-  "@buyButton": { "placeholders": { "cost": { "type": "String" } } },
+  "@buyButton": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
   "buyModeMax": "MAX",
   "boostChip": "🔥 x3 · {seconds}s",
-  "@boostChip": { "placeholders": { "seconds": { "type": "int" } } },
+  "@boostChip": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
   "vipSnack": "Khách VIP! +{cash} Xu, +{gems} 💎",
-  "@vipSnack": { "placeholders": { "cash": { "type": "String" }, "gems": { "type": "int" } } },
-
+  "@vipSnack": {
+    "placeholders": {
+      "cash": {
+        "type": "String"
+      },
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
   "iapGemsSnack": "Đã nhận +{amount} 💎",
-  "@iapGemsSnack": { "placeholders": { "amount": { "type": "String" } } },
+  "@iapGemsSnack": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "iapRemoveAdsSnack": "Đã gỡ quảng cáo. Cảm ơn bạn!",
   "iapStarterSnack": "Gói khởi động: +{amount} 💎",
-  "@iapStarterSnack": { "placeholders": { "amount": { "type": "String" } } },
-
+  "@iapStarterSnack": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "genTraDen": "Trà đen",
   "genTranChau": "Trân châu",
   "genThach": "Thạch",
   "genPudding": "Pudding",
   "genKemNuong": "Trà sữa kem nướng",
   "genMatcha": "Matcha xô",
-
   "stage1": "Xe đẩy vỉa hè",
   "stage2": "Kiosk cửa hàng nhỏ",
   "stage3": "Chuỗi cafe sang trọng",
-
   "gemShopTitle": "Cửa Hàng 💎 (có {gems})",
-  "@gemShopTitle": { "placeholders": { "gems": { "type": "String" } } },
+  "@gemShopTitle": {
+    "placeholders": {
+      "gems": {
+        "type": "String"
+      }
+    }
+  },
   "gemBoostName": "Tăng thu nhập",
   "gemBoostDesc": "+{percent}% thu nhập vĩnh viễn mỗi cấp",
-  "@gemBoostDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@gemBoostDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "offlineCapName": "Kho lạnh offline",
   "offlineCapDesc": "+{hours} giờ trần tiền offline mỗi cấp",
-  "@offlineCapDesc": { "placeholders": { "hours": { "type": "int" } } },
+  "@offlineCapDesc": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "gemItemLevel": "{name}  Lv.{level}",
-  "@gemItemLevel": { "placeholders": { "name": { "type": "String" }, "level": { "type": "int" } } },
+  "@gemItemLevel": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
   "gemCost": "{cost} 💎",
-  "@gemCost": { "placeholders": { "cost": { "type": "int" } } },
+  "@gemCost": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
   "gemInstantStageName": "Mở giai đoạn tức thì",
   "gemInstantStageDesc": "Mở {stage} ngay, bỏ qua chi phí Xu",
-  "@gemInstantStageDesc": { "placeholders": { "stage": { "type": "String" } } },
+  "@gemInstantStageDesc": {
+    "placeholders": {
+      "stage": {
+        "type": "String"
+      }
+    }
+  },
   "gemStageUnlockedSnack": "Đã mở {stage}!",
-  "@gemStageUnlockedSnack": { "placeholders": { "stage": { "type": "String" } } },
+  "@gemStageUnlockedSnack": {
+    "placeholders": {
+      "stage": {
+        "type": "String"
+      }
+    }
+  },
   "gemTimeSkipName": "Tua nhanh",
   "gemTimeSkipDesc": "Nhận ngay {hours} giờ sản xuất",
-  "@gemTimeSkipDesc": { "placeholders": { "hours": { "type": "int" } } },
+  "@gemTimeSkipDesc": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "gemTimeSkipRemaining": "Còn {remaining}/{max} lượt hôm nay",
-  "@gemTimeSkipRemaining": { "placeholders": { "remaining": { "type": "int" }, "max": { "type": "int" } } },
+  "@gemTimeSkipRemaining": {
+    "placeholders": {
+      "remaining": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
   "iapSectionTitle": "Nạp bằng tiền thật",
   "restorePurchases": "Khôi phục giao dịch",
   "close": "Đóng",
-
   "iapGemsDesc": "Nạp thêm Kim Cương để mua vật phẩm trong Cửa hàng.",
   "iapRemoveAdsTitle": "Gỡ quảng cáo",
   "iapRemoveAdsDesc": "Bỏ qua mọi quảng cáo — vẫn nhận đủ thưởng, không cần xem.",
   "iapStarterTitle": "Gói khởi động",
   "iapStarterDesc": "Một lần: nhận ngay một túi Kim Cương lớn.",
-
   "prestigeTitle": "Nhượng Quyền 🏪",
   "prestigeIntro": "Mỗi ⭐ Sao cho +{percent}% thu nhập vĩnh viễn.",
-  "@prestigeIntro": { "placeholders": { "percent": { "type": "int" } } },
+  "@prestigeIntro": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "prestigeStarsNow": "Sao hiện có",
   "prestigeStarsValue": "{stars} ⭐  (+{percent}%)",
-  "@prestigeStarsValue": { "placeholders": { "stars": { "type": "int" }, "percent": { "type": "int" } } },
+  "@prestigeStarsValue": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "prestigeNow": "Nhượng quyền bây giờ",
   "prestigeGain": "+{stars} ⭐",
-  "@prestigeGain": { "placeholders": { "stars": { "type": "int" } } },
+  "@prestigeGain": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      }
+    }
+  },
   "prestigeTotalBonus": "Tổng bonus sau đó",
   "prestigeTotalValue": "+{percent}%",
-  "@prestigeTotalValue": { "placeholders": { "percent": { "type": "int" } } },
+  "@prestigeTotalValue": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "prestigeWarning": "⚠️ Reset Xu, cấp nâng cấp và giai đoạn (perk kho Sao có thể giữ lại một phần).",
   "cancel": "Huỷ",
   "prestigeConfirm": "Nhượng quyền (+{stars} ⭐)",
-  "@prestigeConfirm": { "placeholders": { "stars": { "type": "int" } } },
+  "@prestigeConfirm": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      }
+    }
+  },
   "prestigeNotEnough": "Chưa đủ",
   "prestigeSuccess": "Nhượng quyền thành công! +{stars} ⭐",
-  "@prestigeSuccess": { "placeholders": { "stars": { "type": "int" } } },
-
+  "@prestigeSuccess": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      }
+    }
+  },
   "offlineTitle": "Chào mừng trở lại! 🧋",
   "offlineBody": "Quán vẫn bán trong lúc bạn vắng mặt.\nBạn kiếm được {amount} Xu.",
-  "@offlineBody": { "placeholders": { "amount": { "type": "String" } } },
+  "@offlineBody": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "offlineClaim": "Nhận",
   "offlineDoubleButton": "Xem QC ×2",
   "offlineDoubleSnack": "Nhân đôi! +{amount} Xu",
-  "@offlineDoubleSnack": { "placeholders": { "amount": { "type": "String" } } },
-
+  "@offlineDoubleSnack": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "howToPlayTitle": "Cách chơi",
   "htpTap": "🧋 Chạm ly để pha trà và kiếm Xu.",
   "htpBuy": "🛒 Mua nâng cấp để có thu nhập tự động mỗi giây.",
@@ -121,50 +290,146 @@
   "dailyPrompt": "Nhận quà đăng nhập hôm nay!",
   "dailyClaim": "Nhận quà",
   "dailyReward": "+{gems} 💎",
-  "@dailyReward": { "placeholders": { "gems": { "type": "String" } } },
+  "@dailyReward": {
+    "placeholders": {
+      "gems": {
+        "type": "String"
+      }
+    }
+  },
   "dailyStreak": "Chuỗi {days} ngày 🔥",
-  "@dailyStreak": { "placeholders": { "days": { "type": "int" } } },
+  "@dailyStreak": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
   "achievementsTitle": "Thành tựu",
   "achEarn": "Kiếm tổng {amount} Xu",
-  "@achEarn": { "placeholders": { "amount": { "type": "String" } } },
+  "@achEarn": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "achStage": "Đạt giai đoạn {n}",
-  "@achStage": { "placeholders": { "n": { "type": "int" } } },
+  "@achStage": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "achLevels": "Sở hữu tổng {n} cấp nâng cấp",
-  "@achLevels": { "placeholders": { "n": { "type": "int" } } },
+  "@achLevels": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "achPrestige": "Nhượng quyền ({n}★ trở lên)",
-  "@achPrestige": { "placeholders": { "n": { "type": "int" } } },
+  "@achPrestige": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "achUnlocked": "🏆 Mở khoá thành tựu! +{gems} 💎",
-  "@achUnlocked": { "placeholders": { "gems": { "type": "String" } } },
+  "@achUnlocked": {
+    "placeholders": {
+      "gems": {
+        "type": "String"
+      }
+    }
+  },
   "prestigeShopTitle": "Kho Sao ⭐",
   "prestigeShopSpendable": "Còn {stars} ⭐ để tiêu",
-  "@prestigeShopSpendable": { "placeholders": { "stars": { "type": "int" } } },
+  "@prestigeShopSpendable": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      }
+    }
+  },
   "prestigeIncomeName": "Siêu thu nhập",
   "prestigeIncomeDesc": "+{percent}% thu nhập vĩnh viễn mỗi cấp",
-  "@prestigeIncomeDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@prestigeIncomeDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "prestigeTapName": "Siêu chạm",
   "prestigeTapDesc": "+{percent}% giá trị chạm mỗi cấp",
-  "@prestigeTapDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@prestigeTapDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "prestigeOfflineName": "Siêu offline",
   "prestigeOfflineDesc": "+{percent}% thu nhập lúc vắng mỗi cấp",
-  "@prestigeOfflineDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@prestigeOfflineDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "prestigeStartCashName": "Vốn khởi nghiệp",
   "prestigeStartCashDesc": "Nhận Xu ngay sau Nhượng quyền (tăng mỗi cấp)",
   "prestigeKeepStageName": "Giữ giai đoạn",
   "prestigeKeepStageDesc": "Sau Nhượng quyền giữ thêm 1 giai đoạn mỗi cấp",
   "prestigeDiscountName": "Mua sỉ",
   "prestigeDiscountDesc": "−{percent}% giá nâng cấp nguồn thu mỗi cấp",
-  "@prestigeDiscountDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@prestigeDiscountDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "prestigeAutoBuyName": "Tự động mua",
   "prestigeAutoBuyDesc": "Mở khoá công tắc tự mua nguồn đáng mua nhất",
   "autoBuyLabel": "Tự động mua",
   "prestigeStarCost": "{cost} ⭐",
-  "@prestigeStarCost": { "placeholders": { "cost": { "type": "int" } } },
+  "@prestigeStarCost": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
   "questTap": "Chạm pha trà {n} lần",
-  "@questTap": { "placeholders": { "n": { "type": "int" } } },
+  "@questTap": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "questBuy": "Mua {n} nâng cấp",
-  "@questBuy": { "placeholders": { "n": { "type": "int" } } },
+  "@questBuy": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "questRepeatEarn": "Kiếm thêm {amount} Xu",
-  "@questRepeatEarn": { "placeholders": { "amount": { "type": "String" } } },
+  "@questRepeatEarn": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "questClaim": "Nhận",
   "iapDoubleTitle": "x2 Thu nhập (vĩnh viễn)",
   "iapDoubleDesc": "Gấp đôi mọi thu nhập tự động, mãi mãi",
@@ -172,17 +437,41 @@
   "rewardsTitle": "Kiếm thêm 🎁",
   "rewardX2Name": "x2 thu nhập 24 giờ",
   "rewardX2Active": "Đang bật · còn {hours}h",
-  "@rewardX2Active": { "placeholders": { "hours": { "type": "int" } } },
+  "@rewardX2Active": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "rewardX2Snack": "Đã bật x2 thu nhập 24 giờ!",
   "rewardGemsName": "Nhận {gems} 💎",
-  "@rewardGemsName": { "placeholders": { "gems": { "type": "int" } } },
+  "@rewardGemsName": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
   "rewardTimeSkip": "Tua nhanh {hours} giờ",
-  "@rewardTimeSkip": { "placeholders": { "hours": { "type": "int" } } },
+  "@rewardTimeSkip": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
   "watchAd": "Xem QC",
   "piggyName": "Heo đất",
   "piggyBreak": "Đập",
   "piggySnack": "Đập heo: +{gems} 💎",
-  "@piggySnack": { "placeholders": { "gems": { "type": "String" } } },
+  "@piggySnack": {
+    "placeholders": {
+      "gems": {
+        "type": "String"
+      }
+    }
+  },
   "iapVipTitle": "VIP Pass 30 ngày 👑",
   "iapVipDesc": "Gỡ QC + x2 thu nhập + 50💎/ngày + trần offline+",
   "iapVipSnack": "Đã kích hoạt VIP 30 ngày! 👑",
@@ -242,9 +531,14 @@
   "wheelName": "Vòng quay may mắn 🎡",
   "spinFree": "Quay miễn phí",
   "spinAd": "Xem QC để quay",
-
   "storyChapterLabel": "Chương {n}",
-  "@storyChapterLabel": { "placeholders": { "n": { "type": "int" } } },
+  "@storyChapterLabel": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "storyContinue": "Tiếp tục",
   "storyChoosePrompt": "Chọn hướng đi — không đổi lại được:",
   "storyLogTitle": "Cốt truyện",
@@ -256,7 +550,6 @@
   "rivalMeterBehind": "Đang bị lấn",
   "rivalResolvedSnack": "Đã đối phó. Đối thủ chùn lại.",
   "rivalIgnoredSnack": "Bạn làm ngơ — đối thủ được đà lấn tới.",
-
   "navArena": "Đấu Trường",
   "navCompete": "Thi đấu",
   "arenaTitle": "Đấu Trường",
@@ -271,65 +564,152 @@
   "arenaTapButton": "Chạm ly",
   "arenaResolving": "Đang chốt trận…",
   "arenaTierButton": "Nâng ×2 ({cost} Xu)",
-  "@arenaTierButton": { "placeholders": { "cost": { "type": "String" } } },
+  "@arenaTierButton": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
   "arenaTimeLeft": "Còn {seconds}s",
-  "@arenaTimeLeft": { "placeholders": { "seconds": { "type": "int" } } },
+  "@arenaTimeLeft": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
   "arenaOnlineCount": "{count} người đang online",
-  "@arenaOnlineCount": { "placeholders": { "count": { "type": "int" } } },
+  "@arenaOnlineCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "arenaYourScore": "Điểm của bạn",
   "arenaOpponentScore": "Đối thủ",
   "arenaResultWin": "Bạn thắng! 🎉",
   "arenaResultLose": "Bạn thua rồi",
   "arenaResultDraw": "Hoà",
   "arenaResultReward": "+{gems} 💎",
-  "@arenaResultReward": { "placeholders": { "gems": { "type": "int" } } },
+  "@arenaResultReward": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
   "arenaCloseButton": "Đóng",
-
   "cloudSaveMenuTitle": "Sao lưu tiến trình",
   "cloudSaveMenuLinked": "Đã liên kết: {email}",
-  "@cloudSaveMenuLinked": { "placeholders": { "email": { "type": "String" } } },
+  "@cloudSaveMenuLinked": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveMenuUnlinked": "Chưa liên kết — có thể mất tiến trình nếu gỡ app",
   "cloudSaveTitle": "Sao lưu tiến trình",
   "cloudSaveIntro": "Liên kết email để khôi phục được tiến trình nếu gỡ app hoặc đổi máy.",
   "cloudSaveEmailHint": "Email của bạn",
   "cloudSaveSendCode": "Gửi mã",
   "cloudSaveCodeSentTo": "Đã gửi mã xác nhận tới {email}",
-  "@cloudSaveCodeSentTo": { "placeholders": { "email": { "type": "String" } } },
+  "@cloudSaveCodeSentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveCodeHint": "Mã xác nhận",
   "cloudSaveVerify": "Xác nhận",
   "cloudSaveChangeEmail": "Đổi email khác",
   "cloudSaveResend": "Gửi lại mã",
   "cloudSaveResendIn": "Gửi lại mã ({seconds}s)",
-  "@cloudSaveResendIn": { "placeholders": { "seconds": { "type": "int" } } },
+  "@cloudSaveResendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
   "cloudSaveConflictTitle": "Tìm thấy save khác trên cloud",
   "cloudSaveConflictLocal": "Máy này: {amount} Xu cả đời",
-  "@cloudSaveConflictLocal": { "placeholders": { "amount": { "type": "String" } } },
+  "@cloudSaveConflictLocal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveConflictCloud": "Trên cloud: {amount} Xu cả đời",
-  "@cloudSaveConflictCloud": { "placeholders": { "amount": { "type": "String" } } },
+  "@cloudSaveConflictCloud": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveRestoreButton": "Khôi phục từ cloud",
   "cloudSaveKeepLocalButton": "Giữ máy này",
   "cloudSaveLinkedStatus": "Đã liên kết: {email}",
-  "@cloudSaveLinkedStatus": { "placeholders": { "email": { "type": "String" } } },
+  "@cloudSaveLinkedStatus": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveDisconnect": "Ngắt kết nối",
   "cloudSaveRetry": "Thử lại",
-
   "leaderboardMenuTitle": "Bảng xếp hạng",
   "leaderboardTitle": "Bảng xếp hạng",
   "leaderboardNicknameIntro": "Đặt tên hiển thị trên bảng xếp hạng (đổi được sau):",
   "leaderboardNicknameHint": "Tên của bạn",
   "leaderboardSubmit": "Xác nhận",
   "leaderboardYourRank": "Hạng của bạn: #{rank}",
-  "@leaderboardYourRank": { "placeholders": { "rank": { "type": "int" } } },
+  "@leaderboardYourRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardStars": "{stars} ⭐",
-  "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
+  "@leaderboardStars": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardEmpty": "Chưa có ai trên bảng xếp hạng — là bạn đây!",
   "leaderboardRewardSnack": "🎉 Bạn đang giữ hạng cao! +{gems} 💎",
-  "@leaderboardRewardSnack": { "placeholders": { "gems": { "type": "int" } } },
+  "@leaderboardRewardSnack": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardRewardInfo": "Top 1: {top1}💎 · Top 2-3: {top23}💎 · Top 4-10: {top410}💎 — mỗi 24 giờ nếu còn giữ hạng",
-  "@leaderboardRewardInfo": { "placeholders": { "top1": { "type": "int" }, "top23": { "type": "int" }, "top410": { "type": "int" } } },
+  "@leaderboardRewardInfo": {
+    "placeholders": {
+      "top1": {
+        "type": "int"
+      },
+      "top23": {
+        "type": "int"
+      },
+      "top410": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardChangeName": "Đổi tên",
   "leaderboardRetry": "Thử lại",
-
   "storySpeedrunMenuTitle": "Tốc độ hoàn thành",
   "storySpeedrunTitle": "Bảng xếp hạng tốc độ",
   "storySpeedrunNotCompletedYet": "Bạn chưa hoàn thành cốt truyện — hoàn thành Chương 18 để được xếp hạng.",
@@ -337,42 +717,104 @@
   "storySpeedrunTabExt": "Hồi 2",
   "storySpeedrunExtNotCompletedYet": "Bạn chưa hoàn thành Hồi 2 — hoàn thành Chương 28 để được xếp hạng.",
   "storySpeedrunEmpty": "Chưa có ai hoàn thành cốt truyện — là bạn đây!",
-
   "arenaLeaderboardMenuTitle": "Bảng xếp hạng PK",
   "arenaLeaderboardTitle": "Bảng xếp hạng PK",
   "arenaLeaderboardNotPlayedYet": "Bạn chưa đấu trận nào — thắng 1 trận Đấu Trường để xuất hiện ở đây.",
   "arenaLeaderboardRecord": "{wins} thắng - {losses} bại",
-  "@arenaLeaderboardRecord": { "placeholders": { "wins": { "type": "int" }, "losses": { "type": "int" } } },
+  "@arenaLeaderboardRecord": {
+    "placeholders": {
+      "wins": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionTitle": "Kỷ Nguyên",
   "ascensionOpen": "Kỷ Nguyên ⏳",
   "ascensionIntro": "Đổi toàn bộ Sao và perk Kho Sao lấy ⏳ Điểm Kỷ Nguyên — perk vĩnh viễn mạnh hơn. Bạn sẽ chơi lại từ đầu.",
   "ascensionProgress": "Tiến độ tới ngưỡng mở: {percent}%",
-  "@ascensionProgress": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionProgress": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionPointsNow": "Điểm đang có",
   "ascensionPointsGain": "Nhận nếu Kỷ Nguyên hoá",
   "ascensionPointsValue": "{points} ⏳",
-  "@ascensionPointsValue": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionPointsValue": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionWarning": "⚠️ Reset Sao, mọi perk Kho Sao, Xu, cấp nâng cấp và giai đoạn. Giữ 💎, thành tựu, cốt truyện. Sao trên bảng xếp hạng về 0 (thứ hạng theo tổng thu nhập không đổi).",
   "ascensionConfirm": "Kỷ Nguyên hoá (+{points} ⏳)",
-  "@ascensionConfirm": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionConfirm": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionNotEnough": "Chưa đủ điều kiện",
   "ascensionSuccess": "Bắt đầu Kỷ Nguyên mới! +{points} ⏳",
-  "@ascensionSuccess": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionSuccess": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionShopTitle": "Perk Kỷ Nguyên ⏳",
   "ascensionShopSpendable": "Còn {points} ⏳ để tiêu",
-  "@ascensionShopSpendable": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionShopSpendable": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionCost": "{cost} ⏳",
-  "@ascensionCost": { "placeholders": { "cost": { "type": "int" } } },
+  "@ascensionCost": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionMaxed": "Tối đa",
   "ascensionIncomeName": "Nguồn năng lượng",
   "ascensionIncomeDesc": "+{percent}% thu nhập mỗi cấp",
-  "@ascensionIncomeDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionIncomeDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionStarBonusName": "Ngôi sao rực rỡ",
   "ascensionStarBonusDesc": "+{percent}% sức mạnh mỗi Sao, mỗi cấp",
-  "@ascensionStarBonusDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionStarBonusDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionStarGainName": "Tinh tú dồi dào",
   "ascensionStarGainDesc": "+{percent}% tốc độ tích Sao, mỗi cấp",
-  "@ascensionStarGainDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionStarGainDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "achAscend": "Kỷ Nguyên hoá lần đầu",
   "dailyQuestsTitle": "Nhiệm vụ ngày",
   "dailyQuestsChip": "Nhiệm vụ",
@@ -380,9 +822,21 @@
   "dailyQuestsResetsIn": "Đổi nhiệm vụ sau {time}",
   "dailyQuestClaimed": "Đã nhận",
   "dqTap": "Chạm ly {n} lần",
-  "@dqTap": { "placeholders": { "n": { "type": "int" } } },
+  "@dqTap": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "dqBuy": "Nâng cấp {n} lần",
-  "@dqBuy": { "placeholders": { "n": { "type": "int" } } },
+  "@dqBuy": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "dqEarn": "Kiếm {amount} Xu",
   "dqCat": "Bắt mèo Mưa vàng",
   "dqVip": "Phục vụ khách VIP",
@@ -394,12 +848,22 @@
   "navMatch3": "Ghép 3",
   "m3Title": "Hành trình Ghép 3",
   "m3Level": "Màn {n}",
-  "@m3Level": { "placeholders": { "n": { "type": "int" } } },
+  "@m3Level": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "m3Locked": "Chưa mở",
-  "m3Target": "Mục tiêu {n}",
-  "@m3Target": { "placeholders": { "n": { "type": "String" } } },
   "m3MovesLeft": "Còn {n} nước",
-  "@m3MovesLeft": { "placeholders": { "n": { "type": "int" } } },
+  "@m3MovesLeft": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "m3Score": "Điểm",
   "m3Win": "Qua màn!",
   "m3Lose": "Chưa đạt mục tiêu",
@@ -409,16 +873,39 @@
   "m3Reward": "Thưởng",
   "m3NoReward": "Đã nhận thưởng màn này rồi",
   "m3AdMoves": "Xem QC: +{n} nước",
-  "@m3AdMoves": { "placeholders": { "n": { "type": "int" } } },
+  "@m3AdMoves": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "m3KeepPlaying": "Chơi nốt",
   "m3Pause": "Tạm nghỉ",
   "m3GoalReached": "Đạt mục tiêu!",
-  "m3Collect": "Thu thập {icon}",
-  "@m3Collect": { "placeholders": { "icon": { "type": "String" } } },
-  "m3CollectShort": "Thu {icon}",
-  "@m3CollectShort": { "placeholders": { "icon": { "type": "String" } } },
   "m3NeedScore": "Còn thiếu {n} điểm nữa là {star}★",
-  "@m3NeedScore": { "placeholders": { "n": { "type": "String" }, "star": { "type": "int" } } },
+  "@m3NeedScore": {
+    "placeholders": {
+      "n": {
+        "type": "String"
+      },
+      "star": {
+        "type": "int"
+      }
+    }
+  },
   "m3NeedCollect": "Còn thiếu {n} ô {icon} nữa là {star}★",
-  "@m3NeedCollect": { "placeholders": { "n": { "type": "int" }, "icon": { "type": "String" }, "star": { "type": "int" } } }
+  "@m3NeedCollect": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "icon": {
+        "type": "String"
+      },
+      "star": {
+        "type": "int"
+      }
+    }
+  }
 }

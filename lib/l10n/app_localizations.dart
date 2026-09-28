@@ -1924,12 +1924,6 @@ abstract class AppLocalizations {
   /// **'Chưa mở'**
   String get m3Locked;
 
-  /// No description provided for @m3Target.
-  ///
-  /// In vi, this message translates to:
-  /// **'Mục tiêu {n}'**
-  String m3Target(String n);
-
   /// No description provided for @m3MovesLeft.
   ///
   /// In vi, this message translates to:
@@ -2007,18 +2001,6 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đạt mục tiêu!'**
   String get m3GoalReached;
-
-  /// No description provided for @m3Collect.
-  ///
-  /// In vi, this message translates to:
-  /// **'Thu thập {icon}'**
-  String m3Collect(String icon);
-
-  /// No description provided for @m3CollectShort.
-  ///
-  /// In vi, this message translates to:
-  /// **'Thu {icon}'**
-  String m3CollectShort(String icon);
 
   /// No description provided for @m3NeedScore.
   ///

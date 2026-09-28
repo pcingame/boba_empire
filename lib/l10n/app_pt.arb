@@ -1,15 +1,12 @@
 {
   "@@locale": "pt",
-
   "appTitle": "Boba Empire",
-
   "tapBrew": "Toque para preparar",
   "coinsSuffix": " Moedas",
   "incomePerSecond": "+{amount} / seg",
   "instantCashButton": "Dinheiro instantâneo",
   "instantCashSnack": "Dinheiro instantâneo! +{amount} Moedas",
   "adNotReadySnack": "Anúncio ainda não está pronto, tente novamente em instantes",
-
   "stageHeader": "🏪 {name}",
   "unlockStageButton": "Desbloquear {cost} Moedas",
   "globalBonusChip": "🌐 +{percent}%",
@@ -18,22 +15,18 @@
   "buyModeMax": "MAX",
   "boostChip": "🔥 x3 · {seconds}s",
   "vipSnack": "Cliente VIP! +{cash} Moedas, +{gems} 💎",
-
   "iapGemsSnack": "Recebido +{amount} 💎",
   "iapRemoveAdsSnack": "Anúncios removidos. Obrigado!",
   "iapStarterSnack": "Pacote inicial: +{amount} 💎",
-
   "genTraDen": "Chá Preto",
   "genTranChau": "Pérolas de Tapioca",
   "genThach": "Geleia de Ervas",
   "genPudding": "Pudim",
   "genKemNuong": "Chá com Leite Crème Brûlée",
   "genMatcha": "Balde de Matchá",
-
   "stage1": "Carrinho de Rua",
   "stage2": "Quiosque Pequeno",
   "stage3": "Rede de Cafés de Luxo",
-
   "gemShopTitle": "Loja 💎 (você tem {gems})",
   "gemBoostName": "Aumento de renda",
   "gemBoostDesc": "+{percent}% de renda permanente por nível",
@@ -50,13 +43,11 @@
   "iapSectionTitle": "Comprar com dinheiro real",
   "restorePurchases": "Restaurar compras",
   "close": "Fechar",
-
   "iapGemsDesc": "Recarregue Gemas para comprar itens na Loja.",
   "iapRemoveAdsTitle": "Remover anúncios",
   "iapRemoveAdsDesc": "Pule todos os anúncios — você ainda recebe todas as recompensas, sem precisar assistir.",
   "iapStarterTitle": "Pacote inicial",
   "iapStarterDesc": "Única vez: receba uma grande bolsa de Gemas na hora.",
-
   "prestigeTitle": "Franquia 🏪",
   "prestigeIntro": "Cada ⭐ Estrela dá +{percent}% de renda permanente.",
   "prestigeStarsNow": "Estrelas atuais",
@@ -70,13 +61,11 @@
   "prestigeConfirm": "Franquear (+{stars} ⭐)",
   "prestigeNotEnough": "Insuficiente",
   "prestigeSuccess": "Franquia bem-sucedida! +{stars} ⭐",
-
   "offlineTitle": "Bem-vindo de volta! 🧋",
   "offlineBody": "A loja continuou vendendo enquanto você estava fora.\nVocê ganhou {amount} Moedas.",
   "offlineClaim": "Receber",
   "offlineDoubleButton": "Ver anúncio ×2",
   "offlineDoubleSnack": "Dobrado! +{amount} Moedas",
-
   "howToPlayTitle": "Como jogar",
   "htpTap": "🧋 Toque no copo para preparar chá e ganhar Moedas.",
   "htpBuy": "🛒 Compre melhorias para ter renda automática a cada segundo.",
@@ -194,7 +183,6 @@
   "wheelName": "Roleta da Sorte 🎡",
   "spinFree": "Giro grátis",
   "spinAd": "Ver anúncio para girar",
-
   "storyChapterLabel": "Capítulo {n}",
   "storyContinue": "Continuar",
   "storyChoosePrompt": "Escolha seu caminho — não dá para desfazer:",
@@ -207,7 +195,6 @@
   "rivalMeterBehind": "Perdendo terreno",
   "rivalResolvedSnack": "Resolvido. O rival recua.",
   "rivalIgnoredSnack": "Você deixa passar — o rival ganha terreno.",
-
   "navArena": "Arena",
   "navCompete": "Competir",
   "arenaTitle": "Arena",
@@ -222,65 +209,152 @@
   "arenaTapButton": "Toque no copo",
   "arenaResolving": "Encerrando a partida…",
   "arenaTierButton": "Melhorar ×2 ({cost} Moedas)",
-  "@arenaTierButton": { "placeholders": { "cost": { "type": "String" } } },
+  "@arenaTierButton": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
   "arenaTimeLeft": "Faltam {seconds}s",
-  "@arenaTimeLeft": { "placeholders": { "seconds": { "type": "int" } } },
+  "@arenaTimeLeft": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
   "arenaOnlineCount": "{count, plural, =1{1 jogador online} other{{count} jogadores online}}",
-  "@arenaOnlineCount": { "placeholders": { "count": { "type": "int" } } },
+  "@arenaOnlineCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "arenaYourScore": "Sua pontuação",
   "arenaOpponentScore": "Rival",
   "arenaResultWin": "Você venceu! 🎉",
   "arenaResultLose": "Você perdeu",
   "arenaResultDraw": "Empate",
   "arenaResultReward": "+{gems} 💎",
-  "@arenaResultReward": { "placeholders": { "gems": { "type": "int" } } },
+  "@arenaResultReward": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
   "arenaCloseButton": "Fechar",
-
   "cloudSaveMenuTitle": "Backup do progresso",
   "cloudSaveMenuLinked": "Vinculado: {email}",
-  "@cloudSaveMenuLinked": { "placeholders": { "email": { "type": "String" } } },
+  "@cloudSaveMenuLinked": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveMenuUnlinked": "Não vinculado — pode perder o progresso ao desinstalar",
   "cloudSaveTitle": "Backup do progresso",
   "cloudSaveIntro": "Vincule um email para recuperar seu progresso ao desinstalar ou trocar de aparelho.",
   "cloudSaveEmailHint": "Seu email",
   "cloudSaveSendCode": "Enviar código",
   "cloudSaveCodeSentTo": "Código de confirmação enviado para {email}",
-  "@cloudSaveCodeSentTo": { "placeholders": { "email": { "type": "String" } } },
+  "@cloudSaveCodeSentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveCodeHint": "Código de confirmação",
   "cloudSaveVerify": "Verificar",
   "cloudSaveChangeEmail": "Usar outro email",
   "cloudSaveResend": "Reenviar código",
   "cloudSaveResendIn": "Reenviar código ({seconds}s)",
-  "@cloudSaveResendIn": { "placeholders": { "seconds": { "type": "int" } } },
+  "@cloudSaveResendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
   "cloudSaveConflictTitle": "Encontramos outro salvamento na nuvem",
   "cloudSaveConflictLocal": "Este aparelho: {amount} Moedas totais",
-  "@cloudSaveConflictLocal": { "placeholders": { "amount": { "type": "String" } } },
+  "@cloudSaveConflictLocal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveConflictCloud": "Na nuvem: {amount} Moedas totais",
-  "@cloudSaveConflictCloud": { "placeholders": { "amount": { "type": "String" } } },
+  "@cloudSaveConflictCloud": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveRestoreButton": "Restaurar da nuvem",
   "cloudSaveKeepLocalButton": "Manter este aparelho",
   "cloudSaveLinkedStatus": "Vinculado: {email}",
-  "@cloudSaveLinkedStatus": { "placeholders": { "email": { "type": "String" } } },
+  "@cloudSaveLinkedStatus": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveDisconnect": "Desvincular",
   "cloudSaveRetry": "Tentar de novo",
-
   "leaderboardMenuTitle": "Classificação",
   "leaderboardTitle": "Classificação",
   "leaderboardNicknameIntro": "Escolha um nome para a classificação (pode mudar depois):",
   "leaderboardNicknameHint": "Seu nome",
   "leaderboardSubmit": "Confirmar",
   "leaderboardYourRank": "Sua posição: #{rank}",
-  "@leaderboardYourRank": { "placeholders": { "rank": { "type": "int" } } },
+  "@leaderboardYourRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardStars": "{stars} ⭐",
-  "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
+  "@leaderboardStars": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardEmpty": "Ainda ninguém na classificação — é você!",
   "leaderboardRewardSnack": "🎉 Você está em uma posição alta! +{gems} 💎",
-  "@leaderboardRewardSnack": { "placeholders": { "gems": { "type": "int" } } },
+  "@leaderboardRewardSnack": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardRewardInfo": "Top 1: {top1}💎 · Top 2-3: {top23}💎 · Top 4-10: {top410}💎 — a cada 24h enquanto estiver classificado",
-  "@leaderboardRewardInfo": { "placeholders": { "top1": { "type": "int" }, "top23": { "type": "int" }, "top410": { "type": "int" } } },
+  "@leaderboardRewardInfo": {
+    "placeholders": {
+      "top1": {
+        "type": "int"
+      },
+      "top23": {
+        "type": "int"
+      },
+      "top410": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardChangeName": "Mudar nome",
   "leaderboardRetry": "Tentar de novo",
-
   "storySpeedrunMenuTitle": "Speedrun",
   "storySpeedrunTitle": "Classificação de Speedrun",
   "storySpeedrunNotCompletedYet": "Você ainda não terminou a história — complete o Capítulo 18 para entrar na classificação.",
@@ -288,42 +362,104 @@
   "storySpeedrunTabExt": "Ato 2",
   "storySpeedrunExtNotCompletedYet": "Você ainda não concluiu o Ato 2 — conclua o Capítulo 28 para entrar no ranking.",
   "storySpeedrunEmpty": "Ninguém terminou a história ainda — seja o primeiro!",
-
   "arenaLeaderboardMenuTitle": "Ranking PK",
   "arenaLeaderboardTitle": "Ranking PK",
   "arenaLeaderboardNotPlayedYet": "Você ainda não jogou nenhuma partida na Arena — vença uma para aparecer aqui.",
   "arenaLeaderboardRecord": "{wins}V - {losses}D",
-  "@arenaLeaderboardRecord": { "placeholders": { "wins": { "type": "int" }, "losses": { "type": "int" } } },
+  "@arenaLeaderboardRecord": {
+    "placeholders": {
+      "wins": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionTitle": "Ascensão",
   "ascensionOpen": "Ascensão ⏳",
   "ascensionIntro": "Troque todas as Estrelas e melhorias da Loja de Estrelas por ⏳ Pontos de Ascensão — melhorias permanentes mais fortes. Você recomeça.",
   "ascensionProgress": "Progresso para desbloquear: {percent}%",
-  "@ascensionProgress": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionProgress": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionPointsNow": "Pontos atuais",
   "ascensionPointsGain": "Ganha se ascender",
   "ascensionPointsValue": "{points} ⏳",
-  "@ascensionPointsValue": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionPointsValue": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionWarning": "⚠️ Reinicia Estrelas, todas as melhorias da Loja de Estrelas, Moedas, níveis e etapa. Mantém 💎, conquistas e história. Suas Estrelas no ranking voltam a 0 (a posição por ganhos totais não muda).",
   "ascensionConfirm": "Ascender (+{points} ⏳)",
-  "@ascensionConfirm": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionConfirm": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionNotEnough": "Ainda indisponível",
   "ascensionSuccess": "Uma nova era começa! +{points} ⏳",
-  "@ascensionSuccess": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionSuccess": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionShopTitle": "Melhorias de Ascensão ⏳",
   "ascensionShopSpendable": "{points} ⏳ para gastar",
-  "@ascensionShopSpendable": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionShopSpendable": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionCost": "{cost} ⏳",
-  "@ascensionCost": { "placeholders": { "cost": { "type": "int" } } },
+  "@ascensionCost": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionMaxed": "Máx.",
   "ascensionIncomeName": "Fonte de energia",
   "ascensionIncomeDesc": "+{percent}% de renda por nível",
-  "@ascensionIncomeDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionIncomeDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionStarBonusName": "Estrelas radiantes",
   "ascensionStarBonusDesc": "+{percent}% de poder por Estrela, por nível",
-  "@ascensionStarBonusDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionStarBonusDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionStarGainName": "Estrelas abundantes",
   "ascensionStarGainDesc": "+{percent}% de ganho de Estrelas, por nível",
-  "@ascensionStarGainDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionStarGainDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "achAscend": "Ascenda pela primeira vez",
   "dailyQuestsTitle": "Missões diárias",
   "dailyQuestsChip": "Missões",
@@ -331,9 +467,21 @@
   "dailyQuestsResetsIn": "Novas missões em {time}",
   "dailyQuestClaimed": "Recebido",
   "dqTap": "Toque no copo {n} vezes",
-  "@dqTap": { "placeholders": { "n": { "type": "int" } } },
+  "@dqTap": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "dqBuy": "Compre {n} melhorias",
-  "@dqBuy": { "placeholders": { "n": { "type": "int" } } },
+  "@dqBuy": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "dqEarn": "Ganhe {amount} Moedas",
   "dqCat": "Pegue o Gato Dourado",
   "dqVip": "Atenda um cliente VIP",
@@ -346,7 +494,6 @@
   "m3Title": "Jornada Match-3",
   "m3Level": "Nível {n}",
   "m3Locked": "Bloqueado",
-  "m3Target": "Meta {n}",
   "m3MovesLeft": "{n} jogadas restantes",
   "m3Score": "Pontos",
   "m3Win": "Nível concluído!",
@@ -360,8 +507,6 @@
   "m3KeepPlaying": "Continuar jogando",
   "m3Pause": "Fazer uma pausa",
   "m3GoalReached": "Meta alcançada!",
-  "m3Collect": "Colete {icon}",
-  "m3CollectShort": "Junte {icon}",
   "m3NeedScore": "Faltam {n} pontos para {star}★",
   "m3NeedCollect": "Faltam {n} {icon} para {star}★"
 }

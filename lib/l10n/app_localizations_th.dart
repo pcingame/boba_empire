@@ -1094,11 +1094,6 @@ class AppLocalizationsTh extends AppLocalizations {
   String get m3Locked => 'ยังไม่ปลดล็อก';
 
   @override
-  String m3Target(String n) {
-    return 'เป้าหมาย $n';
-  }
-
-  @override
   String m3MovesLeft(int n) {
     return 'เหลือ $n ตา';
   }
@@ -1140,16 +1135,6 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get m3GoalReached => 'ถึงเป้าหมายแล้ว!';
-
-  @override
-  String m3Collect(String icon) {
-    return 'เก็บ $icon';
-  }
-
-  @override
-  String m3CollectShort(String icon) {
-    return 'เก็บ $icon';
-  }
 
   @override
   String m3NeedScore(String n, int star) {

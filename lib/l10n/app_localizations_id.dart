@@ -1103,11 +1103,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get m3Locked => 'Terkunci';
 
   @override
-  String m3Target(String n) {
-    return 'Target $n';
-  }
-
-  @override
   String m3MovesLeft(int n) {
     return 'Sisa $n langkah';
   }
@@ -1149,16 +1144,6 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get m3GoalReached => 'Target tercapai!';
-
-  @override
-  String m3Collect(String icon) {
-    return 'Kumpulkan $icon';
-  }
-
-  @override
-  String m3CollectShort(String icon) {
-    return 'Ambil $icon';
-  }
 
   @override
   String m3NeedScore(String n, int star) {

@@ -46,6 +46,7 @@ Finder _tile(int i) => find.byKey(Key('m3-tile-$i'));
 
 void main() {
   _specialFaceTests();
+  _boardFitsTests();
   for (final locale in AppLocalizations.supportedLocales) {
     testWidgets('không tràn ở ${locale.languageCode}, máy nhỏ + chữ to', (tester) async {
       tester.view.physicalSize = const Size(320, 640);
@@ -271,5 +272,56 @@ void _specialFaceTests() {
     expect(match3IconFor(m3CrossBase + 3), '💥');
     expect(match3IconFor(m3ColorBase), '🌈');
     expect(match3IconFor(-1), '');
+  });
+}
+
+// --- Bàn cờ phải vừa CHIỀU CAO ĐƯỢC CẤP, không phải nửa chiều cao màn hình ---
+void _boardFitsTests() {
+  testWidgets('khung thấp (banner chiếm chỗ) → bàn co lại, không tràn',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 800));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    // _host bọc sẵn SingleChildScrollView (giống Đấu Trường) nên phải dựng
+    // khung riêng có CHIỀU CAO GIỚI HẠN — đúng cách chơi đơn đặt bàn cờ.
+    await tester.pumpWidget(MaterialApp(
+      locale: const Locale('vi'),
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: Scaffold(
+        body: Column(
+          children: [
+            // Chiều cao còn lại nhỏ hơn nhiều so với nửa màn hình (400px) —
+            // đúng tình huống banner + HUD ăn mất chỗ.
+            Expanded(
+              child: Center(
+                child: Match3Panel(view: _view(), onSwap: (_, _) => true),
+              ),
+            ),
+            const SizedBox(height: 560), // giả lập banner + HUD ăn chỗ
+          ],
+        ),
+      ),
+    ));
+    await tester.pump();
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('khung cao vô hạn (trong vùng cuộn) vẫn dựng được',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 800));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(_host(
+      const Locale('vi'),
+      SingleChildScrollView(
+        child: Match3Panel(view: _view(), onSwap: (_, _) => true),
+      ),
+    ));
+    await tester.pump();
+    await tester.pumpWidget(const SizedBox());
   });
 }

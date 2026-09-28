@@ -1,15 +1,12 @@
 {
   "@@locale": "en",
-
   "appTitle": "Boba Empire",
-
   "tapBrew": "Tap to brew",
   "coinsSuffix": " Coins",
   "incomePerSecond": "+{amount} / sec",
   "instantCashButton": "Instant cash",
   "instantCashSnack": "Instant cash! +{amount} Coins",
   "adNotReadySnack": "Ad not ready yet, try again shortly",
-
   "stageHeader": "🏪 {name}",
   "unlockStageButton": "Unlock {cost} Coins",
   "globalBonusChip": "🌐 +{percent}%",
@@ -18,22 +15,18 @@
   "buyModeMax": "MAX",
   "boostChip": "🔥 x3 · {seconds}s",
   "vipSnack": "VIP customer! +{cash} Coins, +{gems} 💎",
-
   "iapGemsSnack": "Received +{amount} 💎",
   "iapRemoveAdsSnack": "Ads removed. Thank you!",
   "iapStarterSnack": "Starter pack: +{amount} 💎",
-
   "genTraDen": "Black Tea",
   "genTranChau": "Boba Pearls",
   "genThach": "Grass Jelly",
   "genPudding": "Pudding",
   "genKemNuong": "Crème Brûlée Milk Tea",
   "genMatcha": "Bucket Matcha",
-
   "stage1": "Street Cart",
   "stage2": "Small Kiosk",
   "stage3": "Luxury Cafe Chain",
-
   "gemShopTitle": "Shop 💎 (you have {gems})",
   "gemBoostName": "Income boost",
   "gemBoostDesc": "+{percent}% permanent income per level",
@@ -50,13 +43,11 @@
   "iapSectionTitle": "Buy with real money",
   "restorePurchases": "Restore purchases",
   "close": "Close",
-
   "iapGemsDesc": "Top up Gems to buy items in the Shop.",
   "iapRemoveAdsTitle": "Remove ads",
   "iapRemoveAdsDesc": "Skip all ads — you still get every reward, no watching needed.",
   "iapStarterTitle": "Starter pack",
   "iapStarterDesc": "One-time: get a big pouch of Gems right away.",
-
   "prestigeTitle": "Franchise 🏪",
   "prestigeIntro": "Each ⭐ Star gives +{percent}% permanent income.",
   "prestigeStarsNow": "Current stars",
@@ -70,13 +61,11 @@
   "prestigeConfirm": "Franchise (+{stars} ⭐)",
   "prestigeNotEnough": "Not enough",
   "prestigeSuccess": "Franchise successful! +{stars} ⭐",
-
   "offlineTitle": "Welcome back! 🧋",
   "offlineBody": "The shop kept selling while you were away.\nYou earned {amount} Coins.",
   "offlineClaim": "Claim",
   "offlineDoubleButton": "Watch ad ×2",
   "offlineDoubleSnack": "Doubled! +{amount} Coins",
-
   "howToPlayTitle": "How to play",
   "htpTap": "🧋 Tap the cup to brew tea and earn Coins.",
   "htpBuy": "🛒 Buy upgrades for automatic income every second.",
@@ -194,7 +183,6 @@
   "wheelName": "Lucky Wheel 🎡",
   "spinFree": "Free spin",
   "spinAd": "Watch ad to spin",
-
   "storyChapterLabel": "Chapter {n}",
   "storyContinue": "Continue",
   "storyChoosePrompt": "Choose your path — this can't be undone:",
@@ -207,7 +195,6 @@
   "rivalMeterBehind": "Losing ground",
   "rivalResolvedSnack": "Handled. The rival backs off.",
   "rivalIgnoredSnack": "You let it slide — the rival gains ground.",
-
   "navArena": "Arena",
   "navCompete": "Compete",
   "arenaTitle": "Arena",
@@ -222,65 +209,152 @@
   "arenaTapButton": "Tap the cup",
   "arenaResolving": "Wrapping up the match…",
   "arenaTierButton": "Upgrade ×2 ({cost} Coins)",
-  "@arenaTierButton": { "placeholders": { "cost": { "type": "String" } } },
+  "@arenaTierButton": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
   "arenaTimeLeft": "{seconds}s left",
-  "@arenaTimeLeft": { "placeholders": { "seconds": { "type": "int" } } },
+  "@arenaTimeLeft": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
   "arenaOnlineCount": "{count, plural, =1{1 player online} other{{count} players online}}",
-  "@arenaOnlineCount": { "placeholders": { "count": { "type": "int" } } },
+  "@arenaOnlineCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "arenaYourScore": "Your score",
   "arenaOpponentScore": "Opponent",
   "arenaResultWin": "You win! 🎉",
   "arenaResultLose": "You lost",
   "arenaResultDraw": "Draw",
   "arenaResultReward": "+{gems} 💎",
-  "@arenaResultReward": { "placeholders": { "gems": { "type": "int" } } },
+  "@arenaResultReward": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
   "arenaCloseButton": "Close",
-
   "cloudSaveMenuTitle": "Backup progress",
   "cloudSaveMenuLinked": "Linked: {email}",
-  "@cloudSaveMenuLinked": { "placeholders": { "email": { "type": "String" } } },
+  "@cloudSaveMenuLinked": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveMenuUnlinked": "Not linked — you may lose progress if you uninstall",
   "cloudSaveTitle": "Backup progress",
   "cloudSaveIntro": "Link an email to recover your progress if you uninstall or switch devices.",
   "cloudSaveEmailHint": "Your email",
   "cloudSaveSendCode": "Send code",
   "cloudSaveCodeSentTo": "Sent a confirmation code to {email}",
-  "@cloudSaveCodeSentTo": { "placeholders": { "email": { "type": "String" } } },
+  "@cloudSaveCodeSentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveCodeHint": "Confirmation code",
   "cloudSaveVerify": "Verify",
   "cloudSaveChangeEmail": "Use a different email",
   "cloudSaveResend": "Resend code",
   "cloudSaveResendIn": "Resend code ({seconds}s)",
-  "@cloudSaveResendIn": { "placeholders": { "seconds": { "type": "int" } } },
+  "@cloudSaveResendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
   "cloudSaveConflictTitle": "Found a different save on the cloud",
   "cloudSaveConflictLocal": "This device: {amount} Coins lifetime",
-  "@cloudSaveConflictLocal": { "placeholders": { "amount": { "type": "String" } } },
+  "@cloudSaveConflictLocal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveConflictCloud": "On the cloud: {amount} Coins lifetime",
-  "@cloudSaveConflictCloud": { "placeholders": { "amount": { "type": "String" } } },
+  "@cloudSaveConflictCloud": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveRestoreButton": "Restore from cloud",
   "cloudSaveKeepLocalButton": "Keep this device",
   "cloudSaveLinkedStatus": "Linked: {email}",
-  "@cloudSaveLinkedStatus": { "placeholders": { "email": { "type": "String" } } },
+  "@cloudSaveLinkedStatus": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveDisconnect": "Disconnect",
   "cloudSaveRetry": "Retry",
-
   "leaderboardMenuTitle": "Leaderboard",
   "leaderboardTitle": "Leaderboard",
   "leaderboardNicknameIntro": "Pick a display name for the leaderboard (you can change it later):",
   "leaderboardNicknameHint": "Your name",
   "leaderboardSubmit": "Confirm",
   "leaderboardYourRank": "Your rank: #{rank}",
-  "@leaderboardYourRank": { "placeholders": { "rank": { "type": "int" } } },
+  "@leaderboardYourRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardStars": "{stars} ⭐",
-  "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
+  "@leaderboardStars": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardEmpty": "No one on the leaderboard yet — that's you!",
   "leaderboardRewardSnack": "🎉 You're holding a top rank! +{gems} 💎",
-  "@leaderboardRewardSnack": { "placeholders": { "gems": { "type": "int" } } },
+  "@leaderboardRewardSnack": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardRewardInfo": "Top 1: {top1}💎 · Top 2-3: {top23}💎 · Top 4-10: {top410}💎 — every 24h while ranked",
-  "@leaderboardRewardInfo": { "placeholders": { "top1": { "type": "int" }, "top23": { "type": "int" }, "top410": { "type": "int" } } },
+  "@leaderboardRewardInfo": {
+    "placeholders": {
+      "top1": {
+        "type": "int"
+      },
+      "top23": {
+        "type": "int"
+      },
+      "top410": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardChangeName": "Change name",
   "leaderboardRetry": "Retry",
-
   "storySpeedrunMenuTitle": "Speedrun",
   "storySpeedrunTitle": "Speedrun Leaderboard",
   "storySpeedrunNotCompletedYet": "You haven't finished the story yet — complete Chapter 18 to get ranked.",
@@ -288,42 +362,104 @@
   "storySpeedrunTabExt": "Act 2",
   "storySpeedrunExtNotCompletedYet": "You haven't finished Act 2 yet — complete Chapter 28 to be ranked.",
   "storySpeedrunEmpty": "No one has finished the story yet — be the first!",
-
   "arenaLeaderboardMenuTitle": "PK Leaderboard",
   "arenaLeaderboardTitle": "PK Leaderboard",
   "arenaLeaderboardNotPlayedYet": "You haven't fought any Arena matches yet — win one to appear here.",
   "arenaLeaderboardRecord": "{wins}W - {losses}L",
-  "@arenaLeaderboardRecord": { "placeholders": { "wins": { "type": "int" }, "losses": { "type": "int" } } },
+  "@arenaLeaderboardRecord": {
+    "placeholders": {
+      "wins": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionTitle": "Ascension",
   "ascensionOpen": "Ascension ⏳",
   "ascensionIntro": "Trade all your Stars and Star Shop perks for ⏳ Ascension Points — stronger permanent perks. You start over.",
   "ascensionProgress": "Progress to unlock: {percent}%",
-  "@ascensionProgress": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionProgress": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionPointsNow": "Points owned",
   "ascensionPointsGain": "Gain if you ascend",
   "ascensionPointsValue": "{points} ⏳",
-  "@ascensionPointsValue": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionPointsValue": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionWarning": "⚠️ Resets Stars, all Star Shop perks, Coins, upgrade levels and stage. Keeps 💎, achievements and story. Your leaderboard Stars drop to 0 (rank by lifetime earnings is unchanged).",
   "ascensionConfirm": "Ascend (+{points} ⏳)",
-  "@ascensionConfirm": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionConfirm": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionNotEnough": "Not yet available",
   "ascensionSuccess": "A new era begins! +{points} ⏳",
-  "@ascensionSuccess": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionSuccess": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionShopTitle": "Ascension perks ⏳",
   "ascensionShopSpendable": "{points} ⏳ to spend",
-  "@ascensionShopSpendable": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionShopSpendable": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionCost": "{cost} ⏳",
-  "@ascensionCost": { "placeholders": { "cost": { "type": "int" } } },
+  "@ascensionCost": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionMaxed": "Max",
   "ascensionIncomeName": "Power source",
   "ascensionIncomeDesc": "+{percent}% income per level",
-  "@ascensionIncomeDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionIncomeDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionStarBonusName": "Radiant stars",
   "ascensionStarBonusDesc": "+{percent}% power per Star, per level",
-  "@ascensionStarBonusDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionStarBonusDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionStarGainName": "Abundant stars",
   "ascensionStarGainDesc": "+{percent}% Star gain rate, per level",
-  "@ascensionStarGainDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionStarGainDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "achAscend": "Ascend for the first time",
   "dailyQuestsTitle": "Daily quests",
   "dailyQuestsChip": "Quests",
@@ -331,9 +467,21 @@
   "dailyQuestsResetsIn": "New quests in {time}",
   "dailyQuestClaimed": "Claimed",
   "dqTap": "Tap the cup {n} times",
-  "@dqTap": { "placeholders": { "n": { "type": "int" } } },
+  "@dqTap": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "dqBuy": "Buy {n} upgrades",
-  "@dqBuy": { "placeholders": { "n": { "type": "int" } } },
+  "@dqBuy": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "dqEarn": "Earn {amount} Coins",
   "dqCat": "Catch the Golden Cat",
   "dqVip": "Serve a VIP customer",
@@ -346,7 +494,6 @@
   "m3Title": "Match-3 Journey",
   "m3Level": "Level {n}",
   "m3Locked": "Locked",
-  "m3Target": "Goal {n}",
   "m3MovesLeft": "{n} moves left",
   "m3Score": "Score",
   "m3Win": "Level clear!",
@@ -360,8 +507,6 @@
   "m3KeepPlaying": "Keep playing",
   "m3Pause": "Take a break",
   "m3GoalReached": "Goal reached!",
-  "m3Collect": "Collect {icon}",
-  "m3CollectShort": "Get {icon}",
   "m3NeedScore": "{n} more points for {star}★",
   "m3NeedCollect": "{n} more {icon} for {star}★"
 }

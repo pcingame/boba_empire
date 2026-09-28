@@ -45,6 +45,38 @@ const Duration _popDur = Duration(milliseconds: 170);
 const Duration _fallDur = Duration(milliseconds: 220);
 const Duration _hintDelay = Duration(seconds: 6);
 
+/// Ba ngôi sao của một màn: sao đạt được tô vàng đặc, sao chưa đạt để rỗng mờ.
+/// Dùng chung cho lưới màn và bảng kết quả.
+class Match3Stars extends StatelessWidget {
+  const Match3Stars({
+    super.key,
+    required this.stars,
+    this.dim = false,
+    this.size = 13,
+  });
+
+  final int stars;
+  final bool dim;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final off = dim ? theme.disabledColor : theme.colorScheme.outlineVariant;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (var i = 0; i < 3; i++)
+          Icon(
+            i < stars ? Icons.star_rounded : Icons.star_outline_rounded,
+            size: size,
+            color: i < stars ? Colors.amber.shade700 : off,
+          ),
+      ],
+    );
+  }
+}
+
 class _T {
   _T(this.id, this.value, this.row, this.col);
   final int id;
@@ -394,8 +426,19 @@ class _Match3PanelState extends State<Match3Panel> {
     final colorScheme = Theme.of(context).colorScheme;
     return LayoutBuilder(builder: (context, box) {
       final screenH = MediaQuery.sizeOf(context).height;
+      // Chiều cao dùng được: ưu tiên chiều cao ĐƯỢC CẤP (chơi đơn đặt bàn trong
+      // Expanded, và banner quảng cáo ăn bớt chỗ ở đáy — bàn phải co theo, nếu
+      // cứ bám nửa chiều cao màn hình thì tràn). Đấu Trường đặt bàn trong
+      // SingleChildScrollView nên maxHeight vô hạn → rơi về cách tính cũ.
+      final usableH = box.maxHeight.isFinite
+          ? box.maxHeight - (widget.view.stuck ? 34 : 0)
+          : screenH * 0.5;
       // Khung bảng = padding 4 + viền 1 mỗi bên = 10px, phải nằm trong bề ngang.
-      final cell = [(box.maxWidth - 10) / m3Size, screenH * 0.5 / m3Size, 52.0].reduce((a, b) => a < b ? a : b);
+      final cell = [
+        (box.maxWidth - 10) / m3Size,
+        (usableH - 10) / m3Size,
+        52.0,
+      ].reduce((a, b) => a < b ? a : b);
       final side = cell * m3Size;
       return Column(
         mainAxisSize: MainAxisSize.min,

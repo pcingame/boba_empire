@@ -1,15 +1,12 @@
 {
   "@@locale": "id",
-
   "appTitle": "Boba Empire",
-
   "tapBrew": "Ketuk untuk menyeduh",
   "coinsSuffix": " Koin",
   "incomePerSecond": "+{amount} / dtk",
   "instantCashButton": "Uang instan",
   "instantCashSnack": "Uang instan! +{amount} Koin",
   "adNotReadySnack": "Iklan belum siap, coba lagi sebentar lagi",
-
   "stageHeader": "🏪 {name}",
   "unlockStageButton": "Buka {cost} Koin",
   "globalBonusChip": "🌐 +{percent}%",
@@ -18,22 +15,18 @@
   "buyModeMax": "MAX",
   "boostChip": "🔥 x3 · {seconds}s",
   "vipSnack": "Pelanggan VIP! +{cash} Koin, +{gems} 💎",
-
   "iapGemsSnack": "Menerima +{amount} 💎",
   "iapRemoveAdsSnack": "Iklan dihapus. Terima kasih!",
   "iapStarterSnack": "Paket awal: +{amount} 💎",
-
   "genTraDen": "Teh Hitam",
   "genTranChau": "Mutiara Boba",
   "genThach": "Cincau",
   "genPudding": "Puding",
   "genKemNuong": "Teh Susu Crème Brûlée",
   "genMatcha": "Matcha Seember",
-
   "stage1": "Gerobak Kaki Lima",
   "stage2": "Kios Kecil",
   "stage3": "Jaringan Kafe Mewah",
-
   "gemShopTitle": "Toko 💎 (punya {gems})",
   "gemBoostName": "Peningkatan pendapatan",
   "gemBoostDesc": "+{percent}% pendapatan permanen per level",
@@ -50,13 +43,11 @@
   "iapSectionTitle": "Beli dengan uang asli",
   "restorePurchases": "Pulihkan pembelian",
   "close": "Tutup",
-
   "iapGemsDesc": "Isi Permata untuk membeli item di Toko.",
   "iapRemoveAdsTitle": "Hapus iklan",
   "iapRemoveAdsDesc": "Lewati semua iklan — kamu tetap dapat semua hadiah tanpa menonton.",
   "iapStarterTitle": "Paket awal",
   "iapStarterDesc": "Sekali saja: langsung dapat sekantong besar Permata.",
-
   "prestigeTitle": "Waralaba 🏪",
   "prestigeIntro": "Setiap ⭐ Bintang memberi +{percent}% pendapatan permanen.",
   "prestigeStarsNow": "Bintang saat ini",
@@ -70,13 +61,11 @@
   "prestigeConfirm": "Waralabakan (+{stars} ⭐)",
   "prestigeNotEnough": "Tidak cukup",
   "prestigeSuccess": "Waralaba berhasil! +{stars} ⭐",
-
   "offlineTitle": "Selamat datang kembali! 🧋",
   "offlineBody": "Toko tetap berjualan saat kamu pergi.\nKamu mendapat {amount} Koin.",
   "offlineClaim": "Ambil",
   "offlineDoubleButton": "Tonton iklan ×2",
   "offlineDoubleSnack": "Digandakan! +{amount} Koin",
-
   "howToPlayTitle": "Cara bermain",
   "htpTap": "🧋 Ketuk gelas untuk menyeduh teh dan mendapatkan Koin.",
   "htpBuy": "🛒 Beli peningkatan untuk pendapatan otomatis setiap detik.",
@@ -194,7 +183,6 @@
   "wheelName": "Roda Keberuntungan 🎡",
   "spinFree": "Putar gratis",
   "spinAd": "Tonton iklan untuk memutar",
-
   "storyChapterLabel": "Bab {n}",
   "storyContinue": "Lanjut",
   "storyChoosePrompt": "Pilih jalanmu — tidak bisa dibatalkan:",
@@ -207,7 +195,6 @@
   "rivalMeterBehind": "Tertinggal",
   "rivalResolvedSnack": "Ditangani. Pesaing mundur.",
   "rivalIgnoredSnack": "Kamu biarkan saja — pesaing makin unggul.",
-
   "navArena": "Arena",
   "navCompete": "Kompetisi",
   "arenaTitle": "Arena",
@@ -222,65 +209,152 @@
   "arenaTapButton": "Ketuk gelas",
   "arenaResolving": "Menutup pertandingan…",
   "arenaTierButton": "Tingkatkan ×2 ({cost} Koin)",
-  "@arenaTierButton": { "placeholders": { "cost": { "type": "String" } } },
+  "@arenaTierButton": {
+    "placeholders": {
+      "cost": {
+        "type": "String"
+      }
+    }
+  },
   "arenaTimeLeft": "Sisa {seconds}s",
-  "@arenaTimeLeft": { "placeholders": { "seconds": { "type": "int" } } },
+  "@arenaTimeLeft": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
   "arenaOnlineCount": "{count} pemain online",
-  "@arenaOnlineCount": { "placeholders": { "count": { "type": "int" } } },
+  "@arenaOnlineCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "arenaYourScore": "Skor kamu",
   "arenaOpponentScore": "Lawan",
   "arenaResultWin": "Kamu menang! 🎉",
   "arenaResultLose": "Kamu kalah",
   "arenaResultDraw": "Seri",
   "arenaResultReward": "+{gems} 💎",
-  "@arenaResultReward": { "placeholders": { "gems": { "type": "int" } } },
+  "@arenaResultReward": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
   "arenaCloseButton": "Tutup",
-
   "cloudSaveMenuTitle": "Cadangkan progres",
   "cloudSaveMenuLinked": "Terhubung: {email}",
-  "@cloudSaveMenuLinked": { "placeholders": { "email": { "type": "String" } } },
+  "@cloudSaveMenuLinked": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveMenuUnlinked": "Belum terhubung — progres bisa hilang jika uninstall",
   "cloudSaveTitle": "Cadangkan progres",
   "cloudSaveIntro": "Hubungkan email untuk memulihkan progres jika uninstall atau ganti perangkat.",
   "cloudSaveEmailHint": "Email kamu",
   "cloudSaveSendCode": "Kirim kode",
   "cloudSaveCodeSentTo": "Kode konfirmasi terkirim ke {email}",
-  "@cloudSaveCodeSentTo": { "placeholders": { "email": { "type": "String" } } },
+  "@cloudSaveCodeSentTo": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveCodeHint": "Kode konfirmasi",
   "cloudSaveVerify": "Verifikasi",
   "cloudSaveChangeEmail": "Pakai email lain",
   "cloudSaveResend": "Kirim ulang kode",
   "cloudSaveResendIn": "Kirim ulang kode ({seconds}d)",
-  "@cloudSaveResendIn": { "placeholders": { "seconds": { "type": "int" } } },
+  "@cloudSaveResendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
   "cloudSaveConflictTitle": "Ditemukan save lain di cloud",
   "cloudSaveConflictLocal": "Perangkat ini: {amount} Koin seumur hidup",
-  "@cloudSaveConflictLocal": { "placeholders": { "amount": { "type": "String" } } },
+  "@cloudSaveConflictLocal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveConflictCloud": "Di cloud: {amount} Koin seumur hidup",
-  "@cloudSaveConflictCloud": { "placeholders": { "amount": { "type": "String" } } },
+  "@cloudSaveConflictCloud": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveRestoreButton": "Pulihkan dari cloud",
   "cloudSaveKeepLocalButton": "Pakai perangkat ini",
   "cloudSaveLinkedStatus": "Terhubung: {email}",
-  "@cloudSaveLinkedStatus": { "placeholders": { "email": { "type": "String" } } },
+  "@cloudSaveLinkedStatus": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
   "cloudSaveDisconnect": "Putuskan",
   "cloudSaveRetry": "Coba lagi",
-
   "leaderboardMenuTitle": "Papan Peringkat",
   "leaderboardTitle": "Papan Peringkat",
   "leaderboardNicknameIntro": "Pilih nama tampilan untuk papan peringkat (bisa diganti nanti):",
   "leaderboardNicknameHint": "Nama kamu",
   "leaderboardSubmit": "Konfirmasi",
   "leaderboardYourRank": "Peringkat kamu: #{rank}",
-  "@leaderboardYourRank": { "placeholders": { "rank": { "type": "int" } } },
+  "@leaderboardYourRank": {
+    "placeholders": {
+      "rank": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardStars": "{stars} ⭐",
-  "@leaderboardStars": { "placeholders": { "stars": { "type": "int" } } },
+  "@leaderboardStars": {
+    "placeholders": {
+      "stars": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardEmpty": "Belum ada siapa-siapa di papan peringkat — itu kamu!",
   "leaderboardRewardSnack": "🎉 Anda berada di peringkat atas! +{gems} 💎",
-  "@leaderboardRewardSnack": { "placeholders": { "gems": { "type": "int" } } },
+  "@leaderboardRewardSnack": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardRewardInfo": "Top 1: {top1}💎 · Top 2-3: {top23}💎 · Top 4-10: {top410}💎 — tiap 24 jam selama masih peringkat",
-  "@leaderboardRewardInfo": { "placeholders": { "top1": { "type": "int" }, "top23": { "type": "int" }, "top410": { "type": "int" } } },
+  "@leaderboardRewardInfo": {
+    "placeholders": {
+      "top1": {
+        "type": "int"
+      },
+      "top23": {
+        "type": "int"
+      },
+      "top410": {
+        "type": "int"
+      }
+    }
+  },
   "leaderboardChangeName": "Ganti nama",
   "leaderboardRetry": "Coba lagi",
-
   "storySpeedrunMenuTitle": "Speedrun",
   "storySpeedrunTitle": "Papan Peringkat Speedrun",
   "storySpeedrunNotCompletedYet": "Anda belum menyelesaikan cerita — selesaikan Bab 18 untuk masuk peringkat.",
@@ -288,42 +362,104 @@
   "storySpeedrunTabExt": "Babak 2",
   "storySpeedrunExtNotCompletedYet": "Kamu belum menyelesaikan Babak 2 — selesaikan Bab 28 untuk masuk peringkat.",
   "storySpeedrunEmpty": "Belum ada yang menyelesaikan cerita — jadilah yang pertama!",
-
   "arenaLeaderboardMenuTitle": "Papan Peringkat PK",
   "arenaLeaderboardTitle": "Papan Peringkat PK",
   "arenaLeaderboardNotPlayedYet": "Kamu belum bertanding di Arena — menangkan satu pertandingan untuk muncul di sini.",
   "arenaLeaderboardRecord": "{wins}M - {losses}K",
-  "@arenaLeaderboardRecord": { "placeholders": { "wins": { "type": "int" }, "losses": { "type": "int" } } },
+  "@arenaLeaderboardRecord": {
+    "placeholders": {
+      "wins": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionTitle": "Ascension",
   "ascensionOpen": "Ascension ⏳",
   "ascensionIntro": "Tukar semua Bintang dan perk Toko Bintang dengan ⏳ Poin Ascension — perk permanen yang lebih kuat. Kamu mulai dari awal.",
   "ascensionProgress": "Progres untuk membuka: {percent}%",
-  "@ascensionProgress": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionProgress": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionPointsNow": "Poin dimiliki",
   "ascensionPointsGain": "Didapat jika ascend",
   "ascensionPointsValue": "{points} ⏳",
-  "@ascensionPointsValue": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionPointsValue": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionWarning": "⚠️ Reset Bintang, semua perk Toko Bintang, Koin, level upgrade, dan tahap. Menyimpan 💎, pencapaian, dan cerita. Bintang di papan peringkat jadi 0 (peringkat total pendapatan tidak berubah).",
   "ascensionConfirm": "Ascend (+{points} ⏳)",
-  "@ascensionConfirm": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionConfirm": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionNotEnough": "Belum tersedia",
   "ascensionSuccess": "Era baru dimulai! +{points} ⏳",
-  "@ascensionSuccess": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionSuccess": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionShopTitle": "Perk Ascension ⏳",
   "ascensionShopSpendable": "{points} ⏳ untuk dibelanjakan",
-  "@ascensionShopSpendable": { "placeholders": { "points": { "type": "int" } } },
+  "@ascensionShopSpendable": {
+    "placeholders": {
+      "points": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionCost": "{cost} ⏳",
-  "@ascensionCost": { "placeholders": { "cost": { "type": "int" } } },
+  "@ascensionCost": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionMaxed": "Maks",
   "ascensionIncomeName": "Sumber energi",
   "ascensionIncomeDesc": "+{percent}% pendapatan per level",
-  "@ascensionIncomeDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionIncomeDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionStarBonusName": "Bintang gemilang",
   "ascensionStarBonusDesc": "+{percent}% kekuatan per Bintang, per level",
-  "@ascensionStarBonusDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionStarBonusDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "ascensionStarGainName": "Bintang melimpah",
   "ascensionStarGainDesc": "+{percent}% kecepatan dapat Bintang, per level",
-  "@ascensionStarGainDesc": { "placeholders": { "percent": { "type": "int" } } },
+  "@ascensionStarGainDesc": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
   "achAscend": "Ascend untuk pertama kali",
   "dailyQuestsTitle": "Misi harian",
   "dailyQuestsChip": "Misi",
@@ -331,9 +467,21 @@
   "dailyQuestsResetsIn": "Misi baru dalam {time}",
   "dailyQuestClaimed": "Diambil",
   "dqTap": "Ketuk gelas {n} kali",
-  "@dqTap": { "placeholders": { "n": { "type": "int" } } },
+  "@dqTap": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "dqBuy": "Beli {n} upgrade",
-  "@dqBuy": { "placeholders": { "n": { "type": "int" } } },
+  "@dqBuy": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "dqEarn": "Dapatkan {amount} Koin",
   "dqCat": "Tangkap Kucing Emas",
   "dqVip": "Layani pelanggan VIP",
@@ -346,7 +494,6 @@
   "m3Title": "Perjalanan Match-3",
   "m3Level": "Level {n}",
   "m3Locked": "Terkunci",
-  "m3Target": "Target {n}",
   "m3MovesLeft": "Sisa {n} langkah",
   "m3Score": "Skor",
   "m3Win": "Level selesai!",
@@ -360,8 +507,6 @@
   "m3KeepPlaying": "Lanjut main",
   "m3Pause": "Istirahat",
   "m3GoalReached": "Target tercapai!",
-  "m3Collect": "Kumpulkan {icon}",
-  "m3CollectShort": "Ambil {icon}",
   "m3NeedScore": "Kurang {n} poin lagi untuk {star}★",
   "m3NeedCollect": "Kurang {n} {icon} lagi untuk {star}★"
 }

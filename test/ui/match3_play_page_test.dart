@@ -16,6 +16,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  _landscapeTests();
   late int savedMoves;
   setUp(() {
     savedMoves = Balance.m3Moves;
@@ -110,10 +111,12 @@ void main() {
 
     final level = c.read(match3ControllerProvider).level;
     final icon = match3Icons[level.collectType];
+    // Tiến độ "🟤 0/13" chứa cả số hiện tại lẫn mục tiêu nên không cần thêm
+    // nhãn mục tiêu riêng nữa.
     expect(find.text('$icon 0/${level.target}'), findsOneWidget);
-    expect(find.text('Thu thập $icon ${level.target}'), findsOneWidget);
-    // Không còn nhãn "Điểm:" ở màn thu thập.
     expect(find.textContaining('Điểm:'), findsNothing);
+    // Thanh sao phải có mặt: đó là thứ cho biết còn cách mốc sao bao xa.
+    expect(find.byType(LinearProgressIndicator), findsOneWidget);
 
     await tester.pumpWidget(const SizedBox());
     c.dispose();
@@ -295,5 +298,50 @@ void main() {
 
     await tester.pumpWidget(const SizedBox());
     c.dispose(); // dừng Timer 1 giây của GameController, không thì test báo
+  });
+}
+
+// --- Bố cục khi máy nằm ngang: HUD đứng cạnh bàn cờ, không xếp dọc ---
+void _landscapeTests() {
+  testWidgets('nằm ngang: bàn cờ không bị co còn bằng con tem', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final c = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(() => 0),
+      adServiceProvider.overrideWithValue(const StubAdService()),
+    ]);
+    Future<double> boardWidth(Size size) async {
+      await tester.binding.setSurfaceSize(size);
+      await tester.pumpWidget(UncontrolledProviderScope(
+        container: c,
+        child: const MaterialApp(
+          locale: Locale('vi'),
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Match3PlayPage(level: Match3Level(1)),
+        ),
+      ));
+      await tester.pump();
+      return tester.getSize(find.byType(Match3Panel)).width;
+    }
+
+    final portrait = await boardWidth(const Size(400, 800));
+    final landscape = await boardWidth(const Size(800, 400));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    // Đo thật ở 800x400: bố cục ngang cho bàn rộng 344 (0.86 lần lúc đứng),
+    // còn nếu cứ xếp dọc thì chỉ còn 246 (0.61 lần) vì chiều cao bóp lại.
+    // Ngưỡng 0.75 nằm gọn giữa hai con số đó.
+    expect(landscape, greaterThan(portrait * 0.75),
+        reason: 'ngang $landscape vs dọc $portrait');
+
+    await tester.pumpWidget(const SizedBox());
+    c.dispose(); // dừng Timer 1 giây của GameController trước khi test kết thúc
   });
 }
