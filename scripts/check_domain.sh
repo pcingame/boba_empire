@@ -76,10 +76,23 @@ else
     --resolve "www.$DOMAIN:443:$ip" "https://www.$DOMAIN")
   [ -z "$wcode" ] && wcode=000
   if [ "$wcode" = "000" ]; then
-    bad "https://www.$DOMAIN lỗi chứng chỉ — đổi CNAME www thành pcingame.github.io. (xem DOMAIN_TODO.md)"
+    # Phân biệt hai ca rất khác nhau: CNAME sai (phải tự sửa) vs CNAME đã đúng
+    # nhưng GitHub chưa cấp lại chứng chỉ (chỉ cần chờ).
+    if [ "$cname" = "pcingame.github.io." ]; then
+      bad "https://www.$DOMAIN chưa có chứng chỉ — CNAME đã đúng rồi, ĐANG CHỜ GitHub cấp lại (vài phút tới ~1 giờ)"
+    else
+      bad "https://www.$DOMAIN lỗi chứng chỉ — đổi CNAME www thành pcingame.github.io. (xem DOMAIN_TODO.md)"
+    fi
   else
     pass "https://www.$DOMAIN trả $wcode"
   fi
+
+  # In thẳng các tên có trong chứng chỉ: đây là thứ quyết định Enforce HTTPS có
+  # bật được hay không, mà giao diện GitHub chỉ hiện dấu X không nói vì sao.
+  san=$(echo Q | openssl s_client -connect "$ip:443" -servername "$DOMAIN" 2>/dev/null \
+    | openssl x509 -noout -text 2>/dev/null \
+    | grep -A1 "Subject Alternative Name" | tail -1 | tr -d ' ')
+  [ -n "$san" ] && echo "     tên trong chứng chỉ: $san"
 fi
 
 echo "5) Email forwarding support@$DOMAIN"
