@@ -94,13 +94,9 @@ class GameController extends Notifier<GameSnapshot> {
     // thật. Không có cách nào biết lại đúng thời điểm họ thực sự hoàn thành
     // (không được ghi lúc đó) — dùng thời điểm mở app NÀY làm mốc best-effort
     // (số giây sẽ cao hơn thực tế, nhưng còn hơn không bao giờ xuất hiện được).
-    // Save cũ không có firstPlayedMillis nên fromJson mặc định nó = lastSeenMillis;
-    // khi đó `now - firstPlayed` chỉ là thời gian tắt app (~1s) — số giả làm
-    // bảng xếp hạng có "phá đảo trong 1s". Không có mốc thật thì để null.
-    // Cùng logic cho mốc Chương 28 (bảng "Hồi 2").
-    if (_game.firstPlayedMillis != _game.lastSeenMillis) {
-      _stampStoryFinales(_game.storyChapter, exact: false);
-    }
+    // `_stampStoryFinales` tự bỏ qua khi firstPlayedMillis không đáng tin
+    // (xem GameState.firstPlayedIsEstimate) — cùng logic cho mốc Chương 28.
+    _stampStoryFinales(_game.storyChapter, exact: false);
     _rollDaily();
     // Tính tiền kiếm được lúc app tắt (có cap + chống lùi giờ ở tầng core).
     _offlineEarned = applyOfflineEarnings(
@@ -336,6 +332,12 @@ class GameController extends Notifier<GameSnapshot> {
   /// [exact] = chương vừa xem xong (== mốc); false = save đã ở chương >= mốc
   /// (bù mốc lúc mở app).
   void _stampStoryFinales(int chapter, {required bool exact}) {
+    // firstPlayedMillis là giá trị ĐOÁN (save cũ chưa từng có mốc thật, xem
+    // GameState.firstPlayedIsEstimate) → `clock - firstPlayedMillis` có thể
+    // ra một con số nhỏ giả tạo (đo được trên bảng xếp hạng thật: 86s, 150s
+    // cho save lẽ ra phải mất hàng giờ mới lên tới GĐ12). Không chốt gì cả
+    // còn hơn chốt sai — bỏ qua vĩnh viễn cho save này, không phải lỗi.
+    if (_game.firstPlayedIsEstimate) return;
     bool hit(int finale) => exact ? chapter == finale : chapter >= finale;
     final seconds = max(1, (_clock() - _game.firstPlayedMillis) ~/ 1000);
     if (hit(storyFinaleChapterId) && _game.storyCompleteSeconds == null) {

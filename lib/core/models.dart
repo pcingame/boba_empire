@@ -119,6 +119,7 @@ class GameState {
     this.gemTimeSkipDay = 0,
     this.gemTimeSkipUsedToday = 0,
     int? firstPlayedMillis,
+    this.firstPlayedIsEstimate = false,
     this.storyCompleteSeconds,
     this.storyExtCompleteSeconds,
     List<String>? achievementsClaimed,
@@ -287,6 +288,19 @@ class GameState {
   /// [storyCompleteSeconds] cho bảng xếp hạng tốc độ hoàn thành cốt truyện.
   int firstPlayedMillis;
 
+  /// true nếu [firstPlayedMillis] là GIÁ TRỊ ĐOÁN (save cũ trước khi trường
+  /// này tồn tại, gán tạm = `lastSeenMillis` lúc nạp) chứ không phải mốc thật.
+  ///
+  /// Bug thật đã gặp (2026-09-29, xem speedrun-one-second-entries memory):
+  /// giá trị đoán này gần "bây giờ" nên nếu người chơi hoàn thành cốt truyện
+  /// ngay sau đó, `now - firstPlayedMillis` ra một con số nhỏ giả tạo (86s,
+  /// 150s...) dù họ đã chơi thật hàng giờ/ngày trước đó để lên tới GĐ12 —
+  /// TRÔNG như gian lận nhưng không phải, chỉ là mất dấu mốc thật. Cờ này
+  /// chặn việc chốt mốc tốc độ khi không tin được số liệu, thay vì cố tính
+  /// ra một con số (dù đúng hướng "cao hơn thực tế" như bản vá cũ) — con số
+  /// nhỏ giả tạo còn tệ hơn nhiều so với không hiện lên bảng xếp hạng.
+  bool firstPlayedIsEstimate;
+
   /// Số giây thực tế (epoch, không phải giờ chơi) từ [firstPlayedMillis] tới
   /// lúc xem xong Chương 18 lần đầu — null nếu chưa hoàn thành cốt truyện.
   /// Ghi một lần, không đổi được (giống storyChoiceA/B/C/D).
@@ -395,6 +409,7 @@ class GameState {
         'storyChoiceE': storyChoiceE,
         'storyChoiceF': storyChoiceF,
         'firstPlayedMillis': firstPlayedMillis,
+        'firstPlayedIsEstimate': firstPlayedIsEstimate,
         'storyCompleteSeconds': storyCompleteSeconds,
         'storyExtCompleteSeconds': storyExtCompleteSeconds,
         'rivalDefeated': rivalDefeated,
@@ -487,6 +502,14 @@ class GameState {
         // ảnh hưởng gameplay chính).
         firstPlayedMillis: (json['firstPlayedMillis'] as num?)?.toInt() ??
             (json['lastSeenMillis'] as num).toInt(),
+        // Suy ra từ chính lần nạp NÀY: cờ chưa từng có ở save cũ, nên tự bắc
+        // cầu bằng câu hỏi "JSON có sẵn firstPlayedMillis thật không" — thiếu
+        // thì chắc chắn vừa đoán ở dòng trên, có thì tin (kể cả nếu bản thân
+        // giá trị đó từng bị đoán ở một lần nạp trước lúc cờ này chưa tồn
+        // tại — rủi ro còn sót lại chấp nhận được, chỉ ảnh hưởng vài save rất
+        // cũ chưa từng hoàn thành cốt truyện).
+        firstPlayedIsEstimate: (json['firstPlayedIsEstimate'] as bool?) ??
+            json['firstPlayedMillis'] == null,
         storyCompleteSeconds:
             (json['storyCompleteSeconds'] as num?)?.toInt(),
         storyExtCompleteSeconds:

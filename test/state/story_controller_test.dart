@@ -199,7 +199,12 @@ void main() {
     await GameStorage(prefs).save(seed, nowMillis: 5000);
     final payload =
         jsonDecode(prefs.getString('game_state')!) as Map<String, dynamic>;
-    (payload['state'] as Map<String, dynamic>).remove('firstPlayedMillis');
+    // Xoá cả cờ firstPlayedIsEstimate — save thật thiếu firstPlayedMillis thì
+    // cũng thiếu luôn cờ này (cùng thêm một lượt), xoá một mình millis dựng
+    // một trạng thái không có thật.
+    (payload['state'] as Map<String, dynamic>)
+      ..remove('firstPlayedMillis')
+      ..remove('firstPlayedIsEstimate');
     await prefs.setString('game_state', jsonEncode(payload));
     final container = ProviderContainer(overrides: [
       sharedPreferencesProvider.overrideWithValue(prefs),
@@ -208,6 +213,25 @@ void main() {
     addTearDown(container.dispose);
 
     expect(container.read(gameControllerProvider).storyCompleteSeconds, isNull);
+  });
+
+  test(
+      'save có firstPlayedMillis THẬT (không thiếu trường nào) vẫn được chốt '
+      'mốc bình thường — cờ firstPlayedIsEstimate không lỡ tay chặn nhầm save '
+      'hợp lệ', () async {
+    final seed = GameState.newGame(nowMillis: 1000)
+      ..storyChapter = 18
+      ..storyChoiceD = 'soul'
+      ..stage = 12;
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    await GameStorage(prefs).save(seed, nowMillis: 5000);
+    final container = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(() => 1000 + 777000),
+    ]);
+    addTearDown(container.dispose);
+    expect(container.read(gameControllerProvider).storyCompleteSeconds, 777);
   });
 
   group('mốc Hồi 2 (Chương 28)', () {
@@ -260,7 +284,14 @@ void main() {
       await GameStorage(prefs).save(seed, nowMillis: savedAt);
       if (dropFirstPlayed) {
         final payload = jsonDecode(prefs.getString('game_state')!) as Map<String, dynamic>;
-        (payload['state'] as Map<String, dynamic>).remove('firstPlayedMillis');
+        // Xoá CẢ HAI trường: save thật trước 2026-09-12 không có trường nào
+        // trong hai trường này (cả firstPlayedMillis lẫn cờ
+        // firstPlayedIsEstimate đều được thêm cùng lúc) — chỉ xoá một trường
+        // là dựng một trạng thái không có thật (cờ nói "tin được" nhưng mốc
+        // lại thiếu), không mô phỏng đúng bug đang kiểm.
+        (payload['state'] as Map<String, dynamic>)
+          ..remove('firstPlayedMillis')
+          ..remove('firstPlayedIsEstimate');
         await prefs.setString('game_state', jsonEncode(payload));
       }
       final container = ProviderContainer(overrides: [
