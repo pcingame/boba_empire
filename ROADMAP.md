@@ -124,7 +124,7 @@ tối ưu sai chỗ.
 
 | # | Việc | Vì sao |
 |---|---|---|
-| 17 | Hoàn thiện xác thực biên nhận server-side: chống replay (lưu transaction/order id đã trao), acknowledge/consume phía Play, chuyển App Store Server API cho StoreKit 2 — SETUP.md đã liệt kê rõ 3 việc thiếu, `server/` đã có skeleton | Ngay khi #13 xong và có giao dịch thật, đây là thứ chặn giả mạo mua hàng — vá SAU KHI tiền thật đã chảy qua là quá muộn |
+| 17 | ✅ **CODE xong 2026-09-29**: xác thực biên nhận server-side qua App Store Server API (không phải `verifyReceipt` cũ — plugin đang dùng gửi JWS StoreKit 2, endpoint cũ sai định dạng với MỌI giao dịch thật) + Play + chặn phát lại consumable qua Supabase + acknowledge/consume Play, 30 test. ⏳ Còn 4 việc CẤU HÌNH trước khi bật thật, xem RELEASE_CHECKLIST §4 | Phát hiện quan trọng: endpoint cũ đã BỊ HỎNG với bản plugin hiện tại, không phải "sắp lỗi thời" như README cũ ghi |
 | 18 | Điều tra Đấu Trường 0 trận / Trân Châu Rơi 1 người — treo từ phiên trước | Cần biết là do KHÁM PHÁ (không ai biết tồn tại) hay HỨNG THÚ (biết mà không thích) trước khi quyết định đầu tư thêm hay dừng |
 | 19 | Đo lại đường cong hoạt động ~2 tuần sau khi `1.0.4` lên (mốc so sánh: đường cong hiện tại 277→123) | Chưa có số liệu thật về hiệu quả D3/D7 + sự kiện giới hạn thời gian — hai thứ tốn công nhất vừa ship |
 

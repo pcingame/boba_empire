@@ -10,6 +10,7 @@ const _receipt = PurchaseReceipt(
   productId: 'boba_gems_small',
   source: 'google_play',
   verificationData: 'token-123',
+  isConsumable: true,
 );
 
 HttpReceiptVerifier _verifierReturning(http.Response Function() respond) {
@@ -19,6 +20,7 @@ HttpReceiptVerifier _verifierReturning(http.Response Function() respond) {
     expect(body['productId'], 'boba_gems_small');
     expect(body['source'], 'google_play');
     expect(body['verificationData'], 'token-123');
+    expect(body['kind'], 'consumable');
     return respond();
   });
   return HttpReceiptVerifier(Uri.parse('https://x/verify'), client: client);

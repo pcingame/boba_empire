@@ -13,6 +13,7 @@ class PurchaseReceipt {
     required this.productId,
     required this.source,
     required this.verificationData,
+    required this.isConsumable,
   });
 
   /// Product id của store (khớp [IapProduct.id]).
@@ -23,6 +24,16 @@ class PurchaseReceipt {
 
   /// Token/receipt store cấp để server đối chiếu (serverVerificationData).
   final String verificationData;
+
+  /// Khớp [IapProduct.kind] == [IapKind.consumable]. Server cần biết để:
+  ///  - Play: gọi đúng `products.acknowledge` (non-consumable) hay
+  ///    `products.consume` (consumable) — Play tự hoàn tiền sau 3 ngày nếu
+  ///    giao dịch không được acknowledge/consume.
+  ///  - Chặn phát lại (replay): CHỈ chặn với consumable (phát lại nghĩa là
+  ///    cộng 💎 hai lần — mất tiền thật). Non-consumable phải cho phép phát
+  ///    lại — đó chính là luồng "Khôi phục giao dịch mua" hợp lệ khi người
+  ///    chơi đổi máy, gửi lại ĐÚNG transaction id cũ.
+  final bool isConsumable;
 }
 
 /// Kết quả xác thực. [unavailable] = không gọi được server (mạng/lỗi) — khác với

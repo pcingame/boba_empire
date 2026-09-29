@@ -35,6 +35,7 @@ class HttpReceiptVerifier implements ReceiptVerifier {
               'productId': receipt.productId,
               'source': receipt.source,
               'verificationData': receipt.verificationData,
+              'kind': receipt.isConsumable ? 'consumable' : 'non_consumable',
             }),
           )
           .timeout(timeout);

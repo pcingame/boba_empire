@@ -66,10 +66,10 @@ non-consumable, ~$2.99), `boba_piggy` (đập heo, **consumable**, ~$1.99),
 `boba_vip30` (VIP Pass 30 ngày, **consumable**, ~$4.99). Giá gốc theo mục
 "Giá đề xuất".
 
-- [x] 🔴 **iOS (App Store Connect):** tạo đủ 8 product — user báo xong
-  2026-09-29. ⚠️ CHƯA XÁC NHẬN: giá theo vùng đã bật chưa, đã test bằng
-  Sandbox tester chưa (2 mục dưới) — hỏi lại trước khi coi phần iOS đã
-  xong hẳn.
+- [x] 🔴 **iOS (App Store Connect):** tạo đủ 8 product — xong 2026-09-29,
+  xác nhận qua ảnh chụp console: cả 8/8 **Approved**, product ID khớp
+  đúng `iap_products.dart`. ⚠️ CHƯA XÁC NHẬN: giá theo vùng đã bật chưa,
+  đã test bằng Sandbox tester chưa (2 mục dưới).
 - [ ] 🔴 **Android (Play Console):** tạo đủ 8 product — CHƯA làm, đợi
   Play Store được publish (mục 9).
 - [ ] 🔴 Bật giá **theo vùng** (hạ cho ID/BR/TH/VN — SETUP.md) — cả 2 nền
@@ -78,11 +78,16 @@ non-consumable, ~$2.99), `boba_piggy` (đập heo, **consumable**, ~$1.99),
   app đã ký & cài qua Play.
 - [ ] 🔴 Thêm **License testers** (Play) / **Sandbox tester** (iOS) để mua
   thử không mất tiền, làm TRƯỚC khi mở bán thật.
-- [ ] 🟡 **Verify receipt server-side** trước khi bán thật (hiện
-  client-only qua `NoopReceiptVerifier`, dễ bị giả mạo — điểm chèn trong
-  `real_iap_service.dart`, còn thiếu chống replay + acknowledge Play +
-  App Store Server API, xem SETUP.md). ⚠️ Ưu tiên cao hơn hẳn từ khi iOS
-  đã có product thật — giờ có thể có giao dịch thật bất cứ lúc nào.
+- [x] 🟡 **Verify receipt server-side** — CODE xong 2026-09-29 (App Store
+  Server API + Play + chặn phát lại consumable + acknowledge/consume Play,
+  30 test, xem `server/README.md`). Vẫn client-only (`NoopReceiptVerifier`)
+  CHO TỚI KHI làm xong 4 việc cấu hình dưới — code không tự bật:
+  - [ ] Tạo khoá App Store Server API (App Store Connect → Users and
+    Access → Integrations) — lấy Key ID + Issuer ID + file `.p8`.
+  - [ ] Tạo service account Play (quyền *View financial data*) — lấy JSON.
+  - [ ] Chạy `supabase/iap_replay_schema.sql` (bảng chặn phát lại).
+  - [ ] Deploy `server/` (VERIFY_MODE=prod + đủ biến môi trường), build app
+    với `--dart-define=IAP_VERIFY_ENDPOINT=<url>`.
 
 ## 5. Assets & store listing
 

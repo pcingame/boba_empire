@@ -94,10 +94,12 @@ class RealIapService implements IapService {
   /// FAIL-OPEN: chỉ chặn khi server phán quyết dứt khoát biên nhận không hợp lệ;
   /// lỗi mạng ([VerifyResult.unavailable]) vẫn cho trao thưởng.
   Future<bool> _verified(PurchaseDetails pd) async {
+    final product = IapProduct.byId(pd.productID);
     final result = await _verifier.verify(PurchaseReceipt(
       productId: pd.productID,
       source: pd.verificationData.source,
       verificationData: pd.verificationData.serverVerificationData,
+      isConsumable: product?.kind == IapKind.consumable,
     ));
     return result != VerifyResult.invalid;
   }

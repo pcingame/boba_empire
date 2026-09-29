@@ -93,8 +93,9 @@ starter): 🇮🇩 ~Rp 39.000 / Rp 9.000 · 🇧🇷 ~R$ 9,90 / R$ 2,90 · 🇹�
 để đẩy người chơi lên gói cao. Chỉnh số 💎 mỗi bậc ở `Balance.iapGems*`.
 
 ### ⚠️ Xác thực biên nhận (bảo mật)
-Đã có **skeleton backend** ở `server/` (Dart shelf) và wiring client sẵn:
-`RealIapService` gọi `ReceiptVerifier` TRƯỚC khi trao thưởng
+Backend ở `server/` (Dart shelf) — **2026-09-29: hết skeleton, xác thực thật**
+(App Store Server API + Play + chặn phát lại + acknowledge/consume, 30 test).
+Wiring client sẵn: `RealIapService` gọi `ReceiptVerifier` TRƯỚC khi trao thưởng
 (`lib/iap/real_iap_service.dart` → `_onPurchases`).
 
 - Mặc định `NoopReceiptVerifier` (client-only như cũ) khi chưa cấu hình endpoint.
@@ -102,10 +103,12 @@ starter): 🇮🇩 ~Rp 39.000 / Rp 9.000 · 🇧🇷 ~R$ 9,90 / R$ 2,90 · 🇹�
   `--dart-define=IAP_VERIFY_ENDPOINT=https://<server>/verify` → dùng
   `HttpReceiptVerifier`. Chính sách **fail-open**: chỉ chặn khi server trả
   `200 {"valid": false}`; lỗi mạng/timeout vẫn trao (ưu tiên người mua thật).
-- Server: `server/README.md` hướng dẫn chạy dev (`VERIFY_MODE=dev` chấp nhận mọi
-  biên nhận để test wiring) và bật prod (Google Play / App Store) qua biến môi
-  trường. Việc CÒN THIẾU cho production: chống replay (lưu orderId/transaction_id
-  đã trao), acknowledge/consume Play, chuyển App Store Server API cho StoreKit 2.
+- Server: `server/README.md` hướng dẫn chạy dev (`VERIFY_MODE=dev`) và bật
+  prod. **Việc còn lại là CẤU HÌNH, không phải code**: (1) tạo khoá App Store
+  Server API (App Store Connect → Integrations) + service account Play
+  (quyền *View financial data*), (2) chạy `supabase/iap_replay_schema.sql`
+  (bảng chặn phát lại), (3) deploy server, (4) build app kèm
+  `IAP_VERIFY_ENDPOINT`.
 
 ---
 

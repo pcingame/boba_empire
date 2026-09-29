@@ -12,6 +12,8 @@ dependencies:
   # Dùng cho xác thực Google Play thật (service account → androidpublisher API).
   googleapis_auth: ^1.6.0
   http: ^1.2.0
+  # Ký JWT ES256 để gọi App Store Server API (xem lib/verifier.dart).
+  dart_jsonwebtoken: ^3.1.0
 
 dev_dependencies:
   lints: ^4.0.0
