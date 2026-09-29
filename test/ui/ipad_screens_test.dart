@@ -95,6 +95,15 @@ void main() {
           reason: '${entry.key}: bàn cờ rộng ${board.width}dp, chưa kẹp');
       expect(board.width, greaterThan(300),
           reason: '${entry.key}: bàn cờ chỉ ${board.width}dp — quá bé');
+      // Bug thật (2026-09-29): trần cỡ ô cũ (52dp/ô = 416dp bàn) ăn cả iPad,
+      // nên bàn cờ trên iPad giống hệt trên iPhone dù cột nội dung rộng gấp
+      // đôi — "hơi nhỏ" theo đúng nghĩa đen. Chỉ kiểm nhánh dọc (portrait):
+      // nhánh ngang chia đôi cột cho HUD nên có trần khác.
+      if (entry.key.contains('dọc')) {
+        expect(board.width, greaterThan(480),
+            reason: '${entry.key}: bàn cờ chỉ ${board.width}dp — '
+                'trần cỡ ô (66dp/ô trong match3_board.dart) bị hạ nhầm');
+      }
 
       await tester.pumpWidget(const SizedBox());
       c.dispose();

@@ -453,10 +453,17 @@ class _Match3PanelState extends ConsumerState<Match3Panel> {
           ? box.maxHeight - (widget.view.stuck ? 34 : 0)
           : screenH * 0.5;
       // Khung bảng = padding 4 + viền 1 mỗi bên = 10px, phải nằm trong bề ngang.
+      //
+      // Trần 66 (trước là 52, đổi 2026-09-29): 52 hoá ra là trần THẬT SỰ ăn
+      // luôn cả iPad lẫn iPhone Pro Max — đo được bàn cờ giống hệt 426x426 ở
+      // CẢ HAI, dù cột nội dung trên iPad rộng 560dp. Ô game không có lý do
+      // gì phải nhỏ hơn chỗ có sẵn; 66 gần lấp đầy cột trên iPad
+      // (538/560dp) mà máy hẹp (iPhone SE) vẫn bị kẹp bởi bề ngang màn hình
+      // trước khi chạm tới trần này nên không đổi gì ở đó.
       final cell = [
         (box.maxWidth - 10) / m3Size,
         (usableH - 10) / m3Size,
-        52.0,
+        66.0,
       ].reduce((a, b) => a < b ? a : b);
       final side = cell * m3Size;
       return Column(
