@@ -9,6 +9,82 @@ người bản ngữ soát.
 
 ---
 
+## 1.0.5 (+8) — 2026-09-30
+
+**Bản trước:** 1.0.4 (+7), chưa được App Store duyệt xong tại thời điểm này.
+
+Mốc đáng chú ý của bản này: **hỗ trợ iPad đầy đủ** và bản vá bảng xếp hạng
+tốc độ hoàn thành cốt truyện bị sai thời gian với save cũ (xem
+`test/state/story_controller_test.dart`).
+
+### 🇻🇳 Tiếng Việt (vi)
+
+```
+Mới: hỗ trợ đầy đủ iPad!
+
+• Sự kiện giới hạn thời gian theo đợt, thêm thu nhập cuối tuần
+• Thông báo nhắc quay lại sau vài ngày vắng mặt
+• SỬA LỖI: bảng xếp hạng tốc độ hoàn thành cốt truyện bị sai với save cũ — nay tính đúng thời gian thật
+• Nhiều lỗi hiển thị và ổn định hạ tầng phía sau
+```
+
+### 🇬🇧 English (en)
+
+```
+New: full iPad support!
+
+• Limited-time weekend income events
+• Come-back reminders after a few days away
+• FIX: the story speedrun leaderboard could show bogus times on old saves — now uses real elapsed time
+• Various display fixes and backend stability work
+```
+
+### 🇧🇷 Português (pt-BR)
+
+```
+Novo: suporte completo a iPad!
+
+• Eventos de renda por tempo limitado nos fins de semana
+• Lembretes para voltar após alguns dias ausente
+• CORREÇÃO: o ranking de velocidade da história podia mostrar tempos falsos em saves antigos — agora usa o tempo real
+• Várias correções visuais e mais estabilidade nos bastidores
+```
+
+### 🇪🇸 Español (es)
+
+```
+Nuevo: soporte completo para iPad!
+
+• Eventos de ingresos por tiempo limitado los fines de semana
+• Avisos para volver tras unos días de ausencia
+• CORRECCIÓN: la clasificación de velocidad de la historia podía mostrar tiempos falsos en partidas antiguas — ahora usa el tiempo real
+• Varias correcciones visuales y más estabilidad interna
+```
+
+### 🇮🇩 Bahasa Indonesia (id)
+
+```
+Baru: dukungan penuh iPad!
+
+• Event pendapatan akhir pekan waktu terbatas
+• Pengingat kembali bermain setelah beberapa hari absen
+• PERBAIKAN: papan peringkat speedrun cerita bisa menampilkan waktu palsu pada save lama — kini pakai waktu asli
+• Berbagai perbaikan tampilan dan stabilitas di balik layar
+```
+
+### 🇹🇭 ภาษาไทย (th)
+
+```
+ใหม่: รองรับ iPad เต็มรูปแบบ!
+
+• อีเวนต์รายได้ช่วงเวลาจำกัดวันหยุดสุดสัปดาห์
+• แจ้งเตือนชวนกลับมาเล่นหลังหายไปหลายวัน
+• แก้ไข: กระดานจัดอันดับความเร็วเนื้อเรื่องอาจแสดงเวลาผิดสำหรับเซฟเก่า — ตอนนี้ใช้เวลาจริงแล้ว
+• แก้ไขการแสดงผลหลายจุดและเสถียรภาพเบื้องหลัง
+```
+
+---
+
 ## 1.0.4 (+7) — 2026-09-29
 
 **Bản trước:** 1.0.3 (+6), phát hành App Store 2026-09-27.
