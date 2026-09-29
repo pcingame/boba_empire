@@ -1088,6 +1088,20 @@ class AppLocalizationsEn extends AppLocalizations {
       'Your daily check-in, free spin and 3 quests are waiting.';
 
   @override
+  String get notifyD3Title => 'Your shop misses you 🧋';
+
+  @override
+  String get notifyD3Body =>
+      'It\'s been 3 days — the coin stash filled up ages ago, come collect it.';
+
+  @override
+  String get notifyD7Title => 'It\'s been a week! 🧋';
+
+  @override
+  String get notifyD7Body =>
+      'Ascension, Falling Pearls and lots of new stuff are waiting for you.';
+
+  @override
   String get navMatch3 => 'Pearls';
 
   @override

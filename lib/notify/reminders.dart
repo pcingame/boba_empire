@@ -1,8 +1,16 @@
 /// Nhắc người chơi quay lại bằng thông báo cục bộ (không cần server đẩy).
 ///
-/// Hai mốc, đặt lại mỗi lần app chuyển nền và xoá sạch khi mở lại:
+/// Bốn mốc, đặt lại mỗi lần app chuyển nền và xoá sạch khi mở lại:
 ///  1. Kho Xu offline đã đầy → không tích thêm nữa, quay lại nhận đi.
 ///  2. Sang ngày mới → điểm danh + vòng quay free + 3 nhiệm vụ ngày.
+///  3. Vắng 3 ngày → kéo lại trước khi quên hẳn app tồn tại.
+///  4. Vắng 7 ngày → lần cuối, không đặt lịch xa hơn (thông báo cục bộ đặt
+///     càng xa lúc lên lịch càng dễ bị hệ điều hành coi là ít quan trọng).
+///
+/// Trước đây chỉ có 2 mốc đầu — người rời app quá 1 ngày và không tự mở lại
+/// thì KHÔNG BAO GIỜ nhận thêm thông báo nào nữa (lịch chỉ được đặt lại vào
+/// lần *pause* kế tiếp, mà không có lần pause kế tiếp nếu họ không quay lại).
+/// D3/D7 lấp đúng khoảng trống đó.
 ///
 /// Quyền thông báo xin lúc app ĐANG Ở TRƯỚC (lần resume đầu tiên), không xin
 /// lúc khởi động — màn mở app đã có sẵn ATT + form đồng ý quảng cáo.
@@ -20,25 +28,39 @@ import 'package:timezone/timezone.dart' as tz;
 DateTime offlineFullAt(DateTime now, int capSeconds) =>
     now.toUtc().add(Duration(seconds: capSeconds));
 
-/// Mốc "ngày mới": game đổi ngày lúc nửa đêm UTC (xem `dayIndex` trong
-/// core/daily.dart). Nếu mốc đó rơi vào đêm theo giờ máy (22:00-08:00) thì dời
-/// tới 10:00 sáng — không ai muốn bị ping lúc 2 giờ sáng.
-DateTime dailyResetAt(DateTime now) {
-  final utc = now.toUtc();
-  final midnight = DateTime.utc(utc.year, utc.month, utc.day)
-      .add(const Duration(days: 1));
-  final local = midnight.toLocal();
-  if (local.hour < 22 && local.hour >= 8) return midnight;
+/// Dời [whenUtc] sang 10:00 sáng giờ máy nếu nó rơi vào đêm (22:00-08:00) —
+/// không ai muốn bị ping lúc 2 giờ sáng. Dùng chung cho mọi mốc nhắc.
+DateTime _avoidNight(DateTime whenUtc) {
+  final local = whenUtc.toLocal();
+  if (local.hour < 22 && local.hour >= 8) return whenUtc;
   final morning = DateTime(local.year, local.month, local.day, 10);
   return (morning.isAfter(local) ? morning : morning.add(const Duration(days: 1)))
       .toUtc();
 }
+
+/// Mốc "ngày mới": game đổi ngày lúc nửa đêm UTC (xem `dayIndex` trong
+/// core/daily.dart).
+DateTime dailyResetAt(DateTime now) {
+  final utc = now.toUtc();
+  return _avoidNight(
+      DateTime.utc(utc.year, utc.month, utc.day).add(const Duration(days: 1)));
+}
+
+/// Mốc "vắng 3 ngày": [now] + 3 ngày, né giờ đêm.
+DateTime d3ReminderAt(DateTime now) =>
+    _avoidNight(now.toUtc().add(const Duration(days: 3)));
+
+/// Mốc "vắng 7 ngày": [now] + 7 ngày, né giờ đêm.
+DateTime d7ReminderAt(DateTime now) =>
+    _avoidNight(now.toUtc().add(const Duration(days: 7)));
 
 class Reminders {
   const Reminders._();
 
   static const int _idOfflineFull = 1;
   static const int _idDaily = 2;
+  static const int _idD3 = 3;
+  static const int _idD7 = 4;
 
   static final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
@@ -91,12 +113,18 @@ class Reminders {
     required String offlineBody,
     required String dailyTitle,
     required String dailyBody,
+    required String d3Title,
+    required String d3Body,
+    required String d7Title,
+    required String d7Body,
   }) async {
     if (!await _ensureInit()) return;
     await cancelAll();
     await _at(_idOfflineFull, offlineFullAt(now, offlineCapSeconds),
         offlineTitle, offlineBody);
     await _at(_idDaily, dailyResetAt(now), dailyTitle, dailyBody);
+    await _at(_idD3, d3ReminderAt(now), d3Title, d3Body);
+    await _at(_idD7, d7ReminderAt(now), d7Title, d7Body);
   }
 
   /// Xoá lịch (gọi khi người chơi đã mở app — nhắc nữa là phiền).

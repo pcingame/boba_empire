@@ -1085,6 +1085,20 @@ class AppLocalizationsVi extends AppLocalizations {
       'Điểm danh, 1 lượt quay miễn phí và 3 nhiệm vụ hôm nay đang chờ bạn.';
 
   @override
+  String get notifyD3Title => 'Quán vắng bạn 3 ngày rồi 🧋';
+
+  @override
+  String get notifyD3Body =>
+      'Kho Xu đã đầy từ lâu, đơn hàng vẫn đang chờ — ghé qua thu dọn nhé.';
+
+  @override
+  String get notifyD7Title => 'Đã 1 tuần rồi đó! 🧋';
+
+  @override
+  String get notifyD7Body =>
+      'Kỷ Nguyên, Trân Châu Rơi và bao nhiêu thứ mới đang chờ bạn quay lại.';
+
+  @override
   String get navMatch3 => 'Trân châu';
 
   @override

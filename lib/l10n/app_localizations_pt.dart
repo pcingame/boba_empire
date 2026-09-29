@@ -1092,6 +1092,20 @@ class AppLocalizationsPt extends AppLocalizations {
       'A recompensa diária, um giro grátis e 3 missões estão à espera.';
 
   @override
+  String get notifyD3Title => 'Sua loja sente sua falta 🧋';
+
+  @override
+  String get notifyD3Body =>
+      'Já se passaram 3 dias — o caixa está cheio há tempos, venha recolher.';
+
+  @override
+  String get notifyD7Title => 'Já faz uma semana! 🧋';
+
+  @override
+  String get notifyD7Body =>
+      'Ascensão, Pérolas Caindo e muitas novidades estão à sua espera.';
+
+  @override
   String get navMatch3 => 'Pérolas';
 
   @override

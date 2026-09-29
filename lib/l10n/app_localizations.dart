@@ -1900,6 +1900,30 @@ abstract class AppLocalizations {
   /// **'Điểm danh, 1 lượt quay miễn phí và 3 nhiệm vụ hôm nay đang chờ bạn.'**
   String get notifyDailyBody;
 
+  /// No description provided for @notifyD3Title.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quán vắng bạn 3 ngày rồi 🧋'**
+  String get notifyD3Title;
+
+  /// No description provided for @notifyD3Body.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kho Xu đã đầy từ lâu, đơn hàng vẫn đang chờ — ghé qua thu dọn nhé.'**
+  String get notifyD3Body;
+
+  /// No description provided for @notifyD7Title.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã 1 tuần rồi đó! 🧋'**
+  String get notifyD7Title;
+
+  /// No description provided for @notifyD7Body.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kỷ Nguyên, Trân Châu Rơi và bao nhiêu thứ mới đang chờ bạn quay lại.'**
+  String get notifyD7Body;
+
   /// No description provided for @navMatch3.
   ///
   /// In vi, this message translates to:

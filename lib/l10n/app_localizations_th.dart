@@ -1080,6 +1080,18 @@ class AppLocalizationsTh extends AppLocalizations {
       'รางวัลรายวัน หมุนวงล้อฟรี 1 ครั้ง และภารกิจ 3 อย่างรออยู่';
 
   @override
+  String get notifyD3Title => 'ร้านคิดถึงคุณอยู่ 3 วันแล้ว 🧋';
+
+  @override
+  String get notifyD3Body => 'คลังเหรียญเต็มมานานแล้ว กลับมาเก็บกันเถอะ';
+
+  @override
+  String get notifyD7Title => 'ผ่านไปหนึ่งสัปดาห์แล้ว! 🧋';
+
+  @override
+  String get notifyD7Body => 'ยุคใหม่ ไข่มุกร่วง และของใหม่อีกมากมายรอคุณอยู่';
+
+  @override
   String get navMatch3 => 'ไข่มุก';
 
   @override

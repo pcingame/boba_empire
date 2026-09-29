@@ -198,8 +198,8 @@ class _HomePageState extends ConsumerState<HomePage>
   bool _wasPaused = false;
   bool _askedNotifyPermission = false;
 
-  /// Hẹn 2 mốc nhắc quay lại (kho offline đầy / sang ngày mới). No-op nếu người
-  /// chơi chưa cho quyền thông báo.
+  /// Hẹn 4 mốc nhắc quay lại (kho offline đầy / sang ngày mới / vắng 3 ngày /
+  /// vắng 7 ngày). No-op nếu người chơi chưa cho quyền thông báo.
   void _scheduleReminders(int offlineCapSeconds) {
     final l10n = AppLocalizations.of(context)!;
     Reminders.schedule(
@@ -209,6 +209,10 @@ class _HomePageState extends ConsumerState<HomePage>
       offlineBody: l10n.notifyOfflineFullBody,
       dailyTitle: l10n.notifyDailyTitle,
       dailyBody: l10n.notifyDailyBody,
+      d3Title: l10n.notifyD3Title,
+      d3Body: l10n.notifyD3Body,
+      d7Title: l10n.notifyD7Title,
+      d7Body: l10n.notifyD7Body,
     );
   }
 

@@ -1089,6 +1089,20 @@ class AppLocalizationsId extends AppLocalizations {
       'Hadiah harian, 1 putaran gratis, dan 3 misi sedang menunggu.';
 
   @override
+  String get notifyD3Title => 'Kedaimu merindukanmu 🧋';
+
+  @override
+  String get notifyD3Body =>
+      'Sudah 3 hari — kas Koin sudah penuh sejak lama, ayo ambil.';
+
+  @override
+  String get notifyD7Title => 'Sudah seminggu! 🧋';
+
+  @override
+  String get notifyD7Body =>
+      'Ascension, Mutiara Jatuh, dan banyak hal baru menantimu.';
+
+  @override
   String get navMatch3 => 'Mutiara';
 
   @override
