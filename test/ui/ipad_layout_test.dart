@@ -51,6 +51,59 @@ Future<ProviderContainer> _pumpHome(WidgetTester tester) async {
 void main() {
   _contentWidthTests();
   _journeyTests();
+  _dialogBarrierTests();
+}
+
+/// Lớp chặn (ModalBarrier) của hộp thoại PHẢI phủ hết màn, dù nội dung hộp bị
+/// kẹp lại.
+///
+/// Bug thật đã mắc: ban đầu tôi đặt PhoneWidth ở `MaterialApp.builder` cho gọn
+/// (một chỗ, phủ mọi hộp thoại). Nhưng `builder` nằm NGOÀI Navigator nên lớp
+/// chặn bị kẹp theo — đo được 560dp trên màn 1032dp: bấm vào vùng trống hai
+/// bên KHÔNG đóng được hộp thoại, và lớp mờ chỉ phủ giữa màn. Chỉ lộ ra khi
+/// chạy thật trên máy ảo iPad, không test nào lúc đó bắt được.
+void _dialogBarrierTests() {
+  testWidgets('lớp chặn hộp thoại phủ hết màn iPad', (tester) async {
+    const size = Size(1032, 1376);
+    await tester.binding.setSurfaceSize(size);
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    final c = await _pumpHome(tester);
+
+    await tester.tap(find.byKey(const Key('prestige-button')));
+    await tester.pumpAndSettle();
+    expect(find.byType(Dialog), findsOneWidget);
+
+    for (final e in find.byType(ModalBarrier).evaluate()) {
+      final w = (e.renderObject! as RenderBox).size.width;
+      expect(w, size.width,
+          reason: 'lớp chặn rộng ${w}dp thay vì ${size.width}dp — '
+              'chỗ kẹp bề ngang đang nằm ngoài Navigator');
+    }
+
+    // Và bấm vào rìa màn (ngoài vùng nội dung 560dp) phải đóng được hộp.
+    await tester.tapAt(const Offset(40, 700));
+    await tester.pumpAndSettle();
+    expect(find.byType(Dialog), findsNothing,
+        reason: 'bấm ra vùng trống hai bên không đóng được hộp thoại');
+
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
+  testWidgets('hộp thoại vẫn được kẹp bề ngang trên iPad', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(1032, 1376));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    final c = await _pumpHome(tester);
+    await tester.tap(find.byKey(const Key('prestige-button')));
+    await tester.pumpAndSettle();
+    final card = find
+        .descendant(of: find.byType(Dialog), matching: find.byType(Material))
+        .first;
+    expect(tester.getSize(card).width, lessThanOrEqualTo(kPhoneMaxWidth),
+        reason: 'hộp thoại chưa được kẹp (insetPadding của theme)');
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
 }
 
 /// Nội dung không được rộng quá [kPhoneMaxWidth] trên máy tablet, và PHẢI

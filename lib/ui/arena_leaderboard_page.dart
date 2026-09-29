@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../arena/arena_leaderboard_controller.dart';
 import '../l10n/app_localizations.dart';
 import 'widgets/clay.dart';
+import 'widgets/phone_width.dart';
 
 Future<void> showArenaLeaderboardPage(BuildContext context) {
   return Navigator.of(
@@ -45,23 +46,25 @@ class _ArenaLeaderboardPageState extends ConsumerState<ArenaLeaderboardPage> {
 
     final viewState = ref.watch(arenaLeaderboardControllerProvider);
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.arenaLeaderboardTitle)),
-      body: SafeArea(
-        child: switch (viewState) {
-          ArenaLeaderboardLoading() => const Center(
-            child: CircularProgressIndicator(),
-          ),
-          ArenaLeaderboardNeedsNickname() => _NicknameForm(
-            l10n: l10n,
-            nameCtrl: _nameCtrl,
-          ),
-          ArenaLeaderboardLoaded() => _ArenaLeaderboardList(
-            l10n: l10n,
-            view: viewState,
-          ),
-          ArenaLeaderboardError(:final message) => _ErrorView(message: message),
-        },
+    return PhoneWidth(
+      child: Scaffold(
+        appBar: AppBar(title: Text(l10n.arenaLeaderboardTitle)),
+        body: SafeArea(
+          child: switch (viewState) {
+            ArenaLeaderboardLoading() => const Center(
+              child: CircularProgressIndicator(),
+            ),
+            ArenaLeaderboardNeedsNickname() => _NicknameForm(
+              l10n: l10n,
+              nameCtrl: _nameCtrl,
+            ),
+            ArenaLeaderboardLoaded() => _ArenaLeaderboardList(
+              l10n: l10n,
+              view: viewState,
+            ),
+            ArenaLeaderboardError(:final message) => _ErrorView(message: message),
+          },
+        ),
       ),
     );
   }

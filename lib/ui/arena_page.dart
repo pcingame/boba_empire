@@ -15,6 +15,7 @@ import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import 'match3_board.dart';
 import 'widgets/clay.dart';
+import 'widgets/phone_width.dart';
 
 Future<void> showArenaPage(BuildContext context) {
   return Navigator.of(context).push(
@@ -38,30 +39,32 @@ class ArenaPage extends ConsumerWidget {
     // vẫn thấy mình đang ở đây; lỗi/đang kết nối -> null -> ẩn số.
     final online = ref.watch(arenaOnlineCountProvider).asData?.value;
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.arenaTitle)),
-      // SingleChildScrollView: màn "trong trận" có khá nhiều khối xếp dọc
-      // (đồng hồ + 2 điểm + nút chạm + 3 mốc) — máy màn hình nhỏ hoặc cỡ chữ
-      // hệ thống to (accessibility) dễ tràn nếu chỉ dùng Center/Column cố định.
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: MediaQuery.sizeOf(context).height -
-                  MediaQuery.paddingOf(context).vertical -
-                  kToolbarHeight -
-                  40,
-            ),
-            child: Align(
-              alignment: viewState is ArenaInMatch ? Alignment.topCenter : Alignment.center,
-              child: switch (viewState) {
-                ArenaIdle() => _IdleView(l10n: l10n, online: online),
-                ArenaQueued() => _QueuedView(l10n: l10n, online: online),
-                ArenaInMatch() => _MatchView(l10n: l10n, view: viewState),
-                ArenaFinished() => _ResultView(l10n: l10n, view: viewState),
-                ArenaError() => _ErrorView(l10n: l10n, view: viewState),
-              },
+    return PhoneWidth(
+      child: Scaffold(
+        appBar: AppBar(title: Text(l10n.arenaTitle)),
+        // SingleChildScrollView: màn "trong trận" có khá nhiều khối xếp dọc
+        // (đồng hồ + 2 điểm + nút chạm + 3 mốc) — máy màn hình nhỏ hoặc cỡ chữ
+        // hệ thống to (accessibility) dễ tràn nếu chỉ dùng Center/Column cố định.
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.sizeOf(context).height -
+                    MediaQuery.paddingOf(context).vertical -
+                    kToolbarHeight -
+                    40,
+              ),
+              child: Align(
+                alignment: viewState is ArenaInMatch ? Alignment.topCenter : Alignment.center,
+                child: switch (viewState) {
+                  ArenaIdle() => _IdleView(l10n: l10n, online: online),
+                  ArenaQueued() => _QueuedView(l10n: l10n, online: online),
+                  ArenaInMatch() => _MatchView(l10n: l10n, view: viewState),
+                  ArenaFinished() => _ResultView(l10n: l10n, view: viewState),
+                  ArenaError() => _ErrorView(l10n: l10n, view: viewState),
+                },
+              ),
             ),
           ),
         ),

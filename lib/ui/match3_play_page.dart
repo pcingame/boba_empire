@@ -19,6 +19,7 @@ import 'match3_board.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
 import 'widgets/one_shot_lottie.dart';
+import 'widgets/phone_width.dart';
 
 class Match3PlayPage extends ConsumerStatefulWidget {
   const Match3PlayPage({super.key, required this.level});
@@ -86,7 +87,11 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
         // hai bên thừa mênh mông.
         final wide = box.maxWidth > box.maxHeight;
         if (wide) {
-          return Column(
+          // Nhánh 2 cột nới rộng hơn (900dp): kẹp 560 thì mỗi cột còn 280 và
+          // bàn cờ bé hơn cả lúc cầm dọc — test bố cục ngang bắt đúng chỗ này.
+          return PhoneWidth(
+            maxWidth: 900,
+            child: Column(
             children: [
               Expanded(
                 child: Row(
@@ -99,14 +104,17 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
               ),
               const BannerAdBox(),
             ],
+          ),
           );
         }
-        return Column(
-          children: [
-            _Hud(play: play),
-            Expanded(child: Center(child: board)),
-            const BannerAdBox(),
-          ],
+        return PhoneWidth(
+          child: Column(
+            children: [
+              _Hud(play: play),
+              Expanded(child: Center(child: board)),
+              const BannerAdBox(),
+            ],
+          ),
         );
       }),
     );

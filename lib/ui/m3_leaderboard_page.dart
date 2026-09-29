@@ -12,6 +12,7 @@ import '../l10n/app_localizations.dart';
 import '../leaderboard/m3_leaderboard_controller.dart';
 import '../state/game_providers.dart';
 import 'widgets/clay.dart';
+import 'widgets/phone_width.dart';
 
 Future<void> showM3Leaderboard(BuildContext context) {
   return Navigator.of(context).push(
@@ -53,17 +54,19 @@ class _M3LeaderboardPageState extends ConsumerState<M3LeaderboardPage> {
     }
 
     final view = ref.watch(m3LeaderboardControllerProvider);
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.m3LbTitle)),
-      body: switch (view) {
-        M3LeaderboardLoading() =>
-          const Center(child: CircularProgressIndicator()),
-        M3LeaderboardNeedsNickname() => _NicknameForm(ctrl: _nameCtrl),
-        M3LeaderboardLoaded() => _List(view: view),
-        // Bỏ qua `message` của controller (tiếng Việt cứng, không dịch được vì
-        // controller không có BuildContext) — hiện chuỗi đã dịch ở đây.
-        M3LeaderboardError() => const _ErrorView(),
-      },
+    return PhoneWidth(
+      child: Scaffold(
+        appBar: AppBar(title: Text(l10n.m3LbTitle)),
+        body: switch (view) {
+          M3LeaderboardLoading() =>
+            const Center(child: CircularProgressIndicator()),
+          M3LeaderboardNeedsNickname() => _NicknameForm(ctrl: _nameCtrl),
+          M3LeaderboardLoaded() => _List(view: view),
+          // Bỏ qua `message` của controller (tiếng Việt cứng, không dịch được vì
+          // controller không có BuildContext) — hiện chuỗi đã dịch ở đây.
+          M3LeaderboardError() => const _ErrorView(),
+        },
+      ),
     );
   }
 }

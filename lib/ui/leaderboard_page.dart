@@ -11,6 +11,7 @@ import '../l10n/app_localizations.dart';
 import '../leaderboard/leaderboard_controller.dart';
 import '../state/game_providers.dart';
 import 'widgets/clay.dart';
+import 'widgets/phone_width.dart';
 
 Future<void> showLeaderboardPage(BuildContext context) {
   return Navigator.of(
@@ -65,20 +66,22 @@ class _LeaderboardPageState extends ConsumerState<LeaderboardPage> {
 
     final viewState = ref.watch(leaderboardControllerProvider);
 
-    return Scaffold(
-      appBar: AppBar(title: Text(l10n.leaderboardTitle)),
-      body: SafeArea(
-        child: switch (viewState) {
-          LeaderboardLoading() => const Center(
-            child: CircularProgressIndicator(),
-          ),
-          LeaderboardNeedsNickname() => _NicknameForm(
-            l10n: l10n,
-            nameCtrl: _nameCtrl,
-          ),
-          LeaderboardLoaded() => _LeaderboardList(l10n: l10n, view: viewState),
-          LeaderboardError(:final message) => _ErrorView(message: message),
-        },
+    return PhoneWidth(
+      child: Scaffold(
+        appBar: AppBar(title: Text(l10n.leaderboardTitle)),
+        body: SafeArea(
+          child: switch (viewState) {
+            LeaderboardLoading() => const Center(
+              child: CircularProgressIndicator(),
+            ),
+            LeaderboardNeedsNickname() => _NicknameForm(
+              l10n: l10n,
+              nameCtrl: _nameCtrl,
+            ),
+            LeaderboardLoaded() => _LeaderboardList(l10n: l10n, view: viewState),
+            LeaderboardError(:final message) => _ErrorView(message: message),
+          },
+        ),
       ),
     );
   }

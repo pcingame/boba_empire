@@ -117,14 +117,39 @@ class BobaEmpireApp extends ConsumerWidget {
       themeMode: ThemeMode.system,
       theme: _buildTheme(Brightness.light, seed),
       darkTheme: _buildTheme(Brightness.dark, seed),
-      // Kẹp bề ngang cho máy tablet Ở ĐÂY chứ không ở từng trang: `builder`
-      // bọc Navigator, nên nó phủ luôn MỌI dialog (đo trên iPad Pro 13": hộp
-      // Nhượng quyền rộng 952dp, Thành tựu 952x1328 — chữ dàn ngang cả gang
-      // tay). Sửa ở ~20 chỗ gọi showDialog thì vừa dài vừa sót chỗ mới thêm.
-      builder: (context, child) => ColoredBox(
-        // Nền phải phủ hết màn hình, nếu không hai bên dải kẹp lòi nền trống.
-        color: Theme.of(context).colorScheme.surface,
-        child: PhoneWidth(child: child ?? const SizedBox.shrink()),
+      // Kẹp bề ngang hộp thoại cho máy tablet bằng insetPadding của theme —
+      // MỘT chỗ, phủ cả 19 file có showDialog (iPad Pro 13" trước khi sửa:
+      // hộp Nhượng quyền rộng 952dp, Thành tựu 952x1328).
+      //
+      // KHÔNG bọc `child` bằng PhoneWidth ở đây, dù nhìn thì gọn hơn: `builder`
+      // nằm NGOÀI Navigator nên lớp chặn (ModalBarrier) của hộp thoại cũng bị
+      // kẹp theo — đo được 560dp trên màn 1032dp, tức bấm ra vùng trống hai
+      // bên KHÔNG đóng được hộp thoại và lớp mờ chỉ phủ giữa màn. Các trang tự
+      // kẹp lấy bằng PhoneWidth trong Scaffold của mình.
+      builder: (context, child) => LayoutBuilder(
+        // Lấy bề ngang từ RÀNG BUỘC THẬT, không phải MediaQuery: trong
+        // flutter_test, `setSurfaceSize` đổi kích thước dựng hình nhưng
+        // MediaQuery vẫn báo 800dp — đo được lúc gỡ bug này (lớp chặn 1032dp
+        // mà MediaQuery 800dp trong cùng một cây). LayoutBuilder luôn khớp với
+        // thứ thật sự được vẽ, và cũng đúng khi app bị co ở Split View.
+        builder: (context, box) {
+          final t = Theme.of(context);
+          final pad = ((box.maxWidth - kPhoneMaxWidth) / 2)
+              .clamp(40.0, double.infinity);
+          return Theme(
+            data: t.copyWith(
+              dialogTheme: t.dialogTheme.copyWith(
+                insetPadding:
+                    EdgeInsets.symmetric(horizontal: pad, vertical: 24),
+              ),
+            ),
+            child: ColoredBox(
+              // Nền phủ hết màn, nếu không hai bên dải kẹp lòi nền trống.
+              color: t.colorScheme.surface,
+              child: child ?? const SizedBox.shrink(),
+            ),
+          );
+        },
       ),
       // Chỉ bản release: debug/test không gọi mạng hỏi store.
       home: kReleaseMode

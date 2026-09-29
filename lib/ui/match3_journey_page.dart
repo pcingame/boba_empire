@@ -15,6 +15,7 @@ import 'm3_leaderboard_page.dart';
 import 'match3_how_to_dialog.dart';
 import 'match3_play_page.dart';
 import 'widgets/clay.dart';
+import 'widgets/phone_width.dart';
 
 Future<void> showMatch3Journey(BuildContext context) {
   return Navigator.of(context).push(
@@ -74,74 +75,76 @@ class _Match3JourneyPageState extends ConsumerState<Match3JourneyPage> {
     final current = highestUnlocked(stars);
     final earned = stars.fold<int>(0, (a, b) => a + b);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.m3Title),
-        actions: [
-          IconButton(
-            key: const Key('m3-leaderboard-button'),
-            icon: const Icon(Icons.emoji_events_outlined),
-            tooltip: l10n.m3LbTitle,
-            onPressed: () => showM3Leaderboard(context),
-          ),
-          IconButton(
-            key: const Key('m3-how-to-button'),
-            icon: const Icon(Icons.help_outline),
-            tooltip: l10n.m3HowToTitle,
-            onPressed: () => showMatch3HowTo(context),
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          // Tổng sao: thứ duy nhất đo được tiến độ dài hạn ở chế độ này.
-          //
-          // KHÔNG để trong AppBar: chip này ăn 116px, cộng nút quay lại + 2 nút
-          // biểu tượng thì tiêu đề chỉ còn 168px và bị cắt cụt ở MỌI ngôn ngữ
-          // ("Falling Pear..." trên máy thật).
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-            child: Row(
-              children: [
-                ClayChip(
-                  child: Text(
-                    '⭐ $earned / ${Balance.m3LevelCount * 3}',
-                    maxLines: 1,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ],
+    return PhoneWidth(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(l10n.m3Title),
+          actions: [
+            IconButton(
+              key: const Key('m3-leaderboard-button'),
+              icon: const Icon(Icons.emoji_events_outlined),
+              tooltip: l10n.m3LbTitle,
+              onPressed: () => showM3Leaderboard(context),
             ),
-          ),
-          Expanded(
-            // Tắt hiệu ứng kéo giãn của Android (StretchingOverscrollIndicator):
-            // khi cuộn hết cỡ nó BÓP nội dung ở mép — đo trên máy ảo, hàng ô
-            // cuối còn 150px trong khi các hàng khác 236px. Lưới ô vuông thì
-            // méo rất lộ, khác hẳn danh sách chữ.
-            child: ScrollConfiguration(
-              behavior:
-                  ScrollConfiguration.of(context).copyWith(overscroll: false),
-              child: GridView.builder(
-                controller: _scroll,
-                padding: const EdgeInsets.fromLTRB(12, 12, 12, 4),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
-                ),
-                itemCount: Balance.m3LevelCount,
-                itemBuilder: (context, i) => _LevelTile(
-                  level: Match3Level(i + 1),
-                  stars: starsOf(stars, i + 1),
-                  unlocked: levelUnlocked(stars, i + 1),
-                  isCurrent: i + 1 == current,
+            IconButton(
+              key: const Key('m3-how-to-button'),
+              icon: const Icon(Icons.help_outline),
+              tooltip: l10n.m3HowToTitle,
+              onPressed: () => showMatch3HowTo(context),
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            // Tổng sao: thứ duy nhất đo được tiến độ dài hạn ở chế độ này.
+            //
+            // KHÔNG để trong AppBar: chip này ăn 116px, cộng nút quay lại + 2 nút
+            // biểu tượng thì tiêu đề chỉ còn 168px và bị cắt cụt ở MỌI ngôn ngữ
+            // ("Falling Pear..." trên máy thật).
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: Row(
+                children: [
+                  ClayChip(
+                    child: Text(
+                      '⭐ $earned / ${Balance.m3LevelCount * 3}',
+                      maxLines: 1,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              // Tắt hiệu ứng kéo giãn của Android (StretchingOverscrollIndicator):
+              // khi cuộn hết cỡ nó BÓP nội dung ở mép — đo trên máy ảo, hàng ô
+              // cuối còn 150px trong khi các hàng khác 236px. Lưới ô vuông thì
+              // méo rất lộ, khác hẳn danh sách chữ.
+              child: ScrollConfiguration(
+                behavior:
+                    ScrollConfiguration.of(context).copyWith(overscroll: false),
+                child: GridView.builder(
+                  controller: _scroll,
+                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 4),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                  ),
+                  itemCount: Balance.m3LevelCount,
+                  itemBuilder: (context, i) => _LevelTile(
+                    level: Match3Level(i + 1),
+                    stars: starsOf(stars, i + 1),
+                    unlocked: levelUnlocked(stars, i + 1),
+                    isCurrent: i + 1 == current,
+                  ),
                 ),
               ),
             ),
-          ),
-          // Banner ở ĐÁY, ngoài vùng cuộn — không bao giờ nằm cạnh ô bấm.
-          const BannerAdBox(),
-        ],
+            // Banner ở ĐÁY, ngoài vùng cuộn — không bao giờ nằm cạnh ô bấm.
+            const BannerAdBox(),
+          ],
+        ),
       ),
     );
   }

@@ -38,6 +38,7 @@ import 'widgets/animated_count.dart';
 import 'widgets/clay.dart';
 import 'widgets/mascot.dart';
 import 'widgets/one_shot_lottie.dart';
+import 'widgets/phone_width.dart';
 
 /// Cho phép tự hiện "Cách chơi" ở lần chơi đầu. App luôn bật; test tắt qua
 /// flutter_test_config để dialog modal không che thao tác, và test hướng dẫn
@@ -320,53 +321,55 @@ class _HomePageState extends ConsumerState<HomePage>
       },
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          key: const Key('how-to-play-button'),
-          icon: const Icon(Icons.help_outline),
-          onPressed: () => showHowToPlay(context),
+    return PhoneWidth(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            key: const Key('how-to-play-button'),
+            icon: const Icon(Icons.help_outline),
+            onPressed: () => showHowToPlay(context),
+          ),
+          title: Text(
+            AppLocalizations.of(context)!.appTitle,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'Baloo 2',
+              fontFamilyFallback: ['Mitr', 'Roboto'],
+            ),
+          ),
+          titleSpacing: 0,
+          actions: [
+            IconButton(
+              key: const Key('story-log-button'),
+              icon: const Icon(Icons.auto_stories_outlined),
+              tooltip: AppLocalizations.of(context)!.storyLogTitle,
+              onPressed: () => showStoryLog(context),
+            ),
+            IconButton(
+              key: const Key('settings-button'),
+              icon: const Icon(Icons.settings_outlined),
+              onPressed: () => showSettings(context),
+            ),
+          ],
         ),
-        title: Text(
-          AppLocalizations.of(context)!.appTitle,
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-            fontFamily: 'Baloo 2',
-            fontFamilyFallback: ['Mitr', 'Roboto'],
-          ),
+        body: const Stack(
+          children: [
+            Column(
+              children: [
+                _MoneyHeader(),
+                // Chia phần còn lại theo tỷ lệ: cảnh quán không bao giờ bị "co"
+                // biến mất, shop luôn có chỗ (danh sách tự cuộn nếu nhiều dòng).
+                Expanded(flex: 42, child: _StageScene()),
+                Expanded(flex: 58, child: _Shop()),
+              ],
+            ),
+            _BoostIndicator(),
+          ],
         ),
-        titleSpacing: 0,
-        actions: [
-          IconButton(
-            key: const Key('story-log-button'),
-            icon: const Icon(Icons.auto_stories_outlined),
-            tooltip: AppLocalizations.of(context)!.storyLogTitle,
-            onPressed: () => showStoryLog(context),
-          ),
-          IconButton(
-            key: const Key('settings-button'),
-            icon: const Icon(Icons.settings_outlined),
-            onPressed: () => showSettings(context),
-          ),
-        ],
+        bottomNavigationBar: const _BottomBar(),
       ),
-      body: const Stack(
-        children: [
-          Column(
-            children: [
-              _MoneyHeader(),
-              // Chia phần còn lại theo tỷ lệ: cảnh quán không bao giờ bị "co"
-              // biến mất, shop luôn có chỗ (danh sách tự cuộn nếu nhiều dòng).
-              Expanded(flex: 42, child: _StageScene()),
-              Expanded(flex: 58, child: _Shop()),
-            ],
-          ),
-          _BoostIndicator(),
-        ],
-      ),
-      bottomNavigationBar: const _BottomBar(),
     );
   }
 }
