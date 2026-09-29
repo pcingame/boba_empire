@@ -69,6 +69,7 @@ class _WheelDialogState extends ConsumerState<_WheelDialog>
       final outcome = adFree
           ? RewardOutcome.earned
           : await ref.read(adServiceProvider).showRewardedAd();
+      if (!mounted) return;
       if (outcome != RewardOutcome.earned) {
         if (mounted) setState(() => _spinning = false);
         return;

@@ -106,6 +106,9 @@ class Reminders {
   }
 
   /// Đặt lại toàn bộ lịch nhắc (gọi lúc app chuyển nền). Mốc đã qua thì bỏ.
+  /// No-op nếu người chơi chưa cho quyền thông báo — thiếu quyền mà vẫn gọi
+  /// zonedSchedule thì iOS ném PlatformException UNErrorDomain 2003 ("Source
+  /// is not authorized"), crash app vì lỗi này không được bắt ở call site.
   static Future<void> schedule({
     required DateTime now,
     required int offlineCapSeconds,
@@ -119,12 +122,25 @@ class Reminders {
     required String d7Body,
   }) async {
     if (!await _ensureInit()) return;
+    if (!await _authorized()) return;
     await cancelAll();
     await _at(_idOfflineFull, offlineFullAt(now, offlineCapSeconds),
         offlineTitle, offlineBody);
     await _at(_idDaily, dailyResetAt(now), dailyTitle, dailyBody);
     await _at(_idD3, d3ReminderAt(now), d3Title, d3Body);
     await _at(_idD7, d7ReminderAt(now), d7Title, d7Body);
+  }
+
+  static Future<bool> _authorized() async {
+    if (Platform.isIOS) {
+      final ios = _plugin.resolvePlatformSpecificImplementation<
+          IOSFlutterLocalNotificationsPlugin>();
+      final options = await ios?.checkPermissions();
+      return options?.isEnabled ?? false;
+    }
+    final android = _plugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    return await android?.areNotificationsEnabled() ?? false;
   }
 
   /// Xoá lịch (gọi khi người chơi đã mở app — nhắc nữa là phiền).

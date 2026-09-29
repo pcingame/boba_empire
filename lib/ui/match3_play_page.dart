@@ -272,6 +272,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
     final outcome = adFree
         ? RewardOutcome.earned
         : await ref.read(adServiceProvider).showRewardedAd();
+    if (!mounted) return;
     if (outcome != RewardOutcome.earned) {
       messenger.showSnackBar(SnackBar(content: Text(l10n.adNotReadySnack)));
       return;

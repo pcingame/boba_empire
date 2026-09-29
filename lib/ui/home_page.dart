@@ -730,6 +730,7 @@ class _MoneyHeader extends ConsumerWidget {
     final adFree = ref.read(gameControllerProvider).adFree;
     final outcome =
         adFree ? RewardOutcome.earned : await ads.showRewardedAd();
+    if (!context.mounted) return;
     if (outcome != RewardOutcome.earned) {
       messenger.showSnackBar(SnackBar(content: Text(l10n.adNotReadySnack)));
       return;
@@ -2003,6 +2004,7 @@ class _GoldenCat extends ConsumerWidget {
           final adFree = ref.read(gameControllerProvider).adFree;
           final outcome =
               adFree ? RewardOutcome.earned : await ads.showRewardedAd();
+          if (!context.mounted) return;
           if (outcome == RewardOutcome.earned) {
             controller.activateGoldenRush();
             HapticFeedback.mediumImpact();

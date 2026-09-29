@@ -42,6 +42,7 @@ class _RewardsDialogState extends ConsumerState<_RewardsDialog> {
     final outcome = adFree
         ? RewardOutcome.earned
         : await ref.read(adServiceProvider).showRewardedAd();
+    if (!mounted) return;
     if (outcome == RewardOutcome.earned) {
       ref.read(audioServiceProvider).play(Sfx.reward);
       onEarned();

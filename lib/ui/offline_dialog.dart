@@ -36,6 +36,7 @@ class _OfflineDialogState extends ConsumerState<_OfflineDialog> {
     final outcome = adFree
         ? RewardOutcome.earned
         : await ref.read(adServiceProvider).showRewardedAd();
+    if (!mounted) return;
     double bonus = 0;
     if (outcome == RewardOutcome.earned) {
       bonus = ref.read(gameControllerProvider.notifier).claimDoubleOffline();
