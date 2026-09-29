@@ -60,17 +60,29 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
 
 ## 4. In-app purchase (xem SETUP.md mục 2)
 
-- [ ] 🔴 Tạo **8 product** đúng ID: `boba_gems_small/medium/large`,
-  `boba_remove_ads`, `boba_starter_pack`, `boba_double_income` (x2 thu nhập
-  vĩnh viễn, non-consumable, ~$2.99), `boba_piggy` (đập heo, **consumable**,
-  ~$1.99), `boba_vip30` (VIP Pass 30 ngày, **consumable**, ~$4.99). Đặt giá
-  theo mục "Giá đề xuất".
-- [ ] 🔴 Bật giá **theo vùng** (hạ cho ID/BR/TH/VN — SETUP.md).
-- [ ] 🔴 Upload 1 build lên **internal testing** (IAP chỉ chạy với app đã ký &
-  cài qua Play).
-- [ ] 🔴 Thêm **License testers** để mua thử không mất tiền.
-- [ ] 🟡 **Verify receipt server-side** trước khi bán thật (hiện client-only, dễ
-  bị giả mạo — điểm chèn trong `real_iap_service.dart`).
+8 product ID cần khớp: `boba_gems_small/medium/large`, `boba_remove_ads`,
+`boba_starter_pack`, `boba_double_income` (x2 thu nhập vĩnh viễn,
+non-consumable, ~$2.99), `boba_piggy` (đập heo, **consumable**, ~$1.99),
+`boba_vip30` (VIP Pass 30 ngày, **consumable**, ~$4.99). Giá gốc theo mục
+"Giá đề xuất".
+
+- [x] 🔴 **iOS (App Store Connect):** tạo đủ 8 product — user báo xong
+  2026-09-29. ⚠️ CHƯA XÁC NHẬN: giá theo vùng đã bật chưa, đã test bằng
+  Sandbox tester chưa (2 mục dưới) — hỏi lại trước khi coi phần iOS đã
+  xong hẳn.
+- [ ] 🔴 **Android (Play Console):** tạo đủ 8 product — CHƯA làm, đợi
+  Play Store được publish (mục 9).
+- [ ] 🔴 Bật giá **theo vùng** (hạ cho ID/BR/TH/VN — SETUP.md) — cả 2 nền
+  tảng.
+- [ ] 🔴 Upload 1 build lên **internal testing** (Play) — IAP chỉ chạy với
+  app đã ký & cài qua Play.
+- [ ] 🔴 Thêm **License testers** (Play) / **Sandbox tester** (iOS) để mua
+  thử không mất tiền, làm TRƯỚC khi mở bán thật.
+- [ ] 🟡 **Verify receipt server-side** trước khi bán thật (hiện
+  client-only qua `NoopReceiptVerifier`, dễ bị giả mạo — điểm chèn trong
+  `real_iap_service.dart`, còn thiếu chống replay + acknowledge Play +
+  App Store Server API, xem SETUP.md). ⚠️ Ưu tiên cao hơn hẳn từ khi iOS
+  đã có product thật — giờ có thể có giao dịch thật bất cứ lúc nào.
 
 ## 5. Assets & store listing
 

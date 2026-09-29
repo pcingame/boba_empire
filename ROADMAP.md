@@ -93,10 +93,11 @@ chờ Apple duyệt — số liệu hoạt động ở P3 dưới đây CHƯA ph
 - **iOS-only**: App Store đang live `1.0.3`; Play Store `play.google.com/.../
   com.pcingame.bobaempire` trả **404** — chưa từng publish, kể cả ở dạng
   closed testing.
-- **IAP CHƯA TỪNG ĐƯỢC TẠO trên bất kỳ store nào** (RELEASE_CHECKLIST §4, cả 5
-  dòng chưa tick). 8 sản phẩm đã viết sẵn trong `iap_products.dart`, giá đã
-  tính sẵn theo vùng ở SETUP.md — nhưng **hiện tại không ai mua được gì cả**
-  vì product không tồn tại phía store. Doanh thu hiện tại = 100% quảng cáo.
+- **IAP:** iOS đã tạo đủ 8 product (2026-09-29, user tự làm) — ⚠️ chưa xác
+  nhận giá theo vùng/Sandbox test. **Android vẫn chưa có gì** (đợi Play
+  publish). Trước hôm nay: doanh thu = 100% quảng cáo; giờ iOS CÓ THỂ đã bán
+  được, nhưng `real_iap_service.dart` vẫn dùng `NoopReceiptVerifier`
+  (client-only) — xác thực server-side càng cấp thiết hơn từ lúc này.
 - `1.0.4` (D3/D7, sự kiện giới hạn thời gian, vá trần Sao int64) đang chờ Apple
   duyệt — số hoạt động ở trên chưa phản ánh được tác dụng của hai đòn bẩy
   retention lớn nhất vừa ship.
@@ -113,10 +114,11 @@ tối ưu sai chỗ.
 
 | # | Việc | Vì sao ưu tiên nhất |
 |---|---|---|
-| 13 | 🔴 Tạo đủ **8 product IAP** trên CẢ App Store Connect lẫn Play Console, đúng ID trong `iap_products.dart` (`boba_gems_small/medium/large`, `boba_remove_ads`, `boba_starter_pack`, `boba_double_income`, `boba_piggy`, `boba_vip30`) | Chặn TOÀN BỘ doanh thu IAP — không phải "chưa tối ưu giá", là "chưa tồn tại để bán" |
-| 14 | 🔴 Giá theo vùng (hạ 20-40% cho ID/BR/TH/VN) — số gợi ý cụ thể có sẵn ở SETUP.md §"Giá đề xuất", chỉ cần điền | Không làm thì mất chuyển đổi đúng ở các thị trường game đang có người chơi thật (nickname trong leaderboard áp đảo tiếng Việt) |
+| 13a | ✅ Tạo đủ 8 product IAP trên **App Store Connect** (iOS) — user xong 2026-09-29 | — |
+| 13b | 🔴 Tạo đủ 8 product IAP trên **Play Console** (Android) | Đợi #15 (Play chưa publish thì chưa tạo được product) |
+| 14 | 🔴 Giá theo vùng (hạ 20-40% cho ID/BR/TH/VN) — số gợi ý cụ thể có sẵn ở SETUP.md §"Giá đề xuất", chỉ cần điền. **Chưa xác nhận đã bật cho iOS chưa** | Không làm thì mất chuyển đổi đúng ở các thị trường game đang có người chơi thật (nickname trong leaderboard áp đảo tiếng Việt) |
 | 15 | 🔴 Publish **Google Play** (tài khoản dev $25 một lần + qua review) | Android áp đảo thị phần ở VN — bỏ Android là bỏ phần lớn nhất của chính thị trường mục tiêu game đang nhắm tới |
-| 16 | 🟡 License tester (Play) / Sandbox tester (iOS) trước khi mở bán thật | Làm TRƯỚC #13 có ý nghĩa — lỡ tự mua bằng tiền thật lúc test là tốn oan |
+| 16 | 🟡 Sandbox tester (iOS) — mua thử không mất tiền trước khi để người dùng thật mua. **Chưa xác nhận đã test chưa** | Lỡ tự mua bằng tiền thật lúc test là tốn oan |
 
 ### Việc tôi làm được ngay, không cần đợi bạn
 
