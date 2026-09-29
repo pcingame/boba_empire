@@ -10,7 +10,7 @@ Game idle/clicker xây chuỗi trà sữa, viết bằng Flutter. Android · iOS
 ```sh
 flutter pub get
 flutter run
-flutter test        # 470 test, không cần thiết bị
+flutter test        # 620+ test, không cần thiết bị
 flutter analyze
 ```
 
@@ -18,6 +18,7 @@ flutter analyze
 
 | File | Nội dung |
 |---|---|
+| `TECH_STACK.md` | Toàn bộ công nghệ/dịch vụ đang thật sự dùng — Firebase, Supabase, server IAP, hạ tầng deploy |
 | `GAME_DESIGN.md` | Tài liệu gốc về vòng lặp, kinh tế, mọi hệ thống — đọc trước khi tune số |
 | `ROADMAP.md` | Việc tiếp theo, xếp theo ROI |
 | `SETUP.md` | Cấu hình AdMob / IAP thật trước khi phát hành |
