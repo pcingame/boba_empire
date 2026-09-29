@@ -82,6 +82,11 @@ Ký hiệu: 🔴 chặn phát hành · 🟡 nên làm · 🟢 tùy chọn/sau.
   ở `assets/store/screenshots/`: home sáng, điểm danh, cửa hàng 💎, kho Sao,
   thành tựu, home tối. Chụp từ máy thật, tiếng Việt, UI claymorphic mới (font
   Baloo 2 + màu theo stage). Chụp lại bằng seed+adb khi UI đổi.
+- [x] 🔴 **Screenshot iPad** — 36 ảnh (6 màn × 6 ngôn ngữ) ở
+  `assets/store/screenshots/ipad/`, 2064×2752 (đúng cỡ iPad 13" App Store đòi).
+  Sinh lại bằng `./scripts/shoot.sh <udid> all` khi UI đổi — KHÔNG chụp tay.
+  ⚠️ Bắt buộc từ bản có iPad trở đi: App Store Connect chặn nộp app universal
+  nếu thiếu bộ ảnh iPad.
 - [ ] 🔴 **Store listing** (tên/mô tả ngắn/mô tả đầy đủ) — dán từ
   STORE_LISTING.md, cho từng ngôn ngữ (vi/en/pt/es/id/th).
 - [ ] 🟡 Nhờ **người bản ngữ soát** bản dịch in-app + listing.
