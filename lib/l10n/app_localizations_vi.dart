@@ -1099,6 +1099,11 @@ class AppLocalizationsVi extends AppLocalizations {
       'Kỷ Nguyên, Trân Châu Rơi và bao nhiêu thứ mới đang chờ bạn quay lại.';
 
   @override
+  String eventBannerLabel(String mult, String timeLeft) {
+    return '🎉 Sự kiện: ×$mult thu nhập! Còn $timeLeft';
+  }
+
+  @override
   String get navMatch3 => 'Trân châu';
 
   @override

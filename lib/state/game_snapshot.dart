@@ -40,6 +40,9 @@ class GameSnapshot {
     required this.catVisible,
     required this.boostRemainingSeconds,
     required this.vipVisible,
+    required this.eventActive,
+    required this.eventRemainingSeconds,
+    required this.eventMultiplier,
     required this.gemBoostLevel,
     required this.offlineCapLevel,
     required this.stage,
@@ -124,6 +127,16 @@ class GameSnapshot {
 
   /// Khách VIP đang đứng chờ trên màn hình hay không.
   final bool vipVisible;
+
+  /// Sự kiện giới hạn thời gian (Remote Config) đang chạy hay không.
+  final bool eventActive;
+
+  /// Số giây còn lại tới lúc sự kiện kết thúc — 0 nếu [eventActive] false.
+  final int eventRemainingSeconds;
+
+  /// Hệ số sự kiện hiện tại (1.0 nếu không có sự kiện) — cho banner hiện
+  /// đúng số ("×2") thay vì hardcode.
+  final double eventMultiplier;
 
   /// Cấp vật phẩm Kim Cương "Tăng thu nhập" / "Kho lạnh offline".
   final int gemBoostLevel;

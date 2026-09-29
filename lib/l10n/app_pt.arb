@@ -494,6 +494,7 @@
   "notifyD3Body": "Já se passaram 3 dias — o caixa está cheio há tempos, venha recolher.",
   "notifyD7Title": "Já faz uma semana! 🧋",
   "notifyD7Body": "Ascensão, Pérolas Caindo e muitas novidades estão à sua espera.",
+  "eventBannerLabel": "🎉 Evento: ×{mult} de renda! Faltam {timeLeft}",
   "navMatch3": "Pérolas",
   "m3Title": "Pérolas Caindo",
   "m3Level": "Nível {n}",

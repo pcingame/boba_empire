@@ -1092,6 +1092,11 @@ class AppLocalizationsTh extends AppLocalizations {
   String get notifyD7Body => 'ยุคใหม่ ไข่มุกร่วง และของใหม่อีกมากมายรอคุณอยู่';
 
   @override
+  String eventBannerLabel(String mult, String timeLeft) {
+    return '🎉 อีเวนต์: รายได้ ×$mult! เหลือ $timeLeft';
+  }
+
+  @override
   String get navMatch3 => 'ไข่มุก';
 
   @override

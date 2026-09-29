@@ -494,6 +494,7 @@
   "notifyD3Body": "It's been 3 days — the coin stash filled up ages ago, come collect it.",
   "notifyD7Title": "It's been a week! 🧋",
   "notifyD7Body": "Ascension, Falling Pearls and lots of new stuff are waiting for you.",
+  "eventBannerLabel": "🎉 Event: ×{mult} income! {timeLeft} left",
   "navMatch3": "Pearls",
   "m3Title": "Falling Pearls",
   "m3Level": "Level {n}",

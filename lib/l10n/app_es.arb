@@ -494,6 +494,7 @@
   "notifyD3Body": "Han pasado 3 días — la caja se llenó hace tiempo, ven a recogerla.",
   "notifyD7Title": "¡Ya pasó una semana! 🧋",
   "notifyD7Body": "El Ascenso, Perlas que caen y muchas cosas nuevas te esperan.",
+  "eventBannerLabel": "🎉 ¡Evento: ×{mult} de ingresos! Quedan {timeLeft}",
   "navMatch3": "Perlas",
   "m3Title": "Perlas que caen",
   "m3Level": "Nivel {n}",

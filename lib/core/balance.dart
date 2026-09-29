@@ -312,6 +312,24 @@ class Balance {
   static const double dailyEarnMinTarget = 500;
   static const int dailyEarnIncomeSeconds = 30 * 60;
 
+  // --- Sự kiện giới hạn thời gian (2026-09-29, ROADMAP #11) ---
+  //
+  // Mặc định TẮT (start = end = 0, xem eventMultiplierAt() trong economy.dart)
+  // — chỉ bật khi cả 3 nút này được đặt qua Remote Config. Người vặn số đặt
+  // 1 cửa sổ thời gian (VD cuối tuần) + hệ số, publish, hết hạn thì TỰ tắt —
+  // không cần nhớ quay lại tắt tay, và không cần nộp bản mới cho mỗi đợt.
+
+  /// Hệ số nhân thu nhập trong lúc sự kiện đang chạy (KHÔNG áp cho offline —
+  /// xem ghi chú ở eventMultiplierAt()).
+  static double eventIncomeMult = 1.0;
+
+  /// Mốc bắt đầu/kết thúc sự kiện (epoch ms, giờ UTC). `double` dù về bản
+  /// chất là số nguyên — khớp kiểu của mọi nút vặn khác trong RemoteBalance
+  /// (đọc/ghi qua `double`), và epoch ms tới tận năm ~2100 vẫn nằm gọn trong
+  /// phần nguyên chính xác của double (< 2^53).
+  static double eventStartMillis = 0;
+  static double eventEndMillis = 0;
+
   // --- Kỷ Nguyên (Ascension) — prestige tầng 2 (2026-09-26) ---
   // ⚠️ Mọi số dưới đây là ƯỚC LƯỢNG, chưa playtest.
 

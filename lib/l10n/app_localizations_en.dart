@@ -1102,6 +1102,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Ascension, Falling Pearls and lots of new stuff are waiting for you.';
 
   @override
+  String eventBannerLabel(String mult, String timeLeft) {
+    return '🎉 Event: ×$mult income! $timeLeft left';
+  }
+
+  @override
   String get navMatch3 => 'Pearls';
 
   @override

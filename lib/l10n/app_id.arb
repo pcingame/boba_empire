@@ -494,6 +494,7 @@
   "notifyD3Body": "Sudah 3 hari — kas Koin sudah penuh sejak lama, ayo ambil.",
   "notifyD7Title": "Sudah seminggu! 🧋",
   "notifyD7Body": "Ascension, Mutiara Jatuh, dan banyak hal baru menantimu.",
+  "eventBannerLabel": "🎉 Event: ×{mult} pendapatan! Sisa {timeLeft}",
   "navMatch3": "Mutiara",
   "m3Title": "Mutiara Jatuh",
   "m3Level": "Level {n}",

@@ -138,6 +138,27 @@ class GameController extends Notifier<GameSnapshot> {
   double _rivalModifier() =>
       _clock() < _rivalModUntilMillis ? _rivalModMult : 1.0;
 
+  /// Hệ số sự kiện giới hạn thời gian đang chạy (Remote Config) — xem
+  /// eventMultiplierAt() ở economy.dart. Tách khỏi _boostMultiplier() (không
+  /// cộng vào trần Balance.maxTimeBoostMultiplier): sự kiện là một tầng độc
+  /// lập, giống _rivalModifier(), không phải một loại "Mưa vàng" nữa.
+  double _eventMultiplier() => eventMultiplierAt(
+        _clock(),
+        mult: Balance.eventIncomeMult,
+        startMillis: Balance.eventStartMillis,
+        endMillis: Balance.eventEndMillis,
+      );
+
+  /// true nếu sự kiện đang chạy NGAY LÚC NÀY — UI dùng để hiện banner.
+  bool get eventActive => _eventMultiplier() > 1.0;
+
+  /// Số giây còn lại tới lúc sự kiện kết thúc, 0 nếu không có sự kiện đang
+  /// chạy. Dùng cho đồng hồ đếm ngược ở banner.
+  int get eventRemainingSeconds {
+    if (!eventActive) return 0;
+    return max(0, ((Balance.eventEndMillis - _clock()) / 1000).ceil());
+  }
+
   /// Trần offline (giây) hiện tại — UI dùng để hẹn giờ thông báo "kho đã đầy"
   /// (lib/notify/reminders.dart).
   // Tên khác `offlineCapSeconds` của economy.dart (đã import) để khỏi che nó.
@@ -443,7 +464,9 @@ class GameController extends Notifier<GameSnapshot> {
     _game.tapCount++;
     addDailyProgress(_game, DailyQuestKind.tap, 1);
     final gained =
-        tap(_game, boostMultiplier: _boostMultiplier() * _rivalModifier());
+        tap(_game,
+            boostMultiplier:
+                _boostMultiplier() * _rivalModifier() * _eventMultiplier());
     state = _snapshot();
     return gained;
   }
@@ -1000,7 +1023,8 @@ class GameController extends Notifier<GameSnapshot> {
     final dt = (now - _game.lastSeenMillis) / 1000.0;
     if (dt > 0) {
       tick(_game, dt,
-          boostMultiplier: _boostMultiplier() * _rivalModifier());
+          boostMultiplier:
+              _boostMultiplier() * _rivalModifier() * _eventMultiplier());
       fillPiggy(_game, dt); // heo đất tích theo thời gian chơi
       // Sự kiện đối thủ đang chờ trả lời → đối thủ "lấn tới" (nhỏ, tạo cảm giác gấp).
       if (_rivalEventPending != null && rivalActive(_game)) {
@@ -1044,7 +1068,8 @@ class GameController extends Notifier<GameSnapshot> {
         _game,
         Balance.generators,
         bonusPerStar: Balance.bonusPerStar,
-        boostMultiplier: _boostMultiplier() * _rivalModifier(),
+        boostMultiplier:
+            _boostMultiplier() * _rivalModifier() * _eventMultiplier(),
       ),
       prestigeStars: _game.prestigeStars,
       prestigeStarsAvailable: prestigeStarsAvailable(_game),
@@ -1052,6 +1077,9 @@ class GameController extends Notifier<GameSnapshot> {
       catVisible: _catVisible,
       boostRemainingSeconds: remainingMs > 0 ? remainingMs / 1000.0 : 0,
       vipVisible: _vipVisible,
+      eventActive: eventActive,
+      eventRemainingSeconds: eventRemainingSeconds,
+      eventMultiplier: _eventMultiplier(),
       gemBoostLevel: _game.gemBoostLevel,
       offlineCapLevel: _game.offlineCapLevel,
       stage: _game.stage,

@@ -21,5 +21,8 @@
   "m3CollectGrowth": 1.1,
   "m3ThreeStarGems": 3,
   "dailyQuestRewardGems": 8,
-  "dailyQuestBonusGems": 15
+  "dailyQuestBonusGems": 15,
+  "eventIncomeMult": 1.0,
+  "eventStartMillis": 0,
+  "eventEndMillis": 0
 }

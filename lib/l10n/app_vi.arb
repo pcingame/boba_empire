@@ -849,6 +849,8 @@
   "notifyD3Body": "Kho Xu đã đầy từ lâu, đơn hàng vẫn đang chờ — ghé qua thu dọn nhé.",
   "notifyD7Title": "Đã 1 tuần rồi đó! 🧋",
   "notifyD7Body": "Kỷ Nguyên, Trân Châu Rơi và bao nhiêu thứ mới đang chờ bạn quay lại.",
+  "eventBannerLabel": "🎉 Sự kiện: ×{mult} thu nhập! Còn {timeLeft}",
+  "@eventBannerLabel": {"placeholders": {"mult": {"type": "String"}, "timeLeft": {"type": "String"}}},
   "navMatch3": "Trân châu",
   "m3Title": "Trân Châu Rơi",
   "m3Level": "Màn {n}",

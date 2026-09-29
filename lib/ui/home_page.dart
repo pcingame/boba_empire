@@ -362,6 +362,7 @@ class _HomePageState extends ConsumerState<HomePage>
           children: [
             Column(
               children: [
+                _EventBanner(),
                 _MoneyHeader(),
                 // Chia phần còn lại theo tỷ lệ: cảnh quán không bao giờ bị "co"
                 // biến mất, shop luôn có chỗ (danh sách tự cuộn nếu nhiều dòng).
@@ -1856,6 +1857,50 @@ class _MilestoneBar extends StatelessWidget {
 }
 
 /// Đồng hồ đếm ngược khi Mưa vàng đang chạy (×3). Ẩn khi không có boost.
+/// Dải ngang mỏng báo sự kiện giới hạn thời gian (Remote Config) đang chạy —
+/// ĐẶT RIÊNG, không nhét vào _MoneyHeader: hàng "thu nhập/giây" ở đó đã chật
+/// (chip Mốc vàng + nút "Tiền tức thì", từng tràn ở màn 400px với nhãn dài
+/// pt/es — xem chú thích tại chỗ). Một sự kiện marketing cũng đáng được thấy
+/// rõ hơn là chen vào một chip bé tí.
+class _EventBanner extends ConsumerWidget {
+  const _EventBanner();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final (active, remaining, mult) = ref.watch(gameControllerProvider.select(
+        (s) => (s.eventActive, s.eventRemainingSeconds, s.eventMultiplier)));
+    if (!active) return const SizedBox.shrink();
+    final theme = Theme.of(context);
+    // "2" thay vì "2.0" cho hệ số tròn (trường hợp thường gặp nhất); giữ 1 số
+    // lẻ khi không tròn (VD ×1.5) thay vì cắt cụt sai số.
+    final multText = mult == mult.roundToDouble()
+        ? mult.round().toString()
+        : mult.toStringAsFixed(1);
+    return Container(
+      width: double.infinity,
+      color: theme.colorScheme.tertiary,
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Center(
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            key: const Key('event-banner-text'),
+            AppLocalizations.of(context)!.eventBannerLabel(
+              multText,
+              formatDuration(remaining),
+            ),
+            maxLines: 1,
+            style: theme.textTheme.labelMedium?.copyWith(
+              color: theme.colorScheme.onTertiary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _BoostIndicator extends ConsumerWidget {
   const _BoostIndicator();
 

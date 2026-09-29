@@ -1924,6 +1924,12 @@ abstract class AppLocalizations {
   /// **'Kỷ Nguyên, Trân Châu Rơi và bao nhiêu thứ mới đang chờ bạn quay lại.'**
   String get notifyD7Body;
 
+  /// No description provided for @eventBannerLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'🎉 Sự kiện: ×{mult} thu nhập! Còn {timeLeft}'**
+  String eventBannerLabel(String mult, String timeLeft);
+
   /// No description provided for @navMatch3.
   ///
   /// In vi, this message translates to:

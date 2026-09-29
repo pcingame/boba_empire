@@ -103,6 +103,29 @@ double bulkIncomeGain(GeneratorConfig config, int fromLevel, int count) {
 double prestigeMultiplier(double stars, double bonusPerStar) =>
     1 + stars * bonusPerStar;
 
+/// Hệ số sự kiện giới hạn thời gian (cuối tuần ×2, lễ...) đang chạy tại
+/// [nowMillis]. Toàn bộ 3 tham số đến từ Remote Config (`Balance.event*`) —
+/// người vặn số chỉ cần đổi [startMillis]/[endMillis]/[mult] trên Firebase
+/// Console, không cần nộp bản mới cho mỗi đợt sự kiện (đúng tinh thần
+/// ROADMAP #11 "vòng lặp tái sử dụng mãi").
+///
+/// Trả `1.0` (không đổi gì) nếu CHƯA CẤU HÌNH (mặc định `startMillis =
+/// endMillis = 0` → `endMillis <= startMillis`, coi là chưa bật) hoặc
+/// [nowMillis] nằm ngoài `[startMillis, endMillis)`. Không áp cho thu nhập
+/// offline — cùng quy ước với Mưa vàng/VIP (xem `boostMultiplier` ở
+/// [effectiveIncomePerSecond]): một sự kiện "chơi trong lúc này" không nên
+/// âm thầm nhân đôi luôn cả khoản đã tích lũy từ trước lúc mở app.
+double eventMultiplierAt(
+  int nowMillis, {
+  required double mult,
+  required double startMillis,
+  required double endMillis,
+}) {
+  if (endMillis <= startMillis) return 1.0;
+  if (nowMillis < startMillis || nowMillis >= endMillis) return 1.0;
+  return mult;
+}
+
 /// Hệ số nhân GIÁ TRỊ CHẠM vĩnh viễn từ lựa chọn cốt truyện (Chương 6 "thủ
 /// công", Chương 8 "giữ bản sắc", Chương 13 "giữ độc lập", Chương 18 "giữ hồn
 /// quán nhỏ", Chương 23 "giữ di sản", Chương 28 "giữ công thức"). Không reset khi prestige.

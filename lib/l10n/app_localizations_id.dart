@@ -1103,6 +1103,11 @@ class AppLocalizationsId extends AppLocalizations {
       'Ascension, Mutiara Jatuh, dan banyak hal baru menantimu.';
 
   @override
+  String eventBannerLabel(String mult, String timeLeft) {
+    return '🎉 Event: ×$mult pendapatan! Sisa $timeLeft';
+  }
+
+  @override
   String get navMatch3 => 'Mutiara';
 
   @override

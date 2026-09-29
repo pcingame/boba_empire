@@ -172,6 +172,27 @@ class RemoteBalance {
       min: 0,
       max: 500,
     ),
+    // Sự kiện giới hạn thời gian — 3 nút cùng nhóm, đặt CẢ BA thì sự kiện mới
+    // chạy (xem eventMultiplierAt() trong economy.dart). Publish xong tự tắt
+    // khi qua endMillis, không cần quay lại tắt tay.
+    'eventIncomeMult': (
+      read: () => Balance.eventIncomeMult,
+      write: (v) => Balance.eventIncomeMult = v,
+      min: 1.0,
+      max: 5.0,
+    ),
+    'eventStartMillis': (
+      read: () => Balance.eventStartMillis,
+      write: (v) => Balance.eventStartMillis = v,
+      min: 0,
+      max: 4102444800000, // năm 2100 — trần rộng rãi, chỉ chặn số bịa
+    ),
+    'eventEndMillis': (
+      read: () => Balance.eventEndMillis,
+      write: (v) => Balance.eventEndMillis = v,
+      min: 0,
+      max: 4102444800000,
+    ),
   };
 
   /// Giá trị đang biên dịch trong app — dùng làm default của Remote Config để

@@ -147,6 +147,56 @@ void main() {
       expect(baseIncomePerSecond(state, const [_g]), 0);
     });
 
+    group('eventMultiplierAt — sự kiện giới hạn thời gian', () {
+      test('chưa cấu hình (start=end=0, mặc định) -> 1.0', () {
+        expect(
+          eventMultiplierAt(1000, mult: 2.0, startMillis: 0, endMillis: 0),
+          1.0,
+        );
+      });
+
+      test('end <= start (cấu hình hỏng/gõ ngược) -> 1.0, không ném lỗi', () {
+        expect(
+          eventMultiplierAt(1500,
+              mult: 2.0, startMillis: 2000, endMillis: 1000),
+          1.0,
+        );
+      });
+
+      test('đúng trong cửa sổ [start, end) -> mult', () {
+        expect(
+          eventMultiplierAt(1500,
+              mult: 2.0, startMillis: 1000, endMillis: 2000),
+          2.0,
+        );
+        // Biên trái ĐÓNG (>= start).
+        expect(
+          eventMultiplierAt(1000,
+              mult: 2.0, startMillis: 1000, endMillis: 2000),
+          2.0,
+        );
+      });
+
+      test('ngoài cửa sổ (trước start, đúng end, sau end) -> 1.0', () {
+        expect(
+          eventMultiplierAt(999, mult: 2.0, startMillis: 1000, endMillis: 2000),
+          1.0,
+        );
+        // Biên phải MỞ (< end) — đúng lúc end coi là đã hết, khớp cách nhiều
+        // API "khoảng nửa mở" khác trong repo (VD arena queue).
+        expect(
+          eventMultiplierAt(2000,
+              mult: 2.0, startMillis: 1000, endMillis: 2000),
+          1.0,
+        );
+        expect(
+          eventMultiplierAt(3000,
+              mult: 2.0, startMillis: 1000, endMillis: 2000),
+          1.0,
+        );
+      });
+    });
+
     test('prestige nhân đúng hệ số', () {
       final state = GameState.newGame(nowMillis: 0)
         ..levels['x'] = 1
