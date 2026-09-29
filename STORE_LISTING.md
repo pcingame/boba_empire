@@ -7,6 +7,17 @@ Bản dịch do máy soạn — **nên nhờ người bản ngữ soát** trư�
 chương, Kỷ Nguyên, nhiệm vụ hằng ngày, Đấu Trường + bảng xếp hạng, sao lưu email). Mọi tính
 năng nêu trong mô tả đều có trong code; **không** nêu số lượng người chơi hay đánh giá.
 
+**Cập nhật 2026-09-29:** Keywords + Promotional Text 6 ngôn ngữ — 2 việc cùng lúc:
+1. Sửa mô tả sai: Trân Châu Rơi đã tách thành chế độ riêng (60 màn + bảng xếp hạng
+   riêng, xem `b195d32`), không còn là "một dạng của Đấu Trường" như bản cũ ghi.
+2. Thêm từ khóa theo trend trà sữa thật 2026 (matcha, cheese foam/phô mai, trà trái
+   cây) — đúng từ khách hàng boba thật đang tìm. Nhường chỗ bằng cách bỏ vài từ đã
+   trùng nghĩa với tên app/subtitle (vi/en/pt/es/id — nơi "idle"/"tycoon" xuất hiện
+   ĐÚNG CHỮ đó ở tên app, nhồi lại vào Keywords là phí ký tự theo "Mẹo ASO" bên
+   dưới). Riêng th GIỮ nguyên idle/tycoon/clicker vì tên app ở đó dùng chữ Thái
+   phiên âm (ไอเดิลไทคูน), không trùng ký tự với "idle"/"tycoon" tiếng Anh trong
+   Keywords. Promotional Text đổi được không cần nộp bản mới.
+
 ## Giới hạn ký tự
 
 | Trường | Google Play | App Store |
@@ -35,8 +46,8 @@ Mọi trường dưới đây đã được kiểm tra tự động ≤ giới h
 **Tên app:** `Đế Chế Trà Sữa`
 **Mô tả ngắn (Play):** `Chạm pha trà, xây đế chế trà sữa qua 18 giai đoạn! Idle tycoon có cốt truyện.`
 **Subtitle (App Store):** `Idle tycoon trà sữa`
-**Keywords (App Store):** `idle,tycoon,clicker,boba,trà sữa,trà,cafe,kinh doanh,tap,thư giãn,nhàn rỗi,cốt truyện`
-**Promotional Text (App Store):** `Mới: Đấu Trường dạng Trân Châu Rơi, Kỷ Nguyên, nhiệm vụ hằng ngày! Chạm pha trà, xây đế chế trà sữa từ xe đẩy tới huyền thoại. Kiếm Xu cả khi offline.`
+**Keywords (App Store):** `boba,trân châu,matcha,phô mai,trà trái cây,trà sữa,cafe,tap,thư giãn,nhàn rỗi,cốt truyện`
+**Promotional Text (App Store):** `Mới: Trân Châu Rơi 60 màn, Kỷ Nguyên, nhiệm vụ ngày! Matcha, phô mai, trà trái cây — như quán thật. Xây đế chế từ xe đẩy tới huyền thoại, kiếm Xu cả khi offline.`
 
 **Mô tả đầy đủ:**
 ```
@@ -83,8 +94,8 @@ Bắt đầu pha ly trà đầu tiên ngay hôm nay!
 **App name:** `Boba Empire: Idle Tycoon`
 **Short description (Play):** `Tap, brew & grow a bubble tea empire across 18 stages! Idle tycoon with a story.`
 **Subtitle (App Store):** `Relaxing bubble tea tycoon`
-**Keywords (App Store):** `idle,tycoon,clicker,boba,bubble tea,tea,cafe,incremental,tap,business,relaxing,story`
-**Promotional Text (App Store):** `New: Falling Pearls arena mode, Ascension and daily quests! Tap, brew and grow your bubble tea empire from street cart to legend. Earn even while offline.`
+**Keywords (App Store):** `boba,pearls,matcha,cheese foam,fruit tea,bubble tea,cafe,incremental,tap,business,relaxing,story`
+**Promotional Text (App Store):** `New: Falling Pearls now standalone (60 levels), plus Ascension & daily quests! Matcha, cheese foam, fruit tea — just like a real shop. Cart to legend, earn even offline.`
 
 **Full description:**
 ```
@@ -131,8 +142,8 @@ Start brewing your Boba Empire today!
 **Nome do app:** `Boba Empire: Idle Tycoon`
 **Descrição curta (Play):** `Toque, prepare e expanda seu império de bubble tea em 18 fases! Idle e história.`
 **Subtítulo (App Store):** `Império de bubble tea`
-**Keywords (App Store):** `idle,tycoon,clicker,boba,bubble tea,cha,cafe,incremental,negocio,relaxante,historia`
-**Promotional Text (App Store):** `Novo: Arena Pérolas Caindo, Ascensão e missões diárias! Toque, prepare e expanda seu império de bubble tea do carrinho à lenda. Ganhe até offline.`
+**Keywords (App Store):** `boba,perolas,matcha,espuma queijo,cha frutas,bubble tea,cafe,incremental,negocio,relaxante,historia`
+**Promotional Text (App Store):** `Novo: Pérolas Caindo agora solo (60 fases), Ascensão e missões diárias! Matcha, espuma de queijo, chá de frutas: como uma loja real. Do carrinho à lenda, ganhe offline.`
 
 **Descrição completa:**
 ```
@@ -179,8 +190,8 @@ Comece a preparar seu Boba Empire hoje!
 **Nombre de la app:** `Boba Empire: Idle Tycoon`
 **Descripción corta (Play):** `¡Toca, prepara y crea tu imperio de bubble tea en 18 etapas! Idle con historia.`
 **Subtítulo (App Store):** `Imperio de bubble tea`
-**Keywords (App Store):** `idle,tycoon,clicker,boba,bubble tea,te,cafe,incremental,negocio,relajante,historia`
-**Promotional Text (App Store):** `Nuevo: Arena Perlas que Caen, Ascensión y misiones diarias. Toca, prepara y haz crecer tu imperio de bubble tea del carrito a la leyenda. Gana incluso offline.`
+**Keywords (App Store):** `boba,perlas,matcha,espuma queso,te frutas,bubble tea,cafe,incremental,negocio,relajante,historia`
+**Promotional Text (App Store):** `Nuevo: Perlas que Caen ahora solo (60 niveles), Ascensión, misiones diarias! Matcha, espuma queso, té frutas: como una tienda real. Del carrito a leyenda, gana offline.`
 
 **Descripción completa:**
 ```
@@ -227,8 +238,8 @@ Disponible en 6 idiomas. Ideal para fans de idle clicker, tycoon e incremental. 
 **Nama aplikasi:** `Boba Empire: Idle Tycoon`
 **Deskripsi singkat (Play):** `Ketuk, seduh & bangun kerajaan bubble tea di 18 tahap! Idle tycoon berkisah.`
 **Subjudul (App Store):** `Kerajaan bubble tea`
-**Keywords (App Store):** `idle,tycoon,clicker,boba,bubble tea,teh,kafe,incremental,bisnis,santai,cerita`
-**Promotional Text (App Store):** `Baru: Arena Mutiara Jatuh, Ascension, dan misi harian! Ketuk, seduh, dan kembangkan kerajaan bubble tea dari gerobak sampai legenda. Cuan meski offline.`
+**Keywords (App Store):** `boba,mutiara,matcha,busa keju,teh buah,bubble tea,kafe,incremental,bisnis,santai,cerita`
+**Promotional Text (App Store):** `Baru: mode solo Mutiara Jatuh (60 level), Ascension, misi harian! Matcha, busa keju, teh buah - seperti kedai asli. Dari gerobak sampai legenda, cuan meski offline.`
 
 **Deskripsi lengkap:**
 ```
@@ -275,8 +286,8 @@ Mulai seduh Boba Empire-mu hari ini!
 **ชื่อแอป:** `Boba Empire: ไอเดิลไทคูน`
 **คำอธิบายสั้น (Play):** `แตะ ชง และสร้างอาณาจักรชานมไข่มุก 18 ด่าน! เกมไอเดิลไทคูนมีเนื้อเรื่อง`
 **คำบรรยาย (App Store):** `ไทคูนชานมไข่มุก`
-**Keywords (App Store):** `idle,tycoon,clicker,boba,ชานม,ชา,คาเฟ่,incremental,ธุรกิจ,ผ่อนคลาย,เนื้อเรื่อง`
-**Promotional Text (App Store):** `ใหม่: สนามประลองไข่มุกร่วง ระบบยุคใหม่ และภารกิจรายวัน! แตะ ชง และขยายอาณาจักรชานมจากรถเข็นสู่ตำนาน หาเงินได้แม้ออฟไลน์`
+**Keywords (App Store):** `idle,tycoon,clicker,boba,ไข่มุก,มัทฉะ,ชีสโฟม,ชาผลไม้,ชานม,คาเฟ่,ธุรกิจ,เนื้อเรื่อง`
+**Promotional Text (App Store):** `ใหม่: โหมดไข่มุกร่วงแยกเดี่ยว 60 ด่าน ระบบยุคใหม่ ภารกิจรายวัน! มัทฉะ ชีสโฟม ชาผลไม้ เหมือนร้านจริง ขยายอาณาจักรชานมจากรถเข็นสู่ตำนาน หาเงินได้แม้ออฟไลน์`
 
 **คำอธิบายแบบเต็ม:**
 ```
