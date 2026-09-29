@@ -1,4 +1,4 @@
-# ROADMAP — mở rộng & tối ưu (2026-09-28)
+# ROADMAP — mở rộng & tối ưu (cập nhật 2026-09-29)
 
 Ghi lại để làm tiếp, không cần khảo sát lại repo từ đầu. Xếp theo ROI, không
 theo "thứ tự thấy hay". Cập nhật trạng thái tại chỗ (như `DOMAIN_TODO.md`).
@@ -73,9 +73,67 @@ Việc tay trên AdMob console: ✅ xong 2026-09-28 — Banner ad unit đã tạ
 | 8 | ✅ **Art cảnh cho GĐ7-18** (xong 2026-09-28) — cả 12 giai đoạn đang dùng lại `stage6.png` (§17 GAME_DESIGN) | Người chơi tới GĐ7+ thấy "hết game" về mặt hình ảnh. Có `scripts/make_scenes.py` rồi → rẻ nhất nhóm này |
 | 9 | ✅ **Tự xáo khi hết nước đi** (xong 2026-09-28) | Làm ở cả Dart lẫn SQL, có vector vàng khoá. NHƯNG đo được: 600k nước không lần nào bàn bí — đây là lưới an toàn, không phải lỗ UX hay gặp như ghi chú ban đầu |
 | 10 | **Bảng xếp hạng tỉ lệ thắng Đấu Trường** | `arena_matches.winner` đã verify server-side → gần như chỉ là 1 view SQL + 1 tab |
-| 11 | **Sự kiện giới hạn thời gian** (cuối tuần ×2, mùa lễ) qua Remote Config ở #5 | Vòng lặp retention tái sử dụng mãi, không phải sản xuất nội dung mới mỗi đợt |
+| 11 | ✅ **Sự kiện giới hạn thời gian** (cuối tuần ×2, mùa lễ) qua Remote Config ở #5 — xong 2026-09-29 (`eventIncomeMult`/`eventStartMillis`/`eventEndMillis`, tự tắt hết cửa sổ) | Vòng lặp retention tái sử dụng mãi, không phải sản xuất nội dung mới mỗi đợt |
 | 12 | ~~Đợt mở rộng 3 (GĐ19+, chương 29+)~~ | **Hoãn**: chạm trần `economyOverflowGuardCap` (1e100) + nội dung mới vô nghĩa khi funnel chưa có ai |
+
+**Cũng đã xong 2026-09-29, ngoài bảng trên:** mở rộng #6 (thông báo local) thêm 2
+mốc D3/D7 (vắng 3/7 ngày) — trước đó lịch chỉ phủ ~24-30h, rời app quá 1 ngày là
+không bao giờ nhận thêm thông báo. Cả #6 mở rộng lẫn #11 nằm trong 1.0.4+7, đang
+chờ Apple duyệt — số liệu hoạt động ở P3 dưới đây CHƯA phản ánh hai thứ này.
 
 ---
 
-Gate trước mỗi lần ship: `flutter analyze` sạch + `flutter test` (60 file test) xanh.
+## P3 — Thu hút người chơi + Tăng lợi nhuận (2026-09-29)
+
+### Nhận định (số liệu thật, Supabase + iTunes lookup, đo hôm nay)
+
+- **1255 người chơi tổng**, hoạt động đang **giảm dần**: 277→235→191→174→123
+  (25→29/09, đơn vị "mở bảng xếp hạng chính/ngày" — proxy DAU, không phải DAU
+  thật).
+- **iOS-only**: App Store đang live `1.0.3`; Play Store `play.google.com/.../
+  com.pcingame.bobaempire` trả **404** — chưa từng publish, kể cả ở dạng
+  closed testing.
+- **IAP CHƯA TỪNG ĐƯỢC TẠO trên bất kỳ store nào** (RELEASE_CHECKLIST §4, cả 5
+  dòng chưa tick). 8 sản phẩm đã viết sẵn trong `iap_products.dart`, giá đã
+  tính sẵn theo vùng ở SETUP.md — nhưng **hiện tại không ai mua được gì cả**
+  vì product không tồn tại phía store. Doanh thu hiện tại = 100% quảng cáo.
+- `1.0.4` (D3/D7, sự kiện giới hạn thời gian, vá trần Sao int64) đang chờ Apple
+  duyệt — số hoạt động ở trên chưa phản ánh được tác dụng của hai đòn bẩy
+  retention lớn nhất vừa ship.
+- Trân Châu Rơi: 1 người từng mở bảng xếp hạng. Đấu Trường: 0 trận xác nhận
+  được qua REST (RLS chỉ cho thấy trận của chính mình). Còn quá sớm để kết
+  luận đây là lỗ hổng UX hay đơn giản là chưa đủ người biết.
+
+⇒ Đòn bẩy lớn nhất lúc này **không phải thêm tính năng** — là mở hai vòi đang
+**tắt hẳn**: bán được hàng (IAP) và tiếp cận được nửa thị trường còn lại
+(Android). Thêm nội dung mới lúc doanh thu = 0 và phân phối = 1 nền tảng là
+tối ưu sai chỗ.
+
+### Việc PHẢI làm trên console — tôi không có quyền, chỉ hỗ trợ số liệu/format
+
+| # | Việc | Vì sao ưu tiên nhất |
+|---|---|---|
+| 13 | 🔴 Tạo đủ **8 product IAP** trên CẢ App Store Connect lẫn Play Console, đúng ID trong `iap_products.dart` (`boba_gems_small/medium/large`, `boba_remove_ads`, `boba_starter_pack`, `boba_double_income`, `boba_piggy`, `boba_vip30`) | Chặn TOÀN BỘ doanh thu IAP — không phải "chưa tối ưu giá", là "chưa tồn tại để bán" |
+| 14 | 🔴 Giá theo vùng (hạ 20-40% cho ID/BR/TH/VN) — số gợi ý cụ thể có sẵn ở SETUP.md §"Giá đề xuất", chỉ cần điền | Không làm thì mất chuyển đổi đúng ở các thị trường game đang có người chơi thật (nickname trong leaderboard áp đảo tiếng Việt) |
+| 15 | 🔴 Publish **Google Play** (tài khoản dev $25 một lần + qua review) | Android áp đảo thị phần ở VN — bỏ Android là bỏ phần lớn nhất của chính thị trường mục tiêu game đang nhắm tới |
+| 16 | 🟡 License tester (Play) / Sandbox tester (iOS) trước khi mở bán thật | Làm TRƯỚC #13 có ý nghĩa — lỡ tự mua bằng tiền thật lúc test là tốn oan |
+
+### Việc tôi làm được ngay, không cần đợi bạn
+
+| # | Việc | Vì sao |
+|---|---|---|
+| 17 | Hoàn thiện xác thực biên nhận server-side: chống replay (lưu transaction/order id đã trao), acknowledge/consume phía Play, chuyển App Store Server API cho StoreKit 2 — SETUP.md đã liệt kê rõ 3 việc thiếu, `server/` đã có skeleton | Ngay khi #13 xong và có giao dịch thật, đây là thứ chặn giả mạo mua hàng — vá SAU KHI tiền thật đã chảy qua là quá muộn |
+| 18 | Điều tra Đấu Trường 0 trận / Trân Châu Rơi 1 người — treo từ phiên trước | Cần biết là do KHÁM PHÁ (không ai biết tồn tại) hay HỨNG THÚ (biết mà không thích) trước khi quyết định đầu tư thêm hay dừng |
+| 19 | Đo lại đường cong hoạt động ~2 tuần sau khi `1.0.4` lên (mốc so sánh: đường cong hiện tại 277→123) | Chưa có số liệu thật về hiệu quả D3/D7 + sự kiện giới hạn thời gian — hai thứ tốn công nhất vừa ship |
+
+### KHÔNG nên làm lúc này
+
+- Thêm nội dung mới (GĐ19+, nguồn thu mới theo trend...) — lý do ở đầu file vẫn
+  đúng, giờ càng rõ hơn: đến IAP còn chưa tồn tại thì thêm nội dung không phải
+  nút thắt.
+- Quảng cáo trả phí (TikTok/Facebook Ads) trước khi Play Store sống — một nửa
+  lưu lượng trả tiền sẽ đổ vào một cửa hàng không tồn tại.
+
+---
+
+Gate trước mỗi lần ship: `flutter analyze` sạch + `flutter test` (60+ file test) xanh.
