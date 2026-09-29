@@ -95,12 +95,15 @@ non-consumable, ~$2.99), `boba_piggy` (đập heo, **consumable**, ~$1.99),
   - App Store Server API (không phải `verifyReceipt` cũ) đã xác nhận hoạt
     động đúng với plugin StoreKit 2 đang dùng, cả cục bộ lẫn trên Cloud Run.
 
+  - [x] **Chặn phát lại consumable — BỀN, đã xác nhận 2026-09-30.** Chạy
+    `iap_replay_schema.sql` xong, service role key lưu Secret Manager
+    (không phải biến môi trường trần), Cloud Run redeploy → log xác nhận
+    `replay=SupabaseReplayStore` (không còn `InMemoryReplayStore`). Kiểm
+    trực tiếp ràng buộc UNIQUE trên bảng thật: ghi 1 dòng → `201`, ghi lại
+    ĐÚNG (source, transaction_id) đó → `409` (bị chặn đúng), đã dọn dòng
+    test. An toàn dù service scale nhiều instance (`--max-instances=2`).
+
   ⚠️ Còn lại trước khi mở cho người dùng thật (KHÔNG phải test):
-  - [ ] Chạy `supabase/iap_replay_schema.sql` + lấy service role key, thêm
-    vào biến môi trường Cloud Run (`SUPABASE_URL`/
-    `SUPABASE_SERVICE_ROLE_KEY`). Hiện tại chặn phát lại đang chạy
-    `InMemoryReplayStore` — **có rủi ro thật** vì service đặt
-    `--max-instances=2`, phát lại tới instance khác thì không bị chặn.
   - [ ] Tạo service account Play (quyền *View financial data*) — lấy JSON,
     thêm biến `PLAY_SERVICE_ACCOUNT_JSON`/`ANDROID_PACKAGE_NAME` khi Play
     publish.
