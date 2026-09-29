@@ -41,7 +41,7 @@ class _BannerAdBoxState extends ConsumerState<BannerAdBox> {
     super.dispose();
   }
 
-  Future<void> _load() async {
+  Future<void> _load(double boxWidth) async {
     if (_requested) return;
     _requested = true;
     // PHẢI chờ SDK init xong. Gọi sớm hơn thì hàm đo cỡ banner bên dưới trả
@@ -59,11 +59,16 @@ class _BannerAdBoxState extends ConsumerState<BannerAdBox> {
     // ponytail: hàm này đã deprecated, google_mobile_ads đang đẩy hết sang bản
     // Large. Khi nào nó bị xoá thật thì phải chuyển sang inline adaptive có
     // `maxHeight` để giữ được chiều cao nhỏ.
+    // Bề ngang lấy từ RÀNG BUỘC của chính ô banner, KHÔNG phải MediaQuery:
+    // trên iPad nội dung bị kẹp giữa (PhoneWidth, 560dp) trong khi màn hình
+    // rộng 1032dp — hỏi MediaQuery thì xin về banner 1032dp rồi nhét vào ô
+    // 560dp, tức tràn ngang. Trên điện thoại hai số này bằng nhau nên không
+    // đổi gì.
     final media = MediaQuery.of(context);
     // ignore: deprecated_member_use
     final size = await AdSize.getAnchoredAdaptiveBannerAdSize(
       media.orientation,
-      media.size.width.truncate(),
+      boxWidth.truncate(),
     );
     if (!mounted) return;
     if (size == null) {
@@ -100,9 +105,17 @@ class _BannerAdBoxState extends ConsumerState<BannerAdBox> {
     if (!_supported || adFree || AdConfig.bannerUnitId.isEmpty) {
       return const SizedBox.shrink();
     }
-    _load();
-    final ad = _ad;
-    if (!_loaded || ad == null) return const SizedBox.shrink();
+    return LayoutBuilder(
+      builder: (context, box) {
+        _load(box.maxWidth);
+        final ad = _ad;
+        if (!_loaded || ad == null) return const SizedBox.shrink();
+        return _box(ad);
+      },
+    );
+  }
+
+  Widget _box(BannerAd ad) {
     return SafeArea(
       top: false,
       child: Padding(

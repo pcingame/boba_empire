@@ -30,6 +30,7 @@ import 'iap/receipt_verifier.dart';
 import 'data/remote_balance.dart';
 import 'state/game_providers.dart';
 import 'ui/home_page.dart';
+import 'ui/widgets/phone_width.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -116,6 +117,15 @@ class BobaEmpireApp extends ConsumerWidget {
       themeMode: ThemeMode.system,
       theme: _buildTheme(Brightness.light, seed),
       darkTheme: _buildTheme(Brightness.dark, seed),
+      // Kẹp bề ngang cho máy tablet Ở ĐÂY chứ không ở từng trang: `builder`
+      // bọc Navigator, nên nó phủ luôn MỌI dialog (đo trên iPad Pro 13": hộp
+      // Nhượng quyền rộng 952dp, Thành tựu 952x1328 — chữ dàn ngang cả gang
+      // tay). Sửa ở ~20 chỗ gọi showDialog thì vừa dài vừa sót chỗ mới thêm.
+      builder: (context, child) => ColoredBox(
+        // Nền phải phủ hết màn hình, nếu không hai bên dải kẹp lòi nền trống.
+        color: Theme.of(context).colorScheme.surface,
+        child: PhoneWidth(child: child ?? const SizedBox.shrink()),
+      ),
       // Chỉ bản release: debug/test không gọi mạng hỏi store.
       home: kReleaseMode
           ? UpgradeAlert(child: const HomePage())
