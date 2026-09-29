@@ -91,10 +91,60 @@ MỌI giao dịch thật với bản plugin đang dùng.
 (`InMemoryReplayStore`, log cảnh báo lúc khởi động) — mất tác dụng chặn phát
 lại nếu deploy nhiều instance hoặc restart.
 
-## Deploy (gợi ý: Cloud Run)
+## Deploy (Cloud Run) — đã deploy thật 2026-09-30
+
+**Đang sống tại:** `https://boba-receipt-server-411559711815.asia-southeast1.run.app`
+(project `bobaempire-1f372` — CÙNG project Firebase app đang dùng, region
+`asia-southeast1` cho gần người chơi VN). `Dockerfile` ở gốc thư mục này build
+2 giai đoạn (`dart:stable` compile AOT → chạy trên `dart:stable` gốc), theo
+đúng khuyến nghị chính thức của Dart cho Cloud Run.
+
+Lệnh deploy (chạy lại khi đổi code — dùng `--source .` để Cloud Build tự build
+từ Dockerfile, KHÔNG cần Docker cài trên máy):
 
 ```bash
-# Dockerfile tối thiểu dựa trên dart:stable; hoặc `gcloud run deploy --source .`
+gcloud run deploy boba-receipt-server \
+  --source . \
+  --project=bobaempire-1f372 \
+  --region=asia-southeast1 \
+  --allow-unauthenticated \
+  --set-env-vars="VERIFY_MODE=prod,APPSTORE_KEY_ID=...,APPSTORE_ISSUER_ID=...,APPSTORE_BUNDLE_ID=com.pcingame.bobaempire" \
+  --set-secrets="APPSTORE_PRIVATE_KEY=appstore-private-key:latest" \
+  --min-instances=0 --max-instances=2 --memory=256Mi
 ```
 
-Sau khi deploy, đặt `IAP_VERIFY_ENDPOINT=https://<service>/verify` khi build app.
+**Khoá riêng App Store nằm ở Secret Manager** (`appstore-private-key`), KHÔNG
+phải biến môi trường trần — tránh lộ qua console/audit log. Tạo lại nếu cần:
+
+```bash
+gcloud secrets create appstore-private-key \
+  --data-file=/đường/dẫn/AuthKey_XXXXXXXXXX.p8 --project=bobaempire-1f372
+```
+
+⚠️ **2 lỗi quyền IAM gặp phải ở lần deploy đầu tiên trên project mới** (project
+vừa bật Cloud Build/Cloud Run lần đầu) — vá 1 lần là xong, không lặp lại ở lần
+deploy sau, nhưng cần biết nếu deploy sang project khác:
+
+1. `PERMISSION_DENIED` lúc "Uploading sources" — service account mặc định của
+   Compute (`<PROJECT_NUMBER>-compute@developer.gserviceaccount.com`) thiếu
+   quyền đọc bucket nguồn Cloud Build tạo ra:
+   ```bash
+   gcloud projects add-iam-policy-binding <PROJECT_ID> \
+     --member="serviceAccount:<PROJECT_NUMBER>-compute@developer.gserviceaccount.com" \
+     --role="roles/storage.objectViewer"
+   ```
+2. `PERMISSION_DENIED` lúc "Creating Revision" (SAU KHI build đã qua) — cùng
+   service account đó thiếu quyền đọc secret ở RUNTIME (khác quyền build ở
+   trên):
+   ```bash
+   gcloud secrets add-iam-policy-binding appstore-private-key \
+     --member="serviceAccount:<PROJECT_NUMBER>-compute@developer.gserviceaccount.com" \
+     --role="roles/secretmanager.secretAccessor"
+   ```
+
+Client build với: `--dart-define=IAP_VERIFY_ENDPOINT=<Service URL>/verify`.
+
+**Chi phí:** gói Always Free của Cloud Run (2 triệu request/tháng) — ở quy mô
+người chơi hiện tại, chi phí thực tế gần như chắc chắn $0. Đã đặt **Budget
+Alert $1** trên billing account (Console → Billing → Budgets & alerts) để báo
+sớm nếu có phí phát sinh ngoài dự kiến.

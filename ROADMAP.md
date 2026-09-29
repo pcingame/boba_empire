@@ -124,7 +124,7 @@ tối ưu sai chỗ.
 
 | # | Việc | Vì sao |
 |---|---|---|
-| 17 | ✅ **XÁC THỰC THẬT ĐÃ CHẠY 2026-09-30**: server cục bộ `VERIFY_MODE=prod` (khoá App Store Server API thật) + đường hầm cloudflared + app thật mua Sandbox — 6/6 yêu cầu thành công, 💎 cộng đúng, App Store Server API xác nhận hoạt động đúng với StoreKit 2. ⏳ Còn deploy lên hạ tầng thật + Play + Supabase replay store trước khi bật cho bản phát hành, xem RELEASE_CHECKLIST §4 | Phát hiện quan trọng lúc viết code: `verifyReceipt` cũ đã BỊ HỎNG với bản plugin hiện tại (gửi JWS StoreKit 2, không phải base64 receipt) — không phải "sắp lỗi thời" như README cũ ghi |
+| 17 | ✅ **DEPLOY THẬT + XÁC THỰC XONG 2026-09-30**: server sống trên Cloud Run (`bobaempire-1f372`, cùng project Firebase) tại `boba-receipt-server-411559711815.asia-southeast1.run.app`, khoá App Store lưu Secret Manager. App thật mua Sandbox xuyên qua Cloud Run — 4/4 yêu cầu thành công, 💎 cộng đúng. Budget Alert $1 đã đặt. ⏳ Còn Supabase replay store (đang chạy InMemoryReplayStore — rủi ro thật vì service chạy tới 2 instance) + Play trước khi mở cho người dùng thật, xem RELEASE_CHECKLIST §4 | Phát hiện quan trọng lúc viết code: `verifyReceipt` cũ đã BỊ HỎNG với bản plugin hiện tại (gửi JWS StoreKit 2, không phải base64 receipt) — không phải "sắp lỗi thời" như README cũ ghi |
 | 18 | Điều tra Đấu Trường 0 trận / Trân Châu Rơi 1 người — treo từ phiên trước | Cần biết là do KHÁM PHÁ (không ai biết tồn tại) hay HỨNG THÚ (biết mà không thích) trước khi quyết định đầu tư thêm hay dừng |
 | 19 | Đo lại đường cong hoạt động ~2 tuần sau khi `1.0.4` lên (mốc so sánh: đường cong hiện tại 277→123) | Chưa có số liệu thật về hiệu quả D3/D7 + sự kiện giới hạn thời gian — hai thứ tốn công nhất vừa ship |
 

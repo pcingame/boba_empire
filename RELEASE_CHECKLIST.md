@@ -78,23 +78,36 @@ non-consumable, ~$2.99), `boba_piggy` (đập heo, **consumable**, ~$1.99),
 - [x] 🔴 **Sandbox tester (iOS)** — tạo xong 2026-09-30, mua thử thật qua
   Cửa hàng 💎 (boba_gems_small/starter_pack/gems_large), 💎 cộng đúng.
 - [ ] 🔴 **License testers (Play)** — chưa làm, đợi Play publish.
-- [x] 🟡 **Verify receipt server-side** — **XÁC THỰC THẬT ĐÃ CHẠY**
-  2026-09-30: tạo khoá App Store Server API thật (Key ID `4X2ARF43Q4`),
-  chạy server cục bộ `VERIFY_MODE=prod` + đường hầm cloudflared, build app
-  trỏ vào đó, mua Sandbox thật — 6/6 yêu cầu `200`, ~1.5-2s/yêu cầu (đúng
-  round-trip mạng thật tới Apple, khác hẳn phản hồi tức thì của
-  `DevVerifier` lúc test đường dây), không dòng lỗi nào, 💎 cộng đúng.
-  App Store Server API (không phải `verifyReceipt` cũ) **đã xác nhận hoạt
-  động đúng với plugin StoreKit 2 đang dùng**.
-  Còn lại trước khi deploy THẬT (server cục bộ chỉ để test, đã tắt sau khi
-  xác nhận):
-  - [ ] Tạo service account Play (quyền *View financial data*) — lấy JSON.
-  - [ ] Chạy `supabase/iap_replay_schema.sql` + lấy service role key
-    (chặn phát lại đang chạy `InMemoryReplayStore` — không bền, chỉ chấp
-    nhận được cho lần test cục bộ này).
-  - [ ] Deploy `server/` lên hạ tầng thật (Cloud Run gợi ý sẵn trong
-    `server/README.md`), build app bản release với
-    `--dart-define=IAP_VERIFY_ENDPOINT=<url thật>`.
+- [x] 🟡 **Verify receipt server-side** — **ĐÃ DEPLOY THẬT VÀ XÁC THỰC
+  THÀNH CÔNG**, không còn là code chưa kiểm chứng:
+  - 2026-09-30: tạo khoá App Store Server API thật (Key ID `4X2ARF43Q4`),
+    test qua server cục bộ + đường hầm cloudflared trước — 6/6 yêu cầu
+    `200`, 💎 cộng đúng.
+  - 2026-09-30: **deploy thật lên Cloud Run**
+    (`bobaempire-1f372`/`asia-southeast1`, cùng project Firebase sẵn có),
+    khoá riêng App Store lưu ở **Secret Manager** (không phải biến môi
+    trường trần). URL:
+    `https://boba-receipt-server-411559711815.asia-southeast1.run.app`.
+    Build app trỏ thẳng vào URL này, mua Sandbox lại lần nữa — 4/4 yêu cầu
+    `200`, ~1.4-1.6s/yêu cầu (đúng round-trip thật tới Apple), 💎 cộng
+    đúng. **Đã set Budget Alert $1** trên billing account phòng phát sinh
+    phí ngoài dự kiến.
+  - App Store Server API (không phải `verifyReceipt` cũ) đã xác nhận hoạt
+    động đúng với plugin StoreKit 2 đang dùng, cả cục bộ lẫn trên Cloud Run.
+
+  ⚠️ Còn lại trước khi mở cho người dùng thật (KHÔNG phải test):
+  - [ ] Chạy `supabase/iap_replay_schema.sql` + lấy service role key, thêm
+    vào biến môi trường Cloud Run (`SUPABASE_URL`/
+    `SUPABASE_SERVICE_ROLE_KEY`). Hiện tại chặn phát lại đang chạy
+    `InMemoryReplayStore` — **có rủi ro thật** vì service đặt
+    `--max-instances=2`, phát lại tới instance khác thì không bị chặn.
+  - [ ] Tạo service account Play (quyền *View financial data*) — lấy JSON,
+    thêm biến `PLAY_SERVICE_ACCOUNT_JSON`/`ANDROID_PACKAGE_NAME` khi Play
+    publish.
+  - [ ] Build app **bản release** (không phải debug) với
+    `--dart-define=IAP_VERIFY_ENDPOINT=https://boba-receipt-server-411559711815.asia-southeast1.run.app/verify`
+    trước khi nộp store — bản debug hiện tại trỏ đúng URL này nhưng chỉ
+    dùng để test.
 
 ## 5. Assets & store listing
 
