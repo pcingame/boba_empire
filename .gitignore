@@ -49,3 +49,4 @@ app.*.map.json
 
 # VS Code (per-developer editor settings, machine-specific paths)
 .vscode/
+.crashlytics/
