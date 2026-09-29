@@ -68,26 +68,33 @@ non-consumable, ~$2.99), `boba_piggy` (đập heo, **consumable**, ~$1.99),
 
 - [x] 🔴 **iOS (App Store Connect):** tạo đủ 8 product — xong 2026-09-29,
   xác nhận qua ảnh chụp console: cả 8/8 **Approved**, product ID khớp
-  đúng `iap_products.dart`. ⚠️ CHƯA XÁC NHẬN: giá theo vùng đã bật chưa,
-  đã test bằng Sandbox tester chưa (2 mục dưới).
+  đúng `iap_products.dart`. ⚠️ CHƯA XÁC NHẬN: giá theo vùng đã bật chưa.
 - [ ] 🔴 **Android (Play Console):** tạo đủ 8 product — CHƯA làm, đợi
   Play Store được publish (mục 9).
 - [ ] 🔴 Bật giá **theo vùng** (hạ cho ID/BR/TH/VN — SETUP.md) — cả 2 nền
   tảng.
 - [ ] 🔴 Upload 1 build lên **internal testing** (Play) — IAP chỉ chạy với
   app đã ký & cài qua Play.
-- [ ] 🔴 Thêm **License testers** (Play) / **Sandbox tester** (iOS) để mua
-  thử không mất tiền, làm TRƯỚC khi mở bán thật.
-- [x] 🟡 **Verify receipt server-side** — CODE xong 2026-09-29 (App Store
-  Server API + Play + chặn phát lại consumable + acknowledge/consume Play,
-  30 test, xem `server/README.md`). Vẫn client-only (`NoopReceiptVerifier`)
-  CHO TỚI KHI làm xong 4 việc cấu hình dưới — code không tự bật:
-  - [ ] Tạo khoá App Store Server API (App Store Connect → Users and
-    Access → Integrations) — lấy Key ID + Issuer ID + file `.p8`.
+- [x] 🔴 **Sandbox tester (iOS)** — tạo xong 2026-09-30, mua thử thật qua
+  Cửa hàng 💎 (boba_gems_small/starter_pack/gems_large), 💎 cộng đúng.
+- [ ] 🔴 **License testers (Play)** — chưa làm, đợi Play publish.
+- [x] 🟡 **Verify receipt server-side** — **XÁC THỰC THẬT ĐÃ CHẠY**
+  2026-09-30: tạo khoá App Store Server API thật (Key ID `4X2ARF43Q4`),
+  chạy server cục bộ `VERIFY_MODE=prod` + đường hầm cloudflared, build app
+  trỏ vào đó, mua Sandbox thật — 6/6 yêu cầu `200`, ~1.5-2s/yêu cầu (đúng
+  round-trip mạng thật tới Apple, khác hẳn phản hồi tức thì của
+  `DevVerifier` lúc test đường dây), không dòng lỗi nào, 💎 cộng đúng.
+  App Store Server API (không phải `verifyReceipt` cũ) **đã xác nhận hoạt
+  động đúng với plugin StoreKit 2 đang dùng**.
+  Còn lại trước khi deploy THẬT (server cục bộ chỉ để test, đã tắt sau khi
+  xác nhận):
   - [ ] Tạo service account Play (quyền *View financial data*) — lấy JSON.
-  - [ ] Chạy `supabase/iap_replay_schema.sql` (bảng chặn phát lại).
-  - [ ] Deploy `server/` (VERIFY_MODE=prod + đủ biến môi trường), build app
-    với `--dart-define=IAP_VERIFY_ENDPOINT=<url>`.
+  - [ ] Chạy `supabase/iap_replay_schema.sql` + lấy service role key
+    (chặn phát lại đang chạy `InMemoryReplayStore` — không bền, chỉ chấp
+    nhận được cho lần test cục bộ này).
+  - [ ] Deploy `server/` lên hạ tầng thật (Cloud Run gợi ý sẵn trong
+    `server/README.md`), build app bản release với
+    `--dart-define=IAP_VERIFY_ENDPOINT=<url thật>`.
 
 ## 5. Assets & store listing
 
