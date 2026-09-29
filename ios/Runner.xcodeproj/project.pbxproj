@@ -173,6 +173,7 @@
 				97C146EC1CF9000F007C117D /* Resources */,
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
+				E7D0668C6ADEFA0CD368D7AC /* Upload Crashlytics dSYM */,
 			);
 			buildRules = (
 			);
@@ -282,6 +283,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" build";
+		};
+		E7D0668C6ADEFA0CD368D7AC /* Upload Crashlytics dSYM */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = "Upload Crashlytics dSYM";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "SCRIPT=\"${SRCROOT}/../build/ios/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\nif [ -f \"$SCRIPT\" ]; then\n  \"$SCRIPT\"\nelse\n  echo \"warning: không thấy $SCRIPT — bỏ qua upload dSYM tự động. Chạy \\`flutter build ipa\\` xong upload tay bằng build/ios/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/upload-symbols\"\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
