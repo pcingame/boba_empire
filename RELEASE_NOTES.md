@@ -9,6 +9,89 @@ người bản ngữ soát.
 
 ---
 
+## Play Store — bản đầu tiên (1.0.5 (+10)) — 2026-09-30
+
+Play Store chưa từng phát hành trước đó (App Store thì đã ở 1.0.3+) — đây là
+**bản nộp đầu tiên trên Play**, nên nội dung "What's new" viết kiểu giới
+thiệu tính năng, KHÔNG nhắc bug/crash/mã xin lỗi (những cái đó chỉ áp dụng
+cho người chơi iOS cũ, không liên quan người cài lần đầu trên Play). Đừng
+lẫn với mục changelog "1.0.5 (+10)" ngay dưới đây — đó là nội dung dành cho
+App Store (đã có người chơi từ trước).
+
+### 🇻🇳 Tiếng Việt (vi)
+
+```
+🧋 Đế Chế Trà Sữa — xây quán trà sữa từ xe đẩy thành đế chế toàn cầu!
+
+• Idle nhàn rỗi: chạm, nâng cấp, kiếm Xu cả khi không chơi
+• Trân Châu Rơi: 60 màn ghép 3, kẹo đặc biệt, bảng xếp hạng riêng
+• Đấu Trường: PK trực tiếp với người chơi khác
+• Cốt truyện 28 chương, nhiều lựa chọn ảnh hưởng kết cục
+• Đồng bộ đám mây, VIP Pass, nhiệm vụ ngày, vòng quay may mắn
+```
+
+### 🇬🇧 English (en-GB)
+
+```
+🧋 Boba Empire — grow your tea shop from a street cart into a global empire!
+
+• Idle gameplay: tap, upgrade, earn even while away
+• Falling Pearls: 60 match-3 levels, special candies, its own leaderboard
+• Arena: live PvP against other players
+• 28-chapter story with choices that shape the ending
+• Cloud save, VIP Pass, daily quests, lucky wheel
+```
+
+### 🇧🇷 Português (pt-BR)
+
+```
+🧋 Boba Empire — transforme sua barraca de chá em um império global!
+
+• Jogo idle: toque, evolua e ganhe mesmo offline
+• Pérolas Caindo: 60 fases de match-3, doces especiais e ranking próprio
+• Arena: PvP ao vivo contra outros jogadores
+• História com 28 capítulos e escolhas que mudam o final
+• Save na nuvem, VIP Pass, missões diárias, roleta da sorte
+```
+
+### 🇪🇸 Español (es-ES)
+
+```
+🧋 Boba Empire — ¡convierte tu carrito de té en un imperio global!
+
+• Juego idle: toca, mejora y gana incluso sin estar conectado
+• Perlas que Caen: 60 niveles de match-3, caramelos especiales y ranking propio
+• Arena: PvP en vivo contra otros jugadores
+• Historia de 28 capítulos con decisiones que cambian el final
+• Guardado en la nube, VIP Pass, misiones diarias, ruleta de la suerte
+```
+
+### 🇮🇩 Bahasa Indonesia (id)
+
+```
+🧋 Boba Empire — ubah gerobak tehmu jadi kerajaan global!
+
+• Gameplay idle: tap, upgrade, dan tetap dapat cuan walau offline
+• Mutiara Jatuh: 60 level match-3, permen spesial, papan peringkat sendiri
+• Arena: PvP langsung lawan pemain lain
+• Cerita 28 bab dengan pilihan yang mengubah akhir cerita
+• Save cloud, VIP Pass, misi harian, roda keberuntungan
+```
+
+### 🇹🇭 ภาษาไทย (th)
+
+```
+🧋 Boba Empire — เปลี่ยนรถเข็นชาไข่มุกให้กลายเป็นอาณาจักรระดับโลก!
+
+• เกม Idle: แตะ อัปเกรด ได้เงินแม้ไม่ได้เล่น
+• ไข่มุกร่วง: 60 ด่านจับคู่ 3 ลูกอมพิเศษ กระดานจัดอันดับของตัวเอง
+• อารีน่า: PvP สดกับผู้เล่นคนอื่น
+• เนื้อเรื่อง 28 ตอน มีตัวเลือกที่เปลี่ยนตอนจบ
+• เซฟบนคลาวด์ VIP Pass ภารกิจรายวัน วงล้อนำโชค
+```
+
+---
+
 ## 1.0.5 (+10) — 2026-09-30
 
 **Bản trước:** 1.0.5 (+8), cùng ngày.
