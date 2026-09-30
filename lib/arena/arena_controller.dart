@@ -168,13 +168,18 @@ class ArenaController extends Notifier<ArenaViewState> {
     _swapInFlight = false;
     _boardSynced = false;
     state = _buildState(0, 0);
-    _actionsSub = _repository.watchActions(match.id).listen((log) {
-      _log = log;
-      // Lần đầu (hoặc vào lại trận đang dở sau khi mở lại app) dựng bảng của
-      // mình từ log server — nguồn sự thật, không phải bộ đếm cục bộ.
-      if (_mode == ArenaMode.match3 && !_boardSynced) _resyncBoard();
-      _recompute();
-    });
+    _actionsSub = _repository.watchActions(match.id).listen(
+      (log) {
+        _log = log;
+        // Lần đầu (hoặc vào lại trận đang dở sau khi mở lại app) dựng bảng của
+        // mình từ log server — nguồn sự thật, không phải bộ đếm cục bộ.
+        if (_mode == ArenaMode.match3 && !_boardSynced) _resyncBoard();
+        _recompute();
+      },
+      // Không bắt thì lỗi realtime (mất kết nối, token hết hạn giữa trận...)
+      // rơi thành unhandled stream error — crash cả app. Xem [_fail].
+      onError: _fail,
+    );
     _ticker = Timer.periodic(const Duration(milliseconds: 250), (_) => _onTick());
   }
 

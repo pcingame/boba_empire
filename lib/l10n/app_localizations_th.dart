@@ -779,6 +779,26 @@ class AppLocalizationsTh extends AppLocalizations {
   String get arenaCloseButton => 'ปิด';
 
   @override
+  String get redeemTitle => 'แลกโค้ดของขวัญ';
+
+  @override
+  String get redeemHint => 'กรอกโค้ด';
+
+  @override
+  String get redeemButton => 'แลกรับ';
+
+  @override
+  String redeemSuccess(int gems) {
+    return 'แลกสำเร็จ +$gems 💎!';
+  }
+
+  @override
+  String get redeemAlreadyClaimed => 'คุณแลกโค้ดนี้ไปแล้ว';
+
+  @override
+  String get redeemInvalid => 'โค้ดไม่ถูกต้อง';
+
+  @override
   String get cloudSaveMenuTitle => 'สำรองความคืบหน้า';
 
   @override

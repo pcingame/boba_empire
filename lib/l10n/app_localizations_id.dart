@@ -786,6 +786,26 @@ class AppLocalizationsId extends AppLocalizations {
   String get arenaCloseButton => 'Tutup';
 
   @override
+  String get redeemTitle => 'Tukar kode hadiah';
+
+  @override
+  String get redeemHint => 'Masukkan kode';
+
+  @override
+  String get redeemButton => 'Tukar';
+
+  @override
+  String redeemSuccess(int gems) {
+    return 'Berhasil ditukar +$gems 💎!';
+  }
+
+  @override
+  String get redeemAlreadyClaimed => 'Kamu sudah menukar kode ini';
+
+  @override
+  String get redeemInvalid => 'Kode tidak valid';
+
+  @override
   String get cloudSaveMenuTitle => 'Cadangkan progres';
 
   @override

@@ -6,6 +6,7 @@ import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import 'cloud_save_dialog.dart';
 import 'language_dialog.dart';
+import 'redeem_dialog.dart';
 
 /// Cài đặt: đổi ngôn ngữ, bật/tắt âm thanh, chơi lại từ đầu.
 Future<void> showSettings(BuildContext context) {
@@ -48,6 +49,13 @@ class _SettingsDialog extends ConsumerWidget {
             ),
             trailing: const Icon(Icons.chevron_right),
             onTap: () => showCloudSaveDialog(context),
+          ),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.card_giftcard),
+            title: Text(l10n.redeemTitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => showRedeemDialog(context),
           ),
           SwitchListTile(
             key: const Key('settings-sound'),

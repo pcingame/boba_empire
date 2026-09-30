@@ -124,8 +124,10 @@ class GameState {
     this.storyExtCompleteSeconds,
     List<String>? achievementsClaimed,
     List<int>? m3Stars,
+    List<String>? redeemedCodes,
   })  : achievementsClaimed = achievementsClaimed ?? [],
         m3Stars = m3Stars ?? [],
+        redeemedCodes = redeemedCodes ?? [],
         dailyProgress = dailyProgress ?? {},
         dailyClaimed = dailyClaimed ?? [],
         firstPlayedMillis = firstPlayedMillis ?? lastSeenMillis;
@@ -208,6 +210,10 @@ class GameState {
   /// dài dần theo tiến độ (không cấp phát sẵn đủ số màn). KHÔNG reset khi
   /// Nhượng quyền / Kỷ Nguyên — cùng nhóm với thành tựu, cốt truyện.
   final List<int> m3Stars;
+
+  /// Mã quà tặng đã nhận (VD mã bù đắp sự cố) — chống nhận trùng. Xem
+  /// `core/redeem.dart`.
+  final List<String> redeemedCodes;
 
   /// Cấp perk "Siêu thu nhập" mua bằng ⭐ Sao (kho prestige) — +% income vĩnh viễn.
   int prestigeIncomeLevel;
@@ -382,6 +388,7 @@ class GameState {
         'dailyStreak': dailyStreak,
         'achievementsClaimed': achievementsClaimed,
         'm3Stars': m3Stars,
+        'redeemedCodes': redeemedCodes,
         'prestigeIncomeLevel': prestigeIncomeLevel,
         'prestigeTapLevel': prestigeTapLevel,
         'prestigeOfflineLevel': prestigeOfflineLevel,
@@ -457,6 +464,8 @@ class GameState {
         m3Stars: (json['m3Stars'] as List?)
             ?.map((e) => (e as num).toInt())
             .toList(),
+        redeemedCodes:
+            (json['redeemedCodes'] as List?)?.cast<String>().toList(),
         prestigeIncomeLevel:
             (json['prestigeIncomeLevel'] as num?)?.toInt() ?? 0,
         prestigeTapLevel: (json['prestigeTapLevel'] as num?)?.toInt() ?? 0,

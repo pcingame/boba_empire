@@ -1414,6 +1414,42 @@ abstract class AppLocalizations {
   /// **'Đóng'**
   String get arenaCloseButton;
 
+  /// No description provided for @redeemTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập mã quà tặng'**
+  String get redeemTitle;
+
+  /// No description provided for @redeemHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập mã'**
+  String get redeemHint;
+
+  /// No description provided for @redeemButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận quà'**
+  String get redeemButton;
+
+  /// No description provided for @redeemSuccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận thành công +{gems} 💎!'**
+  String redeemSuccess(int gems);
+
+  /// No description provided for @redeemAlreadyClaimed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã này bạn đã nhận rồi'**
+  String get redeemAlreadyClaimed;
+
+  /// No description provided for @redeemInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã không hợp lệ'**
+  String get redeemInvalid;
+
   /// No description provided for @cloudSaveMenuTitle.
   ///
   /// In vi, this message translates to:

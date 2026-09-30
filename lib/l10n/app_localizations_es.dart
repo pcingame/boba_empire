@@ -793,6 +793,26 @@ class AppLocalizationsEs extends AppLocalizations {
   String get arenaCloseButton => 'Cerrar';
 
   @override
+  String get redeemTitle => 'Canjear código de regalo';
+
+  @override
+  String get redeemHint => 'Ingresa el código';
+
+  @override
+  String get redeemButton => 'Canjear';
+
+  @override
+  String redeemSuccess(int gems) {
+    return '¡Canjeado +$gems 💎!';
+  }
+
+  @override
+  String get redeemAlreadyClaimed => 'Ya canjeaste este código';
+
+  @override
+  String get redeemInvalid => 'Código no válido';
+
+  @override
   String get cloudSaveMenuTitle => 'Copia de seguridad';
 
   @override

@@ -141,8 +141,13 @@ const List<StoryChapter> storyChapters = [
   ),
 ];
 
-StoryChapter chapterById(int id) =>
-    storyChapters.firstWhere((c) => c.id == id);
+/// [id] không khớp chương nào (VD save đồng bộ từ version có nhiều/ít chương
+/// hơn build hiện tại, `GameState.storyChapter` không được validate khi nạp)
+/// → rơi về chương 1 thay vì crash.
+StoryChapter chapterById(int id) => storyChapters.firstWhere(
+      (c) => c.id == id,
+      orElse: () => storyChapters.first,
+    );
 
 bool _triggerMet(StoryChapter c, GameState s) => switch (c.trigger) {
       StoryTrigger.gameStart => true,

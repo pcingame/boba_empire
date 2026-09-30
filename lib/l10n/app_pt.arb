@@ -246,6 +246,19 @@
     }
   },
   "arenaCloseButton": "Fechar",
+  "redeemTitle": "Resgatar código de presente",
+  "redeemHint": "Digite o código",
+  "redeemButton": "Resgatar",
+  "redeemSuccess": "Resgatado +{gems} 💎!",
+  "@redeemSuccess": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "redeemAlreadyClaimed": "Você já resgatou este código",
+  "redeemInvalid": "Código inválido",
   "cloudSaveMenuTitle": "Backup do progresso",
   "cloudSaveMenuLinked": "Vinculado: {email}",
   "@cloudSaveMenuLinked": {

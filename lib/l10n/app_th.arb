@@ -246,6 +246,19 @@
     }
   },
   "arenaCloseButton": "ปิด",
+  "redeemTitle": "แลกโค้ดของขวัญ",
+  "redeemHint": "กรอกโค้ด",
+  "redeemButton": "แลกรับ",
+  "redeemSuccess": "แลกสำเร็จ +{gems} 💎!",
+  "@redeemSuccess": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "redeemAlreadyClaimed": "คุณแลกโค้ดนี้ไปแล้ว",
+  "redeemInvalid": "โค้ดไม่ถูกต้อง",
   "cloudSaveMenuTitle": "สำรองความคืบหน้า",
   "cloudSaveMenuLinked": "เชื่อมต่อแล้ว: {email}",
   "@cloudSaveMenuLinked": {

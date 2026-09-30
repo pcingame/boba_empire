@@ -246,6 +246,19 @@
     }
   },
   "arenaCloseButton": "Tutup",
+  "redeemTitle": "Tukar kode hadiah",
+  "redeemHint": "Masukkan kode",
+  "redeemButton": "Tukar",
+  "redeemSuccess": "Berhasil ditukar +{gems} 💎!",
+  "@redeemSuccess": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "redeemAlreadyClaimed": "Kamu sudah menukar kode ini",
+  "redeemInvalid": "Kode tidak valid",
   "cloudSaveMenuTitle": "Cadangkan progres",
   "cloudSaveMenuLinked": "Terhubung: {email}",
   "@cloudSaveMenuLinked": {

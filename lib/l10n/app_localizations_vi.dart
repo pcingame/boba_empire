@@ -783,6 +783,26 @@ class AppLocalizationsVi extends AppLocalizations {
   String get arenaCloseButton => 'Đóng';
 
   @override
+  String get redeemTitle => 'Nhập mã quà tặng';
+
+  @override
+  String get redeemHint => 'Nhập mã';
+
+  @override
+  String get redeemButton => 'Nhận quà';
+
+  @override
+  String redeemSuccess(int gems) {
+    return 'Nhận thành công +$gems 💎!';
+  }
+
+  @override
+  String get redeemAlreadyClaimed => 'Mã này bạn đã nhận rồi';
+
+  @override
+  String get redeemInvalid => 'Mã không hợp lệ';
+
+  @override
   String get cloudSaveMenuTitle => 'Sao lưu tiến trình';
 
   @override

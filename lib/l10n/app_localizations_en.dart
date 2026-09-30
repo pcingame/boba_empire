@@ -786,6 +786,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get arenaCloseButton => 'Close';
 
   @override
+  String get redeemTitle => 'Redeem gift code';
+
+  @override
+  String get redeemHint => 'Enter code';
+
+  @override
+  String get redeemButton => 'Redeem';
+
+  @override
+  String redeemSuccess(int gems) {
+    return 'Redeemed +$gems 💎!';
+  }
+
+  @override
+  String get redeemAlreadyClaimed => 'You already redeemed this code';
+
+  @override
+  String get redeemInvalid => 'Invalid code';
+
+  @override
   String get cloudSaveMenuTitle => 'Backup progress';
 
   @override

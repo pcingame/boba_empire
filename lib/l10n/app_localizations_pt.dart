@@ -790,6 +790,26 @@ class AppLocalizationsPt extends AppLocalizations {
   String get arenaCloseButton => 'Fechar';
 
   @override
+  String get redeemTitle => 'Resgatar código de presente';
+
+  @override
+  String get redeemHint => 'Digite o código';
+
+  @override
+  String get redeemButton => 'Resgatar';
+
+  @override
+  String redeemSuccess(int gems) {
+    return 'Resgatado +$gems 💎!';
+  }
+
+  @override
+  String get redeemAlreadyClaimed => 'Você já resgatou este código';
+
+  @override
+  String get redeemInvalid => 'Código inválido';
+
+  @override
   String get cloudSaveMenuTitle => 'Backup do progresso';
 
   @override

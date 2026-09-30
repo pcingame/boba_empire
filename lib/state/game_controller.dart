@@ -19,6 +19,7 @@ import '../core/daily_quests.dart';
 import '../core/economy.dart';
 import '../core/models.dart';
 import '../core/quests.dart';
+import '../core/redeem.dart';
 import '../core/rival.dart';
 import '../core/simulation.dart';
 import '../core/story.dart';
@@ -766,7 +767,17 @@ class GameController extends Notifier<GameSnapshot> {
   /// chọn "Khôi phục" ở dialog Đồng bộ đám mây khi phát hiện save khác trên
   /// cloud). Lưu local ngay để không mất nếu app bị tắt giữa chừng.
   void restoreFromCloud(Map<String, dynamic> json, {required int cloudVersion}) {
-    _game = GameState.fromJson(json)..lastSeenMillis = _clock();
+    final GameState restored;
+    try {
+      restored = GameState.fromJson(json);
+    } catch (e) {
+      // Payload cloud hỏng/không khớp schema (máy khác version) — bỏ qua,
+      // giữ nguyên save hiện tại thay vì crash (cùng nguyên tắc như
+      // game_storage.dart khi load local hỏng).
+      debugPrint('restoreFromCloud: payload hỏng, bỏ qua: $e');
+      return;
+    }
+    _game = restored..lastSeenMillis = _clock();
     sanitizeRepeatQuest(_game);
     applyCloudSyncVersion(cloudVersion);
     unawaited(saveNow());
@@ -892,6 +903,17 @@ class GameController extends Notifier<GameSnapshot> {
     unawaited(saveNow());
     state = _snapshot();
     return (index: i, kind: p.kind, value: value);
+  }
+
+  /// Nhập mã quà tặng (VD mã bù đắp sự cố) — xem `core/redeem.dart`. Lưu ngay
+  /// nếu thành công (gems là premium).
+  ({RedeemStatus status, double gems}) redeemCode(String code) {
+    final result = applyRedeemCode(_game, code);
+    if (result.status == RedeemStatus.success) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return result;
   }
 
   /// Nhận Kim Cương miễn phí (sau khi xem QC). Lưu ngay vì gems là premium.

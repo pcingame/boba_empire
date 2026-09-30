@@ -246,6 +246,19 @@
     }
   },
   "arenaCloseButton": "Cerrar",
+  "redeemTitle": "Canjear código de regalo",
+  "redeemHint": "Ingresa el código",
+  "redeemButton": "Canjear",
+  "redeemSuccess": "¡Canjeado +{gems} 💎!",
+  "@redeemSuccess": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "redeemAlreadyClaimed": "Ya canjeaste este código",
+  "redeemInvalid": "Código no válido",
   "cloudSaveMenuTitle": "Copia de seguridad",
   "cloudSaveMenuLinked": "Vinculado: {email}",
   "@cloudSaveMenuLinked": {

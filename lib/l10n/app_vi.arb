@@ -601,6 +601,19 @@
     }
   },
   "arenaCloseButton": "Đóng",
+  "redeemTitle": "Nhập mã quà tặng",
+  "redeemHint": "Nhập mã",
+  "redeemButton": "Nhận quà",
+  "redeemSuccess": "Nhận thành công +{gems} 💎!",
+  "@redeemSuccess": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "redeemAlreadyClaimed": "Mã này bạn đã nhận rồi",
+  "redeemInvalid": "Mã không hợp lệ",
   "cloudSaveMenuTitle": "Sao lưu tiến trình",
   "cloudSaveMenuLinked": "Đã liên kết: {email}",
   "@cloudSaveMenuLinked": {
