@@ -9,6 +9,77 @@ người bản ngữ soát.
 
 ---
 
+## 1.0.5 (+10) — 2026-09-30
+
+**Bản trước:** 1.0.5 (+8), cùng ngày.
+
+Mốc đáng chú ý của bản này: vá 3 lỗi crash phát hiện qua Crashlytics (xem
+QC thưởng, khôi phục save cloud, mất kết nối Đấu Trường) và thêm tính năng
+**mã quà tặng** — mã xin lỗi `XINLOI2026` tặng 1.000 💎 cho người từng gặp
+crash.
+
+### 🇻🇳 Tiếng Việt (vi)
+
+```
+Mới: nhập mã quà tặng ở Cài đặt!
+
+• SỬA NHIỀU LỖI CRASH: xem QC thưởng, khôi phục save từ cloud, mất kết nối ở Đấu Trường
+• Mã xin lỗi các bạn từng gặp crash: XINLOI2026 (+1.000 💎) — vào Cài đặt > Nhập mã quà tặng
+• Ổn định hạ tầng phía sau
+```
+
+### 🇬🇧 English (en)
+
+```
+New: redeem gift codes in Settings!
+
+• FIXED SEVERAL CRASHES: rewarded ads, cloud save restore, Arena connection loss
+• Sorry for the crashes some of you hit — redeem code XINLOI2026 for +1,000 💎 (Settings > Redeem gift code)
+• Backend stability improvements
+```
+
+### 🇧🇷 Português (pt-BR)
+
+```
+Novo: resgate códigos de presente em Ajustes!
+
+• VÁRIAS CORREÇÕES DE CRASH: anúncios de recompensa, restauração de save na nuvem, perda de conexão na Arena
+• Desculpe pelos crashes — resgate o código XINLOI2026 e ganhe +1.000 💎 (Ajustes > Resgatar código de presente)
+• Melhorias de estabilidade nos bastidores
+```
+
+### 🇪🇸 Español (es)
+
+```
+Nuevo: canjea códigos de regalo en Ajustes!
+
+• VARIAS CORRECCIONES DE FALLOS: anuncios con recompensa, restauración de guardado en la nube, pérdida de conexión en la Arena
+• Disculpa por los fallos — canjea el código XINLOI2026 y recibe +1.000 💎 (Ajustes > Canjear código de regalo)
+• Mejoras de estabilidad internas
+```
+
+### 🇮🇩 Bahasa Indonesia (id)
+
+```
+Baru: tukar kode hadiah di Pengaturan!
+
+• PERBAIKAN BEBERAPA CRASH: iklan berhadiah, pemulihan save cloud, koneksi Arena terputus
+• Maaf atas crash yang dialami — tukar kode XINLOI2026 untuk +1.000 💎 (Pengaturan > Tukar kode hadiah)
+• Peningkatan stabilitas di balik layar
+```
+
+### 🇹🇭 ภาษาไทย (th)
+
+```
+ใหม่: แลกโค้ดของขวัญในตั้งค่า!
+
+• แก้ไขปัญหาแอปปิดกะทันหันหลายจุด: ดูโฆษณารับรางวัล, กู้คืนเซฟจากคลาวด์, การเชื่อมต่ออารีน่าหลุด
+• ขออภัยที่ทำให้แอปปิดกะทันหัน — แลกโค้ด XINLOI2026 รับ 💎 1,000 (ตั้งค่า > แลกโค้ดของขวัญ)
+• ปรับปรุงความเสถียรเบื้องหลัง
+```
+
+---
+
 ## 1.0.5 (+8) — 2026-09-30
 
 **Bản trước:** 1.0.4 (+7), chưa được App Store duyệt xong tại thời điểm này.
