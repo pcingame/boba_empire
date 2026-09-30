@@ -160,9 +160,9 @@ void main() {
     expect(s.storyChapter, 6);
   });
 
-  test('mọi chương (1..28) có prose vi + en, không thiếu/lệch id', () {
+  test('mọi chương (1..36) có prose vi + en, không thiếu/lệch id', () {
     expect(storyChapters.map((c) => c.id).toList(),
-        List.generate(28, (i) => i + 1));
+        List.generate(36, (i) => i + 1));
     for (final c in storyChapters) {
       for (final locale in ['vi', 'en']) {
         final text = storyText(c.id, locale);
@@ -185,7 +185,7 @@ void main() {
     test('chương kết của tuyến gốc vẫn là 18, không trượt theo chương mới', () {
       // Bảng xếp hạng tốc độ cốt truyện dựa vào mốc này (storyCompleteSeconds).
       expect(storyFinaleChapterId, 18);
-      expect(storyChapters.last.id, 28);
+      expect(storyExtendedFinaleChapterId, 28);
     });
 
     test('mở tuần tự theo giai đoạn 13..18, kẹt ở 23 và 28 tới khi chọn', () {
@@ -237,6 +237,110 @@ void main() {
       expect(s.storyChoiceA, 'craft');
       expect(s.storyChoiceD, 'soul');
       expect(applyStoryChoice(s, 28, 'bogus'), isFalse);
+    });
+  });
+
+  group('Chương 29-36 (Hồi 3, Kỷ Nguyên + Trân Châu Rơi)', () {
+    test('chương kết Hồi 3 là 36', () {
+      expect(storyThirdActFinaleChapterId, 36);
+      expect(storyChapters.last.id, 36);
+    });
+
+    test('mở tuần tự theo Kỷ Nguyên/màn Trân Châu Rơi, kẹt tới khi thoả', () {
+      final s = _fresh()
+        ..storyChapter = 28
+        ..storyChoiceF = 'recipe';
+      expect(pendingChapterId(s), isNull); // chưa Kỷ Nguyên lần nào
+      s.ascensionCount = 1;
+      expect(pendingChapterId(s), 29);
+      markChapterSeen(s, 29);
+      expect(pendingChapterId(s), isNull); // Ch.30 cần qua màn 10
+      s.m3Stars.addAll(List.filled(12, 1)); // đã qua tới màn 12
+      expect(pendingChapterId(s), 30);
+      markChapterSeen(s, 30);
+      expect(pendingChapterId(s), isNull); // Ch.31 cần Kỷ Nguyên lần 2
+      s.ascensionCount = 2;
+      expect(pendingChapterId(s), 31);
+      markChapterSeen(s, 31);
+      expect(pendingChapterId(s), isNull); // Ch.32 cần qua màn 25
+      s.m3Stars.addAll(List.filled(15, 1)); // giờ dài 27
+      expect(pendingChapterId(s), 32);
+      markChapterSeen(s, 32);
+      expect(pendingChapterId(s), isNull); // Ch.33 cần Kỷ Nguyên lần 3
+      s.ascensionCount = 3;
+      expect(pendingChapterId(s), 33);
+      markChapterSeen(s, 33);
+      expect(pendingChapterId(s), isNull); // Ch.34 cần qua màn 40, mới tới 27
+      s.m3Stars.addAll(List.filled(15, 1)); // giờ dài 42
+      expect(pendingChapterId(s), 34);
+      markChapterSeen(s, 34);
+      expect(pendingChapterId(s), isNull); // Ch.35 cần qua màn 55, mới tới 42
+      s.m3Stars.addAll(List.filled(15, 1)); // giờ dài 57
+      expect(pendingChapterId(s), 35);
+      markChapterSeen(s, 35);
+      expect(pendingChapterId(s), isNull); // Ch.36 cần Kỷ Nguyên lần 4
+      s.ascensionCount = 4;
+      expect(pendingChapterId(s), 36);
+    });
+
+    test('qua màn nhưng 0 sao (chưa thật sự qua) không tính', () {
+      final s = _fresh()
+        ..storyChapter = 29
+        ..ascensionCount = 1;
+      s.m3Stars.addAll(List.filled(10, 0)); // chạm màn 10 nhưng chưa được sao nào
+      expect(pendingChapterId(s), isNull);
+      s.m3Stars[9] = 1;
+      expect(pendingChapterId(s), 30);
+    });
+
+    test('Chương 36 re-show tới khi chọn trục G, độc lập A-F', () {
+      final s = _fresh()
+        ..storyChapter = 36
+        ..storyChoiceA = 'craft'
+        ..ascensionCount = 4;
+      expect(pendingChapterId(s), 36);
+      expect(applyStoryChoice(s, 36, 'open'), isTrue);
+      expect(s.storyChoiceG, 'open');
+      expect(s.storyChoiceA, 'craft');
+      expect(applyStoryChoice(s, 36, 'secret'), isFalse); // đã chọn
+      expect(pendingChapterId(s), isNull); // hết truyện
+    });
+
+    test('m3Stars ngắn hơn ngưỡng đúng 1 (off-by-one) không crash, không mở',
+        () {
+      final s = _fresh()
+        ..storyChapter = 29
+        ..ascensionCount = 1;
+      // Ch.30 cần qua màn 10 (index 9). Danh sách dài 9 (index 0..8) — truy
+      // cập index 9 sẽ némRangeError nếu thiếu check độ dài trước &&.
+      s.m3Stars.addAll(List.filled(9, 1));
+      expect(pendingChapterId(s), isNull);
+      s.m3Stars.add(1); // giờ dài 10, index 9 hợp lệ
+      expect(pendingChapterId(s), 30);
+    });
+
+    test('m3Stars rỗng ở chương cần qua màn: không crash, không mở', () {
+      final s = _fresh()
+        ..storyChapter = 29
+        ..ascensionCount = 1;
+      expect(s.m3Stars, isEmpty);
+      expect(pendingChapterId(s), isNull);
+    });
+  });
+
+  group('chapterById: id ngoài phạm vi không crash (VD save từ bản khác)', () {
+    test('id = 0, âm, hoặc vượt chương cuối (37, rất lớn) -> rơi về Chương 1',
+        () {
+      for (final id in [0, -1, -9999, 37, 9999]) {
+        expect(chapterById(id).id, 1, reason: 'id=$id');
+      }
+    });
+
+    test('storyChapter lưu id vượt chương cuối (save từ bản mới hơn, mở '
+        'bằng bản cũ): pendingChapterId không crash, coi như hết truyện', () {
+      final s = _fresh()..storyChapter = 999;
+      expect(() => pendingChapterId(s), returnsNormally);
+      expect(pendingChapterId(s), isNull);
     });
   });
 }

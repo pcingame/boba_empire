@@ -11,11 +11,13 @@ library;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-/// Bảng nào: "Hồi 1" (tới Chương 18, `story_speedrun_schema.sql`) hay "Hồi 2"
-/// (tới Chương 28, `story_speedrun2_schema.sql`). Hai bảng riêng, cùng khuôn.
+/// Bảng nào: "Hồi 1" (tới Chương 18, `story_speedrun_schema.sql`), "Hồi 2"
+/// (tới Chương 28, `story_speedrun2_schema.sql`) hay "Hồi 3" (tới Chương 34,
+/// `story_speedrun3_schema.sql`). Ba bảng riêng, cùng khuôn.
 enum SpeedrunBoard {
   main('story_speedrun_entries', 'story_speedrun_top'),
-  ext('story_speedrun2_entries', 'story_speedrun2_top');
+  ext('story_speedrun2_entries', 'story_speedrun2_top'),
+  third('story_speedrun3_entries', 'story_speedrun3_top');
 
   const SpeedrunBoard(this.table, this.topRpc);
   final String table;

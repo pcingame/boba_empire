@@ -54,7 +54,7 @@ class StorySpeedrunError extends StorySpeedrunViewState {
 class StorySpeedrunController extends Notifier<StorySpeedrunViewState> {
   StorySpeedrunController([this.board = SpeedrunBoard.main]);
 
-  /// Bảng Hồi 1 (Chương 18) hoặc Hồi 2 (Chương 28).
+  /// Bảng Hồi 1 (Chương 18), Hồi 2 (Chương 28) hoặc Hồi 3 (Chương 34).
   final SpeedrunBoard board;
 
   StorySpeedrunRepository? _repo;
@@ -89,8 +89,11 @@ class StorySpeedrunController extends Notifier<StorySpeedrunViewState> {
 
   Future<void> refresh({bool silent = false}) async {
     if (!silent) state = const StorySpeedrunLoading();
-    unawaited(_analytics?.log(
-        board == SpeedrunBoard.ext ? 'speedrun_ext_viewed' : 'speedrun_viewed'));
+    unawaited(_analytics?.log(switch (board) {
+      SpeedrunBoard.main => 'speedrun_viewed',
+      SpeedrunBoard.ext => 'speedrun_ext_viewed',
+      SpeedrunBoard.third => 'speedrun_third_viewed',
+    }));
     try {
       final completeSeconds = getMyCompleteSeconds?.call();
       if (completeSeconds != null) {
@@ -153,3 +156,8 @@ final storySpeedrunControllerProvider =
 final storySpeedrunExtControllerProvider =
     NotifierProvider<StorySpeedrunController, StorySpeedrunViewState>(
         () => StorySpeedrunController(SpeedrunBoard.ext));
+
+/// Bảng Hồi 3 (mốc Chương 34).
+final storySpeedrunThirdControllerProvider =
+    NotifierProvider<StorySpeedrunController, StorySpeedrunViewState>(
+        () => StorySpeedrunController(SpeedrunBoard.third));

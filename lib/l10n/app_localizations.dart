@@ -1684,6 +1684,18 @@ abstract class AppLocalizations {
   /// **'Bạn chưa hoàn thành Hồi 2 — hoàn thành Chương 28 để được xếp hạng.'**
   String get storySpeedrunExtNotCompletedYet;
 
+  /// No description provided for @storySpeedrunTabExt2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hồi 3'**
+  String get storySpeedrunTabExt2;
+
+  /// No description provided for @storySpeedrunExt2NotCompletedYet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa hoàn thành Hồi 3 — hoàn thành Chương 36 để được xếp hạng.'**
+  String get storySpeedrunExt2NotCompletedYet;
+
   /// No description provided for @storySpeedrunEmpty.
   ///
   /// In vi, this message translates to:

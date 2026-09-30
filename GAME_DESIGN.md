@@ -595,13 +595,15 @@ Chọn dạng ở màn Đấu Trường trước khi ghép trận (hàng đợi 
   là đúng về lý thuyết nhưng gần như không xảy ra.
 - Chưa làm: xem bảng đối thủ. Chưa playtest cân bằng.
 
-## 21. Bảng xếp hạng tốc độ "Hồi 2" (2026-09-26)
+## 21. Bảng xếp hạng tốc độ "Hồi 2" (2026-09-26), mở rộng "Hồi 3" (§25)
 
-Bảng Tốc độ cốt truyện có 2 tab: **Hồi 1** (tới Chương 18, `storyFinaleChapterId`, bảng cũ giữ nguyên) và **Hồi 2**
-(tới Chương 28, `storyExtendedFinaleChapterId`). Thời gian = tổng giây thực tế từ lần đầu chơi (`firstPlayedMillis`) tới lúc
-xem xong chương cuối, ghi 1 lần (`storyCompleteSeconds` / `storyExtCompleteSeconds`). Hai bảng Supabase riêng
-(`story_speedrun_entries` / `story_speedrun2_entries`), cùng khuôn, không anti-cheat. Save đã qua Chương 28 nhưng chưa có mốc được
-bù khi mở app (cao hơn thực tế một chút); save không có `firstPlayedMillis` thật thì không bù (tránh mốc ~1 giây).
+Bảng Tốc độ cốt truyện có 3 tab: **Hồi 1** (tới Chương 18, `storyFinaleChapterId`, bảng cũ giữ nguyên), **Hồi 2**
+(tới Chương 28, `storyExtendedFinaleChapterId`) và **Hồi 3** (tới Chương 36, `storyThirdActFinaleChapterId`, xem §25). Thời gian
+= tổng giây thực tế từ lần đầu chơi (`firstPlayedMillis`) tới lúc xem xong chương cuối, ghi 1 lần (`storyCompleteSeconds` /
+`storyExtCompleteSeconds` / `storyThirdActCompleteSeconds`). Ba bảng Supabase riêng (`story_speedrun_entries` /
+`story_speedrun2_entries` / `story_speedrun3_entries`), cùng khuôn (`SpeedrunBoard` enum), không anti-cheat. Save đã qua chương
+cuối nhưng chưa có mốc được bù khi mở app (cao hơn thực tế một chút); save không có `firstPlayedMillis` thật thì không bù
+(tránh mốc ~1 giây).
 
 ## 22. Số người đang online ở Đấu Trường (2026-09-26)
 
@@ -702,3 +704,40 @@ loé lên lúc mở app và không tốn thêm gì ở khởi động:
 
 Bố cục ngang của màn chơi Ghép 3 KHÔNG bỏ đi: bản desktop/web và cửa sổ chia đôi
 vẫn có thể rộng hơn cao.
+
+## 25. Hồi 3 — "Vòng Lặp Vĩnh Cửu" (Chương 29-36, chưa playtest)
+
+> ⚠️ Ngưỡng là **ước lượng, chưa playtest**. Lý do: Hồi 2 (§17) thuần narrative
+> theo mốc giai đoạn, nhưng GĐ18 đã là trần kinh tế (§18 Kỷ Nguyên) — Hồi 3
+> không còn mốc giai đoạn nào để gắn vào, nên chuyển sang 2 mốc SẴN CÓ khác
+> vẫn tăng đều sau đó: số lần Kỷ Nguyên và tiến độ Hành trình Trân Châu Rơi
+> (§23) — chương gating = "thử thách" thay vì chỉ đọc.
+
+- **8 chương mới (29-36)**, nhân vật mới **🌀 Thầy Cả** (người giữ "Vòng Lặp
+  Vĩnh Cửu") — thuần narrative, không có sự kiện đối thủ song song (đối thủ đã
+  hết vai trò từ Hồi 2). Bản đầu chỉ có 6 chương (29-34, ngưỡng 15/30/45 màn,
+  3 lần Kỷ Nguyên) — kéo dài + dàn ngưỡng đều hơn trên phạm vi rộng hơn của cả
+  chiến dịch Trân Châu Rơi (60 màn).
+- **2 trigger mới** trong `StoryTrigger`: `ascension` (`GameState.ascensionCount
+  >= value`) và `m3Level` (đã qua màn `value` của Trân Châu Rơi với ≥1★,
+  `GameState.m3Stars[value - 1] > 0`). `StoryChapter.stageValue` đổi tên thành
+  `StoryChapter.value` (generic cho cả 3 loại trigger cần ngưỡng số) — an toàn
+  vì trường này chỉ dùng nội bộ `story.dart`.
+- **Ngưỡng từng chương** (xen kẽ 2 loại mốc): Ch.29 Kỷ Nguyên ≥1 · Ch.30 qua
+  màn 10 · Ch.31 Kỷ Nguyên ≥2 · Ch.32 qua màn 25 · Ch.33 Kỷ Nguyên ≥3 · Ch.34
+  qua màn 40 · Ch.35 qua màn 55 · Ch.36 Kỷ Nguyên ≥4 (chương lựa chọn, **trục
+  G**: `secret` giữ bí mật hội +8% chạm / `open` mở cho tất cả +8% thu nhập,
+  vĩnh viễn — cùng khuôn perk A-F).
+- **Mốc "phá đảo" Hồi 3** = `storyThirdActFinaleChapterId` (= 36, KHÔNG dùng
+  `storyChapters.last.id`, cùng lý do như Hồi 1/2 — mở rộng tiếp về sau không
+  làm trượt mốc). Bảng xếp hạng tốc độ thêm tab thứ 3 (§21), field
+  `storyThirdActCompleteSeconds`, chốt trong `_stampStoryFinales` (GameController)
+  y hệt 2 mốc trước.
+- `GameState` +2 field (persisted, giữ qua prestige/Kỷ Nguyên): `storyChoiceG`,
+  `storyThirdActCompleteSeconds`. JSON back-compat (`?? null`).
+- **Server**: bảng mới `story_speedrun3_entries` + RPC `story_speedrun3_top`
+  (`supabase/story_speedrun3_schema.sql`, cùng khuôn story_speedrun2) —
+  **phải chạy file SQL trên Supabase** thì tab "Hồi 3" mới hoạt động.
+- Prose vi/en đầy đủ; es/id/pt/th tạm fallback sang `en` (cùng quy ước mọi đợt
+  mở rộng trước). Nhãn tab + thông báo "chưa hoàn thành" dịch đủ 6 ngôn ngữ
+  trong ARB (`storySpeedrunTabExt2`, `storySpeedrunExt2NotCompletedYet`).

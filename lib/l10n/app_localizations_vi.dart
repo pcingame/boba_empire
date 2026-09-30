@@ -945,6 +945,13 @@ class AppLocalizationsVi extends AppLocalizations {
       'Bạn chưa hoàn thành Hồi 2 — hoàn thành Chương 28 để được xếp hạng.';
 
   @override
+  String get storySpeedrunTabExt2 => 'Hồi 3';
+
+  @override
+  String get storySpeedrunExt2NotCompletedYet =>
+      'Bạn chưa hoàn thành Hồi 3 — hoàn thành Chương 36 để được xếp hạng.';
+
+  @override
   String get storySpeedrunEmpty =>
       'Chưa có ai hoàn thành cốt truyện — là bạn đây!';
 

@@ -374,6 +374,8 @@
   "storySpeedrunTabMain": "Act 1",
   "storySpeedrunTabExt": "Act 2",
   "storySpeedrunExtNotCompletedYet": "You haven't finished Act 2 yet — complete Chapter 28 to be ranked.",
+  "storySpeedrunTabExt2": "Act 3",
+  "storySpeedrunExt2NotCompletedYet": "You haven't finished Act 3 yet — complete Chapter 36 to be ranked.",
   "storySpeedrunEmpty": "No one has finished the story yet — be the first!",
   "arenaLeaderboardMenuTitle": "PK Leaderboard",
   "arenaLeaderboardTitle": "PK Leaderboard",

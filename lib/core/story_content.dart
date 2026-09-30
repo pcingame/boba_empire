@@ -1,4 +1,4 @@
-/// Lời kể cho 18 chương cốt truyện + text sự kiện đối thủ.
+/// Lời kể cho 36 chương cốt truyện + text sự kiện đối thủ.
 ///
 /// KHÔNG dùng ARB: prose dài, và giữ ở đây cho dễ biên tập. `vi` + `en` viết đủ;
 /// các locale khác (es/id/pt/th) tạm fallback sang `en` — dịch sau.
@@ -572,6 +572,169 @@ const Map<int, Map<String, StoryText>> _chapters = {
           'permanent.',
       optionB: 'Give It to Everyone',
       optionBDesc: 'Anyone may continue the recipe. +8% idle income, permanent.',
+    ),
+  },
+  // --- Hồi 3 (29-34): "Vòng Lặp Vĩnh Cửu" — Kỷ Nguyên + Hành trình Trân Châu
+  // Rơi làm bài luyện tay nghề, nhân vật mới "Thầy Cả". ---
+  29: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Người lạ giữa vòng lặp',
+      body: 'Ngay sau lần Kỷ Nguyên đầu tiên — khi mọi thứ vừa trở về số '
+          'không — một bóng người bước ra từ quầy trống. "Ta đã chờ con ở '
+          'đây từ rất lâu," ông nói, "qua không biết bao nhiêu vòng lặp của '
+          'những người trước con. Ta là Thầy Cả, giữ cửa cho những ai dám '
+          'bắt đầu lại."',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'A Stranger in the Loop',
+      body: 'Right after the first Ascension — the moment everything reset '
+          'to zero — a figure stepped out from the empty counter. "I have '
+          'waited for you here a very long time," he said, "through more '
+          'loops of those before you than I can count. I am the Grand '
+          'Teacher, keeper of the gate for those who dare begin again."',
+    ),
+  },
+  30: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Bài luyện đầu tiên',
+      body: 'Thầy Cả đặt trước mặt bạn một khay trân châu đang rơi không '
+          'ngừng. "Kỷ Nguyên cho con sức mạnh, nhưng sức mạnh không dạy con '
+          'đôi tay. Bắt đúng nhịp 10 mẻ, rồi quay lại đây." Không có phép '
+          'màu nào rút ngắn được bài học này.',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'The First Trial',
+      body: 'The Grand Teacher sets down a tray of endlessly falling '
+          'pearls. "Ascension gives you power, but power doesn\'t teach your '
+          'hands. Catch the rhythm through 10 batches, then come back." No '
+          'shortcut can skip this lesson.',
+    ),
+  },
+  31: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Bắt đầu lại, lần nữa',
+      body: 'Lần Kỷ Nguyên thứ hai đến, và bạn thấy dễ chịu hơn lần đầu. '
+          '"Đúng vậy," Thầy Cả gật đầu, "nỗi sợ mất đi chỉ lớn ở lần đầu '
+          'tiên. Càng buông bỏ nhiều lần, con càng nhận ra: không gì con '
+          'từng học bị mất cả — chỉ có Xu là về không."',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'Beginning Again',
+      body: 'The second Ascension comes, and it feels easier than the '
+          'first. "Just so," the Grand Teacher nods. "The fear of losing '
+          'everything is only ever biggest the first time. Let go enough '
+          'times, and you realize: nothing you\'ve learned is ever lost — '
+          'only the coins reset to zero."',
+    ),
+  },
+  32: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Bài luyện thứ hai',
+      body: '"Tay con đã vững hơn," Thầy Cả nhận xét khi nhìn bạn ghép '
+          'những dãy trân châu dài dần. "Nhưng vững chưa đủ — còn phải '
+          'nhanh." Ông chỉ vào khay mới: 25 mẻ, nhịp nhanh hơn hẳn lần '
+          'trước.',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'The Second Trial',
+      body: '"Your hands are steadier now," the Grand Teacher remarks, '
+          'watching your chains of pearls grow longer. "But steady isn\'t '
+          'enough — you must also be fast." He points to a new tray: 25 '
+          'batches, a noticeably faster pace than before.',
+    ),
+  },
+  33: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Ba lần, không phải ngẫu nhiên',
+      body: 'Lần Kỷ Nguyên thứ ba, Thầy Cả không nói gì thêm về việc buông '
+          'bỏ nữa — ông chỉ lặng nhìn bạn một lúc lâu. "Ba lần không phải '
+          'ngẫu nhiên," cuối cùng ông nói. "Đó là số lần tối thiểu để một '
+          'người thật sự tin vào vòng lặp, chứ không chỉ chịu đựng nó."',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'Three Times, Not by Chance',
+      body: 'On the third Ascension, the Grand Teacher says nothing more '
+          'about letting go — he only watches you for a long moment. '
+          '"Three times is not by chance," he finally says. "That is the '
+          'minimum for someone to truly believe in the loop, not merely '
+          'endure it."',
+    ),
+  },
+  34: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Bài luyện thứ ba',
+      body: 'Khay trân châu thứ ba không còn là bài luyện tay nữa — nó là '
+          'một tấm gương. "Con sẽ thấy," Thầy Cả nói khẽ, "càng gần mốc 40 '
+          'mẻ, thứ con đang luyện không phải đôi tay, mà là sự kiên nhẫn '
+          'với chính mình."',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'The Third Trial',
+      body: 'The third tray of pearls is no longer a hand trial — it is a '
+          'mirror. "You will see," the Grand Teacher says quietly, "as you '
+          'near batch 40, what you are training is no longer your hands, '
+          'but your patience with yourself."',
+    ),
+  },
+  35: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Gần hết con đường',
+      body: 'Khay trân châu cuối cùng chỉ còn vài màn nữa là hết cả hành '
+          'trình. "Tới đây," Thầy Cả nói, "phần lớn người bỏ cuộc không '
+          'phải vì tay họ chậm, mà vì họ tưởng gần xong rồi nên lơ là." 55 '
+          'mẻ — gần sát đáy khay.',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'Near the End of the Road',
+      body: 'The last tray of pearls has only a few levels left before the '
+          'whole journey ends. "By this point," the Grand Teacher says, '
+          '"most who quit don\'t do so because their hands are slow, but '
+          'because they think they are nearly done and grow careless." 55 '
+          'batches — close to the bottom of the tray.',
+    ),
+  },
+  36: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Vòng lặp vĩnh cửu',
+      body: 'Kỷ Nguyên thứ tư khép lại. Thầy Cả bước lùi, nhường chỗ quầy '
+          'trống cho bạn. "Đến lượt con giữ cửa. Nhưng trước khi ta đi, một '
+          'câu hỏi cuối: con sẽ giữ Vòng Lặp này bí mật, chỉ mở cho ai thật '
+          'sự xứng đáng — hay mở nó cho tất cả, để ai cũng có cơ hội bắt '
+          'đầu lại?"',
+      optionA: 'Giữ bí mật',
+      optionADesc: 'Chỉ truyền cho người xứng đáng, gìn giữ tinh hoa. +8% giá trị '
+          'mỗi lần chạm, vĩnh viễn.',
+      optionB: 'Mở cho tất cả',
+      optionBDesc: 'Ai cũng được thử bắt đầu lại. +8% thu nhập tự động, vĩnh viễn.',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'The Eternal Loop',
+      body: 'The fourth Ascension closes. The Grand Teacher steps back, '
+          'leaving the empty counter to you. "It is your turn to keep the '
+          'gate. But before I go, one last question: will you keep this '
+          'Loop secret, opened only to those truly worthy — or open it to '
+          'everyone, so anyone may have the chance to begin again?"',
+      optionA: 'Keep It Secret',
+      optionADesc: 'Pass it only to the worthy, preserving its essence. +8% tap '
+          'value, permanent.',
+      optionB: 'Open It to Everyone',
+      optionBDesc: 'Anyone may try to begin again. +8% idle income, permanent.',
     ),
   },
 };

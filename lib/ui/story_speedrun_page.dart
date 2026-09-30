@@ -22,13 +22,14 @@ Future<void> showStorySpeedrunPage(BuildContext context) {
 typedef _SpeedrunProvider
     = NotifierProvider<StorySpeedrunController, StorySpeedrunViewState>;
 
-_SpeedrunProvider _providerFor(SpeedrunBoard board) =>
-    board == SpeedrunBoard.ext
-        ? storySpeedrunExtControllerProvider
-        : storySpeedrunControllerProvider;
+_SpeedrunProvider _providerFor(SpeedrunBoard board) => switch (board) {
+      SpeedrunBoard.main => storySpeedrunControllerProvider,
+      SpeedrunBoard.ext => storySpeedrunExtControllerProvider,
+      SpeedrunBoard.third => storySpeedrunThirdControllerProvider,
+    };
 
-/// 2 tab: "Hồi 1" (tới Chương 18) và "Hồi 2" (tới Chương 28) — mỗi tab có bảng,
-/// controller và mốc thời gian riêng.
+/// 3 tab: "Hồi 1" (tới Chương 18), "Hồi 2" (tới Chương 28) và "Hồi 3" (tới
+/// Chương 34) — mỗi tab có bảng, controller và mốc thời gian riêng.
 class StorySpeedrunPage extends StatelessWidget {
   const StorySpeedrunPage({super.key});
 
@@ -36,7 +37,7 @@ class StorySpeedrunPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: Text(l10n.storySpeedrunTitle),
@@ -44,6 +45,7 @@ class StorySpeedrunPage extends StatelessWidget {
             tabs: [
               Tab(text: l10n.storySpeedrunTabMain),
               Tab(text: l10n.storySpeedrunTabExt),
+              Tab(text: l10n.storySpeedrunTabExt2),
             ],
           ),
         ),
@@ -52,6 +54,7 @@ class StorySpeedrunPage extends StatelessWidget {
             children: [
               _SpeedrunTab(board: SpeedrunBoard.main),
               _SpeedrunTab(board: SpeedrunBoard.ext),
+              _SpeedrunTab(board: SpeedrunBoard.third),
             ],
           ),
         ),
@@ -90,9 +93,11 @@ class _SpeedrunTabState extends ConsumerState<_SpeedrunTab>
     final notifier = ref.read(provider.notifier);
     notifier.getMyCompleteSeconds = () {
       final game = ref.read(gameControllerProvider);
-      return widget.board == SpeedrunBoard.ext
-          ? game.storyExtCompleteSeconds
-          : game.storyCompleteSeconds;
+      return switch (widget.board) {
+        SpeedrunBoard.main => game.storyCompleteSeconds,
+        SpeedrunBoard.ext => game.storyExtCompleteSeconds,
+        SpeedrunBoard.third => game.storyThirdActCompleteSeconds,
+      };
     };
 
     if (!_loaded) {
@@ -190,9 +195,11 @@ class _SpeedrunList extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.all(12),
             child: Text(
-              board == SpeedrunBoard.ext
-                  ? l10n.storySpeedrunExtNotCompletedYet
-                  : l10n.storySpeedrunNotCompletedYet,
+              switch (board) {
+                SpeedrunBoard.main => l10n.storySpeedrunNotCompletedYet,
+                SpeedrunBoard.ext => l10n.storySpeedrunExtNotCompletedYet,
+                SpeedrunBoard.third => l10n.storySpeedrunExt2NotCompletedYet,
+              },
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.error,

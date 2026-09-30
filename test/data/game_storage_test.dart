@@ -71,6 +71,28 @@ void main() {
     expect(GameState.fromJson(oldJson).storyExtCompleteSeconds, isNull);
   });
 
+  test(
+      'save rồi load giữ nguyên storyThirdActCompleteSeconds/storyChoiceG '
+      '(Hồi 3); save cũ (trước Hồi 3) thiếu cả 2 trường -> load null, '
+      'không ném lỗi', () async {
+    final storage = await _storage();
+    final state = GameState.newGame(nowMillis: 1000)
+      ..storyThirdActCompleteSeconds = 8765
+      ..storyChoiceG = 'open';
+    await storage.save(state, nowMillis: 2000);
+    final loaded = storage.load()!;
+    expect(loaded.storyThirdActCompleteSeconds, 8765);
+    expect(loaded.storyChoiceG, 'open');
+
+    // Mô phỏng save từ bản trước khi có Hồi 3 — JSON không có 2 trường này.
+    final oldJson = state.toJson()
+      ..remove('storyThirdActCompleteSeconds')
+      ..remove('storyChoiceG');
+    final fromOld = GameState.fromJson(oldJson);
+    expect(fromOld.storyThirdActCompleteSeconds, isNull);
+    expect(fromOld.storyChoiceG, isNull);
+  });
+
   test('save rồi load giữ nguyên gemTimeSkipDay/gemTimeSkipUsedToday',
       () async {
     final storage = await _storage();

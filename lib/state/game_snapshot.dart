@@ -83,6 +83,7 @@ class GameSnapshot {
     required this.storyChoiceB,
     required this.storyCompleteSeconds,
     required this.storyExtCompleteSeconds,
+    required this.storyThirdActCompleteSeconds,
     required this.rivalActive,
     required this.rivalDefeated,
     required this.rivalStanding,
@@ -235,6 +236,9 @@ class GameSnapshot {
 
   /// Như [storyCompleteSeconds] nhưng tới Chương 28 — cho bảng "Hồi 2".
   final int? storyExtCompleteSeconds;
+
+  /// Như [storyCompleteSeconds] nhưng tới Chương 36 — cho bảng "Hồi 3".
+  final int? storyThirdActCompleteSeconds;
 
   /// Đối thủ đang "hoạt động" (Chương 3+ và chưa bị hạ) & đã bị hạ.
   final bool rivalActive;

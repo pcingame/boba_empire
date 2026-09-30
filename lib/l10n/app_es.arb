@@ -374,6 +374,8 @@
   "storySpeedrunTabMain": "Acto 1",
   "storySpeedrunTabExt": "Acto 2",
   "storySpeedrunExtNotCompletedYet": "Aún no has completado el Acto 2: termina el Capítulo 28 para entrar en la clasificación.",
+  "storySpeedrunTabExt2": "Acto 3",
+  "storySpeedrunExt2NotCompletedYet": "Aún no has completado el Acto 3: termina el Capítulo 36 para entrar en la clasificación.",
   "storySpeedrunEmpty": "Nadie ha terminado la historia todavía — ¡sé el primero!",
   "arenaLeaderboardMenuTitle": "Clasificación PK",
   "arenaLeaderboardTitle": "Clasificación PK",

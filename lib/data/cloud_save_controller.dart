@@ -226,8 +226,13 @@ class CloudSaveController extends Notifier<CloudSaveViewState> {
     state = const CloudSaveUnlinked();
   }
 
+  /// Có thể bị gọi sau khi phiên Supabase ĐÃ chuyển thành tài khoản thật
+  /// (verifyCode thành công) nhưng bước sau đó (`_afterLinked`) lỗi mạng —
+  /// phải kiểm tra lại trạng thái thật, không được ép về Unlinked mù.
   void backToUnlinked() {
-    state = const CloudSaveUnlinked();
+    state = _repository.isLinked
+        ? CloudSaveLinked(_repository.linkedEmail!)
+        : const CloudSaveUnlinked();
   }
 
   void _fail(Object error) {

@@ -350,9 +350,9 @@ class GameController extends Notifier<GameSnapshot> {
   }
 
   /// Chốt mốc thời gian hoàn thành cốt truyện (giây thực tế từ firstPlayedMillis)
-  /// cho bảng "Hồi 1" (Chương 18) và "Hồi 2" (Chương 28). Mỗi mốc ghi đúng 1 lần.
-  /// [exact] = chương vừa xem xong (== mốc); false = save đã ở chương >= mốc
-  /// (bù mốc lúc mở app).
+  /// cho bảng "Hồi 1" (Chương 18), "Hồi 2" (Chương 28) và "Hồi 3" (Chương 36).
+  /// Mỗi mốc ghi đúng 1 lần. [exact] = chương vừa xem xong (== mốc); false =
+  /// save đã ở chương >= mốc (bù mốc lúc mở app).
   void _stampStoryFinales(int chapter, {required bool exact}) {
     // firstPlayedMillis là giá trị ĐOÁN (save cũ chưa từng có mốc thật, xem
     // GameState.firstPlayedIsEstimate) → `clock - firstPlayedMillis` có thể
@@ -368,6 +368,10 @@ class GameController extends Notifier<GameSnapshot> {
     if (hit(storyExtendedFinaleChapterId) &&
         _game.storyExtCompleteSeconds == null) {
       _game.storyExtCompleteSeconds = seconds;
+    }
+    if (hit(storyThirdActFinaleChapterId) &&
+        _game.storyThirdActCompleteSeconds == null) {
+      _game.storyThirdActCompleteSeconds = seconds;
     }
   }
 
@@ -908,7 +912,7 @@ class GameController extends Notifier<GameSnapshot> {
   /// Nhập mã quà tặng (VD mã bù đắp sự cố) — xem `core/redeem.dart`. Lưu ngay
   /// nếu thành công (gems là premium).
   ({RedeemStatus status, double gems}) redeemCode(String code) {
-    final result = applyRedeemCode(_game, code);
+    final result = applyRedeemCode(_game, code, _clock());
     if (result.status == RedeemStatus.success) {
       unawaited(saveNow());
       state = _snapshot();
@@ -1145,6 +1149,7 @@ class GameController extends Notifier<GameSnapshot> {
       storyChoiceB: _game.storyChoiceB,
       storyCompleteSeconds: _game.storyCompleteSeconds,
       storyExtCompleteSeconds: _game.storyExtCompleteSeconds,
+      storyThirdActCompleteSeconds: _game.storyThirdActCompleteSeconds,
       rivalActive: rivalActive(_game),
       rivalDefeated: _game.rivalDefeated,
       rivalStanding: rivalStanding(_game),

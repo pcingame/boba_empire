@@ -103,6 +103,7 @@ class GameState {
     this.storyChoiceD,
     this.storyChoiceE,
     this.storyChoiceF,
+    this.storyChoiceG,
     this.rivalDefeated = false,
     this.rivalPressureSeconds = 0,
     this.repeatQuestBaseline = 0,
@@ -122,6 +123,7 @@ class GameState {
     this.firstPlayedIsEstimate = false,
     this.storyCompleteSeconds,
     this.storyExtCompleteSeconds,
+    this.storyThirdActCompleteSeconds,
     List<String>? achievementsClaimed,
     List<int>? m3Stars,
     List<String>? redeemedCodes,
@@ -289,6 +291,10 @@ class GameState {
   String? storyChoiceE;
   String? storyChoiceF;
 
+  /// Lựa chọn nhánh Chương 36 ('secret' | 'open' | null) — Hồi 3 (Kỷ Nguyên +
+  /// Trân Châu Rơi làm bài luyện tay nghề). Save cũ thiếu trường này → null.
+  String? storyChoiceG;
+
   /// Mốc thời gian (epoch ms) lần đầu tạo save — đặt 1 lần ở [GameState.newGame],
   /// KHÔNG đổi sau đó (kể cả prestige). Dùng làm mốc "bắt đầu" để tính
   /// [storyCompleteSeconds] cho bảng xếp hạng tốc độ hoàn thành cốt truyện.
@@ -316,6 +322,10 @@ class GameState {
   /// 2026-09-26) — cho bảng "Hồi 2". Tổng thời gian từ [firstPlayedMillis], null
   /// nếu chưa xong. Ghi một lần, không đổi được.
   int? storyExtCompleteSeconds;
+
+  /// Như [storyCompleteSeconds] nhưng tới lúc xem xong Chương 36 (Hồi 3) — cho
+  /// bảng "Hồi 3". Tổng thời gian từ [firstPlayedMillis], null nếu chưa xong.
+  int? storyThirdActCompleteSeconds;
 
   /// Đã "hạ" đối thủ (đạt điều kiện ở giai đoạn 6) — chốt lại, mở Chương 8 và
   /// dừng các sự kiện đối thủ.
@@ -415,10 +425,12 @@ class GameState {
         'storyChoiceD': storyChoiceD,
         'storyChoiceE': storyChoiceE,
         'storyChoiceF': storyChoiceF,
+        'storyChoiceG': storyChoiceG,
         'firstPlayedMillis': firstPlayedMillis,
         'firstPlayedIsEstimate': firstPlayedIsEstimate,
         'storyCompleteSeconds': storyCompleteSeconds,
         'storyExtCompleteSeconds': storyExtCompleteSeconds,
+        'storyThirdActCompleteSeconds': storyThirdActCompleteSeconds,
         'rivalDefeated': rivalDefeated,
         'rivalPressureSeconds': rivalPressureSeconds,
         'repeatQuestBaseline': repeatQuestBaseline,
@@ -504,6 +516,7 @@ class GameState {
         storyChoiceD: json['storyChoiceD'] as String?,
         storyChoiceE: json['storyChoiceE'] as String?,
         storyChoiceF: json['storyChoiceF'] as String?,
+        storyChoiceG: json['storyChoiceG'] as String?,
         // Save cũ (trước khi có trường này) không có firstPlayedMillis — dùng
         // lastSeenMillis của chính save đó làm mốc gần đúng nhất có sẵn (biết
         // là ước tính hụt, không phải lúc thật sự bắt đầu chơi; chấp nhận vì
@@ -523,6 +536,8 @@ class GameState {
             (json['storyCompleteSeconds'] as num?)?.toInt(),
         storyExtCompleteSeconds:
             (json['storyExtCompleteSeconds'] as num?)?.toInt(),
+        storyThirdActCompleteSeconds:
+            (json['storyThirdActCompleteSeconds'] as num?)?.toInt(),
         rivalDefeated: (json['rivalDefeated'] as bool?) ?? false,
         rivalPressureSeconds:
             (json['rivalPressureSeconds'] as num?)?.toDouble() ?? 0,
