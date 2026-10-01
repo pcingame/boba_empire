@@ -990,7 +990,13 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get accessoryLbTopTitle => 'Top 20 Colecionador';
+  String get accessoryLbTopTitle => 'Colecionador';
+
+  @override
+  String get accessoryLbTitleKing => 'Rei dos Acessórios';
+
+  @override
+  String get accessoryLbTitleMaster => 'Mestre Colecionador';
 
   @override
   String get accessoryLbEmpty =>
@@ -1218,6 +1224,37 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get marketPriceLabel => 'Preço (Moedas de Mercado)';
+
+  @override
+  String marketListFeeNote(int proceeds, int fee) {
+    return 'Você receberá $proceeds Moedas de Mercado após a taxa de 1% (−$fee)';
+  }
+
+  @override
+  String get marketConvertButton => 'Trocar';
+
+  @override
+  String get marketConvertTitle => 'Trocar por Moedas de Mercado';
+
+  @override
+  String get marketConvertAmountLabel => 'Moedas de Mercado desejadas';
+
+  @override
+  String marketConvertCostGems(String cost) {
+    return 'Custo: $cost 💎';
+  }
+
+  @override
+  String marketConvertCostMoney(String cost) {
+    return 'Custo: $cost 💰';
+  }
+
+  @override
+  String get marketConvertSuccessToast => 'Trocado!';
+
+  @override
+  String get marketConvertFailToast =>
+      'Troca falhou, saldo insuficiente ou erro de rede.';
 
   @override
   String get storySpeedrunEmpty =>

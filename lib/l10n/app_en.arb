@@ -391,7 +391,9 @@
   "accessoryRarityLegendary": "Legendary",
   "accessoryLbTitle": "Collection ranking",
   "accessoryLbCount": "{n} accessories",
-  "accessoryLbTopTitle": "Top 20 Collector",
+  "accessoryLbTopTitle": "Collector",
+  "accessoryLbTitleKing": "Accessory King",
+  "accessoryLbTitleMaster": "Collection Master",
   "@accessoryLbCount": {
     "placeholders": {
       "n": {"type": "int"}
@@ -484,6 +486,30 @@
   "marketListedToast": "Listed!",
   "marketListButton": "List for sale",
   "marketPriceLabel": "Price (Market Coins)",
+  "marketListFeeNote": "You'll receive {proceeds} Market Coins after the 1% fee (−{fee})",
+  "@marketListFeeNote": {
+    "placeholders": {
+      "proceeds": {"type": "int"},
+      "fee": {"type": "int"}
+    }
+  },
+  "marketConvertButton": "Convert",
+  "marketConvertTitle": "Convert to Market Coins",
+  "marketConvertAmountLabel": "Market Coins wanted",
+  "marketConvertCostGems": "Cost: {cost} 💎",
+  "@marketConvertCostGems": {
+    "placeholders": {
+      "cost": {"type": "String"}
+    }
+  },
+  "marketConvertCostMoney": "Cost: {cost} 💰",
+  "@marketConvertCostMoney": {
+    "placeholders": {
+      "cost": {"type": "String"}
+    }
+  },
+  "marketConvertSuccessToast": "Converted!",
+  "marketConvertFailToast": "Conversion failed — insufficient balance or network error.",
   "storySpeedrunEmpty": "No one has finished the story yet — be the first!",
   "arenaLeaderboardMenuTitle": "PK Leaderboard",
   "arenaLeaderboardTitle": "PK Leaderboard",

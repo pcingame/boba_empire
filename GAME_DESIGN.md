@@ -834,3 +834,25 @@ hạn giao dịch/ngày). Điểm mấu chốt:
   `story_speedrun_tabs_test.dart`) — không có test cho chính các RPC Postgres
   (cần Supabase thật/mock, chưa làm; CHECK/trigger trong file SQL là tuyến
   phòng thủ duy nhất, giống mọi schema khác trong repo này).
+
+### 27b. Phí sàn 1% + nạp Xu Chợ bằng Xu/💎 (2026-10-01, đã code + test Dart — SQL chưa deploy)
+
+- **Phí sàn: 1%, tối thiểu 1 Xu Chợ** — `greatest(1, ceil(price/100))` trong
+  `buy_listing()`. Người mua trả đúng giá niêm yết, người bán nhận giá − phí,
+  `accessory_market_trades` ghi giá niêm yết. Hệ quả làm tròn: giá ≤ 100 đều
+  mất đúng 1 Xu Chợ (giá 1 → người bán nhận 0; giá 100 → 1%; giá 101 → 2).
+- **Nạp Xu Chợ MỘT CHIỀU**: RPC `credit_market_coins(p_amount)` chỉ cộng ví
+  người gọi (1..100000), không có chiều ngược lại → Xu Chợ không rút ra thành
+  Xu/💎 thật được (xem PROPOSAL §0).
+  - 💎: `Balance.marketCoinsPerGem = 10` (1 💎 = 10 Xu Chợ).
+  - Xu: tương đối theo thu nhập/giây hiện tại, `Balance.marketCoinsIncomeSeconds
+    = 60` (giá = số Xu Chợ × 60 × thu nhập/giây) — Xu trải ~1e2..1e100 nên
+    không dùng tỉ giá cố định.
+- **Bất biến**: Xu/💎 cục bộ chỉ bị trừ SAU khi RPC thành công. Supabase chưa
+  sẵn sàng, chi phí không hữu hạn/tràn, hoặc lượng ≤ 0 → trả `false`, không gọi
+  RPC, không trừ gì (fail-closed). UI không bật nút xác nhận khi chi phí không
+  hữu hạn.
+- **Deploy**: `supabase/accessory_market_schema.sql` là artifact — phải chạy lại
+  trên Supabase (idempotent) thì phí 1% và `credit_market_coins` mới có hiệu
+  lực. Test Dart: `test/state/game_controller_test.dart` (nhóm "Supabase chưa
+  sẵn sàng"); RPC Postgres chưa có test tự động.

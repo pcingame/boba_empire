@@ -986,7 +986,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get accessoryLbTopTitle => 'Top 20 Collector';
+  String get accessoryLbTopTitle => 'Collector';
+
+  @override
+  String get accessoryLbTitleKing => 'Accessory King';
+
+  @override
+  String get accessoryLbTitleMaster => 'Collection Master';
 
   @override
   String get accessoryLbEmpty =>
@@ -1213,6 +1219,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get marketPriceLabel => 'Price (Market Coins)';
+
+  @override
+  String marketListFeeNote(int proceeds, int fee) {
+    return 'You\'ll receive $proceeds Market Coins after the 1% fee (−$fee)';
+  }
+
+  @override
+  String get marketConvertButton => 'Convert';
+
+  @override
+  String get marketConvertTitle => 'Convert to Market Coins';
+
+  @override
+  String get marketConvertAmountLabel => 'Market Coins wanted';
+
+  @override
+  String marketConvertCostGems(String cost) {
+    return 'Cost: $cost 💎';
+  }
+
+  @override
+  String marketConvertCostMoney(String cost) {
+    return 'Cost: $cost 💰';
+  }
+
+  @override
+  String get marketConvertSuccessToast => 'Converted!';
+
+  @override
+  String get marketConvertFailToast =>
+      'Conversion failed — insufficient balance or network error.';
 
   @override
   String get storySpeedrunEmpty =>

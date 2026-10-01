@@ -9,11 +9,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/accessories.dart';
+import '../core/balance.dart';
+import '../core/format.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../market/accessory_market_controller.dart';
 import '../market/accessory_market_repository.dart';
 import '../state/game_providers.dart';
+import 'widgets/accessory_rarity.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -88,17 +91,225 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
 }
 
 class _WalletChip extends StatelessWidget {
-  const _WalletChip({required this.balance});
+  const _WalletChip({required this.balance, this.onConvert});
   final int balance;
+  final VoidCallback? onConvert;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return Padding(
-      padding: const EdgeInsets.all(12),
-      child: ClayChip(child: Text(l10n.marketWallet(balance))),
+      padding: const EdgeInsets.fromLTRB(12, 12, 12, 4),
+      child: Center(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ClayChip(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('🪙', style: TextStyle(fontSize: 16)),
+                  const SizedBox(width: 6),
+                  Text(
+                    l10n.marketWallet(balance),
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                ],
+              ),
+            ),
+            if (onConvert != null) ...[
+              const SizedBox(width: 8),
+              IconButton.filledTonal(
+                onPressed: onConvert,
+                icon: const Icon(Icons.add, size: 18),
+                tooltip: l10n.marketConvertButton,
+                visualDensity: VisualDensity.compact,
+              ),
+            ],
+          ],
+        ),
+      ),
     );
   }
+}
+
+enum _ConvertSource { gems, money }
+
+/// Dialog đổi 💎/💰 lấy Xu Chợ (MỘT CHIỀU — xem GameController.
+/// convertGemsToMarketCoins/convertMoneyToMarketCoins). Tự thực hiện việc đổi
+/// (không trả giá trị về như _askPrice) vì cần gọi RPC + refresh ví ngay bên
+/// trong dialog để hiện trạng thái đang xử lý/kết quả.
+class _ConvertCoinsDialog extends ConsumerStatefulWidget {
+  const _ConvertCoinsDialog({required this.onAction});
+  final void Function(String?) onAction;
+
+  @override
+  ConsumerState<_ConvertCoinsDialog> createState() =>
+      _ConvertCoinsDialogState();
+}
+
+class _ConvertCoinsDialogState extends ConsumerState<_ConvertCoinsDialog> {
+  _ConvertSource _source = _ConvertSource.gems;
+  final _ctrl = TextEditingController();
+  bool _busy = false;
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final gems = ref.watch(gameControllerProvider.select((s) => s.gems));
+    final money = ref.watch(gameControllerProvider.select((s) => s.money));
+    final income =
+        ref.watch(gameControllerProvider.select((s) => s.incomePerSecond));
+
+    final wanted = int.tryParse(_ctrl.text.trim());
+    final validAmount = wanted != null && wanted >= 1 && wanted <= 100000;
+
+    double? cost;
+    var enough = false;
+    if (validAmount) {
+      if (_source == _ConvertSource.gems) {
+        cost = wanted / Balance.marketCoinsPerGem;
+        enough = gems >= cost;
+      } else {
+        cost = wanted * Balance.marketCoinsIncomeSeconds * income;
+        enough = income.isFinite && income > 0 && money >= cost;
+      }
+      if (!cost.isFinite) {
+        cost = null;
+        enough = false;
+      }
+    }
+    final canConfirm = validAmount && enough && !_busy;
+
+    return AlertDialog(
+      title: Text(l10n.marketConvertTitle),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SegmentedButton<_ConvertSource>(
+            segments: const [
+              ButtonSegment(value: _ConvertSource.gems, label: Text('💎')),
+              ButtonSegment(value: _ConvertSource.money, label: Text('💰')),
+            ],
+            selected: {_source},
+            onSelectionChanged: _busy
+                ? null
+                : (s) => setState(() => _source = s.first),
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _ctrl,
+            keyboardType: TextInputType.number,
+            autofocus: true,
+            enabled: !_busy,
+            onChanged: (_) => setState(() {}),
+            decoration: InputDecoration(
+              labelText: l10n.marketConvertAmountLabel,
+              prefixIcon: const Padding(
+                padding: EdgeInsets.all(12),
+                child: Text('🪙', style: TextStyle(fontSize: 18)),
+              ),
+            ),
+          ),
+          if (validAmount && cost != null) ...[
+            const SizedBox(height: 8),
+            Text(
+              _source == _ConvertSource.gems
+                  ? l10n.marketConvertCostGems(formatNumber(cost, decimals: 2))
+                  : l10n.marketConvertCostMoney(formatNumber(cost)),
+              style: TextStyle(
+                color: enough
+                    ? null
+                    : Theme.of(context).colorScheme.error,
+              ),
+            ),
+          ],
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: _busy ? null : () => Navigator.of(context).pop(),
+          child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+        ),
+        FilledButton(
+          onPressed: canConfirm
+              ? () async {
+                  setState(() => _busy = true);
+                  final notifier = ref.read(gameControllerProvider.notifier);
+                  final ok = _source == _ConvertSource.gems
+                      ? await notifier.convertGemsToMarketCoins(wanted)
+                      : await notifier.convertMoneyToMarketCoins(wanted);
+                  if (ok) {
+                    await ref
+                        .read(accessoryMarketControllerProvider.notifier)
+                        .refresh(silent: true);
+                  }
+                  if (!context.mounted) return;
+                  Navigator.of(context).pop();
+                  widget.onAction(ok
+                      ? l10n.marketConvertSuccessToast
+                      : l10n.marketConvertFailToast);
+                }
+              : null,
+          child: _busy
+              ? const SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : Text(l10n.marketConvertButton),
+        ),
+      ],
+    );
+  }
+}
+
+void _showConvertDialog(BuildContext context, void Function(String?) onAction) {
+  showDialog<void>(
+    context: context,
+    builder: (_) => _ConvertCoinsDialog(onAction: onAction),
+  );
+}
+
+/// Trạng thái rỗng dùng chung (chợ chưa ai bán / chưa đăng gì / chưa có gì
+/// để bán) — icon mờ + chữ, nhất quán thay vì mỗi chỗ 1 kiểu Text trần.
+class _EmptyState extends StatelessWidget {
+  const _EmptyState({required this.emoji, required this.message});
+  final String emoji;
+  final String message;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 28),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Opacity(
+              opacity: 0.35,
+              child: Text(emoji, style: const TextStyle(fontSize: 40)),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Text(
+                message,
+                textAlign: TextAlign.center,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+              ),
+            ),
+          ],
+        ),
+      );
 }
 
 class _ErrorView extends StatelessWidget {
@@ -114,6 +325,8 @@ class _ErrorView extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const Text('🏬', style: TextStyle(fontSize: 40)),
+            const SizedBox(height: 8),
             Text(l10n.marketError, textAlign: TextAlign.center),
             const SizedBox(height: 12),
             FilledButton(onPressed: onRetry, child: Text(l10n.leaderboardRetry)),
@@ -139,7 +352,10 @@ class _BrowseTab extends ConsumerWidget {
 
     return Column(
       children: [
-        _WalletChip(balance: view.walletBalance),
+        _WalletChip(
+          balance: view.walletBalance,
+          onConvert: () => _showConvertDialog(context, onAction),
+        ),
         Expanded(
           child: RefreshIndicator(
             onRefresh: () => ref
@@ -149,10 +365,7 @@ class _BrowseTab extends ConsumerWidget {
                 ? ListView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     children: [
-                      SizedBox(
-                        height: 200,
-                        child: Center(child: Text(l10n.marketEmptyBrowse)),
-                      ),
+                      _EmptyState(emoji: '🏬', message: l10n.marketEmptyBrowse),
                     ],
                   )
                 : ListView.builder(
@@ -184,11 +397,30 @@ class _BrowseTab extends ConsumerWidget {
 
 Future<bool?> _confirmBuy(
     BuildContext context, AppLocalizations l10n, MarketListing listing) {
+  final accessory = accessoryById(listing.accessoryId);
   return showDialog<bool>(
     context: context,
     builder: (_) => AlertDialog(
-      title: Text(accessoryName(l10n, listing.accessoryId)),
-      content: Text(l10n.marketConfirmBuy(listing.price)),
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(accessory.emoji, style: const TextStyle(fontSize: 22)),
+          const SizedBox(width: 8),
+          Flexible(child: Text(accessoryName(l10n, listing.accessoryId))),
+        ],
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RarityChip(
+            rarity: accessory.rarity,
+            label: accessoryRarityLabel(l10n, accessory.rarity),
+          ),
+          const SizedBox(height: 12),
+          Text(l10n.marketConfirmBuy(listing.price)),
+        ],
+      ),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
@@ -213,36 +445,85 @@ class _ListingTile extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final accessory = accessoryById(listing.accessoryId);
-    return ClayTile(
-      child: Row(
+    final color = rarityColor(accessory.rarity);
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: Stack(
         children: [
-          Text(accessory.emoji, style: const TextStyle(fontSize: 24)),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
+          ClayTile(
+            margin: const EdgeInsets.symmetric(vertical: 4),
+            // Chừa chỗ cho dải màu độ hiếm bên trái (xem Container dưới) —
+            // cùng hệ màu đã dùng ở Kho phụ kiện, giúp quét nhanh bằng mắt
+            // mà không cần đọc tên độ hiếm.
+            padding: const EdgeInsets.fromLTRB(16, 10, 12, 10),
+            child: Row(
               children: [
-                Text(
-                  accessoryName(l10n, listing.accessoryId),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodyMedium
-                      ?.copyWith(fontWeight: FontWeight.w600),
+                Text(accessory.emoji, style: const TextStyle(fontSize: 24)),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        accessoryName(l10n, listing.accessoryId),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodyMedium
+                            ?.copyWith(fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(height: 2),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text('🪙', style: theme.textTheme.bodySmall),
+                          const SizedBox(width: 3),
+                          Text(
+                            l10n.marketPriceTag(listing.price),
+                            style: theme.textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                Text(
-                  l10n.marketPriceTag(listing.price),
-                  style: theme.textTheme.bodySmall,
-                ),
+                const SizedBox(width: 8),
+                trailing,
               ],
             ),
           ),
-          const SizedBox(width: 8),
-          trailing,
+          Positioned(
+            left: 0,
+            top: 4,
+            bottom: 4,
+            child: Container(width: 4, color: color),
+          ),
         ],
       ),
     );
   }
+}
+
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader({required this.emoji, required this.text});
+  final String emoji;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.fromLTRB(4, 4, 4, 8),
+        child: Row(
+          children: [
+            Text(emoji, style: const TextStyle(fontSize: 16)),
+            const SizedBox(width: 6),
+            Text(text,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall
+                    ?.copyWith(fontWeight: FontWeight.w700)),
+          ],
+        ),
+      );
 }
 
 class _MineTab extends ConsumerWidget {
@@ -263,14 +544,14 @@ class _MineTab extends ConsumerWidget {
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
         children: [
-          _WalletChip(balance: view.walletBalance),
-          Text(l10n.marketMyListingsHeader,
-              style: Theme.of(context).textTheme.titleSmall),
+          _WalletChip(
+            balance: view.walletBalance,
+            onConvert: () => _showConvertDialog(context, onAction),
+          ),
+          const SizedBox(height: 8),
+          _SectionHeader(emoji: '📋', text: l10n.marketMyListingsHeader),
           if (view.myListings.isEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Text(l10n.marketEmptyMine, textAlign: TextAlign.center),
-            )
+            _EmptyState(emoji: '📋', message: l10n.marketEmptyMine)
           else
             for (final listing in view.myListings)
               _ListingTile(
@@ -285,14 +566,10 @@ class _MineTab extends ConsumerWidget {
                   child: Text(l10n.marketCancelButton),
                 ),
               ),
-          const SizedBox(height: 16),
-          Text(l10n.marketSellableHeader,
-              style: Theme.of(context).textTheme.titleSmall),
+          const SizedBox(height: 20),
+          _SectionHeader(emoji: '🎒', text: l10n.marketSellableHeader),
           if (owned.isEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Text(l10n.marketEmptySellable, textAlign: TextAlign.center),
-            )
+            _EmptyState(emoji: '🎒', message: l10n.marketEmptySellable)
           else
             for (final id in owned)
               _SellableTile(accessoryId: id, onAction: onAction),
@@ -310,29 +587,49 @@ class _SellableTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
     final accessory = accessoryById(accessoryId);
-    return ClayTile(
-      child: Row(
+    final color = rarityColor(accessory.rarity);
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(16),
+      child: Stack(
         children: [
-          Text(accessory.emoji, style: const TextStyle(fontSize: 24)),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              accessoryName(l10n, accessoryId),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+          ClayTile(
+            margin: const EdgeInsets.symmetric(vertical: 4),
+            padding: const EdgeInsets.fromLTRB(16, 10, 12, 10),
+            child: Row(
+              children: [
+                Text(accessory.emoji, style: const TextStyle(fontSize: 24)),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    accessoryName(l10n, accessoryId),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                OutlinedButton(
+                  onPressed: () async {
+                    final price = await _askPrice(context, l10n, accessory);
+                    if (price == null) return;
+                    final msg = await ref
+                        .read(accessoryMarketControllerProvider.notifier)
+                        .listItem(accessoryId, price);
+                    onAction(msg ?? l10n.marketListedToast);
+                  },
+                  child: Text(l10n.marketListButton),
+                ),
+              ],
             ),
           ),
-          OutlinedButton(
-            onPressed: () async {
-              final price = await _askPrice(context, l10n);
-              if (price == null) return;
-              final msg = await ref
-                  .read(accessoryMarketControllerProvider.notifier)
-                  .listItem(accessoryId, price);
-              onAction(msg ?? l10n.marketListedToast);
-            },
-            child: Text(l10n.marketListButton),
+          Positioned(
+            left: 0,
+            top: 4,
+            bottom: 4,
+            child: Container(width: 4, color: color),
           ),
         ],
       ),
@@ -340,32 +637,67 @@ class _SellableTile extends ConsumerWidget {
   }
 }
 
-Future<int?> _askPrice(BuildContext context, AppLocalizations l10n) {
+Future<int?> _askPrice(
+    BuildContext context, AppLocalizations l10n, Accessory accessory) {
   final ctrl = TextEditingController();
   return showDialog<int>(
     context: context,
-    builder: (_) => AlertDialog(
-      title: Text(l10n.marketListButton),
-      content: TextField(
-        controller: ctrl,
-        keyboardType: TextInputType.number,
-        autofocus: true,
-        decoration: InputDecoration(labelText: l10n.marketPriceLabel),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
-        ),
-        FilledButton(
-          onPressed: () {
-            final price = int.tryParse(ctrl.text.trim());
-            if (price == null || price < 1 || price > 100000) return;
-            Navigator.of(context).pop(price);
-          },
-          child: Text(l10n.marketListButton),
-        ),
-      ],
+    builder: (_) => StatefulBuilder(
+      builder: (context, setState) {
+        final price = int.tryParse(ctrl.text.trim());
+        final valid = price != null && price >= 1 && price <= 100000;
+        // Phí sàn 1%, làm tròn lên, tối thiểu 1 — khớp buy_listing() trong
+        // accessory_market_schema.sql.
+        final fee = valid ? (price * 0.01).ceil().clamp(1, price) : 0;
+        return AlertDialog(
+          title: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(accessory.emoji, style: const TextStyle(fontSize: 22)),
+              const SizedBox(width: 8),
+              Text(l10n.marketListButton),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextField(
+                controller: ctrl,
+                keyboardType: TextInputType.number,
+                autofocus: true,
+                onChanged: (_) => setState(() {}),
+                decoration: InputDecoration(
+                  labelText: l10n.marketPriceLabel,
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Text('🪙', style: TextStyle(fontSize: 18)),
+                  ),
+                  errorText:
+                      ctrl.text.isNotEmpty && !valid ? '1 – 100,000' : null,
+                ),
+              ),
+              if (valid) ...[
+                const SizedBox(height: 8),
+                Text(
+                  l10n.marketListFeeNote(price - fee, fee),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+            ),
+            FilledButton(
+              onPressed: valid ? () => Navigator.of(context).pop(price) : null,
+              child: Text(l10n.marketListButton),
+            ),
+          ],
+        );
+      },
     ),
   );
 }

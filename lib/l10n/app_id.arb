@@ -391,7 +391,9 @@
   "accessoryRarityLegendary": "Legendaris",
   "accessoryLbTitle": "Peringkat Koleksi",
   "accessoryLbCount": "{n} aksesori",
-  "accessoryLbTopTitle": "Top 20 Kolektor",
+  "accessoryLbTopTitle": "Kolektor",
+  "accessoryLbTitleKing": "Raja Aksesori",
+  "accessoryLbTitleMaster": "Master Kolektor",
   "@accessoryLbCount": {
     "placeholders": {
       "n": {"type": "int"}
@@ -484,6 +486,30 @@
   "marketListedToast": "Berhasil dijual!",
   "marketListButton": "Jual",
   "marketPriceLabel": "Harga (Koin Pasar)",
+  "marketListFeeNote": "Kamu akan menerima {proceeds} Koin Pasar setelah biaya pasar 1% (−{fee})",
+  "@marketListFeeNote": {
+    "placeholders": {
+      "proceeds": {"type": "int"},
+      "fee": {"type": "int"}
+    }
+  },
+  "marketConvertButton": "Tukar",
+  "marketConvertTitle": "Tukar jadi Koin Pasar",
+  "marketConvertAmountLabel": "Jumlah Koin Pasar yang diinginkan",
+  "marketConvertCostGems": "Biaya: {cost} 💎",
+  "@marketConvertCostGems": {
+    "placeholders": {
+      "cost": {"type": "String"}
+    }
+  },
+  "marketConvertCostMoney": "Biaya: {cost} 💰",
+  "@marketConvertCostMoney": {
+    "placeholders": {
+      "cost": {"type": "String"}
+    }
+  },
+  "marketConvertSuccessToast": "Berhasil ditukar!",
+  "marketConvertFailToast": "Penukaran gagal, saldo tidak cukup atau error jaringan.",
   "storySpeedrunEmpty": "Belum ada yang menyelesaikan cerita — jadilah yang pertama!",
   "arenaLeaderboardMenuTitle": "Papan Peringkat PK",
   "arenaLeaderboardTitle": "Papan Peringkat PK",

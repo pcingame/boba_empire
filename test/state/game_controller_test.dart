@@ -152,4 +152,130 @@ void main() {
     expect(container.read(gameControllerProvider).money, 0);
     expect(GameStorage(prefs).load(), isNull);
   });
+
+  group('đổi Xu/💎 lấy Xu Chợ — Supabase chưa sẵn sàng trong test (fail-closed)', () {
+    test('convertGemsToMarketCoins: thiếu 💎 -> false, không trừ gì', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      await GameStorage(prefs).save(
+        GameState.newGame(nowMillis: 0)..gems = 1,
+        nowMillis: 0,
+      );
+      final container = ProviderContainer(overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        clockProvider.overrideWithValue(() => 0),
+      ]);
+      addTearDown(container.dispose);
+
+      final ctrl = container.read(gameControllerProvider.notifier);
+      // 100 Xu Chợ cần 10 💎 (marketCoinsPerGem = 10), chỉ có 1 💎.
+      expect(await ctrl.convertGemsToMarketCoins(100), isFalse);
+      expect(container.read(gameControllerProvider).gems, 1);
+    });
+
+    test(
+        'convertGemsToMarketCoins: đủ 💎 nhưng không nối được server -> false, '
+        'KHÔNG được trừ 💎 (bug đã sửa: trước đây coi _market null là thành công)',
+        () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      await GameStorage(prefs).save(
+        GameState.newGame(nowMillis: 0)..gems = 100,
+        nowMillis: 0,
+      );
+      final container = ProviderContainer(overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        clockProvider.overrideWithValue(() => 0),
+      ]);
+      addTearDown(container.dispose);
+
+      final ctrl = container.read(gameControllerProvider.notifier);
+      expect(await ctrl.convertGemsToMarketCoins(10), isFalse);
+      expect(container.read(gameControllerProvider).gems, 100);
+    });
+
+    test('convertMoneyToMarketCoins: thu nhập/giây = 0 -> false, không trừ gì',
+        () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      await GameStorage(prefs).save(
+        GameState.newGame(nowMillis: 0)..money = 1000000,
+        nowMillis: 0,
+      );
+      final container = ProviderContainer(overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        clockProvider.overrideWithValue(() => 0),
+      ]);
+      addTearDown(container.dispose);
+
+      final ctrl = container.read(gameControllerProvider.notifier);
+      expect(await ctrl.convertMoneyToMarketCoins(10), isFalse);
+      expect(container.read(gameControllerProvider).money, 1000000);
+    });
+
+    test(
+        'convertMoneyToMarketCoins: đủ Xu nhưng không nối được server -> false, '
+        'không trừ Xu', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      await GameStorage(prefs).save(
+        GameState.newGame(nowMillis: 0)..money = 1000000,
+        nowMillis: 0,
+      );
+      final container = ProviderContainer(overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        clockProvider.overrideWithValue(() => 0),
+      ]);
+      addTearDown(container.dispose);
+
+      final ctrl = container.read(gameControllerProvider.notifier);
+      expect(ctrl.buy('tra_den'), isTrue); // tạo thu nhập/giây > 0
+      final before = container.read(gameControllerProvider).money;
+      expect(await ctrl.convertMoneyToMarketCoins(1), isFalse);
+      expect(container.read(gameControllerProvider).money, before);
+    });
+
+    test('convertMoneyToMarketCoins: chi phí tràn/không hữu hạn -> false, không trừ gì',
+        () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      await GameStorage(prefs).save(
+        GameState.newGame(nowMillis: 0)..money = double.maxFinite,
+        nowMillis: 0,
+      );
+      final container = ProviderContainer(overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        clockProvider.overrideWithValue(() => 0),
+      ]);
+      addTearDown(container.dispose);
+
+      final ctrl = container.read(gameControllerProvider.notifier);
+      expect(ctrl.buy('tra_den'), isTrue);
+      final before = container.read(gameControllerProvider).money;
+      expect(await ctrl.convertMoneyToMarketCoins(0), isFalse);
+      expect(await ctrl.convertMoneyToMarketCoins(-5), isFalse);
+      expect(await ctrl.convertMoneyToMarketCoins(1 << 62), isFalse);
+      expect(container.read(gameControllerProvider).money, before);
+    });
+
+    test('convertGemsToMarketCoins: yêu cầu cực lớn -> false, không trừ 💎',
+        () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      await GameStorage(prefs).save(
+        GameState.newGame(nowMillis: 0)..gems = 100,
+        nowMillis: 0,
+      );
+      final container = ProviderContainer(overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        clockProvider.overrideWithValue(() => 0),
+      ]);
+      addTearDown(container.dispose);
+
+      final ctrl = container.read(gameControllerProvider.notifier);
+      expect(await ctrl.convertGemsToMarketCoins(1 << 62), isFalse);
+      expect(await ctrl.convertGemsToMarketCoins(-1), isFalse);
+      expect(container.read(gameControllerProvider).gems, 100);
+    });
+  });
 }

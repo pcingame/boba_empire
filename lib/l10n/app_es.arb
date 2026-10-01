@@ -391,7 +391,9 @@
   "accessoryRarityLegendary": "Legendario",
   "accessoryLbTitle": "Clasificación de colección",
   "accessoryLbCount": "{n} accesorios",
-  "accessoryLbTopTitle": "Top 20 Coleccionista",
+  "accessoryLbTopTitle": "Coleccionista",
+  "accessoryLbTitleKing": "Rey de los Accesorios",
+  "accessoryLbTitleMaster": "Maestro Coleccionista",
   "@accessoryLbCount": {
     "placeholders": {
       "n": {"type": "int"}
@@ -484,6 +486,30 @@
   "marketListedToast": "¡Publicado!",
   "marketListButton": "Poner a la venta",
   "marketPriceLabel": "Precio (Monedas de Mercado)",
+  "marketListFeeNote": "Recibirás {proceeds} Monedas de Mercado tras la comisión del 1% (−{fee})",
+  "@marketListFeeNote": {
+    "placeholders": {
+      "proceeds": {"type": "int"},
+      "fee": {"type": "int"}
+    }
+  },
+  "marketConvertButton": "Cambiar",
+  "marketConvertTitle": "Cambiar por Monedas de Mercado",
+  "marketConvertAmountLabel": "Monedas de Mercado deseadas",
+  "marketConvertCostGems": "Costo: {cost} 💎",
+  "@marketConvertCostGems": {
+    "placeholders": {
+      "cost": {"type": "String"}
+    }
+  },
+  "marketConvertCostMoney": "Costo: {cost} 💰",
+  "@marketConvertCostMoney": {
+    "placeholders": {
+      "cost": {"type": "String"}
+    }
+  },
+  "marketConvertSuccessToast": "¡Cambiado!",
+  "marketConvertFailToast": "Cambio fallido, saldo insuficiente o error de red.",
   "storySpeedrunEmpty": "Nadie ha terminado la historia todavía — ¡sé el primero!",
   "arenaLeaderboardMenuTitle": "Clasificación PK",
   "arenaLeaderboardTitle": "Clasificación PK",

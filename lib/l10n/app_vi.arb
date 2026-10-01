@@ -746,7 +746,9 @@
   "accessoryRarityLegendary": "Huyền thoại",
   "accessoryLbTitle": "Bảng xếp hạng Sưu tập",
   "accessoryLbCount": "{n} phụ kiện",
-  "accessoryLbTopTitle": "Top 20 Sưu Tập",
+  "accessoryLbTopTitle": "Nhà Sưu Tầm",
+  "accessoryLbTitleKing": "Vua Phụ Kiện",
+  "accessoryLbTitleMaster": "Cao Thủ Sưu Tầm",
   "@accessoryLbCount": {
     "placeholders": {
       "n": {"type": "int"}
@@ -839,6 +841,30 @@
   "marketListedToast": "Đã đăng bán!",
   "marketListButton": "Đăng bán",
   "marketPriceLabel": "Giá (Xu Chợ)",
+  "marketListFeeNote": "Bạn sẽ nhận {proceeds} Xu Chợ sau khi trừ phí sàn 1% (−{fee})",
+  "@marketListFeeNote": {
+    "placeholders": {
+      "proceeds": {"type": "int"},
+      "fee": {"type": "int"}
+    }
+  },
+  "marketConvertButton": "Đổi",
+  "marketConvertTitle": "Đổi lấy Xu Chợ",
+  "marketConvertAmountLabel": "Số Xu Chợ muốn đổi",
+  "marketConvertCostGems": "Tốn: {cost} 💎",
+  "@marketConvertCostGems": {
+    "placeholders": {
+      "cost": {"type": "String"}
+    }
+  },
+  "marketConvertCostMoney": "Tốn: {cost} 💰",
+  "@marketConvertCostMoney": {
+    "placeholders": {
+      "cost": {"type": "String"}
+    }
+  },
+  "marketConvertSuccessToast": "Đã đổi!",
+  "marketConvertFailToast": "Đổi thất bại — không đủ số dư hoặc lỗi mạng.",
   "storySpeedrunEmpty": "Chưa có ai hoàn thành cốt truyện — là bạn đây!",
   "arenaLeaderboardMenuTitle": "Bảng xếp hạng PK",
   "arenaLeaderboardTitle": "Bảng xếp hạng PK",

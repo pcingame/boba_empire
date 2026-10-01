@@ -260,3 +260,22 @@ create table accessory_market_trades (
 Coi như đóng băng phạm vi ở mức này cho bản MVP — đổi luật sau khi đã có
 bản chạy được, tránh vừa code vừa đổi yêu cầu (cùng cách Arena PvP đã làm
 ở §10 của file đó).
+
+## 10. Phí sàn + nạp Xu Chợ bằng Xu/💎 (bổ sung 2026-10-01)
+
+5. **Phí sàn 1%** trên mỗi giao dịch `buy_listing`, trừ vào tiền người bán
+   nhận (`greatest(1, ceil(price * 0.01))` — làm tròn lên, sàn tối thiểu 1
+   để giá nhỏ không bị phí về 0). Người mua vẫn trả đúng giá niêm yết. Vai
+   trò: sink nhẹ hút bớt Xu Chợ lưu thông, giữ chợ không bị lạm phát vô hạn
+   theo thời gian.
+6. **Nạp Xu Chợ bằng Xu/💎 — MỘT CHIỀU** (RPC `credit_market_coins`). KHÔNG
+   vi phạm nguyên tắc §0: chiều nguy hiểm (rửa tiền) là Xu Chợ ➜ Xu/💎 thật,
+   chiều này đi ngược lại — bơm giá trị thật VÀO hệ thống đóng, không ai rút
+   được ra, tương đương một kiểu sink (giống mua 💎 bằng tiền thật). Tỉ giá:
+   - 💎: cố định 1 💎 = 10 Xu Chợ (`Balance.marketCoinsPerGem`).
+   - Xu: tương đối theo thu nhập/giây hiện tại — 1 Xu Chợ = 60 giây thu nhập
+     (`Balance.marketCoinsIncomeSeconds`), vì Xu co giãn ~1e2–1e100 suốt
+     game nên không dùng được tỉ giá tuyệt đối (cùng lý do nhiệm vụ ngày
+     "Kiếm Xu" đã dùng ngưỡng tương đối).
+   - Server-trước-trừ-sau: `GameController` gọi RPC rồi mới trừ Xu/💎 cục bộ
+     nếu thành công, tránh mất tiền oan khi mất mạng giữa chừng.

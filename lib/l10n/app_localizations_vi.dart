@@ -983,7 +983,13 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get accessoryLbTopTitle => 'Top 20 Sưu Tập';
+  String get accessoryLbTopTitle => 'Nhà Sưu Tầm';
+
+  @override
+  String get accessoryLbTitleKing => 'Vua Phụ Kiện';
+
+  @override
+  String get accessoryLbTitleMaster => 'Cao Thủ Sưu Tầm';
 
   @override
   String get accessoryLbEmpty =>
@@ -1209,6 +1215,37 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get marketPriceLabel => 'Giá (Xu Chợ)';
+
+  @override
+  String marketListFeeNote(int proceeds, int fee) {
+    return 'Bạn sẽ nhận $proceeds Xu Chợ sau khi trừ phí sàn 1% (−$fee)';
+  }
+
+  @override
+  String get marketConvertButton => 'Đổi';
+
+  @override
+  String get marketConvertTitle => 'Đổi lấy Xu Chợ';
+
+  @override
+  String get marketConvertAmountLabel => 'Số Xu Chợ muốn đổi';
+
+  @override
+  String marketConvertCostGems(String cost) {
+    return 'Tốn: $cost 💎';
+  }
+
+  @override
+  String marketConvertCostMoney(String cost) {
+    return 'Tốn: $cost 💰';
+  }
+
+  @override
+  String get marketConvertSuccessToast => 'Đã đổi!';
+
+  @override
+  String get marketConvertFailToast =>
+      'Đổi thất bại — không đủ số dư hoặc lỗi mạng.';
 
   @override
   String get storySpeedrunEmpty =>

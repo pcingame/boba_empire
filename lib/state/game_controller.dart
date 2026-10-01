@@ -823,6 +823,55 @@ class GameController extends Notifier<GameSnapshot> {
     }
   }
 
+  /// Đổi 💎 lấy Xu Chợ — MỘT CHIỀU (xem Balance.marketCoinsPerGem). Gọi RPC
+  /// trước, chỉ trừ 💎 cục bộ nếu RPC thành công — tránh mất 💎 oan nếu lỗi
+  /// mạng giữa chừng. Trả false nếu không đủ 💎 hoặc RPC lỗi.
+  Future<bool> convertGemsToMarketCoins(int marketCoinsWanted) async {
+    if (marketCoinsWanted <= 0) return false;
+    final cost = marketCoinsWanted / Balance.marketCoinsPerGem;
+    if (!(_game.gems >= cost)) return false;
+    final market = _market;
+    if (market == null) return false;
+    try {
+      await market.creditMarketCoins(marketCoinsWanted);
+    } catch (e) {
+      developer.log('đổi 💎 lấy Xu Chợ lỗi mạng, chưa trừ gì cục bộ: $e',
+          name: 'Market');
+      return false;
+    }
+    _game.gems -= cost;
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
+  /// Đổi Xu lấy Xu Chợ theo giây-thu-nhập HIỆN TẠI (xem
+  /// Balance.marketCoinsIncomeSeconds) — không dùng tỉ giá Xu cố định vì Xu
+  /// co giãn nhiều bậc suốt game. Cùng nguyên tắc server-trước-trừ-sau như
+  /// convertGemsToMarketCoins.
+  Future<bool> convertMoneyToMarketCoins(int marketCoinsWanted) async {
+    if (marketCoinsWanted <= 0) return false;
+    final income = effectiveIncomePerSecond(_game, Balance.generators,
+        bonusPerStar: Balance.bonusPerStar);
+    if (!income.isFinite || income <= 0) return false;
+    final cost = marketCoinsWanted * Balance.marketCoinsIncomeSeconds * income;
+    // `!(x >= y)` thay vì `x < y` để NaN cũng bị từ chối.
+    if (!cost.isFinite || cost <= 0 || !(_game.money >= cost)) return false;
+    final market = _market;
+    if (market == null) return false;
+    try {
+      await market.creditMarketCoins(marketCoinsWanted);
+    } catch (e) {
+      developer.log('đổi Xu lấy Xu Chợ lỗi mạng, chưa trừ gì cục bộ: $e',
+          name: 'Market');
+      return false;
+    }
+    _game.money -= cost;
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
   /// Xuất save hiện tại dạng JSON — dùng cho Đồng bộ đám mây (đẩy save máy
   /// này lên cloud lần đầu liên kết / khi chọn "Giữ máy này" lúc xung đột).
   Map<String, dynamic> exportSaveJson() => _game.toJson();

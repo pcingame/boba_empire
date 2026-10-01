@@ -328,7 +328,20 @@ class Balance {
   /// Rớt trúng món đã có (trùng) → quy đổi 💎 thay vì lãng phí lượt rớt.
   static const int duplicateAccessoryGems = 2;
 
-  // --- Sự kiện giới hạn thời gian (2026-09-29, ROADMAP #11) ---
+  // --- Chợ Phụ kiện: đổi Xu/💎 lấy Xu Chợ (2026-10-01) — MỘT CHIỀU, xem
+  // credit_market_coins() trong accessory_market_schema.sql. Phí sàn 1%
+  // (làm tròn lên, tối thiểu 1) áp ở buy_listing(), không phải ở đây — đây
+  // chỉ là tỉ giá NẠP, không phải giao dịch mua bán.
+
+  /// 1 💎 = 10 Xu Chợ — số cố định được vì 💎 ít co giãn hơn Xu nhiều.
+  static const int marketCoinsPerGem = 10;
+
+  /// 1 Xu Chợ = [marketCoinsIncomeSeconds] giây thu nhập/giây HIỆN TẠI —
+  /// KHÔNG dùng tỉ giá Xu cố định vì Xu trải ~1e2 tới ~1e100 suốt game (cùng
+  /// lý do ngưỡng nhiệm vụ "Kiếm Xu" ở §19 GAME_DESIGN dùng tương đối, không
+  /// tuyệt đối). Đối xứng với "Tua nhanh" (claimTimeSkip) đã có, chiều ngược
+  /// lại: đổi vài phút thu nhập lấy Xu Chợ thay vì đổi 💎 lấy vài phút thu nhập.
+  static const int marketCoinsIncomeSeconds = 60;
   //
   // Mặc định TẮT (start = end = 0, xem eventMultiplierAt() trong economy.dart)
   // — chỉ bật khi cả 3 nút này được đặt qua Remote Config. Người vặn số đặt

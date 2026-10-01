@@ -11,6 +11,7 @@ import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import 'accessory_leaderboard_page.dart';
 import 'accessory_market_page.dart';
+import 'widgets/accessory_rarity.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -99,16 +100,6 @@ class AccessoryInventoryPage extends ConsumerWidget {
   }
 }
 
-/// Màu quy ước theo độ hiếm (xám/xanh/tím/vàng) — cố định, không lấy từ
-/// theme, giống cách hầu hết game sưu tập dùng màu hiếm cố định xuyên suốt
-/// light/dark mode để người chơi quét nhanh bằng mắt không cần đọc chữ.
-Color _rarityColor(AccessoryRarity r) => switch (r) {
-      AccessoryRarity.common => const Color(0xFF9E9E9E),
-      AccessoryRarity.rare => const Color(0xFF42A5F5),
-      AccessoryRarity.epic => const Color(0xFFAB47BC),
-      AccessoryRarity.legendary => const Color(0xFFFFA726),
-    };
-
 class _AccessoryCell extends ConsumerWidget {
   const _AccessoryCell({required this.accessory});
   final Accessory accessory;
@@ -122,7 +113,7 @@ class _AccessoryCell extends ConsumerWidget {
     // không phải toàn bộ lưới mỗi khi danh sách tăng thêm 1 món khác.
     final unlocked = ref.watch(gameControllerProvider
         .select((s) => s.ownedAccessories.contains(accessory.id)));
-    final rarityColor = _rarityColor(accessory.rarity);
+    final color = rarityColor(accessory.rarity);
 
     return Opacity(
       opacity: unlocked ? 1.0 : 0.45,
@@ -132,12 +123,12 @@ class _AccessoryCell extends ConsumerWidget {
         // được kiểu game sưu tập thường có.
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: rarityColor, width: 2),
+          border: Border.all(color: color, width: 2),
         ),
         child: ClayCard(
           padding: const EdgeInsets.all(8),
           color: Color.alphaBlend(
-            rarityColor.withValues(alpha: unlocked ? 0.14 : 0.06),
+            color.withValues(alpha: unlocked ? 0.14 : 0.06),
             theme.colorScheme.surface,
           ),
           // Ô lưới rất hẹp (3 cột) — tên phụ kiện dịch ra vài ngôn ngữ dài
@@ -161,17 +152,9 @@ class _AccessoryCell extends ConsumerWidget {
                       ?.copyWith(fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 4),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: rarityColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Text(
-                    accessoryRarityLabel(l10n, accessory.rarity),
-                    style: theme.textTheme.labelSmall
-                        ?.copyWith(color: Colors.white, fontWeight: FontWeight.w600),
-                  ),
+                RarityChip(
+                  rarity: accessory.rarity,
+                  label: accessoryRarityLabel(l10n, accessory.rarity),
                 ),
               ],
             ),

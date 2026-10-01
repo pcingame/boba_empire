@@ -979,7 +979,13 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
-  String get accessoryLbTopTitle => 'ท็อป 20 นักสะสม';
+  String get accessoryLbTopTitle => 'นักสะสม';
+
+  @override
+  String get accessoryLbTitleKing => 'ราชาแอคเซสซอรี';
+
+  @override
+  String get accessoryLbTitleMaster => 'ปรมาจารย์นักสะสม';
 
   @override
   String get accessoryLbEmpty =>
@@ -1204,6 +1210,37 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get marketPriceLabel => 'ราคา (เหรียญตลาด)';
+
+  @override
+  String marketListFeeNote(int proceeds, int fee) {
+    return 'คุณจะได้รับ $proceeds เหรียญตลาดหลังหักค่าธรรมเนียม 1% (−$fee)';
+  }
+
+  @override
+  String get marketConvertButton => 'แลกเปลี่ยน';
+
+  @override
+  String get marketConvertTitle => 'แลกเป็นเหรียญตลาด';
+
+  @override
+  String get marketConvertAmountLabel => 'จำนวนเหรียญตลาดที่ต้องการ';
+
+  @override
+  String marketConvertCostGems(String cost) {
+    return 'ค่าใช้จ่าย: $cost 💎';
+  }
+
+  @override
+  String marketConvertCostMoney(String cost) {
+    return 'ค่าใช้จ่าย: $cost 💰';
+  }
+
+  @override
+  String get marketConvertSuccessToast => 'แลกเปลี่ยนสำเร็จ!';
+
+  @override
+  String get marketConvertFailToast =>
+      'แลกเปลี่ยนไม่สำเร็จ ยอดคงเหลือไม่พอหรือเครือข่ายขัดข้อง';
 
   @override
   String get storySpeedrunEmpty => 'ยังไม่มีใครจบเนื้อเรื่อง — เป็นคนแรกสิ!';

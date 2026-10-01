@@ -1753,8 +1753,20 @@ abstract class AppLocalizations {
   /// No description provided for @accessoryLbTopTitle.
   ///
   /// In vi, this message translates to:
-  /// **'Top 20 Sưu Tập'**
+  /// **'Nhà Sưu Tầm'**
   String get accessoryLbTopTitle;
+
+  /// No description provided for @accessoryLbTitleKing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vua Phụ Kiện'**
+  String get accessoryLbTitleKing;
+
+  /// No description provided for @accessoryLbTitleMaster.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cao Thủ Sưu Tầm'**
+  String get accessoryLbTitleMaster;
 
   /// No description provided for @accessoryLbEmpty.
   ///
@@ -2187,6 +2199,54 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Giá (Xu Chợ)'**
   String get marketPriceLabel;
+
+  /// No description provided for @marketListFeeNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn sẽ nhận {proceeds} Xu Chợ sau khi trừ phí sàn 1% (−{fee})'**
+  String marketListFeeNote(int proceeds, int fee);
+
+  /// No description provided for @marketConvertButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi'**
+  String get marketConvertButton;
+
+  /// No description provided for @marketConvertTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi lấy Xu Chợ'**
+  String get marketConvertTitle;
+
+  /// No description provided for @marketConvertAmountLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số Xu Chợ muốn đổi'**
+  String get marketConvertAmountLabel;
+
+  /// No description provided for @marketConvertCostGems.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tốn: {cost} 💎'**
+  String marketConvertCostGems(String cost);
+
+  /// No description provided for @marketConvertCostMoney.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tốn: {cost} 💰'**
+  String marketConvertCostMoney(String cost);
+
+  /// No description provided for @marketConvertSuccessToast.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đổi!'**
+  String get marketConvertSuccessToast;
+
+  /// No description provided for @marketConvertFailToast.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi thất bại — không đủ số dư hoặc lỗi mạng.'**
+  String get marketConvertFailToast;
 
   /// No description provided for @storySpeedrunEmpty.
   ///

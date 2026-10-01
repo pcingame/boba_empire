@@ -179,4 +179,14 @@ class AccessoryMarketRepository {
     await ensureSignedIn();
     await _client.rpc('buy_listing', params: {'p_listing_id': listingId});
   }
+
+  /// Nạp [amount] Xu Chợ — MỘT CHIỀU, không có hàm ngược (xem PROPOSAL §0).
+  /// Gọi SAU KHI đã chắc chắn sẽ trừ Xu/💎 cục bộ (GameController tự trừ
+  /// nếu lệnh này thành công, xem convertGemsToMarketCoins/
+  /// convertMoneyToMarketCoins) — gọi trước rồi mới trừ cục bộ để tránh mất
+  /// Xu/💎 oan nếu lỗi mạng giữa chừng.
+  Future<void> creditMarketCoins(int amount) async {
+    await ensureSignedIn();
+    await _client.rpc('credit_market_coins', params: {'p_amount': amount});
+  }
 }

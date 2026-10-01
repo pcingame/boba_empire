@@ -391,7 +391,9 @@
   "accessoryRarityLegendary": "ตำนาน",
   "accessoryLbTitle": "อันดับนักสะสม",
   "accessoryLbCount": "{n} ชิ้น",
-  "accessoryLbTopTitle": "ท็อป 20 นักสะสม",
+  "accessoryLbTopTitle": "นักสะสม",
+  "accessoryLbTitleKing": "ราชาแอคเซสซอรี",
+  "accessoryLbTitleMaster": "ปรมาจารย์นักสะสม",
   "@accessoryLbCount": {
     "placeholders": {
       "n": {"type": "int"}
@@ -484,6 +486,30 @@
   "marketListedToast": "ลงขายสำเร็จ!",
   "marketListButton": "ลงขาย",
   "marketPriceLabel": "ราคา (เหรียญตลาด)",
+  "marketListFeeNote": "คุณจะได้รับ {proceeds} เหรียญตลาดหลังหักค่าธรรมเนียม 1% (−{fee})",
+  "@marketListFeeNote": {
+    "placeholders": {
+      "proceeds": {"type": "int"},
+      "fee": {"type": "int"}
+    }
+  },
+  "marketConvertButton": "แลกเปลี่ยน",
+  "marketConvertTitle": "แลกเป็นเหรียญตลาด",
+  "marketConvertAmountLabel": "จำนวนเหรียญตลาดที่ต้องการ",
+  "marketConvertCostGems": "ค่าใช้จ่าย: {cost} 💎",
+  "@marketConvertCostGems": {
+    "placeholders": {
+      "cost": {"type": "String"}
+    }
+  },
+  "marketConvertCostMoney": "ค่าใช้จ่าย: {cost} 💰",
+  "@marketConvertCostMoney": {
+    "placeholders": {
+      "cost": {"type": "String"}
+    }
+  },
+  "marketConvertSuccessToast": "แลกเปลี่ยนสำเร็จ!",
+  "marketConvertFailToast": "แลกเปลี่ยนไม่สำเร็จ ยอดคงเหลือไม่พอหรือเครือข่ายขัดข้อง",
   "storySpeedrunEmpty": "ยังไม่มีใครจบเนื้อเรื่อง — เป็นคนแรกสิ!",
   "arenaLeaderboardMenuTitle": "อันดับ PK",
   "arenaLeaderboardTitle": "อันดับ PK",

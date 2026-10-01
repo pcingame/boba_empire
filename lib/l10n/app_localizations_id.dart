@@ -987,7 +987,13 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get accessoryLbTopTitle => 'Top 20 Kolektor';
+  String get accessoryLbTopTitle => 'Kolektor';
+
+  @override
+  String get accessoryLbTitleKing => 'Raja Aksesori';
+
+  @override
+  String get accessoryLbTitleMaster => 'Master Kolektor';
 
   @override
   String get accessoryLbEmpty =>
@@ -1213,6 +1219,37 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get marketPriceLabel => 'Harga (Koin Pasar)';
+
+  @override
+  String marketListFeeNote(int proceeds, int fee) {
+    return 'Kamu akan menerima $proceeds Koin Pasar setelah biaya pasar 1% (−$fee)';
+  }
+
+  @override
+  String get marketConvertButton => 'Tukar';
+
+  @override
+  String get marketConvertTitle => 'Tukar jadi Koin Pasar';
+
+  @override
+  String get marketConvertAmountLabel => 'Jumlah Koin Pasar yang diinginkan';
+
+  @override
+  String marketConvertCostGems(String cost) {
+    return 'Biaya: $cost 💎';
+  }
+
+  @override
+  String marketConvertCostMoney(String cost) {
+    return 'Biaya: $cost 💰';
+  }
+
+  @override
+  String get marketConvertSuccessToast => 'Berhasil ditukar!';
+
+  @override
+  String get marketConvertFailToast =>
+      'Penukaran gagal, saldo tidak cukup atau error jaringan.';
 
   @override
   String get storySpeedrunEmpty =>

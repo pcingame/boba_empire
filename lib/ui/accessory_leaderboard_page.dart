@@ -141,6 +141,17 @@ String? _topMedal(int rank) => switch (rank) {
       _ => null,
     };
 
+/// Danh hiệu Top 20 Sưu tập theo 3 bậc — hạng 1 nổi bật riêng ("Vua Phụ
+/// Kiện"), hạng 2-3 chung 1 danh hiệu, hạng 4-20 danh hiệu thấp hơn. Trước
+/// đây cả 20 hạng dùng chung đúng 1 nhãn "Top 20 Sưu Tập", chỉ khác mỗi huy
+/// hiệu — không đủ phân biệt cảm giác đứng đầu.
+String? _topTitle(int rank, AppLocalizations l10n) => switch (rank) {
+      1 => l10n.accessoryLbTitleKing,
+      <= 3 => l10n.accessoryLbTitleMaster,
+      <= 20 => l10n.accessoryLbTopTitle,
+      _ => null,
+    };
+
 class _List extends ConsumerWidget {
   const _List({required this.view});
   final AccessoryLeaderboardLoaded view;
@@ -178,6 +189,7 @@ class _List extends ConsumerWidget {
                 final e = view.entries[i];
                 final isMe = e.userId == view.myUserId;
                 final medal = _topMedal(e.rank);
+                final title = _topTitle(e.rank, l10n);
                 return ClayTile(
                   child: Row(
                     children: [
@@ -208,9 +220,9 @@ class _List extends ConsumerWidget {
                             // Danh hiệu top 20 — cùng màu vàng/cam đã dùng cho
                             // độ hiếm "huyền thoại" ở Kho phụ kiện, nhất quán
                             // trực quan trong cùng tính năng sưu tập.
-                            if (medal != null)
+                            if (medal != null && title != null)
                               Text(
-                                '$medal ${l10n.accessoryLbTopTitle}',
+                                '$medal $title',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: theme.textTheme.labelSmall?.copyWith(

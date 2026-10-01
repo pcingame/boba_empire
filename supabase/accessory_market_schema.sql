@@ -218,6 +218,7 @@ declare
   v_price bigint;
   v_buyer uuid := auth.uid();
   v_balance bigint;
+  v_fee bigint;
 begin
   select seller_id, accessory_id, price into v_seller, v_accessory, v_price
   from accessory_listings
@@ -243,8 +244,12 @@ begin
     raise exception 'insufficient_balance';
   end if;
 
+  -- Phí sàn 1%, làm tròn lên, tối thiểu 1 Xu Chợ (số nguyên, không qua float).
+  -- Người mua trả đúng giá niêm yết; người bán nhận giá - phí.
+  v_fee := greatest(1, (v_price + 99) / 100);
+
   update accessory_wallets set balance = balance - v_price where user_id = v_buyer;
-  update accessory_wallets set balance = balance + v_price where user_id = v_seller;
+  update accessory_wallets set balance = balance + (v_price - v_fee) where user_id = v_seller;
 
   update accessory_listings
   set status = 'sold', resolved_at = now()
@@ -260,3 +265,27 @@ end;
 $$;
 
 grant execute on function buy_listing(uuid) to authenticated;
+
+-- Nạp Xu Chợ bằng Xu/💎 — MỘT CHIỀU: chỉ cộng ví người gọi, không có RPC ngược
+-- và không đụng Xu/💎 cục bộ (client tự trừ SAU khi RPC này thành công).
+create or replace function credit_market_coins(p_amount bigint)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if auth.uid() is null then
+    raise exception 'not_authenticated';
+  end if;
+  if p_amount is null or p_amount < 1 or p_amount > 100000 then
+    raise exception 'invalid_amount';
+  end if;
+
+  insert into accessory_wallets (user_id, balance) values (auth.uid(), p_amount)
+  on conflict (user_id) do update set balance = accessory_wallets.balance + p_amount;
+end;
+$$;
+
+revoke execute on function credit_market_coins(bigint) from public, anon;
+grant execute on function credit_market_coins(bigint) to authenticated;
