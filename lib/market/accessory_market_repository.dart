@@ -224,4 +224,16 @@ class AccessoryMarketRepository {
     final id = await _client.rpc('market_weekly_top_seller');
     return id as String?;
   }
+
+  /// Đăng ký token FCM của máy này cho người dùng hiện tại (server dùng để đẩy
+  /// thông báo khi món bán được).
+  Future<void> registerPushToken(
+      String token, String platform, String locale) async {
+    await ensureSignedIn();
+    await _client.rpc('register_push_token', params: {
+      'p_token': token,
+      'p_platform': platform,
+      'p_locale': locale,
+    });
+  }
 }

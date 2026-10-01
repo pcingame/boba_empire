@@ -869,4 +869,9 @@ hạn giao dịch/ngày). Điểm mấu chốt:
 - **Điểm nhấn**: chấm đỏ + banner màn chính khi có listing mới (hiếm nhất),
   dải "Vừa bán" (`recent_market_trades`, ẩn danh), danh hiệu "Thương gia tuần"
   (`market_weekly_top_seller`, chỉ là danh hiệu).
-- **Chưa làm**: popup lúc rớt món (hiện chưa có popup rớt phụ kiện); push khi bán được.
+- **Push "món đã bán"** (code xong, chưa deploy): `firebase_messaging` → token
+  gửi qua RPC `register_push_token` (lúc đăng bán thì xin quyền, lúc mở Chợ chỉ
+  đăng ký lại nếu đã cấp) → bảng `push_tokens`; Database Webhook INSERT trên
+  `accessory_market_trades` gọi Edge Function `supabase/functions/notify-market-sale`
+  (FCM HTTP v1, 6 ngôn ngữ, số Xu nhận = giá − phí). Các bước deploy ở đầu file index.ts.
+- **Chưa làm**: popup lúc rớt món (hiện chưa có popup rớt phụ kiện).

@@ -11,9 +11,13 @@ library;
 import 'dart:async';
 import 'dart:developer' as developer;
 
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart' show WidgetsBinding;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../l10n/locale_provider.dart';
 import 'accessory_market_repository.dart';
 
 sealed class AccessoryMarketViewState {
@@ -84,8 +88,38 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
     }
   }
 
+  /// Đăng ký token FCM để server đẩy "món của bạn đã bán được" lúc app không
+  /// mở. [ask] = true (vừa đăng bán — đúng lúc người chơi hiểu vì sao cần)
+  /// mới xin quyền; ngược lại chỉ đăng ký lại khi đã được cấp từ trước. Lỗi
+  /// nuốt im lặng: thông báo chỉ là phần thêm, không được làm hỏng Chợ.
+  Future<void> _registerPush({required bool ask}) async {
+    try {
+      final fcm = FirebaseMessaging.instance;
+      final settings =
+          ask ? await fcm.requestPermission() : await fcm.getNotificationSettings();
+      if (settings.authorizationStatus != AuthorizationStatus.authorized &&
+          settings.authorizationStatus != AuthorizationStatus.provisional) {
+        return;
+      }
+      final token = await fcm.getToken();
+      if (token == null) return;
+      final locale = ref.read(localeProvider)?.languageCode ??
+          WidgetsBinding.instance.platformDispatcher.locale.languageCode;
+      await _repository.registerPushToken(
+        token,
+        defaultTargetPlatform == TargetPlatform.iOS ? 'ios' : 'android',
+        locale,
+      );
+    } catch (e) {
+      developer.log('đăng ký push lỗi: $e', name: 'Market');
+    }
+  }
+
   Future<void> refresh({bool silent = false}) async {
-    if (!silent) state = const AccessoryMarketLoading();
+    if (!silent) {
+      state = const AccessoryMarketLoading();
+      unawaited(_registerPush(ask: false));
+    }
     try {
       await _reconcileOwnership();
       final listings = await _repository.fetchActiveListings();
@@ -113,6 +147,7 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
   Future<String?> listItem(String accessoryId, int price) async {
     try {
       await _repository.listAccessory(accessoryId, price);
+      unawaited(_registerPush(ask: true));
       onAccessoryRemovedLocally?.call(accessoryId);
       await refresh(silent: true);
       return null;

@@ -363,3 +363,43 @@ as $$
 $$;
 
 grant execute on function market_weekly_top_seller() to anon, authenticated;
+
+-- Token FCM để đẩy "món của bạn đã bán được" (xem
+-- supabase/functions/notify-market-sale). Không có policy nào cho client —
+-- chỉ ghi qua RPC dưới, chỉ đọc bằng service role trong Edge Function.
+create table if not exists push_tokens (
+  token       text primary key,
+  user_id     uuid not null references auth.users(id) on delete cascade,
+  platform    text not null,
+  locale      text not null default 'en',
+  updated_at  timestamptz not null default now()
+);
+
+create index if not exists push_tokens_user_idx on push_tokens (user_id);
+
+alter table push_tokens enable row level security;
+
+-- Token thuộc về máy: cài lại app (user ẩn danh mới) thì token chuyển chủ.
+create or replace function register_push_token(p_token text, p_platform text, p_locale text)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if auth.uid() is null then
+    raise exception 'not_authenticated';
+  end if;
+  if char_length(p_token) not between 20 and 4096 then
+    raise exception 'invalid_token';
+  end if;
+
+  insert into push_tokens (token, user_id, platform, locale)
+  values (p_token, auth.uid(), p_platform, left(p_locale, 8))
+  on conflict (token) do update
+    set user_id = auth.uid(), platform = excluded.platform,
+        locale = excluded.locale, updated_at = now();
+end;
+$$;
+
+grant execute on function register_push_token(text, text, text) to authenticated;
