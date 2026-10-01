@@ -979,6 +979,9 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get accessoryLbTopTitle => 'ท็อป 20 นักสะสม';
+
+  @override
   String get accessoryLbEmpty =>
       'ยังไม่มีใครติดอันดับ เก็บของสะสมสักชิ้นแล้วคุณจะได้อันดับ 1!';
 
@@ -1138,6 +1141,69 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get accessoryGalaxy => 'กาแล็กซี';
+
+  @override
+  String get marketTitle => 'ตลาดของสะสม';
+
+  @override
+  String get marketTabBrowse => 'ตลาด';
+
+  @override
+  String get marketTabMine => 'ของฉัน';
+
+  @override
+  String marketWallet(int n) {
+    return '$n เหรียญตลาด';
+  }
+
+  @override
+  String get marketError => 'โหลดตลาดไม่ได้ ลองใหม่ภายหลังนะ';
+
+  @override
+  String get marketEmptyBrowse => 'ยังไม่มีใครลงขายอะไรเลย';
+
+  @override
+  String get marketBuyButton => 'ซื้อ';
+
+  @override
+  String get marketBoughtToast => 'ซื้อสำเร็จ!';
+
+  @override
+  String marketConfirmBuy(int price) {
+    return 'ซื้อในราคา $price เหรียญตลาดใช่ไหม?';
+  }
+
+  @override
+  String marketPriceTag(int price) {
+    return '$price เหรียญตลาด';
+  }
+
+  @override
+  String get marketMyListingsHeader => 'รายการที่คุณลงขาย';
+
+  @override
+  String get marketEmptyMine => 'คุณยังไม่ได้ลงขายอะไรเลย';
+
+  @override
+  String get marketCancelButton => 'ยกเลิกการขาย';
+
+  @override
+  String get marketCancelledToast => 'ยกเลิกการขายแล้ว';
+
+  @override
+  String get marketSellableHeader => 'ของสะสมที่ขายได้';
+
+  @override
+  String get marketEmptySellable => 'คุณยังไม่มีของสะสมให้ขาย';
+
+  @override
+  String get marketListedToast => 'ลงขายสำเร็จ!';
+
+  @override
+  String get marketListButton => 'ลงขาย';
+
+  @override
+  String get marketPriceLabel => 'ราคา (เหรียญตลาด)';
 
   @override
   String get storySpeedrunEmpty => 'ยังไม่มีใครจบเนื้อเรื่อง — เป็นคนแรกสิ!';

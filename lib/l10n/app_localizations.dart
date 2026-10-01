@@ -1750,6 +1750,12 @@ abstract class AppLocalizations {
   /// **'{n} phụ kiện'**
   String accessoryLbCount(int n);
 
+  /// No description provided for @accessoryLbTopTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Top 20 Sưu Tập'**
+  String get accessoryLbTopTitle;
+
   /// No description provided for @accessoryLbEmpty.
   ///
   /// In vi, this message translates to:
@@ -2067,6 +2073,120 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Dải ngân hà'**
   String get accessoryGalaxy;
+
+  /// No description provided for @marketTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chợ Phụ kiện'**
+  String get marketTitle;
+
+  /// No description provided for @marketTabBrowse.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chợ'**
+  String get marketTabBrowse;
+
+  /// No description provided for @marketTabMine.
+  ///
+  /// In vi, this message translates to:
+  /// **'Của tôi'**
+  String get marketTabMine;
+
+  /// No description provided for @marketWallet.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} Xu Chợ'**
+  String marketWallet(int n);
+
+  /// No description provided for @marketError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tải được Chợ, thử lại sau nhé.'**
+  String get marketError;
+
+  /// No description provided for @marketEmptyBrowse.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chợ chưa có ai đăng bán gì.'**
+  String get marketEmptyBrowse;
+
+  /// No description provided for @marketBuyButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua'**
+  String get marketBuyButton;
+
+  /// No description provided for @marketBoughtToast.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã mua!'**
+  String get marketBoughtToast;
+
+  /// No description provided for @marketConfirmBuy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua với giá {price} Xu Chợ?'**
+  String marketConfirmBuy(int price);
+
+  /// No description provided for @marketPriceTag.
+  ///
+  /// In vi, this message translates to:
+  /// **'{price} Xu Chợ'**
+  String marketPriceTag(int price);
+
+  /// No description provided for @marketMyListingsHeader.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang đăng bán'**
+  String get marketMyListingsHeader;
+
+  /// No description provided for @marketEmptyMine.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa đăng bán món nào.'**
+  String get marketEmptyMine;
+
+  /// No description provided for @marketCancelButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Huỷ đăng'**
+  String get marketCancelButton;
+
+  /// No description provided for @marketCancelledToast.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã huỷ đăng.'**
+  String get marketCancelledToast;
+
+  /// No description provided for @marketSellableHeader.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phụ kiện có thể đăng bán'**
+  String get marketSellableHeader;
+
+  /// No description provided for @marketEmptySellable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa có phụ kiện nào để đăng bán.'**
+  String get marketEmptySellable;
+
+  /// No description provided for @marketListedToast.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đăng bán!'**
+  String get marketListedToast;
+
+  /// No description provided for @marketListButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng bán'**
+  String get marketListButton;
+
+  /// No description provided for @marketPriceLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá (Xu Chợ)'**
+  String get marketPriceLabel;
 
   /// No description provided for @storySpeedrunEmpty.
   ///

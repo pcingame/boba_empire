@@ -1,10 +1,15 @@
 # ĐỀ XUẤT — Chợ Phụ kiện (Accessory Market, giai đoạn 2)
 
-> Trạng thái: **đề xuất, chưa code**. Nối tiếp "Kho phụ kiện" (giai đoạn 1,
-> đã ship — xem [`GAME_DESIGN.md`](GAME_DESIGN.md) §26) sau khi hệ sưu tập
-> cosmetic đã ổn định. File này chỉ mô tả **module cộng thêm**; không đụng
-> `GameState`/`economy.dart`/`simulation.dart` hiện có, cùng nguyên tắc đã
-> dùng ở [`PROPOSAL_ARENA_PVP.md`](PROPOSAL_ARENA_PVP.md).
+> Trạng thái: **đã code xong, chờ deploy SQL + test**. Tóm tắt vận hành đã
+> đưa vào `GAME_DESIGN.md` §27. Nối tiếp "Kho phụ kiện" (giai đoạn 1, đã ship
+> — xem [`GAME_DESIGN.md`](GAME_DESIGN.md) §26). File này chỉ mô tả **module
+> cộng thêm**; không đụng `GameState`/`economy.dart`/`simulation.dart` hiện
+> có, cùng nguyên tắc đã dùng ở [`PROPOSAL_ARENA_PVP.md`](PROPOSAL_ARENA_PVP.md).
+>
+> ⚠️ Khác bản phác thảo §4 ban đầu: lúc code mới phát hiện thiếu RPC
+> `register_accessory_drop` (server không có cách nào verify quyền sở hữu nếu
+> thiếu nó — xem ghi chú đầu `supabase/accessory_market_schema.sql`). Đã vá
+> trước khi deploy, không phải vá sau.
 
 ## 0. Nguyên tắc thu hẹp
 

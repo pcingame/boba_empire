@@ -986,6 +986,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get accessoryLbTopTitle => 'Top 20 Collector';
+
+  @override
   String get accessoryLbEmpty =>
       'Nobody on the board yet. Collect an accessory and the top spot is yours!';
 
@@ -1146,6 +1149,70 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accessoryGalaxy => 'Galaxy';
+
+  @override
+  String get marketTitle => 'Accessory Market';
+
+  @override
+  String get marketTabBrowse => 'Market';
+
+  @override
+  String get marketTabMine => 'Mine';
+
+  @override
+  String marketWallet(int n) {
+    return '$n Market Coins';
+  }
+
+  @override
+  String get marketError => 'Couldn\'t load the market, try again later.';
+
+  @override
+  String get marketEmptyBrowse => 'Nobody has listed anything yet.';
+
+  @override
+  String get marketBuyButton => 'Buy';
+
+  @override
+  String get marketBoughtToast => 'Bought!';
+
+  @override
+  String marketConfirmBuy(int price) {
+    return 'Buy for $price Market Coins?';
+  }
+
+  @override
+  String marketPriceTag(int price) {
+    return '$price Market Coins';
+  }
+
+  @override
+  String get marketMyListingsHeader => 'Your listings';
+
+  @override
+  String get marketEmptyMine => 'You haven\'t listed anything yet.';
+
+  @override
+  String get marketCancelButton => 'Cancel listing';
+
+  @override
+  String get marketCancelledToast => 'Listing cancelled.';
+
+  @override
+  String get marketSellableHeader => 'Accessories you can sell';
+
+  @override
+  String get marketEmptySellable =>
+      'You don\'t have any accessories to sell yet.';
+
+  @override
+  String get marketListedToast => 'Listed!';
+
+  @override
+  String get marketListButton => 'List for sale';
+
+  @override
+  String get marketPriceLabel => 'Price (Market Coins)';
 
   @override
   String get storySpeedrunEmpty =>

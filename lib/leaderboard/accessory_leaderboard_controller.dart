@@ -52,7 +52,11 @@ class AccessoryLeaderboardController
   AnalyticsRepository? _analyticsRepo;
 
   /// UI gán trước khi gọi [refresh] — trả về số phụ kiện khác nhau đang có.
-  int Function()? getMyOwnedCount;
+  /// Async (không chỉ đọc `GameState.ownedAccessories` local) vì từ lúc có
+  /// Chợ Phụ kiện, số này phải cộng thêm listing ĐANG BÁN của chính mình
+  /// (đọc từ Supabase) — xem PROPOSAL_ACCESSORY_MARKET.md §9.3: món đang rao
+  /// bán vẫn tính là "của mình" tới khi thật sự có người mua.
+  Future<int> Function()? getMyOwnedCount;
 
   @override
   AccessoryLeaderboardViewState build() => const AccessoryLeaderboardLoading();
@@ -80,7 +84,7 @@ class AccessoryLeaderboardController
     if (!silent) state = const AccessoryLeaderboardLoading();
     unawaited(_analytics?.log('accessory_leaderboard_viewed'));
     try {
-      final owned = getMyOwnedCount?.call() ?? 0;
+      final owned = await getMyOwnedCount?.call() ?? 0;
       if (owned > 0) {
         final nickname = _repository.cachedNickname;
         if (nickname == null) {
@@ -99,7 +103,7 @@ class AccessoryLeaderboardController
   Future<void> submitNickname(String nickname) async {
     state = const AccessoryLeaderboardLoading();
     try {
-      final owned = getMyOwnedCount?.call() ?? 0;
+      final owned = await getMyOwnedCount?.call() ?? 0;
       if (owned > 0) {
         await _repository.submit(nickname: nickname, ownedCount: owned);
       }

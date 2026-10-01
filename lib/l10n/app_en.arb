@@ -391,6 +391,7 @@
   "accessoryRarityLegendary": "Legendary",
   "accessoryLbTitle": "Collection ranking",
   "accessoryLbCount": "{n} accessories",
+  "accessoryLbTopTitle": "Top 20 Collector",
   "@accessoryLbCount": {
     "placeholders": {
       "n": {"type": "int"}
@@ -449,6 +450,40 @@
   "accessoryAngelWing": "Angel Wing",
   "accessoryPhoenix": "Phoenix",
   "accessoryGalaxy": "Galaxy",
+  "marketTitle": "Accessory Market",
+  "marketTabBrowse": "Market",
+  "marketTabMine": "Mine",
+  "marketWallet": "{n} Market Coins",
+  "@marketWallet": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketError": "Couldn't load the market, try again later.",
+  "marketEmptyBrowse": "Nobody has listed anything yet.",
+  "marketBuyButton": "Buy",
+  "marketBoughtToast": "Bought!",
+  "marketConfirmBuy": "Buy for {price} Market Coins?",
+  "@marketConfirmBuy": {
+    "placeholders": {
+      "price": {"type": "int"}
+    }
+  },
+  "marketPriceTag": "{price} Market Coins",
+  "@marketPriceTag": {
+    "placeholders": {
+      "price": {"type": "int"}
+    }
+  },
+  "marketMyListingsHeader": "Your listings",
+  "marketEmptyMine": "You haven't listed anything yet.",
+  "marketCancelButton": "Cancel listing",
+  "marketCancelledToast": "Listing cancelled.",
+  "marketSellableHeader": "Accessories you can sell",
+  "marketEmptySellable": "You don't have any accessories to sell yet.",
+  "marketListedToast": "Listed!",
+  "marketListButton": "List for sale",
+  "marketPriceLabel": "Price (Market Coins)",
   "storySpeedrunEmpty": "No one has finished the story yet — be the first!",
   "arenaLeaderboardMenuTitle": "PK Leaderboard",
   "arenaLeaderboardTitle": "PK Leaderboard",

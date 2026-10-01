@@ -10,6 +10,7 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import 'accessory_leaderboard_page.dart';
+import 'accessory_market_page.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -33,6 +34,11 @@ class AccessoryInventoryPage extends ConsumerWidget {
         appBar: AppBar(
           title: Text(l10n.accessoryInventoryTitle),
           actions: [
+            IconButton(
+              icon: const Icon(Icons.storefront),
+              tooltip: l10n.marketTitle,
+              onPressed: () => showAccessoryMarket(context),
+            ),
             IconButton(
               icon: const Text('🏆', style: TextStyle(fontSize: 20)),
               tooltip: l10n.accessoryLbTitle,

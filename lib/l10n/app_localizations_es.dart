@@ -994,6 +994,9 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get accessoryLbTopTitle => 'Top 20 Coleccionista';
+
+  @override
   String get accessoryLbEmpty =>
       'Nadie en la tabla todavía. ¡Consigue un accesorio y el primer puesto es tuyo!';
 
@@ -1154,6 +1157,70 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get accessoryGalaxy => 'Galaxia';
+
+  @override
+  String get marketTitle => 'Mercado de accesorios';
+
+  @override
+  String get marketTabBrowse => 'Mercado';
+
+  @override
+  String get marketTabMine => 'Mío';
+
+  @override
+  String marketWallet(int n) {
+    return '$n Monedas de Mercado';
+  }
+
+  @override
+  String get marketError =>
+      'No se pudo cargar el mercado. Inténtalo más tarde.';
+
+  @override
+  String get marketEmptyBrowse => 'Todavía nadie ha puesto nada a la venta.';
+
+  @override
+  String get marketBuyButton => 'Comprar';
+
+  @override
+  String get marketBoughtToast => '¡Comprado!';
+
+  @override
+  String marketConfirmBuy(int price) {
+    return '¿Comprar por $price Monedas de Mercado?';
+  }
+
+  @override
+  String marketPriceTag(int price) {
+    return '$price Monedas de Mercado';
+  }
+
+  @override
+  String get marketMyListingsHeader => 'Tus publicaciones';
+
+  @override
+  String get marketEmptyMine => 'Aún no has puesto nada a la venta.';
+
+  @override
+  String get marketCancelButton => 'Cancelar publicación';
+
+  @override
+  String get marketCancelledToast => 'Publicación cancelada.';
+
+  @override
+  String get marketSellableHeader => 'Accesorios que puedes vender';
+
+  @override
+  String get marketEmptySellable => 'Todavía no tienes accesorios para vender.';
+
+  @override
+  String get marketListedToast => '¡Publicado!';
+
+  @override
+  String get marketListButton => 'Poner a la venta';
+
+  @override
+  String get marketPriceLabel => 'Precio (Monedas de Mercado)';
 
   @override
   String get storySpeedrunEmpty =>

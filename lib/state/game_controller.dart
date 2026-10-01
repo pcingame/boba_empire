@@ -6,6 +6,7 @@
 library;
 
 import 'dart:async';
+import 'dart:developer' as developer;
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
@@ -29,6 +30,7 @@ import '../core/wheel.dart';
 import '../data/analytics_repository.dart';
 import '../data/cloud_save_repository.dart';
 import '../data/game_storage.dart';
+import '../market/accessory_market_repository.dart';
 import 'game_providers.dart';
 import 'game_snapshot.dart';
 
@@ -43,6 +45,7 @@ class GameController extends Notifier<GameSnapshot> {
   late final int Function() _clock;
   CloudSaveRepository? _cloudSaveRepo;
   AnalyticsRepository? _analyticsRepo;
+  AccessoryMarketRepository? _marketRepo;
 
   /// Bookkeeping đồng bộ cloud cục bộ — xem GameStorage.loadCloudVersion()/
   /// loadCloudConflictPending() cho lý do tách riêng khỏi [_game].
@@ -461,11 +464,36 @@ class GameController extends Notifier<GameSnapshot> {
   int claimDailyBonus() {
     final gems = claimDailyQuestBonus(_game);
     if (gems > 0) {
-      grantAccessory(_game, rollAccessoryWith(_random));
+      final rolled = rollAccessoryWith(_random);
+      final isNew = grantAccessory(_game, rolled);
+      // Ghi server NGAY lúc rớt (không đợi lúc đăng bán) — xem
+      // _registerAccessoryDropServerSide và PROPOSAL_ACCESSORY_MARKET.md §0
+      // cho lý do cần bước này (chặn thông đồng 2 tài khoản bơm phụ kiện
+      // giả). Fire-and-forget: không chặn/trễ việc nhận thưởng cục bộ.
+      if (isNew) unawaited(_registerAccessoryDropServerSide(rolled.id));
       unawaited(saveNow());
       state = _snapshot();
     }
     return gems;
+  }
+
+  /// Chợ Phụ kiện: bớt 1 món khỏi kho local NGAY sau khi đăng bán thành công
+  /// trên server (xem AccessoryMarketController.listItem). Lưu ngay (không
+  /// đợi tick nền) để giảm cửa sổ "hồi sinh" món đã bán qua đồng bộ đa máy
+  /// — xem PROPOSAL_ACCESSORY_MARKET.md §5.
+  void removeOwnedAccessoryLocally(String accessoryId) {
+    if (!_game.ownedAccessories.remove(accessoryId)) return;
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Chợ Phụ kiện: thêm 1 món vào kho local sau khi mua hoặc huỷ đăng thành
+  /// công trên server (xem AccessoryMarketController.buyItem/cancelItem).
+  void addOwnedAccessoryLocally(String accessoryId) {
+    if (_game.ownedAccessories.contains(accessoryId)) return;
+    _game.ownedAccessories.add(accessoryId);
+    unawaited(saveNow());
+    state = _snapshot();
   }
 
   /// Chạm ly → +tiền (nhân boost Mưa vàng nếu đang có). Trả về số Xu vừa nhận
@@ -765,6 +793,33 @@ class GameController extends Notifier<GameSnapshot> {
       );
     } catch (_) {
       return null;
+    }
+  }
+
+  /// Cùng nguyên tắc lazy + tự bắt lỗi như [_cloudSave] — ghi nhận rớt phụ
+  /// kiện lên server KHÔNG BAO GIỜ được phép chặn/làm hỏng việc nhận thưởng
+  /// nhiệm vụ ngày cục bộ nếu Supabase có vấn đề (xem [claimDailyBonus]).
+  AccessoryMarketRepository? get _market {
+    if (_marketRepo != null) return _marketRepo;
+    try {
+      return _marketRepo = AccessoryMarketRepository(Supabase.instance.client);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Ghi nhận món vừa rớt lên server (accessory_server_ownership) — cho
+  /// phép đăng bán sau này trên Chợ Phụ kiện (xem PROPOSAL_ACCESSORY_MARKET.md
+  /// §0, lý do cần RPC này: list_accessory phải verify sở hữu server-side,
+  /// không tin suông lời client). Lỗi mạng ở đây KHÔNG được chặn việc nhận
+  /// thưởng cục bộ — [AccessoryMarketController.reconcileOwnership] sẽ bù
+  /// lại lúc mở Chợ nếu lần này lỡ mất.
+  Future<void> _registerAccessoryDropServerSide(String accessoryId) async {
+    try {
+      await _market?.registerDrop(accessoryId);
+    } catch (e) {
+      developer.log('đăng ký sở hữu phụ kiện lỗi, sẽ bù lúc mở Chợ: $e',
+          name: 'Market');
     }
   }
 

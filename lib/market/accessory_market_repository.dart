@@ -1,0 +1,182 @@
+/// Nói chuyện với Supabase cho "Chợ Phụ kiện" — xem
+/// PROPOSAL_ACCESSORY_MARKET.md và `supabase/accessory_market_schema.sql`.
+///
+/// Mọi ghi (đăng bán/mua/huỷ/ghi nhận rớt) đi qua RPC security-definer, RLS
+/// chặn insert/update thẳng từ client trên 4 bảng — xem ghi chú đầu file
+/// SQL về lý do cần `registerDrop` (lỗ hổng thông đồng 2 tài khoản nếu
+/// thiếu). Đọc (listing/ví/lịch sử) dùng select thẳng, được RLS cho phép.
+library;
+
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+class MarketListing {
+  const MarketListing({
+    required this.id,
+    required this.sellerId,
+    required this.accessoryId,
+    required this.price,
+    required this.createdAt,
+  });
+
+  factory MarketListing.fromRow(Map<String, dynamic> row) => MarketListing(
+        id: row['id'] as String,
+        sellerId: row['seller_id'] as String,
+        accessoryId: row['accessory_id'] as String,
+        price: (row['price'] as num).toInt(),
+        createdAt: DateTime.parse(row['created_at'] as String),
+      );
+
+  final String id;
+  final String sellerId;
+  final String accessoryId;
+  final int price;
+  final DateTime createdAt;
+}
+
+class MarketTrade {
+  const MarketTrade({
+    required this.id,
+    required this.buyerId,
+    required this.sellerId,
+    required this.accessoryId,
+    required this.price,
+    required this.tradedAt,
+  });
+
+  factory MarketTrade.fromRow(Map<String, dynamic> row) => MarketTrade(
+        id: (row['id'] as num).toInt(),
+        buyerId: row['buyer_id'] as String,
+        sellerId: row['seller_id'] as String,
+        accessoryId: row['accessory_id'] as String,
+        price: (row['price'] as num).toInt(),
+        tradedAt: DateTime.parse(row['traded_at'] as String),
+      );
+
+  final int id;
+  final String buyerId;
+  final String sellerId;
+  final String accessoryId;
+  final int price;
+  final DateTime tradedAt;
+}
+
+class AccessoryMarketRepository {
+  AccessoryMarketRepository(this._client);
+
+  final SupabaseClient _client;
+
+  static const _walletsTable = 'accessory_wallets';
+  static const _listingsTable = 'accessory_listings';
+  static const _tradesTable = 'accessory_market_trades';
+  static const _ownershipTable = 'accessory_server_ownership';
+
+  Future<String> ensureSignedIn() async {
+    final existing = _client.auth.currentUser;
+    if (existing != null) return existing.id;
+    final res = await _client.auth.signInAnonymously();
+    final user = res.user;
+    if (user == null) {
+      throw StateError('Đăng nhập ẩn danh Supabase thất bại (user null).');
+    }
+    return user.id;
+  }
+
+  /// Ghi nhận 1 món vừa rớt hợp lệ — gọi lúc rớt món MỚI (game_controller.dart)
+  /// HOẶC lúc đối chiếu lần đầu mở Chợ (bù món có từ trước khi Chợ ra đời).
+  /// An toàn gọi lại nhiều lần.
+  Future<void> registerDrop(String accessoryId) async {
+    await ensureSignedIn();
+    await _client.rpc('register_accessory_drop',
+        params: {'p_accessory_id': accessoryId});
+  }
+
+  /// Id phụ kiện server đã xác nhận sở hữu (không gồm món đang đăng bán —
+  /// xem list_accessory trong SQL, món rời accessory_server_ownership ngay
+  /// lúc đăng). Dùng để đối chiếu với `GameState.ownedAccessories` local lúc
+  /// mở Chợ lần đầu (xem AccessoryMarketController.reconcileOwnership).
+  Future<Set<String>> fetchServerOwnedIds() async {
+    final uid = await ensureSignedIn();
+    final rows = await _client
+        .from(_ownershipTable)
+        .select('accessory_id')
+        .eq('user_id', uid);
+    return (rows as List)
+        .map((r) => (r as Map<String, dynamic>)['accessory_id'] as String)
+        .toSet();
+  }
+
+  Future<int> fetchWalletBalance() async {
+    final uid = await ensureSignedIn();
+    final row = await _client
+        .from(_walletsTable)
+        .select('balance')
+        .eq('user_id', uid)
+        .maybeSingle();
+    if (row == null) return 0;
+    return (row['balance'] as num).toInt();
+  }
+
+  Future<List<MarketListing>> fetchActiveListings({int limit = 50}) async {
+    final rows = await _client
+        .from(_listingsTable)
+        .select()
+        .eq('status', 'active')
+        .order('created_at', ascending: false)
+        .limit(limit);
+    return (rows as List)
+        .map((r) => MarketListing.fromRow(r as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<List<MarketListing>> fetchMyActiveListings() async {
+    final uid = await ensureSignedIn();
+    final rows = await _client
+        .from(_listingsTable)
+        .select()
+        .eq('seller_id', uid)
+        .eq('status', 'active')
+        .order('created_at', ascending: false);
+    return (rows as List)
+        .map((r) => MarketListing.fromRow(r as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<List<MarketTrade>> fetchMyTrades({int limit = 50}) async {
+    final uid = await ensureSignedIn();
+    final rows = await _client
+        .from(_tradesTable)
+        .select()
+        .or('buyer_id.eq.$uid,seller_id.eq.$uid')
+        .order('traded_at', ascending: false)
+        .limit(limit);
+    return (rows as List)
+        .map((r) => MarketTrade.fromRow(r as Map<String, dynamic>))
+        .toList();
+  }
+
+  /// Trả về id listing vừa tạo. Ném lỗi `not_owned` (PostgrestException) nếu
+  /// server không thấy món này trong accessory_server_ownership của mình —
+  /// UI nên gợi ý "Đối chiếu lại" (gọi lại registerDrop) thay vì chỉ báo lỗi
+  /// chung chung.
+  Future<String> listAccessory(String accessoryId, int price) async {
+    await ensureSignedIn();
+    final id = await _client.rpc('list_accessory', params: {
+      'p_accessory_id': accessoryId,
+      'p_price': price,
+    }) as String;
+    return id;
+  }
+
+  Future<void> cancelListing(String listingId) async {
+    await ensureSignedIn();
+    await _client
+        .rpc('cancel_listing', params: {'p_listing_id': listingId});
+  }
+
+  /// Ném `insufficient_balance`/`listing_not_active`/`cannot_buy_own_listing`
+  /// (PostgrestException) — UI tự dịch sang thông báo phù hợp.
+  Future<void> buyListing(String listingId) async {
+    await ensureSignedIn();
+    await _client.rpc('buy_listing', params: {'p_listing_id': listingId});
+  }
+}

@@ -391,6 +391,7 @@
   "accessoryRarityLegendary": "Legendario",
   "accessoryLbTitle": "Clasificación de colección",
   "accessoryLbCount": "{n} accesorios",
+  "accessoryLbTopTitle": "Top 20 Coleccionista",
   "@accessoryLbCount": {
     "placeholders": {
       "n": {"type": "int"}
@@ -449,6 +450,40 @@
   "accessoryAngelWing": "Ala de ángel",
   "accessoryPhoenix": "Fénix",
   "accessoryGalaxy": "Galaxia",
+  "marketTitle": "Mercado de accesorios",
+  "marketTabBrowse": "Mercado",
+  "marketTabMine": "Mío",
+  "marketWallet": "{n} Monedas de Mercado",
+  "@marketWallet": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketError": "No se pudo cargar el mercado. Inténtalo más tarde.",
+  "marketEmptyBrowse": "Todavía nadie ha puesto nada a la venta.",
+  "marketBuyButton": "Comprar",
+  "marketBoughtToast": "¡Comprado!",
+  "marketConfirmBuy": "¿Comprar por {price} Monedas de Mercado?",
+  "@marketConfirmBuy": {
+    "placeholders": {
+      "price": {"type": "int"}
+    }
+  },
+  "marketPriceTag": "{price} Monedas de Mercado",
+  "@marketPriceTag": {
+    "placeholders": {
+      "price": {"type": "int"}
+    }
+  },
+  "marketMyListingsHeader": "Tus publicaciones",
+  "marketEmptyMine": "Aún no has puesto nada a la venta.",
+  "marketCancelButton": "Cancelar publicación",
+  "marketCancelledToast": "Publicación cancelada.",
+  "marketSellableHeader": "Accesorios que puedes vender",
+  "marketEmptySellable": "Todavía no tienes accesorios para vender.",
+  "marketListedToast": "¡Publicado!",
+  "marketListButton": "Poner a la venta",
+  "marketPriceLabel": "Precio (Monedas de Mercado)",
   "storySpeedrunEmpty": "Nadie ha terminado la historia todavía — ¡sé el primero!",
   "arenaLeaderboardMenuTitle": "Clasificación PK",
   "arenaLeaderboardTitle": "Clasificación PK",

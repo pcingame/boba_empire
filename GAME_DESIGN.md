@@ -772,6 +772,10 @@ vẫn có thể rộng hơn cao.
   chính) và `accessory_leaderboard_page.dart` (xếp theo SỐ MÓN KHÁC NHAU đã
   có, top tuyệt đối, cùng khuôn `m3_leaderboard_page.dart`). Vào từ
   `compete_hub_dialog.dart`.
+- **Danh hiệu top 20** (2026-10-01): hạng 1-3 hiện 🥇🥈🥉, hạng 4-20 hiện 🏅,
+  kèm nhãn "Top 20 Sưu Tập" — suy thẳng từ `rank` mà RPC
+  `accessory_leaderboard_top` đã trả (`row_number()` có sẵn), không cần
+  cột/bảng mới. Hạng 21 trở đi không có danh hiệu.
 - **Server**: bảng mới `accessory_leaderboard_entries` + RPC
   `accessory_leaderboard_top` (`supabase/accessory_leaderboard_schema.sql`,
   cùng khuôn m3_leaderboard: trigger chặn hạ cấp, CHECK `owned_count <= 50`
@@ -782,8 +786,51 @@ vẫn có thể rộng hơn cao.
 - **Scope cố ý cắt bớt so với ý tưởng gốc**: KHÔNG có market giao dịch giữa
   người chơi (P2P) — rủi ro gian lận cao (tự bán cho tài khoản phụ để rửa
   Xu/💎, cùng lớp rủi ro đã gặp ở leaderboard/Đấu Trường) nên để riêng thành
-  giai đoạn 2. Thiết kế đầy đủ (chưa code) ở
-  [`PROPOSAL_ACCESSORY_MARKET.md`](PROPOSAL_ACCESSORY_MARKET.md) — điểm
-  mấu chốt: dùng đơn vị "Xu Chợ" tách biệt hoàn toàn khỏi Xu/💎 thật, không
-  đổi ngược được, để triệt tiêu động cơ rửa tiền ngay từ thiết kế thay vì
-  phải dò từng kiểu gian lận.
+  giai đoạn 2 — đã code xong (2026-10-01), xem §27 và
+  [`PROPOSAL_ACCESSORY_MARKET.md`](PROPOSAL_ACCESSORY_MARKET.md).
+
+## 27. Chợ Phụ kiện (2026-10-01, đã code xong — chờ deploy SQL + test)
+
+Thiết kế đầy đủ ở [`PROPOSAL_ACCESSORY_MARKET.md`](PROPOSAL_ACCESSORY_MARKET.md)
+(gồm 4 quyết định đã chốt ở §9 file đó: giá tự do 1-100,000, không cấp Xu Chợ
+khởi điểm, món đang đăng bán vẫn tính vào bảng xếp hạng Sưu tập, không giới
+hạn giao dịch/ngày). Điểm mấu chốt:
+
+- **Đơn vị "Xu Chợ"** tách biệt hoàn toàn khỏi Xu/💎 thật, không đổi ngược
+  được — triệt tiêu động cơ rửa tiền (2 tài khoản thông đồng) ngay từ thiết
+  kế thay vì phải dò từng kiểu gian lận như Đấu Trường đã phải làm.
+- **RPC `register_accessory_drop`** (phát hiện lúc code, không có trong bản
+  phác thảo đầu): server phải biết ai sở hữu món gì TRƯỚC khi cho đăng bán,
+  nếu không thì 2 tài khoản thông đồng có thể đăng bán id bất kỳ (kể cả chưa
+  từng rớt) để bơm phụ kiện giả cho nhau. Gọi ngay lúc `claimDailyBonus` rớt
+  món MỚI (fire-and-forget, không chặn thưởng cục bộ nếu lỗi mạng) + đối
+  chiếu lại mỗi lần mở Chợ (bù món có từ trước khi Chợ ra đời, hoặc bù lần
+  gọi bị lỗi mạng trước đó).
+- **3 RPC giao dịch** (`list_accessory`/`buy_listing`/`cancel_listing`,
+  `supabase/accessory_market_schema.sql`): `buy_listing` khoá hàng `for
+  update` trước khi đổi gì (chặn 2 người mua cùng lúc 1 listing, bài học từ
+  `pushIfCurrent` ở Cloud Save) và chặn tự mua chính mình.
+- **Bảng xếp hạng Sưu tập đổi cách tính** (`getMyOwnedCount` ở
+  `accessory_leaderboard_page.dart` giờ là async): cộng thêm số listing
+  `active` của chính mình, không chỉ đếm `ownedAccessories.length` cục bộ
+  như GĐ1 — món đang rao bán vẫn tính là "của mình" tới khi có người mua
+  thật, tránh đăng bán làm tụt hạng ngay lập tức (sẽ khiến market chết yểu
+  vì ai cũng ngại bán).
+- **UI**: `accessory_market_page.dart`, 2 tab "Chợ" (duyệt + mua, ẩn listing
+  của chính mình) và "Của tôi" (ví Xu Chợ + listing đang bán, nút huỷ + danh
+  sách phụ kiện đang sở hữu có thể đăng bán). Vào từ icon 🏬 trên AppBar của
+  `accessory_inventory_page.dart`, cạnh nút 🏆 xếp hạng.
+- `GameController` +2 hàm mutate local (`removeOwnedAccessoryLocally`/
+  `addOwnedAccessoryLocally`, gọi sau khi RPC Supabase xác nhận thành công,
+  lưu ngay bằng `saveNow()` để giảm cửa sổ "hồi sinh" món đã bán qua đồng bộ
+  đa máy — xem PROPOSAL §5).
+- **Server**: 4 bảng mới (`accessory_wallets`, `accessory_server_ownership`,
+  `accessory_listings`, `accessory_market_trades`) + 4 RPC
+  (`supabase/accessory_market_schema.sql`, độc lập với
+  `accessory_leaderboard_schema.sql`) — **phải chạy file SQL trên Supabase**.
+- Prose/chrome dịch đủ 6 ngôn ngữ trong ARB (19 khoá `market*`).
+- Test: `test/market/accessory_market_repository_test.dart` (parse model) +
+  `test/ui/accessory_market_page_test.dart` (controller giả, cùng khuôn
+  `story_speedrun_tabs_test.dart`) — không có test cho chính các RPC Postgres
+  (cần Supabase thật/mock, chưa làm; CHECK/trigger trong file SQL là tuyến
+  phòng thủ duy nhất, giống mọi schema khác trong repo này).

@@ -6,9 +6,11 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../l10n/app_localizations.dart';
 import '../leaderboard/accessory_leaderboard_controller.dart';
+import '../market/accessory_market_repository.dart';
 import '../state/game_providers.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
@@ -43,9 +45,25 @@ class _AccessoryLeaderboardPageState
     final l10n = AppLocalizations.of(context)!;
     final notifier = ref.read(accessoryLeaderboardControllerProvider.notifier);
 
-    // Tiến độ lấy từ GameState, không tự tính lại: số phụ kiện khác nhau.
-    notifier.getMyOwnedCount =
-        () => ref.read(gameControllerProvider).ownedAccessories.length;
+    // Số phụ kiện khác nhau = đang có cục bộ + đang đăng bán trên Chợ (xem
+    // AccessoryLeaderboardController.getMyOwnedCount) — lỗi mạng khi đọc
+    // listing thì rơi về đếm cục bộ, không để lỗi Chợ chặn luôn bảng xếp
+    // hạng.
+    notifier.getMyOwnedCount = () async {
+      final local = ref.read(gameControllerProvider).ownedAccessories.length;
+      // Chưa từng có phiên Supabase nào (chưa đụng Chợ/Đấu Trường/cloud save)
+      // thì chắc chắn chưa có listing nào — khỏi ép đăng nhập ẩn danh chỉ để
+      // hỏi một câu luôn có sẵn câu trả lời.
+      if (Supabase.instance.client.auth.currentUser == null) return local;
+      try {
+        final myListings = await AccessoryMarketRepository(
+          Supabase.instance.client,
+        ).fetchMyActiveListings();
+        return local + myListings.length;
+      } catch (_) {
+        return local;
+      }
+    };
 
     if (!_loaded) {
       _loaded = true;
@@ -111,6 +129,18 @@ class _NicknameForm extends ConsumerWidget {
   }
 }
 
+/// Huy hiệu top 20 Sưu tập — 🥇🥈🥉 cho hạng 1-3, 🏅 chung cho hạng 4-20,
+/// null từ hạng 21 trở đi (không có danh hiệu). Suy thẳng từ `rank` RPC đã
+/// trả về (`accessory_leaderboard_top`, row_number() có sẵn) — không cần
+/// cột/bảng mới.
+String? _topMedal(int rank) => switch (rank) {
+      1 => '🥇',
+      2 => '🥈',
+      3 => '🥉',
+      <= 20 => '🏅',
+      _ => null,
+    };
+
 class _List extends ConsumerWidget {
   const _List({required this.view});
   final AccessoryLeaderboardLoaded view;
@@ -147,6 +177,7 @@ class _List extends ConsumerWidget {
               itemBuilder: (context, i) {
                 final e = view.entries[i];
                 final isMe = e.userId == view.myUserId;
+                final medal = _topMedal(e.rank);
                 return ClayTile(
                   child: Row(
                     children: [
@@ -161,14 +192,33 @@ class _List extends ConsumerWidget {
                         ),
                       ),
                       Expanded(
-                        child: Text(
-                          e.nickname,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontWeight:
-                                isMe ? FontWeight.bold : FontWeight.normal,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              e.nickname,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontWeight:
+                                    isMe ? FontWeight.bold : FontWeight.normal,
+                              ),
+                            ),
+                            // Danh hiệu top 20 — cùng màu vàng/cam đã dùng cho
+                            // độ hiếm "huyền thoại" ở Kho phụ kiện, nhất quán
+                            // trực quan trong cùng tính năng sưu tập.
+                            if (medal != null)
+                              Text(
+                                '$medal ${l10n.accessoryLbTopTitle}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                  color: const Color(0xFFFFA726),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                          ],
                         ),
                       ),
                       const SizedBox(width: 8),

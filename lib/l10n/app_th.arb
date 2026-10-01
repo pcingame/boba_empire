@@ -391,6 +391,7 @@
   "accessoryRarityLegendary": "ตำนาน",
   "accessoryLbTitle": "อันดับนักสะสม",
   "accessoryLbCount": "{n} ชิ้น",
+  "accessoryLbTopTitle": "ท็อป 20 นักสะสม",
   "@accessoryLbCount": {
     "placeholders": {
       "n": {"type": "int"}
@@ -449,6 +450,40 @@
   "accessoryAngelWing": "ปีกนางฟ้า",
   "accessoryPhoenix": "ฟีนิกซ์",
   "accessoryGalaxy": "กาแล็กซี",
+  "marketTitle": "ตลาดของสะสม",
+  "marketTabBrowse": "ตลาด",
+  "marketTabMine": "ของฉัน",
+  "marketWallet": "{n} เหรียญตลาด",
+  "@marketWallet": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketError": "โหลดตลาดไม่ได้ ลองใหม่ภายหลังนะ",
+  "marketEmptyBrowse": "ยังไม่มีใครลงขายอะไรเลย",
+  "marketBuyButton": "ซื้อ",
+  "marketBoughtToast": "ซื้อสำเร็จ!",
+  "marketConfirmBuy": "ซื้อในราคา {price} เหรียญตลาดใช่ไหม?",
+  "@marketConfirmBuy": {
+    "placeholders": {
+      "price": {"type": "int"}
+    }
+  },
+  "marketPriceTag": "{price} เหรียญตลาด",
+  "@marketPriceTag": {
+    "placeholders": {
+      "price": {"type": "int"}
+    }
+  },
+  "marketMyListingsHeader": "รายการที่คุณลงขาย",
+  "marketEmptyMine": "คุณยังไม่ได้ลงขายอะไรเลย",
+  "marketCancelButton": "ยกเลิกการขาย",
+  "marketCancelledToast": "ยกเลิกการขายแล้ว",
+  "marketSellableHeader": "ของสะสมที่ขายได้",
+  "marketEmptySellable": "คุณยังไม่มีของสะสมให้ขาย",
+  "marketListedToast": "ลงขายสำเร็จ!",
+  "marketListButton": "ลงขาย",
+  "marketPriceLabel": "ราคา (เหรียญตลาด)",
   "storySpeedrunEmpty": "ยังไม่มีใครจบเนื้อเรื่อง — เป็นคนแรกสิ!",
   "arenaLeaderboardMenuTitle": "อันดับ PK",
   "arenaLeaderboardTitle": "อันดับ PK",

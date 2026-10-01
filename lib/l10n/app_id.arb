@@ -391,6 +391,7 @@
   "accessoryRarityLegendary": "Legendaris",
   "accessoryLbTitle": "Peringkat Koleksi",
   "accessoryLbCount": "{n} aksesori",
+  "accessoryLbTopTitle": "Top 20 Kolektor",
   "@accessoryLbCount": {
     "placeholders": {
       "n": {"type": "int"}
@@ -449,6 +450,40 @@
   "accessoryAngelWing": "Sayap Malaikat",
   "accessoryPhoenix": "Phoenix",
   "accessoryGalaxy": "Galaksi",
+  "marketTitle": "Pasar Aksesori",
+  "marketTabBrowse": "Pasar",
+  "marketTabMine": "Milikku",
+  "marketWallet": "{n} Koin Pasar",
+  "@marketWallet": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketError": "Tidak dapat memuat pasar. Coba lagi nanti.",
+  "marketEmptyBrowse": "Belum ada yang menjual apa pun.",
+  "marketBuyButton": "Beli",
+  "marketBoughtToast": "Berhasil dibeli!",
+  "marketConfirmBuy": "Beli seharga {price} Koin Pasar?",
+  "@marketConfirmBuy": {
+    "placeholders": {
+      "price": {"type": "int"}
+    }
+  },
+  "marketPriceTag": "{price} Koin Pasar",
+  "@marketPriceTag": {
+    "placeholders": {
+      "price": {"type": "int"}
+    }
+  },
+  "marketMyListingsHeader": "Daftar jualanmu",
+  "marketEmptyMine": "Kamu belum menjual apa pun.",
+  "marketCancelButton": "Batalkan penjualan",
+  "marketCancelledToast": "Penjualan dibatalkan.",
+  "marketSellableHeader": "Aksesori yang bisa dijual",
+  "marketEmptySellable": "Kamu belum punya aksesori untuk dijual.",
+  "marketListedToast": "Berhasil dijual!",
+  "marketListButton": "Jual",
+  "marketPriceLabel": "Harga (Koin Pasar)",
   "storySpeedrunEmpty": "Belum ada yang menyelesaikan cerita — jadilah yang pertama!",
   "arenaLeaderboardMenuTitle": "Papan Peringkat PK",
   "arenaLeaderboardTitle": "Papan Peringkat PK",

@@ -746,6 +746,7 @@
   "accessoryRarityLegendary": "Huyền thoại",
   "accessoryLbTitle": "Bảng xếp hạng Sưu tập",
   "accessoryLbCount": "{n} phụ kiện",
+  "accessoryLbTopTitle": "Top 20 Sưu Tập",
   "@accessoryLbCount": {
     "placeholders": {
       "n": {"type": "int"}
@@ -804,6 +805,40 @@
   "accessoryAngelWing": "Cánh thiên thần",
   "accessoryPhoenix": "Phượng hoàng lửa",
   "accessoryGalaxy": "Dải ngân hà",
+  "marketTitle": "Chợ Phụ kiện",
+  "marketTabBrowse": "Chợ",
+  "marketTabMine": "Của tôi",
+  "marketWallet": "{n} Xu Chợ",
+  "@marketWallet": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketError": "Không tải được Chợ, thử lại sau nhé.",
+  "marketEmptyBrowse": "Chợ chưa có ai đăng bán gì.",
+  "marketBuyButton": "Mua",
+  "marketBoughtToast": "Đã mua!",
+  "marketConfirmBuy": "Mua với giá {price} Xu Chợ?",
+  "@marketConfirmBuy": {
+    "placeholders": {
+      "price": {"type": "int"}
+    }
+  },
+  "marketPriceTag": "{price} Xu Chợ",
+  "@marketPriceTag": {
+    "placeholders": {
+      "price": {"type": "int"}
+    }
+  },
+  "marketMyListingsHeader": "Đang đăng bán",
+  "marketEmptyMine": "Bạn chưa đăng bán món nào.",
+  "marketCancelButton": "Huỷ đăng",
+  "marketCancelledToast": "Đã huỷ đăng.",
+  "marketSellableHeader": "Phụ kiện có thể đăng bán",
+  "marketEmptySellable": "Bạn chưa có phụ kiện nào để đăng bán.",
+  "marketListedToast": "Đã đăng bán!",
+  "marketListButton": "Đăng bán",
+  "marketPriceLabel": "Giá (Xu Chợ)",
   "storySpeedrunEmpty": "Chưa có ai hoàn thành cốt truyện — là bạn đây!",
   "arenaLeaderboardMenuTitle": "Bảng xếp hạng PK",
   "arenaLeaderboardTitle": "Bảng xếp hạng PK",

@@ -987,6 +987,9 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get accessoryLbTopTitle => 'Top 20 Kolektor';
+
+  @override
   String get accessoryLbEmpty =>
       'Belum ada yang masuk peringkat. Kumpulkan satu aksesori dan posisi teratas jadi milikmu!';
 
@@ -1147,6 +1150,69 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get accessoryGalaxy => 'Galaksi';
+
+  @override
+  String get marketTitle => 'Pasar Aksesori';
+
+  @override
+  String get marketTabBrowse => 'Pasar';
+
+  @override
+  String get marketTabMine => 'Milikku';
+
+  @override
+  String marketWallet(int n) {
+    return '$n Koin Pasar';
+  }
+
+  @override
+  String get marketError => 'Tidak dapat memuat pasar. Coba lagi nanti.';
+
+  @override
+  String get marketEmptyBrowse => 'Belum ada yang menjual apa pun.';
+
+  @override
+  String get marketBuyButton => 'Beli';
+
+  @override
+  String get marketBoughtToast => 'Berhasil dibeli!';
+
+  @override
+  String marketConfirmBuy(int price) {
+    return 'Beli seharga $price Koin Pasar?';
+  }
+
+  @override
+  String marketPriceTag(int price) {
+    return '$price Koin Pasar';
+  }
+
+  @override
+  String get marketMyListingsHeader => 'Daftar jualanmu';
+
+  @override
+  String get marketEmptyMine => 'Kamu belum menjual apa pun.';
+
+  @override
+  String get marketCancelButton => 'Batalkan penjualan';
+
+  @override
+  String get marketCancelledToast => 'Penjualan dibatalkan.';
+
+  @override
+  String get marketSellableHeader => 'Aksesori yang bisa dijual';
+
+  @override
+  String get marketEmptySellable => 'Kamu belum punya aksesori untuk dijual.';
+
+  @override
+  String get marketListedToast => 'Berhasil dijual!';
+
+  @override
+  String get marketListButton => 'Jual';
+
+  @override
+  String get marketPriceLabel => 'Harga (Koin Pasar)';
 
   @override
   String get storySpeedrunEmpty =>

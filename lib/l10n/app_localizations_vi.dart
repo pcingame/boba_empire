@@ -983,6 +983,9 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get accessoryLbTopTitle => 'Top 20 Sưu Tập';
+
+  @override
   String get accessoryLbEmpty =>
       'Chưa ai lên bảng. Sưu tập 1 món là có tên ngay!';
 
@@ -1143,6 +1146,69 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get accessoryGalaxy => 'Dải ngân hà';
+
+  @override
+  String get marketTitle => 'Chợ Phụ kiện';
+
+  @override
+  String get marketTabBrowse => 'Chợ';
+
+  @override
+  String get marketTabMine => 'Của tôi';
+
+  @override
+  String marketWallet(int n) {
+    return '$n Xu Chợ';
+  }
+
+  @override
+  String get marketError => 'Không tải được Chợ, thử lại sau nhé.';
+
+  @override
+  String get marketEmptyBrowse => 'Chợ chưa có ai đăng bán gì.';
+
+  @override
+  String get marketBuyButton => 'Mua';
+
+  @override
+  String get marketBoughtToast => 'Đã mua!';
+
+  @override
+  String marketConfirmBuy(int price) {
+    return 'Mua với giá $price Xu Chợ?';
+  }
+
+  @override
+  String marketPriceTag(int price) {
+    return '$price Xu Chợ';
+  }
+
+  @override
+  String get marketMyListingsHeader => 'Đang đăng bán';
+
+  @override
+  String get marketEmptyMine => 'Bạn chưa đăng bán món nào.';
+
+  @override
+  String get marketCancelButton => 'Huỷ đăng';
+
+  @override
+  String get marketCancelledToast => 'Đã huỷ đăng.';
+
+  @override
+  String get marketSellableHeader => 'Phụ kiện có thể đăng bán';
+
+  @override
+  String get marketEmptySellable => 'Bạn chưa có phụ kiện nào để đăng bán.';
+
+  @override
+  String get marketListedToast => 'Đã đăng bán!';
+
+  @override
+  String get marketListButton => 'Đăng bán';
+
+  @override
+  String get marketPriceLabel => 'Giá (Xu Chợ)';
 
   @override
   String get storySpeedrunEmpty =>
