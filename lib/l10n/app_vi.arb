@@ -810,6 +810,8 @@
   "marketTitle": "Chợ Phụ kiện",
   "marketTabBrowse": "Chợ",
   "marketTabMine": "Của tôi",
+  "marketRecentSalesHeader": "Vừa bán",
+  "marketMerchantTitle": "Thương gia tuần",
   "marketWallet": "{n} Xu Chợ",
   "@marketWallet": {
     "placeholders": {

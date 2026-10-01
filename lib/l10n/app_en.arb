@@ -455,6 +455,8 @@
   "marketTitle": "Accessory Market",
   "marketTabBrowse": "Market",
   "marketTabMine": "Mine",
+  "marketRecentSalesHeader": "Recently sold",
+  "marketMerchantTitle": "Weekly Merchant",
   "marketWallet": "{n} Market Coins",
   "@marketWallet": {
     "placeholders": {

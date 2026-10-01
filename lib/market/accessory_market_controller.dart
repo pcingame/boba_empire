@@ -30,12 +30,14 @@ class AccessoryMarketLoaded extends AccessoryMarketViewState {
     required this.myListings,
     required this.walletBalance,
     required this.myUserId,
+    this.recentSales = const [],
   });
 
   final List<MarketListing> listings;
   final List<MarketListing> myListings;
   final int walletBalance;
   final String? myUserId;
+  final List<RecentSale> recentSales;
 }
 
 class AccessoryMarketError extends AccessoryMarketViewState {
@@ -48,6 +50,7 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
 
   /// UI gán trước khi gọi bất kỳ hành động nào.
   List<String> Function()? getLocalOwnedAccessories;
+  Map<String, int> Function()? getLocalSpares;
   void Function(String accessoryId)? onAccessoryRemovedLocally;
   void Function(String accessoryId)? onAccessoryAddedLocally;
 
@@ -66,11 +69,13 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
   Future<void> _reconcileOwnership() async {
     final local = getLocalOwnedAccessories?.call() ?? const <String>[];
     if (local.isEmpty) return;
-    final serverOwned = await _repository.fetchServerOwnedIds();
-    final missing = local.where((id) => !serverOwned.contains(id));
-    for (final id in missing) {
+    final server = await _repository.fetchServerCopies();
+    final spares = getLocalSpares?.call() ?? const <String, int>{};
+    for (final id in local) {
+      final copies = 1 + (spares[id] ?? 0);
+      if ((server[id] ?? 0) >= copies) continue;
       try {
-        await _repository.registerDrop(id);
+        await _repository.registerDrop(id, copies: copies);
       } catch (e) {
         // Lỗi mạng giữa chừng — bỏ qua, lần mở Chợ sau sẽ thử lại (vẫn
         // idempotent, không có gì bị mất).
@@ -86,11 +91,16 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
       final listings = await _repository.fetchActiveListings();
       final myListings = await _repository.fetchMyActiveListings();
       final balance = await _repository.fetchWalletBalance();
+      // Phần phụ: lỗi (vd SQL mới chưa deploy) không được làm hỏng cả Chợ.
+      final recentSales = await _repository.fetchRecentSales().catchError(
+        (_) => const <RecentSale>[],
+      );
       state = AccessoryMarketLoaded(
         listings: listings,
         myListings: myListings,
         walletBalance: balance,
         myUserId: Supabase.instance.client.auth.currentUser?.id,
+        recentSales: recentSales,
       );
     } catch (e) {
       _fail(e);
@@ -162,4 +172,17 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
 
 final accessoryMarketControllerProvider =
     NotifierProvider<AccessoryMarketController, AccessoryMarketViewState>(
-        AccessoryMarketController.new);
+      AccessoryMarketController.new,
+    );
+
+/// Thương gia tuần (null = chưa có / không tải được) — dùng ở bảng xếp hạng
+/// Sưu tập và tab "Của tôi" của Chợ.
+final marketMerchantIdProvider = FutureProvider<String?>((ref) async {
+  try {
+    return await AccessoryMarketRepository(
+      Supabase.instance.client,
+    ).fetchWeeklyTopSeller();
+  } catch (_) {
+    return null;
+  }
+});

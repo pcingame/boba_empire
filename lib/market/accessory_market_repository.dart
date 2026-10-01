@@ -60,6 +60,14 @@ class MarketTrade {
   final DateTime tradedAt;
 }
 
+/// Giao dịch đã khớp, ẩn danh (không có id người mua/bán) — nguồn là RPC công
+/// khai `recent_market_trades`.
+class RecentSale {
+  const RecentSale({required this.accessoryId, required this.price});
+  final String accessoryId;
+  final int price;
+}
+
 class AccessoryMarketRepository {
   AccessoryMarketRepository(this._client);
 
@@ -84,25 +92,29 @@ class AccessoryMarketRepository {
   /// Ghi nhận 1 món vừa rớt hợp lệ — gọi lúc rớt món MỚI (game_controller.dart)
   /// HOẶC lúc đối chiếu lần đầu mở Chợ (bù món có từ trước khi Chợ ra đời).
   /// An toàn gọi lại nhiều lần.
-  Future<void> registerDrop(String accessoryId) async {
+  Future<void> registerDrop(String accessoryId, {int copies = 1}) async {
     await ensureSignedIn();
-    await _client.rpc('register_accessory_drop',
-        params: {'p_accessory_id': accessoryId});
+    await _client.rpc(
+      'register_accessory_copies',
+      params: {'p_accessory_id': accessoryId, 'p_copies': copies},
+    );
   }
 
   /// Id phụ kiện server đã xác nhận sở hữu (không gồm món đang đăng bán —
   /// xem list_accessory trong SQL, món rời accessory_server_ownership ngay
   /// lúc đăng). Dùng để đối chiếu với `GameState.ownedAccessories` local lúc
   /// mở Chợ lần đầu (xem AccessoryMarketController.reconcileOwnership).
-  Future<Set<String>> fetchServerOwnedIds() async {
+  Future<Map<String, int>> fetchServerCopies() async {
     final uid = await ensureSignedIn();
     final rows = await _client
         .from(_ownershipTable)
-        .select('accessory_id')
+        .select('accessory_id, copies')
         .eq('user_id', uid);
-    return (rows as List)
-        .map((r) => (r as Map<String, dynamic>)['accessory_id'] as String)
-        .toSet();
+    return {
+      for (final r in rows as List)
+        (r as Map<String, dynamic>)['accessory_id'] as String:
+            (r['copies'] as num).toInt(),
+    };
   }
 
   Future<int> fetchWalletBalance() async {
@@ -160,10 +172,12 @@ class AccessoryMarketRepository {
   /// chung chung.
   Future<String> listAccessory(String accessoryId, int price) async {
     await ensureSignedIn();
-    final id = await _client.rpc('list_accessory', params: {
-      'p_accessory_id': accessoryId,
-      'p_price': price,
-    }) as String;
+    final id =
+        await _client.rpc(
+              'list_accessory',
+              params: {'p_accessory_id': accessoryId, 'p_price': price},
+            )
+            as String;
     return id;
   }
 
@@ -188,5 +202,26 @@ class AccessoryMarketRepository {
   Future<void> creditMarketCoins(int amount) async {
     await ensureSignedIn();
     await _client.rpc('credit_market_coins', params: {'p_amount': amount});
+  }
+
+  Future<List<RecentSale>> fetchRecentSales({int limit = 10}) async {
+    final rows = await _client.rpc(
+      'recent_market_trades',
+      params: {'p_limit': limit},
+    );
+    return (rows as List)
+        .map(
+          (r) => RecentSale(
+            accessoryId: (r as Map<String, dynamic>)['accessory_id'] as String,
+            price: (r['price'] as num).toInt(),
+          ),
+        )
+        .toList();
+  }
+
+  /// user_id người bán nhiều nhất 7 ngày qua, null nếu tuần này chưa có giao dịch.
+  Future<String?> fetchWeeklyTopSeller() async {
+    final id = await _client.rpc('market_weekly_top_seller');
+    return id as String?;
   }
 }

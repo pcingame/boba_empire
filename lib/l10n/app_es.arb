@@ -455,6 +455,8 @@
   "marketTitle": "Mercado de accesorios",
   "marketTabBrowse": "Mercado",
   "marketTabMine": "Mío",
+  "marketRecentSalesHeader": "Vendido recientemente",
+  "marketMerchantTitle": "Comerciante semanal",
   "marketWallet": "{n} Monedas de Mercado",
   "@marketWallet": {
     "placeholders": {

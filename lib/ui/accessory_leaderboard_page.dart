@@ -10,6 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../l10n/app_localizations.dart';
 import '../leaderboard/accessory_leaderboard_controller.dart';
+import '../market/accessory_market_controller.dart';
 import '../market/accessory_market_repository.dart';
 import '../state/game_providers.dart';
 import 'widgets/clay.dart';
@@ -50,7 +51,8 @@ class _AccessoryLeaderboardPageState
     // listing thì rơi về đếm cục bộ, không để lỗi Chợ chặn luôn bảng xếp
     // hạng.
     notifier.getMyOwnedCount = () async {
-      final local = ref.read(gameControllerProvider).ownedAccessories.length;
+      final ownedIds = ref.read(gameControllerProvider).ownedAccessories;
+      final local = ownedIds.length;
       // Chưa từng có phiên Supabase nào (chưa đụng Chợ/Đấu Trường/cloud save)
       // thì chắc chắn chưa có listing nào — khỏi ép đăng nhập ẩn danh chỉ để
       // hỏi một câu luôn có sẵn câu trả lời.
@@ -59,7 +61,9 @@ class _AccessoryLeaderboardPageState
         final myListings = await AccessoryMarketRepository(
           Supabase.instance.client,
         ).fetchMyActiveListings();
-        return local + myListings.length;
+        // Hợp (không cộng): đang bán 1 bản dư của món vẫn còn trong kho thì
+        // không phải món khác nhau thứ hai.
+        return {...ownedIds, ...myListings.map((l) => l.accessoryId)}.length;
       } catch (_) {
         return local;
       }
@@ -160,6 +164,7 @@ class _List extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
+    final merchantId = ref.watch(marketMerchantIdProvider).value;
 
     if (view.entries.isEmpty) {
       return Center(
@@ -190,6 +195,13 @@ class _List extends ConsumerWidget {
                 final isMe = e.userId == view.myUserId;
                 final medal = _topMedal(e.rank);
                 final title = _topTitle(e.rank, l10n);
+                final merchant = e.userId == merchantId
+                    ? '🛒 ${l10n.marketMerchantTitle}'
+                    : null;
+                final badge = [
+                  if (medal != null && title != null) '$medal $title',
+                  ?merchant,
+                ].join(' · ');
                 return ClayTile(
                   child: Row(
                     children: [
@@ -220,9 +232,9 @@ class _List extends ConsumerWidget {
                             // Danh hiệu top 20 — cùng màu vàng/cam đã dùng cho
                             // độ hiếm "huyền thoại" ở Kho phụ kiện, nhất quán
                             // trực quan trong cùng tính năng sưu tập.
-                            if (medal != null && title != null)
+                            if (badge.isNotEmpty)
                               Text(
-                                '$medal $title',
+                                badge,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: theme.textTheme.labelSmall?.copyWith(

@@ -16,9 +16,9 @@ import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
 Future<void> showAccessoryInventory(BuildContext context) {
-  return Navigator.of(context).push(
-    MaterialPageRoute(builder: (_) => const AccessoryInventoryPage()),
-  );
+  return Navigator.of(
+    context,
+  ).push(MaterialPageRoute(builder: (_) => const AccessoryInventoryPage()));
 }
 
 class AccessoryInventoryPage extends ConsumerWidget {
@@ -56,10 +56,9 @@ class AccessoryInventoryPage extends ConsumerWidget {
                 children: [
                   Text(
                     l10n.accessoryInventoryOwned(owned, accessories.length),
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(fontWeight: FontWeight.w600),
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   ClipRRect(
@@ -77,8 +76,9 @@ class AccessoryInventoryPage extends ConsumerWidget {
               // khi cuộn hết cỡ nó BÓP nội dung ở mép, lưới ô vuông thì méo rất
               // lộ — cùng bug + cách fix đã dùng ở match3_journey_page.dart.
               child: ScrollConfiguration(
-                behavior:
-                    ScrollConfiguration.of(context).copyWith(overscroll: false),
+                behavior: ScrollConfiguration.of(
+                  context,
+                ).copyWith(overscroll: false),
                 child: GridView.builder(
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -111,8 +111,16 @@ class _AccessoryCell extends ConsumerWidget {
     // select riêng cờ "đã có món này" (giống _AchievementRow ở
     // achievements_dialog.dart) — mỗi ô chỉ rebuild khi ĐÚNG món của nó đổi,
     // không phải toàn bộ lưới mỗi khi danh sách tăng thêm 1 món khác.
-    final unlocked = ref.watch(gameControllerProvider
-        .select((s) => s.ownedAccessories.contains(accessory.id)));
+    final unlocked = ref.watch(
+      gameControllerProvider.select(
+        (s) => s.ownedAccessories.contains(accessory.id),
+      ),
+    );
+    final spares = ref.watch(
+      gameControllerProvider.select(
+        (s) => s.accessorySpares[accessory.id] ?? 0,
+      ),
+    );
     final color = rarityColor(accessory.rarity);
 
     return Opacity(
@@ -146,7 +154,10 @@ class _AccessoryCell extends ConsumerWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  unlocked ? accessoryName(l10n, accessory.id) : '???',
+                  unlocked
+                      ? '${accessoryName(l10n, accessory.id)}'
+                            '${spares > 0 ? ' ×${spares + 1}' : ''}'
+                      : '???',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodySmall
                       ?.copyWith(fontWeight: FontWeight.w600),

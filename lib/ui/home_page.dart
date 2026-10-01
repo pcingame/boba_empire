@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../audio/audio_service.dart';
+import '../core/accessories.dart';
 import '../core/balance.dart';
 import '../core/economy.dart';
 import '../core/format.dart';
@@ -16,9 +17,11 @@ import '../iap/iap_products.dart';
 import '../iap/iap_service.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
+import '../market/market_highlight.dart';
 import '../notify/reminders.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
+import 'accessory_market_page.dart';
 import 'achievements_dialog.dart';
 import 'compete_hub_dialog.dart';
 import 'daily_quests_dialog.dart';
@@ -363,6 +366,7 @@ class _HomePageState extends ConsumerState<HomePage>
             Column(
               children: [
                 _EventBanner(),
+                _MarketBanner(),
                 _MoneyHeader(),
                 // Chia phần còn lại theo tỷ lệ: cảnh quán không bao giờ bị "co"
                 // biến mất, shop luôn có chỗ (danh sách tự cuộn nếu nhiều dòng).
@@ -406,6 +410,7 @@ class _BottomBar extends ConsumerWidget {
     final newAch = ref.watch(
       gameControllerProvider.select((s) => s.newAchievements.isNotEmpty),
     );
+    final newMarket = ref.watch(marketHighlightProvider).value != null;
 
     return Container(
       decoration: BoxDecoration(
@@ -451,6 +456,7 @@ class _BottomBar extends ConsumerWidget {
                   buttonKey: const Key('compete-button'),
                   icon: Icons.sports_kabaddi,
                   label: l10n.navCompete,
+                  badge: newMarket,
                   onTap: () => showCompeteHub(context)),
               _navItem(theme,
                   buttonKey: const Key('match3-button'),
@@ -529,6 +535,50 @@ class _BottomBar extends ConsumerWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Banner mời vào Chợ khi có listing mới (món hiếm nhất) kể từ lần mở Chợ
+/// trước — biến mất ngay khi người chơi mở Chợ.
+class _MarketBanner extends ConsumerWidget {
+  const _MarketBanner();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final listing = ref.watch(marketHighlightProvider).value;
+    if (listing == null) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final acc = accessoryById(listing.accessoryId);
+    return Material(
+      key: const Key('market-banner'),
+      color: theme.colorScheme.tertiaryContainer,
+      child: InkWell(
+        onTap: () => showAccessoryMarket(context),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          child: Row(
+            children: [
+              Text(acc.emoji, style: const TextStyle(fontSize: 18)),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  '${l10n.marketTitle} · ${accessoryName(l10n, acc.id)} '
+                  '(${accessoryRarityLabel(l10n, acc.rarity)}) · '
+                  '${listing.price} 🪙',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                      color: theme.colorScheme.onTertiaryContainer),
+                ),
+              ),
+              Icon(Icons.chevron_right,
+                  color: theme.colorScheme.onTertiaryContainer),
+            ],
+          ),
         ),
       ),
     );

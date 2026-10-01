@@ -86,6 +86,9 @@ void main() {
       expect(isNew, isFalse);
       expect(s.ownedAccessories.where((id) => id == 'cupcake').length, 1);
       expect(s.gems, gemsAfterFirst + Balance.duplicateAccessoryGems);
+      expect(s.accessorySpares['cupcake'], 1); // thêm 1 bản dư bán được
+      grantAccessory(s, a);
+      expect(s.accessorySpares['cupcake'], 2);
     });
 
     test('rớt liên tiếp nhiều món khác nhau: mỗi món chỉ xuất hiện 1 lần', () {

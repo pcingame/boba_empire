@@ -15,15 +15,16 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../market/accessory_market_controller.dart';
 import '../market/accessory_market_repository.dart';
+import '../market/market_highlight.dart';
 import '../state/game_providers.dart';
 import 'widgets/accessory_rarity.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
 Future<void> showAccessoryMarket(BuildContext context) {
-  return Navigator.of(context).push(
-    MaterialPageRoute(builder: (_) => const AccessoryMarketPage()),
-  );
+  return Navigator.of(
+    context,
+  ).push(MaterialPageRoute(builder: (_) => const AccessoryMarketPage()));
 }
 
 class AccessoryMarketPage extends ConsumerStatefulWidget {
@@ -38,8 +39,9 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
 
   void _snack(String? message) {
     if (message == null || !mounted) return;
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -47,16 +49,26 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
     final l10n = AppLocalizations.of(context)!;
     final notifier = ref.read(accessoryMarketControllerProvider.notifier);
 
-    notifier.getLocalOwnedAccessories =
-        () => ref.read(gameControllerProvider).ownedAccessories;
-    notifier.onAccessoryRemovedLocally = (id) =>
-        ref.read(gameControllerProvider.notifier).removeOwnedAccessoryLocally(id);
+    notifier.getLocalOwnedAccessories = () =>
+        ref.read(gameControllerProvider).ownedAccessories;
+    notifier.getLocalSpares = () =>
+        ref.read(gameControllerProvider).accessorySpares;
+    notifier.onAccessoryRemovedLocally = (id) => ref
+        .read(gameControllerProvider.notifier)
+        .removeOwnedAccessoryLocally(id);
     notifier.onAccessoryAddedLocally = (id) =>
         ref.read(gameControllerProvider.notifier).addOwnedAccessoryLocally(id);
 
     if (!_loaded) {
       _loaded = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) => notifier.refresh());
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // Mở Chợ = đã xem hết listing hiện có → tắt chấm đỏ/banner ở màn chính.
+        ref
+            .read(sharedPreferencesProvider)
+            .setInt(marketSeenKey, DateTime.now().millisecondsSinceEpoch);
+        ref.invalidate(marketHighlightProvider);
+        notifier.refresh();
+      });
     }
 
     final view = ref.watch(accessoryMarketControllerProvider);
@@ -337,6 +349,48 @@ class _ErrorView extends StatelessWidget {
   }
 }
 
+/// Dải "Vừa bán": món + giá khớp gần nhất, cho người mua biết giá thị trường.
+class _RecentSalesStrip extends StatelessWidget {
+  const _RecentSalesStrip({required this.sales});
+  final List<RecentSale> sales;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final known = sales.where(
+      (s) => accessories.any((a) => a.id == s.accessoryId),
+    );
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(12, 0, 12, 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '🔥 ${l10n.marketRecentSalesHeader}',
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+          const SizedBox(height: 4),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                for (final s in known) ...[
+                  ClayChip(
+                    child: Text(
+                      '${accessoryById(s.accessoryId).emoji} ${s.price} 🪙',
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _BrowseTab extends ConsumerWidget {
   const _BrowseTab({required this.view, required this.onAction});
   final AccessoryMarketLoaded view;
@@ -356,6 +410,8 @@ class _BrowseTab extends ConsumerWidget {
           balance: view.walletBalance,
           onConvert: () => _showConvertDialog(context, onAction),
         ),
+        if (view.recentSales.isNotEmpty)
+          _RecentSalesStrip(sales: view.recentSales),
         Expanded(
           child: RefreshIndicator(
             onRefresh: () => ref
@@ -548,6 +604,11 @@ class _MineTab extends ConsumerWidget {
             balance: view.walletBalance,
             onConvert: () => _showConvertDialog(context, onAction),
           ),
+          if (view.myUserId != null &&
+              ref.watch(marketMerchantIdProvider).value == view.myUserId)
+            Center(
+              child: ClayChip(child: Text('🛒 ${l10n.marketMerchantTitle}')),
+            ),
           const SizedBox(height: 8),
           _SectionHeader(emoji: '📋', text: l10n.marketMyListingsHeader),
           if (view.myListings.isEmpty)
@@ -590,6 +651,9 @@ class _SellableTile extends ConsumerWidget {
     final theme = Theme.of(context);
     final accessory = accessoryById(accessoryId);
     final color = rarityColor(accessory.rarity);
+    final spares = ref.watch(
+      gameControllerProvider.select((s) => s.accessorySpares[accessoryId] ?? 0),
+    );
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: Stack(
@@ -603,7 +667,8 @@ class _SellableTile extends ConsumerWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    accessoryName(l10n, accessoryId),
+                    '${accessoryName(l10n, accessoryId)}'
+                    '${spares > 0 ? ' ×${spares + 1}' : ''}',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.bodyMedium

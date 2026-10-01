@@ -1158,6 +1158,12 @@ class AppLocalizationsTh extends AppLocalizations {
   String get marketTabMine => 'ของฉัน';
 
   @override
+  String get marketRecentSalesHeader => 'เพิ่งขายไป';
+
+  @override
+  String get marketMerchantTitle => 'พ่อค้าประจำสัปดาห์';
+
+  @override
   String marketWallet(int n) {
     return '$n เหรียญตลาด';
   }

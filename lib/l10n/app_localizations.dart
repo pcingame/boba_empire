@@ -2104,6 +2104,18 @@ abstract class AppLocalizations {
   /// **'Của tôi'**
   String get marketTabMine;
 
+  /// No description provided for @marketRecentSalesHeader.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vừa bán'**
+  String get marketRecentSalesHeader;
+
+  /// No description provided for @marketMerchantTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thương gia tuần'**
+  String get marketMerchantTitle;
+
   /// No description provided for @marketWallet.
   ///
   /// In vi, this message translates to:

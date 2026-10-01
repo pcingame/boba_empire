@@ -1163,6 +1163,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get marketTabMine => 'Của tôi';
 
   @override
+  String get marketRecentSalesHeader => 'Vừa bán';
+
+  @override
+  String get marketMerchantTitle => 'Thương gia tuần';
+
+  @override
   String marketWallet(int n) {
     return '$n Xu Chợ';
   }

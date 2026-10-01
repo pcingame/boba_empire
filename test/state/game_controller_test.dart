@@ -1,5 +1,6 @@
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/data/game_storage.dart';
+import 'package:boba_empire/state/game_snapshot.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -151,6 +152,37 @@ void main() {
     await ctrl.resetGame();
     expect(container.read(gameControllerProvider).money, 0);
     expect(GameStorage(prefs).load(), isNull);
+  });
+
+  test('bản dư phụ kiện: bán/mua trừ-cộng bản dư trước, chỉ mất món khi hết dư',
+      () async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    await GameStorage(prefs).save(
+      GameState.newGame(nowMillis: 0)
+        ..ownedAccessories.add('dragon')
+        ..accessorySpares['dragon'] = 1,
+      nowMillis: 0,
+    );
+    final container = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(() => 0),
+    ]);
+    final ctrl = container.read(gameControllerProvider.notifier);
+    GameSnapshot snap() => container.read(gameControllerProvider);
+
+    ctrl.removeOwnedAccessoryLocally('dragon'); // bán bản dư
+    expect(snap().ownedAccessories, ['dragon']);
+    expect(snap().accessorySpares, isEmpty);
+
+    ctrl.addOwnedAccessoryLocally('dragon'); // mua/huỷ đăng lại -> thành bản dư
+    expect(snap().accessorySpares['dragon'], 1);
+
+    ctrl.removeOwnedAccessoryLocally('dragon');
+    ctrl.removeOwnedAccessoryLocally('dragon'); // hết dư -> bán nốt bản đầu
+    expect(snap().ownedAccessories, isEmpty);
+
+    container.dispose();
   });
 
   group('đổi Xu/💎 lấy Xu Chợ — Supabase chưa sẵn sàng trong test (fail-closed)', () {

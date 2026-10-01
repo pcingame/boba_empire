@@ -38,11 +38,12 @@ class _FakeMarketController extends AccessoryMarketController {
 
   @override
   AccessoryMarketViewState build() => AccessoryMarketLoaded(
-        listings: [_myListing, _otherListing],
-        myListings: [_myListing],
-        walletBalance: 42,
-        myUserId: 'me',
-      );
+    listings: [_myListing, _otherListing],
+    myListings: [_myListing],
+    walletBalance: 42,
+    myUserId: 'me',
+    recentSales: const [RecentSale(accessoryId: 'dragon', price: 777)],
+  );
 
   @override
   Future<void> refresh({bool silent = false}) async {}
@@ -106,6 +107,8 @@ void main() {
 
     expect(find.text('Rồng nhỏ'), findsOneWidget); // listing của người khác
     expect(find.text('Bánh cupcake'), findsNothing); // listing của mình bị ẩn
+    expect(find.textContaining('Vừa bán'), findsOneWidget);
+    expect(find.textContaining('777'), findsOneWidget); // dải Vừa bán
 
     // GameController có Timer tick định kỳ — phải dispose() NGAY trong thân
     // test (addTearDown chạy sau khi flutter_test đã kiểm "còn Timer treo

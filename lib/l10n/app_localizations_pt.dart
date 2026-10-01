@@ -1170,6 +1170,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get marketTabMine => 'Meus';
 
   @override
+  String get marketRecentSalesHeader => 'Vendido recentemente';
+
+  @override
+  String get marketMerchantTitle => 'Comerciante da semana';
+
+  @override
   String marketWallet(int n) {
     return '$n Moedas de Mercado';
   }

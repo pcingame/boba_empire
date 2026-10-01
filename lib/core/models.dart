@@ -128,10 +128,12 @@ class GameState {
     List<int>? m3Stars,
     List<String>? redeemedCodes,
     List<String>? ownedAccessories,
+    Map<String, int>? accessorySpares,
   })  : achievementsClaimed = achievementsClaimed ?? [],
         m3Stars = m3Stars ?? [],
         redeemedCodes = redeemedCodes ?? [],
         ownedAccessories = ownedAccessories ?? [],
+        accessorySpares = accessorySpares ?? {},
         dailyProgress = dailyProgress ?? {},
         dailyClaimed = dailyClaimed ?? [],
         firstPlayedMillis = firstPlayedMillis ?? lastSeenMillis;
@@ -223,6 +225,11 @@ class GameState {
   /// rớt trùng quy đổi 💎 thay vì thêm vào đây. Không reset khi Nhượng
   /// quyền/Kỷ Nguyên, cùng nhóm với thành tựu, cốt truyện.
   final List<String> ownedAccessories;
+
+  /// Số bản SAO DƯ ngoài bản đầu của mỗi món (id → n ≥ 1; không có khoá = 0
+  /// dư). Rớt trùng cộng vào đây (xem grantAccessory) — bản dư bán được ở Chợ
+  /// mà không mất món đang sưu tập.
+  final Map<String, int> accessorySpares;
 
   /// Cấp perk "Siêu thu nhập" mua bằng ⭐ Sao (kho prestige) — +% income vĩnh viễn.
   int prestigeIncomeLevel;
@@ -407,6 +414,7 @@ class GameState {
         'm3Stars': m3Stars,
         'redeemedCodes': redeemedCodes,
         'ownedAccessories': ownedAccessories,
+        'accessorySpares': accessorySpares,
         'prestigeIncomeLevel': prestigeIncomeLevel,
         'prestigeTapLevel': prestigeTapLevel,
         'prestigeOfflineLevel': prestigeOfflineLevel,
@@ -488,6 +496,11 @@ class GameState {
             (json['redeemedCodes'] as List?)?.cast<String>().toList(),
         ownedAccessories:
             (json['ownedAccessories'] as List?)?.cast<String>().toList(),
+        accessorySpares: {
+          for (final e in ((json['accessorySpares'] as Map?) ?? const {}).entries)
+            if (e.value is num && (e.value as num) >= 1)
+              e.key as String: (e.value as num).toInt(),
+        },
         prestigeIncomeLevel:
             (json['prestigeIncomeLevel'] as num?)?.toInt() ?? 0,
         prestigeTapLevel: (json['prestigeTapLevel'] as num?)?.toInt() ?? 0,

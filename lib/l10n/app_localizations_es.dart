@@ -1174,6 +1174,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get marketTabMine => 'Mío';
 
   @override
+  String get marketRecentSalesHeader => 'Vendido recientemente';
+
+  @override
+  String get marketMerchantTitle => 'Comerciante semanal';
+
+  @override
   String marketWallet(int n) {
     return '$n Monedas de Mercado';
   }

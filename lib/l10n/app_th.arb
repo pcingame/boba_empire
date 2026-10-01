@@ -455,6 +455,8 @@
   "marketTitle": "ตลาดของสะสม",
   "marketTabBrowse": "ตลาด",
   "marketTabMine": "ของฉัน",
+  "marketRecentSalesHeader": "เพิ่งขายไป",
+  "marketMerchantTitle": "พ่อค้าประจำสัปดาห์",
   "marketWallet": "{n} เหรียญตลาด",
   "@marketWallet": {
     "placeholders": {

@@ -98,14 +98,17 @@ void main() {
       'sưu tập) thiếu trường -> load rỗng, không ném lỗi', () async {
     final storage = await _storage();
     final state = GameState.newGame(nowMillis: 0)
-      ..ownedAccessories.addAll(['mint_leaf', 'dragon']);
+      ..ownedAccessories.addAll(['mint_leaf', 'dragon'])
+      ..accessorySpares['dragon'] = 2;
     await storage.save(state, nowMillis: 1000);
     final loaded = storage.load()!;
     expect(loaded.ownedAccessories, ['mint_leaf', 'dragon']);
+    expect(loaded.accessorySpares, {'dragon': 2});
 
     final oldJson = state.toJson()..remove('ownedAccessories');
     final fromOld = GameState.fromJson(oldJson);
     expect(fromOld.ownedAccessories, isEmpty);
+    expect((GameState.fromJson(state.toJson()..remove('accessorySpares'))).accessorySpares, isEmpty);
   });
 
   test('save rồi load giữ nguyên gemTimeSkipDay/gemTimeSkipUsedToday',

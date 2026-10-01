@@ -56,6 +56,11 @@ create table if not exists accessory_server_ownership (
   primary key (user_id, accessory_id)
 );
 
+-- Số bản sao sở hữu (≥ 1 khi còn hàng; hàng bị xoá khi về 0). Rớt trùng cho
+-- bản dư bán được ở Chợ mà vẫn giữ món sưu tập.
+alter table accessory_server_ownership
+  add column if not exists copies integer not null default 1;
+
 alter table accessory_server_ownership enable row level security;
 
 drop policy if exists accessory_server_ownership_select_own on accessory_server_ownership;
@@ -133,6 +138,28 @@ $$;
 
 grant execute on function register_accessory_drop(text) to authenticated;
 
+-- Ghi nhận số bản sao người chơi đang có: idempotent (chỉ NÂNG, không hạ —
+-- hạ chỉ qua list_accessory), nên vừa dùng được lúc rớt vừa dùng để đối chiếu
+-- khi mở Chợ. Client tự khai số bản — cùng mức tin cậy với register_accessory_drop.
+create or replace function register_accessory_copies(p_accessory_id text, p_copies integer)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if p_copies < 1 or p_copies > 999 then
+    raise exception 'invalid_copies';
+  end if;
+  insert into accessory_server_ownership (user_id, accessory_id, copies)
+  values (auth.uid(), p_accessory_id, p_copies)
+  on conflict (user_id, accessory_id) do update
+    set copies = greatest(accessory_server_ownership.copies, excluded.copies);
+end;
+$$;
+
+grant execute on function register_accessory_copies(text, integer) to authenticated;
+
 -- Đăng bán — CHỈ cho đăng món đã có trong accessory_server_ownership của
 -- chính mình (xem lý do ở đầu file). Xoá khỏi bảng sở hữu ngay (món "rời
 -- khỏi tay" người bán trong lúc đang rao) để không đăng được 2 lần.
@@ -144,16 +171,22 @@ set search_path = public
 as $$
 declare
   v_listing_id uuid;
+  v_left integer;
 begin
   if p_price < 1 or p_price > 100000 then
     raise exception 'invalid_price';
   end if;
 
-  delete from accessory_server_ownership
-  where user_id = auth.uid() and accessory_id = p_accessory_id;
+  update accessory_server_ownership set copies = copies - 1
+  where user_id = auth.uid() and accessory_id = p_accessory_id
+  returning copies into v_left;
 
   if not found then
     raise exception 'not_owned';
+  end if;
+  if v_left <= 0 then
+    delete from accessory_server_ownership
+    where user_id = auth.uid() and accessory_id = p_accessory_id;
   end if;
 
   insert into accessory_listings (seller_id, accessory_id, price)
@@ -195,7 +228,8 @@ begin
 
   insert into accessory_server_ownership (user_id, accessory_id)
   values (v_seller, v_accessory)
-  on conflict (user_id, accessory_id) do nothing;
+  on conflict (user_id, accessory_id) do update
+    set copies = accessory_server_ownership.copies + 1;
 end;
 $$;
 
@@ -257,7 +291,8 @@ begin
 
   insert into accessory_server_ownership (user_id, accessory_id)
   values (v_buyer, v_accessory)
-  on conflict (user_id, accessory_id) do nothing;
+  on conflict (user_id, accessory_id) do update
+    set copies = accessory_server_ownership.copies + 1;
 
   insert into accessory_market_trades (listing_id, buyer_id, seller_id, accessory_id, price)
   values (p_listing_id, v_buyer, v_seller, v_accessory, v_price);
@@ -289,3 +324,42 @@ $$;
 
 revoke execute on function credit_market_coins(bigint) from public, anon;
 grant execute on function credit_market_coins(bigint) to authenticated;
+
+-- Giao dịch gần nhất, ẩn danh (không lộ id người mua/bán) — cho dải "Vừa bán".
+-- RLS của accessory_market_trades chỉ cho đọc giao dịch của chính mình nên
+-- phải qua security definer; chỉ trả 3 cột an toàn.
+create or replace function recent_market_trades(p_limit integer default 10)
+returns table (accessory_id text, price bigint, traded_at timestamptz)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select accessory_id, price, traded_at
+  from accessory_market_trades
+  order by traded_at desc
+  limit least(greatest(p_limit, 1), 20);
+$$;
+
+grant execute on function recent_market_trades(integer) to anon, authenticated;
+
+-- "Thương gia tuần": người bán được nhiều giao dịch nhất 7 ngày qua (hoà →
+-- tổng giá cao hơn → ai bán sớm hơn). Chỉ trả user_id — bảng xếp hạng Sưu tập
+-- vốn đã công khai user_id. Phí sàn 1% khiến 2 tài khoản bán qua lại để
+-- cày danh hiệu này mất Xu Chợ mỗi vòng; đây chỉ là danh hiệu, không thưởng.
+create or replace function market_weekly_top_seller()
+returns uuid
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select seller_id
+  from accessory_market_trades
+  where traded_at > now() - interval '7 days'
+  group by seller_id
+  order by count(*) desc, sum(price) desc, min(traded_at) asc
+  limit 1;
+$$;
+
+grant execute on function market_weekly_top_seller() to anon, authenticated;

@@ -856,3 +856,17 @@ hạn giao dịch/ngày). Điểm mấu chốt:
   trên Supabase (idempotent) thì phí 1% và `credit_market_coins` mới có hiệu
   lực. Test Dart: `test/state/game_controller_test.dart` (nhóm "Supabase chưa
   sẵn sàng"); RPC Postgres chưa có test tự động.
+
+### 27c. Bản sao dư phụ kiện + điểm nhấn Chợ (2026-10-02, đã code + test Dart — SQL chưa deploy)
+
+- **Bản dư**: rớt trùng vẫn được 2 💎 **và** cộng 1 bản dư vào
+  `GameState.accessorySpares` (id → số bản dư). Bán/mua/huỷ đăng chỉ đụng bản
+  dư trước; món chỉ mất khỏi kho khi bán nốt bản đầu. Kho/Chợ hiện `×N`.
+- **Server**: `accessory_server_ownership.copies`; RPC `register_accessory_copies`
+  (idempotent, chỉ nâng) dùng lúc rớt và lúc đối chiếu khi mở Chợ;
+  `list_accessory` trừ 1, xoá hàng khi về 0; `buy_listing`/`cancel_listing` cộng 1.
+- **Bảng Sưu tập** đếm món KHÁC NHAU = hợp(kho, đang bán), không cộng dồn.
+- **Điểm nhấn**: chấm đỏ + banner màn chính khi có listing mới (hiếm nhất),
+  dải "Vừa bán" (`recent_market_trades`, ẩn danh), danh hiệu "Thương gia tuần"
+  (`market_weekly_top_seller`, chỉ là danh hiệu).
+- **Chưa làm**: popup lúc rớt món (hiện chưa có popup rớt phụ kiện); push khi bán được.

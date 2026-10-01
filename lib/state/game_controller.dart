@@ -465,12 +465,17 @@ class GameController extends Notifier<GameSnapshot> {
     final gems = claimDailyQuestBonus(_game);
     if (gems > 0) {
       final rolled = rollAccessoryWith(_random);
-      final isNew = grantAccessory(_game, rolled);
+      grantAccessory(_game, rolled);
       // Ghi server NGAY lúc rớt (không đợi lúc đăng bán) — xem
       // _registerAccessoryDropServerSide và PROPOSAL_ACCESSORY_MARKET.md §0
       // cho lý do cần bước này (chặn thông đồng 2 tài khoản bơm phụ kiện
       // giả). Fire-and-forget: không chặn/trễ việc nhận thưởng cục bộ.
-      if (isNew) unawaited(_registerAccessoryDropServerSide(rolled.id));
+      unawaited(
+        _registerAccessoryDropServerSide(
+          rolled.id,
+          1 + (_game.accessorySpares[rolled.id] ?? 0),
+        ),
+      );
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -482,7 +487,14 @@ class GameController extends Notifier<GameSnapshot> {
   /// đợi tick nền) để giảm cửa sổ "hồi sinh" món đã bán qua đồng bộ đa máy
   /// — xem PROPOSAL_ACCESSORY_MARKET.md §5.
   void removeOwnedAccessoryLocally(String accessoryId) {
-    if (!_game.ownedAccessories.remove(accessoryId)) return;
+    final spare = _game.accessorySpares[accessoryId] ?? 0;
+    if (spare > 1) {
+      _game.accessorySpares[accessoryId] = spare - 1;
+    } else if (spare == 1) {
+      _game.accessorySpares.remove(accessoryId);
+    } else if (!_game.ownedAccessories.remove(accessoryId)) {
+      return;
+    }
     unawaited(saveNow());
     state = _snapshot();
   }
@@ -490,8 +502,12 @@ class GameController extends Notifier<GameSnapshot> {
   /// Chợ Phụ kiện: thêm 1 món vào kho local sau khi mua hoặc huỷ đăng thành
   /// công trên server (xem AccessoryMarketController.buyItem/cancelItem).
   void addOwnedAccessoryLocally(String accessoryId) {
-    if (_game.ownedAccessories.contains(accessoryId)) return;
-    _game.ownedAccessories.add(accessoryId);
+    if (_game.ownedAccessories.contains(accessoryId)) {
+      _game.accessorySpares[accessoryId] =
+          (_game.accessorySpares[accessoryId] ?? 0) + 1;
+    } else {
+      _game.ownedAccessories.add(accessoryId);
+    }
     unawaited(saveNow());
     state = _snapshot();
   }
@@ -814,9 +830,12 @@ class GameController extends Notifier<GameSnapshot> {
   /// không tin suông lời client). Lỗi mạng ở đây KHÔNG được chặn việc nhận
   /// thưởng cục bộ — [AccessoryMarketController.reconcileOwnership] sẽ bù
   /// lại lúc mở Chợ nếu lần này lỡ mất.
-  Future<void> _registerAccessoryDropServerSide(String accessoryId) async {
+  Future<void> _registerAccessoryDropServerSide(
+    String accessoryId,
+    int copies,
+  ) async {
     try {
-      await _market?.registerDrop(accessoryId);
+      await _market?.registerDrop(accessoryId, copies: copies);
     } catch (e) {
       developer.log('đăng ký sở hữu phụ kiện lỗi, sẽ bù lúc mở Chợ: $e',
           name: 'Market');
@@ -1225,6 +1244,7 @@ class GameController extends Notifier<GameSnapshot> {
       // Bản sao — cùng lý do m3Stars ở trên (xem snapshot-list-aliasing-select
       // memory: chia sẻ instance List làm `.select()` không rebuild).
       ownedAccessories: List.unmodifiable(_game.ownedAccessories),
+      accessorySpares: Map.unmodifiable(_game.accessorySpares),
       m3HowToSeen: _game.m3HowToSeen,
       starterPackOwned: _game.starterPackOwned,
       tutorialSeen: _game.tutorialSeen,

@@ -108,11 +108,13 @@ Accessory rollAccessory(double rarityRoll01, double itemRoll01) {
   return pool[i];
 }
 
-/// Cấp [a] cho [state]. Đã có thì quy đổi [Balance.duplicateAccessoryGems]
-/// 💎 thay vì lãng phí lượt rớt. Trả về true nếu là món MỚI. MUTATE.
+/// Cấp [a] cho [state]. Đã có thì được [Balance.duplicateAccessoryGems] 💎 VÀ
+/// thêm 1 bản dư (`accessorySpares`) bán được ở Chợ. Trả về true nếu là món
+/// MỚI. MUTATE.
 bool grantAccessory(GameState state, Accessory a) {
   if (state.ownedAccessories.contains(a.id)) {
     state.gems += Balance.duplicateAccessoryGems;
+    state.accessorySpares[a.id] = (state.accessorySpares[a.id] ?? 0) + 1;
     return false;
   }
   state.ownedAccessories.add(a.id);

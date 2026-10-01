@@ -455,6 +455,8 @@
   "marketTitle": "Pasar Aksesori",
   "marketTabBrowse": "Pasar",
   "marketTabMine": "Milikku",
+  "marketRecentSalesHeader": "Baru terjual",
+  "marketMerchantTitle": "Pedagang Mingguan",
   "marketWallet": "{n} Koin Pasar",
   "@marketWallet": {
     "placeholders": {

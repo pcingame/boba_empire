@@ -1167,6 +1167,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get marketTabMine => 'Milikku';
 
   @override
+  String get marketRecentSalesHeader => 'Baru terjual';
+
+  @override
+  String get marketMerchantTitle => 'Pedagang Mingguan';
+
+  @override
   String marketWallet(int n) {
     return '$n Koin Pasar';
   }

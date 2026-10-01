@@ -55,6 +55,7 @@ class GameSnapshot {
     required this.achievementsClaimed,
     required this.m3Stars,
     required this.ownedAccessories,
+    required this.accessorySpares,
     required this.m3HowToSeen,
     required this.prestigeStarsSpendable,
     required this.prestigeIncomeLevel,
@@ -173,6 +174,9 @@ class GameSnapshot {
 
   /// Id phụ kiện sưu tập đã có (xem `core/accessories.dart`).
   final List<String> ownedAccessories;
+
+  /// Bản sao dư mỗi món (xem GameState.accessorySpares).
+  final Map<String, int> accessorySpares;
 
   /// Đã xem hướng dẫn Trân Châu Rơi chưa.
   final bool m3HowToSeen;
