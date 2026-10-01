@@ -32,17 +32,23 @@ final _otherListing = MarketListing(
   createdAt: DateTime.utc(2026, 10, 1),
 );
 
+/// Món do bản app MỚI HƠN tạo ra — bản cũ không có trong danh mục.
+List<MarketListing> _extraListings = const [];
+
 class _FakeMarketController extends AccessoryMarketController {
   int buyCalls = 0;
   int cancelCalls = 0;
 
   @override
   AccessoryMarketViewState build() => AccessoryMarketLoaded(
-    listings: [_myListing, _otherListing],
+    listings: [_myListing, _otherListing, ..._extraListings],
     myListings: [_myListing],
     walletBalance: 42,
     myUserId: 'me',
-    recentSales: const [RecentSale(accessoryId: 'dragon', price: 777)],
+    recentSales: const [
+      RecentSale(accessoryId: 'dragon', price: 777),
+      RecentSale(accessoryId: 'item_from_future', price: 5),
+    ],
   );
 
   @override
@@ -65,11 +71,11 @@ class _FakeMarketController extends AccessoryMarketController {
 }
 
 Future<(ProviderContainer, _FakeMarketController)> _pump(
-    WidgetTester tester) async {
+    WidgetTester tester, {List<String> extraOwned = const []}) async {
   SharedPreferences.setMockInitialValues({});
   final prefs = await SharedPreferences.getInstance();
   final seed = GameState.newGame(nowMillis: 0)
-    ..ownedAccessories.addAll(['mint_leaf']); // món có thể đăng bán
+    ..ownedAccessories.addAll(['mint_leaf', ...extraOwned]); // món có thể đăng bán
   await GameStorage(prefs).save(seed, nowMillis: 0);
   final fake = _FakeMarketController();
   final container = ProviderContainer(overrides: [
@@ -156,6 +162,28 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(fake.cancelCalls, 1);
+    container.dispose();
+  });
+
+  testWidgets('id phụ kiện lạ (từ bản app mới hơn) KHÔNG làm sập Chợ',
+      (tester) async {
+    _extraListings = [
+      MarketListing(
+        id: 'listing-future',
+        sellerId: 'someone-else',
+        accessoryId: 'item_from_future',
+        price: 1,
+        createdAt: DateTime.utc(2026, 10, 1),
+      ),
+    ];
+    addTearDown(() => _extraListings = const []);
+    final (container, _) = await _pump(tester, extraOwned: ['owned_from_future']);
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('Rồng nhỏ'), findsOneWidget); // món biết vẫn hiện
+    await tester.tap(find.text('Của tôi'));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
     container.dispose();
   });
 }

@@ -101,6 +101,13 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
           settings.authorizationStatus != AuthorizationStatus.provisional) {
         return;
       }
+      // iOS: token APNs về SAU lúc bấm "Cho phép" vài giây — gọi getToken sớm
+      // thì ném apns-token-not-set (bị nuốt → không bao giờ đăng ký được).
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
+        for (var i = 0; i < 5 && await fcm.getAPNSToken() == null; i++) {
+          await Future<void>.delayed(const Duration(seconds: 1));
+        }
+      }
       final token = await fcm.getToken();
       if (token == null) return;
       final locale = ref.read(localeProvider)?.languageCode ??

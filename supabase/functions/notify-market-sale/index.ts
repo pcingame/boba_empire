@@ -86,6 +86,7 @@ Deno.serve(async (req) => {
 
   const sa = JSON.parse(Deno.env.get("FCM_SERVICE_ACCOUNT")!);
   const access = await fcmAccessToken(sa);
+  const results: { platform?: string; status: number }[] = [];
   for (const t of tokens) {
     const text = TEXT[t.locale] ?? TEXT.en;
     const res = await fetch(
@@ -103,8 +104,10 @@ Deno.serve(async (req) => {
         }),
       },
     );
+    results.push({ status: res.status });
+    if (!res.ok) console.error("fcm", res.status, await res.text());
     // Token chết (gỡ app / đổi máy) → dọn để lần sau khỏi gửi vô ích.
     if (res.status === 404) await db.from("push_tokens").delete().eq("token", t.token);
   }
-  return new Response("ok");
+  return Response.json({ sent: results });
 });

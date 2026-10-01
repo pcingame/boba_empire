@@ -21,6 +21,10 @@ import 'widgets/accessory_rarity.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
+/// Id có trong danh mục của bản app này. Listing/kho có thể chứa món do bản app
+/// MỚI HƠN tạo ra — accessoryById ném StateError với id lạ, nên phải lọc trước.
+bool _known(String id) => accessories.any((a) => a.id == id);
+
 Future<void> showAccessoryMarket(BuildContext context) {
   return Navigator.of(
     context,
@@ -62,6 +66,8 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
     if (!_loaded) {
       _loaded = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
+        // Thoát trang trước khi frame đầu xong → ref đã dispose, dùng là crash.
+        if (!mounted) return;
         // Mở Chợ = đã xem hết listing hiện có → tắt chấm đỏ/banner ở màn chính.
         ref
             .read(sharedPreferencesProvider)
@@ -401,8 +407,9 @@ class _BrowseTab extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     // Không hiện listing của chính mình ở tab Chợ — tự mua bị RPC chặn, xem
     // ở tab "Của tôi" để huỷ thay vì mua.
-    final others =
-        view.listings.where((l) => l.sellerId != view.myUserId).toList();
+    final others = view.listings
+        .where((l) => l.sellerId != view.myUserId && _known(l.accessoryId))
+        .toList();
 
     return Column(
       children: [
@@ -590,8 +597,10 @@ class _MineTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final owned =
-        ref.watch(gameControllerProvider.select((s) => s.ownedAccessories));
+    final owned = ref
+        .watch(gameControllerProvider.select((s) => s.ownedAccessories))
+        .where(_known)
+        .toList();
 
     return RefreshIndicator(
       onRefresh: () =>
@@ -614,7 +623,7 @@ class _MineTab extends ConsumerWidget {
           if (view.myListings.isEmpty)
             _EmptyState(emoji: '📋', message: l10n.marketEmptyMine)
           else
-            for (final listing in view.myListings)
+            for (final listing in view.myListings.where((l) => _known(l.accessoryId)))
               _ListingTile(
                 listing: listing,
                 trailing: OutlinedButton(

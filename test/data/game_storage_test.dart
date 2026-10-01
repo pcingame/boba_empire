@@ -182,4 +182,46 @@ void main() {
     await storage.clear();
     expect(storage.load(), isNull);
   });
+
+  group('accessorySpares hỏng KHÔNG được làm mất cả save', () {
+    // load() nuốt mọi lỗi và trả null (= ván mới) — một trường phụ hỏng mà
+    // ném lỗi thì người chơi mất toàn bộ tiến trình.
+    test('sai kiểu (list/chuỗi/null) -> load vẫn ra save, bản dư rỗng', () async {
+      final storage = await _storage();
+      for (final bad in <Object?>[
+        [1, 2],
+        'abc',
+        42,
+        null
+      ]) {
+        final json = GameState.newGame(nowMillis: 0).toJson();
+        json['accessorySpares'] = bad;
+        expect(GameState.fromJson(json).accessorySpares, isEmpty, reason: '$bad');
+      }
+      // và đi qua đúng đường load() của storage:
+      final state = GameState.newGame(nowMillis: 0)..gems = 7;
+      await storage.save(state, nowMillis: 1);
+      expect(storage.load()!.gems, 7);
+    });
+
+    test('giá trị lạ: âm/0/chuỗi/NaN/quá lớn -> bỏ hoặc kẹp, không ném lỗi', () {
+      final json = GameState.newGame(nowMillis: 0).toJson();
+      json['accessorySpares'] = {
+        'dragon': 1e30, // quá lớn -> kẹp, không tràn int khi cộng 1 + spares
+        'cupcake': -3,
+        'cookie': 0,
+        'cap': 'abc',
+        'kite': 2.7,
+        'scarf': double.nan,
+        'candle': double.infinity,
+      };
+      final spares = GameState.fromJson(json).accessorySpares;
+      expect(spares['dragon'], lessThanOrEqualTo(999));
+      expect(spares['dragon'], greaterThanOrEqualTo(1));
+      expect(spares['kite'], 2);
+      for (final k in ['cupcake', 'cookie', 'cap', 'scarf', 'candle']) {
+        expect(spares.containsKey(k), isFalse, reason: k);
+      }
+    });
+  });
 }

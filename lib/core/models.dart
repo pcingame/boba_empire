@@ -496,10 +496,16 @@ class GameState {
             (json['redeemedCodes'] as List?)?.cast<String>().toList(),
         ownedAccessories:
             (json['ownedAccessories'] as List?)?.cast<String>().toList(),
+        // load() nuốt mọi lỗi thành "ván mới" — trường phụ này sai kiểu/giá trị
+        // lạ phải bị BỎ QUA chứ không được ném, nếu không mất cả save.
         accessorySpares: {
-          for (final e in ((json['accessorySpares'] as Map?) ?? const {}).entries)
-            if (e.value is num && (e.value as num) >= 1)
-              e.key as String: (e.value as num).toInt(),
+          if (json['accessorySpares'] is Map)
+            for (final e in (json['accessorySpares'] as Map).entries)
+              if (e.key is String &&
+                  e.value is num &&
+                  (e.value as num).isFinite &&
+                  (e.value as num) >= 1)
+                e.key as String: (e.value as num).clamp(1, 999).toInt(),
         },
         prestigeIncomeLevel:
             (json['prestigeIncomeLevel'] as num?)?.toInt() ?? 0,
