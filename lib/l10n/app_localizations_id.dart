@@ -956,6 +956,199 @@ class AppLocalizationsId extends AppLocalizations {
       'Kamu belum menyelesaikan Babak 3 — selesaikan Bab 36 untuk masuk peringkat.';
 
   @override
+  String get accessoryMenuTitle => 'Koleksi';
+
+  @override
+  String get accessoryInventoryTitle => 'Koleksi Aksesori';
+
+  @override
+  String accessoryInventoryOwned(int owned, int total) {
+    return '$owned/$total terkumpul';
+  }
+
+  @override
+  String get accessoryRarityCommon => 'Umum';
+
+  @override
+  String get accessoryRarityRare => 'Langka';
+
+  @override
+  String get accessoryRarityEpic => 'Epik';
+
+  @override
+  String get accessoryRarityLegendary => 'Legendaris';
+
+  @override
+  String get accessoryLbTitle => 'Peringkat Koleksi';
+
+  @override
+  String accessoryLbCount(int n) {
+    return '$n aksesori';
+  }
+
+  @override
+  String get accessoryLbEmpty =>
+      'Belum ada yang masuk peringkat. Kumpulkan satu aksesori dan posisi teratas jadi milikmu!';
+
+  @override
+  String get accessoryLbNoOwned =>
+      'Kamu belum punya aksesori apa pun — selesaikan 3 misi harian untuk berkesempatan mendapatkannya.';
+
+  @override
+  String get accessoryLbError =>
+      'Tidak dapat memuat peringkat. Coba lagi nanti.';
+
+  @override
+  String get accessoryMintLeaf => 'Daun Mint';
+
+  @override
+  String get accessoryCupcake => 'Cupcake';
+
+  @override
+  String get accessoryCookie => 'Kue Kering';
+
+  @override
+  String get accessoryPottedPlant => 'Tanaman Pot';
+
+  @override
+  String get accessoryCandle => 'Lilin Aromatik';
+
+  @override
+  String get accessoryScarf => 'Syal';
+
+  @override
+  String get accessoryKite => 'Layang-layang Kertas';
+
+  @override
+  String get accessoryCap => 'Topi';
+
+  @override
+  String get accessorySeashell => 'Kerang';
+
+  @override
+  String get accessoryMask => 'Topeng';
+
+  @override
+  String get accessoryDrum => 'Drum Kecil';
+
+  @override
+  String get accessoryPalette => 'Palet Warna';
+
+  @override
+  String get accessoryCrystalBall => 'Bola Kristal';
+
+  @override
+  String get accessoryLantern => 'Lentera Antik';
+
+  @override
+  String get accessoryUnicorn => 'Unicorn Kecil';
+
+  @override
+  String get accessoryDragon => 'Naga Kecil';
+
+  @override
+  String get accessoryBalloon => 'Balon';
+
+  @override
+  String get accessoryBowtie => 'Pita Kupu-kupu';
+
+  @override
+  String get accessorySunglasses => 'Kacamata Hitam';
+
+  @override
+  String get accessoryUmbrella => 'Payung Kecil';
+
+  @override
+  String get accessoryTeapot => 'Teko Kecil';
+
+  @override
+  String get accessoryBell => 'Lonceng Kecil';
+
+  @override
+  String get accessoryRibbon => 'Pita';
+
+  @override
+  String get accessoryBookmark => 'Pembatas Buku Lucu';
+
+  @override
+  String get accessoryWindChime => 'Lonceng Angin';
+
+  @override
+  String get accessoryClover => 'Semanggi Berdaun Empat';
+
+  @override
+  String get accessoryBubble => 'Gelembung Sabun';
+
+  @override
+  String get accessorySticker => 'Stiker';
+
+  @override
+  String get accessoryYarn => 'Gulungan Benang Wol';
+
+  @override
+  String get accessoryFan => 'Kipas Kertas';
+
+  @override
+  String get accessoryBasket => 'Keranjang Anyaman';
+
+  @override
+  String get accessoryBead => 'Gelang Manik-manik';
+
+  @override
+  String get accessoryLadybug => 'Kepik Kecil';
+
+  @override
+  String get accessoryKey => 'Kunci Antik';
+
+  @override
+  String get accessoryDiamondStone => 'Batu Berlian';
+
+  @override
+  String get accessoryMusicNote => 'Not Musik';
+
+  @override
+  String get accessoryTelescope => 'Teleskop';
+
+  @override
+  String get accessoryAnchor => 'Jangkar';
+
+  @override
+  String get accessoryFeather => 'Bulu';
+
+  @override
+  String get accessoryHourglass => 'Jam Pasir';
+
+  @override
+  String get accessoryMap => 'Peta Kuno';
+
+  @override
+  String get accessoryRing => 'Cincin Kecil';
+
+  @override
+  String get accessoryMagicWand => 'Tongkat Sihir';
+
+  @override
+  String get accessoryTrident => 'Trisula';
+
+  @override
+  String get accessoryPeacock => 'Merak Kecil';
+
+  @override
+  String get accessoryComet => 'Komet';
+
+  @override
+  String get accessoryButterfly => 'Kupu-kupu Kristal';
+
+  @override
+  String get accessoryAngelWing => 'Sayap Malaikat';
+
+  @override
+  String get accessoryPhoenix => 'Phoenix';
+
+  @override
+  String get accessoryGalaxy => 'Galaksi';
+
+  @override
   String get storySpeedrunEmpty =>
       'Belum ada yang menyelesaikan cerita — jadilah yang pertama!';
 

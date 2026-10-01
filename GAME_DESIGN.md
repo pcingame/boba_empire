@@ -741,3 +741,49 @@ vẫn có thể rộng hơn cao.
 - Prose vi/en đầy đủ; es/id/pt/th tạm fallback sang `en` (cùng quy ước mọi đợt
   mở rộng trước). Nhãn tab + thông báo "chưa hoàn thành" dịch đủ 6 ngôn ngữ
   trong ARB (`storySpeedrunTabExt2`, `storySpeedrunExt2NotCompletedYet`).
+
+## 26. Phụ kiện sưu tập — "Kho phụ kiện" (2026-10-01, chưa playtest)
+
+> ⚠️ Trọng số độ hiếm + số 💎 quy đổi trùng là **ước lượng, chưa playtest**.
+> Mục đích: sink cosmetic thuần cho Xu/thời gian chơi cuối game, không đụng
+> cân bằng kinh tế (khác gem shop/redeem — không có tác dụng lên số liệu).
+
+- **50 món** (`lib/core/accessories.dart`), chia 4 độ hiếm: 25 thường · 13
+  hiếm · 9 sử thi · 3 huyền thoại (nâng từ 16 lên 50 — 2026-10-01 — lúc chốt
+  kế hoạch Chợ Phụ kiện ở `PROPOSAL_ACCESSORY_MARKET.md`, muốn sưu tập đủ
+  dài hơi để chợ có ý nghĩa). Chỉ id + emoji ở tầng dữ liệu — tên hiển thị
+  dựng ở `l10n_ext.dart` (`accessoryName`/`accessoryRarityLabel`), cùng khuôn
+  `generatorName`/`achievementDesc`, dịch đủ 6 ngôn ngữ trong ARB.
+- **Rớt khi nhận thưởng "xong cả 3 nhiệm vụ ngày"** (`claimDailyBonus` trong
+  `game_controller.dart`) — CỐ Ý không hook vào chuỗi nhiệm vụ chính 10 bước +
+  lặp vô hạn (đã có lịch sử bug tràn số, xem int-pow-overflow-quest-zero
+  memory) để giữ 2 hệ thống tách biệt. Random 2 tầng (`rollAccessory`, cùng
+  khuôn `spinWheel` ở wheel.dart): chọn độ hiếm theo trọng số trước, rồi chọn
+  đều trong nhóm đó.
+- **Trùng món đã có** → quy đổi `Balance.duplicateAccessoryGems` (2 💎) thay
+  vì lãng phí lượt rớt, không thêm bản ghi trùng vào `GameState.ownedAccessories`.
+- **Không có "vừa nhận được X" popup** — cố ý đơn giản hoá (cùng triết lý
+  "không tự bật popup, chuỗi mở app đã dài" đã ghi ở `daily_quests_dialog.dart`).
+  Người chơi kiểm tra bằng cách mở "Kho phụ kiện".
+- **UI**: `accessory_inventory_page.dart` (lưới 3 cột, ô khoá hiện "❔"/"???",
+  FittedBox co cụm emoji+tên+độ hiếm — tên dịch dài ở vài ngôn ngữ (VD
+  "Unicórnio Pequeno") tại cỡ chữ lớn từng làm tràn RenderFlex, xem
+  shop-tile-overflow-pattern memory, cùng lớp bug với cột hạng bảng xếp hạng
+  chính) và `accessory_leaderboard_page.dart` (xếp theo SỐ MÓN KHÁC NHAU đã
+  có, top tuyệt đối, cùng khuôn `m3_leaderboard_page.dart`). Vào từ
+  `compete_hub_dialog.dart`.
+- **Server**: bảng mới `accessory_leaderboard_entries` + RPC
+  `accessory_leaderboard_top` (`supabase/accessory_leaderboard_schema.sql`,
+  cùng khuôn m3_leaderboard: trigger chặn hạ cấp, CHECK `owned_count <= 50`
+  khớp đúng số món trong danh mục — **nâng danh mục lên >50 món thì PHẢI nâng
+  trần CHECK này trước**) — **phải chạy file SQL trên Supabase**.
+- `GameState` +1 field (persisted, giữ qua prestige/Kỷ Nguyên/Ascension,
+  KHÔNG cho xoá): `ownedAccessories`. JSON back-compat (`?? []`).
+- **Scope cố ý cắt bớt so với ý tưởng gốc**: KHÔNG có market giao dịch giữa
+  người chơi (P2P) — rủi ro gian lận cao (tự bán cho tài khoản phụ để rửa
+  Xu/💎, cùng lớp rủi ro đã gặp ở leaderboard/Đấu Trường) nên để riêng thành
+  giai đoạn 2. Thiết kế đầy đủ (chưa code) ở
+  [`PROPOSAL_ACCESSORY_MARKET.md`](PROPOSAL_ACCESSORY_MARKET.md) — điểm
+  mấu chốt: dùng đơn vị "Xu Chợ" tách biệt hoàn toàn khỏi Xu/💎 thật, không
+  đổi ngược được, để triệt tiêu động cơ rửa tiền ngay từ thiết kế thay vì
+  phải dò từng kiểu gian lận.

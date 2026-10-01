@@ -93,6 +93,21 @@ void main() {
     expect(fromOld.storyChoiceG, isNull);
   });
 
+  test(
+      'save rồi load giữ nguyên ownedAccessories; save cũ (trước phụ kiện '
+      'sưu tập) thiếu trường -> load rỗng, không ném lỗi', () async {
+    final storage = await _storage();
+    final state = GameState.newGame(nowMillis: 0)
+      ..ownedAccessories.addAll(['mint_leaf', 'dragon']);
+    await storage.save(state, nowMillis: 1000);
+    final loaded = storage.load()!;
+    expect(loaded.ownedAccessories, ['mint_leaf', 'dragon']);
+
+    final oldJson = state.toJson()..remove('ownedAccessories');
+    final fromOld = GameState.fromJson(oldJson);
+    expect(fromOld.ownedAccessories, isEmpty);
+  });
+
   test('save rồi load giữ nguyên gemTimeSkipDay/gemTimeSkipUsedToday',
       () async {
     final storage = await _storage();

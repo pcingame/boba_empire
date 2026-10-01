@@ -312,6 +312,22 @@ class Balance {
   static const double dailyEarnMinTarget = 500;
   static const int dailyEarnIncomeSeconds = 30 * 60;
 
+  // --- Phụ kiện sưu tập (2026-10-01) — ⚠️ số là ƯỚC LƯỢNG, chưa playtest ---
+  //
+  // Rớt khi nhận thưởng "xong cả 3 nhiệm vụ ngày" (xem claimDailyQuestBonus
+  // trong game_controller.dart) — không đụng chuỗi nhiệm vụ chính (đã có lịch
+  // sử bug tràn số, xem int-pow-overflow-quest-zero memory).
+
+  /// Trọng số chọn ĐỘ HIẾM khi rớt phụ kiện (không phải trọng số từng món —
+  /// trong cùng 1 độ hiếm thì đều xác suất giữa các món). Tổng không cần = 100.
+  static const int accessoryWeightCommon = 60;
+  static const int accessoryWeightRare = 25;
+  static const int accessoryWeightEpic = 12;
+  static const int accessoryWeightLegendary = 3;
+
+  /// Rớt trúng món đã có (trùng) → quy đổi 💎 thay vì lãng phí lượt rớt.
+  static const int duplicateAccessoryGems = 2;
+
   // --- Sự kiện giới hạn thời gian (2026-09-29, ROADMAP #11) ---
   //
   // Mặc định TẮT (start = end = 0, xem eventMultiplierAt() trong economy.dart)

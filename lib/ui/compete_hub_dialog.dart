@@ -6,6 +6,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
+import 'accessory_inventory_page.dart';
 import 'arena_leaderboard_page.dart';
 import 'arena_page.dart';
 import 'leaderboard_page.dart';
@@ -63,6 +64,15 @@ class _CompeteHubDialog extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
               showArenaLeaderboardPage(context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.auto_awesome),
+            title: Text(l10n.accessoryMenuTitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              Navigator.of(context).pop();
+              showAccessoryInventory(context);
             },
           ),
         ],

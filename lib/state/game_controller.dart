@@ -12,6 +12,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../core/accessories.dart';
 import '../core/achievements.dart';
 import '../core/balance.dart';
 import '../core/daily.dart';
@@ -453,10 +454,14 @@ class GameController extends Notifier<GameSnapshot> {
     return gems;
   }
 
-  /// Nhận thưởng "xong cả 3 nhiệm vụ ngày".
+  /// Nhận thưởng "xong cả 3 nhiệm vụ ngày" — kèm rớt 1 phụ kiện sưu tập
+  /// (trùng thì quy đổi 💎, xem grantAccessory). Không đổi chữ ký trả về
+  /// (int gems) để khỏi đụng `claim()` helper dùng chung ở daily_quests_dialog.dart
+  /// — phụ kiện vừa nhận không có popup riêng, xem ở màn "Kho phụ kiện".
   int claimDailyBonus() {
     final gems = claimDailyQuestBonus(_game);
     if (gems > 0) {
+      grantAccessory(_game, rollAccessoryWith(_random));
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -1113,6 +1118,9 @@ class GameController extends Notifier<GameSnapshot> {
       // Bản sao: dùng chung instance thì `.select((s) => s.m3Stars)` so sánh
       // ra "y nguyên" (cùng object) và UI không bao giờ rebuild.
       m3Stars: List.unmodifiable(_game.m3Stars),
+      // Bản sao — cùng lý do m3Stars ở trên (xem snapshot-list-aliasing-select
+      // memory: chia sẻ instance List làm `.select()` không rebuild).
+      ownedAccessories: List.unmodifiable(_game.ownedAccessories),
       m3HowToSeen: _game.m3HowToSeen,
       starterPackOwned: _game.starterPackOwned,
       tutorialSeen: _game.tutorialSeen,

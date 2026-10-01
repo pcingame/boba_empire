@@ -959,6 +959,199 @@ class AppLocalizationsPt extends AppLocalizations {
       'Você ainda não concluiu o Ato 3 — conclua o Capítulo 36 para entrar no ranking.';
 
   @override
+  String get accessoryMenuTitle => 'Coleção';
+
+  @override
+  String get accessoryInventoryTitle => 'Coleção de acessórios';
+
+  @override
+  String accessoryInventoryOwned(int owned, int total) {
+    return '$owned/$total coletados';
+  }
+
+  @override
+  String get accessoryRarityCommon => 'Comum';
+
+  @override
+  String get accessoryRarityRare => 'Raro';
+
+  @override
+  String get accessoryRarityEpic => 'Épico';
+
+  @override
+  String get accessoryRarityLegendary => 'Lendário';
+
+  @override
+  String get accessoryLbTitle => 'Ranking de coleção';
+
+  @override
+  String accessoryLbCount(int n) {
+    return '$n acessórios';
+  }
+
+  @override
+  String get accessoryLbEmpty =>
+      'Ainda ninguém no ranking. Colecione um acessório e o primeiro lugar é seu!';
+
+  @override
+  String get accessoryLbNoOwned =>
+      'Você ainda não tem nenhum acessório — complete as 3 missões diárias para ter uma chance.';
+
+  @override
+  String get accessoryLbError =>
+      'Não foi possível carregar o ranking. Tente novamente mais tarde.';
+
+  @override
+  String get accessoryMintLeaf => 'Folha de Hortelã';
+
+  @override
+  String get accessoryCupcake => 'Cupcake';
+
+  @override
+  String get accessoryCookie => 'Biscoito';
+
+  @override
+  String get accessoryPottedPlant => 'Planta em Vaso';
+
+  @override
+  String get accessoryCandle => 'Vela Aromática';
+
+  @override
+  String get accessoryScarf => 'Cachecol';
+
+  @override
+  String get accessoryKite => 'Pipa de Papel';
+
+  @override
+  String get accessoryCap => 'Boné';
+
+  @override
+  String get accessorySeashell => 'Concha do Mar';
+
+  @override
+  String get accessoryMask => 'Máscara';
+
+  @override
+  String get accessoryDrum => 'Tamborzinho';
+
+  @override
+  String get accessoryPalette => 'Paleta de Cores';
+
+  @override
+  String get accessoryCrystalBall => 'Bola de Cristal';
+
+  @override
+  String get accessoryLantern => 'Lanterna Antiga';
+
+  @override
+  String get accessoryUnicorn => 'Unicórnio Pequeno';
+
+  @override
+  String get accessoryDragon => 'Dragão Pequeno';
+
+  @override
+  String get accessoryBalloon => 'Balão';
+
+  @override
+  String get accessoryBowtie => 'Laço';
+
+  @override
+  String get accessorySunglasses => 'Óculos de Sol';
+
+  @override
+  String get accessoryUmbrella => 'Guarda-chuva Pequeno';
+
+  @override
+  String get accessoryTeapot => 'Bule Pequeno';
+
+  @override
+  String get accessoryBell => 'Sininho';
+
+  @override
+  String get accessoryRibbon => 'Fita';
+
+  @override
+  String get accessoryBookmark => 'Marcador de Página';
+
+  @override
+  String get accessoryWindChime => 'Sino de Vento';
+
+  @override
+  String get accessoryClover => 'Trevo de Quatro Folhas';
+
+  @override
+  String get accessoryBubble => 'Bolha de Sabão';
+
+  @override
+  String get accessorySticker => 'Adesivo';
+
+  @override
+  String get accessoryYarn => 'Novelo de Lã';
+
+  @override
+  String get accessoryFan => 'Leque de Papel';
+
+  @override
+  String get accessoryBasket => 'Cesta de Vime';
+
+  @override
+  String get accessoryBead => 'Pulseira de Contas';
+
+  @override
+  String get accessoryLadybug => 'Joaninha Pequena';
+
+  @override
+  String get accessoryKey => 'Chave Antiga';
+
+  @override
+  String get accessoryDiamondStone => 'Pedra de Diamante';
+
+  @override
+  String get accessoryMusicNote => 'Nota Musical';
+
+  @override
+  String get accessoryTelescope => 'Telescópio';
+
+  @override
+  String get accessoryAnchor => 'Âncora';
+
+  @override
+  String get accessoryFeather => 'Pena';
+
+  @override
+  String get accessoryHourglass => 'Ampulheta';
+
+  @override
+  String get accessoryMap => 'Mapa Antigo';
+
+  @override
+  String get accessoryRing => 'Anelzinho';
+
+  @override
+  String get accessoryMagicWand => 'Varinha Mágica';
+
+  @override
+  String get accessoryTrident => 'Tridente';
+
+  @override
+  String get accessoryPeacock => 'Pavão Pequeno';
+
+  @override
+  String get accessoryComet => 'Cometa';
+
+  @override
+  String get accessoryButterfly => 'Borboleta de Cristal';
+
+  @override
+  String get accessoryAngelWing => 'Asa de Anjo';
+
+  @override
+  String get accessoryPhoenix => 'Fênix';
+
+  @override
+  String get accessoryGalaxy => 'Galáxia';
+
+  @override
   String get storySpeedrunEmpty =>
       'Ninguém terminou a história ainda — seja o primeiro!';
 

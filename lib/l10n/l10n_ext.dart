@@ -2,6 +2,7 @@
 /// dịch. Gom một chỗ để tầng core/Balance khỏi giữ tên hiển thị.
 library;
 
+import '../core/accessories.dart';
 import '../core/achievements.dart';
 import '../core/format.dart';
 import '../core/quests.dart';
@@ -110,4 +111,67 @@ String achievementDesc(AppLocalizations l10n, Achievement a) =>
       AchievementMetric.levels => l10n.achLevels(a.threshold.toInt()),
       AchievementMetric.prestige => l10n.achPrestige(a.threshold.toInt()),
       AchievementMetric.ascension => l10n.achAscend,
+    };
+
+/// Tên hiển thị của một phụ kiện sưu tập (xem core/accessories.dart).
+String accessoryName(AppLocalizations l10n, String id) => switch (id) {
+      'mint_leaf' => l10n.accessoryMintLeaf,
+      'cupcake' => l10n.accessoryCupcake,
+      'cookie' => l10n.accessoryCookie,
+      'potted_plant' => l10n.accessoryPottedPlant,
+      'candle' => l10n.accessoryCandle,
+      'scarf' => l10n.accessoryScarf,
+      'kite' => l10n.accessoryKite,
+      'cap' => l10n.accessoryCap,
+      'seashell' => l10n.accessorySeashell,
+      'mask' => l10n.accessoryMask,
+      'drum' => l10n.accessoryDrum,
+      'palette' => l10n.accessoryPalette,
+      'crystal_ball' => l10n.accessoryCrystalBall,
+      'lantern' => l10n.accessoryLantern,
+      'unicorn' => l10n.accessoryUnicorn,
+      'dragon' => l10n.accessoryDragon,
+      'balloon' => l10n.accessoryBalloon,
+      'bowtie' => l10n.accessoryBowtie,
+      'sunglasses' => l10n.accessorySunglasses,
+      'umbrella' => l10n.accessoryUmbrella,
+      'teapot' => l10n.accessoryTeapot,
+      'bell' => l10n.accessoryBell,
+      'ribbon' => l10n.accessoryRibbon,
+      'bookmark' => l10n.accessoryBookmark,
+      'wind_chime' => l10n.accessoryWindChime,
+      'clover' => l10n.accessoryClover,
+      'bubble' => l10n.accessoryBubble,
+      'sticker' => l10n.accessorySticker,
+      'yarn' => l10n.accessoryYarn,
+      'fan' => l10n.accessoryFan,
+      'basket' => l10n.accessoryBasket,
+      'bead' => l10n.accessoryBead,
+      'ladybug' => l10n.accessoryLadybug,
+      'key' => l10n.accessoryKey,
+      'diamond_stone' => l10n.accessoryDiamondStone,
+      'music_note' => l10n.accessoryMusicNote,
+      'telescope' => l10n.accessoryTelescope,
+      'anchor' => l10n.accessoryAnchor,
+      'feather' => l10n.accessoryFeather,
+      'hourglass' => l10n.accessoryHourglass,
+      'map' => l10n.accessoryMap,
+      'ring' => l10n.accessoryRing,
+      'magic_wand' => l10n.accessoryMagicWand,
+      'trident' => l10n.accessoryTrident,
+      'peacock' => l10n.accessoryPeacock,
+      'comet' => l10n.accessoryComet,
+      'butterfly' => l10n.accessoryButterfly,
+      'angel_wing' => l10n.accessoryAngelWing,
+      'phoenix' => l10n.accessoryPhoenix,
+      'galaxy' => l10n.accessoryGalaxy,
+      _ => id,
+    };
+
+String accessoryRarityLabel(AppLocalizations l10n, AccessoryRarity r) =>
+    switch (r) {
+      AccessoryRarity.common => l10n.accessoryRarityCommon,
+      AccessoryRarity.rare => l10n.accessoryRarityRare,
+      AccessoryRarity.epic => l10n.accessoryRarityEpic,
+      AccessoryRarity.legendary => l10n.accessoryRarityLegendary,
     };

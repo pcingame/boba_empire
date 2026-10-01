@@ -955,6 +955,199 @@ class AppLocalizationsEn extends AppLocalizations {
       'You haven\'t finished Act 3 yet — complete Chapter 36 to be ranked.';
 
   @override
+  String get accessoryMenuTitle => 'Collection';
+
+  @override
+  String get accessoryInventoryTitle => 'Accessory Collection';
+
+  @override
+  String accessoryInventoryOwned(int owned, int total) {
+    return '$owned/$total collected';
+  }
+
+  @override
+  String get accessoryRarityCommon => 'Common';
+
+  @override
+  String get accessoryRarityRare => 'Rare';
+
+  @override
+  String get accessoryRarityEpic => 'Epic';
+
+  @override
+  String get accessoryRarityLegendary => 'Legendary';
+
+  @override
+  String get accessoryLbTitle => 'Collection ranking';
+
+  @override
+  String accessoryLbCount(int n) {
+    return '$n accessories';
+  }
+
+  @override
+  String get accessoryLbEmpty =>
+      'Nobody on the board yet. Collect an accessory and the top spot is yours!';
+
+  @override
+  String get accessoryLbNoOwned =>
+      'You haven\'t collected anything yet — finish all 3 daily quests for a chance at one.';
+
+  @override
+  String get accessoryLbError =>
+      'Couldn\'t load the ranking. Please try again later.';
+
+  @override
+  String get accessoryMintLeaf => 'Mint Leaf';
+
+  @override
+  String get accessoryCupcake => 'Cupcake';
+
+  @override
+  String get accessoryCookie => 'Cookie';
+
+  @override
+  String get accessoryPottedPlant => 'Potted Plant';
+
+  @override
+  String get accessoryCandle => 'Scented Candle';
+
+  @override
+  String get accessoryScarf => 'Scarf';
+
+  @override
+  String get accessoryKite => 'Paper Kite';
+
+  @override
+  String get accessoryCap => 'Cap';
+
+  @override
+  String get accessorySeashell => 'Seashell';
+
+  @override
+  String get accessoryMask => 'Mask';
+
+  @override
+  String get accessoryDrum => 'Little Drum';
+
+  @override
+  String get accessoryPalette => 'Color Palette';
+
+  @override
+  String get accessoryCrystalBall => 'Crystal Ball';
+
+  @override
+  String get accessoryLantern => 'Antique Lantern';
+
+  @override
+  String get accessoryUnicorn => 'Little Unicorn';
+
+  @override
+  String get accessoryDragon => 'Little Dragon';
+
+  @override
+  String get accessoryBalloon => 'Balloon';
+
+  @override
+  String get accessoryBowtie => 'Bow';
+
+  @override
+  String get accessorySunglasses => 'Sunglasses';
+
+  @override
+  String get accessoryUmbrella => 'Little Umbrella';
+
+  @override
+  String get accessoryTeapot => 'Little Teapot';
+
+  @override
+  String get accessoryBell => 'Little Bell';
+
+  @override
+  String get accessoryRibbon => 'Ribbon';
+
+  @override
+  String get accessoryBookmark => 'Cute Bookmark';
+
+  @override
+  String get accessoryWindChime => 'Wind Chime';
+
+  @override
+  String get accessoryClover => 'Four-Leaf Clover';
+
+  @override
+  String get accessoryBubble => 'Soap Bubble';
+
+  @override
+  String get accessorySticker => 'Sticker';
+
+  @override
+  String get accessoryYarn => 'Yarn Ball';
+
+  @override
+  String get accessoryFan => 'Paper Fan';
+
+  @override
+  String get accessoryBasket => 'Wicker Basket';
+
+  @override
+  String get accessoryBead => 'Beaded Bracelet';
+
+  @override
+  String get accessoryLadybug => 'Little Ladybug';
+
+  @override
+  String get accessoryKey => 'Antique Key';
+
+  @override
+  String get accessoryDiamondStone => 'Diamond Stone';
+
+  @override
+  String get accessoryMusicNote => 'Musical Note';
+
+  @override
+  String get accessoryTelescope => 'Telescope';
+
+  @override
+  String get accessoryAnchor => 'Anchor';
+
+  @override
+  String get accessoryFeather => 'Feather';
+
+  @override
+  String get accessoryHourglass => 'Hourglass';
+
+  @override
+  String get accessoryMap => 'Old Map';
+
+  @override
+  String get accessoryRing => 'Little Ring';
+
+  @override
+  String get accessoryMagicWand => 'Magic Wand';
+
+  @override
+  String get accessoryTrident => 'Trident';
+
+  @override
+  String get accessoryPeacock => 'Little Peacock';
+
+  @override
+  String get accessoryComet => 'Comet';
+
+  @override
+  String get accessoryButterfly => 'Crystal Butterfly';
+
+  @override
+  String get accessoryAngelWing => 'Angel Wing';
+
+  @override
+  String get accessoryPhoenix => 'Phoenix';
+
+  @override
+  String get accessoryGalaxy => 'Galaxy';
+
+  @override
   String get storySpeedrunEmpty =>
       'No one has finished the story yet — be the first!';
 

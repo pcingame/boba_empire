@@ -948,6 +948,198 @@ class AppLocalizationsTh extends AppLocalizations {
       'คุณยังไม่จบภาค 3 — จบตอนที่ 36 เพื่อติดอันดับ';
 
   @override
+  String get accessoryMenuTitle => 'คอลเลกชัน';
+
+  @override
+  String get accessoryInventoryTitle => 'คลังของสะสม';
+
+  @override
+  String accessoryInventoryOwned(int owned, int total) {
+    return 'สะสมแล้ว $owned/$total';
+  }
+
+  @override
+  String get accessoryRarityCommon => 'ทั่วไป';
+
+  @override
+  String get accessoryRarityRare => 'หายาก';
+
+  @override
+  String get accessoryRarityEpic => 'เอพิก';
+
+  @override
+  String get accessoryRarityLegendary => 'ตำนาน';
+
+  @override
+  String get accessoryLbTitle => 'อันดับนักสะสม';
+
+  @override
+  String accessoryLbCount(int n) {
+    return '$n ชิ้น';
+  }
+
+  @override
+  String get accessoryLbEmpty =>
+      'ยังไม่มีใครติดอันดับ เก็บของสะสมสักชิ้นแล้วคุณจะได้อันดับ 1!';
+
+  @override
+  String get accessoryLbNoOwned =>
+      'คุณยังไม่มีของสะสมเลย — ทำภารกิจประจำวันให้ครบ 3 อย่างเพื่อมีโอกาสได้รับ';
+
+  @override
+  String get accessoryLbError => 'โหลดอันดับไม่ได้ ลองใหม่ภายหลังนะ';
+
+  @override
+  String get accessoryMintLeaf => 'ใบมินต์';
+
+  @override
+  String get accessoryCupcake => 'คัพเค้ก';
+
+  @override
+  String get accessoryCookie => 'คุกกี้';
+
+  @override
+  String get accessoryPottedPlant => 'ต้นไม้กระถางเล็ก';
+
+  @override
+  String get accessoryCandle => 'เทียนหอม';
+
+  @override
+  String get accessoryScarf => 'ผ้าพันคอ';
+
+  @override
+  String get accessoryKite => 'ว่าวกระดาษ';
+
+  @override
+  String get accessoryCap => 'หมวกแก๊ป';
+
+  @override
+  String get accessorySeashell => 'เปลือกหอย';
+
+  @override
+  String get accessoryMask => 'หน้ากาก';
+
+  @override
+  String get accessoryDrum => 'กลองเล็ก';
+
+  @override
+  String get accessoryPalette => 'จานสี';
+
+  @override
+  String get accessoryCrystalBall => 'ลูกแก้ว';
+
+  @override
+  String get accessoryLantern => 'โคมไฟโบราณ';
+
+  @override
+  String get accessoryUnicorn => 'ยูนิคอร์นตัวน้อย';
+
+  @override
+  String get accessoryDragon => 'มังกรตัวน้อย';
+
+  @override
+  String get accessoryBalloon => 'ลูกโป่ง';
+
+  @override
+  String get accessoryBowtie => 'โบว์';
+
+  @override
+  String get accessorySunglasses => 'แว่นกันแดด';
+
+  @override
+  String get accessoryUmbrella => 'ร่มเล็ก';
+
+  @override
+  String get accessoryTeapot => 'กาน้ำชาเล็ก';
+
+  @override
+  String get accessoryBell => 'กระดิ่งเล็ก';
+
+  @override
+  String get accessoryRibbon => 'ริบบิ้น';
+
+  @override
+  String get accessoryBookmark => 'ที่คั่นหนังสือน่ารัก';
+
+  @override
+  String get accessoryWindChime => 'กระดิ่งลม';
+
+  @override
+  String get accessoryClover => 'โคลเวอร์สี่ใบ';
+
+  @override
+  String get accessoryBubble => 'ฟองสบู่';
+
+  @override
+  String get accessorySticker => 'สติกเกอร์';
+
+  @override
+  String get accessoryYarn => 'ไหมพรมม้วน';
+
+  @override
+  String get accessoryFan => 'พัดกระดาษ';
+
+  @override
+  String get accessoryBasket => 'ตะกร้าหวาย';
+
+  @override
+  String get accessoryBead => 'กำไลลูกปัด';
+
+  @override
+  String get accessoryLadybug => 'เต่าทองตัวน้อย';
+
+  @override
+  String get accessoryKey => 'กุญแจโบราณ';
+
+  @override
+  String get accessoryDiamondStone => 'หินเพชร';
+
+  @override
+  String get accessoryMusicNote => 'โน้ตดนตรี';
+
+  @override
+  String get accessoryTelescope => 'กล้องโทรทรรศน์';
+
+  @override
+  String get accessoryAnchor => 'สมอเรือ';
+
+  @override
+  String get accessoryFeather => 'ขนนก';
+
+  @override
+  String get accessoryHourglass => 'นาฬิกาทราย';
+
+  @override
+  String get accessoryMap => 'แผนที่โบราณ';
+
+  @override
+  String get accessoryRing => 'แหวนวงเล็ก';
+
+  @override
+  String get accessoryMagicWand => 'ไม้กายสิทธิ์';
+
+  @override
+  String get accessoryTrident => 'ตรีศูล';
+
+  @override
+  String get accessoryPeacock => 'นกยูงตัวน้อย';
+
+  @override
+  String get accessoryComet => 'ดาวหาง';
+
+  @override
+  String get accessoryButterfly => 'ผีเสื้อคริสตัล';
+
+  @override
+  String get accessoryAngelWing => 'ปีกนางฟ้า';
+
+  @override
+  String get accessoryPhoenix => 'ฟีนิกซ์';
+
+  @override
+  String get accessoryGalaxy => 'กาแล็กซี';
+
+  @override
   String get storySpeedrunEmpty => 'ยังไม่มีใครจบเนื้อเรื่อง — เป็นคนแรกสิ!';
 
   @override

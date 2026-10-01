@@ -54,6 +54,7 @@ class GameSnapshot {
     required this.lifetimeEarnings,
     required this.achievementsClaimed,
     required this.m3Stars,
+    required this.ownedAccessories,
     required this.m3HowToSeen,
     required this.prestigeStarsSpendable,
     required this.prestigeIncomeLevel,
@@ -169,6 +170,9 @@ class GameSnapshot {
 
   /// Sao Hành trình Ghép 3 (chỉ số = màn - 1, giá trị 0..3).
   final List<int> m3Stars;
+
+  /// Id phụ kiện sưu tập đã có (xem `core/accessories.dart`).
+  final List<String> ownedAccessories;
 
   /// Đã xem hướng dẫn Trân Châu Rơi chưa.
   final bool m3HowToSeen;

@@ -129,6 +129,25 @@ void main() {
     expect(reloaded.gems, gems0 + got);
   });
 
+  test('nhận thưởng "xong cả 3 nhiệm vụ ngày" cũng cấp 1 phụ kiện sưu tập'
+      ' mới (ván mới nên chắc chắn chưa trùng món nào)', () async {
+    final day = 20000;
+    final kinds = dailyQuestsFor(day, 1e6).map((q) => q.kind.name).toList();
+    final h = await _harness(day,
+        seed: (now) => GameState.newGame(nowMillis: now)
+          ..dailyQuestDay = day // khớp "hôm nay" để rollDailyQuests không đổi bộ
+          ..dailyClaimed.addAll(kinds));
+    expect(h.snap.dailyBonusAvailable, isTrue);
+    expect(h.snap.ownedAccessories, isEmpty);
+    final gemsBefore = h.snap.gems;
+    final got = h.ctrl.claimDailyBonus() as int;
+    expect(got, greaterThan(0));
+    expect(h.snap.ownedAccessories.length, 1);
+    // Món đầu tiên của 1 ván mới chắc chắn là MỚI (chưa có gì để trùng) nên
+    // không có 💎 quy đổi cộng thêm ngoài thưởng bonus.
+    expect(h.snap.gems, gemsBefore + got);
+  });
+
   test('Nhượng quyền không xoá tiến độ nhiệm vụ ngày', () async {
     final day = _dayWith(DailyQuestKind.tap);
     final h = await _harness(day,

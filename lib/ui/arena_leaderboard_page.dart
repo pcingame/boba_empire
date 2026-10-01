@@ -170,13 +170,20 @@ class _ArenaLeaderboardList extends ConsumerWidget {
                           children: [
                             SizedBox(
                               width: 44,
-                              child: Text(
-                                '#${entry.rank}',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.titleMedium,
+                              // Cùng bug overflow đã gặp ở leaderboard_page.dart
+                              // — hạng lên hàng nghìn bị ellipsis cắt mất số
+                              // ("#13…"). Co chữ bằng FittedBox thay vì cắt.
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  '#${entry.rank}',
+                                  maxLines: 1,
+                                  style: theme.textTheme.titleMedium,
+                                ),
                               ),
                             ),
+                            const SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                 entry.nickname,

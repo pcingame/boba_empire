@@ -952,6 +952,199 @@ class AppLocalizationsVi extends AppLocalizations {
       'Bạn chưa hoàn thành Hồi 3 — hoàn thành Chương 36 để được xếp hạng.';
 
   @override
+  String get accessoryMenuTitle => 'Sưu tập';
+
+  @override
+  String get accessoryInventoryTitle => 'Kho phụ kiện';
+
+  @override
+  String accessoryInventoryOwned(int owned, int total) {
+    return 'Đã có $owned/$total';
+  }
+
+  @override
+  String get accessoryRarityCommon => 'Thường';
+
+  @override
+  String get accessoryRarityRare => 'Hiếm';
+
+  @override
+  String get accessoryRarityEpic => 'Sử thi';
+
+  @override
+  String get accessoryRarityLegendary => 'Huyền thoại';
+
+  @override
+  String get accessoryLbTitle => 'Bảng xếp hạng Sưu tập';
+
+  @override
+  String accessoryLbCount(int n) {
+    return '$n phụ kiện';
+  }
+
+  @override
+  String get accessoryLbEmpty =>
+      'Chưa ai lên bảng. Sưu tập 1 món là có tên ngay!';
+
+  @override
+  String get accessoryLbNoOwned =>
+      'Bạn chưa có phụ kiện nào — hoàn thành đủ 3 nhiệm vụ ngày để có cơ hội nhận.';
+
+  @override
+  String get accessoryLbError =>
+      'Không tải được bảng xếp hạng, thử lại sau nhé.';
+
+  @override
+  String get accessoryMintLeaf => 'Lá bạc hà';
+
+  @override
+  String get accessoryCupcake => 'Bánh cupcake';
+
+  @override
+  String get accessoryCookie => 'Bánh quy';
+
+  @override
+  String get accessoryPottedPlant => 'Chậu cây nhỏ';
+
+  @override
+  String get accessoryCandle => 'Nến thơm';
+
+  @override
+  String get accessoryScarf => 'Khăn quàng';
+
+  @override
+  String get accessoryKite => 'Diều giấy';
+
+  @override
+  String get accessoryCap => 'Mũ lưỡi trai';
+
+  @override
+  String get accessorySeashell => 'Vỏ sò';
+
+  @override
+  String get accessoryMask => 'Mặt nạ';
+
+  @override
+  String get accessoryDrum => 'Trống nhỏ';
+
+  @override
+  String get accessoryPalette => 'Bảng màu';
+
+  @override
+  String get accessoryCrystalBall => 'Quả cầu pha lê';
+
+  @override
+  String get accessoryLantern => 'Đèn lồng cổ';
+
+  @override
+  String get accessoryUnicorn => 'Kỳ lân nhỏ';
+
+  @override
+  String get accessoryDragon => 'Rồng nhỏ';
+
+  @override
+  String get accessoryBalloon => 'Bong bóng';
+
+  @override
+  String get accessoryBowtie => 'Nơ bướm';
+
+  @override
+  String get accessorySunglasses => 'Kính râm';
+
+  @override
+  String get accessoryUmbrella => 'Dù nhỏ';
+
+  @override
+  String get accessoryTeapot => 'Ấm trà nhỏ';
+
+  @override
+  String get accessoryBell => 'Chuông nhỏ';
+
+  @override
+  String get accessoryRibbon => 'Ruy băng';
+
+  @override
+  String get accessoryBookmark => 'Bookmark xinh';
+
+  @override
+  String get accessoryWindChime => 'Chuông gió';
+
+  @override
+  String get accessoryClover => 'Cỏ bốn lá';
+
+  @override
+  String get accessoryBubble => 'Bong bóng xà phòng';
+
+  @override
+  String get accessorySticker => 'Nhãn dán';
+
+  @override
+  String get accessoryYarn => 'Cuộn len';
+
+  @override
+  String get accessoryFan => 'Quạt giấy';
+
+  @override
+  String get accessoryBasket => 'Giỏ mây';
+
+  @override
+  String get accessoryBead => 'Chuỗi hạt';
+
+  @override
+  String get accessoryLadybug => 'Bọ rùa nhỏ';
+
+  @override
+  String get accessoryKey => 'Chìa khoá cổ';
+
+  @override
+  String get accessoryDiamondStone => 'Viên đá kim cương';
+
+  @override
+  String get accessoryMusicNote => 'Nốt nhạc nhỏ';
+
+  @override
+  String get accessoryTelescope => 'Kính viễn vọng';
+
+  @override
+  String get accessoryAnchor => 'Mỏ neo';
+
+  @override
+  String get accessoryFeather => 'Lông vũ';
+
+  @override
+  String get accessoryHourglass => 'Đồng hồ cát';
+
+  @override
+  String get accessoryMap => 'Bản đồ cổ';
+
+  @override
+  String get accessoryRing => 'Nhẫn nhỏ';
+
+  @override
+  String get accessoryMagicWand => 'Đũa phép';
+
+  @override
+  String get accessoryTrident => 'Đinh ba biển cả';
+
+  @override
+  String get accessoryPeacock => 'Công nhỏ';
+
+  @override
+  String get accessoryComet => 'Sao chổi';
+
+  @override
+  String get accessoryButterfly => 'Bướm pha lê';
+
+  @override
+  String get accessoryAngelWing => 'Cánh thiên thần';
+
+  @override
+  String get accessoryPhoenix => 'Phượng hoàng lửa';
+
+  @override
+  String get accessoryGalaxy => 'Dải ngân hà';
+
+  @override
   String get storySpeedrunEmpty =>
       'Chưa có ai hoàn thành cốt truyện — là bạn đây!';
 

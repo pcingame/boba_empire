@@ -1696,6 +1696,378 @@ abstract class AppLocalizations {
   /// **'Bạn chưa hoàn thành Hồi 3 — hoàn thành Chương 36 để được xếp hạng.'**
   String get storySpeedrunExt2NotCompletedYet;
 
+  /// No description provided for @accessoryMenuTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sưu tập'**
+  String get accessoryMenuTitle;
+
+  /// No description provided for @accessoryInventoryTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kho phụ kiện'**
+  String get accessoryInventoryTitle;
+
+  /// No description provided for @accessoryInventoryOwned.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã có {owned}/{total}'**
+  String accessoryInventoryOwned(int owned, int total);
+
+  /// No description provided for @accessoryRarityCommon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thường'**
+  String get accessoryRarityCommon;
+
+  /// No description provided for @accessoryRarityRare.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hiếm'**
+  String get accessoryRarityRare;
+
+  /// No description provided for @accessoryRarityEpic.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sử thi'**
+  String get accessoryRarityEpic;
+
+  /// No description provided for @accessoryRarityLegendary.
+  ///
+  /// In vi, this message translates to:
+  /// **'Huyền thoại'**
+  String get accessoryRarityLegendary;
+
+  /// No description provided for @accessoryLbTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảng xếp hạng Sưu tập'**
+  String get accessoryLbTitle;
+
+  /// No description provided for @accessoryLbCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} phụ kiện'**
+  String accessoryLbCount(int n);
+
+  /// No description provided for @accessoryLbEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa ai lên bảng. Sưu tập 1 món là có tên ngay!'**
+  String get accessoryLbEmpty;
+
+  /// No description provided for @accessoryLbNoOwned.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa có phụ kiện nào — hoàn thành đủ 3 nhiệm vụ ngày để có cơ hội nhận.'**
+  String get accessoryLbNoOwned;
+
+  /// No description provided for @accessoryLbError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tải được bảng xếp hạng, thử lại sau nhé.'**
+  String get accessoryLbError;
+
+  /// No description provided for @accessoryMintLeaf.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lá bạc hà'**
+  String get accessoryMintLeaf;
+
+  /// No description provided for @accessoryCupcake.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bánh cupcake'**
+  String get accessoryCupcake;
+
+  /// No description provided for @accessoryCookie.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bánh quy'**
+  String get accessoryCookie;
+
+  /// No description provided for @accessoryPottedPlant.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chậu cây nhỏ'**
+  String get accessoryPottedPlant;
+
+  /// No description provided for @accessoryCandle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nến thơm'**
+  String get accessoryCandle;
+
+  /// No description provided for @accessoryScarf.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khăn quàng'**
+  String get accessoryScarf;
+
+  /// No description provided for @accessoryKite.
+  ///
+  /// In vi, this message translates to:
+  /// **'Diều giấy'**
+  String get accessoryKite;
+
+  /// No description provided for @accessoryCap.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mũ lưỡi trai'**
+  String get accessoryCap;
+
+  /// No description provided for @accessorySeashell.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vỏ sò'**
+  String get accessorySeashell;
+
+  /// No description provided for @accessoryMask.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mặt nạ'**
+  String get accessoryMask;
+
+  /// No description provided for @accessoryDrum.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trống nhỏ'**
+  String get accessoryDrum;
+
+  /// No description provided for @accessoryPalette.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảng màu'**
+  String get accessoryPalette;
+
+  /// No description provided for @accessoryCrystalBall.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quả cầu pha lê'**
+  String get accessoryCrystalBall;
+
+  /// No description provided for @accessoryLantern.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đèn lồng cổ'**
+  String get accessoryLantern;
+
+  /// No description provided for @accessoryUnicorn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kỳ lân nhỏ'**
+  String get accessoryUnicorn;
+
+  /// No description provided for @accessoryDragon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rồng nhỏ'**
+  String get accessoryDragon;
+
+  /// No description provided for @accessoryBalloon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bong bóng'**
+  String get accessoryBalloon;
+
+  /// No description provided for @accessoryBowtie.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nơ bướm'**
+  String get accessoryBowtie;
+
+  /// No description provided for @accessorySunglasses.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kính râm'**
+  String get accessorySunglasses;
+
+  /// No description provided for @accessoryUmbrella.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dù nhỏ'**
+  String get accessoryUmbrella;
+
+  /// No description provided for @accessoryTeapot.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ấm trà nhỏ'**
+  String get accessoryTeapot;
+
+  /// No description provided for @accessoryBell.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuông nhỏ'**
+  String get accessoryBell;
+
+  /// No description provided for @accessoryRibbon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ruy băng'**
+  String get accessoryRibbon;
+
+  /// No description provided for @accessoryBookmark.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bookmark xinh'**
+  String get accessoryBookmark;
+
+  /// No description provided for @accessoryWindChime.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuông gió'**
+  String get accessoryWindChime;
+
+  /// No description provided for @accessoryClover.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cỏ bốn lá'**
+  String get accessoryClover;
+
+  /// No description provided for @accessoryBubble.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bong bóng xà phòng'**
+  String get accessoryBubble;
+
+  /// No description provided for @accessorySticker.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhãn dán'**
+  String get accessorySticker;
+
+  /// No description provided for @accessoryYarn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cuộn len'**
+  String get accessoryYarn;
+
+  /// No description provided for @accessoryFan.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quạt giấy'**
+  String get accessoryFan;
+
+  /// No description provided for @accessoryBasket.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giỏ mây'**
+  String get accessoryBasket;
+
+  /// No description provided for @accessoryBead.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuỗi hạt'**
+  String get accessoryBead;
+
+  /// No description provided for @accessoryLadybug.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bọ rùa nhỏ'**
+  String get accessoryLadybug;
+
+  /// No description provided for @accessoryKey.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chìa khoá cổ'**
+  String get accessoryKey;
+
+  /// No description provided for @accessoryDiamondStone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Viên đá kim cương'**
+  String get accessoryDiamondStone;
+
+  /// No description provided for @accessoryMusicNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nốt nhạc nhỏ'**
+  String get accessoryMusicNote;
+
+  /// No description provided for @accessoryTelescope.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kính viễn vọng'**
+  String get accessoryTelescope;
+
+  /// No description provided for @accessoryAnchor.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỏ neo'**
+  String get accessoryAnchor;
+
+  /// No description provided for @accessoryFeather.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lông vũ'**
+  String get accessoryFeather;
+
+  /// No description provided for @accessoryHourglass.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đồng hồ cát'**
+  String get accessoryHourglass;
+
+  /// No description provided for @accessoryMap.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bản đồ cổ'**
+  String get accessoryMap;
+
+  /// No description provided for @accessoryRing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhẫn nhỏ'**
+  String get accessoryRing;
+
+  /// No description provided for @accessoryMagicWand.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đũa phép'**
+  String get accessoryMagicWand;
+
+  /// No description provided for @accessoryTrident.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đinh ba biển cả'**
+  String get accessoryTrident;
+
+  /// No description provided for @accessoryPeacock.
+  ///
+  /// In vi, this message translates to:
+  /// **'Công nhỏ'**
+  String get accessoryPeacock;
+
+  /// No description provided for @accessoryComet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao chổi'**
+  String get accessoryComet;
+
+  /// No description provided for @accessoryButterfly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bướm pha lê'**
+  String get accessoryButterfly;
+
+  /// No description provided for @accessoryAngelWing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cánh thiên thần'**
+  String get accessoryAngelWing;
+
+  /// No description provided for @accessoryPhoenix.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phượng hoàng lửa'**
+  String get accessoryPhoenix;
+
+  /// No description provided for @accessoryGalaxy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dải ngân hà'**
+  String get accessoryGalaxy;
+
   /// No description provided for @storySpeedrunEmpty.
   ///
   /// In vi, this message translates to:

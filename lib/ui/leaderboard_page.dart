@@ -189,13 +189,22 @@ class _LeaderboardList extends ConsumerWidget {
                           children: [
                             SizedBox(
                               width: 44,
-                              child: Text(
-                                '#${entry.rank}',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.titleMedium,
+                              // Cùng lớp bug overflow đã ghi ở cột Sao/Xu bên
+                              // dưới — hạng có thể lên hàng nghìn (list hiện
+                              // quanh hạng của bạn), ellipsis cắt mất số
+                              // ("#13…") không đọc được. Co chữ bằng FittedBox
+                              // thay vì cắt.
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  '#${entry.rank}',
+                                  maxLines: 1,
+                                  style: theme.textTheme.titleMedium,
+                                ),
                               ),
                             ),
+                            const SizedBox(width: 8),
                             Expanded(
                               child: Text(
                                 entry.nickname,
