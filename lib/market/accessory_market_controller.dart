@@ -58,8 +58,55 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
   void Function(String accessoryId)? onAccessoryRemovedLocally;
   void Function(String accessoryId)? onAccessoryAddedLocally;
 
+  RealtimeChannel? _channel;
+  Timer? _debounce;
+
   @override
-  AccessoryMarketViewState build() => const AccessoryMarketLoading();
+  AccessoryMarketViewState build() {
+    ref.onDispose(stopRealtime);
+    return const AccessoryMarketLoading();
+  }
+
+  /// Lắng nghe thay đổi `accessory_listings` (đăng/bán/huỷ — của bất kỳ ai) và
+  /// làm mới âm thầm, để người bán thấy món "đã bán" ngay mà không phải thoát
+  /// ra vào lại. Cần bảng nằm trong publication supabase_realtime (xem SQL).
+  /// Lỗi nuốt im lặng — không có realtime thì Chợ vẫn dùng được (kéo để làm mới).
+  void startRealtime() {
+    if (_channel != null) return;
+    try {
+      _channel = Supabase.instance.client
+          .channel('accessory-market')
+          .onPostgresChanges(
+            event: PostgresChangeEvent.all,
+            schema: 'public',
+            table: 'accessory_listings',
+            callback: (_) => _scheduleRefresh(),
+          )
+          .subscribe();
+    } catch (e) {
+      developer.log('bật realtime Chợ lỗi: $e', name: 'Market');
+    }
+  }
+
+  void stopRealtime() {
+    _debounce?.cancel();
+    final channel = _channel;
+    _channel = null;
+    if (channel == null) return;
+    try {
+      Supabase.instance.client.removeChannel(channel);
+    } catch (e) {
+      developer.log('tắt realtime Chợ lỗi: $e', name: 'Market');
+    }
+  }
+
+  // Một lần mua có thể bắn vài sự kiện liên tiếp — gộp lại thành 1 lần tải.
+  void _scheduleRefresh() {
+    _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 400), () {
+      refresh(silent: true);
+    });
+  }
 
   AccessoryMarketRepository get _repository =>
       _repo ??= AccessoryMarketRepository(Supabase.instance.client);

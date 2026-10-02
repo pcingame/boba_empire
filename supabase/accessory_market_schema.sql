@@ -403,3 +403,17 @@ end;
 $$;
 
 grant execute on function register_push_token(text, text, text) to authenticated;
+
+-- Realtime: trang Chợ lắng nghe thay đổi của accessory_listings (đăng/bán/huỷ)
+-- để tự làm mới, khỏi phải thoát ra vào lại. Cần bảng nằm trong publication
+-- `supabase_realtime` (idempotent, bỏ qua nếu đã bật). RLS vẫn áp dụng cho
+-- sự kiện: policy select_all ở trên cho mọi người đọc nên ai cũng nhận được.
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and tablename = 'accessory_listings'
+  ) then
+    alter publication supabase_realtime add table accessory_listings;
+  end if;
+end $$;

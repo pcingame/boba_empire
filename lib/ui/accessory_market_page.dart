@@ -41,6 +41,13 @@ class AccessoryMarketPage extends ConsumerStatefulWidget {
 
 class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
   bool _loaded = false;
+  AccessoryMarketController? _controller;
+
+  @override
+  void dispose() {
+    _controller?.stopRealtime(); // dùng ref sau dispose là crash → giữ tham chiếu
+    super.dispose();
+  }
 
   void _snack(String? message) {
     if (message == null || !mounted) return;
@@ -53,6 +60,7 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final notifier = ref.read(accessoryMarketControllerProvider.notifier);
+    _controller = notifier;
 
     notifier.getLocalOwnedAccessories = () =>
         ref.read(gameControllerProvider).ownedAccessories;
@@ -75,6 +83,7 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
             .setInt(marketSeenKey, DateTime.now().millisecondsSinceEpoch);
         ref.invalidate(marketHighlightProvider);
         notifier.refresh();
+        notifier.startRealtime();
       });
     }
 
