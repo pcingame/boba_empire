@@ -5,6 +5,7 @@ import '../data/cloud_save_controller.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import 'cloud_save_dialog.dart';
+import 'how_to_play_dialog.dart';
 import 'language_dialog.dart';
 import 'redeem_dialog.dart';
 
@@ -31,6 +32,14 @@ class _SettingsDialog extends ConsumerWidget {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          ListTile(
+            key: const Key('how-to-play-button'),
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.help_outline),
+            title: Text(l10n.howToPlayTitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => showHowToPlay(context),
+          ),
           ListTile(
             contentPadding: EdgeInsets.zero,
             leading: const Icon(Icons.language),

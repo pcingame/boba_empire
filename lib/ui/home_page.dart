@@ -330,52 +330,50 @@ class _HomePageState extends ConsumerState<HomePage>
 
     return PhoneWidth(
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            key: const Key('how-to-play-button'),
-            icon: const Icon(Icons.help_outline),
-            onPressed: () => showHowToPlay(context),
+        // Không còn AppBar (56dp chỉ chứa tên game + 📖 ⚙): 📖 ⚙ nằm hai bên số
+        // Coins ở _MoneyHeader, trả chỗ cho cảnh quán. SafeArea chừa thanh trạng thái.
+        body: SafeArea(
+          bottom: false,
+          child: Stack(
+            children: [
+              Column(
+                children: [
+                  const _TopBanner(),
+                  const _MoneyHeader(),
+                  // Nhiệm vụ: một dải mảnh trong bố cục (không nổi đè cảnh/cửa hàng).
+                  const _QuestBar(),
+                  // Cảnh quán cao theo TỈ LỆ TRANH (đủ thấy trọn xe), shop lấy phần
+                  // còn lại và tự cuộn. Trước đây flex 42/58 nên cảnh co theo màn và
+                  // mỗi hàng thêm vào đều bóp cảnh → xe bị cắt ở màn thấp.
+                  Expanded(
+                    child: LayoutBuilder(
+                      builder: (context, box) {
+                        // Ảnh 2:1 phóng [_sceneZoom] neo đáy: thấy trọn xe cần
+                        // ≈ 0.65–0.70 × bề ngang; lấy 0.675 (= 0.9 × w/2 × zoom).
+                        final natural = box.maxWidth / 2 * _sceneZoom * 0.9;
+                        // Trần 55% để shop còn ≥ 45% (không thấp hơn 170 nếu có thể).
+                        final sceneH = natural
+                            .clamp(0.0, box.maxHeight * 0.55)
+                            .clamp(0.0, box.maxHeight)
+                            .toDouble();
+                        return Column(
+                          children: [
+                            SizedBox(
+                              key: const Key('stage-scene'),
+                              height: sceneH,
+                              child: const _StageScene(),
+                            ),
+                            const Expanded(child: _Shop()),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const _BoostIndicator(),
+            ],
           ),
-          title: Text(
-            AppLocalizations.of(context)!.appTitle,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              fontFamily: 'Baloo 2',
-              fontFamilyFallback: ['Mitr', 'Roboto'],
-            ),
-          ),
-          titleSpacing: 0,
-          actions: [
-            IconButton(
-              key: const Key('story-log-button'),
-              icon: const Icon(Icons.auto_stories_outlined),
-              tooltip: AppLocalizations.of(context)!.storyLogTitle,
-              onPressed: () => showStoryLog(context),
-            ),
-            IconButton(
-              key: const Key('settings-button'),
-              icon: const Icon(Icons.settings_outlined),
-              onPressed: () => showSettings(context),
-            ),
-          ],
-        ),
-        body: const Stack(
-          children: [
-            Column(
-              children: [
-                _EventBanner(),
-                _MarketBanner(),
-                _MoneyHeader(),
-                // Chia phần còn lại theo tỷ lệ: cảnh quán không bao giờ bị "co"
-                // biến mất, shop luôn có chỗ (danh sách tự cuộn nếu nhiều dòng).
-                Expanded(flex: 42, child: _StageScene()),
-                Expanded(flex: 58, child: _Shop()),
-              ],
-            ),
-            _BoostIndicator(),
-          ],
         ),
         bottomNavigationBar: const _BottomBar(),
       ),
@@ -548,11 +546,41 @@ class _BottomBar extends ConsumerWidget {
 
 /// Banner mời vào Chợ khi có listing mới (món hiếm nhất) kể từ lần mở Chợ
 /// trước — biến mất ngay khi người chơi mở Chợ.
-class _MarketBanner extends ConsumerWidget {
-  const _MarketBanner();
+/// Chỉ MỘT banner mỗi lúc: sự kiện (có hạn, quan trọng hơn) che banner Chợ.
+class _TopBanner extends ConsumerWidget {
+  const _TopBanner();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final eventActive =
+        ref.watch(gameControllerProvider.select((s) => s.eventActive));
+    return eventActive ? const _EventBanner() : const _MarketBanner();
+  }
+}
+
+class _MarketBanner extends ConsumerStatefulWidget {
+  const _MarketBanner();
+
+  @override
+  ConsumerState<_MarketBanner> createState() => _MarketBannerState();
+}
+
+class _MarketBannerState extends ConsumerState<_MarketBanner> {
+  bool _hidden = false;
+
+  /// ✕ = "đã xem": ẩn ngay, ghi mốc đã xem để banner + chấm đỏ ở nút Thi đấu
+  /// không quay lại với cùng listing.
+  void _dismiss() {
+    setState(() => _hidden = true);
+    ref
+        .read(sharedPreferencesProvider)
+        .setInt(marketSeenKey, DateTime.now().millisecondsSinceEpoch);
+    ref.invalidate(marketHighlightProvider);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_hidden) return const SizedBox.shrink();
     final listing = ref.watch(marketHighlightProvider).value;
     if (listing == null) return const SizedBox.shrink();
     final l10n = AppLocalizations.of(context)!;
@@ -564,7 +592,7 @@ class _MarketBanner extends ConsumerWidget {
       child: InkWell(
         onTap: () => showAccessoryMarket(context),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: const EdgeInsets.only(left: 12, top: 2, bottom: 2),
           child: Row(
             children: [
               Text(acc.emoji, style: const TextStyle(fontSize: 18)),
@@ -580,8 +608,14 @@ class _MarketBanner extends ConsumerWidget {
                       color: theme.colorScheme.onTertiaryContainer),
                 ),
               ),
-              Icon(Icons.chevron_right,
-                  color: theme.colorScheme.onTertiaryContainer),
+              IconButton(
+                key: const Key('market-banner-dismiss'),
+                icon: Icon(Icons.close,
+                    size: 18, color: theme.colorScheme.onTertiaryContainer),
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(minWidth: 40, minHeight: 36),
+                onPressed: _dismiss,
+              ),
             ],
           ),
         ),
@@ -700,27 +734,53 @@ class _MoneyHeader extends ConsumerWidget {
           // số lớn hoặc ngôn ngữ dài (không tràn header).
           // RepaintBoundary: số đếm mượt mỗi frame → không repaint gradient
           // header theo.
-          RepaintBoundary(
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const ExcludeSemantics(
-                    child: Text('🪙', style: TextStyle(fontSize: 26)),
-                  ),
-                  const SizedBox(width: 6),
-                  AnimatedCount(
-                    money,
-                    suffix: l10n.coinsSuffix,
-                    style: theme.textTheme.displaySmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: onContainer,
+          Row(
+            children: [
+              IconButton(
+                key: const Key('story-log-button'),
+                icon: const Icon(Icons.auto_stories_outlined),
+                tooltip: l10n.storyLogTitle,
+                color: onContainer,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
+                onPressed: () => showStoryLog(context),
+              ),
+              Expanded(
+                child: Center(
+                  child: RepaintBoundary(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const ExcludeSemantics(
+                            child: Text('🪙', style: TextStyle(fontSize: 26)),
+                          ),
+                          const SizedBox(width: 6),
+                          AnimatedCount(
+                            money,
+                            suffix: l10n.coinsSuffix,
+                            style: theme.textTheme.displaySmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: onContainer,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
+              IconButton(
+                key: const Key('settings-button'),
+                icon: const Icon(Icons.settings_outlined),
+                tooltip: l10n.settingsTitle,
+                color: onContainer,
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
+                onPressed: () => showSettings(context),
+              ),
+            ],
           ),
           // Dòng "thu nhập/giây" gộp chip "Mốc vàng" (🌐 +%) và nút "Tiền tức
           // thì" cùng hàng — tiết kiệm chiều cao, trả chỗ cho cảnh quán.
@@ -728,32 +788,58 @@ class _MoneyHeader extends ConsumerWidget {
             padding: const EdgeInsets.only(top: 2),
             child: Row(
               children: [
-                Flexible(
-                  child: Text(
-                    l10n.incomePerSecond(formatNumber(income)),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: onContainer.withValues(alpha: 0.92),
-                      fontWeight: FontWeight.w600,
+                // Nhóm trái (thu nhập + chip 🌐) lấy TOÀN BỘ chỗ còn lại sau nút.
+                // Thu nhập được ưu tiên: không Flexible/Spacer chia phần nên chữ
+                // không còn bị cắt "+3.06jj /…" khi cả hàng còn dư (Flexible loose
+                // chỉ được 1/n chỗ trống dù n-1 phần tử kia rỗng/nhỏ). Quá dài thì
+                // THU NHỎ chữ (FittedBox) chứ không cắt; chip 🌐 nhận phần dư.
+                Expanded(
+                  child: LayoutBuilder(
+                    builder: (context, box) => Row(
+                      children: [
+                        ConstrainedBox(
+                          constraints: BoxConstraints(maxWidth: box.maxWidth),
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              key: const Key('income-per-second'),
+                              l10n.incomePerSecond(formatNumber(income)),
+                              maxLines: 1,
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                color: onContainer.withValues(alpha: 0.92),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Khoảng cách 8px nằm TRONG phần co giãn của chip — để ngoài thì
+                        // tràn 8px khi chữ thu nhập chiếm hết hàng.
+                        if (globalPercent > 0)
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8),
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                alignment: Alignment.centerLeft,
+                                child: _GlobalBonusChip(globalPercent),
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                 ),
-                if (globalPercent > 0) ...[
-                  const SizedBox(width: 8),
-                  Flexible(child: _GlobalBonusChip(globalPercent)),
-                ],
-                const Spacer(),
-                // Nút KHÔNG dùng Flexible: Flexible chia đều chỗ trống với dòng thu
-                // nhập nên cắt "Tiền tức thì" thành "Tiền tứ…" kể cả khi màn còn dư
-                // chỗ (gặp thật trên máy). Thay vào đó cho nút chiều rộng tự nhiên,
-                // chỉ chặn ở 55% bề rộng hàng và THU NHỎ CHỮ khi vượt — vẫn không tràn
-                // ở màn hẹp (400px) với thu nhập cực lớn + chip 🌐 + nhãn dài pt/es.
+                // Nút KHÔNG dùng Flexible (Flexible chia đều chỗ trống nên cắt "Tiền
+                // tức thì" thành "Tiền tứ…" dù màn còn dư — gặp thật trên máy): cho
+                // chiều rộng tự nhiên, chặn ở 42% bề rộng màn (trước 55%, nhường chỗ
+                // cho thu nhập) và THU NHỎ CHỮ khi vượt — không tràn ở màn hẹp với
+                // thu nhập cực lớn + chip 🌐 + nhãn dài pt/es.
                 if (income > 0)
                   ConstrainedBox(
                     constraints: BoxConstraints(
-                      maxWidth: (MediaQuery.sizeOf(context).width * 0.55)
-                          .clamp(120.0, 400.0),
+                      maxWidth: (MediaQuery.sizeOf(context).width * 0.42)
+                          .clamp(110.0, 400.0),
                     ),
                     child: FilledButton.tonalIcon(
                       key: const Key('instant-cash'),
@@ -1029,6 +1115,7 @@ class _TapAreaState extends ConsumerState<_TapArea>
                     child: ScaleTransition(
                   scale: _popScale,
                   child: Container(
+                    key: const Key('tap-circle'),
                     width: side,
                     height: side,
                     decoration: BoxDecoration(
@@ -1183,6 +1270,11 @@ class _Shop extends ConsumerWidget {
     final globalMult =
         ref.watch(gameControllerProvider.select(_globalIncomeMult));
     final bestBuyId = ref.watch(gameControllerProvider.select(_bestBuyId));
+    // Auto-buy là mục ĐẦU danh sách (cuộn cùng list) thay vì một hàng cố định —
+    // chỉ dùng thỉnh thoảng, không đáng chiếm ~48dp cố định của khung shop.
+    final hasAutoBuy = ref.watch(
+        gameControllerProvider.select((s) => s.prestigeAutoBuyLevel > 0));
+    final extra = hasAutoBuy ? 1 : 0;
     final unlocked = [
       for (final config in Balance.generators)
         if (config.stage <= stage) config,
@@ -1194,10 +1286,7 @@ class _Shop extends ConsumerWidget {
         top: false,
         child: Column(
           children: [
-            const _QuestBar(),
             const _StageHeader(),
-            const _BuyModeSelector(),
-            const _AutoBuyToggle(),
             // Danh sách lấp phần _Shop còn lại và tự cuộn — mở giai đoạn mới chỉ
             // thêm dòng, KHÔNG "ăn" chỗ của _StageScene nữa (bố cục theo flex).
             Expanded(
@@ -1205,17 +1294,21 @@ class _Shop extends ConsumerWidget {
                 builder: (context, c) {
                   final list = ListView.builder(
                     padding: EdgeInsets.zero,
-                    itemCount: unlocked.length,
-                    itemBuilder: (context, i) => _ShopTile(
-                      unlocked[i],
-                      globalMult: globalMult,
-                      isBest: unlocked[i].id == bestBuyId,
-                    ),
+                    itemCount: unlocked.length + extra,
+                    itemBuilder: (context, i) {
+                      if (hasAutoBuy && i == 0) return const _AutoBuyToggle();
+                      final config = unlocked[i - extra];
+                      return _ShopTile(
+                        config,
+                        globalMult: globalMult,
+                        isBest: config.id == bestBuyId,
+                      );
+                    },
                   );
                   // Mờ mép dưới gợi ý cuộn khi nội dung tràn khung. Dùng lớp
                   // gradient phủ màu nền thay vì ShaderMask — ShaderMask bắt
                   // saveLayer cả vùng list mỗi frame lúc cuộn.
-                  if (unlocked.length * 96 <= c.maxHeight) return list;
+                  if (unlocked.length * 96 + extra * 48 <= c.maxHeight) return list;
                   final bg = Theme.of(context).canvasColor; // màu Material bọc ngoài
                   return Stack(
                     children: [
@@ -1249,59 +1342,47 @@ class _Shop extends ConsumerWidget {
   }
 }
 
-/// Chọn chế độ mua (×1 · ×10 · MAX) cho mọi dòng shop.
-class _BuyModeSelector extends ConsumerWidget {
-  const _BuyModeSelector();
+/// Chế độ mua (×1 → ×10 → MAX) cho mọi dòng shop: một viên thuốc nhỏ, chạm để
+/// xoay vòng — nằm cùng hàng với tên giai đoạn thay vì chiếm hàng riêng.
+class _BuyModeChip extends ConsumerWidget {
+  const _BuyModeChip();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final mode = ref.watch(_buyModeProvider);
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
-    // Light mode dùng tông pastel (xem _buildTheme ở main.dart); dark giữ cũ.
-    final pastel = theme.brightness == Brightness.light;
-
-    Widget seg(_BuyMode m, String label) {
-      final on = mode == m;
-      return Expanded(
-        child: InkWell(
-          onTap: () => ref.read(_buyModeProvider.notifier).select(m),
-          child: Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            color: on
-                ? (pastel
-                    ? Color.lerp(theme.colorScheme.primaryContainer,
-                        theme.colorScheme.primary, 0.3)
-                    : theme.colorScheme.primary)
-                : theme.colorScheme.surfaceContainerHigh,
-            child: Text(
-              label,
-              style: theme.textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: on
-                    ? (pastel
-                        ? theme.colorScheme.onPrimaryContainer
-                        : theme.colorScheme.onPrimary)
-                    : theme.colorScheme.onSurfaceVariant,
+    final label = switch (mode) {
+      _BuyMode.x1 => '×1',
+      _BuyMode.x10 => '×10',
+      _BuyMode.max => l10n.buyModeMax,
+    };
+    return Material(
+      key: const Key('buy-mode-chip'),
+      color: theme.colorScheme.secondaryContainer,
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(14),
+        onTap: () => ref
+            .read(_buyModeProvider.notifier)
+            .select(_BuyMode.values[(mode.index + 1) % _BuyMode.values.length]),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                label,
+                style: theme.textTheme.labelLarge?.copyWith(
+                  color: theme.colorScheme.onSecondaryContainer,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
-            ),
+              const SizedBox(width: 2),
+              Icon(Icons.swap_horiz,
+                  size: 14, color: theme.colorScheme.onSecondaryContainer),
+            ],
           ),
-        ),
-      );
-    }
-
-    return Container(
-      color: theme.colorScheme.surfaceContainerHighest,
-      padding: const EdgeInsets.fromLTRB(10, 0, 10, 6),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Row(
-          children: [
-            seg(_BuyMode.x1, '×1'),
-            seg(_BuyMode.x10, '×10'),
-            seg(_BuyMode.max, l10n.buyModeMax),
-          ],
         ),
       ),
     );
@@ -1362,48 +1443,53 @@ class _QuestBar extends ConsumerWidget {
     final cur = progress > quest.threshold ? quest.threshold : progress;
 
     return Container(
+      key: const Key('quest-bar'),
       width: double.infinity,
+      constraints: const BoxConstraints(minHeight: 32),
       color: theme.colorScheme.secondaryContainer,
-      padding: const EdgeInsets.fromLTRB(16, 8, 12, 8),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      // MỘT dòng: 🎯 mô tả · thanh tiến độ mảnh · số/đích (hoặc nút Nhận). Mô tả
+      // co chữ (FittedBox) thay vì cắt "…" khi dài.
       child: Row(
         children: [
-          const ExcludeSemantics(child: Text('🎯', style: TextStyle(fontSize: 18))),
-          const SizedBox(width: 8),
+          const ExcludeSemantics(child: Text('🎯', style: TextStyle(fontSize: 14))),
+          const SizedBox(width: 6),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  questDesc(l10n, quest),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSecondaryContainer,
-                    fontWeight: FontWeight.w600,
-                  ),
+            flex: 5,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerLeft,
+              child: Text(
+                questDesc(l10n, quest),
+                maxLines: 1,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.colorScheme.onSecondaryContainer,
+                  fontWeight: FontWeight.w600,
                 ),
-                const SizedBox(height: 4),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(6),
-                  child: TweenAnimationBuilder<double>(
-                    tween: Tween(end: ratio),
-                    duration: _reduceMotion
-                        ? Duration.zero
-                        : const Duration(milliseconds: 400),
-                    curve: Curves.easeOut,
-                    builder: (context, value, _) => LinearProgressIndicator(
-                      value: value,
-                      minHeight: 6,
-                      backgroundColor: theme.colorScheme.onSecondaryContainer
-                          .withValues(alpha: 0.15),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-          const SizedBox(width: 10),
+          const SizedBox(width: 8),
+          Expanded(
+            flex: 3,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(3),
+              child: TweenAnimationBuilder<double>(
+                tween: Tween(end: ratio),
+                duration: _reduceMotion
+                    ? Duration.zero
+                    : const Duration(milliseconds: 400),
+                curve: Curves.easeOut,
+                builder: (context, value, _) => LinearProgressIndicator(
+                  value: value,
+                  minHeight: 5,
+                  backgroundColor: theme.colorScheme.onSecondaryContainer
+                      .withValues(alpha: 0.15),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
           if (done)
             FilledButton(
               key: const Key('quest-claim'),
@@ -1528,7 +1614,11 @@ class _StageHeader extends ConsumerWidget {
             ConstrainedBox(
               // Giai đoạn cuối không có nút mở khoá → tên được dùng cả hàng.
               constraints: BoxConstraints(
-                  maxWidth: next == null ? box.maxWidth : box.maxWidth * 0.62),
+                  // Giai đoạn cuối: chừa chỗ cho chip chế độ mua (~62) + khoảng cách,
+                  // và chip đối thủ (~40) nếu có — nếu không hàng tràn ở máy hẹp.
+                  maxWidth: next == null
+                      ? box.maxWidth - 78 - (rivalActive ? 40 : 0)
+                      : box.maxWidth * 0.5),
               child: FittedBox(
                 key: const Key('stage-header-name'),
                 fit: BoxFit.scaleDown,
@@ -1545,41 +1635,56 @@ class _StageHeader extends ConsumerWidget {
               _RivalChip(standing),
             ],
             const SizedBox(width: 8),
-            if (next != null)
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: FilledButton(
-                    key: const Key('unlock-stage'),
-                    // Padding gọn để nhãn (có giá tiền) đủ chỗ trên máy hẹp.
-                    style: FilledButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      visualDensity: VisualDensity.compact,
-                    ),
-                    onPressed: money >= next.unlockCost
-                        ? () {
-                            if (ref
-                                .read(gameControllerProvider.notifier)
-                                .unlockStage()) {
-                              HapticFeedback.mediumImpact();
-                              ref.read(audioServiceProvider).play(Sfx.unlock);
-                              playEffect(context, AnimAssets.celebration,
-                                  size: 280);
-                            }
-                          }
-                        : null,
-                    // FittedBox thay ellipsis: giá mở khoá là thông tin quan
-                    // trọng, không được cắt.
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        l10n.unlockStageButton(formatNumber(next.unlockCost)),
-                        maxLines: 1,
+            // Chip chế độ mua + nút mở khoá dồn phải; nút co chữ (FittedBox) khi
+            // hẹp thay vì tràn.
+            Expanded(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const _BuyModeChip(),
+                    if (next != null) ...[
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: FilledButton(
+                          key: const Key('unlock-stage'),
+                          // Padding gọn để nhãn (có giá tiền) đủ chỗ trên máy hẹp.
+                          style: FilledButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            visualDensity: VisualDensity.compact,
+                          ),
+                          onPressed: money >= next.unlockCost
+                              ? () {
+                                  if (ref
+                                      .read(gameControllerProvider.notifier)
+                                      .unlockStage()) {
+                                    HapticFeedback.mediumImpact();
+                                    ref
+                                        .read(audioServiceProvider)
+                                        .play(Sfx.unlock);
+                                    playEffect(context, AnimAssets.celebration,
+                                        size: 280);
+                                  }
+                                }
+                              : null,
+                          // FittedBox thay ellipsis: giá mở khoá là thông tin
+                          // quan trọng, không được cắt.
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              l10n.unlockStageButton(
+                                  formatNumber(next.unlockCost)),
+                              maxLines: 1,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    ],
+                  ],
                 ),
               ),
+            ),
           ],
         ),
       ),
@@ -1759,16 +1864,21 @@ class _ShopTile extends ConsumerWidget {
                   ),
                   // Thu nhập thật TĂNG THÊM khi mua 1 cấp (đã tính mốc + toàn
                   // cục) — trong cột Expanded nên tự bó chiều rộng, không tràn.
-                  Text(
-                    gain > 0
-                        ? l10n.incomePerSecond(formatNumber(gain))
-                        : l10n.generatorSubtitle(
-                            formatNumber(config.incomePerLevelPerSecond)),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: gain > 0 ? theme.colorScheme.primary : null,
-                      fontWeight: gain > 0 ? FontWeight.w700 : null,
+                  // FittedBox thay ellipsis: số thu nhập tăng thêm là thông tin chính
+                  // của dòng, không được cắt "+3.06jj /…" khi cột hẹp.
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      gain > 0
+                          ? l10n.incomePerSecond(formatNumber(gain))
+                          : l10n.generatorSubtitle(
+                              formatNumber(config.incomePerLevelPerSecond)),
+                      maxLines: 1,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: gain > 0 ? theme.colorScheme.primary : null,
+                        fontWeight: gain > 0 ? FontWeight.w700 : null,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 6),

@@ -1,4 +1,5 @@
 import 'package:boba_empire/core/models.dart';
+import 'package:boba_empire/data/cloud_save_controller.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/main.dart';
 import 'package:boba_empire/state/game_providers.dart';
@@ -7,6 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+/// Cài đặt đọc trạng thái sao lưu đám mây (cần Supabase) — thay bằng bản "chưa
+/// liên kết" để mở được hộp thoại trong test.
+class _FakeCloudSave extends CloudSaveController {
+  @override
+  CloudSaveViewState build() => const CloudSaveUnlinked();
+}
 
 const _closeKey = Key('how-to-play-close');
 
@@ -20,6 +28,7 @@ Future<ProviderContainer> _pump(WidgetTester tester, {GameState? seed}) async {
     ProviderScope(
       overrides: [
         sharedPreferencesProvider.overrideWithValue(prefs),
+        cloudSaveControllerProvider.overrideWith(_FakeCloudSave.new),
         clockProvider.overrideWithValue(() => 0),
       ],
       child: const BobaEmpireApp(),
@@ -35,6 +44,8 @@ void main() {
     await _pump(tester);
     expect(find.byKey(_closeKey), findsNothing); // chưa tự mở
 
+    await tester.tap(find.byKey(const Key('settings-button')));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('how-to-play-button')));
     await tester.pumpAndSettle();
     expect(find.byKey(_closeKey), findsOneWidget);

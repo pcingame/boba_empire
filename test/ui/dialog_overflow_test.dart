@@ -2,6 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/core/rival.dart';
+import 'package:boba_empire/data/cloud_save_controller.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/iap/iap_products.dart';
 import 'package:boba_empire/iap/iap_service.dart';
@@ -30,6 +31,13 @@ class _PricedIap implements IapService {
 
 /// Bơm app ở [locale] với [seed], màn 400×800 (bề rộng chật nhất). Nếu bất kỳ
 /// dialog nào tràn, framework ném exception → test tự fail.
+/// Cài đặt đọc trạng thái sao lưu đám mây (cần Supabase) — thay bằng bản "chưa
+/// liên kết" để mở được hộp thoại trong test.
+class _FakeCloudSave extends CloudSaveController {
+  @override
+  CloudSaveViewState build() => const CloudSaveUnlinked();
+}
+
 Future<void> _pump(
   WidgetTester tester, {
   required String locale,
@@ -49,6 +57,7 @@ Future<void> _pump(
     ProviderScope(
       overrides: [
         sharedPreferencesProvider.overrideWithValue(prefs),
+        cloudSaveControllerProvider.overrideWith(_FakeCloudSave.new),
         clockProvider.overrideWithValue(() => clock),
         if (iap != null) iapServiceProvider.overrideWithValue(iap),
       ],
@@ -138,6 +147,8 @@ void main() {
         locale: locale,
         seed: GameState.newGame(nowMillis: 0),
       );
+      await tester.tap(find.byKey(const Key('settings-button')));
+      await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('how-to-play-button')));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('how-to-play-close')), findsOneWidget);
