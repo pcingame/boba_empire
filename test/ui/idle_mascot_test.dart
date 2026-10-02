@@ -71,4 +71,51 @@ void main() {
     expect(scheduled, 0);
     await tester.pumpWidget(const SizedBox());
   });
+
+  testWidgets('bị hộp thoại phủ lên: dừng hẳn; đóng hộp thoại: chạy lại',
+      (tester) async {
+    final navKey = GlobalKey<NavigatorState>();
+    await tester.pumpWidget(MaterialApp(
+      navigatorKey: navKey,
+      home: const Scaffold(
+        body: Center(
+          child: IdleMascot(
+              asset: 'assets/anim/does_not_exist.json', emoji: '🧋', size: 72),
+        ),
+      ),
+    ));
+    double y() => tester
+        .widget<Transform>(find
+            .descendant(
+                of: find.byType(IdleMascot), matching: find.byType(Transform))
+            .first)
+        .transform
+        .getTranslation()
+        .y;
+    Future<int> changesIn1s() async {
+      var last = y();
+      var changes = 0;
+      for (var i = 0; i < 60; i++) {
+        await tester.pump(const Duration(milliseconds: 16));
+        final now = y();
+        if (now != last) changes++;
+        last = now;
+      }
+      return changes;
+    }
+
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(await changesIn1s(), greaterThan(15), reason: 'đang chạy');
+
+    showDialog<void>(
+        context: navKey.currentContext!,
+        builder: (_) => const AlertDialog(title: Text('x')));
+    await tester.pumpAndSettle();
+    expect(await changesIn1s(), 0, reason: 'bị hộp thoại phủ lên phải đứng yên');
+
+    navKey.currentState!.pop();
+    await tester.pumpAndSettle();
+    expect(await changesIn1s(), greaterThan(15), reason: 'đóng hộp thoại phải chạy lại');
+    await tester.pumpWidget(const SizedBox());
+  });
 }

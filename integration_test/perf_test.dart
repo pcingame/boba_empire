@@ -11,6 +11,12 @@
 // harness báo ~60). Số "khung" ở kịch bản 1_idle chỉ so sánh được trước/sau khi
 // cùng loại animation; thời gian build/raster MỖI khung thì đáng tin.
 //
+// Cũng vì vậy các kịch bản 4x (mở/đóng màn) bị PHỒNG số khung rớt: `pump(Duration)` của
+// harness tự sinh khung ngay cả lúc app đứng yên (đo: 43 khung/700ms trong khi chính app
+// chạy thật chỉ ~0 khung khi hộp thoại tĩnh đang mở — IdleMascot dừng khi bị phủ). Chi
+// phí thật của một hộp thoại chỉ là ~10–20 khung lúc chuyển cảnh. Dùng raster TB/p99 để
+// so sánh trước/sau; đừng đọc số khung rớt tuyệt đối của 4x.
+//
 // Dùng SharedPreferences trong bộ nhớ (setMockInitialValues) nên KHÔNG đụng vào
 // ván chơi thật trên máy. Không khởi tạo Firebase/Supabase/quảng cáo — chỉ đo UI.
 

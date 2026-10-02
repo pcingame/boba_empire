@@ -42,6 +42,10 @@ class _IdleMascotState extends State<IdleMascot>
   // KHÔNG forward()/repeat(): controller không có ticker chạy → không ép khung vsync.
   late final AnimationController _c = AnimationController(vsync: this);
   Timer? _timer;
+  // Bị hộp thoại/trang khác phủ lên (route không còn là route hiện tại): cốc ở sau lớp
+  // phủ tối, animate cũng vô ích mà còn buộc vẽ lại cả màn chính + hộp thoại cao ở 30Hz
+  // suốt lúc hộp thoại mở. Dừng hẳn → hộp thoại mở xong là TĨNH (0 khung nền).
+  bool _covered = false;
   double _t = 0; // giây
   double _loopSeconds = 2.4; // cập nhật theo độ dài thật của file Lottie
 
@@ -50,6 +54,14 @@ class _IdleMascotState extends State<IdleMascot>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     if (widget.animate) _start();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // ModalRoute.of đăng ký phụ thuộc: tự gọi lại khi isCurrent đổi (đẩy/đóng route).
+    final route = ModalRoute.of(context);
+    _covered = route != null && !route.isCurrent;
   }
 
   @override
@@ -62,6 +74,7 @@ class _IdleMascotState extends State<IdleMascot>
 
   void _start() {
     _timer ??= Timer.periodic(const Duration(milliseconds: _stepMs), (_) {
+      if (_covered) return; // không đổi giá trị → không lên lịch khung nào
       _t += _stepMs / 1000.0;
       _c.value = (_t % _loopSeconds) / _loopSeconds;
     });
