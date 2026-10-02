@@ -86,21 +86,43 @@ void main() {
       }
     }, reportKey: '3_scroll_shop');
 
-    // 4. Mở/đóng các hộp thoại & trang nặng (chuyển trang + dựng nội dung).
+    // 4. Mở/đóng từng màn RIÊNG để thấy màn nào nặng. 4a là hộp thoại "trơn" (vài dòng
+    // chữ) làm mốc: nếu nó đã nặng thì chi phí nằm ở màn chính phía dưới, không phải
+    // nội dung màn.
     final nav = tester.state<NavigatorState>(find.byType(Navigator).first);
+    Future<void> openClose(Future<void> Function() open) async {
+      await open();
+      await tester.pump(const Duration(milliseconds: 700));
+      nav.popUntil((r) => r.isFirst);
+      await tester.pump(const Duration(milliseconds: 500));
+    }
+
     await binding.watchPerformance(() async {
-      for (final key in const [
-        'gem-shop-button',
-        'prestige-button',
-        'achievements-button',
-        'compete-button',
-        'match3-button',
-      ]) {
-        await tester.tap(find.byKey(Key(key)));
-        await tester.pump(const Duration(milliseconds: 700));
-        nav.popUntil((r) => r.isFirst);
-        await tester.pump(const Duration(milliseconds: 500));
+      for (var i = 0; i < 4; i++) {
+        await openClose(() async {
+          showDialog<void>(
+            context: nav.overlay!.context,
+            builder: (_) => const AlertDialog(
+              title: Text('Mốc'),
+              content: Text('Hộp thoại trơn chỉ có chữ'),
+            ),
+          );
+        });
       }
-    }, reportKey: '4_open_close_screens');
+    }, reportKey: '4a_trivial_dialog_x4');
+
+    for (final (label, key) in const [
+      ('4b_gem_shop', 'gem-shop-button'),
+      ('4c_prestige', 'prestige-button'),
+      ('4d_achievements', 'achievements-button'),
+      ('4e_compete_hub', 'compete-button'),
+      ('4f_match3_journey', 'match3-button'),
+    ]) {
+      await binding.watchPerformance(() async {
+        for (var i = 0; i < 3; i++) {
+          await openClose(() => tester.tap(find.byKey(Key(key))));
+        }
+      }, reportKey: '${label}_x3');
+    }
   });
 }

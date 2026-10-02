@@ -93,6 +93,12 @@ class _IdleMascotState extends State<IdleMascot>
       widget.asset,
       controller: _c,
       fit: BoxFit.contain,
+      // Lottie vector (nhiều lớp) tốn ~5ms raster MỖI khung trên Android tầm trung — đo
+      // bằng cách cắt từng khối: bỏ nó thì mở/đóng hộp thoại rớt khung 100 → 5/220.
+      // Cache từng khung thành ảnh (vẽ một texture) giữ nguyên animation mà gần như
+      // hết chi phí (9.5 vs 8.8ms khi bỏ hẳn). 24fps ⇒ ~58 khung × (72dp·dpr)² ≈ 7MB.
+      renderCache: RenderCache.raster,
+      frameRate: const FrameRate(24),
       onLoaded: (composition) =>
           _loopSeconds = composition.duration.inMilliseconds / 1000.0,
       errorBuilder: (context, error, stackTrace) => Center(
