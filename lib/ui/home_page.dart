@@ -496,7 +496,12 @@ class _BottomBar extends ConsumerWidget {
               children: [
                 Icon(
                   icon,
-                  color: highlight ? Colors.amber : theme.colorScheme.primary,
+                  // Light: cam đậm (amber sáng chỉ 1.6:1 trên thanh điều hướng pastel).
+                  color: highlight
+                      ? (theme.brightness == Brightness.light
+                          ? Colors.orange.shade900
+                          : Colors.amber)
+                      : theme.colorScheme.primary,
                   size: 26,
                 ),
                 if (badgeValue != null)
