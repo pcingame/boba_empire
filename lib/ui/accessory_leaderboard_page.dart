@@ -238,7 +238,11 @@ class _List extends ConsumerWidget {
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: theme.textTheme.labelSmall?.copyWith(
-                                  color: const Color(0xFFFFA726),
+                                  // Light: cam đậm (cam sáng chỉ 1.7:1 trên thẻ pastel);
+                                  // dark giữ cam sáng.
+                                  color: theme.brightness == Brightness.light
+                                      ? const Color(0xFF9A5B00)
+                                      : const Color(0xFFFFA726),
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
