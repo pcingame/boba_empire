@@ -196,10 +196,13 @@ class BobaEmpireApp extends ConsumerWidget {
     // sáng, pastel hoá sẽ mờ). Dark mode không đổi.
     final light = brightness == Brightness.light;
     final pastelBg = Color.lerp(raw.primaryContainer, Colors.white, 0.55)!;
+    // Dark: "pastel dịu trên nền tối" — nền/thẻ/thanh tiền nhuốm màu seed nhưng
+    // rất tối và ít bão hoà; nút/chip giữ pastel sáng sẵn có của M3 dark.
+    Color dim(double t) => Color.lerp(raw.surface, raw.primaryContainer, t)!;
     final scheme = light
         ? raw.copyWith(
             surface: Color.lerp(raw.primaryContainer, Colors.white, 0.8)!)
-        : raw;
+        : raw.copyWith(surface: dim(0.45), primaryContainer: dim(0.75));
     // Nút "chunky đất sét": bo tròn dày, chữ đậm, có độ nổi nhẹ; dialog bo tròn
     // to — phong cách casual game (claymorphism).
     final buttonShape =
@@ -209,11 +212,10 @@ class BobaEmpireApp extends ConsumerWidget {
     final base = ThemeData(
       colorScheme: scheme,
       useMaterial3: true,
-      scaffoldBackgroundColor: light ? pastelBg : null,
-      appBarTheme: light
-          ? AppBarTheme(
-              backgroundColor: pastelBg, surfaceTintColor: Colors.transparent)
-          : null,
+      scaffoldBackgroundColor: light ? pastelBg : dim(0.25),
+      appBarTheme: AppBarTheme(
+          backgroundColor: light ? pastelBg : dim(0.25),
+          surfaceTintColor: Colors.transparent),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -252,6 +254,7 @@ class BobaEmpireApp extends ConsumerWidget {
         style: TextButton.styleFrom(textStyle: buttonText),
       ),
       dialogTheme: DialogThemeData(
+        backgroundColor: light ? null : dim(0.55),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
       ),
       cardTheme: CardThemeData(
