@@ -41,6 +41,7 @@ import 'widgets/animated_count.dart';
 import 'widgets/clay.dart';
 import 'widgets/idle_mascot.dart';
 import 'widgets/mascot.dart';
+import 'widgets/motion.dart';
 import 'widgets/one_shot_lottie.dart';
 import 'widgets/phone_width.dart';
 
@@ -59,10 +60,7 @@ bool debugAutoShowStory = true;
 
 /// Có nên tắt animation trang trí (thở/nhấp nháy/crossfade) không: khi test HOẶC
 /// khi người dùng bật "giảm chuyển động" ở hệ điều hành (accessibility).
-bool get _reduceMotion =>
-    debugDisableMascotAnimation ||
-    WidgetsBinding.instance.platformDispatcher.accessibilityFeatures
-        .disableAnimations;
+bool get _reduceMotion => reduceMotion;
 
 /// Ảnh scene là banner 2:1; khung lại gần vuông. Phóng to ảnh (fitWidth) chừng
 /// này để xe đẩy choán khung cho "đã mắt" mà chỉ cắt nhẹ hai mép (mất mây, giữ
@@ -513,12 +511,14 @@ class _BottomBar extends ConsumerWidget {
                   Positioned(
                     right: -1,
                     top: -1,
-                    child: Container(
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.error,
-                        shape: BoxShape.circle,
+                    child: PopIn(
+                      child: Container(
+                        width: 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.error,
+                          shape: BoxShape.circle,
+                        ),
                       ),
                     ),
                   ),
@@ -1518,7 +1518,9 @@ class _QuestBar extends ConsumerWidget {
           ),
           const SizedBox(width: 8),
           if (done)
-            FilledButton(
+            // Nhịp phóng-thu 2 lần khi vừa hoàn thành rồi dừng (không lặp vô hạn).
+            PulseOnMount(
+              child: FilledButton(
               key: const Key('quest-claim'),
               style: FilledButton.styleFrom(
                 visualDensity: VisualDensity.compact,
@@ -1534,6 +1536,7 @@ class _QuestBar extends ConsumerWidget {
                 }
               },
               child: Text('${l10n.questClaim} +${quest.rewardGems}💎'),
+            ),
             )
           else
             Text(
@@ -1959,7 +1962,10 @@ class _ShopTile extends ConsumerWidget {
         ),
       );
 
-    return Padding(
+    // Nhấp nhẹ khi lên cấp (chỉ ô vừa mua chạy animation).
+    return PulseOnIncrease(
+      value: level,
+      child: Padding(
       padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
       // Gợi ý "đáng mua nhất": viền màu + huy hiệu ⭐ (hình sao, không chỉ dựa
       // vào màu → người mù màu vẫn nhận ra).
@@ -1992,7 +1998,7 @@ class _ShopTile extends ConsumerWidget {
               ],
             )
           : card,
-    );
+    ));
   }
 }
 

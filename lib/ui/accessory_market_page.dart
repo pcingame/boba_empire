@@ -19,6 +19,7 @@ import '../market/market_filter.dart';
 import '../market/market_highlight.dart';
 import '../state/game_providers.dart';
 import 'widgets/accessory_rarity.dart';
+import 'widgets/motion.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -498,6 +499,12 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
   bool _missingOnly = false;
   MarketSort _sort = MarketSort.newest;
 
+  // Listing xuất hiện SAU lần dựng đầu (realtime/làm mới) trượt vào; danh sách ban
+  // đầu hiện ngay. Theo dõi trên danh sách CHƯA lọc để đổi bộ lọc không bị coi là "mới".
+  final _seenIds = <String>{};
+  final _animateIds = <String>{};
+  var _firstBuildDone = false;
+
   @override
   Widget build(BuildContext context) {
     final view = widget.view;
@@ -513,6 +520,15 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
     final all = view.listings
         .where((l) => l.sellerId != view.myUserId && _known(l.accessoryId))
         .toList();
+    for (final l in all) {
+      if (_seenIds.add(l.id) && _firstBuildDone) {
+        _animateIds.add(l.id);
+        // Hết animation (~320ms) thì thôi đánh dấu — cuộn ra/vào lại không chạy lại.
+        Future<void>.delayed(
+            const Duration(milliseconds: 600), () => _animateIds.remove(l.id));
+      }
+    }
+    _firstBuildDone = true;
     final others = filterMarketListings(
       all,
       rarity: _rarity,
@@ -564,7 +580,10 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
                     physics: const AlwaysScrollableScrollPhysics(),
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     itemCount: others.length,
-                    itemBuilder: (context, i) => _ListingTile(
+                    itemBuilder: (context, i) => AppearIn(
+                      key: ValueKey(others[i].id),
+                      enabled: _animateIds.contains(others[i].id),
+                      child: _ListingTile(
                       listing: others[i],
                       isNew: !owned.contains(others[i].accessoryId),
                       trailing: FilledButton(
@@ -585,7 +604,7 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
                         },
                         child: Text(l10n.marketBuyButton),
                       ),
-                    ),
+                    )),
                   ),
           ),
         ),
