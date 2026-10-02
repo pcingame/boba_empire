@@ -1180,6 +1180,26 @@ class AppLocalizationsEs extends AppLocalizations {
   String get marketMerchantTitle => 'Comerciante semanal';
 
   @override
+  String get marketFilterAll => 'Todos';
+
+  @override
+  String get marketFilterMissing => 'Faltan';
+
+  @override
+  String get marketSortPriceAsc => 'Menor precio';
+
+  @override
+  String get marketBadgeNew => 'NUEVO';
+
+  @override
+  String marketNeedMore(int n) {
+    return 'Faltan $n Monedas de Mercado';
+  }
+
+  @override
+  String get marketNoFilterResults => 'Ningún artículo coincide con el filtro.';
+
+  @override
   String marketWallet(int n) {
     return '$n Monedas de Mercado';
   }

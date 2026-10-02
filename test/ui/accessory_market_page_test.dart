@@ -34,6 +34,7 @@ final _otherListing = MarketListing(
 
 /// Món do bản app MỚI HƠN tạo ra — bản cũ không có trong danh mục.
 List<MarketListing> _extraListings = const [];
+int _wallet = 42;
 
 class _FakeMarketController extends AccessoryMarketController {
   int buyCalls = 0;
@@ -43,7 +44,7 @@ class _FakeMarketController extends AccessoryMarketController {
   AccessoryMarketViewState build() => AccessoryMarketLoaded(
     listings: [_myListing, _otherListing, ..._extraListings],
     myListings: [_myListing],
-    walletBalance: 42,
+    walletBalance: _wallet,
     myUserId: 'me',
     recentSales: const [
       RecentSale(accessoryId: 'dragon', price: 777),
@@ -139,6 +140,8 @@ void main() {
   });
 
   testWidgets('bấm Mua -> xác nhận -> gọi buyItem đúng 1 lần', (tester) async {
+    _wallet = 5000; // đủ Xu Chợ cho món 999
+    addTearDown(() => _wallet = 42);
     final (container, fake) = await _pump(tester);
 
     await tester.tap(find.text('Mua'));
@@ -182,6 +185,63 @@ void main() {
     expect(tester.takeException(), isNull);
     expect(find.text('Rồng nhỏ'), findsOneWidget); // món biết vẫn hiện
     await tester.tap(find.text('Của tôi'));
+    await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
+    container.dispose();
+  });
+
+  testWidgets('thiếu Xu Chợ: hộp mua báo thiếu bao nhiêu, nút thành Đổi, không mua',
+      (tester) async {
+    final (container, fake) = await _pump(tester); // ví 42, món 999
+
+    await tester.tap(find.text('Mua'));
+    await tester.pumpAndSettle();
+    expect(find.text('Thiếu 957 Xu Chợ'), findsOneWidget);
+    expect(find.text('Đổi'), findsOneWidget); // thay cho nút Mua xác nhận
+
+    await tester.tap(find.text('Đổi'));
+    await tester.pumpAndSettle();
+    expect(fake.buyCalls, 0);
+    expect(find.text('Mua với giá 999 Xu Chợ?'), findsNothing); // đã đóng
+    container.dispose();
+  });
+
+  testWidgets('nhãn MỚI chỉ hiện với món chưa có; có rồi thì ẩn', (tester) async {
+    var (container, _) = await _pump(tester);
+    expect(find.text('MỚI'), findsOneWidget); // chưa có dragon
+    container.dispose();
+    await tester.pumpWidget(const SizedBox());
+
+    (container, _) = await _pump(tester, extraOwned: ['dragon']);
+    expect(find.text('MỚI'), findsNothing);
+    container.dispose();
+  });
+
+  testWidgets('bộ lọc: độ hiếm không khớp -> thông báo rỗng; Tất cả -> hiện lại',
+      (tester) async {
+    final (container, _) = await _pump(tester);
+    await tester.tap(find.text('Thường')); // listing duy nhất là huyền thoại
+    await tester.pumpAndSettle();
+    expect(find.text('Không có món nào khớp bộ lọc.'), findsOneWidget);
+    expect(find.text('Rồng nhỏ'), findsNothing);
+
+    await tester.tap(find.text('Tất cả'));
+    await tester.pumpAndSettle();
+    expect(find.text('Rồng nhỏ'), findsOneWidget);
+    container.dispose();
+  });
+
+  testWidgets('màn hẹp 360px + chữ 1.3x: thanh lọc, nhãn MỚI, tab số -> không tràn',
+      (tester) async {
+    tester.view.physicalSize = const Size(360 * 3, 720 * 3);
+    tester.view.devicePixelRatio = 3;
+    tester.platformDispatcher.textScaleFactorTestValue = 1.3;
+    addTearDown(tester.view.reset);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+
+    final (container, _) = await _pump(tester);
+    expect(tester.takeException(), isNull);
+    await tester.tap(find.textContaining('Của tôi'));
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
     container.dispose();

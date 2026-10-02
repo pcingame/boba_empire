@@ -457,6 +457,17 @@
   "marketTabMine": "Mío",
   "marketRecentSalesHeader": "Vendido recientemente",
   "marketMerchantTitle": "Comerciante semanal",
+  "marketFilterAll": "Todos",
+  "marketFilterMissing": "Faltan",
+  "marketSortPriceAsc": "Menor precio",
+  "marketBadgeNew": "NUEVO",
+  "marketNeedMore": "Faltan {n} Monedas de Mercado",
+  "@marketNeedMore": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketNoFilterResults": "Ningún artículo coincide con el filtro.",
   "marketWallet": "{n} Monedas de Mercado",
   "@marketWallet": {
     "placeholders": {

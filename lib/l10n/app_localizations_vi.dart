@@ -1169,6 +1169,26 @@ class AppLocalizationsVi extends AppLocalizations {
   String get marketMerchantTitle => 'Thương gia tuần';
 
   @override
+  String get marketFilterAll => 'Tất cả';
+
+  @override
+  String get marketFilterMissing => 'Chưa có';
+
+  @override
+  String get marketSortPriceAsc => 'Giá thấp';
+
+  @override
+  String get marketBadgeNew => 'MỚI';
+
+  @override
+  String marketNeedMore(int n) {
+    return 'Thiếu $n Xu Chợ';
+  }
+
+  @override
+  String get marketNoFilterResults => 'Không có món nào khớp bộ lọc.';
+
+  @override
   String marketWallet(int n) {
     return '$n Xu Chợ';
   }

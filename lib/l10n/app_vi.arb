@@ -812,6 +812,17 @@
   "marketTabMine": "Của tôi",
   "marketRecentSalesHeader": "Vừa bán",
   "marketMerchantTitle": "Thương gia tuần",
+  "marketFilterAll": "Tất cả",
+  "marketFilterMissing": "Chưa có",
+  "marketSortPriceAsc": "Giá thấp",
+  "marketBadgeNew": "MỚI",
+  "marketNeedMore": "Thiếu {n} Xu Chợ",
+  "@marketNeedMore": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketNoFilterResults": "Không có món nào khớp bộ lọc.",
   "marketWallet": "{n} Xu Chợ",
   "@marketWallet": {
     "placeholders": {

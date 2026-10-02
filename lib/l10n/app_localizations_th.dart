@@ -1164,6 +1164,26 @@ class AppLocalizationsTh extends AppLocalizations {
   String get marketMerchantTitle => 'พ่อค้าประจำสัปดาห์';
 
   @override
+  String get marketFilterAll => 'ทั้งหมด';
+
+  @override
+  String get marketFilterMissing => 'ยังไม่มี';
+
+  @override
+  String get marketSortPriceAsc => 'ราคาต่ำสุด';
+
+  @override
+  String get marketBadgeNew => 'ใหม่';
+
+  @override
+  String marketNeedMore(int n) {
+    return 'ขาดอีก $n เหรียญตลาด';
+  }
+
+  @override
+  String get marketNoFilterResults => 'ไม่มีของที่ตรงกับตัวกรอง';
+
+  @override
   String marketWallet(int n) {
     return '$n เหรียญตลาด';
   }

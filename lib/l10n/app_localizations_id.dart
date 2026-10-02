@@ -1173,6 +1173,26 @@ class AppLocalizationsId extends AppLocalizations {
   String get marketMerchantTitle => 'Pedagang Mingguan';
 
   @override
+  String get marketFilterAll => 'Semua';
+
+  @override
+  String get marketFilterMissing => 'Belum punya';
+
+  @override
+  String get marketSortPriceAsc => 'Harga terendah';
+
+  @override
+  String get marketBadgeNew => 'BARU';
+
+  @override
+  String marketNeedMore(int n) {
+    return 'Kurang $n Koin Pasar';
+  }
+
+  @override
+  String get marketNoFilterResults => 'Tidak ada barang yang cocok.';
+
+  @override
   String marketWallet(int n) {
     return '$n Koin Pasar';
   }

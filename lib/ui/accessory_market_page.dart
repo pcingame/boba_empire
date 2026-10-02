@@ -15,6 +15,7 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../market/accessory_market_controller.dart';
 import '../market/accessory_market_repository.dart';
+import '../market/market_filter.dart';
 import '../market/market_highlight.dart';
 import '../state/game_providers.dart';
 import 'widgets/accessory_rarity.dart';
@@ -86,12 +87,32 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
           appBar: AppBar(
             title: Text(l10n.marketTitle),
             bottom: TabBar(
-              tabs: [Tab(text: l10n.marketTabBrowse), Tab(text: l10n.marketTabMine)],
+              tabs: [
+                Tab(text: l10n.marketTabBrowse),
+                Tab(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          l10n.marketTabMine,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      if (view is AccessoryMarketLoaded &&
+                          view.myListings.isNotEmpty) ...[
+                        const SizedBox(width: 6),
+                        _CountDot(view.myListings.length),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
           body: switch (view) {
-            AccessoryMarketLoading() =>
-              const Center(child: CircularProgressIndicator()),
+            AccessoryMarketLoading() => const _SkeletonList(),
             AccessoryMarketError() => _ErrorView(
                 onRetry: () => notifier.refresh(),
               ),
@@ -102,6 +123,55 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
                 ],
               ),
           },
+        ),
+      ),
+    );
+  }
+}
+
+/// Chấm số nhỏ cạnh nhãn tab.
+class _CountDot extends StatelessWidget {
+  const _CountDot(this.count);
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primary,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        '$count',
+        style: theme.textTheme.labelSmall?.copyWith(
+          color: theme.colorScheme.onPrimary,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+  }
+}
+
+/// Khung xương lúc tải lần đầu — giữ bố cục danh sách thay vì vòng quay trơ trọi.
+class _SkeletonList extends StatelessWidget {
+  const _SkeletonList();
+
+  @override
+  Widget build(BuildContext context) {
+    final color =
+        Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.07);
+    return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.all(12),
+      itemCount: 6,
+      itemBuilder: (_, _) => Container(
+        height: 60,
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(16),
         ),
       ),
     );
@@ -122,17 +192,23 @@ class _WalletChip extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ClayChip(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text('🪙', style: TextStyle(fontSize: 16)),
-                  const SizedBox(width: 6),
-                  Text(
-                    l10n.marketWallet(balance),
-                    style: const TextStyle(fontWeight: FontWeight.w700),
-                  ),
-                ],
+            Flexible(
+              child: ClayChip(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text('🪙', style: TextStyle(fontSize: 16)),
+                    const SizedBox(width: 6),
+                    Flexible(
+                      child: Text(
+                        l10n.marketWallet(balance),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             if (onConvert != null) ...[
@@ -382,6 +458,8 @@ class _RecentSalesStrip extends StatelessWidget {
               children: [
                 for (final s in known) ...[
                   ClayChip(
+                    color: rarityColor(accessoryById(s.accessoryId).rarity)
+                        .withValues(alpha: 0.25),
                     child: Text(
                       '${accessoryById(s.accessoryId).emoji} ${s.price} 🪙',
                     ),
@@ -397,19 +475,42 @@ class _RecentSalesStrip extends StatelessWidget {
   }
 }
 
-class _BrowseTab extends ConsumerWidget {
+class _BrowseTab extends ConsumerStatefulWidget {
   const _BrowseTab({required this.view, required this.onAction});
   final AccessoryMarketLoaded view;
   final void Function(String?) onAction;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_BrowseTab> createState() => _BrowseTabState();
+}
+
+class _BrowseTabState extends ConsumerState<_BrowseTab> {
+  AccessoryRarity? _rarity;
+  bool _missingOnly = false;
+  MarketSort _sort = MarketSort.newest;
+
+  @override
+  Widget build(BuildContext context) {
+    final view = widget.view;
+    final onAction = widget.onAction;
     final l10n = AppLocalizations.of(context)!;
+    // select theo CHUỖI (so sánh theo giá trị) — snapshot tạo list mới mỗi
+    // tick nên select thẳng list sẽ rebuild cả tab mỗi giây.
+    final ownedKey = ref.watch(gameControllerProvider
+        .select((s) => s.ownedAccessories.join(',')));
+    final owned = ownedKey.isEmpty ? <String>{} : ownedKey.split(',').toSet();
     // Không hiện listing của chính mình ở tab Chợ — tự mua bị RPC chặn, xem
     // ở tab "Của tôi" để huỷ thay vì mua.
-    final others = view.listings
+    final all = view.listings
         .where((l) => l.sellerId != view.myUserId && _known(l.accessoryId))
         .toList();
+    final others = filterMarketListings(
+      all,
+      rarity: _rarity,
+      missingOnly: _missingOnly,
+      owned: owned,
+      sort: _sort,
+    );
 
     return Column(
       children: [
@@ -419,6 +520,20 @@ class _BrowseTab extends ConsumerWidget {
         ),
         if (view.recentSales.isNotEmpty)
           _RecentSalesStrip(sales: view.recentSales),
+        if (all.isNotEmpty)
+          _FilterBar(
+            rarity: _rarity,
+            missingOnly: _missingOnly,
+            priceSort: _sort == MarketSort.priceAsc,
+            onAll: () => setState(() {
+              _rarity = null;
+              _missingOnly = false;
+            }),
+            onMissing: (v) => setState(() => _missingOnly = v),
+            onRarity: (r) => setState(() => _rarity = r),
+            onPriceSort: (v) => setState(
+                () => _sort = v ? MarketSort.priceAsc : MarketSort.newest),
+          ),
         Expanded(
           child: RefreshIndicator(
             onRefresh: () => ref
@@ -428,7 +543,12 @@ class _BrowseTab extends ConsumerWidget {
                 ? ListView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     children: [
-                      _EmptyState(emoji: '🏬', message: l10n.marketEmptyBrowse),
+                      _EmptyState(
+                        emoji: all.isEmpty ? '🏬' : '🔍',
+                        message: all.isEmpty
+                            ? l10n.marketEmptyBrowse
+                            : l10n.marketNoFilterResults,
+                      ),
                     ],
                   )
                 : ListView.builder(
@@ -437,9 +557,16 @@ class _BrowseTab extends ConsumerWidget {
                     itemCount: others.length,
                     itemBuilder: (context, i) => _ListingTile(
                       listing: others[i],
+                      isNew: !owned.contains(others[i].accessoryId),
                       trailing: FilledButton(
                         onPressed: () async {
-                          final ok = await _confirmBuy(context, l10n, others[i]);
+                          final ok = await _confirmBuy(
+                            context,
+                            l10n,
+                            others[i],
+                            balance: view.walletBalance,
+                            onTopUp: () => _showConvertDialog(context, onAction),
+                          );
                           if (ok != true) return;
                           HapticFeedback.mediumImpact();
                           final msg = await ref
@@ -458,12 +585,81 @@ class _BrowseTab extends ConsumerWidget {
   }
 }
 
+/// Hàng chip lọc/sắp xếp cuộn ngang: Tất cả · Chưa có · 4 độ hiếm · Giá thấp.
+class _FilterBar extends StatelessWidget {
+  const _FilterBar({
+    required this.rarity,
+    required this.missingOnly,
+    required this.priceSort,
+    required this.onAll,
+    required this.onMissing,
+    required this.onRarity,
+    required this.onPriceSort,
+  });
+  final AccessoryRarity? rarity;
+  final bool missingOnly;
+  final bool priceSort;
+  final VoidCallback onAll;
+  final ValueChanged<bool> onMissing;
+  final ValueChanged<AccessoryRarity?> onRarity;
+  final ValueChanged<bool> onPriceSort;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    Widget gap() => const SizedBox(width: 6);
+    return SizedBox(
+      height: 44,
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        children: [
+          ChoiceChip(
+            label: Text(l10n.marketFilterAll),
+            selected: rarity == null && !missingOnly,
+            onSelected: (_) => onAll(),
+          ),
+          gap(),
+          ChoiceChip(
+            label: Text('🆕 ${l10n.marketFilterMissing}'),
+            selected: missingOnly,
+            onSelected: onMissing,
+          ),
+          for (final r in AccessoryRarity.values) ...[
+            gap(),
+            ChoiceChip(
+              label: Text(accessoryRarityLabel(l10n, r)),
+              selected: rarity == r,
+              selectedColor: rarityColor(r).withValues(alpha: 0.35),
+              onSelected: (v) => onRarity(v ? r : null),
+            ),
+          ],
+          gap(),
+          ChoiceChip(
+            label: Text('↑ ${l10n.marketSortPriceAsc}'),
+            selected: priceSort,
+            onSelected: onPriceSort,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// [balance] < giá → hộp báo thiếu bao nhiêu và nút chính thành "Đổi" (mở dialog
+/// nạp [onTopUp]) thay vì để người chơi bấm Mua rồi mới nhận lỗi.
 Future<bool?> _confirmBuy(
-    BuildContext context, AppLocalizations l10n, MarketListing listing) {
+  BuildContext context,
+  AppLocalizations l10n,
+  MarketListing listing, {
+  required int balance,
+  required VoidCallback onTopUp,
+}) {
   final accessory = accessoryById(listing.accessoryId);
+  final short = listing.price - balance;
   return showDialog<bool>(
     context: context,
-    builder: (_) => AlertDialog(
+    builder: (dialogContext) => AlertDialog(
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -482,16 +678,26 @@ Future<bool?> _confirmBuy(
           ),
           const SizedBox(height: 12),
           Text(l10n.marketConfirmBuy(listing.price)),
+          if (short > 0) ...[
+            const SizedBox(height: 8),
+            Text(
+              l10n.marketNeedMore(short),
+              style: TextStyle(color: Theme.of(dialogContext).colorScheme.error),
+            ),
+          ],
         ],
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(false),
-          child: Text(MaterialLocalizations.of(context).cancelButtonLabel),
+          onPressed: () => Navigator.of(dialogContext).pop(false),
+          child: Text(MaterialLocalizations.of(dialogContext).cancelButtonLabel),
         ),
         FilledButton(
-          onPressed: () => Navigator.of(context).pop(true),
-          child: Text(l10n.marketBuyButton),
+          onPressed: () {
+            Navigator.of(dialogContext).pop(short <= 0);
+            if (short > 0) onTopUp();
+          },
+          child: Text(short > 0 ? l10n.marketConvertButton : l10n.marketBuyButton),
         ),
       ],
     ),
@@ -499,9 +705,13 @@ Future<bool?> _confirmBuy(
 }
 
 class _ListingTile extends StatelessWidget {
-  const _ListingTile({required this.listing, required this.trailing});
+  const _ListingTile(
+      {required this.listing, required this.trailing, this.isNew = false});
   final MarketListing listing;
   final Widget trailing;
+
+  /// Món người chơi CHƯA có trong bộ sưu tập — gắn nhãn "MỚI" để dễ nhận ra.
+  final bool isNew;
 
   @override
   Widget build(BuildContext context) {
@@ -522,18 +732,42 @@ class _ListingTile extends StatelessWidget {
             child: Row(
               children: [
                 Text(accessory.emoji, style: const TextStyle(fontSize: 24)),
-                const SizedBox(width: 10),
+                const SizedBox(width: 6),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        accessoryName(l10n, listing.accessoryId),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.bodyMedium
-                            ?.copyWith(fontWeight: FontWeight.w600),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              accessoryName(l10n, listing.accessoryId),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.textTheme.bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.w600),
+                            ),
+                          ),
+                          if (isNew) ...[
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 1),
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.tertiary,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                l10n.marketBadgeNew,
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                  color: theme.colorScheme.onTertiary,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                       const SizedBox(height: 2),
                       Row(
@@ -541,16 +775,20 @@ class _ListingTile extends StatelessWidget {
                         children: [
                           Text('🪙', style: theme.textTheme.bodySmall),
                           const SizedBox(width: 3),
-                          Text(
-                            l10n.marketPriceTag(listing.price),
-                            style: theme.textTheme.bodySmall,
+                          Flexible(
+                            child: Text(
+                              l10n.marketPriceTag(listing.price),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: theme.textTheme.bodySmall,
+                            ),
                           ),
                         ],
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(width: 8),
+                const SizedBox(width: 4),
                 trailing,
               ],
             ),
@@ -579,11 +817,13 @@ class _SectionHeader extends StatelessWidget {
           children: [
             Text(emoji, style: const TextStyle(fontSize: 16)),
             const SizedBox(width: 6),
-            Text(text,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleSmall
-                    ?.copyWith(fontWeight: FontWeight.w700)),
+            Expanded(
+              child: Text(text,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleSmall
+                      ?.copyWith(fontWeight: FontWeight.w700)),
+            ),
           ],
         ),
       );

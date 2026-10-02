@@ -457,6 +457,17 @@
   "marketTabMine": "ของฉัน",
   "marketRecentSalesHeader": "เพิ่งขายไป",
   "marketMerchantTitle": "พ่อค้าประจำสัปดาห์",
+  "marketFilterAll": "ทั้งหมด",
+  "marketFilterMissing": "ยังไม่มี",
+  "marketSortPriceAsc": "ราคาต่ำสุด",
+  "marketBadgeNew": "ใหม่",
+  "marketNeedMore": "ขาดอีก {n} เหรียญตลาด",
+  "@marketNeedMore": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketNoFilterResults": "ไม่มีของที่ตรงกับตัวกรอง",
   "marketWallet": "{n} เหรียญตลาด",
   "@marketWallet": {
     "placeholders": {

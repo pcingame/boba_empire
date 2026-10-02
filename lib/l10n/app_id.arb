@@ -457,6 +457,17 @@
   "marketTabMine": "Milikku",
   "marketRecentSalesHeader": "Baru terjual",
   "marketMerchantTitle": "Pedagang Mingguan",
+  "marketFilterAll": "Semua",
+  "marketFilterMissing": "Belum punya",
+  "marketSortPriceAsc": "Harga terendah",
+  "marketBadgeNew": "BARU",
+  "marketNeedMore": "Kurang {n} Koin Pasar",
+  "@marketNeedMore": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketNoFilterResults": "Tidak ada barang yang cocok.",
   "marketWallet": "{n} Koin Pasar",
   "@marketWallet": {
     "placeholders": {

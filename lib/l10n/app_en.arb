@@ -457,6 +457,17 @@
   "marketTabMine": "Mine",
   "marketRecentSalesHeader": "Recently sold",
   "marketMerchantTitle": "Weekly Merchant",
+  "marketFilterAll": "All",
+  "marketFilterMissing": "Missing",
+  "marketSortPriceAsc": "Lowest price",
+  "marketBadgeNew": "NEW",
+  "marketNeedMore": "Need {n} more Market Coins",
+  "@marketNeedMore": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketNoFilterResults": "No items match the filter.",
   "marketWallet": "{n} Market Coins",
   "@marketWallet": {
     "placeholders": {

@@ -2116,6 +2116,42 @@ abstract class AppLocalizations {
   /// **'Thương gia tuần'**
   String get marketMerchantTitle;
 
+  /// No description provided for @marketFilterAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả'**
+  String get marketFilterAll;
+
+  /// No description provided for @marketFilterMissing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có'**
+  String get marketFilterMissing;
+
+  /// No description provided for @marketSortPriceAsc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá thấp'**
+  String get marketSortPriceAsc;
+
+  /// No description provided for @marketBadgeNew.
+  ///
+  /// In vi, this message translates to:
+  /// **'MỚI'**
+  String get marketBadgeNew;
+
+  /// No description provided for @marketNeedMore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thiếu {n} Xu Chợ'**
+  String marketNeedMore(int n);
+
+  /// No description provided for @marketNoFilterResults.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có món nào khớp bộ lọc.'**
+  String get marketNoFilterResults;
+
   /// No description provided for @marketWallet.
   ///
   /// In vi, this message translates to:

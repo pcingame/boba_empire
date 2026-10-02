@@ -1172,6 +1172,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get marketMerchantTitle => 'Weekly Merchant';
 
   @override
+  String get marketFilterAll => 'All';
+
+  @override
+  String get marketFilterMissing => 'Missing';
+
+  @override
+  String get marketSortPriceAsc => 'Lowest price';
+
+  @override
+  String get marketBadgeNew => 'NEW';
+
+  @override
+  String marketNeedMore(int n) {
+    return 'Need $n more Market Coins';
+  }
+
+  @override
+  String get marketNoFilterResults => 'No items match the filter.';
+
+  @override
   String marketWallet(int n) {
     return '$n Market Coins';
   }
