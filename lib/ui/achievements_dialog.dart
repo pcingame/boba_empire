@@ -35,12 +35,14 @@ class _AchievementsDialog extends StatelessWidget {
         // mỗi giây (lifetimeEarnings đổi mỗi tick) trong khi phần lớn thành
         // tựu (stage/levels/prestige, hoặc đã đạt) không đổi thường xuyên
         // vậy — nguyên nhân giật khi mở bảng này lúc đang chơi.
-        child: ListView(
+        // ListView.builder: không tạo sẵn 25 widget hàng mỗi lần dựng (phần tử vẫn chỉ
+        // tạo cho hàng hiển thị — ListView(children) cũng lười — nhưng đỡ cấp phát).
+        // Thủ phạm giật thật là Opacity/saveLayer ở _AchievementRow, xem bên dưới.
+        child: ListView.builder(
           shrinkWrap: true,
-          children: [
-            for (final a in achievements)
-              _AchievementRow(achievement: a, l10n: l10n, theme: theme),
-          ],
+          itemCount: achievements.length,
+          itemBuilder: (context, i) => _AchievementRow(
+              achievement: achievements[i], l10n: l10n, theme: theme),
         ),
       ),
       actions: [
@@ -86,9 +88,12 @@ class _AchievementRow extends ConsumerWidget {
         ref.watch(gameControllerProvider.select((s) => _metricValue(s, a)));
     final ratio = (progress / a.threshold).clamp(0.0, 1.0).toDouble();
 
-    return Opacity(
-      opacity: unlocked ? 1.0 : 0.8,
-      child: ClayTile(
+    // KHÔNG dùng Opacity(0.8) cho hàng chưa đạt: mỗi Opacity là một saveLayer
+    // (vùng đệm ngoài màn hình) trên GPU, nhân với số hàng hiển thị — đo trên Android
+    // thật là một nguyên nhân khiến mở bảng này rớt ~66% khung. Hàng chưa đạt vẫn
+    // khác biệt nhờ thanh tiến độ + chữ nhạt hơn.
+    final dim = unlocked ? 1.0 : 0.8;
+    return ClayTile(
         child: Row(
           children: [
             Text(a.emoji, style: const TextStyle(fontSize: 24)),
@@ -100,15 +105,19 @@ class _AchievementRow extends ConsumerWidget {
                 children: [
                   Text(
                     achievementDesc(l10n, a),
-                    style: theme.textTheme.bodyMedium
-                        ?.copyWith(fontWeight: FontWeight.w600),
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.onSurface
+                          .withValues(alpha: dim),
+                    ),
                   ),
                   if (!unlocked) ...[
                     const SizedBox(height: 5),
-                    ClipRRect(
+                    // borderRadius có sẵn của widget, không bọc thêm ClipRRect.
+                    LinearProgressIndicator(
+                      value: ratio,
+                      minHeight: 6,
                       borderRadius: BorderRadius.circular(5),
-                      child: LinearProgressIndicator(
-                          value: ratio, minHeight: 6),
                     ),
                   ],
                 ],
@@ -120,12 +129,14 @@ class _AchievementRow extends ConsumerWidget {
                     color: theme.colorScheme.primary, size: 28)
                 : Text(
                     l10n.dailyReward(formatNumber(a.rewardGems.toDouble())),
-                    style: theme.textTheme.labelMedium
-                        ?.copyWith(fontWeight: FontWeight.w600),
+                    style: theme.textTheme.labelMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.onSurface
+                          .withValues(alpha: dim),
+                    ),
                   ),
           ],
         ),
-      ),
     );
   }
 }
