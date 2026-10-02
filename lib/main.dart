@@ -189,7 +189,17 @@ class BobaEmpireApp extends ConsumerWidget {
   // Chủ đề trà sữa, [seed] đổi theo giai đoạn. Font Baloo 2 cho bề mặt hiển thị
   // lớn (fallback Mitr cho tiếng Thái); body giữ font hệ thống để đủ mọi ngôn ngữ.
   static ThemeData _buildTheme(Brightness brightness, Color seed) {
-    final scheme = ColorScheme.fromSeed(seedColor: seed, brightness: brightness);
+    final raw = ColorScheme.fromSeed(seedColor: seed, brightness: brightness);
+    // Tông pastel (chỉ light mode): nền = primaryContainer của seed trộn nhiều
+    // trắng, thẻ/surface nhạt hơn nền một chút, nút filled dùng primaryContainer
+    // + chữ đậm cùng tông. `primary` GIỮ NGUYÊN (icon/chữ nhấn dùng nó trên nền
+    // sáng, pastel hoá sẽ mờ). Dark mode không đổi.
+    final light = brightness == Brightness.light;
+    final pastelBg = Color.lerp(raw.primaryContainer, Colors.white, 0.55)!;
+    final scheme = light
+        ? raw.copyWith(
+            surface: Color.lerp(raw.primaryContainer, Colors.white, 0.8)!)
+        : raw;
     // Nút "chunky đất sét": bo tròn dày, chữ đậm, có độ nổi nhẹ; dialog bo tròn
     // to — phong cách casual game (claymorphism).
     final buttonShape =
@@ -199,12 +209,24 @@ class BobaEmpireApp extends ConsumerWidget {
     final base = ThemeData(
       colorScheme: scheme,
       useMaterial3: true,
+      scaffoldBackgroundColor: light ? pastelBg : null,
+      appBarTheme: light
+          ? AppBarTheme(
+              backgroundColor: pastelBg, surfaceTintColor: Colors.transparent)
+          : null,
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
+          backgroundColor: light ? scheme.primaryContainer : null,
+          foregroundColor: light ? scheme.onPrimaryContainer : null,
+          // Nút khoá: pastel nhạt thay vì xám đục (xám lạc tông trên nền pastel).
+          disabledBackgroundColor:
+              light ? scheme.primaryContainer.withValues(alpha: 0.5) : null,
+          disabledForegroundColor:
+              light ? scheme.onPrimaryContainer.withValues(alpha: 0.45) : null,
           shape: buttonShape,
           padding: buttonPad,
           textStyle: buttonText,
@@ -213,6 +235,13 @@ class BobaEmpireApp extends ConsumerWidget {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
+          backgroundColor: light ? scheme.primaryContainer : null,
+          foregroundColor: light ? scheme.onPrimaryContainer : null,
+          // Nút khoá: pastel nhạt thay vì xám đục (xám lạc tông trên nền pastel).
+          disabledBackgroundColor:
+              light ? scheme.primaryContainer.withValues(alpha: 0.5) : null,
+          disabledForegroundColor:
+              light ? scheme.onPrimaryContainer.withValues(alpha: 0.45) : null,
           shape: buttonShape,
           padding: buttonPad,
           textStyle: buttonText,

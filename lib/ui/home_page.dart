@@ -1253,6 +1253,8 @@ class _BuyModeSelector extends ConsumerWidget {
     final mode = ref.watch(_buyModeProvider);
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
+    // Light mode dùng tông pastel (xem _buildTheme ở main.dart); dark giữ cũ.
+    final pastel = theme.brightness == Brightness.light;
 
     Widget seg(_BuyMode m, String label) {
       final on = mode == m;
@@ -1263,14 +1265,19 @@ class _BuyModeSelector extends ConsumerWidget {
             alignment: Alignment.center,
             padding: const EdgeInsets.symmetric(vertical: 5),
             color: on
-                ? theme.colorScheme.primary
+                ? (pastel
+                    ? Color.lerp(theme.colorScheme.primaryContainer,
+                        theme.colorScheme.primary, 0.3)
+                    : theme.colorScheme.primary)
                 : theme.colorScheme.surfaceContainerHigh,
             child: Text(
               label,
               style: theme.textTheme.labelMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: on
-                    ? theme.colorScheme.onPrimary
+                    ? (pastel
+                        ? theme.colorScheme.onPrimaryContainer
+                        : theme.colorScheme.onPrimary)
                     : theme.colorScheme.onSurfaceVariant,
               ),
             ),
