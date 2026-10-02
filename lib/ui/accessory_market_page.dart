@@ -459,7 +459,7 @@ class _RecentSalesStrip extends StatelessWidget {
                 for (final s in known) ...[
                   ClayChip(
                     color: rarityColor(accessoryById(s.accessoryId).rarity)
-                        .withValues(alpha: 0.25),
+                        .withValues(alpha: 0.7),
                     child: Text(
                       '${accessoryById(s.accessoryId).emoji} ${s.price} 🪙',
                     ),
@@ -630,7 +630,7 @@ class _FilterBar extends StatelessWidget {
             ChoiceChip(
               label: Text(accessoryRarityLabel(l10n, r)),
               selected: rarity == r,
-              selectedColor: rarityColor(r).withValues(alpha: 0.35),
+              selectedColor: rarityColor(r).withValues(alpha: 0.9),
               onSelected: (v) => onRarity(v ? r : null),
             ),
           ],
