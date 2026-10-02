@@ -43,6 +43,12 @@ void playEffect(
   String asset, {
   double size = 200,
   Offset? center, // toạ độ toàn cục; null = giữa màn hình
+  // Phát nhanh hơn (>1) cho hiệu ứng dài nhưng chỉ là trang trí — ngắn hơn thì
+  // ít bản chồng nhau cùng lúc hơn.
+  double speed = 1.0,
+  // Gọi đúng MỘT lần khi hiệu ứng kết thúc/bị gỡ — để chỗ gọi đếm số hiệu ứng
+  // đang sống và giới hạn đồng thời.
+  VoidCallback? onFinished,
 }) {
   final overlay = Overlay.maybeOf(context, rootOverlay: true);
   if (overlay == null) return;
@@ -53,11 +59,13 @@ void playEffect(
     if (removed) return;
     removed = true;
     entry?.remove();
+    onFinished?.call();
   }
 
   entry = OverlayEntry(
     builder: (_) {
-      final effect = _OneShotLottie(asset: asset, size: size, onDone: dismiss);
+      final effect = _OneShotLottie(
+          asset: asset, size: size, speed: speed, onDone: dismiss);
       // IgnorePointer để hiệu ứng không chặn thao tác của game bên dưới.
       if (center == null) {
         return IgnorePointer(child: Center(child: effect));
@@ -76,11 +84,13 @@ class _OneShotLottie extends StatefulWidget {
   const _OneShotLottie({
     required this.asset,
     required this.size,
+    required this.speed,
     required this.onDone,
   });
 
   final String asset;
   final double size;
+  final double speed;
   final VoidCallback onDone;
 
   @override
@@ -106,9 +116,12 @@ class _OneShotLottieState extends State<_OneShotLottie>
       child: Lottie.asset(
         widget.asset,
         controller: _controller,
+        // Chỉ là trang trí: vẽ 30 khung/giây thay vì 60 (file gốc 60fps, nhiều lớp)
+        // — nửa chi phí vẽ mỗi khung mà mắt gần như không nhận ra.
+        frameRate: const FrameRate(30),
         onLoaded: (composition) {
           _controller
-            ..duration = composition.duration
+            ..duration = composition.duration * (1 / widget.speed)
             ..forward().whenComplete(widget.onDone);
         },
         errorBuilder: (_, _, _) {

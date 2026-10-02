@@ -26,16 +26,14 @@ class ClayCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: base,
         borderRadius: BorderRadius.circular(radius),
+        // MỘT bóng mềm (trước: 2 bóng blur 14 + 8 — highlight trắng phía trên bị bỏ).
+        // Mỗi bóng blur là một lần làm mờ trên GPU mỗi khung; đo trên Android thật
+        // thì bóng đổ là thủ phạm chính của rớt khung khi chạm cốc.
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: dark ? 0.35 : 0.10),
-            blurRadius: 14,
-            offset: const Offset(0, 7),
-          ),
-          BoxShadow(
-            color: Colors.white.withValues(alpha: dark ? 0.05 : 0.75),
-            blurRadius: 8,
-            offset: const Offset(0, -2),
+            color: Colors.black.withValues(alpha: dark ? 0.35 : 0.12),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
           ),
         ],
       ),

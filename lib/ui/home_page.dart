@@ -39,6 +39,7 @@ import 'story_log_dialog.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/animated_count.dart';
 import 'widgets/clay.dart';
+import 'widgets/idle_mascot.dart';
 import 'widgets/mascot.dart';
 import 'widgets/one_shot_lottie.dart';
 import 'widgets/phone_width.dart';
@@ -1004,12 +1005,6 @@ class _TapAreaState extends ConsumerState<_TapArea>
     });
   int _comboCount = 0;
 
-  // Nhịp "thở" nhẹ của ly (mascot có sức sống). Tắt trong test (ticker lặp).
-  late final AnimationController _bob = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 1400),
-  );
-
   final math.Random _rng = math.Random();
   final List<_Floater> _floaters = [];
 
@@ -1021,18 +1016,13 @@ class _TapAreaState extends ConsumerState<_TapArea>
   // (~850ms) — giữ tối đa vài số cùng lúc, đủ để nhìn vẫn "dồn dập" mà không
   // tích luỹ hàng chục widget animation sống cùng lúc.
   static const _maxFloaters = 12;
-
-  @override
-  void initState() {
-    super.initState();
-    if (!_reduceMotion) _bob.repeat(reverse: true);
-  }
+  static const _maxCoinEffects = 3;
+  int _coinEffectsAlive = 0;
 
   @override
   void dispose() {
     _pop.dispose();
     _combo.dispose();
-    _bob.dispose();
     super.dispose();
   }
 
@@ -1047,8 +1037,20 @@ class _TapAreaState extends ConsumerState<_TapArea>
     // bơm được của cả app (test override qua clockProvider) — quyết định
     // gộp/không gộp hiệu ứng test được xác định, không phụ thuộc tốc độ máy
     // chạy test thật.
-    if (_coinsEffectGate.allow(ref.read(clockProvider)())) {
-      playEffect(context, AnimAssets.coins, size: 140);
+    // Hiệu ứng đồng xu dài ~2.5s, 15 lớp: chạm liên tục (cổng 90ms) từng sinh tới
+    // ~28 Lottie chồng nhau cùng lúc — đo trên Android thật là nguyên nhân chính
+    // làm rớt khung (raster ~29ms/khung). Chỉ cho tối đa [_maxCoinEffects] bản sống
+    // cùng lúc, phát nhanh hơn để ngắn lại.
+    if (_coinEffectsAlive < _maxCoinEffects &&
+        _coinsEffectGate.allow(ref.read(clockProvider)())) {
+      _coinEffectsAlive++;
+      playEffect(
+        context,
+        AnimAssets.coins,
+        size: 140,
+        speed: 1.6,
+        onFinished: () => _coinEffectsAlive--,
+      );
     }
 
     final key = UniqueKey();
@@ -1066,6 +1068,10 @@ class _TapAreaState extends ConsumerState<_TapArea>
     });
     _combo.forward(from: 0);
   }
+
+  // Giữ MỘT instance: Flutter bỏ qua dựng lại khi widget con giống hệt (identical).
+  late final Widget _circle =
+      _TapCircle(popScale: _popScale, onTap: _onTap);
 
   @override
   Widget build(BuildContext context) {
@@ -1095,79 +1101,98 @@ class _TapAreaState extends ConsumerState<_TapArea>
               ),
             ),
           ),
-        LayoutBuilder(
-          builder: (context, constraints) {
-            final h = constraints.maxHeight;
-            // Vòng chạm co theo chiều cao vùng cảnh: giai đoạn sau shop cao hơn
-            // → cảnh thấp lại, nếu để cố định sẽ bị Stack cắt. Chừa 36px cho bóng.
-            final side = (h - 36).clamp(120.0, 172.0);
-            // Ảnh scene neo đáy, cao ~ (w/2)·[_sceneZoom]; quầy ở ~58% chiều
-            // cao ảnh. Neo cup NGỒI TRÊN QUẦY theo trục dọc thực tế của khung.
-            final imgH = constraints.maxWidth / 2 * _sceneZoom;
-            final counterY = (h - imgH) + imgH * 0.58;
-            final av = (2 * counterY / h - 1).clamp(-0.4, 0.78);
-            return Align(
-              alignment: Alignment(0, av),
-              child: GestureDetector(
-                onTap: _onTap,
-                // RepaintBoundary: pop/thở của cup lặp mỗi frame → cô lập layer.
-                child: RepaintBoundary(
-                    child: ScaleTransition(
-                  scale: _popScale,
-                  child: Container(
-                    key: const Key('tap-circle'),
-                    width: side,
-                    height: side,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: theme.colorScheme.secondaryContainer,
-                      boxShadow: [
-                        BoxShadow(
-                          color:
-                              theme.colorScheme.shadow.withValues(alpha: 0.25),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(8),
-                    // Co lại khi vòng bị ép nhỏ (ngôn ngữ dài / vòng nhỏ) thay vì tràn.
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          // Animation nếu có file, ngược lại emoji 🧋. Bob nhẹ cho có hồn.
-                          AnimatedBuilder(
-                            animation: _bob,
-                            builder: (context, child) => Transform.translate(
-                              offset: Offset(0,
-                                  -7 * Curves.easeInOut.transform(_bob.value)),
-                              child: child,
-                            ),
-                            child: const Mascot(
-                                asset: AnimAssets.cup, emoji: '🧋', size: 72),
-                          ),
-                          const SizedBox(height: 4),
-                          SizedBox(
-                            width: 150,
-                            child: Text(
-                              AppLocalizations.of(context)!.tapBrew,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(fontSize: 15),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                )),
-              ),
-            );
-          },
-        ),
+        _circle,
       ],
+    );
+  }
+}
+
+/// Vòng cốc chạm — tách riêng và dựng MỘT lần (instance giữ trong state) để mỗi cú
+/// chạm (setState của _TapArea để thêm số bay/combo) KHÔNG dựng lại cả vòng +
+/// Lottie bên trong. Đo trên Android thật: chạm cốc liên tục rớt 84% khung.
+class _TapCircle extends StatelessWidget {
+  const _TapCircle({required this.popScale, required this.onTap});
+
+  final Animation<double> popScale;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final h = constraints.maxHeight;
+        // Vòng chạm co theo chiều cao vùng cảnh: giai đoạn sau shop cao hơn
+        // → cảnh thấp lại, nếu để cố định sẽ bị Stack cắt. Chừa 36px cho bóng.
+        final side = (h - 36).clamp(120.0, 172.0);
+        // Ảnh scene neo đáy, cao ~ (w/2)·[_sceneZoom]; quầy ở ~58% chiều
+        // cao ảnh. Neo cup NGỒI TRÊN QUẦY theo trục dọc thực tế của khung.
+        final imgH = constraints.maxWidth / 2 * _sceneZoom;
+        final counterY = (h - imgH) + imgH * 0.58;
+        final av = (2 * counterY / h - 1).clamp(-0.4, 0.78);
+        return Align(
+          alignment: Alignment(0, av),
+          child: GestureDetector(
+            onTap: onTap,
+            // RepaintBoundary: pop/thở của cup lặp mỗi frame → cô lập layer.
+            child: RepaintBoundary(
+                child: ScaleTransition(
+              scale: popScale,
+              child: Container(
+                key: const Key('tap-circle'),
+                width: side,
+                height: side,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: theme.colorScheme.secondaryContainer,
+                  boxShadow: [
+                    BoxShadow(
+                      color:
+                          theme.colorScheme.shadow.withValues(alpha: 0.25),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(8),
+                // Co lại khi vòng bị ép nhỏ (ngôn ngữ dài / vòng nhỏ) thay vì tràn.
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Animation nếu có file, ngược lại emoji 🧋. Bob nhẹ cho có hồn.
+                      // RepaintBoundary RIÊNG cho phần luôn động (bob + Lottie 60fps):
+                      // không có thì mỗi khung vẽ lại cả vòng + bóng blur của nó (chỉ
+                      // vì một con cốc 72dp nhún) — nguyên nhân khiến màn chính vẽ
+                      // lại toàn bộ 60 lần/giây kể cả khi đứng yên.
+                      // IdleMascot: 30Hz bằng Timer (không ticker 60Hz) — xem idle_mascot.dart.
+                      RepaintBoundary(
+                        child: IdleMascot(
+                          asset: AnimAssets.cup,
+                          emoji: '🧋',
+                          size: 72,
+                          animate: !_reduceMotion,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      SizedBox(
+                        width: 150,
+                        child: Text(
+                          AppLocalizations.of(context)!.tapBrew,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 15),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )),
+          ),
+        );
+      },
     );
   }
 }
@@ -1281,7 +1306,9 @@ class _Shop extends ConsumerWidget {
     ];
 
     return Material(
-      elevation: 8,
+      // Bóng khung shop: elevation 8 là blur lớn trên cả bề ngang màn, vẽ lại mỗi
+      // khung — hạ xuống 3 (đo trên Android thật: bóng đổ là phần tốn nhất khi chạm).
+      elevation: 3,
       child: SafeArea(
         top: false,
         child: Column(
@@ -1589,7 +1616,12 @@ class _StageHeader extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final stage = ref.watch(gameControllerProvider.select((s) => s.stage));
-    final money = ref.watch(gameControllerProvider.select((s) => s.money));
+    // Chỉ cần biết đủ tiền mở khoá giai đoạn kế chưa (bool) — không theo dõi money
+    // thô, nếu không cả hàng này dựng lại mỗi lần chạm cốc.
+    final canUnlock = ref.watch(gameControllerProvider.select((s) {
+      final n = Balance.nextStageConfig(s.stage);
+      return n != null && s.money >= n.unlockCost;
+    }));
     final rivalActive =
         ref.watch(gameControllerProvider.select((s) => s.rivalActive));
     final standing = ref
@@ -1654,7 +1686,7 @@ class _StageHeader extends ConsumerWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 12),
                             visualDensity: VisualDensity.compact,
                           ),
-                          onPressed: money >= next.unlockCost
+                          onPressed: canUnlock
                               ? () {
                                   if (ref
                                       .read(gameControllerProvider.notifier)
@@ -1804,24 +1836,32 @@ class _ShopTile extends ConsumerWidget {
     final level = ref.watch(
       gameControllerProvider.select((s) => s.levelOf(config.id)),
     );
-    final money =
-        ref.watch(gameControllerProvider.select((s) => s.money));
     final costMult =
         ref.watch(gameControllerProvider.select((s) => s.upgradeCostMult));
     final mode = ref.watch(_buyModeProvider);
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
 
-    // Số cấp sẽ mua theo chế độ; "MAX" = nhiều nhất mua nổi (tối thiểu 1 để nút
-    // vẫn hiện giá, disable nếu không đủ cho 1 cấp).
-    final count = switch (mode) {
-      _BuyMode.x1 => 1,
-      _BuyMode.x10 => 10,
-      _BuyMode.max =>
-        math.max(1, maxAffordableLevels(config, level, money, costMult)),
-    };
+    // KHÔNG watch `money` thô: money đổi MỖI lần chạm cốc (~25 lần/giây) nên mọi
+    // ô shop (đến 18+, mỗi ô có bóng đổ/thanh mốc/nút) bị dựng + vẽ lại mỗi lần —
+    // đo trên Android thật: build 12ms + raster 29ms/khung, rớt 84% khung khi chạm.
+    // Chỉ watch KẾT QUẢ phụ thuộc tiền: (số cấp sẽ mua, có đủ tiền không) — record
+    // so sánh theo giá trị nên ô chỉ dựng lại khi kết quả thật sự đổi.
+    //
+    // Số cấp theo chế độ; "MAX" = nhiều nhất mua nổi (tối thiểu 1 để nút vẫn hiện
+    // giá, disable nếu không đủ cho 1 cấp).
+    final (count, canAfford) = ref.watch(gameControllerProvider.select((s) {
+      final lv = s.levelOf(config.id);
+      final cm = s.upgradeCostMult;
+      final n = switch (mode) {
+        _BuyMode.x1 => 1,
+        _BuyMode.x10 => 10,
+        _BuyMode.max =>
+          math.max(1, maxAffordableLevels(config, lv, s.money, cm)),
+      };
+      return (n, s.money >= bulkCost(config, lv, n) * cm);
+    }));
     final cost = bulkCost(config, level, count) * costMult;
-    final canAfford = money >= cost;
     final gain = bulkIncomeGain(config, level, count) * globalMult;
     final countLabel = count > 1 ? ' ×$count' : '';
 
