@@ -1234,6 +1234,42 @@ abstract class AppLocalizations {
   /// **'Chương chưa mở'**
   String get storyLogLocked;
 
+  /// No description provided for @storyUnlockWhen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở khi: {cond}'**
+  String storyUnlockWhen(String cond);
+
+  /// No description provided for @storyUnlockAfter.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở sau {chapter}'**
+  String storyUnlockAfter(String chapter);
+
+  /// No description provided for @storyCondFirst.
+  ///
+  /// In vi, this message translates to:
+  /// **'{name} lần đầu'**
+  String storyCondFirst(String name);
+
+  /// No description provided for @storyCondRival.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đánh bại đối thủ'**
+  String get storyCondRival;
+
+  /// No description provided for @storyCondAscension.
+  ///
+  /// In vi, this message translates to:
+  /// **'{name} lần {n}'**
+  String storyCondAscension(int n, String name);
+
+  /// No description provided for @storyCondM3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Qua màn {n} của {game}'**
+  String storyCondM3(int n, String game);
+
   /// No description provided for @rivalEventTitle.
   ///
   /// In vi, this message translates to:

@@ -683,6 +683,34 @@ class AppLocalizationsVi extends AppLocalizations {
   String get storyLogLocked => 'Chương chưa mở';
 
   @override
+  String storyUnlockWhen(String cond) {
+    return 'Mở khi: $cond';
+  }
+
+  @override
+  String storyUnlockAfter(String chapter) {
+    return 'Mở sau $chapter';
+  }
+
+  @override
+  String storyCondFirst(String name) {
+    return '$name lần đầu';
+  }
+
+  @override
+  String get storyCondRival => 'Đánh bại đối thủ';
+
+  @override
+  String storyCondAscension(int n, String name) {
+    return '$name lần $n';
+  }
+
+  @override
+  String storyCondM3(int n, String game) {
+    return 'Qua màn $n của $game';
+  }
+
+  @override
   String get rivalEventTitle => 'Đối thủ ra tay!';
 
   @override

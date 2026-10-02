@@ -188,6 +188,39 @@
   "storyChoosePrompt": "เลือกเส้นทางของคุณ — เปลี่ยนใจไม่ได้:",
   "storyLogTitle": "เนื้อเรื่อง",
   "storyLogLocked": "ยังไม่ปลดล็อก",
+  "storyUnlockWhen": "ปลดล็อกเมื่อ: {cond}",
+  "@storyUnlockWhen": {
+    "placeholders": {
+      "cond": {"type": "String"}
+    }
+  },
+  "storyUnlockAfter": "ปลดล็อกหลัง {chapter}",
+  "@storyUnlockAfter": {
+    "placeholders": {
+      "chapter": {"type": "String"}
+    }
+  },
+  "storyCondFirst": "{name} ครั้งแรก",
+  "@storyCondFirst": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "storyCondRival": "เอาชนะคู่แข่ง",
+  "storyCondAscension": "{name} ครั้งที่ {n}",
+  "@storyCondAscension": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "name": {"type": "String"}
+    }
+  },
+  "storyCondM3": "ผ่านด่าน {n} ของ {game}",
+  "@storyCondM3": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "game": {"type": "String"}
+    }
+  },
   "rivalEventTitle": "คู่แข่งลงมือแล้ว!",
   "rivalEventIgnore": "เพิกเฉย",
   "rivalMeterAhead": "นำอยู่",

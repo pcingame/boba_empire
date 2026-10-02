@@ -343,4 +343,56 @@ void main() {
       expect(pendingChapterId(s), isNull);
     });
   });
+
+  group('storyUnlockProgress / storyTriggerMet (gợi ý mở khoá ở Nhật ký)', () {
+    StoryChapter ch(int id) => chapterById(id);
+
+    test('theo giai đoạn: đang có/cần, kẹp ở đích', () {
+      // Chương 7 cần giai đoạn 6.
+      expect(
+          storyUnlockProgress(ch(7), stage: 4, ascensionCount: 0, m3Stars: []),
+          (current: 4, target: 6));
+      expect(
+          storyUnlockProgress(ch(7), stage: 9, ascensionCount: 0, m3Stars: []),
+          (current: 6, target: 6)); // không vượt 100%
+    });
+
+    test('Kỷ Nguyên và Trân Châu Rơi', () {
+      expect(
+          storyUnlockProgress(ch(31), stage: 18, ascensionCount: 1, m3Stars: []),
+          (current: 1, target: 2));
+      // Chương 30 cần qua màn m (xem story.dart); 3 màn đã qua (≥1★) -> current 3.
+      final c30 = ch(30);
+      final p = storyUnlockProgress(c30,
+          stage: 18, ascensionCount: 1, m3Stars: [3, 1, 2, 0, 0]);
+      expect(p!.current, 3);
+      expect(p.target, c30.value);
+    });
+
+    test('điều kiện không đo bằng số -> null', () {
+      expect(
+          storyUnlockProgress(ch(4), stage: 1, ascensionCount: 0, m3Stars: []),
+          isNull); // Nhượng quyền lần đầu
+      expect(
+          storyUnlockProgress(ch(8), stage: 1, ascensionCount: 0, m3Stars: []),
+          isNull); // hạ đối thủ
+    });
+
+    test('storyTriggerMet khớp pendingChapterId (cùng một nguồn sự thật)', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..storyChapter = 1
+        ..stage = 2;
+      expect(
+          storyTriggerMet(ch(2),
+              stage: s.stage,
+              hasPrestiged: false,
+              rivalDefeated: false,
+              ascensionCount: 0,
+              m3Stars: s.m3Stars),
+          isTrue);
+      expect(pendingChapterId(s), 2);
+      s.stage = 1;
+      expect(pendingChapterId(s), isNull);
+    });
+  });
 }

@@ -188,6 +188,39 @@
   "storyChoosePrompt": "Pilih jalanmu — tidak bisa dibatalkan:",
   "storyLogTitle": "Cerita",
   "storyLogLocked": "Belum terbuka",
+  "storyUnlockWhen": "Terbuka saat: {cond}",
+  "@storyUnlockWhen": {
+    "placeholders": {
+      "cond": {"type": "String"}
+    }
+  },
+  "storyUnlockAfter": "Terbuka setelah {chapter}",
+  "@storyUnlockAfter": {
+    "placeholders": {
+      "chapter": {"type": "String"}
+    }
+  },
+  "storyCondFirst": "{name} pertama",
+  "@storyCondFirst": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "storyCondRival": "Kalahkan pesaing",
+  "storyCondAscension": "{name} ke-{n}",
+  "@storyCondAscension": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "name": {"type": "String"}
+    }
+  },
+  "storyCondM3": "Selesaikan level {n} di {game}",
+  "@storyCondM3": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "game": {"type": "String"}
+    }
+  },
   "rivalEventTitle": "Pesaing menyerang!",
   "rivalEventIgnore": "Abaikan",
   "rivalMeterAhead": "Unggul",

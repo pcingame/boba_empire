@@ -188,6 +188,39 @@
   "storyChoosePrompt": "Elige tu camino — no se puede deshacer:",
   "storyLogTitle": "Historia",
   "storyLogLocked": "Aún no desbloqueado",
+  "storyUnlockWhen": "Se desbloquea al: {cond}",
+  "@storyUnlockWhen": {
+    "placeholders": {
+      "cond": {"type": "String"}
+    }
+  },
+  "storyUnlockAfter": "Se desbloquea tras {chapter}",
+  "@storyUnlockAfter": {
+    "placeholders": {
+      "chapter": {"type": "String"}
+    }
+  },
+  "storyCondFirst": "Primer {name}",
+  "@storyCondFirst": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "storyCondRival": "Derrota al rival",
+  "storyCondAscension": "{name} n.º {n}",
+  "@storyCondAscension": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "name": {"type": "String"}
+    }
+  },
+  "storyCondM3": "Supera el nivel {n} de {game}",
+  "@storyCondM3": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "game": {"type": "String"}
+    }
+  },
   "rivalEventTitle": "¡El rival ataca!",
   "rivalEventIgnore": "Ignorar",
   "rivalMeterAhead": "Por delante",

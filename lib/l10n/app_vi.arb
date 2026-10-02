@@ -543,6 +543,39 @@
   "storyChoosePrompt": "Chọn hướng đi — không đổi lại được:",
   "storyLogTitle": "Cốt truyện",
   "storyLogLocked": "Chương chưa mở",
+  "storyUnlockWhen": "Mở khi: {cond}",
+  "@storyUnlockWhen": {
+    "placeholders": {
+      "cond": {"type": "String"}
+    }
+  },
+  "storyUnlockAfter": "Mở sau {chapter}",
+  "@storyUnlockAfter": {
+    "placeholders": {
+      "chapter": {"type": "String"}
+    }
+  },
+  "storyCondFirst": "{name} lần đầu",
+  "@storyCondFirst": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "storyCondRival": "Đánh bại đối thủ",
+  "storyCondAscension": "{name} lần {n}",
+  "@storyCondAscension": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "name": {"type": "String"}
+    }
+  },
+  "storyCondM3": "Qua màn {n} của {game}",
+  "@storyCondM3": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "game": {"type": "String"}
+    }
+  },
   "rivalEventTitle": "Đối thủ ra tay!",
   "rivalEventIgnore": "Phớt lờ",
   "rivalMeterAhead": "Đang dẫn trước",

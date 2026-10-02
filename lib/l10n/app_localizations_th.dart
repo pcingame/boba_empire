@@ -680,6 +680,34 @@ class AppLocalizationsTh extends AppLocalizations {
   String get storyLogLocked => 'ยังไม่ปลดล็อก';
 
   @override
+  String storyUnlockWhen(String cond) {
+    return 'ปลดล็อกเมื่อ: $cond';
+  }
+
+  @override
+  String storyUnlockAfter(String chapter) {
+    return 'ปลดล็อกหลัง $chapter';
+  }
+
+  @override
+  String storyCondFirst(String name) {
+    return '$name ครั้งแรก';
+  }
+
+  @override
+  String get storyCondRival => 'เอาชนะคู่แข่ง';
+
+  @override
+  String storyCondAscension(int n, String name) {
+    return '$name ครั้งที่ $n';
+  }
+
+  @override
+  String storyCondM3(int n, String game) {
+    return 'ผ่านด่าน $n ของ $game';
+  }
+
+  @override
   String get rivalEventTitle => 'คู่แข่งลงมือแล้ว!';
 
   @override

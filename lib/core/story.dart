@@ -180,17 +180,59 @@ StoryChapter chapterById(int id) => storyChapters.firstWhere(
       orElse: () => storyChapters.first,
     );
 
-bool _triggerMet(StoryChapter c, GameState s) => switch (c.trigger) {
+bool _triggerMet(StoryChapter c, GameState s) => storyTriggerMet(
+      c,
+      stage: s.stage,
+      hasPrestiged: s.prestigeStars > 0,
+      rivalDefeated: s.rivalDefeated,
+      ascensionCount: s.ascensionCount,
+      m3Stars: s.m3Stars,
+    );
+
+/// Điều kiện của [c] đã thoả chưa — tách khỏi GameState để UI (snapshot) dùng
+/// chung đúng một nguồn sự thật với [pendingChapterId].
+bool storyTriggerMet(
+  StoryChapter c, {
+  required int stage,
+  required bool hasPrestiged,
+  required bool rivalDefeated,
+  required int ascensionCount,
+  required List<int> m3Stars,
+}) =>
+    switch (c.trigger) {
       StoryTrigger.gameStart => true,
-      StoryTrigger.stage => s.stage >= c.value,
+      StoryTrigger.stage => stage >= c.value,
       // Bình thường Chương 4 mở ở lần prestige đầu; nhưng nếu ai đó lên tới giai
       // đoạn cuối bằng "mở giai đoạn tức thì" (💎) mà chưa prestige lần nào thì
       // vẫn mở để chuỗi truyện không kẹt.
-      StoryTrigger.firstPrestige => s.prestigeStars > 0 || s.stage >= 6,
-      StoryTrigger.rivalDefeated => s.rivalDefeated,
-      StoryTrigger.ascension => s.ascensionCount >= c.value,
+      StoryTrigger.firstPrestige => hasPrestiged || stage >= 6,
+      StoryTrigger.rivalDefeated => rivalDefeated,
+      StoryTrigger.ascension => ascensionCount >= c.value,
       StoryTrigger.m3Level =>
-        s.m3Stars.length >= c.value && s.m3Stars[c.value - 1] > 0,
+        m3Stars.length >= c.value && m3Stars[c.value - 1] > 0,
+    };
+
+/// Tiến độ tới điều kiện mở [c] (đang có / cần), cho thanh tiến độ ở Nhật ký.
+/// null nếu điều kiện không đo bằng số (Nhượng quyền lần đầu, hạ đối thủ).
+/// Trân Châu Rơi đếm số màn ĐÃ QUA (≥1★) — gần đúng "đang ở màn nào" vì hành
+/// trình mở tuần tự.
+({int current, int target})? storyUnlockProgress(
+  StoryChapter c, {
+  required int stage,
+  required int ascensionCount,
+  required List<int> m3Stars,
+}) =>
+    switch (c.trigger) {
+      StoryTrigger.stage => (current: stage.clamp(0, c.value), target: c.value),
+      StoryTrigger.ascension => (
+          current: ascensionCount.clamp(0, c.value),
+          target: c.value
+        ),
+      StoryTrigger.m3Level => (
+          current: m3Stars.where((x) => x > 0).length.clamp(0, c.value),
+          target: c.value
+        ),
+      _ => null,
     };
 
 String? _choiceValue(GameState s, StoryChoiceAxis axis) => switch (axis) {

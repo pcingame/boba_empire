@@ -188,6 +188,39 @@
   "storyChoosePrompt": "Choose your path — this can't be undone:",
   "storyLogTitle": "Story",
   "storyLogLocked": "Not unlocked yet",
+  "storyUnlockWhen": "Unlocks when: {cond}",
+  "@storyUnlockWhen": {
+    "placeholders": {
+      "cond": {"type": "String"}
+    }
+  },
+  "storyUnlockAfter": "Unlocks after {chapter}",
+  "@storyUnlockAfter": {
+    "placeholders": {
+      "chapter": {"type": "String"}
+    }
+  },
+  "storyCondFirst": "First {name}",
+  "@storyCondFirst": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "storyCondRival": "Defeat the rival",
+  "storyCondAscension": "{name} #{n}",
+  "@storyCondAscension": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "name": {"type": "String"}
+    }
+  },
+  "storyCondM3": "Clear level {n} of {game}",
+  "@storyCondM3": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "game": {"type": "String"}
+    }
+  },
   "rivalEventTitle": "The rival strikes!",
   "rivalEventIgnore": "Ignore",
   "rivalMeterAhead": "Ahead",

@@ -686,6 +686,34 @@ class AppLocalizationsId extends AppLocalizations {
   String get storyLogLocked => 'Belum terbuka';
 
   @override
+  String storyUnlockWhen(String cond) {
+    return 'Terbuka saat: $cond';
+  }
+
+  @override
+  String storyUnlockAfter(String chapter) {
+    return 'Terbuka setelah $chapter';
+  }
+
+  @override
+  String storyCondFirst(String name) {
+    return '$name pertama';
+  }
+
+  @override
+  String get storyCondRival => 'Kalahkan pesaing';
+
+  @override
+  String storyCondAscension(int n, String name) {
+    return '$name ke-$n';
+  }
+
+  @override
+  String storyCondM3(int n, String game) {
+    return 'Selesaikan level $n di $game';
+  }
+
+  @override
   String get rivalEventTitle => 'Pesaing menyerang!';
 
   @override
