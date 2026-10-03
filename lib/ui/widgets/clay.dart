@@ -80,16 +80,22 @@ class ClayTile extends StatelessWidget {
 
 /// Chip "đất sét" nhỏ gọn — dùng cho số Kim Cương/Xu ở đầu trang.
 class ClayChip extends StatelessWidget {
-  const ClayChip({super.key, required this.child, this.color});
+  const ClayChip({
+    super.key,
+    required this.child,
+    this.color,
+    this.padding = const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+  });
 
   final Widget child;
   final Color? color;
+  final EdgeInsetsGeometry padding;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+      padding: padding,
       decoration: BoxDecoration(
         color: color ?? theme.colorScheme.surface.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(24),

@@ -682,14 +682,18 @@ class _MoneyHeader extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(24),
                         onTap: () => showRewards(context),
                         child: ClayChip(
-                          child: Text(
-                            AppLocalizations.of(context)!.rewardsTitle,
-                            maxLines: 1,
-                            softWrap: false,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.labelLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: onContainer,
+                          // Co chữ cho vừa thay vì cắt "…" (mất cả emoji 🎁 ở cuối)
+                          // khi hàng chip chật; chuỗi quá dài vẫn co dần, không tràn.
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              AppLocalizations.of(context)!.rewardsTitle,
+                              maxLines: 1,
+                              softWrap: false,
+                              style: theme.textTheme.labelLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: onContainer,
+                              ),
                             ),
                           ),
                         ),
@@ -1819,6 +1823,8 @@ class _CollectionChip extends ConsumerWidget {
           clipBehavior: Clip.none,
           children: [
             ClayChip(
+              // Chỉ icon + đệm hẹp: hàng chip đã chật, đừng làm "Ưu đãi" bị cắt.
+              padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
               child: Icon(
                 Icons.auto_awesome,
                 size: 20,
