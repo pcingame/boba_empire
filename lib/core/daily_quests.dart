@@ -97,6 +97,7 @@ int claimDailyQuest(GameState s, int index) {
   final q = list[index];
   if (!dailyQuestDone(s, q) || dailyQuestClaimed(s, q)) return 0;
   s.dailyClaimed.add(q.kind.name);
+  s.dailyQuestEverClaimed = true;
   s.gems += q.rewardGems;
   return q.rewardGems;
 }

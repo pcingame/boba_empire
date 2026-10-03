@@ -1256,6 +1256,28 @@ class AppLocalizationsEn extends AppLocalizations {
       'Couldn\'t set the badge — item not synced yet or you\'re offline';
 
   @override
+  String get marketStarterTitle => 'Market Starter Pack';
+
+  @override
+  String get marketStarterBody =>
+      'Get 1 Common accessory + 1 spare to sell + 10 Market Coins. One time only.';
+
+  @override
+  String get marketStarterClaim => 'Claim';
+
+  @override
+  String get marketStarterDone =>
+      'Starter Pack claimed! Check your Collection.';
+
+  @override
+  String get marketStarterErrCap =>
+      'Today\'s gifts ran out server-wide — come back tomorrow.';
+
+  @override
+  String get marketStarterErrNet =>
+      'Couldn\'t claim — check your connection and try again.';
+
+  @override
   String marketWallet(int n) {
     return '$n Market Coins';
   }

@@ -536,6 +536,12 @@
   },
   "accessoryFlairCleared": "Leaderboard badge removed",
   "accessoryFlairFailed": "Couldn't set the badge — item not synced yet or you're offline",
+  "marketStarterTitle": "Market Starter Pack",
+  "marketStarterBody": "Get 1 Common accessory + 1 spare to sell + 10 Market Coins. One time only.",
+  "marketStarterClaim": "Claim",
+  "marketStarterDone": "Starter Pack claimed! Check your Collection.",
+  "marketStarterErrCap": "Today's gifts ran out server-wide — come back tomorrow.",
+  "marketStarterErrNet": "Couldn't claim — check your connection and try again.",
   "marketWallet": "{n} Market Coins",
   "@marketWallet": {
     "placeholders": {

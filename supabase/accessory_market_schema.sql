@@ -481,3 +481,57 @@ as $$
 $$;
 
 grant execute on function accessory_flairs(uuid[]) to anon, authenticated;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Gói Khởi Nghiệp Chợ: MỘT LẦN mỗi tài khoản — 1 phụ kiện Thường + 1 bản dư
+-- (bán được) + 10 Xu Chợ, để người mới có thứ để bán/mua ngay.
+-- Chống cày bằng danh tính ẩn danh mới: (1) chỉ mở khi có tiến độ thật
+-- (giai đoạn ≥ 3 và ≥ 1 nhiệm vụ ngày đã nhận) — NHƯNG tiến độ do client tự
+-- khai nên làm giả được, cùng mức tin cậy với register_accessory_drop; (2) một
+-- lần/tài khoản (PK user_id); (3) trần TOÀN CỤC mỗi ngày để cày hàng loạt chỉ
+-- rút được tối đa 500 gói/ngày × 10 Xu Chợ. Lỗi: already_claimed |
+-- not_eligible | daily_cap.
+-- ─────────────────────────────────────────────────────────────────────────
+create table if not exists accessory_starter (
+  user_id     uuid primary key references auth.users(id) on delete cascade,
+  claimed_at  timestamptz not null default now()
+);
+
+alter table accessory_starter enable row level security;
+-- Không policy nào: chỉ ghi/đọc qua RPC.
+
+create or replace function claim_starter_pack(
+  p_accessory_id text, p_stage integer, p_quests integer)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if auth.uid() is null then
+    raise exception 'not authenticated';
+  end if;
+  if p_stage < 3 or p_quests < 1 then
+    raise exception 'not_eligible';
+  end if;
+  if exists (select 1 from accessory_starter where user_id = auth.uid()) then
+    raise exception 'already_claimed';
+  end if;
+  if (select count(*) from accessory_starter
+      where claimed_at >= date_trunc('day', now())) >= 500 then
+    raise exception 'daily_cap';
+  end if;
+
+  insert into accessory_starter (user_id) values (auth.uid());
+  insert into accessory_server_ownership (user_id, accessory_id, copies)
+  values (auth.uid(), p_accessory_id, 2)
+  on conflict (user_id, accessory_id) do update
+    set copies = accessory_server_ownership.copies + 2;
+  insert into accessory_wallets (user_id, balance)
+  values (auth.uid(), 10)
+  on conflict (user_id) do update
+    set balance = accessory_wallets.balance + 10;
+end;
+$$;
+
+grant execute on function claim_starter_pack(text, integer, integer) to authenticated;

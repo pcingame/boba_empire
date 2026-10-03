@@ -1257,6 +1257,27 @@ class AppLocalizationsId extends AppLocalizations {
       'Gagal memasang lencana — item belum tersinkron atau offline';
 
   @override
+  String get marketStarterTitle => 'Paket Pemula Pasar';
+
+  @override
+  String get marketStarterBody =>
+      'Dapatkan 1 aksesori Biasa + 1 cadangan untuk dijual + 10 Koin Pasar. Sekali saja.';
+
+  @override
+  String get marketStarterClaim => 'Klaim';
+
+  @override
+  String get marketStarterDone => 'Paket Pemula diklaim! Lihat Koleksimu.';
+
+  @override
+  String get marketStarterErrCap =>
+      'Hadiah hari ini habis di seluruh server — kembali besok.';
+
+  @override
+  String get marketStarterErrNet =>
+      'Gagal klaim — periksa koneksi lalu coba lagi.';
+
+  @override
   String marketWallet(int n) {
     return '$n Koin Pasar';
   }

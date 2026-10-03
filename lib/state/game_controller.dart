@@ -24,6 +24,7 @@ import '../core/quests.dart';
 import '../core/redeem.dart';
 import '../core/rival.dart';
 import '../core/simulation.dart';
+import '../core/starter_pack.dart' as market_starter;
 import '../core/story.dart';
 import '../core/vip.dart';
 import '../core/wheel.dart';
@@ -878,6 +879,38 @@ class GameController extends Notifier<GameSnapshot> {
     }
   }
 
+  /// Nhận Gói Khởi Nghiệp Chợ: server trước, cấp cục bộ sau (cùng nguyên tắc
+  /// [convertGemsToMarketCoins]). Trả null nếu xong, hoặc mã lỗi server
+  /// (`already_claimed`, `not_eligible`, `daily_cap`, `network`).
+  Future<String?> claimMarketStarter() async {
+    final market = _market;
+    if (market == null || !market_starter.starterPackEligible(_game)) {
+      return 'not_eligible';
+    }
+    final item = market_starter.starterPackAccessory(_game);
+    try {
+      await market.claimStarterPack(item.id, _game.stage);
+    } catch (e) {
+      final msg = '$e';
+      if (msg.contains('already_claimed')) {
+        _game.starterPackClaimed = true; // server đã ghi nhận — thôi hiện thẻ
+        unawaited(saveNow());
+        state = _snapshot();
+        return 'already_claimed';
+      }
+      developer.log('nhận Gói Khởi Nghiệp lỗi: $e', name: 'Market');
+      return msg.contains('daily_cap')
+          ? 'daily_cap'
+          : msg.contains('not_eligible')
+              ? 'not_eligible'
+              : 'network';
+    }
+    market_starter.grantMarketStarter(_game, item);
+    unawaited(saveNow());
+    state = _snapshot();
+    return null;
+  }
+
   /// Đổi 💎 lấy Xu Chợ — MỘT CHIỀU (xem Balance.marketCoinsPerGem). Gọi RPC
   /// trước, chỉ trừ 💎 cục bộ nếu RPC thành công — tránh mất 💎 oan nếu lỗi
   /// mạng giữa chừng. Trả false nếu không đủ 💎 hoặc RPC lỗi.
@@ -1344,6 +1377,7 @@ class GameController extends Notifier<GameSnapshot> {
       ],
       dailyBonusAvailable: dailyBonusAvailable(_game),
       dailyBonusClaimed: _game.dailyBonusClaimed,
+      starterPackReady: market_starter.starterPackEligible(_game),
       dailyClaimableCount: dailyClaimableCount(_game),
       ascensionCount: _game.ascensionCount,
       ascensionPointsAvailable: ascensionPointsAvailable(_game),

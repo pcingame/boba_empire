@@ -539,6 +539,9 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
 
     return Column(
       children: [
+        if (ref.watch(
+            gameControllerProvider.select((s) => s.starterPackReady)))
+          _StarterPackCard(onAction: onAction),
         _WalletChip(
           balance: view.walletBalance,
           onConvert: () => _showConvertDialog(context, onAction),
@@ -1042,4 +1045,73 @@ Future<int?> _askPrice(
       },
     ),
   );
+}
+
+/// Thẻ "Gói Khởi Nghiệp Chợ" — chỉ hiện khi đủ điều kiện (xem starter_pack.dart).
+class _StarterPackCard extends ConsumerStatefulWidget {
+  const _StarterPackCard({required this.onAction});
+  final void Function(String?) onAction;
+
+  @override
+  ConsumerState<_StarterPackCard> createState() => _StarterPackCardState();
+}
+
+class _StarterPackCardState extends ConsumerState<_StarterPackCard> {
+  bool _busy = false;
+
+  Future<void> _claim() async {
+    final l10n = AppLocalizations.of(context)!;
+    setState(() => _busy = true);
+    final err =
+        await ref.read(gameControllerProvider.notifier).claimMarketStarter();
+    if (!mounted) return;
+    setState(() => _busy = false);
+    widget.onAction(switch (err) {
+      null => l10n.marketStarterDone,
+      'daily_cap' => l10n.marketStarterErrCap,
+      'already_claimed' => null,
+      _ => l10n.marketStarterErrNet,
+    });
+    if (err == null) {
+      ref
+          .read(accessoryMarketControllerProvider.notifier)
+          .refresh(silent: true);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      child: ClayCard(
+        key: const Key('starter-pack-card'),
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            const Text('🎁', style: TextStyle(fontSize: 28)),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(l10n.marketStarterTitle,
+                      style: theme.textTheme.titleSmall),
+                  Text(l10n.marketStarterBody,
+                      style: theme.textTheme.bodySmall),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            FilledButton(
+              key: const Key('starter-pack-claim'),
+              onPressed: _busy ? null : _claim,
+              child: Text(l10n.marketStarterClaim),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

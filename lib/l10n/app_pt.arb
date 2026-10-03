@@ -536,6 +536,12 @@
   },
   "accessoryFlairCleared": "Emblema do ranking removido",
   "accessoryFlairFailed": "Não foi possível definir o emblema: item não sincronizado ou sem conexão",
+  "marketStarterTitle": "Pacote Inicial do Mercado",
+  "marketStarterBody": "Ganhe 1 acessório Comum + 1 repetido para vender + 10 Moedas de Mercado. Apenas uma vez.",
+  "marketStarterClaim": "Resgatar",
+  "marketStarterDone": "Pacote Inicial resgatado! Veja sua Coleção.",
+  "marketStarterErrCap": "Os presentes de hoje acabaram em todo o servidor — volte amanhã.",
+  "marketStarterErrNet": "Não foi possível resgatar: verifique a conexão e tente de novo.",
   "marketWallet": "{n} Moedas de Mercado",
   "@marketWallet": {
     "placeholders": {

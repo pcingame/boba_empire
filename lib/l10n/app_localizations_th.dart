@@ -1247,6 +1247,27 @@ class AppLocalizationsTh extends AppLocalizations {
       'ตั้งเหรียญตราไม่ได้ — ไอเทมยังไม่ซิงก์หรือออฟไลน์';
 
   @override
+  String get marketStarterTitle => 'ชุดเริ่มต้นตลาด';
+
+  @override
+  String get marketStarterBody =>
+      'รับเครื่องประดับธรรมดา 1 ชิ้น + ของซ้ำ 1 ชิ้นไว้ขาย + 10 เหรียญตลาด รับได้ครั้งเดียว';
+
+  @override
+  String get marketStarterClaim => 'รับ';
+
+  @override
+  String get marketStarterDone => 'รับชุดเริ่มต้นแล้ว! ดูในคอลเลกชัน';
+
+  @override
+  String get marketStarterErrCap =>
+      'ของขวัญวันนี้หมดทั้งเซิร์ฟเวอร์ — พรุ่งนี้มาใหม่นะ';
+
+  @override
+  String get marketStarterErrNet =>
+      'รับไม่ได้ — ตรวจสอบเครือข่ายแล้วลองอีกครั้ง';
+
+  @override
   String marketWallet(int n) {
     return '$n เหรียญตลาด';
   }

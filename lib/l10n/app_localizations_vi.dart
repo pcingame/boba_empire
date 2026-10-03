@@ -1253,6 +1253,27 @@ class AppLocalizationsVi extends AppLocalizations {
       'Không đặt được huy hiệu — món này chưa đồng bộ lên máy chủ hoặc mất mạng';
 
   @override
+  String get marketStarterTitle => 'Gói Khởi Nghiệp Chợ';
+
+  @override
+  String get marketStarterBody =>
+      'Tặng 1 phụ kiện Thường + 1 bản dư để bán + 10 Xu Chợ. Chỉ nhận một lần.';
+
+  @override
+  String get marketStarterClaim => 'Nhận quà';
+
+  @override
+  String get marketStarterDone => 'Đã nhận Gói Khởi Nghiệp! Xem món trong Kho.';
+
+  @override
+  String get marketStarterErrCap =>
+      'Hôm nay quà đã hết lượt toàn server — mai quay lại nhé.';
+
+  @override
+  String get marketStarterErrNet =>
+      'Không nhận được — kiểm tra mạng rồi thử lại.';
+
+  @override
   String marketWallet(int n) {
     return '$n Xu Chợ';
   }

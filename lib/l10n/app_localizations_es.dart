@@ -1264,6 +1264,27 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se pudo poner la insignia: objeto sin sincronizar o sin conexión';
 
   @override
+  String get marketStarterTitle => 'Pack inicial del Mercado';
+
+  @override
+  String get marketStarterBody =>
+      'Recibe 1 accesorio Común + 1 repetido para vender + 10 Monedas de Mercado. Solo una vez.';
+
+  @override
+  String get marketStarterClaim => 'Reclamar';
+
+  @override
+  String get marketStarterDone => '¡Pack inicial reclamado! Mira tu Colección.';
+
+  @override
+  String get marketStarterErrCap =>
+      'Hoy se agotaron los regalos en todo el servidor — vuelve mañana.';
+
+  @override
+  String get marketStarterErrNet =>
+      'No se pudo reclamar: revisa tu conexión e inténtalo de nuevo.';
+
+  @override
   String marketWallet(int n) {
     return '$n Monedas de Mercado';
   }

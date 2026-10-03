@@ -891,6 +891,12 @@
   },
   "accessoryFlairCleared": "Đã gỡ huy hiệu bảng xếp hạng",
   "accessoryFlairFailed": "Không đặt được huy hiệu — món này chưa đồng bộ lên máy chủ hoặc mất mạng",
+  "marketStarterTitle": "Gói Khởi Nghiệp Chợ",
+  "marketStarterBody": "Tặng 1 phụ kiện Thường + 1 bản dư để bán + 10 Xu Chợ. Chỉ nhận một lần.",
+  "marketStarterClaim": "Nhận quà",
+  "marketStarterDone": "Đã nhận Gói Khởi Nghiệp! Xem món trong Kho.",
+  "marketStarterErrCap": "Hôm nay quà đã hết lượt toàn server — mai quay lại nhé.",
+  "marketStarterErrNet": "Không nhận được — kiểm tra mạng rồi thử lại.",
   "marketWallet": "{n} Xu Chợ",
   "@marketWallet": {
     "placeholders": {

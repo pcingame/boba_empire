@@ -194,6 +194,17 @@ class AccessoryMarketRepository {
     await _client.rpc('buy_listing', params: {'p_listing_id': listingId});
   }
 
+  /// Gói Khởi Nghiệp (1 lần/tài khoản). Ném PostgrestException với message
+  /// `already_claimed` / `not_eligible` / `daily_cap`.
+  Future<void> claimStarterPack(String accessoryId, int stage) async {
+    await ensureSignedIn();
+    await _client.rpc('claim_starter_pack', params: {
+      'p_accessory_id': accessoryId,
+      'p_stage': stage,
+      'p_quests': 1, // ponytail: cờ dailyQuestEverClaimed, không đếm thật
+    });
+  }
+
   /// Nạp [amount] Xu Chợ — MỘT CHIỀU, không có hàm ngược (xem PROPOSAL §0).
   /// Gọi SAU KHI đã chắc chắn sẽ trừ Xu/💎 cục bộ (GameController tự trừ
   /// nếu lệnh này thành công, xem convertGemsToMarketCoins/

@@ -536,6 +536,12 @@
   },
   "accessoryFlairCleared": "ถอดเหรียญตราบนอันดับแล้ว",
   "accessoryFlairFailed": "ตั้งเหรียญตราไม่ได้ — ไอเทมยังไม่ซิงก์หรือออฟไลน์",
+  "marketStarterTitle": "ชุดเริ่มต้นตลาด",
+  "marketStarterBody": "รับเครื่องประดับธรรมดา 1 ชิ้น + ของซ้ำ 1 ชิ้นไว้ขาย + 10 เหรียญตลาด รับได้ครั้งเดียว",
+  "marketStarterClaim": "รับ",
+  "marketStarterDone": "รับชุดเริ่มต้นแล้ว! ดูในคอลเลกชัน",
+  "marketStarterErrCap": "ของขวัญวันนี้หมดทั้งเซิร์ฟเวอร์ — พรุ่งนี้มาใหม่นะ",
+  "marketStarterErrNet": "รับไม่ได้ — ตรวจสอบเครือข่ายแล้วลองอีกครั้ง",
   "marketWallet": "{n} เหรียญตลาด",
   "@marketWallet": {
     "placeholders": {

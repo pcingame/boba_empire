@@ -1260,6 +1260,27 @@ class AppLocalizationsPt extends AppLocalizations {
       'Não foi possível definir o emblema: item não sincronizado ou sem conexão';
 
   @override
+  String get marketStarterTitle => 'Pacote Inicial do Mercado';
+
+  @override
+  String get marketStarterBody =>
+      'Ganhe 1 acessório Comum + 1 repetido para vender + 10 Moedas de Mercado. Apenas uma vez.';
+
+  @override
+  String get marketStarterClaim => 'Resgatar';
+
+  @override
+  String get marketStarterDone => 'Pacote Inicial resgatado! Veja sua Coleção.';
+
+  @override
+  String get marketStarterErrCap =>
+      'Os presentes de hoje acabaram em todo o servidor — volte amanhã.';
+
+  @override
+  String get marketStarterErrNet =>
+      'Não foi possível resgatar: verifique a conexão e tente de novo.';
+
+  @override
   String marketWallet(int n) {
     return '$n Moedas de Mercado';
   }

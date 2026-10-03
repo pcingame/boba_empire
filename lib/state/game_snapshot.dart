@@ -97,6 +97,7 @@ class GameSnapshot {
     required this.dailyQuests,
     required this.dailyBonusAvailable,
     required this.dailyBonusClaimed,
+    required this.starterPackReady,
     required this.dailyClaimableCount,
     required this.ascensionCount,
     required this.ascensionPointsAvailable,
@@ -275,6 +276,9 @@ class GameSnapshot {
   final List<DailyQuestView> dailyQuests;
   final bool dailyBonusAvailable;
   final bool dailyBonusClaimed;
+
+  /// Đủ điều kiện hiện thẻ Gói Khởi Nghiệp Chợ (xem starter_pack.dart).
+  final bool starterPackReady;
   final int dailyClaimableCount;
 
   final int ascensionCount;

@@ -2236,6 +2236,42 @@ abstract class AppLocalizations {
   /// **'Không đặt được huy hiệu — món này chưa đồng bộ lên máy chủ hoặc mất mạng'**
   String get accessoryFlairFailed;
 
+  /// No description provided for @marketStarterTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gói Khởi Nghiệp Chợ'**
+  String get marketStarterTitle;
+
+  /// No description provided for @marketStarterBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tặng 1 phụ kiện Thường + 1 bản dư để bán + 10 Xu Chợ. Chỉ nhận một lần.'**
+  String get marketStarterBody;
+
+  /// No description provided for @marketStarterClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận quà'**
+  String get marketStarterClaim;
+
+  /// No description provided for @marketStarterDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận Gói Khởi Nghiệp! Xem món trong Kho.'**
+  String get marketStarterDone;
+
+  /// No description provided for @marketStarterErrCap.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay quà đã hết lượt toàn server — mai quay lại nhé.'**
+  String get marketStarterErrCap;
+
+  /// No description provided for @marketStarterErrNet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không nhận được — kiểm tra mạng rồi thử lại.'**
+  String get marketStarterErrNet;
+
   /// No description provided for @marketWallet.
   ///
   /// In vi, this message translates to:

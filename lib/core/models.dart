@@ -87,6 +87,8 @@ class GameState {
     this.dailyQuestDay = 0,
     this.dailyEarnTarget = 0,
     this.dailyBonusClaimed = false,
+    this.dailyQuestEverClaimed = false,
+    this.starterPackClaimed = false,
     Map<String, double>? dailyProgress,
     List<String>? dailyClaimed,
     this.ascensionCount = 0,
@@ -265,6 +267,12 @@ class GameState {
   int dailyQuestDay;
   double dailyEarnTarget;
   bool dailyBonusClaimed;
+
+  /// Đã từng nhận thưởng ≥1 nhiệm vụ ngày (điều kiện Gói Khởi Nghiệp Chợ).
+  bool dailyQuestEverClaimed;
+
+  /// Đã nhận Gói Khởi Nghiệp Chợ (server cũng chặn, xem claim_starter_pack).
+  bool starterPackClaimed;
   final Map<String, double> dailyProgress;
   final List<String> dailyClaimed;
 
@@ -432,6 +440,8 @@ class GameState {
         'dailyQuestDay': dailyQuestDay,
         'dailyEarnTarget': dailyEarnTarget,
         'dailyBonusClaimed': dailyBonusClaimed,
+        'dailyQuestEverClaimed': dailyQuestEverClaimed,
+        'starterPackClaimed': starterPackClaimed,
         'dailyProgress': dailyProgress,
         'dailyClaimed': dailyClaimed,
         'ascensionCount': ascensionCount,
@@ -535,6 +545,9 @@ class GameState {
         dailyQuestDay: (json['dailyQuestDay'] as num?)?.toInt() ?? 0,
         dailyEarnTarget: (json['dailyEarnTarget'] as num?)?.toDouble() ?? 0,
         dailyBonusClaimed: (json['dailyBonusClaimed'] as bool?) ?? false,
+        dailyQuestEverClaimed:
+            (json['dailyQuestEverClaimed'] as bool?) ?? false,
+        starterPackClaimed: (json['starterPackClaimed'] as bool?) ?? false,
         dailyProgress: (json['dailyProgress'] as Map?)
             ?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),
         dailyClaimed: (json['dailyClaimed'] as List?)?.cast<String>().toList(),

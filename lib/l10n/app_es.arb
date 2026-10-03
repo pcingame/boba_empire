@@ -536,6 +536,12 @@
   },
   "accessoryFlairCleared": "Insignia del ranking quitada",
   "accessoryFlairFailed": "No se pudo poner la insignia: objeto sin sincronizar o sin conexión",
+  "marketStarterTitle": "Pack inicial del Mercado",
+  "marketStarterBody": "Recibe 1 accesorio Común + 1 repetido para vender + 10 Monedas de Mercado. Solo una vez.",
+  "marketStarterClaim": "Reclamar",
+  "marketStarterDone": "¡Pack inicial reclamado! Mira tu Colección.",
+  "marketStarterErrCap": "Hoy se agotaron los regalos en todo el servidor — vuelve mañana.",
+  "marketStarterErrNet": "No se pudo reclamar: revisa tu conexión e inténtalo de nuevo.",
   "marketWallet": "{n} Monedas de Mercado",
   "@marketWallet": {
     "placeholders": {

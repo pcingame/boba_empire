@@ -72,11 +72,16 @@ class _FakeMarketController extends AccessoryMarketController {
 }
 
 Future<(ProviderContainer, _FakeMarketController)> _pump(
-    WidgetTester tester, {List<String> extraOwned = const []}) async {
+    WidgetTester tester,
+    {List<String> extraOwned = const [], bool starter = false}) async {
   SharedPreferences.setMockInitialValues({});
   final prefs = await SharedPreferences.getInstance();
   final seed = GameState.newGame(nowMillis: 0)
     ..ownedAccessories.addAll(['mint_leaf', ...extraOwned]); // món có thể đăng bán
+  if (starter) {
+    seed.stage = 3;
+    seed.dailyQuestEverClaimed = true;
+  }
   await GameStorage(prefs).save(seed, nowMillis: 0);
   final fake = _FakeMarketController();
   final container = ProviderContainer(overrides: [
@@ -244,6 +249,18 @@ void main() {
     await tester.tap(find.textContaining('Của tôi'));
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
+    container.dispose();
+  });
+
+  testWidgets('thẻ Gói Khởi Nghiệp chỉ hiện khi đủ điều kiện', (tester) async {
+    var (container, _) = await _pump(tester);
+    expect(find.byKey(const Key('starter-pack-card')), findsNothing);
+    container.dispose();
+    await tester.pumpWidget(const SizedBox());
+
+    (container, _) = await _pump(tester, starter: true);
+    expect(find.byKey(const Key('starter-pack-card')), findsOneWidget);
+    expect(find.text('Nhận quà'), findsOneWidget);
     container.dispose();
   });
 }
