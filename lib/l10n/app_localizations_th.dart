@@ -1232,6 +1232,21 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get accessoryFlairHint => 'กดค้างไอเทมเพื่อใช้เป็นเหรียญตราบนอันดับ';
+
+  @override
+  String accessoryFlairSet(String name) {
+    return 'ตั้ง $name เป็นเหรียญตราบนอันดับแล้ว';
+  }
+
+  @override
+  String get accessoryFlairCleared => 'ถอดเหรียญตราบนอันดับแล้ว';
+
+  @override
+  String get accessoryFlairFailed =>
+      'ตั้งเหรียญตราไม่ได้ — ไอเทมยังไม่ซิงก์หรือออฟไลน์';
+
+  @override
   String marketWallet(int n) {
     return '$n เหรียญตลาด';
   }

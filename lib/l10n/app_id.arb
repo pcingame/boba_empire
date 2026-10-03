@@ -527,6 +527,15 @@
       "max": {"type": "int"}
     }
   },
+  "accessoryFlairHint": "Tekan lama item untuk jadi lencana papan peringkat",
+  "accessoryFlairSet": "{name} kini jadi lencana papan peringkatmu",
+  "@accessoryFlairSet": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "accessoryFlairCleared": "Lencana papan peringkat dilepas",
+  "accessoryFlairFailed": "Gagal memasang lencana — item belum tersinkron atau offline",
   "marketWallet": "{n} Koin Pasar",
   "@marketWallet": {
     "placeholders": {

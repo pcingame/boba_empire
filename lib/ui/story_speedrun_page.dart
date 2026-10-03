@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/format.dart';
 import '../l10n/app_localizations.dart';
+import '../leaderboard/flair.dart';
 import '../leaderboard/story_speedrun_controller.dart';
 import '../leaderboard/story_speedrun_repository.dart';
 import '../state/game_providers.dart';
@@ -19,14 +20,14 @@ Future<void> showStorySpeedrunPage(BuildContext context) {
   ).push(MaterialPageRoute(builder: (_) => const StorySpeedrunPage()));
 }
 
-typedef _SpeedrunProvider
-    = NotifierProvider<StorySpeedrunController, StorySpeedrunViewState>;
+typedef _SpeedrunProvider =
+    NotifierProvider<StorySpeedrunController, StorySpeedrunViewState>;
 
 _SpeedrunProvider _providerFor(SpeedrunBoard board) => switch (board) {
-      SpeedrunBoard.main => storySpeedrunControllerProvider,
-      SpeedrunBoard.ext => storySpeedrunExtControllerProvider,
-      SpeedrunBoard.third => storySpeedrunThirdControllerProvider,
-    };
+  SpeedrunBoard.main => storySpeedrunControllerProvider,
+  SpeedrunBoard.ext => storySpeedrunExtControllerProvider,
+  SpeedrunBoard.third => storySpeedrunThirdControllerProvider,
+};
 
 /// 3 tab: "Hồi 1" (tới Chương 18), "Hồi 2" (tới Chương 28) và "Hồi 3" (tới
 /// Chương 34) — mỗi tab có bảng, controller và mốc thời gian riêng.
@@ -238,10 +239,17 @@ class _SpeedrunList extends ConsumerWidget {
                               ),
                             ),
                             Expanded(
-                              child: Text(
-                                entry.nickname,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                              child: Row(
+                                children: [
+                                  FlairBadge(userId: entry.userId),
+                                  Flexible(
+                                    child: Text(
+                                      entry.nickname,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             Flexible(
@@ -294,8 +302,7 @@ class _ErrorView extends ConsumerWidget {
             Text(message, textAlign: TextAlign.center),
             const SizedBox(height: 12),
             FilledButton(
-              onPressed: () =>
-                  ref.read(provider.notifier).refresh(),
+              onPressed: () => ref.read(provider.notifier).refresh(),
               child: Text(l10n.leaderboardRetry),
             ),
           ],

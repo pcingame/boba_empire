@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/balance.dart';
 import '../core/format.dart';
 import '../l10n/app_localizations.dart';
+import '../leaderboard/flair.dart';
 import '../leaderboard/leaderboard_controller.dart';
 import '../state/game_providers.dart';
 import 'widgets/clay.dart';
@@ -78,7 +79,10 @@ class _LeaderboardPageState extends ConsumerState<LeaderboardPage> {
               l10n: l10n,
               nameCtrl: _nameCtrl,
             ),
-            LeaderboardLoaded() => _LeaderboardList(l10n: l10n, view: viewState),
+            LeaderboardLoaded() => _LeaderboardList(
+              l10n: l10n,
+              view: viewState,
+            ),
             LeaderboardError(:final message) => _ErrorView(message: message),
           },
         ),
@@ -206,10 +210,17 @@ class _LeaderboardList extends ConsumerWidget {
                             ),
                             const SizedBox(width: 8),
                             Expanded(
-                              child: Text(
-                                entry.nickname,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                              child: Row(
+                                children: [
+                                  FlairBadge(userId: entry.userId),
+                                  Flexible(
+                                    child: Text(
+                                      entry.nickname,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             // Flexible + FittedBox: prestige_stars/lifetime_earnings

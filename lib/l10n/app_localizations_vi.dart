@@ -1237,6 +1237,22 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get accessoryFlairHint =>
+      'Giữ lâu một món để đặt làm huy hiệu bảng xếp hạng';
+
+  @override
+  String accessoryFlairSet(String name) {
+    return 'Đã đặt $name làm huy hiệu bảng xếp hạng';
+  }
+
+  @override
+  String get accessoryFlairCleared => 'Đã gỡ huy hiệu bảng xếp hạng';
+
+  @override
+  String get accessoryFlairFailed =>
+      'Không đặt được huy hiệu — món này chưa đồng bộ lên máy chủ hoặc mất mạng';
+
+  @override
   String marketWallet(int n) {
     return '$n Xu Chợ';
   }

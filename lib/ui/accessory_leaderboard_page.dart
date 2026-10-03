@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../l10n/app_localizations.dart';
+import '../leaderboard/flair.dart';
 import '../leaderboard/accessory_leaderboard_controller.dart';
 import '../market/accessory_market_controller.dart';
 import '../market/accessory_market_repository.dart';
@@ -17,9 +18,9 @@ import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
 Future<void> showAccessoryLeaderboard(BuildContext context) {
-  return Navigator.of(context).push(
-    MaterialPageRoute(builder: (_) => const AccessoryLeaderboardPage()),
-  );
+  return Navigator.of(
+    context,
+  ).push(MaterialPageRoute(builder: (_) => const AccessoryLeaderboardPage()));
 }
 
 class AccessoryLeaderboardPage extends ConsumerStatefulWidget {
@@ -79,8 +80,9 @@ class _AccessoryLeaderboardPageState
       child: Scaffold(
         appBar: AppBar(title: Text(l10n.accessoryLbTitle)),
         body: switch (view) {
-          AccessoryLeaderboardLoading() =>
-            const Center(child: CircularProgressIndicator()),
+          AccessoryLeaderboardLoading() => const Center(
+            child: CircularProgressIndicator(),
+          ),
           AccessoryLeaderboardNeedsNickname() => _NicknameForm(ctrl: _nameCtrl),
           AccessoryLeaderboardLoaded() => _List(view: view),
           // Bỏ qua `message` của controller (tiếng Việt cứng, không dịch được
@@ -138,23 +140,23 @@ class _NicknameForm extends ConsumerWidget {
 /// trả về (`accessory_leaderboard_top`, row_number() có sẵn) — không cần
 /// cột/bảng mới.
 String? _topMedal(int rank) => switch (rank) {
-      1 => '🥇',
-      2 => '🥈',
-      3 => '🥉',
-      <= 20 => '🏅',
-      _ => null,
-    };
+  1 => '🥇',
+  2 => '🥈',
+  3 => '🥉',
+  <= 20 => '🏅',
+  _ => null,
+};
 
 /// Danh hiệu Top 20 Sưu tập theo 3 bậc — hạng 1 nổi bật riêng ("Vua Phụ
 /// Kiện"), hạng 2-3 chung 1 danh hiệu, hạng 4-20 danh hiệu thấp hơn. Trước
 /// đây cả 20 hạng dùng chung đúng 1 nhãn "Top 20 Sưu Tập", chỉ khác mỗi huy
 /// hiệu — không đủ phân biệt cảm giác đứng đầu.
 String? _topTitle(int rank, AppLocalizations l10n) => switch (rank) {
-      1 => l10n.accessoryLbTitleKing,
-      <= 3 => l10n.accessoryLbTitleMaster,
-      <= 20 => l10n.accessoryLbTopTitle,
-      _ => null,
-    };
+  1 => l10n.accessoryLbTitleKing,
+  <= 3 => l10n.accessoryLbTitleMaster,
+  <= 20 => l10n.accessoryLbTopTitle,
+  _ => null,
+};
 
 class _List extends ConsumerWidget {
   const _List({required this.view});
@@ -220,13 +222,15 @@ class _List extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            FlairBadge(userId: e.userId),
                             Text(
                               e.nickname,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                fontWeight:
-                                    isMe ? FontWeight.bold : FontWeight.normal,
+                                fontWeight: isMe
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
                               ),
                             ),
                             // Danh hiệu top 20 — cùng màu vàng/cam đã dùng cho

@@ -1244,6 +1244,22 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get accessoryFlairHint =>
+      'Pressione e segure um item para usá-lo como emblema do ranking';
+
+  @override
+  String accessoryFlairSet(String name) {
+    return '$name agora é seu emblema do ranking';
+  }
+
+  @override
+  String get accessoryFlairCleared => 'Emblema do ranking removido';
+
+  @override
+  String get accessoryFlairFailed =>
+      'Não foi possível definir o emblema: item não sincronizado ou sem conexão';
+
+  @override
   String marketWallet(int n) {
     return '$n Moedas de Mercado';
   }

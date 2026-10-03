@@ -9,15 +9,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/match3_levels.dart';
 import '../l10n/app_localizations.dart';
+import '../leaderboard/flair.dart';
 import '../leaderboard/m3_leaderboard_controller.dart';
 import '../state/game_providers.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
 Future<void> showM3Leaderboard(BuildContext context) {
-  return Navigator.of(context).push(
-    MaterialPageRoute(builder: (_) => const M3LeaderboardPage()),
-  );
+  return Navigator.of(
+    context,
+  ).push(MaterialPageRoute(builder: (_) => const M3LeaderboardPage()));
 }
 
 class M3LeaderboardPage extends ConsumerStatefulWidget {
@@ -58,8 +59,9 @@ class _M3LeaderboardPageState extends ConsumerState<M3LeaderboardPage> {
       child: Scaffold(
         appBar: AppBar(title: Text(l10n.m3LbTitle)),
         body: switch (view) {
-          M3LeaderboardLoading() =>
-            const Center(child: CircularProgressIndicator()),
+          M3LeaderboardLoading() => const Center(
+            child: CircularProgressIndicator(),
+          ),
           M3LeaderboardNeedsNickname() => _NicknameForm(ctrl: _nameCtrl),
           M3LeaderboardLoaded() => _List(view: view),
           // Bỏ qua `message` của controller (tiếng Việt cứng, không dịch được vì
@@ -164,14 +166,22 @@ class _List extends ConsumerWidget {
                       // Tên có thể rất dài: phải co lại, không được đẩy cột số
                       // sao ra khỏi hàng (lớp lỗi tràn đã gặp nhiều lần).
                       Expanded(
-                        child: Text(
-                          e.nickname,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontWeight:
-                                isMe ? FontWeight.bold : FontWeight.normal,
-                          ),
+                        child: Row(
+                          children: [
+                            FlairBadge(userId: e.userId),
+                            Flexible(
+                              child: Text(
+                                e.nickname,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontWeight: isMe
+                                      ? FontWeight.bold
+                                      : FontWeight.normal,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(width: 8),

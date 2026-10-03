@@ -1241,6 +1241,22 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get accessoryFlairHint =>
+      'Tekan lama item untuk jadi lencana papan peringkat';
+
+  @override
+  String accessoryFlairSet(String name) {
+    return '$name kini jadi lencana papan peringkatmu';
+  }
+
+  @override
+  String get accessoryFlairCleared => 'Lencana papan peringkat dilepas';
+
+  @override
+  String get accessoryFlairFailed =>
+      'Gagal memasang lencana — item belum tersinkron atau offline';
+
+  @override
   String marketWallet(int n) {
     return '$n Koin Pasar';
   }

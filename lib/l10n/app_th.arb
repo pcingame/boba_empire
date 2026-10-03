@@ -527,6 +527,15 @@
       "max": {"type": "int"}
     }
   },
+  "accessoryFlairHint": "กดค้างไอเทมเพื่อใช้เป็นเหรียญตราบนอันดับ",
+  "accessoryFlairSet": "ตั้ง {name} เป็นเหรียญตราบนอันดับแล้ว",
+  "@accessoryFlairSet": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "accessoryFlairCleared": "ถอดเหรียญตราบนอันดับแล้ว",
+  "accessoryFlairFailed": "ตั้งเหรียญตราไม่ได้ — ไอเทมยังไม่ซิงก์หรือออฟไลน์",
   "marketWallet": "{n} เหรียญตลาด",
   "@marketWallet": {
     "placeholders": {

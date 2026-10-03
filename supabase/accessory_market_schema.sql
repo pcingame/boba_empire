@@ -417,3 +417,67 @@ begin
     alter publication supabase_realtime add table accessory_listings;
   end if;
 end $$;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Huy hiệu bảng xếp hạng ("flair"): 1 phụ kiện hiển thị cạnh tên người chơi.
+-- Một bảng riêng thay vì thêm cột vào 6 bảng xếp hạng. Ghi CHỈ qua
+-- set_accessory_flair (kiểm tra sở hữu thật trong accessory_server_ownership).
+-- Đọc qua accessory_flairs: chỉ trả huy hiệu mà chủ nhân VẪN còn sở hữu (bán
+-- hết bản cuối thì tự biến mất, khỏi phải dọn trong list_accessory).
+-- ─────────────────────────────────────────────────────────────────────────
+create table if not exists accessory_flair (
+  user_id       uuid primary key references auth.users(id) on delete cascade,
+  accessory_id  text not null,
+  updated_at    timestamptz not null default now()
+);
+
+alter table accessory_flair enable row level security;
+-- Không policy nào: client chỉ đi qua 2 RPC bên dưới.
+
+-- p_accessory_id null = gỡ huy hiệu.
+create or replace function set_accessory_flair(p_accessory_id text)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if auth.uid() is null then
+    raise exception 'not authenticated';
+  end if;
+  if p_accessory_id is null then
+    delete from accessory_flair where user_id = auth.uid();
+    return;
+  end if;
+  if not exists (
+    select 1 from accessory_server_ownership
+    where user_id = auth.uid() and accessory_id = p_accessory_id
+  ) then
+    raise exception 'not owned';
+  end if;
+  insert into accessory_flair (user_id, accessory_id)
+  values (auth.uid(), p_accessory_id)
+  on conflict (user_id) do update
+    set accessory_id = excluded.accessory_id, updated_at = now();
+end;
+$$;
+
+grant execute on function set_accessory_flair(text) to authenticated;
+
+create or replace function accessory_flairs(p_user_ids uuid[])
+returns table (user_id uuid, accessory_id text)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select f.user_id, f.accessory_id
+  from accessory_flair f
+  where f.user_id = any (p_user_ids[1:100])
+    and exists (
+      select 1 from accessory_server_ownership o
+      where o.user_id = f.user_id and o.accessory_id = f.accessory_id
+    );
+$$;
+
+grant execute on function accessory_flairs(uuid[]) to anon, authenticated;

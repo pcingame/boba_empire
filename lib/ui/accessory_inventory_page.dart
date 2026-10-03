@@ -10,6 +10,7 @@ import '../core/accessories.dart';
 import '../core/balance.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
+import '../leaderboard/flair.dart';
 import '../state/game_providers.dart';
 import 'accessory_leaderboard_page.dart';
 import 'accessory_market_page.dart';
@@ -29,10 +30,12 @@ class AccessoryInventoryPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    final owned =
-        ref.watch(gameControllerProvider.select((s) => s.ownedAccessories.length));
+    final owned = ref.watch(
+      gameControllerProvider.select((s) => s.ownedAccessories.length),
+    );
     final equippedCount = ref.watch(
-        gameControllerProvider.select((s) => s.equippedAccessories.length));
+      gameControllerProvider.select((s) => s.equippedAccessories.length),
+    );
 
     return PhoneWidth(
       child: Scaffold(
@@ -67,7 +70,13 @@ class AccessoryInventoryPage extends ConsumerWidget {
                   const SizedBox(height: 4),
                   Text(
                     l10n.accessoryEquipHint(
-                        equippedCount, Balance.maxEquippedAccessories),
+                      equippedCount,
+                      Balance.maxEquippedAccessories,
+                    ),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  Text(
+                    l10n.accessoryFlairHint,
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   const SizedBox(height: 8),
@@ -147,78 +156,107 @@ class _AccessoryCell extends ConsumerWidget {
         HapticFeedback.selectionClick();
       } else {
         // Đã đủ chỗ trưng bày: báo thay vì im lặng.
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(l10n.accessoryEquipFull(Balance.maxEquippedAccessories)),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              l10n.accessoryEquipFull(Balance.maxEquippedAccessories),
+            ),
+          ),
+        );
       }
+    }
+
+    Future<void> onLongPress() async {
+      if (!unlocked) return;
+      HapticFeedback.mediumImpact();
+      final cache = ref.read(flairCacheProvider.notifier);
+      final isCurrent = cache.isMine(accessory.emoji);
+      final ok = await cache.setMine(isCurrent ? null : accessory.id);
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            !ok
+                ? l10n.accessoryFlairFailed
+                : isCurrent
+                ? l10n.accessoryFlairCleared
+                : l10n.accessoryFlairSet(accessoryName(l10n, accessory.id)),
+          ),
+        ),
+      );
     }
 
     return GestureDetector(
       key: Key('accessory-cell-${accessory.id}'),
       onTap: onTap,
+      onLongPress: onLongPress,
       child: Stack(
-      children: [
-        Opacity(
-      opacity: unlocked ? 1.0 : 0.45,
-      child: Container(
-        // Viền màu theo độ hiếm — trước đây 4 độ hiếm nhìn giống hệt nhau,
-        // chỉ khác ở 1 dòng chữ nhỏ dưới cùng, không quét nhanh bằng mắt
-        // được kiểu game sưu tập thường có.
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-              color: equipped ? theme.colorScheme.primary : color,
-              width: equipped ? 3.5 : 2),
-        ),
-        child: ClayCard(
-          padding: const EdgeInsets.all(8),
-          color: Color.alphaBlend(
-            color.withValues(alpha: unlocked ? 0.14 : 0.06),
-            theme.colorScheme.surface,
-          ),
-          // Ô lưới rất hẹp (3 cột) — tên phụ kiện dịch ra vài ngôn ngữ dài
-          // hơn hẳn (VD "Unicórnio Pequeno") cùng cỡ chữ lớn (accessibility)
-          // làm Column tràn dọc. FittedBox co cả cụm vừa ô thay vì tràn —
-          // cùng cách đã sửa cột hạng ở leaderboard_page.dart.
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  unlocked ? accessory.emoji : '❔',
-                  style: const TextStyle(fontSize: 32),
+        children: [
+          Opacity(
+            opacity: unlocked ? 1.0 : 0.45,
+            child: Container(
+              // Viền màu theo độ hiếm — trước đây 4 độ hiếm nhìn giống hệt nhau,
+              // chỉ khác ở 1 dòng chữ nhỏ dưới cùng, không quét nhanh bằng mắt
+              // được kiểu game sưu tập thường có.
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: equipped ? theme.colorScheme.primary : color,
+                  width: equipped ? 3.5 : 2,
                 ),
-                const SizedBox(height: 6),
-                Text(
-                  unlocked
-                      ? '${accessoryName(l10n, accessory.id)}'
-                            '${spares > 0 ? ' ×${spares + 1}' : ''}'
-                      : '???',
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(fontWeight: FontWeight.w600),
+              ),
+              child: ClayCard(
+                padding: const EdgeInsets.all(8),
+                color: Color.alphaBlend(
+                  color.withValues(alpha: unlocked ? 0.14 : 0.06),
+                  theme.colorScheme.surface,
                 ),
-                const SizedBox(height: 4),
-                RarityChip(
-                  rarity: accessory.rarity,
-                  label: accessoryRarityLabel(l10n, accessory.rarity),
+                // Ô lưới rất hẹp (3 cột) — tên phụ kiện dịch ra vài ngôn ngữ dài
+                // hơn hẳn (VD "Unicórnio Pequeno") cùng cỡ chữ lớn (accessibility)
+                // làm Column tràn dọc. FittedBox co cả cụm vừa ô thay vì tràn —
+                // cùng cách đã sửa cột hạng ở leaderboard_page.dart.
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        unlocked ? accessory.emoji : '❔',
+                        style: const TextStyle(fontSize: 32),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        unlocked
+                            ? '${accessoryName(l10n, accessory.id)}'
+                                  '${spares > 0 ? ' ×${spares + 1}' : ''}'
+                            : '???',
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      RarityChip(
+                        rarity: accessory.rarity,
+                        label: accessoryRarityLabel(l10n, accessory.rarity),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+          // Ghim 📌 trên món đang trưng bày (không chỉ dựa vào màu viền).
+          if (equipped)
+            const Positioned(
+              top: 6,
+              right: 10,
+              child: ExcludeSemantics(
+                child: Text('📌', style: TextStyle(fontSize: 18)),
+              ),
+            ),
+        ],
       ),
-        ),
-        // Ghim 📌 trên món đang trưng bày (không chỉ dựa vào màu viền).
-        if (equipped)
-          const Positioned(
-            top: 6,
-            right: 10,
-            child: ExcludeSemantics(child: Text('📌', style: TextStyle(fontSize: 18))),
-          ),
-      ],
-    ),
     );
   }
 }

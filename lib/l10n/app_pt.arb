@@ -527,6 +527,15 @@
       "max": {"type": "int"}
     }
   },
+  "accessoryFlairHint": "Pressione e segure um item para usá-lo como emblema do ranking",
+  "accessoryFlairSet": "{name} agora é seu emblema do ranking",
+  "@accessoryFlairSet": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "accessoryFlairCleared": "Emblema do ranking removido",
+  "accessoryFlairFailed": "Não foi possível definir o emblema: item não sincronizado ou sem conexão",
   "marketWallet": "{n} Moedas de Mercado",
   "@marketWallet": {
     "placeholders": {

@@ -882,6 +882,15 @@
       "max": {"type": "int"}
     }
   },
+  "accessoryFlairHint": "Giữ lâu một món để đặt làm huy hiệu bảng xếp hạng",
+  "accessoryFlairSet": "Đã đặt {name} làm huy hiệu bảng xếp hạng",
+  "@accessoryFlairSet": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "accessoryFlairCleared": "Đã gỡ huy hiệu bảng xếp hạng",
+  "accessoryFlairFailed": "Không đặt được huy hiệu — món này chưa đồng bộ lên máy chủ hoặc mất mạng",
   "marketWallet": "{n} Xu Chợ",
   "@marketWallet": {
     "placeholders": {

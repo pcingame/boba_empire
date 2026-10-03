@@ -2212,6 +2212,30 @@ abstract class AppLocalizations {
   /// **'Đã đủ {max} món trưng bày — bỏ chọn một món trước'**
   String accessoryEquipFull(int max);
 
+  /// No description provided for @accessoryFlairHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giữ lâu một món để đặt làm huy hiệu bảng xếp hạng'**
+  String get accessoryFlairHint;
+
+  /// No description provided for @accessoryFlairSet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đặt {name} làm huy hiệu bảng xếp hạng'**
+  String accessoryFlairSet(String name);
+
+  /// No description provided for @accessoryFlairCleared.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gỡ huy hiệu bảng xếp hạng'**
+  String get accessoryFlairCleared;
+
+  /// No description provided for @accessoryFlairFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đặt được huy hiệu — món này chưa đồng bộ lên máy chủ hoặc mất mạng'**
+  String get accessoryFlairFailed;
+
   /// No description provided for @marketWallet.
   ///
   /// In vi, this message translates to:

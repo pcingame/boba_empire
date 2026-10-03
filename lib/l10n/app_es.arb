@@ -527,6 +527,15 @@
       "max": {"type": "int"}
     }
   },
+  "accessoryFlairHint": "Mantén pulsado un objeto para usarlo como insignia del ranking",
+  "accessoryFlairSet": "{name} es ahora tu insignia del ranking",
+  "@accessoryFlairSet": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "accessoryFlairCleared": "Insignia del ranking quitada",
+  "accessoryFlairFailed": "No se pudo poner la insignia: objeto sin sincronizar o sin conexión",
   "marketWallet": "{n} Monedas de Mercado",
   "@marketWallet": {
     "placeholders": {

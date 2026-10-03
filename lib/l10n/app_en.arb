@@ -527,6 +527,15 @@
       "max": {"type": "int"}
     }
   },
+  "accessoryFlairHint": "Long-press an item to use it as your leaderboard badge",
+  "accessoryFlairSet": "{name} is now your leaderboard badge",
+  "@accessoryFlairSet": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "accessoryFlairCleared": "Leaderboard badge removed",
+  "accessoryFlairFailed": "Couldn't set the badge — item not synced yet or you're offline",
   "marketWallet": "{n} Market Coins",
   "@marketWallet": {
     "placeholders": {

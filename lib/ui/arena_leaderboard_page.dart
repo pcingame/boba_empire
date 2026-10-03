@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../arena/arena_leaderboard_controller.dart';
 import '../l10n/app_localizations.dart';
+import '../leaderboard/flair.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -62,7 +63,9 @@ class _ArenaLeaderboardPageState extends ConsumerState<ArenaLeaderboardPage> {
               l10n: l10n,
               view: viewState,
             ),
-            ArenaLeaderboardError(:final message) => _ErrorView(message: message),
+            ArenaLeaderboardError(:final message) => _ErrorView(
+              message: message,
+            ),
           },
         ),
       ),
@@ -185,10 +188,17 @@ class _ArenaLeaderboardList extends ConsumerWidget {
                             ),
                             const SizedBox(width: 8),
                             Expanded(
-                              child: Text(
-                                entry.nickname,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                              child: Row(
+                                children: [
+                                  FlairBadge(userId: entry.userId),
+                                  Flexible(
+                                    child: Text(
+                                      entry.nickname,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             // Flexible + ellipsis: cùng lớp bug RenderFlex overflow

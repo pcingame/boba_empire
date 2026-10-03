@@ -1240,6 +1240,22 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get accessoryFlairHint =>
+      'Long-press an item to use it as your leaderboard badge';
+
+  @override
+  String accessoryFlairSet(String name) {
+    return '$name is now your leaderboard badge';
+  }
+
+  @override
+  String get accessoryFlairCleared => 'Leaderboard badge removed';
+
+  @override
+  String get accessoryFlairFailed =>
+      'Couldn\'t set the badge — item not synced yet or you\'re offline';
+
+  @override
   String marketWallet(int n) {
     return '$n Market Coins';
   }

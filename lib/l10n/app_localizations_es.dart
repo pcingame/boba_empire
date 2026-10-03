@@ -1248,6 +1248,22 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get accessoryFlairHint =>
+      'Mantén pulsado un objeto para usarlo como insignia del ranking';
+
+  @override
+  String accessoryFlairSet(String name) {
+    return '$name es ahora tu insignia del ranking';
+  }
+
+  @override
+  String get accessoryFlairCleared => 'Insignia del ranking quitada';
+
+  @override
+  String get accessoryFlairFailed =>
+      'No se pudo poner la insignia: objeto sin sincronizar o sin conexión';
+
+  @override
   String marketWallet(int n) {
     return '$n Monedas de Mercado';
   }
