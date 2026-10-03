@@ -47,7 +47,7 @@ Future<ProviderContainer> _pump(
 }
 
 Future<void> _openWheel(WidgetTester tester) async {
-  await tester.tap(find.text('Earn more'));
+  await tester.tap(find.text('🎁 Earn more'));
   await tester.pumpAndSettle();
   await tester.tap(find.byKey(const Key('open-wheel')));
   await tester.pumpAndSettle();
