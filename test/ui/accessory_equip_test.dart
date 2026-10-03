@@ -2,6 +2,7 @@
 /// chạm trong Kho, và hiện ở màn chính (thuần trang trí, không buff gì).
 library;
 
+import 'package:boba_empire/core/accessories.dart';
 import 'package:boba_empire/core/balance.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/data/game_storage.dart';
@@ -132,6 +133,36 @@ void main() {
     await tester.pump();
     expect(emoji('🐉'), findsNothing);
     expect(emoji('🌌'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
+  testWidgets('màn chính: nút Sưu tập ngang hàng Ưu đãi/Nhiệm vụ, mở Kho, chấm đỏ khi có mốc',
+      (tester) async {
+    tester.view.physicalSize = const Size(320 * 3, 640 * 3); // máy hẹp
+    tester.view.devicePixelRatio = 3;
+    tester.platformDispatcher.textScaleFactorTestValue = 1.3;
+    addTearDown(tester.view.reset);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    final c = await _container(
+      seed: GameState.newGame(nowMillis: 0)
+        ..ownedAccessories.addAll(accessories.take(10).map((a) => a.id)),
+    );
+    await tester.pumpWidget(UncontrolledProviderScope(
+        container: c, child: const BobaEmpireApp()));
+    await tester.pumpAndSettle();
+    final chip = find.byKey(const Key('collection-chip'));
+    final quests = find.byKey(const Key('daily-quests-chip'));
+    expect(chip, findsOneWidget);
+    expect((tester.getCenter(chip).dy - tester.getCenter(quests).dy).abs(),
+        lessThan(6), reason: 'cùng hàng với chip Nhiệm vụ');
+    expect(tester.takeException(), isNull, reason: 'không tràn ở 320px/1.3x');
+    // Có 10 món → mốc 10 chờ nhận → chấm đỏ "1" nằm trong nút.
+    expect(find.descendant(of: chip, matching: find.text('1')), findsOneWidget);
+
+    await tester.tap(chip);
+    await tester.pumpAndSettle();
+    expect(find.byType(AccessoryInventoryPage), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
     c.dispose();
   });

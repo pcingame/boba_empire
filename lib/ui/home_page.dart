@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../audio/audio_service.dart';
 import '../core/accessories.dart';
 import '../core/balance.dart';
+import '../core/collection_milestones.dart';
 import '../core/economy.dart';
 import '../core/format.dart';
 import '../ads/ad_service.dart';
@@ -21,6 +22,7 @@ import '../market/market_highlight.dart';
 import '../notify/reminders.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
+import 'accessory_inventory_page.dart';
 import 'accessory_market_page.dart';
 import 'achievements_dialog.dart';
 import 'compete_hub_dialog.dart';
@@ -695,6 +697,8 @@ class _MoneyHeader extends ConsumerWidget {
                     ),
                     const SizedBox(width: 6),
                     const Flexible(child: _DailyQuestsChip()),
+                    const SizedBox(width: 6),
+                    const _CollectionChip(),
                   ],
                 ),
               ),
@@ -1783,6 +1787,54 @@ class _StageHeader extends ConsumerWidget {
 /// Chip "Nhiệm vụ" ở đầu màn chính, có chấm đỏ khi có nhiệm vụ xong chưa nhận.
 /// Dùng `_CountBadge` tự vẽ (không dùng `Badge` mặc định — không giới hạn chiều
 /// rộng nhãn, xem shop-tile-overflow-pattern).
+/// Nút nhỏ mở Kho phụ kiện (chỉ icon cho đỡ chật hàng chip) — chấm đỏ khi có
+/// mốc sưu tập đã đạt mà chưa nhận.
+class _CollectionChip extends ConsumerWidget {
+  const _CollectionChip();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // select theo CHUỖI để so sánh theo giá trị (snapshot tạo list mới mỗi tick).
+    final key = ref.watch(gameControllerProvider.select(
+      (s) => '${s.ownedAccessories.length}|'
+          '${s.collectionMilestonesClaimed.join(",")}',
+    ));
+    final parts = key.split('|');
+    final owned = int.parse(parts[0]);
+    final claimed = parts[1].isEmpty
+        ? <int>{}
+        : parts[1].split(',').map(int.parse).toSet();
+    final claimable = collectionMilestones
+        .where((m) => owned >= m.count && !claimed.contains(m.count))
+        .length;
+    final theme = Theme.of(context);
+    final label = AppLocalizations.of(context)!.accessoryMenuTitle;
+    return Tooltip(
+      message: label,
+      child: InkWell(
+        key: const Key('collection-chip'),
+        borderRadius: BorderRadius.circular(24),
+        onTap: () => showAccessoryInventory(context),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            ClayChip(
+              child: Icon(
+                Icons.auto_awesome,
+                size: 20,
+                semanticLabel: label,
+                color: theme.colorScheme.onPrimaryContainer,
+              ),
+            ),
+            if (claimable > 0)
+              Positioned(right: -6, top: -6, child: _CountBadge(claimable)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _DailyQuestsChip extends ConsumerWidget {
   const _DailyQuestsChip();
 
