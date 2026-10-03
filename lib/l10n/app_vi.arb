@@ -435,6 +435,7 @@
   "iapDoubleDesc": "Gấp đôi mọi thu nhập tự động, mãi mãi",
   "iapDoubleSnack": "Đã bật x2 thu nhập vĩnh viễn!",
   "rewardsTitle": "Kiếm thêm 🎁",
+  "rewardsChip": "Kiếm thêm",
   "rewardX2Name": "x2 thu nhập 24 giờ",
   "rewardX2Active": "Đang bật · còn {hours}h",
   "@rewardX2Active": {

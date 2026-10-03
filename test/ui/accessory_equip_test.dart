@@ -158,7 +158,7 @@ void main() {
         lessThan(6), reason: 'cùng hàng với chip Nhiệm vụ');
     expect(tester.takeException(), isNull, reason: 'không tràn ở 320px/1.3x');
     // Nút có NHÃN chữ (không chỉ icon) và không đè lên chip Nhiệm vụ bên cạnh.
-    expect(find.descendant(of: chip, matching: find.textContaining('✨')),
+    expect(find.descendant(of: chip, matching: find.text('Bộ sưu tập')),
         findsOneWidget);
     expect(tester.getRect(chip).left,
         greaterThanOrEqualTo(tester.getRect(quests).right - 0.5),

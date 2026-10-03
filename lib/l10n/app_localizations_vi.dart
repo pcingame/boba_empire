@@ -454,6 +454,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get rewardsTitle => 'Kiếm thêm 🎁';
 
   @override
+  String get rewardsChip => 'Kiếm thêm';
+
+  @override
   String get rewardX2Name => 'x2 thu nhập 24 giờ';
 
   @override

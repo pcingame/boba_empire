@@ -451,6 +451,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get rewardsTitle => 'หาเพิ่ม 🎁';
 
   @override
+  String get rewardsChip => 'หาเพิ่ม';
+
+  @override
   String get rewardX2Name => 'x2 รายได้ 24 ชม.';
 
   @override

@@ -796,6 +796,12 @@ abstract class AppLocalizations {
   /// **'Kiếm thêm 🎁'**
   String get rewardsTitle;
 
+  /// No description provided for @rewardsChip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiếm thêm'**
+  String get rewardsChip;
+
   /// No description provided for @rewardX2Name.
   ///
   /// In vi, this message translates to:

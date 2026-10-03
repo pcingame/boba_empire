@@ -451,6 +451,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rewardsTitle => 'Earn more 🎁';
 
   @override
+  String get rewardsChip => 'Earn more';
+
+  @override
   String get rewardX2Name => 'x2 income for 24h';
 
   @override

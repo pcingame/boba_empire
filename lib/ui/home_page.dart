@@ -684,7 +684,7 @@ class _MoneyHeader extends ConsumerWidget {
                           child: FittedBox(
                             fit: BoxFit.scaleDown,
                             child: Text(
-                              AppLocalizations.of(context)!.rewardsTitle,
+                              AppLocalizations.of(context)!.rewardsChip,
                               maxLines: 1,
                               softWrap: false,
                               style: theme.textTheme.labelLarge?.copyWith(
@@ -1828,7 +1828,7 @@ class _CollectionChip extends ConsumerWidget {
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  '✨ $label',
+                  label,
                   maxLines: 1,
                   softWrap: false,
                   style: theme.textTheme.labelLarge?.copyWith(
