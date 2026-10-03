@@ -174,6 +174,7 @@ void main() {
 
     Future<void> shoot(String name) async {
       await settle(tester);
+      debugPrint('SHOT $name');
       await binding.takeScreenshot('${kLocale}_$name');
     }
 
@@ -194,6 +195,17 @@ void main() {
       await tester.tap(find.byType(BackButton).first);
       await settle(tester);
     }
+
+    // 1d. Nhiệm vụ ngày (có thưởng phụ kiện) và 1e. Vòng quay 9 ô có ô rương.
+    await tester.tap(find.byKey(const Key('daily-quests-chip')));
+    await shoot('1d_daily_quests');
+    await _closeDialog(tester);
+    await tester.tap(find.byKey(const Key('rewards-chip')));
+    await settle(tester);
+    await tester.tap(find.byKey(const Key('open-wheel')));
+    await shoot('1e_wheel');
+    await _closeDialog(tester); // đóng vòng quay
+    await _closeDialog(tester); // đóng hộp "Kiếm thêm"
 
     // 2. Kho Sao (Nhượng quyền): cho thấy chiều sâu meta-game.
     await tester.tap(find.byKey(const Key('prestige-button')));

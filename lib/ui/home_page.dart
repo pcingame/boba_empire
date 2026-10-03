@@ -703,6 +703,7 @@ class _MoneyHeader extends ConsumerWidget {
             children: [
               Expanded(
                 child: InkWell(
+                  key: const Key('rewards-chip'),
                   borderRadius: BorderRadius.circular(24),
                   onTap: () => showRewards(context),
                   child: ClayChip(

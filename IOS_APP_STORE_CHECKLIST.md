@@ -187,13 +187,18 @@ thử, xác nhận có trong `.app`). Nội dung hiện tại (AdMob + ATT + sha
   hàng 💎, nhượng quyền/kho Sao, home dark mode, thành tựu, cách chơi, cốt
   truyện, dialog "Kiếm thêm", home stage 2 (theme xanh). Còn phải **kéo thả
   vào ASC** (chưa upload).
-- [x] 🔴 **Screenshots bản 1.0.6 (2026-10-03)** — chụp lại bằng `./scripts/shoot.sh` (integration_test, KHÔNG
-  chạm server: Chợ dùng controller giả, đồng hồ game đặt vào ngày thứ 4 để khỏi dính banner cuối tuần):
-  iPhone 6.9" (1320×2868, iPhone 17 Pro Max) ở `assets/store/screenshots_ios/6.9in/` — 01 màn chính mới ·
-  02 Bộ sưu tập · 03 Chợ phụ kiện · 04 Trân Châu Rơi · 05 Nhượng quyền · 06 Thành tựu · 07 Cửa hàng 💎;
-  iPad 13" (2064×2752) 8 màn × 6 ngôn ngữ ở `assets/store/screenshots/ipad/` (thêm `_1b_collection`,
-  `_1c_market`). Bản 6.5" (1242×2688) co sẵn từ ảnh 6.9" ở `assets/store/screenshots_ios/6.5in_from_6.9/` (resample + cắt 11px dải trống phía trên) — dùng nếu ASC đòi khung 6.5".
-  Sửa lỗi script cũ: `SHOT_DIR` giờ đọc từ biến môi trường (trước đây ảnh iPhone rơi vào thư mục ipad và đè ảnh iPad).
+- [x] 🔴 **Screenshots bản 1.0.6 (2026-10-03)** — chụp bằng `./scripts/shoot.sh <udid> "vi en es id pt th"`
+  (integration_test trên simulator, KHÔNG chạm server: Chợ dùng controller giả, đồng hồ game đặt vào
+  ngày thứ 4 để khỏi dính banner cuối tuần). **Mỗi ngôn ngữ 10 ảnh**, thư mục theo ngôn ngữ (KHÔNG commit —
+  ~115MB, sinh lại được bằng script):
+  - iPhone 6.9" (1320×2868, iPhone 17 Pro Max): `assets/store/screenshots_ios/6.9in/<ngôn ngữ>/` —
+    01 màn chính · 02 Bộ sưu tập · 03 Chợ phụ kiện · 04 Nhiệm vụ ngày · 05 Vòng quay · 06 Trân Châu Rơi (chơi) ·
+    07 Trân Châu Rơi (lưới màn) · 08 Nhượng quyền · 09 Thành tựu · 10 Cửa hàng 💎.
+  - Bản 6.5" (1242×2688) co sẵn từ 6.9" (dùng nếu ASC đòi): `.../6.5in_from_6.9/<ngôn ngữ>/` (cắt 11px dải trống trên).
+  - iPad 13" (2064×2752): `assets/store/screenshots/ipad/<ngôn ngữ>_*.png` (đã commit), 8 màn × 6 ngôn ngữ.
+  Upload: mỗi Localization một bộ riêng; ngôn ngữ nào thiếu ảnh sẽ dùng ảnh của ngôn ngữ chính.
+  Lưu ý: chạy shoot.sh mà thấy một ngôn ngữ thiếu ảnh (từng gặp: `es` thiếu 2 ảnh) thì chạy lại riêng ngôn ngữ đó —
+  nguyên nhân là bản app biên dịch cũ được dùng lại. `SHOT_DIR` đọc từ biến môi trường (script đã export).
 - [ ] 🟡 **App Preview video** (tùy chọn, tăng chuyển đổi) — 15–30s, quay từ
   thiết bị/simulator.
 - [ ] 🔴 **Name** ≤ 30, **Subtitle** ≤ 30, **Keywords** ≤ 100 (phẩy),

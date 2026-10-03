@@ -50,3 +50,8 @@ app.*.map.json
 # VS Code (per-developer editor settings, machine-specific paths)
 .vscode/
 .crashlytics/
+
+# Ảnh App Store sinh bằng scripts/shoot.sh (chụp lại được) — không commit (~130MB)
+assets/store/screenshots_ios/6.9in/
+assets/store/screenshots_ios/6.5in_from_6.9/
+assets/store/screenshots/iphone/
