@@ -860,6 +860,9 @@ class GameController extends Notifier<GameSnapshot> {
   /// Cùng nguyên tắc lazy + tự bắt lỗi như [_cloudSave] — ghi nhận rớt phụ
   /// kiện lên server KHÔNG BAO GIỜ được phép chặn/làm hỏng việc nhận thưởng
   /// nhiệm vụ ngày cục bộ nếu Supabase có vấn đề (xem [claimDailyBonus]).
+  @visibleForTesting
+  set debugMarketRepo(AccessoryMarketRepository? repo) => _marketRepo = repo;
+
   AccessoryMarketRepository? get _market {
     if (_marketRepo != null) return _marketRepo;
     try {
@@ -900,6 +903,14 @@ class GameController extends Notifier<GameSnapshot> {
     return List.of(list);
   }
 
+  void _markMilestoneClaimed(int count) {
+    if (!_game.collectionMilestonesClaimed.contains(count)) {
+      _game.collectionMilestonesClaimed.add(count);
+    }
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
   /// Nhận thưởng mốc sưu tập [count] (server trước, đánh dấu cục bộ sau). Trả
   /// số Xu Chợ nhận được, hoặc mã lỗi (`not_reached`, `already_claimed`,
   /// `network`) — `already_claimed` cũng đánh dấu cục bộ để ẩn nút.
@@ -924,16 +935,12 @@ class GameController extends Notifier<GameSnapshot> {
         }
       }
       final coins = await market.claimCollectionMilestone(count);
-      _game.collectionMilestonesClaimed.add(count);
-      unawaited(saveNow());
-      state = _snapshot();
+      _markMilestoneClaimed(count);
       return (coins: coins, error: null);
     } catch (e) {
       final msg = '$e';
       if (msg.contains('already_claimed')) {
-        _game.collectionMilestonesClaimed.add(count);
-        unawaited(saveNow());
-        state = _snapshot();
+        _markMilestoneClaimed(count);
         return (coins: null, error: 'already_claimed');
       }
       developer.log('nhận mốc sưu tập lỗi: $e', name: 'Market');

@@ -1,5 +1,7 @@
 /// Nguồn rớt phụ kiện có bảo đảm độ hiếm: Kỷ Nguyên (Sử thi/Huyền thoại) và
 /// mốc Trân Châu Rơi 10/30/60 (chỉ lần ĐẦU qua màn).
+library;
+
 import 'package:boba_empire/core/accessories.dart';
 import 'package:boba_empire/core/balance.dart';
 import 'package:boba_empire/core/models.dart';

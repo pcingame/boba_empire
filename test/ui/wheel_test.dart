@@ -98,6 +98,22 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
+  testWidgets('đóng hộp vòng quay giữa lúc đang quay: không crash', (
+    tester,
+  ) async {
+    final container = await _pump(
+      tester,
+      ads: const _StubAds(RewardOutcome.earned),
+    );
+    await _openWheel(tester);
+    await tester.tap(find.byKey(const Key('wheel-spin')));
+    await tester.pump(const Duration(milliseconds: 500)); // đang quay
+    await tester.pumpWidget(const SizedBox()); // gỡ cả cây (như back/kill)
+    await tester.pump(const Duration(seconds: 5)); // animation/await chạy tiếp
+    expect(tester.takeException(), isNull);
+    container.dispose();
+  });
+
   testWidgets('đóng QC sớm (dismissed): không quay, không thưởng', (
     tester,
   ) async {

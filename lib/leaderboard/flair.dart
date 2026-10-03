@@ -108,9 +108,12 @@ class FlairBadge extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final emoji = ref.watch(flairCacheProvider.select((m) => m[userId]));
     if (emoji == null) {
-      Future.microtask(
-        () => ref.read(flairCacheProvider.notifier).ensure(userId),
-      );
+      Future.microtask(() {
+        // Widget có thể đã bị gỡ trước khi microtask chạy → ref đã dispose.
+        if (context.mounted) {
+          ref.read(flairCacheProvider.notifier).ensure(userId);
+        }
+      });
     }
     if (emoji == null || emoji.isEmpty) return const SizedBox.shrink();
     return Padding(

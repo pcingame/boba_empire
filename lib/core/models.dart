@@ -570,8 +570,8 @@ class GameState {
         dailyEarnTarget: (json['dailyEarnTarget'] as num?)?.toDouble() ?? 0,
         dailyBonusClaimed: (json['dailyBonusClaimed'] as bool?) ?? false,
         dailyQuestEverClaimed:
-            (json['dailyQuestEverClaimed'] as bool?) ?? false,
-        starterPackClaimed: (json['starterPackClaimed'] as bool?) ?? false,
+            json['dailyQuestEverClaimed'] == true,
+        starterPackClaimed: json['starterPackClaimed'] == true,
         dailyProgress: (json['dailyProgress'] as Map?)
             ?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),
         dailyClaimed: (json['dailyClaimed'] as List?)?.cast<String>().toList(),
