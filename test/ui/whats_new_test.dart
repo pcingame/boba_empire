@@ -8,6 +8,7 @@ import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/main.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/ui/accessory_inventory_page.dart';
+import 'package:boba_empire/ui/home_page.dart' show debugAutoShowStory, debugAutoShowTutorial;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -113,6 +114,52 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('whats-new')), findsNothing);
     expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
+  testWidgets('cài mới: hướng dẫn lần đầu hiện, đóng xong KHÔNG hiện "Có gì mới" (dù tutorial đã lưu ván)',
+      (tester) async {
+    final savedTutorial = debugAutoShowTutorial;
+    debugAutoShowTutorial = true;
+    addTearDown(() => debugAutoShowTutorial = savedTutorial);
+    final (c, prefs) = await _launch(tester, version: '1.0.6', hasSave: false);
+    expect(find.byKey(const Key('how-to-play-close')), findsOneWidget,
+        reason: 'người mới thấy hướng dẫn');
+    expect(find.byKey(const Key('whats-new')), findsNothing);
+    await tester.tap(find.byKey(const Key('how-to-play-close')));
+    await tester.pumpAndSettle();
+    // markTutorialSeen() đã lưu ván → trước bản sửa, đây bị nhầm là "người vừa cập nhật".
+    expect(prefs.containsKey(GameStorage.saveKey), isTrue);
+    expect(find.byKey(const Key('whats-new')), findsNothing);
+    expect(prefs.getString(whatsNewSeenKey), '1.0.6');
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
+  testWidgets('đang chờ cutscene cốt truyện: nhường cutscene, CHƯA ghi nhớ → lần mở sau mới hiện',
+      (tester) async {
+    debugAutoShowStory = true;
+    addTearDown(() => debugAutoShowStory = false);
+    SharedPreferences.setMockInitialValues({whatsNewSeenKey: '1.0.5'});
+    final prefs = await SharedPreferences.getInstance();
+    await GameStorage(prefs).save(
+        GameState.newGame(nowMillis: 0)
+          ..storyChapter = 5
+          ..stage = 5,
+        nowMillis: 0);
+    final c = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(() => 0),
+      appVersionProvider.overrideWithValue(() async => '1.0.6'),
+    ]);
+    await tester.pumpWidget(
+        UncontrolledProviderScope(container: c, child: const BobaEmpireApp()));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('story-choice-0')), findsOneWidget);
+    expect(find.byKey(const Key('whats-new')), findsNothing);
+    expect(prefs.getString(whatsNewSeenKey), '1.0.5',
+        reason: 'chưa hiện thì chưa ghi nhớ');
     await tester.pumpWidget(const SizedBox());
     c.dispose();
   });
