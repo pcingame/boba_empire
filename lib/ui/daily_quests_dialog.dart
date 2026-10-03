@@ -7,13 +7,19 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../audio/audio_service.dart';
+import '../core/accessories.dart';
 import '../core/balance.dart';
 import '../core/daily_quests.dart';
 import '../core/format.dart';
 import '../l10n/app_localizations.dart';
+import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
+import 'widgets/accessory_rarity.dart';
+import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
+import 'widgets/motion.dart';
+import 'widgets/one_shot_lottie.dart';
 
 Future<void> showDailyQuests(BuildContext context) {
   return showDialog<void>(
@@ -31,11 +37,39 @@ String _title(AppLocalizations l10n, DailyQuestView q) => switch (q.kind) {
       DailyQuestKind.spin => l10n.dqSpin,
     };
 
-class _DailyQuestsDialog extends ConsumerWidget {
+class _DailyQuestsDialog extends ConsumerStatefulWidget {
   const _DailyQuestsDialog();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_DailyQuestsDialog> createState() => _DailyQuestsDialogState();
+}
+
+class _DailyQuestsDialogState extends ConsumerState<_DailyQuestsDialog> {
+  /// Phụ kiện vừa rớt khi nhận thưởng "xong cả bộ" — hiện NỘI TUYẾN ngay trong hộp
+  /// thoại (không thêm popup mới; chuỗi popup mở app đã dài). Chỉ trong phiên hộp
+  /// thoại này: mở lại sau đó thì không còn (đã có trong Kho).
+  AccessoryDrop? _revealed;
+
+  void _claimBonus() {
+    final controller = ref.read(gameControllerProvider.notifier);
+    final got = controller.claimDailyBonus();
+    if (got <= 0) return;
+    HapticFeedback.mediumImpact();
+    ref.read(audioServiceProvider).play(Sfx.reward);
+    final drop = controller.lastAccessoryDrop;
+    if (drop == null) return;
+    setState(() => _revealed = drop);
+    // Sử thi/Huyền thoại đáng ăn mừng: pháo giấy (huyền thoại thêm rung mạnh).
+    if (drop.accessory.rarity.index >= AccessoryRarity.epic.index) {
+      playEffect(context, AnimAssets.confetti, size: 200);
+    }
+    if (drop.accessory.rarity == AccessoryRarity.legendary) {
+      HapticFeedback.heavyImpact();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final quests = ref.watch(gameControllerProvider.select((s) => s.dailyQuests));
@@ -86,9 +120,7 @@ class _DailyQuestsDialog extends ConsumerWidget {
                   Flexible(
                     child: FilledButton(
                       key: const Key('daily-quest-bonus'),
-                      onPressed: bonusAvailable
-                          ? () => claim(controller.claimDailyBonus)
-                          : null,
+                      onPressed: bonusAvailable ? _claimBonus : null,
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(bonusClaimed
@@ -100,6 +132,7 @@ class _DailyQuestsDialog extends ConsumerWidget {
                 ],
               ),
             ),
+            if (_revealed != null) _AccessoryReveal(drop: _revealed!),
             const SizedBox(height: 8),
             Text(
               l10n.dailyQuestsResetsIn(formatDuration(secondsLeft)),
@@ -177,6 +210,58 @@ class _QuestRow extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Hàng "khoảnh khắc nhận phụ kiện": emoji lớn viền theo độ hiếm + câu mới/trùng + chip độ hiếm.
+class _AccessoryReveal extends StatelessWidget {
+  const _AccessoryReveal({required this.drop});
+  final AccessoryDrop drop;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final a = drop.accessory;
+    return AppearIn(
+      child: ClayTile(
+        key: const Key('accessory-reveal'),
+        child: Row(
+          children: [
+            Container(
+              width: 52,
+              height: 52,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: rarityColor(a.rarity).withValues(alpha: 0.35),
+                border: Border.all(color: rarityColor(a.rarity), width: 3),
+              ),
+              child: Text(a.emoji, style: const TextStyle(fontSize: 28)),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    accessoryRevealMessage(l10n, drop),
+                    style: theme.textTheme.bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 4),
+                  RarityChip(
+                    rarity: a.rarity,
+                    label: accessoryRarityLabel(l10n, a.rarity),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
