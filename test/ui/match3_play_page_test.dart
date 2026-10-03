@@ -230,6 +230,50 @@ void main() {
     c.dispose();
   });
 
+  testWidgets(
+      'đã chọn "Chơi nốt" nhưng đạt 3★ giữa chừng → hỏi NGAY (Màn sau / Tạm nghỉ), không đợi hết nước',
+      (tester) async {
+    final savedBase = Balance.m3TargetBase;
+    final savedMoves = Balance.m3Moves;
+    Balance.m3TargetBase = firstMoveScore().toDouble(); // nước đầu = đúng 1★
+    Balance.m3Moves = 40; // còn rất nhiều nước
+    addTearDown(() {
+      Balance.m3TargetBase = savedBase;
+      Balance.m3Moves = savedMoves;
+    });
+
+    final c = await pumpPage(tester);
+    playOne(c);
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 2));
+    expect(find.text('Đạt mục tiêu!'), findsOneWidget);
+    await tester.tap(find.text('Chơi nốt'));
+    await tester.pumpAndSettle();
+
+    // Đi tiếp tới khi đủ 3★ (không được hỏi trước đó vì 1★/2★ đã chọn chơi nốt).
+    var moves = 0;
+    while (c.read(match3ControllerProvider).stars < 3 && moves < 30) {
+      expect(find.text('Đạt mục tiêu!'), findsNothing);
+      expect(find.text('Qua màn!'), findsNothing);
+      playOne(c);
+      moves++;
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 600));
+    }
+    expect(c.read(match3ControllerProvider).stars, greaterThanOrEqualTo(3));
+    await tester.pump(const Duration(seconds: 2));
+
+    expect(c.read(match3ControllerProvider).movesLeft, greaterThan(0),
+        reason: 'hỏi khi còn nước, không đợi hết nước');
+    expect(find.text('Qua màn!'), findsOneWidget);
+    expect(find.text('Tạm nghỉ'), findsOneWidget);
+    expect(find.text('Màn sau'), findsOneWidget);
+    expect(find.text('Chơi nốt'), findsNothing, reason: 'hết sao để săn');
+
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
   testWidgets('qua màn → nút "Màn sau" đưa thẳng sang màn kế tiếp',
       (tester) async {
     // Mục tiêu 0 điểm: nước nào cũng đủ 1 sao.

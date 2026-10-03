@@ -43,7 +43,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
   bool _leaving = false;
 
   /// Người chơi đã chọn "Chơi nốt" sau khi đạt mục tiêu → đừng hỏi lại mỗi
-  /// nước, chỉ hiện bảng kết quả lần nữa khi hết nước.
+  /// nước; chỉ hiện bảng kết quả lần nữa khi đủ 3★ hoặc hết nước.
   bool _keepPlaying = false;
 
   @override
@@ -62,9 +62,12 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
     final controller = ref.read(match3ControllerProvider.notifier);
 
     // Kết thúc màn khi HẾT NƯỚC, hoặc ngay khi ĐẠT MỤC TIÊU — không bắt người
-    // chơi đốt nốt số nước còn lại rồi mới được sang màn sau.
-    final ended =
-        play.finished || (play.goalReached && !_keepPlaying);
+    // chơi đốt nốt số nước còn lại rồi mới được sang màn sau. Đủ 3★ thì hỏi
+    // NGAY dù đã chọn "Chơi nốt" trước đó: không còn sao nào để săn nữa, đi tiếp
+    // chỉ tốn thời gian (chọn Màn sau / Tạm nghỉ).
+    final ended = play.finished ||
+        play.stars >= 3 ||
+        (play.goalReached && !_keepPlaying);
     if (ended && !_resultShown && play.level.id == widget.level.id) {
       _resultShown = true;
       WidgetsBinding.instance.addPostFrameCallback((_) => _showResult(play));
