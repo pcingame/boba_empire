@@ -196,6 +196,8 @@ thử, xác nhận có trong `.app`). Nội dung hiện tại (AdMob + ATT + sha
     07 Trân Châu Rơi (lưới màn) · 08 Nhượng quyền · 09 Thành tựu · 10 Cửa hàng 💎.
   - Bản 6.5" (1242×2688) co sẵn từ 6.9" (dùng nếu ASC đòi): `.../6.5in_from_6.9/<ngôn ngữ>/` (cắt 11px dải trống trên).
   - iPad 13" (2064×2752): `assets/store/screenshots/ipad/<ngôn ngữ>_*.png` (đã commit), 8 màn × 6 ngôn ngữ.
+  ⚠️ ASC báo "Your file couldn't be saved" khi up PNG có **kênh alpha** (ảnh integration_test luôn là RGBA):
+  `scripts/flatten_screenshots.py` bỏ alpha, shoot.sh đã tự gọi — ảnh trong các thư mục trên đã được xử lý.
   Upload: mỗi Localization một bộ riêng; ngôn ngữ nào thiếu ảnh sẽ dùng ảnh của ngôn ngữ chính.
   Lưu ý: chạy shoot.sh mà thấy một ngôn ngữ thiếu ảnh (từng gặp: `es` thiếu 2 ảnh) thì chạy lại riêng ngôn ngữ đó —
   nguyên nhân là bản app biên dịch cũ được dùng lại. `SHOT_DIR` đọc từ biến môi trường (script đã export).

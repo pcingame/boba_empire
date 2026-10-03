@@ -51,6 +51,9 @@ for loc in $LOCALES; do
     --dart-define=SHOT_DIR="assets/store/screenshots/$KIND"
 done
 
+# App Store Connect từ chối PNG có kênh alpha → bỏ alpha ngay.
+python3 scripts/flatten_screenshots.py "assets/store/screenshots/$KIND"
+
 echo
 echo "xong. Ảnh ở assets/store/screenshots/$KIND/"
 ls -1 "assets/store/screenshots/$KIND/" 2>/dev/null | head -20
