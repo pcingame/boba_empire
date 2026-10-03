@@ -9,6 +9,89 @@ người bản ngữ soát.
 
 ---
 
+## 1.0.6 (+12) — 2026-10-03
+
+**Bản trước:** 1.0.5 (+10), đã lên store 2026-09-30 (+11 chưa lên store production).
+
+Mốc đáng chú ý của bản này: **Bộ sưu tập + Chợ phụ kiện** (50 món, Kho, trưng bày quanh
+cốc, huy hiệu bảng xếp hạng, mốc thưởng, Chợ mua bán bằng Xu Chợ có giá tham khảo, danh
+sách muốn có, thông báo đẩy, Gói Khởi Nghiệp, sự kiện cuối tuần), **Hồi 3 cốt truyện**
+(chương 29–36), giao diện pastel và tối ưu hiệu năng. Cùng nội dung dùng được cho cả
+App Store lẫn Play (đều dưới 500 ký tự).
+
+**Phía server (kiểm trước khi phát hành):** SQL Chợ/Sưu tập (`accessory_market_schema.sql`)
+đã chạy 2026-10-03; Edge Function `notify-market-sale` đã deploy và trigger
+`market_push_triggers.sql` đã tạo. Cần chắc là đã chạy `story_speedrun3_schema.sql` (bảng
+xếp hạng Hồi 3).
+
+### 🇻🇳 Tiếng Việt (vi)
+
+```
+Mới: BỘ SƯU TẬP & CHỢ PHỤ KIỆN!
+
+• 50 phụ kiện sưu tầm: rớt từ nhiệm vụ ngày, vòng quay, Kỷ Nguyên, Trân Châu Rơi. Trưng bày quanh cốc, huy hiệu bảng xếp hạng, mốc thưởng
+• Chợ: mua bán bằng Xu Chợ, giá tham khảo, danh sách muốn có, báo khi bán được. Cuối tuần phí 0% và dễ rớt đồ hiếm hơn
+• Hồi 3 cốt truyện: 8 chương mới
+• Giao diện pastel, mượt hơn, chia sẻ bộ sưu tập thành ảnh
+```
+
+### 🇬🇧 English (en)
+
+```
+New: COLLECTION & ACCESSORY MARKET!
+
+• 50 collectible accessories from daily quests, the wheel, Ascension and Falling Pearls. Show them around your cup, leaderboard badges, milestone rewards
+• Market: trade with Market Coins, price hints, wishlist, sale alerts. Weekends: 0% fee and better rare drops
+• Story Act 3: 8 new chapters
+• Pastel look, smoother play, share your collection as an image
+```
+
+### 🇧🇷 Português (pt-BR)
+
+```
+Novo: COLEÇÃO E MERCADO DE ACESSÓRIOS!
+
+• 50 acessórios colecionáveis: missões diárias, roleta, Ascensão e Pérolas Caindo. Exiba ao redor do copo, emblema no ranking, recompensas por marcos
+• Mercado: negocie com Moedas de Mercado, preço de referência, lista de desejos, aviso de venda. Fim de semana: taxa 0% e mais itens raros
+• História Ato 3: 8 capítulos novos
+• Visual pastel, mais fluido, compartilhe a coleção em imagem
+```
+
+### 🇪🇸 Español (es)
+
+```
+Nuevo: ¡COLECCIÓN Y MERCADO DE ACCESORIOS!
+
+• 50 accesorios coleccionables: misiones diarias, ruleta, Ascensión y Perlas que Caen. Muéstralos junto al vaso, insignia en la clasificación, premios por hitos
+• Mercado: compra y vende con Monedas de Mercado, precio de referencia, lista de deseos, aviso de ventas. Fines de semana: comisión 0% y más objetos raros
+• Historia Acto 3: 8 capítulos nuevos
+• Estilo pastel, más fluido, comparte tu colección como imagen
+```
+
+### 🇮🇩 Bahasa Indonesia (id)
+
+```
+Baru: KOLEKSI & PASAR AKSESORI!
+
+• 50 aksesori koleksi dari misi harian, roda, Ascension, dan Mutiara Jatuh. Pajang di sekitar gelas, lencana papan peringkat, hadiah pencapaian
+• Pasar: jual beli dengan Koin Pasar, harga acuan, daftar keinginan, notifikasi terjual. Akhir pekan: biaya 0% dan item langka lebih sering
+• Cerita Babak 3: 8 bab baru
+• Tampilan pastel, lebih mulus, bagikan koleksi sebagai gambar
+```
+
+### 🇹🇭 ภาษาไทย (th)
+
+```
+ใหม่: คอลเลกชันและตลาดเครื่องประดับ!
+
+• เครื่องประดับสะสม 50 ชิ้น จากภารกิจรายวัน วงล้อ Ascension และไข่มุกร่วง จัดโชว์รอบแก้ว ตราบนกระดานจัดอันดับ รางวัลตามเป้าหมาย
+• ตลาด: ซื้อขายด้วยเหรียญตลาด ราคาอ้างอิง รายการที่อยากได้ แจ้งเตือนเมื่อขายได้ สุดสัปดาห์ค่าธรรมเนียม 0% และมีโอกาสได้ของหายากสูงขึ้น
+• เนื้อเรื่องภาค 3: เพิ่ม 8 ตอน
+• ธีมพาสเทล ลื่นขึ้น แชร์คอลเลกชันเป็นรูปภาพ
+```
+
+---
+
 ## Play Store — bản đầu tiên (1.0.5 (+10)) — 2026-09-30
 
 Play Store chưa từng phát hành trước đó (App Store thì đã ở 1.0.3+) — đây là
