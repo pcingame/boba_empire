@@ -92,4 +92,27 @@ void main() {
     expect(tester.takeException(), isNull);
     c.dispose();
   });
+
+  testWidgets('tiêu đề Kho không bị cắt "…" dù 3 nút bên phải + chữ to (320px, 1.3x)',
+      (tester) async {
+    tester.view.physicalSize = const Size(320 * 3, 640 * 3);
+    tester.view.devicePixelRatio = 3;
+    tester.platformDispatcher.textScaleFactorTestValue = 1.3;
+    addTearDown(tester.view.reset);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    final c = await _pump(tester, GameState.newGame(nowMillis: 0));
+    final title = find.descendant(
+        of: find.byType(AppBar), matching: find.byType(FittedBox));
+    expect(title, findsOneWidget);
+    final text = tester.widget<Text>(
+        find.descendant(of: title, matching: find.byType(Text)));
+    // Text bên trong FittedBox luôn được layout đủ rộng → không bao giờ ellipsis.
+    final box = tester.getRect(title);
+    final share = tester.getRect(find.byKey(const Key('collection-share')));
+    expect(box.right, lessThanOrEqualTo(share.left + 0.5),
+        reason: 'tiêu đề không đè lên nút chia sẻ');
+    expect(text.maxLines, 1);
+    expect(tester.takeException(), isNull);
+    c.dispose();
+  });
 }

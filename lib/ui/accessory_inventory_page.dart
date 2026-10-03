@@ -45,7 +45,14 @@ class AccessoryInventoryPage extends ConsumerWidget {
     return PhoneWidth(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(l10n.accessoryInventoryTitle),
+          // 3 nút bên phải chiếm chỗ: tiêu đề dài ('Accessory Collection') bị cắt
+          // '…'. Co chữ cho vừa (tĩnh, 0 khung hình nền) thay vì chạy chữ: trang
+          // này đã nặng (lưới 50 ô) và không nên có animation vô hạn.
+          title: FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(l10n.accessoryInventoryTitle, maxLines: 1),
+          ),
           actions: [
             IconButton(
               key: const Key('collection-share'),
