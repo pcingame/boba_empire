@@ -1358,6 +1358,35 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String marketFeeFreeNote(int proceeds) {
+    return 'Free on weekends: you receive the full $proceeds Market Coins';
+  }
+
+  @override
+  String get marketWeekendBanner => '🎉 Weekend: 0% Market fee!';
+
+  @override
+  String collectionPeekTitle(String name) {
+    return '$name\'s collection';
+  }
+
+  @override
+  String get collectionPeekError =>
+      'Couldn\'t load the collection — try again later.';
+
+  @override
+  String get collectionShareTooltip => 'Show off collection';
+
+  @override
+  String collectionShareText(int owned, int total, String items) {
+    return 'I\'ve collected $owned/$total accessories in Boba Empire! $items';
+  }
+
+  @override
+  String get collectionShareCopied =>
+      'Copied — paste it in a chat to show off!';
+
+  @override
   String marketWallet(int n) {
     return '$n Market Coins';
   }

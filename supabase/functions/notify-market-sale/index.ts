@@ -106,7 +106,10 @@ Deno.serve(async (req) => {
 
   // Cùng công thức phí với buy_listing(): 1%, làm tròn lên, tối thiểu 1.
   const price = Number(record.price);
-  const net = price - Math.max(1, Math.ceil(price / 100));
+  // Cuối tuần (thứ 7/CN UTC) miễn phí — khớp market_fee_free() trong SQL.
+  const dow = new Date().getUTCDay();
+  const feeFree = dow === 0 || dow === 6;
+  const net = feeFree ? price : price - Math.max(1, Math.ceil(price / 100));
 
   const sa = JSON.parse(Deno.env.get("FCM_SERVICE_ACCOUNT")!);
   const access = await fcmAccessToken(sa);

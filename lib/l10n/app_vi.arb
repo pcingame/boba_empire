@@ -958,6 +958,30 @@
       "max": {"type": "int"}
     }
   },
+  "marketFeeFreeNote": "Cuối tuần miễn phí: bạn nhận đủ {proceeds} Xu Chợ",
+  "@marketFeeFreeNote": {
+    "placeholders": {
+      "proceeds": {"type": "int"}
+    }
+  },
+  "marketWeekendBanner": "🎉 Cuối tuần: phí Chợ 0%!",
+  "collectionPeekTitle": "Bộ sưu tập của {name}",
+  "@collectionPeekTitle": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "collectionPeekError": "Không tải được bộ sưu tập — thử lại sau nhé.",
+  "collectionShareTooltip": "Khoe bộ sưu tập",
+  "collectionShareText": "Tôi đã sưu tầm {owned}/{total} phụ kiện trong Boba Empire! {items}",
+  "@collectionShareText": {
+    "placeholders": {
+      "owned": {"type": "int"},
+      "total": {"type": "int"},
+      "items": {"type": "String"}
+    }
+  },
+  "collectionShareCopied": "Đã sao chép — dán vào tin nhắn để khoe!",
   "marketWallet": "{n} Xu Chợ",
   "@marketWallet": {
     "placeholders": {

@@ -2392,6 +2392,48 @@ abstract class AppLocalizations {
   /// **'Danh sách muốn có đã đầy ({max} món)'**
   String marketWishFull(int max);
 
+  /// No description provided for @marketFeeFreeNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cuối tuần miễn phí: bạn nhận đủ {proceeds} Xu Chợ'**
+  String marketFeeFreeNote(int proceeds);
+
+  /// No description provided for @marketWeekendBanner.
+  ///
+  /// In vi, this message translates to:
+  /// **'🎉 Cuối tuần: phí Chợ 0%!'**
+  String get marketWeekendBanner;
+
+  /// No description provided for @collectionPeekTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ sưu tập của {name}'**
+  String collectionPeekTitle(String name);
+
+  /// No description provided for @collectionPeekError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tải được bộ sưu tập — thử lại sau nhé.'**
+  String get collectionPeekError;
+
+  /// No description provided for @collectionShareTooltip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khoe bộ sưu tập'**
+  String get collectionShareTooltip;
+
+  /// No description provided for @collectionShareText.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tôi đã sưu tầm {owned}/{total} phụ kiện trong Boba Empire! {items}'**
+  String collectionShareText(int owned, int total, String items);
+
+  /// No description provided for @collectionShareCopied.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã sao chép — dán vào tin nhắn để khoe!'**
+  String get collectionShareCopied;
+
   /// No description provided for @marketWallet.
   ///
   /// In vi, this message translates to:

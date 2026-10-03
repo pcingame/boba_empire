@@ -1361,6 +1361,34 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String marketFeeFreeNote(int proceeds) {
+    return 'Grátis no fim de semana: você recebe as $proceeds Moedas de Mercado completas';
+  }
+
+  @override
+  String get marketWeekendBanner => '🎉 Fim de semana: taxa do Mercado 0%!';
+
+  @override
+  String collectionPeekTitle(String name) {
+    return 'Coleção de $name';
+  }
+
+  @override
+  String get collectionPeekError =>
+      'Não foi possível carregar a coleção — tente mais tarde.';
+
+  @override
+  String get collectionShareTooltip => 'Mostrar coleção';
+
+  @override
+  String collectionShareText(int owned, int total, String items) {
+    return 'Colecionei $owned/$total acessórios no Boba Empire! $items';
+  }
+
+  @override
+  String get collectionShareCopied => 'Copiado — cole em um chat para mostrar!';
+
+  @override
   String marketWallet(int n) {
     return '$n Moedas de Mercado';
   }

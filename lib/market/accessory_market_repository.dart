@@ -250,6 +250,15 @@ class AccessoryMarketRepository {
         .toList();
   }
 
+  /// Id món người khác đang có (giữ + đang rao bán) — RPC công khai.
+  Future<List<String>> fetchCollectionOf(String userId) async {
+    final rows = await _client
+        .rpc('accessory_collection_of', params: {'p_user_id': userId});
+    return [
+      for (final r in rows as List) (r as Map<String, dynamic>)['accessory_id'] as String,
+    ];
+  }
+
   Future<void> setWishlist(List<String> ids) async {
     await ensureSignedIn();
     await _client.rpc('set_accessory_wishlist', params: {'p_ids': ids});

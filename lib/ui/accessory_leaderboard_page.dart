@@ -14,6 +14,7 @@ import '../leaderboard/accessory_leaderboard_controller.dart';
 import '../market/accessory_market_controller.dart';
 import '../market/accessory_market_repository.dart';
 import '../state/game_providers.dart';
+import 'collection_peek_dialog.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -204,61 +205,75 @@ class _List extends ConsumerWidget {
                   if (medal != null && title != null) '$medal $title',
                   ?merchant,
                 ].join(' · ');
-                return ClayTile(
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 36,
-                        child: Text(
-                          '${e.rank}',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: isMe ? theme.colorScheme.primary : null,
+                return GestureDetector(
+                  key: Key('lb-row-${e.userId}'),
+                  onTap: () => showCollectionPeek(
+                    context,
+                    userId: e.userId,
+                    nickname: e.nickname,
+                  ),
+                  child: ClayTile(
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 36,
+                          child: Text(
+                            '${e.rank}',
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: isMe ? theme.colorScheme.primary : null,
+                            ),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            FlairBadge(userId: e.userId),
-                            Text(
-                              e.nickname,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontWeight: isMe
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  FlairBadge(userId: e.userId),
+                                  Flexible(
+                                    child: Text(
+                                      e.nickname,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontWeight: isMe
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            // Danh hiệu top 20 — cùng màu vàng/cam đã dùng cho
-                            // độ hiếm "huyền thoại" ở Kho phụ kiện, nhất quán
-                            // trực quan trong cùng tính năng sưu tập.
-                            if (badge.isNotEmpty)
-                              Text(
-                                badge,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.labelSmall?.copyWith(
-                                  // Light: cam đậm (cam sáng chỉ 1.7:1 trên thẻ pastel);
-                                  // dark giữ cam sáng.
-                                  color: theme.brightness == Brightness.light
-                                      ? const Color(0xFF9A5B00)
-                                      : const Color(0xFFFFA726),
-                                  fontWeight: FontWeight.w600,
+                              // Danh hiệu top 20 — cùng màu vàng/cam đã dùng cho
+                              // độ hiếm "huyền thoại" ở Kho phụ kiện, nhất quán
+                              // trực quan trong cùng tính năng sưu tập.
+                              if (badge.isNotEmpty)
+                                Text(
+                                  badge,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                    // Light: cam đậm (cam sáng chỉ 1.7:1 trên thẻ pastel);
+                                    // dark giữ cam sáng.
+                                    color: theme.brightness == Brightness.light
+                                        ? const Color(0xFF9A5B00)
+                                        : const Color(0xFFFFA726),
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
-                              ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        l10n.accessoryLbCount(e.ownedCount),
-                        style: const TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                    ],
+                        const SizedBox(width: 8),
+                        Text(
+                          l10n.accessoryLbCount(e.ownedCount),
+                          style: const TextStyle(fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

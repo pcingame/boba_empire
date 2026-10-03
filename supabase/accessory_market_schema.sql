@@ -240,6 +240,18 @@ grant execute on function cancel_listing(uuid) to authenticated;
 -- ở Cloud Save). Chặn tự mua chính mình dù không có lợi kinh tế thật (Xu
 -- Chợ không đổi ra giá trị thật — xem PROPOSAL §0) vì vẫn làm nhiễu
 -- accessory_market_trades (vd thao túng cảm giác "món hot").
+-- Sự kiện cuối tuần: phí sàn 0% vào thứ 7 và Chủ nhật (UTC). PHẢI khớp
+-- lib/core/market_fee.dart (marketFeeFree) và Edge Function notify-market-sale.
+create or replace function market_fee_free()
+returns boolean
+language sql
+stable
+as $$
+  select extract(isodow from (now() at time zone 'utc')) in (6, 7);
+$$;
+
+grant execute on function market_fee_free() to anon, authenticated;
+
 create or replace function buy_listing(p_listing_id uuid)
 returns void
 language plpgsql
@@ -280,7 +292,9 @@ begin
 
   -- Phí sàn 1%, làm tròn lên, tối thiểu 1 Xu Chợ (số nguyên, không qua float).
   -- Người mua trả đúng giá niêm yết; người bán nhận giá - phí.
-  v_fee := greatest(1, (v_price + 99) / 100);
+  -- Cuối tuần (thứ 7/CN theo UTC) MIỄN phí — xem market_fee_free().
+  v_fee := case when market_fee_free() then 0
+                else greatest(1, (v_price + 99) / 100) end;
 
   update accessory_wallets set balance = balance - v_price where user_id = v_buyer;
   update accessory_wallets set balance = balance + (v_price - v_fee) where user_id = v_seller;
@@ -663,3 +677,22 @@ end;
 $$;
 
 grant execute on function set_accessory_wishlist(text[]) to authenticated;
+
+-- Xem bộ sưu tập của người khác từ bảng xếp hạng Sưu tập: chỉ trả id món (đang
+-- giữ + đang rao bán — cùng cách đếm của bảng xếp hạng), không lộ gì khác.
+-- user_id vốn đã công khai trên bảng xếp hạng.
+create or replace function accessory_collection_of(p_user_id uuid)
+returns table (accessory_id text)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select o.accessory_id from accessory_server_ownership o
+    where o.user_id = p_user_id
+  union
+  select l.accessory_id from accessory_listings l
+    where l.seller_id = p_user_id and l.status = 'active';
+$$;
+
+grant execute on function accessory_collection_of(uuid) to anon, authenticated;

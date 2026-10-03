@@ -44,6 +44,12 @@ class AccessoryInventoryPage extends ConsumerWidget {
           title: Text(l10n.accessoryInventoryTitle),
           actions: [
             IconButton(
+              key: const Key('collection-share'),
+              icon: const Icon(Icons.ios_share),
+              tooltip: l10n.collectionShareTooltip,
+              onPressed: () => _shareCollection(context, ref),
+            ),
+            IconButton(
               icon: const Icon(Icons.storefront),
               tooltip: l10n.marketTitle,
               onPressed: () => showAccessoryMarket(context),
@@ -120,6 +126,22 @@ class AccessoryInventoryPage extends ConsumerWidget {
       ),
     );
   }
+}
+
+/// "Thẻ chia sẻ" dạng chữ: chép vào clipboard để dán vào tin nhắn nào cũng được
+/// (không cần thêm plugin chia sẻ). ponytail: nâng lên ảnh + share_plus nếu cần.
+Future<void> _shareCollection(BuildContext context, WidgetRef ref) async {
+  final l10n = AppLocalizations.of(context)!;
+  final messenger = ScaffoldMessenger.of(context);
+  final owned = ref.read(gameControllerProvider).ownedAccessories.toSet();
+  final items = accessories
+      .where((a) => owned.contains(a.id))
+      .map((a) => a.emoji)
+      .join();
+  await Clipboard.setData(ClipboardData(
+    text: l10n.collectionShareText(owned.length, accessories.length, items),
+  ));
+  messenger.showSnackBar(SnackBar(content: Text(l10n.collectionShareCopied)));
 }
 
 class _AccessoryCell extends ConsumerWidget {

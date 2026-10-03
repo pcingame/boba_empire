@@ -603,6 +603,30 @@
       "max": {"type": "int"}
     }
   },
+  "marketFeeFreeNote": "ฟรีช่วงสุดสัปดาห์: คุณได้รับเต็ม {proceeds} เหรียญตลาด",
+  "@marketFeeFreeNote": {
+    "placeholders": {
+      "proceeds": {"type": "int"}
+    }
+  },
+  "marketWeekendBanner": "🎉 สุดสัปดาห์: ค่าธรรมเนียมตลาด 0%!",
+  "collectionPeekTitle": "คอลเลกชันของ {name}",
+  "@collectionPeekTitle": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "collectionPeekError": "โหลดคอลเลกชันไม่ได้ — ลองใหม่ภายหลัง",
+  "collectionShareTooltip": "อวดคอลเลกชัน",
+  "collectionShareText": "ฉันสะสมเครื่องประดับได้ {owned}/{total} ชิ้นใน Boba Empire! {items}",
+  "@collectionShareText": {
+    "placeholders": {
+      "owned": {"type": "int"},
+      "total": {"type": "int"},
+      "items": {"type": "String"}
+    }
+  },
+  "collectionShareCopied": "คัดลอกแล้ว — วางในแชทเพื่ออวดได้เลย!",
   "marketWallet": "{n} เหรียญตลาด",
   "@marketWallet": {
     "placeholders": {

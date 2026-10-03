@@ -603,6 +603,30 @@
       "max": {"type": "int"}
     }
   },
+  "marketFeeFreeNote": "Free on weekends: you receive the full {proceeds} Market Coins",
+  "@marketFeeFreeNote": {
+    "placeholders": {
+      "proceeds": {"type": "int"}
+    }
+  },
+  "marketWeekendBanner": "🎉 Weekend: 0% Market fee!",
+  "collectionPeekTitle": "{name}'s collection",
+  "@collectionPeekTitle": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "collectionPeekError": "Couldn't load the collection — try again later.",
+  "collectionShareTooltip": "Show off collection",
+  "collectionShareText": "I've collected {owned}/{total} accessories in Boba Empire! {items}",
+  "@collectionShareText": {
+    "placeholders": {
+      "owned": {"type": "int"},
+      "total": {"type": "int"},
+      "items": {"type": "String"}
+    }
+  },
+  "collectionShareCopied": "Copied — paste it in a chat to show off!",
   "marketWallet": "{n} Market Coins",
   "@marketWallet": {
     "placeholders": {

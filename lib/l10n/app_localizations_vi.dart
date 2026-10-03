@@ -1353,6 +1353,34 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String marketFeeFreeNote(int proceeds) {
+    return 'Cuối tuần miễn phí: bạn nhận đủ $proceeds Xu Chợ';
+  }
+
+  @override
+  String get marketWeekendBanner => '🎉 Cuối tuần: phí Chợ 0%!';
+
+  @override
+  String collectionPeekTitle(String name) {
+    return 'Bộ sưu tập của $name';
+  }
+
+  @override
+  String get collectionPeekError =>
+      'Không tải được bộ sưu tập — thử lại sau nhé.';
+
+  @override
+  String get collectionShareTooltip => 'Khoe bộ sưu tập';
+
+  @override
+  String collectionShareText(int owned, int total, String items) {
+    return 'Tôi đã sưu tầm $owned/$total phụ kiện trong Boba Empire! $items';
+  }
+
+  @override
+  String get collectionShareCopied => 'Đã sao chép — dán vào tin nhắn để khoe!';
+
+  @override
   String marketWallet(int n) {
     return '$n Xu Chợ';
   }

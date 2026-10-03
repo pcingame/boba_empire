@@ -12,6 +12,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../core/accessories.dart';
 import '../core/balance.dart';
 import '../core/format.dart';
+import '../core/market_fee.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../market/accessory_market_controller.dart';
@@ -577,6 +578,18 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
 
     return Column(
       children: [
+        if (marketFeeFree(_nowUtc(ref)))
+          Container(
+            key: const Key('weekend-banner'),
+            width: double.infinity,
+            color: Theme.of(context).colorScheme.tertiaryContainer,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            child: Text(
+              l10n.marketWeekendBanner,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.labelLarge,
+            ),
+          ),
         if (ref.watch(
             gameControllerProvider.select((s) => s.starterPackReady)))
           _StarterPackCard(onAction: onAction),
@@ -1042,7 +1055,8 @@ class _SellableTile extends ConsumerWidget {
                 const SizedBox(width: 8),
                 OutlinedButton(
                   onPressed: () async {
-                    final price = await _askPrice(context, l10n, accessory);
+                    final price =
+                        await _askPrice(context, l10n, accessory, _nowUtc(ref));
                     if (price == null) return;
                     final msg = await ref
                         .read(accessoryMarketControllerProvider.notifier)
@@ -1066,8 +1080,13 @@ class _SellableTile extends ConsumerWidget {
   }
 }
 
-Future<int?> _askPrice(
-    BuildContext context, AppLocalizations l10n, Accessory accessory) {
+/// Giờ UTC theo đồng hồ của game (test ghi đè được qua clockProvider).
+DateTime _nowUtc(WidgetRef ref) => DateTime.fromMillisecondsSinceEpoch(
+    ref.read(clockProvider)(),
+    isUtc: true);
+
+Future<int?> _askPrice(BuildContext context, AppLocalizations l10n,
+    Accessory accessory, DateTime nowUtc) {
   final ctrl = TextEditingController();
   return showDialog<int>(
     context: context,
@@ -1075,9 +1094,9 @@ Future<int?> _askPrice(
       builder: (context, setState) {
         final price = int.tryParse(ctrl.text.trim());
         final valid = price != null && price >= 1 && price <= 100000;
-        // Phí sàn 1%, làm tròn lên, tối thiểu 1 — khớp buy_listing() trong
-        // accessory_market_schema.sql.
-        final fee = valid ? (price * 0.01).ceil().clamp(1, price) : 0;
+        // Phí sàn 1% (cuối tuần 0%) — khớp buy_listing() trong
+        // accessory_market_schema.sql; xem core/market_fee.dart.
+        final fee = valid ? marketFee(price, nowUtc) : 0;
         return AlertDialog(
           title: Row(
             mainAxisSize: MainAxisSize.min,
@@ -1110,7 +1129,9 @@ Future<int?> _askPrice(
               if (valid) ...[
                 const SizedBox(height: 8),
                 Text(
-                  l10n.marketListFeeNote(price - fee, fee),
+                  fee == 0
+                      ? l10n.marketFeeFreeNote(price)
+                      : l10n.marketListFeeNote(price - fee, fee),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],

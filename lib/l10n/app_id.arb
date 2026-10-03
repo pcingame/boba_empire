@@ -603,6 +603,30 @@
       "max": {"type": "int"}
     }
   },
+  "marketFeeFreeNote": "Gratis akhir pekan: kamu menerima penuh {proceeds} Koin Pasar",
+  "@marketFeeFreeNote": {
+    "placeholders": {
+      "proceeds": {"type": "int"}
+    }
+  },
+  "marketWeekendBanner": "🎉 Akhir pekan: biaya Pasar 0%!",
+  "collectionPeekTitle": "Koleksi {name}",
+  "@collectionPeekTitle": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "collectionPeekError": "Gagal memuat koleksi — coba lagi nanti.",
+  "collectionShareTooltip": "Pamerkan koleksi",
+  "collectionShareText": "Aku sudah mengoleksi {owned}/{total} aksesori di Boba Empire! {items}",
+  "@collectionShareText": {
+    "placeholders": {
+      "owned": {"type": "int"},
+      "total": {"type": "int"},
+      "items": {"type": "String"}
+    }
+  },
+  "collectionShareCopied": "Tersalin — tempel di chat untuk pamer!",
   "marketWallet": "{n} Koin Pasar",
   "@marketWallet": {
     "placeholders": {

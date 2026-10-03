@@ -603,6 +603,30 @@
       "max": {"type": "int"}
     }
   },
+  "marketFeeFreeNote": "Grátis no fim de semana: você recebe as {proceeds} Moedas de Mercado completas",
+  "@marketFeeFreeNote": {
+    "placeholders": {
+      "proceeds": {"type": "int"}
+    }
+  },
+  "marketWeekendBanner": "🎉 Fim de semana: taxa do Mercado 0%!",
+  "collectionPeekTitle": "Coleção de {name}",
+  "@collectionPeekTitle": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "collectionPeekError": "Não foi possível carregar a coleção — tente mais tarde.",
+  "collectionShareTooltip": "Mostrar coleção",
+  "collectionShareText": "Colecionei {owned}/{total} acessórios no Boba Empire! {items}",
+  "@collectionShareText": {
+    "placeholders": {
+      "owned": {"type": "int"},
+      "total": {"type": "int"},
+      "items": {"type": "String"}
+    }
+  },
+  "collectionShareCopied": "Copiado — cole em um chat para mostrar!",
   "marketWallet": "{n} Moedas de Mercado",
   "@marketWallet": {
     "placeholders": {

@@ -6,7 +6,9 @@ library;
 import 'package:boba_empire/l10n/app_localizations.dart';
 import 'package:boba_empire/leaderboard/accessory_leaderboard_controller.dart';
 import 'package:boba_empire/leaderboard/accessory_leaderboard_repository.dart';
+import 'package:boba_empire/leaderboard/flair.dart';
 import 'package:boba_empire/ui/accessory_leaderboard_page.dart';
+import 'package:boba_empire/ui/collection_peek_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,9 +35,16 @@ class _Fake extends AccessoryLeaderboardController {
   Future<void> refresh({bool silent = false}) async {}
 }
 
+class _Flair extends FlairCache {
+  @override
+  Map<String, String> build() => {'u1': '🐉', 'u20': '', 'u21': ''};
+}
+
 Widget _app() => ProviderScope(
       overrides: [
         accessoryLeaderboardControllerProvider.overrideWith(_Fake.new),
+        flairCacheProvider.overrideWith(_Flair.new),
+        collectionOfProvider('u1').overrideWith((ref) async => {'dragon'}),
       ],
       child: const MaterialApp(
         locale: Locale('vi'),
@@ -62,5 +71,24 @@ void main() {
     // Hạng 21 không có dòng danh hiệu nào (không tìm thấy text chứa nó).
     expect(find.textContaining('Vua Phụ Kiện'), findsOneWidget);
     expect(find.textContaining('Nhà Sưu Tầm'), findsOneWidget);
+  });
+
+  testWidgets('huy hiệu nằm CÙNG DÒNG với tên (không đẩy tên xuống)',
+      (tester) async {
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+    final flair = tester.getCenter(find.byKey(const Key('flair-badge')));
+    final name = tester.getCenter(find.text('HangNhat'));
+    expect((flair.dy - name.dy).abs(), lessThan(4));
+    expect(flair.dx, lessThan(name.dx));
+  });
+
+  testWidgets('bấm một hàng mở bộ sưu tập của người đó', (tester) async {
+    await tester.pumpWidget(_app());
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('lb-row-u1')));
+    await tester.pumpAndSettle();
+    expect(find.text('Bộ sưu tập của HangNhat'), findsOneWidget);
+    expect(find.text('🐉'), findsWidgets);
   });
 }

@@ -1358,6 +1358,33 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String marketFeeFreeNote(int proceeds) {
+    return 'Gratis akhir pekan: kamu menerima penuh $proceeds Koin Pasar';
+  }
+
+  @override
+  String get marketWeekendBanner => '🎉 Akhir pekan: biaya Pasar 0%!';
+
+  @override
+  String collectionPeekTitle(String name) {
+    return 'Koleksi $name';
+  }
+
+  @override
+  String get collectionPeekError => 'Gagal memuat koleksi — coba lagi nanti.';
+
+  @override
+  String get collectionShareTooltip => 'Pamerkan koleksi';
+
+  @override
+  String collectionShareText(int owned, int total, String items) {
+    return 'Aku sudah mengoleksi $owned/$total aksesori di Boba Empire! $items';
+  }
+
+  @override
+  String get collectionShareCopied => 'Tersalin — tempel di chat untuk pamer!';
+
+  @override
   String marketWallet(int n) {
     return '$n Koin Pasar';
   }

@@ -75,7 +75,8 @@ Future<(ProviderContainer, _FakeMarketController)> _pump(
     WidgetTester tester,
     {List<String> extraOwned = const [],
     bool starter = false,
-    bool introSeen = true}) async {
+    bool introSeen = true,
+    int clockMs = 0}) async {
   SharedPreferences.setMockInitialValues({'market_intro_seen': introSeen});
   final prefs = await SharedPreferences.getInstance();
   final seed = GameState.newGame(nowMillis: 0)
@@ -88,7 +89,7 @@ Future<(ProviderContainer, _FakeMarketController)> _pump(
   final fake = _FakeMarketController();
   final container = ProviderContainer(overrides: [
     sharedPreferencesProvider.overrideWithValue(prefs),
-    clockProvider.overrideWithValue(() => 0),
+    clockProvider.overrideWithValue(() => clockMs),
     accessoryMarketControllerProvider.overrideWith(() => fake),
     priceStatsProvider.overrideWith((ref, id) async => id == 'dragon'
         ? const PriceStats(lastPrice: 700, lowestActive: 650, avg7d: 720)
@@ -327,5 +328,36 @@ void main() {
     final s = GameState.newGame(nowMillis: 0)..wishlist.addAll(['a', 'b']);
     final r = GameState.fromJson({...s.toJson(), 'wishlist': ['a', 3, null, 'b']});
     expect(r.wishlist, ['a', 'b']);
+  });
+
+  final saturday = DateTime.utc(2026, 10, 3, 12).millisecondsSinceEpoch;
+
+  testWidgets('cuối tuần: có banner phí 0% và hộp đăng bán báo nhận đủ',
+      (tester) async {
+    final (container, _) = await _pump(tester, clockMs: saturday);
+    expect(find.byKey(const Key('weekend-banner')), findsOneWidget);
+    await tester.tap(find.text('Của tôi'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Đăng bán'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), '500');
+    await tester.pump();
+    expect(find.textContaining('Cuối tuần miễn phí'), findsOneWidget);
+    expect(find.textContaining('phí 1%'), findsNothing);
+    container.dispose();
+  });
+
+  testWidgets('ngày thường: không banner, hộp đăng bán báo phí 1%',
+      (tester) async {
+    final (container, _) = await _pump(tester); // clock 0 = thứ 5 (1/1/1970)
+    expect(find.byKey(const Key('weekend-banner')), findsNothing);
+    await tester.tap(find.text('Của tôi'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Đăng bán'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), '500');
+    await tester.pump();
+    expect(find.textContaining('1%'), findsOneWidget);
+    container.dispose();
   });
 }

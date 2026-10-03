@@ -1348,6 +1348,33 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String marketFeeFreeNote(int proceeds) {
+    return 'ฟรีช่วงสุดสัปดาห์: คุณได้รับเต็ม $proceeds เหรียญตลาด';
+  }
+
+  @override
+  String get marketWeekendBanner => '🎉 สุดสัปดาห์: ค่าธรรมเนียมตลาด 0%!';
+
+  @override
+  String collectionPeekTitle(String name) {
+    return 'คอลเลกชันของ $name';
+  }
+
+  @override
+  String get collectionPeekError => 'โหลดคอลเลกชันไม่ได้ — ลองใหม่ภายหลัง';
+
+  @override
+  String get collectionShareTooltip => 'อวดคอลเลกชัน';
+
+  @override
+  String collectionShareText(int owned, int total, String items) {
+    return 'ฉันสะสมเครื่องประดับได้ $owned/$total ชิ้นใน Boba Empire! $items';
+  }
+
+  @override
+  String get collectionShareCopied => 'คัดลอกแล้ว — วางในแชทเพื่ออวดได้เลย!';
+
+  @override
   String marketWallet(int n) {
     return '$n เหรียญตลาด';
   }

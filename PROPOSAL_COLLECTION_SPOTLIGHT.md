@@ -45,7 +45,11 @@ Cách "tặng hàng qua bot" vẫn bị cày như tặng tiền: mỗi danh tín
 - Nguồn rớt có bảo đảm độ hiếm: Kỷ Nguyên (Sử thi, 15% Huyền thoại), mốc Ghép 3 lần đầu qua
   màn 10/30/60 (Hiếm/Sử thi/Huyền thoại).
 - SQL phải chạy lại `supabase/accessory_market_schema.sql` trong Supabase.
-- Chưa làm: tách ô Chợ ở hộp Thi đấu, coachmark, analytics, mốc sưu tập, giá tham khảo, wishlist.
+- Đã làm thêm: ô Chợ ở hộp Thi đấu + chấm đỏ, hướng dẫn lần đầu, analytics, mốc sưu tập 10/25/40/50,
+  giá tham khảo, danh sách muốn có (push), GĐ4: xem bộ sưu tập người khác (bấm hàng ở BXH Sưu tập,
+  RPC `accessory_collection_of`), thẻ chia sẻ dạng chữ (chép clipboard, nút ở Kho), sự kiện cuối tuần
+  (phí Chợ 0% thứ 7/CN UTC — `market_fee_free()` + `lib/core/market_fee.dart` + Edge Function).
+- Chưa làm: thẻ chia sẻ dạng ẢNH (cần share_plus), tăng tỉ lệ rớt cuối tuần.
 
 ## 2. Kế hoạch
 
