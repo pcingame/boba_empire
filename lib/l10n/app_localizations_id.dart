@@ -1404,6 +1404,36 @@ class AppLocalizationsId extends AppLocalizations {
   String get collectionShareFailed => 'Gagal membagikan — coba salin teksnya.';
 
   @override
+  String whatsNewTitle(String version) {
+    return 'Yang baru di $version';
+  }
+
+  @override
+  String get whatsNewCollection =>
+      '🎀 Koleksi: 50 aksesori, pajang di sekitar gelas, lencana papan peringkat, hadiah pencapaian';
+
+  @override
+  String get whatsNewMarket =>
+      '🛒 Pasar Aksesori: jual beli dengan Koin Pasar, harga acuan, daftar keinginan, notifikasi terjual';
+
+  @override
+  String get whatsNewWheel =>
+      '🎡 Roda punya peti aksesori. Akhir pekan: biaya Pasar 0% dan item langka lebih sering';
+
+  @override
+  String get whatsNewStory => '📖 Cerita Babak 3: 8 bab baru';
+
+  @override
+  String get whatsNewLook =>
+      '🎨 Tampilan pastel, lebih mulus, bagikan koleksi sebagai gambar';
+
+  @override
+  String get whatsNewLater => 'Nanti';
+
+  @override
+  String get whatsNewOpen => 'Lihat koleksi';
+
+  @override
   String marketWallet(int n) {
     return '$n Koin Pasar';
   }

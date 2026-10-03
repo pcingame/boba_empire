@@ -633,6 +633,19 @@
   "collectionShareImage": "แชร์รูปภาพ",
   "collectionShareCopy": "คัดลอกข้อความ",
   "collectionShareFailed": "แชร์ไม่ได้ — ลองคัดลอกข้อความแทน",
+  "whatsNewTitle": "มีอะไรใหม่ใน {version}",
+  "@whatsNewTitle": {
+    "placeholders": {
+      "version": {"type": "String"}
+    }
+  },
+  "whatsNewCollection": "🎀 คอลเลกชัน: เครื่องประดับ 50 ชิ้น จัดโชว์รอบแก้ว ตราบนกระดานจัดอันดับ รางวัลตามเป้าหมาย",
+  "whatsNewMarket": "🛒 ตลาดเครื่องประดับ: ซื้อขายด้วยเหรียญตลาด ราคาอ้างอิง รายการที่อยากได้ แจ้งเตือนเมื่อขายได้",
+  "whatsNewWheel": "🎡 วงล้อมีหีบเครื่องประดับ สุดสัปดาห์: ค่าธรรมเนียม 0% และมีโอกาสได้ของหายากมากขึ้น",
+  "whatsNewStory": "📖 เนื้อเรื่องภาค 3: เพิ่ม 8 ตอน",
+  "whatsNewLook": "🎨 ธีมพาสเทล ลื่นขึ้น แชร์คอลเลกชันเป็นรูปภาพ",
+  "whatsNewLater": "ไว้ทีหลัง",
+  "whatsNewOpen": "ดูคอลเลกชัน",
   "marketWallet": "{n} เหรียญตลาด",
   "@marketWallet": {
     "placeholders": {

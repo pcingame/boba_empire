@@ -633,6 +633,19 @@
   "collectionShareImage": "Compartir imagen",
   "collectionShareCopy": "Copiar texto",
   "collectionShareFailed": "No se pudo compartir: prueba a copiar el texto.",
+  "whatsNewTitle": "Novedades de {version}",
+  "@whatsNewTitle": {
+    "placeholders": {
+      "version": {"type": "String"}
+    }
+  },
+  "whatsNewCollection": "🎀 Colección: 50 accesorios, muéstralos junto al vaso, insignias en la clasificación, premios por hitos",
+  "whatsNewMarket": "🛒 Mercado de accesorios: compra y vende con Monedas de Mercado, precio de referencia, lista de deseos, avisos de venta",
+  "whatsNewWheel": "🎡 La ruleta tiene un cofre de accesorios. Fines de semana: comisión 0% y más objetos raros",
+  "whatsNewStory": "📖 Historia Acto 3: 8 capítulos nuevos",
+  "whatsNewLook": "🎨 Estilo pastel, más fluido, comparte tu colección como imagen",
+  "whatsNewLater": "Después",
+  "whatsNewOpen": "Ver colección",
   "marketWallet": "{n} Monedas de Mercado",
   "@marketWallet": {
     "placeholders": {

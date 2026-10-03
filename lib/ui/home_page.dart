@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -13,6 +14,8 @@ import '../core/economy.dart';
 import '../core/format.dart';
 import '../ads/ad_service.dart';
 import '../core/models.dart';
+import '../core/whats_new.dart';
+import '../data/game_storage.dart';
 import '../core/rival.dart';
 import '../iap/iap_products.dart';
 import '../iap/iap_service.dart';
@@ -24,6 +27,7 @@ import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
 import 'accessory_inventory_page.dart';
 import 'accessory_market_page.dart';
+import 'whats_new_dialog.dart';
 import 'achievements_dialog.dart';
 import 'compete_hub_dialog.dart';
 import 'daily_quests_dialog.dart';
@@ -104,6 +108,10 @@ class _HomePageState extends ConsumerState<HomePage>
     // Tiền offline lúc mở app lạnh: ref.listen chỉ bắt thay đổi nên xử lý
     // giá trị ban đầu ở đây, sau frame đầu.
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // Đọc TRƯỚC mọi popup: markTutorialSeen() bên dưới lưu ván → cài mới cũng
+      // thành "có save" và bị nhầm là người vừa cập nhật.
+      final hadSaveAtLaunch =
+          ref.read(sharedPreferencesProvider).containsKey(GameStorage.saveKey);
       // Khôi phục sản phẩm non-consumable (Gỡ QC / Gói khởi động) đã mua.
       unawaited(ref.read(iapServiceProvider).restore());
       final state = ref.read(gameControllerProvider);
@@ -123,8 +131,32 @@ class _HomePageState extends ConsumerState<HomePage>
       // chung chuỗi else-if để không bị điểm danh/hướng dẫn "nuốt" mất.
       if (!mounted) return;
       final chapter = ref.read(gameControllerProvider).pendingStoryChapterId;
-      if (debugAutoShowStory && chapter != null) _showStoryBeat(chapter);
+      if (debugAutoShowStory && chapter != null) {
+        _showStoryBeat(chapter);
+      } else {
+        // "Có gì mới" (một lần sau khi cập nhật) — sau các popup mở-app; nhường
+        // cutscene nếu đang chờ (lần mở sau sẽ hiện, vì chưa ghi nhớ phiên bản).
+        // KHÔNG await: hỏi phiên bản qua kênh nền tảng, không được chặn chuỗi popup.
+        unawaited(_maybeShowWhatsNew(hadSaveAtLaunch));
+      }
     });
+  }
+
+  /// Ghi nhớ phiên bản hiện tại; nếu vừa cập nhật lên bản có nội dung mới thì
+  /// hiện hộp "Có gì mới". Lỗi lấy phiên bản (test, nền tảng lạ) → bỏ qua im lặng.
+  Future<void> _maybeShowWhatsNew(bool hadSave) async {
+    try {
+      final prefs = ref.read(sharedPreferencesProvider);
+      final current = await ref.read(appVersionProvider)();
+      final seen = prefs.getString(whatsNewSeenKey);
+      await prefs.setString(whatsNewSeenKey, current);
+      if (!mounted) return;
+      if (shouldShowWhatsNew(seen: seen, current: current, hasSave: hadSave)) {
+        await showWhatsNew(context, current);
+      }
+    } catch (e) {
+      developer.log('Có gì mới: bỏ qua ($e)', name: 'WhatsNew');
+    }
   }
 
   @override

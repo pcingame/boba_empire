@@ -1406,6 +1406,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get collectionShareFailed => 'Couldn\'t share — try copying the text.';
 
   @override
+  String whatsNewTitle(String version) {
+    return 'What\'s new in $version';
+  }
+
+  @override
+  String get whatsNewCollection =>
+      '🎀 Collection: 50 accessories, show them around your cup, leaderboard badges, milestone rewards';
+
+  @override
+  String get whatsNewMarket =>
+      '🛒 Accessory Market: trade with Market Coins, price hints, wishlist, sale alerts';
+
+  @override
+  String get whatsNewWheel =>
+      '🎡 The wheel has an accessory chest. Weekends: 0% Market fee and better rare drops';
+
+  @override
+  String get whatsNewStory => '📖 Story Act 3: 8 new chapters';
+
+  @override
+  String get whatsNewLook =>
+      '🎨 Pastel look, smoother play, share your collection as an image';
+
+  @override
+  String get whatsNewLater => 'Later';
+
+  @override
+  String get whatsNewOpen => 'View collection';
+
+  @override
   String marketWallet(int n) {
     return '$n Market Coins';
   }

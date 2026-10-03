@@ -9,7 +9,7 @@ người bản ngữ soát.
 
 ---
 
-## 1.0.6 (+12) — 2026-10-03
+## 1.0.6 (+13) — 2026-10-03
 
 **Bản trước:** 1.0.5 (+10), đã lên store 2026-09-30 (+11 chưa lên store production).
 
@@ -23,6 +23,28 @@ App Store lẫn Play (đều dưới 500 ký tự).
 đã chạy 2026-10-03; Edge Function `notify-market-sale` đã deploy và trigger
 `market_push_triggers.sql` đã tạo. Cần chắc là đã chạy `story_speedrun3_schema.sql` (bảng
 xếp hạng Hồi 3).
+
+### Bắt buộc người chơi cập nhật (force update) và hộp "Có gì mới"
+
+**Force update — KHÔNG cần sửa code.** App đã dùng `upgrader` (`UpgradeAlert`, có từ 1.0.3+6) nên
+mọi bản ≥ 1.0.3 đều tự hỏi store. `upgrader` đọc một **thẻ trong phần Mô tả** của bản đang live;
+thấy thẻ thì mọi bản cũ hơn bị CHẶN: hộp cập nhật mất nút "Để sau/Bỏ qua" và không đóng được.
+
+- **App Store Connect** → mô tả của phiên bản 1.0.6 (MỌI ngôn ngữ đang dùng: vi, en, es, id, pt, th), thêm một dòng cuối:
+  `[:mav: 1.0.6]`
+- **Play Console** → Mô tả đầy đủ (Full description), thêm một dòng cuối:
+  `[Minimum supported app version: 1.0.6]`
+
+Lưu ý: (1) thẻ chỉ có tác dụng khi bản 1.0.6 đã **live** trên store (lookup đọc mô tả bản
+live) — trước đó không ép được và cũng không test được; (2) iOS lấy mô tả theo ngôn ngữ của
+quốc gia máy, nên thẻ phải có ở từng bản địa hoá; (3) thẻ hiện trong trang store (chữ nhỏ ở
+cuối mô tả) — chấp nhận được; gỡ đi ở lần phát hành sau nếu không muốn ép tiếp; (4) từ lần sau
+muốn ép bản mới hơn thì đổi số trong thẻ.
+
+**Hộp "Có gì mới":** `lib/core/whats_new.dart` + `lib/ui/whats_new_dialog.dart`. Hiện **một lần**
+khi người chơi vừa cập nhật lên đúng `whatsNewVersion` (hiện = `1.0.6`); người cài mới thì không
+hiện. Phát hành bản có nội dung mới khác: đổi `whatsNewVersion` và các chuỗi `whatsNew*` trong
+`lib/l10n/app_*.arb` (6 ngôn ngữ).
 
 ### 🇻🇳 Tiếng Việt (vi)
 

@@ -1401,6 +1401,36 @@ class AppLocalizationsVi extends AppLocalizations {
       'Không chia sẻ được — thử sao chép chữ nhé.';
 
   @override
+  String whatsNewTitle(String version) {
+    return 'Có gì mới ở $version';
+  }
+
+  @override
+  String get whatsNewCollection =>
+      '🎀 Bộ sưu tập: 50 phụ kiện, trưng bày quanh cốc, huy hiệu bảng xếp hạng, mốc thưởng';
+
+  @override
+  String get whatsNewMarket =>
+      '🛒 Chợ phụ kiện: mua bán bằng Xu Chợ, giá tham khảo, danh sách muốn có, báo khi bán được';
+
+  @override
+  String get whatsNewWheel =>
+      '🎡 Vòng quay có ô rương phụ kiện. Cuối tuần: phí Chợ 0% và dễ rớt đồ hiếm hơn';
+
+  @override
+  String get whatsNewStory => '📖 Hồi 3 cốt truyện: 8 chương mới';
+
+  @override
+  String get whatsNewLook =>
+      '🎨 Giao diện pastel, mượt hơn, chia sẻ bộ sưu tập thành ảnh';
+
+  @override
+  String get whatsNewLater => 'Để sau';
+
+  @override
+  String get whatsNewOpen => 'Xem bộ sưu tập';
+
+  @override
   String marketWallet(int n) {
     return '$n Xu Chợ';
   }

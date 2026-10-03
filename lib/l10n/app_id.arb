@@ -633,6 +633,19 @@
   "collectionShareImage": "Bagikan gambar",
   "collectionShareCopy": "Salin teks",
   "collectionShareFailed": "Gagal membagikan — coba salin teksnya.",
+  "whatsNewTitle": "Yang baru di {version}",
+  "@whatsNewTitle": {
+    "placeholders": {
+      "version": {"type": "String"}
+    }
+  },
+  "whatsNewCollection": "🎀 Koleksi: 50 aksesori, pajang di sekitar gelas, lencana papan peringkat, hadiah pencapaian",
+  "whatsNewMarket": "🛒 Pasar Aksesori: jual beli dengan Koin Pasar, harga acuan, daftar keinginan, notifikasi terjual",
+  "whatsNewWheel": "🎡 Roda punya peti aksesori. Akhir pekan: biaya Pasar 0% dan item langka lebih sering",
+  "whatsNewStory": "📖 Cerita Babak 3: 8 bab baru",
+  "whatsNewLook": "🎨 Tampilan pastel, lebih mulus, bagikan koleksi sebagai gambar",
+  "whatsNewLater": "Nanti",
+  "whatsNewOpen": "Lihat koleksi",
   "marketWallet": "{n} Koin Pasar",
   "@marketWallet": {
     "placeholders": {

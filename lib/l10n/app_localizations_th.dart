@@ -1394,6 +1394,35 @@ class AppLocalizationsTh extends AppLocalizations {
   String get collectionShareFailed => 'แชร์ไม่ได้ — ลองคัดลอกข้อความแทน';
 
   @override
+  String whatsNewTitle(String version) {
+    return 'มีอะไรใหม่ใน $version';
+  }
+
+  @override
+  String get whatsNewCollection =>
+      '🎀 คอลเลกชัน: เครื่องประดับ 50 ชิ้น จัดโชว์รอบแก้ว ตราบนกระดานจัดอันดับ รางวัลตามเป้าหมาย';
+
+  @override
+  String get whatsNewMarket =>
+      '🛒 ตลาดเครื่องประดับ: ซื้อขายด้วยเหรียญตลาด ราคาอ้างอิง รายการที่อยากได้ แจ้งเตือนเมื่อขายได้';
+
+  @override
+  String get whatsNewWheel =>
+      '🎡 วงล้อมีหีบเครื่องประดับ สุดสัปดาห์: ค่าธรรมเนียม 0% และมีโอกาสได้ของหายากมากขึ้น';
+
+  @override
+  String get whatsNewStory => '📖 เนื้อเรื่องภาค 3: เพิ่ม 8 ตอน';
+
+  @override
+  String get whatsNewLook => '🎨 ธีมพาสเทล ลื่นขึ้น แชร์คอลเลกชันเป็นรูปภาพ';
+
+  @override
+  String get whatsNewLater => 'ไว้ทีหลัง';
+
+  @override
+  String get whatsNewOpen => 'ดูคอลเลกชัน';
+
+  @override
   String marketWallet(int n) {
     return '$n เหรียญตลาด';
   }

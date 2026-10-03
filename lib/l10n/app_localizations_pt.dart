@@ -1409,6 +1409,36 @@ class AppLocalizationsPt extends AppLocalizations {
       'Não foi possível compartilhar — tente copiar o texto.';
 
   @override
+  String whatsNewTitle(String version) {
+    return 'Novidades da $version';
+  }
+
+  @override
+  String get whatsNewCollection =>
+      '🎀 Coleção: 50 acessórios, exiba ao redor do copo, emblemas no ranking, recompensas por marcos';
+
+  @override
+  String get whatsNewMarket =>
+      '🛒 Mercado de acessórios: negocie com Moedas de Mercado, preço de referência, lista de desejos, aviso de venda';
+
+  @override
+  String get whatsNewWheel =>
+      '🎡 A roleta tem baú de acessórios. Fim de semana: taxa 0% e mais itens raros';
+
+  @override
+  String get whatsNewStory => '📖 História Ato 3: 8 capítulos novos';
+
+  @override
+  String get whatsNewLook =>
+      '🎨 Visual pastel, mais fluido, compartilhe a coleção em imagem';
+
+  @override
+  String get whatsNewLater => 'Depois';
+
+  @override
+  String get whatsNewOpen => 'Ver coleção';
+
+  @override
   String marketWallet(int n) {
     return '$n Moedas de Mercado';
   }

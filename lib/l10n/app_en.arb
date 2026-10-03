@@ -633,6 +633,19 @@
   "collectionShareImage": "Share image",
   "collectionShareCopy": "Copy text",
   "collectionShareFailed": "Couldn't share — try copying the text.",
+  "whatsNewTitle": "What's new in {version}",
+  "@whatsNewTitle": {
+    "placeholders": {
+      "version": {"type": "String"}
+    }
+  },
+  "whatsNewCollection": "🎀 Collection: 50 accessories, show them around your cup, leaderboard badges, milestone rewards",
+  "whatsNewMarket": "🛒 Accessory Market: trade with Market Coins, price hints, wishlist, sale alerts",
+  "whatsNewWheel": "🎡 The wheel has an accessory chest. Weekends: 0% Market fee and better rare drops",
+  "whatsNewStory": "📖 Story Act 3: 8 new chapters",
+  "whatsNewLook": "🎨 Pastel look, smoother play, share your collection as an image",
+  "whatsNewLater": "Later",
+  "whatsNewOpen": "View collection",
   "marketWallet": "{n} Market Coins",
   "@marketWallet": {
     "placeholders": {

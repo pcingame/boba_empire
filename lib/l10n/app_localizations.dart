@@ -2470,6 +2470,54 @@ abstract class AppLocalizations {
   /// **'Không chia sẻ được — thử sao chép chữ nhé.'**
   String get collectionShareFailed;
 
+  /// No description provided for @whatsNewTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Có gì mới ở {version}'**
+  String whatsNewTitle(String version);
+
+  /// No description provided for @whatsNewCollection.
+  ///
+  /// In vi, this message translates to:
+  /// **'🎀 Bộ sưu tập: 50 phụ kiện, trưng bày quanh cốc, huy hiệu bảng xếp hạng, mốc thưởng'**
+  String get whatsNewCollection;
+
+  /// No description provided for @whatsNewMarket.
+  ///
+  /// In vi, this message translates to:
+  /// **'🛒 Chợ phụ kiện: mua bán bằng Xu Chợ, giá tham khảo, danh sách muốn có, báo khi bán được'**
+  String get whatsNewMarket;
+
+  /// No description provided for @whatsNewWheel.
+  ///
+  /// In vi, this message translates to:
+  /// **'🎡 Vòng quay có ô rương phụ kiện. Cuối tuần: phí Chợ 0% và dễ rớt đồ hiếm hơn'**
+  String get whatsNewWheel;
+
+  /// No description provided for @whatsNewStory.
+  ///
+  /// In vi, this message translates to:
+  /// **'📖 Hồi 3 cốt truyện: 8 chương mới'**
+  String get whatsNewStory;
+
+  /// No description provided for @whatsNewLook.
+  ///
+  /// In vi, this message translates to:
+  /// **'🎨 Giao diện pastel, mượt hơn, chia sẻ bộ sưu tập thành ảnh'**
+  String get whatsNewLook;
+
+  /// No description provided for @whatsNewLater.
+  ///
+  /// In vi, this message translates to:
+  /// **'Để sau'**
+  String get whatsNewLater;
+
+  /// No description provided for @whatsNewOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem bộ sưu tập'**
+  String get whatsNewOpen;
+
   /// No description provided for @marketWallet.
   ///
   /// In vi, this message translates to:

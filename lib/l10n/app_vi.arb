@@ -988,6 +988,19 @@
   "collectionShareImage": "Chia sẻ ảnh",
   "collectionShareCopy": "Sao chép chữ",
   "collectionShareFailed": "Không chia sẻ được — thử sao chép chữ nhé.",
+  "whatsNewTitle": "Có gì mới ở {version}",
+  "@whatsNewTitle": {
+    "placeholders": {
+      "version": {"type": "String"}
+    }
+  },
+  "whatsNewCollection": "🎀 Bộ sưu tập: 50 phụ kiện, trưng bày quanh cốc, huy hiệu bảng xếp hạng, mốc thưởng",
+  "whatsNewMarket": "🛒 Chợ phụ kiện: mua bán bằng Xu Chợ, giá tham khảo, danh sách muốn có, báo khi bán được",
+  "whatsNewWheel": "🎡 Vòng quay có ô rương phụ kiện. Cuối tuần: phí Chợ 0% và dễ rớt đồ hiếm hơn",
+  "whatsNewStory": "📖 Hồi 3 cốt truyện: 8 chương mới",
+  "whatsNewLook": "🎨 Giao diện pastel, mượt hơn, chia sẻ bộ sưu tập thành ảnh",
+  "whatsNewLater": "Để sau",
+  "whatsNewOpen": "Xem bộ sưu tập",
   "marketWallet": "{n} Xu Chợ",
   "@marketWallet": {
     "placeholders": {

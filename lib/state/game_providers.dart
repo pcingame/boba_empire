@@ -2,6 +2,7 @@
 library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../audio/audio_service.dart';
@@ -49,3 +50,9 @@ class SoundNotifier extends Notifier<bool> {
     state = on;
   }
 }
+
+/// Phiên bản app đang chạy (vd "1.0.6"). Provider trả hàm để test ghi đè; mặc
+/// định hỏi nền tảng.
+final appVersionProvider = Provider<Future<String> Function()>(
+  (ref) => () async => (await PackageInfo.fromPlatform()).version,
+);

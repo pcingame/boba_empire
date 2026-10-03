@@ -633,6 +633,19 @@
   "collectionShareImage": "Compartilhar imagem",
   "collectionShareCopy": "Copiar texto",
   "collectionShareFailed": "Não foi possível compartilhar — tente copiar o texto.",
+  "whatsNewTitle": "Novidades da {version}",
+  "@whatsNewTitle": {
+    "placeholders": {
+      "version": {"type": "String"}
+    }
+  },
+  "whatsNewCollection": "🎀 Coleção: 50 acessórios, exiba ao redor do copo, emblemas no ranking, recompensas por marcos",
+  "whatsNewMarket": "🛒 Mercado de acessórios: negocie com Moedas de Mercado, preço de referência, lista de desejos, aviso de venda",
+  "whatsNewWheel": "🎡 A roleta tem baú de acessórios. Fim de semana: taxa 0% e mais itens raros",
+  "whatsNewStory": "📖 História Ato 3: 8 capítulos novos",
+  "whatsNewLook": "🎨 Visual pastel, mais fluido, compartilhe a coleção em imagem",
+  "whatsNewLater": "Depois",
+  "whatsNewOpen": "Ver coleção",
   "marketWallet": "{n} Moedas de Mercado",
   "@marketWallet": {
     "placeholders": {

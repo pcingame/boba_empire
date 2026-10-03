@@ -18,6 +18,9 @@ class GameStorage {
 
   static const String _key = 'game_state';
 
+  /// Khoá lưu ván — để nơi khác (vd 'Có gì mới') biết đã từng có save chưa.
+  static const String saveKey = _key;
+
   /// Phiên bản schema — để sau này migrate save cũ khi model đổi.
   static const int _schemaVersion = 1;
 
