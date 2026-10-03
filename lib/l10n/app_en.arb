@@ -609,7 +609,7 @@
       "proceeds": {"type": "int"}
     }
   },
-  "marketWeekendBanner": "🎉 Weekend: 0% Market fee!",
+  "marketWeekendBanner": "🎉 Weekend: 0% Market fee & boosted rare accessory drops!",
   "collectionPeekTitle": "{name}'s collection",
   "@collectionPeekTitle": {
     "placeholders": {
@@ -627,6 +627,10 @@
     }
   },
   "collectionShareCopied": "Copied — paste it in a chat to show off!",
+  "collectionCardTitle": "Collection card",
+  "collectionShareImage": "Share image",
+  "collectionShareCopy": "Copy text",
+  "collectionShareFailed": "Couldn't share — try copying the text.",
   "marketWallet": "{n} Market Coins",
   "@marketWallet": {
     "placeholders": {

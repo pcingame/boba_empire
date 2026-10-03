@@ -964,7 +964,7 @@
       "proceeds": {"type": "int"}
     }
   },
-  "marketWeekendBanner": "🎉 Cuối tuần: phí Chợ 0%!",
+  "marketWeekendBanner": "🎉 Cuối tuần: phí Chợ 0% & tăng tỉ lệ rớt phụ kiện hiếm!",
   "collectionPeekTitle": "Bộ sưu tập của {name}",
   "@collectionPeekTitle": {
     "placeholders": {
@@ -982,6 +982,10 @@
     }
   },
   "collectionShareCopied": "Đã sao chép — dán vào tin nhắn để khoe!",
+  "collectionCardTitle": "Thẻ khoe bộ sưu tập",
+  "collectionShareImage": "Chia sẻ ảnh",
+  "collectionShareCopy": "Sao chép chữ",
+  "collectionShareFailed": "Không chia sẻ được — thử sao chép chữ nhé.",
   "marketWallet": "{n} Xu Chợ",
   "@marketWallet": {
     "placeholders": {

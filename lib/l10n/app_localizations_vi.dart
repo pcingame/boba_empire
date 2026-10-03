@@ -1358,7 +1358,8 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get marketWeekendBanner => '🎉 Cuối tuần: phí Chợ 0%!';
+  String get marketWeekendBanner =>
+      '🎉 Cuối tuần: phí Chợ 0% & tăng tỉ lệ rớt phụ kiện hiếm!';
 
   @override
   String collectionPeekTitle(String name) {
@@ -1379,6 +1380,19 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get collectionShareCopied => 'Đã sao chép — dán vào tin nhắn để khoe!';
+
+  @override
+  String get collectionCardTitle => 'Thẻ khoe bộ sưu tập';
+
+  @override
+  String get collectionShareImage => 'Chia sẻ ảnh';
+
+  @override
+  String get collectionShareCopy => 'Sao chép chữ';
+
+  @override
+  String get collectionShareFailed =>
+      'Không chia sẻ được — thử sao chép chữ nhé.';
 
   @override
   String marketWallet(int n) {

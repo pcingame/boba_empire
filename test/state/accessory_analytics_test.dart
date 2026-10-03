@@ -60,13 +60,14 @@ class _MarketRepo extends AccessoryMarketRepository {
   Future<List<RecentSale>> fetchRecentSales({int limit = 10}) async => [];
 }
 
-Future<(ProviderContainer, GameController, _Rec)> _setup(GameState seed) async {
+Future<(ProviderContainer, GameController, _Rec)> _setup(GameState seed,
+    {int clockMs = 0}) async {
   SharedPreferences.setMockInitialValues({});
   final prefs = await SharedPreferences.getInstance();
   await GameStorage(prefs).save(seed, nowMillis: 0);
   final c = ProviderContainer(overrides: [
     sharedPreferencesProvider.overrideWithValue(prefs),
-    clockProvider.overrideWithValue(() => 0),
+    clockProvider.overrideWithValue(() => clockMs),
   ]);
   addTearDown(c.dispose);
   final ctrl = c.read(gameControllerProvider.notifier);
@@ -112,6 +113,21 @@ void main() {
     expect(rec.of('accessory_dropped').length, chests);
     expect(rec.of('accessory_dropped').every((e) => e['source'] == 'wheel'),
         isTrue);
+  });
+
+  test('accessory_dropped ghi cờ weekend theo đồng hồ (T7 true, T5 false)',
+      () async {
+    final sat = DateTime.utc(2026, 10, 3, 12).millisecondsSinceEpoch;
+    final (_, a, recA) =
+        await _setup(GameState.newGame(nowMillis: 0), clockMs: sat);
+    final (_, b, recB) = await _setup(GameState.newGame(nowMillis: 0));
+    for (var i = 0; i < 300; i++) {
+      a.spin(free: false);
+      b.spin(free: false);
+    }
+    expect(recA.of('accessory_dropped').isNotEmpty, isTrue);
+    expect(recA.of('accessory_dropped').every((e) => e['weekend'] == true), isTrue);
+    expect(recB.of('accessory_dropped').every((e) => e['weekend'] == false), isTrue);
   });
 
   test('mốc sưu tập và Gói Khởi Nghiệp: ghi khi thành công', () async {

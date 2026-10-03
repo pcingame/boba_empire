@@ -609,7 +609,7 @@
       "proceeds": {"type": "int"}
     }
   },
-  "marketWeekendBanner": "🎉 Fim de semana: taxa do Mercado 0%!",
+  "marketWeekendBanner": "🎉 Fim de semana: taxa 0% e mais chance de acessórios raros!",
   "collectionPeekTitle": "Coleção de {name}",
   "@collectionPeekTitle": {
     "placeholders": {
@@ -627,6 +627,10 @@
     }
   },
   "collectionShareCopied": "Copiado — cole em um chat para mostrar!",
+  "collectionCardTitle": "Cartão da coleção",
+  "collectionShareImage": "Compartilhar imagem",
+  "collectionShareCopy": "Copiar texto",
+  "collectionShareFailed": "Não foi possível compartilhar — tente copiar o texto.",
   "marketWallet": "{n} Moedas de Mercado",
   "@marketWallet": {
     "placeholders": {

@@ -609,7 +609,7 @@
       "proceeds": {"type": "int"}
     }
   },
-  "marketWeekendBanner": "🎉 Akhir pekan: biaya Pasar 0%!",
+  "marketWeekendBanner": "🎉 Akhir pekan: biaya Pasar 0% & peluang aksesori langka naik!",
   "collectionPeekTitle": "Koleksi {name}",
   "@collectionPeekTitle": {
     "placeholders": {
@@ -627,6 +627,10 @@
     }
   },
   "collectionShareCopied": "Tersalin — tempel di chat untuk pamer!",
+  "collectionCardTitle": "Kartu koleksi",
+  "collectionShareImage": "Bagikan gambar",
+  "collectionShareCopy": "Salin teks",
+  "collectionShareFailed": "Gagal membagikan — coba salin teksnya.",
   "marketWallet": "{n} Koin Pasar",
   "@marketWallet": {
     "placeholders": {

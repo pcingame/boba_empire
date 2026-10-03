@@ -20,6 +20,7 @@ import '../core/collection_milestones.dart';
 import '../core/daily.dart';
 import '../core/daily_quests.dart';
 import '../core/economy.dart';
+import '../core/market_fee.dart' show weekendEventActive;
 import '../core/models.dart';
 import '../core/quests.dart';
 import '../core/redeem.dart';
@@ -481,8 +482,10 @@ class GameController extends Notifier<GameSnapshot> {
     required String source,
     AccessoryRarity? rarity,
   }) {
+    final weekend = weekendEventActive(
+        DateTime.fromMillisecondsSinceEpoch(_clock(), isUtc: true));
     final rolled = rarity == null
-        ? rollAccessoryWith(_random)
+        ? rollAccessoryWith(_random, weekend: weekend)
         : rollAccessoryOfRarity(rarity, _random.nextDouble());
     final isNew = grantAccessory(_game, rolled);
     unawaited(
@@ -496,6 +499,7 @@ class GameController extends Notifier<GameSnapshot> {
       'accessory': rolled.id,
       'rarity': rolled.rarity.name,
       'isNew': isNew,
+      'weekend': weekend,
     });
     return lastAccessoryDrop = AccessoryDrop(rolled, isNew: isNew);
   }

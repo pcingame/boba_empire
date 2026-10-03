@@ -14,10 +14,12 @@ import '../l10n/l10n_ext.dart';
 import '../leaderboard/flair.dart';
 import '../state/game_providers.dart';
 import 'accessory_leaderboard_page.dart';
+import 'collection_share_dialog.dart';
 import 'accessory_market_page.dart';
 import 'widgets/accessory_rarity.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/weekend_banner.dart';
 
 Future<void> showAccessoryInventory(BuildContext context) {
   return Navigator.of(
@@ -47,7 +49,7 @@ class AccessoryInventoryPage extends ConsumerWidget {
               key: const Key('collection-share'),
               icon: const Icon(Icons.ios_share),
               tooltip: l10n.collectionShareTooltip,
-              onPressed: () => _shareCollection(context, ref),
+              onPressed: () => showCollectionShare(context),
             ),
             IconButton(
               icon: const Icon(Icons.storefront),
@@ -70,6 +72,7 @@ class AccessoryInventoryPage extends ConsumerWidget {
           behavior: ScrollConfiguration.of(context).copyWith(overscroll: false),
           child: CustomScrollView(
             slivers: [
+              const SliverToBoxAdapter(child: WeekendBanner()),
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
@@ -126,22 +129,6 @@ class AccessoryInventoryPage extends ConsumerWidget {
       ),
     );
   }
-}
-
-/// "Thẻ chia sẻ" dạng chữ: chép vào clipboard để dán vào tin nhắn nào cũng được
-/// (không cần thêm plugin chia sẻ). ponytail: nâng lên ảnh + share_plus nếu cần.
-Future<void> _shareCollection(BuildContext context, WidgetRef ref) async {
-  final l10n = AppLocalizations.of(context)!;
-  final messenger = ScaffoldMessenger.of(context);
-  final owned = ref.read(gameControllerProvider).ownedAccessories.toSet();
-  final items = accessories
-      .where((a) => owned.contains(a.id))
-      .map((a) => a.emoji)
-      .join();
-  await Clipboard.setData(ClipboardData(
-    text: l10n.collectionShareText(owned.length, accessories.length, items),
-  ));
-  messenger.showSnackBar(SnackBar(content: Text(l10n.collectionShareCopied)));
 }
 
 class _AccessoryCell extends ConsumerWidget {

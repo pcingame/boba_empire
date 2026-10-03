@@ -326,6 +326,10 @@ class Balance {
   static const int accessoryWeightEpic = 12;
   static const int accessoryWeightLegendary = 3;
 
+  /// Sự kiện cuối tuần: trọng số rớt món Sử thi + Huyền thoại nhân lên bấy nhiêu
+  /// (12→24, 3→6: Huyền thoại 3% → ~5,2%, Sử thi 12% → ~20,9%).
+  static const int weekendHighRarityMultiplier = 2;
+
   /// Số phụ kiện tối đa trưng bày quanh cốc ở màn chính (thuần trang trí).
   static const int maxEquippedAccessories = 3;
 

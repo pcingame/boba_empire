@@ -1353,7 +1353,8 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
-  String get marketWeekendBanner => '🎉 สุดสัปดาห์: ค่าธรรมเนียมตลาด 0%!';
+  String get marketWeekendBanner =>
+      '🎉 สุดสัปดาห์: ค่าธรรมเนียม 0% & โอกาสได้เครื่องประดับหายากสูงขึ้น!';
 
   @override
   String collectionPeekTitle(String name) {
@@ -1373,6 +1374,18 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get collectionShareCopied => 'คัดลอกแล้ว — วางในแชทเพื่ออวดได้เลย!';
+
+  @override
+  String get collectionCardTitle => 'การ์ดคอลเลกชัน';
+
+  @override
+  String get collectionShareImage => 'แชร์รูปภาพ';
+
+  @override
+  String get collectionShareCopy => 'คัดลอกข้อความ';
+
+  @override
+  String get collectionShareFailed => 'แชร์ไม่ได้ — ลองคัดลอกข้อความแทน';
 
   @override
   String marketWallet(int n) {

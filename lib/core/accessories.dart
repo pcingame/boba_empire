@@ -79,30 +79,35 @@ const List<Accessory> accessories = [
 Accessory accessoryById(String id) =>
     accessories.firstWhere((a) => a.id == id);
 
-int _rarityWeight(AccessoryRarity r) => switch (r) {
-      AccessoryRarity.common => Balance.accessoryWeightCommon,
-      AccessoryRarity.rare => Balance.accessoryWeightRare,
-      AccessoryRarity.epic => Balance.accessoryWeightEpic,
-      AccessoryRarity.legendary => Balance.accessoryWeightLegendary,
-    };
+int _rarityWeight(AccessoryRarity r, {bool weekend = false}) {
+  final boost = weekend ? Balance.weekendHighRarityMultiplier : 1;
+  return switch (r) {
+    AccessoryRarity.common => Balance.accessoryWeightCommon,
+    AccessoryRarity.rare => Balance.accessoryWeightRare,
+    AccessoryRarity.epic => Balance.accessoryWeightEpic * boost,
+    AccessoryRarity.legendary => Balance.accessoryWeightLegendary * boost,
+  };
+}
 
 /// Chọn độ hiếm theo trọng số từ [roll01] trong [0,1) — cùng khuôn
 /// [spinWheel] ở wheel.dart.
-AccessoryRarity _rollRarity(double roll01) {
-  final total =
-      AccessoryRarity.values.fold<int>(0, (a, r) => a + _rarityWeight(r));
+AccessoryRarity _rollRarity(double roll01, {bool weekend = false}) {
+  final total = AccessoryRarity.values
+      .fold<int>(0, (a, r) => a + _rarityWeight(r, weekend: weekend));
   var r = roll01 * total;
   for (final rarity in AccessoryRarity.values) {
-    r -= _rarityWeight(rarity);
+    r -= _rarityWeight(rarity, weekend: weekend);
     if (r < 0) return rarity;
   }
   return AccessoryRarity.values.last;
 }
 
 /// Rớt 1 món ngẫu nhiên: [rarityRoll01] chọn độ hiếm, [itemRoll01] chọn món
-/// trong độ hiếm đó (đều xác suất). Thuần — không mutate.
-Accessory rollAccessory(double rarityRoll01, double itemRoll01) {
-  final rarity = _rollRarity(rarityRoll01);
+/// trong độ hiếm đó (đều xác suất). [weekend] = sự kiện cuối tuần (tăng tỉ lệ
+/// Sử thi/Huyền thoại, xem [Balance.weekendHighRarityMultiplier]). Thuần.
+Accessory rollAccessory(double rarityRoll01, double itemRoll01,
+    {bool weekend = false}) {
+  final rarity = _rollRarity(rarityRoll01, weekend: weekend);
   final pool = accessories.where((a) => a.rarity == rarity).toList();
   final i = (itemRoll01 * pool.length).floor().clamp(0, pool.length - 1);
   return pool[i];
@@ -141,5 +146,5 @@ bool grantAccessory(GameState state, Accessory a) {
 
 /// Dùng cho Random thật (không test) — mirror cách game_controller.dart gọi
 /// spinWheel(_random.nextDouble()).
-Accessory rollAccessoryWith(Random random) =>
-    rollAccessory(random.nextDouble(), random.nextDouble());
+Accessory rollAccessoryWith(Random random, {bool weekend = false}) =>
+    rollAccessory(random.nextDouble(), random.nextDouble(), weekend: weekend);

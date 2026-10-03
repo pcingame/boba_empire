@@ -24,6 +24,7 @@ import 'widgets/accessory_rarity.dart';
 import 'widgets/motion.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/weekend_banner.dart';
 
 /// Id có trong danh mục của bản app này. Listing/kho có thể chứa món do bản app
 /// MỚI HƠN tạo ra — accessoryById ném StateError với id lạ, nên phải lọc trước.
@@ -578,18 +579,7 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
 
     return Column(
       children: [
-        if (marketFeeFree(_nowUtc(ref)))
-          Container(
-            key: const Key('weekend-banner'),
-            width: double.infinity,
-            color: Theme.of(context).colorScheme.tertiaryContainer,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-            child: Text(
-              l10n.marketWeekendBanner,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelLarge,
-            ),
-          ),
+        const WeekendBanner(),
         if (ref.watch(
             gameControllerProvider.select((s) => s.starterPackReady)))
           _StarterPackCard(onAction: onAction),

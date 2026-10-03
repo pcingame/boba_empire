@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:boba_empire/core/accessories.dart';
 import 'package:boba_empire/core/balance.dart';
 import 'package:boba_empire/core/models.dart';
@@ -98,6 +100,35 @@ void main() {
       }
       expect(s.ownedAccessories.length, accessories.length);
       expect(s.ownedAccessories.toSet().length, accessories.length);
+    });
+  });
+
+  group('sự kiện cuối tuần', () {
+    test('cùng roll 0.95: ngày thường Sử thi, cuối tuần Huyền thoại', () {
+      expect(rollAccessory(0.95, 0).rarity, AccessoryRarity.epic);
+      expect(rollAccessory(0.95, 0, weekend: true).rarity,
+          AccessoryRarity.legendary);
+    });
+
+    test('tỉ lệ thực: Huyền thoại ~3% → ~5,2%; Thường giảm; không hạng nào mất', () {
+      final rnd = Random(7);
+      Map<AccessoryRarity, int> sample(bool weekend) {
+        final m = {for (final r in AccessoryRarity.values) r: 0};
+        for (var i = 0; i < 40000; i++) {
+          final r = rollAccessoryWith(rnd, weekend: weekend).rarity;
+          m[r] = m[r]! + 1;
+        }
+        return m;
+      }
+
+      final normal = sample(false);
+      final wk = sample(true);
+      double p(Map<AccessoryRarity, int> m, AccessoryRarity r) => m[r]! / 40000;
+      expect(p(normal, AccessoryRarity.legendary), closeTo(0.03, 0.006));
+      expect(p(wk, AccessoryRarity.legendary), closeTo(0.052, 0.008));
+      expect(p(wk, AccessoryRarity.epic), closeTo(0.209, 0.012));
+      expect(p(wk, AccessoryRarity.common), lessThan(p(normal, AccessoryRarity.common)));
+      expect(wk.values.every((n) => n > 0), isTrue);
     });
   });
 }

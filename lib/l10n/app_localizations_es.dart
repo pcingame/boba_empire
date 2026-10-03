@@ -1371,7 +1371,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get marketWeekendBanner =>
-      '🎉 Fin de semana: ¡comisión del Mercado 0%!';
+      '🎉 Fin de semana: ¡comisión 0% y más probabilidad de accesorios raros!';
 
   @override
   String collectionPeekTitle(String name) {
@@ -1393,6 +1393,19 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get collectionShareCopied =>
       'Copiado — ¡pégalo en un chat para presumir!';
+
+  @override
+  String get collectionCardTitle => 'Tarjeta de colección';
+
+  @override
+  String get collectionShareImage => 'Compartir imagen';
+
+  @override
+  String get collectionShareCopy => 'Copiar texto';
+
+  @override
+  String get collectionShareFailed =>
+      'No se pudo compartir: prueba a copiar el texto.';
 
   @override
   String marketWallet(int n) {

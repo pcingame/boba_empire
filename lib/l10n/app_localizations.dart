@@ -2401,7 +2401,7 @@ abstract class AppLocalizations {
   /// No description provided for @marketWeekendBanner.
   ///
   /// In vi, this message translates to:
-  /// **'🎉 Cuối tuần: phí Chợ 0%!'**
+  /// **'🎉 Cuối tuần: phí Chợ 0% & tăng tỉ lệ rớt phụ kiện hiếm!'**
   String get marketWeekendBanner;
 
   /// No description provided for @collectionPeekTitle.
@@ -2433,6 +2433,30 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đã sao chép — dán vào tin nhắn để khoe!'**
   String get collectionShareCopied;
+
+  /// No description provided for @collectionCardTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thẻ khoe bộ sưu tập'**
+  String get collectionCardTitle;
+
+  /// No description provided for @collectionShareImage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia sẻ ảnh'**
+  String get collectionShareImage;
+
+  /// No description provided for @collectionShareCopy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao chép chữ'**
+  String get collectionShareCopy;
+
+  /// No description provided for @collectionShareFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không chia sẻ được — thử sao chép chữ nhé.'**
+  String get collectionShareFailed;
 
   /// No description provided for @marketWallet.
   ///

@@ -1363,7 +1363,8 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get marketWeekendBanner => '🎉 Akhir pekan: biaya Pasar 0%!';
+  String get marketWeekendBanner =>
+      '🎉 Akhir pekan: biaya Pasar 0% & peluang aksesori langka naik!';
 
   @override
   String collectionPeekTitle(String name) {
@@ -1383,6 +1384,18 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get collectionShareCopied => 'Tersalin — tempel di chat untuk pamer!';
+
+  @override
+  String get collectionCardTitle => 'Kartu koleksi';
+
+  @override
+  String get collectionShareImage => 'Bagikan gambar';
+
+  @override
+  String get collectionShareCopy => 'Salin teks';
+
+  @override
+  String get collectionShareFailed => 'Gagal membagikan — coba salin teksnya.';
 
   @override
   String marketWallet(int n) {
