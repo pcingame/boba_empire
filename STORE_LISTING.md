@@ -41,6 +41,12 @@ Mọi trường dưới đây đã được kiểm tra tự động ≤ giới h
 
 ---
 
+**Cập nhật 2026-10-03 (bản 1.0.6):** cốt truyện 28 → 36 chương (Hồi 3), thêm mục "Bộ sưu tập & Chợ
+phụ kiện" ở cả 6 mô tả, và dòng cuối `[:mav: 1.0.6]` — **thẻ force update** của `upgrader` (xem
+`RELEASE_NOTES.md`). Thẻ này CHỈ để trong **Description (App Store)**; bản Play dùng thẻ khác:
+`[Minimum supported app version: 1.0.6]` (thay dòng cuối khi dán vào Play Console). Chưa cập nhật:
+Keywords/Promotional Text/Mô tả ngắn (vẫn đúng).
+
 ## 🇻🇳 Tiếng Việt (vi)
 
 **Tên app:** `Đế Chế Trà Sữa`
@@ -61,8 +67,11 @@ Chạm để bán trà sữa và kiếm Xu. Mua nâng cấp để có thu nhập
 🏪 18 GIAI ĐOẠN
 Từ xe đẩy vỉa hè, kiosk, chuỗi cafe sang trọng, sàn chứng khoán, học viện, thành phố, tới hành tinh trà sữa. Mỗi giai đoạn có món mới và bầu không khí riêng.
 
-📖 CỐT TRUYỆN 28 CHƯƠNG
+📖 CỐT TRUYỆN 36 CHƯƠNG
 Cùng Bà Tư xây quán, đối đầu đối thủ, đưa ra những lựa chọn rẽ nhánh ảnh hưởng tới sức mạnh của bạn.
+
+🎀 BỘ SƯU TẬP & CHỢ PHỤ KIỆN
+Sưu tầm 50 phụ kiện, trưng bày quanh cốc và khoe huy hiệu trên bảng xếp hạng. Mua bán với người chơi khác ở Chợ bằng Xu Chợ, xem giá tham khảo, lập danh sách muốn có. Cuối tuần phí Chợ 0%.
 
 ⭐ NHƯỢNG QUYỀN & KỶ NGUYÊN
 Chơi lại để nhận Sao và bonus vĩnh viễn. Khi đã đi hết tuyến, Kỷ Nguyên mở ra vòng chơi mới với perk mạnh hơn nữa.
@@ -85,6 +94,8 @@ Quán vẫn bán khi bạn vắng mặt. Quay lại và nhận cả đống Xu!
 Có 6 ngôn ngữ. Hợp với ai mê game idle clicker, tycoon, incremental. Dễ chơi, thư giãn.
 
 Bắt đầu pha ly trà đầu tiên ngay hôm nay!
+
+[:mav: 1.0.6]
 ```
 
 ---
@@ -109,8 +120,11 @@ Tap to serve bubble tea and earn coins. Buy upgrades for automatic income every 
 🏪 18 STAGES
 From a street cart to a kiosk, luxury cafés, the stock market, an academy, a city and a whole milk-tea planet. Every stage brings new drinks and a new feel.
 
-📖 A 28-CHAPTER STORY
+📖 A 36-CHAPTER STORY
 Build the shop alongside Grandma Tư, face your rival, and make branching choices that change your power.
+
+🎀 COLLECTION & ACCESSORY MARKET
+Collect 50 accessories, show them around your cup and flaunt a badge on the leaderboards. Trade with other players in the Market using Market Coins, check price hints, build a wishlist. Weekends: 0% Market fee.
 
 ⭐ FRANCHISE & ASCENSION
 Reset to earn Stars and permanent bonuses. Once you've reached the end, Ascension opens a whole new loop with even stronger perks.
@@ -133,6 +147,8 @@ Your shop keeps selling while you're away. Come back to a pile of coins!
 Available in 6 languages. Perfect for fans of idle clicker, tycoon and incremental games. Easy to play, relaxing to master.
 
 Start brewing your Boba Empire today!
+
+[:mav: 1.0.6]
 ```
 
 ---
@@ -157,8 +173,11 @@ Toque para servir bubble tea e ganhar moedas. Compre melhorias para ter renda au
 🏪 18 FASES
 De um carrinho de rua a quiosque, cafés de luxo, bolsa de valores, academia, cidade e até um planeta de chá com leite. Cada fase traz novas bebidas e um clima novo.
 
-📖 HISTÓRIA DE 28 CAPÍTULOS
+📖 HISTÓRIA DE 36 CAPÍTULOS
 Construa a loja ao lado da Vovó Tư, enfrente seu rival e faça escolhas que mudam seu poder.
+
+🎀 COLEÇÃO E MERCADO DE ACESSÓRIOS
+Colecione 50 acessórios, exiba-os ao redor do copo e mostre um emblema nos rankings. Negocie com outros jogadores no Mercado com Moedas de Mercado, veja preços de referência e crie sua lista de desejos. Fim de semana: taxa 0%.
 
 ⭐ FRANQUIA E ASCENSÃO
 Reinicie para ganhar Estrelas e bônus permanentes. Ao chegar ao fim, a Ascensão abre um novo ciclo com melhorias ainda mais fortes.
@@ -181,6 +200,8 @@ Sua loja continua vendendo quando você está fora. Volte e receba uma pilha de 
 Disponível em 6 idiomas. Ideal para fãs de idle clicker, tycoon e incremental. Fácil de jogar, relaxante de dominar.
 
 Comece a preparar seu Boba Empire hoje!
+
+[:mav: 1.0.6]
 ```
 
 ---
@@ -205,8 +226,11 @@ Toca para servir bubble tea y ganar monedas. Compra mejoras para tener ingresos 
 🏪 18 ETAPAS
 De un carrito callejero a un quiosco, cafés de lujo, la bolsa, una academia, una ciudad y hasta un planeta de té con leche. Cada etapa trae bebidas y ambiente nuevos.
 
-📖 HISTORIA DE 28 CAPÍTULOS
+📖 HISTORIA DE 36 CAPÍTULOS
 Construye la tienda junto a la Abuela Tư, enfréntate a tu rival y toma decisiones que cambian tu poder.
+
+🎀 COLECCIÓN Y MERCADO DE ACCESORIOS
+Colecciona 50 accesorios, muéstralos junto al vaso y presume una insignia en las clasificaciones. Compra y vende con otros jugadores en el Mercado usando Monedas de Mercado, mira precios de referencia y crea tu lista de deseos. Fines de semana: comisión 0%.
 
 ⭐ FRANQUICIA Y ASCENSIÓN
 Reinicia para ganar Estrellas y bonos permanentes. Al llegar al final, la Ascensión abre un nuevo ciclo con mejoras aún más fuertes.
@@ -229,6 +253,8 @@ Tu tienda sigue vendiendo cuando no estás. ¡Vuelve y recibe un montón de mone
 Disponible en 6 idiomas. Ideal para fans de idle clicker, tycoon e incremental. Fácil de jugar, relajante de dominar.
 
 ¡Empieza a preparar tu Boba Empire hoy!
+
+[:mav: 1.0.6]
 ```
 
 ---
@@ -253,8 +279,11 @@ Ketuk untuk menyajikan bubble tea dan dapatkan koin. Beli upgrade untuk pendapat
 🏪 18 TAHAP
 Dari gerobak kaki lima ke kios, kafe mewah, bursa saham, akademi, kota, sampai planet teh susu. Setiap tahap punya minuman dan suasana baru.
 
-📖 CERITA 28 BAB
+📖 CERITA 36 BAB
 Bangun toko bersama Nenek Tư, hadapi saingan, dan buat pilihan bercabang yang mengubah kekuatanmu.
+
+🎀 KOLEKSI & PASAR AKSESORI
+Koleksi 50 aksesori, pajang di sekitar gelas, dan pamerkan lencana di papan peringkat. Jual beli dengan pemain lain di Pasar memakai Koin Pasar, lihat harga acuan, buat daftar keinginan. Akhir pekan: biaya Pasar 0%.
 
 ⭐ WARALABA & ASCENSION
 Reset untuk mendapat Bintang dan bonus permanen. Setelah sampai akhir, Ascension membuka putaran baru dengan perk yang lebih kuat.
@@ -277,6 +306,8 @@ Tokomu tetap berjualan saat kamu pergi. Kembali dan terima tumpukan koin!
 Tersedia dalam 6 bahasa. Cocok untuk penggemar idle clicker, tycoon, dan incremental. Mudah dimainkan, santai untuk dikuasai.
 
 Mulai seduh Boba Empire-mu hari ini!
+
+[:mav: 1.0.6]
 ```
 
 ---
@@ -301,8 +332,11 @@ Boba Empire คือเกมไอเดิลไทคูนผ่อนค�
 🏪 18 ด่าน
 จากรถเข็นริมทาง คีออสก์ คาเฟ่หรู ตลาดหลักทรัพย์ สถาบัน เมือง ไปจนถึงดาวเคราะห์ชานม แต่ละด่านมีเครื่องดื่มและบรรยากาศใหม่
 
-📖 เนื้อเรื่อง 28 บท
+📖 เนื้อเรื่อง 36 บท
 สร้างร้านไปกับคุณยาย Tư เผชิญหน้าคู่แข่ง และเลือกเส้นทางที่เปลี่ยนพลังของคุณ
+
+🎀 คอลเลกชันและตลาดเครื่องประดับ
+สะสมเครื่องประดับ 50 ชิ้น จัดโชว์รอบแก้ว และอวดตราบนกระดานจัดอันดับ ซื้อขายกับผู้เล่นอื่นในตลาดด้วยเหรียญตลาด ดูราคาอ้างอิง สร้างรายการที่อยากได้ สุดสัปดาห์ค่าธรรมเนียม 0%
 
 ⭐ แฟรนไชส์และยุคใหม่
 เริ่มใหม่เพื่อรับดาวและโบนัสถาวร เมื่อไปถึงจุดจบ ระบบยุคใหม่จะเปิดรอบใหม่พร้อมเพิร์กที่แรงขึ้น
@@ -325,6 +359,8 @@ Boba Empire คือเกมไอเดิลไทคูนผ่อนค�
 รองรับ 6 ภาษา เหมาะสำหรับแฟนเกมไอเดิลคลิกเกอร์ ไทคูน และ incremental เล่นง่าย ผ่อนคลาย
 
 เริ่มชงชาอาณาจักร Boba Empire ของคุณวันนี้!
+
+[:mav: 1.0.6]
 ```
 
 ---
