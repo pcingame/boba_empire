@@ -410,8 +410,6 @@ class _BottomBar extends ConsumerWidget {
     final newAch = ref.watch(
       gameControllerProvider.select((s) => s.newAchievements.isNotEmpty),
     );
-    final newMarket = ref.watch(marketHighlightProvider).value != null;
-
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
@@ -456,7 +454,6 @@ class _BottomBar extends ConsumerWidget {
                   buttonKey: const Key('compete-button'),
                   icon: Icons.sports_kabaddi,
                   label: l10n.navCompete,
-                  badge: newMarket,
                   onTap: () => showCompeteHub(context)),
               _navItem(theme,
                   buttonKey: const Key('match3-button'),
@@ -1791,8 +1788,8 @@ class _StageHeader extends ConsumerWidget {
 /// Chip "Nhiệm vụ" ở đầu màn chính, có chấm đỏ khi có nhiệm vụ xong chưa nhận.
 /// Dùng `_CountBadge` tự vẽ (không dùng `Badge` mặc định — không giới hạn chiều
 /// rộng nhãn, xem shop-tile-overflow-pattern).
-/// Nút nhỏ mở Kho phụ kiện (chỉ icon cho đỡ chật hàng chip) — chấm đỏ khi có
-/// mốc sưu tập đã đạt mà chưa nhận.
+/// Nút nhỏ mở Sưu tập (Kho + Chợ phụ kiện + bảng xếp hạng; chỉ icon cho đỡ chật
+/// hàng chip) — chấm đỏ = số mốc sưu tập chờ nhận + 1 nếu Chợ có listing mới.
 class _CollectionChip extends ConsumerWidget {
   const _CollectionChip();
 
@@ -1808,9 +1805,12 @@ class _CollectionChip extends ConsumerWidget {
     final claimed = parts[1].isEmpty
         ? <int>{}
         : parts[1].split(',').map(int.parse).toSet();
+    // Chợ đã gộp vào Sưu tập: listing mới cũng bật chấm đỏ ở đây (+1).
+    final newMarket = ref.watch(marketHighlightProvider).value != null;
     final claimable = collectionMilestones
-        .where((m) => owned >= m.count && !claimed.contains(m.count))
-        .length;
+            .where((m) => owned >= m.count && !claimed.contains(m.count))
+            .length +
+        (newMarket ? 1 : 0);
     final theme = Theme.of(context);
     final label = AppLocalizations.of(context)!.accessoryMenuTitle;
     return Tooltip(

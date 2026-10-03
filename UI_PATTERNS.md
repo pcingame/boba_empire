@@ -30,6 +30,8 @@ mẫu ở `test/ui/accessory_inventory_page_test.dart` và `accessory_market_pag
   báo "infinite size". Phải bọc `SizedBox(height: chiều cao 1 dòng)`.
 - Bẫy test: đoạn đứng yên đầu dài cỡ 20% chu kỳ; chu kỳ phụ thuộc bề rộng chữ (font test Ahem rất
   rộng) → pump đủ lâu (≥ 12 s) mới thấy dịch chuyển.
+- Bẫy test: marquee là animation vô hạn → màn có banner đang chạy chữ thì `pumpAndSettle` luôn hết giờ; dùng
+  vài lần `pump(Duration)` thay thế.
 - Chỉ áp dụng khi chữ **quan trọng và một dòng**. `SnackBar` và đoạn mô tả thì cho xuống dòng.
 
 ### 1.3 Chuỗi đa ngôn ngữ (l10n)

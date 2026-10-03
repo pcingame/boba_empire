@@ -1,5 +1,6 @@
 /// "Kho phụ kiện" — sưu tập cosmetic thuần (không ảnh hưởng số liệu). Rớt từ
-/// nhiệm vụ ngày (xem GameController.claimDailyBonus). Mở từ compete_hub_dialog.dart.
+/// nhiệm vụ ngày (xem GameController.claimDailyBonus). Mở từ nút ✨ ở màn chính
+/// (home_page.dart `_CollectionChip`); từ đây vào Chợ (icon cửa hàng) và BXH Sưu tập (🏆).
 library;
 
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import '../leaderboard/flair.dart';
 import '../state/game_providers.dart';
 import 'accessory_leaderboard_page.dart';
 import 'collection_share_dialog.dart';
+import '../market/market_highlight.dart';
 import 'accessory_market_page.dart';
 import 'widgets/accessory_rarity.dart';
 import 'widgets/clay.dart';
@@ -52,7 +54,13 @@ class AccessoryInventoryPage extends ConsumerWidget {
               onPressed: () => showCollectionShare(context),
             ),
             IconButton(
-              icon: const Icon(Icons.storefront),
+              key: const Key('collection-market-button'),
+              icon: Badge(
+                key: const Key('collection-market-dot'),
+                isLabelVisible:
+                    ref.watch(marketHighlightProvider).value != null,
+                child: const Icon(Icons.storefront),
+              ),
               tooltip: l10n.marketTitle,
               onPressed: () => showAccessoryMarket(context),
             ),
