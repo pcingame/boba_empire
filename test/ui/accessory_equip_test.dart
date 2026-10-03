@@ -163,6 +163,13 @@ void main() {
     expect(tester.getRect(chip).left,
         greaterThanOrEqualTo(tester.getRect(quests).right - 0.5),
         reason: 'không đè chip Nhiệm vụ');
+    // 3 nút rộng đều nhau; 💎 ở hàng tiền bên dưới (không chen vào hàng nút).
+    expect(tester.getRect(chip).width,
+        closeTo(tester.getRect(quests).width, 1),
+        reason: 'các nút rộng đều nhau');
+    final gem = tester.getCenter(find.textContaining('💎'));
+    expect(gem.dy, greaterThan(tester.getRect(chip).bottom),
+        reason: '💎 nằm dưới hàng nút');
     // Có 10 món → mốc 10 chờ nhận → chấm đỏ "1" nằm trong nút.
     expect(find.descendant(of: chip, matching: find.text('1')), findsOneWidget);
 

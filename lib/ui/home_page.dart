@@ -664,74 +664,37 @@ class _MoneyHeader extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          // Hàng trên: nút "Ưu đãi" (xem QC thưởng) bên trái, chip 💎 bên phải.
+          // Hàng trên: 3 nút (Ưu đãi · Nhiệm vụ · Sưu tập) rộng đều nhau chiếm
+          // TRỌN hàng — chip 💎/VIP đã chuyển xuống hàng tiền để chữ không bị
+          // cắt/co nhỏ. Chữ trong mỗi nút co vừa (FittedBox), không "…".
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Flexible + ellipsis: hai chip bên trái cùng cạnh chip 💎 bên phải
-              // dễ tràn ngang ở màn hẹp/chuỗi dài (id/th) — để chúng co lại.
-              Flexible(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Flexible(
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(24),
-                        onTap: () => showRewards(context),
-                        child: ClayChip(
-                          // Co chữ cho vừa thay vì cắt "…" (mất cả emoji 🎁 ở cuối)
-                          // khi hàng chip chật; chuỗi quá dài vẫn co dần, không tràn.
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              AppLocalizations.of(context)!.rewardsChip,
-                              maxLines: 1,
-                              softWrap: false,
-                              style: theme.textTheme.labelLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: onContainer,
-                              ),
-                            ),
+              Expanded(
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(24),
+                  onTap: () => showRewards(context),
+                  child: ClayChip(
+                    child: Center(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          AppLocalizations.of(context)!.rewardsChip,
+                          maxLines: 1,
+                          softWrap: false,
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: onContainer,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(width: 6),
-                    const Flexible(child: _DailyQuestsChip()),
-                    const SizedBox(width: 6),
-                    const Flexible(child: _CollectionChip()),
-                  ],
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (vip) ...[
-                    ClayChip(
-                      color: Colors.amber.shade200,
-                      child: Text(
-                        '👑 VIP',
-                        semanticsLabel: 'VIP',
-                        style: theme.textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.brown.shade800,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                  ],
-                  ClayChip(
-                    child: Text(
-                      '💎 ${formatNumber(gems)}',
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: onContainer,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              const Expanded(child: _DailyQuestsChip()),
+              const SizedBox(width: 8),
+              const Expanded(child: _CollectionChip()),
             ],
           ),
           // Icon xu là widget riêng (không nhét vào chuỗi số) để text tiền vẫn
@@ -776,6 +739,34 @@ class _MoneyHeader extends ConsumerWidget {
                   ),
                 ),
               ),
+              // 💎 (và VIP) cạnh nút cài đặt: trước đây nằm hàng trên làm chật 3 nút.
+              if (vip) ...[
+                ClayChip(
+                  color: Colors.amber.shade200,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Text(
+                    '👑 VIP',
+                    semanticsLabel: 'VIP',
+                    style: theme.textTheme.labelMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.brown.shade800,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 6),
+              ],
+              ClayChip(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                child: Text(
+                  '💎 ${formatNumber(gems)}',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: onContainer,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 4),
               IconButton(
                 key: const Key('settings-button'),
                 icon: const Icon(Icons.settings_outlined),
@@ -1821,19 +1812,21 @@ class _CollectionChip extends ConsumerWidget {
         onTap: () => showAccessoryInventory(context),
         child: Stack(
           clipBehavior: Clip.none,
+          fit: StackFit.passthrough,
           children: [
             ClayChip(
-              // FittedBox: hàng chip chật (Ưu đãi · Nhiệm vụ · Sưu tập · 💎) — co chữ
-              // cho vừa thay vì cắt "…".
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  label,
-                  maxLines: 1,
-                  softWrap: false,
-                  style: theme.textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: theme.colorScheme.onPrimaryContainer,
+              // 3 nút rộng đều nhau; chữ co vừa (FittedBox) thay vì cắt "…".
+              child: Center(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    label,
+                    maxLines: 1,
+                    softWrap: false,
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onPrimaryContainer,
+                    ),
                   ),
                 ),
               ),
@@ -1861,16 +1854,21 @@ class _DailyQuestsChip extends ConsumerWidget {
       onTap: () => showDailyQuests(context),
       child: Stack(
         clipBehavior: Clip.none,
+        fit: StackFit.passthrough,
         children: [
           ClayChip(
-            child: Text(
-              AppLocalizations.of(context)!.dailyQuestsChip,
-              maxLines: 1,
-              softWrap: false,
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: theme.colorScheme.onPrimaryContainer,
+            child: Center(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  AppLocalizations.of(context)!.dailyQuestsChip,
+                  maxLines: 1,
+                  softWrap: false,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onPrimaryContainer,
+                  ),
+                ),
               ),
             ),
           ),
