@@ -990,6 +990,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get accessoryMenuTitle => 'Coleção';
 
   @override
+  String get collectionChip => 'Coleção';
+
+  @override
   String get accessoryInventoryTitle => 'Coleção de acessórios';
 
   @override

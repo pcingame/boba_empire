@@ -410,6 +410,7 @@
   "storySpeedrunTabExt2": "Acto 3",
   "storySpeedrunExt2NotCompletedYet": "Aún no has completado el Acto 3: termina el Capítulo 36 para entrar en la clasificación.",
   "accessoryMenuTitle": "Colección",
+  "collectionChip": "Colección",
   "accessoryInventoryTitle": "Colección de accesorios",
   "accessoryInventoryOwned": "{owned}/{total} conseguidos",
   "@accessoryInventoryOwned": {

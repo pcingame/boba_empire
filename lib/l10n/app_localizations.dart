@@ -1738,6 +1738,12 @@ abstract class AppLocalizations {
   /// **'Sưu tập'**
   String get accessoryMenuTitle;
 
+  /// No description provided for @collectionChip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ sưu tập'**
+  String get collectionChip;
+
   /// No description provided for @accessoryInventoryTitle.
   ///
   /// In vi, this message translates to:

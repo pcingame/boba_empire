@@ -157,6 +157,12 @@ void main() {
     expect((tester.getCenter(chip).dy - tester.getCenter(quests).dy).abs(),
         lessThan(6), reason: 'cùng hàng với chip Nhiệm vụ');
     expect(tester.takeException(), isNull, reason: 'không tràn ở 320px/1.3x');
+    // Nút có NHÃN chữ (không chỉ icon) và không đè lên chip Nhiệm vụ bên cạnh.
+    expect(find.descendant(of: chip, matching: find.textContaining('✨')),
+        findsOneWidget);
+    expect(tester.getRect(chip).left,
+        greaterThanOrEqualTo(tester.getRect(quests).right - 0.5),
+        reason: 'không đè chip Nhiệm vụ');
     // Có 10 món → mốc 10 chờ nhận → chấm đỏ "1" nằm trong nút.
     expect(find.descendant(of: chip, matching: find.text('1')), findsOneWidget);
 

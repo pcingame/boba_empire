@@ -410,6 +410,7 @@
   "storySpeedrunTabExt2": "Babak 3",
   "storySpeedrunExt2NotCompletedYet": "Kamu belum menyelesaikan Babak 3 — selesaikan Bab 36 untuk masuk peringkat.",
   "accessoryMenuTitle": "Koleksi",
+  "collectionChip": "Koleksi",
   "accessoryInventoryTitle": "Koleksi Aksesori",
   "accessoryInventoryOwned": "{owned}/{total} terkumpul",
   "@accessoryInventoryOwned": {

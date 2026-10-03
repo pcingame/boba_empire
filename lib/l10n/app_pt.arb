@@ -410,6 +410,7 @@
   "storySpeedrunTabExt2": "Ato 3",
   "storySpeedrunExt2NotCompletedYet": "Você ainda não concluiu o Ato 3 — conclua o Capítulo 36 para entrar no ranking.",
   "accessoryMenuTitle": "Coleção",
+  "collectionChip": "Coleção",
   "accessoryInventoryTitle": "Coleção de acessórios",
   "accessoryInventoryOwned": "{owned}/{total} coletados",
   "@accessoryInventoryOwned": {

@@ -987,6 +987,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get accessoryMenuTitle => 'Koleksi';
 
   @override
+  String get collectionChip => 'Koleksi';
+
+  @override
   String get accessoryInventoryTitle => 'Koleksi Aksesori';
 
   @override

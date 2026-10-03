@@ -699,7 +699,7 @@ class _MoneyHeader extends ConsumerWidget {
                     const SizedBox(width: 6),
                     const Flexible(child: _DailyQuestsChip()),
                     const SizedBox(width: 6),
-                    const _CollectionChip(),
+                    const Flexible(child: _CollectionChip()),
                   ],
                 ),
               ),
@@ -1812,7 +1812,7 @@ class _CollectionChip extends ConsumerWidget {
             .length +
         (newMarket ? 1 : 0);
     final theme = Theme.of(context);
-    final label = AppLocalizations.of(context)!.accessoryMenuTitle;
+    final label = AppLocalizations.of(context)!.collectionChip;
     return Tooltip(
       message: label,
       child: InkWell(
@@ -1823,13 +1823,19 @@ class _CollectionChip extends ConsumerWidget {
           clipBehavior: Clip.none,
           children: [
             ClayChip(
-              // Chỉ icon + đệm hẹp: hàng chip đã chật, đừng làm "Ưu đãi" bị cắt.
-              padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 7),
-              child: Icon(
-                Icons.auto_awesome,
-                size: 20,
-                semanticLabel: label,
-                color: theme.colorScheme.onPrimaryContainer,
+              // FittedBox: hàng chip chật (Ưu đãi · Nhiệm vụ · Sưu tập · 💎) — co chữ
+              // cho vừa thay vì cắt "…".
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  '✨ $label',
+                  maxLines: 1,
+                  softWrap: false,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onPrimaryContainer,
+                  ),
+                ),
               ),
             ),
             if (claimable > 0)

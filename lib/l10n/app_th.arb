@@ -410,6 +410,7 @@
   "storySpeedrunTabExt2": "ภาค 3",
   "storySpeedrunExt2NotCompletedYet": "คุณยังไม่จบภาค 3 — จบตอนที่ 36 เพื่อติดอันดับ",
   "accessoryMenuTitle": "คอลเลกชัน",
+  "collectionChip": "คอลเลกชัน",
   "accessoryInventoryTitle": "คลังของสะสม",
   "accessoryInventoryOwned": "สะสมแล้ว {owned}/{total}",
   "@accessoryInventoryOwned": {

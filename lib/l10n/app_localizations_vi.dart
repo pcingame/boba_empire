@@ -983,6 +983,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get accessoryMenuTitle => 'Sưu tập';
 
   @override
+  String get collectionChip => 'Bộ sưu tập';
+
+  @override
   String get accessoryInventoryTitle => 'Kho phụ kiện';
 
   @override

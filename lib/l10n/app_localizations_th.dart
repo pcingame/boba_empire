@@ -979,6 +979,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get accessoryMenuTitle => 'คอลเลกชัน';
 
   @override
+  String get collectionChip => 'คอลเลกชัน';
+
+  @override
   String get accessoryInventoryTitle => 'คลังของสะสม';
 
   @override

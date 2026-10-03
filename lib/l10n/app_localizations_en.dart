@@ -986,6 +986,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accessoryMenuTitle => 'Collection';
 
   @override
+  String get collectionChip => 'Collection';
+
+  @override
   String get accessoryInventoryTitle => 'Accessory Collection';
 
   @override
