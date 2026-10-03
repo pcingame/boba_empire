@@ -190,7 +190,10 @@ class _AccessoryCell extends ConsumerWidget {
       key: Key('accessory-cell-${accessory.id}'),
       onTap: onTap,
       onLongPress: onLongPress,
+      // StackFit.expand: Stack mặc định nới lỏng ràng buộc nên ô co lại theo
+      // nội dung (hẹp, lệch trái) thay vì lấp đầy ô lưới.
       child: Stack(
+        fit: StackFit.expand,
         children: [
           Opacity(
             opacity: unlocked ? 1.0 : 0.45,

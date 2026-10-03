@@ -136,6 +136,37 @@ void main() {
     c.dispose();
   });
 
+  testWidgets('Kho: mỗi ô lấp đầy ô lưới (không co hẹp lệch trái)',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 2800));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    final c = await _container(seed: GameState.newGame(nowMillis: 0));
+    await tester.pumpWidget(UncontrolledProviderScope(
+      container: c,
+      child: const MaterialApp(
+        locale: Locale('vi'),
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: AccessoryInventoryPage(),
+      ),
+    ));
+    await tester.pumpAndSettle();
+    // 400 - 24 padding - 20 khoảng cách = 356 / 3 ≈ 118.7
+    final w = tester
+        .getSize(find.descendant(
+          of: find.byKey(const Key('accessory-cell-mint_leaf')),
+          matching: find.byType(Opacity),
+        ))
+        .width;
+    expect(w, closeTo(118.67, 1));
+    c.dispose();
+  });
+
   testWidgets('Kho: chạm món ĐÃ CÓ để trưng bày/bỏ; món khoá không đổi; đủ chỗ thì báo',
       (tester) async {
     await tester.binding.setSurfaceSize(const Size(400, 2800));
