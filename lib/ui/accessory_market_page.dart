@@ -105,6 +105,7 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
         .removeOwnedAccessoryLocally(id);
     notifier.onAccessoryAddedLocally = (id) =>
         ref.read(gameControllerProvider.notifier).addOwnedAccessoryLocally(id);
+    notifier.onEvent = ref.read(gameControllerProvider.notifier).logEvent;
 
     if (!_loaded) {
       _loaded = true;
@@ -116,6 +117,9 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
             .read(sharedPreferencesProvider)
             .setInt(marketSeenKey, DateTime.now().millisecondsSinceEpoch);
         ref.invalidate(marketHighlightProvider);
+        ref.read(gameControllerProvider.notifier).logEvent('market_open', {
+          'owned': ref.read(gameControllerProvider).ownedAccessories.length,
+        });
         notifier.refresh();
         notifier.startRealtime();
         _maybeShowIntro();

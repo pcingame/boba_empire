@@ -62,3 +62,23 @@ create policy analytics_events_insert_anyone on analytics_events
 --   select count(*), avg(extract(epoch from (t1 - t0)))
 --   from first_seen join first_prestige using (device_id);
 -- ─────────────────────────────────────────────────────────────────────────
+
+-- ── Sự kiện Chợ/Sưu tập (props là jsonb, không PII) ───────────────────────
+-- market_open{owned} · listing_created{accessory,price} · trade_done{accessory,price}
+-- accessory_dropped{source: daily_quest|wheel|ascension|match3, accessory, rarity, isNew}
+-- collection_milestone{milestone,coins} · starter_pack_claimed{accessory}
+--
+-- Phễu Chợ: bao nhiêu máy mở Chợ → đăng bán → có giao dịch:
+--   select count(distinct device_id) filter (where event = 'market_open')     as opened,
+--          count(distinct device_id) filter (where event = 'listing_created') as listed,
+--          count(distinct device_id) filter (where event = 'trade_done')      as bought
+--   from analytics_events;
+--
+-- Nguồn rớt phụ kiện theo độ hiếm:
+--   select props->>'source' as source, props->>'rarity' as rarity, count(*)
+--   from analytics_events where event = 'accessory_dropped' group by 1, 2 order by 1, 2;
+--
+-- Giá khớp trung bình theo món (7 ngày):
+--   select props->>'accessory' as item, count(*), round(avg((props->>'price')::numeric))
+--   from analytics_events
+--   where event = 'trade_done' and created_at > now() - interval '7 days' group by 1 order by 2 desc;

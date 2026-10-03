@@ -477,7 +477,10 @@ class GameController extends Notifier<GameSnapshot> {
   /// bán — xem _registerAccessoryDropServerSide và PROPOSAL_ACCESSORY_MARKET.md §0 cho lý do:
   /// chặn thông đồng 2 tài khoản bơm phụ kiện giả). Fire-and-forget: không chặn/trễ việc
   /// nhận thưởng cục bộ. Dùng chung cho nhiệm vụ ngày và rương vòng quay.
-  AccessoryDrop _dropAccessory({AccessoryRarity? rarity}) {
+  AccessoryDrop _dropAccessory({
+    required String source,
+    AccessoryRarity? rarity,
+  }) {
     final rolled = rarity == null
         ? rollAccessoryWith(_random)
         : rollAccessoryOfRarity(rarity, _random.nextDouble());
@@ -488,13 +491,27 @@ class GameController extends Notifier<GameSnapshot> {
         1 + (_game.accessorySpares[rolled.id] ?? 0),
       ),
     );
+    logEvent('accessory_dropped', {
+      'source': source,
+      'accessory': rolled.id,
+      'rarity': rolled.rarity.name,
+      'isNew': isNew,
+    });
     return lastAccessoryDrop = AccessoryDrop(rolled, isNew: isNew);
   }
+
+  /// Ghi 1 sự kiện analytics (best-effort, không bao giờ ném). Public để Chợ
+  /// (controller riêng) dùng chung cùng đường ghi.
+  void logEvent(String event, [Map<String, dynamic> props = const {}]) =>
+      unawaited(_analytics?.log(event, props));
+
+  @visibleForTesting
+  set debugAnalytics(AnalyticsRepository? repo) => _analyticsRepo = repo;
 
   int claimDailyBonus() {
     final gems = claimDailyQuestBonus(_game);
     if (gems > 0) {
-      _dropAccessory();
+      _dropAccessory(source: 'daily_quest');
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -750,6 +767,7 @@ class GameController extends Notifier<GameSnapshot> {
     final gained = ascend(_game);
     if (gained > 0) {
       _dropAccessory(
+        source: 'ascension',
         rarity: _random.nextDouble() < Balance.ascensionLegendaryChance
             ? AccessoryRarity.legendary
             : AccessoryRarity.epic,
@@ -935,6 +953,7 @@ class GameController extends Notifier<GameSnapshot> {
         }
       }
       final coins = await market.claimCollectionMilestone(count);
+      logEvent('collection_milestone', {'milestone': count, 'coins': coins});
       _markMilestoneClaimed(count);
       return (coins: coins, error: null);
     } catch (e) {
@@ -978,6 +997,7 @@ class GameController extends Notifier<GameSnapshot> {
               : 'network';
     }
     market_starter.grantMarketStarter(_game, item);
+    logEvent('starter_pack_claimed', {'accessory': item.id});
     unawaited(saveNow());
     state = _snapshot();
     return null;
@@ -1157,7 +1177,7 @@ class GameController extends Notifier<GameSnapshot> {
     AccessoryDrop? drop;
     switch (p.kind) {
       case WheelKind.chest:
-        drop = _dropAccessory();
+        drop = _dropAccessory(source: 'wheel');
         value = drop.isNew ? 1 : 0;
       case WheelKind.coins:
         value = effectiveIncomePerSecond(
@@ -1266,7 +1286,9 @@ class GameController extends Notifier<GameSnapshot> {
       incomePerSecond: state.incomePerSecond,
     );
     final milestone = Balance.m3AccessoryMilestones[levelId];
-    if (firstClear && milestone != null) _dropAccessory(rarity: milestone);
+    if (firstClear && milestone != null) {
+      _dropAccessory(source: 'match3', rarity: milestone);
+    }
     // LUÔN lưu + phát snapshot mới khi màn có sao: `applyMatch3Result` ghi
     // `m3Stars` kể cả lúc thưởng bằng 0, và chính bản ghi đó mới là thứ mở khoá
     // màn sau. Chỉ lưu khi có thưởng thì người chơi mới (thu nhập/giây = 0) qua

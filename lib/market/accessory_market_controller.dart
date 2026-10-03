@@ -58,6 +58,9 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
   void Function(String accessoryId)? onAccessoryRemovedLocally;
   void Function(String accessoryId)? onAccessoryAddedLocally;
 
+  /// Ghi analytics (gán từ UI, trỏ tới GameController.logEvent).
+  void Function(String event, Map<String, dynamic> props)? onEvent;
+
   RealtimeChannel? _channel;
   Timer? _debounce;
 
@@ -107,6 +110,9 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
       refresh(silent: true);
     });
   }
+
+  @visibleForTesting
+  set debugRepo(AccessoryMarketRepository? repo) => _repo = repo;
 
   AccessoryMarketRepository get _repository =>
       _repo ??= AccessoryMarketRepository(Supabase.instance.client);
@@ -214,6 +220,7 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
     try {
       await _repository.listAccessory(accessoryId, price);
       unawaited(_registerPush(ask: true));
+      onEvent?.call('listing_created', {'accessory': accessoryId, 'price': price});
       onAccessoryRemovedLocally?.call(accessoryId);
       await refresh(silent: true);
       return null;
@@ -231,6 +238,10 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
   Future<String?> buyItem(MarketListing listing) async {
     try {
       await _repository.buyListing(listing.id);
+      onEvent?.call('trade_done', {
+        'accessory': listing.accessoryId,
+        'price': listing.price,
+      });
       onAccessoryAddedLocally?.call(listing.accessoryId);
       await refresh(silent: true);
       return null;
