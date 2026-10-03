@@ -12,6 +12,7 @@ import '../state/game_providers.dart';
 import 'accessory_market_repository.dart';
 
 const marketSeenKey = 'market_last_seen_ms';
+const marketIntroSeenKey = 'market_intro_seen';
 
 // ponytail: mốc "đã xem" là đồng hồ máy so với created_at của server — lệch
 // giờ máy thì chấm đỏ sai nhẹ; đổi sang lưu max(created_at) nếu thành vấn đề.

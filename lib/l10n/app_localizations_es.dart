@@ -1285,6 +1285,24 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se pudo reclamar: revisa tu conexión e inténtalo de nuevo.';
 
   @override
+  String get marketIntroTitle => '¡Bienvenido al Mercado!';
+
+  @override
+  String get marketIntroStep1 =>
+      '1. Convierte 💎 o monedas en Monedas de Mercado (botón Convertir): solo sirven en el Mercado y no se pueden convertir de vuelta.';
+
+  @override
+  String get marketIntroStep2 =>
+      '2. Compra accesorios que otros jugadores pongan a la venta para completar tu colección.';
+
+  @override
+  String get marketIntroStep3 =>
+      '3. Vende repetidos en la pestaña Mis objetos. La comisión es solo del 1%.';
+
+  @override
+  String get marketIntroOk => 'Entendido';
+
+  @override
   String marketWallet(int n) {
     return '$n Monedas de Mercado';
   }

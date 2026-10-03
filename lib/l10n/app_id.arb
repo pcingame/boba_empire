@@ -542,6 +542,11 @@
   "marketStarterDone": "Paket Pemula diklaim! Lihat Koleksimu.",
   "marketStarterErrCap": "Hadiah hari ini habis di seluruh server — kembali besok.",
   "marketStarterErrNet": "Gagal klaim — periksa koneksi lalu coba lagi.",
+  "marketIntroTitle": "Selamat datang di Pasar!",
+  "marketIntroStep1": "1. Tukar 💎 atau koin jadi Koin Pasar (tombol Tukar) — hanya berlaku di Pasar dan tak bisa ditukar balik.",
+  "marketIntroStep2": "2. Beli aksesori yang dijual pemain lain untuk melengkapi koleksimu.",
+  "marketIntroStep3": "3. Jual cadangan di tab Milikku. Biayanya hanya 1%.",
+  "marketIntroOk": "Mengerti",
   "marketWallet": "{n} Koin Pasar",
   "@marketWallet": {
     "placeholders": {

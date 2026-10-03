@@ -57,6 +57,38 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
     ).showSnackBar(SnackBar(content: Text(message)));
   }
 
+  /// Hướng dẫn 3 bước, chỉ hiện đúng một lần (cờ trong SharedPreferences).
+  void _maybeShowIntro() {
+    final prefs = ref.read(sharedPreferencesProvider);
+    if (prefs.getBool(marketIntroSeenKey) ?? false) return;
+    prefs.setBool(marketIntroSeenKey, true);
+    final l10n = AppLocalizations.of(context)!;
+    showDialog<void>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        key: const Key('market-intro'),
+        title: Text(l10n.marketIntroTitle),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.marketIntroStep1),
+            const SizedBox(height: 8),
+            Text(l10n.marketIntroStep2),
+            const SizedBox(height: 8),
+            Text(l10n.marketIntroStep3),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(l10n.marketIntroOk),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -85,6 +117,7 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
         ref.invalidate(marketHighlightProvider);
         notifier.refresh();
         notifier.startRealtime();
+        _maybeShowIntro();
       });
     }
 

@@ -1278,6 +1278,24 @@ class AppLocalizationsEn extends AppLocalizations {
       'Couldn\'t claim — check your connection and try again.';
 
   @override
+  String get marketIntroTitle => 'Welcome to the Market!';
+
+  @override
+  String get marketIntroStep1 =>
+      '1. Convert 💎 or coins into Market Coins (Convert button) — they only work in the Market and can\'t be converted back.';
+
+  @override
+  String get marketIntroStep2 =>
+      '2. Buy accessories other players list to complete your collection.';
+
+  @override
+  String get marketIntroStep3 =>
+      '3. Sell spares in the My items tab. The fee is only 1%.';
+
+  @override
+  String get marketIntroOk => 'Got it';
+
+  @override
   String marketWallet(int n) {
     return '$n Market Coins';
   }

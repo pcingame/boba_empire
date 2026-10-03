@@ -1278,6 +1278,24 @@ class AppLocalizationsId extends AppLocalizations {
       'Gagal klaim — periksa koneksi lalu coba lagi.';
 
   @override
+  String get marketIntroTitle => 'Selamat datang di Pasar!';
+
+  @override
+  String get marketIntroStep1 =>
+      '1. Tukar 💎 atau koin jadi Koin Pasar (tombol Tukar) — hanya berlaku di Pasar dan tak bisa ditukar balik.';
+
+  @override
+  String get marketIntroStep2 =>
+      '2. Beli aksesori yang dijual pemain lain untuk melengkapi koleksimu.';
+
+  @override
+  String get marketIntroStep3 =>
+      '3. Jual cadangan di tab Milikku. Biayanya hanya 1%.';
+
+  @override
+  String get marketIntroOk => 'Mengerti';
+
+  @override
   String marketWallet(int n) {
     return '$n Koin Pasar';
   }

@@ -1274,6 +1274,23 @@ class AppLocalizationsVi extends AppLocalizations {
       'Không nhận được — kiểm tra mạng rồi thử lại.';
 
   @override
+  String get marketIntroTitle => 'Chào mừng đến Chợ!';
+
+  @override
+  String get marketIntroStep1 =>
+      '1. Đổi 💎 hoặc Xu lấy Xu Chợ (nút Đổi) — Xu Chợ chỉ dùng trong Chợ và không đổi ngược lại.';
+
+  @override
+  String get marketIntroStep2 =>
+      '2. Mua phụ kiện người khác đăng bán để hoàn thiện bộ sưu tập.';
+
+  @override
+  String get marketIntroStep3 => '3. Bán bản dư ở tab Của tôi. Phí sàn chỉ 1%.';
+
+  @override
+  String get marketIntroOk => 'Đã hiểu';
+
+  @override
   String marketWallet(int n) {
     return '$n Xu Chợ';
   }

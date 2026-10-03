@@ -542,6 +542,11 @@
   "marketStarterDone": "Starter Pack claimed! Check your Collection.",
   "marketStarterErrCap": "Today's gifts ran out server-wide — come back tomorrow.",
   "marketStarterErrNet": "Couldn't claim — check your connection and try again.",
+  "marketIntroTitle": "Welcome to the Market!",
+  "marketIntroStep1": "1. Convert 💎 or coins into Market Coins (Convert button) — they only work in the Market and can't be converted back.",
+  "marketIntroStep2": "2. Buy accessories other players list to complete your collection.",
+  "marketIntroStep3": "3. Sell spares in the My items tab. The fee is only 1%.",
+  "marketIntroOk": "Got it",
   "marketWallet": "{n} Market Coins",
   "@marketWallet": {
     "placeholders": {

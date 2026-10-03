@@ -73,8 +73,10 @@ class _FakeMarketController extends AccessoryMarketController {
 
 Future<(ProviderContainer, _FakeMarketController)> _pump(
     WidgetTester tester,
-    {List<String> extraOwned = const [], bool starter = false}) async {
-  SharedPreferences.setMockInitialValues({});
+    {List<String> extraOwned = const [],
+    bool starter = false,
+    bool introSeen = true}) async {
+  SharedPreferences.setMockInitialValues({'market_intro_seen': introSeen});
   final prefs = await SharedPreferences.getInstance();
   final seed = GameState.newGame(nowMillis: 0)
     ..ownedAccessories.addAll(['mint_leaf', ...extraOwned]); // món có thể đăng bán
@@ -261,6 +263,23 @@ void main() {
     (container, _) = await _pump(tester, starter: true);
     expect(find.byKey(const Key('starter-pack-card')), findsOneWidget);
     expect(find.text('Nhận quà'), findsOneWidget);
+    container.dispose();
+  });
+
+  testWidgets('lần đầu vào Chợ hiện hướng dẫn 3 bước, đóng rồi không hiện lại',
+      (tester) async {
+    var (container, _) = await _pump(tester, introSeen: false);
+    expect(find.byKey(const Key('market-intro')), findsOneWidget);
+    await tester.tap(find.text('Đã hiểu'));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('market-intro')), findsNothing);
+    container.dispose();
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('đã xem hướng dẫn thì không hiện', (tester) async {
+    final (container, _) = await _pump(tester);
+    expect(find.byKey(const Key('market-intro')), findsNothing);
     container.dispose();
   });
 }

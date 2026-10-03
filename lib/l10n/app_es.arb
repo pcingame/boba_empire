@@ -542,6 +542,11 @@
   "marketStarterDone": "¡Pack inicial reclamado! Mira tu Colección.",
   "marketStarterErrCap": "Hoy se agotaron los regalos en todo el servidor — vuelve mañana.",
   "marketStarterErrNet": "No se pudo reclamar: revisa tu conexión e inténtalo de nuevo.",
+  "marketIntroTitle": "¡Bienvenido al Mercado!",
+  "marketIntroStep1": "1. Convierte 💎 o monedas en Monedas de Mercado (botón Convertir): solo sirven en el Mercado y no se pueden convertir de vuelta.",
+  "marketIntroStep2": "2. Compra accesorios que otros jugadores pongan a la venta para completar tu colección.",
+  "marketIntroStep3": "3. Vende repetidos en la pestaña Mis objetos. La comisión es solo del 1%.",
+  "marketIntroOk": "Entendido",
   "marketWallet": "{n} Monedas de Mercado",
   "@marketWallet": {
     "placeholders": {

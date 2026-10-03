@@ -1268,6 +1268,24 @@ class AppLocalizationsTh extends AppLocalizations {
       'รับไม่ได้ — ตรวจสอบเครือข่ายแล้วลองอีกครั้ง';
 
   @override
+  String get marketIntroTitle => 'ยินดีต้อนรับสู่ตลาด!';
+
+  @override
+  String get marketIntroStep1 =>
+      '1. แปลง 💎 หรือเหรียญเป็นเหรียญตลาด (ปุ่มแปลง) — ใช้ได้เฉพาะในตลาดและแปลงกลับไม่ได้';
+
+  @override
+  String get marketIntroStep2 =>
+      '2. ซื้อเครื่องประดับที่ผู้เล่นอื่นลงขายเพื่อเก็บให้ครบชุด';
+
+  @override
+  String get marketIntroStep3 =>
+      '3. ขายของซ้ำที่แท็บของฉัน ค่าธรรมเนียมเพียง 1%';
+
+  @override
+  String get marketIntroOk => 'เข้าใจแล้ว';
+
+  @override
   String marketWallet(int n) {
     return '$n เหรียญตลาด';
   }

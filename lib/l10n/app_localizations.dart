@@ -2272,6 +2272,36 @@ abstract class AppLocalizations {
   /// **'Không nhận được — kiểm tra mạng rồi thử lại.'**
   String get marketStarterErrNet;
 
+  /// No description provided for @marketIntroTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chào mừng đến Chợ!'**
+  String get marketIntroTitle;
+
+  /// No description provided for @marketIntroStep1.
+  ///
+  /// In vi, this message translates to:
+  /// **'1. Đổi 💎 hoặc Xu lấy Xu Chợ (nút Đổi) — Xu Chợ chỉ dùng trong Chợ và không đổi ngược lại.'**
+  String get marketIntroStep1;
+
+  /// No description provided for @marketIntroStep2.
+  ///
+  /// In vi, this message translates to:
+  /// **'2. Mua phụ kiện người khác đăng bán để hoàn thiện bộ sưu tập.'**
+  String get marketIntroStep2;
+
+  /// No description provided for @marketIntroStep3.
+  ///
+  /// In vi, this message translates to:
+  /// **'3. Bán bản dư ở tab Của tôi. Phí sàn chỉ 1%.'**
+  String get marketIntroStep3;
+
+  /// No description provided for @marketIntroOk.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hiểu'**
+  String get marketIntroOk;
+
   /// No description provided for @marketWallet.
   ///
   /// In vi, this message translates to:
