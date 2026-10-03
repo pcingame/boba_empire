@@ -59,17 +59,37 @@ void main() {
     final seed = GameState.newGame(nowMillis: 0)
       ..ownedAccessories.addAll(accessories.take(12).map((a) => a.id));
     var c = await _pump(tester, seed);
-    expect(find.byType(ActionChip), findsOneWidget); // mốc 10
-    expect(find.textContaining('Nhận +20'), findsOneWidget);
+    expect(find.byKey(const Key('milestone-claim-10')), findsOneWidget); // mốc 10
+    expect(find.text('+20 🪙'), findsOneWidget);
     expect(find.byKey(const Key('collection-title')), findsNothing);
     c.dispose();
     await tester.pumpWidget(const SizedBox());
 
     seed.collectionMilestonesClaimed.add(10);
     c = await _pump(tester, seed);
-    expect(find.byType(ActionChip), findsNothing);
-    expect(find.text('✓ 10'), findsOneWidget);
+    expect(find.byKey(const Key('milestone-claim-10')), findsNothing);
+    expect(find.text('✓'), findsOneWidget);
     expect(find.text('Danh hiệu: Người sưu tầm'), findsOneWidget);
+    c.dispose();
+  });
+
+  testWidgets('4 mốc nằm CÙNG MỘT hàng, rộng đều nhau, không tràn (360px, chữ 1.3x)',
+      (tester) async {
+    tester.view.physicalSize = const Size(360 * 3, 720 * 3);
+    tester.view.devicePixelRatio = 3;
+    tester.platformDispatcher.textScaleFactorTestValue = 1.3;
+    addTearDown(tester.view.reset);
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    final c = await _pump(tester, GameState.newGame(nowMillis: 0));
+    final cells = [10, 25, 40, 50]
+        .map((n) => tester.getRect(find.byKey(Key('milestone-$n'))))
+        .toList();
+    expect(cells.map((r) => r.top).toSet().length, 1, reason: 'cùng một hàng');
+    expect(cells.map((r) => r.width.round()).toSet().length, 1,
+        reason: 'rộng đều');
+    expect(cells.first.left, lessThan(24));
+    expect(cells.last.right, greaterThan(360 - 24), reason: 'trải hết bề ngang');
+    expect(tester.takeException(), isNull);
     c.dispose();
   });
 }

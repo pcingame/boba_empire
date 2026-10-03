@@ -344,38 +344,114 @@ class _MilestoneStripState extends ConsumerState<_MilestoneStrip> {
                 ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
               ),
             ),
-          Wrap(
-            spacing: 6,
-            runSpacing: 0,
-            children: [
-              for (final m in collectionMilestones)
-                if (claimed.contains(m.count))
-                  Chip(
-                    key: Key('milestone-${m.count}'),
-                    visualDensity: VisualDensity.compact,
-                    label: Text('✓ ${m.count}'),
-                  )
-                else if (owned >= m.count)
-                  ActionChip(
-                    key: Key('milestone-${m.count}'),
-                    visualDensity: VisualDensity.compact,
-                    label: Text(
-                      '${m.count} · ${l10n.collectionMilestoneClaim(m.coins)}',
-                    ),
-                    onPressed: _busy ? null : () => _claim(m),
-                  )
-                else
-                  Chip(
-                    key: Key('milestone-${m.count}'),
-                    visualDensity: VisualDensity.compact,
-                    label: Text(
-                      l10n.collectionMilestoneLocked(m.count, m.coins),
+          // 4 ô đều nhau trên MỘT hàng (nhãn dài như "10 món · 20 Xu Chợ" làm
+          // mỗi chip chiếm một dòng và dồn trái).
+          IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (var i = 0; i < collectionMilestones.length; i++) ...[
+                  if (i > 0) const SizedBox(width: 8),
+                  Expanded(
+                    child: _MilestoneCell(
+                      milestone: collectionMilestones[i],
+                      claimed: claimed.contains(collectionMilestones[i].count),
+                      reached: owned >= collectionMilestones[i].count,
+                      busy: _busy,
+                      onClaim: () => _claim(collectionMilestones[i]),
                     ),
                   ),
-            ],
+                ],
+              ],
+            ),
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Một mốc: số món ở trên, thưởng/trạng thái ở dưới. Đã nhận ✓ · đạt rồi thì
+/// nổi bật và bấm được · chưa đạt thì mờ.
+class _MilestoneCell extends StatelessWidget {
+  const _MilestoneCell({
+    required this.milestone,
+    required this.claimed,
+    required this.reached,
+    required this.busy,
+    required this.onClaim,
+  });
+
+  final CollectionMilestone milestone;
+  final bool claimed;
+  final bool reached;
+  final bool busy;
+  final VoidCallback onClaim;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final claimable = reached && !claimed;
+    final scheme = theme.colorScheme;
+    final Color bg = claimable
+        ? scheme.primaryContainer
+        : scheme.surfaceContainerHighest.withValues(alpha: 0.6);
+    final String sub = claimed ? '✓' : '${milestone.coins} 🪙';
+    final cell = Container(
+      key: Key(
+        claimable
+            ? 'milestone-claim-${milestone.count}'
+            : 'milestone-${milestone.count}',
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: claimable ? scheme.primary : Colors.transparent,
+          width: 2,
+        ),
+      ),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '${milestone.count}',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: claimed || !reached
+                    ? scheme.onSurface.withValues(alpha: claimed ? 0.8 : 0.5)
+                    : scheme.onPrimaryContainer,
+              ),
+            ),
+            Text(
+              claimable ? '+$sub' : sub,
+              style: theme.textTheme.labelMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: claimable
+                    ? scheme.primary
+                    : scheme.onSurface.withValues(alpha: reached ? 0.8 : 0.5),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    final tip = claimable
+        ? l10n.collectionMilestoneClaim(milestone.coins)
+        : l10n.collectionMilestoneLocked(milestone.count, milestone.coins);
+    return Tooltip(
+      message: tip,
+      child: claimable
+          ? GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: busy ? null : onClaim,
+              child: cell,
+            )
+          : cell,
     );
   }
 }

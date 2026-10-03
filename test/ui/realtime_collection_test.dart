@@ -68,7 +68,7 @@ void main() {
       ..debugMarketRepo = _OkRepo();
     await tester.pumpWidget(_app(c, const AccessoryInventoryPage()));
     await tester.pumpAndSettle();
-    expect(find.byType(ActionChip), findsNothing);
+    expect(find.byKey(const Key('milestone-claim-10')), findsNothing);
 
     // Món đầu tiên (như vừa quay trúng rương): ô đổi từ ❔ sang emoji NGAY.
     final first = accessories.first;
@@ -85,12 +85,12 @@ void main() {
       ctrl.addOwnedAccessoryLocally(a.id);
     }
     await tester.pump();
-    expect(find.byType(ActionChip), findsOneWidget);
+    expect(find.byKey(const Key('milestone-claim-10')), findsOneWidget);
 
-    await tester.tap(find.byType(ActionChip));
+    await tester.tap(find.byKey(const Key('milestone-claim-10')));
     await tester.pumpAndSettle();
-    expect(find.byType(ActionChip), findsNothing);
-    expect(find.text('✓ 10'), findsOneWidget);
+    expect(find.byKey(const Key('milestone-claim-10')), findsNothing);
+    expect(find.text('✓'), findsOneWidget);
     expect(find.byKey(const Key('collection-title')), findsOneWidget);
     c.dispose();
     await tester.pumpWidget(const SizedBox());
@@ -108,7 +108,7 @@ void main() {
     }
     await tester.pumpWidget(_app(c, const AccessoryInventoryPage()));
     await tester.pumpAndSettle();
-    await tester.tap(find.byType(ActionChip));
+    await tester.tap(find.byKey(const Key('milestone-claim-10')));
     // Gỡ trang NGAY sau khi bấm, trước khi lời gọi server trả về.
     await tester.pumpWidget(const SizedBox());
     await tester.pump(const Duration(milliseconds: 50));
