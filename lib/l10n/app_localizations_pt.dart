@@ -871,6 +871,10 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get cloudSaveCheckSpam =>
+      'Não encontrou o e-mail? Verifique também a pasta de Spam / Lixo eletrônico.';
+
+  @override
   String get cloudSaveCodeHint => 'Código de confirmação';
 
   @override

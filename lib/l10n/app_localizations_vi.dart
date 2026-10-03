@@ -864,6 +864,10 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get cloudSaveCheckSpam =>
+      'Không thấy email? Hãy kiểm tra cả thư mục Spam / Thư rác.';
+
+  @override
   String get cloudSaveCodeHint => 'Mã xác nhận';
 
   @override

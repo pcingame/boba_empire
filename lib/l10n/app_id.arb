@@ -315,6 +315,7 @@
       }
     }
   },
+  "cloudSaveCheckSpam": "Email tidak muncul? Periksa juga folder Spam / Sampah.",
   "cloudSaveCodeHint": "Kode konfirmasi",
   "cloudSaveVerify": "Verifikasi",
   "cloudSaveChangeEmail": "Pakai email lain",

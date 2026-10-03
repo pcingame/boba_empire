@@ -1540,6 +1540,12 @@ abstract class AppLocalizations {
   /// **'Đã gửi mã xác nhận tới {email}'**
   String cloudSaveCodeSentTo(String email);
 
+  /// No description provided for @cloudSaveCheckSpam.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thấy email? Hãy kiểm tra cả thư mục Spam / Thư rác.'**
+  String get cloudSaveCheckSpam;
+
   /// No description provided for @cloudSaveCodeHint.
   ///
   /// In vi, this message translates to:

@@ -670,6 +670,7 @@
       }
     }
   },
+  "cloudSaveCheckSpam": "Không thấy email? Hãy kiểm tra cả thư mục Spam / Thư rác.",
   "cloudSaveCodeHint": "Mã xác nhận",
   "cloudSaveVerify": "Xác nhận",
   "cloudSaveChangeEmail": "Đổi email khác",

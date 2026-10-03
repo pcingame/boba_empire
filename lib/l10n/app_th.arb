@@ -315,6 +315,7 @@
       }
     }
   },
+  "cloudSaveCheckSpam": "ไม่เจออีเมล? ลองดูในโฟลเดอร์สแปม / จดหมายขยะด้วย",
   "cloudSaveCodeHint": "รหัสยืนยัน",
   "cloudSaveVerify": "ยืนยัน",
   "cloudSaveChangeEmail": "ใช้อีเมลอื่น",

@@ -315,6 +315,7 @@
       }
     }
   },
+  "cloudSaveCheckSpam": "Não encontrou o e-mail? Verifique também a pasta de Spam / Lixo eletrônico.",
   "cloudSaveCodeHint": "Código de confirmação",
   "cloudSaveVerify": "Verificar",
   "cloudSaveChangeEmail": "Usar outro email",

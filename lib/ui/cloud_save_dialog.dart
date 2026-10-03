@@ -202,6 +202,8 @@ class _CodeFormState extends ConsumerState<_CodeForm> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(l10n.cloudSaveCodeSentTo(email)),
+        const SizedBox(height: 8),
+        Text(l10n.cloudSaveCheckSpam, style: Theme.of(context).textTheme.bodySmall),
         const SizedBox(height: 16),
         TextField(
           controller: codeCtrl,

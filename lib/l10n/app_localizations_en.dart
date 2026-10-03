@@ -867,6 +867,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get cloudSaveCheckSpam =>
+      'Can\'t find the email? Check your Spam / Junk folder too.';
+
+  @override
   String get cloudSaveCodeHint => 'Confirmation code';
 
   @override

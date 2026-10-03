@@ -874,6 +874,10 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get cloudSaveCheckSpam =>
+      '¿No ves el correo? Revisa también la carpeta de Spam / Correo no deseado.';
+
+  @override
   String get cloudSaveCodeHint => 'Código de confirmación';
 
   @override

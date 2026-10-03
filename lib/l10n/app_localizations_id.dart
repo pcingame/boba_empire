@@ -867,6 +867,10 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get cloudSaveCheckSpam =>
+      'Email tidak muncul? Periksa juga folder Spam / Sampah.';
+
+  @override
   String get cloudSaveCodeHint => 'Kode konfirmasi';
 
   @override

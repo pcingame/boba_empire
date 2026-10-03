@@ -860,6 +860,10 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get cloudSaveCheckSpam =>
+      'ไม่เจออีเมล? ลองดูในโฟลเดอร์สแปม / จดหมายขยะด้วย';
+
+  @override
   String get cloudSaveCodeHint => 'รหัสยืนยัน';
 
   @override
