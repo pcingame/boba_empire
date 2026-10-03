@@ -105,6 +105,8 @@ void main() {
             expect(r.drop, isNotNull);
             if (r.drop!.isNew) {
               expect(ctrl.lastAccessoryDrop, same(r.drop));
+              expect(container.read(gameControllerProvider).ownedAccessories,
+                  contains(r.drop!.accessory.id));
               expect(gems, beforeGems);
             } else {
               expect(gems, beforeGems + Balance.duplicateAccessoryGems);
