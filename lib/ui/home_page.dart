@@ -36,6 +36,7 @@ import 'rival_event_dialog.dart';
 import 'settings_dialog.dart';
 import 'story_dialog.dart';
 import 'story_log_dialog.dart';
+import 'widgets/marquee_text.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/animated_count.dart';
 import 'widgets/clay.dart';
@@ -599,12 +600,10 @@ class _MarketBannerState extends ConsumerState<_MarketBanner> {
               Text(acc.emoji, style: const TextStyle(fontSize: 18)),
               const SizedBox(width: 8),
               Expanded(
-                child: Text(
+                child: MarqueeText(
                   '${l10n.marketTitle} · ${accessoryName(l10n, acc.id)} '
                   '(${accessoryRarityLabel(l10n, acc.rarity)}) · '
                   '${listing.price} 🪙',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.labelLarge?.copyWith(
                       color: theme.colorScheme.onTertiaryContainer),
                 ),
