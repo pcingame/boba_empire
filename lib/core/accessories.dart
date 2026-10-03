@@ -108,6 +108,13 @@ Accessory rollAccessory(double rarityRoll01, double itemRoll01) {
   return pool[i];
 }
 
+/// Rớt 1 món THUỘC độ hiếm [rarity] (nguồn rớt có bảo đảm: Kỷ Nguyên, mốc Ghép 3).
+Accessory rollAccessoryOfRarity(AccessoryRarity rarity, double itemRoll01) {
+  final pool = accessories.where((a) => a.rarity == rarity).toList();
+  final i = (itemRoll01 * pool.length).floor().clamp(0, pool.length - 1);
+  return pool[i];
+}
+
 /// Kết quả một lần rớt phụ kiện (nhiệm vụ ngày / rương vòng quay) — để UI hiện "khoảnh
 /// khắc nhận" (mới hay trùng) mà không phải suy ngược từ trạng thái.
 class AccessoryDrop {

@@ -13,6 +13,7 @@ import '../core/balance.dart';
 import '../core/format.dart';
 import '../core/match3_levels.dart';
 import '../l10n/app_localizations.dart';
+import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import '../state/match3_controller.dart';
 import 'match3_board.dart';
@@ -126,6 +127,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
     final (cash, gems) = ref
         .read(gameControllerProvider.notifier)
         .grantMatch3Result(widget.level.id, stars);
+    final drop = ref.read(gameControllerProvider.notifier).lastAccessoryDrop;
 
     final hasNext = stars >= 1 && widget.level.id < Balance.m3LevelCount;
     // Còn nước = vừa đạt mục tiêu giữa chừng → mời chơi nốt để săn thêm sao
@@ -184,6 +186,14 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
               )
             else if (stars > 0)
               Text(l10n.m3NoReward, textAlign: TextAlign.center),
+            if (drop != null) ...[
+              const SizedBox(height: 8),
+              Text(
+                accessoryRevealMessage(l10n, drop),
+                key: const Key('m3-accessory-reveal'),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ],
         ),
         actions: [

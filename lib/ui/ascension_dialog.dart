@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../audio/audio_service.dart';
 import '../core/balance.dart';
 import '../l10n/app_localizations.dart';
+import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
@@ -105,7 +106,9 @@ class _AscensionDialog extends ConsumerWidget {
   void _confirm(BuildContext context, WidgetRef ref) {
     final messenger = ScaffoldMessenger.of(context);
     final l10n = AppLocalizations.of(context)!;
-    final gained = ref.read(gameControllerProvider.notifier).doAscend();
+    final controller = ref.read(gameControllerProvider.notifier);
+    final gained = controller.doAscend();
+    final drop = gained > 0 ? controller.lastAccessoryDrop : null;
     if (gained > 0) {
       HapticFeedback.heavyImpact();
       ref.read(audioServiceProvider).play(Sfx.prestige);
@@ -115,7 +118,13 @@ class _AscensionDialog extends ConsumerWidget {
     Navigator.of(context).popUntil((r) => r.isFirst);
     if (gained > 0) {
       messenger.showSnackBar(
-        SnackBar(content: Text(l10n.ascensionSuccess(gained))),
+        SnackBar(
+          content: Text(
+            drop == null
+                ? l10n.ascensionSuccess(gained)
+                : '${l10n.ascensionSuccess(gained)}\n${accessoryRevealMessage(l10n, drop)}',
+          ),
+        ),
       );
     }
   }

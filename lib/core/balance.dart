@@ -9,6 +9,7 @@
 /// (ở đó cũng khai báo khoảng hợp lệ của từng nút).
 library;
 
+import 'accessories.dart' show AccessoryRarity;
 import 'models.dart';
 
 class Balance {
@@ -327,6 +328,17 @@ class Balance {
 
   /// Số phụ kiện tối đa trưng bày quanh cốc ở màn chính (thuần trang trí).
   static const int maxEquippedAccessories = 3;
+
+  /// Mốc Trân Châu Rơi tặng phụ kiện lần ĐẦU qua màn (id màn → độ hiếm tối thiểu
+  /// của món). Màn 60 là màn cuối.
+  static const Map<int, AccessoryRarity> m3AccessoryMilestones = {
+    10: AccessoryRarity.rare,
+    30: AccessoryRarity.epic,
+    60: AccessoryRarity.legendary,
+  };
+
+  /// Mỗi lần Kỷ Nguyên hoá rớt 1 món Sử thi; xác suất này là Huyền thoại.
+  static const double ascensionLegendaryChance = 0.15;
 
   /// Rớt trúng món đã có (trùng) → quy đổi 💎 thay vì lãng phí lượt rớt.
   static const int duplicateAccessoryGems = 2;

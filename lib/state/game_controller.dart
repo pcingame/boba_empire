@@ -476,8 +476,10 @@ class GameController extends Notifier<GameSnapshot> {
   /// bán — xem _registerAccessoryDropServerSide và PROPOSAL_ACCESSORY_MARKET.md §0 cho lý do:
   /// chặn thông đồng 2 tài khoản bơm phụ kiện giả). Fire-and-forget: không chặn/trễ việc
   /// nhận thưởng cục bộ. Dùng chung cho nhiệm vụ ngày và rương vòng quay.
-  AccessoryDrop _dropAccessory() {
-    final rolled = rollAccessoryWith(_random);
+  AccessoryDrop _dropAccessory({AccessoryRarity? rarity}) {
+    final rolled = rarity == null
+        ? rollAccessoryWith(_random)
+        : rollAccessoryOfRarity(rarity, _random.nextDouble());
     final isNew = grantAccessory(_game, rolled);
     unawaited(
       _registerAccessoryDropServerSide(
@@ -746,6 +748,11 @@ class GameController extends Notifier<GameSnapshot> {
   int doAscend() {
     final gained = ascend(_game);
     if (gained > 0) {
+      _dropAccessory(
+        rarity: _random.nextDouble() < Balance.ascensionLegendaryChance
+            ? AccessoryRarity.legendary
+            : AccessoryRarity.epic,
+      );
       _awardAchievements();
       unawaited(saveNow());
       unawaited(_analytics?.log('ascend', {
@@ -1184,12 +1191,17 @@ class GameController extends Notifier<GameSnapshot> {
   /// Ghi kết quả một màn Ghép 3 (chơi đơn) và trao thưởng. Trả về (Xu, 💎) vừa
   /// nhận — 0 nếu không phá được kỷ lục sao cũ của màn đó.
   (double, int) grantMatch3Result(int levelId, int stars) {
+    final firstClear = stars > 0 &&
+        (levelId > _game.m3Stars.length || _game.m3Stars[levelId - 1] == 0);
+    lastAccessoryDrop = null;
     final reward = applyMatch3Result(
       _game,
       levelId,
       stars,
       incomePerSecond: state.incomePerSecond,
     );
+    final milestone = Balance.m3AccessoryMilestones[levelId];
+    if (firstClear && milestone != null) _dropAccessory(rarity: milestone);
     // LUÔN lưu + phát snapshot mới khi màn có sao: `applyMatch3Result` ghi
     // `m3Stars` kể cả lúc thưởng bằng 0, và chính bản ghi đó mới là thứ mở khoá
     // màn sau. Chỉ lưu khi có thưởng thì người chơi mới (thu nhập/giây = 0) qua
