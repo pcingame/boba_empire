@@ -1322,6 +1322,21 @@ class AppLocalizationsTh extends AppLocalizations {
       'รับไม่ได้ — ตรวจสอบเครือข่ายแล้วลองอีกครั้ง';
 
   @override
+  String marketPriceLast(int n) {
+    return 'ขายล่าสุด: $n';
+  }
+
+  @override
+  String marketPriceLowest(int n) {
+    return 'ถูกสุดที่ลงขาย: $n';
+  }
+
+  @override
+  String marketPriceAvg(int n) {
+    return 'เฉลี่ย 7 วัน: $n';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n เหรียญตลาด';
   }

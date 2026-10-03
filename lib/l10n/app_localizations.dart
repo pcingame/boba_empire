@@ -2356,6 +2356,24 @@ abstract class AppLocalizations {
   /// **'Không nhận được — kiểm tra mạng rồi thử lại.'**
   String get collectionMilestoneErrNet;
 
+  /// No description provided for @marketPriceLast.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bán gần nhất: {n}'**
+  String marketPriceLast(int n);
+
+  /// No description provided for @marketPriceLowest.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rẻ nhất đang bán: {n}'**
+  String marketPriceLowest(int n);
+
+  /// No description provided for @marketPriceAvg.
+  ///
+  /// In vi, this message translates to:
+  /// **'TB 7 ngày: {n}'**
+  String marketPriceAvg(int n);
+
   /// No description provided for @marketWallet.
   ///
   /// In vi, this message translates to:

@@ -68,6 +68,17 @@ class RecentSale {
   final int price;
 }
 
+/// Giá tham khảo của một món (RPC `accessory_price_stats`); mọi trường có thể
+/// null khi chưa có dữ liệu.
+class PriceStats {
+  const PriceStats({this.lastPrice, this.lowestActive, this.avg7d});
+  final int? lastPrice;
+  final int? lowestActive;
+  final int? avg7d;
+
+  bool get isEmpty => lastPrice == null && lowestActive == null;
+}
+
 class AccessoryMarketRepository {
   AccessoryMarketRepository(this._client);
 
@@ -237,6 +248,20 @@ class AccessoryMarketRepository {
           ),
         )
         .toList();
+  }
+
+  Future<PriceStats> fetchPriceStats(String accessoryId) async {
+    final rows = await _client
+        .rpc('accessory_price_stats', params: {'p_accessory_id': accessoryId});
+    final list = rows as List;
+    if (list.isEmpty) return const PriceStats();
+    final r = list.first as Map<String, dynamic>;
+    int? n(String k) => (r[k] as num?)?.toInt();
+    return PriceStats(
+      lastPrice: n('last_price'),
+      lowestActive: n('lowest_active'),
+      avg7d: n('avg_7d'),
+    );
   }
 
   /// user_id người bán nhiều nhất 7 ngày qua, null nếu tuần này chưa có giao dịch.

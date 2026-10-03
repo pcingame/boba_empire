@@ -1332,6 +1332,21 @@ class AppLocalizationsEn extends AppLocalizations {
       'Couldn\'t claim — check your connection and try again.';
 
   @override
+  String marketPriceLast(int n) {
+    return 'Last sold: $n';
+  }
+
+  @override
+  String marketPriceLowest(int n) {
+    return 'Cheapest listed: $n';
+  }
+
+  @override
+  String marketPriceAvg(int n) {
+    return '7-day avg: $n';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Market Coins';
   }

@@ -1327,6 +1327,21 @@ class AppLocalizationsVi extends AppLocalizations {
       'Không nhận được — kiểm tra mạng rồi thử lại.';
 
   @override
+  String marketPriceLast(int n) {
+    return 'Bán gần nhất: $n';
+  }
+
+  @override
+  String marketPriceLowest(int n) {
+    return 'Rẻ nhất đang bán: $n';
+  }
+
+  @override
+  String marketPriceAvg(int n) {
+    return 'TB 7 ngày: $n';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Xu Chợ';
   }

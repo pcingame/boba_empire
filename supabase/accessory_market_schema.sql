@@ -598,3 +598,29 @@ end;
 $$;
 
 grant execute on function claim_collection_milestone(integer) to authenticated;
+
+-- Giá tham khảo theo món, ẩn danh (không lộ id người mua/bán): giá khớp gần
+-- nhất, giá rẻ nhất đang rao, và số giao dịch + giá TB 7 ngày. Trả đúng 1 hàng
+-- (các cột có thể null nếu chưa có dữ liệu).
+create or replace function accessory_price_stats(p_accessory_id text)
+returns table (
+  last_price bigint, lowest_active bigint, trades_7d integer, avg_7d bigint)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select
+    (select price from accessory_market_trades
+       where accessory_id = p_accessory_id order by traded_at desc limit 1),
+    (select min(price) from accessory_listings
+       where accessory_id = p_accessory_id and status = 'active'),
+    (select count(*)::integer from accessory_market_trades
+       where accessory_id = p_accessory_id
+         and traded_at > now() - interval '7 days'),
+    (select round(avg(price))::bigint from accessory_market_trades
+       where accessory_id = p_accessory_id
+         and traded_at > now() - interval '7 days');
+$$;
+
+grant execute on function accessory_price_stats(text) to anon, authenticated;

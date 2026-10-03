@@ -577,6 +577,24 @@
     }
   },
   "collectionMilestoneErrNet": "No se pudo reclamar: revisa tu conexión e inténtalo de nuevo.",
+  "marketPriceLast": "Última venta: {n}",
+  "@marketPriceLast": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketPriceLowest": "Más barato ahora: {n}",
+  "@marketPriceLowest": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketPriceAvg": "Prom. 7 días: {n}",
+  "@marketPriceAvg": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Monedas de Mercado",
   "@marketWallet": {
     "placeholders": {

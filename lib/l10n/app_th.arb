@@ -577,6 +577,24 @@
     }
   },
   "collectionMilestoneErrNet": "รับไม่ได้ — ตรวจสอบเครือข่ายแล้วลองอีกครั้ง",
+  "marketPriceLast": "ขายล่าสุด: {n}",
+  "@marketPriceLast": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketPriceLowest": "ถูกสุดที่ลงขาย: {n}",
+  "@marketPriceLowest": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketPriceAvg": "เฉลี่ย 7 วัน: {n}",
+  "@marketPriceAvg": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} เหรียญตลาด",
   "@marketWallet": {
     "placeholders": {

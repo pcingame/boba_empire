@@ -577,6 +577,24 @@
     }
   },
   "collectionMilestoneErrNet": "Couldn't claim — check your connection and try again.",
+  "marketPriceLast": "Last sold: {n}",
+  "@marketPriceLast": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketPriceLowest": "Cheapest listed: {n}",
+  "@marketPriceLowest": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketPriceAvg": "7-day avg: {n}",
+  "@marketPriceAvg": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Market Coins",
   "@marketWallet": {
     "placeholders": {

@@ -1335,6 +1335,21 @@ class AppLocalizationsPt extends AppLocalizations {
       'Não foi possível resgatar: verifique a conexão e tente de novo.';
 
   @override
+  String marketPriceLast(int n) {
+    return 'Última venda: $n';
+  }
+
+  @override
+  String marketPriceLowest(int n) {
+    return 'Mais barato agora: $n';
+  }
+
+  @override
+  String marketPriceAvg(int n) {
+    return 'Média de 7 dias: $n';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Moedas de Mercado';
   }

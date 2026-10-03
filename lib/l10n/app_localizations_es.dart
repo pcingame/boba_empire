@@ -1339,6 +1339,21 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se pudo reclamar: revisa tu conexión e inténtalo de nuevo.';
 
   @override
+  String marketPriceLast(int n) {
+    return 'Última venta: $n';
+  }
+
+  @override
+  String marketPriceLowest(int n) {
+    return 'Más barato ahora: $n';
+  }
+
+  @override
+  String marketPriceAvg(int n) {
+    return 'Prom. 7 días: $n';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Monedas de Mercado';
   }

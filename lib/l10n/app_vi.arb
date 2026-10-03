@@ -932,6 +932,24 @@
     }
   },
   "collectionMilestoneErrNet": "Không nhận được — kiểm tra mạng rồi thử lại.",
+  "marketPriceLast": "Bán gần nhất: {n}",
+  "@marketPriceLast": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketPriceLowest": "Rẻ nhất đang bán: {n}",
+  "@marketPriceLowest": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketPriceAvg": "TB 7 ngày: {n}",
+  "@marketPriceAvg": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Xu Chợ",
   "@marketWallet": {
     "placeholders": {

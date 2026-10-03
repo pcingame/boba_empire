@@ -1332,6 +1332,21 @@ class AppLocalizationsId extends AppLocalizations {
       'Gagal klaim — periksa koneksi lalu coba lagi.';
 
   @override
+  String marketPriceLast(int n) {
+    return 'Terjual terakhir: $n';
+  }
+
+  @override
+  String marketPriceLowest(int n) {
+    return 'Termurah dijual: $n';
+  }
+
+  @override
+  String marketPriceAvg(int n) {
+    return 'Rata-rata 7 hari: $n';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Koin Pasar';
   }

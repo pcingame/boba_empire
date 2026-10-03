@@ -7,6 +7,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../core/accessories.dart';
 import '../core/balance.dart';
@@ -742,6 +743,7 @@ Future<bool?> _confirmBuy(
           ),
           const SizedBox(height: 12),
           Text(l10n.marketConfirmBuy(listing.price)),
+          _PriceReference(listing.accessoryId),
           if (short > 0) ...[
             const SizedBox(height: 8),
             Text(
@@ -766,6 +768,45 @@ Future<bool?> _confirmBuy(
       ],
     ),
   );
+}
+
+/// Công khai để test ghi đè.
+final priceStatsProvider =
+    FutureProvider.autoDispose.family<PriceStats?, String>((ref, id) async {
+  try {
+    return await AccessoryMarketRepository(Supabase.instance.client)
+        .fetchPriceStats(id);
+  } catch (_) {
+    return null; // chỉ là tham khảo — lỗi thì ẩn, không chặn mua/bán
+  }
+});
+
+/// Giá tham khảo của một món: bán gần nhất · rẻ nhất đang rao · TB 7 ngày.
+/// Ẩn hẳn khi đang tải/lỗi/chưa có dữ liệu.
+class _PriceReference extends ConsumerWidget {
+  const _PriceReference(this.accessoryId);
+  final String accessoryId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final stats = ref.watch(priceStatsProvider(accessoryId)).value;
+    if (stats == null || stats.isEmpty) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context)!;
+    final parts = [
+      if (stats.lastPrice != null) l10n.marketPriceLast(stats.lastPrice!),
+      if (stats.lowestActive != null)
+        l10n.marketPriceLowest(stats.lowestActive!),
+      if (stats.avg7d != null) l10n.marketPriceAvg(stats.avg7d!),
+    ];
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Text(
+        parts.join('\n'),
+        key: const Key('price-reference'),
+        style: Theme.of(context).textTheme.bodySmall,
+      ),
+    );
+  }
 }
 
 class _ListingTile extends StatelessWidget {
@@ -1040,6 +1081,7 @@ Future<int?> _askPrice(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              _PriceReference(accessory.id),
               TextField(
                 controller: ctrl,
                 keyboardType: TextInputType.number,

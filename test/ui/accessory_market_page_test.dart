@@ -90,6 +90,9 @@ Future<(ProviderContainer, _FakeMarketController)> _pump(
     sharedPreferencesProvider.overrideWithValue(prefs),
     clockProvider.overrideWithValue(() => 0),
     accessoryMarketControllerProvider.overrideWith(() => fake),
+    priceStatsProvider.overrideWith((ref, id) async => id == 'dragon'
+        ? const PriceStats(lastPrice: 700, lowestActive: 650, avg7d: 720)
+        : const PriceStats()),
   ]);
   // KHÔNG addTearDown(container.dispose): tearDown chạy SAU khi flutter_test
   // đã kiểm "còn Timer treo không" (GameController có Timer tick định kỳ) —
@@ -280,6 +283,29 @@ void main() {
   testWidgets('đã xem hướng dẫn thì không hiện', (tester) async {
     final (container, _) = await _pump(tester);
     expect(find.byKey(const Key('market-intro')), findsNothing);
+    container.dispose();
+  });
+
+  testWidgets('hộp mua hiện giá tham khảo (bán gần nhất / rẻ nhất / TB 7 ngày)',
+      (tester) async {
+    final (container, _) = await _pump(tester);
+    await tester.tap(find.text('Mua'));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('price-reference')), findsOneWidget);
+    expect(find.textContaining('Bán gần nhất: 700'), findsOneWidget);
+    expect(find.textContaining('Rẻ nhất đang bán: 650'), findsOneWidget);
+    expect(find.textContaining('TB 7 ngày: 720'), findsOneWidget);
+    container.dispose();
+  });
+
+  testWidgets('hộp đăng bán: món chưa có dữ liệu giá thì không hiện khối tham khảo',
+      (tester) async {
+    final (container, _) = await _pump(tester);
+    await tester.tap(find.text('Của tôi'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Đăng bán'));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('price-reference')), findsNothing);
     container.dispose();
   });
 }

@@ -577,6 +577,24 @@
     }
   },
   "collectionMilestoneErrNet": "Gagal klaim — periksa koneksi lalu coba lagi.",
+  "marketPriceLast": "Terjual terakhir: {n}",
+  "@marketPriceLast": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketPriceLowest": "Termurah dijual: {n}",
+  "@marketPriceLowest": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "marketPriceAvg": "Rata-rata 7 hari: {n}",
+  "@marketPriceAvg": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Koin Pasar",
   "@marketWallet": {
     "placeholders": {
