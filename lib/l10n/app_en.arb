@@ -501,6 +501,19 @@
     }
   },
   "marketNoFilterResults": "No items match the filter.",
+  "accessoryRevealNew": "New accessory: {name}!",
+  "@accessoryRevealNew": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "accessoryRevealDuplicate": "Duplicate {name}: +{gems} 💎 and a spare to sell in the Market",
+  "@accessoryRevealDuplicate": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "gems": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Market Coins",
   "@marketWallet": {
     "placeholders": {

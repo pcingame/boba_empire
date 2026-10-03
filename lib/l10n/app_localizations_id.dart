@@ -1221,6 +1221,16 @@ class AppLocalizationsId extends AppLocalizations {
   String get marketNoFilterResults => 'Tidak ada barang yang cocok.';
 
   @override
+  String accessoryRevealNew(String name) {
+    return 'Aksesori baru: $name!';
+  }
+
+  @override
+  String accessoryRevealDuplicate(String name, int gems) {
+    return '$name ganda: +$gems 💎 dan 1 cadangan untuk dijual di Pasar';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Koin Pasar';
   }

@@ -1,5 +1,6 @@
 import 'package:boba_empire/core/daily.dart';
 import 'package:boba_empire/core/models.dart';
+import 'package:boba_empire/core/balance.dart';
 import 'package:boba_empire/core/wheel.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/state/game_providers.dart';
@@ -99,10 +100,19 @@ void main() {
             expect(gems, greaterThan(beforeGems));
           case WheelKind.x2:
             expect(x2, greaterThan(beforeX2));
+          case WheelKind.chest:
+            // Rương: luôn có kết quả rớt; mới → thêm món, trùng → +💎 và +1 bản dư.
+            expect(r.drop, isNotNull);
+            if (r.drop!.isNew) {
+              expect(ctrl.lastAccessoryDrop, same(r.drop));
+              expect(gems, beforeGems);
+            } else {
+              expect(gems, beforeGems + Balance.duplicateAccessoryGems);
+            }
         }
       }
 
-      // Với 300 lần quay, gần như chắc chắn chạm cả 3 loại.
+      // Với 300 lần quay, gần như chắc chắn chạm cả 4 loại (rương 6% → ~99.9999%).
       expect(kinds, containsAll(WheelKind.values));
     },
   );

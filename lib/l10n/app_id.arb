@@ -501,6 +501,19 @@
     }
   },
   "marketNoFilterResults": "Tidak ada barang yang cocok.",
+  "accessoryRevealNew": "Aksesori baru: {name}!",
+  "@accessoryRevealNew": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "accessoryRevealDuplicate": "{name} ganda: +{gems} 💎 dan 1 cadangan untuk dijual di Pasar",
+  "@accessoryRevealDuplicate": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "gems": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Koin Pasar",
   "@marketWallet": {
     "placeholders": {

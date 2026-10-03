@@ -1212,6 +1212,16 @@ class AppLocalizationsTh extends AppLocalizations {
   String get marketNoFilterResults => 'ไม่มีของที่ตรงกับตัวกรอง';
 
   @override
+  String accessoryRevealNew(String name) {
+    return 'ได้รับแอคเซสซอรีใหม่: $name!';
+  }
+
+  @override
+  String accessoryRevealDuplicate(String name, int gems) {
+    return '$name ซ้ำ: +$gems 💎 และสำเนาสำรอง 1 ชิ้นสำหรับขายในตลาด';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n เหรียญตลาด';
   }

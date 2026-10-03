@@ -1217,6 +1217,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String get marketNoFilterResults => 'Không có món nào khớp bộ lọc.';
 
   @override
+  String accessoryRevealNew(String name) {
+    return 'Nhận được phụ kiện mới: $name!';
+  }
+
+  @override
+  String accessoryRevealDuplicate(String name, int gems) {
+    return 'Trùng $name: +$gems 💎 và 1 bản dư bán được ở Chợ';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Xu Chợ';
   }

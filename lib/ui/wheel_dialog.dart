@@ -6,10 +6,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../ads/ad_service.dart';
 import '../audio/audio_service.dart';
+import '../core/accessories.dart';
 import '../core/format.dart';
 import '../core/wheel.dart';
 import '../l10n/app_localizations.dart';
+import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
+import 'widgets/anim_assets.dart';
+import 'widgets/one_shot_lottie.dart';
 
 /// Vòng quay may mắn: 1 lượt miễn phí/ngày, hết thì xem QC để quay.
 Future<void> showWheel(BuildContext context) {
@@ -23,13 +27,15 @@ Future<void> showWheel(BuildContext context) {
 String _shortLabel(WheelPrize p) => switch (p.kind) {
       WheelKind.gems => '${p.amount}💎',
       WheelKind.x2 => 'x2',
+      WheelKind.chest => '🎁',
       WheelKind.coins =>
         p.amount < 3600 ? '${p.amount ~/ 60}p' : '${p.amount ~/ 3600}h',
     };
 
 const _sectorColors = [
   Color(0xFFFBE0C3), Color(0xFFCDE9DE), Color(0xFFF6D0DA), Color(0xFFD9CBEF),
-  Color(0xFFFDEBB0), Color(0xFFCDE3F0), Color(0xFFF7C9A8), Color(0xFFFFD54F),
+  Color(0xFFFDEBB0), Color(0xFFCDE3F0), Color(0xFFF7C9A8), Color(0xFFE6E0F8),
+  Color(0xFFFFD54F),
 ];
 
 class _WheelDialog extends ConsumerStatefulWidget {
@@ -77,7 +83,7 @@ class _WheelDialogState extends ConsumerState<_WheelDialog>
     }
 
     final r = ref.read(gameControllerProvider.notifier).spin(free: free);
-    const step = 2 * math.pi / 8;
+    final step = 2 * math.pi / wheelPrizes.length;
     // Góc để ô r.index dừng ở kim trên đỉnh (+ nhiều vòng cho đã mắt).
     final landMod = (2 * math.pi - (r.index * step + step / 2)) % (2 * math.pi);
     final cur = _rotation % (2 * math.pi);
@@ -96,7 +102,14 @@ class _WheelDialogState extends ConsumerState<_WheelDialog>
       WheelKind.gems => l10n.iapGemsSnack(formatNumber(r.value)),
       WheelKind.coins => l10n.instantCashSnack(formatNumber(r.value)),
       WheelKind.x2 => l10n.rewardX2Snack,
+      WheelKind.chest => accessoryRevealMessage(l10n, r.drop!),
     };
+    // Rương: nổ pháo giấy cho món Sử thi/Huyền thoại (hiếm đáng ăn mừng).
+    final drop = r.drop;
+    if (drop != null &&
+        drop.accessory.rarity.index >= AccessoryRarity.epic.index) {
+      playEffect(context, AnimAssets.confetti, size: 200);
+    }
     setState(() {
       _spinning = false;
       _result = msg;
@@ -174,7 +187,7 @@ class _WheelPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final c = size.center(Offset.zero);
     final r = size.width / 2;
-    const step = 2 * math.pi / 8;
+    final step = 2 * math.pi / wheelPrizes.length;
     final paint = Paint()..style = PaintingStyle.fill;
     for (var i = 0; i < wheelPrizes.length; i++) {
       paint.color = _sectorColors[i % _sectorColors.length];

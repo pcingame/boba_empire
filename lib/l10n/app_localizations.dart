@@ -2188,6 +2188,18 @@ abstract class AppLocalizations {
   /// **'Không có món nào khớp bộ lọc.'**
   String get marketNoFilterResults;
 
+  /// No description provided for @accessoryRevealNew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận được phụ kiện mới: {name}!'**
+  String accessoryRevealNew(String name);
+
+  /// No description provided for @accessoryRevealDuplicate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trùng {name}: +{gems} 💎 và 1 bản dư bán được ở Chợ'**
+  String accessoryRevealDuplicate(String name, int gems);
+
   /// No description provided for @marketWallet.
   ///
   /// In vi, this message translates to:

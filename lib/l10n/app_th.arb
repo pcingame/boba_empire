@@ -501,6 +501,19 @@
     }
   },
   "marketNoFilterResults": "ไม่มีของที่ตรงกับตัวกรอง",
+  "accessoryRevealNew": "ได้รับแอคเซสซอรีใหม่: {name}!",
+  "@accessoryRevealNew": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "accessoryRevealDuplicate": "{name} ซ้ำ: +{gems} 💎 และสำเนาสำรอง 1 ชิ้นสำหรับขายในตลาด",
+  "@accessoryRevealDuplicate": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "gems": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} เหรียญตลาด",
   "@marketWallet": {
     "placeholders": {

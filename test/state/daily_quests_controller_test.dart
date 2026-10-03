@@ -146,6 +146,11 @@ void main() {
     // Món đầu tiên của 1 ván mới chắc chắn là MỚI (chưa có gì để trùng) nên
     // không có 💎 quy đổi cộng thêm ngoài thưởng bonus.
     expect(h.snap.gems, gemsBefore + got);
+    // UI đọc lastAccessoryDrop ngay sau khi nhận để hiện "khoảnh khắc nhận".
+    final drop = h.ctrl.lastAccessoryDrop;
+    expect(drop, isNotNull);
+    expect(drop!.isNew, isTrue);
+    expect(h.snap.ownedAccessories, [drop.accessory.id]);
   });
 
   test('Nhượng quyền không xoá tiến độ nhiệm vụ ngày', () async {

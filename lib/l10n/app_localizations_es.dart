@@ -1228,6 +1228,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get marketNoFilterResults => 'Ningún artículo coincide con el filtro.';
 
   @override
+  String accessoryRevealNew(String name) {
+    return '¡Nuevo accesorio: $name!';
+  }
+
+  @override
+  String accessoryRevealDuplicate(String name, int gems) {
+    return '$name repetido: +$gems 💎 y una copia extra para vender en el Mercado';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Monedas de Mercado';
   }

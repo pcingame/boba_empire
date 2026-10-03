@@ -856,6 +856,19 @@
     }
   },
   "marketNoFilterResults": "Không có món nào khớp bộ lọc.",
+  "accessoryRevealNew": "Nhận được phụ kiện mới: {name}!",
+  "@accessoryRevealNew": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "accessoryRevealDuplicate": "Trùng {name}: +{gems} 💎 và 1 bản dư bán được ở Chợ",
+  "@accessoryRevealDuplicate": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "gems": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Xu Chợ",
   "@marketWallet": {
     "placeholders": {

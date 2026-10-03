@@ -1220,6 +1220,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get marketNoFilterResults => 'No items match the filter.';
 
   @override
+  String accessoryRevealNew(String name) {
+    return 'New accessory: $name!';
+  }
+
+  @override
+  String accessoryRevealDuplicate(String name, int gems) {
+    return 'Duplicate $name: +$gems 💎 and a spare to sell in the Market';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Market Coins';
   }

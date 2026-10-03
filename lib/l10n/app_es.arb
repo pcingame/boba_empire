@@ -501,6 +501,19 @@
     }
   },
   "marketNoFilterResults": "Ningún artículo coincide con el filtro.",
+  "accessoryRevealNew": "¡Nuevo accesorio: {name}!",
+  "@accessoryRevealNew": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "accessoryRevealDuplicate": "{name} repetido: +{gems} 💎 y una copia extra para vender en el Mercado",
+  "@accessoryRevealDuplicate": {
+    "placeholders": {
+      "name": {"type": "String"},
+      "gems": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Monedas de Mercado",
   "@marketWallet": {
     "placeholders": {

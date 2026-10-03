@@ -461,21 +461,30 @@ class GameController extends Notifier<GameSnapshot> {
   /// (trùng thì quy đổi 💎, xem grantAccessory). Không đổi chữ ký trả về
   /// (int gems) để khỏi đụng `claim()` helper dùng chung ở daily_quests_dialog.dart
   /// — phụ kiện vừa nhận không có popup riêng, xem ở màn "Kho phụ kiện".
+  /// Lần rớt phụ kiện gần nhất (nhiệm vụ ngày hoặc rương vòng quay) — KHÔNG lưu, chỉ để UI
+  /// đọc ngay sau khi nhận và hiện "khoảnh khắc nhận".
+  AccessoryDrop? lastAccessoryDrop;
+
+  /// Rớt 1 phụ kiện ngẫu nhiên: cấp cho ván, ghi nhận lên server NGAY (không đợi lúc đăng
+  /// bán — xem _registerAccessoryDropServerSide và PROPOSAL_ACCESSORY_MARKET.md §0 cho lý do:
+  /// chặn thông đồng 2 tài khoản bơm phụ kiện giả). Fire-and-forget: không chặn/trễ việc
+  /// nhận thưởng cục bộ. Dùng chung cho nhiệm vụ ngày và rương vòng quay.
+  AccessoryDrop _dropAccessory() {
+    final rolled = rollAccessoryWith(_random);
+    final isNew = grantAccessory(_game, rolled);
+    unawaited(
+      _registerAccessoryDropServerSide(
+        rolled.id,
+        1 + (_game.accessorySpares[rolled.id] ?? 0),
+      ),
+    );
+    return lastAccessoryDrop = AccessoryDrop(rolled, isNew: isNew);
+  }
+
   int claimDailyBonus() {
     final gems = claimDailyQuestBonus(_game);
     if (gems > 0) {
-      final rolled = rollAccessoryWith(_random);
-      grantAccessory(_game, rolled);
-      // Ghi server NGAY lúc rớt (không đợi lúc đăng bán) — xem
-      // _registerAccessoryDropServerSide và PROPOSAL_ACCESSORY_MARKET.md §0
-      // cho lý do cần bước này (chặn thông đồng 2 tài khoản bơm phụ kiện
-      // giả). Fire-and-forget: không chặn/trễ việc nhận thưởng cục bộ.
-      unawaited(
-        _registerAccessoryDropServerSide(
-          rolled.id,
-          1 + (_game.accessorySpares[rolled.id] ?? 0),
-        ),
-      );
+      _dropAccessory();
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -1007,12 +1016,17 @@ class GameController extends Notifier<GameSnapshot> {
 
   /// Quay Vòng quay may mắn. [free]=true đánh dấu đã dùng lượt free hôm nay. Trả
   /// về (chỉ số ô trúng, loại thưởng, giá trị đã nhận) để UI quay + báo.
-  ({int index, WheelKind kind, double value}) spin({required bool free}) {
+  ({int index, WheelKind kind, double value, AccessoryDrop? drop}) spin(
+      {required bool free}) {
     final i = spinWheel(_random.nextDouble());
     final p = wheelPrizes[i];
     addDailyProgress(_game, DailyQuestKind.spin, 1);
     double value = 0;
+    AccessoryDrop? drop;
     switch (p.kind) {
+      case WheelKind.chest:
+        drop = _dropAccessory();
+        value = drop.isNew ? 1 : 0;
       case WheelKind.coins:
         value = effectiveIncomePerSecond(
               _game,
@@ -1034,7 +1048,7 @@ class GameController extends Notifier<GameSnapshot> {
     if (free) _game.lastFreeSpinDay = dayIndex(_clock());
     unawaited(saveNow());
     state = _snapshot();
-    return (index: i, kind: p.kind, value: value);
+    return (index: i, kind: p.kind, value: value, drop: drop);
   }
 
   /// Nhập mã quà tặng (VD mã bù đắp sự cố) — xem `core/redeem.dart`. Lưu ngay

@@ -3,6 +3,7 @@
 library;
 
 import '../core/accessories.dart';
+import '../core/balance.dart';
 import '../core/achievements.dart';
 import '../core/format.dart';
 import '../core/quests.dart';
@@ -175,3 +176,13 @@ String accessoryRarityLabel(AppLocalizations l10n, AccessoryRarity r) =>
       AccessoryRarity.epic => l10n.accessoryRarityEpic,
       AccessoryRarity.legendary => l10n.accessoryRarityLegendary,
     };
+
+/// Câu "khoảnh khắc nhận" cho một lần rớt phụ kiện (nhiệm vụ ngày / rương vòng quay):
+/// món MỚI, hoặc TRÙNG (kèm số 💎 và 1 bản dư bán được ở Chợ).
+String accessoryRevealMessage(AppLocalizations l10n, AccessoryDrop drop) {
+  final label =
+      '${drop.accessory.emoji} ${accessoryName(l10n, drop.accessory.id)}';
+  return drop.isNew
+      ? l10n.accessoryRevealNew(label)
+      : l10n.accessoryRevealDuplicate(label, Balance.duplicateAccessoryGems);
+}

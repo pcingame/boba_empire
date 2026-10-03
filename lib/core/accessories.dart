@@ -108,6 +108,17 @@ Accessory rollAccessory(double rarityRoll01, double itemRoll01) {
   return pool[i];
 }
 
+/// Kết quả một lần rớt phụ kiện (nhiệm vụ ngày / rương vòng quay) — để UI hiện "khoảnh
+/// khắc nhận" (mới hay trùng) mà không phải suy ngược từ trạng thái.
+class AccessoryDrop {
+  const AccessoryDrop(this.accessory, {required this.isNew});
+
+  final Accessory accessory;
+
+  /// false = trùng món đã có (được 💎 + 1 bản dư, xem [grantAccessory]).
+  final bool isNew;
+}
+
 /// Cấp [a] cho [state]. Đã có thì được [Balance.duplicateAccessoryGems] 💎 VÀ
 /// thêm 1 bản dư (`accessorySpares`) bán được ở Chợ. Trả về true nếu là món
 /// MỚI. MUTATE.
