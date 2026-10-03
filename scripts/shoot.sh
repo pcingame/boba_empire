@@ -37,6 +37,7 @@ if [[ "$LOCALES" == "all" ]]; then
   LOCALES="vi en es id pt th"
 fi
 
+export SHOT_DIR="assets/store/screenshots/$KIND" # driver đọc từ môi trường
 echo "máy: $NAME ($KIND) · ngôn ngữ: $LOCALES"
 xcrun simctl boot "$UDID" 2>/dev/null || true
 

@@ -187,6 +187,13 @@ thử, xác nhận có trong `.app`). Nội dung hiện tại (AdMob + ATT + sha
   hàng 💎, nhượng quyền/kho Sao, home dark mode, thành tựu, cách chơi, cốt
   truyện, dialog "Kiếm thêm", home stage 2 (theme xanh). Còn phải **kéo thả
   vào ASC** (chưa upload).
+- [x] 🔴 **Screenshots bản 1.0.6 (2026-10-03)** — chụp lại bằng `./scripts/shoot.sh` (integration_test, KHÔNG
+  chạm server: Chợ dùng controller giả, đồng hồ game đặt vào ngày thứ 4 để khỏi dính banner cuối tuần):
+  iPhone 6.9" (1320×2868, iPhone 17 Pro Max) ở `assets/store/screenshots_ios/6.9in/` — 01 màn chính mới ·
+  02 Bộ sưu tập · 03 Chợ phụ kiện · 04 Trân Châu Rơi · 05 Nhượng quyền · 06 Thành tựu · 07 Cửa hàng 💎;
+  iPad 13" (2064×2752) 8 màn × 6 ngôn ngữ ở `assets/store/screenshots/ipad/` (thêm `_1b_collection`,
+  `_1c_market`). Nếu ASC vẫn đòi 6.5" (1242×2688) thì co từ ảnh 6.9" hoặc chụp bằng simulator 6.5".
+  Sửa lỗi script cũ: `SHOT_DIR` giờ đọc từ biến môi trường (trước đây ảnh iPhone rơi vào thư mục ipad và đè ảnh iPad).
 - [ ] 🟡 **App Preview video** (tùy chọn, tăng chuyển đổi) — 15–30s, quay từ
   thiết bị/simulator.
 - [ ] 🔴 **Name** ≤ 30, **Subtitle** ≤ 30, **Keywords** ≤ 100 (phẩy),

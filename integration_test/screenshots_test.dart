@@ -16,9 +16,13 @@
 // KHÔNG dùng save mới tinh: màn hình lúc đó chỉ có 1 dòng shop và một dải
 // trống lớn (đo được: khung shop 526dp, không cuộn được dòng nào trên iPad).
 // Ảnh store phải cho thấy game lúc đang chơi thật.
+import 'package:boba_empire/core/accessories.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/main.dart';
+import 'package:boba_empire/market/accessory_market_controller.dart';
+import 'package:boba_empire/market/accessory_market_repository.dart';
+import 'package:boba_empire/market/market_highlight.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/ui/home_page.dart' as home;
 import 'package:flutter/material.dart';
@@ -30,12 +34,69 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Ngôn ngữ của lượt chụp này. Đổi bằng `--dart-define=SHOT_LOCALE=en`.
 const String kLocale = String.fromEnvironment('SHOT_LOCALE', defaultValue: 'vi');
 
+/// Chợ phụ kiện GIẢ cho ảnh store: dữ liệu cố định, không chạm Supabase (không
+/// đăng nhập ẩn danh, không ghi sở hữu/analytics lên server thật từ máy ảo).
+class _ShowcaseMarket extends AccessoryMarketController {
+  @override
+  AccessoryMarketViewState build() {
+    final t = DateTime.utc(2026, 10, 1);
+    MarketListing l(String id, String item, int price) => MarketListing(
+          id: id,
+          sellerId: 'seller-$id',
+          accessoryId: item,
+          price: price,
+          createdAt: t,
+        );
+    return AccessoryMarketLoaded(
+      listings: [
+        l('1', 'dragon', 1800),
+        l('2', 'unicorn', 620),
+        l('3', 'phoenix', 3200),
+        l('4', 'crystal_ball', 480),
+        l('5', 'peacock', 350),
+        l('6', 'lantern', 310),
+        l('7', 'telescope', 120),
+        l('8', 'ring', 95),
+        l('9', 'cupcake', 25),
+        l('10', 'mint_leaf', 18),
+      ],
+      myListings: const [],
+      walletBalance: 540,
+      myUserId: 'me',
+      recentSales: const [
+        RecentSale(accessoryId: 'galaxy', price: 4100),
+        RecentSale(accessoryId: 'angel_wing', price: 760),
+        RecentSale(accessoryId: 'ring', price: 90),
+        RecentSale(accessoryId: 'butterfly', price: 540),
+      ],
+    );
+  }
+
+  @override
+  Future<void> refresh({bool silent = false}) async {}
+}
+
+/// Một ngày THƯỜNG (thứ 4) để ảnh store không dính banner "sự kiện cuối tuần"
+/// (đúng lúc chụp nhưng sai vào ngày xem ảnh). Dùng cho cả save lẫn đồng hồ game.
+int _showcaseNow() {
+  var d = DateTime.now().toUtc();
+  while (d.weekday != DateTime.wednesday) {
+    d = d.add(const Duration(days: 1));
+  }
+  return DateTime.utc(d.year, d.month, d.day, 12).millisecondsSinceEpoch;
+}
+
 /// Save "đang chơi giữa chừng" — đủ giàu để shop đầy màn, đủ nhiều Sao/💎 để
 /// các hộp thoại có số đẹp, nhưng KHÔNG phá kỷ lục gì (ảnh store không nên
 /// khoe số vô lý).
 GameState _showcaseSave(int now) {
   final s = GameState.newGame(nowMillis: now)
     ..tutorialSeen = true
+    ..starterPackClaimed = true
+    ..collectionMilestonesClaimed.addAll([10, 25])
+    ..ownedAccessories.addAll(_showcaseOwned())
+    ..accessorySpares.addAll({'cupcake': 1, 'ring': 2})
+    ..equippedAccessories.addAll(['dragon', 'unicorn', 'crystal_ball'])
     ..m3HowToSeen = true
     ..stage = 6
     ..money = 4.2e9
@@ -64,6 +125,12 @@ GameState _showcaseSave(int now) {
   return s;
 }
 
+/// Bộ sưu tập dở dang: ~29/50, có vài món hiếm — cho thấy Kho đang được chơi.
+List<String> _showcaseOwned() => {
+      for (var i = 0; i < accessories.length; i += 2) accessories[i].id,
+      'dragon', 'phoenix', 'unicorn', 'crystal_ball', 'lantern', 'angel_wing',
+    }.toList();
+
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -79,12 +146,19 @@ void main() {
       await binding.convertFlutterSurfaceToImage();
     } catch (_) {}
 
-    SharedPreferences.setMockInitialValues({'flutter.app_locale': kLocale});
+    SharedPreferences.setMockInitialValues({'flutter.app_locale': kLocale, 'flutter.market_intro_seen': true});
     final prefs = await SharedPreferences.getInstance();
-    final now = DateTime.now().millisecondsSinceEpoch;
+    final now = _showcaseNow();
     await GameStorage(prefs).save(_showcaseSave(now), nowMillis: now);
     final c = ProviderContainer(
-      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        clockProvider.overrideWithValue(() => now),
+        accessoryMarketControllerProvider.overrideWith(_ShowcaseMarket.new),
+        marketHighlightProvider.overrideWith((ref) async => null),
+        // Không hiện hộp "Có gì mới" đè lên ảnh.
+        appVersionProvider.overrideWithValue(() async => '1.0.5'),
+      ],
     );
     addTearDown(c.dispose);
 
@@ -105,6 +179,21 @@ void main() {
 
     // 1. Màn chính — thứ quan trọng nhất, quyết định lượt cài.
     await shoot('1_home');
+
+    // 1b. Bộ sưu tập (Kho phụ kiện) — tính năng mới chủ lực của bản 1.0.6.
+    await tester.tap(find.byKey(const Key('collection-chip')));
+    await shoot('1b_collection');
+
+    // 1c. Chợ phụ kiện: icon cửa hàng ở thanh trên của Kho.
+    await tester.tap(find.byKey(const Key('collection-market-button')));
+    await shoot('1c_market');
+    // Về màn chính: 2 lần back (Chợ → Kho → màn chính).
+    // (Không dùng tester.pageBack: nó tìm nút back kiểu Cupertino trên iOS, còn
+    // AppBar Material của app dùng BackButton.)
+    for (var i = 0; i < 2; i++) {
+      await tester.tap(find.byType(BackButton).first);
+      await settle(tester);
+    }
 
     // 2. Kho Sao (Nhượng quyền): cho thấy chiều sâu meta-game.
     await tester.tap(find.byKey(const Key('prestige-button')));
