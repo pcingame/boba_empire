@@ -950,6 +950,14 @@
       "n": {"type": "int"}
     }
   },
+  "marketWishAdd": "Thêm vào danh sách muốn có",
+  "marketWishRemove": "Bỏ khỏi danh sách muốn có",
+  "marketWishFull": "Danh sách muốn có đã đầy ({max} món)",
+  "@marketWishFull": {
+    "placeholders": {
+      "max": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Xu Chợ",
   "@marketWallet": {
     "placeholders": {

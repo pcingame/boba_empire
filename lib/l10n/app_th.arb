@@ -595,6 +595,14 @@
       "n": {"type": "int"}
     }
   },
+  "marketWishAdd": "เพิ่มในรายการที่อยากได้",
+  "marketWishRemove": "เอาออกจากรายการที่อยากได้",
+  "marketWishFull": "รายการที่อยากได้เต็มแล้ว ({max} ชิ้น)",
+  "@marketWishFull": {
+    "placeholders": {
+      "max": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} เหรียญตลาด",
   "@marketWallet": {
     "placeholders": {

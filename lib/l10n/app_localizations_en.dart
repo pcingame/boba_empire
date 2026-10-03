@@ -1347,6 +1347,17 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get marketWishAdd => 'Add to wishlist';
+
+  @override
+  String get marketWishRemove => 'Remove from wishlist';
+
+  @override
+  String marketWishFull(int max) {
+    return 'Wishlist is full ($max items)';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Market Coins';
   }

@@ -1350,6 +1350,17 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get marketWishAdd => 'Adicionar à lista de desejos';
+
+  @override
+  String get marketWishRemove => 'Remover da lista de desejos';
+
+  @override
+  String marketWishFull(int max) {
+    return 'Lista de desejos cheia ($max itens)';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Moedas de Mercado';
   }

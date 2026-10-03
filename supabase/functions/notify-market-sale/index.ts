@@ -10,9 +10,20 @@
 //   4. Dashboard → Database → Webhooks → Create: table accessory_market_trades,
 //      event INSERT, type HTTP Request (POST) tới URL function, thêm header
 //      x-webhook-secret = đúng WEBHOOK_SECRET ở trên.
+//   5. (Danh sách muốn có) Tạo webhook THỨ HAI: table accessory_listings, event
+//      INSERT, cùng URL + header. Function phân biệt theo `table` trong payload.
 // SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY do Supabase tự cấp cho function.
 
 import { createClient } from "jsr:@supabase/supabase-js@2";
+
+const WISH_TEXT: Record<string, { title: string; body: string }> = {
+  vi: { title: "Chợ Phụ kiện", body: "Món trong danh sách muốn có của bạn vừa được đăng bán!" },
+  en: { title: "Accessory Market", body: "An item on your wishlist was just listed!" },
+  es: { title: "Mercado de accesorios", body: "¡Un artículo de tu lista de deseos acaba de publicarse!" },
+  id: { title: "Pasar Aksesori", body: "Item di daftar keinginanmu baru saja dijual!" },
+  pt: { title: "Mercado de Acessórios", body: "Um item da sua lista de desejos acabou de ser anunciado!" },
+  th: { title: "ตลาดของสะสม", body: "ของในรายการที่อยากได้เพิ่งลงขายแล้ว!" },
+};
 
 const TEXT: Record<string, { title: string; body: (n: number) => string }> = {
   vi: { title: "Chợ Phụ kiện", body: (n) => `Món của bạn vừa bán được! +${n} Xu Chợ` },
@@ -69,15 +80,28 @@ Deno.serve(async (req) => {
   if (!secret || req.headers.get("x-webhook-secret") !== secret) {
     return new Response("forbidden", { status: 403 });
   }
-  const { type, record } = await req.json();
+  const { type, table, record } = await req.json();
   if (type !== "INSERT" || !record?.seller_id) return new Response("ignored");
 
   const db = createClient(
     Deno.env.get("SUPABASE_URL")!,
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
+
+  // Listing mới → báo những người có món đó trong danh sách muốn có (trừ chính
+  // người đăng). Bảng khác (accessory_market_trades) → báo người bán như cũ.
+  const wish = table === "accessory_listings";
+  let userIds: string[] = [record.seller_id];
+  if (wish) {
+    const { data: wishers } = await db
+      .from("accessory_wishlist").select("user_id")
+      .eq("accessory_id", record.accessory_id)
+      .neq("user_id", record.seller_id);
+    userIds = (wishers ?? []).map((w: { user_id: string }) => w.user_id);
+    if (!userIds.length) return new Response("no wishers");
+  }
   const { data: tokens } = await db
-    .from("push_tokens").select("token, locale").eq("user_id", record.seller_id);
+    .from("push_tokens").select("token, locale").in("user_id", userIds);
   if (!tokens?.length) return new Response("no tokens");
 
   // Cùng công thức phí với buy_listing(): 1%, làm tròn lên, tối thiểu 1.
@@ -88,7 +112,12 @@ Deno.serve(async (req) => {
   const access = await fcmAccessToken(sa);
   const results: { platform?: string; status: number }[] = [];
   for (const t of tokens) {
-    const text = TEXT[t.locale] ?? TEXT.en;
+    const text = wish
+      ? (WISH_TEXT[t.locale] ?? WISH_TEXT.en)
+      : (TEXT[t.locale] ?? TEXT.en);
+    const body = wish
+      ? (text as { body: string }).body
+      : (text as { body: (n: number) => string }).body(net);
     const res = await fetch(
       `https://fcm.googleapis.com/v1/projects/${sa.project_id}/messages:send`,
       {
@@ -97,7 +126,7 @@ Deno.serve(async (req) => {
         body: JSON.stringify({
           message: {
             token: t.token,
-            notification: { title: text.title, body: text.body(net) },
+            notification: { title: text.title, body },
             apns: { payload: { aps: { sound: "default" } } },
             android: { priority: "high" },
           },

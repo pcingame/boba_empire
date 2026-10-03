@@ -595,6 +595,14 @@
       "n": {"type": "int"}
     }
   },
+  "marketWishAdd": "Tambah ke daftar keinginan",
+  "marketWishRemove": "Hapus dari daftar keinginan",
+  "marketWishFull": "Daftar keinginan penuh ({max} item)",
+  "@marketWishFull": {
+    "placeholders": {
+      "max": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Koin Pasar",
   "@marketWallet": {
     "placeholders": {

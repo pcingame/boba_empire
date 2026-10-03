@@ -250,6 +250,11 @@ class AccessoryMarketRepository {
         .toList();
   }
 
+  Future<void> setWishlist(List<String> ids) async {
+    await ensureSignedIn();
+    await _client.rpc('set_accessory_wishlist', params: {'p_ids': ids});
+  }
+
   Future<PriceStats> fetchPriceStats(String accessoryId) async {
     final rows = await _client
         .rpc('accessory_price_stats', params: {'p_accessory_id': accessoryId});

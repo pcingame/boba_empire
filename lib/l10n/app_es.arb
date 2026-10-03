@@ -595,6 +595,14 @@
       "n": {"type": "int"}
     }
   },
+  "marketWishAdd": "Añadir a la lista de deseos",
+  "marketWishRemove": "Quitar de la lista de deseos",
+  "marketWishFull": "Lista de deseos llena ({max} objetos)",
+  "@marketWishFull": {
+    "placeholders": {
+      "max": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Monedas de Mercado",
   "@marketWallet": {
     "placeholders": {

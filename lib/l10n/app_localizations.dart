@@ -2374,6 +2374,24 @@ abstract class AppLocalizations {
   /// **'TB 7 ngày: {n}'**
   String marketPriceAvg(int n);
 
+  /// No description provided for @marketWishAdd.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm vào danh sách muốn có'**
+  String get marketWishAdd;
+
+  /// No description provided for @marketWishRemove.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ khỏi danh sách muốn có'**
+  String get marketWishRemove;
+
+  /// No description provided for @marketWishFull.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh sách muốn có đã đầy ({max} món)'**
+  String marketWishFull(int max);
+
   /// No description provided for @marketWallet.
   ///
   /// In vi, this message translates to:

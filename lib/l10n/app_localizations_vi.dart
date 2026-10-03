@@ -1342,6 +1342,17 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get marketWishAdd => 'Thêm vào danh sách muốn có';
+
+  @override
+  String get marketWishRemove => 'Bỏ khỏi danh sách muốn có';
+
+  @override
+  String marketWishFull(int max) {
+    return 'Danh sách muốn có đã đầy ($max món)';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Xu Chợ';
   }

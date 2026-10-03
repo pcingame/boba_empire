@@ -308,4 +308,24 @@ void main() {
     expect(find.byKey(const Key('price-reference')), findsNothing);
     container.dispose();
   });
+
+  testWidgets('ngôi sao: thêm/bỏ món vào danh sách muốn có', (tester) async {
+    final (container, _) = await _pump(tester);
+    List<String> wl() => container.read(gameControllerProvider).wishlist;
+    expect(wl(), isEmpty);
+    await tester.tap(find.byKey(const Key('wish-dragon')));
+    await tester.pump();
+    expect(wl(), ['dragon']);
+    await tester.tap(find.byKey(const Key('wish-dragon')));
+    await tester.pump();
+    expect(wl(), isEmpty);
+    container.dispose();
+    await tester.pumpAndSettle();
+  });
+
+  test('wishlist: JSON bỏ phần tử sai kiểu', () {
+    final s = GameState.newGame(nowMillis: 0)..wishlist.addAll(['a', 'b']);
+    final r = GameState.fromJson({...s.toJson(), 'wishlist': ['a', 3, null, 'b']});
+    expect(r.wishlist, ['a', 'b']);
+  });
 }

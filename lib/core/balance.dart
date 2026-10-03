@@ -337,6 +337,9 @@ class Balance {
     60: AccessoryRarity.legendary,
   };
 
+  /// Số món tối đa trong danh sách muốn có (khớp `set_accessory_wishlist`).
+  static const int maxWishlist = 10;
+
   /// Mỗi lần Kỷ Nguyên hoá rớt 1 món Sử thi; xác suất này là Huyền thoại.
   static const double ascensionLegendaryChance = 0.15;
 

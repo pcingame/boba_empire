@@ -595,6 +595,14 @@
       "n": {"type": "int"}
     }
   },
+  "marketWishAdd": "Add to wishlist",
+  "marketWishRemove": "Remove from wishlist",
+  "marketWishFull": "Wishlist is full ({max} items)",
+  "@marketWishFull": {
+    "placeholders": {
+      "max": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Market Coins",
   "@marketWallet": {
     "placeholders": {

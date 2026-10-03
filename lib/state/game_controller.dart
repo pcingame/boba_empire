@@ -887,6 +887,19 @@ class GameController extends Notifier<GameSnapshot> {
     }
   }
 
+  /// Thêm/bỏ [accessoryId] khỏi danh sách muốn có. Trả danh sách mới, hoặc null
+  /// nếu đầy ([Balance.maxWishlist]) khi đang thêm.
+  List<String>? toggleWishlist(String accessoryId) {
+    final list = _game.wishlist;
+    if (!list.remove(accessoryId)) {
+      if (list.length >= Balance.maxWishlist) return null;
+      list.add(accessoryId);
+    }
+    unawaited(saveNow());
+    state = _snapshot();
+    return List.of(list);
+  }
+
   /// Nhận thưởng mốc sưu tập [count] (server trước, đánh dấu cục bộ sau). Trả
   /// số Xu Chợ nhận được, hoặc mã lỗi (`not_reached`, `already_claimed`,
   /// `network`) — `already_claimed` cũng đánh dấu cục bộ để ẩn nút.
@@ -1379,6 +1392,7 @@ class GameController extends Notifier<GameSnapshot> {
       equippedAccessories: List.unmodifiable(_game.equippedAccessories),
       collectionMilestonesClaimed:
           List.unmodifiable(_game.collectionMilestonesClaimed),
+      wishlist: List.unmodifiable(_game.wishlist),
       m3HowToSeen: _game.m3HowToSeen,
       starterPackOwned: _game.starterPackOwned,
       tutorialSeen: _game.tutorialSeen,

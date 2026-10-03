@@ -624,3 +624,42 @@ as $$
 $$;
 
 grant execute on function accessory_price_stats(text) to anon, authenticated;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Danh sách muốn có (wishlist): tối đa 10 món/người. Chỉ để Edge Function
+-- notify-market-sale đẩy "món bạn muốn vừa được đăng bán" (webhook thứ 2, trên
+-- accessory_listings INSERT — xem đầu file index.ts). Ghi qua RPC thay thế cả
+-- danh sách; không có policy nào cho client, Edge Function đọc bằng service role.
+-- ─────────────────────────────────────────────────────────────────────────
+create table if not exists accessory_wishlist (
+  user_id       uuid not null references auth.users(id) on delete cascade,
+  accessory_id  text not null,
+  primary key (user_id, accessory_id)
+);
+
+create index if not exists accessory_wishlist_item_idx
+  on accessory_wishlist (accessory_id);
+
+alter table accessory_wishlist enable row level security;
+
+create or replace function set_accessory_wishlist(p_ids text[])
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if auth.uid() is null then
+    raise exception 'not authenticated';
+  end if;
+  if coalesce(array_length(p_ids, 1), 0) > 10 then
+    raise exception 'too_many';
+  end if;
+  delete from accessory_wishlist where user_id = auth.uid();
+  insert into accessory_wishlist (user_id, accessory_id)
+  select auth.uid(), left(id, 64) from unnest(p_ids) as id
+  on conflict do nothing;
+end;
+$$;
+
+grant execute on function set_accessory_wishlist(text[]) to authenticated;

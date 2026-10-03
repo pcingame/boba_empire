@@ -1337,6 +1337,17 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get marketWishAdd => 'เพิ่มในรายการที่อยากได้';
+
+  @override
+  String get marketWishRemove => 'เอาออกจากรายการที่อยากได้';
+
+  @override
+  String marketWishFull(int max) {
+    return 'รายการที่อยากได้เต็มแล้ว ($max ชิ้น)';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n เหรียญตลาด';
   }

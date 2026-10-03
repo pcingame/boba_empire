@@ -623,7 +623,11 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
                       child: _ListingTile(
                       listing: others[i],
                       isNew: !owned.contains(others[i].accessoryId),
-                      trailing: FilledButton(
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _WishStar(accessoryId: others[i].accessoryId),
+                          FilledButton(
                         onPressed: () async {
                           final ok = await _confirmBuy(
                             context,
@@ -640,6 +644,8 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
                           onAction(msg ?? l10n.marketBoughtToast);
                         },
                         child: Text(l10n.marketBuyButton),
+                      ),
+                        ],
                       ),
                     )),
                   ),
@@ -1187,6 +1193,40 @@ class _StarterPackCardState extends ConsumerState<_StarterPackCard> {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Ngôi sao thêm/bỏ món khỏi danh sách muốn có (có thông báo khi được đăng bán).
+class _WishStar extends ConsumerWidget {
+  const _WishStar({required this.accessoryId});
+  final String accessoryId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final wished = ref.watch(gameControllerProvider
+        .select((s) => s.wishlist.contains(accessoryId)));
+    return IconButton(
+      key: Key('wish-$accessoryId'),
+      visualDensity: VisualDensity.compact,
+      tooltip: wished ? l10n.marketWishRemove : l10n.marketWishAdd,
+      icon: Icon(wished ? Icons.star : Icons.star_border),
+      color: wished ? Colors.amber : null,
+      onPressed: () {
+        final list = ref
+            .read(gameControllerProvider.notifier)
+            .toggleWishlist(accessoryId);
+        if (list == null) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(l10n.marketWishFull(Balance.maxWishlist))));
+          return;
+        }
+        HapticFeedback.selectionClick();
+        ref
+            .read(accessoryMarketControllerProvider.notifier)
+            .syncWishlist(list, askPush: list.contains(accessoryId));
+      },
     );
   }
 }

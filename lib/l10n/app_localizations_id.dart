@@ -1347,6 +1347,17 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get marketWishAdd => 'Tambah ke daftar keinginan';
+
+  @override
+  String get marketWishRemove => 'Hapus dari daftar keinginan';
+
+  @override
+  String marketWishFull(int max) {
+    return 'Daftar keinginan penuh ($max item)';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Koin Pasar';
   }

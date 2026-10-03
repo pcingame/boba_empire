@@ -58,6 +58,7 @@ class GameSnapshot {
     required this.accessorySpares,
     required this.equippedAccessories,
     required this.collectionMilestonesClaimed,
+    required this.wishlist,
     required this.m3HowToSeen,
     required this.prestigeStarsSpendable,
     required this.prestigeIncomeLevel,
@@ -186,6 +187,9 @@ class GameSnapshot {
 
   /// Mốc sưu tập đã nhận (xem GameState.collectionMilestonesClaimed).
   final List<int> collectionMilestonesClaimed;
+
+  /// Danh sách muốn có (xem GameState.wishlist).
+  final List<String> wishlist;
 
   /// Đã xem hướng dẫn Trân Châu Rơi chưa.
   final bool m3HowToSeen;

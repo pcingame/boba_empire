@@ -169,6 +169,18 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
     }
   }
 
+  /// Đẩy danh sách muốn có lên server (để nhận thông báo khi có người đăng bán).
+  /// [askPush]: vừa THÊM món → đúng lúc người chơi hiểu vì sao cần xin quyền
+  /// thông báo. Lỗi nuốt im lặng — wishlist vẫn còn cục bộ, lần sau đồng bộ lại.
+  Future<void> syncWishlist(List<String> ids, {bool askPush = false}) async {
+    try {
+      await _repository.setWishlist(ids);
+      if (askPush) unawaited(_registerPush(ask: true));
+    } catch (e) {
+      developer.log('đồng bộ danh sách muốn có lỗi: $e', name: 'Market');
+    }
+  }
+
   Future<void> refresh({bool silent = false}) async {
     if (!silent) {
       state = const AccessoryMarketLoading();

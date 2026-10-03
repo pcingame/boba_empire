@@ -133,6 +133,7 @@ class GameState {
     Map<String, int>? accessorySpares,
     List<String>? equippedAccessories,
     List<int>? collectionMilestonesClaimed,
+    List<String>? wishlist,
   })  : achievementsClaimed = achievementsClaimed ?? [],
         m3Stars = m3Stars ?? [],
         redeemedCodes = redeemedCodes ?? [],
@@ -140,6 +141,7 @@ class GameState {
         accessorySpares = accessorySpares ?? {},
         equippedAccessories = equippedAccessories ?? [],
         collectionMilestonesClaimed = collectionMilestonesClaimed ?? [],
+        wishlist = wishlist ?? [],
         dailyProgress = dailyProgress ?? {},
         dailyClaimed = dailyClaimed ?? [],
         firstPlayedMillis = firstPlayedMillis ?? lastSeenMillis;
@@ -244,6 +246,10 @@ class GameState {
   /// Mốc sưu tập đã nhận thưởng (xem collection_milestones.dart). Server mới là
   /// nguồn sự thật — đây chỉ để ẩn nút nhận.
   final List<int> collectionMilestonesClaimed;
+
+  /// Món muốn có (≤ Balance.maxWishlist) — đồng bộ lên server để đẩy thông báo
+  /// khi có người đăng bán.
+  final List<String> wishlist;
 
   /// Cấp perk "Siêu thu nhập" mua bằng ⭐ Sao (kho prestige) — +% income vĩnh viễn.
   int prestigeIncomeLevel;
@@ -437,6 +443,7 @@ class GameState {
         'accessorySpares': accessorySpares,
         'equippedAccessories': equippedAccessories,
         'collectionMilestonesClaimed': collectionMilestonesClaimed,
+        'wishlist': wishlist,
         'prestigeIncomeLevel': prestigeIncomeLevel,
         'prestigeTapLevel': prestigeTapLevel,
         'prestigeOfflineLevel': prestigeOfflineLevel,
@@ -522,6 +529,11 @@ class GameState {
             (json['ownedAccessories'] as List?)?.cast<String>().toList(),
         // load() nuốt mọi lỗi thành "ván mới" — trường phụ này sai kiểu/giá trị
         // lạ phải bị BỎ QUA chứ không được ném, nếu không mất cả save.
+        wishlist: [
+          if (json['wishlist'] is List)
+            for (final e in json['wishlist'] as List)
+              if (e is String) e,
+        ],
         collectionMilestonesClaimed: [
           if (json['collectionMilestonesClaimed'] is List)
             for (final e in json['collectionMilestonesClaimed'] as List)
