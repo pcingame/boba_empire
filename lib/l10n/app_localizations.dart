@@ -2200,6 +2200,18 @@ abstract class AppLocalizations {
   /// **'Trùng {name}: +{gems} 💎 và 1 bản dư bán được ở Chợ'**
   String accessoryRevealDuplicate(String name, int gems);
 
+  /// No description provided for @accessoryEquipHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trưng bày {n}/{max} — chạm một món đã có để đặt quanh cốc'**
+  String accessoryEquipHint(int n, int max);
+
+  /// No description provided for @accessoryEquipFull.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đủ {max} món trưng bày — bỏ chọn một món trước'**
+  String accessoryEquipFull(int max);
+
   /// No description provided for @marketWallet.
   ///
   /// In vi, this message translates to:

@@ -514,6 +514,19 @@
       "gems": {"type": "int"}
     }
   },
+  "accessoryEquipHint": "จัดแสดง {n}/{max} — แตะของที่มีเพื่อวางรอบแก้ว",
+  "@accessoryEquipHint": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "max": {"type": "int"}
+    }
+  },
+  "accessoryEquipFull": "จัดแสดงเต็มแล้ว ({max}) — ยกเลิกหนึ่งชิ้นก่อน",
+  "@accessoryEquipFull": {
+    "placeholders": {
+      "max": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} เหรียญตลาด",
   "@marketWallet": {
     "placeholders": {

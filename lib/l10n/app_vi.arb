@@ -869,6 +869,19 @@
       "gems": {"type": "int"}
     }
   },
+  "accessoryEquipHint": "Trưng bày {n}/{max} — chạm một món đã có để đặt quanh cốc",
+  "@accessoryEquipHint": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "max": {"type": "int"}
+    }
+  },
+  "accessoryEquipFull": "Đã đủ {max} món trưng bày — bỏ chọn một món trước",
+  "@accessoryEquipFull": {
+    "placeholders": {
+      "max": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Xu Chợ",
   "@marketWallet": {
     "placeholders": {

@@ -129,11 +129,13 @@ class GameState {
     List<String>? redeemedCodes,
     List<String>? ownedAccessories,
     Map<String, int>? accessorySpares,
+    List<String>? equippedAccessories,
   })  : achievementsClaimed = achievementsClaimed ?? [],
         m3Stars = m3Stars ?? [],
         redeemedCodes = redeemedCodes ?? [],
         ownedAccessories = ownedAccessories ?? [],
         accessorySpares = accessorySpares ?? {},
+        equippedAccessories = equippedAccessories ?? [],
         dailyProgress = dailyProgress ?? {},
         dailyClaimed = dailyClaimed ?? [],
         firstPlayedMillis = firstPlayedMillis ?? lastSeenMillis;
@@ -230,6 +232,10 @@ class GameState {
   /// dư). Rớt trùng cộng vào đây (xem grantAccessory) — bản dư bán được ở Chợ
   /// mà không mất món đang sưu tập.
   final Map<String, int> accessorySpares;
+
+  /// Id phụ kiện đang TRƯNG BÀY quanh cốc ở màn chính (≤ Balance.maxEquippedAccessories,
+  /// đều phải đang sở hữu). Thuần trang trí — động lực khoe/sưu tập, không buff gì.
+  final List<String> equippedAccessories;
 
   /// Cấp perk "Siêu thu nhập" mua bằng ⭐ Sao (kho prestige) — +% income vĩnh viễn.
   int prestigeIncomeLevel;
@@ -415,6 +421,7 @@ class GameState {
         'redeemedCodes': redeemedCodes,
         'ownedAccessories': ownedAccessories,
         'accessorySpares': accessorySpares,
+        'equippedAccessories': equippedAccessories,
         'prestigeIncomeLevel': prestigeIncomeLevel,
         'prestigeTapLevel': prestigeTapLevel,
         'prestigeOfflineLevel': prestigeOfflineLevel,
@@ -498,6 +505,11 @@ class GameState {
             (json['ownedAccessories'] as List?)?.cast<String>().toList(),
         // load() nuốt mọi lỗi thành "ván mới" — trường phụ này sai kiểu/giá trị
         // lạ phải bị BỎ QUA chứ không được ném, nếu không mất cả save.
+        equippedAccessories: [
+          if (json['equippedAccessories'] is List)
+            for (final e in json['equippedAccessories'] as List)
+              if (e is String) e,
+        ],
         accessorySpares: {
           if (json['accessorySpares'] is Map)
             for (final e in (json['accessorySpares'] as Map).entries)

@@ -514,6 +514,19 @@
       "gems": {"type": "int"}
     }
   },
+  "accessoryEquipHint": "Exhibidos {n}/{max}: toca un objeto que tengas para mostrarlo junto a la taza",
+  "@accessoryEquipHint": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "max": {"type": "int"}
+    }
+  },
+  "accessoryEquipFull": "Exhibición llena ({max}): quita uno primero",
+  "@accessoryEquipFull": {
+    "placeholders": {
+      "max": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Monedas de Mercado",
   "@marketWallet": {
     "placeholders": {

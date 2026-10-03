@@ -1230,6 +1230,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String accessoryEquipHint(int n, int max) {
+    return 'Displayed $n/$max — tap an item you own to show it around the cup';
+  }
+
+  @override
+  String accessoryEquipFull(int max) {
+    return 'Display is full ($max) — remove one first';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Market Coins';
   }

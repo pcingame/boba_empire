@@ -1222,6 +1222,16 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String accessoryEquipHint(int n, int max) {
+    return 'จัดแสดง $n/$max — แตะของที่มีเพื่อวางรอบแก้ว';
+  }
+
+  @override
+  String accessoryEquipFull(int max) {
+    return 'จัดแสดงเต็มแล้ว ($max) — ยกเลิกหนึ่งชิ้นก่อน';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n เหรียญตลาด';
   }

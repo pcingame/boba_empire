@@ -56,6 +56,7 @@ class GameSnapshot {
     required this.m3Stars,
     required this.ownedAccessories,
     required this.accessorySpares,
+    required this.equippedAccessories,
     required this.m3HowToSeen,
     required this.prestigeStarsSpendable,
     required this.prestigeIncomeLevel,
@@ -177,6 +178,9 @@ class GameSnapshot {
 
   /// Bản sao dư mỗi món (xem GameState.accessorySpares).
   final Map<String, int> accessorySpares;
+
+  /// Phụ kiện đang trưng bày quanh cốc (xem GameState.equippedAccessories).
+  final List<String> equippedAccessories;
 
   /// Đã xem hướng dẫn Trân Châu Rơi chưa.
   final bool m3HowToSeen;

@@ -102,6 +102,12 @@ class GameController extends Notifier<GameSnapshot> {
     // `_stampStoryFinales` tự bỏ qua khi firstPlayedMillis không đáng tin
     // (xem GameState.firstPlayedIsEstimate) — cùng logic cho mốc Chương 28.
     _stampStoryFinales(_game.storyChapter, exact: false);
+    // Save từ cloud/phiên bản khác có thể liệt kê món không còn sở hữu hoặc quá số chỗ.
+    _game.equippedAccessories
+      ..removeWhere((id) => !_game.ownedAccessories.contains(id))
+      ..removeRange(
+          _game.equippedAccessories.length.clamp(0, Balance.maxEquippedAccessories),
+          _game.equippedAccessories.length);
     _rollDaily();
     // Tính tiền kiếm được lúc app tắt (có cap + chống lùi giờ ở tầng core).
     _offlineEarned = applyOfflineEarnings(
@@ -503,9 +509,30 @@ class GameController extends Notifier<GameSnapshot> {
       _game.accessorySpares.remove(accessoryId);
     } else if (!_game.ownedAccessories.remove(accessoryId)) {
       return;
+    } else {
+      // Bán nốt bản cuối → không còn món để trưng bày.
+      _game.equippedAccessories.remove(accessoryId);
     }
     unawaited(saveNow());
     state = _snapshot();
+  }
+
+  /// Bật/tắt trưng bày [accessoryId] quanh cốc. Chỉ trưng bày món ĐANG CÓ, tối đa
+  /// [Balance.maxEquippedAccessories]. Trả về false nếu không đổi được (chưa có món,
+  /// hoặc đã đủ chỗ khi định thêm).
+  bool toggleEquippedAccessory(String accessoryId) {
+    final equipped = _game.equippedAccessories;
+    if (equipped.remove(accessoryId)) {
+      // đã bỏ
+    } else if (_game.ownedAccessories.contains(accessoryId) &&
+        equipped.length < Balance.maxEquippedAccessories) {
+      equipped.add(accessoryId);
+    } else {
+      return false;
+    }
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
   }
 
   /// Chợ Phụ kiện: thêm 1 món vào kho local sau khi mua hoặc huỷ đăng thành
@@ -1259,6 +1286,7 @@ class GameController extends Notifier<GameSnapshot> {
       // memory: chia sẻ instance List làm `.select()` không rebuild).
       ownedAccessories: List.unmodifiable(_game.ownedAccessories),
       accessorySpares: Map.unmodifiable(_game.accessorySpares),
+      equippedAccessories: List.unmodifiable(_game.equippedAccessories),
       m3HowToSeen: _game.m3HowToSeen,
       starterPackOwned: _game.starterPackOwned,
       tutorialSeen: _game.tutorialSeen,

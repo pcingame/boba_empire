@@ -3,9 +3,11 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/accessories.dart';
+import '../core/balance.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
@@ -29,6 +31,8 @@ class AccessoryInventoryPage extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final owned =
         ref.watch(gameControllerProvider.select((s) => s.ownedAccessories.length));
+    final equippedCount = ref.watch(
+        gameControllerProvider.select((s) => s.equippedAccessories.length));
 
     return PhoneWidth(
       child: Scaffold(
@@ -59,6 +63,12 @@ class AccessoryInventoryPage extends ConsumerWidget {
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                     ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    l10n.accessoryEquipHint(
+                        equippedCount, Balance.maxEquippedAccessories),
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                   const SizedBox(height: 8),
                   ClipRRect(
@@ -121,9 +131,34 @@ class _AccessoryCell extends ConsumerWidget {
         (s) => s.accessorySpares[accessory.id] ?? 0,
       ),
     );
+    final equipped = ref.watch(
+      gameControllerProvider.select(
+        (s) => s.equippedAccessories.contains(accessory.id),
+      ),
+    );
     final color = rarityColor(accessory.rarity);
 
-    return Opacity(
+    void onTap() {
+      if (!unlocked) return;
+      final changed = ref
+          .read(gameControllerProvider.notifier)
+          .toggleEquippedAccessory(accessory.id);
+      if (changed) {
+        HapticFeedback.selectionClick();
+      } else {
+        // Đã đủ chỗ trưng bày: báo thay vì im lặng.
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(l10n.accessoryEquipFull(Balance.maxEquippedAccessories)),
+        ));
+      }
+    }
+
+    return GestureDetector(
+      key: Key('accessory-cell-${accessory.id}'),
+      onTap: onTap,
+      child: Stack(
+      children: [
+        Opacity(
       opacity: unlocked ? 1.0 : 0.45,
       child: Container(
         // Viền màu theo độ hiếm — trước đây 4 độ hiếm nhìn giống hệt nhau,
@@ -131,7 +166,9 @@ class _AccessoryCell extends ConsumerWidget {
         // được kiểu game sưu tập thường có.
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: color, width: 2),
+          border: Border.all(
+              color: equipped ? theme.colorScheme.primary : color,
+              width: equipped ? 3.5 : 2),
         ),
         child: ClayCard(
           padding: const EdgeInsets.all(8),
@@ -172,6 +209,16 @@ class _AccessoryCell extends ConsumerWidget {
           ),
         ),
       ),
+        ),
+        // Ghim 📌 trên món đang trưng bày (không chỉ dựa vào màu viền).
+        if (equipped)
+          const Positioned(
+            top: 6,
+            right: 10,
+            child: ExcludeSemantics(child: Text('📌', style: TextStyle(fontSize: 18))),
+          ),
+      ],
+    ),
     );
   }
 }

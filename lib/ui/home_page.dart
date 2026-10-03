@@ -1138,7 +1138,12 @@ class _TapCircle extends StatelessWidget {
             child: RepaintBoundary(
                 child: ScaleTransition(
               scale: popScale,
-              child: Container(
+              // Stack: phụ kiện trưng bày nằm TRONG ScaleTransition nên "nhún" theo cốc
+              // mỗi lần chạm; clipBehavior.none để chúng lơ lửng ra ngoài mép vòng.
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                Container(
                 key: const Key('tap-circle'),
                 width: side,
                 height: side,
@@ -1189,10 +1194,59 @@ class _TapCircle extends StatelessWidget {
                   ),
                 ),
               ),
+                const Positioned.fill(child: _EquippedFloaters()),
+                ],
+              ),
             )),
           ),
         );
       },
+    );
+  }
+}
+
+/// Phụ kiện đang trưng bày, lơ lửng quanh vòng cốc (tối đa 3: góc 10h, 2h và 4h). Chỉ là
+/// emoji `Text` TĨNH (không animation, không ảnh) nên gần như không tốn chi phí vẽ; nhún
+/// theo cốc nhờ nằm trong ScaleTransition của _TapCircle. Id lạ (món của bản app mới hơn,
+/// hoặc save cloud lạ) bị bỏ qua thay vì làm sập.
+class _EquippedFloaters extends ConsumerWidget {
+  const _EquippedFloaters();
+
+  // (left, right, top, bottom, góc nghiêng rad)
+  static const _slots = [
+    (left: -12.0, right: null, top: -8.0, bottom: null, tilt: -0.22),
+    (left: null, right: -12.0, top: -8.0, bottom: null, tilt: 0.22),
+    (left: null, right: -6.0, top: null, bottom: 4.0, tilt: 0.14),
+  ];
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    // select theo CHUỖI (so sánh theo giá trị) — snapshot tạo list mới mỗi tick.
+    final key = ref.watch(
+        gameControllerProvider.select((s) => s.equippedAccessories.join(',')));
+    final emojis = [
+      for (final id in key.isEmpty ? const <String>[] : key.split(','))
+        for (final a in accessories)
+          if (a.id == id) a.emoji,
+    ];
+    return IgnorePointer(
+      child: Stack(
+        key: const Key('equipped-floaters'),
+        clipBehavior: Clip.none,
+        children: [
+          for (var i = 0; i < emojis.length && i < _slots.length; i++)
+            Positioned(
+              left: _slots[i].left,
+              right: _slots[i].right,
+              top: _slots[i].top,
+              bottom: _slots[i].bottom,
+              child: Transform.rotate(
+                angle: _slots[i].tilt,
+                child: Text(emojis[i], style: const TextStyle(fontSize: 30)),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

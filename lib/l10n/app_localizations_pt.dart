@@ -1234,6 +1234,16 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String accessoryEquipHint(int n, int max) {
+    return 'Em exibição $n/$max — toque num item que você tem para mostrá-lo ao redor do copo';
+  }
+
+  @override
+  String accessoryEquipFull(int max) {
+    return 'Exibição cheia ($max) — remova um primeiro';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Moedas de Mercado';
   }

@@ -1231,6 +1231,16 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String accessoryEquipHint(int n, int max) {
+    return 'Dipajang $n/$max — ketuk barang yang kamu punya untuk dipajang di sekitar gelas';
+  }
+
+  @override
+  String accessoryEquipFull(int max) {
+    return 'Pajangan penuh ($max) — lepas satu dulu';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Koin Pasar';
   }

@@ -325,6 +325,9 @@ class Balance {
   static const int accessoryWeightEpic = 12;
   static const int accessoryWeightLegendary = 3;
 
+  /// Số phụ kiện tối đa trưng bày quanh cốc ở màn chính (thuần trang trí).
+  static const int maxEquippedAccessories = 3;
+
   /// Rớt trúng món đã có (trùng) → quy đổi 💎 thay vì lãng phí lượt rớt.
   static const int duplicateAccessoryGems = 2;
 

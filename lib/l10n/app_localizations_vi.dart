@@ -1227,6 +1227,16 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String accessoryEquipHint(int n, int max) {
+    return 'Trưng bày $n/$max — chạm một món đã có để đặt quanh cốc';
+  }
+
+  @override
+  String accessoryEquipFull(int max) {
+    return 'Đã đủ $max món trưng bày — bỏ chọn một món trước';
+  }
+
+  @override
   String marketWallet(int n) {
     return '$n Xu Chợ';
   }

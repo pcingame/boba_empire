@@ -514,6 +514,19 @@
       "gems": {"type": "int"}
     }
   },
+  "accessoryEquipHint": "Em exibição {n}/{max} — toque num item que você tem para mostrá-lo ao redor do copo",
+  "@accessoryEquipHint": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "max": {"type": "int"}
+    }
+  },
+  "accessoryEquipFull": "Exibição cheia ({max}) — remova um primeiro",
+  "@accessoryEquipFull": {
+    "placeholders": {
+      "max": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Moedas de Mercado",
   "@marketWallet": {
     "placeholders": {

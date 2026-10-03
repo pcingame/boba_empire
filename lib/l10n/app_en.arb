@@ -514,6 +514,19 @@
       "gems": {"type": "int"}
     }
   },
+  "accessoryEquipHint": "Displayed {n}/{max} — tap an item you own to show it around the cup",
+  "@accessoryEquipHint": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "max": {"type": "int"}
+    }
+  },
+  "accessoryEquipFull": "Display is full ({max}) — remove one first",
+  "@accessoryEquipFull": {
+    "placeholders": {
+      "max": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Market Coins",
   "@marketWallet": {
     "placeholders": {

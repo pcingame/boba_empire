@@ -514,6 +514,19 @@
       "gems": {"type": "int"}
     }
   },
+  "accessoryEquipHint": "Dipajang {n}/{max} — ketuk barang yang kamu punya untuk dipajang di sekitar gelas",
+  "@accessoryEquipHint": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "max": {"type": "int"}
+    }
+  },
+  "accessoryEquipFull": "Pajangan penuh ({max}) — lepas satu dulu",
+  "@accessoryEquipFull": {
+    "placeholders": {
+      "max": {"type": "int"}
+    }
+  },
   "marketWallet": "{n} Koin Pasar",
   "@marketWallet": {
     "placeholders": {
