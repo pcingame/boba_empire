@@ -547,6 +547,36 @@
   "marketIntroStep2": "2. Buy accessories other players list to complete your collection.",
   "marketIntroStep3": "3. Sell spares in the My items tab. The fee is only 1%.",
   "marketIntroOk": "Got it",
+  "collectionTitle10": "Collector",
+  "collectionTitle25": "Connoisseur",
+  "collectionTitle40": "Expert Collector",
+  "collectionTitle50": "Collecting Legend",
+  "collectionTitleLabel": "Title: {title}",
+  "@collectionTitleLabel": {
+    "placeholders": {
+      "title": {"type": "String"}
+    }
+  },
+  "collectionMilestoneClaim": "Claim +{coins}",
+  "@collectionMilestoneClaim": {
+    "placeholders": {
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneLocked": "{count} items · {coins} Market Coins",
+  "@collectionMilestoneLocked": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneDone": "Got {coins} Market Coins and a new title!",
+  "@collectionMilestoneDone": {
+    "placeholders": {
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneErrNet": "Couldn't claim — check your connection and try again.",
   "marketWallet": "{n} Market Coins",
   "@marketWallet": {
     "placeholders": {

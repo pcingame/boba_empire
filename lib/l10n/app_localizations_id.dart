@@ -1296,6 +1296,42 @@ class AppLocalizationsId extends AppLocalizations {
   String get marketIntroOk => 'Mengerti';
 
   @override
+  String get collectionTitle10 => 'Kolektor';
+
+  @override
+  String get collectionTitle25 => 'Penggemar';
+
+  @override
+  String get collectionTitle40 => 'Kolektor Ahli';
+
+  @override
+  String get collectionTitle50 => 'Legenda Koleksi';
+
+  @override
+  String collectionTitleLabel(String title) {
+    return 'Gelar: $title';
+  }
+
+  @override
+  String collectionMilestoneClaim(int coins) {
+    return 'Klaim +$coins';
+  }
+
+  @override
+  String collectionMilestoneLocked(int count, int coins) {
+    return '$count item · $coins Koin Pasar';
+  }
+
+  @override
+  String collectionMilestoneDone(int coins) {
+    return 'Dapat $coins Koin Pasar dan gelar baru!';
+  }
+
+  @override
+  String get collectionMilestoneErrNet =>
+      'Gagal klaim — periksa koneksi lalu coba lagi.';
+
+  @override
   String marketWallet(int n) {
     return '$n Koin Pasar';
   }

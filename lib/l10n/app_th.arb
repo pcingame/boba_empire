@@ -547,6 +547,36 @@
   "marketIntroStep2": "2. ซื้อเครื่องประดับที่ผู้เล่นอื่นลงขายเพื่อเก็บให้ครบชุด",
   "marketIntroStep3": "3. ขายของซ้ำที่แท็บของฉัน ค่าธรรมเนียมเพียง 1%",
   "marketIntroOk": "เข้าใจแล้ว",
+  "collectionTitle10": "นักสะสม",
+  "collectionTitle25": "นักสะสมตัวยง",
+  "collectionTitle40": "ผู้เชี่ยวชาญการสะสม",
+  "collectionTitle50": "ตำนานนักสะสม",
+  "collectionTitleLabel": "ฉายา: {title}",
+  "@collectionTitleLabel": {
+    "placeholders": {
+      "title": {"type": "String"}
+    }
+  },
+  "collectionMilestoneClaim": "รับ +{coins}",
+  "@collectionMilestoneClaim": {
+    "placeholders": {
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneLocked": "{count} ชิ้น · {coins} เหรียญตลาด",
+  "@collectionMilestoneLocked": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneDone": "ได้รับ {coins} เหรียญตลาดและฉายาใหม่!",
+  "@collectionMilestoneDone": {
+    "placeholders": {
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneErrNet": "รับไม่ได้ — ตรวจสอบเครือข่ายแล้วลองอีกครั้ง",
   "marketWallet": "{n} เหรียญตลาด",
   "@marketWallet": {
     "placeholders": {

@@ -1286,6 +1286,42 @@ class AppLocalizationsTh extends AppLocalizations {
   String get marketIntroOk => 'เข้าใจแล้ว';
 
   @override
+  String get collectionTitle10 => 'นักสะสม';
+
+  @override
+  String get collectionTitle25 => 'นักสะสมตัวยง';
+
+  @override
+  String get collectionTitle40 => 'ผู้เชี่ยวชาญการสะสม';
+
+  @override
+  String get collectionTitle50 => 'ตำนานนักสะสม';
+
+  @override
+  String collectionTitleLabel(String title) {
+    return 'ฉายา: $title';
+  }
+
+  @override
+  String collectionMilestoneClaim(int coins) {
+    return 'รับ +$coins';
+  }
+
+  @override
+  String collectionMilestoneLocked(int count, int coins) {
+    return '$count ชิ้น · $coins เหรียญตลาด';
+  }
+
+  @override
+  String collectionMilestoneDone(int coins) {
+    return 'ได้รับ $coins เหรียญตลาดและฉายาใหม่!';
+  }
+
+  @override
+  String get collectionMilestoneErrNet =>
+      'รับไม่ได้ — ตรวจสอบเครือข่ายแล้วลองอีกครั้ง';
+
+  @override
   String marketWallet(int n) {
     return '$n เหรียญตลาด';
   }

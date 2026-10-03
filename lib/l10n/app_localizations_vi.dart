@@ -1291,6 +1291,42 @@ class AppLocalizationsVi extends AppLocalizations {
   String get marketIntroOk => 'Đã hiểu';
 
   @override
+  String get collectionTitle10 => 'Người sưu tầm';
+
+  @override
+  String get collectionTitle25 => 'Nhà sưu tầm';
+
+  @override
+  String get collectionTitle40 => 'Chuyên gia sưu tầm';
+
+  @override
+  String get collectionTitle50 => 'Huyền thoại sưu tầm';
+
+  @override
+  String collectionTitleLabel(String title) {
+    return 'Danh hiệu: $title';
+  }
+
+  @override
+  String collectionMilestoneClaim(int coins) {
+    return 'Nhận +$coins';
+  }
+
+  @override
+  String collectionMilestoneLocked(int count, int coins) {
+    return '$count món · $coins Xu Chợ';
+  }
+
+  @override
+  String collectionMilestoneDone(int coins) {
+    return 'Nhận $coins Xu Chợ và danh hiệu mới!';
+  }
+
+  @override
+  String get collectionMilestoneErrNet =>
+      'Không nhận được — kiểm tra mạng rồi thử lại.';
+
+  @override
   String marketWallet(int n) {
     return '$n Xu Chợ';
   }

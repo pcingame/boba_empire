@@ -179,6 +179,13 @@ String accessoryRarityLabel(AppLocalizations l10n, AccessoryRarity r) =>
 
 /// Câu "khoảnh khắc nhận" cho một lần rớt phụ kiện (nhiệm vụ ngày / rương vòng quay):
 /// món MỚI, hoặc TRÙNG (kèm số 💎 và 1 bản dư bán được ở Chợ).
+String collectionTitle(AppLocalizations l10n, int count) => switch (count) {
+      10 => l10n.collectionTitle10,
+      25 => l10n.collectionTitle25,
+      40 => l10n.collectionTitle40,
+      _ => l10n.collectionTitle50,
+    };
+
 String accessoryRevealMessage(AppLocalizations l10n, AccessoryDrop drop) {
   final label =
       '${drop.accessory.emoji} ${accessoryName(l10n, drop.accessory.id)}';

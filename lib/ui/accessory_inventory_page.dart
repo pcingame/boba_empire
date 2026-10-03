@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/accessories.dart';
 import '../core/balance.dart';
+import '../core/collection_milestones.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../leaderboard/flair.dart';
@@ -54,52 +55,54 @@ class AccessoryInventoryPage extends ConsumerWidget {
             ),
           ],
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    l10n.accessoryInventoryOwned(owned, accessories.length),
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w600,
-                    ),
+        // Cả trang cuộn chung (tiêu đề + mốc + lưới): máy nhỏ/chữ to thì phần
+        // đầu cao hơn, để cố định thì tràn dọc.
+        body: ScrollConfiguration(
+          // Tắt hiệu ứng kéo giãn của Android (StretchingOverscrollIndicator):
+          // khi cuộn hết cỡ nó BÓP nội dung ở mép, lưới ô vuông thì méo rất
+          // lộ — cùng bug + cách fix đã dùng ở match3_journey_page.dart.
+          behavior: ScrollConfiguration.of(context).copyWith(overscroll: false),
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.accessoryInventoryOwned(owned, accessories.length),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        l10n.accessoryEquipHint(
+                          equippedCount,
+                          Balance.maxEquippedAccessories,
+                        ),
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      Text(
+                        l10n.accessoryFlairHint,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(height: 8),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(5),
+                        child: LinearProgressIndicator(
+                          value: owned / accessories.length,
+                          minHeight: 8,
+                        ),
+                      ),
+                      const _MilestoneStrip(),
+                    ],
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    l10n.accessoryEquipHint(
-                      equippedCount,
-                      Balance.maxEquippedAccessories,
-                    ),
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  Text(
-                    l10n.accessoryFlairHint,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  const SizedBox(height: 8),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(5),
-                    child: LinearProgressIndicator(
-                      value: owned / accessories.length,
-                      minHeight: 8,
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-            Expanded(
-              // Tắt hiệu ứng kéo giãn của Android (StretchingOverscrollIndicator):
-              // khi cuộn hết cỡ nó BÓP nội dung ở mép, lưới ô vuông thì méo rất
-              // lộ — cùng bug + cách fix đã dùng ở match3_journey_page.dart.
-              child: ScrollConfiguration(
-                behavior: ScrollConfiguration.of(
-                  context,
-                ).copyWith(overscroll: false),
-                child: GridView.builder(
-                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                sliver: SliverGrid.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     mainAxisSpacing: 10,
@@ -111,8 +114,8 @@ class AccessoryInventoryPage extends ConsumerWidget {
                       _AccessoryCell(accessory: accessories[i]),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -258,6 +261,110 @@ class _AccessoryCell extends ConsumerWidget {
                 child: Text('📌', style: TextStyle(fontSize: 18)),
               ),
             ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Hàng mốc sưu tập 10/25/40/50 + danh hiệu hiện tại. Nút nhận chỉ hiện khi
+/// đã đạt mốc mà chưa nhận; server tự đếm và chặn nhận lặp.
+class _MilestoneStrip extends ConsumerStatefulWidget {
+  const _MilestoneStrip();
+
+  @override
+  ConsumerState<_MilestoneStrip> createState() => _MilestoneStripState();
+}
+
+class _MilestoneStripState extends ConsumerState<_MilestoneStrip> {
+  bool _busy = false;
+
+  Future<void> _claim(CollectionMilestone m) async {
+    final l10n = AppLocalizations.of(context)!;
+    final messenger = ScaffoldMessenger.of(context);
+    setState(() => _busy = true);
+    final r = await ref
+        .read(gameControllerProvider.notifier)
+        .claimCollectionMilestone(m.count);
+    if (!mounted) return;
+    setState(() => _busy = false);
+    if (r.coins != null) {
+      HapticFeedback.mediumImpact();
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.collectionMilestoneDone(r.coins!))),
+      );
+    } else if (r.error == 'network') {
+      messenger.showSnackBar(
+        SnackBar(content: Text(l10n.collectionMilestoneErrNet)),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    // select theo CHUỖI để so sánh theo giá trị (snapshot tạo list mới mỗi tick).
+    final key = ref.watch(
+      gameControllerProvider.select(
+        (s) =>
+            '${s.ownedAccessories.length}|'
+            '${s.collectionMilestonesClaimed.join(",")}',
+      ),
+    );
+    final parts = key.split('|');
+    final owned = int.parse(parts[0]);
+    final claimed = parts[1].isEmpty
+        ? <int>{}
+        : parts[1].split(',').map(int.parse).toSet();
+    final highest = collectionMilestones
+        .where((m) => claimed.contains(m.count))
+        .fold<CollectionMilestone?>(null, (_, m) => m);
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (highest != null)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 4),
+              child: Text(
+                l10n.collectionTitleLabel(collectionTitle(l10n, highest.count)),
+                key: const Key('collection-title'),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+              ),
+            ),
+          Wrap(
+            spacing: 6,
+            runSpacing: 0,
+            children: [
+              for (final m in collectionMilestones)
+                if (claimed.contains(m.count))
+                  Chip(
+                    key: Key('milestone-${m.count}'),
+                    visualDensity: VisualDensity.compact,
+                    label: Text('✓ ${m.count}'),
+                  )
+                else if (owned >= m.count)
+                  ActionChip(
+                    key: Key('milestone-${m.count}'),
+                    visualDensity: VisualDensity.compact,
+                    label: Text(
+                      '${m.count} · ${l10n.collectionMilestoneClaim(m.coins)}',
+                    ),
+                    onPressed: _busy ? null : () => _claim(m),
+                  )
+                else
+                  Chip(
+                    key: Key('milestone-${m.count}'),
+                    visualDensity: VisualDensity.compact,
+                    label: Text(
+                      l10n.collectionMilestoneLocked(m.count, m.coins),
+                    ),
+                  ),
+            ],
+          ),
         ],
       ),
     );

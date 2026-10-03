@@ -1299,6 +1299,42 @@ class AppLocalizationsPt extends AppLocalizations {
   String get marketIntroOk => 'Entendi';
 
   @override
+  String get collectionTitle10 => 'Colecionador';
+
+  @override
+  String get collectionTitle25 => 'Apreciador';
+
+  @override
+  String get collectionTitle40 => 'Colecionador especialista';
+
+  @override
+  String get collectionTitle50 => 'Lenda das coleções';
+
+  @override
+  String collectionTitleLabel(String title) {
+    return 'Título: $title';
+  }
+
+  @override
+  String collectionMilestoneClaim(int coins) {
+    return 'Resgatar +$coins';
+  }
+
+  @override
+  String collectionMilestoneLocked(int count, int coins) {
+    return '$count itens · $coins Moedas de Mercado';
+  }
+
+  @override
+  String collectionMilestoneDone(int coins) {
+    return 'Você ganhou $coins Moedas de Mercado e um novo título!';
+  }
+
+  @override
+  String get collectionMilestoneErrNet =>
+      'Não foi possível resgatar: verifique a conexão e tente de novo.';
+
+  @override
   String marketWallet(int n) {
     return '$n Moedas de Mercado';
   }

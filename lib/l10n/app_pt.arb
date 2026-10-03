@@ -547,6 +547,36 @@
   "marketIntroStep2": "2. Compre acessórios que outros jogadores anunciam para completar sua coleção.",
   "marketIntroStep3": "3. Venda repetidos na aba Meus itens. A taxa é de apenas 1%.",
   "marketIntroOk": "Entendi",
+  "collectionTitle10": "Colecionador",
+  "collectionTitle25": "Apreciador",
+  "collectionTitle40": "Colecionador especialista",
+  "collectionTitle50": "Lenda das coleções",
+  "collectionTitleLabel": "Título: {title}",
+  "@collectionTitleLabel": {
+    "placeholders": {
+      "title": {"type": "String"}
+    }
+  },
+  "collectionMilestoneClaim": "Resgatar +{coins}",
+  "@collectionMilestoneClaim": {
+    "placeholders": {
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneLocked": "{count} itens · {coins} Moedas de Mercado",
+  "@collectionMilestoneLocked": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneDone": "Você ganhou {coins} Moedas de Mercado e um novo título!",
+  "@collectionMilestoneDone": {
+    "placeholders": {
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneErrNet": "Não foi possível resgatar: verifique a conexão e tente de novo.",
   "marketWallet": "{n} Moedas de Mercado",
   "@marketWallet": {
     "placeholders": {

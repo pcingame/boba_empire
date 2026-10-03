@@ -205,6 +205,15 @@ class AccessoryMarketRepository {
     });
   }
 
+  /// Nhận thưởng mốc sưu tập; trả số Xu Chợ. Ném PostgrestException với message
+  /// `invalid_milestone` / `not_reached` / `already_claimed`.
+  Future<int> claimCollectionMilestone(int milestone) async {
+    await ensureSignedIn();
+    final coins = await _client
+        .rpc('claim_collection_milestone', params: {'p_milestone': milestone});
+    return (coins as num).toInt();
+  }
+
   /// Nạp [amount] Xu Chợ — MỘT CHIỀU, không có hàm ngược (xem PROPOSAL §0).
   /// Gọi SAU KHI đã chắc chắn sẽ trừ Xu/💎 cục bộ (GameController tự trừ
   /// nếu lệnh này thành công, xem convertGemsToMarketCoins/

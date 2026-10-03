@@ -2302,6 +2302,60 @@ abstract class AppLocalizations {
   /// **'Đã hiểu'**
   String get marketIntroOk;
 
+  /// No description provided for @collectionTitle10.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người sưu tầm'**
+  String get collectionTitle10;
+
+  /// No description provided for @collectionTitle25.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhà sưu tầm'**
+  String get collectionTitle25;
+
+  /// No description provided for @collectionTitle40.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuyên gia sưu tầm'**
+  String get collectionTitle40;
+
+  /// No description provided for @collectionTitle50.
+  ///
+  /// In vi, this message translates to:
+  /// **'Huyền thoại sưu tầm'**
+  String get collectionTitle50;
+
+  /// No description provided for @collectionTitleLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh hiệu: {title}'**
+  String collectionTitleLabel(String title);
+
+  /// No description provided for @collectionMilestoneClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận +{coins}'**
+  String collectionMilestoneClaim(int coins);
+
+  /// No description provided for @collectionMilestoneLocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} món · {coins} Xu Chợ'**
+  String collectionMilestoneLocked(int count, int coins);
+
+  /// No description provided for @collectionMilestoneDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {coins} Xu Chợ và danh hiệu mới!'**
+  String collectionMilestoneDone(int coins);
+
+  /// No description provided for @collectionMilestoneErrNet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không nhận được — kiểm tra mạng rồi thử lại.'**
+  String get collectionMilestoneErrNet;
+
   /// No description provided for @marketWallet.
   ///
   /// In vi, this message translates to:

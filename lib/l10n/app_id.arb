@@ -547,6 +547,36 @@
   "marketIntroStep2": "2. Beli aksesori yang dijual pemain lain untuk melengkapi koleksimu.",
   "marketIntroStep3": "3. Jual cadangan di tab Milikku. Biayanya hanya 1%.",
   "marketIntroOk": "Mengerti",
+  "collectionTitle10": "Kolektor",
+  "collectionTitle25": "Penggemar",
+  "collectionTitle40": "Kolektor Ahli",
+  "collectionTitle50": "Legenda Koleksi",
+  "collectionTitleLabel": "Gelar: {title}",
+  "@collectionTitleLabel": {
+    "placeholders": {
+      "title": {"type": "String"}
+    }
+  },
+  "collectionMilestoneClaim": "Klaim +{coins}",
+  "@collectionMilestoneClaim": {
+    "placeholders": {
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneLocked": "{count} item · {coins} Koin Pasar",
+  "@collectionMilestoneLocked": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneDone": "Dapat {coins} Koin Pasar dan gelar baru!",
+  "@collectionMilestoneDone": {
+    "placeholders": {
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneErrNet": "Gagal klaim — periksa koneksi lalu coba lagi.",
   "marketWallet": "{n} Koin Pasar",
   "@marketWallet": {
     "placeholders": {

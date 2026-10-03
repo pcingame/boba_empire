@@ -1296,6 +1296,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String get marketIntroOk => 'Got it';
 
   @override
+  String get collectionTitle10 => 'Collector';
+
+  @override
+  String get collectionTitle25 => 'Connoisseur';
+
+  @override
+  String get collectionTitle40 => 'Expert Collector';
+
+  @override
+  String get collectionTitle50 => 'Collecting Legend';
+
+  @override
+  String collectionTitleLabel(String title) {
+    return 'Title: $title';
+  }
+
+  @override
+  String collectionMilestoneClaim(int coins) {
+    return 'Claim +$coins';
+  }
+
+  @override
+  String collectionMilestoneLocked(int count, int coins) {
+    return '$count items · $coins Market Coins';
+  }
+
+  @override
+  String collectionMilestoneDone(int coins) {
+    return 'Got $coins Market Coins and a new title!';
+  }
+
+  @override
+  String get collectionMilestoneErrNet =>
+      'Couldn\'t claim — check your connection and try again.';
+
+  @override
   String marketWallet(int n) {
     return '$n Market Coins';
   }

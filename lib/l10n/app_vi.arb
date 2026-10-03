@@ -902,6 +902,36 @@
   "marketIntroStep2": "2. Mua phụ kiện người khác đăng bán để hoàn thiện bộ sưu tập.",
   "marketIntroStep3": "3. Bán bản dư ở tab Của tôi. Phí sàn chỉ 1%.",
   "marketIntroOk": "Đã hiểu",
+  "collectionTitle10": "Người sưu tầm",
+  "collectionTitle25": "Nhà sưu tầm",
+  "collectionTitle40": "Chuyên gia sưu tầm",
+  "collectionTitle50": "Huyền thoại sưu tầm",
+  "collectionTitleLabel": "Danh hiệu: {title}",
+  "@collectionTitleLabel": {
+    "placeholders": {
+      "title": {"type": "String"}
+    }
+  },
+  "collectionMilestoneClaim": "Nhận +{coins}",
+  "@collectionMilestoneClaim": {
+    "placeholders": {
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneLocked": "{count} món · {coins} Xu Chợ",
+  "@collectionMilestoneLocked": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneDone": "Nhận {coins} Xu Chợ và danh hiệu mới!",
+  "@collectionMilestoneDone": {
+    "placeholders": {
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneErrNet": "Không nhận được — kiểm tra mạng rồi thử lại.",
   "marketWallet": "{n} Xu Chợ",
   "@marketWallet": {
     "placeholders": {

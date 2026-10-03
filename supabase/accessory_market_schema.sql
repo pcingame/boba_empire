@@ -535,3 +535,66 @@ end;
 $$;
 
 grant execute on function claim_starter_pack(text, integer, integer) to authenticated;
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Mốc sưu tập 10/25/40/50 món: thưởng Xu Chợ MỘT LẦN mỗi mốc. Server tự đếm
+-- số món khác nhau (đang giữ + đang rao bán) nên client không khai khống số
+-- lượng được — chỉ có thể bơm món giả qua register_accessory_drop (cùng mức
+-- tin cậy cũ). Thưởng cố định, một chiều (Xu Chợ không đổi ra Xu/💎 thật),
+-- tối đa 370 Xu Chợ cả đời mỗi tài khoản. Lỗi: invalid_milestone |
+-- not_reached | already_claimed.
+-- ─────────────────────────────────────────────────────────────────────────
+create table if not exists accessory_milestone_claims (
+  user_id    uuid not null references auth.users(id) on delete cascade,
+  milestone  integer not null,
+  claimed_at timestamptz not null default now(),
+  primary key (user_id, milestone)
+);
+
+alter table accessory_milestone_claims enable row level security;
+-- Không policy nào: chỉ qua RPC.
+
+create or replace function claim_collection_milestone(p_milestone integer)
+returns integer
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_reward integer;
+  v_owned integer;
+begin
+  if auth.uid() is null then
+    raise exception 'not authenticated';
+  end if;
+  v_reward := case p_milestone
+    when 10 then 20 when 25 then 50 when 40 then 100 when 50 then 200
+    else null end;
+  if v_reward is null then
+    raise exception 'invalid_milestone';
+  end if;
+  select count(*) into v_owned from (
+    select accessory_id from accessory_server_ownership where user_id = auth.uid()
+    union
+    select accessory_id from accessory_listings
+      where seller_id = auth.uid() and status = 'active'
+  ) t;
+  if v_owned < p_milestone then
+    raise exception 'not_reached';
+  end if;
+  if exists (select 1 from accessory_milestone_claims
+             where user_id = auth.uid() and milestone = p_milestone) then
+    raise exception 'already_claimed';
+  end if;
+
+  insert into accessory_milestone_claims (user_id, milestone)
+  values (auth.uid(), p_milestone);
+  insert into accessory_wallets (user_id, balance)
+  values (auth.uid(), v_reward)
+  on conflict (user_id) do update
+    set balance = accessory_wallets.balance + v_reward;
+  return v_reward;
+end;
+$$;
+
+grant execute on function claim_collection_milestone(integer) to authenticated;

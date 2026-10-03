@@ -132,12 +132,14 @@ class GameState {
     List<String>? ownedAccessories,
     Map<String, int>? accessorySpares,
     List<String>? equippedAccessories,
+    List<int>? collectionMilestonesClaimed,
   })  : achievementsClaimed = achievementsClaimed ?? [],
         m3Stars = m3Stars ?? [],
         redeemedCodes = redeemedCodes ?? [],
         ownedAccessories = ownedAccessories ?? [],
         accessorySpares = accessorySpares ?? {},
         equippedAccessories = equippedAccessories ?? [],
+        collectionMilestonesClaimed = collectionMilestonesClaimed ?? [],
         dailyProgress = dailyProgress ?? {},
         dailyClaimed = dailyClaimed ?? [],
         firstPlayedMillis = firstPlayedMillis ?? lastSeenMillis;
@@ -238,6 +240,10 @@ class GameState {
   /// Id phụ kiện đang TRƯNG BÀY quanh cốc ở màn chính (≤ Balance.maxEquippedAccessories,
   /// đều phải đang sở hữu). Thuần trang trí — động lực khoe/sưu tập, không buff gì.
   final List<String> equippedAccessories;
+
+  /// Mốc sưu tập đã nhận thưởng (xem collection_milestones.dart). Server mới là
+  /// nguồn sự thật — đây chỉ để ẩn nút nhận.
+  final List<int> collectionMilestonesClaimed;
 
   /// Cấp perk "Siêu thu nhập" mua bằng ⭐ Sao (kho prestige) — +% income vĩnh viễn.
   int prestigeIncomeLevel;
@@ -430,6 +436,7 @@ class GameState {
         'ownedAccessories': ownedAccessories,
         'accessorySpares': accessorySpares,
         'equippedAccessories': equippedAccessories,
+        'collectionMilestonesClaimed': collectionMilestonesClaimed,
         'prestigeIncomeLevel': prestigeIncomeLevel,
         'prestigeTapLevel': prestigeTapLevel,
         'prestigeOfflineLevel': prestigeOfflineLevel,
@@ -515,6 +522,11 @@ class GameState {
             (json['ownedAccessories'] as List?)?.cast<String>().toList(),
         // load() nuốt mọi lỗi thành "ván mới" — trường phụ này sai kiểu/giá trị
         // lạ phải bị BỎ QUA chứ không được ném, nếu không mất cả save.
+        collectionMilestonesClaimed: [
+          if (json['collectionMilestonesClaimed'] is List)
+            for (final e in json['collectionMilestonesClaimed'] as List)
+              if (e is num) e.toInt(),
+        ],
         equippedAccessories: [
           if (json['equippedAccessories'] is List)
             for (final e in json['equippedAccessories'] as List)

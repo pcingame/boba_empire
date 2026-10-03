@@ -73,6 +73,10 @@ void main() {
     final beforeX2 = container
         .read(gameControllerProvider)
         .x2IncomeRemainingSeconds;
+    final beforeOwned = container
+        .read(gameControllerProvider)
+        .ownedAccessories
+        .length;
 
     await tester.tap(find.byKey(const Key('wheel-spin')));
     await tester.pumpAndSettle(); // chờ QC + animation quay 3.6s
@@ -81,8 +85,14 @@ void main() {
     final gems = container.read(gameControllerProvider).gems;
     final x2 = container.read(gameControllerProvider).x2IncomeRemainingSeconds;
 
-    // Đúng một trong ba loại thưởng phải tăng.
-    final gotReward = money > beforeMoney || gems > beforeGems || x2 > beforeX2;
+    final owned = container.read(gameControllerProvider).ownedAccessories.length;
+
+    // Đúng một trong các loại thưởng phải tăng (ô rương: phụ kiện mới, hoặc
+    // trùng thì +💎 — đã nằm trong `gems`).
+    final gotReward = money > beforeMoney ||
+        gems > beforeGems ||
+        x2 > beforeX2 ||
+        owned > beforeOwned;
     expect(gotReward, isTrue, reason: 'quay xong phải nhận thưởng');
 
     await tester.pumpWidget(const SizedBox());

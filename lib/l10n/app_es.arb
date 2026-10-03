@@ -547,6 +547,36 @@
   "marketIntroStep2": "2. Compra accesorios que otros jugadores pongan a la venta para completar tu colección.",
   "marketIntroStep3": "3. Vende repetidos en la pestaña Mis objetos. La comisión es solo del 1%.",
   "marketIntroOk": "Entendido",
+  "collectionTitle10": "Coleccionista",
+  "collectionTitle25": "Aficionado",
+  "collectionTitle40": "Coleccionista experto",
+  "collectionTitle50": "Leyenda del coleccionismo",
+  "collectionTitleLabel": "Título: {title}",
+  "@collectionTitleLabel": {
+    "placeholders": {
+      "title": {"type": "String"}
+    }
+  },
+  "collectionMilestoneClaim": "Reclamar +{coins}",
+  "@collectionMilestoneClaim": {
+    "placeholders": {
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneLocked": "{count} objetos · {coins} Monedas de Mercado",
+  "@collectionMilestoneLocked": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneDone": "¡Recibiste {coins} Monedas de Mercado y un nuevo título!",
+  "@collectionMilestoneDone": {
+    "placeholders": {
+      "coins": {"type": "int"}
+    }
+  },
+  "collectionMilestoneErrNet": "No se pudo reclamar: revisa tu conexión e inténtalo de nuevo.",
   "marketWallet": "{n} Monedas de Mercado",
   "@marketWallet": {
     "placeholders": {

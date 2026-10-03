@@ -16,6 +16,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../core/accessories.dart';
 import '../core/achievements.dart';
 import '../core/balance.dart';
+import '../core/collection_milestones.dart';
 import '../core/daily.dart';
 import '../core/daily_quests.dart';
 import '../core/economy.dart';
@@ -886,6 +887,50 @@ class GameController extends Notifier<GameSnapshot> {
     }
   }
 
+  /// Nhận thưởng mốc sưu tập [count] (server trước, đánh dấu cục bộ sau). Trả
+  /// số Xu Chợ nhận được, hoặc mã lỗi (`not_reached`, `already_claimed`,
+  /// `network`) — `already_claimed` cũng đánh dấu cục bộ để ẩn nút.
+  Future<({int? coins, String? error})> claimCollectionMilestone(
+      int count) async {
+    final market = _market;
+    final m = collectionMilestones.where((m) => m.count == count).firstOrNull;
+    if (market == null ||
+        m == null ||
+        !milestoneReached(_game, m) ||
+        milestoneClaimed(_game, m)) {
+      return (coins: null, error: 'not_reached');
+    }
+    try {
+      // Server tự đếm món — bù những món local có mà server chưa biết (cùng
+      // việc đối chiếu lúc mở Chợ) để không bị 'not_reached' oan.
+      final server = await market.fetchServerCopies();
+      for (final id in _game.ownedAccessories.toList()) {
+        if (!server.containsKey(id)) {
+          await market.registerDrop(id,
+              copies: 1 + (_game.accessorySpares[id] ?? 0));
+        }
+      }
+      final coins = await market.claimCollectionMilestone(count);
+      _game.collectionMilestonesClaimed.add(count);
+      unawaited(saveNow());
+      state = _snapshot();
+      return (coins: coins, error: null);
+    } catch (e) {
+      final msg = '$e';
+      if (msg.contains('already_claimed')) {
+        _game.collectionMilestonesClaimed.add(count);
+        unawaited(saveNow());
+        state = _snapshot();
+        return (coins: null, error: 'already_claimed');
+      }
+      developer.log('nhận mốc sưu tập lỗi: $e', name: 'Market');
+      return (
+        coins: null,
+        error: msg.contains('not_reached') ? 'not_reached' : 'network'
+      );
+    }
+  }
+
   /// Nhận Gói Khởi Nghiệp Chợ: server trước, cấp cục bộ sau (cùng nguyên tắc
   /// [convertGemsToMarketCoins]). Trả null nếu xong, hoặc mã lỗi server
   /// (`already_claimed`, `not_eligible`, `daily_cap`, `network`).
@@ -1332,6 +1377,8 @@ class GameController extends Notifier<GameSnapshot> {
       ownedAccessories: List.unmodifiable(_game.ownedAccessories),
       accessorySpares: Map.unmodifiable(_game.accessorySpares),
       equippedAccessories: List.unmodifiable(_game.equippedAccessories),
+      collectionMilestonesClaimed:
+          List.unmodifiable(_game.collectionMilestonesClaimed),
       m3HowToSeen: _game.m3HowToSeen,
       starterPackOwned: _game.starterPackOwned,
       tutorialSeen: _game.tutorialSeen,
