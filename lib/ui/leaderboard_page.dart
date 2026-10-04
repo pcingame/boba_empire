@@ -53,8 +53,11 @@ class _LeaderboardPageState extends ConsumerState<LeaderboardPage> {
     // đó có thể không còn hợp lệ để tra cứu lại (onRewardGems chạy sau 1
     // await bên trong controller, không phải ngay lúc build này).
     final messenger = ScaffoldMessenger.of(context);
+    // Chụp trước: callback này chạy SAU một await trong controller, lúc đó trang có thể đã
+    // đóng và `ref` đã dispose → `ref.read` sẽ ném lỗi.
+    final game = ref.read(gameControllerProvider.notifier);
     notifier.onRewardGems = (gems) {
-      ref.read(gameControllerProvider.notifier).grantLeaderboardReward(gems);
+      game.grantLeaderboardReward(gems);
       messenger.showSnackBar(
         SnackBar(content: Text(l10n.leaderboardRewardSnack(gems))),
       );

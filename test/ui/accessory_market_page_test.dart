@@ -67,8 +67,13 @@ class _FakeMarketController extends AccessoryMarketController {
     return null;
   }
 
+  int listCalls = 0;
+
   @override
-  Future<String?> listItem(String accessoryId, int price) async => null;
+  Future<String?> listItem(String accessoryId, int price) async {
+    listCalls++;
+    return null;
+  }
 }
 
 Future<(ProviderContainer, _FakeMarketController)> _pump(
@@ -358,6 +363,34 @@ void main() {
     await tester.enterText(find.byType(TextField), '500');
     await tester.pump();
     expect(find.textContaining('1%'), findsOneWidget);
+    container.dispose();
+  });
+
+  // Crash thật trên Crashlytics: ConsumerStatefulElement._assertNotDisposed ← _SellableTile.build
+  // (ref.read sau await). Trong lúc hộp thoại giá mở, danh sách "có thể bán" đổi và gỡ ô đó.
+  testWidgets('đăng bán: ô bị gỡ khỏi danh sách GIỮA lúc hộp giá mở -> xác nhận vẫn không crash',
+      (tester) async {
+    final (container, fake) = await _pump(tester);
+    await tester.tap(find.text('Của tôi'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Đăng bán'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), '500');
+    await tester.pump();
+
+    // Trong lúc hộp thoại đang mở: món bị gỡ (vd đối chiếu/làm mới) -> _SellableTile dispose.
+    container
+        .read(gameControllerProvider.notifier)
+        .removeOwnedAccessoryLocally('mint_leaf');
+    await tester.pumpAndSettle();
+    expect(find.text('Lá bạc hà'), findsNothing); // ô đã biến mất khỏi danh sách
+
+    await tester.tap(find.widgetWithText(FilledButton, 'Đăng bán')); // xác nhận trong hộp thoại
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+    expect(fake.listCalls, 1);
     container.dispose();
   });
 }

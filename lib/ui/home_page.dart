@@ -260,6 +260,7 @@ class _HomePageState extends ConsumerState<HomePage>
     _offlineDialogOpen = true;
     await showOfflineDialog(context, earned);
     _offlineDialogOpen = false;
+    if (!mounted) return;
     // Dù đóng bằng cách nào cũng dọn trạng thái popup (no-op nếu đã nhân đôi).
     ref.read(gameControllerProvider.notifier).acknowledgeOffline();
   }

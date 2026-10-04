@@ -387,13 +387,13 @@ class _ConvertCoinsDialogState extends ConsumerState<_ConvertCoinsDialog> {
               ? () async {
                   setState(() => _busy = true);
                   final notifier = ref.read(gameControllerProvider.notifier);
+                  final market =
+                      ref.read(accessoryMarketControllerProvider.notifier);
                   final ok = _source == _ConvertSource.gems
                       ? await notifier.convertGemsToMarketCoins(wanted)
                       : await notifier.convertMoneyToMarketCoins(wanted);
                   if (ok) {
-                    await ref
-                        .read(accessoryMarketControllerProvider.notifier)
-                        .refresh(silent: true);
+                    await market.refresh(silent: true);
                   }
                   if (!context.mounted) return;
                   Navigator.of(context).pop();
@@ -636,6 +636,9 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
                           _WishStar(accessoryId: others[i].accessoryId),
                           FilledButton(
                         onPressed: () async {
+                          // Chụp notifier trước await (xem ghi chú ở _SellableTile).
+                          final market = ref
+                              .read(accessoryMarketControllerProvider.notifier);
                           final ok = await _confirmBuy(
                             context,
                             l10n,
@@ -645,9 +648,7 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
                           );
                           if (ok != true) return;
                           HapticFeedback.mediumImpact();
-                          final msg = await ref
-                              .read(accessoryMarketControllerProvider.notifier)
-                              .buyItem(others[i]);
+                          final msg = await market.buyItem(others[i]);
                           onAction(msg ?? l10n.marketBoughtToast);
                         },
                         child: Text(l10n.marketBuyButton),
@@ -1045,12 +1046,15 @@ class _SellableTile extends ConsumerWidget {
                 const SizedBox(width: 8),
                 OutlinedButton(
                   onPressed: () async {
+                    // Chụp notifier TRƯỚC khi chờ hộp thoại: trong lúc hộp thoại mở, danh sách
+                    // "có thể bán" có thể đổi (đối chiếu/làm mới) và gỡ ô này → `ref` của nó
+                    // đã dispose, `ref.read` sau await sẽ ném FlutterError (crash trên Crashlytics).
+                    final market =
+                        ref.read(accessoryMarketControllerProvider.notifier);
                     final price =
                         await _askPrice(context, l10n, accessory, _nowUtc(ref));
                     if (price == null) return;
-                    final msg = await ref
-                        .read(accessoryMarketControllerProvider.notifier)
-                        .listItem(accessoryId, price);
+                    final msg = await market.listItem(accessoryId, price);
                     onAction(msg ?? l10n.marketListedToast);
                   },
                   child: Text(l10n.marketListButton),
