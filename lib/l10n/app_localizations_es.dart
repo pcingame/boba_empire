@@ -380,6 +380,66 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get accessoryChampagne => 'Brindis de champán';
+
+  @override
+  String get accessoryPartyPopper => 'Cañón de confeti';
+
+  @override
+  String get accessoryFireworks => 'Fuegos artificiales';
+
+  @override
+  String get accessoryGoldenSparkler => 'Bengala dorada';
+
+  @override
+  String get accessoryLoveLetter => 'Carta de amor';
+
+  @override
+  String get accessoryRose => 'Rosa roja';
+
+  @override
+  String get accessoryChocolate => 'Chocolate';
+
+  @override
+  String get accessoryCupidArrow => 'Flecha de Cupido';
+
+  @override
+  String get accessoryTulip => 'Tulipán';
+
+  @override
+  String get accessoryBouquet => 'Ramo de flores';
+
+  @override
+  String get accessoryLipstick => 'Pintalabios';
+
+  @override
+  String get accessoryPrincess => 'Princesa';
+
+  @override
+  String get accessoryMooncake => 'Pastel de luna';
+
+  @override
+  String get accessoryRabbit => 'Conejo lunar';
+
+  @override
+  String get accessoryFullMoon => 'Luna llena';
+
+  @override
+  String get accessoryLionDance => 'Danza del león';
+
+  @override
+  String get festivalNewYear => 'Año Nuevo';
+
+  @override
+  String get festivalValentine => 'San Valentín';
+
+  @override
+  String get festivalWomensDay => 'Día de la Mujer';
+
+  @override
+  String get festivalMidAutumn => 'Festival de Medio Otoño';
+
+  @override
   String get dailyClaim => 'Reclamar';
 
   @override

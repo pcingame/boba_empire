@@ -378,6 +378,66 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get accessoryChampagne => 'Ly sâm panh';
+
+  @override
+  String get accessoryPartyPopper => 'Pháo giấy';
+
+  @override
+  String get accessoryFireworks => 'Pháo hoa';
+
+  @override
+  String get accessoryGoldenSparkler => 'Pháo hoa vàng';
+
+  @override
+  String get accessoryLoveLetter => 'Thư tình';
+
+  @override
+  String get accessoryRose => 'Hoa hồng';
+
+  @override
+  String get accessoryChocolate => 'Sô-cô-la';
+
+  @override
+  String get accessoryCupidArrow => 'Mũi tên thần tình yêu';
+
+  @override
+  String get accessoryTulip => 'Hoa tulip';
+
+  @override
+  String get accessoryBouquet => 'Bó hoa';
+
+  @override
+  String get accessoryLipstick => 'Son môi';
+
+  @override
+  String get accessoryPrincess => 'Công chúa';
+
+  @override
+  String get accessoryMooncake => 'Bánh Trung Thu';
+
+  @override
+  String get accessoryRabbit => 'Thỏ ngọc';
+
+  @override
+  String get accessoryFullMoon => 'Trăng rằm';
+
+  @override
+  String get accessoryLionDance => 'Múa lân';
+
+  @override
+  String get festivalNewYear => 'Tết Dương lịch';
+
+  @override
+  String get festivalValentine => 'Valentine';
+
+  @override
+  String get festivalWomensDay => 'Quốc tế Phụ nữ 8/3';
+
+  @override
+  String get festivalMidAutumn => 'Tết Trung Thu';
+
+  @override
   String get dailyClaim => 'Nhận quà';
 
   @override

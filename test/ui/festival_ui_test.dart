@@ -4,6 +4,7 @@ import 'package:boba_empire/core/accessories.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
+import 'package:boba_empire/main.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/ui/accessory_inventory_page.dart';
 import 'package:boba_empire/ui/accessory_pack_dialog.dart';
@@ -108,4 +109,36 @@ void main() {
       await tester.pumpWidget(const SizedBox());
     });
   }
+
+  testWidgets('màn chính: món độc quyền đang trưng bày hiện quanh cốc (cả ô VIP thứ 4)',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 800));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final ids = festivals.first.items.map((a) => a.id).toList();
+    await GameStorage(prefs).save(
+        GameState.newGame(nowMillis: inWindow)
+          ..tutorialSeen = true
+          ..lastDailyDay = inWindow ~/ (24 * 60 * 60 * 1000)
+          ..vipUntilMillis = inWindow + 24 * 60 * 60 * 1000
+          ..ownedLimited.addAll(ids)
+          ..equippedAccessories.addAll(ids),
+        nowMillis: inWindow);
+    await tester.pumpWidget(ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        clockProvider.overrideWithValue(() => inWindow),
+      ],
+      child: const BobaEmpireApp(),
+    ));
+    await tester.pumpAndSettle();
+    final floaters = find.descendant(
+        of: find.byKey(const Key('equipped-floaters')),
+        matching: find.byType(Text));
+    expect(floaters, findsNWidgets(4));
+    final shown = tester.widgetList<Text>(floaters).map((t) => t.data).toSet();
+    expect(shown, festivals.first.items.map((a) => a.emoji).toSet());
+    await tester.pumpWidget(const SizedBox());
+  });
 }

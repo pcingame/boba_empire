@@ -380,6 +380,66 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get accessoryChampagne => 'Bersulang sampanye';
+
+  @override
+  String get accessoryPartyPopper => 'Konfeti pesta';
+
+  @override
+  String get accessoryFireworks => 'Kembang api';
+
+  @override
+  String get accessoryGoldenSparkler => 'Kembang api emas';
+
+  @override
+  String get accessoryLoveLetter => 'Surat cinta';
+
+  @override
+  String get accessoryRose => 'Mawar merah';
+
+  @override
+  String get accessoryChocolate => 'Cokelat';
+
+  @override
+  String get accessoryCupidArrow => 'Panah Cupid';
+
+  @override
+  String get accessoryTulip => 'Tulip';
+
+  @override
+  String get accessoryBouquet => 'Buket bunga';
+
+  @override
+  String get accessoryLipstick => 'Lipstik';
+
+  @override
+  String get accessoryPrincess => 'Putri';
+
+  @override
+  String get accessoryMooncake => 'Kue bulan';
+
+  @override
+  String get accessoryRabbit => 'Kelinci bulan';
+
+  @override
+  String get accessoryFullMoon => 'Bulan purnama';
+
+  @override
+  String get accessoryLionDance => 'Barongsai';
+
+  @override
+  String get festivalNewYear => 'Tahun Baru';
+
+  @override
+  String get festivalValentine => 'Hari Valentine';
+
+  @override
+  String get festivalWomensDay => 'Hari Perempuan Internasional';
+
+  @override
+  String get festivalMidAutumn => 'Festival Pertengahan Musim Gugur';
+
+  @override
   String get dailyClaim => 'Ambil';
 
   @override

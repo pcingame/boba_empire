@@ -375,6 +375,66 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get accessoryChampagne => 'แชมเปญฉลอง';
+
+  @override
+  String get accessoryPartyPopper => 'ปืนปาร์ตี้';
+
+  @override
+  String get accessoryFireworks => 'ดอกไม้ไฟ';
+
+  @override
+  String get accessoryGoldenSparkler => 'ดอกไม้ไฟทอง';
+
+  @override
+  String get accessoryLoveLetter => 'จดหมายรัก';
+
+  @override
+  String get accessoryRose => 'กุหลาบแดง';
+
+  @override
+  String get accessoryChocolate => 'ช็อกโกแลต';
+
+  @override
+  String get accessoryCupidArrow => 'ลูกศรคิวปิด';
+
+  @override
+  String get accessoryTulip => 'ทิวลิป';
+
+  @override
+  String get accessoryBouquet => 'ช่อดอกไม้';
+
+  @override
+  String get accessoryLipstick => 'ลิปสติก';
+
+  @override
+  String get accessoryPrincess => 'เจ้าหญิง';
+
+  @override
+  String get accessoryMooncake => 'ขนมไหว้พระจันทร์';
+
+  @override
+  String get accessoryRabbit => 'กระต่ายบนดวงจันทร์';
+
+  @override
+  String get accessoryFullMoon => 'พระจันทร์เต็มดวง';
+
+  @override
+  String get accessoryLionDance => 'ระบำสิงโต';
+
+  @override
+  String get festivalNewYear => 'ปีใหม่';
+
+  @override
+  String get festivalValentine => 'วันวาเลนไทน์';
+
+  @override
+  String get festivalWomensDay => 'วันสตรีสากล';
+
+  @override
+  String get festivalMidAutumn => 'เทศกาลไหว้พระจันทร์';
+
+  @override
   String get dailyClaim => 'รับ';
 
   @override

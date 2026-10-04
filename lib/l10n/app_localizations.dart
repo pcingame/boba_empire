@@ -706,6 +706,126 @@ abstract class AppLocalizations {
   /// **'Mỗi gói nhận 1 món độc quyền CHƯA CÓ, chỉ bán trong dịp lễ. Có đủ rồi thì đổi {gems} 💎. Không giao dịch được.'**
   String festivalPackDesc(int gems);
 
+  /// No description provided for @accessoryChampagne.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ly sâm panh'**
+  String get accessoryChampagne;
+
+  /// No description provided for @accessoryPartyPopper.
+  ///
+  /// In vi, this message translates to:
+  /// **'Pháo giấy'**
+  String get accessoryPartyPopper;
+
+  /// No description provided for @accessoryFireworks.
+  ///
+  /// In vi, this message translates to:
+  /// **'Pháo hoa'**
+  String get accessoryFireworks;
+
+  /// No description provided for @accessoryGoldenSparkler.
+  ///
+  /// In vi, this message translates to:
+  /// **'Pháo hoa vàng'**
+  String get accessoryGoldenSparkler;
+
+  /// No description provided for @accessoryLoveLetter.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thư tình'**
+  String get accessoryLoveLetter;
+
+  /// No description provided for @accessoryRose.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoa hồng'**
+  String get accessoryRose;
+
+  /// No description provided for @accessoryChocolate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sô-cô-la'**
+  String get accessoryChocolate;
+
+  /// No description provided for @accessoryCupidArrow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mũi tên thần tình yêu'**
+  String get accessoryCupidArrow;
+
+  /// No description provided for @accessoryTulip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoa tulip'**
+  String get accessoryTulip;
+
+  /// No description provided for @accessoryBouquet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bó hoa'**
+  String get accessoryBouquet;
+
+  /// No description provided for @accessoryLipstick.
+  ///
+  /// In vi, this message translates to:
+  /// **'Son môi'**
+  String get accessoryLipstick;
+
+  /// No description provided for @accessoryPrincess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Công chúa'**
+  String get accessoryPrincess;
+
+  /// No description provided for @accessoryMooncake.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bánh Trung Thu'**
+  String get accessoryMooncake;
+
+  /// No description provided for @accessoryRabbit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thỏ ngọc'**
+  String get accessoryRabbit;
+
+  /// No description provided for @accessoryFullMoon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trăng rằm'**
+  String get accessoryFullMoon;
+
+  /// No description provided for @accessoryLionDance.
+  ///
+  /// In vi, this message translates to:
+  /// **'Múa lân'**
+  String get accessoryLionDance;
+
+  /// No description provided for @festivalNewYear.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tết Dương lịch'**
+  String get festivalNewYear;
+
+  /// No description provided for @festivalValentine.
+  ///
+  /// In vi, this message translates to:
+  /// **'Valentine'**
+  String get festivalValentine;
+
+  /// No description provided for @festivalWomensDay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quốc tế Phụ nữ 8/3'**
+  String get festivalWomensDay;
+
+  /// No description provided for @festivalMidAutumn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tết Trung Thu'**
+  String get festivalMidAutumn;
+
   /// No description provided for @dailyClaim.
   ///
   /// In vi, this message translates to:

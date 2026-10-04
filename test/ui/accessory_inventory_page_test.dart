@@ -49,7 +49,7 @@ void main() {
   testWidgets('ván mới: 0/80, cả 80 ô đều khoá ("???")', (tester) async {
     // Đủ cao để GridView dựng hết 50 ô (17 hàng) không cần cuộn — GridView.builder
     // chỉ dựng ô đang hiện trên màn, đếm thiếu nếu màn quá thấp.
-    await tester.binding.setSurfaceSize(const Size(400, 5600));
+    await tester.binding.setSurfaceSize(const Size(400, 7600));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(await _app(const Locale('vi')));
     await tester.pumpAndSettle();

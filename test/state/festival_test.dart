@@ -60,6 +60,51 @@ void main() {
     });
   });
 
+  group('lịch dịp lễ', () {
+    // Ngày lễ chính (đã đối chiếu âm lịch: Tết 6/2/2027, Trung Thu 15/9/2027)
+    // phải nằm TRONG cửa sổ bán của dịp tương ứng.
+    final holidays = {
+      'halloween': DateTime.utc(2026, 10, 31),
+      'christmas': DateTime.utc(2026, 12, 24),
+      'new_year': DateTime.utc(2027, 1, 1),
+      'tet': DateTime.utc(2027, 2, 6),
+      'valentine': DateTime.utc(2027, 2, 14),
+      'womens_day': DateTime.utc(2027, 3, 8),
+      'mid_autumn': DateTime.utc(2027, 9, 15),
+    };
+    test('mỗi dịp bao trùm đúng ngày lễ chính của nó', () {
+      expect(festivals.map((f) => f.id).toSet(), holidays.keys.toSet());
+      holidays.forEach((id, day) {
+        expect(activeFestival(day)?.id, id, reason: 'ngày lễ của $id');
+        expect(activeFestival(day.add(const Duration(hours: 23, minutes: 59)))?.id, id);
+      });
+    });
+
+    test('quét từng ngày 10/2026–12/2027: tối đa 1 dịp, mỗi dịp liên tục', () {
+      final seen = <String>[];
+      for (var d = DateTime.utc(2026, 10, 1);
+          d.isBefore(DateTime.utc(2028, 1, 1));
+          d = d.add(const Duration(days: 1))) {
+        final a = activeFestival(d);
+        final matches = festivals.where(
+            (f) => !d.isBefore(f.start) && d.isBefore(f.end)).length;
+        expect(matches, lessThanOrEqualTo(1), reason: '$d');
+        if (a != null && (seen.isEmpty || seen.last != a.id)) seen.add(a.id);
+      }
+      // Mỗi dịp xuất hiện đúng 1 đoạn liên tục (không bị cắt đôi).
+      expect(seen.toSet().length, seen.length);
+      expect(seen.length, festivals.length);
+    });
+
+    test('mỗi dịp có đủ độ hiếm đa dạng và đúng 1 huyền thoại', () {
+      for (final f in festivals) {
+        expect(f.items.where((a) => a.rarity == AccessoryRarity.legendary).length, 1,
+            reason: f.id);
+        expect(f.items.map((a) => a.rarity).toSet().length, greaterThanOrEqualTo(2));
+      }
+    });
+  });
+
   group('mua Gói Lễ Hội', () {
     test('trong dịp: trừ 80💎, nhận món của dịp đó, KHÔNG đụng bộ sưu tập chính',
         () async {
@@ -109,5 +154,51 @@ void main() {
       final old = json.toJson()..remove('ownedLimited');
       expect(GameState.fromJson(old).ownedLimited, isEmpty);
     });
+  });
+
+  group('mọi dịp mua được trọn bộ', () {
+    for (final f in festivals) {
+      test('${f.id}: 4 gói = đủ 4 món, cả 4 đều tra tên/emoji được', () async {
+        final c = await _open(f.start.millisecondsSinceEpoch + 1);
+        for (var i = 0; i < 4; i++) {
+          _ctrl(c).buyFestivalPack();
+        }
+        expect(c.read(gameControllerProvider).ownedLimited.toSet(),
+            f.items.map((a) => a.id).toSet());
+        for (final a in f.items) {
+          expect(accessoryById(a.id).emoji, a.emoji);
+        }
+      });
+    }
+  });
+
+  test('50 lượt mua ngẫu nhiên: không bao giờ vượt 4 món/dịp, 💎 không âm',
+      () async {
+    final c = await _open(inWindow, gems: 5000);
+    for (var i = 0; i < 50; i++) {
+      _ctrl(c).buyFestivalPack();
+      final s = c.read(gameControllerProvider);
+      expect(s.ownedLimited.length, lessThanOrEqualTo(4));
+      expect(s.gems, greaterThanOrEqualTo(0));
+    }
+  });
+
+  test('đóng/mở lại app: món độc quyền + trưng bày được giữ nguyên', () async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final id = festivals.first.items.last.id; // huyền thoại
+    await GameStorage(prefs).save(
+        GameState.newGame(nowMillis: inWindow)
+          ..ownedLimited.add(id)
+          ..equippedAccessories.add(id),
+        nowMillis: inWindow);
+    final c = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(() => inWindow),
+    ]);
+    addTearDown(c.dispose);
+    final s = c.read(gameControllerProvider);
+    expect(s.ownedLimited, [id]);
+    expect(s.equippedAccessories, [id]); // load cleanup không xoá món độc quyền
   });
 }

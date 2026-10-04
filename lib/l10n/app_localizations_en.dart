@@ -375,6 +375,66 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get accessoryChampagne => 'Champagne Toast';
+
+  @override
+  String get accessoryPartyPopper => 'Party Popper';
+
+  @override
+  String get accessoryFireworks => 'Fireworks';
+
+  @override
+  String get accessoryGoldenSparkler => 'Golden Sparkler';
+
+  @override
+  String get accessoryLoveLetter => 'Love Letter';
+
+  @override
+  String get accessoryRose => 'Red Rose';
+
+  @override
+  String get accessoryChocolate => 'Chocolate';
+
+  @override
+  String get accessoryCupidArrow => 'Cupid\'s Arrow';
+
+  @override
+  String get accessoryTulip => 'Tulip';
+
+  @override
+  String get accessoryBouquet => 'Bouquet';
+
+  @override
+  String get accessoryLipstick => 'Lipstick';
+
+  @override
+  String get accessoryPrincess => 'Princess';
+
+  @override
+  String get accessoryMooncake => 'Mooncake';
+
+  @override
+  String get accessoryRabbit => 'Moon Rabbit';
+
+  @override
+  String get accessoryFullMoon => 'Full Moon';
+
+  @override
+  String get accessoryLionDance => 'Lion Dance';
+
+  @override
+  String get festivalNewYear => 'New Year';
+
+  @override
+  String get festivalValentine => 'Valentine\'s Day';
+
+  @override
+  String get festivalWomensDay => 'Women\'s Day';
+
+  @override
+  String get festivalMidAutumn => 'Mid-Autumn Festival';
+
+  @override
   String get dailyClaim => 'Claim';
 
   @override

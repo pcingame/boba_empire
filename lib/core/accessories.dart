@@ -265,11 +265,35 @@ final List<Festival> festivals = [
     Accessory('reindeer', AccessoryRarity.epic, '🦌'),
     Accessory('santa', AccessoryRarity.legendary, '🎅'),
   ]),
-  Festival('tet', DateTime.utc(2027, 1, 30), DateTime.utc(2027, 2, 15), const [
+  Festival('new_year', DateTime.utc(2026, 12, 28), DateTime.utc(2027, 1, 4), const [
+    Accessory('champagne', AccessoryRarity.rare, '🥂'),
+    Accessory('party_popper', AccessoryRarity.epic, '🎉'),
+    Accessory('fireworks', AccessoryRarity.epic, '🎆'),
+    Accessory('golden_sparkler', AccessoryRarity.legendary, '🎇'),
+  ]),
+  Festival('tet', DateTime.utc(2027, 1, 30), DateTime.utc(2027, 2, 10), const [
     Accessory('firecracker', AccessoryRarity.rare, '🧨'),
     Accessory('red_envelope', AccessoryRarity.epic, '🧧'),
     Accessory('apricot_blossom', AccessoryRarity.epic, '🌼'),
     Accessory('golden_goat', AccessoryRarity.legendary, '🐐'),
+  ]),
+  Festival('valentine', DateTime.utc(2027, 2, 10), DateTime.utc(2027, 2, 16), const [
+    Accessory('love_letter', AccessoryRarity.rare, '💌'),
+    Accessory('rose', AccessoryRarity.epic, '🌹'),
+    Accessory('chocolate', AccessoryRarity.epic, '🍫'),
+    Accessory('cupid_arrow', AccessoryRarity.legendary, '💘'),
+  ]),
+  Festival('womens_day', DateTime.utc(2027, 3, 4), DateTime.utc(2027, 3, 10), const [
+    Accessory('tulip', AccessoryRarity.rare, '🌷'),
+    Accessory('bouquet', AccessoryRarity.epic, '💐'),
+    Accessory('lipstick', AccessoryRarity.epic, '💄'),
+    Accessory('princess', AccessoryRarity.legendary, '👸'),
+  ]),
+  Festival('mid_autumn', DateTime.utc(2027, 9, 8), DateTime.utc(2027, 9, 18), const [
+    Accessory('mooncake', AccessoryRarity.rare, '🥮'),
+    Accessory('rabbit', AccessoryRarity.epic, '🐇'),
+    Accessory('full_moon', AccessoryRarity.epic, '🌕'),
+    Accessory('lion_dance', AccessoryRarity.legendary, '🦁'),
   ]),
 ];
 
