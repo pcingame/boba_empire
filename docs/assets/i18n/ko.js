@@ -106,5 +106,18 @@
  "ctaTitle": "오늘 첫 잔을 만들어 보세요",
  "ctaLead": "iPhone과 iPad에서 무료.",
  "by": "개발",
- "privacy": "개인정보 처리방침"
+ "privacy": "개인정보 처리방침",
+ "navPlay": "체험",
+ "playTitle": "한번 탭해 보세요",
+ "playLead": "커다란 버블티 한 잔이 기다리고 있어요. 탭해서 코인을 벌고, 업그레이드를 사서 돈이 저절로 쌓이는 모습을 보세요.",
+ "playHint": "컵을 탭하세요!",
+ "playCoins": "코인",
+ "playPerSec": "/초",
+ "playU1": "펄 추가",
+ "playU2": "바리스타 고용",
+ "playU3": "자동 제조기",
+ "playCtaTitle": "이건 아주 작은 일부예요!",
+ "playCtaText": "정식 게임에는 18단계, 스토리, 액세서리, PvP 아레나가 기다리고 있어요.",
+ "cdLive": "{name} 진행 중, {t} 남음",
+ "cdNext": "{name} {t} 후 시작"
 };

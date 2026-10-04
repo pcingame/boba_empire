@@ -1,14 +1,15 @@
 # WEBSITE — landing page bobaempiregame.com
 
 Ghi lại cách trang web hoạt động để sửa/mở rộng mà không phải đọc lại từ đầu.
-Cập nhật lần cuối: 2026-10-04 (thêm hiệu ứng + tối ưu).
+Cập nhật lần cuối: 2026-10-04 (mini-game, đếm ngược, tour, video hero, hiệu ứng nút/trứng phục sinh).
 
 ## Hạ tầng
 - Host: **GitHub Pages**, nguồn là thư mục `docs/` của nhánh `main`. Push là tự cập nhật
   (thường vài phút). Domain trỏ qua `docs/CNAME` (`bobaempiregame.com`); chi tiết DNS/HTTPS ở
   `DOMAIN_TODO.md`, tự kiểm bằng `bash scripts/check_domain.sh`.
 - **Không có bước build**: `docs/index.html` (CSS inline, không framework) + `docs/assets/site.js`
-  (logic, `defer`) + `docs/assets/i18n/<lang>.js` (mỗi ngôn ngữ một file, chỉ tải ngôn ngữ đang dùng)
+  (logic chính: ngôn ngữ, bảng xếp hạng, sự kiện, đếm ngược) + `docs/assets/extras.js` (phần "vui": mini-game,
+  tour, hiệu ứng, video) — cả hai `defer` — + `docs/assets/i18n/<lang>.js` (mỗi ngôn ngữ một file, chỉ tải ngôn ngữ đang dùng)
   + ảnh. Mở thẳng file trong trình duyệt là chạy được.
 - Trang kèm: `docs/privacy-policy.html` (chính sách quyền riêng tư, có link quay lại trang chủ).
 - ⚠️ Mọi file trong `docs/` đều **công khai**: đừng đặt ghi chú nội bộ/`.md` ở đây (file này
@@ -23,9 +24,15 @@ Cập nhật lần cuối: 2026-10-04 (thêm hiệu ứng + tối ưu).
 | **12 thẻ tính năng**, dải số liệu (18 giai đoạn / 36 chương / 80+ phụ kiện / 7 ngôn ngữ) | `index.html` + `i18n/<lang>.js` (`f1t…f12d`, `st*`) | Số liệu phải khớp game — cập nhật khi đổi |
 | **Bảng xếp hạng trực tiếp** (4 tab, top 20) | mục `#board` | Xem mục "Bảng xếp hạng" dưới đây |
 | **Lịch sự kiện lễ** (7 dịp) tự gắn nhãn ĐANG DIỄN RA / SẮP TỚI theo ngày | mục `#events`, mảng `EVENTS` trong script | PHẢI khớp `festivals` trong `lib/core/accessories.dart` (đổi một nơi thì đổi cả hai) |
+| **Mini-game "Thử chạm"** | mục `#play`, `extras.js` (`play()`) | Chạm ly kiếm Xu, 3 nâng cấp (+chạm / +mỗi giây), tiền tự chạy; vòng lặp `requestAnimationFrame` chỉ chạy khi mục đang thấy và tab mở. Đủ 250 Xu hoặc chơi 25 giây thì hiện thẻ "Mới chỉ là một phần nhỏ" + nút App Store. Chuỗi: `play*` trong i18n |
+| **Tour cuộn** (điện thoại dính bên trái, ảnh đổi theo bước) | mục `#screens`, `extras.js` (`tour()`) | 8 bước dùng lại chuỗi `f*`/`s*`; điện thoại ẩn ở <860px, mỗi bước tự kèm ảnh. Thay cho thanh trượt ảnh cũ |
+| **Video chơi game ở hero** | `<video id="heroVideo">`, `docs/assets/video/` | `gameplay-vi.mp4` (giao diện tiếng Việt) cho `vi`, `gameplay.mp4` (tiếng Anh) cho các ngôn ngữ còn lại + `poster*.webp`. Tự phát, câm, lặp; dừng khi ra khỏi màn hình; chỉ hiện poster khi bật giảm chuyển động / tiết kiệm dữ liệu. ~0,3–0,4MB/clip. Cách quay lại: mục "Quay lại video" dưới đây |
+| **Đếm ngược sự kiện lễ + hiệu ứng mùa** | pill dưới nút tải ở hero, `site.js` (`renderCountdown`) | "Halloween bắt đầu sau 19d 8h" / "đang diễn ra, còn …"; khi sự kiện đang diễn ra thả emoji bộ phụ kiện rơi nhẹ ở hero. **Xem thử:** thêm `?event=halloween` (ép sự kiện đó thành "đang diễn ra") |
+| Hạt trân châu khi bấm **Tải trên App Store** | `extras.js` (`pearlBurst`) | Bắn 16 hạt rồi mới chuyển trang (380 ms); Ctrl/Cmd/Shift/chuột giữa vẫn mở tab mới như thường |
+| Trứng phục sinh | `extras.js` (`egg()`) | Bấm 5 lần vào logo (nav hoặc hero) trong 2,5 giây → mưa trân châu |
 | FAQ 5 câu | `q1…q5`/`a1…a5` | |
 | Sáng/tối tự động (`prefers-color-scheme`), responsive | CSS biến `:root` | Điểm vỡ 860px (hero) và 640px (lưới) |
-| **Hiệu ứng** (đều tắt khi `prefers-reduced-motion`) | CSS ở cuối `<style>` + `site.js` | Hiện dần khi cuộn (`.reveal` → `.in`, IntersectionObserver); hero: tiêu đề vào lần lượt, 2 điện thoại bồng bềnh, trân châu bay; số liệu đếm lên; nút App Store sáng/lướt bóng; thẻ nhấc lên khi rê chuột; thanh trượt có mũi tên (desktop); bảng xếp hạng: khung chờ lấp lánh (skeleton) + dòng vào lần lượt; nav đổ bóng khi cuộn |
+| **Hiệu ứng** (đều tắt khi `prefers-reduced-motion`) | CSS ở cuối `<style>` + `site.js` | Hiện dần khi cuộn (`.reveal` → `.in`, IntersectionObserver); hero: tiêu đề vào lần lượt, 2 điện thoại bồng bềnh, trân châu bay; số liệu đếm lên; nút App Store sáng/lướt bóng; thẻ nhấc lên khi rê chuột; bảng xếp hạng: khung chờ lấp lánh (skeleton) + dòng vào lần lượt; nav đổ bóng khi cuộn |
 | **Tối ưu hiệu năng** | `<head>` + CSS | Script `defer` ngoài file (được cache); script head chọn ngôn ngữ sớm và tải từ điển + preload 2 ảnh hero song song; chỉ tải từ điển của ngôn ngữ cần; ảnh `webp` có `width/height` (không xô lệch), `loading=lazy` (trừ 2 ảnh hero có `fetchpriority=high`); `content-visibility:auto` cho các mục dưới màn hình đầu; API xếp hạng chỉ gọi khi cuộn gần tới; `dns-prefetch` Supabase |
 | SEO / chia sẻ | `<head>` | `canonical`, Open Graph + Twitter card (`assets/og.jpg` 1200×630), **Smart App Banner** Safari (`apple-itunes-app`), JSON-LD `MobileApplication` |
 
@@ -65,11 +72,29 @@ chơi KHÔNG bao giờ được chèn dưới dạng HTML).
 - **Cập nhật số liệu game** (số giai đoạn/chương/phụ kiện): `i18n/<lang>.js` (`f*`, `st*`, `s2d`,
   `metaDesc`) **và** `JSON-LD`/`<meta>` tĩnh trong `index.html` (đang bản tiếng Việt).
 
+
+## Quay lại video chơi game (hero)
+Quay từ iOS Simulator rồi nén; không cần công cụ ngoài ngoài `ffmpeg` và `cliclick` (brew).
+1. `flutter build ios --debug --simulator` rồi cài vào iPhone 17 Pro Max đang boot; chỉ để một Simulator
+   mở (tắt iPad) để cửa sổ iPhone là cửa sổ duy nhất.
+2. Qua các hộp thoại lần đầu (UMP "Continue" → hệ thống "Allow/Ask not to track" → "Cách chơi" → cốt
+   truyện chương 1). **Hộp thoại gốc của hệ điều hành đôi khi không nhận `cliclick c:`** — thử lại hoặc
+   dùng bấm-giữ (`m:` `w:` `dd:` `du:`). Muốn tiếng Việt: Cài đặt → Ngôn ngữ trong game.
+3. Chạm thật bằng `cliclick`, đổi toạ độ điểm trên máy (440×956) sang toạ độ màn hình:
+   `X = 1124.4 + 0.787·dx`, `Y = 109.8 + 0.787·dy` (cửa sổ Simulator ở góc phải trên; **hiệu chỉnh lại**
+   bằng `screencapture -R… ` nếu bạn đổi cỡ/vị trí cửa sổ). Lấy `dx,dy` từ ảnh `xcrun simctl io <udid> screenshot`
+   — bố cục đổi theo từng trạng thái (VD biển báo "Chợ phụ kiện" ở đầu đẩy mọi thứ xuống ~50pt).
+4. Quay: `xcrun simctl io <udid> recordVideo --codec=h264 --force x.mov &` → chạy kịch bản chạm
+   (chạm ly → mua Trà đen → Thành tựu → Nhiệm vụ ngày) → `kill -INT` để chốt file.
+5. Nén: `ffmpeg -i x.mov -an -vf "trim=start=1:end=…,setpts=(PTS-STARTPTS)/1.5,fps=24,scale=400:-2" -c:v libx264 -crf 26 -profile:v main -pix_fmt yuv420p -movflags +faststart docs/assets/video/gameplay.mp4`
+   (tăng tốc 1,5×, ~15 giây) và tạo `poster*.webp` từ một khung hình (Pillow).
+⚠️ Đừng để lọt vào video: biển quảng cáo thử ("Test ad"), tên người thật, số liệu nhạy cảm.
+
 ## Kiểm thử cục bộ
 - Mở thẳng `docs/index.html` (hoặc `python3 -m http.server -d docs`).
 - Chụp thử bằng Chrome headless: cửa sổ nhỏ hơn ~500px bị Chrome ép rộng hơn nên bố cục mobile
   trông như "tràn". Để xem mobile đúng, nhúng trang vào `<iframe width="390">` rồi chụp.
-- Chỉ ảnh `?lang=…` và bảng xếp hạng cần mạng; phần còn lại chạy offline.
+- Chỉ bảng xếp hạng cần mạng; phần còn lại chạy offline.
 
 ## Chưa làm / ý tưởng
 - Trang tiếng Hàn trên store (mô tả/ảnh) và ảnh store tiếng Hàn để dùng cho web.

@@ -106,5 +106,18 @@
  "ctaTitle": "Prepare seu primeiro copo hoje",
  "ctaLead": "Grátis no iPhone e no iPad.",
  "by": "criado por",
- "privacy": "Política de privacidade"
+ "privacy": "Política de privacidade",
+ "navPlay": "Experimente",
+ "playTitle": "Dê um toque",
+ "playLead": "Um copão de chá de bolhas espera por você. Toque para ganhar moedas, compre melhorias e veja o dinheiro entrar sozinho, como no jogo.",
+ "playHint": "Toque no copo!",
+ "playCoins": "Moedas",
+ "playPerSec": "/s",
+ "playU1": "Mais pérolas",
+ "playU2": "Contratar barista",
+ "playU3": "Máquina automática",
+ "playCtaTitle": "Isso é só uma pequena parte!",
+ "playCtaText": "O jogo completo tem 18 fases, história, acessórios e uma arena PvP.",
+ "cdLive": "{name} em andamento, restam {t}",
+ "cdNext": "{name} começa em {t}"
 };

@@ -106,5 +106,18 @@
  "ctaTitle": "Seduh gelas pertamamu hari ini",
  "ctaLead": "Gratis di iPhone dan iPad.",
  "by": "dibuat oleh",
- "privacy": "Kebijakan privasi"
+ "privacy": "Kebijakan privasi",
+ "navPlay": "Coba main",
+ "playTitle": "Coba ketuk dulu",
+ "playLead": "Segelas besar teh boba menunggumu. Ketuk untuk dapat Koin, beli peningkatan, lalu lihat uang mengalir sendiri seperti di game.",
+ "playHint": "Ketuk gelasnya!",
+ "playCoins": "Koin",
+ "playPerSec": "/dtk",
+ "playU1": "Boba ekstra",
+ "playU2": "Rekrut barista",
+ "playU3": "Mesin seduh otomatis",
+ "playCtaTitle": "Ini baru sebagian kecil!",
+ "playCtaText": "Game lengkapnya punya 18 tahap, cerita, aksesori, dan arena PvP.",
+ "cdLive": "{name} sedang berlangsung, sisa {t}",
+ "cdNext": "{name} dimulai dalam {t}"
 };

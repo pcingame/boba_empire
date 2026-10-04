@@ -106,5 +106,18 @@
  "ctaTitle": "Pha ly trà đầu tiên ngay hôm nay",
  "ctaLead": "Miễn phí trên iPhone và iPad.",
  "by": "phát triển bởi",
- "privacy": "Chính sách quyền riêng tư"
+ "privacy": "Chính sách quyền riêng tư",
+ "navPlay": "Chơi thử",
+ "playTitle": "Thử chạm một cái đi",
+ "playLead": "Một ly trà sữa thật to đang chờ bạn. Chạm để kiếm Xu, mua nâng cấp rồi xem tiền tự chạy như trong game.",
+ "playHint": "Chạm vào ly!",
+ "playCoins": "Xu",
+ "playPerSec": "/giây",
+ "playU1": "Thêm trân châu",
+ "playU2": "Thuê nhân viên",
+ "playU3": "Máy pha tự động",
+ "playCtaTitle": "Mới chỉ là một phần nhỏ thôi!",
+ "playCtaText": "Trong game còn 18 giai đoạn, cốt truyện, phụ kiện và cả đấu trường đang chờ bạn.",
+ "cdLive": "{name} đang diễn ra, còn {t}",
+ "cdNext": "{name} bắt đầu sau {t}"
 };

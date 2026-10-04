@@ -106,5 +106,18 @@
  "ctaTitle": "Brew your first cup today",
  "ctaLead": "Free on iPhone and iPad.",
  "by": "made by",
- "privacy": "Privacy policy"
+ "privacy": "Privacy policy",
+ "navPlay": "Try it",
+ "playTitle": "Give it a tap",
+ "playLead": "A big cup of bubble tea is waiting. Tap to earn Coins, buy upgrades and watch the money roll in on its own, just like in the game.",
+ "playHint": "Tap the cup!",
+ "playCoins": "Coins",
+ "playPerSec": "/sec",
+ "playU1": "Extra pearls",
+ "playU2": "Hire a barista",
+ "playU3": "Auto brewer",
+ "playCtaTitle": "That’s just a tiny part!",
+ "playCtaText": "The full game has 18 stages, a story, accessories and a PvP arena waiting for you.",
+ "cdLive": "{name} is live, {t} left",
+ "cdNext": "{name} starts in {t}"
 };

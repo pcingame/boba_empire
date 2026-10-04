@@ -106,5 +106,18 @@
  "ctaTitle": "Prepara tu primer vaso hoy",
  "ctaLead": "Gratis en iPhone y iPad.",
  "by": "creado por",
- "privacy": "Política de privacidad"
+ "privacy": "Política de privacidad",
+ "navPlay": "Pruébalo",
+ "playTitle": "Dale un toque",
+ "playLead": "Un vaso enorme de té de burbujas te espera. Toca para ganar monedas, compra mejoras y mira cómo el dinero llega solo, como en el juego.",
+ "playHint": "¡Toca el vaso!",
+ "playCoins": "Monedas",
+ "playPerSec": "/seg",
+ "playU1": "Más perlas",
+ "playU2": "Contratar barista",
+ "playU3": "Cafetera automática",
+ "playCtaTitle": "¡Esto es solo una pequeña parte!",
+ "playCtaText": "El juego completo tiene 18 etapas, historia, accesorios y una arena PvP.",
+ "cdLive": "{name} en curso, quedan {t}",
+ "cdNext": "{name} empieza en {t}"
 };

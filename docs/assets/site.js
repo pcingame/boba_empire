@@ -41,6 +41,7 @@
     return s + 's';
   }
   function tpl(str, n) { return str.replace('{n}', n); }
+  window.__big = big; window.__dur = dur;   // dùng lại ở extras.js
   function $(id) { return document.getElementById(id); }
 
   var T = window.I18N = window.I18N || {};
@@ -78,6 +79,55 @@
       d.appendChild(tg); d.appendChild(em); d.appendChild(h); d.appendChild(tm);
       box.appendChild(d); watch(d);
     });
+  }
+
+
+  /* ---------- đếm ngược sự kiện + hiệu ứng mùa ---------- */
+  // ?event=halloween ép sự kiện đó "đang diễn ra" (để xem thử/chụp ảnh); không ảnh hưởng người dùng thường.
+  var FORCE = (function () { try { return new URLSearchParams(location.search).get('event') || ''; } catch (e) { return ''; } })();
+  function nowMs() { return Date.now(); }
+  function pickEvent() {
+    var now = nowMs(), i, ev;
+    if (FORCE) for (i = 0; i < EVENTS.length; i++) if (EVENTS[i].id === FORCE) return { ev: EVENTS[i], live: true, end: nowMs() + 6 * 86400000 };
+    for (i = 0; i < EVENTS.length; i++) { ev = EVENTS[i]; if (now >= utc(ev.s) && now < utc(ev.e)) return { ev: ev, live: true, end: utc(ev.e) }; }
+    for (i = 0; i < EVENTS.length; i++) { ev = EVENTS[i]; if (now < utc(ev.s)) return { ev: ev, live: false, end: utc(ev.s) }; }
+    return null;
+  }
+  function span(ms) {
+    var s = Math.max(0, Math.floor(ms / 1000)), d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60);
+    if (d) return d + 'd ' + h + 'h';
+    if (h) return h + 'h ' + m + 'm';
+    return m + 'm ' + (s % 60) + 's';
+  }
+  var cdTimer = null, seasonFor = '';
+  function renderCountdown() {
+    var el = $('countdown'), t = T[lang], pk = pickEvent();
+    if (cdTimer) { clearInterval(cdTimer); cdTimer = null; }
+    if (!pk) { el.hidden = true; return; }
+    function tick() {
+      var left = pk.end - nowMs();
+      var text = (pk.live ? t.cdLive : t.cdNext).replace('{name}', t.ev[pk.ev.id]).replace('{t}', span(left));
+      el.textContent = Array.from(pk.ev.em)[0] + '  ' + text;
+    }
+    tick(); el.hidden = false;
+    cdTimer = setInterval(tick, 1000);
+    // Sự kiện đang diễn ra: thả emoji của bộ phụ kiện rơi nhẹ ở hero.
+    var box = $('season'), want = pk.live ? pk.ev.id : '';
+    if (want !== seasonFor) {
+      seasonFor = want; box.textContent = '';
+      if (want && !REDUCED) {
+        var em = Array.from(pk.ev.em);
+        for (var i = 0; i < 14; i++) {
+          var sp = document.createElement('span');
+          sp.textContent = em[i % em.length];
+          sp.style.left = (4 + (i * 7.1) % 92) + '%';
+          sp.style.fontSize = (18 + (i * 5) % 14) + 'px';
+          sp.style.animationDuration = (11 + (i * 3) % 8) + 's';
+          sp.style.animationDelay = '-' + ((i * 2.3) % 14) + 's';
+          box.appendChild(sp);
+        }
+      }
+    }
   }
 
   /* ---------- bảng xếp hạng ---------- */
@@ -171,8 +221,14 @@
       var src = 'assets/' + shotLang + '/' + img.getAttribute('data-shot') + '.webp';
       if (img.getAttribute('src') !== src) img.src = src;
     });
+    var hv = $('heroVideo');   // vi có video giao diện tiếng Việt; các ngôn ngữ khác dùng bản tiếng Anh
+    if (hv) {
+      var suf = lang === 'vi' ? '-vi' : '', want = 'assets/video/gameplay' + suf + '.mp4';
+      if (hv.getAttribute('src') !== want) { hv.poster = 'assets/video/poster' + suf + '.webp'; hv.src = want; hv.load(); if (hv.autoplay) hv.play().catch(function () {}); }
+    }
     $('langSel').value = lang;
-    renderEvents(); renderTabs();
+    renderEvents(); renderTabs(); renderCountdown();
+    window.__LANG_CUR = lang; document.dispatchEvent(new CustomEvent('langchange'));
     if (boardStarted) loadBoard();
     root.className = root.className.replace(' i18n-pending', '');
   }
@@ -216,13 +272,6 @@
       if (s !== on) { on = s; nav.classList.toggle('scrolled', s); }
     }, { passive: true });
   }
-  function setupCarousel() {
-    var rail = $('shots'), prev = $('shotPrev'), next = $('shotNext');
-    if (!rail || !prev) return;
-    function step(dir) { rail.scrollBy({ left: dir * 480, behavior: REDUCED ? 'auto' : 'smooth' }); }
-    prev.addEventListener('click', function () { step(-1); });
-    next.addEventListener('click', function () { step(1); });
-  }
 
   /* ---------- khởi động ---------- */
   var sel = $('langSel');
@@ -240,6 +289,6 @@
     new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { start(); o.disconnect(); } }, { rootMargin: '300px' }).observe(boardEl);
   } else { start(); }
 
-  setupReveal(); setupCounters(); setupNav(); setupCarousel();
+  setupReveal(); setupCounters(); setupNav();
   ready(lang, function () { apply(); });
 })();
