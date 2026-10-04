@@ -1,123 +1,520 @@
 <!DOCTYPE html>
 <!--
-  Landing page cho Boba Empire, host qua GitHub Pages với custom domain
-  (xem docs/CNAME). Cùng bảng màu với privacy-policy.html cho đồng bộ.
+  Landing page Boba Empire — host qua GitHub Pages + custom domain (docs/CNAME).
+  Một file, không framework: CSS inline, JS nhỏ cho đổi ngôn ngữ vi/en + đánh
+  dấu sự kiện lễ đang diễn ra. Ảnh chụp lấy từ assets/store/screenshots_ios
+  (đã nén webp ở docs/assets/{vi,en}). Lịch sự kiện PHẢI khớp `festivals` trong
+  lib/core/accessories.dart khi đổi.
 -->
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Boba Empire — Đế Chế Trà Sữa</title>
-<meta name="description" content="Chạm pha trà, xây đế chế trà sữa qua 18 giai đoạn! Idle tycoon có cốt truyện, Đấu Trường PvP và bảng xếp hạng.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Boba Empire — Đế Chế Trà Sữa | Game idle tycoon trà sữa</title>
+<meta name="description" content="Chạm pha trà, xây đế chế trà sữa qua 18 giai đoạn. Cốt truyện 36 chương, 80 phụ kiện sưu tầm, Chợ, Trân Châu Rơi, Đấu Trường PvP. Miễn phí trên App Store.">
+<meta name="theme-color" content="#fdf3dc" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1b1511" media="(prefers-color-scheme: dark)">
+<meta name="apple-itunes-app" content="app-id=6808940339">
+<link rel="canonical" href="https://bobaempiregame.com/">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Boba Empire — Đế Chế Trà Sữa">
+<meta property="og:description" content="Xây đế chế trà sữa từ chiếc xe đẩy tới hành tinh trà sữa. Idle tycoon có cốt truyện, sưu tầm phụ kiện, Chợ và Đấu Trường.">
+<meta property="og:url" content="https://bobaempiregame.com/">
+<meta property="og:image" content="https://bobaempiregame.com/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  "name": "Boba Empire — Đế Chế Trà Sữa",
+  "operatingSystem": "iOS",
+  "applicationCategory": "GameApplication",
+  "description": "Idle tycoon trà sữa có cốt truyện, sưu tầm phụ kiện, Chợ và Đấu Trường PvP.",
+  "url": "https://bobaempiregame.com/",
+  "image": "https://bobaempiregame.com/assets/og.jpg",
+  "author": {"@type": "Organization", "name": "pcingame"},
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "downloadUrl": "https://apps.apple.com/app/id6808940339"
+}
+</script>
+
 <style>
-  :root { color-scheme: light dark; }
-  * { box-sizing: border-box; }
-  body {
-    font: 16px/1.65 -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    max-width: 860px; margin: 0 auto; padding: 40px 20px 64px; color: #2a2320;
-    background: #fdfaf5;
+  :root {
+    --bg: #fdf3dc; --bg2: #fff9ec; --card: #ffffff; --ink: #2d211a; --muted: #7d6a5a;
+    --brand: #8d5524; --brand-ink: #ffffff; --accent: #e8b968; --line: #ecdcc0;
+    --shadow: 0 10px 30px rgba(120, 80, 30, .16);
+    --radius: 22px;
   }
   @media (prefers-color-scheme: dark) {
-    body { color: #e9e2da; background: #1a1613; }
-    a { color: #e0a868; }
-    hr { border-color: #3a2f28; }
-    .card { background: #241d18; border-color: #3a2f28; }
-    .badge { filter: brightness(0.9); }
+    :root {
+      --bg: #1b1511; --bg2: #231b16; --card: #2a211b; --ink: #f1e8dd; --muted: #b9a999;
+      --brand: #e0a868; --brand-ink: #24160a; --accent: #8d5524; --line: #3b2f26;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .45);
+    }
   }
-  a { color: #8d5524; word-break: break-word; }
-  hr { border: none; border-top: 1px solid #e5d8c6; margin: 2.5em 0; }
-
-  header { text-align: center; }
-  header img.icon {
-    width: 96px; height: 96px; border-radius: 22px;
-    box-shadow: 0 6px 18px rgba(0,0,0,.18);
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; color: var(--ink); background: var(--bg);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
   }
-  h1 { font-size: 2rem; margin: .5em 0 .2em; }
-  .tagline { font-size: 1.1rem; color: #8a7a6c; max-width: 520px; margin: 0 auto; }
+  a { color: var(--brand); }
+  img { max-width: 100%; display: block; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+  section { padding: 64px 0; }
+  h1, h2, h3 { line-height: 1.2; margin: 0; }
+  h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); text-align: center; }
+  .lead { text-align: center; color: var(--muted); max-width: 640px; margin: 12px auto 36px; }
 
-  .stores { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 28px 0; }
-  .stores a {
-    display: inline-flex; align-items: center; gap: 8px;
-    padding: 12px 22px; border-radius: 12px; text-decoration: none;
-    font-weight: 700; color: #fff; background: #8d5524;
+  /* ---------- thanh trên ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 10; backdrop-filter: blur(10px);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    border-bottom: 1px solid var(--line);
   }
-  .stores a.soon { background: #b0a394; pointer-events: none; }
-
-  h2 { font-size: 1.35rem; margin-top: 1.6em; border-bottom: 2px solid #8d5524; padding-bottom: .2em; }
-
-  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 16px; }
-  .card {
-    background: #fff; border: 1px solid #eee1d0; border-radius: 14px;
-    padding: 16px 18px;
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 58px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; text-decoration: none; color: var(--ink); }
+  .brand img { width: 32px; height: 32px; border-radius: 8px; }
+  .nav-links { display: flex; align-items: center; gap: 18px; }
+  .nav-links a { text-decoration: none; color: var(--muted); font-weight: 600; font-size: .95rem; }
+  .nav-links a:hover { color: var(--brand); }
+  .lang {
+    appearance: auto; max-width: 150px;
+    border: 1px solid var(--line); background: var(--card); color: var(--ink);
+    border-radius: 999px; padding: 6px 14px; font: inherit; font-weight: 700; font-size: .85rem; cursor: pointer;
   }
-  .card b { display: block; margin-bottom: 4px; }
-  .card span { color: #8a7a6c; font-size: .95rem; }
+  @media (max-width: 640px) { .nav-links a.hide-sm { display: none; } }
 
-  .shots { display: flex; gap: 12px; overflow-x: auto; padding: 8px 0 16px; scroll-snap-type: x mandatory; }
-  .shots img {
-    height: 340px; border-radius: 16px; scroll-snap-align: start;
-    box-shadow: 0 4px 14px rgba(0,0,0,.15); flex: none;
+  /* ---------- hero ---------- */
+  .hero { padding: 48px 0 24px; background:
+    radial-gradient(900px 400px at 85% -10%, color-mix(in srgb, var(--accent) 40%, transparent), transparent 70%),
+    radial-gradient(700px 360px at -10% 20%, color-mix(in srgb, var(--accent) 25%, transparent), transparent 70%); }
+  .hero .wrap { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 40px; align-items: center; }
+  @media (max-width: 860px) { .hero .wrap { grid-template-columns: minmax(0, 1fr); text-align: center; } }
+  .hero .icon { width: 88px; height: 88px; border-radius: 22px; box-shadow: var(--shadow); }
+  @media (max-width: 860px) { .hero .icon { margin: 0 auto; } }
+  .hero h1 { font-size: clamp(2.1rem, 6vw, 3.4rem); margin-top: 18px; letter-spacing: -.02em; }
+  .hero h1 em { font-style: normal; color: var(--brand); }
+  .hero p.sub { font-size: 1.15rem; color: var(--muted); max-width: 520px; margin: 16px 0 26px; }
+  @media (max-width: 860px) { .hero p.sub { margin-left: auto; margin-right: auto; } }
+  .stores { display: flex; gap: 12px; flex-wrap: wrap; }
+  @media (max-width: 860px) { .stores { justify-content: center; } }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 14px;
+    font-weight: 800; text-decoration: none; border: 2px solid transparent; transition: transform .15s;
   }
+  .btn:hover { transform: translateY(-2px); }
+  .btn.primary { background: var(--brand); color: var(--brand-ink); box-shadow: 0 8px 20px rgba(141, 85, 36, .35); }
+  .btn.soon { background: transparent; border-color: var(--line); color: var(--muted); cursor: default; }
+  .btn.soon:hover { transform: none; }
+  .btn small { display: block; font-weight: 600; font-size: .72rem; opacity: .85; line-height: 1.1; }
+  .btn svg { width: 22px; height: 22px; fill: currentColor; flex: none; }
+  .note { font-size: .88rem; color: var(--muted); margin-top: 14px; }
 
-  footer { text-align: center; color: #8a7a6c; font-size: .9rem; margin-top: 2.5em; }
+  /* khung điện thoại */
+  .phone {
+    border-radius: 34px; padding: 9px; background: #1d1612;
+    box-shadow: var(--shadow), inset 0 0 0 2px #3a2d24; flex: none;
+  }
+  .phone img { border-radius: 26px; width: 100%; height: auto; background: var(--bg2); }
+  .hero-phones { position: relative; display: flex; justify-content: center; gap: 18px; }
+  .hero-phones .phone { width: min(44%, 230px); }
+  .hero-phones .phone:nth-child(1) { transform: rotate(-4deg) translateY(14px); }
+  .hero-phones .phone:nth-child(2) { transform: rotate(4deg) translateY(-14px); }
+  @media (max-width: 860px) { .hero-phones { margin-top: 12px; } }
+
+  /* ---------- số liệu ---------- */
+  .stats { padding: 20px 0 8px; }
+  .stats .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+  @media (max-width: 640px) { .stats .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 12px; text-align: center; }
+  .stat b { display: block; font-size: 2rem; color: var(--brand); line-height: 1.1; }
+  .stat span { color: var(--muted); font-size: .92rem; }
+
+  /* ---------- tính năng ---------- */
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+  .card .ico { font-size: 1.9rem; }
+  .card h3 { font-size: 1.1rem; margin: 8px 0 6px; }
+  .card p { margin: 0; color: var(--muted); font-size: .96rem; }
+
+  /* ---------- ảnh chụp ---------- */
+  .alt { background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .shots { display: flex; gap: 18px; overflow-x: auto; padding: 8px 20px 26px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+  .shots figure { margin: 0; flex: none; width: 230px; scroll-snap-align: center; text-align: center; }
+  .shots figcaption { margin-top: 12px; font-weight: 700; font-size: .95rem; }
+  .shots figcaption span { display: block; font-weight: 500; color: var(--muted); font-size: .85rem; }
+  @media (min-width: 1100px) { .shots { justify-content: safe center; } }
+
+
+  /* ---------- bảng xếp hạng ---------- */
+  .tabs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 18px; }
+  .tab { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 8px 18px; font: inherit; font-weight: 700; font-size: .92rem; cursor: pointer; }
+  .tab[aria-selected="true"] { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
+  .board { max-width: 720px; margin: 0 auto; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .board table { width: 100%; border-collapse: collapse; }
+  .board th, .board td { padding: 11px 16px; text-align: left; border-bottom: 1px solid var(--line); }
+  .board th { font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); background: var(--bg2); }
+  .board tr:last-child td { border-bottom: 0; }
+  .board td.rank { width: 64px; font-weight: 800; color: var(--brand); white-space: nowrap; }
+  .board td.val { text-align: right; font-weight: 800; white-space: nowrap; }
+  .board th.val { text-align: right; }
+  .board td .sub { display: block; font-weight: 500; font-size: .8rem; color: var(--muted); }
+  .board td.who { overflow-wrap: anywhere; }
+  .board-msg { padding: 28px 16px; text-align: center; color: var(--muted); }
+
+  /* ---------- sự kiện lễ ---------- */
+  .events { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 14px; }
+  .event { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; position: relative; }
+  .event .em { font-size: 1.6rem; letter-spacing: 4px; }
+  .event h3 { font-size: 1.05rem; margin: 8px 0 2px; }
+  .event time { color: var(--muted); font-size: .88rem; }
+  .event .tag {
+    position: absolute; top: 14px; right: 14px; font-size: .72rem; font-weight: 800; padding: 3px 10px;
+    border-radius: 999px; background: var(--brand); color: var(--brand-ink); display: none;
+  }
+  .event.live { border-color: var(--brand); box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 35%, transparent); }
+  .event.live .tag, .event.next .tag { display: block; }
+  .event.next .tag { background: var(--accent); color: var(--ink); }
+
+  /* ---------- faq ---------- */
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; margin: 10px auto; max-width: 720px; }
+  summary { cursor: pointer; font-weight: 700; }
+  details p { margin: 10px 0 0; color: var(--muted); }
+
+  /* ---------- cta + footer ---------- */
+  .cta { text-align: center; }
+  .cta .stores { justify-content: center; margin-top: 22px; }
+  footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); font-size: .9rem; text-align: center; }
+  footer a { color: var(--muted); }
+  footer p { margin: 6px 0; }
+  :focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; border-radius: 6px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .btn { transition: none; } }
 </style>
 </head>
 <body>
 
-<header>
-  <img class="icon" src="assets/icon-256.png" alt="Boba Empire icon">
-  <h1>Boba Empire — Đế Chế Trà Sữa</h1>
-  <p class="tagline">Chạm pha trà, xây đế chế trà sữa qua 18 giai đoạn — idle tycoon
-  thư giãn, có cốt truyện 28 chương, Đấu Trường PvP và bảng xếp hạng.</p>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="assets/icon-256.png" alt="" width="32" height="32"> Boba Empire</a>
+    <div class="nav-links">
+      <a class="hide-sm" href="#features" data-i18n="navFeatures">Tính năng</a>
+      <a class="hide-sm" href="#screens" data-i18n="navScreens">Hình ảnh</a>
+      <a class="hide-sm" href="#board" data-i18n="navBoard">Xếp hạng</a>
+      <a class="hide-sm" href="#events" data-i18n="navEvents">Sự kiện</a>
+      <a class="hide-sm" href="#faq">FAQ</a>
+      <select class="lang" id="langSel" aria-label="Language"></select>
+    </div>
+  </div>
+</nav>
 
-  <div class="stores">
-    <a href="https://play.google.com/store/apps/details?id=com.pcingame.bobaempire">▶ Google Play</a>
-    <a class="soon" href="#">🍎 App Store (sắp có)</a>
+<main id="top">
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <img class="icon" src="assets/icon-256.png" alt="Boba Empire" width="88" height="88">
+      <h1><span data-i18n="heroTitle1">Xây đế chế</span> <em data-i18n="heroTitle2">trà sữa</em><br><span data-i18n="heroTitle3">từ một chiếc xe đẩy</span></h1>
+      <p class="sub" data-i18n="heroSub">Idle tycoon thư giãn có cốt truyện: chạm pha trà, nâng cấp, sưu tầm phụ kiện và đấu với người chơi khác — kể cả khi bạn không mở game.</p>
+      <div class="stores">
+        <a class="btn primary" href="https://apps.apple.com/app/id6808940339" rel="noopener">
+          <svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+          <span><small data-i18n="dlOn">Tải trên</small>App Store</span>
+        </a>
+        <span class="btn soon" aria-disabled="true">
+          <svg viewBox="0 0 512 512" aria-hidden="true"><path d="M325.3 234.3 104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6-58.9-34.1-65.7 64.5 65.7 64.5 60.1-34.1c18-14.3 18-46.5-1.2-60.8zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+          <span><small data-i18n="soonSmall">Sắp có trên</small>Google Play</span>
+        </span>
+      </div>
+      <p class="note" data-i18n="free">Miễn phí. Có quảng cáo tự chọn và gói mua trong game, bạn có thể gỡ quảng cáo.</p>
+    </div>
+    <div class="hero-phones" aria-hidden="true">
+      <div class="phone"><img src="assets/vi/01_home.webp" data-shot="01_home" alt="" width="230" height="500"></div>
+      <div class="phone"><img src="assets/vi/02_collection.webp" data-shot="02_collection" alt="" width="230" height="500"></div>
+    </div>
   </div>
 </header>
 
-<div class="shots">
-  <img src="assets/shots/home.png" alt="Màn hình chính">
-  <img src="assets/shots/stage.png" alt="Giai đoạn nâng cấp">
-  <img src="assets/shots/arena.png" alt="Đấu Trường Trân Châu Rơi">
-  <img src="assets/shots/ascension.png" alt="Kỷ Nguyên">
-</div>
+<section class="stats" aria-label="Boba Empire in numbers">
+  <div class="wrap grid">
+    <div class="stat"><b>18</b><span data-i18n="stStages">giai đoạn</span></div>
+    <div class="stat"><b>36</b><span data-i18n="stChapters">chương cốt truyện</span></div>
+    <div class="stat"><b>80+</b><span data-i18n="stAcc">phụ kiện sưu tầm</span></div>
+    <div class="stat"><b>7</b><span data-i18n="stLangs">ngôn ngữ</span></div>
+  </div>
+</section>
 
-<h2>Vì sao chơi Boba Empire?</h2>
-<div class="features">
-  <div class="card">
-    <b>☕ Chạm & pha trà</b>
-    <span>Chạm để bán trà sữa, mua nâng cấp để có thu nhập tự động mỗi giây.</span>
+<section id="features">
+  <div class="wrap">
+    <h2 data-i18n="featTitle">Vì sao chơi Boba Empire?</h2>
+    <p class="lead" data-i18n="featLead">Dễ chơi trong 10 giây, đủ sâu để bạn quay lại mỗi ngày.</p>
+    <div class="features">
+      <div class="card"><div class="ico">🧋</div><h3 data-i18n="f1t">Chạm &amp; pha trà</h3><p data-i18n="f1d">Chạm để bán trà sữa, mua nâng cấp để có thu nhập tự động mỗi giây và đạt mốc nhân bội.</p></div>
+      <div class="card"><div class="ico">🏪</div><h3 data-i18n="f2t">18 giai đoạn</h3><p data-i18n="f2d">Từ xe đẩy vỉa hè, chuỗi cafe sang trọng, sàn chứng khoán, học viện, thành phố… tới cả hành tinh trà sữa.</p></div>
+      <div class="card"><div class="ico">📖</div><h3 data-i18n="f3t">Cốt truyện 36 chương</h3><p data-i18n="f3d">Cùng Bà Tư xây quán, đối đầu đối thủ và đưa ra những lựa chọn rẽ nhánh ảnh hưởng sức mạnh của bạn.</p></div>
+      <div class="card"><div class="ico">🎀</div><h3 data-i18n="f4t">Bộ sưu tập &amp; Chợ</h3><p data-i18n="f4d">80 phụ kiện để trưng bày quanh cốc và khoe huy hiệu trên bảng xếp hạng. Mua bán với người chơi khác, lập danh sách muốn có.</p></div>
+      <div class="card"><div class="ico">🎡</div><h3 data-i18n="f5t">Gói phụ kiện &amp; vòng quay</h3><p data-i18n="f5d">Mở gói bằng Kim Cương hoặc quay vòng quay phụ kiện. Tỉ lệ rớt được công bố rõ trong game.</p></div>
+      <div class="card"><div class="ico">⭐</div><h3 data-i18n="f6t">Nhượng quyền &amp; Kỷ Nguyên</h3><p data-i18n="f6d">Chơi lại để nhận Sao và bonus vĩnh viễn; đi hết tuyến thì Kỷ Nguyên mở vòng chơi mới mạnh hơn.</p></div>
+      <div class="card"><div class="ico">🔮</div><h3 data-i18n="f7t">Trân Châu Rơi</h3><p data-i18n="f7d">Chế độ ghép 3 riêng với 60 màn, bom chữ thập, bom màu và bảng xếp hạng.</p></div>
+      <div class="card"><div class="ico">⚔️</div><h3 data-i18n="f8t">Đấu Trường PvP</h3><p data-i18n="f8d">Đấu 1v1 trong 60 giây — Đua chạm hoặc Trân Châu Rơi — rồi leo bảng xếp hạng.</p></div>
+      <div class="card"><div class="ico">🔥</div><h3 data-i18n="f9t">Mỗi ngày một lý do</h3><p data-i18n="f9d">Điểm danh theo chuỗi (lỡ một ngày vẫn cứu được), nhiệm vụ hằng ngày, vòng quay may mắn.</p></div>
+      <div class="card"><div class="ico">😴</div><h3 data-i18n="f10t">Kiếm tiền offline</h3><p data-i18n="f10d">Quán vẫn bán khi bạn vắng mặt. Quay lại là có cả đống Xu chờ sẵn.</p></div>
+      <div class="card"><div class="ico">☁️</div><h3 data-i18n="f11t">Sao lưu tiến trình</h3><p data-i18n="f11d">Liên kết email để giữ nguyên tiến trình khi đổi máy hoặc cài lại game.</p></div>
+      <div class="card"><div class="ico">🌏</div><h3 data-i18n="f12t">7 ngôn ngữ</h3><p data-i18n="f12d">Tiếng Việt, English, Español, Bahasa Indonesia, Português, ไทย và 한국어.</p></div>
+    </div>
   </div>
-  <div class="card">
-    <b>🏪 18 giai đoạn</b>
-    <span>Từ xe đẩy vỉa hè tới hành tinh trà sữa, mỗi giai đoạn một bầu không khí riêng.</span>
-  </div>
-  <div class="card">
-    <b>📖 Cốt truyện 28 chương</b>
-    <span>Cùng Bà Tư xây quán, đối đầu đối thủ, chọn nhánh rẽ ảnh hưởng sức mạnh.</span>
-  </div>
-  <div class="card">
-    <b>⭐ Nhượng quyền & Kỷ Nguyên</b>
-    <span>Chơi lại để nhận Sao và bonus vĩnh viễn, mở khóa vòng chơi mạnh hơn.</span>
-  </div>
-  <div class="card">
-    <b>⚔️ Đấu Trường & bảng xếp hạng</b>
-    <span>Đấu 1v1 dạng Đua chạm hoặc Trân Châu Rơi, leo bảng xếp hạng thu nhập.</span>
-  </div>
-  <div class="card">
-    <b>😴 Kiếm tiền offline</b>
-    <span>Quán vẫn bán khi bạn vắng mặt — quay lại nhận cả đống Xu.</span>
-  </div>
-</div>
+</section>
 
-<hr>
+<section id="screens" class="alt">
+  <h2 data-i18n="scrTitle">Xem game trông thế nào</h2>
+  <p class="lead" data-i18n="scrLead">Giao diện pastel dịu mắt, chơi một tay thoải mái.</p>
+  <div class="shots" role="list">
+    <figure role="listitem"><div class="phone"><img src="assets/vi/01_home.webp" data-shot="01_home" alt="" loading="lazy" width="230" height="500"></div><figcaption data-i18n="s1">Màn chính<span data-i18n="s1d">Chạm pha trà, nâng cấp tự động</span></figcaption></figure>
+    <figure role="listitem"><div class="phone"><img src="assets/vi/02_collection.webp" data-shot="02_collection" alt="" loading="lazy" width="230" height="500"></div><figcaption data-i18n="s2">Bộ sưu tập<span data-i18n="s2d">80 phụ kiện, 4 độ hiếm</span></figcaption></figure>
+    <figure role="listitem"><div class="phone"><img src="assets/vi/03_market.webp" data-shot="03_market" alt="" loading="lazy" width="230" height="500"></div><figcaption data-i18n="s3">Chợ phụ kiện<span data-i18n="s3d">Mua bán, giá tham khảo</span></figcaption></figure>
+    <figure role="listitem"><div class="phone"><img src="assets/vi/04_daily_quests.webp" data-shot="04_daily_quests" alt="" loading="lazy" width="230" height="500"></div><figcaption data-i18n="s4">Nhiệm vụ ngày<span data-i18n="s4d">Hoàn thành để nhận thưởng</span></figcaption></figure>
+    <figure role="listitem"><div class="phone"><img src="assets/vi/05_wheel.webp" data-shot="05_wheel" alt="" loading="lazy" width="230" height="500"></div><figcaption data-i18n="s5">Vòng quay may mắn<span data-i18n="s5d">Một lượt miễn phí mỗi ngày</span></figcaption></figure>
+    <figure role="listitem"><div class="phone"><img src="assets/vi/06_pearls_play.webp" data-shot="06_pearls_play" alt="" loading="lazy" width="230" height="500"></div><figcaption data-i18n="s6">Trân Châu Rơi<span data-i18n="s6d">Ghép 3, 60 màn</span></figcaption></figure>
+    <figure role="listitem"><div class="phone"><img src="assets/vi/08_prestige.webp" data-shot="08_prestige" alt="" loading="lazy" width="230" height="500"></div><figcaption data-i18n="s7">Nhượng quyền<span data-i18n="s7d">Sao và bonus vĩnh viễn</span></figcaption></figure>
+    <figure role="listitem"><div class="phone"><img src="assets/vi/09_achievements.webp" data-shot="09_achievements" alt="" loading="lazy" width="230" height="500"></div><figcaption data-i18n="s8">Thành tựu<span data-i18n="s8d">Nhận Kim Cương khi đạt mốc</span></figcaption></figure>
+  </div>
+</section>
+
+<section id="board" class="alt">
+  <div class="wrap">
+    <h2 data-i18n="lbTitle">Bảng xếp hạng</h2>
+    <p class="lead" data-i18n="lbLead">Dữ liệu trực tiếp từ game.</p>
+    <div class="tabs" role="tablist" id="boardTabs"></div>
+    <div class="board" id="boardBox" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="events">
+  <div class="wrap">
+    <h2 data-i18n="evTitle">Phụ kiện độc quyền theo dịp lễ</h2>
+    <p class="lead" data-i18n="evLead">Mỗi dịp lễ có bộ phụ kiện riêng, chỉ mua được trong thời gian sự kiện — bỏ lỡ là phải đợi năm sau.</p>
+    <div class="events" id="eventList"></div>
+  </div>
+</section>
+
+<section id="faq" class="alt">
+  <div class="wrap">
+    <h2>FAQ</h2>
+    <p class="lead" data-i18n="faqLead">Những câu hỏi hay gặp.</p>
+    <details><summary data-i18n="q1">Game có miễn phí không?</summary><p data-i18n="a1">Có. Bạn chơi trọn vẹn miễn phí. Quảng cáo chỉ hiện khi bạn tự chọn xem để nhận thưởng, và có gói gỡ quảng cáo hoặc VIP nếu bạn muốn.</p></details>
+    <details><summary data-i18n="q2">Có chơi được khi không có mạng không?</summary><p data-i18n="a2">Phần chơi chính chạy offline. Cần mạng cho Chợ, Đấu Trường, bảng xếp hạng và sao lưu đám mây.</p></details>
+    <details><summary data-i18n="q3">Đổi máy có mất tiến trình không?</summary><p data-i18n="a3">Không, nếu bạn liên kết email trong Cài đặt. Game gửi mã xác nhận về email — nhớ kiểm tra cả thư mục Spam.</p></details>
+    <details><summary data-i18n="q4">Bao giờ có bản Android?</summary><p data-i18n="a4">Bản Google Play đang được chuẩn bị. Hiện game có trên App Store; chúng tôi sẽ cập nhật tại trang này khi Android sẵn sàng.</p></details>
+    <details><summary data-i18n="q5">Liên hệ hỗ trợ ở đâu?</summary><p><span data-i18n="a5">Gửi email tới</span> <a href="mailto:support@bobaempiregame.com">support@bobaempiregame.com</a>.</p></details>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <h2 data-i18n="ctaTitle">Pha ly trà đầu tiên ngay hôm nay</h2>
+    <p class="lead" data-i18n="ctaLead">Miễn phí trên iPhone và iPad.</p>
+    <div class="stores">
+      <a class="btn primary" href="https://apps.apple.com/app/id6808940339" rel="noopener">
+        <svg viewBox="0 0 384 512" aria-hidden="true"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+        <span><small data-i18n="dlOn">Tải trên</small>App Store</span>
+      </a>
+    </div>
+  </div>
+</section>
+</main>
 
 <footer>
-  <p>Boba Empire — phát triển bởi pcingame ·
-  <a href="privacy-policy.html">Chính sách quyền riêng tư</a> ·
-  <a href="mailto:support@bobaempiregame.com">support@bobaempiregame.com</a></p>
+  <div class="wrap">
+    <p>Boba Empire — <span data-i18n="by">phát triển bởi</span> pcingame</p>
+    <p><a href="privacy-policy.html" data-i18n="privacy">Chính sách quyền riêng tư</a> · <a href="mailto:support@bobaempiregame.com">support@bobaempiregame.com</a></p>
+  </div>
 </footer>
 
+<script src="assets/i18n.js"></script>
+<script>
+(function () {
+  var T = window.I18N, LANGS = Object.keys(T);
+  var API = 'https://orphyhtnaaqfglytffkn.supabase.co/rest/v1/';
+  // Publishable key: công khai theo thiết kế (đã nhúng sẵn trong app), chỉ đọc qua RLS/RPC công khai.
+  var KEY = 'sb_publishable_1mFXwBKzUaLm36h4WMLFuQ_3oqju0RV';
+
+  // Lịch khớp `festivals` trong lib/core/accessories.dart (UTC, [start, end)).
+  var EVENTS = [
+    { id: 'halloween',  em: '🦇🎃👻🧙', s: [2026, 10, 24], e: [2026, 11, 3] },
+    { id: 'christmas',  em: '⛄🎄🦌🎅', s: [2026, 12, 18], e: [2026, 12, 28] },
+    { id: 'new_year',   em: '🥂🎉🎆🎇', s: [2026, 12, 28], e: [2027, 1, 4] },
+    { id: 'tet',        em: '🧨🧧🌼🐐', s: [2027, 1, 30],  e: [2027, 2, 10] },
+    { id: 'valentine',  em: '💌🌹🍫💘', s: [2027, 2, 10],  e: [2027, 2, 16] },
+    { id: 'womens_day', em: '🌷💐💄👸', s: [2027, 3, 4],   e: [2027, 3, 10] },
+    { id: 'mid_autumn', em: '🥮🐇🌕🦁', s: [2027, 9, 8],   e: [2027, 9, 18] }
+  ];
+
+  // Cùng quy ước số lớn như game (lib/core/format.dart).
+  var SUF = ['', 'K', 'M', 'B', 'T', 'aa', 'bb', 'cc', 'dd', 'ee', 'ff', 'gg', 'hh', 'ii', 'jj',
+             'kk', 'll', 'mm', 'nn', 'oo', 'pp', 'qq', 'rr', 'ss', 'tt', 'uu', 'vv', 'ww', 'xx', 'yy', 'zz'];
+  function big(n) {
+    n = Number(n);
+    if (!isFinite(n) || n <= 0) return '0';
+    if (n < 1000) return String(Math.round(n));
+    var tier = 0;
+    while (n >= 1000 && tier < SUF.length - 1) { n /= 1000; tier++; }
+    return n.toFixed(2) + SUF[tier];
+  }
+  function dur(sec) {
+    var d = Math.floor(sec / 86400), h = Math.floor(sec % 86400 / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60;
+    if (d) return d + 'd ' + h + 'h';
+    if (h) return h + 'h ' + m + 'm';
+    if (m) return m + 'm ' + s + 's';
+    return s + 's';
+  }
+  function tpl(str, n) { return str.replace('{n}', n); }
+
+  var lang = '';
+  try { lang = new URLSearchParams(location.search).get('lang') || localStorage.getItem('lang') || ''; } catch (e) {}
+  if (!T[lang]) {
+    var nav = (navigator.language || 'vi').toLowerCase().slice(0, 2);
+    lang = T[nav] ? nav : 'en';
+  }
+
+  function utc(a) { return Date.UTC(a[0], a[1] - 1, a[2]); }
+  function fmtDate(a, last) {
+    var d = new Date(utc(a) - (last ? 86400000 : 0));
+    try {
+      return d.toLocaleDateString(lang === 'vi' ? 'vi-VN' : lang, { day: 'numeric', month: lang === 'vi' ? 'numeric' : 'short', year: last ? 'numeric' : undefined, timeZone: 'UTC' });
+    } catch (e) { return d.toISOString().slice(0, 10); }
+  }
+
+  function renderEvents() {
+    var t = T[lang], now = Date.now(), nextSet = false, box = document.getElementById('eventList');
+    box.textContent = '';
+    EVENTS.forEach(function (ev) {
+      var cls = 'event', tag = '';
+      if (now >= utc(ev.s) && now < utc(ev.e)) { cls += ' live'; tag = t.live; }
+      else if (now < utc(ev.s) && !nextSet) { cls += ' next'; tag = t.next; nextSet = true; }
+      var d = document.createElement('div'); d.className = cls;
+      var tg = document.createElement('span'); tg.className = 'tag'; tg.textContent = tag;
+      var em = document.createElement('div'); em.className = 'em'; em.setAttribute('aria-hidden', 'true'); em.textContent = ev.em;
+      var h = document.createElement('h3'); h.textContent = t.ev[ev.id];
+      var tm = document.createElement('time'); tm.textContent = fmtDate(ev.s, false) + ' – ' + fmtDate(ev.e, true);
+      d.appendChild(tg); d.appendChild(em); d.appendChild(h); d.appendChild(tm);
+      box.appendChild(d);
+    });
+  }
+
+  // ---------- bảng xếp hạng ----------
+  var BOARDS = [
+    { id: 'income', tab: 'lbTabIncome', col: 'lbIncome',
+      get: function () { return fetch(API + 'leaderboard_entries?select=nickname,lifetime_earnings,stage&order=lifetime_earnings.desc&limit=20', { headers: H() }); },
+      val: function (r) { return big(r.lifetime_earnings); }, sub: function (r, t) { return tpl(t.lbStage, r.stage); } },
+    { id: 'pearls', tab: 'lbTabPearls', col: 'lbPearls',
+      get: function () { return rpc('m3_leaderboard_top'); },
+      val: function (r) { return r.stars + ' ⭐'; }, sub: function (r, t) { return tpl(t.lbLevels, r.levels_cleared); } },
+    { id: 'collection', tab: 'lbTabCollection', col: 'lbCollection',
+      get: function () { return rpc('accessory_leaderboard_top'); },
+      val: function (r) { return r.owned_count; }, sub: null },
+    { id: 'speed', tab: 'lbTabSpeed', col: 'lbSpeed',
+      get: function () { return rpc('story_speedrun_top'); },
+      val: function (r) { return dur(r.complete_seconds); }, sub: null }
+  ];
+  function H() { return { apikey: KEY, Authorization: 'Bearer ' + KEY }; }
+  function rpc(name) {
+    return fetch(API + 'rpc/' + name, { method: 'POST', headers: Object.assign({ 'Content-Type': 'application/json' }, H()), body: JSON.stringify({ p_limit: 20 }) });
+  }
+  var cache = {}, current = BOARDS[0].id, boardStarted = false;
+
+  function renderTabs() {
+    var t = T[lang], box = document.getElementById('boardTabs');
+    box.textContent = '';
+    BOARDS.forEach(function (b) {
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.className = 'tab'; btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-selected', b.id === current ? 'true' : 'false');
+      btn.textContent = t[b.tab];
+      btn.addEventListener('click', function () { current = b.id; renderTabs(); loadBoard(); });
+      box.appendChild(btn);
+    });
+  }
+  function msg(text) {
+    var box = document.getElementById('boardBox');
+    box.textContent = '';
+    var d = document.createElement('div'); d.className = 'board-msg'; d.textContent = text; box.appendChild(d);
+  }
+  function renderBoard(b, rows) {
+    var t = T[lang], box = document.getElementById('boardBox');
+    if (!rows.length) return msg(t.lbEmpty);
+    var table = document.createElement('table'), head = document.createElement('tr');
+    [[t.lbRank, ''], [t.lbPlayer, ''], [t[b.col], 'val']].forEach(function (c) {
+      var th = document.createElement('th'); th.textContent = c[0]; if (c[1]) th.className = c[1]; head.appendChild(th);
+    });
+    var thead = document.createElement('thead'); thead.appendChild(head); table.appendChild(thead);
+    var tb = document.createElement('tbody'), medals = ['🥇', '🥈', '🥉'];
+    rows.forEach(function (r, i) {
+      var tr = document.createElement('tr');
+      var tdR = document.createElement('td'); tdR.className = 'rank'; tdR.textContent = medals[i] || ('#' + (i + 1));
+      var tdW = document.createElement('td'); tdW.className = 'who'; tdW.textContent = r.nickname || '—';
+      var tdV = document.createElement('td'); tdV.className = 'val'; tdV.textContent = b.val(r);
+      if (b.sub) { var s = document.createElement('span'); s.className = 'sub'; s.textContent = b.sub(r, t); tdV.appendChild(s); }
+      tr.appendChild(tdR); tr.appendChild(tdW); tr.appendChild(tdV); tb.appendChild(tr);
+    });
+    table.appendChild(tb); box.textContent = ''; box.appendChild(table);
+  }
+  function loadBoard() {
+    var b = BOARDS.filter(function (x) { return x.id === current; })[0], t = T[lang];
+    var c = cache[b.id];
+    if (c && Date.now() - c.at < 60000) return renderBoard(b, c.rows);
+    msg(t.lbLoading);
+    b.get().then(function (res) {
+      if (!res.ok) throw new Error(res.status);
+      return res.json();
+    }).then(function (rows) {
+      cache[b.id] = { at: Date.now(), rows: rows };
+      if (b.id === current) renderBoard(b, rows);
+    }).catch(function () { if (b.id === current) msg(T[lang].lbError); });
+  }
+
+  function apply() {
+    var t = T[lang];
+    document.documentElement.lang = lang;
+    document.title = t.metaTitle;
+    var md = document.querySelector('meta[name="description"]'); if (md) md.setAttribute('content', t.metaDesc);
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      var v = t[el.getAttribute('data-i18n')];
+      if (v == null) return;
+      // figcaption có <span> con: chỉ thay nút văn bản đầu, giữ span.
+      if (el.tagName === 'FIGCAPTION') el.firstChild.nodeValue = v; else el.textContent = v;
+    });
+    var shotLang = lang === 'ko' ? 'en' : lang;
+    document.querySelectorAll('img[data-shot]').forEach(function (img) {
+      img.src = 'assets/' + shotLang + '/' + img.getAttribute('data-shot') + '.webp';
+    });
+    document.getElementById('langSel').value = lang;
+    renderEvents(); renderTabs();
+    if (boardStarted) loadBoard();
+  }
+
+  var sel = document.getElementById('langSel');
+  LANGS.forEach(function (l) { var o = document.createElement('option'); o.value = l; o.textContent = T[l].name; sel.appendChild(o); });
+  sel.addEventListener('change', function () {
+    lang = sel.value;
+    try { localStorage.setItem('lang', lang); } catch (e) {}
+    apply();
+  });
+
+  // Chỉ gọi API khi người dùng cuộn tới mục xếp hạng.
+  var boardEl = document.getElementById('board');
+  function start() { if (!boardStarted) { boardStarted = true; loadBoard(); } }
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { start(); o.disconnect(); } }, { rootMargin: '300px' }).observe(boardEl);
+  } else { start(); }
+
+  apply();
+})();
+</script>
 </body>
 </html>
