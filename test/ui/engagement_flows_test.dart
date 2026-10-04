@@ -332,6 +332,32 @@ void main() {
       await tester.pumpWidget(const SizedBox());
     });
 
+    testWidgets('đóng hộp thoại GIỮA lúc vòng quay đang quay: không crash',
+        (tester) async {
+      final (c, _) = await open(tester);
+      await tester.tap(find.byKey(const Key('accessory-wheel-gems')));
+      await tester.pump(const Duration(milliseconds: 600));
+      Navigator.of(tester.element(find.byKey(const Key('accessory-wheel-gems'))))
+          .pop();
+      await tester.pumpAndSettle(const Duration(milliseconds: 200));
+      expect(tester.takeException(), isNull);
+      // 💎 đã trừ & món đã vào kho dù người chơi bỏ ngang (đã trả tiền là nhận)
+      expect(c.read(gameControllerProvider).ownedAccessories.length, 1);
+      await tester.pumpWidget(const SizedBox());
+    });
+
+    testWidgets('bấm liên tục nút quay: chỉ quay 1 lượt (đang bận thì bỏ qua)',
+        (tester) async {
+      final (c, _) = await open(tester);
+      final b = find.byKey(const Key('accessory-wheel-gems'));
+      await tester.tap(b);
+      await tester.tap(b, warnIfMissed: false);
+      await tester.tap(b, warnIfMissed: false);
+      await tester.pumpAndSettle(const Duration(milliseconds: 200));
+      expect(c.read(gameControllerProvider).gems, 200 - 30);
+      await tester.pumpWidget(const SizedBox());
+    });
+
     testWidgets('thiếu 💎: nút 30 💎 mờ', (tester) async {
       await open(tester, gems: 29);
       final b = tester
