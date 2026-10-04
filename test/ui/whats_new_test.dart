@@ -1,4 +1,4 @@
-/// Hộp "Có gì mới": chỉ hiện đúng một lần cho người vừa cập nhật lên 1.0.6;
+/// Hộp "Có gì mới": chỉ hiện đúng một lần cho người vừa cập nhật lên 1.0.7;
 /// cài mới và bản khác không hiện.
 library;
 
@@ -41,26 +41,26 @@ Future<(ProviderContainer, SharedPreferences)> _launch(
 void main() {
   group('shouldShowWhatsNew', () {
     test('cập nhật từ bản có ghi nhận / chưa ghi nhận nhưng có save → hiện', () {
-      expect(shouldShowWhatsNew(seen: '1.0.5', current: '1.0.6', hasSave: true),
+      expect(shouldShowWhatsNew(seen: '1.0.5', current: '1.0.7', hasSave: true),
           isTrue);
-      expect(shouldShowWhatsNew(seen: null, current: '1.0.6', hasSave: true),
+      expect(shouldShowWhatsNew(seen: null, current: '1.0.7', hasSave: true),
           isTrue);
     });
     test('cài mới (không save), đã xem, hoặc bản khác → không hiện', () {
-      expect(shouldShowWhatsNew(seen: null, current: '1.0.6', hasSave: false),
+      expect(shouldShowWhatsNew(seen: null, current: '1.0.7', hasSave: false),
           isFalse);
-      expect(shouldShowWhatsNew(seen: '1.0.6', current: '1.0.6', hasSave: true),
+      expect(shouldShowWhatsNew(seen: '1.0.7', current: '1.0.7', hasSave: true),
           isFalse);
-      expect(shouldShowWhatsNew(seen: '1.0.6', current: '1.0.7', hasSave: true),
+      expect(shouldShowWhatsNew(seen: '1.0.7', current: '1.0.8', hasSave: true),
           isFalse);
     });
   });
 
-  testWidgets('vừa cập nhật lên 1.0.6: hiện hộp, ghi nhớ, mở bộ sưu tập từ nút',
+  testWidgets('vừa cập nhật lên 1.0.7: hiện hộp, ghi nhớ, mở bộ sưu tập từ nút',
       (tester) async {
-    final (c, prefs) = await _launch(tester, version: '1.0.6', seen: '1.0.5');
+    final (c, prefs) = await _launch(tester, version: '1.0.7', seen: '1.0.5');
     expect(find.byKey(const Key('whats-new')), findsOneWidget);
-    expect(prefs.getString(whatsNewSeenKey), '1.0.6');
+    expect(prefs.getString(whatsNewSeenKey), '1.0.7');
     await tester.tap(find.byKey(const Key('whats-new-open')));
     await tester.pumpAndSettle();
     expect(find.byType(AccessoryInventoryPage), findsOneWidget);
@@ -70,14 +70,14 @@ void main() {
 
   testWidgets('người dùng bản 1.0.5 chưa từng ghi nhận (seen=null, có save) → hiện',
       (tester) async {
-    final (c, _) = await _launch(tester, version: '1.0.6');
+    final (c, _) = await _launch(tester, version: '1.0.7');
     expect(find.byKey(const Key('whats-new')), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
     c.dispose();
   });
 
-  testWidgets('đã xem 1.0.6 rồi → không hiện lại', (tester) async {
-    final (c, _) = await _launch(tester, version: '1.0.6', seen: '1.0.6');
+  testWidgets('đã xem 1.0.7 rồi → không hiện lại', (tester) async {
+    final (c, _) = await _launch(tester, version: '1.0.7', seen: '1.0.7');
     expect(find.byKey(const Key('whats-new')), findsNothing);
     await tester.pumpWidget(const SizedBox());
     c.dispose();
@@ -85,15 +85,15 @@ void main() {
 
   testWidgets('cài mới (chưa có save): không hiện, nhưng vẫn ghi nhớ phiên bản',
       (tester) async {
-    final (c, prefs) = await _launch(tester, version: '1.0.6', hasSave: false);
+    final (c, prefs) = await _launch(tester, version: '1.0.7', hasSave: false);
     expect(find.byKey(const Key('whats-new')), findsNothing);
-    expect(prefs.getString(whatsNewSeenKey), '1.0.6');
+    expect(prefs.getString(whatsNewSeenKey), '1.0.7');
     await tester.pumpWidget(const SizedBox());
     c.dispose();
   });
 
-  testWidgets('bản khác 1.0.6 (chưa có nội dung): không hiện', (tester) async {
-    final (c, _) = await _launch(tester, version: '1.0.7', seen: '1.0.6');
+  testWidgets('bản khác 1.0.7 (chưa có nội dung): không hiện', (tester) async {
+    final (c, _) = await _launch(tester, version: '1.0.8', seen: '1.0.7');
     expect(find.byKey(const Key('whats-new')), findsNothing);
     await tester.pumpWidget(const SizedBox());
     c.dispose();
@@ -123,7 +123,7 @@ void main() {
     final savedTutorial = debugAutoShowTutorial;
     debugAutoShowTutorial = true;
     addTearDown(() => debugAutoShowTutorial = savedTutorial);
-    final (c, prefs) = await _launch(tester, version: '1.0.6', hasSave: false);
+    final (c, prefs) = await _launch(tester, version: '1.0.7', hasSave: false);
     expect(find.byKey(const Key('how-to-play-close')), findsOneWidget,
         reason: 'người mới thấy hướng dẫn');
     expect(find.byKey(const Key('whats-new')), findsNothing);
@@ -132,7 +132,7 @@ void main() {
     // markTutorialSeen() đã lưu ván → trước bản sửa, đây bị nhầm là "người vừa cập nhật".
     expect(prefs.containsKey(GameStorage.saveKey), isTrue);
     expect(find.byKey(const Key('whats-new')), findsNothing);
-    expect(prefs.getString(whatsNewSeenKey), '1.0.6');
+    expect(prefs.getString(whatsNewSeenKey), '1.0.7');
     await tester.pumpWidget(const SizedBox());
     c.dispose();
   });
@@ -151,7 +151,7 @@ void main() {
     final c = ProviderContainer(overrides: [
       sharedPreferencesProvider.overrideWithValue(prefs),
       clockProvider.overrideWithValue(() => 0),
-      appVersionProvider.overrideWithValue(() async => '1.0.6'),
+      appVersionProvider.overrideWithValue(() async => '1.0.7'),
     ]);
     await tester.pumpWidget(
         UncontrolledProviderScope(container: c, child: const BobaEmpireApp()));

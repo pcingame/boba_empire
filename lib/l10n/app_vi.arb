@@ -1121,11 +1121,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewCollection": "🎀 Bộ sưu tập: 50 phụ kiện, trưng bày quanh cốc, huy hiệu bảng xếp hạng, mốc thưởng",
-  "whatsNewMarket": "🛒 Chợ phụ kiện: mua bán bằng Xu Chợ, giá tham khảo, danh sách muốn có, báo khi bán được",
-  "whatsNewWheel": "🎡 Vòng quay có ô rương phụ kiện. Cuối tuần: phí Chợ 0% và dễ rớt đồ hiếm hơn",
-  "whatsNewStory": "📖 Hồi 3 cốt truyện: 8 chương mới",
-  "whatsNewLook": "🎨 Giao diện pastel, mượt hơn, chia sẻ bộ sưu tập thành ảnh",
+  "whatsNewFestival": "🎃 Phụ kiện độc quyền 7 dịp lễ (Halloween, Giáng Sinh, Tết...) — mua bằng Gói Lễ Hội trong dịp, giữ mãi",
+  "whatsNewPacks": "🎁 Bộ sưu tập lên 80 phụ kiện, thêm gói phụ kiện và vòng quay (30 💎 hoặc xem QC)",
+  "whatsNewStreak": "🔥 Lỡ một ngày điểm danh? Cứu chuỗi bằng Kim Cương hoặc xem QC",
+  "whatsNewVip": "👑 VIP có thêm 1 chỗ trưng bày; nhượng quyền xem QC để nhận thêm Xu khởi đầu",
+  "whatsNewKorean": "🇰🇷 Thêm tiếng Hàn",
   "whatsNewLater": "Để sau",
   "whatsNewOpen": "Xem bộ sưu tập",
   "marketWallet": "{n} Xu Chợ",

@@ -724,11 +724,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewCollection": "🎀 Colección: 50 accesorios, muéstralos junto al vaso, insignias en la clasificación, premios por hitos",
-  "whatsNewMarket": "🛒 Mercado de accesorios: compra y vende con Monedas de Mercado, precio de referencia, lista de deseos, avisos de venta",
-  "whatsNewWheel": "🎡 La ruleta tiene un cofre de accesorios. Fines de semana: comisión 0% y más objetos raros",
-  "whatsNewStory": "📖 Historia Acto 3: 8 capítulos nuevos",
-  "whatsNewLook": "🎨 Estilo pastel, más fluido, comparte tu colección como imagen",
+  "whatsNewFestival": "🎃 Accesorios exclusivos de 7 festividades (Halloween, Navidad, Año Nuevo Lunar...) — consíguelos con el Paquete de Festividad durante el evento y consérvalos",
+  "whatsNewPacks": "🎁 La colección llega a 80 accesorios, con paquetes y una ruleta (30 💎 o ver un anuncio)",
+  "whatsNewStreak": "🔥 ¿Te saltaste un día? Salva tu racha con Gemas o un anuncio",
+  "whatsNewVip": "👑 VIP tiene un espacio de exhibición más; mira un anuncio al hacer Franquicia para más monedas iniciales",
+  "whatsNewKorean": "🇰🇷 Se añade el coreano",
   "whatsNewLater": "Después",
   "whatsNewOpen": "Ver colección",
   "marketWallet": "{n} Monedas de Mercado",

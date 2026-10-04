@@ -1668,22 +1668,23 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
-  String get whatsNewCollection =>
-      '🎀 คอลเลกชัน: เครื่องประดับ 50 ชิ้น จัดโชว์รอบแก้ว ตราบนกระดานจัดอันดับ รางวัลตามเป้าหมาย';
+  String get whatsNewFestival =>
+      '🎃 เครื่องประดับเฉพาะกิจ 7 เทศกาล (ฮาโลวีน คริสต์มาส ตรุษจีน...) — ซื้อด้วยแพ็กเทศกาลในช่วงงานและเก็บไว้ได้ตลอด';
 
   @override
-  String get whatsNewMarket =>
-      '🛒 ตลาดเครื่องประดับ: ซื้อขายด้วยเหรียญตลาด ราคาอ้างอิง รายการที่อยากได้ แจ้งเตือนเมื่อขายได้';
+  String get whatsNewPacks =>
+      '🎁 คอลเลกชันเพิ่มเป็น 80 ชิ้น พร้อมแพ็กเครื่องประดับและวงล้อ (30 💎 หรือดูโฆษณา)';
 
   @override
-  String get whatsNewWheel =>
-      '🎡 วงล้อมีหีบเครื่องประดับ สุดสัปดาห์: ค่าธรรมเนียม 0% และมีโอกาสได้ของหายากมากขึ้น';
+  String get whatsNewStreak =>
+      '🔥 พลาดเช็คอินไปหนึ่งวัน? กู้สตรีคด้วยเพชรหรือดูโฆษณา';
 
   @override
-  String get whatsNewStory => '📖 เนื้อเรื่องภาค 3: เพิ่ม 8 ตอน';
+  String get whatsNewVip =>
+      '👑 VIP ได้ช่องโชว์เพิ่มอีกหนึ่งช่อง ดูโฆษณาตอนแฟรนไชส์เพื่อรับเหรียญเริ่มต้นเพิ่ม';
 
   @override
-  String get whatsNewLook => '🎨 ธีมพาสเทล ลื่นขึ้น แชร์คอลเลกชันเป็นรูปภาพ';
+  String get whatsNewKorean => '🇰🇷 เพิ่มภาษาเกาหลี';
 
   @override
   String get whatsNewLater => 'ไว้ทีหลัง';

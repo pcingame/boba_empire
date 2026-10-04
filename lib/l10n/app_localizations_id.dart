@@ -1678,23 +1678,23 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get whatsNewCollection =>
-      '🎀 Koleksi: 50 aksesori, pajang di sekitar gelas, lencana papan peringkat, hadiah pencapaian';
+  String get whatsNewFestival =>
+      '🎃 Aksesori eksklusif 7 hari raya (Halloween, Natal, Tahun Baru Imlek...) — dapatkan lewat Paket Festival selama acara dan simpan selamanya';
 
   @override
-  String get whatsNewMarket =>
-      '🛒 Pasar Aksesori: jual beli dengan Koin Pasar, harga acuan, daftar keinginan, notifikasi terjual';
+  String get whatsNewPacks =>
+      '🎁 Koleksi jadi 80 aksesori, plus paket aksesori dan roda (30 💎 atau tonton iklan)';
 
   @override
-  String get whatsNewWheel =>
-      '🎡 Roda punya peti aksesori. Akhir pekan: biaya Pasar 0% dan item langka lebih sering';
+  String get whatsNewStreak =>
+      '🔥 Terlewat sehari check-in? Selamatkan streak dengan Permata atau iklan';
 
   @override
-  String get whatsNewStory => '📖 Cerita Babak 3: 8 bab baru';
+  String get whatsNewVip =>
+      '👑 VIP mendapat satu slot pajangan lagi; tonton iklan saat Franchise untuk Koin awal tambahan';
 
   @override
-  String get whatsNewLook =>
-      '🎨 Tampilan pastel, lebih mulus, bagikan koleksi sebagai gambar';
+  String get whatsNewKorean => '🇰🇷 Bahasa Korea ditambahkan';
 
   @override
   String get whatsNewLater => 'Nanti';

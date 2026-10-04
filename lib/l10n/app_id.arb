@@ -724,11 +724,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewCollection": "🎀 Koleksi: 50 aksesori, pajang di sekitar gelas, lencana papan peringkat, hadiah pencapaian",
-  "whatsNewMarket": "🛒 Pasar Aksesori: jual beli dengan Koin Pasar, harga acuan, daftar keinginan, notifikasi terjual",
-  "whatsNewWheel": "🎡 Roda punya peti aksesori. Akhir pekan: biaya Pasar 0% dan item langka lebih sering",
-  "whatsNewStory": "📖 Cerita Babak 3: 8 bab baru",
-  "whatsNewLook": "🎨 Tampilan pastel, lebih mulus, bagikan koleksi sebagai gambar",
+  "whatsNewFestival": "🎃 Aksesori eksklusif 7 hari raya (Halloween, Natal, Tahun Baru Imlek...) — dapatkan lewat Paket Festival selama acara dan simpan selamanya",
+  "whatsNewPacks": "🎁 Koleksi jadi 80 aksesori, plus paket aksesori dan roda (30 💎 atau tonton iklan)",
+  "whatsNewStreak": "🔥 Terlewat sehari check-in? Selamatkan streak dengan Permata atau iklan",
+  "whatsNewVip": "👑 VIP mendapat satu slot pajangan lagi; tonton iklan saat Franchise untuk Koin awal tambahan",
+  "whatsNewKorean": "🇰🇷 Bahasa Korea ditambahkan",
   "whatsNewLater": "Nanti",
   "whatsNewOpen": "Lihat koleksi",
   "marketWallet": "{n} Koin Pasar",

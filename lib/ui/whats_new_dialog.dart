@@ -12,11 +12,11 @@ Future<void> showWhatsNew(BuildContext context, String version) {
     builder: (ctx) {
       final l10n = AppLocalizations.of(ctx)!;
       final items = [
-        l10n.whatsNewCollection,
-        l10n.whatsNewMarket,
-        l10n.whatsNewWheel,
-        l10n.whatsNewStory,
-        l10n.whatsNewLook,
+        l10n.whatsNewFestival,
+        l10n.whatsNewPacks,
+        l10n.whatsNewStreak,
+        l10n.whatsNewVip,
+        l10n.whatsNewKorean,
       ];
       return AlertDialog(
         key: const Key('whats-new'),

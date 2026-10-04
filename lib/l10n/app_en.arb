@@ -724,11 +724,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewCollection": "🎀 Collection: 50 accessories, show them around your cup, leaderboard badges, milestone rewards",
-  "whatsNewMarket": "🛒 Accessory Market: trade with Market Coins, price hints, wishlist, sale alerts",
-  "whatsNewWheel": "🎡 The wheel has an accessory chest. Weekends: 0% Market fee and better rare drops",
-  "whatsNewStory": "📖 Story Act 3: 8 new chapters",
-  "whatsNewLook": "🎨 Pastel look, smoother play, share your collection as an image",
+  "whatsNewFestival": "🎃 Exclusive accessories for 7 holidays (Halloween, Christmas, Lunar New Year...) — get them with the Festival Pack during the event and keep them forever",
+  "whatsNewPacks": "🎁 Collection grows to 80 accessories, plus accessory packs and a wheel (30 💎 or watch an ad)",
+  "whatsNewStreak": "🔥 Missed a check-in day? Save your streak with Gems or an ad",
+  "whatsNewVip": "👑 VIP gets one more display slot; watch an ad when you Franchise for extra starting Coins",
+  "whatsNewKorean": "🇰🇷 Korean language added",
   "whatsNewLater": "Later",
   "whatsNewOpen": "View collection",
   "marketWallet": "{n} Market Coins",

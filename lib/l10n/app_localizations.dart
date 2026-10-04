@@ -2988,35 +2988,35 @@ abstract class AppLocalizations {
   /// **'Có gì mới ở {version}'**
   String whatsNewTitle(String version);
 
-  /// No description provided for @whatsNewCollection.
+  /// No description provided for @whatsNewFestival.
   ///
   /// In vi, this message translates to:
-  /// **'🎀 Bộ sưu tập: 50 phụ kiện, trưng bày quanh cốc, huy hiệu bảng xếp hạng, mốc thưởng'**
-  String get whatsNewCollection;
+  /// **'🎃 Phụ kiện độc quyền 7 dịp lễ (Halloween, Giáng Sinh, Tết...) — mua bằng Gói Lễ Hội trong dịp, giữ mãi'**
+  String get whatsNewFestival;
 
-  /// No description provided for @whatsNewMarket.
+  /// No description provided for @whatsNewPacks.
   ///
   /// In vi, this message translates to:
-  /// **'🛒 Chợ phụ kiện: mua bán bằng Xu Chợ, giá tham khảo, danh sách muốn có, báo khi bán được'**
-  String get whatsNewMarket;
+  /// **'🎁 Bộ sưu tập lên 80 phụ kiện, thêm gói phụ kiện và vòng quay (30 💎 hoặc xem QC)'**
+  String get whatsNewPacks;
 
-  /// No description provided for @whatsNewWheel.
+  /// No description provided for @whatsNewStreak.
   ///
   /// In vi, this message translates to:
-  /// **'🎡 Vòng quay có ô rương phụ kiện. Cuối tuần: phí Chợ 0% và dễ rớt đồ hiếm hơn'**
-  String get whatsNewWheel;
+  /// **'🔥 Lỡ một ngày điểm danh? Cứu chuỗi bằng Kim Cương hoặc xem QC'**
+  String get whatsNewStreak;
 
-  /// No description provided for @whatsNewStory.
+  /// No description provided for @whatsNewVip.
   ///
   /// In vi, this message translates to:
-  /// **'📖 Hồi 3 cốt truyện: 8 chương mới'**
-  String get whatsNewStory;
+  /// **'👑 VIP có thêm 1 chỗ trưng bày; nhượng quyền xem QC để nhận thêm Xu khởi đầu'**
+  String get whatsNewVip;
 
-  /// No description provided for @whatsNewLook.
+  /// No description provided for @whatsNewKorean.
   ///
   /// In vi, this message translates to:
-  /// **'🎨 Giao diện pastel, mượt hơn, chia sẻ bộ sưu tập thành ảnh'**
-  String get whatsNewLook;
+  /// **'🇰🇷 Thêm tiếng Hàn'**
+  String get whatsNewKorean;
 
   /// No description provided for @whatsNewLater.
   ///

@@ -4,7 +4,7 @@
 library;
 
 /// Phiên bản app mà nội dung hộp hiện tại mô tả.
-const whatsNewVersion = '1.0.6';
+const whatsNewVersion = '1.0.7';
 
 /// Khoá SharedPreferences: phiên bản gần nhất app đã "ghi nhận".
 const whatsNewSeenKey = 'whats_new_seen_version';

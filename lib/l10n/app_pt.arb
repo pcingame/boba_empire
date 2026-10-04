@@ -724,11 +724,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewCollection": "🎀 Coleção: 50 acessórios, exiba ao redor do copo, emblemas no ranking, recompensas por marcos",
-  "whatsNewMarket": "🛒 Mercado de acessórios: negocie com Moedas de Mercado, preço de referência, lista de desejos, aviso de venda",
-  "whatsNewWheel": "🎡 A roleta tem baú de acessórios. Fim de semana: taxa 0% e mais itens raros",
-  "whatsNewStory": "📖 História Ato 3: 8 capítulos novos",
-  "whatsNewLook": "🎨 Visual pastel, mais fluido, compartilhe a coleção em imagem",
+  "whatsNewFestival": "🎃 Acessórios exclusivos de 7 festividades (Halloween, Natal, Ano Novo Lunar...) — ganhe com o Pacote de Festival durante o evento e guarde",
+  "whatsNewPacks": "🎁 A coleção chega a 80 acessórios, com pacotes e uma roleta (30 💎 ou ver um anúncio)",
+  "whatsNewStreak": "🔥 Perdeu um dia de check-in? Salve sua sequência com Gemas ou um anúncio",
+  "whatsNewVip": "👑 VIP ganha mais um espaço de exibição; veja um anúncio ao fazer Franquia para mais moedas iniciais",
+  "whatsNewKorean": "🇰🇷 Adicionado o coreano",
   "whatsNewLater": "Depois",
   "whatsNewOpen": "Ver coleção",
   "marketWallet": "{n} Moedas de Mercado",

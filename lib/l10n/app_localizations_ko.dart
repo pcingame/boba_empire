@@ -1652,21 +1652,22 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get whatsNewCollection =>
-      '🎀 컬렉션: 액세서리 50종, 컵 주위에 전시, 리더보드 배지, 마일스톤 보상';
+  String get whatsNewFestival =>
+      '🎃 7개 명절 한정 액세서리 (할로윈, 크리스마스, 설날...) — 이벤트 기간에 축제 팩으로 얻고 영구히 보관하세요';
 
   @override
-  String get whatsNewMarket => '🛒 액세서리 마켓: 마켓 코인으로 거래, 가격 힌트, 위시리스트, 판매 알림';
+  String get whatsNewPacks =>
+      '🎁 컬렉션이 액세서리 80종으로 늘어나고, 액세서리 팩과 룰렛 추가 (30 💎 또는 광고 시청)';
 
   @override
-  String get whatsNewWheel =>
-      '🎡 룰렛에 액세서리 상자가 생겼어요. 주말에는 마켓 수수료 0%와 희귀 드롭 확률 UP';
+  String get whatsNewStreak => '🔥 출석을 하루 놓쳤나요? 보석이나 광고로 연속 출석을 지키세요';
 
   @override
-  String get whatsNewStory => '📖 스토리 3막: 새 챕터 8개';
+  String get whatsNewVip =>
+      '👑 VIP는 전시 칸이 하나 더 생겨요. 프랜차이즈할 때 광고를 보면 시작 코인을 더 받아요';
 
   @override
-  String get whatsNewLook => '🎨 파스텔 룩, 더 부드러운 플레이, 컬렉션을 이미지로 공유';
+  String get whatsNewKorean => '🇰🇷 한국어가 추가되었어요';
 
   @override
   String get whatsNewLater => '나중에';

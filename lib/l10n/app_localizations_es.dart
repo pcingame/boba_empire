@@ -1689,23 +1689,23 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get whatsNewCollection =>
-      '🎀 Colección: 50 accesorios, muéstralos junto al vaso, insignias en la clasificación, premios por hitos';
+  String get whatsNewFestival =>
+      '🎃 Accesorios exclusivos de 7 festividades (Halloween, Navidad, Año Nuevo Lunar...) — consíguelos con el Paquete de Festividad durante el evento y consérvalos';
 
   @override
-  String get whatsNewMarket =>
-      '🛒 Mercado de accesorios: compra y vende con Monedas de Mercado, precio de referencia, lista de deseos, avisos de venta';
+  String get whatsNewPacks =>
+      '🎁 La colección llega a 80 accesorios, con paquetes y una ruleta (30 💎 o ver un anuncio)';
 
   @override
-  String get whatsNewWheel =>
-      '🎡 La ruleta tiene un cofre de accesorios. Fines de semana: comisión 0% y más objetos raros';
+  String get whatsNewStreak =>
+      '🔥 ¿Te saltaste un día? Salva tu racha con Gemas o un anuncio';
 
   @override
-  String get whatsNewStory => '📖 Historia Acto 3: 8 capítulos nuevos';
+  String get whatsNewVip =>
+      '👑 VIP tiene un espacio de exhibición más; mira un anuncio al hacer Franquicia para más monedas iniciales';
 
   @override
-  String get whatsNewLook =>
-      '🎨 Estilo pastel, más fluido, comparte tu colección como imagen';
+  String get whatsNewKorean => '🇰🇷 Se añade el coreano';
 
   @override
   String get whatsNewLater => 'Después';

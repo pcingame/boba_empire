@@ -1680,23 +1680,23 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get whatsNewCollection =>
-      '🎀 Collection: 50 accessories, show them around your cup, leaderboard badges, milestone rewards';
+  String get whatsNewFestival =>
+      '🎃 Exclusive accessories for 7 holidays (Halloween, Christmas, Lunar New Year...) — get them with the Festival Pack during the event and keep them forever';
 
   @override
-  String get whatsNewMarket =>
-      '🛒 Accessory Market: trade with Market Coins, price hints, wishlist, sale alerts';
+  String get whatsNewPacks =>
+      '🎁 Collection grows to 80 accessories, plus accessory packs and a wheel (30 💎 or watch an ad)';
 
   @override
-  String get whatsNewWheel =>
-      '🎡 The wheel has an accessory chest. Weekends: 0% Market fee and better rare drops';
+  String get whatsNewStreak =>
+      '🔥 Missed a check-in day? Save your streak with Gems or an ad';
 
   @override
-  String get whatsNewStory => '📖 Story Act 3: 8 new chapters';
+  String get whatsNewVip =>
+      '👑 VIP gets one more display slot; watch an ad when you Franchise for extra starting Coins';
 
   @override
-  String get whatsNewLook =>
-      '🎨 Pastel look, smoother play, share your collection as an image';
+  String get whatsNewKorean => '🇰🇷 Korean language added';
 
   @override
   String get whatsNewLater => 'Later';
