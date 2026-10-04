@@ -772,6 +772,8 @@ class _MoneyHeader extends ConsumerWidget {
                   ),
                 ),
               ),
+              // Chừa khe để số xu lớn (FittedBox co hết cỡ) không dính chip 💎.
+              const SizedBox(width: 10),
               // 💎 (và VIP) cạnh nút cài đặt: trước đây nằm hàng trên làm chật 3 nút.
               if (vip) ...[
                 ClayChip(
