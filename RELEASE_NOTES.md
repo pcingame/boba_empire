@@ -9,6 +9,121 @@ người bản ngữ soát.
 
 ---
 
+## 1.0.7 (+16) — 2026-10-04
+
+**Bản trước:** 1.0.6 (+13), iOS đã live 2026-10-04 (Play chưa publish 1.0.6). Các build +14/+15 là build trung gian trong quá trình làm bản này; nộp store bằng +16.
+
+Mốc đáng chú ý của bản này (đủ cho cả App Store lẫn Play, đều dưới 500 ký tự):
+- **Bộ sưu tập 50 → 80 phụ kiện**, tỉ lệ rớt đồ hiếm giảm (66/24/8/2 thay vì 60/25/12/3).
+- **Phụ kiện độc quyền theo dịp lễ** (7 dịp × 4 món): Halloween 24/10–2/11/2026, Giáng Sinh 18–27/12/2026, Tết Dương lịch 28/12/2026–3/1/2027, Tết Nguyên Đán 30/1–9/2/2027, Valentine 10–15/2/2027, 8/3 (4–9/3/2027), Trung Thu 8–17/9/2027. Mua bằng **Gói Lễ Hội** (80 💎) trong dịp, giữ mãi sau đó; không đăng bán Chợ, không tính vào bộ sưu tập/bảng xếp hạng.
+- **Gói phụ kiện** mua bằng 💎 (30/80/200, công bố tỉ lệ rớt) và **vòng quay phụ kiện** (30 💎 hoặc xem QC, tối đa 10 lượt QC/ngày). Thêm 1 lượt rớt xem QC sau khi xong cả bộ nhiệm vụ ngày. Trong dịp lễ gói giảm 25% và tăng tỉ lệ Sử thi/Huyền thoại.
+- **Cứu streak điểm danh**: lỡ đúng 1 ngày (chuỗi ≥ 2) cứu bằng 20 💎 hoặc xem QC.
+- **Nhượng quyền xem QC** → thêm Xu khởi đầu (~10 phút thu nhập, không thưởng Sao). **VIP có thêm ô trưng bày thứ 4.**
+- **Thêm tiếng Hàn** (7 ngôn ngữ).
+- Sửa lỗi: số Xu cực lớn đè lên chip 💎 ở màn chính; hộp điểm danh tràn dọc ở máy hẹp (pt/es); nhắc kiểm tra thư mục Spam khi nhận mã sao lưu; báo "quảng cáo chưa sẵn sàng" thay vì im lặng.
+
+**Phía server (kiểm trước khi phát hành):** đã chạy lại `supabase/accessory_leaderboard_schema.sql`
+(nâng CHECK `owned_count` 50 → 200) ngày 2026-10-04 — nếu chưa chạy thì bảng xếp hạng Sưu tập từ chối
+người có hơn 50 món. Không có SQL/Edge Function mới nào khác.
+
+**Hạn cần chú ý:** iOS phải qua duyệt **trước 24/10/2026** thì Gói Lễ Hội Halloween mới có. Đổi mốc
+dịp lễ ở `festivals` trong `lib/core/accessories.dart`.
+
+**Force update:** KHÔNG đổi. Thẻ ở mô tả vẫn là `[:mav: 1.0.6]` (đổi thành `1.0.7` chỉ khi muốn ép mọi
+người lên 1.0.7, và thẻ chỉ có tác dụng sau khi 1.0.7 live). Mô tả đầy đủ 7 ngôn ngữ ở
+`assets/store/description_1.0.7/`, bản dài của "Có gì mới" ở `assets/store/whatsnew_1.0.7/`.
+
+**Hộp "Có gì mới" trong app:** `whatsNewVersion` = `1.0.7`; hiện một lần cho người vừa cập nhật.
+Chuỗi `whatsNewFestival/Packs/Streak/Vip/Korean` trong `lib/l10n/app_*.arb` (7 ngôn ngữ).
+
+**Chưa làm:** mô tả/từ khoá/ảnh chụp store bằng tiếng Hàn; thêm ngôn ngữ Korean trong App Store Connect.
+
+### 🇻🇳 Tiếng Việt (vi)
+
+```
+Mới: PHỤ KIỆN LỄ HỘI & VÒNG QUAY!
+
+• 80 phụ kiện; thêm phụ kiện độc quyền 7 dịp lễ (Halloween, Giáng Sinh, Tết...), mua bằng Gói Lễ Hội trong dịp
+• Gói phụ kiện và vòng quay (30 Kim Cương hoặc xem quảng cáo), công bố tỉ lệ rớt
+• Lỡ điểm danh? Cứu chuỗi bằng Kim Cương hoặc quảng cáo
+• VIP thêm 1 chỗ trưng bày; xem quảng cáo khi nhượng quyền để nhận thêm Xu
+• Thêm tiếng Hàn
+```
+
+### 🇬🇧 English (en)
+
+```
+New: HOLIDAY ACCESSORIES & WHEEL!
+
+• 80 accessories, plus exclusive accessories for 7 holidays (Halloween, Christmas, Lunar New Year...) via the Festival Pack during the event
+• Accessory packs and a wheel (30 Gems or watch an ad), drop rates shown
+• Missed a check-in? Save your streak with Gems or an ad
+• VIP gets one more display slot; watch an ad when you Franchise for extra Coins
+• Korean added
+```
+
+### 🇧🇷 Português (pt-BR)
+
+```
+Novo: ACESSÓRIOS DE FESTIVAIS E ROLETA!
+
+• 80 acessórios, mais acessórios exclusivos de 7 festividades (Halloween, Natal, Ano Novo Lunar...) com o Pacote de Festival durante o evento
+• Pacotes de acessórios e roleta (30 Gemas ou anúncio), chances à vista
+• Perdeu o check-in? Salve a sequência com Gemas ou anúncio
+• VIP ganha mais um espaço de exibição; veja um anúncio ao fazer Franquia para mais moedas
+• Adicionado o coreano
+```
+
+### 🇪🇸 Español (es)
+
+```
+Nuevo: ¡ACCESORIOS DE FESTIVIDADES Y RULETA!
+
+• 80 accesorios, más accesorios exclusivos de 7 festividades (Halloween, Navidad, Año Nuevo Lunar...) con el Paquete de Festividad durante el evento
+• Paquetes de accesorios y ruleta (30 Gemas o un anuncio), probabilidades a la vista
+• ¿Te saltaste el registro? Salva tu racha con Gemas o un anuncio
+• VIP tiene un espacio de exhibición más; mira un anuncio al hacer Franquicia para más monedas
+• Se añade el coreano
+```
+
+### 🇮🇩 Bahasa Indonesia (id)
+
+```
+Baru: AKSESORI HARI RAYA & RODA!
+
+• 80 aksesori, plus aksesori eksklusif 7 hari raya (Halloween, Natal, Imlek...) lewat Paket Festival selama acara
+• Paket aksesori dan roda (30 Permata atau iklan), peluang ditampilkan
+• Terlewat check-in? Selamatkan streak dengan Permata atau iklan
+• VIP dapat satu slot pajangan lagi; tonton iklan saat Franchise untuk Koin tambahan
+• Bahasa Korea ditambahkan
+```
+
+### 🇹🇭 ภาษาไทย (th)
+
+```
+ใหม่: เครื่องประดับเทศกาลและวงล้อ!
+
+• เครื่องประดับ 80 ชิ้น พร้อมเครื่องประดับเฉพาะกิจ 7 เทศกาล (ฮาโลวีน คริสต์มาส ตรุษจีน...) ซื้อด้วยแพ็กเทศกาลในช่วงงาน
+• แพ็กเครื่องประดับและวงล้อ (30 เพชรหรือดูโฆษณา) แสดงโอกาสที่ได้
+• พลาดเช็คอิน? กู้สตรีคด้วยเพชรหรือโฆษณา
+• VIP ได้ช่องโชว์เพิ่ม ดูโฆษณาตอนแฟรนไชส์เพื่อรับเหรียญเพิ่ม
+• เพิ่มภาษาเกาหลี
+```
+
+### 🇰🇷 한국어 (ko)
+
+```
+신규: 명절 액세서리 & 룰렛!
+
+• 액세서리 80종, 그리고 7개 명절 한정 액세서리(할로윈, 크리스마스, 설날...)를 이벤트 기간 축제 팩으로 획득
+• 액세서리 팩과 룰렛(보석 30개 또는 광고 시청), 드롭 확률 공개
+• 출석을 놓쳤나요? 보석이나 광고로 연속 출석 지키기
+• VIP는 전시 칸 +1, 프랜차이즈 시 광고를 보면 코인 추가
+• 한국어 추가
+```
+
+---
+
 ## 1.0.6 (+13) — 2026-10-03
 
 **Bản trước:** 1.0.5 (+10), đã lên store 2026-09-30 (+11 chưa lên store production).
