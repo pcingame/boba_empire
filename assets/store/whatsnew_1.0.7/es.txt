@@ -1,0 +1,9 @@
+Versión 1.0.7:
+- Se añade el coreano.
+- La colección crece a 80 accesorios y se reequilibra la probabilidad de los raros.
+- Accesorios exclusivos de festividades: Halloween, Navidad, Año Nuevo, Año Nuevo Lunar, San Valentín, Día de la Mujer y Festival de Medio Otoño. Consíguelos con el Paquete de Festividad durante el evento y consérvalos para siempre.
+- Paquetes de accesorios por Gemas (con las probabilidades a la vista) y una ruleta de accesorios: 30 Gemas o un anuncio por giro.
+- Registro diario: si te saltas un día, aún puedes salvar tu racha con Gemas o un anuncio.
+- Franquicia: mira un anuncio para recibir más monedas iniciales tras el reinicio.
+- Los miembros VIP tienen un espacio más de exhibición alrededor del vaso.
+- Corregido el solapamiento de cantidades grandes de monedas con las Gemas en la pantalla principal, recordatorio para revisar la carpeta de spam con el código de respaldo y aviso claro cuando un anuncio no está listo.

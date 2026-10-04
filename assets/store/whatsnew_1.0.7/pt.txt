@@ -1,0 +1,9 @@
+Versão 1.0.7:
+- Adicionado o coreano.
+- A coleção chega a 80 acessórios e as chances de itens raros foram reequilibradas.
+- Acessórios exclusivos de festivais: Halloween, Natal, Ano Novo, Ano Novo Lunar, Dia dos Namorados, Dia da Mulher e Festival da Lua. Ganhe com o Pacote de Festival durante o evento e guarde para sempre.
+- Pacotes de acessórios por Gemas (com as chances à vista) e uma roleta de acessórios: 30 Gemas ou um anúncio por giro.
+- Check-in diário: se perder um dia, ainda dá para salvar sua sequência com Gemas ou um anúncio.
+- Franquia: veja um anúncio para receber mais moedas iniciais após o reinício.
+- Membros VIP ganham mais um espaço de exibição ao redor do copo.
+- Corrigida a sobreposição de valores grandes de moedas com as Gemas na tela principal, lembrete para verificar a pasta de spam com o código de backup e aviso claro quando um anúncio não está pronto.

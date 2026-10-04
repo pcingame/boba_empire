@@ -1,0 +1,9 @@
+Versi 1.0.7:
+- Menambahkan bahasa Korea.
+- Koleksi bertambah menjadi 80 aksesori, dan peluang item langka diseimbangkan ulang.
+- Aksesori eksklusif hari raya: Halloween, Natal, Tahun Baru, Tahun Baru Imlek, Valentine, Hari Perempuan, dan Festival Pertengahan Musim Gugur. Dapatkan lewat Paket Festival selama acara dan simpan selamanya.
+- Paket aksesori dengan Permata (peluang ditampilkan jelas) dan roda aksesori: 30 Permata atau satu iklan per putaran.
+- Check-in harian: terlewat sehari, streak masih bisa diselamatkan dengan Permata atau iklan.
+- Franchise: tonton iklan untuk mendapat Koin awal tambahan setelah reset.
+- Anggota VIP mendapat satu slot pajangan tambahan di sekitar gelas.
+- Memperbaiki jumlah Koin besar yang menimpa chip Permata di layar utama, menambahkan pengingat untuk memeriksa folder Spam saat menerima kode cadangan, dan pesan jelas saat iklan belum siap.

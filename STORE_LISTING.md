@@ -3,6 +3,12 @@
 Đây là **metadata cửa hàng** (không phải code). Dán vào đúng trường trong console.
 Bản dịch do máy soạn — **nên nhờ người bản ngữ soát** trước khi phát hành.
 
+**Cập nhật 2026-10-04 (bản 1.0.7):** thêm tiếng Hàn (7 ngôn ngữ). Mô tả mới ở
+`assets/store/description_1.0.7/{vi,en,es,id,pt,th,ko}.txt` (80 phụ kiện, phụ kiện lễ hội, cứu
+streak, "7 ngôn ngữ"); nội dung "Có gì mới" ở `assets/store/whatsnew_1.0.7/*.txt` (App Store,
+không emoji). Dòng cuối mô tả GIỮ `[:mav: 1.0.6]` — đổi thành `1.0.7` chỉ khi muốn ÉP mọi người
+cập nhật. Play giới hạn "What's new" 500 ký tự/ngôn ngữ nên phải rút gọn khi dán.
+
 **Cập nhật 2026-09-26:** viết lại cho khớp game hiện tại (18 giai đoạn, cốt truyện 28
 chương, Kỷ Nguyên, nhiệm vụ hằng ngày, Đấu Trường + bảng xếp hạng, sao lưu email). Mọi tính
 năng nêu trong mô tả đều có trong code; **không** nêu số lượng người chơi hay đánh giá.

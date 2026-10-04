@@ -1,0 +1,9 @@
+Version 1.0.7:
+- Added Korean.
+- The collection grows to 80 accessories, and rare drop rates have been rebalanced.
+- Limited holiday accessories: Halloween, Christmas, New Year, Lunar New Year, Valentine's Day, Women's Day and Mid-Autumn. Get them with the Festival Pack during the event and keep them forever.
+- Accessory packs for Gems (with clearly shown drop rates) and an accessory wheel: 30 Gems or one ad per spin.
+- Daily check-in: miss a day and you can still save your streak with Gems or an ad.
+- Franchise: watch an ad to get extra starting Coins after the reset.
+- VIP members get one more display slot around the cup.
+- Fixed large Coin amounts overlapping the Gems chip on the main screen, added a reminder to check your Spam folder for the backup code, and a clear message when an ad isn't ready.

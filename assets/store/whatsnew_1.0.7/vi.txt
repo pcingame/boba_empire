@@ -1,0 +1,9 @@
+Phiên bản 1.0.7:
+- Thêm tiếng Hàn.
+- Bộ sưu tập lên 80 phụ kiện, tỉ lệ rớt đồ hiếm cân bằng lại.
+- Phụ kiện độc quyền theo các dịp lễ: Halloween, Giáng Sinh, Tết Dương lịch, Tết Nguyên Đán, Valentine, 8/3, Trung Thu. Mua bằng Gói Lễ Hội trong dịp, giữ mãi sau khi hết dịp.
+- Gói phụ kiện bằng Kim Cương (công bố rõ tỉ lệ rớt) và vòng quay phụ kiện: 30 Kim Cương hoặc xem quảng cáo mỗi lượt.
+- Điểm danh: lỡ một ngày vẫn cứu được chuỗi bằng Kim Cương hoặc xem quảng cáo.
+- Nhượng quyền: xem quảng cáo để nhận thêm Xu khởi đầu sau khi reset.
+- Thành viên VIP có thêm một chỗ trưng bày phụ kiện quanh cốc.
+- Sửa lỗi số Xu lớn đè lên ô Kim Cương ở màn chính, thêm nhắc kiểm tra thư mục Spam khi nhận mã sao lưu, báo rõ khi quảng cáo chưa sẵn sàng.
