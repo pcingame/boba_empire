@@ -201,7 +201,7 @@ const _kTitleMinWidth = 220.0; // 16 ký tự × ~13px phông thật + dư
 const _kTitleMaxChars = 16;
 
 void _titleFitTests() {
-  for (final locale in ['vi', 'en', 'es', 'id', 'pt', 'th']) {
+  for (final locale in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
     testWidgets('tiêu đề Hành trình không bị cắt ở máy 412px — $locale',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(412, 800));
@@ -217,7 +217,12 @@ void _titleFitTests() {
             .first,
       );
       final title = para.text.toPlainText();
-      expect(para.size.width, greaterThanOrEqualTo(_kTitleMinWidth),
+      // Tên ngắn (vd tiếng Hàn 6 ký tự) tự co theo chữ: không thể bị cắt, nên chỉ
+      // đòi chỗ tối thiểu cho phần chữ thật (phông test: 22px/ký tự).
+      final need = title.length * 22.0 < _kTitleMinWidth
+          ? title.length * 22.0
+          : _kTitleMinWidth;
+      expect(para.size.width, greaterThanOrEqualTo(need),
           reason: '$locale: chỗ cho tiêu đề chỉ còn ${para.size.width}px — '
               'có thứ gì đó mới nhét vào AppBar, bỏ bớt đi');
       expect(title.length, lessThanOrEqualTo(_kTitleMaxChars),

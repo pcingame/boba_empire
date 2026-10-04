@@ -9,6 +9,7 @@ const _nativeNames = <String, String>{
   'en': 'English',
   'es': 'Español',
   'id': 'Bahasa Indonesia',
+  'ko': '한국어',
   'pt': 'Português',
   'th': 'ไทย',
   'vi': 'Tiếng Việt',

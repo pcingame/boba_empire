@@ -33,6 +33,7 @@ void main() {
     'es': 'Toca para preparar',
     'id': 'Ketuk untuk menyeduh',
     'th': 'แตะเพื่อชงชา',
+    'ko': '탭해서 만들기',
   };
 
   tapBrew.forEach((code, text) {

@@ -68,7 +68,7 @@ Future<void> _pump(
 }
 
 // Các ngôn ngữ tầng 2 (chuỗi dài hơn vi/en).
-const _locales = ['pt', 'es', 'id', 'th'];
+const _locales = ['pt', 'es', 'id', 'th', 'ko'];
 
 void main() {
   for (final locale in _locales) {

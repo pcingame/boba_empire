@@ -93,7 +93,7 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
-  for (final locale in ['vi', 'en', 'es', 'id', 'pt', 'th']) {
+  for (final locale in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
     testWidgets('[$locale] 320dp: Gói Lễ Hội + Kho (mục lễ hội) không tràn',
         (tester) async {
       await _pump(tester, _opener(), now: inWindow, locale: locale);

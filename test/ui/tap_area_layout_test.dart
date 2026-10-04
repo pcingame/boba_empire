@@ -62,7 +62,7 @@ void main() {
 
   // Dải nhiệm vụ MỘT dòng ở màn hẹp: mô tả dài (vi/pt/th/es) + số đích lớn hoặc nút
   // "Nhận +N💎" không được tràn.
-  for (final locale in ['vi', 'en', 'pt', 'es', 'th', 'id']) {
+  for (final locale in ['vi', 'en', 'pt', 'es', 'th', 'id', 'ko']) {
     for (final done in [false, true]) {
       testWidgets('[$locale] dải nhiệm vụ ${done ? "đã xong (nút Nhận)" : "đang làm"} '
           'ở màn 320px không tràn', (tester) async {

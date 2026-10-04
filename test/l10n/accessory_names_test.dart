@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 /// Mọi phụ kiện đều có tên dịch ở cả 6 ngôn ngữ (không rơi về hiển thị id thô).
 void main() {
-  for (final code in ['vi', 'en', 'es', 'id', 'pt', 'th']) {
+  for (final code in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
     test('[$code] mọi phụ kiện có tên, khác id', () async {
       final l10n = await AppLocalizations.delegate.load(Locale(code));
       for (final a in accessories.followedBy(limitedAccessories)) {

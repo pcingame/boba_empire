@@ -43,7 +43,7 @@ void main() {
     });
   }
 
-  for (final locale in ['vi', 'en', 'es', 'id', 'pt', 'th']) {
+  for (final locale in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
     testWidgets('thanh dưới 5 mục không tràn ở 320px — $locale',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(320, 640));
@@ -115,7 +115,7 @@ void main() {
 // Ngưỡng 0.57 nằm giữa hai con số cuối: chặn nhãn quá dài mà không đụng
 // "Nhượng quyền" vốn đã dài sẵn từ trước.
 void _labelScaleTests() {
-  for (final locale in ['vi', 'en', 'es', 'id', 'pt', 'th']) {
+  for (final locale in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
     testWidgets('nhãn tab không co dưới 0.57 lần ở máy 412px — $locale',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(412, 800));

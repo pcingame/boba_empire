@@ -8,6 +8,7 @@ import 'package:intl/intl.dart' as intl;
 import 'app_localizations_en.dart';
 import 'app_localizations_es.dart';
 import 'app_localizations_id.dart';
+import 'app_localizations_ko.dart';
 import 'app_localizations_pt.dart';
 import 'app_localizations_th.dart';
 import 'app_localizations_vi.dart';
@@ -101,6 +102,7 @@ abstract class AppLocalizations {
     Locale('en'),
     Locale('es'),
     Locale('id'),
+    Locale('ko'),
     Locale('pt'),
     Locale('th'),
     Locale('vi'),
@@ -3667,6 +3669,7 @@ class _AppLocalizationsDelegate
     'en',
     'es',
     'id',
+    'ko',
     'pt',
     'th',
     'vi',
@@ -3685,6 +3688,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsEs();
     case 'id':
       return AppLocalizationsId();
+    case 'ko':
+      return AppLocalizationsKo();
     case 'pt':
       return AppLocalizationsPt();
     case 'th':

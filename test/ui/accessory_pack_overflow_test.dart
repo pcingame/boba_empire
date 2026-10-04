@@ -14,7 +14,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Dialog gói phụ kiện không tràn ở mọi ngôn ngữ, cả trong mùa sự kiện, và
 /// mua xong có hiện món vừa rớt.
 void main() {
-  for (final locale in ['vi', 'en', 'pt', 'es', 'id', 'th']) {
+  for (final locale in ['vi', 'en', 'pt', 'es', 'id', 'th', 'ko']) {
     for (final season in [false, true]) {
       testWidgets('[$locale] season=$season: dialog gói không tràn, mua được',
           (tester) async {

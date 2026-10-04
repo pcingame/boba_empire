@@ -226,7 +226,7 @@ void main() {
   });
 
   // Dialog mới/sửa không tràn ở mọi ngôn ngữ, màn hẹp 320dp (RenderFlex → test fail).
-  for (final locale in ['vi', 'en', 'pt', 'es', 'id', 'th']) {
+  for (final locale in ['vi', 'en', 'pt', 'es', 'id', 'th', 'ko']) {
     testWidgets('[$locale] 320dp: dialog cứu streak / nhượng quyền / nhiệm vụ không tràn',
         (tester) async {
       tester.platformDispatcher.localesTestValue = [Locale(locale)];
@@ -265,7 +265,7 @@ void main() {
     });
   }
 
-  for (final locale in ['vi', 'en', 'pt', 'es', 'id', 'th']) {
+  for (final locale in ['vi', 'en', 'pt', 'es', 'id', 'th', 'ko']) {
     testWidgets('[$locale] 320dp: dialog nhiệm vụ (nút QC phụ kiện) + Kho phụ kiện không tràn',
         (tester) async {
       tester.platformDispatcher.localesTestValue = [Locale(locale)];
