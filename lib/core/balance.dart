@@ -300,6 +300,11 @@ class Balance {
   static const int prestigeAutoBuyBaseCost = 12;
   static const int prestigeAutoBuyMaxLevel = 1;
 
+  /// Xem QC lúc nhượng quyền: sau reset được cộng chừng này giây thu nhập (trước
+  /// reset) làm Xu khởi đầu. KHÔNG thưởng Sao — Sao = tổng theo lifetime trừ Sao
+  /// hiện có nên Sao tặng sẽ bị trừ ngược, và vượt trần server của bảng xếp hạng.
+  static const int prestigeAdBonusSeconds = 600;
+
   // --- Nhiệm vụ hằng ngày (2026-09-26) — ⚠️ số là ƯỚC LƯỢNG, chưa playtest ---
   static const int dailyQuestCount = 3;
   static int dailyQuestRewardGems = 8;
@@ -321,10 +326,10 @@ class Balance {
 
   /// Trọng số chọn ĐỘ HIẾM khi rớt phụ kiện (không phải trọng số từng món —
   /// trong cùng 1 độ hiếm thì đều xác suất giữa các món). Tổng không cần = 100.
-  static const int accessoryWeightCommon = 60;
-  static const int accessoryWeightRare = 25;
-  static const int accessoryWeightEpic = 12;
-  static const int accessoryWeightLegendary = 3;
+  static const int accessoryWeightCommon = 66;
+  static const int accessoryWeightRare = 24;
+  static const int accessoryWeightEpic = 8;
+  static const int accessoryWeightLegendary = 2;
 
   /// Sự kiện cuối tuần: trọng số rớt món Sử thi + Huyền thoại nhân lên bấy nhiêu
   /// (12→24, 3→6: Huyền thoại 3% → ~5,2%, Sử thi 12% → ~20,9%).
@@ -349,6 +354,26 @@ class Balance {
 
   /// Rớt trúng món đã có (trùng) → quy đổi 💎 thay vì lãng phí lượt rớt.
   static const int duplicateAccessoryGems = 2;
+
+  /// Gói phụ kiện mua bằng 💎 (⚠️ giá ước lượng, chưa playtest): Thường = rớt như
+  /// thường; Hiếm = bảo đảm từ Hiếm; Sử thi = bảo đảm từ Sử thi.
+  static const int accessoryPackBasicGems = 30;
+  static const int accessoryPackRareGems = 80;
+  static const int accessoryPackEpicGems = 200;
+
+  /// Dịp lễ (xem `festivals` trong accessories.dart): giảm giá gói + tăng tỉ lệ
+  /// Sử thi/Huyền thoại, và mở bán Gói Lễ Hội (phụ kiện độc quyền).
+  static const double seasonPackDiscount = 0.25;
+  static const int festivalPackGems = 80; // ⚠️ ước lượng, chưa playtest
+
+  /// Vòng quay phụ kiện: mỗi lượt = 1 QC hoặc [accessorySpinGems] 💎, rớt như
+  /// thường (cùng tỉ lệ rớt chung). Lượt xem QC giới hạn/ngày để không biến thành
+  /// máy in phụ kiện (bản dư bán được ở Chợ).
+  static const int accessorySpinGems = 30;
+  static const int accessorySpinAdsPerDay = 10;
+
+  /// Chỗ trưng bày thêm cho VIP.
+  static const int vipExtraEquipSlots = 1;
 
   // --- Chợ Phụ kiện: đổi Xu/💎 lấy Xu Chợ (2026-10-01) — MỘT CHIỀU, xem
   // credit_market_coins() trong accessory_market_schema.sql. Phí sàn 1%

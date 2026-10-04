@@ -7,6 +7,7 @@ library;
 import 'dart:math';
 
 import 'balance.dart';
+import 'daily.dart' show dayIndex;
 import 'models.dart';
 
 enum AccessoryRarity { common, rare, epic, legendary }
@@ -19,7 +20,7 @@ class Accessory {
   final String emoji;
 }
 
-/// 50 món, chia theo độ hiếm (25 thường · 13 hiếm · 9 sử thi · 3 huyền
+/// 80 món, chia theo độ hiếm (39 thường · 22 hiếm · 14 sử thi · 5 huyền
 /// thoại). Mô tả hiển thị dựng ở l10n_ext (accessoryName). Nâng số món thì
 /// PHẢI nâng trần CHECK `owned_count` trong accessory_leaderboard_schema.sql
 /// trước (xem ghi chú trong file đó).
@@ -49,6 +50,20 @@ const List<Accessory> accessories = [
   Accessory('basket', AccessoryRarity.common, '🧺'),
   Accessory('bead', AccessoryRarity.common, '📿'),
   Accessory('ladybug', AccessoryRarity.common, '🐞'),
+  Accessory('donut', AccessoryRarity.common, '🍩'),
+  Accessory('lollipop', AccessoryRarity.common, '🍭'),
+  Accessory('pretzel', AccessoryRarity.common, '🥨'),
+  Accessory('ice_cream', AccessoryRarity.common, '🍦'),
+  Accessory('strawberry', AccessoryRarity.common, '🍓'),
+  Accessory('cherry', AccessoryRarity.common, '🍒'),
+  Accessory('lemon', AccessoryRarity.common, '🍋'),
+  Accessory('peach', AccessoryRarity.common, '🍑'),
+  Accessory('popcorn', AccessoryRarity.common, '🍿'),
+  Accessory('honey_pot', AccessoryRarity.common, '🍯'),
+  Accessory('milk_glass', AccessoryRarity.common, '🥛'),
+  Accessory('tangerine', AccessoryRarity.common, '🍊'),
+  Accessory('chestnut', AccessoryRarity.common, '🌰'),
+  Accessory('maple_leaf', AccessoryRarity.common, '🍁'),
   Accessory('seashell', AccessoryRarity.rare, '🐚'),
   Accessory('mask', AccessoryRarity.rare, '🎭'),
   Accessory('drum', AccessoryRarity.rare, '🪘'),
@@ -62,6 +77,15 @@ const List<Accessory> accessories = [
   Accessory('hourglass', AccessoryRarity.rare, '⏳'),
   Accessory('map', AccessoryRarity.rare, '🗺️'),
   Accessory('ring', AccessoryRarity.rare, '💍'),
+  Accessory('compass', AccessoryRarity.rare, '🧭'),
+  Accessory('rocket', AccessoryRarity.rare, '🚀'),
+  Accessory('violin', AccessoryRarity.rare, '🎻'),
+  Accessory('scroll', AccessoryRarity.rare, '📜'),
+  Accessory('microphone', AccessoryRarity.rare, '🎙️'),
+  Accessory('lotus', AccessoryRarity.rare, '🪷'),
+  Accessory('jellyfish', AccessoryRarity.rare, '🪼'),
+  Accessory('camera', AccessoryRarity.rare, '📷'),
+  Accessory('shield', AccessoryRarity.rare, '🛡️'),
   Accessory('crystal_ball', AccessoryRarity.epic, '🔮'),
   Accessory('lantern', AccessoryRarity.epic, '🏮'),
   Accessory('unicorn', AccessoryRarity.epic, '🦄'),
@@ -71,13 +95,21 @@ const List<Accessory> accessories = [
   Accessory('comet', AccessoryRarity.epic, '☄️'),
   Accessory('butterfly', AccessoryRarity.epic, '🦋'),
   Accessory('angel_wing', AccessoryRarity.epic, '🪽'),
+  Accessory('amphora', AccessoryRarity.epic, '🏺'),
+  Accessory('rainbow', AccessoryRarity.epic, '🌈'),
+  Accessory('fairy', AccessoryRarity.epic, '🧚'),
+  Accessory('disco_ball', AccessoryRarity.epic, '🪩'),
+  Accessory('shining_star', AccessoryRarity.epic, '🌟'),
   Accessory('dragon', AccessoryRarity.legendary, '🐉'),
   Accessory('phoenix', AccessoryRarity.legendary, '🔥'),
   Accessory('galaxy', AccessoryRarity.legendary, '🌌'),
+  Accessory('kraken', AccessoryRarity.legendary, '🦑'),
+  Accessory('thunderbolt', AccessoryRarity.legendary, '⚡'),
 ];
 
-Accessory accessoryById(String id) =>
-    accessories.firstWhere((a) => a.id == id);
+Accessory accessoryById(String id) => accessories
+    .followedBy(limitedAccessories)
+    .firstWhere((a) => a.id == id);
 
 int _rarityWeight(AccessoryRarity r, {bool weekend = false}) {
   final boost = weekend ? Balance.weekendHighRarityMultiplier : 1;
@@ -91,23 +123,58 @@ int _rarityWeight(AccessoryRarity r, {bool weekend = false}) {
 
 /// Chọn độ hiếm theo trọng số từ [roll01] trong [0,1) — cùng khuôn
 /// [spinWheel] ở wheel.dart.
-AccessoryRarity _rollRarity(double roll01, {bool weekend = false}) {
-  final total = AccessoryRarity.values
-      .fold<int>(0, (a, r) => a + _rarityWeight(r, weekend: weekend));
+AccessoryRarity _rollRarity(double roll01,
+    {bool weekend = false, AccessoryRarity min = AccessoryRarity.common}) {
+  final allowed = AccessoryRarity.values.where((r) => r.index >= min.index);
+  final total =
+      allowed.fold<int>(0, (a, r) => a + _rarityWeight(r, weekend: weekend));
   var r = roll01 * total;
-  for (final rarity in AccessoryRarity.values) {
+  for (final rarity in allowed) {
     r -= _rarityWeight(rarity, weekend: weekend);
     if (r < 0) return rarity;
   }
-  return AccessoryRarity.values.last;
+  return allowed.last;
 }
+
+/// Tỉ lệ rớt từng độ hiếm (tổng = 1) khi bảo đảm từ [min] — để UI công bố rõ
+/// (Apple/Google yêu cầu công khai tỉ lệ với gói ngẫu nhiên).
+Map<AccessoryRarity, double> accessoryOdds(
+    {AccessoryRarity min = AccessoryRarity.common, bool weekend = false}) {
+  final allowed = AccessoryRarity.values.where((r) => r.index >= min.index);
+  final total =
+      allowed.fold<int>(0, (a, r) => a + _rarityWeight(r, weekend: weekend));
+  return {for (final r in allowed) r: _rarityWeight(r, weekend: weekend) / total};
+}
+
+/// Gói phụ kiện mua bằng 💎: độ hiếm tối thiểu + giá.
+enum AccessoryPack {
+  basic(AccessoryRarity.common, Balance.accessoryPackBasicGems),
+  rare(AccessoryRarity.rare, Balance.accessoryPackRareGems),
+  epic(AccessoryRarity.epic, Balance.accessoryPackEpicGems);
+
+  const AccessoryPack(this.minRarity, this.baseGems);
+  final AccessoryRarity minRarity;
+  final int baseGems;
+
+  /// Giá thực tế: giảm [Balance.seasonPackDiscount] trong mùa sự kiện.
+  int cost(DateTime nowUtc) => seasonPackActive(nowUtc)
+      ? (baseGems * (1 - Balance.seasonPackDiscount)).round()
+      : baseGems;
+}
+
+/// Đang trong dịp lễ nào đó (giảm giá gói + boost tỉ lệ).
+bool seasonPackActive(DateTime nowUtc) => activeFestival(nowUtc) != null;
+
+/// Số chỗ trưng bày tối đa (VIP có thêm).
+int maxEquippedFor({required bool vip}) =>
+    Balance.maxEquippedAccessories + (vip ? Balance.vipExtraEquipSlots : 0);
 
 /// Rớt 1 món ngẫu nhiên: [rarityRoll01] chọn độ hiếm, [itemRoll01] chọn món
 /// trong độ hiếm đó (đều xác suất). [weekend] = sự kiện cuối tuần (tăng tỉ lệ
 /// Sử thi/Huyền thoại, xem [Balance.weekendHighRarityMultiplier]). Thuần.
 Accessory rollAccessory(double rarityRoll01, double itemRoll01,
-    {bool weekend = false}) {
-  final rarity = _rollRarity(rarityRoll01, weekend: weekend);
+    {bool weekend = false, AccessoryRarity min = AccessoryRarity.common}) {
+  final rarity = _rollRarity(rarityRoll01, weekend: weekend, min: min);
   final pool = accessories.where((a) => a.rarity == rarity).toList();
   final i = (itemRoll01 * pool.length).floor().clamp(0, pool.length - 1);
   return pool[i];
@@ -146,5 +213,94 @@ bool grantAccessory(GameState state, Accessory a) {
 
 /// Dùng cho Random thật (không test) — mirror cách game_controller.dart gọi
 /// spinWheel(_random.nextDouble()).
-Accessory rollAccessoryWith(Random random, {bool weekend = false}) =>
-    rollAccessory(random.nextDouble(), random.nextDouble(), weekend: weekend);
+Accessory rollAccessoryWith(Random random,
+        {bool weekend = false, AccessoryRarity min = AccessoryRarity.common}) =>
+    rollAccessory(random.nextDouble(), random.nextDouble(),
+        weekend: weekend, min: min);
+
+/// Đủ điều kiện nhận lượt rớt thưởng xem QC: đã nhận thưởng "xong cả bộ"
+/// nhiệm vụ hôm nay và chưa nhận lượt này hôm nay.
+bool accessoryAdDropAvailable(GameState s, int nowMillis) =>
+    s.dailyBonusClaimed &&
+    s.dailyQuestDay == dayIndex(nowMillis) &&
+    s.accessoryAdDropDay != dayIndex(nowMillis);
+
+/// Số lượt quay xem-QC còn lại hôm nay (reset khi sang ngày UTC mới).
+int accessoryAdSpinsLeft(GameState s, int nowMillis) =>
+    s.accessoryAdSpinDay == dayIndex(nowMillis)
+        ? (Balance.accessorySpinAdsPerDay - s.accessoryAdSpins)
+            .clamp(0, Balance.accessorySpinAdsPerDay)
+        : Balance.accessorySpinAdsPerDay;
+
+// --- Phụ kiện ĐỘC QUYỀN theo dịp lễ ---------------------------------------
+// Tách hẳn khỏi [accessories] (50→80 món sưu tập chính): KHÔNG tính vào số đếm
+// bộ sưu tập / mốc / bảng xếp hạng (SQL có CHECK owned_count), KHÔNG đăng bán ở
+// Chợ, không đồng bộ server, không làm huy hiệu BXH. Lưu ở
+// [GameState.ownedLimited]; chỉ mua được bằng Gói Lễ Hội trong dịp đó.
+
+class Festival {
+  const Festival(this.id, this.start, this.end, this.items);
+
+  /// Khoá ổn định (dùng cho tên dịch `festivalName`).
+  final String id;
+
+  /// Khoảng thời gian bán gói (UTC, [start, end)).
+  final DateTime start;
+  final DateTime end;
+  final List<Accessory> items;
+}
+
+// DateTime.utc không phải const nên danh sách là `final`. Thêm dịp lễ mới = thêm
+// một Festival + tên dịch trong l10n_ext/ARB.
+final List<Festival> festivals = [
+  Festival('halloween', DateTime.utc(2026, 10, 24), DateTime.utc(2026, 11, 3), const [
+    Accessory('bat', AccessoryRarity.rare, '🦇'),
+    Accessory('jack_o_lantern', AccessoryRarity.epic, '🎃'),
+    Accessory('ghost', AccessoryRarity.epic, '👻'),
+    Accessory('witch', AccessoryRarity.legendary, '🧙'),
+  ]),
+  Festival('christmas', DateTime.utc(2026, 12, 18), DateTime.utc(2026, 12, 28), const [
+    Accessory('snowman', AccessoryRarity.rare, '⛄'),
+    Accessory('christmas_tree', AccessoryRarity.epic, '🎄'),
+    Accessory('reindeer', AccessoryRarity.epic, '🦌'),
+    Accessory('santa', AccessoryRarity.legendary, '🎅'),
+  ]),
+  Festival('tet', DateTime.utc(2027, 1, 30), DateTime.utc(2027, 2, 15), const [
+    Accessory('firecracker', AccessoryRarity.rare, '🧨'),
+    Accessory('red_envelope', AccessoryRarity.epic, '🧧'),
+    Accessory('apricot_blossom', AccessoryRarity.epic, '🌼'),
+    Accessory('golden_goat', AccessoryRarity.legendary, '🐐'),
+  ]),
+];
+
+List<Accessory> get limitedAccessories =>
+    [for (final f in festivals) ...f.items];
+
+Festival? activeFestival(DateTime nowUtc) {
+  for (final f in festivals) {
+    if (!nowUtc.isBefore(f.start) && nowUtc.isBefore(f.end)) return f;
+  }
+  return null;
+}
+
+/// Sở hữu món (sưu tập chính HOẶC độc quyền lễ hội) — dùng cho trưng bày.
+bool ownsAccessory(GameState s, String id) =>
+    s.ownedAccessories.contains(id) || s.ownedLimited.contains(id);
+
+/// Chọn món cho 1 lượt Gói Lễ Hội: đều trong các món CHƯA có; có đủ rồi thì chọn
+/// đều trong cả dịp. [roll01] ∈ [0,1).
+Accessory pickFestivalItem(GameState s, Festival f, double roll01) {
+  final unowned = f.items.where((a) => !s.ownedLimited.contains(a.id)).toList();
+  final pool = unowned.isEmpty ? f.items : unowned;
+  return pool[(roll01 * pool.length).floor().clamp(0, pool.length - 1)];
+}
+
+/// Trao món độc quyền. Trả về true nếu là món MỚI; trùng (đã đủ bộ) → đổi 💎.
+bool grantFestivalItem(GameState s, Accessory a) {
+  if (s.ownedLimited.contains(a.id)) {
+    s.gems += Balance.duplicateAccessoryGems;
+    return false;
+  }
+  s.ownedLimited.add(a.id);
+  return true;
+}

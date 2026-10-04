@@ -8,13 +8,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/accessories.dart';
-import '../core/balance.dart';
 import '../core/collection_milestones.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../leaderboard/flair.dart';
 import '../state/game_providers.dart';
 import 'accessory_leaderboard_page.dart';
+import 'accessory_pack_dialog.dart';
 import 'collection_share_dialog.dart';
 import '../market/market_highlight.dart';
 import 'accessory_market_page.dart';
@@ -41,6 +41,8 @@ class AccessoryInventoryPage extends ConsumerWidget {
     final equippedCount = ref.watch(
       gameControllerProvider.select((s) => s.equippedAccessories.length),
     );
+    final maxEquipped = maxEquippedFor(
+        vip: ref.watch(gameControllerProvider.select((s) => s.vipActive)));
 
     return PhoneWidth(
       child: Scaffold(
@@ -103,13 +105,23 @@ class AccessoryInventoryPage extends ConsumerWidget {
                       Text(
                         l10n.accessoryEquipHint(
                           equippedCount,
-                          Balance.maxEquippedAccessories,
+                          maxEquipped,
                         ),
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
                         l10n.accessoryFlairHint,
                         style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        width: double.infinity,
+                        child: FilledButton.tonalIcon(
+                          key: const Key('accessory-pack-button'),
+                          onPressed: () => showAccessoryPacks(context),
+                          icon: const Text('🎁'),
+                          label: Text(l10n.accessoryPackButton),
+                        ),
                       ),
                       const SizedBox(height: 8),
                       ClipRRect(
@@ -138,6 +150,40 @@ class AccessoryInventoryPage extends ConsumerWidget {
                       _AccessoryCell(accessory: accessories[i]),
                 ),
               ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+                  child: Text(
+                    l10n.festivalSection,
+                    style: Theme.of(context).textTheme.titleMedium
+                        ?.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                ),
+              ),
+              for (final f in festivals) ...[
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 6),
+                    child: Text(festivalName(l10n, f.id),
+                        style: Theme.of(context).textTheme.labelLarge),
+                  ),
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                  sliver: SliverGrid.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 0.85,
+                    ),
+                    itemCount: f.items.length,
+                    itemBuilder: (context, i) =>
+                        _AccessoryCell(accessory: f.items[i], limited: true),
+                  ),
+                ),
+              ],
             ],
           ),
         ),
@@ -147,8 +193,12 @@ class AccessoryInventoryPage extends ConsumerWidget {
 }
 
 class _AccessoryCell extends ConsumerWidget {
-  const _AccessoryCell({required this.accessory});
+  const _AccessoryCell({required this.accessory, this.limited = false});
   final Accessory accessory;
+
+  /// Món độc quyền lễ hội: lưu riêng ([GameState.ownedLimited]), không làm huy
+  /// hiệu BXH (nhấn giữ tắt) và không có bản dư.
+  final bool limited;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -159,7 +209,9 @@ class _AccessoryCell extends ConsumerWidget {
     // không phải toàn bộ lưới mỗi khi danh sách tăng thêm 1 món khác.
     final unlocked = ref.watch(
       gameControllerProvider.select(
-        (s) => s.ownedAccessories.contains(accessory.id),
+        (s) =>
+            s.ownedAccessories.contains(accessory.id) ||
+            s.ownedLimited.contains(accessory.id),
       ),
     );
     final spares = ref.watch(
@@ -186,7 +238,8 @@ class _AccessoryCell extends ConsumerWidget {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              l10n.accessoryEquipFull(Balance.maxEquippedAccessories),
+              l10n.accessoryEquipFull(maxEquippedFor(
+                  vip: ref.read(gameControllerProvider).vipActive)),
             ),
           ),
         );
@@ -216,7 +269,7 @@ class _AccessoryCell extends ConsumerWidget {
     return GestureDetector(
       key: Key('accessory-cell-${accessory.id}'),
       onTap: onTap,
-      onLongPress: onLongPress,
+      onLongPress: limited ? null : onLongPress,
       // StackFit.expand: Stack mặc định nới lỏng ràng buộc nên ô co lại theo
       // nội dung (hẹp, lệch trái) thay vì lấp đầy ô lưới.
       child: Stack(

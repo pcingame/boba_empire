@@ -243,6 +243,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get prestigeNotEnough => 'Insuficiente';
 
   @override
+  String get prestigeAdConfirm => 'Ver anuncio: monedas iniciales extra';
+
+  @override
   String prestigeSuccess(String stars) {
     return '¡Franquicia exitosa! +$stars ⭐';
   }
@@ -315,7 +318,120 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dailyPrompt => '¡Reclama el regalo de hoy!';
 
   @override
+  String get adNotReady =>
+      'El anuncio aún no está listo, inténtalo de nuevo en unos segundos.';
+
+  @override
+  String get accessoryBat => 'Murciélago nocturno';
+
+  @override
+  String get accessoryJackOLantern => 'Calabaza de Halloween';
+
+  @override
+  String get accessoryGhost => 'Fantasma amistoso';
+
+  @override
+  String get accessoryWitch => 'Brujita';
+
+  @override
+  String get accessorySnowman => 'Muñeco de nieve';
+
+  @override
+  String get accessoryChristmasTree => 'Árbol de Navidad';
+
+  @override
+  String get accessoryReindeer => 'Reno';
+
+  @override
+  String get accessorySanta => 'Papá Noel';
+
+  @override
+  String get accessoryFirecracker => 'Petardo';
+
+  @override
+  String get accessoryRedEnvelope => 'Sobre rojo';
+
+  @override
+  String get accessoryApricotBlossom => 'Flor de albaricoque';
+
+  @override
+  String get accessoryGoldenGoat => 'Cabra dorada';
+
+  @override
+  String get festivalHalloween => 'Halloween';
+
+  @override
+  String get festivalChristmas => 'Navidad';
+
+  @override
+  String get festivalTet => 'Año Nuevo Lunar';
+
+  @override
+  String get festivalSection => 'Accesorios de festividades (exclusivos)';
+
+  @override
+  String festivalPackTitle(String name) {
+    return 'Paquete de $name';
+  }
+
+  @override
+  String festivalPackDesc(int gems) {
+    return 'Cada paquete da 1 objeto exclusivo que aún no tienes, solo durante el evento. Si ya los tienes todos, recibes $gems 💎. No se puede intercambiar.';
+  }
+
+  @override
   String get dailyClaim => 'Reclamar';
+
+  @override
+  String get accessoryWheelTitle => 'Ruleta de accesorios';
+
+  @override
+  String accessoryWheelAd(int n) {
+    return 'Girar: ver anuncio ($n restantes)';
+  }
+
+  @override
+  String accessoryWheelGems(int gems) {
+    return 'Girar $gems 💎';
+  }
+
+  @override
+  String get accessoryPackButton => 'Paquetes de accesorios';
+
+  @override
+  String get accessoryPackTitle => 'Paquetes de accesorios';
+
+  @override
+  String get accessoryPackBasic => 'Paquete Básico';
+
+  @override
+  String get accessoryPackRare => 'Paquete Raro (Raro o mejor)';
+
+  @override
+  String get accessoryPackEpic => 'Paquete Épico (Épico o mejor)';
+
+  @override
+  String get accessoryPackSeason =>
+      '¡Evento de temporada: 25% de descuento y probabilidad Épico/Legendario ×2!';
+
+  @override
+  String get accessoryAdDropButton => 'Ver anuncio: +1 accesorio';
+
+  @override
+  String dailyStreakAtRisk(int days) {
+    return 'Te saltaste un día: ¡tu racha de $days días está a punto de perderse!';
+  }
+
+  @override
+  String dailyRestoreGems(int gems) {
+    return 'Salvar racha ($gems 💎)';
+  }
+
+  @override
+  String get dailyRestoreAd => 'Ver un anuncio para salvar la racha';
+
+  @override
+  String get dailySkipRestore => 'Omitir y empezar de nuevo';
 
   @override
   String dailyReward(String gems) {
@@ -1201,6 +1317,96 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get accessoryGalaxy => 'Galaxia';
+
+  @override
+  String get accessoryDonut => 'Dona';
+
+  @override
+  String get accessoryLollipop => 'Piruleta';
+
+  @override
+  String get accessoryPretzel => 'Pretzel';
+
+  @override
+  String get accessoryIceCream => 'Cono de helado';
+
+  @override
+  String get accessoryStrawberry => 'Fresa';
+
+  @override
+  String get accessoryCherry => 'Cerezas';
+
+  @override
+  String get accessoryLemon => 'Limón';
+
+  @override
+  String get accessoryPeach => 'Durazno';
+
+  @override
+  String get accessoryPopcorn => 'Palomitas';
+
+  @override
+  String get accessoryHoneyPot => 'Tarro de miel';
+
+  @override
+  String get accessoryMilkGlass => 'Vaso de leche';
+
+  @override
+  String get accessoryTangerine => 'Mandarina';
+
+  @override
+  String get accessoryChestnut => 'Castaña';
+
+  @override
+  String get accessoryMapleLeaf => 'Hoja de arce';
+
+  @override
+  String get accessoryCompass => 'Brújula';
+
+  @override
+  String get accessoryRocket => 'Cohete';
+
+  @override
+  String get accessoryViolin => 'Violín';
+
+  @override
+  String get accessoryScroll => 'Pergamino';
+
+  @override
+  String get accessoryMicrophone => 'Micrófono';
+
+  @override
+  String get accessoryLotus => 'Loto';
+
+  @override
+  String get accessoryJellyfish => 'Medusa';
+
+  @override
+  String get accessoryCamera => 'Cámara';
+
+  @override
+  String get accessoryShield => 'Escudo';
+
+  @override
+  String get accessoryAmphora => 'Jarrón antiguo';
+
+  @override
+  String get accessoryRainbow => 'Arcoíris';
+
+  @override
+  String get accessoryFairy => 'Hada';
+
+  @override
+  String get accessoryDiscoBall => 'Bola disco';
+
+  @override
+  String get accessoryShiningStar => 'Estrella brillante';
+
+  @override
+  String get accessoryKraken => 'Kraken';
+
+  @override
+  String get accessoryThunderbolt => 'Rayo divino';
 
   @override
   String get marketTitle => 'Mercado de accesorios';

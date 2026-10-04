@@ -36,16 +36,26 @@ Future<Widget> _app(Locale locale) async {
 }
 
 void main() {
-  testWidgets('ván mới: 0/50, cả 50 ô đều khoá ("???")', (tester) async {
+  testWidgets('nút Gói phụ kiện rộng bằng cả bề ngang nội dung (không lệch trái)',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(await _app(const Locale('vi')));
+    await tester.pumpAndSettle();
+    final size = tester.getSize(find.byKey(const Key('accessory-pack-button')));
+    expect(size.width, 400 - 2 * 16); // lề nội dung 16 mỗi bên
+  });
+
+  testWidgets('ván mới: 0/80, cả 80 ô đều khoá ("???")', (tester) async {
     // Đủ cao để GridView dựng hết 50 ô (17 hàng) không cần cuộn — GridView.builder
     // chỉ dựng ô đang hiện trên màn, đếm thiếu nếu màn quá thấp.
-    await tester.binding.setSurfaceSize(const Size(400, 2800));
+    await tester.binding.setSurfaceSize(const Size(400, 5600));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(await _app(const Locale('vi')));
     await tester.pumpAndSettle();
 
-    expect(find.text('Đã có 0/50'), findsOneWidget);
-    expect(find.text('???'), findsNWidgets(accessories.length));
+    expect(find.text('Đã có 0/80'), findsOneWidget);
+    expect(find.text('???'), findsNWidgets(accessories.length + limitedAccessories.length));
   });
 
   for (final locale in AppLocalizations.supportedLocales) {

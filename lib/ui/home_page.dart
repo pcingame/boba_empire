@@ -1247,6 +1247,7 @@ class _EquippedFloaters extends ConsumerWidget {
     (left: -12.0, right: null, top: -8.0, bottom: null, tilt: -0.22),
     (left: null, right: -12.0, top: -8.0, bottom: null, tilt: 0.22),
     (left: null, right: -6.0, top: null, bottom: 4.0, tilt: 0.14),
+    (left: -6.0, right: null, top: null, bottom: 4.0, tilt: -0.14), // chỗ VIP
   ];
 
   @override
@@ -1256,7 +1257,7 @@ class _EquippedFloaters extends ConsumerWidget {
         gameControllerProvider.select((s) => s.equippedAccessories.join(',')));
     final emojis = [
       for (final id in key.isEmpty ? const <String>[] : key.split(','))
-        for (final a in accessories)
+        for (final a in accessories.followedBy(limitedAccessories))
           if (a.id == id) a.emoji,
     ];
     return IgnorePointer(

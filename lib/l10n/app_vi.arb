@@ -247,6 +247,7 @@
     }
   },
   "prestigeNotEnough": "Chưa đủ",
+  "prestigeAdConfirm": "Xem QC: nhận thêm Xu khởi đầu",
   "prestigeSuccess": "Nhượng quyền thành công! +{stars} ⭐",
   "@prestigeSuccess": {
     "placeholders": {
@@ -288,7 +289,82 @@
   "languageSystem": "Theo hệ thống",
   "dailyTitle": "Điểm danh hằng ngày",
   "dailyPrompt": "Nhận quà đăng nhập hôm nay!",
+  "adNotReady": "Quảng cáo chưa sẵn sàng, thử lại sau ít giây.",
+  "accessoryBat": "Dơi đêm",
+  "accessoryJackOLantern": "Bí ngô ma quái",
+  "accessoryGhost": "Bóng ma",
+  "accessoryWitch": "Phù thủy",
+  "accessorySnowman": "Người tuyết",
+  "accessoryChristmasTree": "Cây thông Noel",
+  "accessoryReindeer": "Tuần lộc",
+  "accessorySanta": "Ông già Noel",
+  "accessoryFirecracker": "Pháo Tết",
+  "accessoryRedEnvelope": "Bao lì xì",
+  "accessoryApricotBlossom": "Hoa mai vàng",
+  "accessoryGoldenGoat": "Dê vàng",
+  "festivalHalloween": "Halloween",
+  "festivalChristmas": "Giáng Sinh",
+  "festivalTet": "Tết Nguyên Đán",
+  "festivalSection": "Phụ kiện lễ hội (độc quyền)",
+  "festivalPackTitle": "Gói {name}",
+  "@festivalPackTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "festivalPackDesc": "Mỗi gói nhận 1 món độc quyền CHƯA CÓ, chỉ bán trong dịp lễ. Có đủ rồi thì đổi {gems} 💎. Không giao dịch được.",
+  "@festivalPackDesc": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
   "dailyClaim": "Nhận quà",
+  "accessoryWheelTitle": "Vòng quay phụ kiện",
+  "accessoryWheelAd": "Quay: xem QC (còn {n})",
+  "@accessoryWheelAd": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "accessoryWheelGems": "Quay {gems} 💎",
+  "@accessoryWheelGems": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "accessoryPackButton": "Gói phụ kiện",
+  "accessoryPackTitle": "Gói phụ kiện",
+  "accessoryPackBasic": "Gói Thường",
+  "accessoryPackRare": "Gói Hiếm (bảo đảm từ Hiếm)",
+  "accessoryPackEpic": "Gói Sử Thi (bảo đảm từ Sử thi)",
+  "accessoryPackSeason": "Sự kiện mùa: giảm 25% giá gói, tỉ lệ Sử thi/Huyền thoại ×2!",
+  "accessoryAdDropButton": "Xem QC: thêm 1 phụ kiện",
+  "dailyStreakAtRisk": "Bạn bỏ lỡ 1 ngày — chuỗi {days} ngày sắp mất!",
+  "@dailyStreakAtRisk": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dailyRestoreGems": "Cứu chuỗi ({gems} 💎)",
+  "@dailyRestoreGems": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "dailyRestoreAd": "Xem quảng cáo để cứu chuỗi",
+  "dailySkipRestore": "Bỏ qua, bắt đầu lại",
   "dailyReward": "+{gems} 💎",
   "@dailyReward": {
     "placeholders": {
@@ -843,6 +919,36 @@
   "accessoryAngelWing": "Cánh thiên thần",
   "accessoryPhoenix": "Phượng hoàng lửa",
   "accessoryGalaxy": "Dải ngân hà",
+  "accessoryDonut": "Bánh donut",
+  "accessoryLollipop": "Kẹo mút",
+  "accessoryPretzel": "Bánh quy xoắn",
+  "accessoryIceCream": "Kem ốc quế",
+  "accessoryStrawberry": "Dâu tây",
+  "accessoryCherry": "Anh đào",
+  "accessoryLemon": "Chanh vàng",
+  "accessoryPeach": "Đào",
+  "accessoryPopcorn": "Bắp rang",
+  "accessoryHoneyPot": "Hũ mật ong",
+  "accessoryMilkGlass": "Ly sữa",
+  "accessoryTangerine": "Quýt",
+  "accessoryChestnut": "Hạt dẻ",
+  "accessoryMapleLeaf": "Lá phong",
+  "accessoryCompass": "La bàn",
+  "accessoryRocket": "Tên lửa",
+  "accessoryViolin": "Đàn violin",
+  "accessoryScroll": "Cuộn giấy cổ",
+  "accessoryMicrophone": "Micro",
+  "accessoryLotus": "Hoa sen",
+  "accessoryJellyfish": "Sứa",
+  "accessoryCamera": "Máy ảnh",
+  "accessoryShield": "Khiên",
+  "accessoryAmphora": "Bình cổ",
+  "accessoryRainbow": "Cầu vồng",
+  "accessoryFairy": "Tiên nữ",
+  "accessoryDiscoBall": "Quả cầu disco",
+  "accessoryShiningStar": "Ngôi sao sáng",
+  "accessoryKraken": "Kraken",
+  "accessoryThunderbolt": "Tia chớp thần",
   "marketTitle": "Chợ Phụ kiện",
   "marketTabBrowse": "Chợ",
   "marketTabMine": "Của tôi",

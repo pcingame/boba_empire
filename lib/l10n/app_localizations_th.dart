@@ -241,6 +241,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get prestigeNotEnough => 'ไม่พอ';
 
   @override
+  String get prestigeAdConfirm => 'ดูโฆษณา: รับเหรียญเริ่มต้นเพิ่ม';
+
+  @override
   String prestigeSuccess(String stars) {
     return 'แฟรนไชส์สำเร็จ! +$stars ⭐';
   }
@@ -311,7 +314,119 @@ class AppLocalizationsTh extends AppLocalizations {
   String get dailyPrompt => 'รับของขวัญเข้าสู่ระบบวันนี้!';
 
   @override
+  String get adNotReady => 'โฆษณายังไม่พร้อม ลองอีกครั้งในอีกไม่กี่วินาที';
+
+  @override
+  String get accessoryBat => 'ค้างคาวราตรี';
+
+  @override
+  String get accessoryJackOLantern => 'ฟักทองฮาโลวีน';
+
+  @override
+  String get accessoryGhost => 'ผีน้อยใจดี';
+
+  @override
+  String get accessoryWitch => 'แม่มดน้อย';
+
+  @override
+  String get accessorySnowman => 'มนุษย์หิมะ';
+
+  @override
+  String get accessoryChristmasTree => 'ต้นคริสต์มาส';
+
+  @override
+  String get accessoryReindeer => 'กวางเรนเดียร์';
+
+  @override
+  String get accessorySanta => 'ซานตาคลอส';
+
+  @override
+  String get accessoryFirecracker => 'ประทัด';
+
+  @override
+  String get accessoryRedEnvelope => 'อั่งเปา';
+
+  @override
+  String get accessoryApricotBlossom => 'ดอกเหมย';
+
+  @override
+  String get accessoryGoldenGoat => 'แพะทอง';
+
+  @override
+  String get festivalHalloween => 'ฮาโลวีน';
+
+  @override
+  String get festivalChristmas => 'คริสต์มาส';
+
+  @override
+  String get festivalTet => 'ตรุษจีน';
+
+  @override
+  String get festivalSection => 'เครื่องประดับเทศกาล (เฉพาะกิจ)';
+
+  @override
+  String festivalPackTitle(String name) {
+    return 'แพ็ก$name';
+  }
+
+  @override
+  String festivalPackDesc(int gems) {
+    return 'แต่ละแพ็กได้ไอเทมเฉพาะกิจที่ยังไม่มี 1 ชิ้น ขายเฉพาะช่วงเทศกาล หากมีครบแล้วจะได้ $gems 💎 แทน ไม่สามารถซื้อขายได้';
+  }
+
+  @override
   String get dailyClaim => 'รับ';
+
+  @override
+  String get accessoryWheelTitle => 'วงล้อเครื่องประดับ';
+
+  @override
+  String accessoryWheelAd(int n) {
+    return 'หมุน: ดูโฆษณา (เหลือ $n)';
+  }
+
+  @override
+  String accessoryWheelGems(int gems) {
+    return 'หมุน $gems 💎';
+  }
+
+  @override
+  String get accessoryPackButton => 'แพ็กเครื่องประดับ';
+
+  @override
+  String get accessoryPackTitle => 'แพ็กเครื่องประดับ';
+
+  @override
+  String get accessoryPackBasic => 'แพ็กธรรมดา';
+
+  @override
+  String get accessoryPackRare => 'แพ็กหายาก (หายากขึ้นไป)';
+
+  @override
+  String get accessoryPackEpic => 'แพ็กมหากาพย์ (มหากาพย์ขึ้นไป)';
+
+  @override
+  String get accessoryPackSeason =>
+      'อีเวนต์ตามฤดูกาล: ลด 25% และโอกาสมหากาพย์/ตำนาน ×2!';
+
+  @override
+  String get accessoryAdDropButton => 'ดูโฆษณา: รับเครื่องประดับ +1';
+
+  @override
+  String dailyStreakAtRisk(int days) {
+    return 'คุณพลาดไป 1 วัน — สตรีค $days วันกำลังจะหาย!';
+  }
+
+  @override
+  String dailyRestoreGems(int gems) {
+    return 'กู้สตรีค ($gems 💎)';
+  }
+
+  @override
+  String get dailyRestoreAd => 'ดูโฆษณาเพื่อกู้สตรีค';
+
+  @override
+  String get dailySkipRestore => 'ข้ามและเริ่มใหม่';
 
   @override
   String dailyReward(String gems) {
@@ -1185,6 +1300,96 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get accessoryGalaxy => 'กาแล็กซี';
+
+  @override
+  String get accessoryDonut => 'โดนัท';
+
+  @override
+  String get accessoryLollipop => 'อมยิ้ม';
+
+  @override
+  String get accessoryPretzel => 'เพรทเซล';
+
+  @override
+  String get accessoryIceCream => 'ไอศกรีมโคน';
+
+  @override
+  String get accessoryStrawberry => 'สตรอว์เบอร์รี';
+
+  @override
+  String get accessoryCherry => 'เชอร์รี';
+
+  @override
+  String get accessoryLemon => 'เลมอน';
+
+  @override
+  String get accessoryPeach => 'พีช';
+
+  @override
+  String get accessoryPopcorn => 'ป๊อปคอร์น';
+
+  @override
+  String get accessoryHoneyPot => 'โหลน้ำผึ้ง';
+
+  @override
+  String get accessoryMilkGlass => 'แก้วนม';
+
+  @override
+  String get accessoryTangerine => 'ส้ม';
+
+  @override
+  String get accessoryChestnut => 'เกาลัด';
+
+  @override
+  String get accessoryMapleLeaf => 'ใบเมเปิล';
+
+  @override
+  String get accessoryCompass => 'เข็มทิศ';
+
+  @override
+  String get accessoryRocket => 'จรวด';
+
+  @override
+  String get accessoryViolin => 'ไวโอลิน';
+
+  @override
+  String get accessoryScroll => 'ม้วนคัมภีร์โบราณ';
+
+  @override
+  String get accessoryMicrophone => 'ไมโครโฟน';
+
+  @override
+  String get accessoryLotus => 'ดอกบัว';
+
+  @override
+  String get accessoryJellyfish => 'แมงกะพรุน';
+
+  @override
+  String get accessoryCamera => 'กล้องถ่ายรูป';
+
+  @override
+  String get accessoryShield => 'โล่';
+
+  @override
+  String get accessoryAmphora => 'แจกันโบราณ';
+
+  @override
+  String get accessoryRainbow => 'รุ้งกินน้ำ';
+
+  @override
+  String get accessoryFairy => 'นางฟ้า';
+
+  @override
+  String get accessoryDiscoBall => 'ลูกบอลดิสโก้';
+
+  @override
+  String get accessoryShiningStar => 'ดาวส่องแสง';
+
+  @override
+  String get accessoryKraken => 'คราเคน';
+
+  @override
+  String get accessoryThunderbolt => 'สายฟ้าเทพ';
 
   @override
   String get marketTitle => 'ตลาดของสะสม';

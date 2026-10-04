@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../ads/ad_service.dart';
 import '../audio/audio_service.dart';
 import '../core/accessories.dart';
 import '../core/balance.dart';
@@ -50,6 +51,22 @@ class _DailyQuestsDialogState extends ConsumerState<_DailyQuestsDialog> {
   /// thoại này: mở lại sau đó thì không còn (đã có trong Kho).
   AccessoryDrop? _revealed;
 
+  bool _watchingAd = false;
+
+  /// Xem QC → thêm 1 lượt rớt phụ kiện (1 lần/ngày, sau khi nhận thưởng cả bộ).
+  Future<void> _extraDropWithAd() async {
+    setState(() => _watchingAd = true);
+    final adFree = ref.read(gameControllerProvider).adFree;
+    final outcome = adFree
+        ? RewardOutcome.earned
+        : await ref.read(adServiceProvider).showRewardedAd();
+    if (!mounted) return;
+    setState(() => _watchingAd = false);
+    if (outcome != RewardOutcome.earned) return;
+    final drop = ref.read(gameControllerProvider.notifier).claimAdAccessoryDrop();
+    if (drop != null) _showDrop(drop);
+  }
+
   void _claimBonus() {
     final controller = ref.read(gameControllerProvider.notifier);
     final got = controller.claimDailyBonus();
@@ -58,6 +75,10 @@ class _DailyQuestsDialogState extends ConsumerState<_DailyQuestsDialog> {
     ref.read(audioServiceProvider).play(Sfx.reward);
     final drop = controller.lastAccessoryDrop;
     if (drop == null) return;
+    _showDrop(drop);
+  }
+
+  void _showDrop(AccessoryDrop drop) {
     setState(() => _revealed = drop);
     // Sử thi/Huyền thoại đáng ăn mừng: pháo giấy (huyền thoại thêm rung mạnh).
     if (drop.accessory.rarity.index >= AccessoryRarity.epic.index) {
@@ -132,7 +153,18 @@ class _DailyQuestsDialogState extends ConsumerState<_DailyQuestsDialog> {
                 ],
               ),
             ),
-            if (_revealed != null) _AccessoryReveal(drop: _revealed!),
+            if (_revealed != null) AccessoryReveal(drop: _revealed!),
+            if (ref.watch(gameControllerProvider
+                .select((s) => s.accessoryAdDropAvailable)))
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: OutlinedButton.icon(
+                  key: const Key('accessory-ad-drop'),
+                  onPressed: _watchingAd ? null : _extraDropWithAd,
+                  icon: const Icon(Icons.play_circle_outline),
+                  label: Text(l10n.accessoryAdDropButton),
+                ),
+              ),
             const SizedBox(height: 8),
             Text(
               l10n.dailyQuestsResetsIn(formatDuration(secondsLeft)),
@@ -216,8 +248,8 @@ class _QuestRow extends StatelessWidget {
 }
 
 /// Hàng "khoảnh khắc nhận phụ kiện": emoji lớn viền theo độ hiếm + câu mới/trùng + chip độ hiếm.
-class _AccessoryReveal extends StatelessWidget {
-  const _AccessoryReveal({required this.drop});
+class AccessoryReveal extends StatelessWidget {
+  const AccessoryReveal({super.key, required this.drop});
   final AccessoryDrop drop;
 
   @override

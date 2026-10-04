@@ -50,11 +50,16 @@ class GameSnapshot {
     required this.starterPackOwned,
     required this.tutorialSeen,
     required this.dailyAvailable,
+    required this.accessoryAdDropAvailable,
+    required this.accessoryAdSpinsLeft,
+    required this.dailyStreakRestorable,
+    required this.dailyStreak,
     required this.newAchievements,
     required this.lifetimeEarnings,
     required this.achievementsClaimed,
     required this.m3Stars,
     required this.ownedAccessories,
+    required this.ownedLimited,
     required this.accessorySpares,
     required this.equippedAccessories,
     required this.collectionMilestonesClaimed,
@@ -163,6 +168,10 @@ class GameSnapshot {
 
   /// Có phần thưởng đăng nhập hằng ngày chờ nhận (đã sang ngày mới).
   final bool dailyAvailable;
+  final bool accessoryAdDropAvailable;
+  final int accessoryAdSpinsLeft;
+  final bool dailyStreakRestorable;
+  final int dailyStreak;
 
   /// Thành tựu vừa mở khoá (chờ UI báo rồi gọi acknowledgeAchievements()).
   final List<Achievement> newAchievements;
@@ -178,6 +187,7 @@ class GameSnapshot {
 
   /// Id phụ kiện sưu tập đã có (xem `core/accessories.dart`).
   final List<String> ownedAccessories;
+  final List<String> ownedLimited;
 
   /// Bản sao dư mỗi món (xem GameState.accessorySpares).
   final Map<String, int> accessorySpares;

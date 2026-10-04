@@ -14,12 +14,15 @@ class RealAdService implements AdService {
   /// [ready] là Future init AdMob ([AdBootstrap.initialize]) đang chạy song song
   /// với `runApp` — mọi lần nạp quảng cáo phải chờ nó xong, vì `RewardedAd.load`
   /// trước khi SDK init sẽ thất bại.
-  RealAdService({Future<void>? ready})
+  RealAdService({Future<void>? ready, this.onUnavailable})
       : _ready = ready ?? Future<void>.value() {
     _load(); // nạp sẵn để lần xem đầu không phải chờ.
   }
 
   final Future<void> _ready;
+
+  /// Gọi khi người chơi bấm xem mà quảng cáo chưa nạp xong (UI báo "thử lại sau").
+  final void Function()? onUnavailable;
   RewardedAd? _ad;
   bool _loading = false;
 
@@ -53,6 +56,7 @@ class RealAdService implements AdService {
     if (ad == null) {
       developer.log('Rewarded ad not ready when requested', name: 'AdService');
       _load(); // chưa sẵn: bỏ qua lần này, nạp cho lần sau.
+      onUnavailable?.call();
       return RewardOutcome.dismissed;
     }
     _ad = null; // rewarded ad chỉ dùng một lần.

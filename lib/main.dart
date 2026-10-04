@@ -32,6 +32,9 @@ import 'state/game_providers.dart';
 import 'ui/home_page.dart';
 import 'ui/widgets/phone_width.dart';
 
+/// Cho phép báo snackbar từ ngoài cây widget (vd: quảng cáo chưa nạp xong).
+final _messengerKey = GlobalKey<ScaffoldMessengerState>();
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Crashlytics chỉ cấu hình cho Android/iOS (xem lib/firebase_options.dart) —
@@ -76,7 +79,15 @@ Future<void> main() async {
     // Chạy song song, chỉ RealAdService chờ nó xong mới nạp quảng cáo.
     final adsReady = AdBootstrap.ready = AdBootstrap.initialize();
     overrides.add(
-      adServiceProvider.overrideWithValue(RealAdService(ready: adsReady)),
+      adServiceProvider.overrideWithValue(RealAdService(
+        ready: adsReady,
+        onUnavailable: () {
+          final ctx = _messengerKey.currentContext;
+          if (ctx == null) return;
+          ScaffoldMessenger.of(ctx)
+              .showSnackBar(SnackBar(content: Text(AppLocalizations.of(ctx)!.adNotReady)));
+        },
+      )),
     );
     // Có cấu hình endpoint (qua --dart-define IAP_VERIFY_ENDPOINT) thì xác thực
     // biên nhận phía server trước khi trao; rỗng thì giữ client-only.
@@ -104,6 +115,7 @@ class BobaEmpireApp extends ConsumerWidget {
         ref.watch(gameControllerProvider.select((s) => s.stage));
     final seed = _seedForStage(stage);
     return MaterialApp(
+      scaffoldMessengerKey: _messengerKey,
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
       debugShowCheckedModeBanner: false,
       locale: ref.watch(localeProvider),

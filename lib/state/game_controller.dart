@@ -107,9 +107,10 @@ class GameController extends Notifier<GameSnapshot> {
     _stampStoryFinales(_game.storyChapter, exact: false);
     // Save từ cloud/phiên bản khác có thể liệt kê món không còn sở hữu hoặc quá số chỗ.
     _game.equippedAccessories
-      ..removeWhere((id) => !_game.ownedAccessories.contains(id))
+      ..removeWhere((id) => !ownsAccessory(_game, id))
       ..removeRange(
-          _game.equippedAccessories.length.clamp(0, Balance.maxEquippedAccessories),
+          _game.equippedAccessories.length.clamp(
+              0, maxEquippedFor(vip: vipActive(_game, _clock()))),
           _game.equippedAccessories.length);
     _rollDaily();
     // Tính tiền kiếm được lúc app tắt (có cap + chống lùi giờ ở tầng core).
@@ -481,11 +482,12 @@ class GameController extends Notifier<GameSnapshot> {
   AccessoryDrop _dropAccessory({
     required String source,
     AccessoryRarity? rarity,
+    AccessoryRarity minRarity = AccessoryRarity.common,
   }) {
-    final weekend = weekendEventActive(
-        DateTime.fromMillisecondsSinceEpoch(_clock(), isUtc: true));
+    final nowUtc = DateTime.fromMillisecondsSinceEpoch(_clock(), isUtc: true);
+    final weekend = weekendEventActive(nowUtc) || seasonPackActive(nowUtc);
     final rolled = rarity == null
-        ? rollAccessoryWith(_random, weekend: weekend)
+        ? rollAccessoryWith(_random, weekend: weekend, min: minRarity)
         : rollAccessoryOfRarity(rarity, _random.nextDouble());
     final isNew = grantAccessory(_game, rolled);
     unawaited(
@@ -511,6 +513,69 @@ class GameController extends Notifier<GameSnapshot> {
 
   @visibleForTesting
   set debugAnalytics(AnalyticsRepository? repo) => _analyticsRepo = repo;
+
+  /// Mua gói phụ kiện bằng 💎. Null nếu thiếu 💎. Lưu ngay (💎 là premium).
+  AccessoryDrop? buyAccessoryPack(AccessoryPack pack) {
+    final cost =
+        pack.cost(DateTime.fromMillisecondsSinceEpoch(_clock(), isUtc: true));
+    if (_game.gems < cost) return null;
+    _game.gems -= cost;
+    final drop =
+        _dropAccessory(source: 'pack_${pack.name}', minRarity: pack.minRarity);
+    logEvent('accessory_pack_bought', {'pack': pack.name, 'gems': cost});
+    unawaited(saveNow());
+    state = _snapshot();
+    return drop;
+  }
+
+  /// Vòng quay phụ kiện. [withAd]: người dùng đã xem xong QC (UI lo) — tốn 1 lượt
+  /// trong hạn mức ngày; ngược lại trừ [Balance.accessorySpinGems] 💎. Null nếu hết
+  /// lượt / thiếu 💎 (không đổi gì).
+  AccessoryDrop? spinAccessoryWheel({required bool withAd}) {
+    final now = _clock();
+    if (withAd) {
+      if (accessoryAdSpinsLeft(_game, now) <= 0) return null;
+      if (_game.accessoryAdSpinDay != dayIndex(now)) {
+        _game.accessoryAdSpinDay = dayIndex(now);
+        _game.accessoryAdSpins = 0;
+      }
+      _game.accessoryAdSpins++;
+    } else {
+      if (_game.gems < Balance.accessorySpinGems) return null;
+      _game.gems -= Balance.accessorySpinGems;
+    }
+    final drop = _dropAccessory(source: withAd ? 'wheel_ad' : 'wheel_gems');
+    unawaited(saveNow());
+    state = _snapshot();
+    return drop;
+  }
+
+  /// Mua Gói Lễ Hội (phụ kiện độc quyền) đang bán. Null nếu không có dịp lễ nào
+  /// hoặc thiếu 💎. Lưu ngay.
+  AccessoryDrop? buyFestivalPack() {
+    final f = activeFestival(
+        DateTime.fromMillisecondsSinceEpoch(_clock(), isUtc: true));
+    if (f == null || _game.gems < Balance.festivalPackGems) return null;
+    _game.gems -= Balance.festivalPackGems;
+    final item = pickFestivalItem(_game, f, _random.nextDouble());
+    final isNew = grantFestivalItem(_game, item);
+    logEvent('festival_pack_bought',
+        {'festival': f.id, 'item': item.id, 'isNew': isNew});
+    unawaited(saveNow());
+    state = _snapshot();
+    return lastAccessoryDrop = AccessoryDrop(item, isNew: isNew);
+  }
+
+  /// Lượt rớt phụ kiện thưởng xem QC (người dùng đã xem xong QC ở UI): 1 lần/ngày,
+  /// chỉ sau khi nhận thưởng "xong cả bộ" nhiệm vụ ngày. Null nếu không hợp lệ.
+  AccessoryDrop? claimAdAccessoryDrop() {
+    if (!accessoryAdDropAvailable(_game, _clock())) return null;
+    _game.accessoryAdDropDay = dayIndex(_clock());
+    final drop = _dropAccessory(source: 'ad');
+    unawaited(saveNow());
+    state = _snapshot();
+    return drop;
+  }
 
   int claimDailyBonus() {
     final gems = claimDailyQuestBonus(_game);
@@ -549,8 +614,9 @@ class GameController extends Notifier<GameSnapshot> {
     final equipped = _game.equippedAccessories;
     if (equipped.remove(accessoryId)) {
       // đã bỏ
-    } else if (_game.ownedAccessories.contains(accessoryId) &&
-        equipped.length < Balance.maxEquippedAccessories) {
+    } else if (ownsAccessory(_game, accessoryId) &&
+        equipped.length <
+            maxEquippedFor(vip: vipActive(_game, _clock()))) {
       equipped.add(accessoryId);
     } else {
       return false;
@@ -686,8 +752,18 @@ class GameController extends Notifier<GameSnapshot> {
 
   /// Nhận thưởng đăng nhập hằng ngày. Trả về (gems nhận, streak mới); gems=0
   /// nếu chưa tới ngày mới. Lưu ngay vì gems là premium.
-  ({int gems, int streak}) claimDailyReward() {
-    final gems = claimDaily(_game, _clock());
+  ({int gems, int streak}) claimDailyReward(
+      {bool restore = false, bool payGems = false}) {
+    // Cứu streak: trả 💎 (hoặc đã xem QC → payGems=false). Thiếu 💎 → nhận thường.
+    if (restore && !streakRestorable(_game, _clock())) restore = false;
+    if (restore && payGems) {
+      if (_game.gems < streakRestoreGems) {
+        restore = false;
+      } else {
+        _game.gems -= streakRestoreGems;
+      }
+    }
+    final gems = claimDaily(_game, _clock(), restore: restore);
     if (gems > 0) {
       unawaited(saveNow());
       state = _snapshot();
@@ -750,9 +826,14 @@ class GameController extends Notifier<GameSnapshot> {
   }
 
   /// Nhượng quyền. Trả về số Sao vừa nhận (0 nếu chưa đủ).
-  double doPrestige() {
+  double doPrestige({bool adBonus = false}) {
+    // Đọc thu nhập TRƯỚC reset (sau reset thu nhập tụt về gần 0).
+    final bonusCash = adBonus
+        ? state.incomePerSecond * Balance.prestigeAdBonusSeconds
+        : 0.0;
     final gained = prestige(_game);
     if (gained > 0) {
+      grantBonus(_game, bonusCash); // tự chặn NaN/Infinity
       _awardAchievements();
       unawaited(saveNow());
       unawaited(_analytics?.log('prestige', {
@@ -1421,6 +1502,7 @@ class GameController extends Notifier<GameSnapshot> {
       // Bản sao — cùng lý do m3Stars ở trên (xem snapshot-list-aliasing-select
       // memory: chia sẻ instance List làm `.select()` không rebuild).
       ownedAccessories: List.unmodifiable(_game.ownedAccessories),
+      ownedLimited: List.unmodifiable(_game.ownedLimited),
       accessorySpares: Map.unmodifiable(_game.accessorySpares),
       equippedAccessories: List.unmodifiable(_game.equippedAccessories),
       collectionMilestonesClaimed:
@@ -1430,6 +1512,10 @@ class GameController extends Notifier<GameSnapshot> {
       starterPackOwned: _game.starterPackOwned,
       tutorialSeen: _game.tutorialSeen,
       dailyAvailable: dailyAvailable(_game, now),
+      accessoryAdDropAvailable: accessoryAdDropAvailable(_game, now),
+      accessoryAdSpinsLeft: accessoryAdSpinsLeft(_game, now),
+      dailyStreakRestorable: streakRestorable(_game, now),
+      dailyStreak: _game.dailyStreak,
       newAchievements: _newAchievements,
       lifetimeEarnings: _game.lifetimeEarnings,
       achievementsClaimed: _game.achievementsClaimed,

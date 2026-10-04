@@ -46,4 +46,38 @@ void main() {
       expect(dailyGemsForStreak(8), dailyRewardGems[0]);
     });
   });
+
+  group('cứu streak', () {
+    GameState streak2() {
+      final s = GameState.newGame(nowMillis: 0);
+      claimDaily(s, 5 * _day);
+      claimDaily(s, 6 * _day); // streak 2
+      return s;
+    }
+
+    test('chỉ cứu được khi bỏ lỡ đúng 1 ngày và streak ≥ 2', () {
+      final s = streak2();
+      expect(streakRestorable(s, 7 * _day), isFalse); // liên tiếp, không cần cứu
+      expect(streakRestorable(s, 8 * _day), isTrue);
+      expect(streakRestorable(s, 9 * _day), isFalse); // lỡ 2 ngày: muộn
+      final one = GameState.newGame(nowMillis: 0);
+      claimDaily(one, 5 * _day);
+      expect(streakRestorable(one, 7 * _day), isFalse); // streak 1 không đáng cứu
+    });
+
+    test('restore giữ chuỗi +1; không restore thì reset', () {
+      final a = streak2();
+      claimDaily(a, 8 * _day, restore: true);
+      expect(a.dailyStreak, 3);
+      final b = streak2();
+      claimDaily(b, 8 * _day);
+      expect(b.dailyStreak, 1);
+    });
+
+    test('restore bị bỏ qua khi không đủ điều kiện', () {
+      final s = streak2();
+      claimDaily(s, 10 * _day, restore: true);
+      expect(s.dailyStreak, 1);
+    });
+  });
 }

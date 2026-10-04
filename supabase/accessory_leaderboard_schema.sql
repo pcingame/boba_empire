@@ -12,13 +12,19 @@
 create table if not exists accessory_leaderboard_entries (
   user_id      uuid primary key references auth.users(id) on delete cascade,
   nickname     text not null check (char_length(nickname) between 1 and 20),
-  -- Trần 50 = số phụ kiện trong danh mục hiện tại (`accessories.dart`,
-  -- `accessories.length`). Nâng danh mục lên >50 món thì PHẢI nâng trần này
-  -- trước — không có test nào tự khoá việc này, nhớ tự kiểm khi mở rộng
-  -- danh mục (xem ghi chú tương tự ở đầu accessories.dart).
-  owned_count  integer not null check (owned_count between 0 and 50),
+  -- Trần = số phụ kiện tối đa trong danh mục (`accessories.dart`,
+  -- `accessories.length`, hiện 80). Trần đặt 200 để mở rộng danh mục không phải
+  -- sửa lại; ràng buộc cũ (50) được nâng bằng ALTER ở dưới cho bảng đã tồn tại.
+  owned_count  integer not null check (owned_count between 0 and 200),
   updated_at   timestamptz not null default now()
 );
+
+-- Bảng đã tạo từ trước có CHECK ≤ 50: bỏ rồi tạo lại với trần 200 (idempotent).
+alter table accessory_leaderboard_entries
+  drop constraint if exists accessory_leaderboard_entries_owned_count_check;
+alter table accessory_leaderboard_entries
+  add constraint accessory_leaderboard_entries_owned_count_check
+  check (owned_count between 0 and 200);
 
 create index if not exists accessory_leaderboard_entries_count_idx
   on accessory_leaderboard_entries (owned_count desc, updated_at asc);

@@ -87,6 +87,9 @@ class GameState {
     this.dailyQuestDay = 0,
     this.dailyEarnTarget = 0,
     this.dailyBonusClaimed = false,
+    this.accessoryAdDropDay = 0,
+    this.accessoryAdSpinDay = 0,
+    this.accessoryAdSpins = 0,
     this.dailyQuestEverClaimed = false,
     this.starterPackClaimed = false,
     Map<String, double>? dailyProgress,
@@ -130,6 +133,7 @@ class GameState {
     List<int>? m3Stars,
     List<String>? redeemedCodes,
     List<String>? ownedAccessories,
+    List<String>? ownedLimited,
     Map<String, int>? accessorySpares,
     List<String>? equippedAccessories,
     List<int>? collectionMilestonesClaimed,
@@ -138,6 +142,7 @@ class GameState {
         m3Stars = m3Stars ?? [],
         redeemedCodes = redeemedCodes ?? [],
         ownedAccessories = ownedAccessories ?? [],
+        ownedLimited = ownedLimited ?? [],
         accessorySpares = accessorySpares ?? {},
         equippedAccessories = equippedAccessories ?? [],
         collectionMilestonesClaimed = collectionMilestonesClaimed ?? [],
@@ -234,6 +239,10 @@ class GameState {
   /// quyền/Kỷ Nguyên, cùng nhóm với thành tựu, cốt truyện.
   final List<String> ownedAccessories;
 
+  /// Phụ kiện độc quyền theo dịp lễ (xem accessories.dart `festivals`) — tách khỏi
+  /// [ownedAccessories] để không dính số đếm bộ sưu tập / BXH / Chợ.
+  final List<String> ownedLimited;
+
   /// Số bản SAO DƯ ngoài bản đầu của mỗi món (id → n ≥ 1; không có khoá = 0
   /// dư). Rớt trùng cộng vào đây (xem grantAccessory) — bản dư bán được ở Chợ
   /// mà không mất món đang sưu tập.
@@ -279,6 +288,13 @@ class GameState {
   int dailyQuestDay;
   double dailyEarnTarget;
   bool dailyBonusClaimed;
+
+  /// Ngày (UTC, [dayIndex]) đã nhận lượt rớt phụ kiện thưởng xem QC — 1 lần/ngày.
+  int accessoryAdDropDay;
+
+  /// Vòng quay phụ kiện: ngày (UTC) + số lượt xem-QC đã dùng trong ngày đó.
+  int accessoryAdSpinDay;
+  int accessoryAdSpins;
 
   /// Đã từng nhận thưởng ≥1 nhiệm vụ ngày (điều kiện Gói Khởi Nghiệp Chợ).
   bool dailyQuestEverClaimed;
@@ -440,6 +456,7 @@ class GameState {
         'm3Stars': m3Stars,
         'redeemedCodes': redeemedCodes,
         'ownedAccessories': ownedAccessories,
+        'ownedLimited': ownedLimited,
         'accessorySpares': accessorySpares,
         'equippedAccessories': equippedAccessories,
         'collectionMilestonesClaimed': collectionMilestonesClaimed,
@@ -454,6 +471,9 @@ class GameState {
         'dailyQuestDay': dailyQuestDay,
         'dailyEarnTarget': dailyEarnTarget,
         'dailyBonusClaimed': dailyBonusClaimed,
+        'accessoryAdDropDay': accessoryAdDropDay,
+        'accessoryAdSpinDay': accessoryAdSpinDay,
+        'accessoryAdSpins': accessoryAdSpins,
         'dailyQuestEverClaimed': dailyQuestEverClaimed,
         'starterPackClaimed': starterPackClaimed,
         'dailyProgress': dailyProgress,
@@ -527,6 +547,7 @@ class GameState {
             (json['redeemedCodes'] as List?)?.cast<String>().toList(),
         ownedAccessories:
             (json['ownedAccessories'] as List?)?.cast<String>().toList(),
+        ownedLimited: (json['ownedLimited'] as List?)?.cast<String>().toList(),
         // load() nuốt mọi lỗi thành "ván mới" — trường phụ này sai kiểu/giá trị
         // lạ phải bị BỎ QUA chứ không được ném, nếu không mất cả save.
         wishlist: [
@@ -569,6 +590,9 @@ class GameState {
         dailyQuestDay: (json['dailyQuestDay'] as num?)?.toInt() ?? 0,
         dailyEarnTarget: (json['dailyEarnTarget'] as num?)?.toDouble() ?? 0,
         dailyBonusClaimed: (json['dailyBonusClaimed'] as bool?) ?? false,
+        accessoryAdDropDay: (json['accessoryAdDropDay'] as num?)?.toInt() ?? 0,
+        accessoryAdSpinDay: (json['accessoryAdSpinDay'] as num?)?.toInt() ?? 0,
+        accessoryAdSpins: (json['accessoryAdSpins'] as num?)?.toInt() ?? 0,
         dailyQuestEverClaimed:
             json['dailyQuestEverClaimed'] == true,
         starterPackClaimed: json['starterPackClaimed'] == true,

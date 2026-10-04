@@ -242,6 +242,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get prestigeNotEnough => 'Tidak cukup';
 
   @override
+  String get prestigeAdConfirm => 'Tonton iklan: bonus Koin awal';
+
+  @override
   String prestigeSuccess(String stars) {
     return 'Waralaba berhasil! +$stars ⭐';
   }
@@ -316,7 +319,119 @@ class AppLocalizationsId extends AppLocalizations {
   String get dailyPrompt => 'Ambil hadiah login hari ini!';
 
   @override
+  String get adNotReady => 'Iklan belum siap, coba lagi beberapa detik lagi.';
+
+  @override
+  String get accessoryBat => 'Kelelawar malam';
+
+  @override
+  String get accessoryJackOLantern => 'Labu Halloween';
+
+  @override
+  String get accessoryGhost => 'Hantu ramah';
+
+  @override
+  String get accessoryWitch => 'Penyihir kecil';
+
+  @override
+  String get accessorySnowman => 'Manusia salju';
+
+  @override
+  String get accessoryChristmasTree => 'Pohon Natal';
+
+  @override
+  String get accessoryReindeer => 'Rusa kutub';
+
+  @override
+  String get accessorySanta => 'Sinterklas';
+
+  @override
+  String get accessoryFirecracker => 'Petasan';
+
+  @override
+  String get accessoryRedEnvelope => 'Angpao';
+
+  @override
+  String get accessoryApricotBlossom => 'Bunga aprikot';
+
+  @override
+  String get accessoryGoldenGoat => 'Kambing emas';
+
+  @override
+  String get festivalHalloween => 'Halloween';
+
+  @override
+  String get festivalChristmas => 'Natal';
+
+  @override
+  String get festivalTet => 'Tahun Baru Imlek';
+
+  @override
+  String get festivalSection => 'Aksesori festival (eksklusif)';
+
+  @override
+  String festivalPackTitle(String name) {
+    return 'Paket $name';
+  }
+
+  @override
+  String festivalPackDesc(int gems) {
+    return 'Tiap paket memberi 1 item eksklusif yang belum kamu punya, hanya dijual saat festival. Jika sudah lengkap, kamu mendapat $gems 💎. Tidak bisa diperdagangkan.';
+  }
+
+  @override
   String get dailyClaim => 'Ambil';
+
+  @override
+  String get accessoryWheelTitle => 'Roda aksesori';
+
+  @override
+  String accessoryWheelAd(int n) {
+    return 'Putar: tonton iklan (sisa $n)';
+  }
+
+  @override
+  String accessoryWheelGems(int gems) {
+    return 'Putar $gems 💎';
+  }
+
+  @override
+  String get accessoryPackButton => 'Paket aksesori';
+
+  @override
+  String get accessoryPackTitle => 'Paket aksesori';
+
+  @override
+  String get accessoryPackBasic => 'Paket Biasa';
+
+  @override
+  String get accessoryPackRare => 'Paket Langka (Langka atau lebih)';
+
+  @override
+  String get accessoryPackEpic => 'Paket Epik (Epik atau lebih)';
+
+  @override
+  String get accessoryPackSeason =>
+      'Event musiman: diskon 25% dan peluang Epik/Legendaris ×2!';
+
+  @override
+  String get accessoryAdDropButton => 'Tonton iklan: +1 aksesori';
+
+  @override
+  String dailyStreakAtRisk(int days) {
+    return 'Kamu melewatkan 1 hari — streak $days hari hampir hilang!';
+  }
+
+  @override
+  String dailyRestoreGems(int gems) {
+    return 'Selamatkan streak ($gems 💎)';
+  }
+
+  @override
+  String get dailyRestoreAd => 'Tonton iklan untuk menyelamatkan streak';
+
+  @override
+  String get dailySkipRestore => 'Lewati, mulai ulang';
 
   @override
   String dailyReward(String gems) {
@@ -1194,6 +1309,96 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get accessoryGalaxy => 'Galaksi';
+
+  @override
+  String get accessoryDonut => 'Donat';
+
+  @override
+  String get accessoryLollipop => 'Permen lolipop';
+
+  @override
+  String get accessoryPretzel => 'Pretzel';
+
+  @override
+  String get accessoryIceCream => 'Es krim cone';
+
+  @override
+  String get accessoryStrawberry => 'Stroberi';
+
+  @override
+  String get accessoryCherry => 'Ceri';
+
+  @override
+  String get accessoryLemon => 'Lemon';
+
+  @override
+  String get accessoryPeach => 'Persik';
+
+  @override
+  String get accessoryPopcorn => 'Popcorn';
+
+  @override
+  String get accessoryHoneyPot => 'Toples madu';
+
+  @override
+  String get accessoryMilkGlass => 'Segelas susu';
+
+  @override
+  String get accessoryTangerine => 'Jeruk';
+
+  @override
+  String get accessoryChestnut => 'Kastanye';
+
+  @override
+  String get accessoryMapleLeaf => 'Daun maple';
+
+  @override
+  String get accessoryCompass => 'Kompas';
+
+  @override
+  String get accessoryRocket => 'Roket';
+
+  @override
+  String get accessoryViolin => 'Biola';
+
+  @override
+  String get accessoryScroll => 'Gulungan kuno';
+
+  @override
+  String get accessoryMicrophone => 'Mikrofon';
+
+  @override
+  String get accessoryLotus => 'Teratai';
+
+  @override
+  String get accessoryJellyfish => 'Ubur-ubur';
+
+  @override
+  String get accessoryCamera => 'Kamera';
+
+  @override
+  String get accessoryShield => 'Perisai';
+
+  @override
+  String get accessoryAmphora => 'Guci kuno';
+
+  @override
+  String get accessoryRainbow => 'Pelangi';
+
+  @override
+  String get accessoryFairy => 'Peri';
+
+  @override
+  String get accessoryDiscoBall => 'Bola disko';
+
+  @override
+  String get accessoryShiningStar => 'Bintang bersinar';
+
+  @override
+  String get accessoryKraken => 'Kraken';
+
+  @override
+  String get accessoryThunderbolt => 'Petir dewa';
 
   @override
   String get marketTitle => 'Pasar Aksesori';

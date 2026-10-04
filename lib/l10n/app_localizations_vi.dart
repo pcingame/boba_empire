@@ -242,6 +242,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get prestigeNotEnough => 'Chưa đủ';
 
   @override
+  String get prestigeAdConfirm => 'Xem QC: nhận thêm Xu khởi đầu';
+
+  @override
   String prestigeSuccess(String stars) {
     return 'Nhượng quyền thành công! +$stars ⭐';
   }
@@ -314,7 +317,119 @@ class AppLocalizationsVi extends AppLocalizations {
   String get dailyPrompt => 'Nhận quà đăng nhập hôm nay!';
 
   @override
+  String get adNotReady => 'Quảng cáo chưa sẵn sàng, thử lại sau ít giây.';
+
+  @override
+  String get accessoryBat => 'Dơi đêm';
+
+  @override
+  String get accessoryJackOLantern => 'Bí ngô ma quái';
+
+  @override
+  String get accessoryGhost => 'Bóng ma';
+
+  @override
+  String get accessoryWitch => 'Phù thủy';
+
+  @override
+  String get accessorySnowman => 'Người tuyết';
+
+  @override
+  String get accessoryChristmasTree => 'Cây thông Noel';
+
+  @override
+  String get accessoryReindeer => 'Tuần lộc';
+
+  @override
+  String get accessorySanta => 'Ông già Noel';
+
+  @override
+  String get accessoryFirecracker => 'Pháo Tết';
+
+  @override
+  String get accessoryRedEnvelope => 'Bao lì xì';
+
+  @override
+  String get accessoryApricotBlossom => 'Hoa mai vàng';
+
+  @override
+  String get accessoryGoldenGoat => 'Dê vàng';
+
+  @override
+  String get festivalHalloween => 'Halloween';
+
+  @override
+  String get festivalChristmas => 'Giáng Sinh';
+
+  @override
+  String get festivalTet => 'Tết Nguyên Đán';
+
+  @override
+  String get festivalSection => 'Phụ kiện lễ hội (độc quyền)';
+
+  @override
+  String festivalPackTitle(String name) {
+    return 'Gói $name';
+  }
+
+  @override
+  String festivalPackDesc(int gems) {
+    return 'Mỗi gói nhận 1 món độc quyền CHƯA CÓ, chỉ bán trong dịp lễ. Có đủ rồi thì đổi $gems 💎. Không giao dịch được.';
+  }
+
+  @override
   String get dailyClaim => 'Nhận quà';
+
+  @override
+  String get accessoryWheelTitle => 'Vòng quay phụ kiện';
+
+  @override
+  String accessoryWheelAd(int n) {
+    return 'Quay: xem QC (còn $n)';
+  }
+
+  @override
+  String accessoryWheelGems(int gems) {
+    return 'Quay $gems 💎';
+  }
+
+  @override
+  String get accessoryPackButton => 'Gói phụ kiện';
+
+  @override
+  String get accessoryPackTitle => 'Gói phụ kiện';
+
+  @override
+  String get accessoryPackBasic => 'Gói Thường';
+
+  @override
+  String get accessoryPackRare => 'Gói Hiếm (bảo đảm từ Hiếm)';
+
+  @override
+  String get accessoryPackEpic => 'Gói Sử Thi (bảo đảm từ Sử thi)';
+
+  @override
+  String get accessoryPackSeason =>
+      'Sự kiện mùa: giảm 25% giá gói, tỉ lệ Sử thi/Huyền thoại ×2!';
+
+  @override
+  String get accessoryAdDropButton => 'Xem QC: thêm 1 phụ kiện';
+
+  @override
+  String dailyStreakAtRisk(int days) {
+    return 'Bạn bỏ lỡ 1 ngày — chuỗi $days ngày sắp mất!';
+  }
+
+  @override
+  String dailyRestoreGems(int gems) {
+    return 'Cứu chuỗi ($gems 💎)';
+  }
+
+  @override
+  String get dailyRestoreAd => 'Xem quảng cáo để cứu chuỗi';
+
+  @override
+  String get dailySkipRestore => 'Bỏ qua, bắt đầu lại';
 
   @override
   String dailyReward(String gems) {
@@ -1190,6 +1305,96 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get accessoryGalaxy => 'Dải ngân hà';
+
+  @override
+  String get accessoryDonut => 'Bánh donut';
+
+  @override
+  String get accessoryLollipop => 'Kẹo mút';
+
+  @override
+  String get accessoryPretzel => 'Bánh quy xoắn';
+
+  @override
+  String get accessoryIceCream => 'Kem ốc quế';
+
+  @override
+  String get accessoryStrawberry => 'Dâu tây';
+
+  @override
+  String get accessoryCherry => 'Anh đào';
+
+  @override
+  String get accessoryLemon => 'Chanh vàng';
+
+  @override
+  String get accessoryPeach => 'Đào';
+
+  @override
+  String get accessoryPopcorn => 'Bắp rang';
+
+  @override
+  String get accessoryHoneyPot => 'Hũ mật ong';
+
+  @override
+  String get accessoryMilkGlass => 'Ly sữa';
+
+  @override
+  String get accessoryTangerine => 'Quýt';
+
+  @override
+  String get accessoryChestnut => 'Hạt dẻ';
+
+  @override
+  String get accessoryMapleLeaf => 'Lá phong';
+
+  @override
+  String get accessoryCompass => 'La bàn';
+
+  @override
+  String get accessoryRocket => 'Tên lửa';
+
+  @override
+  String get accessoryViolin => 'Đàn violin';
+
+  @override
+  String get accessoryScroll => 'Cuộn giấy cổ';
+
+  @override
+  String get accessoryMicrophone => 'Micro';
+
+  @override
+  String get accessoryLotus => 'Hoa sen';
+
+  @override
+  String get accessoryJellyfish => 'Sứa';
+
+  @override
+  String get accessoryCamera => 'Máy ảnh';
+
+  @override
+  String get accessoryShield => 'Khiên';
+
+  @override
+  String get accessoryAmphora => 'Bình cổ';
+
+  @override
+  String get accessoryRainbow => 'Cầu vồng';
+
+  @override
+  String get accessoryFairy => 'Tiên nữ';
+
+  @override
+  String get accessoryDiscoBall => 'Quả cầu disco';
+
+  @override
+  String get accessoryShiningStar => 'Ngôi sao sáng';
+
+  @override
+  String get accessoryKraken => 'Kraken';
+
+  @override
+  String get accessoryThunderbolt => 'Tia chớp thần';
 
   @override
   String get marketTitle => 'Chợ Phụ kiện';

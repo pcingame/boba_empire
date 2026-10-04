@@ -30,11 +30,22 @@ int nextDailyStreak(GameState s, int nowMillis) {
 int dailyGemsForStreak(int streak) =>
     dailyRewardGems[(streak - 1) % dailyRewardGems.length];
 
+/// Giá cứu streak bằng 💎 (hoặc xem 1 quảng cáo rewarded thay thế).
+const int streakRestoreGems = 20;
+
+/// Bỏ lỡ ĐÚNG 1 ngày và chuỗi đáng cứu (≥2) → còn cứu được trong lần nhận này.
+/// Suy ra từ mốc ngày nên không cần state mới; nhận xong là hết cơ hội.
+bool streakRestorable(GameState s, int nowMillis) =>
+    s.dailyStreak >= 2 && dayIndex(nowMillis) == s.lastDailyDay + 2;
+
 /// Nhận thưởng hằng ngày: cập nhật streak + mốc ngày, cộng gems. Trả về gems
-/// nhận (0 nếu chưa tới ngày mới). MUTATE [s].
-int claimDaily(GameState s, int nowMillis) {
+/// nhận (0 nếu chưa tới ngày mới). [restore] (chỉ có tác dụng khi
+/// [streakRestorable]) coi ngày bỏ lỡ như đã nhận → streak +1. MUTATE [s].
+int claimDaily(GameState s, int nowMillis, {bool restore = false}) {
   if (!dailyAvailable(s, nowMillis)) return 0;
-  final streak = nextDailyStreak(s, nowMillis);
+  final streak = restore && streakRestorable(s, nowMillis)
+      ? s.dailyStreak + 1
+      : nextDailyStreak(s, nowMillis);
   s.dailyStreak = streak;
   s.lastDailyDay = dayIndex(nowMillis);
   final gems = dailyGemsForStreak(streak);

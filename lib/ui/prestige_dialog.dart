@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../ads/ad_service.dart';
 import '../audio/audio_service.dart';
 import '../core/balance.dart';
 import '../core/economy.dart';
@@ -82,6 +83,13 @@ class _PrestigeDialog extends ConsumerWidget {
           onPressed: () => Navigator.of(context).pop(),
           child: Text(l10n.cancel),
         ),
+        if (canPrestige)
+          OutlinedButton.icon(
+            key: const Key('prestige-ad'),
+            onPressed: () => _confirmWithAd(context, ref),
+            icon: const Icon(Icons.play_circle_outline),
+            label: Text(l10n.prestigeAdConfirm),
+          ),
         FilledButton(
           key: const Key('prestige-confirm'),
           onPressed: canPrestige ? () => _confirm(context, ref) : null,
@@ -95,9 +103,18 @@ class _PrestigeDialog extends ConsumerWidget {
     );
   }
 
-  void _confirm(BuildContext context, WidgetRef ref) {
+  Future<void> _confirmWithAd(BuildContext context, WidgetRef ref) async {
+    final adFree = ref.read(gameControllerProvider).adFree;
+    final outcome = adFree
+        ? RewardOutcome.earned
+        : await ref.read(adServiceProvider).showRewardedAd();
+    if (!context.mounted) return;
+    if (outcome == RewardOutcome.earned) _confirm(context, ref, adBonus: true);
+  }
+
+  void _confirm(BuildContext context, WidgetRef ref, {bool adBonus = false}) {
     final messenger = ScaffoldMessenger.of(context);
-    final gained = ref.read(gameControllerProvider.notifier).doPrestige();
+    final gained = ref.read(gameControllerProvider.notifier).doPrestige(adBonus: adBonus);
     if (gained > 0) {
       HapticFeedback.heavyImpact();
       ref.read(audioServiceProvider).play(Sfx.prestige);
