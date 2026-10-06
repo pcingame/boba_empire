@@ -1345,6 +1345,14 @@
   "m3Back": "Danh sách màn",
   "m3Reward": "Thưởng",
   "m3NoReward": "Đã nhận thưởng màn này rồi",
+  "m3AdMovesForever": "Xem QC: +{n} nước mọi màn",
+  "@m3AdMovesForever": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "m3AdMoves": "Xem QC: +{n} nước",
   "@m3AdMoves": {
     "placeholders": {

@@ -2010,6 +2010,11 @@ class AppLocalizationsId extends AppLocalizations {
   String get m3NoReward => 'Hadiah level ini sudah diambil';
 
   @override
+  String m3AdMovesForever(int n) {
+    return 'Tonton iklan: +$n langkah di semua level';
+  }
+
+  @override
   String m3AdMoves(int n) {
     return 'Tonton iklan: +$n langkah';
   }

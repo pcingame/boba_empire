@@ -1977,6 +1977,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get m3NoReward => '이 단계의 보상은 이미 받았어요';
 
   @override
+  String m3AdMovesForever(int n) {
+    return '광고 시청: 모든 레벨 +$n회 이동';
+  }
+
+  @override
   String m3AdMoves(int n) {
     return '광고 시청: $n번 추가';
   }

@@ -933,6 +933,14 @@
   "m3Back": "รายการด่าน",
   "m3Reward": "รางวัล",
   "m3NoReward": "รับรางวัลด่านนี้ไปแล้ว",
+  "m3AdMovesForever": "ดูโฆษณา: +{n} ครั้งเดินทุกด่าน",
+  "@m3AdMovesForever": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "m3AdMoves": "ดูโฆษณา: +{n} ตา",
   "m3KeepPlaying": "เล่นต่อ",
   "m3Pause": "พักก่อน",

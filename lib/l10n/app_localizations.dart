@@ -3534,6 +3534,12 @@ abstract class AppLocalizations {
   /// **'Đã nhận thưởng màn này rồi'**
   String get m3NoReward;
 
+  /// No description provided for @m3AdMovesForever.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem QC: +{n} nước mọi màn'**
+  String m3AdMovesForever(int n);
+
   /// No description provided for @m3AdMoves.
   ///
   /// In vi, this message translates to:

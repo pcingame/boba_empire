@@ -54,7 +54,9 @@ class Match3Controller extends Notifier<Match3PlayState> {
   Match3PlayState build() => _start(const Match3Level(1));
 
   /// Bắt đầu (hoặc chơi lại) một màn.
-  void load(Match3Level level) => state = _start(level);
+  /// [bonusMoves]: đã mở khoá +nước vĩnh viễn (xem GameState.m3BonusMoves).
+  void load(Match3Level level, {bool bonusMoves = false}) =>
+      state = _start(level, bonusMoves: bonusMoves);
 
   /// Cộng nước sau khi xem quảng cáo thưởng. Chỉ có tác dụng một lần mỗi lượt
   /// chơi (xem [Balance.m3AdExtraMoves]).
@@ -71,7 +73,7 @@ class Match3Controller extends Notifier<Match3PlayState> {
     );
   }
 
-  Match3PlayState _start(Match3Level level) {
+  Match3PlayState _start(Match3Level level, {bool bonusMoves = false}) {
     // specials: true — kẹo đặc biệt CHỈ có ở chơi đơn. Đấu Trường không bật vì
     // `arena_m3_replay` (SQL) không biết luật kẹo (xem match3_rules.dart).
     final board = Match3Board.initial(level.seq(), specials: true);
@@ -81,7 +83,7 @@ class Match3Controller extends Notifier<Match3PlayState> {
     return Match3PlayState(
       level: level,
       cells: [...board.cells],
-      movesLeft: level.moves,
+      movesLeft: level.moves + (bonusMoves ? Balance.m3AdExtraMoves : 0),
       score: 0,
     );
   }

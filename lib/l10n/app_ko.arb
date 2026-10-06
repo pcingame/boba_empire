@@ -571,6 +571,14 @@
   "m3Back": "단계 목록",
   "m3Reward": "보상",
   "m3NoReward": "이 단계의 보상은 이미 받았어요",
+  "m3AdMovesForever": "광고 시청: 모든 레벨 +{n}회 이동",
+  "@m3AdMovesForever": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "m3AdMoves": "광고 시청: {n}번 추가",
   "m3KeepPlaying": "계속 플레이",
   "m3Pause": "잠시 쉬기",

@@ -2022,6 +2022,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get m3NoReward => 'Ya reclamaste la recompensa de este nivel';
 
   @override
+  String m3AdMovesForever(int n) {
+    return 'Ver anuncio: +$n movimientos en todos los niveles';
+  }
+
+  @override
   String m3AdMoves(int n) {
     return 'Ver anuncio: +$n movimientos';
   }

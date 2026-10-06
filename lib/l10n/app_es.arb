@@ -933,6 +933,14 @@
   "m3Back": "Lista de niveles",
   "m3Reward": "Recompensa",
   "m3NoReward": "Ya reclamaste la recompensa de este nivel",
+  "m3AdMovesForever": "Ver anuncio: +{n} movimientos en todos los niveles",
+  "@m3AdMovesForever": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "m3AdMoves": "Ver anuncio: +{n} movimientos",
   "m3KeepPlaying": "Seguir jugando",
   "m3Pause": "Descansar",

@@ -51,7 +51,8 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
     super.initState();
     // Sau frame đầu: provider autoDispose mới thực sự có mặt để nạp màn.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(match3ControllerProvider.notifier).load(widget.level);
+      ref.read(match3ControllerProvider.notifier).load(widget.level,
+        bonusMoves: ref.read(gameControllerProvider).m3BonusMoves);
     });
   }
 
@@ -266,7 +267,8 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
     // lượt sau đạt mục tiêu sẽ không báo gì.
     _keepPlaying = false;
     setState(() => _resultShown = false);
-    ref.read(match3ControllerProvider.notifier).load(widget.level);
+    ref.read(match3ControllerProvider.notifier).load(widget.level,
+        bonusMoves: ref.read(gameControllerProvider).m3BonusMoves);
   }
 
   /// Đóng bảng kết quả rồi rời trang chơi về lưới màn.

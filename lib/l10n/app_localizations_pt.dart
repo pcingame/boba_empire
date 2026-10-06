@@ -2018,6 +2018,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get m3NoReward => 'Você já recebeu a recompensa deste nível';
 
   @override
+  String m3AdMovesForever(int n) {
+    return 'Ver anúncio: +$n jogadas em todas as fases';
+  }
+
+  @override
   String m3AdMoves(int n) {
     return 'Ver anúncio: +$n jogadas';
   }

@@ -933,6 +933,14 @@
   "m3Back": "Daftar level",
   "m3Reward": "Hadiah",
   "m3NoReward": "Hadiah level ini sudah diambil",
+  "m3AdMovesForever": "Tonton iklan: +{n} langkah di semua level",
+  "@m3AdMovesForever": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "m3AdMoves": "Tonton iklan: +{n} langkah",
   "m3KeepPlaying": "Lanjut main",
   "m3Pause": "Istirahat",

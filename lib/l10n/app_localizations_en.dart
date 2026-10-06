@@ -2013,6 +2013,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get m3NoReward => 'You already claimed this level\'s reward';
 
   @override
+  String m3AdMovesForever(int n) {
+    return 'Watch ad: +$n moves every level';
+  }
+
+  @override
   String m3AdMoves(int n) {
     return 'Watch ad: +$n moves';
   }

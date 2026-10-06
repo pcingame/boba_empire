@@ -2007,6 +2007,11 @@ class AppLocalizationsVi extends AppLocalizations {
   String get m3NoReward => 'Đã nhận thưởng màn này rồi';
 
   @override
+  String m3AdMovesForever(int n) {
+    return 'Xem QC: +$n nước mọi màn';
+  }
+
+  @override
   String m3AdMoves(int n) {
     return 'Xem QC: +$n nước';
   }
