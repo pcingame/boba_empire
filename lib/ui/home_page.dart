@@ -208,6 +208,7 @@ class _HomePageState extends ConsumerState<HomePage>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (adBusy) return; // quảng cáo toàn màn hình, không phải rời game
     final controller = ref.read(gameControllerProvider.notifier);
     switch (state) {
       case AppLifecycleState.paused:

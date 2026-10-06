@@ -16,6 +16,22 @@ enum RewardOutcome {
   dismissed,
 }
 
+/// Quảng cáo toàn màn hình đưa app vào paused/hidden rồi resumed — KHÔNG phải
+/// người chơi rời game. Lifecycle handler hỏi [adBusy] để bỏ qua các sự kiện đó
+/// (nếu không: popup "tiền offline", session_end giả, lưu/đồng bộ cloud thừa).
+/// Giữ thêm 3s sau khi đóng vì sự kiện `resumed` có thể tới sau callback đóng.
+int _adBusyUntilMillis = 0;
+bool _adShowing = false;
+bool get adBusy =>
+    _adShowing || DateTime.now().millisecondsSinceEpoch < _adBusyUntilMillis;
+
+void adShowStarted() => _adShowing = true;
+
+void adShowEnded() {
+  _adShowing = false;
+  _adBusyUntilMillis = DateTime.now().millisecondsSinceEpoch + 3000;
+}
+
 abstract interface class AdService {
   /// Hiển thị quảng cáo thưởng, trả về kết quả.
   Future<RewardOutcome> showRewardedAd();

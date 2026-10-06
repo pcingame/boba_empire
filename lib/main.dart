@@ -34,6 +34,9 @@ import 'ui/widgets/phone_width.dart';
 
 /// Cho phép báo snackbar từ ngoài cây widget (vd: quảng cáo chưa nạp xong).
 final _messengerKey = GlobalKey<ScaffoldMessengerState>();
+// builder của MaterialApp nằm DƯỚI Localizations; _messengerKey.currentContext
+// thì nằm TRÊN nó nên không tra được l10n.
+AppLocalizations? _l10n;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -82,10 +85,12 @@ Future<void> main() async {
       adServiceProvider.overrideWithValue(RealAdService(
         ready: adsReady,
         onUnavailable: () {
-          final ctx = _messengerKey.currentContext;
-          if (ctx == null) return;
-          ScaffoldMessenger.of(ctx)
-              .showSnackBar(SnackBar(content: Text(AppLocalizations.of(ctx)!.adNotReady)));
+          // currentContext của key chính là context CỦA ScaffoldMessenger, nên
+          // ScaffoldMessenger.of(ctx) tìm tổ tiên và ném FlutterError (crash).
+          final l10n = _l10n;
+          if (l10n == null) return;
+          _messengerKey.currentState
+              ?.showSnackBar(SnackBar(content: Text(l10n.adNotReady)));
         },
       )),
     );
@@ -138,7 +143,9 @@ class BobaEmpireApp extends ConsumerWidget {
       // kẹp theo — đo được 560dp trên màn 1032dp, tức bấm ra vùng trống hai
       // bên KHÔNG đóng được hộp thoại và lớp mờ chỉ phủ giữa màn. Các trang tự
       // kẹp lấy bằng PhoneWidth trong Scaffold của mình.
-      builder: (context, child) => LayoutBuilder(
+      builder: (context, child) {
+        _l10n = AppLocalizations.of(context);
+        return LayoutBuilder(
         // Lấy bề ngang từ RÀNG BUỘC THẬT, không phải MediaQuery: trong
         // flutter_test, `setSurfaceSize` đổi kích thước dựng hình nhưng
         // MediaQuery vẫn báo 800dp — đo được lúc gỡ bug này (lớp chặn 1032dp
@@ -162,7 +169,8 @@ class BobaEmpireApp extends ConsumerWidget {
             ),
           );
         },
-      ),
+        );
+      },
       // Chỉ bản release: debug/test không gọi mạng hỏi store.
       home: kReleaseMode
           ? UpgradeAlert(child: const HomePage())

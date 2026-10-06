@@ -63,8 +63,10 @@ class RealAdService implements AdService {
 
     final completer = Completer<RewardOutcome>();
     var earned = false;
+    adShowStarted();
     ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdDismissedFullScreenContent: (ad) {
+        adShowEnded();
         ad.dispose();
         _load(); // nạp lại cho lần kế.
         if (!completer.isCompleted) {
@@ -74,6 +76,7 @@ class RealAdService implements AdService {
         }
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
+        adShowEnded();
         developer.log(
           'Rewarded ad failed to show: $error',
           name: 'AdService',
