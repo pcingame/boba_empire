@@ -1935,23 +1935,24 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get whatsNewFestival =>
-      '🎃 Exclusive accessories for 7 holidays (Halloween, Christmas, Lunar New Year...) — get them with the Festival Pack during the event and keep them forever';
+  String get whatsNewCollection =>
+      '🎀 Collection grows to 160 accessories, with a collecting guide and a reveal animation for new items';
 
   @override
-  String get whatsNewPacks =>
-      '🎁 Collection grows to 80 accessories, plus accessory packs and a wheel (30 💎 or watch an ad)';
+  String get whatsNewMilestones =>
+      '🏅 New collection milestones at 80/100/120/140/160 with bigger Market Coin rewards';
 
   @override
-  String get whatsNewStreak =>
-      '🔥 Missed a check-in day? Save your streak with Gems or an ad';
+  String get whatsNewMatch3 =>
+      '🧋 Falling Pearls now has 80 levels and is easier to play (25 moves per level)';
 
   @override
-  String get whatsNewVip =>
-      '👑 VIP gets one more display slot; watch an ad when you Franchise for extra starting Coins';
+  String get whatsNewAds =>
+      '📺 Out of moves? Watch an ad for +5 moves, as many times as you like; backing out keeps your game';
 
   @override
-  String get whatsNewKorean => '🇰🇷 Korean language added';
+  String get whatsNewFixes =>
+      '🛠️ Fixes: Market list squashing when scrolling, ads counted as leaving the game, a few crashes';
 
   @override
   String get whatsNewLater => 'Later';

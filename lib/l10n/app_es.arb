@@ -809,11 +809,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewFestival": "🎃 Accesorios exclusivos de 7 festividades (Halloween, Navidad, Año Nuevo Lunar...) — consíguelos con el Paquete de Festividad durante el evento y consérvalos",
-  "whatsNewPacks": "🎁 La colección llega a 80 accesorios, con paquetes y una ruleta (30 💎 o ver un anuncio)",
-  "whatsNewStreak": "🔥 ¿Te saltaste un día? Salva tu racha con Gemas o un anuncio",
-  "whatsNewVip": "👑 VIP tiene un espacio de exhibición más; mira un anuncio al hacer Franquicia para más monedas iniciales",
-  "whatsNewKorean": "🇰🇷 Se añade el coreano",
+  "whatsNewCollection": "🎀 La colección sube a 160 accesorios, con guía de colección y animación al conseguir uno nuevo",
+  "whatsNewMilestones": "🏅 Nuevos hitos de colección en 80/100/120/140/160 con más Monedas de Mercado",
+  "whatsNewMatch3": "🧋 Perlas que caen ahora tiene 80 niveles y es más fácil (25 movimientos por nivel)",
+  "whatsNewAds": "📺 ¿Sin movimientos? Mira un anuncio para +5, tantas veces como quieras; si sales a medias, conservas la partida",
+  "whatsNewFixes": "🛠️ Arreglos: la lista del Mercado se encogía al desplazar, los anuncios contaban como salir del juego, algunos cierres",
   "whatsNewLater": "Después",
   "whatsNewOpen": "Ver colección",
   "marketWallet": "{n} Monedas de Mercado",

@@ -809,11 +809,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewFestival": "🎃 Exclusive accessories for 7 holidays (Halloween, Christmas, Lunar New Year...) — get them with the Festival Pack during the event and keep them forever",
-  "whatsNewPacks": "🎁 Collection grows to 80 accessories, plus accessory packs and a wheel (30 💎 or watch an ad)",
-  "whatsNewStreak": "🔥 Missed a check-in day? Save your streak with Gems or an ad",
-  "whatsNewVip": "👑 VIP gets one more display slot; watch an ad when you Franchise for extra starting Coins",
-  "whatsNewKorean": "🇰🇷 Korean language added",
+  "whatsNewCollection": "🎀 Collection grows to 160 accessories, with a collecting guide and a reveal animation for new items",
+  "whatsNewMilestones": "🏅 New collection milestones at 80/100/120/140/160 with bigger Market Coin rewards",
+  "whatsNewMatch3": "🧋 Falling Pearls now has 80 levels and is easier to play (25 moves per level)",
+  "whatsNewAds": "📺 Out of moves? Watch an ad for +5 moves, as many times as you like; backing out keeps your game",
+  "whatsNewFixes": "🛠️ Fixes: Market list squashing when scrolling, ads counted as leaving the game, a few crashes",
   "whatsNewLater": "Later",
   "whatsNewOpen": "View collection",
   "marketWallet": "{n} Market Coins",

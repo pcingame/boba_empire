@@ -1939,23 +1939,24 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get whatsNewFestival =>
-      '🎃 Acessórios exclusivos de 7 festividades (Halloween, Natal, Ano Novo Lunar...) — ganhe com o Pacote de Festival durante o evento e guarde';
+  String get whatsNewCollection =>
+      '🎀 A coleção sobe para 160 acessórios, com guia de coleção e animação ao ganhar um novo item';
 
   @override
-  String get whatsNewPacks =>
-      '🎁 A coleção chega a 80 acessórios, com pacotes e uma roleta (30 💎 ou ver um anúncio)';
+  String get whatsNewMilestones =>
+      '🏅 Novos marcos de coleção em 80/100/120/140/160 com mais Moedas de Mercado';
 
   @override
-  String get whatsNewStreak =>
-      '🔥 Perdeu um dia de check-in? Salve sua sequência com Gemas ou um anúncio';
+  String get whatsNewMatch3 =>
+      '🧋 Pérolas Caindo agora tem 80 fases e ficou mais fácil (25 jogadas por fase)';
 
   @override
-  String get whatsNewVip =>
-      '👑 VIP ganha mais um espaço de exibição; veja um anúncio ao fazer Franquia para mais moedas iniciais';
+  String get whatsNewAds =>
+      '📺 Sem jogadas? Veja um anúncio para +5, quantas vezes quiser; sair no meio mantém a partida';
 
   @override
-  String get whatsNewKorean => '🇰🇷 Adicionado o coreano';
+  String get whatsNewFixes =>
+      '🛠️ Correções: lista do Mercado encolhia ao rolar, anúncios contavam como sair do jogo, alguns travamentos';
 
   @override
   String get whatsNewLater => 'Depois';

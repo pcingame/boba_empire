@@ -1944,23 +1944,24 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get whatsNewFestival =>
-      '🎃 Accesorios exclusivos de 7 festividades (Halloween, Navidad, Año Nuevo Lunar...) — consíguelos con el Paquete de Festividad durante el evento y consérvalos';
+  String get whatsNewCollection =>
+      '🎀 La colección sube a 160 accesorios, con guía de colección y animación al conseguir uno nuevo';
 
   @override
-  String get whatsNewPacks =>
-      '🎁 La colección llega a 80 accesorios, con paquetes y una ruleta (30 💎 o ver un anuncio)';
+  String get whatsNewMilestones =>
+      '🏅 Nuevos hitos de colección en 80/100/120/140/160 con más Monedas de Mercado';
 
   @override
-  String get whatsNewStreak =>
-      '🔥 ¿Te saltaste un día? Salva tu racha con Gemas o un anuncio';
+  String get whatsNewMatch3 =>
+      '🧋 Perlas que caen ahora tiene 80 niveles y es más fácil (25 movimientos por nivel)';
 
   @override
-  String get whatsNewVip =>
-      '👑 VIP tiene un espacio de exhibición más; mira un anuncio al hacer Franquicia para más monedas iniciales';
+  String get whatsNewAds =>
+      '📺 ¿Sin movimientos? Mira un anuncio para +5, tantas veces como quieras; si sales a medias, conservas la partida';
 
   @override
-  String get whatsNewKorean => '🇰🇷 Se añade el coreano';
+  String get whatsNewFixes =>
+      '🛠️ Arreglos: la lista del Mercado se encogía al desplazar, los anuncios contaban como salir del juego, algunos cierres';
 
   @override
   String get whatsNewLater => 'Después';

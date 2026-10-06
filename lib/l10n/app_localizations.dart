@@ -3498,35 +3498,35 @@ abstract class AppLocalizations {
   /// **'Có gì mới ở {version}'**
   String whatsNewTitle(String version);
 
-  /// No description provided for @whatsNewFestival.
+  /// No description provided for @whatsNewCollection.
   ///
   /// In vi, this message translates to:
-  /// **'🎃 Phụ kiện độc quyền 7 dịp lễ (Halloween, Giáng Sinh, Tết...) — mua bằng Gói Lễ Hội trong dịp, giữ mãi'**
-  String get whatsNewFestival;
+  /// **'🎀 Bộ sưu tập lên 160 phụ kiện, có hướng dẫn sưu tầm và hiệu ứng khi nhận món mới'**
+  String get whatsNewCollection;
 
-  /// No description provided for @whatsNewPacks.
+  /// No description provided for @whatsNewMilestones.
   ///
   /// In vi, this message translates to:
-  /// **'🎁 Bộ sưu tập lên 80 phụ kiện, thêm gói phụ kiện và vòng quay (30 💎 hoặc xem QC)'**
-  String get whatsNewPacks;
+  /// **'🏅 Thêm mốc sưu tập 80/100/120/140/160 với thưởng Xu Chợ lớn hơn'**
+  String get whatsNewMilestones;
 
-  /// No description provided for @whatsNewStreak.
+  /// No description provided for @whatsNewMatch3.
   ///
   /// In vi, this message translates to:
-  /// **'🔥 Lỡ một ngày điểm danh? Cứu chuỗi bằng Kim Cương hoặc xem QC'**
-  String get whatsNewStreak;
+  /// **'🧋 Trân Châu Rơi lên 80 màn, dễ chơi hơn (25 nước mỗi màn)'**
+  String get whatsNewMatch3;
 
-  /// No description provided for @whatsNewVip.
+  /// No description provided for @whatsNewAds.
   ///
   /// In vi, this message translates to:
-  /// **'👑 VIP có thêm 1 chỗ trưng bày; nhượng quyền xem QC để nhận thêm Xu khởi đầu'**
-  String get whatsNewVip;
+  /// **'📺 Hết nước? Xem quảng cáo để +5 nước, xem bao nhiêu lần tuỳ bạn; back giữa chừng vẫn giữ ván'**
+  String get whatsNewAds;
 
-  /// No description provided for @whatsNewKorean.
+  /// No description provided for @whatsNewFixes.
   ///
   /// In vi, this message translates to:
-  /// **'🇰🇷 Thêm tiếng Hàn'**
-  String get whatsNewKorean;
+  /// **'🛠️ Sửa lỗi: danh sách Chợ bị co khi cuộn, xem quảng cáo bị tính là rời game, vài lỗi crash'**
+  String get whatsNewFixes;
 
   /// No description provided for @whatsNewLater.
   ///

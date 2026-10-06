@@ -1930,23 +1930,24 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get whatsNewFestival =>
-      '🎃 Phụ kiện độc quyền 7 dịp lễ (Halloween, Giáng Sinh, Tết...) — mua bằng Gói Lễ Hội trong dịp, giữ mãi';
+  String get whatsNewCollection =>
+      '🎀 Bộ sưu tập lên 160 phụ kiện, có hướng dẫn sưu tầm và hiệu ứng khi nhận món mới';
 
   @override
-  String get whatsNewPacks =>
-      '🎁 Bộ sưu tập lên 80 phụ kiện, thêm gói phụ kiện và vòng quay (30 💎 hoặc xem QC)';
+  String get whatsNewMilestones =>
+      '🏅 Thêm mốc sưu tập 80/100/120/140/160 với thưởng Xu Chợ lớn hơn';
 
   @override
-  String get whatsNewStreak =>
-      '🔥 Lỡ một ngày điểm danh? Cứu chuỗi bằng Kim Cương hoặc xem QC';
+  String get whatsNewMatch3 =>
+      '🧋 Trân Châu Rơi lên 80 màn, dễ chơi hơn (25 nước mỗi màn)';
 
   @override
-  String get whatsNewVip =>
-      '👑 VIP có thêm 1 chỗ trưng bày; nhượng quyền xem QC để nhận thêm Xu khởi đầu';
+  String get whatsNewAds =>
+      '📺 Hết nước? Xem quảng cáo để +5 nước, xem bao nhiêu lần tuỳ bạn; back giữa chừng vẫn giữ ván';
 
   @override
-  String get whatsNewKorean => '🇰🇷 Thêm tiếng Hàn';
+  String get whatsNewFixes =>
+      '🛠️ Sửa lỗi: danh sách Chợ bị co khi cuộn, xem quảng cáo bị tính là rời game, vài lỗi crash';
 
   @override
   String get whatsNewLater => 'Để sau';

@@ -1923,23 +1923,24 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
-  String get whatsNewFestival =>
-      '🎃 เครื่องประดับเฉพาะกิจ 7 เทศกาล (ฮาโลวีน คริสต์มาส ตรุษจีน...) — ซื้อด้วยแพ็กเทศกาลในช่วงงานและเก็บไว้ได้ตลอด';
+  String get whatsNewCollection =>
+      '🎀 คอลเลกชันเพิ่มเป็น 160 ชิ้น มีคู่มือการสะสมและแอนิเมชันเมื่อได้ของใหม่';
 
   @override
-  String get whatsNewPacks =>
-      '🎁 คอลเลกชันเพิ่มเป็น 80 ชิ้น พร้อมแพ็กเครื่องประดับและวงล้อ (30 💎 หรือดูโฆษณา)';
+  String get whatsNewMilestones =>
+      '🏅 หมุดหมายการสะสมใหม่ที่ 80/100/120/140/160 พร้อมรางวัลเหรียญตลาดที่มากขึ้น';
 
   @override
-  String get whatsNewStreak =>
-      '🔥 พลาดเช็คอินไปหนึ่งวัน? กู้สตรีคด้วยเพชรหรือดูโฆษณา';
+  String get whatsNewMatch3 =>
+      '🧋 ไข่มุกร่วงมี 80 ด่าน เล่นง่ายขึ้น (25 ครั้งเดินต่อด่าน)';
 
   @override
-  String get whatsNewVip =>
-      '👑 VIP ได้ช่องโชว์เพิ่มอีกหนึ่งช่อง ดูโฆษณาตอนแฟรนไชส์เพื่อรับเหรียญเริ่มต้นเพิ่ม';
+  String get whatsNewAds =>
+      '📺 หมดตาเดิน? ดูโฆษณารับ +5 ครั้งเดิน ดูกี่ครั้งก็ได้ ออกกลางคันก็ยังเก็บเกมไว้';
 
   @override
-  String get whatsNewKorean => '🇰🇷 เพิ่มภาษาเกาหลี';
+  String get whatsNewFixes =>
+      '🛠️ แก้ไข: รายการตลาดหดตอนเลื่อน โฆษณาถูกนับเป็นออกจากเกม และข้อผิดพลาดบางส่วน';
 
   @override
   String get whatsNewLater => 'ไว้ทีหลัง';

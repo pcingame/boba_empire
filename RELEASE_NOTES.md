@@ -9,6 +9,113 @@ người bản ngữ soát.
 
 ---
 
+## 1.0.8 (+21) — 2026-10-07
+
+**Bản trước:** 1.0.7 đã lên store. Nộp store bằng **+21**.
+
+Mốc đáng chú ý (đủ cho cả App Store lẫn Play, đều dưới 500 ký tự):
+- **Bộ sưu tập 80 → 160 phụ kiện** (75 thường · 46 hiếm · 30 sử thi · 9 huyền thoại); thêm **hướng dẫn sưu tầm** (nút `?` trong Kho) và **hiệu ứng nhận món** (vầng sáng, tia lấp lánh); ô Kho hiện dần.
+- **Mốc sưu tập 80/100/120/140/160** (thưởng 300/500/800/1100/1500 Xu Chợ); dải mốc cuộn ngang, tự cuộn tới mốc kế tiếp chưa nhận.
+- **Trân Châu Rơi 60 → 80 màn**, 25 nước/màn, mục tiêu tăng chậm hơn + trần 24.000 điểm, mốc sao thấp hơn. **Hết nước xem QC +5 nước, không giới hạn số lần.** Back giữa chừng giữ ván dở + hộp thoại xác nhận thoát.
+- Sửa lỗi: danh sách Chợ bị co khi cuộn (Android); xem QC bị tính là rời game (popup "Chào mừng trở lại" giả); snackbar "QC chưa sẵn sàng" gây crash; crash khi đăng bán ở Chợ; chip "Nước còn" tràn ở en/es.
+
+**Phía server / cấu hình (kiểm trước khi phát hành):**
+- Supabase: đã chạy lại `supabase/accessory_market_schema.sql` (mốc 80–160 trong `claim_collection_milestone`) ngày 2026-10-07. Chưa chạy thì nhận mốc mới báo `invalid_milestone`.
+- Firebase Remote Config `boba_remote_config`: `m3LevelCount` **80**, thêm `m3TargetCap` **24000** (khoá mới; giá trị cũ trên Firebase sẽ ghi đè bản mới nếu quên). `m3Moves` 25, `m3TargetGrowth` 1.08, `m3CollectGrowth` 1.07, `m3Star2Mult` 1.2, `m3Star3Mult` 1.45 đã đặt từ trước.
+- CHECK `owned_count` của bảng xếp hạng Sưu tập là 200 → còn dư 40 món; vượt 200 phải nâng trần trước.
+
+**Hộp "Có gì mới" trong app:** `whatsNewVersion` = `1.0.8`; chuỗi `whatsNewCollection/Milestones/Match3/Ads/Fixes` trong `lib/l10n/app_*.arb` (7 ngôn ngữ). Bản dài ở `assets/store/whatsnew_1.0.8/`, mô tả store ở `assets/store/description_1.0.8/` (chỉ đổi "80" → "160" phụ kiện ở dòng 15).
+
+**Force update:** KHÔNG đổi (thẻ ở mô tả giữ nguyên).
+
+⚠️ Mọi số cân bằng Ghép 3 (25 nước, trần 24k, QC +5 không giới hạn) và thưởng mốc là ước lượng, chưa playtest. Bản dịch do máy soạn — nên nhờ người bản ngữ soát.
+
+### 🇻🇳 Tiếng Việt (vi)
+
+```
+Mới: 160 PHỤ KIỆN & 80 MÀN TRÂN CHÂU RƠI!
+
+• Bộ sưu tập lên 160 phụ kiện, có hướng dẫn sưu tầm và hiệu ứng khi nhận món mới
+• Thêm mốc sưu tập 80/100/120/140/160, thưởng Xu Chợ lớn hơn
+• Trân Châu Rơi lên 80 màn, dễ chơi hơn
+• Hết nước? Xem quảng cáo +5 nước, xem bao nhiêu lần tuỳ bạn; back giữa chừng vẫn giữ ván
+• Sửa lỗi: danh sách Chợ bị co khi cuộn, xem quảng cáo bị tính là rời game, vài lỗi crash
+```
+
+### 🇬🇧 English (en)
+
+```
+New: 160 ACCESSORIES & 80 FALLING PEARLS LEVELS!
+
+• Collection grows to 160 accessories, with a collecting guide and a reveal animation for new items
+• New milestones at 80/100/120/140/160 with bigger Market Coin rewards
+• Falling Pearls now has 80 levels and is easier to play
+• Out of moves? Watch an ad for +5 moves, as many times as you like; backing out keeps your game
+• Fixes: Market list squashing when scrolling, ads counted as leaving the game, a few crashes
+```
+
+### 🇧🇷 Português (pt-BR)
+
+```
+Novo: 160 ACESSÓRIOS E 80 FASES DE PÉROLAS CAINDO!
+
+• A coleção sobe para 160 acessórios, com guia e animação ao ganhar um item novo
+• Novos marcos em 80/100/120/140/160 com mais Moedas de Mercado
+• Pérolas Caindo agora tem 80 fases e ficou mais fácil
+• Sem jogadas? Veja um anúncio para +5, quantas vezes quiser; sair no meio mantém a partida
+• Correções: lista do Mercado encolhia ao rolar, anúncios contavam como sair do jogo, alguns travamentos
+```
+
+### 🇪🇸 Español (es)
+
+```
+Nuevo: ¡160 ACCESORIOS Y 80 NIVELES DE PERLAS QUE CAEN!
+
+• La colección sube a 160 accesorios, con guía y animación al conseguir uno nuevo
+• Nuevos hitos en 80/100/120/140/160 con más Monedas de Mercado
+• Perlas que caen ahora tiene 80 niveles y es más fácil
+• ¿Sin movimientos? Mira un anuncio para +5, las veces que quieras; si sales a medias, conservas la partida
+• Arreglos: la lista del Mercado se encogía al desplazar, los anuncios contaban como salir del juego, algunos cierres
+```
+
+### 🇮🇩 Bahasa Indonesia (id)
+
+```
+Baru: 160 AKSESORI & 80 LEVEL MUTIARA JATUH!
+
+• Koleksi jadi 160 aksesori, dengan panduan koleksi dan animasi saat dapat item baru
+• Tonggak baru di 80/100/120/140/160 dengan hadiah Koin Pasar lebih besar
+• Mutiara Jatuh kini 80 level dan lebih mudah
+• Langkah habis? Tonton iklan untuk +5 langkah, sebanyak yang kamu mau; keluar di tengah main tetap menyimpan permainan
+• Perbaikan: daftar Pasar menyusut saat digulir, iklan dihitung sebagai keluar game, beberapa crash
+```
+
+### 🇹🇭 ภาษาไทย (th)
+
+```
+ใหม่: เครื่องประดับ 160 ชิ้น & ไข่มุกร่วง 80 ด่าน!
+
+• คอลเลกชัน 160 ชิ้น มีคู่มือการสะสมและแอนิเมชันเมื่อได้ของใหม่
+• หมุดหมายใหม่ที่ 80/100/120/140/160 รางวัลเหรียญตลาดมากขึ้น
+• ไข่มุกร่วง 80 ด่าน เล่นง่ายขึ้น
+• หมดตาเดิน? ดูโฆษณารับ +5 ดูกี่ครั้งก็ได้ ออกกลางคันก็ยังเก็บเกมไว้
+• แก้ไข: รายการตลาดหดตอนเลื่อน โฆษณาถูกนับเป็นออกจากเกม และข้อผิดพลาดบางส่วน
+```
+
+### 🇰🇷 한국어 (ko)
+
+```
+신규: 액세서리 160종 & 떨어지는 펄 80레벨!
+
+• 컬렉션 160종, 수집 가이드와 새 아이템 획득 애니메이션
+• 80/100/120/140/160 이정표 추가, 더 큰 마켓 코인 보상
+• 떨어지는 펄 80레벨, 더 쉬워졌어요
+• 이동이 끝났나요? 광고를 보면 +5회, 횟수 제한 없음. 중간에 나가도 게임 유지
+• 수정: 마켓 목록 찌그러짐, 광고가 이탈로 집계되던 문제, 일부 크래시
+```
+
+---
+
 ## 1.0.7 (+16) — 2026-10-04
 
 **Bản trước:** 1.0.6 (+13), iOS đã live 2026-10-04 (Play chưa publish 1.0.6). Các build +14/+15 là build trung gian trong quá trình làm bản này; nộp store bằng +16.

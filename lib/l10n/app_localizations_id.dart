@@ -1933,23 +1933,24 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get whatsNewFestival =>
-      '🎃 Aksesori eksklusif 7 hari raya (Halloween, Natal, Tahun Baru Imlek...) — dapatkan lewat Paket Festival selama acara dan simpan selamanya';
+  String get whatsNewCollection =>
+      '🎀 Koleksi bertambah jadi 160 aksesori, dengan panduan koleksi dan animasi saat dapat item baru';
 
   @override
-  String get whatsNewPacks =>
-      '🎁 Koleksi jadi 80 aksesori, plus paket aksesori dan roda (30 💎 atau tonton iklan)';
+  String get whatsNewMilestones =>
+      '🏅 Tonggak koleksi baru di 80/100/120/140/160 dengan hadiah Koin Pasar lebih besar';
 
   @override
-  String get whatsNewStreak =>
-      '🔥 Terlewat sehari check-in? Selamatkan streak dengan Permata atau iklan';
+  String get whatsNewMatch3 =>
+      '🧋 Mutiara Jatuh kini punya 80 level dan lebih mudah (25 langkah per level)';
 
   @override
-  String get whatsNewVip =>
-      '👑 VIP mendapat satu slot pajangan lagi; tonton iklan saat Franchise untuk Koin awal tambahan';
+  String get whatsNewAds =>
+      '📺 Langkah habis? Tonton iklan untuk +5 langkah, sebanyak yang kamu mau; keluar di tengah main tetap menyimpan permainan';
 
   @override
-  String get whatsNewKorean => '🇰🇷 Bahasa Korea ditambahkan';
+  String get whatsNewFixes =>
+      '🛠️ Perbaikan: daftar Pasar menyusut saat digulir, iklan dihitung sebagai keluar game, beberapa crash';
 
   @override
   String get whatsNewLater => 'Nanti';

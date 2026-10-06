@@ -1907,22 +1907,23 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get whatsNewFestival =>
-      '🎃 7개 명절 한정 액세서리 (할로윈, 크리스마스, 설날...) — 이벤트 기간에 축제 팩으로 얻고 영구히 보관하세요';
+  String get whatsNewCollection =>
+      '🎀 컬렉션이 액세서리 160종으로 늘고, 수집 가이드와 새 아이템 획득 애니메이션이 추가됐어요';
 
   @override
-  String get whatsNewPacks =>
-      '🎁 컬렉션이 액세서리 80종으로 늘어나고, 액세서리 팩과 룰렛 추가 (30 💎 또는 광고 시청)';
+  String get whatsNewMilestones =>
+      '🏅 80/100/120/140/160 컬렉션 이정표 추가, 더 큰 마켓 코인 보상';
 
   @override
-  String get whatsNewStreak => '🔥 출석을 하루 놓쳤나요? 보석이나 광고로 연속 출석을 지키세요';
+  String get whatsNewMatch3 => '🧋 떨어지는 펄이 80레벨로 늘고 더 쉬워졌어요 (레벨당 25번 이동)';
 
   @override
-  String get whatsNewVip =>
-      '👑 VIP는 전시 칸이 하나 더 생겨요. 프랜차이즈할 때 광고를 보면 시작 코인을 더 받아요';
+  String get whatsNewAds =>
+      '📺 이동이 끝났나요? 광고를 보면 +5회, 횟수 제한 없음. 중간에 나가도 게임이 유지돼요';
 
   @override
-  String get whatsNewKorean => '🇰🇷 한국어가 추가되었어요';
+  String get whatsNewFixes =>
+      '🛠️ 수정: 스크롤 시 마켓 목록이 찌그러지던 문제, 광고가 게임 이탈로 집계되던 문제, 일부 크래시';
 
   @override
   String get whatsNewLater => '나중에';

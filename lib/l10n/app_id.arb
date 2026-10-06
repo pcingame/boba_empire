@@ -809,11 +809,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewFestival": "🎃 Aksesori eksklusif 7 hari raya (Halloween, Natal, Tahun Baru Imlek...) — dapatkan lewat Paket Festival selama acara dan simpan selamanya",
-  "whatsNewPacks": "🎁 Koleksi jadi 80 aksesori, plus paket aksesori dan roda (30 💎 atau tonton iklan)",
-  "whatsNewStreak": "🔥 Terlewat sehari check-in? Selamatkan streak dengan Permata atau iklan",
-  "whatsNewVip": "👑 VIP mendapat satu slot pajangan lagi; tonton iklan saat Franchise untuk Koin awal tambahan",
-  "whatsNewKorean": "🇰🇷 Bahasa Korea ditambahkan",
+  "whatsNewCollection": "🎀 Koleksi bertambah jadi 160 aksesori, dengan panduan koleksi dan animasi saat dapat item baru",
+  "whatsNewMilestones": "🏅 Tonggak koleksi baru di 80/100/120/140/160 dengan hadiah Koin Pasar lebih besar",
+  "whatsNewMatch3": "🧋 Mutiara Jatuh kini punya 80 level dan lebih mudah (25 langkah per level)",
+  "whatsNewAds": "📺 Langkah habis? Tonton iklan untuk +5 langkah, sebanyak yang kamu mau; keluar di tengah main tetap menyimpan permainan",
+  "whatsNewFixes": "🛠️ Perbaikan: daftar Pasar menyusut saat digulir, iklan dihitung sebagai keluar game, beberapa crash",
   "whatsNewLater": "Nanti",
   "whatsNewOpen": "Lihat koleksi",
   "marketWallet": "{n} Koin Pasar",
