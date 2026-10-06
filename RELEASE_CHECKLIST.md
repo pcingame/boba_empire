@@ -158,6 +158,15 @@ non-consumable, ~$2.99), `boba_piggy` (đập heo, **consumable**, ~$1.99),
 - [x] 🔴 Build bundle: `flutter build appbundle --release` → `.aab` (ký release
   OK; rebuild lại khi bump version/đổi asset).
 - [ ] 🟢 (iOS) `flutter build ipa` (cần macOS + Xcode + chứng chỉ).
+  - **Lệnh chuẩn (từ 1.0.8):** `flutter build ipa --release --export-options-plist=ios/ExportOptions.plist --dart-define=IAP_VERIFY_ENDPOINT=https://boba-receipt-server-411559711815.asia-southeast1.run.app/verify`
+    — `ios/ExportOptions.plist` tắt `uploadSymbols` + `manageAppVersionAndBuildNumber` để ipa "trơn".
+  - ⚠️ **1.0.8 (21): Transporter báo "Processing failed"** với ipa mặc định của Flutter (có thư mục `Symbols/`,
+    Xcode tự quản build number); **Xcode Organizer → Validate App → Distribute thì thành công**. Chưa xác định
+    được nguyên nhân (không có email lý do). Cảnh báo "Upload Symbols Failed … GoogleMobileAds/UserMessagingPlatform"
+    là BÌNH THƯỜNG (Google không kèm dSYM), không phải lỗi.
+  - **Trước khi dán ipa vào Transporter:** mở `build/ios/archive/Runner.xcarchive` → Organizer → **Validate App**
+    (không upload gì, báo lỗi `ITMS-…` cụ thể). Hoặc Transporter bấm **Verify** trước **Deliver**. Nếu vẫn "Processing
+    failed" thì xem email Apple (cả Spam) lấy mã lỗi; cách chắc chắn nhất là Organizer → Distribute App.
 
 ## 7b. Schema Supabase (chỉ khi bản nộp có đổi SQL)
 
