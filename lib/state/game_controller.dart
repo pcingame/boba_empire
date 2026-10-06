@@ -1358,14 +1358,6 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
-  /// Mở khoá vĩnh viễn +nước mỗi màn Ghép 3 (UI gọi sau khi xem QC thưởng).
-  void unlockM3BonusMoves() {
-    if (_game.m3BonusMoves) return;
-    _game.m3BonusMoves = true;
-    unawaited(saveNow());
-    state = _snapshot();
-  }
-
   /// Ghi kết quả một màn Ghép 3 (chơi đơn) và trao thưởng. Trả về (Xu, 💎) vừa
   /// nhận — 0 nếu không phá được kỷ lục sao cũ của màn đó.
   (double, int) grantMatch3Result(int levelId, int stars) {
@@ -1517,7 +1509,6 @@ class GameController extends Notifier<GameSnapshot> {
           List.unmodifiable(_game.collectionMilestonesClaimed),
       wishlist: List.unmodifiable(_game.wishlist),
       m3HowToSeen: _game.m3HowToSeen,
-      m3BonusMoves: _game.m3BonusMoves,
       starterPackOwned: _game.starterPackOwned,
       tutorialSeen: _game.tutorialSeen,
       dailyAvailable: dailyAvailable(_game, now),

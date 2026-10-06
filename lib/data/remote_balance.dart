@@ -115,6 +115,12 @@ class RemoteBalance {
       min: 1.0,
       max: 1.5,
     ),
+    'm3TargetCap': (
+      read: () => Balance.m3TargetCap,
+      write: (v) => Balance.m3TargetCap = v,
+      min: 1000,
+      max: 1e9,
+    ),
     'm3LevelCount': (
       read: () => Balance.m3LevelCount.toDouble(),
       write: (v) => Balance.m3LevelCount = v.round(),

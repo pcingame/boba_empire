@@ -20,7 +20,7 @@ class Accessory {
   final String emoji;
 }
 
-/// 80 món, chia theo độ hiếm (39 thường · 22 hiếm · 14 sử thi · 5 huyền
+/// 160 món, chia theo độ hiếm (75 thường · 46 hiếm · 30 sử thi · 9 huyền
 /// thoại). Mô tả hiển thị dựng ở l10n_ext (accessoryName). Nâng số món thì
 /// PHẢI nâng trần CHECK `owned_count` trong accessory_leaderboard_schema.sql
 /// trước (xem ghi chú trong file đó).
@@ -64,6 +64,42 @@ const List<Accessory> accessories = [
   Accessory('tangerine', AccessoryRarity.common, '🍊'),
   Accessory('chestnut', AccessoryRarity.common, '🌰'),
   Accessory('maple_leaf', AccessoryRarity.common, '🍁'),
+  Accessory('ice_cube', AccessoryRarity.common, '🧊'),
+  Accessory('croissant', AccessoryRarity.common, '🥐'),
+  Accessory('pancakes', AccessoryRarity.common, '🥞'),
+  Accessory('waffle', AccessoryRarity.common, '🧇'),
+  Accessory('bagel', AccessoryRarity.common, '🥯'),
+  Accessory('cake_slice', AccessoryRarity.common, '🍰'),
+  Accessory('pie', AccessoryRarity.common, '🥧'),
+  Accessory('candy', AccessoryRarity.common, '🍬'),
+  Accessory('grapes', AccessoryRarity.common, '🍇'),
+  Accessory('watermelon', AccessoryRarity.common, '🍉'),
+  Accessory('pineapple', AccessoryRarity.common, '🍍'),
+  Accessory('mango', AccessoryRarity.common, '🥭'),
+  Accessory('kiwi', AccessoryRarity.common, '🥝'),
+  Accessory('banana', AccessoryRarity.common, '🍌'),
+  Accessory('apple', AccessoryRarity.common, '🍎'),
+  Accessory('teddy', AccessoryRarity.common, '🧸'),
+  Accessory('crayon', AccessoryRarity.common, '🖍️'),
+  Accessory('bucket', AccessoryRarity.common, '🪣'),
+  Accessory('carrot', AccessoryRarity.common, '🥕'),
+  Accessory('corn', AccessoryRarity.common, '🌽'),
+  Accessory('tomato', AccessoryRarity.common, '🍅'),
+  Accessory('avocado', AccessoryRarity.common, '🥑'),
+  Accessory('coconut', AccessoryRarity.common, '🥥'),
+  Accessory('blueberries', AccessoryRarity.common, '🫐'),
+  Accessory('pear', AccessoryRarity.common, '🍐'),
+  Accessory('rice_ball', AccessoryRarity.common, '🍙'),
+  Accessory('dumpling', AccessoryRarity.common, '🥟'),
+  Accessory('sushi', AccessoryRarity.common, '🍣'),
+  Accessory('ramen', AccessoryRarity.common, '🍜'),
+  Accessory('taco', AccessoryRarity.common, '🌮'),
+  Accessory('pizza', AccessoryRarity.common, '🍕'),
+  Accessory('hot_dog', AccessoryRarity.common, '🌭'),
+  Accessory('fries', AccessoryRarity.common, '🍟'),
+  Accessory('egg', AccessoryRarity.common, '🥚'),
+  Accessory('bread', AccessoryRarity.common, '🍞'),
+  Accessory('butter', AccessoryRarity.common, '🧈'),
   Accessory('seashell', AccessoryRarity.rare, '🐚'),
   Accessory('mask', AccessoryRarity.rare, '🎭'),
   Accessory('drum', AccessoryRarity.rare, '🪘'),
@@ -86,6 +122,30 @@ const List<Accessory> accessories = [
   Accessory('jellyfish', AccessoryRarity.rare, '🪼'),
   Accessory('camera', AccessoryRarity.rare, '📷'),
   Accessory('shield', AccessoryRarity.rare, '🛡️'),
+  Accessory('guitar', AccessoryRarity.rare, '🎸'),
+  Accessory('trumpet', AccessoryRarity.rare, '🎺'),
+  Accessory('piano', AccessoryRarity.rare, '🎹'),
+  Accessory('saxophone', AccessoryRarity.rare, '🎷'),
+  Accessory('banjo', AccessoryRarity.rare, '🪕'),
+  Accessory('microscope', AccessoryRarity.rare, '🔬'),
+  Accessory('ringed_planet', AccessoryRarity.rare, '🪐'),
+  Accessory('crescent_moon', AccessoryRarity.rare, '🌙'),
+  Accessory('bow_arrow', AccessoryRarity.rare, '🏹'),
+  Accessory('mirror', AccessoryRarity.rare, '🪞'),
+  Accessory('ferris_wheel', AccessoryRarity.rare, '🎡'),
+  Accessory('carousel', AccessoryRarity.rare, '🎠'),
+  Accessory('puzzle', AccessoryRarity.rare, '🧩'),
+  Accessory('dice', AccessoryRarity.rare, '🎲'),
+  Accessory('chess_pawn', AccessoryRarity.rare, '♟️'),
+  Accessory('dart', AccessoryRarity.rare, '🎯'),
+  Accessory('bowling', AccessoryRarity.rare, '🎳'),
+  Accessory('yo_yo', AccessoryRarity.rare, '🪀'),
+  Accessory('roller_skate', AccessoryRarity.rare, '🛼'),
+  Accessory('skateboard', AccessoryRarity.rare, '🛹'),
+  Accessory('satellite', AccessoryRarity.rare, '🛰️'),
+  Accessory('alembic', AccessoryRarity.rare, '⚗️'),
+  Accessory('dna', AccessoryRarity.rare, '🧬'),
+  Accessory('trophy', AccessoryRarity.rare, '🏆'),
   Accessory('crystal_ball', AccessoryRarity.epic, '🔮'),
   Accessory('lantern', AccessoryRarity.epic, '🏮'),
   Accessory('unicorn', AccessoryRarity.epic, '🦄'),
@@ -100,11 +160,31 @@ const List<Accessory> accessories = [
   Accessory('fairy', AccessoryRarity.epic, '🧚'),
   Accessory('disco_ball', AccessoryRarity.epic, '🪩'),
   Accessory('shining_star', AccessoryRarity.epic, '🌟'),
+  Accessory('swan', AccessoryRarity.epic, '🦢'),
+  Accessory('flamingo', AccessoryRarity.epic, '🦩'),
+  Accessory('owl', AccessoryRarity.epic, '🦉'),
+  Accessory('whale', AccessoryRarity.epic, '🐋'),
+  Accessory('crown', AccessoryRarity.epic, '👑'),
+  Accessory('circus_tent', AccessoryRarity.epic, '🎪'),
+  Accessory('pinata', AccessoryRarity.epic, '🪅'),
+  Accessory('castle', AccessoryRarity.epic, '🏰'),
+  Accessory('leopard', AccessoryRarity.epic, '🐆'),
+  Accessory('elephant', AccessoryRarity.epic, '🐘'),
+  Accessory('panda', AccessoryRarity.epic, '🐼'),
+  Accessory('giraffe', AccessoryRarity.epic, '🦒'),
+  Accessory('turtle', AccessoryRarity.epic, '🐢'),
+  Accessory('koala', AccessoryRarity.epic, '🐨'),
+  Accessory('penguin', AccessoryRarity.epic, '🐧'),
+  Accessory('sauropod', AccessoryRarity.epic, '🦕'),
   Accessory('dragon', AccessoryRarity.legendary, '🐉'),
   Accessory('phoenix', AccessoryRarity.legendary, '🔥'),
   Accessory('galaxy', AccessoryRarity.legendary, '🌌'),
   Accessory('kraken', AccessoryRarity.legendary, '🦑'),
   Accessory('thunderbolt', AccessoryRarity.legendary, '⚡'),
+  Accessory('genie', AccessoryRarity.legendary, '🧞'),
+  Accessory('volcano', AccessoryRarity.legendary, '🌋'),
+  Accessory('mermaid', AccessoryRarity.legendary, '🧜'),
+  Accessory('eagle', AccessoryRarity.legendary, '🦅'),
 ];
 
 Accessory accessoryById(String id) => accessories
@@ -233,7 +313,7 @@ int accessoryAdSpinsLeft(GameState s, int nowMillis) =>
         : Balance.accessorySpinAdsPerDay;
 
 // --- Phụ kiện ĐỘC QUYỀN theo dịp lễ ---------------------------------------
-// Tách hẳn khỏi [accessories] (50→80 món sưu tập chính): KHÔNG tính vào số đếm
+// Tách hẳn khỏi [accessories] (50→80→120→160 món sưu tập chính): KHÔNG tính vào số đếm
 // bộ sưu tập / mốc / bảng xếp hạng (SQL có CHECK owned_count), KHÔNG đăng bán ở
 // Chợ, không đồng bộ server, không làm huy hiệu BXH. Lưu ở
 // [GameState.ownedLimited]; chỉ mua được bằng Gói Lễ Hội trong dịp đó.

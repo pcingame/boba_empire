@@ -73,7 +73,7 @@ void main() {
     c.dispose();
   });
 
-  testWidgets('4 mốc nằm CÙNG MỘT hàng, rộng đều nhau, không tràn (360px, chữ 1.3x)',
+  testWidgets('dải mốc cuộn ngang: MỘT hàng, thẻ rộng đều, không tràn (360px, chữ 1.3x)',
       (tester) async {
     tester.view.physicalSize = const Size(360 * 3, 720 * 3);
     tester.view.devicePixelRatio = 3;
@@ -81,15 +81,33 @@ void main() {
     addTearDown(tester.view.reset);
     addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
     final c = await _pump(tester, GameState.newGame(nowMillis: 0));
-    final cells = [10, 25, 40, 50]
-        .map((n) => tester.getRect(find.byKey(Key('milestone-$n'))))
+    final cells = collectionMilestones
+        .map((m) => tester.getRect(find.byKey(Key('milestone-${m.count}'))))
         .toList();
     expect(cells.map((r) => r.top).toSet().length, 1, reason: 'cùng một hàng');
     expect(cells.map((r) => r.width.round()).toSet().length, 1,
         reason: 'rộng đều');
-    expect(cells.first.left, lessThan(24));
-    expect(cells.last.right, greaterThan(360 - 24), reason: 'trải hết bề ngang');
+    expect(cells.first.left, lessThan(24), reason: 'chưa nhận gì → mốc đầu ở mép trái');
     expect(tester.takeException(), isNull);
+    c.dispose();
+  });
+
+  testWidgets('tự cuộn tới mốc kế tiếp chưa nhận và đưa vào trong khung nhìn',
+      (tester) async {
+    tester.view.physicalSize = const Size(360 * 3, 720 * 3);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+    // Đã nhận 4 mốc đầu (10/25/40/50), đủ 160 món → mốc kế là 80 (thứ 5).
+    final seed = GameState.newGame(nowMillis: 0)
+      ..ownedAccessories.addAll(accessories.take(160).map((a) => a.id))
+      ..collectionMilestonesClaimed.addAll([10, 25, 40, 50]);
+    final c = await _pump(tester, seed);
+    final strip = tester.getRect(find.byType(SingleChildScrollView).first);
+    final next = tester.getRect(find.byKey(const Key('milestone-claim-80')));
+    expect(next.left, greaterThanOrEqualTo(strip.left - 0.5));
+    expect(next.right, lessThanOrEqualTo(strip.right + 0.5));
+    expect(tester.takeException(), isNull);
+    await tester.pumpWidget(const SizedBox());
     c.dispose();
   });
 

@@ -65,7 +65,6 @@ class GameSnapshot {
     required this.collectionMilestonesClaimed,
     required this.wishlist,
     required this.m3HowToSeen,
-    required this.m3BonusMoves,
     required this.prestigeStarsSpendable,
     required this.prestigeIncomeLevel,
     required this.prestigeTapLevel,
@@ -204,7 +203,6 @@ class GameSnapshot {
 
   /// Đã xem hướng dẫn Trân Châu Rơi chưa.
   final bool m3HowToSeen;
-  final bool m3BonusMoves;
 
   /// Số ⭐ Sao còn có thể tiêu trong kho prestige.
   final double prestigeStarsSpendable;

@@ -17,7 +17,6 @@ class Match3PlayState {
     this.collected = 0,
     this.frames = const [],
     this.moveId = 0,
-    this.adContinueUsed = false,
   });
 
   final Match3Level level;
@@ -33,9 +32,6 @@ class Match3PlayState {
       level.goal == Match3GoalKind.collect ? collected : score;
   final List<List<int>> frames;
   final int moveId;
-
-  /// Đã dùng lượt "xem QC thêm nước" của lượt chơi này chưa (1 lần/lượt).
-  final bool adContinueUsed;
 
   int get stars => match3Stars(progress, level.target);
 
@@ -62,14 +58,12 @@ class Match3Controller extends Notifier<Match3PlayState> {
       !state.goalReached;
 
   /// Bắt đầu (hoặc chơi lại) một màn.
-  /// [bonusMoves]: đã mở khoá +nước vĩnh viễn (xem GameState.m3BonusMoves).
-  void load(Match3Level level, {bool bonusMoves = false}) =>
-      state = _start(level, bonusMoves: bonusMoves);
+  void load(Match3Level level) => state = _start(level);
 
-  /// Cộng nước sau khi xem quảng cáo thưởng. Chỉ có tác dụng một lần mỗi lượt
-  /// chơi (xem [Balance.m3AdExtraMoves]).
+  /// Cộng nước sau khi xem quảng cáo thưởng (xem [Balance.m3AdExtraMoves]).
+  /// KHÔNG giới hạn số lần: hết nước lại xem tiếp được, mỗi lần +5 nước — quyết
+  /// định của chủ game (trước đây chỉ 1 lần/lượt).
   void addMovesFromAd() {
-    if (state.adContinueUsed) return;
     state = Match3PlayState(
       level: state.level,
       cells: state.cells,
@@ -77,11 +71,10 @@ class Match3Controller extends Notifier<Match3PlayState> {
       score: state.score,
       collected: state.collected,
       moveId: state.moveId,
-      adContinueUsed: true,
     );
   }
 
-  Match3PlayState _start(Match3Level level, {bool bonusMoves = false}) {
+  Match3PlayState _start(Match3Level level) {
     // specials: true — kẹo đặc biệt CHỈ có ở chơi đơn. Đấu Trường không bật vì
     // `arena_m3_replay` (SQL) không biết luật kẹo (xem match3_rules.dart).
     final board = Match3Board.initial(level.seq(), specials: true);
@@ -91,7 +84,7 @@ class Match3Controller extends Notifier<Match3PlayState> {
     return Match3PlayState(
       level: level,
       cells: [...board.cells],
-      movesLeft: level.moves + (bonusMoves ? Balance.m3AdExtraMoves : 0),
+      movesLeft: level.moves,
       score: 0,
     );
   }
@@ -118,9 +111,6 @@ class Match3Controller extends Notifier<Match3PlayState> {
       collected: state.collected + _collectedBy(move),
       frames: move.frames,
       moveId: state.moveId + 1,
-      // PHẢI mang theo: quên là cờ reset sau mỗi nước đi -> xem quảng cáo
-      // thêm nước được vô hạn.
-      adContinueUsed: state.adContinueUsed,
     );
     return true;
   }

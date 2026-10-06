@@ -1,5 +1,4 @@
-// Lượt "xem quảng cáo thêm nước": đúng 1 lần mỗi lượt chơi. Không giới hạn thì
-// xem đủ quảng cáo là qua được mọi màn.
+// "Xem quảng cáo thêm nước": hết nước xem tiếp được, không giới hạn số lần.
 import 'package:boba_empire/arena/match3_rules.dart';
 import 'package:boba_empire/core/balance.dart';
 import 'package:boba_empire/core/match3_levels.dart';
@@ -24,10 +23,9 @@ void main() {
       container.read(match3ControllerProvider.notifier);
   Match3PlayState play() => container.read(match3ControllerProvider);
 
-  test('bắt đầu màn: đủ số nước, chưa dùng lượt quảng cáo', () {
+  test('bắt đầu màn: đủ số nước', () {
     controller().load(const Match3Level(1));
     expect(play().movesLeft, Balance.m3Moves);
-    expect(play().adContinueUsed, isFalse);
     expect(play().finished, isFalse);
   });
 
@@ -39,34 +37,33 @@ void main() {
     expect(controller().canResume(const Match3Level(2)), isFalse);
   });
 
-  test('cộng nước một lần; lần thứ hai không có tác dụng', () {
+  test('cộng nước KHÔNG giới hạn số lần: mỗi lần +5, giữ điểm và bàn', () {
     controller().load(const Match3Level(1));
-    final before = play().movesLeft;
-
-    controller().addMovesFromAd();
-    expect(play().movesLeft, before + Balance.m3AdExtraMoves);
-    expect(play().adContinueUsed, isTrue);
-
-    controller().addMovesFromAd();
-    expect(play().movesLeft, before + Balance.m3AdExtraMoves,
-        reason: 'lượt thứ hai phải bị chặn');
+    expect(_playOne(controller(), play()), isTrue);
+    final start = play();
+    for (var i = 1; i <= 4; i++) {
+      controller().addMovesFromAd();
+      expect(play().movesLeft, start.movesLeft + i * Balance.m3AdExtraMoves,
+          reason: 'lần $i');
+    }
+    expect(play().score, start.score);
+    expect(play().cells, start.cells);
+    expect(play().moveId, start.moveId);
   });
 
-  test('cờ đã-dùng còn nguyên sau khi đi tiếp (không reset mỗi nước)', () {
-    controller().load(const Match3Level(1));
-    controller().addMovesFromAd();
-    expect(_playOne(controller(), play()), isTrue);
-    expect(play().adContinueUsed, isTrue);
-    expect(_playOne(controller(), play()), isTrue);
-    expect(play().adContinueUsed, isTrue);
-  });
-
-  test('chơi lại màn thì được mời xem quảng cáo lại từ đầu', () {
+  test('chơi lại màn thì số nước về lại ban đầu (nước QC không dồn sang)', () {
     controller().load(const Match3Level(1));
     controller().addMovesFromAd();
     controller().load(const Match3Level(1));
-    expect(play().adContinueUsed, isFalse);
     expect(play().movesLeft, Balance.m3Moves);
+  });
+
+  test('đi tiếp sau khi cộng nước: số nước vẫn trừ đúng 1 mỗi nước', () {
+    controller().load(const Match3Level(1));
+    controller().addMovesFromAd();
+    final before = play().movesLeft;
+    expect(_playOne(controller(), play()), isTrue);
+    expect(play().movesLeft, before - 1);
   });
 
   test('hết nước thì khoá bàn, cộng nước xong chơi tiếp được', () {

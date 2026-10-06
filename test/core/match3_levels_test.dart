@@ -1,5 +1,7 @@
 // Lõi Hành trình Ghép 3: mốc sao, mở khoá, bàn tất định, và — quan trọng nhất —
 // thưởng KHÔNG lặp lại (bàn tất định nên chơi lại được đúng điểm cũ).
+import 'dart:math' show pow;
+
 import 'package:boba_empire/arena/match3_rules.dart';
 import 'package:boba_empire/core/balance.dart';
 import 'package:boba_empire/core/match3_levels.dart';
@@ -22,6 +24,41 @@ void main() {
     expect(match3Stars(three - 1, target), 2);
     expect(match3Stars(three, target), 3);
     expect(match3Stars(100, 0), 0); // mục tiêu 0 không cho sao chùa
+  });
+
+  test('80 màn: mục tiêu hợp lệ, không giảm dần, màn điểm không vượt trần', () {
+    expect(Balance.m3LevelCount, 80);
+    var prevScore = 0;
+    for (var id = 1; id <= Balance.m3LevelCount; id++) {
+      final lv = Match3Level(id);
+      expect(lv.target, greaterThan(0), reason: 'màn $id');
+      if (lv.goal == Match3GoalKind.score) {
+        expect(lv.target, lessThanOrEqualTo(Balance.m3TargetCap.round()),
+            reason: 'màn $id vượt trần');
+        expect(lv.target, greaterThanOrEqualTo(prevScore),
+            reason: 'màn điểm $id dễ hơn màn trước');
+        prevScore = lv.target;
+      }
+      // Bàn đầu của MỌI màn phải đi được ngay (không bí từ đầu).
+      final board = Match3Board.initial(lv.seq(), specials: true);
+      if (!board.hasAnyMove()) board.reshuffle();
+      expect(board.hasAnyMove(), isTrue, reason: 'màn $id bí từ đầu');
+    }
+  });
+
+  test('trần mục tiêu: dưới trần thì theo công thức, chạm trần thì đứng yên', () {
+    final savedCap = Balance.m3TargetCap;
+    addTearDown(() => Balance.m3TargetCap = savedCap);
+    Balance.m3TargetCap = 5000;
+    final scoreIds = [for (var i = 1; i <= 80; i++) if (Match3Level(i).goal == Match3GoalKind.score) i];
+    expect(Match3Level(scoreIds.first).target, 900, reason: 'màn 1 dưới trần');
+    expect(Match3Level(scoreIds.last).target, 5000);
+    expect(Match3Level(80 - 1).target, lessThanOrEqualTo(5000));
+    // Trần rất cao thì không còn tác dụng: quay về công thức thuần.
+    Balance.m3TargetCap = 1e12;
+    expect(Match3Level(70).goal, Match3GoalKind.score);
+    expect(Match3Level(70).target,
+        (Balance.m3TargetBase * pow(Balance.m3TargetGrowth, 69)).round());
   });
 
   test('mốc sao phải tăng dần (2 sao không được dễ hơn 1, 3 không dễ hơn 2)',

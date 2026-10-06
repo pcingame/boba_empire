@@ -1457,6 +1457,246 @@ class AppLocalizationsVi extends AppLocalizations {
   String get accessoryThunderbolt => 'Tia chớp thần';
 
   @override
+  String get accessoryIceCube => 'Đá viên';
+
+  @override
+  String get accessoryCroissant => 'Bánh sừng bò';
+
+  @override
+  String get accessoryPancakes => 'Bánh pancake';
+
+  @override
+  String get accessoryWaffle => 'Bánh waffle';
+
+  @override
+  String get accessoryBagel => 'Bánh bagel';
+
+  @override
+  String get accessoryCakeSlice => 'Miếng bánh kem';
+
+  @override
+  String get accessoryPie => 'Bánh nướng';
+
+  @override
+  String get accessoryCandy => 'Viên kẹo';
+
+  @override
+  String get accessoryGrapes => 'Chùm nho';
+
+  @override
+  String get accessoryWatermelon => 'Dưa hấu';
+
+  @override
+  String get accessoryPineapple => 'Quả dứa';
+
+  @override
+  String get accessoryMango => 'Xoài';
+
+  @override
+  String get accessoryKiwi => 'Quả kiwi';
+
+  @override
+  String get accessoryBanana => 'Chuối';
+
+  @override
+  String get accessoryApple => 'Quả táo';
+
+  @override
+  String get accessoryTeddy => 'Gấu bông';
+
+  @override
+  String get accessoryCrayon => 'Bút sáp màu';
+
+  @override
+  String get accessoryBucket => 'Cái xô';
+
+  @override
+  String get accessoryGuitar => 'Đàn guitar';
+
+  @override
+  String get accessoryTrumpet => 'Kèn trumpet';
+
+  @override
+  String get accessoryPiano => 'Đàn piano';
+
+  @override
+  String get accessorySaxophone => 'Kèn saxophone';
+
+  @override
+  String get accessoryBanjo => 'Đàn banjo';
+
+  @override
+  String get accessoryMicroscope => 'Kính hiển vi';
+
+  @override
+  String get accessoryRingedPlanet => 'Hành tinh có vành đai';
+
+  @override
+  String get accessoryCrescentMoon => 'Trăng lưỡi liềm';
+
+  @override
+  String get accessoryBowArrow => 'Cung tên';
+
+  @override
+  String get accessoryMirror => 'Gương soi';
+
+  @override
+  String get accessoryFerrisWheel => 'Vòng xoay khổng lồ';
+
+  @override
+  String get accessoryCarousel => 'Ngựa quay';
+
+  @override
+  String get accessorySwan => 'Thiên nga';
+
+  @override
+  String get accessoryFlamingo => 'Hồng hạc';
+
+  @override
+  String get accessoryOwl => 'Cú mèo';
+
+  @override
+  String get accessoryWhale => 'Cá voi';
+
+  @override
+  String get accessoryCrown => 'Vương miện';
+
+  @override
+  String get accessoryCircusTent => 'Lều xiếc';
+
+  @override
+  String get accessoryPinata => 'Piñata';
+
+  @override
+  String get accessoryCastle => 'Lâu đài';
+
+  @override
+  String get accessoryGenie => 'Thần đèn';
+
+  @override
+  String get accessoryVolcano => 'Núi lửa';
+
+  @override
+  String get accessoryCarrot => 'Cà rốt';
+
+  @override
+  String get accessoryCorn => 'Bắp ngô';
+
+  @override
+  String get accessoryTomato => 'Cà chua';
+
+  @override
+  String get accessoryAvocado => 'Quả bơ';
+
+  @override
+  String get accessoryCoconut => 'Quả dừa';
+
+  @override
+  String get accessoryBlueberries => 'Việt quất';
+
+  @override
+  String get accessoryPear => 'Quả lê';
+
+  @override
+  String get accessoryRiceBall => 'Cơm nắm';
+
+  @override
+  String get accessoryDumpling => 'Bánh bao hấp';
+
+  @override
+  String get accessorySushi => 'Sushi';
+
+  @override
+  String get accessoryRamen => 'Tô mì';
+
+  @override
+  String get accessoryTaco => 'Bánh taco';
+
+  @override
+  String get accessoryPizza => 'Bánh pizza';
+
+  @override
+  String get accessoryHotDog => 'Bánh mì xúc xích';
+
+  @override
+  String get accessoryFries => 'Khoai tây chiên';
+
+  @override
+  String get accessoryEgg => 'Quả trứng';
+
+  @override
+  String get accessoryBread => 'Ổ bánh mì';
+
+  @override
+  String get accessoryButter => 'Miếng bơ';
+
+  @override
+  String get accessoryPuzzle => 'Mảnh ghép';
+
+  @override
+  String get accessoryDice => 'Xúc xắc';
+
+  @override
+  String get accessoryChessPawn => 'Quân tốt';
+
+  @override
+  String get accessoryDart => 'Bia phi tiêu';
+
+  @override
+  String get accessoryBowling => 'Bowling';
+
+  @override
+  String get accessoryYoYo => 'Yo-yo';
+
+  @override
+  String get accessoryRollerSkate => 'Giày trượt patin';
+
+  @override
+  String get accessorySkateboard => 'Ván trượt';
+
+  @override
+  String get accessorySatellite => 'Vệ tinh';
+
+  @override
+  String get accessoryAlembic => 'Bình chưng cất';
+
+  @override
+  String get accessoryDna => 'Chuỗi DNA';
+
+  @override
+  String get accessoryTrophy => 'Cúp vô địch';
+
+  @override
+  String get accessoryLeopard => 'Báo hoa mai';
+
+  @override
+  String get accessoryElephant => 'Voi';
+
+  @override
+  String get accessoryPanda => 'Gấu trúc';
+
+  @override
+  String get accessoryGiraffe => 'Hươu cao cổ';
+
+  @override
+  String get accessoryTurtle => 'Rùa';
+
+  @override
+  String get accessoryKoala => 'Gấu koala';
+
+  @override
+  String get accessoryPenguin => 'Chim cánh cụt';
+
+  @override
+  String get accessorySauropod => 'Khủng long cổ dài';
+
+  @override
+  String get accessoryMermaid => 'Nàng tiên cá';
+
+  @override
+  String get accessoryEagle => 'Đại bàng';
+
+  @override
   String get marketTitle => 'Chợ Phụ kiện';
 
   @override
@@ -1576,6 +1816,21 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get collectionTitle50 => 'Huyền thoại sưu tầm';
+
+  @override
+  String get collectionTitle80 => 'Bậc thầy sưu tầm';
+
+  @override
+  String get collectionTitle100 => 'Đại gia sưu tầm';
+
+  @override
+  String get collectionTitle120 => 'Vua sưu tầm';
+
+  @override
+  String get collectionTitle140 => 'Hiền triết sưu tầm';
+
+  @override
+  String get collectionTitle160 => 'Thần sưu tầm';
 
   @override
   String collectionTitleLabel(String title) {
@@ -2007,11 +2262,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get m3NoReward => 'Đã nhận thưởng màn này rồi';
 
   @override
-  String m3AdMovesForever(int n) {
-    return 'Xem QC: +$n nước mọi màn';
-  }
-
-  @override
   String get m3LeaveTitle => 'Thoát ván này?';
 
   @override
@@ -2022,6 +2272,45 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get m3LeaveConfirm => 'Thoát';
+
+  @override
+  String get accessoryHowToTitle => 'Hướng dẫn sưu tầm';
+
+  @override
+  String get accessoryHowToButton => 'Hướng dẫn';
+
+  @override
+  String get accessoryHtp1 =>
+      '🎯 Mục tiêu: sưu tập đủ các món. Phụ kiện thuần trang trí, không tăng thu nhập — nhưng trưng được quanh cốc, khoe với bạn bè và lên bảng xếp hạng Sưu tập.';
+
+  @override
+  String get accessoryHtp2 =>
+      '🎁 Cách nhận: xong cả 3 nhiệm vụ ngày · qua màn mốc Trân Châu Rơi (10/30/60) · ô rương của vòng quay thường · mỗi lần Kỷ Nguyên hoá · mua Gói phụ kiện bằng 💎.';
+
+  @override
+  String get accessoryHtp3 =>
+      '🎰 Vòng quay phụ kiện: mỗi lượt xem 1 quảng cáo hoặc dùng 💎. Lượt xem quảng cáo có giới hạn mỗi ngày.';
+
+  @override
+  String get accessoryHtp4 =>
+      '✨ Độ hiếm: Thường → Hiếm → Sử thi → Huyền thoại. Cuối tuần và dịp lễ tăng tỉ lệ Sử thi/Huyền thoại; Gói Hiếm/Sử thi bảo đảm độ hiếm tối thiểu; dịp lễ có Gói Lễ Hội với món độc quyền.';
+
+  @override
+  String accessoryHtp5(int gems) {
+    return '♻️ Rớt trùng món đã có: nhận $gems 💎 và thêm 1 bản dư để đem bán ở Chợ.';
+  }
+
+  @override
+  String get accessoryHtp6 =>
+      '🏬 Chợ: bán bản dư lấy Xu Chợ, mua món còn thiếu của người chơi khác (phí sàn 1%). Xu Chợ nạp bằng Xu hoặc 💎, không đổi ngược lại.';
+
+  @override
+  String get accessoryHtp7 =>
+      '🏅 Mốc sưu tập (10/25/40/50/80/100/120/140/160 món) tặng Xu Chợ. Thêm món muốn có vào danh sách để theo dõi, xếp hạng tính theo số món khác nhau.';
+
+  @override
+  String get accessoryHtp8 =>
+      '👆 Chạm một món đã có để trưng bày quanh cốc ở màn chính.';
 
   @override
   String m3AdMoves(int n) {

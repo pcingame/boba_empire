@@ -10,6 +10,7 @@ import 'package:boba_empire/market/accessory_market_controller.dart';
 import 'package:boba_empire/market/accessory_market_repository.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/ui/accessory_market_page.dart';
+import 'package:flutter/foundation.dart' show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -124,6 +125,23 @@ Future<(ProviderContainer, _FakeMarketController)> _pump(
 }
 
 void main() {
+  testWidgets(
+      'Android: cuộn hết cỡ không bóp danh sách (không có hiệu ứng kéo giãn) ở cả 2 tab',
+      (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    final (container, _) = await _pump(tester);
+    expect(find.byType(StretchingOverscrollIndicator), findsNothing);
+    expect(find.byType(GlowingOverscrollIndicator), findsNothing);
+    await tester.tap(find.text('Của tôi'));
+    await tester.pumpAndSettle();
+    expect(find.byType(StretchingOverscrollIndicator), findsNothing);
+    expect(find.byType(GlowingOverscrollIndicator), findsNothing);
+    // Phải trả về null NGAY trong thân test (addTearDown chạy sau khi flutter_test
+    // đã kiểm biến debug của foundation).
+    debugDefaultTargetPlatformOverride = null;
+    container.dispose();
+  });
+
   testWidgets('tab Chợ: ẩn listing của chính mình, chỉ hiện của người khác',
       (tester) async {
     final (container, _) = await _pump(tester);

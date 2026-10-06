@@ -1460,6 +1460,246 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accessoryThunderbolt => 'Divine Thunderbolt';
 
   @override
+  String get accessoryIceCube => 'Ice Cube';
+
+  @override
+  String get accessoryCroissant => 'Croissant';
+
+  @override
+  String get accessoryPancakes => 'Pancakes';
+
+  @override
+  String get accessoryWaffle => 'Waffle';
+
+  @override
+  String get accessoryBagel => 'Bagel';
+
+  @override
+  String get accessoryCakeSlice => 'Cake Slice';
+
+  @override
+  String get accessoryPie => 'Pie';
+
+  @override
+  String get accessoryCandy => 'Candy';
+
+  @override
+  String get accessoryGrapes => 'Grapes';
+
+  @override
+  String get accessoryWatermelon => 'Watermelon';
+
+  @override
+  String get accessoryPineapple => 'Pineapple';
+
+  @override
+  String get accessoryMango => 'Mango';
+
+  @override
+  String get accessoryKiwi => 'Kiwi';
+
+  @override
+  String get accessoryBanana => 'Banana';
+
+  @override
+  String get accessoryApple => 'Apple';
+
+  @override
+  String get accessoryTeddy => 'Teddy Bear';
+
+  @override
+  String get accessoryCrayon => 'Crayon';
+
+  @override
+  String get accessoryBucket => 'Bucket';
+
+  @override
+  String get accessoryGuitar => 'Guitar';
+
+  @override
+  String get accessoryTrumpet => 'Trumpet';
+
+  @override
+  String get accessoryPiano => 'Piano';
+
+  @override
+  String get accessorySaxophone => 'Saxophone';
+
+  @override
+  String get accessoryBanjo => 'Banjo';
+
+  @override
+  String get accessoryMicroscope => 'Microscope';
+
+  @override
+  String get accessoryRingedPlanet => 'Ringed Planet';
+
+  @override
+  String get accessoryCrescentMoon => 'Crescent Moon';
+
+  @override
+  String get accessoryBowArrow => 'Bow and Arrow';
+
+  @override
+  String get accessoryMirror => 'Mirror';
+
+  @override
+  String get accessoryFerrisWheel => 'Ferris Wheel';
+
+  @override
+  String get accessoryCarousel => 'Carousel';
+
+  @override
+  String get accessorySwan => 'Swan';
+
+  @override
+  String get accessoryFlamingo => 'Flamingo';
+
+  @override
+  String get accessoryOwl => 'Owl';
+
+  @override
+  String get accessoryWhale => 'Whale';
+
+  @override
+  String get accessoryCrown => 'Crown';
+
+  @override
+  String get accessoryCircusTent => 'Circus Tent';
+
+  @override
+  String get accessoryPinata => 'Piñata';
+
+  @override
+  String get accessoryCastle => 'Castle';
+
+  @override
+  String get accessoryGenie => 'Genie';
+
+  @override
+  String get accessoryVolcano => 'Volcano';
+
+  @override
+  String get accessoryCarrot => 'Carrot';
+
+  @override
+  String get accessoryCorn => 'Corn';
+
+  @override
+  String get accessoryTomato => 'Tomato';
+
+  @override
+  String get accessoryAvocado => 'Avocado';
+
+  @override
+  String get accessoryCoconut => 'Coconut';
+
+  @override
+  String get accessoryBlueberries => 'Blueberries';
+
+  @override
+  String get accessoryPear => 'Pear';
+
+  @override
+  String get accessoryRiceBall => 'Rice Ball';
+
+  @override
+  String get accessoryDumpling => 'Dumpling';
+
+  @override
+  String get accessorySushi => 'Sushi';
+
+  @override
+  String get accessoryRamen => 'Ramen';
+
+  @override
+  String get accessoryTaco => 'Taco';
+
+  @override
+  String get accessoryPizza => 'Pizza';
+
+  @override
+  String get accessoryHotDog => 'Hot Dog';
+
+  @override
+  String get accessoryFries => 'French Fries';
+
+  @override
+  String get accessoryEgg => 'Egg';
+
+  @override
+  String get accessoryBread => 'Bread';
+
+  @override
+  String get accessoryButter => 'Butter';
+
+  @override
+  String get accessoryPuzzle => 'Puzzle Piece';
+
+  @override
+  String get accessoryDice => 'Dice';
+
+  @override
+  String get accessoryChessPawn => 'Chess Pawn';
+
+  @override
+  String get accessoryDart => 'Dartboard';
+
+  @override
+  String get accessoryBowling => 'Bowling';
+
+  @override
+  String get accessoryYoYo => 'Yo-Yo';
+
+  @override
+  String get accessoryRollerSkate => 'Roller Skate';
+
+  @override
+  String get accessorySkateboard => 'Skateboard';
+
+  @override
+  String get accessorySatellite => 'Satellite';
+
+  @override
+  String get accessoryAlembic => 'Alembic';
+
+  @override
+  String get accessoryDna => 'DNA';
+
+  @override
+  String get accessoryTrophy => 'Trophy';
+
+  @override
+  String get accessoryLeopard => 'Leopard';
+
+  @override
+  String get accessoryElephant => 'Elephant';
+
+  @override
+  String get accessoryPanda => 'Panda';
+
+  @override
+  String get accessoryGiraffe => 'Giraffe';
+
+  @override
+  String get accessoryTurtle => 'Turtle';
+
+  @override
+  String get accessoryKoala => 'Koala';
+
+  @override
+  String get accessoryPenguin => 'Penguin';
+
+  @override
+  String get accessorySauropod => 'Sauropod';
+
+  @override
+  String get accessoryMermaid => 'Mermaid';
+
+  @override
+  String get accessoryEagle => 'Eagle';
+
+  @override
   String get marketTitle => 'Accessory Market';
 
   @override
@@ -1581,6 +1821,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get collectionTitle50 => 'Collecting Legend';
+
+  @override
+  String get collectionTitle80 => 'Master Collector';
+
+  @override
+  String get collectionTitle100 => 'Grand Collector';
+
+  @override
+  String get collectionTitle120 => 'Collection King';
+
+  @override
+  String get collectionTitle140 => 'Collection Sage';
+
+  @override
+  String get collectionTitle160 => 'Collecting Deity';
 
   @override
   String collectionTitleLabel(String title) {
@@ -2013,11 +2268,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get m3NoReward => 'You already claimed this level\'s reward';
 
   @override
-  String m3AdMovesForever(int n) {
-    return 'Watch ad: +$n moves every level';
-  }
-
-  @override
   String get m3LeaveTitle => 'Leave this game?';
 
   @override
@@ -2028,6 +2278,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get m3LeaveConfirm => 'Leave';
+
+  @override
+  String get accessoryHowToTitle => 'Collecting guide';
+
+  @override
+  String get accessoryHowToButton => 'Guide';
+
+  @override
+  String get accessoryHtp1 =>
+      '🎯 Goal: collect every item. Accessories are cosmetic only — no income boost — but you can show them off around your cup, share them and climb the Collection leaderboard.';
+
+  @override
+  String get accessoryHtp2 =>
+      '🎁 How to get them: finish all 3 daily quests · clear the Falling Pearls milestone levels (10/30/60) · the chest slot on the main wheel · every Ascension · buy Accessory Packs with 💎.';
+
+  @override
+  String get accessoryHtp3 =>
+      '🎰 Accessory Wheel: each spin costs one ad view or 💎. Ad spins are limited per day.';
+
+  @override
+  String get accessoryHtp4 =>
+      '✨ Rarity: Common → Rare → Epic → Legendary. Weekends and festivals raise Epic/Legendary odds; Rare/Epic Packs guarantee a minimum rarity; festivals bring a Festival Pack with exclusive items.';
+
+  @override
+  String accessoryHtp5(int gems) {
+    return '♻️ Duplicate drop: you get $gems 💎 and 1 spare copy to sell on the Market.';
+  }
+
+  @override
+  String get accessoryHtp6 =>
+      '🏬 Market: sell spares for Market Coins, buy missing items from other players (1% fee). Market Coins are bought with Coins or 💎 and can\'t be converted back.';
+
+  @override
+  String get accessoryHtp7 =>
+      '🏅 Collection milestones (10/25/40/50/80/100/120/140/160 items) reward Market Coins. Add wanted items to your wishlist; ranking counts distinct items.';
+
+  @override
+  String get accessoryHtp8 =>
+      '👆 Tap an owned item to display it around your cup on the main screen.';
 
   @override
   String m3AdMoves(int n) {

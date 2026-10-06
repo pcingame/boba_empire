@@ -1465,6 +1465,246 @@ class AppLocalizationsPt extends AppLocalizations {
   String get accessoryThunderbolt => 'Raio divino';
 
   @override
+  String get accessoryIceCube => 'Cubo de gelo';
+
+  @override
+  String get accessoryCroissant => 'Croissant';
+
+  @override
+  String get accessoryPancakes => 'Panquecas';
+
+  @override
+  String get accessoryWaffle => 'Waffle';
+
+  @override
+  String get accessoryBagel => 'Bagel';
+
+  @override
+  String get accessoryCakeSlice => 'Fatia de bolo';
+
+  @override
+  String get accessoryPie => 'Torta';
+
+  @override
+  String get accessoryCandy => 'Bala';
+
+  @override
+  String get accessoryGrapes => 'Uvas';
+
+  @override
+  String get accessoryWatermelon => 'Melancia';
+
+  @override
+  String get accessoryPineapple => 'Abacaxi';
+
+  @override
+  String get accessoryMango => 'Manga';
+
+  @override
+  String get accessoryKiwi => 'Kiwi';
+
+  @override
+  String get accessoryBanana => 'Banana';
+
+  @override
+  String get accessoryApple => 'Maçã';
+
+  @override
+  String get accessoryTeddy => 'Ursinho de pelúcia';
+
+  @override
+  String get accessoryCrayon => 'Giz de cera';
+
+  @override
+  String get accessoryBucket => 'Balde';
+
+  @override
+  String get accessoryGuitar => 'Violão';
+
+  @override
+  String get accessoryTrumpet => 'Trompete';
+
+  @override
+  String get accessoryPiano => 'Piano';
+
+  @override
+  String get accessorySaxophone => 'Saxofone';
+
+  @override
+  String get accessoryBanjo => 'Banjo';
+
+  @override
+  String get accessoryMicroscope => 'Microscópio';
+
+  @override
+  String get accessoryRingedPlanet => 'Planeta com anéis';
+
+  @override
+  String get accessoryCrescentMoon => 'Lua crescente';
+
+  @override
+  String get accessoryBowArrow => 'Arco e flecha';
+
+  @override
+  String get accessoryMirror => 'Espelho';
+
+  @override
+  String get accessoryFerrisWheel => 'Roda-gigante';
+
+  @override
+  String get accessoryCarousel => 'Carrossel';
+
+  @override
+  String get accessorySwan => 'Cisne';
+
+  @override
+  String get accessoryFlamingo => 'Flamingo';
+
+  @override
+  String get accessoryOwl => 'Coruja';
+
+  @override
+  String get accessoryWhale => 'Baleia';
+
+  @override
+  String get accessoryCrown => 'Coroa';
+
+  @override
+  String get accessoryCircusTent => 'Tenda de circo';
+
+  @override
+  String get accessoryPinata => 'Piñata';
+
+  @override
+  String get accessoryCastle => 'Castelo';
+
+  @override
+  String get accessoryGenie => 'Gênio';
+
+  @override
+  String get accessoryVolcano => 'Vulcão';
+
+  @override
+  String get accessoryCarrot => 'Cenoura';
+
+  @override
+  String get accessoryCorn => 'Milho';
+
+  @override
+  String get accessoryTomato => 'Tomate';
+
+  @override
+  String get accessoryAvocado => 'Abacate';
+
+  @override
+  String get accessoryCoconut => 'Coco';
+
+  @override
+  String get accessoryBlueberries => 'Mirtilos';
+
+  @override
+  String get accessoryPear => 'Pera';
+
+  @override
+  String get accessoryRiceBall => 'Onigiri';
+
+  @override
+  String get accessoryDumpling => 'Pastel chinês';
+
+  @override
+  String get accessorySushi => 'Sushi';
+
+  @override
+  String get accessoryRamen => 'Ramen';
+
+  @override
+  String get accessoryTaco => 'Taco';
+
+  @override
+  String get accessoryPizza => 'Pizza';
+
+  @override
+  String get accessoryHotDog => 'Cachorro-quente';
+
+  @override
+  String get accessoryFries => 'Batata frita';
+
+  @override
+  String get accessoryEgg => 'Ovo';
+
+  @override
+  String get accessoryBread => 'Pão';
+
+  @override
+  String get accessoryButter => 'Manteiga';
+
+  @override
+  String get accessoryPuzzle => 'Peça de quebra-cabeça';
+
+  @override
+  String get accessoryDice => 'Dado';
+
+  @override
+  String get accessoryChessPawn => 'Peão de xadrez';
+
+  @override
+  String get accessoryDart => 'Alvo de dardos';
+
+  @override
+  String get accessoryBowling => 'Boliche';
+
+  @override
+  String get accessoryYoYo => 'Ioiô';
+
+  @override
+  String get accessoryRollerSkate => 'Patim';
+
+  @override
+  String get accessorySkateboard => 'Skate';
+
+  @override
+  String get accessorySatellite => 'Satélite';
+
+  @override
+  String get accessoryAlembic => 'Alambique';
+
+  @override
+  String get accessoryDna => 'DNA';
+
+  @override
+  String get accessoryTrophy => 'Troféu';
+
+  @override
+  String get accessoryLeopard => 'Leopardo';
+
+  @override
+  String get accessoryElephant => 'Elefante';
+
+  @override
+  String get accessoryPanda => 'Panda';
+
+  @override
+  String get accessoryGiraffe => 'Girafa';
+
+  @override
+  String get accessoryTurtle => 'Tartaruga';
+
+  @override
+  String get accessoryKoala => 'Coala';
+
+  @override
+  String get accessoryPenguin => 'Pinguim';
+
+  @override
+  String get accessorySauropod => 'Saurópode';
+
+  @override
+  String get accessoryMermaid => 'Sereia';
+
+  @override
+  String get accessoryEagle => 'Águia';
+
+  @override
   String get marketTitle => 'Mercado de Acessórios';
 
   @override
@@ -1585,6 +1825,21 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get collectionTitle50 => 'Lenda das coleções';
+
+  @override
+  String get collectionTitle80 => 'Mestre colecionador';
+
+  @override
+  String get collectionTitle100 => 'Grande colecionador';
+
+  @override
+  String get collectionTitle120 => 'Rei da coleção';
+
+  @override
+  String get collectionTitle140 => 'Sábio colecionador';
+
+  @override
+  String get collectionTitle160 => 'Divindade da coleção';
 
   @override
   String collectionTitleLabel(String title) {
@@ -2018,11 +2273,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get m3NoReward => 'Você já recebeu a recompensa deste nível';
 
   @override
-  String m3AdMovesForever(int n) {
-    return 'Ver anúncio: +$n jogadas em todas as fases';
-  }
-
-  @override
   String get m3LeaveTitle => 'Sair desta partida?';
 
   @override
@@ -2033,6 +2283,45 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get m3LeaveConfirm => 'Sair';
+
+  @override
+  String get accessoryHowToTitle => 'Guia de coleção';
+
+  @override
+  String get accessoryHowToButton => 'Guia';
+
+  @override
+  String get accessoryHtp1 =>
+      '🎯 Objetivo: juntar todos os itens. Acessórios são só decorativos (não aumentam a renda), mas dá para exibi-los ao redor do copo, compartilhar e subir no ranking de Coleção.';
+
+  @override
+  String get accessoryHtp2 =>
+      '🎁 Como obter: concluir as 3 missões diárias · passar das fases marco de Pérolas Caindo (10/30/60) · a casa de baú da roleta principal · a cada Ascensão · comprar Pacotes de acessórios com 💎.';
+
+  @override
+  String get accessoryHtp3 =>
+      '🎰 Roleta de acessórios: cada giro custa ver um anúncio ou 💎. Giros por anúncio têm limite diário.';
+
+  @override
+  String get accessoryHtp4 =>
+      '✨ Raridade: Comum → Raro → Épico → Lendário. Fins de semana e feriados aumentam a chance de Épico/Lendário; Pacotes Raro/Épico garantem raridade mínima; em feriados há um Pacote de Festival com itens exclusivos.';
+
+  @override
+  String accessoryHtp5(int gems) {
+    return '♻️ Item repetido: você recebe $gems 💎 e 1 cópia extra para vender no Mercado.';
+  }
+
+  @override
+  String get accessoryHtp6 =>
+      '🏬 Mercado: venda cópias extras por Moedas de Mercado e compre o que falta de outros jogadores (taxa de 1%). Moedas de Mercado são compradas com Moedas ou 💎 e não podem ser convertidas de volta.';
+
+  @override
+  String get accessoryHtp7 =>
+      '🏅 Marcos de coleção (10/25/40/50/80/100/120/140/160 itens) dão Moedas de Mercado. Adicione itens desejados à lista de desejos; o ranking conta itens distintos.';
+
+  @override
+  String get accessoryHtp8 =>
+      '👆 Toque num item que você tem para exibi-lo ao redor do copo na tela principal.';
 
   @override
   String m3AdMoves(int n) {

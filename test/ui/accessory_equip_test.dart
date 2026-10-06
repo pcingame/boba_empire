@@ -213,7 +213,7 @@ void main() {
 
   testWidgets('Kho: chạm món ĐÃ CÓ để trưng bày/bỏ; món khoá không đổi; đủ chỗ thì báo',
       (tester) async {
-    await tester.binding.setSurfaceSize(const Size(400, 7600));
+    await tester.binding.setSurfaceSize(const Size(400, 12800));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     final c = await _container(
       seed: GameState.newGame(nowMillis: 0)

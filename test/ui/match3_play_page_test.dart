@@ -153,7 +153,6 @@ void main() {
     expect(after.finished, isFalse);
     expect(after.score, before.score, reason: 'không được reset điểm');
     expect(after.cells, before.cells, reason: 'phải là bàn đang dở');
-    expect(after.adContinueUsed, isTrue);
     expect(find.text('Chưa đạt mục tiêu'), findsNothing);
 
     await tester.pumpWidget(const SizedBox());
@@ -321,24 +320,37 @@ void main() {
     c.dispose();
   });
 
-  testWidgets('đã dùng lượt QC rồi thì lần kết thúc sau không mời nữa',
+  testWidgets(
+      'hết nước LẠI được mời xem QC: mỗi lần xem +5 nước, không giới hạn số lần',
       (tester) async {
+    // Mục tiêu rất cao: đi 11 nước mà đạt mục tiêu thì ra bảng "qua màn", không
+    // phải bảng "hết nước" cần kiểm ở đây.
+    final savedBase = Balance.m3TargetBase;
+    Balance.m3TargetBase = 1e9;
+    addTearDown(() => Balance.m3TargetBase = savedBase);
     final c = await pumpPage(tester);
     playOne(c);
     await tester.pump();
     await tester.pump(const Duration(seconds: 2));
-    await tester.tap(find.text('Xem QC: +${Balance.m3AdExtraMoves} nước'));
-    await tester.pump();
-    await tester.pump(const Duration(seconds: 1));
+    final adButton = find.text('Xem QC: +${Balance.m3AdExtraMoves} nước');
 
-    for (var i = 0; i < Balance.m3AdExtraMoves; i++) {
-      playOne(c);
+    for (var round = 1; round <= 3; round++) {
+      expect(find.text('Chưa đạt mục tiêu'), findsOneWidget,
+          reason: 'lần $round: hết nước thì hiện bảng kết quả');
+      expect(adButton, findsOneWidget, reason: 'lần $round: vẫn được mời xem QC');
+      await tester.tap(adButton);
       await tester.pump();
+      await tester.pump(const Duration(seconds: 1));
+      expect(c.read(match3ControllerProvider).movesLeft, Balance.m3AdExtraMoves,
+          reason: 'lần $round: cộng đúng 5 nước');
+      for (var i = 0; i < Balance.m3AdExtraMoves; i++) {
+        playOne(c);
+        await tester.pump();
+      }
+      await tester.pump(const Duration(seconds: 2));
     }
-    await tester.pump(const Duration(seconds: 2));
-
     expect(find.text('Chưa đạt mục tiêu'), findsOneWidget);
-    expect(find.text('Xem QC: +${Balance.m3AdExtraMoves} nước'), findsNothing);
+    expect(adButton, findsOneWidget);
 
     await tester.pumpWidget(const SizedBox());
     c.dispose(); // dừng Timer 1 giây của GameController, không thì test báo

@@ -46,15 +46,15 @@ void main() {
     expect(size.width, 400 - 2 * 16); // lề nội dung 16 mỗi bên
   });
 
-  testWidgets('ván mới: 0/80, cả 80 ô đều khoá ("???")', (tester) async {
-    // Đủ cao để GridView dựng hết 50 ô (17 hàng) không cần cuộn — GridView.builder
+  testWidgets('ván mới: 0/160, cả 160 ô đều khoá ("???")', (tester) async {
+    // Đủ cao để GridView dựng hết 160 ô (54 hàng) không cần cuộn — GridView.builder
     // chỉ dựng ô đang hiện trên màn, đếm thiếu nếu màn quá thấp.
-    await tester.binding.setSurfaceSize(const Size(400, 7600));
+    await tester.binding.setSurfaceSize(const Size(400, 12800));
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(await _app(const Locale('vi')));
     await tester.pumpAndSettle();
 
-    expect(find.text('Đã có 0/80'), findsOneWidget);
+    expect(find.text('Đã có 0/160'), findsOneWidget);
     expect(find.text('???'), findsNWidgets(accessories.length + limitedAccessories.length));
   });
 

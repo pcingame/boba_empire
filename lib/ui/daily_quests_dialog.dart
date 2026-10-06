@@ -16,6 +16,7 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
+import 'widgets/accessory_reveal.dart';
 import 'widgets/accessory_rarity.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
@@ -80,6 +81,7 @@ class _DailyQuestsDialogState extends ConsumerState<_DailyQuestsDialog> {
 
   void _showDrop(AccessoryDrop drop) {
     setState(() => _revealed = drop);
+    playAccessoryReveal(context, drop);
     // Sử thi/Huyền thoại đáng ăn mừng: pháo giấy (huyền thoại thêm rung mạnh).
     if (drop.accessory.rarity.index >= AccessoryRarity.epic.index) {
       playEffect(context, AnimAssets.confetti, size: 200);

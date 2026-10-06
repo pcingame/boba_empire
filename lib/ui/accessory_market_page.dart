@@ -166,11 +166,20 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
             AccessoryMarketError() => _ErrorView(
                 onRetry: () => notifier.refresh(),
               ),
-            AccessoryMarketLoaded() => TabBarView(
-                children: [
-                  _BrowseTab(view: view, onAction: _snack),
-                  _MineTab(view: view, onAction: _snack),
-                ],
+            // Tắt hiệu ứng kéo giãn của Android (StretchingOverscrollIndicator):
+            // cuộn hết cỡ nó BÓP nội dung ở mép nên danh sách bị co — cùng lỗi
+            // và cách sửa như match3_journey_page.dart / accessory_inventory_page.dart.
+            // Kéo-để-làm-mới (RefreshIndicator) vẫn hoạt động, nó nghe thông báo
+            // cuộn chứ không dựa vào hiệu ứng này.
+            AccessoryMarketLoaded() => ScrollConfiguration(
+                behavior:
+                    ScrollConfiguration.of(context).copyWith(overscroll: false),
+                child: TabBarView(
+                  children: [
+                    _BrowseTab(view: view, onAction: _snack),
+                    _MineTab(view: view, onAction: _snack),
+                  ],
+                ),
               ),
           },
         ),

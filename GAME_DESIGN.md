@@ -717,7 +717,7 @@ vẫn có thể rộng hơn cao.
   Vĩnh Cửu") — thuần narrative, không có sự kiện đối thủ song song (đối thủ đã
   hết vai trò từ Hồi 2). Bản đầu chỉ có 6 chương (29-34, ngưỡng 15/30/45 màn,
   3 lần Kỷ Nguyên) — kéo dài + dàn ngưỡng đều hơn trên phạm vi rộng hơn của cả
-  chiến dịch Trân Châu Rơi (60 màn).
+  chiến dịch Trân Châu Rơi (60 màn; **2026-10-07: 80 màn**, 25 nước, mục tiêu điểm tăng ×1.08 mỗi màn nhưng chặn ở `Balance.m3TargetCap` = 24.000 — mô phỏng tham lam chỉ được ~15-20k điểm/25 nước ở mọi màn; ⚠️ chưa playtest).
 - **2 trigger mới** trong `StoryTrigger`: `ascension` (`GameState.ascensionCount
   >= value`) và `m3Level` (đã qua màn `value` của Trân Châu Rơi với ≥1★,
   `GameState.m3Stars[value - 1] > 0`). `StoryChapter.stageValue` đổi tên thành
@@ -747,6 +747,8 @@ vẫn có thể rộng hơn cao.
 > ⚠️ Trọng số độ hiếm + số 💎 quy đổi trùng là **ước lượng, chưa playtest**.
 > Mục đích: sink cosmetic thuần cho Xu/thời gian chơi cuối game, không đụng
 > cân bằng kinh tế (khác gem shop/redeem — không có tác dụng lên số liệu).
+
+> **Cập nhật 2026-10-06:** danh mục lên **160 món** (75 thường · 46 hiếm · 30 sử thi · 9 huyền thoại); mốc sưu tập thêm 80/100/120/140/160 (thưởng 300/500/800/1100/1500 Xu Chợ, tổng 4570) — SQL `claim_collection_milestone` PHẢI chạy lại. Các con số 50/80 món bên dưới là lịch sử.
 
 - **50 món** (`lib/core/accessories.dart`), chia 4 độ hiếm: 25 thường · 13
   hiếm · 9 sử thi · 3 huyền thoại (nâng từ 16 lên 50 — 2026-10-01 — lúc chốt

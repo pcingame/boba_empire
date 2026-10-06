@@ -17,6 +17,7 @@ import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import '../state/match3_controller.dart';
 import 'match3_board.dart';
+import 'widgets/accessory_reveal.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
 import 'widgets/one_shot_lottie.dart';
@@ -57,8 +58,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final c = ref.read(match3ControllerProvider.notifier);
       if (!c.canResume(widget.level)) {
-        c.load(widget.level,
-            bonusMoves: ref.read(gameControllerProvider).m3BonusMoves);
+        c.load(widget.level);
       }
       setState(() => _ready = true);
     });
@@ -74,9 +74,8 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
     // chơi đốt nốt số nước còn lại rồi mới được sang màn sau. Đủ 3★ thì hỏi
     // NGAY dù đã chọn "Chơi nốt" trước đó: không còn sao nào để săn nữa, đi tiếp
     // chỉ tốn thời gian (chọn Màn sau / Tạm nghỉ).
-    final ended = play.finished ||
-        play.stars >= 3 ||
-        (play.goalReached && !_keepPlaying);
+    final ended =
+        play.finished || play.stars >= 3 || (play.goalReached && !_keepPlaying);
     if (_ready && ended && !_resultShown && play.level.id == widget.level.id) {
       _resultShown = true;
       WidgetsBinding.instance.addPostFrameCallback((_) => _showResult(play));
@@ -123,43 +122,43 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
         }
       },
       child: Scaffold(
-      appBar: AppBar(title: Text(l10n.m3Level(widget.level.id))),
-      body: LayoutBuilder(builder: (context, box) {
-        // Nằm ngang: xếp HUD sang bên cạnh, nhường TOÀN BỘ chiều cao cho bàn
-        // cờ. Xếp dọc như lúc đứng thì bàn co lại còn bằng con tem trong khi
-        // hai bên thừa mênh mông.
-        final wide = box.maxWidth > box.maxHeight;
-        if (wide) {
-          // Nhánh 2 cột nới rộng hơn (900dp): kẹp 560 thì mỗi cột còn 280 và
-          // bàn cờ bé hơn cả lúc cầm dọc — test bố cục ngang bắt đúng chỗ này.
-          return PhoneWidth(
-            maxWidth: 900,
-            child: Column(
-            children: [
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(child: _Hud(play: play)),
-                    Expanded(child: Center(child: board)),
-                  ],
-                ),
+        appBar: AppBar(title: Text(l10n.m3Level(widget.level.id))),
+        body: LayoutBuilder(builder: (context, box) {
+          // Nằm ngang: xếp HUD sang bên cạnh, nhường TOÀN BỘ chiều cao cho bàn
+          // cờ. Xếp dọc như lúc đứng thì bàn co lại còn bằng con tem trong khi
+          // hai bên thừa mênh mông.
+          final wide = box.maxWidth > box.maxHeight;
+          if (wide) {
+            // Nhánh 2 cột nới rộng hơn (900dp): kẹp 560 thì mỗi cột còn 280 và
+            // bàn cờ bé hơn cả lúc cầm dọc — test bố cục ngang bắt đúng chỗ này.
+            return PhoneWidth(
+              maxWidth: 900,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(child: _Hud(play: play)),
+                        Expanded(child: Center(child: board)),
+                      ],
+                    ),
+                  ),
+                  const BannerAdBox(),
+                ],
               ),
-              const BannerAdBox(),
-            ],
-          ),
+            );
+          }
+          return PhoneWidth(
+            child: Column(
+              children: [
+                _Hud(play: play),
+                Expanded(child: Center(child: board)),
+                const BannerAdBox(),
+              ],
+            ),
           );
-        }
-        return PhoneWidth(
-          child: Column(
-            children: [
-              _Hud(play: play),
-              Expanded(child: Center(child: board)),
-              const BannerAdBox(),
-            ],
-          ),
-        );
-      }),
+        }),
       ),
     );
   }
@@ -178,6 +177,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
     final canKeepPlaying = play.movesLeft > 0 && stars < 3;
 
     if (!mounted) return;
+    if (drop != null) playAccessoryReveal(context, drop);
     // Qua màn thì ăn mừng bằng hiệu ứng có sẵn của app (thiếu file thì tự bỏ
     // qua — xem playEffect). 3 sao mới bắn pháo hoa cho "đã".
     if (stars > 0) {
@@ -213,8 +213,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
                   play.level.goal == Match3GoalKind.collect
                       ? l10n.m3NeedCollect(
                           needed, match3Icons[play.level.collectType], star)
-                      : l10n.m3NeedScore(
-                          formatNumber(needed.toDouble()), star),
+                      : l10n.m3NeedScore(formatNumber(needed.toDouble()), star),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodySmall,
                 );
@@ -250,7 +249,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
             ),
           // Thêm nước bằng quảng cáo: chỉ khi ĐÃ HẾT nước thật (còn nước mà mời
           // thêm nước thì vô nghĩa), chưa dùng lượt nào và chưa đạt 3 sao.
-          if (!canKeepPlaying && !play.adContinueUsed && stars < 3)
+          if (!canKeepPlaying && stars < 3)
             TextButton(
               onPressed: () => _continueWithAd(dialogContext),
               child: Text(l10n.m3AdMoves(Balance.m3AdExtraMoves)),
@@ -290,7 +289,8 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
       _goingNext = false;
       await Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => Match3PlayPage(level: Match3Level(widget.level.id + 1)),
+          builder: (_) =>
+              Match3PlayPage(level: Match3Level(widget.level.id + 1)),
         ),
       );
       return;
@@ -306,8 +306,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
     // lượt sau đạt mục tiêu sẽ không báo gì.
     _keepPlaying = false;
     setState(() => _resultShown = false);
-    ref.read(match3ControllerProvider.notifier).load(widget.level,
-        bonusMoves: ref.read(gameControllerProvider).m3BonusMoves);
+    ref.read(match3ControllerProvider.notifier).load(widget.level);
   }
 
   /// Đóng bảng kết quả rồi rời trang chơi về lưới màn.
@@ -375,31 +374,47 @@ class _Hud extends StatelessWidget {
           // khung rồi chừa một khoảng trống to đùng.
           mainAxisSize: MainAxisSize.min,
           children: [
-            Row(
-              children: [
-                // Expanded + ellipsis: chiếm hết chỗ trống nên chip số nước
-                // luôn nằm sát mép phải, và điểm dài ở màn cao bị cắt bằng "..."
-                // thay vì đẩy tràn hàng (lớp lỗi tràn số đã gặp nhiều lần).
-                Expanded(
-                  child: Text(
-                    m3ProgressLabel(l10n, play),
-                    overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.titleMedium
-                        ?.copyWith(fontWeight: FontWeight.w700),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                ClayChip(
-                  color: low ? scheme.errorContainer : null,
-                  child: Text(
-                    l10n.m3MovesLeft(play.movesLeft),
-                    style: TextStyle(
-                      fontWeight: FontWeight.w700,
-                      color: low ? scheme.onErrorContainer : null,
+            LayoutBuilder(
+              builder: (context, box) {
+                final rowWidth = box.maxWidth;
+                return Row(
+                  children: [
+                    // Expanded + ellipsis: chiếm hết chỗ trống nên chip số nước
+                    // luôn nằm sát mép phải, và điểm dài ở màn cao bị cắt bằng "..."
+                    // thay vì đẩy tràn hàng (lớp lỗi tràn số đã gặp nhiều lần).
+                    Expanded(
+                      child: Text(
+                        m3ProgressLabel(l10n, play),
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.w700),
+                      ),
                     ),
-                  ),
-                ),
-              ],
+                    const SizedBox(width: 8),
+                    // Chip chỉ được chiếm tối đa 60% bề ngang hàng và co chữ vừa khung
+                    // (FittedBox): nhãn dài ("Movimientos restantes: 25") ở 320dp +
+                    // chữ 1.3x làm chip tràn hàng (đo được 7.8px ở en/es). Không dùng
+                    // Flexible vì nó chia đôi chỗ trống với nhãn điểm (Expanded) kể
+                    // cả khi chip nhỏ → điểm bị cắt "..." sớm.
+                    ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: rowWidth * 0.6),
+                      child: ClayChip(
+                        color: low ? scheme.errorContainer : null,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            l10n.m3MovesLeft(play.movesLeft),
+                            style: TextStyle(
+                              fontWeight: FontWeight.w700,
+                              color: low ? scheme.onErrorContainer : null,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
             ),
             const SizedBox(height: 8),
             _StarBar(ratio: ratio, stars: play.stars, level: level),

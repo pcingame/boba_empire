@@ -11,6 +11,7 @@ import '../core/balance.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import 'daily_quests_dialog.dart' show AccessoryReveal;
+import 'widgets/accessory_reveal.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/one_shot_lottie.dart';
 
@@ -91,6 +92,7 @@ class _AccessoryWheelState extends ConsumerState<AccessoryWheel>
     _rotation = target;
     HapticFeedback.mediumImpact();
     ref.read(audioServiceProvider).play(Sfx.reward);
+    playAccessoryReveal(context, drop);
     if (drop.accessory.rarity.index >= AccessoryRarity.epic.index) {
       playEffect(context, AnimAssets.confetti, size: 200);
     }

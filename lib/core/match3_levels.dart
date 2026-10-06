@@ -50,8 +50,10 @@ class Match3Level {
   /// Cả hai kiểu dùng CHUNG thang sao của [match3Stars], nên "Chơi nốt" để săn
   /// 2-3 sao hoạt động y hệt nhau.
   int get target => switch (goal) {
-        Match3GoalKind.score =>
-          (Balance.m3TargetBase * pow(Balance.m3TargetGrowth, id - 1)).round(),
+        Match3GoalKind.score => min(
+                Balance.m3TargetBase * pow(Balance.m3TargetGrowth, id - 1),
+                Balance.m3TargetCap)
+            .round(),
         Match3GoalKind.collect => (Balance.m3CollectBase *
                 pow(Balance.m3CollectGrowth, _collectIndex - 1))
             .round(),

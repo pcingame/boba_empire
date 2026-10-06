@@ -1443,6 +1443,246 @@ class AppLocalizationsKo extends AppLocalizations {
   String get accessoryThunderbolt => '신의 번개';
 
   @override
+  String get accessoryIceCube => '얼음 조각';
+
+  @override
+  String get accessoryCroissant => '크루아상';
+
+  @override
+  String get accessoryPancakes => '팬케이크';
+
+  @override
+  String get accessoryWaffle => '와플';
+
+  @override
+  String get accessoryBagel => '베이글';
+
+  @override
+  String get accessoryCakeSlice => '케이크 조각';
+
+  @override
+  String get accessoryPie => '파이';
+
+  @override
+  String get accessoryCandy => '사탕';
+
+  @override
+  String get accessoryGrapes => '포도';
+
+  @override
+  String get accessoryWatermelon => '수박';
+
+  @override
+  String get accessoryPineapple => '파인애플';
+
+  @override
+  String get accessoryMango => '망고';
+
+  @override
+  String get accessoryKiwi => '키위';
+
+  @override
+  String get accessoryBanana => '바나나';
+
+  @override
+  String get accessoryApple => '사과';
+
+  @override
+  String get accessoryTeddy => '곰 인형';
+
+  @override
+  String get accessoryCrayon => '크레용';
+
+  @override
+  String get accessoryBucket => '양동이';
+
+  @override
+  String get accessoryGuitar => '기타';
+
+  @override
+  String get accessoryTrumpet => '트럼펫';
+
+  @override
+  String get accessoryPiano => '피아노';
+
+  @override
+  String get accessorySaxophone => '색소폰';
+
+  @override
+  String get accessoryBanjo => '밴조';
+
+  @override
+  String get accessoryMicroscope => '현미경';
+
+  @override
+  String get accessoryRingedPlanet => '고리 행성';
+
+  @override
+  String get accessoryCrescentMoon => '초승달';
+
+  @override
+  String get accessoryBowArrow => '활과 화살';
+
+  @override
+  String get accessoryMirror => '거울';
+
+  @override
+  String get accessoryFerrisWheel => '대관람차';
+
+  @override
+  String get accessoryCarousel => '회전목마';
+
+  @override
+  String get accessorySwan => '백조';
+
+  @override
+  String get accessoryFlamingo => '홍학';
+
+  @override
+  String get accessoryOwl => '부엉이';
+
+  @override
+  String get accessoryWhale => '고래';
+
+  @override
+  String get accessoryCrown => '왕관';
+
+  @override
+  String get accessoryCircusTent => '서커스 텐트';
+
+  @override
+  String get accessoryPinata => '피냐타';
+
+  @override
+  String get accessoryCastle => '성';
+
+  @override
+  String get accessoryGenie => '지니';
+
+  @override
+  String get accessoryVolcano => '화산';
+
+  @override
+  String get accessoryCarrot => '당근';
+
+  @override
+  String get accessoryCorn => '옥수수';
+
+  @override
+  String get accessoryTomato => '토마토';
+
+  @override
+  String get accessoryAvocado => '아보카도';
+
+  @override
+  String get accessoryCoconut => '코코넛';
+
+  @override
+  String get accessoryBlueberries => '블루베리';
+
+  @override
+  String get accessoryPear => '배';
+
+  @override
+  String get accessoryRiceBall => '주먹밥';
+
+  @override
+  String get accessoryDumpling => '만두';
+
+  @override
+  String get accessorySushi => '초밥';
+
+  @override
+  String get accessoryRamen => '라멘';
+
+  @override
+  String get accessoryTaco => '타코';
+
+  @override
+  String get accessoryPizza => '피자';
+
+  @override
+  String get accessoryHotDog => '핫도그';
+
+  @override
+  String get accessoryFries => '감자튀김';
+
+  @override
+  String get accessoryEgg => '달걀';
+
+  @override
+  String get accessoryBread => '식빵';
+
+  @override
+  String get accessoryButter => '버터';
+
+  @override
+  String get accessoryPuzzle => '퍼즐 조각';
+
+  @override
+  String get accessoryDice => '주사위';
+
+  @override
+  String get accessoryChessPawn => '체스 폰';
+
+  @override
+  String get accessoryDart => '다트판';
+
+  @override
+  String get accessoryBowling => '볼링';
+
+  @override
+  String get accessoryYoYo => '요요';
+
+  @override
+  String get accessoryRollerSkate => '롤러스케이트';
+
+  @override
+  String get accessorySkateboard => '스케이트보드';
+
+  @override
+  String get accessorySatellite => '인공위성';
+
+  @override
+  String get accessoryAlembic => '증류기';
+
+  @override
+  String get accessoryDna => 'DNA';
+
+  @override
+  String get accessoryTrophy => '트로피';
+
+  @override
+  String get accessoryLeopard => '표범';
+
+  @override
+  String get accessoryElephant => '코끼리';
+
+  @override
+  String get accessoryPanda => '판다';
+
+  @override
+  String get accessoryGiraffe => '기린';
+
+  @override
+  String get accessoryTurtle => '거북이';
+
+  @override
+  String get accessoryKoala => '코알라';
+
+  @override
+  String get accessoryPenguin => '펭귄';
+
+  @override
+  String get accessorySauropod => '용각류';
+
+  @override
+  String get accessoryMermaid => '인어';
+
+  @override
+  String get accessoryEagle => '독수리';
+
+  @override
   String get marketTitle => '액세서리 마켓';
 
   @override
@@ -1557,6 +1797,21 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get collectionTitle50 => '수집의 전설';
+
+  @override
+  String get collectionTitle80 => '마스터 수집가';
+
+  @override
+  String get collectionTitle100 => '위대한 수집가';
+
+  @override
+  String get collectionTitle120 => '수집의 왕';
+
+  @override
+  String get collectionTitle140 => '수집의 현자';
+
+  @override
+  String get collectionTitle160 => '수집의 신';
 
   @override
   String collectionTitleLabel(String title) {
@@ -1977,11 +2232,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get m3NoReward => '이 단계의 보상은 이미 받았어요';
 
   @override
-  String m3AdMovesForever(int n) {
-    return '광고 시청: 모든 레벨 +$n회 이동';
-  }
-
-  @override
   String get m3LeaveTitle => '이 게임을 나갈까요?';
 
   @override
@@ -1992,6 +2242,44 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get m3LeaveConfirm => '나가기';
+
+  @override
+  String get accessoryHowToTitle => '수집 가이드';
+
+  @override
+  String get accessoryHowToButton => '가이드';
+
+  @override
+  String get accessoryHtp1 =>
+      '🎯 목표: 모든 아이템을 모으세요. 액세서리는 장식 전용(수입 증가 없음)이지만 컵 주위에 장식하고, 자랑하고, 컬렉션 순위를 올릴 수 있어요.';
+
+  @override
+  String get accessoryHtp2 =>
+      '🎁 얻는 방법: 일일 퀘스트 3개 완료 · 떨어지는 진주 이정표 레벨(10/30/60) 클리어 · 기본 룰렛의 상자 칸 · 승천할 때마다 · 💎로 액세서리 팩 구매.';
+
+  @override
+  String get accessoryHtp3 =>
+      '🎰 액세서리 룰렛: 1회마다 광고 1번 시청 또는 💎가 필요해요. 광고 회전은 하루 횟수 제한이 있어요.';
+
+  @override
+  String get accessoryHtp4 =>
+      '✨ 희귀도: 일반 → 희귀 → 영웅 → 전설. 주말과 기념일에는 영웅/전설 확률이 올라가고, 희귀/영웅 팩은 최소 희귀도를 보장하며, 기념일에는 한정 아이템이 든 축제 팩이 열려요.';
+
+  @override
+  String accessoryHtp5(int gems) {
+    return '♻️ 중복으로 나오면 $gems 💎와 시장에서 팔 수 있는 여분 1개를 받아요.';
+  }
+
+  @override
+  String get accessoryHtp6 =>
+      '🏬 시장: 여분을 팔아 시장 코인을 얻고, 부족한 아이템은 다른 플레이어에게서 사세요(수수료 1%). 시장 코인은 코인이나 💎로 충전하며 되돌릴 수 없어요.';
+
+  @override
+  String get accessoryHtp7 =>
+      '🏅 컬렉션 이정표(10/25/40/50/80/100/120/140/160개)는 시장 코인을 줘요. 원하는 아이템은 위시리스트에 담고, 순위는 서로 다른 아이템 수로 계산해요.';
+
+  @override
+  String get accessoryHtp8 => '👆 보유한 아이템을 탭하면 메인 화면의 컵 주위에 장식돼요.';
 
   @override
   String m3AdMoves(int n) {

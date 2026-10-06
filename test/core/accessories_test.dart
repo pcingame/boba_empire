@@ -8,17 +8,17 @@ import 'package:flutter_test/flutter_test.dart';
 GameState _fresh() => GameState.newGame(nowMillis: 0);
 
 void main() {
-  test('danh mục: 80 món, id không trùng, đúng phân bố độ hiếm 39/22/14/5', () {
-    expect(accessories.length, 80);
-    expect(accessories.map((a) => a.id).toSet().length, 80); // không trùng id
+  test('danh mục: 160 món, id không trùng, đúng phân bố độ hiếm 75/46/30/9', () {
+    expect(accessories.length, 160);
+    expect(accessories.map((a) => a.id).toSet().length, 160); // không trùng id
     final byRarity = <AccessoryRarity, int>{};
     for (final a in accessories) {
       byRarity[a.rarity] = (byRarity[a.rarity] ?? 0) + 1;
     }
-    expect(byRarity[AccessoryRarity.common], 39);
-    expect(byRarity[AccessoryRarity.rare], 22);
-    expect(byRarity[AccessoryRarity.epic], 14);
-    expect(byRarity[AccessoryRarity.legendary], 5);
+    expect(byRarity[AccessoryRarity.common], 75);
+    expect(byRarity[AccessoryRarity.rare], 46);
+    expect(byRarity[AccessoryRarity.epic], 30);
+    expect(byRarity[AccessoryRarity.legendary], 9);
   });
 
   test('accessoryById: tìm đúng món, id lạ thì ném lỗi (không có id lạ trong'

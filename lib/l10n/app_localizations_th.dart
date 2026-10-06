@@ -1452,6 +1452,246 @@ class AppLocalizationsTh extends AppLocalizations {
   String get accessoryThunderbolt => 'สายฟ้าเทพ';
 
   @override
+  String get accessoryIceCube => 'ก้อนน้ำแข็ง';
+
+  @override
+  String get accessoryCroissant => 'ครัวซองต์';
+
+  @override
+  String get accessoryPancakes => 'แพนเค้ก';
+
+  @override
+  String get accessoryWaffle => 'วาฟเฟิล';
+
+  @override
+  String get accessoryBagel => 'เบเกิล';
+
+  @override
+  String get accessoryCakeSlice => 'เค้กหนึ่งชิ้น';
+
+  @override
+  String get accessoryPie => 'พาย';
+
+  @override
+  String get accessoryCandy => 'ลูกอม';
+
+  @override
+  String get accessoryGrapes => 'องุ่น';
+
+  @override
+  String get accessoryWatermelon => 'แตงโม';
+
+  @override
+  String get accessoryPineapple => 'สับปะรด';
+
+  @override
+  String get accessoryMango => 'มะม่วง';
+
+  @override
+  String get accessoryKiwi => 'กีวี';
+
+  @override
+  String get accessoryBanana => 'กล้วย';
+
+  @override
+  String get accessoryApple => 'แอปเปิล';
+
+  @override
+  String get accessoryTeddy => 'ตุ๊กตาหมี';
+
+  @override
+  String get accessoryCrayon => 'สีเทียน';
+
+  @override
+  String get accessoryBucket => 'ถัง';
+
+  @override
+  String get accessoryGuitar => 'กีตาร์';
+
+  @override
+  String get accessoryTrumpet => 'ทรัมเป็ต';
+
+  @override
+  String get accessoryPiano => 'เปียโน';
+
+  @override
+  String get accessorySaxophone => 'แซกโซโฟน';
+
+  @override
+  String get accessoryBanjo => 'แบนโจ';
+
+  @override
+  String get accessoryMicroscope => 'กล้องจุลทรรศน์';
+
+  @override
+  String get accessoryRingedPlanet => 'ดาวเคราะห์มีวงแหวน';
+
+  @override
+  String get accessoryCrescentMoon => 'จันทร์เสี้ยว';
+
+  @override
+  String get accessoryBowArrow => 'ธนูและลูกศร';
+
+  @override
+  String get accessoryMirror => 'กระจกเงา';
+
+  @override
+  String get accessoryFerrisWheel => 'ชิงช้าสวรรค์';
+
+  @override
+  String get accessoryCarousel => 'ม้าหมุน';
+
+  @override
+  String get accessorySwan => 'หงส์';
+
+  @override
+  String get accessoryFlamingo => 'นกฟลามิงโก';
+
+  @override
+  String get accessoryOwl => 'นกฮูก';
+
+  @override
+  String get accessoryWhale => 'ปลาวาฬ';
+
+  @override
+  String get accessoryCrown => 'มงกุฎ';
+
+  @override
+  String get accessoryCircusTent => 'เต็นท์ละครสัตว์';
+
+  @override
+  String get accessoryPinata => 'พินยาต้า';
+
+  @override
+  String get accessoryCastle => 'ปราสาท';
+
+  @override
+  String get accessoryGenie => 'จินนี่';
+
+  @override
+  String get accessoryVolcano => 'ภูเขาไฟ';
+
+  @override
+  String get accessoryCarrot => 'แครอท';
+
+  @override
+  String get accessoryCorn => 'ข้าวโพด';
+
+  @override
+  String get accessoryTomato => 'มะเขือเทศ';
+
+  @override
+  String get accessoryAvocado => 'อะโวคาโด';
+
+  @override
+  String get accessoryCoconut => 'มะพร้าว';
+
+  @override
+  String get accessoryBlueberries => 'บลูเบอร์รี';
+
+  @override
+  String get accessoryPear => 'ลูกแพร์';
+
+  @override
+  String get accessoryRiceBall => 'ข้าวปั้น';
+
+  @override
+  String get accessoryDumpling => 'เกี๊ยว';
+
+  @override
+  String get accessorySushi => 'ซูชิ';
+
+  @override
+  String get accessoryRamen => 'ราเมน';
+
+  @override
+  String get accessoryTaco => 'ทาโก้';
+
+  @override
+  String get accessoryPizza => 'พิซซ่า';
+
+  @override
+  String get accessoryHotDog => 'ฮอทดอก';
+
+  @override
+  String get accessoryFries => 'เฟรนช์ฟรายส์';
+
+  @override
+  String get accessoryEgg => 'ไข่';
+
+  @override
+  String get accessoryBread => 'ขนมปัง';
+
+  @override
+  String get accessoryButter => 'เนย';
+
+  @override
+  String get accessoryPuzzle => 'ชิ้นจิ๊กซอว์';
+
+  @override
+  String get accessoryDice => 'ลูกเต๋า';
+
+  @override
+  String get accessoryChessPawn => 'หมากรุก';
+
+  @override
+  String get accessoryDart => 'เป้าปาลูกดอก';
+
+  @override
+  String get accessoryBowling => 'โบว์ลิ่ง';
+
+  @override
+  String get accessoryYoYo => 'โยโย่';
+
+  @override
+  String get accessoryRollerSkate => 'โรลเลอร์เบลด';
+
+  @override
+  String get accessorySkateboard => 'สเก็ตบอร์ด';
+
+  @override
+  String get accessorySatellite => 'ดาวเทียม';
+
+  @override
+  String get accessoryAlembic => 'เครื่องกลั่น';
+
+  @override
+  String get accessoryDna => 'ดีเอ็นเอ';
+
+  @override
+  String get accessoryTrophy => 'ถ้วยรางวัล';
+
+  @override
+  String get accessoryLeopard => 'เสือดาว';
+
+  @override
+  String get accessoryElephant => 'ช้าง';
+
+  @override
+  String get accessoryPanda => 'แพนด้า';
+
+  @override
+  String get accessoryGiraffe => 'ยีราฟ';
+
+  @override
+  String get accessoryTurtle => 'เต่า';
+
+  @override
+  String get accessoryKoala => 'โคอาล่า';
+
+  @override
+  String get accessoryPenguin => 'เพนกวิน';
+
+  @override
+  String get accessorySauropod => 'ไดโนเสาร์คอยาว';
+
+  @override
+  String get accessoryMermaid => 'นางเงือก';
+
+  @override
+  String get accessoryEagle => 'นกอินทรี';
+
+  @override
   String get marketTitle => 'ตลาดของสะสม';
 
   @override
@@ -1571,6 +1811,21 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get collectionTitle50 => 'ตำนานนักสะสม';
+
+  @override
+  String get collectionTitle80 => 'ปรมาจารย์นักสะสม';
+
+  @override
+  String get collectionTitle100 => 'นักสะสมผู้ยิ่งใหญ่';
+
+  @override
+  String get collectionTitle120 => 'ราชาแห่งการสะสม';
+
+  @override
+  String get collectionTitle140 => 'ปราชญ์นักสะสม';
+
+  @override
+  String get collectionTitle160 => 'เทพแห่งการสะสม';
 
   @override
   String collectionTitleLabel(String title) {
@@ -1997,11 +2252,6 @@ class AppLocalizationsTh extends AppLocalizations {
   String get m3NoReward => 'รับรางวัลด่านนี้ไปแล้ว';
 
   @override
-  String m3AdMovesForever(int n) {
-    return 'ดูโฆษณา: +$n ครั้งเดินทุกด่าน';
-  }
-
-  @override
   String get m3LeaveTitle => 'ออกจากเกมนี้?';
 
   @override
@@ -2012,6 +2262,45 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get m3LeaveConfirm => 'ออก';
+
+  @override
+  String get accessoryHowToTitle => 'คู่มือการสะสม';
+
+  @override
+  String get accessoryHowToButton => 'คู่มือ';
+
+  @override
+  String get accessoryHtp1 =>
+      '🎯 เป้าหมาย: สะสมให้ครบทุกชิ้น ของแต่งเป็นแค่ของตกแต่ง (ไม่เพิ่มรายได้) แต่นำไปตั้งรอบแก้ว อวดเพื่อน และไต่อันดับสะสมได้';
+
+  @override
+  String get accessoryHtp2 =>
+      '🎁 วิธีได้รับ: ทำเควสต์รายวันครบ 3 ข้อ · ผ่านด่านหมุดหมายไข่มุกร่วง (10/30/60) · ช่องหีบของวงล้อหลัก · ทุกครั้งที่เลื่อนขั้น · ซื้อแพ็กของแต่งด้วย 💎';
+
+  @override
+  String get accessoryHtp3 =>
+      '🎰 วงล้อของแต่ง: หมุนแต่ละครั้งต้องดูโฆษณา 1 ครั้งหรือใช้ 💎 การหมุนด้วยโฆษณามีจำกัดต่อวัน';
+
+  @override
+  String get accessoryHtp4 =>
+      '✨ ความหายาก: ธรรมดา → หายาก → มหากาพย์ → ตำนาน วันหยุดสุดสัปดาห์และเทศกาลเพิ่มโอกาสมหากาพย์/ตำนาน แพ็กหายาก/มหากาพย์รับประกันความหายากขั้นต่ำ และเทศกาลมีแพ็กเทศกาลที่มีของเฉพาะ';
+
+  @override
+  String accessoryHtp5(int gems) {
+    return '♻️ ได้ของซ้ำ: รับ $gems 💎 และสำเนาสำรอง 1 ชิ้นไว้ขายที่ตลาด';
+  }
+
+  @override
+  String get accessoryHtp6 =>
+      '🏬 ตลาด: ขายสำเนาสำรองเพื่อรับเหรียญตลาด ซื้อชิ้นที่ขาดจากผู้เล่นอื่น (ค่าธรรมเนียม 1%) เหรียญตลาดซื้อได้ด้วยเหรียญหรือ 💎 และแลกกลับไม่ได้';
+
+  @override
+  String get accessoryHtp7 =>
+      '🏅 หมุดหมายการสะสม (10/25/40/50/80/100/120/140/160 ชิ้น) ให้เหรียญตลาด เพิ่มชิ้นที่อยากได้ลงรายการที่อยากได้ อันดับนับจากจำนวนชิ้นที่ไม่ซ้ำกัน';
+
+  @override
+  String get accessoryHtp8 =>
+      '👆 แตะชิ้นที่มีอยู่เพื่อตั้งโชว์รอบแก้วบนหน้าหลัก';
 
   @override
   String m3AdMoves(int n) {

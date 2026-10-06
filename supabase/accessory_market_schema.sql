@@ -551,11 +551,11 @@ $$;
 grant execute on function claim_starter_pack(text, integer, integer) to authenticated;
 
 -- ─────────────────────────────────────────────────────────────────────────
--- Mốc sưu tập 10/25/40/50 món: thưởng Xu Chợ MỘT LẦN mỗi mốc. Server tự đếm
+-- Mốc sưu tập 10/25/40/50/80/100/120/140/160 món: thưởng Xu Chợ MỘT LẦN mỗi mốc. Server tự đếm
 -- số món khác nhau (đang giữ + đang rao bán) nên client không khai khống số
 -- lượng được — chỉ có thể bơm món giả qua register_accessory_drop (cùng mức
 -- tin cậy cũ). Thưởng cố định, một chiều (Xu Chợ không đổi ra Xu/💎 thật),
--- tối đa 370 Xu Chợ cả đời mỗi tài khoản. Lỗi: invalid_milestone |
+-- tối đa 4570 Xu Chợ cả đời mỗi tài khoản. Lỗi: invalid_milestone |
 -- not_reached | already_claimed.
 -- ─────────────────────────────────────────────────────────────────────────
 create table if not exists accessory_milestone_claims (
@@ -583,6 +583,8 @@ begin
   end if;
   v_reward := case p_milestone
     when 10 then 20 when 25 then 50 when 40 then 100 when 50 then 200
+    when 80 then 300 when 100 then 500 when 120 then 800
+    when 140 then 1100 when 160 then 1500
     else null end;
   if v_reward is null then
     raise exception 'invalid_milestone';

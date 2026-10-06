@@ -12,6 +12,7 @@ import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import 'accessory_wheel.dart';
 import 'daily_quests_dialog.dart' show AccessoryReveal;
+import 'widgets/accessory_reveal.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
 import 'widgets/one_shot_lottie.dart';
@@ -39,6 +40,7 @@ class _AccessoryPackDialogState extends ConsumerState<_AccessoryPackDialog> {
     HapticFeedback.mediumImpact();
     ref.read(audioServiceProvider).play(Sfx.reward);
     setState(() => _revealed = drop);
+    playAccessoryReveal(context, drop);
     if (drop.accessory.rarity.index >= AccessoryRarity.epic.index) {
       playEffect(context, AnimAssets.confetti, size: 200);
     }
@@ -51,6 +53,7 @@ class _AccessoryPackDialogState extends ConsumerState<_AccessoryPackDialog> {
     HapticFeedback.mediumImpact();
     ref.read(audioServiceProvider).play(Sfx.reward);
     setState(() => _revealed = drop);
+    playAccessoryReveal(context, drop);
     if (drop.accessory.rarity.index >= AccessoryRarity.epic.index) {
       playEffect(context, AnimAssets.confetti, size: 200);
     }

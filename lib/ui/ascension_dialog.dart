@@ -11,6 +11,7 @@ import '../core/balance.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
+import 'widgets/accessory_reveal.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
 import 'widgets/one_shot_lottie.dart';
@@ -113,6 +114,7 @@ class _AscensionDialog extends ConsumerWidget {
       HapticFeedback.heavyImpact();
       ref.read(audioServiceProvider).play(Sfx.prestige);
       playEffect(context, AnimAssets.fireworks, size: 320);
+      if (drop != null) playAccessoryReveal(context, drop);
     }
     // Đóng cả dialog Nhượng quyền phía dưới (nó đang hiện số Sao đã reset).
     Navigator.of(context).popUntil((r) => r.isFirst);

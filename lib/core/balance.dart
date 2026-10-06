@@ -94,8 +94,15 @@ class Balance {
   static double m3TargetBase = 900;
   static double m3TargetGrowth = 1.08;
 
+  /// Trần mục tiêu 1 sao của màn ĐIỂM. Không có trần thì mục tiêu tăng theo cấp số
+  /// nhân tới mức không ai đạt nổi: mô phỏng tham lam (1 bước nhìn trước) chỉ được
+  /// ~15-20k điểm trong 25 nước ở MỌI màn, trong khi 900·1.08^(n-1) vượt 20k từ
+  /// màn ~42 và đạt 393k ở màn 80. 24k nằm hơi trên mức đó: vẫn cần chơi tốt/có
+  /// kẹo đặc biệt hoặc xem QC thêm nước. (⚠️ chưa playtest.)
+  static double m3TargetCap = 24000;
+
   /// Tổng số màn. Màn sinh bằng công thức nên tăng số này là có thêm màn.
-  static int m3LevelCount = 60;
+  static int m3LevelCount = 80;
 
   /// Mốc 2 sao và 3 sao, tính theo bội của mục tiêu 1 sao.
   ///
@@ -339,7 +346,7 @@ class Balance {
   static const int maxEquippedAccessories = 3;
 
   /// Mốc Trân Châu Rơi tặng phụ kiện lần ĐẦU qua màn (id màn → độ hiếm tối thiểu
-  /// của món). Màn 60 là màn cuối.
+  /// của món). Mốc 60 từng là màn cuối (nay còn 20 màn sau nó).
   static const Map<int, AccessoryRarity> m3AccessoryMilestones = {
     10: AccessoryRarity.rare,
     30: AccessoryRarity.epic,

@@ -75,7 +75,6 @@ class GameState {
     this.starterPackOwned = false,
     this.tutorialSeen = false,
     this.m3HowToSeen = false,
-    this.m3BonusMoves = false,
     this.lastDailyDay = 0,
     this.dailyStreak = 0,
     this.prestigeIncomeLevel = 0,
@@ -216,9 +215,6 @@ class GameState {
 
   /// Đã xem hướng dẫn riêng của Trân Châu Rơi (tự hiện lần đầu mở tab).
   bool m3HowToSeen;
-
-  /// Đã xem QC mở khoá vĩnh viễn +[Balance.m3AdExtraMoves] nước mỗi màn Ghép 3.
-  bool m3BonusMoves;
 
   /// Chỉ số ngày (UTC) của lần nhận thưởng đăng nhập gần nhất; 0 = chưa nhận.
   int lastDailyDay;
@@ -454,7 +450,6 @@ class GameState {
         'starterPackOwned': starterPackOwned,
         'tutorialSeen': tutorialSeen,
         'm3HowToSeen': m3HowToSeen,
-        'm3BonusMoves': m3BonusMoves,
         'lastDailyDay': lastDailyDay,
         'dailyStreak': dailyStreak,
         'achievementsClaimed': achievementsClaimed,
@@ -541,7 +536,6 @@ class GameState {
         starterPackOwned: (json['starterPackOwned'] as bool?) ?? false,
         tutorialSeen: (json['tutorialSeen'] as bool?) ?? false,
         m3HowToSeen: (json['m3HowToSeen'] as bool?) ?? false,
-        m3BonusMoves: (json['m3BonusMoves'] as bool?) ?? false,
         lastDailyDay: (json['lastDailyDay'] as num?)?.toInt() ?? 0,
         dailyStreak: (json['dailyStreak'] as num?)?.toInt() ?? 0,
         achievementsClaimed:

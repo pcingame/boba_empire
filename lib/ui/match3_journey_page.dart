@@ -5,7 +5,6 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../ads/ad_service.dart';
 import '../ads/banner_ad_box.dart';
 import '../core/balance.dart';
 import '../core/match3_levels.dart';
@@ -69,16 +68,6 @@ class _Match3JourneyPageState extends ConsumerState<Match3JourneyPage> {
     await showMatch3HowTo(context);
   }
 
-  /// Xem QC một lần → +nước mọi màn, vĩnh viễn (adFree được cộng thẳng).
-  Future<void> _unlockBonusMoves() async {
-    final adFree = ref.read(gameControllerProvider).adFree;
-    final notifier = ref.read(gameControllerProvider.notifier);
-    final outcome = adFree
-        ? RewardOutcome.earned
-        : await ref.read(adServiceProvider).showRewardedAd();
-    if (outcome == RewardOutcome.earned) notifier.unlockM3BonusMoves();
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -114,9 +103,7 @@ class _Match3JourneyPageState extends ConsumerState<Match3JourneyPage> {
             // ("Falling Pear..." trên máy thật).
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-              child: Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                spacing: 8,
+              child: Row(
                 children: [
                   ClayChip(
                     child: Text(
@@ -125,14 +112,6 @@ class _Match3JourneyPageState extends ConsumerState<Match3JourneyPage> {
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ),
-                  if (!ref.watch(
-                      gameControllerProvider.select((s) => s.m3BonusMoves)))
-                    TextButton.icon(
-                      key: const Key('m3-bonus-moves'),
-                      icon: const Icon(Icons.play_circle_outline),
-                      label: Text(l10n.m3AdMovesForever(Balance.m3AdExtraMoves)),
-                      onPressed: _unlockBonusMoves,
-                    ),
                 ],
               ),
             ),

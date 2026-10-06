@@ -1461,6 +1461,246 @@ class AppLocalizationsId extends AppLocalizations {
   String get accessoryThunderbolt => 'Petir dewa';
 
   @override
+  String get accessoryIceCube => 'Es Batu';
+
+  @override
+  String get accessoryCroissant => 'Croissant';
+
+  @override
+  String get accessoryPancakes => 'Pancake';
+
+  @override
+  String get accessoryWaffle => 'Wafel';
+
+  @override
+  String get accessoryBagel => 'Bagel';
+
+  @override
+  String get accessoryCakeSlice => 'Potongan Kue';
+
+  @override
+  String get accessoryPie => 'Pai';
+
+  @override
+  String get accessoryCandy => 'Permen';
+
+  @override
+  String get accessoryGrapes => 'Anggur';
+
+  @override
+  String get accessoryWatermelon => 'Semangka';
+
+  @override
+  String get accessoryPineapple => 'Nanas';
+
+  @override
+  String get accessoryMango => 'Mangga';
+
+  @override
+  String get accessoryKiwi => 'Kiwi';
+
+  @override
+  String get accessoryBanana => 'Pisang';
+
+  @override
+  String get accessoryApple => 'Apel';
+
+  @override
+  String get accessoryTeddy => 'Boneka Beruang';
+
+  @override
+  String get accessoryCrayon => 'Krayon';
+
+  @override
+  String get accessoryBucket => 'Ember';
+
+  @override
+  String get accessoryGuitar => 'Gitar';
+
+  @override
+  String get accessoryTrumpet => 'Trompet';
+
+  @override
+  String get accessoryPiano => 'Piano';
+
+  @override
+  String get accessorySaxophone => 'Saksofon';
+
+  @override
+  String get accessoryBanjo => 'Banjo';
+
+  @override
+  String get accessoryMicroscope => 'Mikroskop';
+
+  @override
+  String get accessoryRingedPlanet => 'Planet Bercincin';
+
+  @override
+  String get accessoryCrescentMoon => 'Bulan Sabit';
+
+  @override
+  String get accessoryBowArrow => 'Busur dan Panah';
+
+  @override
+  String get accessoryMirror => 'Cermin';
+
+  @override
+  String get accessoryFerrisWheel => 'Bianglala';
+
+  @override
+  String get accessoryCarousel => 'Komidi Putar';
+
+  @override
+  String get accessorySwan => 'Angsa';
+
+  @override
+  String get accessoryFlamingo => 'Flamingo';
+
+  @override
+  String get accessoryOwl => 'Burung Hantu';
+
+  @override
+  String get accessoryWhale => 'Paus';
+
+  @override
+  String get accessoryCrown => 'Mahkota';
+
+  @override
+  String get accessoryCircusTent => 'Tenda Sirkus';
+
+  @override
+  String get accessoryPinata => 'Piñata';
+
+  @override
+  String get accessoryCastle => 'Kastil';
+
+  @override
+  String get accessoryGenie => 'Jin';
+
+  @override
+  String get accessoryVolcano => 'Gunung Berapi';
+
+  @override
+  String get accessoryCarrot => 'Wortel';
+
+  @override
+  String get accessoryCorn => 'Jagung';
+
+  @override
+  String get accessoryTomato => 'Tomat';
+
+  @override
+  String get accessoryAvocado => 'Alpukat';
+
+  @override
+  String get accessoryCoconut => 'Kelapa';
+
+  @override
+  String get accessoryBlueberries => 'Blueberry';
+
+  @override
+  String get accessoryPear => 'Pir';
+
+  @override
+  String get accessoryRiceBall => 'Onigiri';
+
+  @override
+  String get accessoryDumpling => 'Pangsit';
+
+  @override
+  String get accessorySushi => 'Sushi';
+
+  @override
+  String get accessoryRamen => 'Ramen';
+
+  @override
+  String get accessoryTaco => 'Taco';
+
+  @override
+  String get accessoryPizza => 'Pizza';
+
+  @override
+  String get accessoryHotDog => 'Hot Dog';
+
+  @override
+  String get accessoryFries => 'Kentang Goreng';
+
+  @override
+  String get accessoryEgg => 'Telur';
+
+  @override
+  String get accessoryBread => 'Roti';
+
+  @override
+  String get accessoryButter => 'Mentega';
+
+  @override
+  String get accessoryPuzzle => 'Kepingan Puzzle';
+
+  @override
+  String get accessoryDice => 'Dadu';
+
+  @override
+  String get accessoryChessPawn => 'Bidak Catur';
+
+  @override
+  String get accessoryDart => 'Papan Dart';
+
+  @override
+  String get accessoryBowling => 'Boling';
+
+  @override
+  String get accessoryYoYo => 'Yoyo';
+
+  @override
+  String get accessoryRollerSkate => 'Sepatu Roda';
+
+  @override
+  String get accessorySkateboard => 'Skateboard';
+
+  @override
+  String get accessorySatellite => 'Satelit';
+
+  @override
+  String get accessoryAlembic => 'Alembik';
+
+  @override
+  String get accessoryDna => 'DNA';
+
+  @override
+  String get accessoryTrophy => 'Piala';
+
+  @override
+  String get accessoryLeopard => 'Macan Tutul';
+
+  @override
+  String get accessoryElephant => 'Gajah';
+
+  @override
+  String get accessoryPanda => 'Panda';
+
+  @override
+  String get accessoryGiraffe => 'Jerapah';
+
+  @override
+  String get accessoryTurtle => 'Kura-kura';
+
+  @override
+  String get accessoryKoala => 'Koala';
+
+  @override
+  String get accessoryPenguin => 'Penguin';
+
+  @override
+  String get accessorySauropod => 'Sauropoda';
+
+  @override
+  String get accessoryMermaid => 'Putri Duyung';
+
+  @override
+  String get accessoryEagle => 'Elang';
+
+  @override
   String get marketTitle => 'Pasar Aksesori';
 
   @override
@@ -1581,6 +1821,21 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get collectionTitle50 => 'Legenda Koleksi';
+
+  @override
+  String get collectionTitle80 => 'Kolektor Master';
+
+  @override
+  String get collectionTitle100 => 'Kolektor Agung';
+
+  @override
+  String get collectionTitle120 => 'Raja Koleksi';
+
+  @override
+  String get collectionTitle140 => 'Bijak Koleksi';
+
+  @override
+  String get collectionTitle160 => 'Dewa Koleksi';
 
   @override
   String collectionTitleLabel(String title) {
@@ -2010,11 +2265,6 @@ class AppLocalizationsId extends AppLocalizations {
   String get m3NoReward => 'Hadiah level ini sudah diambil';
 
   @override
-  String m3AdMovesForever(int n) {
-    return 'Tonton iklan: +$n langkah di semua level';
-  }
-
-  @override
   String get m3LeaveTitle => 'Keluar dari permainan ini?';
 
   @override
@@ -2026,6 +2276,45 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get m3LeaveConfirm => 'Keluar';
+
+  @override
+  String get accessoryHowToTitle => 'Panduan koleksi';
+
+  @override
+  String get accessoryHowToButton => 'Panduan';
+
+  @override
+  String get accessoryHtp1 =>
+      '🎯 Tujuan: kumpulkan semua item. Aksesori hanya hiasan (tidak menambah pendapatan), tetapi bisa dipajang di sekitar gelas, dipamerkan, dan menaikkan peringkat Koleksi.';
+
+  @override
+  String get accessoryHtp2 =>
+      '🎁 Cara mendapatkan: selesaikan 3 misi harian · lewati level tonggak Mutiara Jatuh (10/30/60) · slot peti di roda utama · setiap Ascension · beli Paket Aksesori dengan 💎.';
+
+  @override
+  String get accessoryHtp3 =>
+      '🎰 Roda Aksesori: tiap putaran butuh menonton 1 iklan atau 💎. Putaran iklan dibatasi per hari.';
+
+  @override
+  String get accessoryHtp4 =>
+      '✨ Kelangkaan: Biasa → Langka → Epik → Legendaris. Akhir pekan dan hari raya menaikkan peluang Epik/Legendaris; Paket Langka/Epik menjamin kelangkaan minimum; hari raya menghadirkan Paket Festival berisi item eksklusif.';
+
+  @override
+  String accessoryHtp5(int gems) {
+    return '♻️ Dapat item kembar: kamu menerima $gems 💎 dan 1 salinan cadangan untuk dijual di Pasar.';
+  }
+
+  @override
+  String get accessoryHtp6 =>
+      '🏬 Pasar: jual salinan cadangan demi Koin Pasar, beli item yang kurang dari pemain lain (biaya 1%). Koin Pasar dibeli dengan Koin atau 💎 dan tidak bisa ditukar balik.';
+
+  @override
+  String get accessoryHtp7 =>
+      '🏅 Tonggak koleksi (10/25/40/50/80/100/120/140/160 item) memberi Koin Pasar. Tambahkan item incaran ke daftar keinginan; peringkat menghitung item yang berbeda.';
+
+  @override
+  String get accessoryHtp8 =>
+      '👆 Ketuk item yang dimiliki untuk memajangnya di sekitar gelas pada layar utama.';
 
   @override
   String m3AdMoves(int n) {

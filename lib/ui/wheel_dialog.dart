@@ -12,6 +12,7 @@ import '../core/wheel.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
+import 'widgets/accessory_reveal.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/one_shot_lottie.dart';
 
@@ -106,6 +107,7 @@ class _WheelDialogState extends ConsumerState<_WheelDialog>
     };
     // Rương: nổ pháo giấy cho món Sử thi/Huyền thoại (hiếm đáng ăn mừng).
     final drop = r.drop;
+    if (drop != null) playAccessoryReveal(context, drop);
     if (drop != null &&
         drop.accessory.rarity.index >= AccessoryRarity.epic.index) {
       playEffect(context, AnimAssets.confetti, size: 200);
