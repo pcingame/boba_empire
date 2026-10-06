@@ -88,11 +88,11 @@ class Balance {
   // --- Hành trình Ghép 3 (chơi đơn, lib/core/match3_levels.dart) ---
 
   /// Số nước mỗi màn. Cố định; độ khó tăng bằng mục tiêu điểm.
-  static int m3Moves = 20;
+  static int m3Moves = 25;
 
   /// Mục tiêu 1 sao của màn 1, và hệ số tăng mỗi màn (màn n = base·growth^(n-1)).
   static double m3TargetBase = 900;
-  static double m3TargetGrowth = 1.12;
+  static double m3TargetGrowth = 1.08;
 
   /// Tổng số màn. Màn sinh bằng công thức nên tăng số này là có thêm màn.
   static int m3LevelCount = 60;
@@ -103,8 +103,8 @@ class Balance {
   /// sao khắt khe quá, gần như màn nào cũng chỉ được 1 sao. Cộng thêm việc màn
   /// kết thúc ngay khi chạm mục tiêu, người chơi phải chủ động bấm "Chơi nốt"
   /// mới có cơ hội lên sao, nên hai mốc này càng không nên đặt cao.
-  static double m3Star2Mult = 1.25;
-  static double m3Star3Mult = 1.6;
+  static double m3Star2Mult = 1.2;
+  static double m3Star3Mult = 1.45;
 
   /// Cứ mỗi [m3CollectEvery] màn thì có một màn kiểu "thu thập N ô loại X"
   /// thay vì "đạt X điểm" — xen kẽ cho đỡ đơn điệu. Đặt 0 = tắt hẳn.
@@ -112,7 +112,7 @@ class Balance {
 
   /// Số ô cần thu thập ở màn thu thập đầu tiên, và hệ số tăng mỗi màn thu thập.
   static double m3CollectBase = 12;
-  static double m3CollectGrowth = 1.1;
+  static double m3CollectGrowth = 1.07;
 
   /// Thưởng 💎 khi đạt 3 sao một màn (chỉ trả LẦN ĐẦU — bàn tất định nên chơi
   /// lại mà vẫn thưởng là máy in 💎). 60 màn x 3 = 180 💎 trọn đời.
