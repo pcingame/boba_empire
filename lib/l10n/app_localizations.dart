@@ -3540,6 +3540,30 @@ abstract class AppLocalizations {
   /// **'Xem QC: +{n} nước mọi màn'**
   String m3AdMovesForever(int n);
 
+  /// No description provided for @m3LeaveTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thoát ván này?'**
+  String get m3LeaveTitle;
+
+  /// No description provided for @m3LeaveBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ván đang chơi được giữ cho tới khi bạn tắt app.'**
+  String get m3LeaveBody;
+
+  /// No description provided for @m3LeaveStay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chơi tiếp'**
+  String get m3LeaveStay;
+
+  /// No description provided for @m3LeaveConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thoát'**
+  String get m3LeaveConfirm;
+
   /// No description provided for @m3AdMoves.
   ///
   /// In vi, this message translates to:

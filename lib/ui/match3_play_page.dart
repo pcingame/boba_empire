@@ -46,13 +46,21 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
   /// nước; chỉ hiện bảng kết quả lần nữa khi đủ 3★ hoặc hết nước.
   bool _keepPlaying = false;
 
+  /// Đã nạp/khôi phục ván. Trước đó [match3ControllerProvider] có thể còn giữ
+  /// ván cũ đã kết thúc của đúng màn này → không được kích bảng kết quả.
+  bool _ready = false;
+
   @override
   void initState() {
     super.initState();
     // Sau frame đầu: provider autoDispose mới thực sự có mặt để nạp màn.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(match3ControllerProvider.notifier).load(widget.level,
-        bonusMoves: ref.read(gameControllerProvider).m3BonusMoves);
+      final c = ref.read(match3ControllerProvider.notifier);
+      if (!c.canResume(widget.level)) {
+        c.load(widget.level,
+            bonusMoves: ref.read(gameControllerProvider).m3BonusMoves);
+      }
+      setState(() => _ready = true);
     });
   }
 
@@ -69,7 +77,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
     final ended = play.finished ||
         play.stars >= 3 ||
         (play.goalReached && !_keepPlaying);
-    if (ended && !_resultShown && play.level.id == widget.level.id) {
+    if (_ready && ended && !_resultShown && play.level.id == widget.level.id) {
       _resultShown = true;
       WidgetsBinding.instance.addPostFrameCallback((_) => _showResult(play));
     }
@@ -84,7 +92,37 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
       onSwap: controller.swap,
     );
 
-    return Scaffold(
+    // Ván đang dở (đã đi nước, chưa kết thúc) thì hỏi trước khi rời; ván đã
+    // xong/chưa đi nước nào thì rời thẳng.
+    final inProgress = _ready && play.moveId > 0 && !ended && !_leaving;
+    return PopScope(
+      canPop: !inProgress,
+      onPopInvokedWithResult: (didPop, _) async {
+        if (didPop) return;
+        final nav = Navigator.of(context);
+        final leave = await showDialog<bool>(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text(l10n.m3LeaveTitle),
+            content: Text(l10n.m3LeaveBody),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(false),
+                child: Text(l10n.m3LeaveStay),
+              ),
+              FilledButton(
+                onPressed: () => Navigator.of(ctx).pop(true),
+                child: Text(l10n.m3LeaveConfirm),
+              ),
+            ],
+          ),
+        );
+        if (leave == true) {
+          _leaving = true;
+          nav.pop();
+        }
+      },
+      child: Scaffold(
       appBar: AppBar(title: Text(l10n.m3Level(widget.level.id))),
       body: LayoutBuilder(builder: (context, box) {
         // Nằm ngang: xếp HUD sang bên cạnh, nhường TOÀN BỘ chiều cao cho bàn
@@ -122,6 +160,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
           ),
         );
       }),
+      ),
     );
   }
 

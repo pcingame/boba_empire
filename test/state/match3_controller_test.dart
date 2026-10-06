@@ -31,6 +31,14 @@ void main() {
     expect(play().finished, isFalse);
   });
 
+  test('ván dang dở: canResume sau khi đi nước, không phải trước đó', () {
+    controller().load(const Match3Level(1));
+    expect(controller().canResume(const Match3Level(1)), isFalse);
+    expect(_playOne(controller(), play()), isTrue);
+    expect(controller().canResume(const Match3Level(1)), isTrue);
+    expect(controller().canResume(const Match3Level(2)), isFalse);
+  });
+
   test('cộng nước một lần; lần thứ hai không có tác dụng', () {
     controller().load(const Match3Level(1));
     final before = play().movesLeft;

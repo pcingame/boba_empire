@@ -2015,6 +2015,19 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get m3LeaveTitle => 'Keluar dari permainan ini?';
+
+  @override
+  String get m3LeaveBody =>
+      'Permainanmu disimpan sampai kamu menutup aplikasi.';
+
+  @override
+  String get m3LeaveStay => 'Lanjut main';
+
+  @override
+  String get m3LeaveConfirm => 'Keluar';
+
+  @override
   String m3AdMoves(int n) {
     return 'Tonton iklan: +$n langkah';
   }

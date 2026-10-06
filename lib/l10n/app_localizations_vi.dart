@@ -2012,6 +2012,18 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get m3LeaveTitle => 'Thoát ván này?';
+
+  @override
+  String get m3LeaveBody => 'Ván đang chơi được giữ cho tới khi bạn tắt app.';
+
+  @override
+  String get m3LeaveStay => 'Chơi tiếp';
+
+  @override
+  String get m3LeaveConfirm => 'Thoát';
+
+  @override
   String m3AdMoves(int n) {
     return 'Xem QC: +$n nước';
   }

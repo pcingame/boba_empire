@@ -2018,6 +2018,18 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get m3LeaveTitle => 'Leave this game?';
+
+  @override
+  String get m3LeaveBody => 'Your game is kept until you close the app.';
+
+  @override
+  String get m3LeaveStay => 'Keep playing';
+
+  @override
+  String get m3LeaveConfirm => 'Leave';
+
+  @override
   String m3AdMoves(int n) {
     return 'Watch ad: +$n moves';
   }

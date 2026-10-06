@@ -2023,6 +2023,18 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get m3LeaveTitle => 'Sair desta partida?';
+
+  @override
+  String get m3LeaveBody => 'Sua partida é mantida até você fechar o app.';
+
+  @override
+  String get m3LeaveStay => 'Continuar jogando';
+
+  @override
+  String get m3LeaveConfirm => 'Sair';
+
+  @override
   String m3AdMoves(int n) {
     return 'Ver anúncio: +$n jogadas';
   }

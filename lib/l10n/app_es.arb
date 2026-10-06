@@ -941,6 +941,10 @@
       }
     }
   },
+  "m3LeaveTitle": "¿Salir de esta partida?",
+  "m3LeaveBody": "Tu partida se conserva hasta que cierres la app.",
+  "m3LeaveStay": "Seguir jugando",
+  "m3LeaveConfirm": "Salir",
   "m3AdMoves": "Ver anuncio: +{n} movimientos",
   "m3KeepPlaying": "Seguir jugando",
   "m3Pause": "Descansar",

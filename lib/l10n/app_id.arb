@@ -941,6 +941,10 @@
       }
     }
   },
+  "m3LeaveTitle": "Keluar dari permainan ini?",
+  "m3LeaveBody": "Permainanmu disimpan sampai kamu menutup aplikasi.",
+  "m3LeaveStay": "Lanjut main",
+  "m3LeaveConfirm": "Keluar",
   "m3AdMoves": "Tonton iklan: +{n} langkah",
   "m3KeepPlaying": "Lanjut main",
   "m3Pause": "Istirahat",

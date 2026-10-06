@@ -941,6 +941,10 @@
       }
     }
   },
+  "m3LeaveTitle": "Leave this game?",
+  "m3LeaveBody": "Your game is kept until you close the app.",
+  "m3LeaveStay": "Keep playing",
+  "m3LeaveConfirm": "Leave",
   "m3AdMoves": "Watch ad: +{n} moves",
   "m3KeepPlaying": "Keep playing",
   "m3Pause": "Take a break",

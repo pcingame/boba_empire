@@ -1353,6 +1353,10 @@
       }
     }
   },
+  "m3LeaveTitle": "Thoát ván này?",
+  "m3LeaveBody": "Ván đang chơi được giữ cho tới khi bạn tắt app.",
+  "m3LeaveStay": "Chơi tiếp",
+  "m3LeaveConfirm": "Thoát",
   "m3AdMoves": "Xem QC: +{n} nước",
   "@m3AdMoves": {
     "placeholders": {

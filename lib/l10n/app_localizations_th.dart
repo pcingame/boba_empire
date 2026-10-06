@@ -2002,6 +2002,18 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get m3LeaveTitle => 'ออกจากเกมนี้?';
+
+  @override
+  String get m3LeaveBody => 'เกมที่เล่นค้างไว้จะถูกเก็บไว้จนกว่าคุณจะปิดแอป';
+
+  @override
+  String get m3LeaveStay => 'เล่นต่อ';
+
+  @override
+  String get m3LeaveConfirm => 'ออก';
+
+  @override
   String m3AdMoves(int n) {
     return 'ดูโฆษณา: +$n ตา';
   }

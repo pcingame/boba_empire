@@ -1982,6 +1982,18 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get m3LeaveTitle => '이 게임을 나갈까요?';
+
+  @override
+  String get m3LeaveBody => '앱을 종료하기 전까지 진행 중인 게임이 유지됩니다.';
+
+  @override
+  String get m3LeaveStay => '계속하기';
+
+  @override
+  String get m3LeaveConfirm => '나가기';
+
+  @override
   String m3AdMoves(int n) {
     return '광고 시청: $n번 추가';
   }

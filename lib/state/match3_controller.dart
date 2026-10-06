@@ -53,6 +53,14 @@ class Match3Controller extends Notifier<Match3PlayState> {
   @override
   Match3PlayState build() => _start(const Match3Level(1));
 
+  /// Ván của [level] còn dang dở (đã đi ít nhất 1 nước, chưa hết nước/đạt mục
+  /// tiêu) → vào lại thì chơi tiếp thay vì nạp màn mới.
+  bool canResume(Match3Level level) =>
+      state.level.id == level.id &&
+      state.moveId > 0 &&
+      !state.finished &&
+      !state.goalReached;
+
   /// Bắt đầu (hoặc chơi lại) một màn.
   /// [bonusMoves]: đã mở khoá +nước vĩnh viễn (xem GameState.m3BonusMoves).
   void load(Match3Level level, {bool bonusMoves = false}) =>
@@ -118,7 +126,10 @@ class Match3Controller extends Notifier<Match3PlayState> {
   }
 }
 
+/// KHÔNG autoDispose: bấm back giữa chừng rồi vào lại thì ván dở dang còn
+/// nguyên (xem [Match3Controller.canResume]). Chỉ giữ trong bộ nhớ — tắt hẳn
+/// app thì mất ván.
 final match3ControllerProvider =
-    NotifierProvider.autoDispose<Match3Controller, Match3PlayState>(
+    NotifierProvider<Match3Controller, Match3PlayState>(
   Match3Controller.new,
 );
