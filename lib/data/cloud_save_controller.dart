@@ -282,6 +282,17 @@ class CloudSaveController extends Notifier<CloudSaveViewState> {
   }
 }
 
+/// Đã liên kết email (tài khoản thật, không phải phiên ẩn danh) chưa. Supabase
+/// chưa khởi tạo (test) hoặc lỗi → coi là ĐÃ liên kết, để KHÔNG nhắc nhầm.
+final cloudLinkedProvider = Provider<bool>((ref) {
+  try {
+    final user = Supabase.instance.client.auth.currentUser;
+    return user != null && !user.isAnonymous;
+  } catch (_) {
+    return true;
+  }
+});
+
 final cloudSaveControllerProvider =
     NotifierProvider<CloudSaveController, CloudSaveViewState>(
         CloudSaveController.new);

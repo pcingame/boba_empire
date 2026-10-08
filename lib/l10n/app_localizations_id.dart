@@ -2612,4 +2612,17 @@ class AppLocalizationsId extends AppLocalizations {
   String cloudSaveConflictGems(String local, String cloud) {
     return '💎 Perangkat ini: $local · Di cloud: $cloud';
   }
+
+  @override
+  String get cloudRemindTitle => 'Lindungi progresmu';
+
+  @override
+  String get cloudRemindBody =>
+      'Kamu belum menautkan email. Jika ganti ponsel atau instal ulang, progresmu (Koin, 💎, aksesori, Koin Pasar) akan HILANG. Menautkan hanya semenit dan gratis.';
+
+  @override
+  String get cloudRemindLink => 'Tautkan sekarang';
+
+  @override
+  String get cloudRemindLater => 'Nanti';
 }

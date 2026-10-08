@@ -1719,5 +1719,9 @@
         "type": "String"
       }
     }
-  }
+  },
+  "cloudRemindTitle": "Bảo vệ tiến độ của bạn",
+  "cloudRemindBody": "Bạn chưa liên kết email. Nếu đổi máy hoặc cài lại game, tiến độ (Xu, 💎, phụ kiện, Xu Chợ) sẽ MẤT. Liên kết email chỉ mất 1 phút và miễn phí.",
+  "cloudRemindLink": "Liên kết ngay",
+  "cloudRemindLater": "Để sau"
 }

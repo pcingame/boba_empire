@@ -1263,5 +1263,9 @@
         "type": "String"
       }
     }
-  }
+  },
+  "cloudRemindTitle": "Protect your progress",
+  "cloudRemindBody": "You haven't linked an email. If you switch phones or reinstall, your progress (Coins, 💎, accessories, Market Coins) will be LOST. Linking takes a minute and is free.",
+  "cloudRemindLink": "Link now",
+  "cloudRemindLater": "Later"
 }

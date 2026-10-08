@@ -2614,4 +2614,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String cloudSaveConflictGems(String local, String cloud) {
     return '💎 This device: $local · On the cloud: $cloud';
   }
+
+  @override
+  String get cloudRemindTitle => 'Protect your progress';
+
+  @override
+  String get cloudRemindBody =>
+      'You haven\'t linked an email. If you switch phones or reinstall, your progress (Coins, 💎, accessories, Market Coins) will be LOST. Linking takes a minute and is free.';
+
+  @override
+  String get cloudRemindLink => 'Link now';
+
+  @override
+  String get cloudRemindLater => 'Later';
 }

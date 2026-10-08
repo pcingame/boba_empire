@@ -9,12 +9,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../audio/audio_service.dart';
 import '../core/accessories.dart';
 import '../core/balance.dart';
+import '../core/cloud_remind.dart';
 import '../core/collection_milestones.dart';
 import '../core/economy.dart';
 import '../core/format.dart';
 import '../ads/ad_service.dart';
 import '../core/models.dart';
 import '../core/whats_new.dart';
+import '../data/cloud_save_controller.dart' show cloudLinkedProvider;
 import '../data/game_storage.dart';
 import '../core/rival.dart';
 import '../iap/iap_products.dart';
@@ -29,6 +31,7 @@ import 'accessory_inventory_page.dart';
 import 'accessory_market_page.dart';
 import 'whats_new_dialog.dart';
 import 'achievements_dialog.dart';
+import 'cloud_remind_dialog.dart';
 import 'compete_hub_dialog.dart';
 import 'daily_quests_dialog.dart';
 import 'daily_dialog.dart';
@@ -138,26 +141,43 @@ class _HomePageState extends ConsumerState<HomePage>
         // "Có gì mới" (một lần sau khi cập nhật) — sau các popup mở-app; nhường
         // cutscene nếu đang chờ (lần mở sau sẽ hiện, vì chưa ghi nhớ phiên bản).
         // KHÔNG await: hỏi phiên bản qua kênh nền tảng, không được chặn chuỗi popup.
-        unawaited(_maybeShowWhatsNew(hadSaveAtLaunch));
+        // Lời nhắc liên kết email chờ "Có gì mới" xong và KHÔNG chồng lên nó.
+        unawaited(_maybeShowWhatsNew(hadSaveAtLaunch).then((shown) {
+          if (!shown) _maybeRemindCloudLink();
+        }));
       }
     });
   }
 
   /// Ghi nhớ phiên bản hiện tại; nếu vừa cập nhật lên bản có nội dung mới thì
   /// hiện hộp "Có gì mới". Lỗi lấy phiên bản (test, nền tảng lạ) → bỏ qua im lặng.
-  Future<void> _maybeShowWhatsNew(bool hadSave) async {
+  Future<bool> _maybeShowWhatsNew(bool hadSave) async {
     try {
       final prefs = ref.read(sharedPreferencesProvider);
       final current = await ref.read(appVersionProvider)();
       final seen = prefs.getString(whatsNewSeenKey);
       await prefs.setString(whatsNewSeenKey, current);
-      if (!mounted) return;
+      if (!mounted) return false;
       if (shouldShowWhatsNew(seen: seen, current: current, hasSave: hadSave)) {
         await showWhatsNew(context, current);
+        return true;
       }
     } catch (e) {
       developer.log('Có gì mới: bỏ qua ($e)', name: 'WhatsNew');
     }
+    return false;
+  }
+
+  /// Nhắc người chưa liên kết email bật đồng bộ đám mây (nhẹ: từ lần mở thứ 3,
+  /// cách 3 ngày, tối đa 5 lần — xem core/cloud_remind.dart).
+  void _maybeRemindCloudLink() {
+    if (!mounted) return;
+    final due = takeCloudRemindTurn(
+      ref.read(sharedPreferencesProvider),
+      linked: ref.read(cloudLinkedProvider),
+      nowMs: ref.read(clockProvider)(),
+    );
+    if (due) showCloudRemindDialog(context);
   }
 
   @override

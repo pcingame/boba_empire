@@ -2605,4 +2605,17 @@ class AppLocalizationsVi extends AppLocalizations {
   String cloudSaveConflictGems(String local, String cloud) {
     return '💎 Máy này: $local · Trên cloud: $cloud';
   }
+
+  @override
+  String get cloudRemindTitle => 'Bảo vệ tiến độ của bạn';
+
+  @override
+  String get cloudRemindBody =>
+      'Bạn chưa liên kết email. Nếu đổi máy hoặc cài lại game, tiến độ (Xu, 💎, phụ kiện, Xu Chợ) sẽ MẤT. Liên kết email chỉ mất 1 phút và miễn phí.';
+
+  @override
+  String get cloudRemindLink => 'Liên kết ngay';
+
+  @override
+  String get cloudRemindLater => 'Để sau';
 }

@@ -1263,5 +1263,9 @@
         "type": "String"
       }
     }
-  }
+  },
+  "cloudRemindTitle": "Protege tu progreso",
+  "cloudRemindBody": "No has vinculado un correo. Si cambias de teléfono o reinstalas, tu progreso (monedas, 💎, accesorios, monedas del mercado) se PERDERÁ. Vincularlo lleva un minuto y es gratis.",
+  "cloudRemindLink": "Vincular ahora",
+  "cloudRemindLater": "Más tarde"
 }

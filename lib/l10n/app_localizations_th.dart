@@ -2593,4 +2593,17 @@ class AppLocalizationsTh extends AppLocalizations {
   String cloudSaveConflictGems(String local, String cloud) {
     return '💎 เครื่องนี้: $local · บนคลาวด์: $cloud';
   }
+
+  @override
+  String get cloudRemindTitle => 'ปกป้องความคืบหน้าของคุณ';
+
+  @override
+  String get cloudRemindBody =>
+      'คุณยังไม่ได้ผูกอีเมล หากเปลี่ยนเครื่องหรือติดตั้งใหม่ ความคืบหน้า (เหรียญ, 💎, ของตกแต่ง, เหรียญตลาด) จะหายทั้งหมด การผูกใช้เวลาแค่ 1 นาทีและฟรี';
+
+  @override
+  String get cloudRemindLink => 'ผูกเลย';
+
+  @override
+  String get cloudRemindLater => 'ไว้ทีหลัง';
 }

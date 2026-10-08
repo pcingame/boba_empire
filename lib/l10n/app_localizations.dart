@@ -4583,6 +4583,30 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'💎 Máy này: {local} · Trên cloud: {cloud}'**
   String cloudSaveConflictGems(String local, String cloud);
+
+  /// No description provided for @cloudRemindTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảo vệ tiến độ của bạn'**
+  String get cloudRemindTitle;
+
+  /// No description provided for @cloudRemindBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa liên kết email. Nếu đổi máy hoặc cài lại game, tiến độ (Xu, 💎, phụ kiện, Xu Chợ) sẽ MẤT. Liên kết email chỉ mất 1 phút và miễn phí.'**
+  String get cloudRemindBody;
+
+  /// No description provided for @cloudRemindLink.
+  ///
+  /// In vi, this message translates to:
+  /// **'Liên kết ngay'**
+  String get cloudRemindLink;
+
+  /// No description provided for @cloudRemindLater.
+  ///
+  /// In vi, this message translates to:
+  /// **'Để sau'**
+  String get cloudRemindLater;
 }
 
 class _AppLocalizationsDelegate

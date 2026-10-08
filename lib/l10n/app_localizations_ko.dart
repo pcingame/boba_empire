@@ -2567,4 +2567,17 @@ class AppLocalizationsKo extends AppLocalizations {
   String cloudSaveConflictGems(String local, String cloud) {
     return '💎 이 기기: $local · 클라우드: $cloud';
   }
+
+  @override
+  String get cloudRemindTitle => '진행 상황을 보호하세요';
+
+  @override
+  String get cloudRemindBody =>
+      '이메일을 연결하지 않았어요. 기기를 바꾸거나 게임을 다시 설치하면 진행 상황(코인, 💎, 액세서리, 마켓 코인)이 모두 사라져요. 연결은 1분이면 되고 무료예요.';
+
+  @override
+  String get cloudRemindLink => '지금 연결';
+
+  @override
+  String get cloudRemindLater => '나중에';
 }

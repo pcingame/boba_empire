@@ -1263,5 +1263,9 @@
         "type": "String"
       }
     }
-  }
+  },
+  "cloudRemindTitle": "Lindungi progresmu",
+  "cloudRemindBody": "Kamu belum menautkan email. Jika ganti ponsel atau instal ulang, progresmu (Koin, 💎, aksesori, Koin Pasar) akan HILANG. Menautkan hanya semenit dan gratis.",
+  "cloudRemindLink": "Tautkan sekarang",
+  "cloudRemindLater": "Nanti"
 }

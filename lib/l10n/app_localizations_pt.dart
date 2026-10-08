@@ -2621,4 +2621,17 @@ class AppLocalizationsPt extends AppLocalizations {
   String cloudSaveConflictGems(String local, String cloud) {
     return '💎 Este dispositivo: $local · Na nuvem: $cloud';
   }
+
+  @override
+  String get cloudRemindTitle => 'Proteja seu progresso';
+
+  @override
+  String get cloudRemindBody =>
+      'Você ainda não vinculou um e-mail. Se trocar de celular ou reinstalar, seu progresso (moedas, 💎, acessórios, moedas do mercado) será PERDIDO. Vincular leva um minuto e é grátis.';
+
+  @override
+  String get cloudRemindLink => 'Vincular agora';
+
+  @override
+  String get cloudRemindLater => 'Depois';
 }
