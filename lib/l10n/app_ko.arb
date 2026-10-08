@@ -764,5 +764,142 @@
         "type": "String"
       }
     }
+  },
+  "guildTitle": "길드",
+  "guildIntro": "길드를 만들거나 가입해 함께 주간 목표를 달성하고 보상을 받으세요.",
+  "guildCreate": "길드 만들기",
+  "guildJoin": "가입",
+  "guildMembersCount": "{n}/{max}명",
+  "@guildMembersCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "guildWeekTotal": "이번 주: {n}점",
+  "@guildWeekTotal": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildNameLabel": "길드 이름 (3-20자)",
+  "guildTagLabel": "태그 (영문/숫자 2-4자)",
+  "guildLeave": "길드 탈퇴",
+  "guildLeaveConfirm": "이 길드를 탈퇴할까요? 이번 주 내 점수는 더 이상 반영되지 않아요.",
+  "guildKick": "내보내기",
+  "guildKickConfirm": "{name}님을 길드에서 내보낼까요?",
+  "@guildKickConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildReport": "길드 신고",
+  "guildReportSent": "신고가 접수되었어요. 감사합니다.",
+  "guildGoalTitle": "주간 목표",
+  "guildClaim": "받기",
+  "guildNeedPoints": "받으려면 ≥{n}점 기여 필요",
+  "@guildNeedPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildYourPoints": "내 기여: {n}점",
+  "@guildYourPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildOwner": "길드장",
+  "guildEmpty": "공개 길드가 아직 없어요. 첫 길드를 만들어 보세요!",
+  "guildErrNameTaken": "이미 사용 중인 길드 이름이에요.",
+  "guildErrFull": "길드 인원이 가득 찼어요.",
+  "guildErrAlready": "이미 길드에 가입되어 있어요.",
+  "guildErrInvalid": "이름 또는 태그가 올바르지 않아요.",
+  "guildErrNotFound": "길드를 찾을 수 없어요 (폐쇄되었을 수 있어요).",
+  "guildErrContribution": "이번 주에 더 기여해야 해요.",
+  "guildErrNetwork": "연결할 수 없어요. 다시 시도해 주세요.",
+  "guildLbTitle": "길드 랭킹",
+  "guildLbEmpty": "이번 주 점수가 있는 길드가 아직 없어요.",
+  "guildRewardGot": "+{gems} 💎 획득",
+  "@guildRewardGot": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "guildRewardGotAccessory": "+{gems} 💎 와 {name} 획득",
+  "@guildRewardGotAccessory": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildPoints": "{n}점",
+  "@guildPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildCreateCost": "길드 생성 비용: {n} 💎",
+  "@guildCreateCost": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrGems": "길드를 만들려면 {n} 💎가 필요해요.",
+  "@guildErrGems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildApprovalSwitch": "가입 신청은 길드장이 승인",
+  "guildRequestJoin": "신청",
+  "guildRequestSent": "신청을 보냈어요. 길드장의 승인을 기다려 주세요.",
+  "guildRequestPending": "승인 대기",
+  "guildRequestsTitle": "가입 신청 ({n})",
+  "@guildRequestsTitle": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildAccept": "승인",
+  "guildReject": "거절",
+  "guildErrApproval": "이 길드는 길드장 승인이 필요해요. \"신청\"을 눌러 주세요.",
+  "guildErrRequestsFull": "이 길드에 대기 중인 신청이 너무 많아요.",
+  "cloudSaveConflictGems": "💎 이 기기: {local} · 클라우드: {cloud}",
+  "@cloudSaveConflictGems": {
+    "placeholders": {
+      "local": {
+        "type": "String"
+      },
+      "cloud": {
+        "type": "String"
+      }
+    }
   }
 }

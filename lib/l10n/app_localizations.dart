@@ -4319,6 +4319,270 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Doanh thu ×{mult} trong suốt sự kiện'**
   String eventBuff(String mult);
+
+  /// No description provided for @guildTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hội'**
+  String get guildTitle;
+
+  /// No description provided for @guildIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lập hội hoặc vào hội để cùng hoàn thành mục tiêu tuần và nhận thưởng.'**
+  String get guildIntro;
+
+  /// No description provided for @guildCreate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo hội'**
+  String get guildCreate;
+
+  /// No description provided for @guildJoin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vào'**
+  String get guildJoin;
+
+  /// No description provided for @guildMembersCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n}/{max} thành viên'**
+  String guildMembersCount(int n, int max);
+
+  /// No description provided for @guildWeekTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tuần này: {n} điểm'**
+  String guildWeekTotal(int n);
+
+  /// No description provided for @guildNameLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên hội (3-20 ký tự)'**
+  String get guildNameLabel;
+
+  /// No description provided for @guildTagLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tag (2-4 chữ/số)'**
+  String get guildTagLabel;
+
+  /// No description provided for @guildLeave.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rời hội'**
+  String get guildLeave;
+
+  /// No description provided for @guildLeaveConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rời hội này? Điểm tuần của bạn sẽ không còn tính cho hội.'**
+  String get guildLeaveConfirm;
+
+  /// No description provided for @guildKick.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mời ra'**
+  String get guildKick;
+
+  /// No description provided for @guildKickConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mời {name} ra khỏi hội?'**
+  String guildKickConfirm(String name);
+
+  /// No description provided for @guildReport.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo cáo hội'**
+  String get guildReport;
+
+  /// No description provided for @guildReportSent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gửi báo cáo, cảm ơn bạn.'**
+  String get guildReportSent;
+
+  /// No description provided for @guildGoalTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mục tiêu tuần'**
+  String get guildGoalTitle;
+
+  /// No description provided for @guildClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận'**
+  String get guildClaim;
+
+  /// No description provided for @guildNeedPoints.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần đóng góp ≥{n} điểm để nhận'**
+  String guildNeedPoints(int n);
+
+  /// No description provided for @guildYourPoints.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đóng góp: {n} điểm'**
+  String guildYourPoints(int n);
+
+  /// No description provided for @guildOwner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chủ hội'**
+  String get guildOwner;
+
+  /// No description provided for @guildEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có hội công khai nào. Hãy tạo hội đầu tiên!'**
+  String get guildEmpty;
+
+  /// No description provided for @guildErrNameTaken.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên hội đã có người dùng.'**
+  String get guildErrNameTaken;
+
+  /// No description provided for @guildErrFull.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hội đã đủ thành viên.'**
+  String get guildErrFull;
+
+  /// No description provided for @guildErrAlready.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang ở trong một hội rồi.'**
+  String get guildErrAlready;
+
+  /// No description provided for @guildErrInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên hoặc tag không hợp lệ.'**
+  String get guildErrInvalid;
+
+  /// No description provided for @guildErrNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy hội (có thể hội đã đóng).'**
+  String get guildErrNotFound;
+
+  /// No description provided for @guildErrContribution.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn cần đóng góp thêm điểm trong tuần này.'**
+  String get guildErrContribution;
+
+  /// No description provided for @guildErrNetwork.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không kết nối được, thử lại sau nhé.'**
+  String get guildErrNetwork;
+
+  /// No description provided for @guildLbTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'BXH Hội'**
+  String get guildLbTitle;
+
+  /// No description provided for @guildLbEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tuần này chưa hội nào có điểm.'**
+  String get guildLbEmpty;
+
+  /// No description provided for @guildRewardGot.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận +{gems} 💎'**
+  String guildRewardGot(int gems);
+
+  /// No description provided for @guildRewardGotAccessory.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận +{gems} 💎 và {name}'**
+  String guildRewardGotAccessory(int gems, String name);
+
+  /// No description provided for @guildPoints.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} điểm'**
+  String guildPoints(int n);
+
+  /// No description provided for @guildCreateCost.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phí tạo hội: {n} 💎'**
+  String guildCreateCost(int n);
+
+  /// No description provided for @guildErrGems.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần {n} 💎 để tạo hội.'**
+  String guildErrGems(int n);
+
+  /// No description provided for @guildApprovalSwitch.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần chủ hội duyệt khi xin vào'**
+  String get guildApprovalSwitch;
+
+  /// No description provided for @guildRequestJoin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xin vào'**
+  String get guildRequestJoin;
+
+  /// No description provided for @guildRequestSent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gửi yêu cầu, chờ chủ hội duyệt.'**
+  String get guildRequestSent;
+
+  /// No description provided for @guildRequestPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ duyệt'**
+  String get guildRequestPending;
+
+  /// No description provided for @guildRequestsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Yêu cầu vào hội ({n})'**
+  String guildRequestsTitle(int n);
+
+  /// No description provided for @guildAccept.
+  ///
+  /// In vi, this message translates to:
+  /// **'Duyệt'**
+  String get guildAccept;
+
+  /// No description provided for @guildReject.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ chối'**
+  String get guildReject;
+
+  /// No description provided for @guildErrApproval.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hội này cần chủ hội duyệt — hãy bấm \"Xin vào\".'**
+  String get guildErrApproval;
+
+  /// No description provided for @guildErrRequestsFull.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hội đang có quá nhiều yêu cầu chờ duyệt.'**
+  String get guildErrRequestsFull;
+
+  /// No description provided for @cloudSaveConflictGems.
+  ///
+  /// In vi, this message translates to:
+  /// **'💎 Máy này: {local} · Trên cloud: {cloud}'**
+  String cloudSaveConflictGems(String local, String cloud);
 }
 
 class _AppLocalizationsDelegate

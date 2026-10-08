@@ -1126,5 +1126,142 @@
         "type": "String"
       }
     }
+  },
+  "guildTitle": "Guilda",
+  "guildIntro": "Crie ou entre numa guilda para cumprir metas semanais juntos e ganhar recompensas.",
+  "guildCreate": "Criar guilda",
+  "guildJoin": "Entrar",
+  "guildMembersCount": "{n}/{max} membros",
+  "@guildMembersCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "guildWeekTotal": "Esta semana: {n} pts",
+  "@guildWeekTotal": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildNameLabel": "Nome da guilda (3-20 caracteres)",
+  "guildTagLabel": "Tag (2-4 letras/dígitos)",
+  "guildLeave": "Sair da guilda",
+  "guildLeaveConfirm": "Sair desta guilda? Seus pontos semanais deixarão de contar.",
+  "guildKick": "Remover",
+  "guildKickConfirm": "Remover {name} da guilda?",
+  "@guildKickConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildReport": "Denunciar guilda",
+  "guildReportSent": "Denúncia enviada, obrigado.",
+  "guildGoalTitle": "Meta semanal",
+  "guildClaim": "Resgatar",
+  "guildNeedPoints": "Contribua ≥{n} pts para resgatar",
+  "@guildNeedPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildYourPoints": "Sua contribuição: {n} pts",
+  "@guildYourPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildOwner": "Líder",
+  "guildEmpty": "Ainda não há guildas públicas. Crie a primeira!",
+  "guildErrNameTaken": "Esse nome de guilda já existe.",
+  "guildErrFull": "Esta guilda está cheia.",
+  "guildErrAlready": "Você já está numa guilda.",
+  "guildErrInvalid": "Nome ou tag inválidos.",
+  "guildErrNotFound": "Guilda não encontrada (pode ter sido encerrada).",
+  "guildErrContribution": "Você precisa contribuir mais pontos esta semana.",
+  "guildErrNetwork": "Não foi possível conectar, tente de novo.",
+  "guildLbTitle": "Ranking de guildas",
+  "guildLbEmpty": "Nenhuma guilda tem pontos esta semana.",
+  "guildRewardGot": "Recebeu +{gems} 💎",
+  "@guildRewardGot": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "guildRewardGotAccessory": "Recebeu +{gems} 💎 e {name}",
+  "@guildRewardGotAccessory": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildPoints": "{n} pts",
+  "@guildPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildCreateCost": "Custo para criar guilda: {n} 💎",
+  "@guildCreateCost": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrGems": "Você precisa de {n} 💎 para criar uma guilda.",
+  "@guildErrGems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildApprovalSwitch": "O líder precisa aprovar os pedidos",
+  "guildRequestJoin": "Solicitar",
+  "guildRequestSent": "Pedido enviado, aguardando aprovação do líder.",
+  "guildRequestPending": "Pendente",
+  "guildRequestsTitle": "Pedidos de entrada ({n})",
+  "@guildRequestsTitle": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildAccept": "Aprovar",
+  "guildReject": "Recusar",
+  "guildErrApproval": "Esta guilda precisa da aprovação do líder — toque em \"Solicitar\".",
+  "guildErrRequestsFull": "Esta guilda tem pedidos pendentes demais.",
+  "cloudSaveConflictGems": "💎 Este dispositivo: {local} · Na nuvem: {cloud}",
+  "@cloudSaveConflictGems": {
+    "placeholders": {
+      "local": {
+        "type": "String"
+      },
+      "cloud": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import 'arena_leaderboard_page.dart';
 import 'arena_page.dart';
+import 'guild_page.dart';
 import 'leaderboard_page.dart';
 import 'story_speedrun_page.dart';
 
@@ -36,6 +37,16 @@ class _CompeteHubDialog extends StatelessWidget {
             onTap: () {
               Navigator.of(context).pop();
               showArenaPage(context);
+            },
+          ),
+          ListTile(
+            key: const Key('compete-guild'),
+            leading: const Icon(Icons.groups),
+            title: Text(l10n.guildTitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              Navigator.of(context).pop();
+              showGuildPage(context);
             },
           ),
           ListTile(

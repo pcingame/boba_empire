@@ -2445,4 +2445,164 @@ class AppLocalizationsVi extends AppLocalizations {
   String eventBuff(String mult) {
     return 'Doanh thu ×$mult trong suốt sự kiện';
   }
+
+  @override
+  String get guildTitle => 'Hội';
+
+  @override
+  String get guildIntro =>
+      'Lập hội hoặc vào hội để cùng hoàn thành mục tiêu tuần và nhận thưởng.';
+
+  @override
+  String get guildCreate => 'Tạo hội';
+
+  @override
+  String get guildJoin => 'Vào';
+
+  @override
+  String guildMembersCount(int n, int max) {
+    return '$n/$max thành viên';
+  }
+
+  @override
+  String guildWeekTotal(int n) {
+    return 'Tuần này: $n điểm';
+  }
+
+  @override
+  String get guildNameLabel => 'Tên hội (3-20 ký tự)';
+
+  @override
+  String get guildTagLabel => 'Tag (2-4 chữ/số)';
+
+  @override
+  String get guildLeave => 'Rời hội';
+
+  @override
+  String get guildLeaveConfirm =>
+      'Rời hội này? Điểm tuần của bạn sẽ không còn tính cho hội.';
+
+  @override
+  String get guildKick => 'Mời ra';
+
+  @override
+  String guildKickConfirm(String name) {
+    return 'Mời $name ra khỏi hội?';
+  }
+
+  @override
+  String get guildReport => 'Báo cáo hội';
+
+  @override
+  String get guildReportSent => 'Đã gửi báo cáo, cảm ơn bạn.';
+
+  @override
+  String get guildGoalTitle => 'Mục tiêu tuần';
+
+  @override
+  String get guildClaim => 'Nhận';
+
+  @override
+  String guildNeedPoints(int n) {
+    return 'Cần đóng góp ≥$n điểm để nhận';
+  }
+
+  @override
+  String guildYourPoints(int n) {
+    return 'Bạn đóng góp: $n điểm';
+  }
+
+  @override
+  String get guildOwner => 'Chủ hội';
+
+  @override
+  String get guildEmpty => 'Chưa có hội công khai nào. Hãy tạo hội đầu tiên!';
+
+  @override
+  String get guildErrNameTaken => 'Tên hội đã có người dùng.';
+
+  @override
+  String get guildErrFull => 'Hội đã đủ thành viên.';
+
+  @override
+  String get guildErrAlready => 'Bạn đang ở trong một hội rồi.';
+
+  @override
+  String get guildErrInvalid => 'Tên hoặc tag không hợp lệ.';
+
+  @override
+  String get guildErrNotFound => 'Không tìm thấy hội (có thể hội đã đóng).';
+
+  @override
+  String get guildErrContribution =>
+      'Bạn cần đóng góp thêm điểm trong tuần này.';
+
+  @override
+  String get guildErrNetwork => 'Không kết nối được, thử lại sau nhé.';
+
+  @override
+  String get guildLbTitle => 'BXH Hội';
+
+  @override
+  String get guildLbEmpty => 'Tuần này chưa hội nào có điểm.';
+
+  @override
+  String guildRewardGot(int gems) {
+    return 'Nhận +$gems 💎';
+  }
+
+  @override
+  String guildRewardGotAccessory(int gems, String name) {
+    return 'Nhận +$gems 💎 và $name';
+  }
+
+  @override
+  String guildPoints(int n) {
+    return '$n điểm';
+  }
+
+  @override
+  String guildCreateCost(int n) {
+    return 'Phí tạo hội: $n 💎';
+  }
+
+  @override
+  String guildErrGems(int n) {
+    return 'Cần $n 💎 để tạo hội.';
+  }
+
+  @override
+  String get guildApprovalSwitch => 'Cần chủ hội duyệt khi xin vào';
+
+  @override
+  String get guildRequestJoin => 'Xin vào';
+
+  @override
+  String get guildRequestSent => 'Đã gửi yêu cầu, chờ chủ hội duyệt.';
+
+  @override
+  String get guildRequestPending => 'Chờ duyệt';
+
+  @override
+  String guildRequestsTitle(int n) {
+    return 'Yêu cầu vào hội ($n)';
+  }
+
+  @override
+  String get guildAccept => 'Duyệt';
+
+  @override
+  String get guildReject => 'Từ chối';
+
+  @override
+  String get guildErrApproval =>
+      'Hội này cần chủ hội duyệt — hãy bấm \"Xin vào\".';
+
+  @override
+  String get guildErrRequestsFull => 'Hội đang có quá nhiều yêu cầu chờ duyệt.';
+
+  @override
+  String cloudSaveConflictGems(String local, String cloud) {
+    return '💎 Máy này: $local · Trên cloud: $cloud';
+  }
 }

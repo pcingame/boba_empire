@@ -2450,4 +2450,166 @@ class AppLocalizationsId extends AppLocalizations {
   String eventBuff(String mult) {
     return 'Pendapatan ×$mult selama event';
   }
+
+  @override
+  String get guildTitle => 'Guild';
+
+  @override
+  String get guildIntro =>
+      'Buat atau gabung guild untuk mencapai target mingguan bersama dan dapat hadiah.';
+
+  @override
+  String get guildCreate => 'Buat guild';
+
+  @override
+  String get guildJoin => 'Gabung';
+
+  @override
+  String guildMembersCount(int n, int max) {
+    return '$n/$max anggota';
+  }
+
+  @override
+  String guildWeekTotal(int n) {
+    return 'Minggu ini: $n poin';
+  }
+
+  @override
+  String get guildNameLabel => 'Nama guild (3-20 karakter)';
+
+  @override
+  String get guildTagLabel => 'Tag (2-4 huruf/angka)';
+
+  @override
+  String get guildLeave => 'Keluar guild';
+
+  @override
+  String get guildLeaveConfirm =>
+      'Keluar dari guild ini? Poin mingguanmu tidak dihitung lagi.';
+
+  @override
+  String get guildKick => 'Keluarkan';
+
+  @override
+  String guildKickConfirm(String name) {
+    return 'Keluarkan $name dari guild?';
+  }
+
+  @override
+  String get guildReport => 'Laporkan guild';
+
+  @override
+  String get guildReportSent => 'Laporan terkirim, terima kasih.';
+
+  @override
+  String get guildGoalTitle => 'Target mingguan';
+
+  @override
+  String get guildClaim => 'Klaim';
+
+  @override
+  String guildNeedPoints(int n) {
+    return 'Sumbang ≥$n poin untuk klaim';
+  }
+
+  @override
+  String guildYourPoints(int n) {
+    return 'Kontribusimu: $n poin';
+  }
+
+  @override
+  String get guildOwner => 'Ketua';
+
+  @override
+  String get guildEmpty => 'Belum ada guild publik. Buat yang pertama!';
+
+  @override
+  String get guildErrNameTaken => 'Nama guild sudah dipakai.';
+
+  @override
+  String get guildErrFull => 'Guild ini penuh.';
+
+  @override
+  String get guildErrAlready => 'Kamu sudah berada di guild.';
+
+  @override
+  String get guildErrInvalid => 'Nama atau tag tidak valid.';
+
+  @override
+  String get guildErrNotFound => 'Guild tidak ditemukan (mungkin sudah tutup).';
+
+  @override
+  String get guildErrContribution =>
+      'Kamu perlu menyumbang lebih banyak poin minggu ini.';
+
+  @override
+  String get guildErrNetwork => 'Tidak bisa terhubung, coba lagi.';
+
+  @override
+  String get guildLbTitle => 'Peringkat Guild';
+
+  @override
+  String get guildLbEmpty => 'Belum ada guild yang punya poin minggu ini.';
+
+  @override
+  String guildRewardGot(int gems) {
+    return 'Dapat +$gems 💎';
+  }
+
+  @override
+  String guildRewardGotAccessory(int gems, String name) {
+    return 'Dapat +$gems 💎 dan $name';
+  }
+
+  @override
+  String guildPoints(int n) {
+    return '$n poin';
+  }
+
+  @override
+  String guildCreateCost(int n) {
+    return 'Biaya membuat guild: $n 💎';
+  }
+
+  @override
+  String guildErrGems(int n) {
+    return 'Kamu butuh $n 💎 untuk membuat guild.';
+  }
+
+  @override
+  String get guildApprovalSwitch => 'Ketua harus menyetujui permintaan gabung';
+
+  @override
+  String get guildRequestJoin => 'Minta gabung';
+
+  @override
+  String get guildRequestSent =>
+      'Permintaan terkirim, menunggu persetujuan ketua.';
+
+  @override
+  String get guildRequestPending => 'Menunggu';
+
+  @override
+  String guildRequestsTitle(int n) {
+    return 'Permintaan gabung ($n)';
+  }
+
+  @override
+  String get guildAccept => 'Setujui';
+
+  @override
+  String get guildReject => 'Tolak';
+
+  @override
+  String get guildErrApproval =>
+      'Guild ini perlu persetujuan ketua — tekan \"Minta gabung\".';
+
+  @override
+  String get guildErrRequestsFull =>
+      'Guild ini punya terlalu banyak permintaan tertunda.';
+
+  @override
+  String cloudSaveConflictGems(String local, String cloud) {
+    return '💎 Perangkat ini: $local · Di cloud: $cloud';
+  }
 }

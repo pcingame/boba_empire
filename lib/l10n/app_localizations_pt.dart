@@ -2458,4 +2458,167 @@ class AppLocalizationsPt extends AppLocalizations {
   String eventBuff(String mult) {
     return 'Receita ×$mult durante o evento';
   }
+
+  @override
+  String get guildTitle => 'Guilda';
+
+  @override
+  String get guildIntro =>
+      'Crie ou entre numa guilda para cumprir metas semanais juntos e ganhar recompensas.';
+
+  @override
+  String get guildCreate => 'Criar guilda';
+
+  @override
+  String get guildJoin => 'Entrar';
+
+  @override
+  String guildMembersCount(int n, int max) {
+    return '$n/$max membros';
+  }
+
+  @override
+  String guildWeekTotal(int n) {
+    return 'Esta semana: $n pts';
+  }
+
+  @override
+  String get guildNameLabel => 'Nome da guilda (3-20 caracteres)';
+
+  @override
+  String get guildTagLabel => 'Tag (2-4 letras/dígitos)';
+
+  @override
+  String get guildLeave => 'Sair da guilda';
+
+  @override
+  String get guildLeaveConfirm =>
+      'Sair desta guilda? Seus pontos semanais deixarão de contar.';
+
+  @override
+  String get guildKick => 'Remover';
+
+  @override
+  String guildKickConfirm(String name) {
+    return 'Remover $name da guilda?';
+  }
+
+  @override
+  String get guildReport => 'Denunciar guilda';
+
+  @override
+  String get guildReportSent => 'Denúncia enviada, obrigado.';
+
+  @override
+  String get guildGoalTitle => 'Meta semanal';
+
+  @override
+  String get guildClaim => 'Resgatar';
+
+  @override
+  String guildNeedPoints(int n) {
+    return 'Contribua ≥$n pts para resgatar';
+  }
+
+  @override
+  String guildYourPoints(int n) {
+    return 'Sua contribuição: $n pts';
+  }
+
+  @override
+  String get guildOwner => 'Líder';
+
+  @override
+  String get guildEmpty => 'Ainda não há guildas públicas. Crie a primeira!';
+
+  @override
+  String get guildErrNameTaken => 'Esse nome de guilda já existe.';
+
+  @override
+  String get guildErrFull => 'Esta guilda está cheia.';
+
+  @override
+  String get guildErrAlready => 'Você já está numa guilda.';
+
+  @override
+  String get guildErrInvalid => 'Nome ou tag inválidos.';
+
+  @override
+  String get guildErrNotFound =>
+      'Guilda não encontrada (pode ter sido encerrada).';
+
+  @override
+  String get guildErrContribution =>
+      'Você precisa contribuir mais pontos esta semana.';
+
+  @override
+  String get guildErrNetwork => 'Não foi possível conectar, tente de novo.';
+
+  @override
+  String get guildLbTitle => 'Ranking de guildas';
+
+  @override
+  String get guildLbEmpty => 'Nenhuma guilda tem pontos esta semana.';
+
+  @override
+  String guildRewardGot(int gems) {
+    return 'Recebeu +$gems 💎';
+  }
+
+  @override
+  String guildRewardGotAccessory(int gems, String name) {
+    return 'Recebeu +$gems 💎 e $name';
+  }
+
+  @override
+  String guildPoints(int n) {
+    return '$n pts';
+  }
+
+  @override
+  String guildCreateCost(int n) {
+    return 'Custo para criar guilda: $n 💎';
+  }
+
+  @override
+  String guildErrGems(int n) {
+    return 'Você precisa de $n 💎 para criar uma guilda.';
+  }
+
+  @override
+  String get guildApprovalSwitch => 'O líder precisa aprovar os pedidos';
+
+  @override
+  String get guildRequestJoin => 'Solicitar';
+
+  @override
+  String get guildRequestSent =>
+      'Pedido enviado, aguardando aprovação do líder.';
+
+  @override
+  String get guildRequestPending => 'Pendente';
+
+  @override
+  String guildRequestsTitle(int n) {
+    return 'Pedidos de entrada ($n)';
+  }
+
+  @override
+  String get guildAccept => 'Aprovar';
+
+  @override
+  String get guildReject => 'Recusar';
+
+  @override
+  String get guildErrApproval =>
+      'Esta guilda precisa da aprovação do líder — toque em \"Solicitar\".';
+
+  @override
+  String get guildErrRequestsFull =>
+      'Esta guilda tem pedidos pendentes demais.';
+
+  @override
+  String cloudSaveConflictGems(String local, String cloud) {
+    return '💎 Este dispositivo: $local · Na nuvem: $cloud';
+  }
 }

@@ -1582,5 +1582,142 @@
         "type": "String"
       }
     }
+  },
+  "guildTitle": "Hội",
+  "guildIntro": "Lập hội hoặc vào hội để cùng hoàn thành mục tiêu tuần và nhận thưởng.",
+  "guildCreate": "Tạo hội",
+  "guildJoin": "Vào",
+  "guildMembersCount": "{n}/{max} thành viên",
+  "@guildMembersCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "guildWeekTotal": "Tuần này: {n} điểm",
+  "@guildWeekTotal": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildNameLabel": "Tên hội (3-20 ký tự)",
+  "guildTagLabel": "Tag (2-4 chữ/số)",
+  "guildLeave": "Rời hội",
+  "guildLeaveConfirm": "Rời hội này? Điểm tuần của bạn sẽ không còn tính cho hội.",
+  "guildKick": "Mời ra",
+  "guildKickConfirm": "Mời {name} ra khỏi hội?",
+  "@guildKickConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildReport": "Báo cáo hội",
+  "guildReportSent": "Đã gửi báo cáo, cảm ơn bạn.",
+  "guildGoalTitle": "Mục tiêu tuần",
+  "guildClaim": "Nhận",
+  "guildNeedPoints": "Cần đóng góp ≥{n} điểm để nhận",
+  "@guildNeedPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildYourPoints": "Bạn đóng góp: {n} điểm",
+  "@guildYourPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildOwner": "Chủ hội",
+  "guildEmpty": "Chưa có hội công khai nào. Hãy tạo hội đầu tiên!",
+  "guildErrNameTaken": "Tên hội đã có người dùng.",
+  "guildErrFull": "Hội đã đủ thành viên.",
+  "guildErrAlready": "Bạn đang ở trong một hội rồi.",
+  "guildErrInvalid": "Tên hoặc tag không hợp lệ.",
+  "guildErrNotFound": "Không tìm thấy hội (có thể hội đã đóng).",
+  "guildErrContribution": "Bạn cần đóng góp thêm điểm trong tuần này.",
+  "guildErrNetwork": "Không kết nối được, thử lại sau nhé.",
+  "guildLbTitle": "BXH Hội",
+  "guildLbEmpty": "Tuần này chưa hội nào có điểm.",
+  "guildRewardGot": "Nhận +{gems} 💎",
+  "@guildRewardGot": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "guildRewardGotAccessory": "Nhận +{gems} 💎 và {name}",
+  "@guildRewardGotAccessory": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildPoints": "{n} điểm",
+  "@guildPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildCreateCost": "Phí tạo hội: {n} 💎",
+  "@guildCreateCost": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrGems": "Cần {n} 💎 để tạo hội.",
+  "@guildErrGems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildApprovalSwitch": "Cần chủ hội duyệt khi xin vào",
+  "guildRequestJoin": "Xin vào",
+  "guildRequestSent": "Đã gửi yêu cầu, chờ chủ hội duyệt.",
+  "guildRequestPending": "Chờ duyệt",
+  "guildRequestsTitle": "Yêu cầu vào hội ({n})",
+  "@guildRequestsTitle": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildAccept": "Duyệt",
+  "guildReject": "Từ chối",
+  "guildErrApproval": "Hội này cần chủ hội duyệt — hãy bấm \"Xin vào\".",
+  "guildErrRequestsFull": "Hội đang có quá nhiều yêu cầu chờ duyệt.",
+  "cloudSaveConflictGems": "💎 Máy này: {local} · Trên cloud: {cloud}",
+  "@cloudSaveConflictGems": {
+    "placeholders": {
+      "local": {
+        "type": "String"
+      },
+      "cloud": {
+        "type": "String"
+      }
+    }
   }
 }

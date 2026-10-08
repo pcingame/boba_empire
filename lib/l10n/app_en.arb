@@ -1126,5 +1126,142 @@
         "type": "String"
       }
     }
+  },
+  "guildTitle": "Guild",
+  "guildIntro": "Create or join a guild to hit weekly goals together and earn rewards.",
+  "guildCreate": "Create guild",
+  "guildJoin": "Join",
+  "guildMembersCount": "{n}/{max} members",
+  "@guildMembersCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "guildWeekTotal": "This week: {n} pts",
+  "@guildWeekTotal": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildNameLabel": "Guild name (3-20 chars)",
+  "guildTagLabel": "Tag (2-4 letters/digits)",
+  "guildLeave": "Leave guild",
+  "guildLeaveConfirm": "Leave this guild? Your weekly points will no longer count for it.",
+  "guildKick": "Remove",
+  "guildKickConfirm": "Remove {name} from the guild?",
+  "@guildKickConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildReport": "Report guild",
+  "guildReportSent": "Report sent, thank you.",
+  "guildGoalTitle": "Weekly goal",
+  "guildClaim": "Claim",
+  "guildNeedPoints": "Contribute ≥{n} pts to claim",
+  "@guildNeedPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildYourPoints": "Your contribution: {n} pts",
+  "@guildYourPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildOwner": "Owner",
+  "guildEmpty": "No public guilds yet. Create the first one!",
+  "guildErrNameTaken": "That guild name is taken.",
+  "guildErrFull": "This guild is full.",
+  "guildErrAlready": "You're already in a guild.",
+  "guildErrInvalid": "Invalid name or tag.",
+  "guildErrNotFound": "Guild not found (it may have closed).",
+  "guildErrContribution": "You need to contribute more points this week.",
+  "guildErrNetwork": "Can't connect, please try again.",
+  "guildLbTitle": "Guild Leaderboard",
+  "guildLbEmpty": "No guild has points this week yet.",
+  "guildRewardGot": "Got +{gems} 💎",
+  "@guildRewardGot": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "guildRewardGotAccessory": "Got +{gems} 💎 and {name}",
+  "@guildRewardGotAccessory": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildPoints": "{n} pts",
+  "@guildPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildCreateCost": "Guild creation fee: {n} 💎",
+  "@guildCreateCost": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrGems": "You need {n} 💎 to create a guild.",
+  "@guildErrGems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildApprovalSwitch": "Owner must approve join requests",
+  "guildRequestJoin": "Request",
+  "guildRequestSent": "Request sent, waiting for the owner to approve.",
+  "guildRequestPending": "Pending",
+  "guildRequestsTitle": "Join requests ({n})",
+  "@guildRequestsTitle": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildAccept": "Approve",
+  "guildReject": "Reject",
+  "guildErrApproval": "This guild needs the owner's approval — tap \"Request\".",
+  "guildErrRequestsFull": "This guild has too many pending requests.",
+  "cloudSaveConflictGems": "💎 This device: {local} · On the cloud: {cloud}",
+  "@cloudSaveConflictGems": {
+    "placeholders": {
+      "local": {
+        "type": "String"
+      },
+      "cloud": {
+        "type": "String"
+      }
+    }
   }
 }

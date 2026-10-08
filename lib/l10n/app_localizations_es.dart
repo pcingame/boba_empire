@@ -2461,4 +2461,167 @@ class AppLocalizationsEs extends AppLocalizations {
   String eventBuff(String mult) {
     return 'Ingresos ×$mult durante el evento';
   }
+
+  @override
+  String get guildTitle => 'Gremio';
+
+  @override
+  String get guildIntro =>
+      'Crea o únete a un gremio para cumplir metas semanales juntos y ganar recompensas.';
+
+  @override
+  String get guildCreate => 'Crear gremio';
+
+  @override
+  String get guildJoin => 'Unirse';
+
+  @override
+  String guildMembersCount(int n, int max) {
+    return '$n/$max miembros';
+  }
+
+  @override
+  String guildWeekTotal(int n) {
+    return 'Esta semana: $n pts';
+  }
+
+  @override
+  String get guildNameLabel => 'Nombre del gremio (3-20 caracteres)';
+
+  @override
+  String get guildTagLabel => 'Etiqueta (2-4 letras/dígitos)';
+
+  @override
+  String get guildLeave => 'Salir del gremio';
+
+  @override
+  String get guildLeaveConfirm =>
+      '¿Salir de este gremio? Tus puntos semanales dejarán de contar.';
+
+  @override
+  String get guildKick => 'Expulsar';
+
+  @override
+  String guildKickConfirm(String name) {
+    return '¿Expulsar a $name del gremio?';
+  }
+
+  @override
+  String get guildReport => 'Denunciar gremio';
+
+  @override
+  String get guildReportSent => 'Denuncia enviada, gracias.';
+
+  @override
+  String get guildGoalTitle => 'Meta semanal';
+
+  @override
+  String get guildClaim => 'Reclamar';
+
+  @override
+  String guildNeedPoints(int n) {
+    return 'Aporta ≥$n pts para reclamar';
+  }
+
+  @override
+  String guildYourPoints(int n) {
+    return 'Tu aporte: $n pts';
+  }
+
+  @override
+  String get guildOwner => 'Líder';
+
+  @override
+  String get guildEmpty => 'Aún no hay gremios públicos. ¡Crea el primero!';
+
+  @override
+  String get guildErrNameTaken => 'Ese nombre de gremio ya existe.';
+
+  @override
+  String get guildErrFull => 'Este gremio está lleno.';
+
+  @override
+  String get guildErrAlready => 'Ya estás en un gremio.';
+
+  @override
+  String get guildErrInvalid => 'Nombre o etiqueta no válidos.';
+
+  @override
+  String get guildErrNotFound =>
+      'Gremio no encontrado (puede que haya cerrado).';
+
+  @override
+  String get guildErrContribution =>
+      'Necesitas aportar más puntos esta semana.';
+
+  @override
+  String get guildErrNetwork => 'No se pudo conectar, inténtalo de nuevo.';
+
+  @override
+  String get guildLbTitle => 'Ranking de gremios';
+
+  @override
+  String get guildLbEmpty => 'Ningún gremio tiene puntos esta semana.';
+
+  @override
+  String guildRewardGot(int gems) {
+    return 'Recibiste +$gems 💎';
+  }
+
+  @override
+  String guildRewardGotAccessory(int gems, String name) {
+    return 'Recibiste +$gems 💎 y $name';
+  }
+
+  @override
+  String guildPoints(int n) {
+    return '$n pts';
+  }
+
+  @override
+  String guildCreateCost(int n) {
+    return 'Costo de crear gremio: $n 💎';
+  }
+
+  @override
+  String guildErrGems(int n) {
+    return 'Necesitas $n 💎 para crear un gremio.';
+  }
+
+  @override
+  String get guildApprovalSwitch => 'El líder debe aprobar las solicitudes';
+
+  @override
+  String get guildRequestJoin => 'Solicitar';
+
+  @override
+  String get guildRequestSent =>
+      'Solicitud enviada, esperando la aprobación del líder.';
+
+  @override
+  String get guildRequestPending => 'Pendiente';
+
+  @override
+  String guildRequestsTitle(int n) {
+    return 'Solicitudes ($n)';
+  }
+
+  @override
+  String get guildAccept => 'Aprobar';
+
+  @override
+  String get guildReject => 'Rechazar';
+
+  @override
+  String get guildErrApproval =>
+      'Este gremio requiere aprobación del líder: pulsa \"Solicitar\".';
+
+  @override
+  String get guildErrRequestsFull =>
+      'Este gremio tiene demasiadas solicitudes pendientes.';
+
+  @override
+  String cloudSaveConflictGems(String local, String cloud) {
+    return '💎 Este dispositivo: $local · En la nube: $cloud';
+  }
 }

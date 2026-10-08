@@ -1126,5 +1126,142 @@
         "type": "String"
       }
     }
+  },
+  "guildTitle": "Gremio",
+  "guildIntro": "Crea o únete a un gremio para cumplir metas semanales juntos y ganar recompensas.",
+  "guildCreate": "Crear gremio",
+  "guildJoin": "Unirse",
+  "guildMembersCount": "{n}/{max} miembros",
+  "@guildMembersCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "guildWeekTotal": "Esta semana: {n} pts",
+  "@guildWeekTotal": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildNameLabel": "Nombre del gremio (3-20 caracteres)",
+  "guildTagLabel": "Etiqueta (2-4 letras/dígitos)",
+  "guildLeave": "Salir del gremio",
+  "guildLeaveConfirm": "¿Salir de este gremio? Tus puntos semanales dejarán de contar.",
+  "guildKick": "Expulsar",
+  "guildKickConfirm": "¿Expulsar a {name} del gremio?",
+  "@guildKickConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildReport": "Denunciar gremio",
+  "guildReportSent": "Denuncia enviada, gracias.",
+  "guildGoalTitle": "Meta semanal",
+  "guildClaim": "Reclamar",
+  "guildNeedPoints": "Aporta ≥{n} pts para reclamar",
+  "@guildNeedPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildYourPoints": "Tu aporte: {n} pts",
+  "@guildYourPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildOwner": "Líder",
+  "guildEmpty": "Aún no hay gremios públicos. ¡Crea el primero!",
+  "guildErrNameTaken": "Ese nombre de gremio ya existe.",
+  "guildErrFull": "Este gremio está lleno.",
+  "guildErrAlready": "Ya estás en un gremio.",
+  "guildErrInvalid": "Nombre o etiqueta no válidos.",
+  "guildErrNotFound": "Gremio no encontrado (puede que haya cerrado).",
+  "guildErrContribution": "Necesitas aportar más puntos esta semana.",
+  "guildErrNetwork": "No se pudo conectar, inténtalo de nuevo.",
+  "guildLbTitle": "Ranking de gremios",
+  "guildLbEmpty": "Ningún gremio tiene puntos esta semana.",
+  "guildRewardGot": "Recibiste +{gems} 💎",
+  "@guildRewardGot": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "guildRewardGotAccessory": "Recibiste +{gems} 💎 y {name}",
+  "@guildRewardGotAccessory": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildPoints": "{n} pts",
+  "@guildPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildCreateCost": "Costo de crear gremio: {n} 💎",
+  "@guildCreateCost": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrGems": "Necesitas {n} 💎 para crear un gremio.",
+  "@guildErrGems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildApprovalSwitch": "El líder debe aprobar las solicitudes",
+  "guildRequestJoin": "Solicitar",
+  "guildRequestSent": "Solicitud enviada, esperando la aprobación del líder.",
+  "guildRequestPending": "Pendiente",
+  "guildRequestsTitle": "Solicitudes ({n})",
+  "@guildRequestsTitle": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildAccept": "Aprobar",
+  "guildReject": "Rechazar",
+  "guildErrApproval": "Este gremio requiere aprobación del líder: pulsa \"Solicitar\".",
+  "guildErrRequestsFull": "Este gremio tiene demasiadas solicitudes pendientes.",
+  "cloudSaveConflictGems": "💎 Este dispositivo: {local} · En la nube: {cloud}",
+  "@cloudSaveConflictGems": {
+    "placeholders": {
+      "local": {
+        "type": "String"
+      },
+      "cloud": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -21,6 +21,7 @@ import '../core/daily.dart';
 import '../core/daily_quests.dart';
 import '../core/economy.dart';
 import '../core/event_quests.dart';
+import '../core/guild.dart';
 import '../core/market_fee.dart' show weekendEventActive;
 import '../core/models.dart';
 import '../core/quests.dart';
@@ -462,6 +463,7 @@ class GameController extends Notifier<GameSnapshot> {
   /// Sang ngày (UTC) mới thì đổi bộ nhiệm vụ ngày. Gọi TRƯỚC khi cộng tiền
   /// offline để Xu lúc vắng tính vào ngày hôm nay, không bị xoá ngay sau đó.
   void _rollDaily() {
+    rollGuildWeek(_game, _clock());
     rollEvent(
         _game, DateTime.fromMillisecondsSinceEpoch(_clock(), isUtc: true));
     rollDailyQuests(
@@ -491,6 +493,30 @@ class GameController extends Notifier<GameSnapshot> {
       state = _snapshot();
     }
     return ok;
+  }
+
+  /// Nhận thưởng mốc tuần [index] của hội SAU KHI server đã xác nhận (xem
+  /// GuildController.claim). 💎 + (mốc cuối) 1 phụ kiện. Lưu ngay.
+  AccessoryDrop? grantGuildReward(int index) {
+    if (index < 0 || index >= guildMilestones.length) return null;
+    final ms = guildMilestones[index];
+    _game.gems += ms.gems;
+    final drop = ms.accessory ? _dropAccessory(source: 'guild') : null;
+    logEvent('guild_reward_claimed', {'milestone': index + 1});
+    unawaited(saveNow());
+    state = _snapshot();
+    return drop;
+  }
+
+  /// Trừ phí tạo hội SAU KHI server đã tạo xong. Trả false nếu lúc này không đủ
+  /// 💎 (vừa tiêu mất giữa chừng) — khi đó không trừ âm. Lưu ngay.
+  bool chargeGuildCreation() {
+    if (_game.gems < guildCreateCostGems) return false;
+    _game.gems -= guildCreateCostGems;
+    logEvent('guild_created', {'cost': guildCreateCostGems});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
   }
 
   DateTime _nowUtc() =>
@@ -1541,6 +1567,7 @@ class GameController extends Notifier<GameSnapshot> {
       ownedAccessories: List.unmodifiable(_game.ownedAccessories),
       ownedLimited: List.unmodifiable(_game.ownedLimited),
       eventId: _game.eventId,
+      guildScore: guildScore(_game),
       eventPoints: _game.eventPoints,
       eventProgress: Map.unmodifiable(_game.eventProgress),
       eventClaimed: List.unmodifiable(_game.eventClaimed),

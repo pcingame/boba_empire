@@ -1126,5 +1126,142 @@
         "type": "String"
       }
     }
+  },
+  "guildTitle": "กิลด์",
+  "guildIntro": "สร้างหรือเข้าร่วมกิลด์เพื่อทำเป้าหมายรายสัปดาห์ร่วมกันและรับรางวัล",
+  "guildCreate": "สร้างกิลด์",
+  "guildJoin": "เข้าร่วม",
+  "guildMembersCount": "{n}/{max} สมาชิก",
+  "@guildMembersCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "guildWeekTotal": "สัปดาห์นี้: {n} แต้ม",
+  "@guildWeekTotal": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildNameLabel": "ชื่อกิลด์ (3-20 ตัวอักษร)",
+  "guildTagLabel": "แท็ก (ตัวอักษร/ตัวเลข 2-4 ตัว)",
+  "guildLeave": "ออกจากกิลด์",
+  "guildLeaveConfirm": "ออกจากกิลด์นี้? แต้มรายสัปดาห์ของคุณจะไม่นับให้กิลด์อีก",
+  "guildKick": "เชิญออก",
+  "guildKickConfirm": "เชิญ {name} ออกจากกิลด์?",
+  "@guildKickConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildReport": "รายงานกิลด์",
+  "guildReportSent": "ส่งรายงานแล้ว ขอบคุณ",
+  "guildGoalTitle": "เป้าหมายสัปดาห์",
+  "guildClaim": "รับ",
+  "guildNeedPoints": "ต้องสะสม ≥{n} แต้มเพื่อรับ",
+  "@guildNeedPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildYourPoints": "คุณสะสม: {n} แต้ม",
+  "@guildYourPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildOwner": "หัวหน้า",
+  "guildEmpty": "ยังไม่มีกิลด์สาธารณะ สร้างกิลด์แรกเลย!",
+  "guildErrNameTaken": "ชื่อกิลด์นี้ถูกใช้แล้ว",
+  "guildErrFull": "กิลด์เต็มแล้ว",
+  "guildErrAlready": "คุณอยู่ในกิลด์แล้ว",
+  "guildErrInvalid": "ชื่อหรือแท็กไม่ถูกต้อง",
+  "guildErrNotFound": "ไม่พบกิลด์ (อาจปิดไปแล้ว)",
+  "guildErrContribution": "คุณต้องสะสมแต้มเพิ่มในสัปดาห์นี้",
+  "guildErrNetwork": "เชื่อมต่อไม่ได้ ลองใหม่อีกครั้ง",
+  "guildLbTitle": "อันดับกิลด์",
+  "guildLbEmpty": "สัปดาห์นี้ยังไม่มีกิลด์ที่มีแต้ม",
+  "guildRewardGot": "ได้รับ +{gems} 💎",
+  "@guildRewardGot": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "guildRewardGotAccessory": "ได้รับ +{gems} 💎 และ {name}",
+  "@guildRewardGotAccessory": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildPoints": "{n} แต้ม",
+  "@guildPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildCreateCost": "ค่าสร้างกิลด์: {n} 💎",
+  "@guildCreateCost": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrGems": "ต้องมี {n} 💎 เพื่อสร้างกิลด์",
+  "@guildErrGems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildApprovalSwitch": "หัวหน้าต้องอนุมัติคำขอเข้าร่วม",
+  "guildRequestJoin": "ขอเข้าร่วม",
+  "guildRequestSent": "ส่งคำขอแล้ว รอหัวหน้าอนุมัติ",
+  "guildRequestPending": "รออนุมัติ",
+  "guildRequestsTitle": "คำขอเข้าร่วม ({n})",
+  "@guildRequestsTitle": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildAccept": "อนุมัติ",
+  "guildReject": "ปฏิเสธ",
+  "guildErrApproval": "กิลด์นี้ต้องให้หัวหน้าอนุมัติ — กด \"ขอเข้าร่วม\"",
+  "guildErrRequestsFull": "กิลด์นี้มีคำขอรออนุมัติมากเกินไป",
+  "cloudSaveConflictGems": "💎 เครื่องนี้: {local} · บนคลาวด์: {cloud}",
+  "@cloudSaveConflictGems": {
+    "placeholders": {
+      "local": {
+        "type": "String"
+      },
+      "cloud": {
+        "type": "String"
+      }
+    }
   }
 }

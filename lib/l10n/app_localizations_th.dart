@@ -2434,4 +2434,163 @@ class AppLocalizationsTh extends AppLocalizations {
   String eventBuff(String mult) {
     return 'รายได้ ×$mult ตลอดอีเวนต์';
   }
+
+  @override
+  String get guildTitle => 'กิลด์';
+
+  @override
+  String get guildIntro =>
+      'สร้างหรือเข้าร่วมกิลด์เพื่อทำเป้าหมายรายสัปดาห์ร่วมกันและรับรางวัล';
+
+  @override
+  String get guildCreate => 'สร้างกิลด์';
+
+  @override
+  String get guildJoin => 'เข้าร่วม';
+
+  @override
+  String guildMembersCount(int n, int max) {
+    return '$n/$max สมาชิก';
+  }
+
+  @override
+  String guildWeekTotal(int n) {
+    return 'สัปดาห์นี้: $n แต้ม';
+  }
+
+  @override
+  String get guildNameLabel => 'ชื่อกิลด์ (3-20 ตัวอักษร)';
+
+  @override
+  String get guildTagLabel => 'แท็ก (ตัวอักษร/ตัวเลข 2-4 ตัว)';
+
+  @override
+  String get guildLeave => 'ออกจากกิลด์';
+
+  @override
+  String get guildLeaveConfirm =>
+      'ออกจากกิลด์นี้? แต้มรายสัปดาห์ของคุณจะไม่นับให้กิลด์อีก';
+
+  @override
+  String get guildKick => 'เชิญออก';
+
+  @override
+  String guildKickConfirm(String name) {
+    return 'เชิญ $name ออกจากกิลด์?';
+  }
+
+  @override
+  String get guildReport => 'รายงานกิลด์';
+
+  @override
+  String get guildReportSent => 'ส่งรายงานแล้ว ขอบคุณ';
+
+  @override
+  String get guildGoalTitle => 'เป้าหมายสัปดาห์';
+
+  @override
+  String get guildClaim => 'รับ';
+
+  @override
+  String guildNeedPoints(int n) {
+    return 'ต้องสะสม ≥$n แต้มเพื่อรับ';
+  }
+
+  @override
+  String guildYourPoints(int n) {
+    return 'คุณสะสม: $n แต้ม';
+  }
+
+  @override
+  String get guildOwner => 'หัวหน้า';
+
+  @override
+  String get guildEmpty => 'ยังไม่มีกิลด์สาธารณะ สร้างกิลด์แรกเลย!';
+
+  @override
+  String get guildErrNameTaken => 'ชื่อกิลด์นี้ถูกใช้แล้ว';
+
+  @override
+  String get guildErrFull => 'กิลด์เต็มแล้ว';
+
+  @override
+  String get guildErrAlready => 'คุณอยู่ในกิลด์แล้ว';
+
+  @override
+  String get guildErrInvalid => 'ชื่อหรือแท็กไม่ถูกต้อง';
+
+  @override
+  String get guildErrNotFound => 'ไม่พบกิลด์ (อาจปิดไปแล้ว)';
+
+  @override
+  String get guildErrContribution => 'คุณต้องสะสมแต้มเพิ่มในสัปดาห์นี้';
+
+  @override
+  String get guildErrNetwork => 'เชื่อมต่อไม่ได้ ลองใหม่อีกครั้ง';
+
+  @override
+  String get guildLbTitle => 'อันดับกิลด์';
+
+  @override
+  String get guildLbEmpty => 'สัปดาห์นี้ยังไม่มีกิลด์ที่มีแต้ม';
+
+  @override
+  String guildRewardGot(int gems) {
+    return 'ได้รับ +$gems 💎';
+  }
+
+  @override
+  String guildRewardGotAccessory(int gems, String name) {
+    return 'ได้รับ +$gems 💎 และ $name';
+  }
+
+  @override
+  String guildPoints(int n) {
+    return '$n แต้ม';
+  }
+
+  @override
+  String guildCreateCost(int n) {
+    return 'ค่าสร้างกิลด์: $n 💎';
+  }
+
+  @override
+  String guildErrGems(int n) {
+    return 'ต้องมี $n 💎 เพื่อสร้างกิลด์';
+  }
+
+  @override
+  String get guildApprovalSwitch => 'หัวหน้าต้องอนุมัติคำขอเข้าร่วม';
+
+  @override
+  String get guildRequestJoin => 'ขอเข้าร่วม';
+
+  @override
+  String get guildRequestSent => 'ส่งคำขอแล้ว รอหัวหน้าอนุมัติ';
+
+  @override
+  String get guildRequestPending => 'รออนุมัติ';
+
+  @override
+  String guildRequestsTitle(int n) {
+    return 'คำขอเข้าร่วม ($n)';
+  }
+
+  @override
+  String get guildAccept => 'อนุมัติ';
+
+  @override
+  String get guildReject => 'ปฏิเสธ';
+
+  @override
+  String get guildErrApproval =>
+      'กิลด์นี้ต้องให้หัวหน้าอนุมัติ — กด \"ขอเข้าร่วม\"';
+
+  @override
+  String get guildErrRequestsFull => 'กิลด์นี้มีคำขอรออนุมัติมากเกินไป';
+
+  @override
+  String cloudSaveConflictGems(String local, String cloud) {
+    return '💎 เครื่องนี้: $local · บนคลาวด์: $cloud';
+  }
 }

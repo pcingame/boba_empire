@@ -2452,4 +2452,166 @@ class AppLocalizationsEn extends AppLocalizations {
   String eventBuff(String mult) {
     return 'Revenue ×$mult during the event';
   }
+
+  @override
+  String get guildTitle => 'Guild';
+
+  @override
+  String get guildIntro =>
+      'Create or join a guild to hit weekly goals together and earn rewards.';
+
+  @override
+  String get guildCreate => 'Create guild';
+
+  @override
+  String get guildJoin => 'Join';
+
+  @override
+  String guildMembersCount(int n, int max) {
+    return '$n/$max members';
+  }
+
+  @override
+  String guildWeekTotal(int n) {
+    return 'This week: $n pts';
+  }
+
+  @override
+  String get guildNameLabel => 'Guild name (3-20 chars)';
+
+  @override
+  String get guildTagLabel => 'Tag (2-4 letters/digits)';
+
+  @override
+  String get guildLeave => 'Leave guild';
+
+  @override
+  String get guildLeaveConfirm =>
+      'Leave this guild? Your weekly points will no longer count for it.';
+
+  @override
+  String get guildKick => 'Remove';
+
+  @override
+  String guildKickConfirm(String name) {
+    return 'Remove $name from the guild?';
+  }
+
+  @override
+  String get guildReport => 'Report guild';
+
+  @override
+  String get guildReportSent => 'Report sent, thank you.';
+
+  @override
+  String get guildGoalTitle => 'Weekly goal';
+
+  @override
+  String get guildClaim => 'Claim';
+
+  @override
+  String guildNeedPoints(int n) {
+    return 'Contribute ≥$n pts to claim';
+  }
+
+  @override
+  String guildYourPoints(int n) {
+    return 'Your contribution: $n pts';
+  }
+
+  @override
+  String get guildOwner => 'Owner';
+
+  @override
+  String get guildEmpty => 'No public guilds yet. Create the first one!';
+
+  @override
+  String get guildErrNameTaken => 'That guild name is taken.';
+
+  @override
+  String get guildErrFull => 'This guild is full.';
+
+  @override
+  String get guildErrAlready => 'You\'re already in a guild.';
+
+  @override
+  String get guildErrInvalid => 'Invalid name or tag.';
+
+  @override
+  String get guildErrNotFound => 'Guild not found (it may have closed).';
+
+  @override
+  String get guildErrContribution =>
+      'You need to contribute more points this week.';
+
+  @override
+  String get guildErrNetwork => 'Can\'t connect, please try again.';
+
+  @override
+  String get guildLbTitle => 'Guild Leaderboard';
+
+  @override
+  String get guildLbEmpty => 'No guild has points this week yet.';
+
+  @override
+  String guildRewardGot(int gems) {
+    return 'Got +$gems 💎';
+  }
+
+  @override
+  String guildRewardGotAccessory(int gems, String name) {
+    return 'Got +$gems 💎 and $name';
+  }
+
+  @override
+  String guildPoints(int n) {
+    return '$n pts';
+  }
+
+  @override
+  String guildCreateCost(int n) {
+    return 'Guild creation fee: $n 💎';
+  }
+
+  @override
+  String guildErrGems(int n) {
+    return 'You need $n 💎 to create a guild.';
+  }
+
+  @override
+  String get guildApprovalSwitch => 'Owner must approve join requests';
+
+  @override
+  String get guildRequestJoin => 'Request';
+
+  @override
+  String get guildRequestSent =>
+      'Request sent, waiting for the owner to approve.';
+
+  @override
+  String get guildRequestPending => 'Pending';
+
+  @override
+  String guildRequestsTitle(int n) {
+    return 'Join requests ($n)';
+  }
+
+  @override
+  String get guildAccept => 'Approve';
+
+  @override
+  String get guildReject => 'Reject';
+
+  @override
+  String get guildErrApproval =>
+      'This guild needs the owner\'s approval — tap \"Request\".';
+
+  @override
+  String get guildErrRequestsFull =>
+      'This guild has too many pending requests.';
+
+  @override
+  String cloudSaveConflictGems(String local, String cloud) {
+    return '💎 This device: $local · On the cloud: $cloud';
+  }
 }

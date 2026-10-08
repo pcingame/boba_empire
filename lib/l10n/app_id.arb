@@ -1126,5 +1126,142 @@
         "type": "String"
       }
     }
+  },
+  "guildTitle": "Guild",
+  "guildIntro": "Buat atau gabung guild untuk mencapai target mingguan bersama dan dapat hadiah.",
+  "guildCreate": "Buat guild",
+  "guildJoin": "Gabung",
+  "guildMembersCount": "{n}/{max} anggota",
+  "@guildMembersCount": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "guildWeekTotal": "Minggu ini: {n} poin",
+  "@guildWeekTotal": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildNameLabel": "Nama guild (3-20 karakter)",
+  "guildTagLabel": "Tag (2-4 huruf/angka)",
+  "guildLeave": "Keluar guild",
+  "guildLeaveConfirm": "Keluar dari guild ini? Poin mingguanmu tidak dihitung lagi.",
+  "guildKick": "Keluarkan",
+  "guildKickConfirm": "Keluarkan {name} dari guild?",
+  "@guildKickConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildReport": "Laporkan guild",
+  "guildReportSent": "Laporan terkirim, terima kasih.",
+  "guildGoalTitle": "Target mingguan",
+  "guildClaim": "Klaim",
+  "guildNeedPoints": "Sumbang ≥{n} poin untuk klaim",
+  "@guildNeedPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildYourPoints": "Kontribusimu: {n} poin",
+  "@guildYourPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildOwner": "Ketua",
+  "guildEmpty": "Belum ada guild publik. Buat yang pertama!",
+  "guildErrNameTaken": "Nama guild sudah dipakai.",
+  "guildErrFull": "Guild ini penuh.",
+  "guildErrAlready": "Kamu sudah berada di guild.",
+  "guildErrInvalid": "Nama atau tag tidak valid.",
+  "guildErrNotFound": "Guild tidak ditemukan (mungkin sudah tutup).",
+  "guildErrContribution": "Kamu perlu menyumbang lebih banyak poin minggu ini.",
+  "guildErrNetwork": "Tidak bisa terhubung, coba lagi.",
+  "guildLbTitle": "Peringkat Guild",
+  "guildLbEmpty": "Belum ada guild yang punya poin minggu ini.",
+  "guildRewardGot": "Dapat +{gems} 💎",
+  "@guildRewardGot": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "guildRewardGotAccessory": "Dapat +{gems} 💎 dan {name}",
+  "@guildRewardGotAccessory": {
+    "placeholders": {
+      "gems": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildPoints": "{n} poin",
+  "@guildPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildCreateCost": "Biaya membuat guild: {n} 💎",
+  "@guildCreateCost": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrGems": "Kamu butuh {n} 💎 untuk membuat guild.",
+  "@guildErrGems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildApprovalSwitch": "Ketua harus menyetujui permintaan gabung",
+  "guildRequestJoin": "Minta gabung",
+  "guildRequestSent": "Permintaan terkirim, menunggu persetujuan ketua.",
+  "guildRequestPending": "Menunggu",
+  "guildRequestsTitle": "Permintaan gabung ({n})",
+  "@guildRequestsTitle": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildAccept": "Setujui",
+  "guildReject": "Tolak",
+  "guildErrApproval": "Guild ini perlu persetujuan ketua — tekan \"Minta gabung\".",
+  "guildErrRequestsFull": "Guild ini punya terlalu banyak permintaan tertunda.",
+  "cloudSaveConflictGems": "💎 Perangkat ini: {local} · Di cloud: {cloud}",
+  "@cloudSaveConflictGems": {
+    "placeholders": {
+      "local": {
+        "type": "String"
+      },
+      "cloud": {
+        "type": "String"
+      }
+    }
   }
 }

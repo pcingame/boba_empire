@@ -135,6 +135,8 @@ class GameState {
     List<String>? ownedAccessories,
     List<String>? ownedLimited,
     this.eventId = '',
+    this.guildWeek = 0,
+    this.guildWeekScore = 0,
     this.eventPoints = 0,
     Map<String, double>? eventProgress,
     List<String>? eventClaimed,
@@ -252,6 +254,10 @@ class GameState {
   /// Nhiệm vụ sự kiện theo dịp lễ (event_quests.dart): id dịp đang theo dõi
   /// ('' = không có), tiến độ cộng dồn, nhiệm vụ đã nhận, điểm đổi món.
   String eventId;
+
+  /// Hội (guild.dart): chỉ số tuần (thứ Hai UTC) và điểm hoạt động tuần này.
+  int guildWeek;
+  double guildWeekScore;
   int eventPoints;
   final Map<String, double> eventProgress;
   final List<String> eventClaimed;
@@ -471,6 +477,8 @@ class GameState {
         'ownedAccessories': ownedAccessories,
         'ownedLimited': ownedLimited,
         'eventId': eventId,
+        'guildWeek': guildWeek,
+        'guildWeekScore': guildWeekScore,
         'eventPoints': eventPoints,
         'eventProgress': eventProgress,
         'eventClaimed': eventClaimed,
@@ -566,6 +574,8 @@ class GameState {
             (json['ownedAccessories'] as List?)?.cast<String>().toList(),
         ownedLimited: (json['ownedLimited'] as List?)?.cast<String>().toList(),
         eventId: (json['eventId'] as String?) ?? '',
+        guildWeek: (json['guildWeek'] as num?)?.toInt() ?? 0,
+        guildWeekScore: (json['guildWeekScore'] as num?)?.toDouble() ?? 0,
         eventPoints: (json['eventPoints'] as num?)?.toInt() ?? 0,
         eventProgress: (json['eventProgress'] as Map?)
             ?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),

@@ -2411,4 +2411,160 @@ class AppLocalizationsKo extends AppLocalizations {
   String eventBuff(String mult) {
     return '이벤트 기간 동안 수익 ×$mult';
   }
+
+  @override
+  String get guildTitle => '길드';
+
+  @override
+  String get guildIntro => '길드를 만들거나 가입해 함께 주간 목표를 달성하고 보상을 받으세요.';
+
+  @override
+  String get guildCreate => '길드 만들기';
+
+  @override
+  String get guildJoin => '가입';
+
+  @override
+  String guildMembersCount(int n, int max) {
+    return '$n/$max명';
+  }
+
+  @override
+  String guildWeekTotal(int n) {
+    return '이번 주: $n점';
+  }
+
+  @override
+  String get guildNameLabel => '길드 이름 (3-20자)';
+
+  @override
+  String get guildTagLabel => '태그 (영문/숫자 2-4자)';
+
+  @override
+  String get guildLeave => '길드 탈퇴';
+
+  @override
+  String get guildLeaveConfirm => '이 길드를 탈퇴할까요? 이번 주 내 점수는 더 이상 반영되지 않아요.';
+
+  @override
+  String get guildKick => '내보내기';
+
+  @override
+  String guildKickConfirm(String name) {
+    return '$name님을 길드에서 내보낼까요?';
+  }
+
+  @override
+  String get guildReport => '길드 신고';
+
+  @override
+  String get guildReportSent => '신고가 접수되었어요. 감사합니다.';
+
+  @override
+  String get guildGoalTitle => '주간 목표';
+
+  @override
+  String get guildClaim => '받기';
+
+  @override
+  String guildNeedPoints(int n) {
+    return '받으려면 ≥$n점 기여 필요';
+  }
+
+  @override
+  String guildYourPoints(int n) {
+    return '내 기여: $n점';
+  }
+
+  @override
+  String get guildOwner => '길드장';
+
+  @override
+  String get guildEmpty => '공개 길드가 아직 없어요. 첫 길드를 만들어 보세요!';
+
+  @override
+  String get guildErrNameTaken => '이미 사용 중인 길드 이름이에요.';
+
+  @override
+  String get guildErrFull => '길드 인원이 가득 찼어요.';
+
+  @override
+  String get guildErrAlready => '이미 길드에 가입되어 있어요.';
+
+  @override
+  String get guildErrInvalid => '이름 또는 태그가 올바르지 않아요.';
+
+  @override
+  String get guildErrNotFound => '길드를 찾을 수 없어요 (폐쇄되었을 수 있어요).';
+
+  @override
+  String get guildErrContribution => '이번 주에 더 기여해야 해요.';
+
+  @override
+  String get guildErrNetwork => '연결할 수 없어요. 다시 시도해 주세요.';
+
+  @override
+  String get guildLbTitle => '길드 랭킹';
+
+  @override
+  String get guildLbEmpty => '이번 주 점수가 있는 길드가 아직 없어요.';
+
+  @override
+  String guildRewardGot(int gems) {
+    return '+$gems 💎 획득';
+  }
+
+  @override
+  String guildRewardGotAccessory(int gems, String name) {
+    return '+$gems 💎 와 $name 획득';
+  }
+
+  @override
+  String guildPoints(int n) {
+    return '$n점';
+  }
+
+  @override
+  String guildCreateCost(int n) {
+    return '길드 생성 비용: $n 💎';
+  }
+
+  @override
+  String guildErrGems(int n) {
+    return '길드를 만들려면 $n 💎가 필요해요.';
+  }
+
+  @override
+  String get guildApprovalSwitch => '가입 신청은 길드장이 승인';
+
+  @override
+  String get guildRequestJoin => '신청';
+
+  @override
+  String get guildRequestSent => '신청을 보냈어요. 길드장의 승인을 기다려 주세요.';
+
+  @override
+  String get guildRequestPending => '승인 대기';
+
+  @override
+  String guildRequestsTitle(int n) {
+    return '가입 신청 ($n)';
+  }
+
+  @override
+  String get guildAccept => '승인';
+
+  @override
+  String get guildReject => '거절';
+
+  @override
+  String get guildErrApproval => '이 길드는 길드장 승인이 필요해요. \"신청\"을 눌러 주세요.';
+
+  @override
+  String get guildErrRequestsFull => '이 길드에 대기 중인 신청이 너무 많아요.';
+
+  @override
+  String cloudSaveConflictGems(String local, String cloud) {
+    return '💎 이 기기: $local · 클라우드: $cloud';
+  }
 }

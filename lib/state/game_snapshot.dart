@@ -61,6 +61,7 @@ class GameSnapshot {
     required this.ownedAccessories,
     required this.ownedLimited,
     this.eventId = '',
+    this.guildScore = 0,
     this.eventPoints = 0,
     this.eventProgress = const {},
     this.eventClaimed = const [],
@@ -196,6 +197,9 @@ class GameSnapshot {
 
   /// Nhiệm vụ sự kiện lễ hội (event_quests.dart).
   final String eventId;
+
+  /// Điểm hoạt động tuần này cho Hội (guild.dart).
+  final int guildScore;
   final int eventPoints;
   final Map<String, double> eventProgress;
   final List<String> eventClaimed;
