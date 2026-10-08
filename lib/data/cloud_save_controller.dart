@@ -66,8 +66,13 @@ class CloudSaveConflict extends CloudSaveViewState {
   const CloudSaveConflict({
     required this.localLifetimeEarnings,
     required this.cloud,
+    this.localGems = 0,
   });
   final double localLifetimeEarnings;
+
+  /// 💎 trên máy này — hiện cạnh số 💎 trên cloud để người chơi thấy vì sao
+  /// có xung đột khi tiền kiếm được hai bên giống nhau.
+  final double localGems;
   final CloudSaveResult cloud;
 }
 
@@ -81,8 +86,34 @@ class CloudSaveError extends CloudSaveViewState {
   final String message;
 }
 
+/// Hai save (máy này / cloud) có đủ KHÁC để hỏi người chơi không. Khác nếu tiền
+/// kiếm được cả đời lệch quá 1%, HOẶC 💎 lệch ≥ 10 và quá 1%. Phải xét cả 💎:
+/// quà tặng/bù đắp thủ công (sửa `gems` trên cloud) không làm đổi tiền kiếm được,
+/// nếu bỏ qua thì máy chỉ lặng lẽ ghi nhận version mới rồi ĐÈ mất quà ở lần lưu
+/// kế. Chênh lệch nhỏ (vài 💎 do lệch nhịp lưu) thì không làm phiền.
+bool cloudSaveLooksDifferent({
+  required double cloudLifetime,
+  required double localLifetime,
+  required double cloudGems,
+  required double localGems,
+}) {
+  bool differs(double a, double b, {double minDiff = 0}) {
+    if (a == 0 && b == 0) return false;
+    final diff = (a - b).abs();
+    final base = a > b ? a : b;
+    return diff >= minDiff && (base == 0 ? diff > 0 : diff / base > 0.01);
+  }
+
+  return differs(cloudLifetime, localLifetime) ||
+      differs(cloudGems, localGems, minDiff: 10);
+}
+
 class CloudSaveController extends Notifier<CloudSaveViewState> {
   CloudSaveRepository? _repo;
+
+  /// Test thay bản giả (repo thật cần SupabaseClient).
+  @visibleForTesting
+  set repository(CloudSaveRepository repo) => _repo = repo;
 
   /// Mốc gửi mã thành công gần nhất (epoch ms). Giữ ở controller chứ không ở
   /// widget để đóng/mở lại dialog không reset được thời gian chờ.
@@ -99,6 +130,7 @@ class CloudSaveController extends Notifier<CloudSaveViewState> {
   /// UI gán trước khi gọi bất kỳ hành động nào (xem `cloud_save_dialog.dart`).
   Map<String, dynamic> Function()? getLocalSave;
   double Function()? getLocalLifetimeEarnings;
+  double Function()? getLocalGems;
   void Function(Map<String, dynamic> json, int cloudVersion)? onRestore;
 
   /// true nếu GameController vừa phát hiện xung đột chưa xử lý ở lần lưu
@@ -156,8 +188,12 @@ class CloudSaveController extends Notifier<CloudSaveViewState> {
   Future<void> _afterLinked() async {
     final cloud = await _repository.pull();
     final localLifetime = getLocalLifetimeEarnings?.call() ?? 0;
-    if (cloud != null && _looksDifferent(cloud, localLifetime)) {
-      state = CloudSaveConflict(localLifetimeEarnings: localLifetime, cloud: cloud);
+    final localGems = getLocalGems?.call() ?? 0;
+    if (cloud != null && _looksDifferent(cloud, localLifetime, localGems)) {
+      state = CloudSaveConflict(
+          localLifetimeEarnings: localLifetime,
+          localGems: localGems,
+          cloud: cloud);
       return;
     }
     await _pushLocal();
@@ -165,13 +201,14 @@ class CloudSaveController extends Notifier<CloudSaveViewState> {
 
   /// So le rõ ràng mới hỏi — chênh lệch quá nhỏ (VD vài Xu do lệch nhịp lưu)
   /// thì khỏi làm phiền người chơi bằng 1 hộp thoại không cần thiết.
-  bool _looksDifferent(CloudSaveResult cloud, double localLifetime) {
-    final cloudLifetime = (cloud.data['lifetimeEarnings'] as num?)?.toDouble() ?? 0;
-    if (localLifetime == 0 && cloudLifetime == 0) return false;
-    final diff = (cloudLifetime - localLifetime).abs();
-    final base = cloudLifetime > localLifetime ? cloudLifetime : localLifetime;
-    return base == 0 ? diff > 0 : diff / base > 0.01;
-  }
+  bool _looksDifferent(
+          CloudSaveResult cloud, double localLifetime, double localGems) =>
+      cloudSaveLooksDifferent(
+        cloudLifetime: (cloud.data['lifetimeEarnings'] as num?)?.toDouble() ?? 0,
+        localLifetime: localLifetime,
+        cloudGems: (cloud.data['gems'] as num?)?.toDouble() ?? 0,
+        localGems: localGems,
+      );
 
   /// Người chơi chọn "Khôi phục từ cloud" ở hộp thoại xung đột.
   void restoreFromCloud() {
@@ -213,8 +250,12 @@ class CloudSaveController extends Notifier<CloudSaveViewState> {
   Future<void> recheckConflict() async {
     final cloud = await _repository.pull();
     final localLifetime = getLocalLifetimeEarnings?.call() ?? 0;
-    if (cloud != null && _looksDifferent(cloud, localLifetime)) {
-      state = CloudSaveConflict(localLifetimeEarnings: localLifetime, cloud: cloud);
+    final localGems = getLocalGems?.call() ?? 0;
+    if (cloud != null && _looksDifferent(cloud, localLifetime, localGems)) {
+      state = CloudSaveConflict(
+          localLifetimeEarnings: localLifetime,
+          localGems: localGems,
+          cloud: cloud);
       return;
     }
     if (cloud != null) onSyncVersionKnown?.call(cloud.version);

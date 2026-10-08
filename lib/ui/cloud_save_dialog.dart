@@ -49,6 +49,7 @@ class _CloudSaveDialogState extends ConsumerState<_CloudSaveDialog> {
         () => ref.read(gameControllerProvider.notifier).exportSaveJson();
     notifier.getLocalLifetimeEarnings =
         () => ref.read(gameControllerProvider).lifetimeEarnings;
+    notifier.getLocalGems = () => ref.read(gameControllerProvider).gems;
     notifier.onRestore = (json, cloudVersion) => ref
         .read(gameControllerProvider.notifier)
         .restoreFromCloud(json, cloudVersion: cloudVersion);
@@ -81,12 +82,18 @@ class _CloudSaveDialogState extends ConsumerState<_CloudSaveDialog> {
           CloudSaveAwaitingCode(email: final email) =>
             _CodeForm(l10n: l10n, email: email, codeCtrl: _codeCtrl),
           CloudSaveVerifying() => const _Loading(),
-          CloudSaveConflict(:final localLifetimeEarnings, :final cloud) =>
+          CloudSaveConflict(
+            :final localLifetimeEarnings,
+            :final localGems,
+            :final cloud
+          ) =>
             _ConflictView(
               l10n: l10n,
               localLifetimeEarnings: localLifetimeEarnings,
               cloudLifetimeEarnings:
                   (cloud.data['lifetimeEarnings'] as num?)?.toDouble() ?? 0,
+              localGems: localGems,
+              cloudGems: (cloud.data['gems'] as num?)?.toDouble() ?? 0,
             ),
           CloudSaveLinked(email: final email) => _LinkedView(l10n: l10n, email: email),
           CloudSaveError(:final message) => _ErrorView(l10n: l10n, message: message),
@@ -251,10 +258,14 @@ class _ConflictView extends ConsumerWidget {
     required this.l10n,
     required this.localLifetimeEarnings,
     required this.cloudLifetimeEarnings,
+    required this.localGems,
+    required this.cloudGems,
   });
   final AppLocalizations l10n;
   final double localLifetimeEarnings;
   final double cloudLifetimeEarnings;
+  final double localGems;
+  final double cloudGems;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -267,6 +278,8 @@ class _ConflictView extends ConsumerWidget {
         const SizedBox(height: 12),
         Text(l10n.cloudSaveConflictLocal(formatNumber(localLifetimeEarnings))),
         Text(l10n.cloudSaveConflictCloud(formatNumber(cloudLifetimeEarnings))),
+        Text(l10n.cloudSaveConflictGems(
+            formatNumber(localGems), formatNumber(cloudGems))),
         const SizedBox(height: 16),
         FilledButton(
           onPressed: () =>
