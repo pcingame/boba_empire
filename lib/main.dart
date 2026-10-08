@@ -121,6 +121,10 @@ class BobaEmpireApp extends ConsumerWidget {
     final seed = _seedForStage(stage);
     return MaterialApp(
       scaffoldMessengerKey: _messengerKey,
+      // Tắt hiệu ứng kéo giãn của Android 12+ (StretchingOverscrollIndicator) cho
+      // MỌI danh sách — trước đây từng trang tắt riêng nên trang nào quên (vd. BXH
+      // phụ kiện) vẫn bị co giãn khi cuộn quá đầu/cuối. iOS giữ hiệu ứng nảy mặc định.
+      scrollBehavior: const MaterialScrollBehavior().copyWith(overscroll: false),
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
       debugShowCheckedModeBanner: false,
       locale: ref.watch(localeProvider),
