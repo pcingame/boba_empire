@@ -2358,4 +2358,57 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get m3LbError => '순위를 불러오지 못했어요. 나중에 다시 시도해 주세요.';
+
+  @override
+  String eventBanner(String name) {
+    return '🎉 $name 이벤트';
+  }
+
+  @override
+  String eventTitle(String name) {
+    return '$name 이벤트';
+  }
+
+  @override
+  String eventEndsIn(String time) {
+    return '$time 후 종료';
+  }
+
+  @override
+  String eventPoints(int n) {
+    return '이벤트 포인트: $n';
+  }
+
+  @override
+  String get eventRedeemHint =>
+      '퀘스트를 완료해 포인트를 모으고 한정 아이템을 무료로 교환하세요. 포인트로 전체 세트는 못 얻으니 마음에 드는 것을 고르세요!';
+
+  @override
+  String eventRedeemCost(int cost) {
+    return '$cost점';
+  }
+
+  @override
+  String get eventLbTitle => '이벤트 랭킹';
+
+  @override
+  String get eventLbEmpty => '아직 아무도 없어요. 몇 번만 탭하면 1등!';
+
+  @override
+  String get eventLbNoScore => '아직 점수가 없어요. 컵을 탭하고, 고양이를 잡고, VIP를 응대해 보세요.';
+
+  @override
+  String eventLbMyScore(int n) {
+    return '내 점수: $n';
+  }
+
+  @override
+  String eventLbScore(int n) {
+    return '$n점';
+  }
+
+  @override
+  String eventBuff(String mult) {
+    return '이벤트 기간 동안 수익 ×$mult';
+  }
 }

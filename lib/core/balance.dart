@@ -373,6 +373,14 @@ class Balance {
   static const double seasonPackDiscount = 0.25;
   static const int festivalPackGems = 80; // ⚠️ ước lượng, chưa playtest
 
+  /// Nhiệm vụ sự kiện (event_quests.dart): mỗi nhiệm vụ cho 💎 + điểm đổi món lễ hội.
+  static const int eventQuestGems = 15; // ⚠️ ước lượng, chưa playtest
+  static const int eventQuestPoints = 25;
+
+  /// Buff doanh thu trong dịp lễ (thu nhập/giây + chạm ly, KHÔNG áp offline —
+  /// cùng quy ước các boost tạm khác). ⚠️ ước lượng, chưa playtest.
+  static const double festivalIncomeMult = 1.25;
+
   /// Vòng quay phụ kiện: mỗi lượt = 1 QC hoặc [accessorySpinGems] 💎, rớt như
   /// thường (cùng tỉ lệ rớt chung). Lượt xem QC giới hạn/ngày để không biến thành
   /// máy in phụ kiện (bản dư bán được ở Chợ).

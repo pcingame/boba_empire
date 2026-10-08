@@ -1058,5 +1058,73 @@
   "m3LbEmpty": "Aún no hay nadie. ¡Supera unos niveles y serás el primero!",
   "m3LbNoStars": "Aún no tienes estrellas: supera un nivel para entrar en el ranking.",
   "m3LbLevels": "{n} niveles",
-  "m3LbError": "No se pudo cargar el ranking. Inténtalo más tarde."
+  "m3LbError": "No se pudo cargar el ranking. Inténtalo más tarde.",
+  "eventBanner": "🎉 Evento de {name}",
+  "@eventBanner": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "eventTitle": "Evento de {name}",
+  "@eventTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "eventEndsIn": "Termina en {time}",
+  "@eventEndsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "eventPoints": "Puntos de evento: {n}",
+  "@eventPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventRedeemHint": "Completa misiones para ganar puntos y canjear objetos exclusivos gratis. No alcanzan para todo el set: ¡elige tus favoritos!",
+  "eventRedeemCost": "{cost} pts",
+  "@eventRedeemCost": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "eventLbTitle": "Clasificación del evento",
+  "eventLbEmpty": "Nadie en la tabla todavía. ¡Unos toques y serás el primero!",
+  "eventLbNoScore": "Aún no tienes puntos: toca la taza, atrapa gatos y atiende VIP para entrar.",
+  "eventLbMyScore": "Tu puntuación: {n}",
+  "@eventLbMyScore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventLbScore": "{n} pts",
+  "@eventLbScore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventBuff": "Ingresos ×{mult} durante el evento",
+  "@eventBuff": {
+    "placeholders": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  }
 }

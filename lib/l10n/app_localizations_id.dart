@@ -2395,4 +2395,59 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get m3LbError => 'Tidak bisa memuat peringkat. Coba lagi nanti.';
+
+  @override
+  String eventBanner(String name) {
+    return '🎉 Event $name';
+  }
+
+  @override
+  String eventTitle(String name) {
+    return 'Event $name';
+  }
+
+  @override
+  String eventEndsIn(String time) {
+    return 'Berakhir dalam $time';
+  }
+
+  @override
+  String eventPoints(int n) {
+    return 'Poin event: $n';
+  }
+
+  @override
+  String get eventRedeemHint =>
+      'Selesaikan misi untuk dapat poin dan tukar item eksklusif gratis. Poin tidak cukup untuk semua set — pilih yang kamu suka!';
+
+  @override
+  String eventRedeemCost(int cost) {
+    return '$cost poin';
+  }
+
+  @override
+  String get eventLbTitle => 'Peringkat Event';
+
+  @override
+  String get eventLbEmpty =>
+      'Belum ada yang masuk. Beberapa ketukan dan kamu jadi nomor satu!';
+
+  @override
+  String get eventLbNoScore =>
+      'Kamu belum punya poin — ketuk gelas, tangkap kucing, layani VIP untuk masuk papan.';
+
+  @override
+  String eventLbMyScore(int n) {
+    return 'Skormu: $n';
+  }
+
+  @override
+  String eventLbScore(int n) {
+    return '$n poin';
+  }
+
+  @override
+  String eventBuff(String mult) {
+    return 'Pendapatan ×$mult selama event';
+  }
 }

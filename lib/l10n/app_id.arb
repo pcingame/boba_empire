@@ -1058,5 +1058,73 @@
   "m3LbEmpty": "Belum ada siapa pun. Selesaikan beberapa level dan kamu jadi nomor satu!",
   "m3LbNoStars": "Kamu belum punya bintang — selesaikan satu level untuk masuk papan.",
   "m3LbLevels": "{n} level",
-  "m3LbError": "Tidak bisa memuat peringkat. Coba lagi nanti."
+  "m3LbError": "Tidak bisa memuat peringkat. Coba lagi nanti.",
+  "eventBanner": "🎉 Event {name}",
+  "@eventBanner": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "eventTitle": "Event {name}",
+  "@eventTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "eventEndsIn": "Berakhir dalam {time}",
+  "@eventEndsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "eventPoints": "Poin event: {n}",
+  "@eventPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventRedeemHint": "Selesaikan misi untuk dapat poin dan tukar item eksklusif gratis. Poin tidak cukup untuk semua set — pilih yang kamu suka!",
+  "eventRedeemCost": "{cost} poin",
+  "@eventRedeemCost": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "eventLbTitle": "Peringkat Event",
+  "eventLbEmpty": "Belum ada yang masuk. Beberapa ketukan dan kamu jadi nomor satu!",
+  "eventLbNoScore": "Kamu belum punya poin — ketuk gelas, tangkap kucing, layani VIP untuk masuk papan.",
+  "eventLbMyScore": "Skormu: {n}",
+  "@eventLbMyScore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventLbScore": "{n} poin",
+  "@eventLbScore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventBuff": "Pendapatan ×{mult} selama event",
+  "@eventBuff": {
+    "placeholders": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  }
 }

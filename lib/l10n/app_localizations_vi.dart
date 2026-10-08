@@ -2390,4 +2390,59 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get m3LbError => 'Không tải được bảng xếp hạng, thử lại sau nhé.';
+
+  @override
+  String eventBanner(String name) {
+    return '🎉 Sự kiện $name';
+  }
+
+  @override
+  String eventTitle(String name) {
+    return 'Sự kiện $name';
+  }
+
+  @override
+  String eventEndsIn(String time) {
+    return 'Kết thúc sau $time';
+  }
+
+  @override
+  String eventPoints(int n) {
+    return 'Điểm sự kiện: $n';
+  }
+
+  @override
+  String get eventRedeemHint =>
+      'Làm nhiệm vụ để lấy điểm, đổi món độc quyền miễn phí. Điểm không đủ đổi cả bộ — hãy chọn món bạn thích!';
+
+  @override
+  String eventRedeemCost(int cost) {
+    return '$cost điểm';
+  }
+
+  @override
+  String get eventLbTitle => 'BXH Sự kiện';
+
+  @override
+  String get eventLbEmpty =>
+      'Chưa có ai lên bảng. Chạm vài cái là bạn đứng đầu!';
+
+  @override
+  String get eventLbNoScore =>
+      'Bạn chưa có điểm — chạm ly, bắt mèo, phục vụ VIP để lên bảng.';
+
+  @override
+  String eventLbMyScore(int n) {
+    return 'Điểm của bạn: $n';
+  }
+
+  @override
+  String eventLbScore(int n) {
+    return '$n điểm';
+  }
+
+  @override
+  String eventBuff(String mult) {
+    return 'Doanh thu ×$mult trong suốt sự kiện';
+  }
 }

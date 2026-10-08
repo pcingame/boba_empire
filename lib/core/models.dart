@@ -134,6 +134,10 @@ class GameState {
     List<String>? redeemedCodes,
     List<String>? ownedAccessories,
     List<String>? ownedLimited,
+    this.eventId = '',
+    this.eventPoints = 0,
+    Map<String, double>? eventProgress,
+    List<String>? eventClaimed,
     Map<String, int>? accessorySpares,
     List<String>? equippedAccessories,
     List<int>? collectionMilestonesClaimed,
@@ -143,6 +147,8 @@ class GameState {
         redeemedCodes = redeemedCodes ?? [],
         ownedAccessories = ownedAccessories ?? [],
         ownedLimited = ownedLimited ?? [],
+        eventProgress = eventProgress ?? {},
+        eventClaimed = eventClaimed ?? [],
         accessorySpares = accessorySpares ?? {},
         equippedAccessories = equippedAccessories ?? [],
         collectionMilestonesClaimed = collectionMilestonesClaimed ?? [],
@@ -242,6 +248,13 @@ class GameState {
   /// Phụ kiện độc quyền theo dịp lễ (xem accessories.dart `festivals`) — tách khỏi
   /// [ownedAccessories] để không dính số đếm bộ sưu tập / BXH / Chợ.
   final List<String> ownedLimited;
+
+  /// Nhiệm vụ sự kiện theo dịp lễ (event_quests.dart): id dịp đang theo dõi
+  /// ('' = không có), tiến độ cộng dồn, nhiệm vụ đã nhận, điểm đổi món.
+  String eventId;
+  int eventPoints;
+  final Map<String, double> eventProgress;
+  final List<String> eventClaimed;
 
   /// Số bản SAO DƯ ngoài bản đầu của mỗi món (id → n ≥ 1; không có khoá = 0
   /// dư). Rớt trùng cộng vào đây (xem grantAccessory) — bản dư bán được ở Chợ
@@ -457,6 +470,10 @@ class GameState {
         'redeemedCodes': redeemedCodes,
         'ownedAccessories': ownedAccessories,
         'ownedLimited': ownedLimited,
+        'eventId': eventId,
+        'eventPoints': eventPoints,
+        'eventProgress': eventProgress,
+        'eventClaimed': eventClaimed,
         'accessorySpares': accessorySpares,
         'equippedAccessories': equippedAccessories,
         'collectionMilestonesClaimed': collectionMilestonesClaimed,
@@ -548,6 +565,11 @@ class GameState {
         ownedAccessories:
             (json['ownedAccessories'] as List?)?.cast<String>().toList(),
         ownedLimited: (json['ownedLimited'] as List?)?.cast<String>().toList(),
+        eventId: (json['eventId'] as String?) ?? '',
+        eventPoints: (json['eventPoints'] as num?)?.toInt() ?? 0,
+        eventProgress: (json['eventProgress'] as Map?)
+            ?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),
+        eventClaimed: (json['eventClaimed'] as List?)?.cast<String>().toList(),
         // load() nuốt mọi lỗi thành "ván mới" — trường phụ này sai kiểu/giá trị
         // lạ phải bị BỎ QUA chứ không được ném, nếu không mất cả save.
         wishlist: [

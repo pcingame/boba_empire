@@ -60,6 +60,11 @@ class GameSnapshot {
     required this.m3Stars,
     required this.ownedAccessories,
     required this.ownedLimited,
+    this.eventId = '',
+    this.eventPoints = 0,
+    this.eventProgress = const {},
+    this.eventClaimed = const [],
+    this.eventClaimableCount = 0,
     required this.accessorySpares,
     required this.equippedAccessories,
     required this.collectionMilestonesClaimed,
@@ -188,6 +193,13 @@ class GameSnapshot {
   /// Id phụ kiện sưu tập đã có (xem `core/accessories.dart`).
   final List<String> ownedAccessories;
   final List<String> ownedLimited;
+
+  /// Nhiệm vụ sự kiện lễ hội (event_quests.dart).
+  final String eventId;
+  final int eventPoints;
+  final Map<String, double> eventProgress;
+  final List<String> eventClaimed;
+  final int eventClaimableCount;
 
   /// Bản sao dư mỗi món (xem GameState.accessorySpares).
   final Map<String, int> accessorySpares;

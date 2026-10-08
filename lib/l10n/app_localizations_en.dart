@@ -2397,4 +2397,59 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get m3LbError => 'Couldn\'t load the ranking. Please try again later.';
+
+  @override
+  String eventBanner(String name) {
+    return '🎉 $name event';
+  }
+
+  @override
+  String eventTitle(String name) {
+    return '$name event';
+  }
+
+  @override
+  String eventEndsIn(String time) {
+    return 'Ends in $time';
+  }
+
+  @override
+  String eventPoints(int n) {
+    return 'Event points: $n';
+  }
+
+  @override
+  String get eventRedeemHint =>
+      'Finish quests to earn points and redeem exclusive items for free. Points won\'t cover the whole set — pick what you like!';
+
+  @override
+  String eventRedeemCost(int cost) {
+    return '$cost pts';
+  }
+
+  @override
+  String get eventLbTitle => 'Event Leaderboard';
+
+  @override
+  String get eventLbEmpty =>
+      'Nobody is on the board yet. A few taps and you\'re first!';
+
+  @override
+  String get eventLbNoScore =>
+      'You have no points yet — tap the cup, catch cats, serve VIPs to get on the board.';
+
+  @override
+  String eventLbMyScore(int n) {
+    return 'Your score: $n';
+  }
+
+  @override
+  String eventLbScore(int n) {
+    return '$n pts';
+  }
+
+  @override
+  String eventBuff(String mult) {
+    return 'Revenue ×$mult during the event';
+  }
 }

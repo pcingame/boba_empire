@@ -696,5 +696,73 @@
   "m3LbEmpty": "아직 순위에 아무도 없어요. 몇 단계를 클리어하면 1위는 당신이에요!",
   "m3LbNoStars": "아직 별이 없어요 — 한 단계를 클리어하면 순위에 올라요.",
   "m3LbLevels": "{n}단계",
-  "m3LbError": "순위를 불러오지 못했어요. 나중에 다시 시도해 주세요."
+  "m3LbError": "순위를 불러오지 못했어요. 나중에 다시 시도해 주세요.",
+  "eventBanner": "🎉 {name} 이벤트",
+  "@eventBanner": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "eventTitle": "{name} 이벤트",
+  "@eventTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "eventEndsIn": "{time} 후 종료",
+  "@eventEndsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "eventPoints": "이벤트 포인트: {n}",
+  "@eventPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventRedeemHint": "퀘스트를 완료해 포인트를 모으고 한정 아이템을 무료로 교환하세요. 포인트로 전체 세트는 못 얻으니 마음에 드는 것을 고르세요!",
+  "eventRedeemCost": "{cost}점",
+  "@eventRedeemCost": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "eventLbTitle": "이벤트 랭킹",
+  "eventLbEmpty": "아직 아무도 없어요. 몇 번만 탭하면 1등!",
+  "eventLbNoScore": "아직 점수가 없어요. 컵을 탭하고, 고양이를 잡고, VIP를 응대해 보세요.",
+  "eventLbMyScore": "내 점수: {n}",
+  "@eventLbMyScore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventLbScore": "{n}점",
+  "@eventLbScore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventBuff": "이벤트 기간 동안 수익 ×{mult}",
+  "@eventBuff": {
+    "placeholders": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  }
 }

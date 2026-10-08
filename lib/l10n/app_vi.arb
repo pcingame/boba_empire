@@ -1514,5 +1514,73 @@
       }
     }
   },
-  "m3LbError": "Không tải được bảng xếp hạng, thử lại sau nhé."
+  "m3LbError": "Không tải được bảng xếp hạng, thử lại sau nhé.",
+  "eventBanner": "🎉 Sự kiện {name}",
+  "@eventBanner": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "eventTitle": "Sự kiện {name}",
+  "@eventTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "eventEndsIn": "Kết thúc sau {time}",
+  "@eventEndsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "eventPoints": "Điểm sự kiện: {n}",
+  "@eventPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventRedeemHint": "Làm nhiệm vụ để lấy điểm, đổi món độc quyền miễn phí. Điểm không đủ đổi cả bộ — hãy chọn món bạn thích!",
+  "eventRedeemCost": "{cost} điểm",
+  "@eventRedeemCost": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "eventLbTitle": "BXH Sự kiện",
+  "eventLbEmpty": "Chưa có ai lên bảng. Chạm vài cái là bạn đứng đầu!",
+  "eventLbNoScore": "Bạn chưa có điểm — chạm ly, bắt mèo, phục vụ VIP để lên bảng.",
+  "eventLbMyScore": "Điểm của bạn: {n}",
+  "@eventLbMyScore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventLbScore": "{n} điểm",
+  "@eventLbScore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventBuff": "Doanh thu ×{mult} trong suốt sự kiện",
+  "@eventBuff": {
+    "placeholders": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -4247,6 +4247,78 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Không tải được bảng xếp hạng, thử lại sau nhé.'**
   String get m3LbError;
+
+  /// No description provided for @eventBanner.
+  ///
+  /// In vi, this message translates to:
+  /// **'🎉 Sự kiện {name}'**
+  String eventBanner(String name);
+
+  /// No description provided for @eventTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sự kiện {name}'**
+  String eventTitle(String name);
+
+  /// No description provided for @eventEndsIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kết thúc sau {time}'**
+  String eventEndsIn(String time);
+
+  /// No description provided for @eventPoints.
+  ///
+  /// In vi, this message translates to:
+  /// **'Điểm sự kiện: {n}'**
+  String eventPoints(int n);
+
+  /// No description provided for @eventRedeemHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Làm nhiệm vụ để lấy điểm, đổi món độc quyền miễn phí. Điểm không đủ đổi cả bộ — hãy chọn món bạn thích!'**
+  String get eventRedeemHint;
+
+  /// No description provided for @eventRedeemCost.
+  ///
+  /// In vi, this message translates to:
+  /// **'{cost} điểm'**
+  String eventRedeemCost(int cost);
+
+  /// No description provided for @eventLbTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'BXH Sự kiện'**
+  String get eventLbTitle;
+
+  /// No description provided for @eventLbEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có ai lên bảng. Chạm vài cái là bạn đứng đầu!'**
+  String get eventLbEmpty;
+
+  /// No description provided for @eventLbNoScore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa có điểm — chạm ly, bắt mèo, phục vụ VIP để lên bảng.'**
+  String get eventLbNoScore;
+
+  /// No description provided for @eventLbMyScore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Điểm của bạn: {n}'**
+  String eventLbMyScore(int n);
+
+  /// No description provided for @eventLbScore.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} điểm'**
+  String eventLbScore(int n);
+
+  /// No description provided for @eventBuff.
+  ///
+  /// In vi, this message translates to:
+  /// **'Doanh thu ×{mult} trong suốt sự kiện'**
+  String eventBuff(String mult);
 }
 
 class _AppLocalizationsDelegate

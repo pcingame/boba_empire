@@ -2380,4 +2380,58 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get m3LbError => 'โหลดอันดับไม่ได้ ลองใหม่ภายหลัง';
+
+  @override
+  String eventBanner(String name) {
+    return '🎉 อีเวนต์ $name';
+  }
+
+  @override
+  String eventTitle(String name) {
+    return 'อีเวนต์ $name';
+  }
+
+  @override
+  String eventEndsIn(String time) {
+    return 'สิ้นสุดใน $time';
+  }
+
+  @override
+  String eventPoints(int n) {
+    return 'แต้มอีเวนต์: $n';
+  }
+
+  @override
+  String get eventRedeemHint =>
+      'ทำภารกิจเพื่อรับแต้ม แล้วแลกไอเทมพิเศษฟรี แต้มไม่พอแลกครบชุด — เลือกชิ้นที่ชอบ!';
+
+  @override
+  String eventRedeemCost(int cost) {
+    return '$cost แต้ม';
+  }
+
+  @override
+  String get eventLbTitle => 'อันดับอีเวนต์';
+
+  @override
+  String get eventLbEmpty => 'ยังไม่มีใครติดอันดับ แตะไม่กี่ครั้งก็ที่ 1!';
+
+  @override
+  String get eventLbNoScore =>
+      'คุณยังไม่มีคะแนน — แตะแก้ว จับแมว บริการ VIP เพื่อขึ้นอันดับ';
+
+  @override
+  String eventLbMyScore(int n) {
+    return 'คะแนนของคุณ: $n';
+  }
+
+  @override
+  String eventLbScore(int n) {
+    return '$n คะแนน';
+  }
+
+  @override
+  String eventBuff(String mult) {
+    return 'รายได้ ×$mult ตลอดอีเวนต์';
+  }
 }

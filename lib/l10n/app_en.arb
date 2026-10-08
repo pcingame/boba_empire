@@ -1058,5 +1058,73 @@
   "m3LbEmpty": "Nobody on the board yet. Clear a few levels and the top spot is yours!",
   "m3LbNoStars": "You have no stars yet — clear one level to get on the board.",
   "m3LbLevels": "{n} levels",
-  "m3LbError": "Couldn't load the ranking. Please try again later."
+  "m3LbError": "Couldn't load the ranking. Please try again later.",
+  "eventBanner": "🎉 {name} event",
+  "@eventBanner": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "eventTitle": "{name} event",
+  "@eventTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "eventEndsIn": "Ends in {time}",
+  "@eventEndsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "eventPoints": "Event points: {n}",
+  "@eventPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventRedeemHint": "Finish quests to earn points and redeem exclusive items for free. Points won't cover the whole set — pick what you like!",
+  "eventRedeemCost": "{cost} pts",
+  "@eventRedeemCost": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "eventLbTitle": "Event Leaderboard",
+  "eventLbEmpty": "Nobody is on the board yet. A few taps and you're first!",
+  "eventLbNoScore": "You have no points yet — tap the cup, catch cats, serve VIPs to get on the board.",
+  "eventLbMyScore": "Your score: {n}",
+  "@eventLbMyScore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventLbScore": "{n} pts",
+  "@eventLbScore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventBuff": "Revenue ×{mult} during the event",
+  "@eventBuff": {
+    "placeholders": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  }
 }

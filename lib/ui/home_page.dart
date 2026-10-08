@@ -32,6 +32,7 @@ import 'achievements_dialog.dart';
 import 'compete_hub_dialog.dart';
 import 'daily_quests_dialog.dart';
 import 'daily_dialog.dart';
+import 'event_dialog.dart';
 import 'gem_shop.dart';
 import 'how_to_play_dialog.dart';
 import 'match3_journey_page.dart';
@@ -732,6 +733,7 @@ class _MoneyHeader extends ConsumerWidget {
               const Expanded(child: _CollectionChip()),
             ],
           ),
+          const _FestivalBanner(),
           // Icon xu là widget riêng (không nhét vào chuỗi số) để text tiền vẫn
           // đúng "X Xu" cho test và đọc màn hình. FittedBox co vừa bề ngang khi
           // số lớn hoặc ngôn ngữ dài (không tràn header).
@@ -1871,6 +1873,55 @@ class _CollectionChip extends ConsumerWidget {
             ),
             if (claimable > 0)
               Positioned(right: -6, top: -6, child: _CountBadge(claimable)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Dải mời vào sự kiện khi đang trong dịp lễ (xem core/event_quests.dart).
+class _FestivalBanner extends ConsumerWidget {
+  const _FestivalBanner();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final s = ref.watch(gameControllerProvider
+        .select((s) => (s.eventId, s.eventClaimableCount)));
+    final festival = activeFestival(DateTime.fromMillisecondsSinceEpoch(
+        ref.read(clockProvider)(),
+        isUtc: true));
+    if (festival == null || festival.id != s.$1) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(top: 6),
+      child: InkWell(
+        key: const Key('event-banner'),
+        borderRadius: BorderRadius.circular(24),
+        onTap: () => showEventDialog(context),
+        child: Stack(
+          clipBehavior: Clip.none,
+          fit: StackFit.passthrough,
+          children: [
+            ClayChip(
+              child: Center(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    l10n.eventBanner(festivalName(l10n, festival.id)),
+                    maxLines: 1,
+                    softWrap: false,
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: theme.colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            if (s.$2 > 0)
+              Positioned(right: -6, top: -6, child: _CountBadge(s.$2)),
           ],
         ),
       ),

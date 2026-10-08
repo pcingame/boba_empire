@@ -10,6 +10,7 @@ import 'dart:math';
 
 import 'balance.dart';
 import 'daily.dart' show dayIndex;
+import 'event_quests.dart' show addEventProgress;
 import 'models.dart';
 
 enum DailyQuestKind { tap, buy, earn, cat, vip, spin }
@@ -71,6 +72,7 @@ void addDailyProgress(GameState s, DailyQuestKind k, double n) {
   if (n <= 0 || !n.isFinite) return;
   final v = (s.dailyProgress[k.name] ?? 0) + n;
   if (v.isFinite) s.dailyProgress[k.name] = v;
+  addEventProgress(s, k, n);
 }
 
 /// Sang ngày mới thì đổi bộ: xoá tiến độ + cờ đã nhận, chốt ngưỡng "Kiếm Xu" theo

@@ -1058,5 +1058,73 @@
   "m3LbEmpty": "ยังไม่มีใครบนกระดาน ผ่านสักสองสามด่านแล้วคุณจะเป็นที่หนึ่ง!",
   "m3LbNoStars": "คุณยังไม่มีดาว — ผ่านหนึ่งด่านเพื่อขึ้นกระดาน",
   "m3LbLevels": "{n} ด่าน",
-  "m3LbError": "โหลดอันดับไม่ได้ ลองใหม่ภายหลัง"
+  "m3LbError": "โหลดอันดับไม่ได้ ลองใหม่ภายหลัง",
+  "eventBanner": "🎉 อีเวนต์ {name}",
+  "@eventBanner": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "eventTitle": "อีเวนต์ {name}",
+  "@eventTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "eventEndsIn": "สิ้นสุดใน {time}",
+  "@eventEndsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "eventPoints": "แต้มอีเวนต์: {n}",
+  "@eventPoints": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventRedeemHint": "ทำภารกิจเพื่อรับแต้ม แล้วแลกไอเทมพิเศษฟรี แต้มไม่พอแลกครบชุด — เลือกชิ้นที่ชอบ!",
+  "eventRedeemCost": "{cost} แต้ม",
+  "@eventRedeemCost": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      }
+    }
+  },
+  "eventLbTitle": "อันดับอีเวนต์",
+  "eventLbEmpty": "ยังไม่มีใครติดอันดับ แตะไม่กี่ครั้งก็ที่ 1!",
+  "eventLbNoScore": "คุณยังไม่มีคะแนน — แตะแก้ว จับแมว บริการ VIP เพื่อขึ้นอันดับ",
+  "eventLbMyScore": "คะแนนของคุณ: {n}",
+  "@eventLbMyScore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventLbScore": "{n} คะแนน",
+  "@eventLbScore": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "eventBuff": "รายได้ ×{mult} ตลอดอีเวนต์",
+  "@eventBuff": {
+    "placeholders": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  }
 }

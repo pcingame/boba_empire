@@ -20,6 +20,7 @@ import '../core/collection_milestones.dart';
 import '../core/daily.dart';
 import '../core/daily_quests.dart';
 import '../core/economy.dart';
+import '../core/event_quests.dart';
 import '../core/market_fee.dart' show weekendEventActive;
 import '../core/models.dart';
 import '../core/quests.dart';
@@ -163,6 +164,19 @@ class GameController extends Notifier<GameSnapshot> {
         startMillis: Balance.eventStartMillis,
         endMillis: Balance.eventEndMillis,
       );
+
+  /// Buff doanh thu dịp lễ (`festivals`): [Balance.festivalIncomeMult] khi đang
+  /// trong dịp, 1.0 ngoài dịp. Tầng độc lập như _eventMultiplier().
+  double _festivalMultiplier() => activeFestival(_nowUtc()) != null
+      ? Balance.festivalIncomeMult
+      : 1.0;
+
+  /// Mọi hệ số tạm áp cho thu nhập khi ĐANG CHƠI (không áp offline).
+  double _timedMultiplier() =>
+      _boostMultiplier() *
+      _rivalModifier() *
+      _eventMultiplier() *
+      _festivalMultiplier();
 
   /// true nếu sự kiện đang chạy NGAY LÚC NÀY — UI dùng để hiện banner.
   bool get eventActive => _eventMultiplier() > 1.0;
@@ -448,6 +462,8 @@ class GameController extends Notifier<GameSnapshot> {
   /// Sang ngày (UTC) mới thì đổi bộ nhiệm vụ ngày. Gọi TRƯỚC khi cộng tiền
   /// offline để Xu lúc vắng tính vào ngày hôm nay, không bị xoá ngay sau đó.
   void _rollDaily() {
+    rollEvent(
+        _game, DateTime.fromMillisecondsSinceEpoch(_clock(), isUtc: true));
     rollDailyQuests(
       _game,
       _clock(),
@@ -455,6 +471,30 @@ class GameController extends Notifier<GameSnapshot> {
           bonusPerStar: Balance.bonusPerStar),
     );
   }
+
+  /// Nhận thưởng nhiệm vụ sự kiện [index] (0..3). Trả về 💎 (0 nếu không hợp lệ).
+  int claimEventQuestReward(int index) {
+    final gems = claimEventQuest(_game, index, _nowUtc());
+    if (gems > 0) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return gems;
+  }
+
+  /// Đổi điểm sự kiện lấy món lễ hội [itemId].
+  bool redeemEventReward(String itemId) {
+    final ok = redeemEventItem(_game, itemId, _nowUtc());
+    if (ok) {
+      logEvent('event_item_redeemed', {'item': itemId});
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return ok;
+  }
+
+  DateTime _nowUtc() =>
+      DateTime.fromMillisecondsSinceEpoch(_clock(), isUtc: true);
 
   /// Nhận thưởng nhiệm vụ ngày thứ [index] (0..2). Trả về 💎 nhận (0 nếu chưa
   /// xong/đã nhận). Lưu ngay vì 💎 là premium.
@@ -646,8 +686,7 @@ class GameController extends Notifier<GameSnapshot> {
     addDailyProgress(_game, DailyQuestKind.tap, 1);
     final gained =
         tap(_game,
-            boostMultiplier:
-                _boostMultiplier() * _rivalModifier() * _eventMultiplier());
+            boostMultiplier: _timedMultiplier());
     state = _snapshot();
     return gained;
   }
@@ -1435,8 +1474,7 @@ class GameController extends Notifier<GameSnapshot> {
     final dt = (now - _game.lastSeenMillis) / 1000.0;
     if (dt > 0) {
       tick(_game, dt,
-          boostMultiplier:
-              _boostMultiplier() * _rivalModifier() * _eventMultiplier());
+          boostMultiplier: _timedMultiplier());
       fillPiggy(_game, dt); // heo đất tích theo thời gian chơi
       // Sự kiện đối thủ đang chờ trả lời → đối thủ "lấn tới" (nhỏ, tạo cảm giác gấp).
       if (_rivalEventPending != null && rivalActive(_game)) {
@@ -1480,8 +1518,7 @@ class GameController extends Notifier<GameSnapshot> {
         _game,
         Balance.generators,
         bonusPerStar: Balance.bonusPerStar,
-        boostMultiplier:
-            _boostMultiplier() * _rivalModifier() * _eventMultiplier(),
+        boostMultiplier: _timedMultiplier(),
       ),
       prestigeStars: _game.prestigeStars,
       prestigeStarsAvailable: prestigeStarsAvailable(_game),
@@ -1503,6 +1540,11 @@ class GameController extends Notifier<GameSnapshot> {
       // memory: chia sẻ instance List làm `.select()` không rebuild).
       ownedAccessories: List.unmodifiable(_game.ownedAccessories),
       ownedLimited: List.unmodifiable(_game.ownedLimited),
+      eventId: _game.eventId,
+      eventPoints: _game.eventPoints,
+      eventProgress: Map.unmodifiable(_game.eventProgress),
+      eventClaimed: List.unmodifiable(_game.eventClaimed),
+      eventClaimableCount: eventClaimableCount(_game),
       accessorySpares: Map.unmodifiable(_game.accessorySpares),
       equippedAccessories: List.unmodifiable(_game.equippedAccessories),
       collectionMilestonesClaimed:

@@ -2403,4 +2403,59 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get m3LbError =>
       'Não foi possível carregar o ranking. Tente mais tarde.';
+
+  @override
+  String eventBanner(String name) {
+    return '🎉 Evento de $name';
+  }
+
+  @override
+  String eventTitle(String name) {
+    return 'Evento de $name';
+  }
+
+  @override
+  String eventEndsIn(String time) {
+    return 'Termina em $time';
+  }
+
+  @override
+  String eventPoints(int n) {
+    return 'Pontos do evento: $n';
+  }
+
+  @override
+  String get eventRedeemHint =>
+      'Conclua missões para ganhar pontos e trocar itens exclusivos de graça. Os pontos não cobrem o conjunto todo — escolha os seus favoritos!';
+
+  @override
+  String eventRedeemCost(int cost) {
+    return '$cost pts';
+  }
+
+  @override
+  String get eventLbTitle => 'Ranking do evento';
+
+  @override
+  String get eventLbEmpty =>
+      'Ninguém no ranking ainda. Alguns toques e você é o primeiro!';
+
+  @override
+  String get eventLbNoScore =>
+      'Você ainda não tem pontos — toque no copo, pegue gatos e atenda VIPs para entrar.';
+
+  @override
+  String eventLbMyScore(int n) {
+    return 'Sua pontuação: $n';
+  }
+
+  @override
+  String eventLbScore(int n) {
+    return '$n pts';
+  }
+
+  @override
+  String eventBuff(String mult) {
+    return 'Receita ×$mult durante o evento';
+  }
 }
