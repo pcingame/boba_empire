@@ -201,10 +201,13 @@ class _List extends ConsumerWidget {
                 final merchant = e.userId == merchantId
                     ? '🛒 ${l10n.marketMerchantTitle}'
                     : null;
-                final badge = [
+                // Mỗi danh hiệu là MỘT mục riêng: người có 2 danh hiệu (vd. Top +
+                // Thương nhân tuần) thì xuống dòng giữa hai mục, không cắt "…"
+                // một mục nào (trước đây nối thành 1 dòng maxLines 1).
+                final badges = [
                   if (medal != null && title != null) '$medal $title',
                   ?merchant,
-                ].join(' · ');
+                ];
                 return GestureDetector(
                   key: Key('lb-row-${e.userId}'),
                   onTap: () => showCollectionPeek(
@@ -250,19 +253,25 @@ class _List extends ConsumerWidget {
                               // Danh hiệu top 20 — cùng màu vàng/cam đã dùng cho
                               // độ hiếm "huyền thoại" ở Kho phụ kiện, nhất quán
                               // trực quan trong cùng tính năng sưu tập.
-                              if (badge.isNotEmpty)
-                                Text(
-                                  badge,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: theme.textTheme.labelSmall?.copyWith(
-                                    // Light: cam đậm (cam sáng chỉ 1.7:1 trên thẻ pastel);
-                                    // dark giữ cam sáng.
-                                    color: theme.brightness == Brightness.light
-                                        ? const Color(0xFF9A5B00)
-                                        : const Color(0xFFFFA726),
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                              if (badges.isNotEmpty)
+                                Wrap(
+                                  spacing: 10,
+                                  children: [
+                                    for (final badge in badges)
+                                      Text(
+                                        badge,
+                                        style:
+                                            theme.textTheme.labelSmall?.copyWith(
+                                          // Light: cam đậm (cam sáng chỉ 1.7:1 trên thẻ pastel);
+                                          // dark giữ cam sáng.
+                                          color: theme.brightness ==
+                                                  Brightness.light
+                                              ? const Color(0xFF9A5B00)
+                                              : const Color(0xFFFFA726),
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                  ],
                                 ),
                             ],
                           ),

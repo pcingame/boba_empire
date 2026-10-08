@@ -4,6 +4,8 @@
 library;
 
 import 'package:boba_empire/l10n/app_localizations.dart';
+import 'package:boba_empire/l10n/app_localizations_en.dart';
+import 'package:boba_empire/market/accessory_market_controller.dart';
 import 'package:boba_empire/leaderboard/accessory_leaderboard_controller.dart';
 import 'package:boba_empire/leaderboard/accessory_leaderboard_repository.dart';
 import 'package:boba_empire/leaderboard/flair.dart';
@@ -40,14 +42,16 @@ class _Flair extends FlairCache {
   Map<String, String> build() => {'u1': '🐉', 'u20': '', 'u21': ''};
 }
 
-Widget _app() => ProviderScope(
+Widget _app({String locale = 'vi', String? merchant}) => ProviderScope(
       overrides: [
+        if (merchant != null)
+          marketMerchantIdProvider.overrideWith((ref) async => merchant),
         accessoryLeaderboardControllerProvider.overrideWith(_Fake.new),
         flairCacheProvider.overrideWith(_Flair.new),
         collectionOfProvider('u1').overrideWith((ref) async => {'dragon'}),
       ],
-      child: const MaterialApp(
-        locale: Locale('vi'),
+      child: MaterialApp(
+        locale: Locale(locale),
         localizationsDelegates: [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -90,5 +94,50 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Bộ sưu tập của HangNhat'), findsOneWidget);
     expect(find.text('🐉'), findsWidgets);
+  });
+
+  group('người có 2 danh hiệu (Top + Thương nhân tuần)', () {
+    final l10n = AppLocalizationsEn();
+
+    for (final locale in ['en', 'vi']) {
+      testWidgets('[$locale] hiện ĐỦ cả hai danh hiệu, không bị cắt "…" ở màn 320px',
+          (tester) async {
+        await tester.binding.setSurfaceSize(const Size(320, 640));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+        await tester.pumpWidget(_app(locale: locale, merchant: 'u1'));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+
+        final row = find.byKey(const Key('lb-row-u1'));
+        final texts = find.descendant(of: row, matching: find.byType(Text));
+        final all = [
+          for (final w in tester.widgetList<Text>(texts)) w.data ?? '',
+        ];
+        // Mỗi danh hiệu là một mục riêng, nguyên vẹn.
+        expect(all.any((s) => s.startsWith('🥇')), isTrue, reason: '$all');
+        expect(all.any((s) => s.startsWith('🛒')), isTrue, reason: '$all');
+        if (locale == 'en') {
+          expect(all, contains('🛒 ${l10n.marketMerchantTitle}'));
+        }
+        // Mỗi danh hiệu KHÔNG bị cắt: không giới hạn dòng, không ellipsis (trước
+        // đây hai danh hiệu nối thành một dòng maxLines 1 → "Weekly Mer…").
+        // Lưu ý: font Ahem của flutter_test rộng gấp đôi font thật, nên không đo
+        // theo pixel mà kiểm thuộc tính cắt chữ.
+        for (final w in tester.widgetList<Text>(texts)) {
+          final d = w.data ?? '';
+          if (d.startsWith('🥇') || d.startsWith('🛒')) {
+            expect(w.maxLines, isNull, reason: d);
+            expect(w.overflow, isNot(TextOverflow.ellipsis), reason: d);
+          }
+        }
+      });
+    }
+
+    testWidgets('người chỉ có 1 danh hiệu vẫn hiện bình thường', (tester) async {
+      await tester.pumpWidget(_app(merchant: 'someone-else'));
+      await tester.pumpAndSettle();
+      expect(find.text('🥇 Vua Phụ Kiện'), findsOneWidget);
+      expect(find.textContaining('🛒'), findsNothing);
+    });
   });
 }
