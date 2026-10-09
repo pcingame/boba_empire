@@ -53,6 +53,16 @@
                 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
             </intent-filter>
         </receiver>
+        <!-- Tắt Impeller trên Android: emoji (phụ kiện, 💎, ô vòng quay) bị vẽ TRỐNG
+             chập chờn — cả 8 ô vòng quay và emoji thẻ nhận món biến mất sau lượt
+             quay — trên Xiaomi 23129RAA4G / Android 15, cả backend Vulkan lẫn
+             OpenGLES. Skia vẽ đúng 100% (đã quay 6 lượt liền, đủ emoji mọi lần).
+             ⚠️ Engine ghi log "Impeller opt-out deprecated" — cờ này sẽ bị gỡ ở bản
+             Flutter tương lai: khi nâng Flutter phải kiểm lại vòng quay phụ kiện
+             trên máy Android thật rồi mới quyết định bỏ cờ này. -->
+        <meta-data
+            android:name="io.flutter.embedding.android.EnableImpeller"
+            android:value="false" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
