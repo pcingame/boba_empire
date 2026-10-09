@@ -1293,6 +1293,8 @@
   "guildChatPin": "ปักหมุด",
   "guildChatUnpin": "เลิกปักหมุด",
   "guildChatDelete": "ลบข้อความ",
+  "guildChatReport": "รายงานข้อความ",
+  "guildChatReported": "รายงานข้อความแล้ว คุณจะไม่เห็นข้อความนี้อีก",
   "guildErrChatRate": "คุณส่งเร็วเกินไป รอสักครู่",
   "guildErrTextBlocked": "ข้อความมีคำที่ไม่อนุญาต",
   "guildErrDailyLimit": "วันนี้คุณบริจาคครบสูงสุด {n} 💎 แล้ว",

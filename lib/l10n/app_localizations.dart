@@ -4758,6 +4758,18 @@ abstract class AppLocalizations {
   /// **'Xoá tin'**
   String get guildChatDelete;
 
+  /// No description provided for @guildChatReport.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo cáo tin'**
+  String get guildChatReport;
+
+  /// No description provided for @guildChatReported.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã báo cáo tin nhắn. Bạn sẽ không còn thấy tin này.'**
+  String get guildChatReported;
+
   /// No description provided for @guildErrChatRate.
   ///
   /// In vi, this message translates to:

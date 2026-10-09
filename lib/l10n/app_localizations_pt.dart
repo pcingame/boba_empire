@@ -2714,6 +2714,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get guildChatDelete => 'Apagar mensagem';
 
   @override
+  String get guildChatReport => 'Denunciar mensagem';
+
+  @override
+  String get guildChatReported => 'Mensagem denunciada. Você não a verá mais.';
+
+  @override
   String get guildErrChatRate =>
       'Você está enviando rápido demais, aguarde alguns segundos.';
 

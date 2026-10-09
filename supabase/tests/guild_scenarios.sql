@@ -607,4 +607,50 @@ select t_err($$select guild_chat_pin(999999999)$$, 'not found');
 select t_eq('ghim cũ còn nguyên sau lần ghim lỗi', guild_chat_list(10)->'pinned'->>'body', 'ghim thật');
 reset role;
 
+-- ===== 18. Báo cáo tin nhắn ==============================================
+-- Hội riêng: chủ u(64) + 3 thành viên u(65..67)? (67 đã dùng) → dùng u(64), u(65), u(66), u(68), u(69).
+select t_as(u(64)); select guild_create('Report Club', 'rc', '🚨', false, 'RO', 0) as gr \gset
+select t_as(u(65)); select guild_join(:'gr'::uuid, 'M1', 0);
+select t_as(u(66)); select guild_join(:'gr'::uuid, 'M2', 0);
+select t_as(u(68)); select guild_join(:'gr'::uuid, 'M3', 0);
+select t_as(u(69)); select guild_join(:'gr'::uuid, 'Bad', 0);
+select guild_chat_post('tin xấu');
+select (guild_chat_list(1)->'messages'->0->>'id')::bigint as bid \gset
+select t_err(format($$select guild_chat_report(%s)$$, :'bid'), 'invalid input');
+select t_as(u(64));
+select guild_chat_pin(:'bid'::bigint);
+-- Người ngoài hội / tin không tồn tại.
+select t_as(u(62));
+select t_err(format($$select guild_chat_report(%s)$$, :'bid'), 'not found');
+-- Thành viên của HỘI KHÁC (chủ Chat Two) cũng không báo cáo được tin hội này.
+select t_as(u(63));
+select t_err(format($$select guild_chat_report(%s)$$, :'bid'), 'not found');
+select t_as(u(62));
+select t_as(u(65));
+select t_err($$select guild_chat_report(999999999)$$, 'not found');
+-- Báo cáo lần 1: chỉ người báo cáo hết thấy; người khác vẫn thấy. Báo lại không cộng thêm.
+select guild_chat_report(:'bid'::bigint);
+select guild_chat_report(:'bid'::bigint);
+select t_eq('người báo cáo không còn thấy tin', (select count(*) from jsonb_array_elements(guild_chat_list(50)->'messages') m where (m->>'id')::bigint = :'bid'::bigint), 0::bigint);
+select t_eq('người báo cáo không thấy cả tin ghim', guild_chat_list(50)->'pinned', 'null'::jsonb);
+select t_as(u(66));
+select t_eq('người khác vẫn thấy (mới 1 báo cáo)', (select count(*) from jsonb_array_elements(guild_chat_list(50)->'messages') m where (m->>'id')::bigint = :'bid'::bigint), 1::bigint);
+select t_eq('và vẫn thấy ghim', guild_chat_list(50)->'pinned'->>'body', 'tin xấu');
+reset role;
+select t_eq('báo lặp chỉ tính 1', (select count(*) from guild_message_reports where message_id = :'bid'::bigint), 1::bigint);
+-- Báo cáo thứ 2, 3 → ẩn với cả hội và gỡ ghim.
+select t_as(u(66)); select guild_chat_report(:'bid'::bigint);
+select t_as(u(68));
+select t_eq('2 báo cáo: chưa ẩn', (select count(*) from jsonb_array_elements(guild_chat_list(50)->'messages') m where (m->>'id')::bigint = :'bid'::bigint), 1::bigint);
+select guild_chat_report(:'bid'::bigint);
+select t_as(u(64));
+select t_eq('3 báo cáo: ẩn với chủ hội', (select count(*) from jsonb_array_elements(guild_chat_list(50)->'messages') m where (m->>'id')::bigint = :'bid'::bigint), 0::bigint);
+select t_eq('ẩn → gỡ ghim', guild_chat_list(50)->'pinned', 'null'::jsonb);
+select t_err(format($$select guild_chat_pin(%s)$$, :'bid'), 'not found');
+-- Bảo mật: không đọc thẳng bảng báo cáo; khách bị chặn.
+select t_eq('không đọc thẳng báo cáo', (select count(*) from guild_message_reports), 0::bigint);
+select t_as(null);
+select t_err(format($$select guild_chat_report(%s)$$, :'bid'), 'permission denied');
+reset role;
+
 select 'ALL GUILD SQL SCENARIOS PASSED' as result;

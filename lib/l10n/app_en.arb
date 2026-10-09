@@ -1293,6 +1293,8 @@
   "guildChatPin": "Pin",
   "guildChatUnpin": "Unpin",
   "guildChatDelete": "Delete message",
+  "guildChatReport": "Report message",
+  "guildChatReported": "Message reported. You won't see it anymore.",
   "guildErrChatRate": "You're sending too fast, wait a few seconds.",
   "guildErrTextBlocked": "Your message contains a blocked word.",
   "guildErrDailyLimit": "You've already donated the daily max of {n} 💎.",

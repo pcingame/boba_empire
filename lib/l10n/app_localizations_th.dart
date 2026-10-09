@@ -2684,6 +2684,12 @@ class AppLocalizationsTh extends AppLocalizations {
   String get guildChatDelete => 'ลบข้อความ';
 
   @override
+  String get guildChatReport => 'รายงานข้อความ';
+
+  @override
+  String get guildChatReported => 'รายงานข้อความแล้ว คุณจะไม่เห็นข้อความนี้อีก';
+
+  @override
   String get guildErrChatRate => 'คุณส่งเร็วเกินไป รอสักครู่';
 
   @override

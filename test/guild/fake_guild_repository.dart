@@ -128,6 +128,16 @@ class FakeGuildRepository implements GuildRepository {
     chatMessages.removeWhere((m) => m.id == id);
   }
 
+  /// Tin đã báo cáo (fake: báo là ẩn luôn với người báo).
+  final List<int> reportedIds = [];
+
+  @override
+  Future<void> chatReport(int id) async {
+    _hit('chatReport');
+    reportedIds.add(id);
+    chatMessages.removeWhere((m) => m.id == id);
+  }
+
   @override
   Future<void> chatPin(int? id) async {
     _hit('chatPin');

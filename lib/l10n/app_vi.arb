@@ -1749,6 +1749,8 @@
   "guildChatPin": "Ghim",
   "guildChatUnpin": "Bỏ ghim",
   "guildChatDelete": "Xoá tin",
+  "guildChatReport": "Báo cáo tin",
+  "guildChatReported": "Đã báo cáo tin nhắn. Bạn sẽ không còn thấy tin này.",
   "guildErrChatRate": "Bạn gửi quá nhanh, chờ vài giây nhé.",
   "guildErrTextBlocked": "Tin nhắn chứa từ không được phép.",
   "guildErrDailyLimit": "Hôm nay bạn đã nạp tối đa {n} 💎.",

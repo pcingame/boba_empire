@@ -1293,6 +1293,8 @@
   "guildChatPin": "Sematkan",
   "guildChatUnpin": "Lepas sematan",
   "guildChatDelete": "Hapus pesan",
+  "guildChatReport": "Laporkan pesan",
+  "guildChatReported": "Pesan dilaporkan. Kamu tidak akan melihatnya lagi.",
   "guildErrChatRate": "Kamu mengirim terlalu cepat, tunggu beberapa detik.",
   "guildErrTextBlocked": "Pesanmu mengandung kata yang dilarang.",
   "guildErrDailyLimit": "Kamu sudah menyumbang maksimum {n} 💎 hari ini.",

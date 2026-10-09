@@ -129,6 +129,14 @@ create table if not exists guild_messages (
   pinned     boolean not null default false,
   created_at timestamptz not null default now()
 );
+-- Bản đã deploy trước đó chưa có cột này: tin bị ≥3 thành viên báo cáo thì ẩn.
+alter table guild_messages add column if not exists hidden boolean not null default false;
+create table if not exists guild_message_reports (
+  message_id  bigint not null references guild_messages(id) on delete cascade,
+  reporter_id uuid not null,
+  created_at  timestamptz not null default now(),
+  primary key (message_id, reporter_id)
+);
 create index if not exists guild_messages_guild_idx on guild_messages (guild_id, id desc);
 
 alter table guilds drop column if exists is_public;
@@ -151,6 +159,7 @@ alter table guild_donations     enable row level security;
 alter table guild_quest_claims  enable row level security;
 alter table guild_purchases     enable row level security;
 alter table guild_messages      enable row level security;
+alter table guild_message_reports enable row level security;
 -- Cố ý KHÔNG tạo policy: chỉ RPC security definer được đụng vào.
 
 -- --- Hằng số --------------------------------------------------------------
@@ -863,12 +872,16 @@ begin
   return jsonb_build_object(
     'pinned', (select jsonb_build_object('id', id, 'user_id', user_id,
         'nickname', nickname, 'body', body, 'created_at', created_at)
-        from guild_messages where guild_id = v_gid and pinned
+        from guild_messages where guild_id = v_gid and pinned and not hidden
+          and not exists (select 1 from guild_message_reports r
+                            where r.message_id = guild_messages.id and r.reporter_id = v_uid)
         order by id desc limit 1),
     'messages', coalesce((select jsonb_agg(m order by (m->>'id')::bigint desc) from (
         select jsonb_build_object('id', id, 'user_id', user_id, 'nickname', nickname,
                'body', body, 'created_at', created_at) as m
-        from guild_messages where guild_id = v_gid
+        from guild_messages where guild_id = v_gid and not hidden
+          and not exists (select 1 from guild_message_reports r
+                            where r.message_id = guild_messages.id and r.reporter_id = v_uid)
         order by id desc limit least(greatest(coalesce(p_limit, 50), 1), 100)) s),
       '[]'::jsonb));
 end;
@@ -905,8 +918,32 @@ begin
   if v_gid is null then raise exception 'not owner'; end if;
   update guild_messages set pinned = false where guild_id = v_gid and pinned;
   if p_id is not null then
-    update guild_messages set pinned = true where id = p_id and guild_id = v_gid;
+    update guild_messages set pinned = true
+      where id = p_id and guild_id = v_gid and not hidden;
     if not found then raise exception 'not found'; end if;
+  end if;
+end;
+$$;
+
+-- Báo cáo tin: chỉ thành viên cùng hội, không báo cáo tin của mình; mỗi người 1 lần/tin.
+-- Đủ 3 người báo cáo → tin bị ẩn với cả hội; người báo cáo không còn thấy tin đó.
+create or replace function guild_chat_report(p_id bigint) returns void
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_gid uuid;
+  v_author uuid;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  select guild_id into v_gid from guild_members where user_id = v_uid;
+  if v_gid is null then raise exception 'not found'; end if;
+  select user_id into v_author from guild_messages where id = p_id and guild_id = v_gid;
+  if not found then raise exception 'not found'; end if;
+  if v_author = v_uid then raise exception 'invalid input'; end if;
+  insert into guild_message_reports (message_id, reporter_id) values (p_id, v_uid)
+    on conflict do nothing;
+  if (select count(*) from guild_message_reports where message_id = p_id) >= 3 then
+    update guild_messages set hidden = true, pinned = false where id = p_id;
   end if;
 end;
 $$;
@@ -927,7 +964,8 @@ begin
     'guild_donate(integer)', 'guild_claim_quest(integer)',
     'guild_buy_item(text)', 'guild_buy_buff()', 'guild_buff_seconds()',
     'guild_chat_post(text)', 'guild_chat_list(integer)',
-    'guild_chat_delete(bigint)', 'guild_chat_pin(bigint)'
+    'guild_chat_delete(bigint)', 'guild_chat_pin(bigint)',
+    'guild_chat_report(bigint)'
   ] loop
     execute format('revoke all on function %s from public', f);
     execute format('grant execute on function %s to authenticated', f);

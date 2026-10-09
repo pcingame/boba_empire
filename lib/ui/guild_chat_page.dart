@@ -48,13 +48,14 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> {
     super.dispose();
   }
 
-  Future<void> _run(Future<GuildOutcome> action) async {
+  Future<void> _run(Future<GuildOutcome> action,
+      {String Function(AppLocalizations)? okText}) async {
     final l10n = AppLocalizations.of(context)!;
     final out = await action;
     if (!mounted) return;
-    if (!out.ok) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(guildFailureText(l10n, out.failure!))));
+    if (!out.ok || okText != null) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(out.ok ? okText!(l10n) : guildFailureText(l10n, out.failure!))));
     }
     ref.invalidate(guildChatProvider);
   }
@@ -75,11 +76,17 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> {
     final l10n = AppLocalizations.of(context)!;
     final ctrl = ref.read(guildControllerProvider.notifier);
     final mine = m.userId == ref.read(guildRepositoryProvider).myUserId;
-    if (!mine && !isOwner) return;
     final choice = await showModalBottomSheet<String>(
       context: context,
       builder: (_) => SafeArea(
         child: Column(mainAxisSize: MainAxisSize.min, children: [
+          if (!mine)
+            ListTile(
+              key: const Key('guild-chat-report'),
+              leading: const Icon(Icons.flag_outlined),
+              title: Text(l10n.guildChatReport),
+              onTap: () => Navigator.pop(context, 'report'),
+            ),
           if (isOwner)
             ListTile(
               key: const Key('guild-chat-pin'),
@@ -87,18 +94,22 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> {
               title: Text(pinned ? l10n.guildChatUnpin : l10n.guildChatPin),
               onTap: () => Navigator.pop(context, 'pin'),
             ),
-          ListTile(
-            key: const Key('guild-chat-delete'),
-            leading: const Icon(Icons.delete_outline),
-            title: Text(l10n.guildChatDelete),
-            onTap: () => Navigator.pop(context, 'delete'),
-          ),
+          if (mine || isOwner)
+            ListTile(
+              key: const Key('guild-chat-delete'),
+              leading: const Icon(Icons.delete_outline),
+              title: Text(l10n.guildChatDelete),
+              onTap: () => Navigator.pop(context, 'delete'),
+            ),
         ]),
       ),
     );
     if (!mounted || choice == null) return;
     if (choice == 'pin') await _run(ctrl.chatPin(pinned ? null : m.id));
     if (choice == 'delete') await _run(ctrl.chatDelete(m.id));
+    if (choice == 'report') {
+      await _run(ctrl.chatReport(m.id), okText: (l) => l.guildChatReported);
+    }
   }
 
   @override

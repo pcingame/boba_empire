@@ -334,6 +334,9 @@ abstract class GuildRepository {
   Future<void> chatPost(String body);
   Future<void> chatDelete(int id);
 
+  /// Báo cáo tin của người khác; đủ 3 báo cáo thì server ẩn tin.
+  Future<void> chatReport(int id);
+
   /// Chỉ chủ hội; [id] null = bỏ ghim.
   Future<void> chatPin(int? id);
 }
@@ -498,6 +501,9 @@ class SupabaseGuildRepository implements GuildRepository {
 
   @override
   Future<void> chatDelete(int id) => _rpc('guild_chat_delete', {'p_id': id});
+
+  @override
+  Future<void> chatReport(int id) => _rpc('guild_chat_report', {'p_id': id});
 
   @override
   Future<void> chatPin(int? id) => _rpc('guild_chat_pin', {'p_id': id});

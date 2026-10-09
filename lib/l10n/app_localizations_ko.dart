@@ -2658,6 +2658,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get guildChatDelete => '메시지 삭제';
 
   @override
+  String get guildChatReport => '메시지 신고';
+
+  @override
+  String get guildChatReported => '메시지를 신고했어요. 이 메시지는 더 이상 보이지 않아요.';
+
+  @override
   String get guildErrChatRate => '너무 빨리 보내고 있어요. 잠시 기다려 주세요.';
 
   @override

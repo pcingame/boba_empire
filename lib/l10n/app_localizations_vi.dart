@@ -2696,6 +2696,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get guildChatDelete => 'Xoá tin';
 
   @override
+  String get guildChatReport => 'Báo cáo tin';
+
+  @override
+  String get guildChatReported =>
+      'Đã báo cáo tin nhắn. Bạn sẽ không còn thấy tin này.';
+
+  @override
   String get guildErrChatRate => 'Bạn gửi quá nhanh, chờ vài giây nhé.';
 
   @override

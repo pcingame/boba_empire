@@ -931,6 +931,8 @@
   "guildChatPin": "고정",
   "guildChatUnpin": "고정 해제",
   "guildChatDelete": "메시지 삭제",
+  "guildChatReport": "메시지 신고",
+  "guildChatReported": "메시지를 신고했어요. 이 메시지는 더 이상 보이지 않아요.",
   "guildErrChatRate": "너무 빨리 보내고 있어요. 잠시 기다려 주세요.",
   "guildErrTextBlocked": "금지된 단어가 포함되어 있어요.",
   "guildErrDailyLimit": "오늘은 최대 {n} 💎까지 이미 기부했어요.",

@@ -243,21 +243,60 @@ void main() {
     await _end(tester);
   });
 
-  testWidgets('thành viên thường: không có menu trên tin người khác; xoá được tin của mình, không có Ghim',
+  testWidgets('thành viên thường: tin người khác chỉ có Báo cáo (không xoá/ghim); tin của mình có Xoá, không Báo cáo/Ghim',
       (tester) async {
     final (_, repo) = await _open(tester, owner: false, seed: (r) {
       r.chatMessages.addAll([_msg(2, 'của tôi', user: 'me', nick: 'Alice'), _msg(1, 'người khác')]);
     });
     await tester.longPress(find.byKey(const Key('guild-chat-msg-1')));
     await tester.pumpAndSettle();
+    expect(find.byKey(const Key('guild-chat-report')), findsOneWidget);
     expect(find.byKey(const Key('guild-chat-delete')), findsNothing);
+    expect(find.byKey(const Key('guild-chat-pin')), findsNothing);
+    await tester.tapAt(const Offset(5, 5)); // đóng menu
+    await tester.pumpAndSettle();
 
     await tester.longPress(find.byKey(const Key('guild-chat-msg-2')));
     await tester.pumpAndSettle();
+    expect(find.byKey(const Key('guild-chat-report')), findsNothing, reason: 'không tự báo cáo mình');
     expect(find.byKey(const Key('guild-chat-pin')), findsNothing, reason: 'chỉ chủ hội ghim');
     await tester.tap(find.byKey(const Key('guild-chat-delete')));
     await tester.pumpAndSettle();
     expect(repo.chatMessages.map((m) => m.id), [1]);
+    await _end(tester);
+  });
+
+  testWidgets('báo cáo tin: gọi server, báo thành công, tin biến mất khỏi danh sách', (tester) async {
+    final (_, repo) = await _open(tester, owner: false, seed: (r) => r.chatMessages.add(_msg(1, 'tin xấu')));
+    await tester.longPress(find.byKey(const Key('guild-chat-msg-1')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('guild-chat-report')));
+    await tester.pumpAndSettle();
+    expect(repo.reportedIds, [1]);
+    expect(find.text('Đã báo cáo tin nhắn. Bạn sẽ không còn thấy tin này.'), findsOneWidget);
+    expect(find.byKey(const Key('guild-chat-msg-1')), findsNothing);
+    await _end(tester);
+  });
+
+  testWidgets('chủ hội cũng báo cáo được tin người khác (menu đủ Báo cáo + Ghim + Xoá)', (tester) async {
+    await _open(tester, seed: (r) => r.chatMessages.add(_msg(1, 'x')));
+    await tester.longPress(find.byKey(const Key('guild-chat-msg-1')));
+    await tester.pumpAndSettle();
+    for (final k in ['guild-chat-report', 'guild-chat-pin', 'guild-chat-delete']) {
+      expect(find.byKey(Key(k)), findsOneWidget, reason: k);
+    }
+    await _end(tester);
+  });
+
+  testWidgets('báo cáo lỗi (mạng): thông báo lỗi, không báo thành công', (tester) async {
+    final (_, repo) = await _open(tester, owner: false, seed: (r) => r.chatMessages.add(_msg(1, 'x')));
+    repo.failures['chatReport'] = const GuildException(GuildFailure.network);
+    await tester.longPress(find.byKey(const Key('guild-chat-msg-1')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('guild-chat-report')));
+    await tester.pumpAndSettle();
+    expect(find.text('Đã báo cáo tin nhắn. Bạn sẽ không còn thấy tin này.'), findsNothing);
+    expect(find.byKey(const Key('guild-chat-msg-1')), findsOneWidget);
     await _end(tester);
   });
 

@@ -172,6 +172,7 @@ void main() {
         'guild_chat_list(integer)',
         'guild_chat_delete(bigint)',
         'guild_chat_pin(bigint)',
+        'guild_chat_report(bigint)',
       ]) {
         expect(sql.contains("'$fn'"), isTrue, reason: '$fn chưa cấp quyền');
       }
@@ -185,6 +186,7 @@ void main() {
         'guild_quest_claims',
         'guild_purchases',
         'guild_messages',
+        'guild_message_reports',
       ]) {
         expect(sql.contains(RegExp('alter table $t\\s+enable row level security')), isTrue,
             reason: t);

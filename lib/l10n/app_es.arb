@@ -1293,6 +1293,8 @@
   "guildChatPin": "Fijar",
   "guildChatUnpin": "Quitar fijado",
   "guildChatDelete": "Borrar mensaje",
+  "guildChatReport": "Denunciar mensaje",
+  "guildChatReported": "Mensaje denunciado. Ya no lo verás.",
   "guildErrChatRate": "Envías demasiado rápido, espera unos segundos.",
   "guildErrTextBlocked": "Tu mensaje contiene una palabra bloqueada.",
   "guildErrDailyLimit": "Hoy ya donaste el máximo de {n} 💎.",

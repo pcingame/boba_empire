@@ -2701,6 +2701,13 @@ class AppLocalizationsId extends AppLocalizations {
   String get guildChatDelete => 'Hapus pesan';
 
   @override
+  String get guildChatReport => 'Laporkan pesan';
+
+  @override
+  String get guildChatReported =>
+      'Pesan dilaporkan. Kamu tidak akan melihatnya lagi.';
+
+  @override
   String get guildErrChatRate =>
       'Kamu mengirim terlalu cepat, tunggu beberapa detik.';
 
