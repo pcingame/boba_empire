@@ -55,6 +55,7 @@ import 'widgets/mascot.dart';
 import 'widgets/motion.dart';
 import 'widgets/one_shot_lottie.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/trailing_box.dart';
 
 /// Cho phép tự hiện "Cách chơi" ở lần chơi đầu. App luôn bật; test tắt qua
 /// flutter_test_config để dialog modal không che thao tác, và test hướng dẫn
@@ -2180,7 +2181,8 @@ class _ShopTile extends ConsumerWidget {
             // thể rất dài ở cấp cao — không bọc thì nút tự giãn theo nội
             // dung và tràn hàng (RenderFlex overflow thật đã gặp). Co chữ
             // lại thay vì tràn, giống cách _TapArea xử lý ở màn hình chính.
-            Flexible(
+            TrailingBox(
+              maxFraction: 0.4,
               child: _buyButtonFrame(
                 FilledButton(
                 onPressed: canAfford
@@ -2274,18 +2276,27 @@ class _MilestoneBar extends StatelessWidget {
 
     return Row(
       children: [
+        // Chip ×N và nhãn "→×M" đều co chữ (FittedBox) khi cột hẹp: ở cấp rất cao
+        // (×524.24K → ×1.05M) hai nhãn cộng lại rộng hơn cả cột và tràn RenderFlex
+        // 7.8px (thấy trên iPhone, người chơi cấp 999) — thanh tiến độ ở giữa lấy phần
+        // còn lại, không bao giờ thành âm.
         if (mult > 1) ...[
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
-            decoration: BoxDecoration(
-              color: theme.colorScheme.tertiaryContainer,
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Text(
-              '×${formatNumber(mult)}',
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: theme.colorScheme.onTertiaryContainer,
-                fontWeight: FontWeight.bold,
+          Flexible(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.tertiaryContainer,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  '×${formatNumber(mult)}',
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: theme.colorScheme.onTertiaryContainer,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ),
@@ -2309,15 +2320,19 @@ class _MilestoneBar extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 6),
-        Text(
-          // Mốc kế còn cộng +% toàn cục nếu vượt số mốc "miễn phí".
-          level ~/ Balance.milestoneStep >= Balance.milestoneGlobalFreeTiers
-              ? '→×${formatNumber(target)} 🌐'
-              : '→×${formatNumber(target)}',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: theme.textTheme.labelSmall
-              ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+        Flexible(
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              // Mốc kế còn cộng +% toàn cục nếu vượt số mốc "miễn phí".
+              level ~/ Balance.milestoneStep >= Balance.milestoneGlobalFreeTiers
+                  ? '→×${formatNumber(target)} 🌐'
+                  : '→×${formatNumber(target)}',
+              maxLines: 1,
+              style: theme.textTheme.labelSmall
+                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+            ),
+          ),
         ),
       ],
     );

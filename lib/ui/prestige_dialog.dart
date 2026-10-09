@@ -78,25 +78,44 @@ class _PrestigeDialog extends ConsumerWidget {
           ],
         ),
       ),
+      // Ba nút xếp DỌC cùng chiều rộng (Column stretch) thay vì để AlertDialog tự
+      // bẻ hàng: trước đây "Huỷ" lệch phải, nút QC full-width, nút chính hẹp và lệch
+      // phải — ba nút ba chiều rộng. Nút chính ở trên cùng, "Huỷ" dưới cùng.
       actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(l10n.cancel),
+        // Chữ to/ngôn ngữ dài: cột nút cuộn được thay vì đẩy hộp thoại tràn dọc.
+        ConstrainedBox(
+          constraints: BoxConstraints(
+              maxHeight: MediaQuery.sizeOf(context).height * 0.4),
+          child: SingleChildScrollView(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            FilledButton(
+              key: const Key('prestige-confirm'),
+              onPressed: canPrestige ? () => _confirm(context, ref) : null,
+              child: Text(
+                canPrestige
+                    ? l10n.prestigeConfirm(formatNumber(available))
+                    : l10n.prestigeNotEnough,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            if (canPrestige) ...[
+              const SizedBox(height: 8),
+              OutlinedButton.icon(
+                key: const Key('prestige-ad'),
+                onPressed: () => _confirmWithAd(context, ref),
+                icon: const Icon(Icons.play_circle_outline),
+                label: Text(l10n.prestigeAdConfirm, textAlign: TextAlign.center),
+              ),
+            ],
+            const SizedBox(height: 4),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(l10n.cancel),
+            ),
+          ],
         ),
-        if (canPrestige)
-          OutlinedButton.icon(
-            key: const Key('prestige-ad'),
-            onPressed: () => _confirmWithAd(context, ref),
-            icon: const Icon(Icons.play_circle_outline),
-            label: Text(l10n.prestigeAdConfirm),
-          ),
-        FilledButton(
-          key: const Key('prestige-confirm'),
-          onPressed: canPrestige ? () => _confirm(context, ref) : null,
-          child: Text(
-            canPrestige
-                ? l10n.prestigeConfirm(formatNumber(available))
-                : l10n.prestigeNotEnough,
           ),
         ),
       ],
@@ -149,14 +168,18 @@ class _PrestigeDialog extends ConsumerWidget {
           const SizedBox(width: 8),
           Flexible(
             flex: 2,
-            child: Text(
-              value,
-              textAlign: TextAlign.end,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: highlight
-                  ? const TextStyle(fontWeight: FontWeight.bold)
-                  : null,
+            // Co chữ thay vì cắt "…": giá trị (Sao hiện có + % bonus) là thông tin
+            // chính của dòng, bị cắt thành "(+3…" thì vô nghĩa.
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerRight,
+              child: Text(
+                value,
+                maxLines: 1,
+                style: highlight
+                    ? const TextStyle(fontWeight: FontWeight.bold)
+                    : null,
+              ),
             ),
           ),
         ],

@@ -145,14 +145,17 @@ class _AscensionDialog extends ConsumerWidget {
           const SizedBox(width: 8),
           Flexible(
             flex: 2,
-            child: Text(
-              value,
-              textAlign: TextAlign.end,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: highlight
-                  ? const TextStyle(fontWeight: FontWeight.bold)
-                  : null,
+            // Co chữ thay vì cắt "…" (cùng lý do _row ở prestige_dialog.dart).
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerRight,
+              child: Text(
+                value,
+                maxLines: 1,
+                style: highlight
+                    ? const TextStyle(fontWeight: FontWeight.bold)
+                    : null,
+              ),
             ),
           ),
         ],

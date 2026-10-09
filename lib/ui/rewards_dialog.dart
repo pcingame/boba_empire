@@ -156,7 +156,9 @@ class _WheelRow extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  l10n.wheelName,
+                  // wheelName đã có 🎡 ở cuối (dùng cho tiêu đề hộp thoại) mà hàng này
+                  // đã có 🎡 bên trái — bỏ bớt để chữ không xuống dòng lẻ một emoji.
+                  l10n.wheelName.replaceAll('🎡', '').trim(),
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                   ),

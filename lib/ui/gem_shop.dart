@@ -328,7 +328,7 @@ class _GemAction extends StatelessWidget {
 
 /// Chiều rộng chung cho mọi nút giá trong Cửa hàng Kim Cương (_GemAction +
 /// _GemItem) — để 4 nút thẳng cột dù số chữ số khác nhau.
-const double _priceButtonWidth = 72;
+const double _priceButtonWidth = 92;
 
 class _GemItem extends StatelessWidget {
   const _GemItem({
