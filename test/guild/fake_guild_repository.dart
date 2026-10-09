@@ -308,6 +308,7 @@ MyGuild fakeGuild({
   List<int> questsClaimed = const [],
   List<String> ownedItems = const [],
   int donatedToday = 0,
+  int chatLatest = 0,
 }) =>
     MyGuild(
       id: 'g1',
@@ -325,6 +326,7 @@ MyGuild fakeGuild({
       questsClaimed: questsClaimed,
       ownedItems: ownedItems,
       donatedToday: donatedToday,
+      chatLatestId: chatLatest,
       members: members ??
           const [
             GuildMemberInfo(userId: 'me', nickname: 'Alice', points: 400),
@@ -369,4 +371,5 @@ MyGuild withState(
       questsClaimed: questsClaimed ?? g.questsClaimed,
       ownedItems: ownedItems ?? g.ownedItems,
       donatedToday: donatedToday ?? g.donatedToday,
+      chatLatestId: g.chatLatestId,
     );

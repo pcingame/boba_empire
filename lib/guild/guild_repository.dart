@@ -130,6 +130,7 @@ class MyGuild {
     this.questsClaimed = const [],
     this.ownedItems = const [],
     this.donatedToday = 0,
+    this.chatLatestId = 0,
   });
 
   /// Đọc JSON trả về từ `guild_my()`.
@@ -160,6 +161,7 @@ class MyGuild {
         for (final c in (j['owned_items'] as List?) ?? const []) c as String,
       ],
       donatedToday: (j['donated_today'] as num?)?.toInt() ?? 0,
+      chatLatestId: (j['chat_latest'] as num?)?.toInt() ?? 0,
       total: (j['total'] as num).toInt(),
       claimed: [for (final c in j['claimed'] as List) (c as num).toInt()],
       members: [
@@ -201,6 +203,9 @@ class MyGuild {
   final List<int> questsClaimed;
   final List<String> ownedItems;
   final int donatedToday;
+
+  /// Id tin chat mới nhất người này còn thấy (0 = chưa có / server cũ).
+  final int chatLatestId;
   final List<GuildMemberInfo> members;
 
   int pointsOf(String? userId) {

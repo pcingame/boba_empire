@@ -15,6 +15,7 @@ import '../guild/guild_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import 'guild_leaderboard_page.dart';
+import '../guild/guild_chat_unread.dart';
 import 'guild_chat_page.dart';
 import 'guild_shop_page.dart';
 import 'widgets/clay.dart';
@@ -79,7 +80,12 @@ class _GuildPageState extends ConsumerState<GuildPage> {
               IconButton(
                 key: const Key('guild-chat-button'),
                 tooltip: l10n.guildChatTitle,
-                icon: const Icon(Icons.chat_bubble_outline),
+                icon: Badge(
+                  key: const Key('guild-chat-unread'),
+                  isLabelVisible: ref.watch(guildChatUnreadProvider),
+                  smallSize: 9,
+                  child: const Icon(Icons.chat_bubble_outline),
+                ),
                 onPressed: () => showGuildChat(context),
               ),
             IconButton(

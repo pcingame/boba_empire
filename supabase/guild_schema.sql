@@ -544,6 +544,11 @@ begin
       'id', v_g.id, 'name', v_g.name, 'tag', v_g.tag, 'emoji', v_g.emoji,
       'owner_id', v_g.owner_id, 'requires_approval', v_g.requires_approval),
     'week', v_week,
+    -- Id tin mới nhất người này còn thấy (để client tính "chưa đọc").
+    'chat_latest', coalesce((select max(m.id) from guild_messages m
+        where m.guild_id = v_g.id and not m.hidden
+          and not exists (select 1 from guild_message_reports r
+                            where r.message_id = m.id and r.reporter_id = v_uid)), 0),
     'total', guild_week_total(v_g.id),
     'streak', guild_streak(v_g.id),
     'buff_seconds', greatest(

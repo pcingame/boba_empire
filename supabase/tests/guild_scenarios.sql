@@ -653,4 +653,27 @@ select t_as(null);
 select t_err(format($$select guild_chat_report(%s)$$, :'bid'), 'permission denied');
 reset role;
 
+-- ===== 19. chat_latest trong guild_my (chấm "chưa đọc") ==================
+-- Hội "Chat Two" (u(63) chủ): chưa có tin ẩn/báo cáo nào ngoài 1 tin đầu.
+select t_as(u(63));
+select t_eq('chat_latest = id tin mới nhất', (guild_my()->>'chat_latest')::bigint, (guild_chat_list(1)->'messages'->0->>'id')::bigint);
+select guild_chat_post('tin mới hơn');
+select t_eq('đăng thêm → chat_latest tăng', (guild_my()->>'chat_latest')::bigint, (guild_chat_list(1)->'messages'->0->>'id')::bigint);
+-- Hội chưa có tin → 0.
+select t_as(u(71)); select guild_leave();
+select guild_create('Empty Chat', 'ec', '🫥', false, 'E', 0);
+select t_eq('hội chưa có tin → 0', (guild_my()->>'chat_latest')::bigint, 0::bigint);
+-- Tin mình đã báo cáo không tính (không báo "chưa đọc" vì tin mình không còn thấy).
+select t_as(u(64));
+select guild_chat_post('tin của chủ');
+select (guild_chat_list(1)->'messages'->0->>'id')::bigint as lid \gset
+select t_eq('chủ thấy chat_latest là tin vừa đăng', (guild_my()->>'chat_latest')::bigint, :'lid'::bigint);
+select t_as(u(65));
+select t_eq('thành viên cũng thấy', (guild_my()->>'chat_latest')::bigint, :'lid'::bigint);
+select guild_chat_report(:'lid'::bigint);
+select t_eq('đã báo cáo → chat_latest lùi về tin trước', (guild_my()->>'chat_latest')::bigint < :'lid'::bigint, true);
+select t_as(u(66));
+select t_eq('người khác chưa báo vẫn thấy tin đó', (guild_my()->>'chat_latest')::bigint, :'lid'::bigint);
+reset role;
+
 select 'ALL GUILD SQL SCENARIOS PASSED' as result;

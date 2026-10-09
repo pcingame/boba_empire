@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'package:boba_empire/core/guild.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/data/game_storage.dart';
+import 'package:boba_empire/guild/guild_chat_unread.dart';
 import 'package:boba_empire/guild/guild_controller.dart';
 import 'package:boba_empire/guild/guild_repository.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
@@ -116,6 +117,85 @@ void main() {
       await tester.pumpWidget(const SizedBox());
       c.dispose();
     }
+  });
+
+  group('chấm "chưa đọc"', () {
+    Future<(ProviderContainer, FakeGuildRepository)> openGuild(WidgetTester tester,
+        {required int latest, Map<String, Object> prefs = const {}}) async {
+      await tester.binding.setSurfaceSize(const Size(360, 800));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      SharedPreferences.setMockInitialValues(prefs);
+      final sp = await SharedPreferences.getInstance();
+      await GameStorage(sp).save(
+          GameState.newGame(nowMillis: _now)..guildWeek = guildWeekIndex(_now),
+          nowMillis: _now);
+      final repo = FakeGuildRepository(mine: fakeGuild(chatLatest: latest));
+      repo.chatMessages.addAll([for (var i = latest; i >= 1; i--) _msg(i, 'tin $i')]);
+      final c = ProviderContainer(overrides: [
+        sharedPreferencesProvider.overrideWithValue(sp),
+        clockProvider.overrideWithValue(() => _now),
+        guildRepositoryProvider.overrideWithValue(repo),
+      ]);
+      _live.add(c);
+      await tester.pumpWidget(UncontrolledProviderScope(
+        container: c,
+        child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: GuildPage(),
+        ),
+      ));
+      await tester.pumpAndSettle();
+      return (c, repo);
+    }
+
+    bool dot(WidgetTester t) =>
+        t.widget<Badge>(find.byKey(const Key('guild-chat-unread'))).isLabelVisible;
+
+    testWidgets('có tin mới chưa xem → hiện chấm; mở chat → chấm tắt, và nhớ qua lần mở sau',
+        (tester) async {
+      final (c, _) = await openGuild(tester, latest: 3);
+      expect(dot(tester), isTrue);
+      await tester.tap(find.byKey(const Key('guild-chat-button')));
+      await tester.pumpAndSettle();
+      expect(c.read(guildChatSeenProvider.notifier).seenOf('g1'), 3);
+      tester.state<NavigatorState>(find.byType(Navigator)).pop();
+      await tester.pumpAndSettle();
+      expect(dot(tester), isFalse);
+      final sp = c.read(sharedPreferencesProvider);
+      expect(sp.getInt('guild_chat_seen_g1'), 3, reason: 'lưu máy để lần sau không hiện lại');
+      await _end(tester);
+    });
+
+    testWidgets('đã xem tới tin mới nhất (lưu từ trước) → không chấm; không có tin nào → không chấm',
+        (tester) async {
+      await openGuild(tester, latest: 5, prefs: {'guild_chat_seen_g1': 5});
+      expect(find.byKey(const Key('guild-chat-unread')), findsOneWidget);
+      expect(dot(tester), isFalse);
+      await _end(tester);
+      await openGuild(tester, latest: 0);
+      expect(dot(tester), isFalse);
+      await _end(tester);
+    });
+
+    testWidgets('có tin MỚI HƠN lần xem cuối → lại hiện chấm', (tester) async {
+      await openGuild(tester, latest: 7, prefs: {'guild_chat_seen_g1': 5});
+      expect(dot(tester), isTrue);
+      await _end(tester);
+    });
+
+    testWidgets('seen chỉ tăng: danh sách cũ hơn không kéo lùi', (tester) async {
+      final (c, _) = await openGuild(tester, latest: 4, prefs: {'guild_chat_seen_g1': 9});
+      c.read(guildChatSeenProvider.notifier).markSeen('g1', 2);
+      expect(c.read(guildChatSeenProvider.notifier).seenOf('g1'), 9);
+      await _end(tester);
+    });
+
+    testWidgets('chat của hội khác không ảnh hưởng (khoá theo id hội)', (tester) async {
+      await openGuild(tester, latest: 3, prefs: {'guild_chat_seen_gKhac': 99});
+      expect(dot(tester), isTrue);
+      await _end(tester);
+    });
   });
 
   testWidgets('trống: hiện lời mời nhắn tin', (tester) async {

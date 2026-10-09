@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../guild/guild_chat_unread.dart';
 import '../guild/guild_controller.dart';
 import '../guild/guild_repository.dart';
 import '../l10n/app_localizations.dart';
@@ -118,6 +119,13 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> {
     final view = ref.watch(guildControllerProvider);
     final isOwner = view is GuildMine && view.guild.ownerId == ref.read(guildRepositoryProvider).myUserId;
     final chat = ref.watch(guildChatProvider);
+    // Đã mở/tải chat = đã đọc tới tin mới nhất trong danh sách.
+    ref.listen(guildChatProvider, (_, next) {
+      final latest = next.asData?.value.messages.firstOrNull?.id;
+      if (latest != null && view is GuildMine) {
+        ref.read(guildChatSeenProvider.notifier).markSeen(view.guild.id, latest);
+      }
+    });
     final myId = ref.read(guildRepositoryProvider).myUserId;
     return PhoneWidth(
       child: Scaffold(
