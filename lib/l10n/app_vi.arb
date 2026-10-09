@@ -1723,5 +1723,10 @@
   "cloudRemindTitle": "Bảo vệ tiến độ của bạn",
   "cloudRemindBody": "Bạn chưa liên kết email. Nếu đổi máy hoặc cài lại game, tiến độ (Xu, 💎, phụ kiện, Xu Chợ) sẽ MẤT. Liên kết email chỉ mất 1 phút và miễn phí.",
   "cloudRemindLink": "Liên kết ngay",
-  "cloudRemindLater": "Để sau"
+  "cloudRemindLater": "Để sau",
+  "ftueTap": "Chạm vào ly để pha trà và kiếm Xu!",
+  "ftueBuy": "Đủ Xu rồi! Mua nâng cấp đầu tiên để Xu tự chảy mỗi giây.",
+  "ftueExplain": "Tuyệt! Giờ Xu tự tăng mỗi giây — kể cả khi bạn đóng app. Mua thêm nâng cấp để kiếm nhanh hơn, mở khoá giai đoạn mới và nhận quà nhiệm vụ.",
+  "ftueOk": "Đã hiểu",
+  "ftueSkip": "Bỏ qua"
 }

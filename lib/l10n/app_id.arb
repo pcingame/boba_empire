@@ -1267,5 +1267,10 @@
   "cloudRemindTitle": "Lindungi progresmu",
   "cloudRemindBody": "Kamu belum menautkan email. Jika ganti ponsel atau instal ulang, progresmu (Koin, 💎, aksesori, Koin Pasar) akan HILANG. Menautkan hanya semenit dan gratis.",
   "cloudRemindLink": "Tautkan sekarang",
-  "cloudRemindLater": "Nanti"
+  "cloudRemindLater": "Nanti",
+  "ftueTap": "Ketuk gelas untuk meracik teh dan dapatkan Koin!",
+  "ftueBuy": "Koin cukup! Beli upgrade pertamamu agar Koin mengalir tiap detik.",
+  "ftueExplain": "Bagus! Koinmu kini bertambah tiap detik — bahkan saat aplikasi ditutup. Terus upgrade untuk lebih cepat, buka tahap baru, dan klaim hadiah misi.",
+  "ftueOk": "Mengerti",
+  "ftueSkip": "Lewati"
 }

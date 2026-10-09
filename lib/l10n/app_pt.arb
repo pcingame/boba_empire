@@ -1267,5 +1267,10 @@
   "cloudRemindTitle": "Proteja seu progresso",
   "cloudRemindBody": "Você ainda não vinculou um e-mail. Se trocar de celular ou reinstalar, seu progresso (moedas, 💎, acessórios, moedas do mercado) será PERDIDO. Vincular leva um minuto e é grátis.",
   "cloudRemindLink": "Vincular agora",
-  "cloudRemindLater": "Depois"
+  "cloudRemindLater": "Depois",
+  "ftueTap": "Toque no copo para preparar chá e ganhar moedas!",
+  "ftueBuy": "Moedas suficientes! Compre seu primeiro upgrade para ganhar moedas a cada segundo.",
+  "ftueExplain": "Ótimo! Suas moedas agora crescem a cada segundo, mesmo com o app fechado. Continue melhorando para ganhar mais rápido, liberar etapas e resgatar recompensas.",
+  "ftueOk": "Entendi",
+  "ftueSkip": "Pular"
 }

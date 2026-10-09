@@ -19,6 +19,11 @@ class Balance {
   /// tạo chỗ để bán vật phẩm "tăng giới hạn offline".
   static int maxOfflineSeconds = 8 * 60 * 60;
 
+  /// Chỉ hiện popup "Chào mừng quay lại" khi vắng ít nhất ngần này giây. Ngắn hơn
+  /// (đổi app vài giây, mở lại ngay) thì Xu vẫn được cộng nhưng KHÔNG chặn người
+  /// chơi bằng popup — trước đây cứ quay lại là bật popup.
+  static const int offlineDialogMinSeconds = 120;
+
   /// % thu nhập cộng thêm cho mỗi Sao nhượng quyền (bonus vĩnh viễn).
   static double bonusPerStar = 0.02; // +2%/sao
 

@@ -2627,4 +2627,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cloudRemindLater => 'Later';
+
+  @override
+  String get ftueTap => 'Tap the cup to brew tea and earn Coins!';
+
+  @override
+  String get ftueBuy =>
+      'Enough Coins! Buy your first upgrade so Coins flow in every second.';
+
+  @override
+  String get ftueExplain =>
+      'Nice! Your Coins now grow every second — even when the app is closed. Keep upgrading to earn faster, unlock new stages and claim quest rewards.';
+
+  @override
+  String get ftueOk => 'Got it';
+
+  @override
+  String get ftueSkip => 'Skip';
 }

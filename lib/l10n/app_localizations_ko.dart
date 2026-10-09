@@ -2580,4 +2580,20 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get cloudRemindLater => '나중에';
+
+  @override
+  String get ftueTap => '컵을 탭해서 차를 만들고 코인을 모아요!';
+
+  @override
+  String get ftueBuy => '코인이 충분해요! 첫 업그레이드를 구매하면 코인이 매초 들어와요.';
+
+  @override
+  String get ftueExplain =>
+      '좋아요! 이제 앱을 꺼도 코인이 매초 늘어나요. 계속 업그레이드해서 더 빨리 벌고, 새 단계를 열고, 퀘스트 보상을 받으세요.';
+
+  @override
+  String get ftueOk => '알겠어요';
+
+  @override
+  String get ftueSkip => '건너뛰기';
 }

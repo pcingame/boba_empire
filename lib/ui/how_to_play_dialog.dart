@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
 
-/// Bảng "Cách chơi": liệt kê ngắn gọn các cơ chế. Tự hiện lần đầu (xem
-/// tutorialSeen ở HomePage) và mở lại bằng nút ? trên AppBar.
+/// Bảng "Cách chơi": tra cứu ngắn gọn các cơ chế, mở từ Cài đặt. Người mới được
+/// hướng dẫn bằng lớp phủ tương tác (xem tutorial_overlay.dart), không phải hộp này.
 Future<void> showHowToPlay(BuildContext context) {
   return showDialog<void>(
     context: context,
@@ -18,16 +18,17 @@ class _HowToPlayDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final lines = [
-      l10n.htpTap,
-      l10n.htpBuy,
-      l10n.htpStage,
-      l10n.htpCat,
-      l10n.htpVip,
-      l10n.htpGems,
-      l10n.htpPrestige,
-      l10n.htpOffline,
-      l10n.htpNumberFormat,
+      (Icons.touch_app, l10n.htpTap),
+      (Icons.trending_up, l10n.htpBuy),
+      (Icons.storefront, l10n.htpStage),
+      (Icons.pets, l10n.htpCat),
+      (Icons.person, l10n.htpVip),
+      (Icons.diamond, l10n.htpGems),
+      (Icons.workspace_premium, l10n.htpPrestige),
+      (Icons.bedtime, l10n.htpOffline),
+      (Icons.pin, l10n.htpNumberFormat),
     ];
+    final scheme = Theme.of(context).colorScheme;
 
     return AlertDialog(
       title: Text(l10n.howToPlayTitle),
@@ -36,10 +37,22 @@ class _HowToPlayDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            for (final line in lines)
+            for (final (icon, text) in lines)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 6),
-                child: Text(line),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      radius: 16,
+                      backgroundColor: scheme.secondaryContainer,
+                      child: Icon(icon,
+                          size: 18, color: scheme.onSecondaryContainer),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(child: Text(text)),
+                  ],
+                ),
               ),
           ],
         ),

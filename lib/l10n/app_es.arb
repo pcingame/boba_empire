@@ -1267,5 +1267,10 @@
   "cloudRemindTitle": "Protege tu progreso",
   "cloudRemindBody": "No has vinculado un correo. Si cambias de teléfono o reinstalas, tu progreso (monedas, 💎, accesorios, monedas del mercado) se PERDERÁ. Vincularlo lleva un minuto y es gratis.",
   "cloudRemindLink": "Vincular ahora",
-  "cloudRemindLater": "Más tarde"
+  "cloudRemindLater": "Más tarde",
+  "ftueTap": "¡Toca la taza para preparar té y ganar monedas!",
+  "ftueBuy": "¡Ya tienes monedas! Compra tu primera mejora para ganar monedas cada segundo.",
+  "ftueExplain": "¡Genial! Tus monedas ahora crecen cada segundo, incluso con la app cerrada. Sigue mejorando para ganar más rápido, desbloquear etapas y reclamar recompensas.",
+  "ftueOk": "Entendido",
+  "ftueSkip": "Omitir"
 }

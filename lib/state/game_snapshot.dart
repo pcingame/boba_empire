@@ -37,6 +37,7 @@ class GameSnapshot {
     required this.prestigeStars,
     required this.prestigeStarsAvailable,
     required this.offlineEarned,
+    this.offlineDialogDue = false,
     required this.catVisible,
     required this.boostRemainingSeconds,
     required this.vipVisible,
@@ -128,6 +129,10 @@ class GameSnapshot {
   /// Số Xu vừa kiếm lúc vắng mặt, >0 khi cần bật popup; UI gọi
   /// `acknowledgeOffline()` để về 0 sau khi đã hiển thị.
   final double offlineEarned;
+
+  /// Có tiền offline VÀ vắng đủ lâu ([Balance.offlineDialogMinSeconds]) để đáng
+  /// bật popup — tiền vẫn được cộng dù false.
+  final bool offlineDialogDue;
 
   /// Thu nhập tự động mỗi giây (đã tính bonus prestige) — để hiển thị "+X/s".
   final double incomePerSecond;

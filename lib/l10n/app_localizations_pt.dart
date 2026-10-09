@@ -2634,4 +2634,21 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get cloudRemindLater => 'Depois';
+
+  @override
+  String get ftueTap => 'Toque no copo para preparar chá e ganhar moedas!';
+
+  @override
+  String get ftueBuy =>
+      'Moedas suficientes! Compre seu primeiro upgrade para ganhar moedas a cada segundo.';
+
+  @override
+  String get ftueExplain =>
+      'Ótimo! Suas moedas agora crescem a cada segundo, mesmo com o app fechado. Continue melhorando para ganhar mais rápido, liberar etapas e resgatar recompensas.';
+
+  @override
+  String get ftueOk => 'Entendi';
+
+  @override
+  String get ftueSkip => 'Pular';
 }

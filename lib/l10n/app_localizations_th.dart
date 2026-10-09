@@ -2606,4 +2606,21 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get cloudRemindLater => 'ไว้ทีหลัง';
+
+  @override
+  String get ftueTap => 'แตะที่แก้วเพื่อชงชาและหาเหรียญ!';
+
+  @override
+  String get ftueBuy =>
+      'เหรียญพอแล้ว! ซื้ออัปเกรดแรกเพื่อให้เหรียญไหลเข้ามาทุกวินาที';
+
+  @override
+  String get ftueExplain =>
+      'เยี่ยม! ตอนนี้เหรียญเพิ่มขึ้นทุกวินาที แม้ปิดแอป อัปเกรดต่อเพื่อหาเงินเร็วขึ้น ปลดล็อกด่านใหม่ และรับรางวัลภารกิจ';
+
+  @override
+  String get ftueOk => 'เข้าใจแล้ว';
+
+  @override
+  String get ftueSkip => 'ข้าม';
 }

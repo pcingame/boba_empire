@@ -37,7 +37,6 @@ import 'daily_quests_dialog.dart';
 import 'daily_dialog.dart';
 import 'event_dialog.dart';
 import 'gem_shop.dart';
-import 'how_to_play_dialog.dart';
 import 'match3_journey_page.dart';
 import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
@@ -45,6 +44,7 @@ import 'rewards_dialog.dart';
 import 'rival_event_dialog.dart';
 import 'settings_dialog.dart';
 import 'story_dialog.dart';
+import 'tutorial_overlay.dart';
 import 'story_log_dialog.dart';
 import 'widgets/marquee_text.dart';
 import 'widgets/anim_assets.dart';
@@ -119,46 +119,51 @@ class _HomePageState extends ConsumerState<HomePage>
       // Khôi phục sản phẩm non-consumable (Gỡ QC / Gói khởi động) đã mua.
       unawaited(ref.read(iapServiceProvider).restore());
       final state = ref.read(gameControllerProvider);
-      // Lần chơi đầu (chưa xem hướng dẫn, không vướng popup offline): mở "Cách
-      // chơi". Nếu đang có tiền offline thì nhường popup đó, để hướng dẫn lần sau.
-      if (debugAutoShowTutorial &&
-          !state.tutorialSeen &&
-          state.offlineEarned <= 0) {
-        ref.read(gameControllerProvider.notifier).markTutorialSeen();
-        await showHowToPlay(context);
-      } else if (state.offlineEarned > 0) {
-        await _showOfflineDialog(state.offlineEarned);
-      } else if (debugAutoShowDaily && state.dailyAvailable) {
-        await showDailyReward(context);
+      final chapter = state.pendingStoryChapterId;
+      // Hướng dẫn lần đầu là lớp phủ trên màn chơi (TutorialOverlay), không phải
+      // popup. Chưa xong thì chỉ cho cutscene mở đầu hiện; mọi popup khác chờ.
+      // Vẫn ghi nhớ phiên bản (không bật "Có gì mới"), để lần mở sau người mới
+      // không bị nhầm là "vừa cập nhật".
+      if (debugAutoShowTutorial && !state.tutorialSeen) {
+        if (debugAutoShowStory && chapter != null) _showStoryBeat(chapter);
+        unawaited(_maybeShowWhatsNew(false, recordOnly: true));
+        return;
       }
-      // Cutscene cốt truyện: sau khi popup mở-app (nếu có) đóng — không đứng
-      // chung chuỗi else-if để không bị điểm danh/hướng dẫn "nuốt" mất.
-      if (!mounted) return;
-      final chapter = ref.read(gameControllerProvider).pendingStoryChapterId;
+      // MỘT popup mỗi lần mở app, theo ưu tiên: điểm danh (mỗi ngày 1 lần, không
+      // được bỏ lỡ kẻo đứt chuỗi) > cốt truyện > tiền offline (chỉ khi vắng đủ lâu)
+      // > "Có gì mới" > nhắc liên kết email. Cái nào không được hiện thì chờ lần mở
+      // sau — mọi trạng thái đều giữ nguyên (điểm danh/cốt truyện còn chờ, "Có gì
+      // mới" chưa ghi nhớ, nhắc email chưa tính lượt).
+      if (debugAutoShowDaily && state.dailyAvailable) {
+        await showDailyReward(context);
+        return;
+      }
       if (debugAutoShowStory && chapter != null) {
         _showStoryBeat(chapter);
-      } else {
-        // "Có gì mới" (một lần sau khi cập nhật) — sau các popup mở-app; nhường
-        // cutscene nếu đang chờ (lần mở sau sẽ hiện, vì chưa ghi nhớ phiên bản).
-        // KHÔNG await: hỏi phiên bản qua kênh nền tảng, không được chặn chuỗi popup.
-        // Lời nhắc liên kết email chờ "Có gì mới" xong và KHÔNG chồng lên nó.
-        unawaited(_maybeShowWhatsNew(hadSaveAtLaunch).then((shown) {
-          if (!shown) _maybeRemindCloudLink();
-        }));
+        return;
       }
+      if (state.offlineDialogDue) {
+        await _showOfflineDialog(state.offlineEarned);
+        return;
+      }
+      // KHÔNG await: hỏi phiên bản qua kênh nền tảng, không được chặn chuỗi popup.
+      unawaited(_maybeShowWhatsNew(hadSaveAtLaunch).then((shown) {
+        if (!shown) _maybeRemindCloudLink();
+      }));
     });
   }
 
   /// Ghi nhớ phiên bản hiện tại; nếu vừa cập nhật lên bản có nội dung mới thì
   /// hiện hộp "Có gì mới". Lỗi lấy phiên bản (test, nền tảng lạ) → bỏ qua im lặng.
-  Future<bool> _maybeShowWhatsNew(bool hadSave) async {
+  Future<bool> _maybeShowWhatsNew(bool hadSave, {bool recordOnly = false}) async {
     try {
       final prefs = ref.read(sharedPreferencesProvider);
       final current = await ref.read(appVersionProvider)();
       final seen = prefs.getString(whatsNewSeenKey);
       await prefs.setString(whatsNewSeenKey, current);
       if (!mounted) return false;
-      if (shouldShowWhatsNew(seen: seen, current: current, hasSave: hadSave)) {
+      if (!recordOnly &&
+          shouldShowWhatsNew(seen: seen, current: current, hasSave: hadSave)) {
         await showWhatsNew(context, current);
         return true;
       }
@@ -347,9 +352,11 @@ class _HomePageState extends ConsumerState<HomePage>
   Widget build(BuildContext context) {
     // Tiền offline lúc app trở lại foreground (giá trị đổi từ 0 -> X).
     ref.listen(
-      gameControllerProvider.select((s) => s.offlineEarned),
+      gameControllerProvider.select((s) => s.offlineDialogDue),
       (previous, next) {
-        if (next > 0) _showOfflineDialog(next);
+        if (next) {
+          _showOfflineDialog(ref.read(gameControllerProvider).offlineEarned);
+        }
       },
     );
 
@@ -429,6 +436,7 @@ class _HomePageState extends ConsumerState<HomePage>
                 ],
               ),
               const _BoostIndicator(),
+              TutorialOverlay(enabled: debugAutoShowTutorial),
             ],
           ),
         ),
@@ -1197,7 +1205,9 @@ class _TapCircle extends StatelessWidget {
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [
-                Container(
+                KeyedSubtree(
+                key: ftueCupKey,
+                child: Container(
                 key: const Key('tap-circle'),
                 width: side,
                 height: side,
@@ -1247,7 +1257,7 @@ class _TapCircle extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
+              )),
                 const Positioned.fill(child: _EquippedFloaters()),
                 ],
               ),
@@ -2052,6 +2062,18 @@ class _ShopTile extends ConsumerWidget {
 
   final GeneratorConfig config;
 
+  /// Khung quanh nút mua: nút của nguồn thu ĐẦU TIÊN mang khoá cho hướng dẫn lần
+  /// đầu đo vị trí; nút "đáng mua nhất" mà đủ tiền thì nhấp nháy nhẹ (đầu tư có
+  /// ích nhất đang chờ bạn). _Pulse tự tắt khi bật giảm chuyển động.
+  Widget _buyButtonFrame(Widget button, {required bool canAfford}) {
+    var w = button;
+    if (isBest && canAfford) w = _Pulse(child: w);
+    if (config.id == Balance.generators.first.id) {
+      w = KeyedSubtree(key: ftueBuyKey, child: w);
+    }
+    return w;
+  }
+
   /// Hệ số nhân thu nhập toàn cục hiện tại — để hiện thu nhập thật khi mua.
   final double globalMult;
 
@@ -2159,7 +2181,8 @@ class _ShopTile extends ConsumerWidget {
             // dung và tràn hàng (RenderFlex overflow thật đã gặp). Co chữ
             // lại thay vì tràn, giống cách _TapArea xử lý ở màn hình chính.
             Flexible(
-              child: FilledButton(
+              child: _buyButtonFrame(
+                FilledButton(
                 onPressed: canAfford
                     ? () {
                         final ctrl =
@@ -2180,6 +2203,8 @@ class _ShopTile extends ConsumerWidget {
                   fit: BoxFit.scaleDown,
                   child: Text('${l10n.buyButton(formatNumber(cost))}$countLabel'),
                 ),
+              ),
+                canAfford: canAfford,
               ),
             ),
           ],

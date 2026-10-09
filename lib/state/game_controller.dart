@@ -62,6 +62,9 @@ class GameController extends Notifier<GameSnapshot> {
   int _ticksSinceSave = 0;
   double _offlineEarned = 0;
 
+  /// Số ms vắng mặt của lần tính offline gần nhất (để quyết định có bật popup).
+  int _offlineAwayMs = 0;
+
   /// Thành tựu vừa mở khoá, chờ UI hiển thị (xoá qua acknowledgeAchievements).
   List<Achievement> _newAchievements = const [];
 
@@ -116,6 +119,7 @@ class GameController extends Notifier<GameSnapshot> {
           _game.equippedAccessories.length);
     _rollDaily();
     // Tính tiền kiếm được lúc app tắt (có cap + chống lùi giờ ở tầng core).
+    _offlineAwayMs = _clock() - _game.lastSeenMillis;
     _offlineEarned = applyOfflineEarnings(
       _game,
       _clock(),
@@ -1230,6 +1234,7 @@ class GameController extends Notifier<GameSnapshot> {
   /// UI gọi khi app trở lại foreground: bù tiền cho khoảng vừa ở nền.
   void handleResume() {
     _rollDaily();
+    _offlineAwayMs = _clock() - _game.lastSeenMillis;
     _offlineEarned = applyOfflineEarnings(
       _game,
       _clock(),
@@ -1549,6 +1554,8 @@ class GameController extends Notifier<GameSnapshot> {
       prestigeStars: _game.prestigeStars,
       prestigeStarsAvailable: prestigeStarsAvailable(_game),
       offlineEarned: _offlineEarned,
+      offlineDialogDue: _offlineEarned > 0 &&
+          _offlineAwayMs >= Balance.offlineDialogMinSeconds * 1000,
       catVisible: _catVisible,
       boostRemainingSeconds: remainingMs > 0 ? remainingMs / 1000.0 : 0,
       vipVisible: _vipVisible,

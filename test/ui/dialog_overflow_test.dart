@@ -160,7 +160,7 @@ void main() {
         tester,
         locale: locale,
         seed: GameState.newGame(nowMillis: 0)..levels['tra_den'] = 2,
-        clock: 60000, // mở sau 60s → có tiền offline, popup tự hiện
+        clock: 120000, // mở sau 120s (ngưỡng popup) → có tiền offline, popup tự hiện
       );
       expect(find.byKey(const Key('offline-double')), findsOneWidget);
       await tester.pumpWidget(const SizedBox());

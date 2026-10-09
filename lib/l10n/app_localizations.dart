@@ -4607,6 +4607,36 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Để sau'**
   String get cloudRemindLater;
+
+  /// No description provided for @ftueTap.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chạm vào ly để pha trà và kiếm Xu!'**
+  String get ftueTap;
+
+  /// No description provided for @ftueBuy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đủ Xu rồi! Mua nâng cấp đầu tiên để Xu tự chảy mỗi giây.'**
+  String get ftueBuy;
+
+  /// No description provided for @ftueExplain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tuyệt! Giờ Xu tự tăng mỗi giây — kể cả khi bạn đóng app. Mua thêm nâng cấp để kiếm nhanh hơn, mở khoá giai đoạn mới và nhận quà nhiệm vụ.'**
+  String get ftueExplain;
+
+  /// No description provided for @ftueOk.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã hiểu'**
+  String get ftueOk;
+
+  /// No description provided for @ftueSkip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ qua'**
+  String get ftueSkip;
 }
 
 class _AppLocalizationsDelegate

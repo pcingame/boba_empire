@@ -118,21 +118,22 @@ void main() {
     c.dispose();
   });
 
-  testWidgets('cài mới: hướng dẫn lần đầu hiện, đóng xong KHÔNG hiện "Có gì mới" (dù tutorial đã lưu ván)',
+  testWidgets(
+      'cài mới: hướng dẫn tương tác hiện, KHÔNG hiện "Có gì mới" dù hướng dẫn xong sẽ lưu ván',
       (tester) async {
     final savedTutorial = debugAutoShowTutorial;
     debugAutoShowTutorial = true;
     addTearDown(() => debugAutoShowTutorial = savedTutorial);
     final (c, prefs) = await _launch(tester, version: '1.0.8', hasSave: false);
-    expect(find.byKey(const Key('how-to-play-close')), findsOneWidget,
-        reason: 'người mới thấy hướng dẫn');
+    expect(find.byKey(const Key('ftue-bubble')), findsOneWidget,
+        reason: 'người mới thấy hướng dẫn tương tác');
     expect(find.byKey(const Key('whats-new')), findsNothing);
-    await tester.tap(find.byKey(const Key('how-to-play-close')));
-    await tester.pumpAndSettle();
-    // markTutorialSeen() đã lưu ván → trước bản sửa, đây bị nhầm là "người vừa cập nhật".
-    expect(prefs.containsKey(GameStorage.saveKey), isTrue);
-    expect(find.byKey(const Key('whats-new')), findsNothing);
+    // Phiên bản được ghi nhớ NGAY (dù chưa hiện gì) → lần mở sau người mới không bị
+    // nhầm là "vừa cập nhật" khi ván đã được lưu.
     expect(prefs.getString(whatsNewSeenKey), '1.0.8');
+    await tester.tap(find.byKey(const Key('ftue-skip')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('whats-new')), findsNothing);
     await tester.pumpWidget(const SizedBox());
     c.dispose();
   });

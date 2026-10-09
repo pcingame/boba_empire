@@ -2625,4 +2625,21 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get cloudRemindLater => 'Nanti';
+
+  @override
+  String get ftueTap => 'Ketuk gelas untuk meracik teh dan dapatkan Koin!';
+
+  @override
+  String get ftueBuy =>
+      'Koin cukup! Beli upgrade pertamamu agar Koin mengalir tiap detik.';
+
+  @override
+  String get ftueExplain =>
+      'Bagus! Koinmu kini bertambah tiap detik — bahkan saat aplikasi ditutup. Terus upgrade untuk lebih cepat, buka tahap baru, dan klaim hadiah misi.';
+
+  @override
+  String get ftueOk => 'Mengerti';
+
+  @override
+  String get ftueSkip => 'Lewati';
 }

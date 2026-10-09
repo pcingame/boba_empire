@@ -2618,4 +2618,21 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get cloudRemindLater => 'Để sau';
+
+  @override
+  String get ftueTap => 'Chạm vào ly để pha trà và kiếm Xu!';
+
+  @override
+  String get ftueBuy =>
+      'Đủ Xu rồi! Mua nâng cấp đầu tiên để Xu tự chảy mỗi giây.';
+
+  @override
+  String get ftueExplain =>
+      'Tuyệt! Giờ Xu tự tăng mỗi giây — kể cả khi bạn đóng app. Mua thêm nâng cấp để kiếm nhanh hơn, mở khoá giai đoạn mới và nhận quà nhiệm vụ.';
+
+  @override
+  String get ftueOk => 'Đã hiểu';
+
+  @override
+  String get ftueSkip => 'Bỏ qua';
 }
