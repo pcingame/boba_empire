@@ -272,39 +272,36 @@ class AppLocalizationsId extends AppLocalizations {
   String get howToPlayTitle => 'Cara bermain';
 
   @override
-  String get htpTap =>
-      '🧋 Ketuk gelas untuk menyeduh teh dan mendapatkan Koin.';
+  String get htpTap => 'Ketuk gelas untuk menyeduh teh dan mendapatkan Koin.';
 
   @override
   String get htpBuy =>
-      '🛒 Beli peningkatan untuk pendapatan otomatis setiap detik.';
+      'Beli peningkatan untuk pendapatan otomatis setiap detik.';
 
   @override
   String get htpStage =>
-      '🏪 Kumpulkan Koin untuk membuka tahap baru dengan minuman lebih mewah.';
+      'Kumpulkan Koin untuk membuka tahap baru dengan minuman lebih mewah.';
 
   @override
-  String get htpCat =>
-      '🐱 Ketuk kucing keberuntungan untuk Hujan Emas ×3 sesaat.';
+  String get htpCat => 'Ketuk kucing keberuntungan untuk Hujan Emas ×3 sesaat.';
 
   @override
-  String get htpVip => '🚗 Layani pelanggan VIP untuk mendapatkan Permata 💎.';
+  String get htpVip => 'Layani pelanggan VIP untuk mendapatkan Permata 💎.';
 
   @override
-  String get htpGems =>
-      '💎 Gunakan Permata di Toko untuk peningkatan permanen.';
+  String get htpGems => 'Gunakan Permata di Toko untuk peningkatan permanen.';
 
   @override
   String get htpPrestige =>
-      '⭐ Waralabakan untuk mengulang dan dapat Bintang — bonus pendapatan permanen.';
+      'Waralabakan untuk mengulang dan dapat Bintang — bonus pendapatan permanen.';
 
   @override
   String get htpOffline =>
-      '😴 Toko tetap berjualan saat kamu pergi — kembali untuk mengambil uang offline.';
+      'Toko tetap berjualan saat kamu pergi — kembali untuk mengambil uang offline.';
 
   @override
   String get htpNumberFormat =>
-      '🔢 Angka besar pakai singkatan: K=ribu, M=juta, B=miliar, T=triliun, lalu aa, bb, cc... — tiap tingkat 1.000× dari sebelumnya.';
+      'Angka besar pakai singkatan: K=ribu, M=juta, B=miliar, T=triliun, lalu aa, bb, cc... — tiap tingkat 1.000× dari sebelumnya.';
 
   @override
   String get language => 'Bahasa';
@@ -2642,4 +2639,182 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get ftueSkip => 'Lewati';
+
+  @override
+  String get accessoryGuildFlag => 'Bendera Guild';
+
+  @override
+  String get accessoryGuildCastle => 'Kastil Guild';
+
+  @override
+  String get accessoryGuildWolf => 'Serigala Guild';
+
+  @override
+  String get accessoryGuildDragon => 'Naga Guild';
+
+  @override
+  String get accessoryGuildFox => 'Rubah Guild';
+
+  @override
+  String get accessoryGuildTiger => 'Harimau Guild';
+
+  @override
+  String get accessoryGuildShark => 'Hiu Guild';
+
+  @override
+  String get accessoryGuildTrex => 'T-Rex Guild';
+
+  @override
+  String get accessoryGuildBoar => 'Babi Hutan Guild';
+
+  @override
+  String get accessoryGuildBear => 'Beruang Guild';
+
+  @override
+  String get accessoryGuildScorpion => 'Kalajengking Guild';
+
+  @override
+  String get accessoryGuildMoai => 'Moai Guild';
+
+  @override
+  String guildErrDailyLimit(int n) {
+    return 'Kamu sudah menyumbang maksimum $n 💎 hari ini.';
+  }
+
+  @override
+  String get guildErrCoins => 'Koin Guild tidak cukup.';
+
+  @override
+  String get guildErrOwned => 'Kamu sudah punya item ini.';
+
+  @override
+  String get guildErrBuffMaxed => 'Buff guild sudah maksimum, tunggu sebentar.';
+
+  @override
+  String get guildErrClaimed => 'Kamu sudah mengklaim hadiah ini.';
+
+  @override
+  String get guildErrInvalidInput => 'Aksi tidak valid.';
+
+  @override
+  String get guildShopButton => 'Toko guild';
+
+  @override
+  String get guildShopTitle => 'Toko guild';
+
+  @override
+  String guildCoinsLabel(int n) {
+    return 'Koin Guild: $n';
+  }
+
+  @override
+  String get guildDonateTitle => 'Sumbang 💎 untuk Koin Guild';
+
+  @override
+  String guildDonateHint(int used, int cap) {
+    return 'Hari ini: $used/$cap 💎 · 1 💎 = 1 Koin Guild';
+  }
+
+  @override
+  String guildDonateGems(int n) {
+    return '$n 💎';
+  }
+
+  @override
+  String guildDonated(int n) {
+    return 'Berhasil menyumbang, dapat +$n Koin Guild';
+  }
+
+  @override
+  String get guildQuestsTitle => 'Misi guild mingguan';
+
+  @override
+  String guildQuestProgress(int have, int need) {
+    return 'Sumbang $need poin minggu ini ($have/$need)';
+  }
+
+  @override
+  String guildQuestReward(int n) {
+    return '+$n Koin Guild';
+  }
+
+  @override
+  String guildQuestGot(int n) {
+    return 'Dapat +$n Koin Guild';
+  }
+
+  @override
+  String get guildItemsTitle => 'Aksesori eksklusif guild';
+
+  @override
+  String guildItemPrice(int n) {
+    return '$n Koin';
+  }
+
+  @override
+  String get guildItemOwned => 'Dimiliki';
+
+  @override
+  String get guildItemBought => 'Berhasil ditukar! Aksesori ada di Koleksi.';
+
+  @override
+  String get guildBuffTitle => 'Buff pendapatan guild';
+
+  @override
+  String guildBuffDesc(int pct, int hours) {
+    return '+$pct% Koin selama $hours jam untuk semua anggota (tidak berlaku offline)';
+  }
+
+  @override
+  String guildBuffLeft(String time) {
+    return 'Sisa $time';
+  }
+
+  @override
+  String get guildBuffBought => 'Buff guild aktif!';
+
+  @override
+  String guildStreakLine(int n) {
+    return '🔥 $n minggu berturut-turut capai 3 target';
+  }
+
+  @override
+  String guildBuffLine(int pct, String time) {
+    return '⚡ Buff guild +$pct% · sisa $time';
+  }
+
+  @override
+  String get guildLbTabTotal => 'Total';
+
+  @override
+  String get guildLbTabAvg => 'Rata-rata';
+
+  @override
+  String get guildLbTabStreak => 'Beruntun';
+
+  @override
+  String guildLbAvgNote(int n) {
+    return 'Hanya guild dengan $n+ anggota yang diperingkat';
+  }
+
+  @override
+  String guildAvgPerMember(int n) {
+    return '$n/anggota';
+  }
+
+  @override
+  String guildStreakWeeks(int n) {
+    return '$n minggu';
+  }
+
+  @override
+  String get guildLbStreakNote =>
+      'Minggu berturut-turut guild mencapai 3 target';
+
+  @override
+  String get guildLbStreakEmpty => 'Belum ada guild dengan rentetan.';
+
+  @override
+  String get guildLbAvgEmpty =>
+      'Belum ada guild yang memenuhi syarat peringkat rata-rata.';
 }

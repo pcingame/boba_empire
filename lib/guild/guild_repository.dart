@@ -19,6 +19,8 @@ class GuildSummary {
     this.requiresApproval = false,
     this.requested = false,
     this.rank,
+    this.avgPoints,
+    this.streak,
   });
 
   factory GuildSummary.fromRow(Map<String, dynamic> r) => GuildSummary(
@@ -31,6 +33,8 @@ class GuildSummary {
         requiresApproval: (r['requires_approval'] as bool?) ?? false,
         requested: (r['requested'] as bool?) ?? false,
         rank: (r['rank'] as num?)?.toInt(),
+        avgPoints: (r['avg_points'] as num?)?.toInt(),
+        streak: (r['streak'] as num?)?.toInt(),
       );
 
   final String id;
@@ -46,6 +50,11 @@ class GuildSummary {
   /// Mình đã gửi yêu cầu vào hội này và đang chờ duyệt.
   final bool requested;
   final int? rank;
+
+  /// Điểm trung bình mỗi thành viên (chỉ BXH trung bình) / số tuần liên tiếp đủ 3
+  /// mốc (chỉ BXH chuỗi).
+  final int? avgPoints;
+  final int? streak;
 }
 
 class GuildMemberInfo {
@@ -75,6 +84,12 @@ class MyGuild {
     required this.members,
     this.requiresApproval = false,
     this.requests = const [],
+    this.streak = 0,
+    this.buffSeconds = 0,
+    this.wallet = 0,
+    this.questsClaimed = const [],
+    this.ownedItems = const [],
+    this.donatedToday = 0,
   });
 
   /// Đọc JSON trả về từ `guild_my()`.
@@ -94,6 +109,17 @@ class MyGuild {
             nickname: r['nickname'] as String,
           ),
       ],
+      streak: (j['streak'] as num?)?.toInt() ?? 0,
+      buffSeconds: (j['buff_seconds'] as num?)?.toInt() ?? 0,
+      wallet: (j['wallet'] as num?)?.toInt() ?? 0,
+      questsClaimed: [
+        for (final c in (j['quests_claimed'] as List?) ?? const [])
+          (c as num).toInt(),
+      ],
+      ownedItems: [
+        for (final c in (j['owned_items'] as List?) ?? const []) c as String,
+      ],
+      donatedToday: (j['donated_today'] as num?)?.toInt() ?? 0,
       total: (j['total'] as num).toInt(),
       claimed: [for (final c in j['claimed'] as List) (c as num).toInt()],
       members: [
@@ -122,6 +148,19 @@ class MyGuild {
 
   /// Mốc (1-based, như server) mình đã nhận tuần này.
   final List<int> claimed;
+
+  /// Số tuần liên tiếp cả hội đạt đủ 3 mốc.
+  final int streak;
+
+  /// Giây còn lại của buff thu nhập cả hội (0 = không có).
+  final int buffSeconds;
+
+  /// Xu Hội cá nhân; nhiệm vụ tuần đã nhận (1-based); id vật phẩm đã đổi; số 💎
+  /// đã nạp hôm nay.
+  final int wallet;
+  final List<int> questsClaimed;
+  final List<String> ownedItems;
+  final int donatedToday;
   final List<GuildMemberInfo> members;
 
   int pointsOf(String? userId) {
@@ -146,6 +185,13 @@ enum GuildFailure {
   /// Hội này cần duyệt — phải xin vào thay vì vào thẳng.
   approvalRequired,
 
+  alreadyClaimed,
+  dailyLimit,
+  notEnoughCoins,
+  alreadyOwned,
+  buffMaxed,
+  invalidInput,
+
   /// Hội đang có quá nhiều yêu cầu chờ duyệt.
   requestsFull,
   network,
@@ -167,6 +213,16 @@ GuildFailure guildFailureFromMessage(String message) {
   if (m.contains('already in guild')) return GuildFailure.alreadyInGuild;
   if (m.contains('invalid name')) return GuildFailure.invalidName;
   if (m.contains('approval required')) return GuildFailure.approvalRequired;
+  if (m.contains('already claimed')) return GuildFailure.alreadyClaimed;
+  if (m.contains('daily limit')) return GuildFailure.dailyLimit;
+  if (m.contains('not enough coins')) return GuildFailure.notEnoughCoins;
+  if (m.contains('already owned')) return GuildFailure.alreadyOwned;
+  if (m.contains('buff maxed')) return GuildFailure.buffMaxed;
+  if (m.contains('invalid amount') ||
+      m.contains('invalid item') ||
+      m.contains('invalid tier')) {
+    return GuildFailure.invalidInput;
+  }
   if (m.contains('too many requests')) return GuildFailure.requestsFull;
   if (m.contains('not found')) return GuildFailure.notFound;
   if (m.contains('not enough contribution') ||
@@ -184,6 +240,8 @@ abstract class GuildRepository {
   Future<MyGuild?> myGuild();
   Future<List<GuildSummary>> list();
   Future<List<GuildSummary>> leaderboard();
+  Future<List<GuildSummary>> leaderboardAvg();
+  Future<List<GuildSummary>> leaderboardStreak();
   Future<void> create({
     required String name,
     required String tag,
@@ -216,6 +274,15 @@ abstract class GuildRepository {
 
   /// [milestone] 1-based (khớp server).
   Future<void> claimReward(int milestone);
+
+  /// Xu Hội (server giữ ví). Client trừ 💎 / cấp vật phẩm SAU KHI các lệnh này thành công.
+  Future<void> donate(int gems);
+  Future<void> claimQuest(int tier);
+  Future<void> buyItem(String itemId);
+  Future<void> buyBuff();
+
+  /// Giây buff thu nhập cả hội còn lại (nhẹ — gọi khi mở app).
+  Future<int> buffSeconds();
 }
 
 class SupabaseGuildRepository implements GuildRepository {
@@ -340,6 +407,32 @@ class SupabaseGuildRepository implements GuildRepository {
       _rpc('guild_report', {'p_guild': guildId, 'p_reason': reason});
 
   @override
+  Future<List<GuildSummary>> leaderboardAvg() async =>
+      _rows(await _rpc('guild_leaderboard_avg', {'p_limit': 50}));
+
+  @override
+  Future<List<GuildSummary>> leaderboardStreak() async =>
+      _rows(await _rpc('guild_leaderboard_streak', {'p_limit': 50}));
+
+  @override
   Future<void> claimReward(int milestone) =>
       _rpc('guild_claim_reward', {'p_milestone': milestone});
+
+  @override
+  Future<void> donate(int gems) => _rpc('guild_donate', {'p_gems': gems});
+
+  @override
+  Future<void> claimQuest(int tier) =>
+      _rpc('guild_claim_quest', {'p_tier': tier});
+
+  @override
+  Future<void> buyItem(String itemId) =>
+      _rpc('guild_buy_item', {'p_item': itemId});
+
+  @override
+  Future<void> buyBuff() => _rpc('guild_buy_buff');
+
+  @override
+  Future<int> buffSeconds() async =>
+      ((await _rpc('guild_buff_seconds')) as num).toInt();
 }

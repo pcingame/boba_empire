@@ -12,6 +12,10 @@ const int guildMaxMembers = 30;
 /// Phí tạo hội (💎). Trừ SAU khi server tạo thành công; vào hội thì miễn phí.
 const int guildCreateCostGems = 2000; // ⚠️ chưa playtest
 
+/// BXH "trung bình/người": chỉ hội từ chừng này thành viên mới được xếp (chống lập
+/// hội 1 người). Khớp `guild_avg_min_members` ở server.
+const int guildAvgMinMembers = 5;
+
 /// Điểm cá nhân tối thiểu trong tuần để được nhận thưởng mốc (chống ăn theo).
 const int guildMinPointsToClaim = 300;
 

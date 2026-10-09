@@ -317,4 +317,191 @@ select t_as(u(77));
 select t_eq('không đọc thẳng bảng yêu cầu', (select count(*) from guild_join_requests), 0::bigint);
 reset role;
 
+-- ===== 13. Lịch sử tuần, chuỗi, BXH trung bình/chuỗi =====================
+reset role;
+select t_as(u(80));
+select guild_create('Streak Club', 'sk', '🔥', false, 'Boss', 0) as gs \gset
+select guild_my()->>'week' as wk \gset
+reset role;
+-- Chưa có lịch sử, chưa đủ điểm → chuỗi 0.
+select t_eq('chuỗi ban đầu = 0', guild_streak(:'gs'::uuid), 0);
+-- Ba tuần liền trước đều đủ 3 mốc (≥ 120.000) → chuỗi 3 (tuần này chưa đạt).
+insert into guild_week_totals (guild_id, week, total) values
+  (:'gs'::uuid, :'wk'::date - 7, 130000), (:'gs'::uuid, :'wk'::date - 14, 120000),
+  (:'gs'::uuid, :'wk'::date - 21, 999999);
+select t_eq('3 tuần liền đạt → chuỗi 3', guild_streak(:'gs'::uuid), 3);
+-- Tuần này đạt thêm → 4.
+update guild_members set week_points = 125000 where user_id = u(80);
+select t_eq('thêm tuần này đạt → 4', guild_streak(:'gs'::uuid), 4);
+-- Đứt chuỗi ở tuần -14 (119.999 < 120.000): tuần này + tuần trước = 2.
+update guild_week_totals set total = 119999 where guild_id = :'gs'::uuid and week = :'wk'::date - 14;
+select t_eq('đứt ở tuần -14 → chuỗi 2', guild_streak(:'gs'::uuid), 2);
+-- Tuần này chưa đạt nhưng tuần trước đạt → chuỗi tính từ tuần trước (1).
+update guild_members set week_points = 100 where user_id = u(80);
+select t_eq('tuần này chưa đạt, tuần trước đạt → 1', guild_streak(:'gs'::uuid), 1);
+update guild_week_totals set total = 100 where guild_id = :'gs'::uuid and week = :'wk'::date - 7;
+select t_eq('không tuần nào đạt → 0', guild_streak(:'gs'::uuid), 0);
+
+-- Ghi lịch sử khi thành viên sang tuần mới.
+update guild_week_totals set total = 0 where guild_id = :'gs'::uuid;
+update guild_members set week = :'wk'::date - 7, week_points = 5000, last_score = 5000
+  where user_id = u(80);
+select t_as(u(80));
+select guild_submit_score(5100);   -- sang tuần mới: điểm tuần cũ vào lịch sử
+reset role;
+select t_eq('lịch sử tuần cũ có 5000',
+  (select total from guild_week_totals where guild_id = :'gs'::uuid and week = :'wk'::date - 7), 5000::bigint);
+select t_eq('tổng tuần cũ = lịch sử', guild_total_of(:'gs'::uuid, :'wk'::date - 7), 5000::bigint);
+select t_eq('hàng thành viên đã sang tuần mới', (select week from guild_members where user_id = u(80)), :'wk'::date);
+
+-- Thành viên rời giữa tuần: điểm họ đóng góp vẫn tính cho hội (vào lịch sử).
+select t_as(u(81)); select guild_join(:'gs'::uuid, 'Mem1', 0);
+reset role;
+update guild_members set week_points = 7000 where user_id = u(81);
+select t_eq('trước khi rời: 5100 + 7000', guild_week_total(:'gs'::uuid), 12100::bigint);
+select t_as(u(81)); select guild_leave();
+reset role;
+select t_eq('sau khi rời điểm vẫn tính', guild_week_total(:'gs'::uuid), 12100::bigint);
+-- Bị kick cũng vậy.
+select t_as(u(82)); select guild_join(:'gs'::uuid, 'Mem2', 0);
+reset role;
+update guild_members set week_points = 3000 where user_id = u(82);
+select t_as(u(80)); select guild_kick(u(82));
+reset role;
+select t_eq('bị kick điểm vẫn tính', guild_week_total(:'gs'::uuid), 15100::bigint);
+
+-- BXH trung bình/người: chỉ hội ≥ 5 người, xếp theo trung bình.
+select t_as(u(83)); select guild_create('Big Avg', 'ba', '🅰️', false, 'B1', 0) as g_big \gset
+select t_as(u(84)); select guild_create('Small Four', 'sf', '🅱️', false, 'S1', 0) as g_small \gset
+select t_as(u(85)); select guild_create('Wide Five', 'wf', '🅾️', false, 'W1', 0) as g_wide \gset
+reset role;
+insert into guild_members (user_id, guild_id, nickname, week, week_points)
+  select u(i), :'g_big'::uuid, 'b' || i, :'wk'::date, 0 from generate_series(86, 89) i;
+insert into guild_members (user_id, guild_id, nickname, week, week_points)
+  select u(i), :'g_wide'::uuid, 'w' || i, :'wk'::date, 0 from generate_series(90, 98) i;
+insert into guild_members (user_id, guild_id, nickname, week, week_points)
+  select u(i), :'g_small'::uuid, 's' || i, :'wk'::date, 0 from generate_series(99, 99) i;
+update guild_members set week_points = 50000 where user_id = u(83);   -- Big Avg: 5 người, 50k → 10k/người
+update guild_members set week_points = 90000 where user_id = u(85);   -- Wide: 10 người, 90k → 9k/người
+update guild_members set week_points = 400000 where user_id = u(84);  -- Small: 2 người, 400k → bị loại (<5 người)
+select t_as(u(70));
+select t_eq('avg: Small Four (2 người) không lên bảng',
+  (select count(*) from guild_leaderboard_avg(100) where name = 'Small Four'), 0::bigint);
+select t_eq('avg: Big Avg hạng trên Wide Five',
+  (select rank from guild_leaderboard_avg(100) where name = 'Big Avg')
+  < (select rank from guild_leaderboard_avg(100) where name = 'Wide Five'), true);
+select t_eq('avg: giá trị trung bình đúng',
+  (select avg_points from guild_leaderboard_avg(100) where name = 'Big Avg'), 10000::bigint);
+select t_eq('BXH tổng vẫn xếp theo tổng: Small (400k) trên Big (50k)',
+  (select rank from guild_leaderboard(100) where name = 'Small Four')
+  < (select rank from guild_leaderboard(100) where name = 'Big Avg'), true);
+-- BXH chuỗi: chỉ hội có chuỗi > 0.
+reset role;
+insert into guild_week_totals (guild_id, week, total) values
+  (:'g_big'::uuid, :'wk'::date - 7, 130000), (:'g_wide'::uuid, :'wk'::date - 7, 130000),
+  (:'g_wide'::uuid, :'wk'::date - 14, 130000);
+select t_as(u(70));
+select t_eq('chuỗi: Wide (2 tuần) hạng 1', (select name from guild_leaderboard_streak(10) where rank = 1), 'Wide Five');
+-- Small Four đã đạt đủ 3 mốc TUẦN NÀY (400k) → chuỗi 1; Big Avg chuỗi 1 (tuần trước) nhưng ít điểm hơn.
+select t_eq('chuỗi hòa 1: tổng tuần cao hơn xếp trước (Small 400k)',
+  (select name from guild_leaderboard_streak(10) where rank = 2), 'Small Four');
+select t_eq('chuỗi: Big Avg hạng 3', (select name from guild_leaderboard_streak(10) where rank = 3), 'Big Avg');
+select t_eq('chuỗi: hội chưa có chuỗi không lên bảng',
+  (select count(*) from guild_leaderboard_streak(100) where name = 'Streak Club'), 0::bigint);
+select t_eq('guild_my báo chuỗi', (select (guild_my()->>'streak')::int from (select t_as(u(90))) _), 2);
+
+-- ===== 14. Xu Hội: nạp 💎, nhiệm vụ tuần, cửa hàng, buff =================
+reset role;
+select t_as(u(70));   -- chủ Private Club (đang trong hội)
+select t_err($$select guild_donate(0)$$, 'invalid amount');
+select t_err($$select guild_donate(-5)$$, 'invalid amount');
+select t_err($$select guild_donate(1001)$$, 'invalid amount');
+select guild_donate(600) as bal1 \gset
+select t_eq('nạp 600 → 600 Xu', :'bal1'::bigint, 600::bigint);
+select t_err($$select guild_donate(500)$$, 'daily limit');       -- 600 + 500 > 1000
+select guild_donate(400) as bal2 \gset
+select t_eq('nạp thêm 400 → 1000 Xu', :'bal2'::bigint, 1000::bigint);
+select t_err($$select guild_donate(1)$$, 'daily limit');
+select t_eq('guild_my báo đã nạp hôm nay', (guild_my()->>'donated_today')::int, 1000);
+select t_eq('guild_my báo ví', (guild_my()->>'wallet')::bigint, 1000::bigint);
+-- Chưa ở hội thì không nạp được.
+select t_as(u(41)); select t_err($$select guild_donate(10)$$, 'not in guild');
+
+-- Nhiệm vụ tuần theo điểm đóng góp cá nhân.
+select t_as(u(70));
+select t_err($$select guild_claim_quest(9)$$, 'invalid tier');
+select t_err($$select guild_claim_quest(1)$$, 'not enough contribution');
+reset role;
+update guild_members set week = guild_current_week(), week_points = 5000 where user_id = u(70);
+select t_as(u(70));
+select guild_claim_quest(1) as q1 \gset
+select t_eq('nhiệm vụ 1: +100 → 1100', :'q1'::bigint, 1100::bigint);
+select t_err($$select guild_claim_quest(1)$$, 'already claimed');
+select guild_claim_quest(2) as q2 \gset
+select t_eq('nhiệm vụ 2: +200 → 1300', :'q2'::bigint, 1300::bigint);
+select t_err($$select guild_claim_quest(3)$$, 'not enough contribution');
+select t_eq('guild_my liệt kê nhiệm vụ đã nhận', (guild_my()->'quests_claimed')::text, '[1, 2]');
+-- Điểm của TUẦN CŨ không dùng được.
+reset role;
+update guild_members set week = guild_current_week() - 7, week_points = 99999 where user_id = u(70);
+select t_as(u(70));
+select t_err($$select guild_claim_quest(3)$$, 'not enough contribution');
+reset role;
+update guild_members set week = guild_current_week(), week_points = 5000 where user_id = u(70);
+
+-- Cửa hàng phụ kiện.
+select t_as(u(70));
+select t_err($$select guild_buy_item('nope')$$, 'invalid item');
+select t_err($$select guild_buy_item('guild_dragon')$$, 'not enough coins');   -- 4000 > 1300
+select guild_buy_item('guild_flag') as b1 \gset
+select t_eq('mua cờ 500 → 800', :'b1'::bigint, 800::bigint);
+select t_err($$select guild_buy_item('guild_flag')$$, 'already owned');
+select t_eq('guild_my liệt kê món đã đổi', (guild_my()->'owned_items')::text, '["guild_flag"]');
+select t_as(u(42)); select t_err($$select guild_buy_item('guild_flag')$$, 'not in guild');
+
+-- Buff cả hội.
+select t_as(u(70));
+select guild_buy_buff() as bf1 \gset
+select t_eq('buff 800 Xu → ví 0', :'bf1'::bigint, 0::bigint);
+select t_eq('buff ~24h', ((guild_my()->>'buff_seconds')::int between 86300 and 86400), true);
+select t_eq('guild_buff_seconds khớp', (guild_buff_seconds() between 86300 and 86400), true);
+select t_err($$select guild_buy_buff()$$, 'not enough coins');
+reset role;
+update guild_coin_wallets set balance = 5000 where user_id = u(70);
+select t_as(u(70));
+select guild_buy_buff();
+select t_eq('mua lần 2 → ~48h', ((guild_my()->>'buff_seconds')::int between 172700 and 172800), true);
+select t_err($$select guild_buy_buff()$$, 'buff maxed');
+-- Thành viên khác trong hội thấy buff; người ngoài hội thì không.
+select t_as(u(71));
+select t_eq('thành viên khác hưởng buff', (guild_buff_seconds() > 100000), true);
+select t_as(u(41));
+select t_eq('người không ở hội: buff 0', guild_buff_seconds(), 0);
+-- Hết hạn → 0.
+reset role;
+update guilds set buff_until = now() - interval '1 minute' where id = :'gp'::uuid;
+select t_as(u(70));
+select t_eq('buff hết hạn → 0', guild_buff_seconds(), 0);
+-- Ví giữ nguyên khi rời hội; rời rồi thì không mua được.
+select guild_leave();
+reset role;
+select t_eq('rời hội: ví Xu Hội vẫn còn', (select balance from guild_coin_wallets where user_id = u(70)), 4200::bigint);
+select t_as(u(70));
+select t_err($$select guild_buy_item('guild_castle')$$, 'not in guild');
+select t_err($$select guild_buy_buff()$$, 'not in guild');
+select t_err($$select guild_donate(10)$$, 'not in guild');
+
+-- ===== 15. Bảo mật mục mới ================================================
+select t_as(u(70));
+select t_err($$select guild_log_week(gen_random_uuid(), current_date, 999999)$$, 'permission denied');
+select t_eq('không đọc thẳng ví', (select count(*) from guild_coin_wallets), 0::bigint);
+select t_eq('không đọc thẳng lịch sử', (select count(*) from guild_week_totals), 0::bigint);
+select t_eq('không đọc thẳng vật phẩm đã mua', (select count(*) from guild_purchases), 0::bigint);
+select t_as(null);
+select t_err($$select guild_donate(10)$$, 'permission denied');
+select t_err($$select guild_buy_buff()$$, 'permission denied');
+select t_err($$select guild_leaderboard_avg(5)$$, 'permission denied');
+select t_err($$select guild_leaderboard_streak(5)$$, 'permission denied');
+reset role;
+
 select 'ALL GUILD SQL SCENARIOS PASSED' as result;

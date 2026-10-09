@@ -68,15 +68,15 @@
   "offlineDoubleButton": "Ver anúncio ×2",
   "offlineDoubleSnack": "Dobrado! +{amount} Moedas",
   "howToPlayTitle": "Como jogar",
-  "htpTap": "🧋 Toque no copo para preparar chá e ganhar Moedas.",
-  "htpBuy": "🛒 Compre melhorias para ter renda automática a cada segundo.",
-  "htpStage": "🏪 Junte Moedas para desbloquear novas fases com bebidas melhores.",
-  "htpCat": "🐱 Toque no gato da sorte para uma Chuva de Ouro ×3 rápida.",
-  "htpVip": "🚗 Atenda o cliente VIP para ganhar Gemas 💎.",
-  "htpGems": "💎 Gaste Gemas na Loja em melhorias permanentes.",
-  "htpPrestige": "⭐ Franquie para recomeçar e ganhar Estrelas — bônus de renda permanente.",
-  "htpOffline": "😴 A loja continua vendendo enquanto você está fora — volte para pegar o dinheiro offline.",
-  "htpNumberFormat": "🔢 Números grandes usam sufixos: K=mil, M=milhão, B=bilhão, T=trilhão, depois aa, bb, cc... — cada nível é 1.000× o anterior.",
+  "htpTap": "Toque no copo para preparar chá e ganhar Moedas.",
+  "htpBuy": "Compre melhorias para ter renda automática a cada segundo.",
+  "htpStage": "Junte Moedas para desbloquear novas fases com bebidas melhores.",
+  "htpCat": "Toque no gato da sorte para uma Chuva de Ouro ×3 rápida.",
+  "htpVip": "Atenda o cliente VIP para ganhar Gemas 💎.",
+  "htpGems": "Gaste Gemas na Loja em melhorias permanentes.",
+  "htpPrestige": "Franquie para recomeçar e ganhar Estrelas — bônus de renda permanente.",
+  "htpOffline": "A loja continua vendendo enquanto você está fora — volte para pegar o dinheiro offline.",
+  "htpNumberFormat": "Números grandes usam sufixos: K=mil, M=milhão, B=bilhão, T=trilhão, depois aa, bb, cc... — cada nível é 1.000× o anterior.",
   "language": "Idioma",
   "languageSystem": "Padrão do sistema",
   "dailyTitle": "Check-in diário",
@@ -1272,5 +1272,177 @@
   "ftueBuy": "Moedas suficientes! Compre seu primeiro upgrade para ganhar moedas a cada segundo.",
   "ftueExplain": "Ótimo! Suas moedas agora crescem a cada segundo, mesmo com o app fechado. Continue melhorando para ganhar mais rápido, liberar etapas e resgatar recompensas.",
   "ftueOk": "Entendi",
-  "ftueSkip": "Pular"
+  "ftueSkip": "Pular",
+  "accessoryGuildFlag": "Bandeira da guilda",
+  "accessoryGuildCastle": "Castelo da guilda",
+  "accessoryGuildWolf": "Lobo da guilda",
+  "accessoryGuildDragon": "Dragão da guilda",
+  "accessoryGuildFox": "Raposa da guilda",
+  "accessoryGuildTiger": "Tigre da guilda",
+  "accessoryGuildShark": "Tubarão da guilda",
+  "accessoryGuildTrex": "T-Rex da guilda",
+  "accessoryGuildBoar": "Javali da guilda",
+  "accessoryGuildBear": "Urso da guilda",
+  "accessoryGuildScorpion": "Escorpião da guilda",
+  "accessoryGuildMoai": "Moai da guilda",
+  "guildErrDailyLimit": "Hoje você já doou o máximo de {n} 💎.",
+  "@guildErrDailyLimit": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrCoins": "Moedas da guilda insuficientes.",
+  "guildErrOwned": "Você já tem este item.",
+  "guildErrBuffMaxed": "O bônus da guilda está no máximo, aguarde um pouco.",
+  "guildErrClaimed": "Você já resgatou esta recompensa.",
+  "guildErrInvalidInput": "Ação inválida.",
+  "guildShopButton": "Loja da guilda",
+  "guildShopTitle": "Loja da guilda",
+  "guildCoinsLabel": "Moedas da guilda: {n}",
+  "@guildCoinsLabel": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonateTitle": "Doe 💎 por moedas da guilda",
+  "guildDonateHint": "Hoje: {used}/{cap} 💎 · 1 💎 = 1 moeda da guilda",
+  "@guildDonateHint": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "cap": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonateGems": "{n} 💎",
+  "@guildDonateGems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonated": "Doado, você recebeu +{n} moedas da guilda",
+  "@guildDonated": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestsTitle": "Missões semanais da guilda",
+  "guildQuestProgress": "Contribua {need} pontos esta semana ({have}/{need})",
+  "@guildQuestProgress": {
+    "placeholders": {
+      "have": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestReward": "+{n} moedas da guilda",
+  "@guildQuestReward": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestGot": "Recebeu +{n} moedas da guilda",
+  "@guildQuestGot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildItemsTitle": "Acessórios exclusivos da guilda",
+  "guildItemPrice": "{n} moedas",
+  "@guildItemPrice": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildItemOwned": "Possui",
+  "guildItemBought": "Trocado! O acessório está na sua coleção.",
+  "guildBuffTitle": "Bônus de renda da guilda",
+  "guildBuffDesc": "+{pct}% de moedas por {hours} horas para todos (não vale offline)",
+  "@guildBuffDesc": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "guildBuffLeft": "Restam {time}",
+  "@guildBuffLeft": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "guildBuffBought": "Bônus da guilda ativado!",
+  "guildStreakLine": "🔥 {n} semanas seguidas com as 3 metas",
+  "@guildStreakLine": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildBuffLine": "⚡ Bônus da guilda +{pct}% · restam {time}",
+  "@guildBuffLine": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "guildLbTabTotal": "Total",
+  "guildLbTabAvg": "Média",
+  "guildLbTabStreak": "Sequência",
+  "guildLbAvgNote": "Só guildas com {n}+ membros entram no ranking",
+  "@guildLbAvgNote": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildAvgPerMember": "{n}/membro",
+  "@guildAvgPerMember": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildStreakWeeks": "{n} semanas",
+  "@guildStreakWeeks": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildLbStreakNote": "Semanas seguidas em que a guilda atingiu as 3 metas",
+  "guildLbStreakEmpty": "Nenhuma guilda tem sequência ainda.",
+  "guildLbAvgEmpty": "Nenhuma guilda se qualifica para o ranking de média ainda."
 }

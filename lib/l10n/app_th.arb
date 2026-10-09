@@ -68,15 +68,15 @@
   "offlineDoubleButton": "ดูโฆษณา ×2",
   "offlineDoubleSnack": "เพิ่มเป็นสองเท่า! +{amount} เหรียญ",
   "howToPlayTitle": "วิธีเล่น",
-  "htpTap": "🧋 แตะแก้วเพื่อชงชาและรับเหรียญ",
-  "htpBuy": "🛒 ซื้ออัปเกรดเพื่อรับรายได้อัตโนมัติทุกวินาที",
-  "htpStage": "🏪 สะสมเหรียญเพื่อปลดล็อกด่านใหม่ที่มีเครื่องดื่มหรูขึ้น",
-  "htpCat": "🐱 แตะแมวนำโชคเพื่อรับโกลเด้นรัช ×3 ชั่วครู่",
-  "htpVip": "🚗 บริการลูกค้า VIP เพื่อรับเพชร 💎",
-  "htpGems": "💎 ใช้เพชรในร้านค้าเพื่อซื้ออัปเกรดถาวร",
-  "htpPrestige": "⭐ แฟรนไชส์เพื่อเริ่มใหม่และรับดาว — โบนัสรายได้ถาวร",
-  "htpOffline": "😴 ร้านยังขายต่อขณะที่คุณไม่อยู่ — กลับมารับเงินออฟไลน์",
-  "htpNumberFormat": "🔢 ตัวเลขใหญ่ใช้ตัวย่อ: K=พัน, M=ล้าน, B=พันล้าน, T=ล้านล้าน จากนั้นเป็น aa, bb, cc... — แต่ละขั้นมากกว่าขั้นก่อนหน้า 1,000 เท่า",
+  "htpTap": "แตะแก้วเพื่อชงชาและรับเหรียญ",
+  "htpBuy": "ซื้ออัปเกรดเพื่อรับรายได้อัตโนมัติทุกวินาที",
+  "htpStage": "สะสมเหรียญเพื่อปลดล็อกด่านใหม่ที่มีเครื่องดื่มหรูขึ้น",
+  "htpCat": "แตะแมวนำโชคเพื่อรับโกลเด้นรัช ×3 ชั่วครู่",
+  "htpVip": "บริการลูกค้า VIP เพื่อรับเพชร 💎",
+  "htpGems": "ใช้เพชรในร้านค้าเพื่อซื้ออัปเกรดถาวร",
+  "htpPrestige": "แฟรนไชส์เพื่อเริ่มใหม่และรับดาว — โบนัสรายได้ถาวร",
+  "htpOffline": "ร้านยังขายต่อขณะที่คุณไม่อยู่ — กลับมารับเงินออฟไลน์",
+  "htpNumberFormat": "ตัวเลขใหญ่ใช้ตัวย่อ: K=พัน, M=ล้าน, B=พันล้าน, T=ล้านล้าน จากนั้นเป็น aa, bb, cc... — แต่ละขั้นมากกว่าขั้นก่อนหน้า 1,000 เท่า",
   "language": "ภาษา",
   "languageSystem": "ค่าเริ่มต้นของระบบ",
   "dailyTitle": "เช็คอินรายวัน",
@@ -1272,5 +1272,177 @@
   "ftueBuy": "เหรียญพอแล้ว! ซื้ออัปเกรดแรกเพื่อให้เหรียญไหลเข้ามาทุกวินาที",
   "ftueExplain": "เยี่ยม! ตอนนี้เหรียญเพิ่มขึ้นทุกวินาที แม้ปิดแอป อัปเกรดต่อเพื่อหาเงินเร็วขึ้น ปลดล็อกด่านใหม่ และรับรางวัลภารกิจ",
   "ftueOk": "เข้าใจแล้ว",
-  "ftueSkip": "ข้าม"
+  "ftueSkip": "ข้าม",
+  "accessoryGuildFlag": "ธงกิลด์",
+  "accessoryGuildCastle": "ปราสาทกิลด์",
+  "accessoryGuildWolf": "หมาป่ากิลด์",
+  "accessoryGuildDragon": "มังกรกิลด์",
+  "accessoryGuildFox": "จิ้งจอกกิลด์",
+  "accessoryGuildTiger": "เสือกิลด์",
+  "accessoryGuildShark": "ฉลามกิลด์",
+  "accessoryGuildTrex": "ไทแรนโนซอรัสกิลด์",
+  "accessoryGuildBoar": "หมูป่ากิลด์",
+  "accessoryGuildBear": "หมีกิลด์",
+  "accessoryGuildScorpion": "แมงป่องกิลด์",
+  "accessoryGuildMoai": "โมอายกิลด์",
+  "guildErrDailyLimit": "วันนี้คุณบริจาคครบสูงสุด {n} 💎 แล้ว",
+  "@guildErrDailyLimit": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrCoins": "เหรียญกิลด์ไม่พอ",
+  "guildErrOwned": "คุณมีไอเทมนี้แล้ว",
+  "guildErrBuffMaxed": "บัฟกิลด์เต็มสูงสุดแล้ว รอสักครู่",
+  "guildErrClaimed": "คุณรับรางวัลนี้ไปแล้ว",
+  "guildErrInvalidInput": "การกระทำไม่ถูกต้อง",
+  "guildShopButton": "ร้านค้ากิลด์",
+  "guildShopTitle": "ร้านค้ากิลด์",
+  "guildCoinsLabel": "เหรียญกิลด์: {n}",
+  "@guildCoinsLabel": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonateTitle": "บริจาค 💎 รับเหรียญกิลด์",
+  "guildDonateHint": "วันนี้: {used}/{cap} 💎 · 1 💎 = 1 เหรียญกิลด์",
+  "@guildDonateHint": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "cap": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonateGems": "{n} 💎",
+  "@guildDonateGems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonated": "บริจาคแล้ว ได้รับ +{n} เหรียญกิลด์",
+  "@guildDonated": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestsTitle": "ภารกิจกิลด์ประจำสัปดาห์",
+  "guildQuestProgress": "สะสม {need} แต้มในสัปดาห์นี้ ({have}/{need})",
+  "@guildQuestProgress": {
+    "placeholders": {
+      "have": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestReward": "+{n} เหรียญกิลด์",
+  "@guildQuestReward": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestGot": "ได้รับ +{n} เหรียญกิลด์",
+  "@guildQuestGot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildItemsTitle": "ของตกแต่งพิเศษของกิลด์",
+  "guildItemPrice": "{n} เหรียญ",
+  "@guildItemPrice": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildItemOwned": "มีแล้ว",
+  "guildItemBought": "แลกแล้ว! ของตกแต่งอยู่ในคลังของคุณ",
+  "guildBuffTitle": "บัฟรายได้กิลด์",
+  "guildBuffDesc": "+{pct}% เหรียญนาน {hours} ชั่วโมงสำหรับสมาชิกทุกคน (ไม่ใช้ตอนออฟไลน์)",
+  "@guildBuffDesc": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "guildBuffLeft": "เหลือ {time}",
+  "@guildBuffLeft": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "guildBuffBought": "เปิดใช้บัฟกิลด์แล้ว!",
+  "guildStreakLine": "🔥 ทำครบ 3 เป้าหมาย {n} สัปดาห์ติดต่อกัน",
+  "@guildStreakLine": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildBuffLine": "⚡ บัฟกิลด์ +{pct}% · เหลือ {time}",
+  "@guildBuffLine": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "guildLbTabTotal": "รวม",
+  "guildLbTabAvg": "เฉลี่ย",
+  "guildLbTabStreak": "ต่อเนื่อง",
+  "guildLbAvgNote": "เฉพาะกิลด์ที่มี {n} สมาชิกขึ้นไปเท่านั้นที่ติดอันดับ",
+  "@guildLbAvgNote": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildAvgPerMember": "{n}/คน",
+  "@guildAvgPerMember": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildStreakWeeks": "{n} สัปดาห์",
+  "@guildStreakWeeks": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildLbStreakNote": "จำนวนสัปดาห์ติดต่อกันที่กิลด์ทำครบ 3 เป้าหมาย",
+  "guildLbStreakEmpty": "ยังไม่มีกิลด์ที่มีสถิติต่อเนื่อง",
+  "guildLbAvgEmpty": "ยังไม่มีกิลด์ที่เข้าเงื่อนไขอันดับเฉลี่ย"
 }

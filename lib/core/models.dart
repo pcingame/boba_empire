@@ -137,6 +137,8 @@ class GameState {
     this.eventId = '',
     this.guildWeek = 0,
     this.guildWeekScore = 0,
+    this.guildJoined = false,
+    this.guildBuffUntilMillis = 0,
     this.eventPoints = 0,
     Map<String, double>? eventProgress,
     List<String>? eventClaimed,
@@ -258,6 +260,11 @@ class GameState {
   /// Hội (guild.dart): chỉ số tuần (thứ Hai UTC) và điểm hoạt động tuần này.
   int guildWeek;
   double guildWeekScore;
+
+  /// Đang ở một hội (cập nhật khi mở màn Hội) — quyết định có hỏi server về buff hội
+  /// lúc mở app hay không — và mốc (đồng hồ máy, ms) hết buff thu nhập cả hội.
+  bool guildJoined;
+  int guildBuffUntilMillis;
   int eventPoints;
   final Map<String, double> eventProgress;
   final List<String> eventClaimed;
@@ -479,6 +486,8 @@ class GameState {
         'eventId': eventId,
         'guildWeek': guildWeek,
         'guildWeekScore': guildWeekScore,
+        'guildJoined': guildJoined,
+        'guildBuffUntilMillis': guildBuffUntilMillis,
         'eventPoints': eventPoints,
         'eventProgress': eventProgress,
         'eventClaimed': eventClaimed,
@@ -576,6 +585,8 @@ class GameState {
         eventId: (json['eventId'] as String?) ?? '',
         guildWeek: (json['guildWeek'] as num?)?.toInt() ?? 0,
         guildWeekScore: (json['guildWeekScore'] as num?)?.toDouble() ?? 0,
+        guildJoined: json['guildJoined'] == true,
+        guildBuffUntilMillis: (json['guildBuffUntilMillis'] as num?)?.toInt() ?? 0,
         eventPoints: (json['eventPoints'] as num?)?.toInt() ?? 0,
         eventProgress: (json['eventProgress'] as Map?)
             ?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),

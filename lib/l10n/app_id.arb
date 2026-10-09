@@ -68,15 +68,15 @@
   "offlineDoubleButton": "Tonton iklan ×2",
   "offlineDoubleSnack": "Digandakan! +{amount} Koin",
   "howToPlayTitle": "Cara bermain",
-  "htpTap": "🧋 Ketuk gelas untuk menyeduh teh dan mendapatkan Koin.",
-  "htpBuy": "🛒 Beli peningkatan untuk pendapatan otomatis setiap detik.",
-  "htpStage": "🏪 Kumpulkan Koin untuk membuka tahap baru dengan minuman lebih mewah.",
-  "htpCat": "🐱 Ketuk kucing keberuntungan untuk Hujan Emas ×3 sesaat.",
-  "htpVip": "🚗 Layani pelanggan VIP untuk mendapatkan Permata 💎.",
-  "htpGems": "💎 Gunakan Permata di Toko untuk peningkatan permanen.",
-  "htpPrestige": "⭐ Waralabakan untuk mengulang dan dapat Bintang — bonus pendapatan permanen.",
-  "htpOffline": "😴 Toko tetap berjualan saat kamu pergi — kembali untuk mengambil uang offline.",
-  "htpNumberFormat": "🔢 Angka besar pakai singkatan: K=ribu, M=juta, B=miliar, T=triliun, lalu aa, bb, cc... — tiap tingkat 1.000× dari sebelumnya.",
+  "htpTap": "Ketuk gelas untuk menyeduh teh dan mendapatkan Koin.",
+  "htpBuy": "Beli peningkatan untuk pendapatan otomatis setiap detik.",
+  "htpStage": "Kumpulkan Koin untuk membuka tahap baru dengan minuman lebih mewah.",
+  "htpCat": "Ketuk kucing keberuntungan untuk Hujan Emas ×3 sesaat.",
+  "htpVip": "Layani pelanggan VIP untuk mendapatkan Permata 💎.",
+  "htpGems": "Gunakan Permata di Toko untuk peningkatan permanen.",
+  "htpPrestige": "Waralabakan untuk mengulang dan dapat Bintang — bonus pendapatan permanen.",
+  "htpOffline": "Toko tetap berjualan saat kamu pergi — kembali untuk mengambil uang offline.",
+  "htpNumberFormat": "Angka besar pakai singkatan: K=ribu, M=juta, B=miliar, T=triliun, lalu aa, bb, cc... — tiap tingkat 1.000× dari sebelumnya.",
   "language": "Bahasa",
   "languageSystem": "Bawaan sistem",
   "dailyTitle": "Check-in harian",
@@ -1272,5 +1272,177 @@
   "ftueBuy": "Koin cukup! Beli upgrade pertamamu agar Koin mengalir tiap detik.",
   "ftueExplain": "Bagus! Koinmu kini bertambah tiap detik — bahkan saat aplikasi ditutup. Terus upgrade untuk lebih cepat, buka tahap baru, dan klaim hadiah misi.",
   "ftueOk": "Mengerti",
-  "ftueSkip": "Lewati"
+  "ftueSkip": "Lewati",
+  "accessoryGuildFlag": "Bendera Guild",
+  "accessoryGuildCastle": "Kastil Guild",
+  "accessoryGuildWolf": "Serigala Guild",
+  "accessoryGuildDragon": "Naga Guild",
+  "accessoryGuildFox": "Rubah Guild",
+  "accessoryGuildTiger": "Harimau Guild",
+  "accessoryGuildShark": "Hiu Guild",
+  "accessoryGuildTrex": "T-Rex Guild",
+  "accessoryGuildBoar": "Babi Hutan Guild",
+  "accessoryGuildBear": "Beruang Guild",
+  "accessoryGuildScorpion": "Kalajengking Guild",
+  "accessoryGuildMoai": "Moai Guild",
+  "guildErrDailyLimit": "Kamu sudah menyumbang maksimum {n} 💎 hari ini.",
+  "@guildErrDailyLimit": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrCoins": "Koin Guild tidak cukup.",
+  "guildErrOwned": "Kamu sudah punya item ini.",
+  "guildErrBuffMaxed": "Buff guild sudah maksimum, tunggu sebentar.",
+  "guildErrClaimed": "Kamu sudah mengklaim hadiah ini.",
+  "guildErrInvalidInput": "Aksi tidak valid.",
+  "guildShopButton": "Toko guild",
+  "guildShopTitle": "Toko guild",
+  "guildCoinsLabel": "Koin Guild: {n}",
+  "@guildCoinsLabel": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonateTitle": "Sumbang 💎 untuk Koin Guild",
+  "guildDonateHint": "Hari ini: {used}/{cap} 💎 · 1 💎 = 1 Koin Guild",
+  "@guildDonateHint": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "cap": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonateGems": "{n} 💎",
+  "@guildDonateGems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonated": "Berhasil menyumbang, dapat +{n} Koin Guild",
+  "@guildDonated": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestsTitle": "Misi guild mingguan",
+  "guildQuestProgress": "Sumbang {need} poin minggu ini ({have}/{need})",
+  "@guildQuestProgress": {
+    "placeholders": {
+      "have": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestReward": "+{n} Koin Guild",
+  "@guildQuestReward": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestGot": "Dapat +{n} Koin Guild",
+  "@guildQuestGot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildItemsTitle": "Aksesori eksklusif guild",
+  "guildItemPrice": "{n} Koin",
+  "@guildItemPrice": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildItemOwned": "Dimiliki",
+  "guildItemBought": "Berhasil ditukar! Aksesori ada di Koleksi.",
+  "guildBuffTitle": "Buff pendapatan guild",
+  "guildBuffDesc": "+{pct}% Koin selama {hours} jam untuk semua anggota (tidak berlaku offline)",
+  "@guildBuffDesc": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "guildBuffLeft": "Sisa {time}",
+  "@guildBuffLeft": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "guildBuffBought": "Buff guild aktif!",
+  "guildStreakLine": "🔥 {n} minggu berturut-turut capai 3 target",
+  "@guildStreakLine": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildBuffLine": "⚡ Buff guild +{pct}% · sisa {time}",
+  "@guildBuffLine": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "guildLbTabTotal": "Total",
+  "guildLbTabAvg": "Rata-rata",
+  "guildLbTabStreak": "Beruntun",
+  "guildLbAvgNote": "Hanya guild dengan {n}+ anggota yang diperingkat",
+  "@guildLbAvgNote": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildAvgPerMember": "{n}/anggota",
+  "@guildAvgPerMember": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildStreakWeeks": "{n} minggu",
+  "@guildStreakWeeks": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildLbStreakNote": "Minggu berturut-turut guild mencapai 3 target",
+  "guildLbStreakEmpty": "Belum ada guild dengan rentetan.",
+  "guildLbAvgEmpty": "Belum ada guild yang memenuhi syarat peringkat rata-rata."
 }

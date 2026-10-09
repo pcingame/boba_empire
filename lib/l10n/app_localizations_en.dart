@@ -271,35 +271,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get howToPlayTitle => 'How to play';
 
   @override
-  String get htpTap => '🧋 Tap the cup to brew tea and earn Coins.';
+  String get htpTap => 'Tap the cup to brew tea and earn Coins.';
 
   @override
-  String get htpBuy => '🛒 Buy upgrades for automatic income every second.';
+  String get htpBuy => 'Buy upgrades for automatic income every second.';
 
   @override
   String get htpStage =>
-      '🏪 Save up Coins to unlock new stages with fancier drinks.';
+      'Save up Coins to unlock new stages with fancier drinks.';
 
   @override
-  String get htpCat => '🐱 Tap the lucky cat for a short ×3 Golden Rush.';
+  String get htpCat => 'Tap the lucky cat for a short ×3 Golden Rush.';
 
   @override
-  String get htpVip => '🚗 Serve the VIP customer to earn Gems 💎.';
+  String get htpVip => 'Serve the VIP customer to earn Gems 💎.';
 
   @override
-  String get htpGems => '💎 Spend Gems in the Shop on permanent upgrades.';
+  String get htpGems => 'Spend Gems in the Shop on permanent upgrades.';
 
   @override
   String get htpPrestige =>
-      '⭐ Franchise to restart and earn Stars — a permanent income bonus.';
+      'Franchise to restart and earn Stars — a permanent income bonus.';
 
   @override
   String get htpOffline =>
-      '😴 The shop keeps selling while you\'re away — come back for offline cash.';
+      'The shop keeps selling while you\'re away — come back for offline cash.';
 
   @override
   String get htpNumberFormat =>
-      '🔢 Big numbers use suffixes: K=thousand, M=million, B=billion, T=trillion, then aa, bb, cc... — each step is 1,000× the one before.';
+      'Big numbers use suffixes: K=thousand, M=million, B=billion, T=trillion, then aa, bb, cc... — each step is 1,000× the one before.';
 
   @override
   String get language => 'Language';
@@ -2644,4 +2644,184 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ftueSkip => 'Skip';
+
+  @override
+  String get accessoryGuildFlag => 'Guild Flag';
+
+  @override
+  String get accessoryGuildCastle => 'Guild Castle';
+
+  @override
+  String get accessoryGuildWolf => 'Guild Wolf';
+
+  @override
+  String get accessoryGuildDragon => 'Guild Dragon';
+
+  @override
+  String get accessoryGuildFox => 'Guild Fox';
+
+  @override
+  String get accessoryGuildTiger => 'Guild Tiger';
+
+  @override
+  String get accessoryGuildShark => 'Guild Shark';
+
+  @override
+  String get accessoryGuildTrex => 'Guild T-Rex';
+
+  @override
+  String get accessoryGuildBoar => 'Guild Boar';
+
+  @override
+  String get accessoryGuildBear => 'Guild Bear';
+
+  @override
+  String get accessoryGuildScorpion => 'Guild Scorpion';
+
+  @override
+  String get accessoryGuildMoai => 'Guild Moai';
+
+  @override
+  String guildErrDailyLimit(int n) {
+    return 'You\'ve already donated the daily max of $n 💎.';
+  }
+
+  @override
+  String get guildErrCoins => 'Not enough Guild Coins.';
+
+  @override
+  String get guildErrOwned => 'You already own this item.';
+
+  @override
+  String get guildErrBuffMaxed =>
+      'The guild buff is at its maximum, wait a bit.';
+
+  @override
+  String get guildErrClaimed => 'You already claimed this reward.';
+
+  @override
+  String get guildErrInvalidInput => 'Invalid action.';
+
+  @override
+  String get guildShopButton => 'Guild shop';
+
+  @override
+  String get guildShopTitle => 'Guild shop';
+
+  @override
+  String guildCoinsLabel(int n) {
+    return 'Guild Coins: $n';
+  }
+
+  @override
+  String get guildDonateTitle => 'Donate 💎 for Guild Coins';
+
+  @override
+  String guildDonateHint(int used, int cap) {
+    return 'Today: $used/$cap 💎 · 1 💎 = 1 Guild Coin';
+  }
+
+  @override
+  String guildDonateGems(int n) {
+    return '$n 💎';
+  }
+
+  @override
+  String guildDonated(int n) {
+    return 'Donated, got +$n Guild Coins';
+  }
+
+  @override
+  String get guildQuestsTitle => 'Weekly guild quests';
+
+  @override
+  String guildQuestProgress(int have, int need) {
+    return 'Contribute $need points this week ($have/$need)';
+  }
+
+  @override
+  String guildQuestReward(int n) {
+    return '+$n Guild Coins';
+  }
+
+  @override
+  String guildQuestGot(int n) {
+    return 'Got +$n Guild Coins';
+  }
+
+  @override
+  String get guildItemsTitle => 'Exclusive guild accessories';
+
+  @override
+  String guildItemPrice(int n) {
+    return '$n Coins';
+  }
+
+  @override
+  String get guildItemOwned => 'Owned';
+
+  @override
+  String get guildItemBought =>
+      'Exchanged! The accessory is in your Collection.';
+
+  @override
+  String get guildBuffTitle => 'Guild income buff';
+
+  @override
+  String guildBuffDesc(int pct, int hours) {
+    return '+$pct% Coins for $hours hours for every member (not applied offline)';
+  }
+
+  @override
+  String guildBuffLeft(String time) {
+    return '$time left';
+  }
+
+  @override
+  String get guildBuffBought => 'Guild buff activated!';
+
+  @override
+  String guildStreakLine(int n) {
+    return '🔥 $n weeks in a row hitting all 3 milestones';
+  }
+
+  @override
+  String guildBuffLine(int pct, String time) {
+    return '⚡ Guild buff +$pct% · $time left';
+  }
+
+  @override
+  String get guildLbTabTotal => 'Total';
+
+  @override
+  String get guildLbTabAvg => 'Average';
+
+  @override
+  String get guildLbTabStreak => 'Streak';
+
+  @override
+  String guildLbAvgNote(int n) {
+    return 'Only guilds with $n+ members are ranked';
+  }
+
+  @override
+  String guildAvgPerMember(int n) {
+    return '$n/member';
+  }
+
+  @override
+  String guildStreakWeeks(int n) {
+    return '$n weeks';
+  }
+
+  @override
+  String get guildLbStreakNote =>
+      'Consecutive weeks the guild hit all 3 milestones';
+
+  @override
+  String get guildLbStreakEmpty => 'No guild has a streak yet.';
+
+  @override
+  String get guildLbAvgEmpty =>
+      'No guild qualifies for the average ranking yet.';
 }

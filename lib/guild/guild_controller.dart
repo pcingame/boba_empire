@@ -9,6 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../core/accessories.dart';
 import '../core/guild.dart';
+import '../core/guild_shop.dart';
 import '../state/game_providers.dart';
 import 'guild_repository.dart';
 
@@ -77,6 +78,12 @@ class GuildController extends Notifier<GuildViewState> {
           developer.log('submitScore: ${e.failure}', name: 'Guild');
         }
       }
+      // Đồng bộ phần chạy ở tầng game: buff hội, cờ "đang ở hội", và khôi phục phụ
+      // kiện hội đã đổi (mất save/đổi máy vẫn lấy lại được từ server).
+      final game = ref.read(gameControllerProvider.notifier);
+      game.setGuildJoined(my != null);
+      game.applyGuildBuff(my?.buffSeconds ?? 0);
+      if (my != null) game.grantGuildItems(my.ownedItems);
       state = my == null
           ? GuildNone(await _repo.list())
           : GuildMine(guild: my, myUserId: _repo.myUserId);
@@ -161,6 +168,70 @@ class GuildController extends Notifier<GuildViewState> {
       return GuildOutcome(failure: e.failure);
     }
   }
+
+  int _lastBuffSyncMs = 0;
+
+  /// Áp buff hội lúc mở app/quay lại mà KHÔNG cần mở màn Hội: chỉ hỏi server khi
+  /// biết mình đang ở hội, và cách nhau ≥ 10 phút. Mọi lỗi (mất mạng) bị nuốt — buff
+  /// cũ giữ nguyên tới hạn đã lưu.
+  Future<void> syncBuff() async {
+    final game = ref.read(gameControllerProvider);
+    if (!game.guildJoined) return;
+    final now = ref.read(clockProvider)();
+    if (_lastBuffSyncMs != 0 && now - _lastBuffSyncMs < 10 * 60 * 1000) return;
+    _lastBuffSyncMs = now;
+    try {
+      final secs = await _repo.buffSeconds();
+      ref.read(gameControllerProvider.notifier).applyGuildBuff(secs);
+    } catch (e) {
+      developer.log('syncBuff: $e', name: 'Guild');
+    }
+  }
+
+  /// Nạp [gems] 💎 lấy Xu Hội: kiểm đủ 💎 và còn hạn mức ngày TRƯỚC, trừ 💎 SAU khi
+  /// server ghi nhận.
+  Future<GuildOutcome> donate(int gems) async {
+    final s = state;
+    final doneToday = s is GuildMine ? s.guild.donatedToday : 0;
+    if (gems <= 0) return const GuildOutcome(failure: GuildFailure.invalidInput);
+    if (ref.read(gameControllerProvider).gems < gems) {
+      return const GuildOutcome(failure: GuildFailure.notEnoughGems);
+    }
+    if (doneToday + gems > guildDonateDailyCap) {
+      return const GuildOutcome(failure: GuildFailure.dailyLimit);
+    }
+    final out = await _act(() => _repo.donate(gems));
+    if (out.ok) {
+      ref.read(gameControllerProvider.notifier).chargeGuildDonation(gems);
+    }
+    return out;
+  }
+
+  /// Nhận thưởng nhiệm vụ hội tuần [index] (0-based) → Xu Hội cộng ở server.
+  Future<GuildOutcome> claimQuest(int index) async {
+    if (index < 0 || index >= guildQuests.length) {
+      return const GuildOutcome(failure: GuildFailure.invalidInput);
+    }
+    try {
+      // Báo điểm mới nhất để server thấy đóng góp hiện tại của mình.
+      if (_score > 0) await _repo.submitScore(_score);
+    } on GuildException catch (e) {
+      return GuildOutcome(failure: e.failure);
+    }
+    return _act(() => _repo.claimQuest(index + 1));
+  }
+
+  /// Đổi Xu Hội lấy phụ kiện hội: server trừ ví TRƯỚC, rồi mới cấp cục bộ.
+  Future<GuildOutcome> buyItem(String itemId) async {
+    final out = await _act(() => _repo.buyItem(itemId));
+    if (out.ok) {
+      ref.read(gameControllerProvider.notifier).grantGuildItems([itemId]);
+    }
+    return out;
+  }
+
+  /// Mua buff thu nhập cho cả hội; buff áp ngay qua refresh (server báo giây còn lại).
+  Future<GuildOutcome> buyBuff() => _act(_repo.buyBuff);
 
   /// Nhận thưởng mốc [index] (0-based). Server xác nhận TRƯỚC, rồi mới cộng 💎 /
   /// phụ kiện cục bộ — server chặn nhận hai lần trong tuần.

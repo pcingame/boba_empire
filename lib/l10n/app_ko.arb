@@ -68,15 +68,15 @@
   "offlineDoubleButton": "광고 보고 ×2",
   "offlineDoubleSnack": "두 배! +{amount} 코인",
   "howToPlayTitle": "플레이 방법",
-  "htpTap": "🧋 컵을 탭해서 차를 만들고 코인을 벌어요.",
-  "htpBuy": "🛒 업그레이드를 사면 매초 자동으로 수입이 들어와요.",
-  "htpStage": "🏪 코인을 모아 더 멋진 음료가 있는 새 단계를 해금하세요.",
-  "htpCat": "🐱 복고양이를 탭하면 잠시 ×3 골든 러시가 시작돼요.",
-  "htpVip": "🚗 VIP 손님을 응대하면 보석 💎을 얻어요.",
-  "htpGems": "💎 상점에서 보석으로 영구 업그레이드를 사요.",
-  "htpPrestige": "⭐ 프랜차이즈로 다시 시작하고 별을 얻어요. 영구 수입 보너스예요.",
-  "htpOffline": "😴 자리를 비워도 가게는 계속 팔려요. 돌아와서 오프라인 현금을 받으세요.",
-  "htpNumberFormat": "🔢 큰 숫자는 약어를 써요: K=천, M=백만, B=십억, T=조, 그다음 aa, bb, cc... — 한 단계마다 1,000배예요.",
+  "htpTap": "컵을 탭해서 차를 만들고 코인을 벌어요.",
+  "htpBuy": "업그레이드를 사면 매초 자동으로 수입이 들어와요.",
+  "htpStage": "코인을 모아 더 멋진 음료가 있는 새 단계를 해금하세요.",
+  "htpCat": "복고양이를 탭하면 잠시 ×3 골든 러시가 시작돼요.",
+  "htpVip": "VIP 손님을 응대하면 보석 💎을 얻어요.",
+  "htpGems": "상점에서 보석으로 영구 업그레이드를 사요.",
+  "htpPrestige": "프랜차이즈로 다시 시작하고 별을 얻어요. 영구 수입 보너스예요.",
+  "htpOffline": "자리를 비워도 가게는 계속 팔려요. 돌아와서 오프라인 현금을 받으세요.",
+  "htpNumberFormat": "큰 숫자는 약어를 써요: K=천, M=백만, B=십억, T=조, 그다음 aa, bb, cc... — 한 단계마다 1,000배예요.",
   "language": "언어",
   "languageSystem": "시스템 기본값",
   "dailyTitle": "일일 출석",
@@ -910,5 +910,177 @@
   "ftueBuy": "코인이 충분해요! 첫 업그레이드를 구매하면 코인이 매초 들어와요.",
   "ftueExplain": "좋아요! 이제 앱을 꺼도 코인이 매초 늘어나요. 계속 업그레이드해서 더 빨리 벌고, 새 단계를 열고, 퀘스트 보상을 받으세요.",
   "ftueOk": "알겠어요",
-  "ftueSkip": "건너뛰기"
+  "ftueSkip": "건너뛰기",
+  "accessoryGuildFlag": "길드 깃발",
+  "accessoryGuildCastle": "길드 성",
+  "accessoryGuildWolf": "길드 늑대",
+  "accessoryGuildDragon": "길드 용",
+  "accessoryGuildFox": "길드 여우",
+  "accessoryGuildTiger": "길드 호랑이",
+  "accessoryGuildShark": "길드 상어",
+  "accessoryGuildTrex": "길드 티라노",
+  "accessoryGuildBoar": "길드 멧돼지",
+  "accessoryGuildBear": "길드 곰",
+  "accessoryGuildScorpion": "길드 전갈",
+  "accessoryGuildMoai": "길드 모아이",
+  "guildErrDailyLimit": "오늘은 최대 {n} 💎까지 이미 기부했어요.",
+  "@guildErrDailyLimit": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrCoins": "길드 코인이 부족해요.",
+  "guildErrOwned": "이미 가지고 있는 아이템이에요.",
+  "guildErrBuffMaxed": "길드 버프가 최대예요. 잠시 후에 다시 시도하세요.",
+  "guildErrClaimed": "이미 받은 보상이에요.",
+  "guildErrInvalidInput": "올바르지 않은 동작이에요.",
+  "guildShopButton": "길드 상점",
+  "guildShopTitle": "길드 상점",
+  "guildCoinsLabel": "길드 코인: {n}",
+  "@guildCoinsLabel": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonateTitle": "💎 기부하고 길드 코인 받기",
+  "guildDonateHint": "오늘: {used}/{cap} 💎 · 1 💎 = 길드 코인 1",
+  "@guildDonateHint": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "cap": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonateGems": "{n} 💎",
+  "@guildDonateGems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonated": "기부 완료! 길드 코인 +{n}",
+  "@guildDonated": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestsTitle": "이번 주 길드 퀘스트",
+  "guildQuestProgress": "이번 주 {need}점 기여 ({have}/{need})",
+  "@guildQuestProgress": {
+    "placeholders": {
+      "have": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestReward": "길드 코인 +{n}",
+  "@guildQuestReward": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestGot": "길드 코인 +{n} 획득",
+  "@guildQuestGot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildItemsTitle": "길드 전용 액세서리",
+  "guildItemPrice": "{n} 코인",
+  "@guildItemPrice": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildItemOwned": "보유 중",
+  "guildItemBought": "교환 완료! 액세서리는 컬렉션에 있어요.",
+  "guildBuffTitle": "길드 수익 버프",
+  "guildBuffDesc": "모든 멤버에게 {hours}시간 동안 코인 +{pct}% (오프라인에는 적용 안 됨)",
+  "@guildBuffDesc": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "guildBuffLeft": "{time} 남음",
+  "@guildBuffLeft": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "guildBuffBought": "길드 버프가 활성화되었어요!",
+  "guildStreakLine": "🔥 3개 목표를 {n}주 연속 달성",
+  "@guildStreakLine": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildBuffLine": "⚡ 길드 버프 +{pct}% · {time} 남음",
+  "@guildBuffLine": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "guildLbTabTotal": "합계",
+  "guildLbTabAvg": "평균",
+  "guildLbTabStreak": "연속",
+  "guildLbAvgNote": "멤버 {n}명 이상인 길드만 순위에 올라요",
+  "@guildLbAvgNote": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildAvgPerMember": "인당 {n}",
+  "@guildAvgPerMember": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildStreakWeeks": "{n}주",
+  "@guildStreakWeeks": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildLbStreakNote": "길드가 3개 목표를 연속으로 달성한 주 수",
+  "guildLbStreakEmpty": "아직 연속 기록이 있는 길드가 없어요.",
+  "guildLbAvgEmpty": "평균 순위 조건을 충족한 길드가 아직 없어요."
 }

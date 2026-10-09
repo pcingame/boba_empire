@@ -273,37 +273,37 @@ class AppLocalizationsPt extends AppLocalizations {
   String get howToPlayTitle => 'Como jogar';
 
   @override
-  String get htpTap => '🧋 Toque no copo para preparar chá e ganhar Moedas.';
+  String get htpTap => 'Toque no copo para preparar chá e ganhar Moedas.';
 
   @override
   String get htpBuy =>
-      '🛒 Compre melhorias para ter renda automática a cada segundo.';
+      'Compre melhorias para ter renda automática a cada segundo.';
 
   @override
   String get htpStage =>
-      '🏪 Junte Moedas para desbloquear novas fases com bebidas melhores.';
+      'Junte Moedas para desbloquear novas fases com bebidas melhores.';
 
   @override
   String get htpCat =>
-      '🐱 Toque no gato da sorte para uma Chuva de Ouro ×3 rápida.';
+      'Toque no gato da sorte para uma Chuva de Ouro ×3 rápida.';
 
   @override
-  String get htpVip => '🚗 Atenda o cliente VIP para ganhar Gemas 💎.';
+  String get htpVip => 'Atenda o cliente VIP para ganhar Gemas 💎.';
 
   @override
-  String get htpGems => '💎 Gaste Gemas na Loja em melhorias permanentes.';
+  String get htpGems => 'Gaste Gemas na Loja em melhorias permanentes.';
 
   @override
   String get htpPrestige =>
-      '⭐ Franquie para recomeçar e ganhar Estrelas — bônus de renda permanente.';
+      'Franquie para recomeçar e ganhar Estrelas — bônus de renda permanente.';
 
   @override
   String get htpOffline =>
-      '😴 A loja continua vendendo enquanto você está fora — volte para pegar o dinheiro offline.';
+      'A loja continua vendendo enquanto você está fora — volte para pegar o dinheiro offline.';
 
   @override
   String get htpNumberFormat =>
-      '🔢 Números grandes usam sufixos: K=mil, M=milhão, B=bilhão, T=trilhão, depois aa, bb, cc... — cada nível é 1.000× o anterior.';
+      'Números grandes usam sufixos: K=mil, M=milhão, B=bilhão, T=trilhão, depois aa, bb, cc... — cada nível é 1.000× o anterior.';
 
   @override
   String get language => 'Idioma';
@@ -2651,4 +2651,183 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get ftueSkip => 'Pular';
+
+  @override
+  String get accessoryGuildFlag => 'Bandeira da guilda';
+
+  @override
+  String get accessoryGuildCastle => 'Castelo da guilda';
+
+  @override
+  String get accessoryGuildWolf => 'Lobo da guilda';
+
+  @override
+  String get accessoryGuildDragon => 'Dragão da guilda';
+
+  @override
+  String get accessoryGuildFox => 'Raposa da guilda';
+
+  @override
+  String get accessoryGuildTiger => 'Tigre da guilda';
+
+  @override
+  String get accessoryGuildShark => 'Tubarão da guilda';
+
+  @override
+  String get accessoryGuildTrex => 'T-Rex da guilda';
+
+  @override
+  String get accessoryGuildBoar => 'Javali da guilda';
+
+  @override
+  String get accessoryGuildBear => 'Urso da guilda';
+
+  @override
+  String get accessoryGuildScorpion => 'Escorpião da guilda';
+
+  @override
+  String get accessoryGuildMoai => 'Moai da guilda';
+
+  @override
+  String guildErrDailyLimit(int n) {
+    return 'Hoje você já doou o máximo de $n 💎.';
+  }
+
+  @override
+  String get guildErrCoins => 'Moedas da guilda insuficientes.';
+
+  @override
+  String get guildErrOwned => 'Você já tem este item.';
+
+  @override
+  String get guildErrBuffMaxed =>
+      'O bônus da guilda está no máximo, aguarde um pouco.';
+
+  @override
+  String get guildErrClaimed => 'Você já resgatou esta recompensa.';
+
+  @override
+  String get guildErrInvalidInput => 'Ação inválida.';
+
+  @override
+  String get guildShopButton => 'Loja da guilda';
+
+  @override
+  String get guildShopTitle => 'Loja da guilda';
+
+  @override
+  String guildCoinsLabel(int n) {
+    return 'Moedas da guilda: $n';
+  }
+
+  @override
+  String get guildDonateTitle => 'Doe 💎 por moedas da guilda';
+
+  @override
+  String guildDonateHint(int used, int cap) {
+    return 'Hoje: $used/$cap 💎 · 1 💎 = 1 moeda da guilda';
+  }
+
+  @override
+  String guildDonateGems(int n) {
+    return '$n 💎';
+  }
+
+  @override
+  String guildDonated(int n) {
+    return 'Doado, você recebeu +$n moedas da guilda';
+  }
+
+  @override
+  String get guildQuestsTitle => 'Missões semanais da guilda';
+
+  @override
+  String guildQuestProgress(int have, int need) {
+    return 'Contribua $need pontos esta semana ($have/$need)';
+  }
+
+  @override
+  String guildQuestReward(int n) {
+    return '+$n moedas da guilda';
+  }
+
+  @override
+  String guildQuestGot(int n) {
+    return 'Recebeu +$n moedas da guilda';
+  }
+
+  @override
+  String get guildItemsTitle => 'Acessórios exclusivos da guilda';
+
+  @override
+  String guildItemPrice(int n) {
+    return '$n moedas';
+  }
+
+  @override
+  String get guildItemOwned => 'Possui';
+
+  @override
+  String get guildItemBought => 'Trocado! O acessório está na sua coleção.';
+
+  @override
+  String get guildBuffTitle => 'Bônus de renda da guilda';
+
+  @override
+  String guildBuffDesc(int pct, int hours) {
+    return '+$pct% de moedas por $hours horas para todos (não vale offline)';
+  }
+
+  @override
+  String guildBuffLeft(String time) {
+    return 'Restam $time';
+  }
+
+  @override
+  String get guildBuffBought => 'Bônus da guilda ativado!';
+
+  @override
+  String guildStreakLine(int n) {
+    return '🔥 $n semanas seguidas com as 3 metas';
+  }
+
+  @override
+  String guildBuffLine(int pct, String time) {
+    return '⚡ Bônus da guilda +$pct% · restam $time';
+  }
+
+  @override
+  String get guildLbTabTotal => 'Total';
+
+  @override
+  String get guildLbTabAvg => 'Média';
+
+  @override
+  String get guildLbTabStreak => 'Sequência';
+
+  @override
+  String guildLbAvgNote(int n) {
+    return 'Só guildas com $n+ membros entram no ranking';
+  }
+
+  @override
+  String guildAvgPerMember(int n) {
+    return '$n/membro';
+  }
+
+  @override
+  String guildStreakWeeks(int n) {
+    return '$n semanas';
+  }
+
+  @override
+  String get guildLbStreakNote =>
+      'Semanas seguidas em que a guilda atingiu as 3 metas';
+
+  @override
+  String get guildLbStreakEmpty => 'Nenhuma guilda tem sequência ainda.';
+
+  @override
+  String get guildLbAvgEmpty =>
+      'Nenhuma guilda se qualifica para o ranking de média ainda.';
 }

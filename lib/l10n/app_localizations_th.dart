@@ -271,35 +271,34 @@ class AppLocalizationsTh extends AppLocalizations {
   String get howToPlayTitle => 'วิธีเล่น';
 
   @override
-  String get htpTap => '🧋 แตะแก้วเพื่อชงชาและรับเหรียญ';
+  String get htpTap => 'แตะแก้วเพื่อชงชาและรับเหรียญ';
 
   @override
-  String get htpBuy => '🛒 ซื้ออัปเกรดเพื่อรับรายได้อัตโนมัติทุกวินาที';
+  String get htpBuy => 'ซื้ออัปเกรดเพื่อรับรายได้อัตโนมัติทุกวินาที';
 
   @override
   String get htpStage =>
-      '🏪 สะสมเหรียญเพื่อปลดล็อกด่านใหม่ที่มีเครื่องดื่มหรูขึ้น';
+      'สะสมเหรียญเพื่อปลดล็อกด่านใหม่ที่มีเครื่องดื่มหรูขึ้น';
 
   @override
-  String get htpCat => '🐱 แตะแมวนำโชคเพื่อรับโกลเด้นรัช ×3 ชั่วครู่';
+  String get htpCat => 'แตะแมวนำโชคเพื่อรับโกลเด้นรัช ×3 ชั่วครู่';
 
   @override
-  String get htpVip => '🚗 บริการลูกค้า VIP เพื่อรับเพชร 💎';
+  String get htpVip => 'บริการลูกค้า VIP เพื่อรับเพชร 💎';
 
   @override
-  String get htpGems => '💎 ใช้เพชรในร้านค้าเพื่อซื้ออัปเกรดถาวร';
+  String get htpGems => 'ใช้เพชรในร้านค้าเพื่อซื้ออัปเกรดถาวร';
 
   @override
-  String get htpPrestige =>
-      '⭐ แฟรนไชส์เพื่อเริ่มใหม่และรับดาว — โบนัสรายได้ถาวร';
+  String get htpPrestige => 'แฟรนไชส์เพื่อเริ่มใหม่และรับดาว — โบนัสรายได้ถาวร';
 
   @override
   String get htpOffline =>
-      '😴 ร้านยังขายต่อขณะที่คุณไม่อยู่ — กลับมารับเงินออฟไลน์';
+      'ร้านยังขายต่อขณะที่คุณไม่อยู่ — กลับมารับเงินออฟไลน์';
 
   @override
   String get htpNumberFormat =>
-      '🔢 ตัวเลขใหญ่ใช้ตัวย่อ: K=พัน, M=ล้าน, B=พันล้าน, T=ล้านล้าน จากนั้นเป็น aa, bb, cc... — แต่ละขั้นมากกว่าขั้นก่อนหน้า 1,000 เท่า';
+      'ตัวเลขใหญ่ใช้ตัวย่อ: K=พัน, M=ล้าน, B=พันล้าน, T=ล้านล้าน จากนั้นเป็น aa, bb, cc... — แต่ละขั้นมากกว่าขั้นก่อนหน้า 1,000 เท่า';
 
   @override
   String get language => 'ภาษา';
@@ -2623,4 +2622,181 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get ftueSkip => 'ข้าม';
+
+  @override
+  String get accessoryGuildFlag => 'ธงกิลด์';
+
+  @override
+  String get accessoryGuildCastle => 'ปราสาทกิลด์';
+
+  @override
+  String get accessoryGuildWolf => 'หมาป่ากิลด์';
+
+  @override
+  String get accessoryGuildDragon => 'มังกรกิลด์';
+
+  @override
+  String get accessoryGuildFox => 'จิ้งจอกกิลด์';
+
+  @override
+  String get accessoryGuildTiger => 'เสือกิลด์';
+
+  @override
+  String get accessoryGuildShark => 'ฉลามกิลด์';
+
+  @override
+  String get accessoryGuildTrex => 'ไทแรนโนซอรัสกิลด์';
+
+  @override
+  String get accessoryGuildBoar => 'หมูป่ากิลด์';
+
+  @override
+  String get accessoryGuildBear => 'หมีกิลด์';
+
+  @override
+  String get accessoryGuildScorpion => 'แมงป่องกิลด์';
+
+  @override
+  String get accessoryGuildMoai => 'โมอายกิลด์';
+
+  @override
+  String guildErrDailyLimit(int n) {
+    return 'วันนี้คุณบริจาคครบสูงสุด $n 💎 แล้ว';
+  }
+
+  @override
+  String get guildErrCoins => 'เหรียญกิลด์ไม่พอ';
+
+  @override
+  String get guildErrOwned => 'คุณมีไอเทมนี้แล้ว';
+
+  @override
+  String get guildErrBuffMaxed => 'บัฟกิลด์เต็มสูงสุดแล้ว รอสักครู่';
+
+  @override
+  String get guildErrClaimed => 'คุณรับรางวัลนี้ไปแล้ว';
+
+  @override
+  String get guildErrInvalidInput => 'การกระทำไม่ถูกต้อง';
+
+  @override
+  String get guildShopButton => 'ร้านค้ากิลด์';
+
+  @override
+  String get guildShopTitle => 'ร้านค้ากิลด์';
+
+  @override
+  String guildCoinsLabel(int n) {
+    return 'เหรียญกิลด์: $n';
+  }
+
+  @override
+  String get guildDonateTitle => 'บริจาค 💎 รับเหรียญกิลด์';
+
+  @override
+  String guildDonateHint(int used, int cap) {
+    return 'วันนี้: $used/$cap 💎 · 1 💎 = 1 เหรียญกิลด์';
+  }
+
+  @override
+  String guildDonateGems(int n) {
+    return '$n 💎';
+  }
+
+  @override
+  String guildDonated(int n) {
+    return 'บริจาคแล้ว ได้รับ +$n เหรียญกิลด์';
+  }
+
+  @override
+  String get guildQuestsTitle => 'ภารกิจกิลด์ประจำสัปดาห์';
+
+  @override
+  String guildQuestProgress(int have, int need) {
+    return 'สะสม $need แต้มในสัปดาห์นี้ ($have/$need)';
+  }
+
+  @override
+  String guildQuestReward(int n) {
+    return '+$n เหรียญกิลด์';
+  }
+
+  @override
+  String guildQuestGot(int n) {
+    return 'ได้รับ +$n เหรียญกิลด์';
+  }
+
+  @override
+  String get guildItemsTitle => 'ของตกแต่งพิเศษของกิลด์';
+
+  @override
+  String guildItemPrice(int n) {
+    return '$n เหรียญ';
+  }
+
+  @override
+  String get guildItemOwned => 'มีแล้ว';
+
+  @override
+  String get guildItemBought => 'แลกแล้ว! ของตกแต่งอยู่ในคลังของคุณ';
+
+  @override
+  String get guildBuffTitle => 'บัฟรายได้กิลด์';
+
+  @override
+  String guildBuffDesc(int pct, int hours) {
+    return '+$pct% เหรียญนาน $hours ชั่วโมงสำหรับสมาชิกทุกคน (ไม่ใช้ตอนออฟไลน์)';
+  }
+
+  @override
+  String guildBuffLeft(String time) {
+    return 'เหลือ $time';
+  }
+
+  @override
+  String get guildBuffBought => 'เปิดใช้บัฟกิลด์แล้ว!';
+
+  @override
+  String guildStreakLine(int n) {
+    return '🔥 ทำครบ 3 เป้าหมาย $n สัปดาห์ติดต่อกัน';
+  }
+
+  @override
+  String guildBuffLine(int pct, String time) {
+    return '⚡ บัฟกิลด์ +$pct% · เหลือ $time';
+  }
+
+  @override
+  String get guildLbTabTotal => 'รวม';
+
+  @override
+  String get guildLbTabAvg => 'เฉลี่ย';
+
+  @override
+  String get guildLbTabStreak => 'ต่อเนื่อง';
+
+  @override
+  String guildLbAvgNote(int n) {
+    return 'เฉพาะกิลด์ที่มี $n สมาชิกขึ้นไปเท่านั้นที่ติดอันดับ';
+  }
+
+  @override
+  String guildAvgPerMember(int n) {
+    return '$n/คน';
+  }
+
+  @override
+  String guildStreakWeeks(int n) {
+    return '$n สัปดาห์';
+  }
+
+  @override
+  String get guildLbStreakNote =>
+      'จำนวนสัปดาห์ติดต่อกันที่กิลด์ทำครบ 3 เป้าหมาย';
+
+  @override
+  String get guildLbStreakEmpty => 'ยังไม่มีกิลด์ที่มีสถิติต่อเนื่อง';
+
+  @override
+  String get guildLbAvgEmpty => 'ยังไม่มีกิลด์ที่เข้าเงื่อนไขอันดับเฉลี่ย';
 }

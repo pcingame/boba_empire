@@ -519,55 +519,55 @@ abstract class AppLocalizations {
   /// No description provided for @htpTap.
   ///
   /// In vi, this message translates to:
-  /// **'🧋 Chạm ly để pha trà và kiếm Xu.'**
+  /// **'Chạm ly để pha trà và kiếm Xu.'**
   String get htpTap;
 
   /// No description provided for @htpBuy.
   ///
   /// In vi, this message translates to:
-  /// **'🛒 Mua nâng cấp để có thu nhập tự động mỗi giây.'**
+  /// **'Mua nâng cấp để có thu nhập tự động mỗi giây.'**
   String get htpBuy;
 
   /// No description provided for @htpStage.
   ///
   /// In vi, this message translates to:
-  /// **'🏪 Đủ Xu thì mở khóa giai đoạn mới, bán món cao cấp hơn.'**
+  /// **'Đủ Xu thì mở khóa giai đoạn mới, bán món cao cấp hơn.'**
   String get htpStage;
 
   /// No description provided for @htpCat.
   ///
   /// In vi, this message translates to:
-  /// **'🐱 Chạm mèo may mắn để nhận Mưa vàng ×3 trong chốc lát.'**
+  /// **'Chạm mèo may mắn để nhận Mưa vàng ×3 trong chốc lát.'**
   String get htpCat;
 
   /// No description provided for @htpVip.
   ///
   /// In vi, this message translates to:
-  /// **'🚗 Đón khách VIP đi ô tô để nhận Kim Cương 💎.'**
+  /// **'Đón khách VIP đi ô tô để nhận Kim Cương 💎.'**
   String get htpVip;
 
   /// No description provided for @htpGems.
   ///
   /// In vi, this message translates to:
-  /// **'💎 Dùng Kim Cương trong Cửa hàng mua nâng cấp vĩnh viễn.'**
+  /// **'Dùng Kim Cương trong Cửa hàng mua nâng cấp vĩnh viễn.'**
   String get htpGems;
 
   /// No description provided for @htpPrestige.
   ///
   /// In vi, this message translates to:
-  /// **'⭐ Nhượng quyền để chơi lại và nhận Sao — bonus thu nhập vĩnh viễn.'**
+  /// **'Nhượng quyền để chơi lại và nhận Sao — bonus thu nhập vĩnh viễn.'**
   String get htpPrestige;
 
   /// No description provided for @htpOffline.
   ///
   /// In vi, this message translates to:
-  /// **'😴 Quán vẫn bán khi bạn thoát — quay lại nhận tiền offline.'**
+  /// **'Quán vẫn bán khi bạn thoát — quay lại nhận tiền offline.'**
   String get htpOffline;
 
   /// No description provided for @htpNumberFormat.
   ///
   /// In vi, this message translates to:
-  /// **'🔢 Số lớn viết tắt: K=nghìn, M=triệu, B=tỷ, T=nghìn tỷ, rồi tới aa, bb, cc... — mỗi bước gấp 1.000 lần bước trước.'**
+  /// **'Số lớn viết tắt: K=nghìn, M=triệu, B=tỷ, T=nghìn tỷ, rồi tới aa, bb, cc... — mỗi bước gấp 1.000 lần bước trước.'**
   String get htpNumberFormat;
 
   /// No description provided for @language.
@@ -4637,6 +4637,294 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Bỏ qua'**
   String get ftueSkip;
+
+  /// No description provided for @accessoryGuildFlag.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cờ hội'**
+  String get accessoryGuildFlag;
+
+  /// No description provided for @accessoryGuildCastle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lâu đài hội'**
+  String get accessoryGuildCastle;
+
+  /// No description provided for @accessoryGuildWolf.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sói hội'**
+  String get accessoryGuildWolf;
+
+  /// No description provided for @accessoryGuildDragon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rồng hội'**
+  String get accessoryGuildDragon;
+
+  /// No description provided for @accessoryGuildFox.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cáo hội'**
+  String get accessoryGuildFox;
+
+  /// No description provided for @accessoryGuildTiger.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hổ hội'**
+  String get accessoryGuildTiger;
+
+  /// No description provided for @accessoryGuildShark.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cá mập hội'**
+  String get accessoryGuildShark;
+
+  /// No description provided for @accessoryGuildTrex.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khủng long hội'**
+  String get accessoryGuildTrex;
+
+  /// No description provided for @accessoryGuildBoar.
+  ///
+  /// In vi, this message translates to:
+  /// **'Heo rừng hội'**
+  String get accessoryGuildBoar;
+
+  /// No description provided for @accessoryGuildBear.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gấu hội'**
+  String get accessoryGuildBear;
+
+  /// No description provided for @accessoryGuildScorpion.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bò cạp hội'**
+  String get accessoryGuildScorpion;
+
+  /// No description provided for @accessoryGuildMoai.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tượng đá hội'**
+  String get accessoryGuildMoai;
+
+  /// No description provided for @guildErrDailyLimit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay bạn đã nạp tối đa {n} 💎.'**
+  String guildErrDailyLimit(int n);
+
+  /// No description provided for @guildErrCoins.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đủ Xu Hội.'**
+  String get guildErrCoins;
+
+  /// No description provided for @guildErrOwned.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã có vật phẩm này.'**
+  String get guildErrOwned;
+
+  /// No description provided for @guildErrBuffMaxed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Buff của hội đã đạt mức tối đa, hãy chờ bớt.'**
+  String get guildErrBuffMaxed;
+
+  /// No description provided for @guildErrClaimed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã nhận phần thưởng này rồi.'**
+  String get guildErrClaimed;
+
+  /// No description provided for @guildErrInvalidInput.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thao tác không hợp lệ.'**
+  String get guildErrInvalidInput;
+
+  /// No description provided for @guildShopButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cửa hàng hội'**
+  String get guildShopButton;
+
+  /// No description provided for @guildShopTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cửa hàng hội'**
+  String get guildShopTitle;
+
+  /// No description provided for @guildCoinsLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xu Hội: {n}'**
+  String guildCoinsLabel(int n);
+
+  /// No description provided for @guildDonateTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nạp 💎 lấy Xu Hội'**
+  String get guildDonateTitle;
+
+  /// No description provided for @guildDonateHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay: {used}/{cap} 💎 · 1 💎 = 1 Xu Hội'**
+  String guildDonateHint(int used, int cap);
+
+  /// No description provided for @guildDonateGems.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} 💎'**
+  String guildDonateGems(int n);
+
+  /// No description provided for @guildDonated.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nạp, nhận +{n} Xu Hội'**
+  String guildDonated(int n);
+
+  /// No description provided for @guildQuestsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiệm vụ hội tuần này'**
+  String get guildQuestsTitle;
+
+  /// No description provided for @guildQuestProgress.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng góp {need} điểm trong tuần ({have}/{need})'**
+  String guildQuestProgress(int have, int need);
+
+  /// No description provided for @guildQuestReward.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{n} Xu Hội'**
+  String guildQuestReward(int n);
+
+  /// No description provided for @guildQuestGot.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận +{n} Xu Hội'**
+  String guildQuestGot(int n);
+
+  /// No description provided for @guildItemsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phụ kiện độc quyền của hội'**
+  String get guildItemsTitle;
+
+  /// No description provided for @guildItemPrice.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} Xu'**
+  String guildItemPrice(int n);
+
+  /// No description provided for @guildItemOwned.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã có'**
+  String get guildItemOwned;
+
+  /// No description provided for @guildItemBought.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đổi! Phụ kiện nằm trong Kho.'**
+  String get guildItemBought;
+
+  /// No description provided for @guildBuffTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Buff thu nhập cả hội'**
+  String get guildBuffTitle;
+
+  /// No description provided for @guildBuffDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{pct}% Xu trong {hours} giờ cho mọi thành viên (không áp khi offline)'**
+  String guildBuffDesc(int pct, int hours);
+
+  /// No description provided for @guildBuffLeft.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn {time}'**
+  String guildBuffLeft(String time);
+
+  /// No description provided for @guildBuffBought.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã kích hoạt buff cho cả hội!'**
+  String get guildBuffBought;
+
+  /// No description provided for @guildStreakLine.
+  ///
+  /// In vi, this message translates to:
+  /// **'🔥 {n} tuần liên tiếp đủ 3 mốc'**
+  String guildStreakLine(int n);
+
+  /// No description provided for @guildBuffLine.
+  ///
+  /// In vi, this message translates to:
+  /// **'⚡ Buff hội +{pct}% · còn {time}'**
+  String guildBuffLine(int pct, String time);
+
+  /// No description provided for @guildLbTabTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng'**
+  String get guildLbTabTotal;
+
+  /// No description provided for @guildLbTabAvg.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trung bình'**
+  String get guildLbTabAvg;
+
+  /// No description provided for @guildLbTabStreak.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuỗi'**
+  String get guildLbTabStreak;
+
+  /// No description provided for @guildLbAvgNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chỉ tính hội từ {n} thành viên trở lên'**
+  String guildLbAvgNote(int n);
+
+  /// No description provided for @guildAvgPerMember.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n}/người'**
+  String guildAvgPerMember(int n);
+
+  /// No description provided for @guildStreakWeeks.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} tuần'**
+  String guildStreakWeeks(int n);
+
+  /// No description provided for @guildLbStreakNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tuần liên tiếp cả hội đạt đủ 3 mốc'**
+  String get guildLbStreakNote;
+
+  /// No description provided for @guildLbStreakEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa hội nào có chuỗi tuần.'**
+  String get guildLbStreakEmpty;
+
+  /// No description provided for @guildLbAvgEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa hội nào đủ điều kiện xếp hạng trung bình.'**
+  String get guildLbAvgEmpty;
 }
 
 class _AppLocalizationsDelegate

@@ -276,15 +276,15 @@
     }
   },
   "howToPlayTitle": "Cách chơi",
-  "htpTap": "🧋 Chạm ly để pha trà và kiếm Xu.",
-  "htpBuy": "🛒 Mua nâng cấp để có thu nhập tự động mỗi giây.",
-  "htpStage": "🏪 Đủ Xu thì mở khóa giai đoạn mới, bán món cao cấp hơn.",
-  "htpCat": "🐱 Chạm mèo may mắn để nhận Mưa vàng ×3 trong chốc lát.",
-  "htpVip": "🚗 Đón khách VIP đi ô tô để nhận Kim Cương 💎.",
-  "htpGems": "💎 Dùng Kim Cương trong Cửa hàng mua nâng cấp vĩnh viễn.",
-  "htpPrestige": "⭐ Nhượng quyền để chơi lại và nhận Sao — bonus thu nhập vĩnh viễn.",
-  "htpOffline": "😴 Quán vẫn bán khi bạn thoát — quay lại nhận tiền offline.",
-  "htpNumberFormat": "🔢 Số lớn viết tắt: K=nghìn, M=triệu, B=tỷ, T=nghìn tỷ, rồi tới aa, bb, cc... — mỗi bước gấp 1.000 lần bước trước.",
+  "htpTap": "Chạm ly để pha trà và kiếm Xu.",
+  "htpBuy": "Mua nâng cấp để có thu nhập tự động mỗi giây.",
+  "htpStage": "Đủ Xu thì mở khóa giai đoạn mới, bán món cao cấp hơn.",
+  "htpCat": "Chạm mèo may mắn để nhận Mưa vàng ×3 trong chốc lát.",
+  "htpVip": "Đón khách VIP đi ô tô để nhận Kim Cương 💎.",
+  "htpGems": "Dùng Kim Cương trong Cửa hàng mua nâng cấp vĩnh viễn.",
+  "htpPrestige": "Nhượng quyền để chơi lại và nhận Sao — bonus thu nhập vĩnh viễn.",
+  "htpOffline": "Quán vẫn bán khi bạn thoát — quay lại nhận tiền offline.",
+  "htpNumberFormat": "Số lớn viết tắt: K=nghìn, M=triệu, B=tỷ, T=nghìn tỷ, rồi tới aa, bb, cc... — mỗi bước gấp 1.000 lần bước trước.",
   "language": "Ngôn ngữ",
   "languageSystem": "Theo hệ thống",
   "dailyTitle": "Điểm danh hằng ngày",
@@ -1728,5 +1728,177 @@
   "ftueBuy": "Đủ Xu rồi! Mua nâng cấp đầu tiên để Xu tự chảy mỗi giây.",
   "ftueExplain": "Tuyệt! Giờ Xu tự tăng mỗi giây — kể cả khi bạn đóng app. Mua thêm nâng cấp để kiếm nhanh hơn, mở khoá giai đoạn mới và nhận quà nhiệm vụ.",
   "ftueOk": "Đã hiểu",
-  "ftueSkip": "Bỏ qua"
+  "ftueSkip": "Bỏ qua",
+  "accessoryGuildFlag": "Cờ hội",
+  "accessoryGuildCastle": "Lâu đài hội",
+  "accessoryGuildWolf": "Sói hội",
+  "accessoryGuildDragon": "Rồng hội",
+  "accessoryGuildFox": "Cáo hội",
+  "accessoryGuildTiger": "Hổ hội",
+  "accessoryGuildShark": "Cá mập hội",
+  "accessoryGuildTrex": "Khủng long hội",
+  "accessoryGuildBoar": "Heo rừng hội",
+  "accessoryGuildBear": "Gấu hội",
+  "accessoryGuildScorpion": "Bò cạp hội",
+  "accessoryGuildMoai": "Tượng đá hội",
+  "guildErrDailyLimit": "Hôm nay bạn đã nạp tối đa {n} 💎.",
+  "@guildErrDailyLimit": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrCoins": "Không đủ Xu Hội.",
+  "guildErrOwned": "Bạn đã có vật phẩm này.",
+  "guildErrBuffMaxed": "Buff của hội đã đạt mức tối đa, hãy chờ bớt.",
+  "guildErrClaimed": "Bạn đã nhận phần thưởng này rồi.",
+  "guildErrInvalidInput": "Thao tác không hợp lệ.",
+  "guildShopButton": "Cửa hàng hội",
+  "guildShopTitle": "Cửa hàng hội",
+  "guildCoinsLabel": "Xu Hội: {n}",
+  "@guildCoinsLabel": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonateTitle": "Nạp 💎 lấy Xu Hội",
+  "guildDonateHint": "Hôm nay: {used}/{cap} 💎 · 1 💎 = 1 Xu Hội",
+  "@guildDonateHint": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "cap": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonateGems": "{n} 💎",
+  "@guildDonateGems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonated": "Đã nạp, nhận +{n} Xu Hội",
+  "@guildDonated": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestsTitle": "Nhiệm vụ hội tuần này",
+  "guildQuestProgress": "Đóng góp {need} điểm trong tuần ({have}/{need})",
+  "@guildQuestProgress": {
+    "placeholders": {
+      "have": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestReward": "+{n} Xu Hội",
+  "@guildQuestReward": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestGot": "Nhận +{n} Xu Hội",
+  "@guildQuestGot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildItemsTitle": "Phụ kiện độc quyền của hội",
+  "guildItemPrice": "{n} Xu",
+  "@guildItemPrice": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildItemOwned": "Đã có",
+  "guildItemBought": "Đã đổi! Phụ kiện nằm trong Kho.",
+  "guildBuffTitle": "Buff thu nhập cả hội",
+  "guildBuffDesc": "+{pct}% Xu trong {hours} giờ cho mọi thành viên (không áp khi offline)",
+  "@guildBuffDesc": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "guildBuffLeft": "Còn {time}",
+  "@guildBuffLeft": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "guildBuffBought": "Đã kích hoạt buff cho cả hội!",
+  "guildStreakLine": "🔥 {n} tuần liên tiếp đủ 3 mốc",
+  "@guildStreakLine": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildBuffLine": "⚡ Buff hội +{pct}% · còn {time}",
+  "@guildBuffLine": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "guildLbTabTotal": "Tổng",
+  "guildLbTabAvg": "Trung bình",
+  "guildLbTabStreak": "Chuỗi",
+  "guildLbAvgNote": "Chỉ tính hội từ {n} thành viên trở lên",
+  "@guildLbAvgNote": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildAvgPerMember": "{n}/người",
+  "@guildAvgPerMember": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildStreakWeeks": "{n} tuần",
+  "@guildStreakWeeks": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildLbStreakNote": "Số tuần liên tiếp cả hội đạt đủ 3 mốc",
+  "guildLbStreakEmpty": "Chưa hội nào có chuỗi tuần.",
+  "guildLbAvgEmpty": "Chưa hội nào đủ điều kiện xếp hạng trung bình."
 }

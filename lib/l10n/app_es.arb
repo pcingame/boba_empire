@@ -68,15 +68,15 @@
   "offlineDoubleButton": "Ver anuncio ×2",
   "offlineDoubleSnack": "¡Duplicado! +{amount} Monedas",
   "howToPlayTitle": "Cómo jugar",
-  "htpTap": "🧋 Toca el vaso para preparar té y ganar Monedas.",
-  "htpBuy": "🛒 Compra mejoras para tener ingresos automáticos cada segundo.",
-  "htpStage": "🏪 Junta Monedas para desbloquear nuevas etapas con bebidas mejores.",
-  "htpCat": "🐱 Toca el gato de la suerte para una Lluvia Dorada ×3 breve.",
-  "htpVip": "🚗 Atiende al cliente VIP para ganar Gemas 💎.",
-  "htpGems": "💎 Gasta Gemas en la Tienda en mejoras permanentes.",
-  "htpPrestige": "⭐ Franquicia para reiniciar y ganar Estrellas — un bono de ingresos permanente.",
-  "htpOffline": "😴 La tienda sigue vendiendo mientras no estás — vuelve por el dinero sin conexión.",
-  "htpNumberFormat": "🔢 Los números grandes usan sufijos: K=mil, M=millón, B=mil millones, T=billón, luego aa, bb, cc... — cada paso es 1.000× el anterior.",
+  "htpTap": "Toca el vaso para preparar té y ganar Monedas.",
+  "htpBuy": "Compra mejoras para tener ingresos automáticos cada segundo.",
+  "htpStage": "Junta Monedas para desbloquear nuevas etapas con bebidas mejores.",
+  "htpCat": "Toca el gato de la suerte para una Lluvia Dorada ×3 breve.",
+  "htpVip": "Atiende al cliente VIP para ganar Gemas 💎.",
+  "htpGems": "Gasta Gemas en la Tienda en mejoras permanentes.",
+  "htpPrestige": "Franquicia para reiniciar y ganar Estrellas — un bono de ingresos permanente.",
+  "htpOffline": "La tienda sigue vendiendo mientras no estás — vuelve por el dinero sin conexión.",
+  "htpNumberFormat": "Los números grandes usan sufijos: K=mil, M=millón, B=mil millones, T=billón, luego aa, bb, cc... — cada paso es 1.000× el anterior.",
   "language": "Idioma",
   "languageSystem": "Predeterminado del sistema",
   "dailyTitle": "Registro diario",
@@ -1272,5 +1272,177 @@
   "ftueBuy": "¡Ya tienes monedas! Compra tu primera mejora para ganar monedas cada segundo.",
   "ftueExplain": "¡Genial! Tus monedas ahora crecen cada segundo, incluso con la app cerrada. Sigue mejorando para ganar más rápido, desbloquear etapas y reclamar recompensas.",
   "ftueOk": "Entendido",
-  "ftueSkip": "Omitir"
+  "ftueSkip": "Omitir",
+  "accessoryGuildFlag": "Bandera del gremio",
+  "accessoryGuildCastle": "Castillo del gremio",
+  "accessoryGuildWolf": "Lobo del gremio",
+  "accessoryGuildDragon": "Dragón del gremio",
+  "accessoryGuildFox": "Zorro del gremio",
+  "accessoryGuildTiger": "Tigre del gremio",
+  "accessoryGuildShark": "Tiburón del gremio",
+  "accessoryGuildTrex": "T-Rex del gremio",
+  "accessoryGuildBoar": "Jabalí del gremio",
+  "accessoryGuildBear": "Oso del gremio",
+  "accessoryGuildScorpion": "Escorpión del gremio",
+  "accessoryGuildMoai": "Moai del gremio",
+  "guildErrDailyLimit": "Hoy ya donaste el máximo de {n} 💎.",
+  "@guildErrDailyLimit": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrCoins": "Monedas de gremio insuficientes.",
+  "guildErrOwned": "Ya tienes este objeto.",
+  "guildErrBuffMaxed": "El beneficio del gremio está al máximo, espera un poco.",
+  "guildErrClaimed": "Ya reclamaste esta recompensa.",
+  "guildErrInvalidInput": "Acción no válida.",
+  "guildShopButton": "Tienda del gremio",
+  "guildShopTitle": "Tienda del gremio",
+  "guildCoinsLabel": "Monedas de gremio: {n}",
+  "@guildCoinsLabel": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonateTitle": "Dona 💎 por monedas de gremio",
+  "guildDonateHint": "Hoy: {used}/{cap} 💎 · 1 💎 = 1 moneda de gremio",
+  "@guildDonateHint": {
+    "placeholders": {
+      "used": {
+        "type": "int"
+      },
+      "cap": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonateGems": "{n} 💎",
+  "@guildDonateGems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildDonated": "Donado, recibes +{n} monedas de gremio",
+  "@guildDonated": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestsTitle": "Misiones semanales del gremio",
+  "guildQuestProgress": "Aporta {need} puntos esta semana ({have}/{need})",
+  "@guildQuestProgress": {
+    "placeholders": {
+      "have": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestReward": "+{n} monedas de gremio",
+  "@guildQuestReward": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildQuestGot": "Recibiste +{n} monedas de gremio",
+  "@guildQuestGot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildItemsTitle": "Accesorios exclusivos del gremio",
+  "guildItemPrice": "{n} monedas",
+  "@guildItemPrice": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildItemOwned": "Tienes",
+  "guildItemBought": "¡Canjeado! El accesorio está en tu colección.",
+  "guildBuffTitle": "Beneficio de ingresos del gremio",
+  "guildBuffDesc": "+{pct}% de monedas durante {hours} horas para todos (no aplica sin conexión)",
+  "@guildBuffDesc": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      },
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "guildBuffLeft": "Quedan {time}",
+  "@guildBuffLeft": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "guildBuffBought": "¡Beneficio del gremio activado!",
+  "guildStreakLine": "🔥 {n} semanas seguidas con los 3 hitos",
+  "@guildStreakLine": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildBuffLine": "⚡ Beneficio del gremio +{pct}% · quedan {time}",
+  "@guildBuffLine": {
+    "placeholders": {
+      "pct": {
+        "type": "int"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "guildLbTabTotal": "Total",
+  "guildLbTabAvg": "Promedio",
+  "guildLbTabStreak": "Racha",
+  "guildLbAvgNote": "Solo se clasifican gremios con {n}+ miembros",
+  "@guildLbAvgNote": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildAvgPerMember": "{n}/miembro",
+  "@guildAvgPerMember": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildStreakWeeks": "{n} semanas",
+  "@guildStreakWeeks": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildLbStreakNote": "Semanas seguidas en que el gremio logró los 3 hitos",
+  "guildLbStreakEmpty": "Ningún gremio tiene racha aún.",
+  "guildLbAvgEmpty": "Ningún gremio cumple aún para el ranking de promedio."
 }

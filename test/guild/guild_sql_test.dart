@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:boba_empire/core/guild.dart';
+import 'package:boba_empire/core/guild_shop.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -121,5 +122,69 @@ void main() {
     ]) {
       expect(sql.contains(old), isTrue, reason: old);
     }
+  });
+
+  group('Xu Hội / cửa hàng / BXH phụ khớp SQL', () {
+    test('hằng số nạp 💎, buff, số người tối thiểu của BXH trung bình', () {
+      expect(constant('guild_donate_daily_cap'), guildDonateDailyCap);
+      expect(constant('guild_coins_per_gem'), guildCoinsPerGem);
+      expect(constant('guild_buff_price'), guildBuffPrice);
+      expect(constant('guild_buff_hours'), guildBuffHours);
+      expect(constant('guild_buff_max_hours'), guildBuffMaxHours);
+      expect(constant('guild_avg_min_members'), guildAvgMinMembers);
+    });
+
+    test('nhiệm vụ tuần: ngưỡng điểm và thưởng khớp từng bậc', () {
+      final need = RegExp(r'guild_quest_need[\s\S]*?when 1 then (\d+) when 2 then (\d+) when 3 then (\d+)')
+          .firstMatch(sql)!;
+      final reward = RegExp(r'guild_quest_reward[\s\S]*?when 1 then (\d+) when 2 then (\d+) when 3 then (\d+)')
+          .firstMatch(sql)!;
+      for (var i = 0; i < guildQuests.length; i++) {
+        expect(int.parse(need.group(i + 1)!), guildQuests[i].need, reason: 'need ${i + 1}');
+        expect(int.parse(reward.group(i + 1)!), guildQuests[i].reward, reason: 'reward ${i + 1}');
+      }
+    });
+
+    test('bảng giá: mọi món trong cửa hàng có giá y hệt ở SQL, và SQL không bán món lạ', () {
+      final block = sql.substring(sql.indexOf('function guild_item_price'));
+      final sqlPrices = {
+        for (final m in RegExp(r"when '(guild_\w+)' then (\d+)")
+            .allMatches(block.substring(0, block.indexOf(r'$$;') > 0 ? block.indexOf('end') : block.length)))
+          m.group(1)!: int.parse(m.group(2)!),
+      };
+      expect(sqlPrices, {for (final i in guildShopItems) i.id: i.price});
+    });
+
+    test('hàm nội bộ ghi lịch sử bị thu hồi quyền; RPC mới được cấp quyền', () {
+      expect(
+          sql.contains(RegExp(
+              r'revoke all on function guild_log_week\(uuid, date, bigint\)\s+from public, anon, authenticated')),
+          isTrue);
+      for (final fn in [
+        'guild_leaderboard_avg(integer)',
+        'guild_leaderboard_streak(integer)',
+        'guild_donate(integer)',
+        'guild_claim_quest(integer)',
+        'guild_buy_item(text)',
+        'guild_buy_buff()',
+        'guild_buff_seconds()',
+      ]) {
+        expect(sql.contains("'$fn'"), isTrue, reason: '$fn chưa cấp quyền');
+      }
+    });
+
+    test('mọi bảng mới bật RLS và không có policy', () {
+      for (final t in [
+        'guild_week_totals',
+        'guild_coin_wallets',
+        'guild_donations',
+        'guild_quest_claims',
+        'guild_purchases',
+      ]) {
+        expect(sql.contains(RegExp('alter table $t\\s+enable row level security')), isTrue,
+            reason: t);
+      }
+      expect(sql.contains('create policy'), isFalse);
+    });
   });
 }

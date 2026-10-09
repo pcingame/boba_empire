@@ -1,5 +1,6 @@
 // Bản giả của GuildRepository cho test controller/UI: ghi lại lệnh gọi, cho phép
 // ép lỗi theo tên phương thức, và có trạng thái đủ để refresh() đọc lại.
+import 'package:boba_empire/core/guild_shop.dart';
 import 'package:boba_empire/guild/guild_repository.dart';
 
 class FakeGuildRepository implements GuildRepository {
@@ -8,6 +9,11 @@ class FakeGuildRepository implements GuildRepository {
   MyGuild? mine;
   List<GuildSummary> listing;
   List<GuildSummary> board = const [];
+  List<GuildSummary> boardAvg = const [];
+  List<GuildSummary> boardStreak = const [];
+
+  /// Giây buff mà buffSeconds()/guild_my báo (đổi được trong test).
+  int serverBuffSeconds = 0;
   final String me;
 
   /// Tên phương thức → lỗi sẽ ném (một lần, rồi xoá).
@@ -47,6 +53,60 @@ class FakeGuildRepository implements GuildRepository {
   Future<List<GuildSummary>> leaderboard() async {
     _hit('leaderboard');
     return board;
+  }
+
+  @override
+  Future<List<GuildSummary>> leaderboardAvg() async {
+    _hit('leaderboardAvg');
+    return boardAvg;
+  }
+
+  @override
+  Future<List<GuildSummary>> leaderboardStreak() async {
+    _hit('leaderboardStreak');
+    return boardStreak;
+  }
+
+  @override
+  Future<void> donate(int gems) async {
+    _hit('donate');
+    final g = mine!;
+    mine = withState(g,
+        wallet: g.wallet + gems * guildCoinsPerGem,
+        donatedToday: g.donatedToday + gems);
+  }
+
+  @override
+  Future<void> claimQuest(int tier) async {
+    _hit('claimQuest');
+    final g = mine!;
+    mine = withState(g,
+        wallet: g.wallet + guildQuests[tier - 1].reward,
+        questsClaimed: [...g.questsClaimed, tier]);
+  }
+
+  @override
+  Future<void> buyItem(String itemId) async {
+    _hit('buyItem');
+    final g = mine!;
+    final price = guildShopItems.firstWhere((i) => i.id == itemId).price;
+    mine = withState(g,
+        wallet: g.wallet - price, ownedItems: [...g.ownedItems, itemId]);
+  }
+
+  @override
+  Future<void> buyBuff() async {
+    _hit('buyBuff');
+    final g = mine!;
+    serverBuffSeconds = guildBuffHours * 3600;
+    mine = withState(g,
+        wallet: g.wallet - guildBuffPrice, buffSeconds: serverBuffSeconds);
+  }
+
+  @override
+  Future<int> buffSeconds() async {
+    _hit('buffSeconds');
+    return serverBuffSeconds;
   }
 
   @override
@@ -201,6 +261,12 @@ MyGuild fakeGuild({
   bool requiresApproval = false,
   List<GuildJoinRequest> requests = const [],
   List<GuildMemberInfo>? members,
+  int streak = 0,
+  int buffSeconds = 0,
+  int wallet = 0,
+  List<int> questsClaimed = const [],
+  List<String> ownedItems = const [],
+  int donatedToday = 0,
 }) =>
     MyGuild(
       id: 'g1',
@@ -212,6 +278,12 @@ MyGuild fakeGuild({
       claimed: claimed,
       requiresApproval: requiresApproval,
       requests: requests,
+      streak: streak,
+      buffSeconds: buffSeconds,
+      wallet: wallet,
+      questsClaimed: questsClaimed,
+      ownedItems: ownedItems,
+      donatedToday: donatedToday,
       members: members ??
           const [
             GuildMemberInfo(userId: 'me', nickname: 'Alice', points: 400),
@@ -229,3 +301,31 @@ const sampleListing = [
       memberCount: 5,
       weekTotal: 1200),
 ];
+
+/// Bản sao của [g] với vài trường đổi (MyGuild không có copyWith trong code chính).
+MyGuild withState(
+  MyGuild g, {
+  int? wallet,
+  int? buffSeconds,
+  List<int>? questsClaimed,
+  List<String>? ownedItems,
+  int? donatedToday,
+}) =>
+    MyGuild(
+      id: g.id,
+      name: g.name,
+      tag: g.tag,
+      emoji: g.emoji,
+      ownerId: g.ownerId,
+      total: g.total,
+      claimed: g.claimed,
+      members: g.members,
+      requiresApproval: g.requiresApproval,
+      requests: g.requests,
+      streak: g.streak,
+      buffSeconds: buffSeconds ?? g.buffSeconds,
+      wallet: wallet ?? g.wallet,
+      questsClaimed: questsClaimed ?? g.questsClaimed,
+      ownedItems: ownedItems ?? g.ownedItems,
+      donatedToday: donatedToday ?? g.donatedToday,
+    );

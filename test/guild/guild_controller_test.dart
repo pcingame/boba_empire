@@ -1,6 +1,7 @@
 // GuildController: tải trạng thái, báo điểm tuần, các hành động, và nhận thưởng
 // (server xác nhận TRƯỚC rồi mới cộng 💎/phụ kiện cục bộ).
 import 'package:boba_empire/core/guild.dart';
+import 'package:boba_empire/core/guild_shop.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/guild/guild_controller.dart';
@@ -397,6 +398,222 @@ void main() {
       expect((await _ctrl(c).claim(-1)).ok, isFalse);
       expect((await _ctrl(c).claim(99)).ok, isFalse);
       expect(repo.calls, isEmpty);
+    });
+  });
+
+  group('Xu Hội: nạp 💎, nhiệm vụ, cửa hàng, buff', () {
+    Future<ProviderContainer> mine(FakeGuildRepository repo,
+        {double gems = 500, double score = 500}) async {
+      final c = await _open(repo, gems: gems, score: score);
+      await _ctrl(c).refresh();
+      return c;
+    }
+
+    test('nạp: thiếu 💎 → từ chối, KHÔNG gọi server, không trừ', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild());
+      final c = await mine(repo, gems: 50);
+      final out = await _ctrl(c).donate(100);
+      expect(out.failure, GuildFailure.notEnoughGems);
+      expect(repo.calls.contains('donate'), isFalse);
+      expect(c.read(gameControllerProvider).gems, 50);
+    });
+
+    test('nạp: vượt hạn mức ngày → dailyLimit, KHÔNG gọi server', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild(donatedToday: 995));
+      final c = await mine(repo);
+      final out = await _ctrl(c).donate(10);
+      expect(out.failure, GuildFailure.dailyLimit);
+      expect(repo.calls.contains('donate'), isFalse);
+      // Vừa đủ hạn mức thì được.
+      expect((await _ctrl(c).donate(5)).ok, isTrue);
+    });
+
+    test('nạp: thành công → trừ đúng 💎, ví tăng, số đã nạp hôm nay tăng', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild());
+      final c = await mine(repo, gems: 500);
+      expect((await _ctrl(c).donate(100)).ok, isTrue);
+      expect(c.read(gameControllerProvider).gems, 400);
+      final s = c.read(guildControllerProvider) as GuildMine;
+      expect(s.guild.wallet, 100 * guildCoinsPerGem);
+      expect(s.guild.donatedToday, 100);
+    });
+
+    test('nạp: số không hợp lệ (0, âm) bị chặn ngay', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild());
+      final c = await mine(repo);
+      expect((await _ctrl(c).donate(0)).failure, GuildFailure.invalidInput);
+      expect((await _ctrl(c).donate(-5)).failure, GuildFailure.invalidInput);
+      expect(repo.calls.contains('donate'), isFalse);
+    });
+
+    test('nạp: server lỗi → KHÔNG mất 💎', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild())
+        ..failures['donate'] = const GuildException(GuildFailure.dailyLimit);
+      final c = await mine(repo, gems: 500);
+      expect((await _ctrl(c).donate(100)).failure, GuildFailure.dailyLimit);
+      expect(c.read(gameControllerProvider).gems, 500);
+    });
+
+    test('nhiệm vụ tuần: báo điểm trước, rồi nhận; Xu Hội cộng đúng thưởng', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild());
+      final c = await mine(repo, score: 5000);
+      repo.calls.clear();
+      expect((await _ctrl(c).claimQuest(1)).ok, isTrue);
+      expect(repo.calls, containsAllInOrder(['submitScore', 'claimQuest']));
+      expect((c.read(guildControllerProvider) as GuildMine).guild.wallet,
+          guildQuests[1].reward);
+      expect((c.read(guildControllerProvider) as GuildMine).guild.questsClaimed, [2]);
+    });
+
+    test('nhiệm vụ tuần: chỉ số sai bị chặn; lỗi server được trả về', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild())
+        ..failures['claimQuest'] =
+            const GuildException(GuildFailure.notEnoughContribution);
+      final c = await mine(repo);
+      expect((await _ctrl(c).claimQuest(-1)).failure, GuildFailure.invalidInput);
+      expect((await _ctrl(c).claimQuest(7)).failure, GuildFailure.invalidInput);
+      expect((await _ctrl(c).claimQuest(2)).failure,
+          GuildFailure.notEnoughContribution);
+    });
+
+    test('đổi phụ kiện: cấp vào ownedLimited CHỈ sau khi server trừ ví', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild(wallet: 2000));
+      final c = await mine(repo);
+      expect(c.read(gameControllerProvider).ownedLimited, isEmpty);
+      expect((await _ctrl(c).buyItem('guild_flag')).ok, isTrue);
+      expect(c.read(gameControllerProvider).ownedLimited, ['guild_flag']);
+      expect((c.read(guildControllerProvider) as GuildMine).guild.wallet,
+          2000 - 500);
+    });
+
+    test('đổi phụ kiện: server từ chối (thiếu Xu / đã có) → KHÔNG cấp', () async {
+      for (final f in [GuildFailure.notEnoughCoins, GuildFailure.alreadyOwned]) {
+        final repo = FakeGuildRepository(mine: fakeGuild(wallet: 2000))
+          ..failures['buyItem'] = GuildException(f);
+        final c = await mine(repo);
+        expect((await _ctrl(c).buyItem('guild_dragon')).failure, f);
+        expect(c.read(gameControllerProvider).ownedLimited, isEmpty);
+      }
+    });
+
+    test('mua buff: áp ngay cho game (thu nhập nhân hệ số) và hết hạn theo giây server',
+        () async {
+      final repo = FakeGuildRepository(mine: fakeGuild(wallet: 2000));
+      final c = await mine(repo);
+      expect(c.read(gameControllerProvider).guildBuffActive, isFalse);
+      expect((await _ctrl(c).buyBuff()).ok, isTrue);
+      expect(c.read(gameControllerProvider).guildBuffActive, isTrue);
+      expect((c.read(guildControllerProvider) as GuildMine).guild.wallet,
+          2000 - guildBuffPrice);
+    });
+
+    test('mua buff lỗi (thiếu Xu / đã tối đa) → không có buff', () async {
+      for (final f in [GuildFailure.notEnoughCoins, GuildFailure.buffMaxed]) {
+        final repo = FakeGuildRepository(mine: fakeGuild(wallet: 2000))
+          ..failures['buyBuff'] = GuildException(f);
+        final c = await mine(repo);
+        expect((await _ctrl(c).buyBuff()).failure, f);
+        expect(c.read(gameControllerProvider).guildBuffActive, isFalse);
+      }
+    });
+
+    test('refresh đồng bộ phần chạy ở game: cờ ở hội, buff từ server, khôi phục phụ kiện',
+        () async {
+      final repo = FakeGuildRepository(
+          mine: fakeGuild(buffSeconds: 3600, ownedItems: ['guild_castle', 'x_lạ']));
+      final c = await _open(repo, gems: 0);
+      expect(c.read(gameControllerProvider).guildJoined, isFalse);
+      await _ctrl(c).refresh();
+      final g = c.read(gameControllerProvider);
+      expect(g.guildJoined, isTrue);
+      expect(g.guildBuffActive, isTrue);
+      expect(g.ownedLimited, ['guild_castle'], reason: 'id lạ bị bỏ qua');
+    });
+
+    test('rời hội/không còn ở hội: cờ tắt và buff bị xoá', () async {
+      final repo = FakeGuildRepository(
+          mine: fakeGuild(buffSeconds: 3600), listing: sampleListing);
+      final c = await mine(repo);
+      expect(c.read(gameControllerProvider).guildBuffActive, isTrue);
+      await _ctrl(c).leave();
+      final g = c.read(gameControllerProvider);
+      expect(g.guildJoined, isFalse);
+      expect(g.guildBuffActive, isFalse);
+    });
+
+    test('syncBuff: không ở hội → không gọi server', () async {
+      final repo = FakeGuildRepository();
+      final c = await _open(repo);
+      await _ctrl(c).syncBuff();
+      expect(repo.calls, isEmpty);
+    });
+
+    test('syncBuff: ở hội → áp buff server báo; gọi lại trong 10 phút thì bỏ qua',
+        () async {
+      final repo = FakeGuildRepository(mine: fakeGuild())..serverBuffSeconds = 7200;
+      final c = await mine(repo);
+      repo.calls.clear();
+      await _ctrl(c).syncBuff();
+      expect(repo.calls, ['buffSeconds']);
+      expect(c.read(gameControllerProvider).guildBuffActive, isTrue);
+      await _ctrl(c).syncBuff();
+      expect(repo.calls, ['buffSeconds'], reason: 'giới hạn tần suất');
+    });
+
+    test('syncBuff: lỗi mạng bị nuốt, buff cũ giữ nguyên', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild(buffSeconds: 3600));
+      final c = await mine(repo);
+      repo.failures['buffSeconds'] = const GuildException(GuildFailure.network);
+      await _ctrl(c).syncBuff();
+      expect(c.read(gameControllerProvider).guildBuffActive, isTrue);
+    });
+
+    test('MyGuild.fromJson đọc đủ trường mới; thiếu thì về mặc định', () {
+      final base = {
+        'guild': {'id': 'g', 'name': 'N', 'tag': 'TG', 'emoji': '🧋', 'owner_id': 'o'},
+        'total': 0, 'claimed': [], 'members': [],
+      };
+      final d = MyGuild.fromJson(base);
+      expect((d.streak, d.buffSeconds, d.wallet, d.donatedToday), (0, 0, 0, 0));
+      expect(d.questsClaimed, isEmpty);
+      expect(d.ownedItems, isEmpty);
+      final f = MyGuild.fromJson({
+        ...base,
+        'streak': 4,
+        'buff_seconds': 120,
+        'wallet': 777,
+        'quests_claimed': [1, 3],
+        'owned_items': ['guild_flag'],
+        'donated_today': 250,
+      });
+      expect((f.streak, f.buffSeconds, f.wallet, f.donatedToday), (4, 120, 777, 250));
+      expect(f.questsClaimed, [1, 3]);
+      expect(f.ownedItems, ['guild_flag']);
+    });
+
+    test('GuildSummary.fromRow đọc avg_points và streak (thiếu → null)', () {
+      final row = {
+        'id': 'g', 'name': 'N', 'tag': 'TG', 'emoji': '🧋',
+        'member_count': 6, 'week_total': 60000,
+      };
+      final a = GuildSummary.fromRow(row);
+      expect((a.avgPoints, a.streak), (null, null));
+      final b = GuildSummary.fromRow({...row, 'avg_points': 10000, 'streak': 3});
+      expect((b.avgPoints, b.streak), (10000, 3));
+    });
+
+    test('guildFailureFromMessage: lỗi mới của Xu Hội', () {
+      const cases = {
+        'daily limit': GuildFailure.dailyLimit,
+        'not enough coins': GuildFailure.notEnoughCoins,
+        'already owned': GuildFailure.alreadyOwned,
+        'buff maxed': GuildFailure.buffMaxed,
+        'already claimed': GuildFailure.alreadyClaimed,
+        'invalid amount': GuildFailure.invalidInput,
+        'invalid item': GuildFailure.invalidInput,
+        'invalid tier': GuildFailure.invalidInput,
+      };
+      cases.forEach((m, f) => expect(guildFailureFromMessage(m), f, reason: m));
     });
   });
 

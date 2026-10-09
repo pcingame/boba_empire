@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/accessories.dart';
 import '../core/collection_milestones.dart';
+import '../core/guild_shop.dart' show guildAccessories;
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../leaderboard/flair.dart';
@@ -193,19 +194,34 @@ class AccessoryInventoryPage extends ConsumerWidget {
                 SliverPadding(
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
                   sliver: SliverGrid.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
-                          childAspectRatio: 0.85,
-                        ),
+                    // 4 món/dịp → 2 cột (2x2 cân đối); 3 cột cho 3+1 với ô cuối lẻ loi.
+                    gridDelegate: _limitedGridDelegate,
                     itemCount: f.items.length,
                     itemBuilder: (context, i) =>
                         _AccessoryCell(accessory: f.items[i], limited: true),
                   ),
                 ),
               ],
+              // Phụ kiện độc quyền của hội: đổi bằng Xu Hội ở Cửa hàng hội.
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 6),
+                  child: Text(
+                    l10n.guildItemsTitle,
+                    key: const Key('inventory-guild-section'),
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                sliver: SliverGrid.builder(
+                  gridDelegate: _limitedGridDelegate,
+                  itemCount: guildAccessories.length,
+                  itemBuilder: (context, i) => _AccessoryCell(
+                      accessory: guildAccessories[i], limited: true),
+                ),
+              ),
             ],
           ),
         ),
@@ -213,6 +229,14 @@ class AccessoryInventoryPage extends ConsumerWidget {
     );
   }
 }
+
+/// Lưới cho nhóm 4 món độc quyền (mỗi dịp lễ, cửa hàng hội): 2 cột × 2 hàng.
+const _limitedGridDelegate = SliverGridDelegateWithFixedCrossAxisCount(
+  crossAxisCount: 2,
+  mainAxisSpacing: 10,
+  crossAxisSpacing: 10,
+  childAspectRatio: 1.5,
+);
 
 class _AccessoryCell extends ConsumerWidget {
   const _AccessoryCell({

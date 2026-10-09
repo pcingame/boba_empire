@@ -272,37 +272,35 @@ class AppLocalizationsVi extends AppLocalizations {
   String get howToPlayTitle => 'Cách chơi';
 
   @override
-  String get htpTap => '🧋 Chạm ly để pha trà và kiếm Xu.';
+  String get htpTap => 'Chạm ly để pha trà và kiếm Xu.';
 
   @override
-  String get htpBuy => '🛒 Mua nâng cấp để có thu nhập tự động mỗi giây.';
+  String get htpBuy => 'Mua nâng cấp để có thu nhập tự động mỗi giây.';
 
   @override
   String get htpStage =>
-      '🏪 Đủ Xu thì mở khóa giai đoạn mới, bán món cao cấp hơn.';
+      'Đủ Xu thì mở khóa giai đoạn mới, bán món cao cấp hơn.';
 
   @override
-  String get htpCat =>
-      '🐱 Chạm mèo may mắn để nhận Mưa vàng ×3 trong chốc lát.';
+  String get htpCat => 'Chạm mèo may mắn để nhận Mưa vàng ×3 trong chốc lát.';
 
   @override
-  String get htpVip => '🚗 Đón khách VIP đi ô tô để nhận Kim Cương 💎.';
+  String get htpVip => 'Đón khách VIP đi ô tô để nhận Kim Cương 💎.';
 
   @override
-  String get htpGems =>
-      '💎 Dùng Kim Cương trong Cửa hàng mua nâng cấp vĩnh viễn.';
+  String get htpGems => 'Dùng Kim Cương trong Cửa hàng mua nâng cấp vĩnh viễn.';
 
   @override
   String get htpPrestige =>
-      '⭐ Nhượng quyền để chơi lại và nhận Sao — bonus thu nhập vĩnh viễn.';
+      'Nhượng quyền để chơi lại và nhận Sao — bonus thu nhập vĩnh viễn.';
 
   @override
   String get htpOffline =>
-      '😴 Quán vẫn bán khi bạn thoát — quay lại nhận tiền offline.';
+      'Quán vẫn bán khi bạn thoát — quay lại nhận tiền offline.';
 
   @override
   String get htpNumberFormat =>
-      '🔢 Số lớn viết tắt: K=nghìn, M=triệu, B=tỷ, T=nghìn tỷ, rồi tới aa, bb, cc... — mỗi bước gấp 1.000 lần bước trước.';
+      'Số lớn viết tắt: K=nghìn, M=triệu, B=tỷ, T=nghìn tỷ, rồi tới aa, bb, cc... — mỗi bước gấp 1.000 lần bước trước.';
 
   @override
   String get language => 'Ngôn ngữ';
@@ -2635,4 +2633,182 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get ftueSkip => 'Bỏ qua';
+
+  @override
+  String get accessoryGuildFlag => 'Cờ hội';
+
+  @override
+  String get accessoryGuildCastle => 'Lâu đài hội';
+
+  @override
+  String get accessoryGuildWolf => 'Sói hội';
+
+  @override
+  String get accessoryGuildDragon => 'Rồng hội';
+
+  @override
+  String get accessoryGuildFox => 'Cáo hội';
+
+  @override
+  String get accessoryGuildTiger => 'Hổ hội';
+
+  @override
+  String get accessoryGuildShark => 'Cá mập hội';
+
+  @override
+  String get accessoryGuildTrex => 'Khủng long hội';
+
+  @override
+  String get accessoryGuildBoar => 'Heo rừng hội';
+
+  @override
+  String get accessoryGuildBear => 'Gấu hội';
+
+  @override
+  String get accessoryGuildScorpion => 'Bò cạp hội';
+
+  @override
+  String get accessoryGuildMoai => 'Tượng đá hội';
+
+  @override
+  String guildErrDailyLimit(int n) {
+    return 'Hôm nay bạn đã nạp tối đa $n 💎.';
+  }
+
+  @override
+  String get guildErrCoins => 'Không đủ Xu Hội.';
+
+  @override
+  String get guildErrOwned => 'Bạn đã có vật phẩm này.';
+
+  @override
+  String get guildErrBuffMaxed =>
+      'Buff của hội đã đạt mức tối đa, hãy chờ bớt.';
+
+  @override
+  String get guildErrClaimed => 'Bạn đã nhận phần thưởng này rồi.';
+
+  @override
+  String get guildErrInvalidInput => 'Thao tác không hợp lệ.';
+
+  @override
+  String get guildShopButton => 'Cửa hàng hội';
+
+  @override
+  String get guildShopTitle => 'Cửa hàng hội';
+
+  @override
+  String guildCoinsLabel(int n) {
+    return 'Xu Hội: $n';
+  }
+
+  @override
+  String get guildDonateTitle => 'Nạp 💎 lấy Xu Hội';
+
+  @override
+  String guildDonateHint(int used, int cap) {
+    return 'Hôm nay: $used/$cap 💎 · 1 💎 = 1 Xu Hội';
+  }
+
+  @override
+  String guildDonateGems(int n) {
+    return '$n 💎';
+  }
+
+  @override
+  String guildDonated(int n) {
+    return 'Đã nạp, nhận +$n Xu Hội';
+  }
+
+  @override
+  String get guildQuestsTitle => 'Nhiệm vụ hội tuần này';
+
+  @override
+  String guildQuestProgress(int have, int need) {
+    return 'Đóng góp $need điểm trong tuần ($have/$need)';
+  }
+
+  @override
+  String guildQuestReward(int n) {
+    return '+$n Xu Hội';
+  }
+
+  @override
+  String guildQuestGot(int n) {
+    return 'Nhận +$n Xu Hội';
+  }
+
+  @override
+  String get guildItemsTitle => 'Phụ kiện độc quyền của hội';
+
+  @override
+  String guildItemPrice(int n) {
+    return '$n Xu';
+  }
+
+  @override
+  String get guildItemOwned => 'Đã có';
+
+  @override
+  String get guildItemBought => 'Đã đổi! Phụ kiện nằm trong Kho.';
+
+  @override
+  String get guildBuffTitle => 'Buff thu nhập cả hội';
+
+  @override
+  String guildBuffDesc(int pct, int hours) {
+    return '+$pct% Xu trong $hours giờ cho mọi thành viên (không áp khi offline)';
+  }
+
+  @override
+  String guildBuffLeft(String time) {
+    return 'Còn $time';
+  }
+
+  @override
+  String get guildBuffBought => 'Đã kích hoạt buff cho cả hội!';
+
+  @override
+  String guildStreakLine(int n) {
+    return '🔥 $n tuần liên tiếp đủ 3 mốc';
+  }
+
+  @override
+  String guildBuffLine(int pct, String time) {
+    return '⚡ Buff hội +$pct% · còn $time';
+  }
+
+  @override
+  String get guildLbTabTotal => 'Tổng';
+
+  @override
+  String get guildLbTabAvg => 'Trung bình';
+
+  @override
+  String get guildLbTabStreak => 'Chuỗi';
+
+  @override
+  String guildLbAvgNote(int n) {
+    return 'Chỉ tính hội từ $n thành viên trở lên';
+  }
+
+  @override
+  String guildAvgPerMember(int n) {
+    return '$n/người';
+  }
+
+  @override
+  String guildStreakWeeks(int n) {
+    return '$n tuần';
+  }
+
+  @override
+  String get guildLbStreakNote => 'Số tuần liên tiếp cả hội đạt đủ 3 mốc';
+
+  @override
+  String get guildLbStreakEmpty => 'Chưa hội nào có chuỗi tuần.';
+
+  @override
+  String get guildLbAvgEmpty =>
+      'Chưa hội nào đủ điều kiện xếp hạng trung bình.';
 }

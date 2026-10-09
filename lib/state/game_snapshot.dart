@@ -63,6 +63,8 @@ class GameSnapshot {
     required this.ownedLimited,
     this.eventId = '',
     this.guildScore = 0,
+    this.guildJoined = false,
+    this.guildBuffActive = false,
     this.eventPoints = 0,
     this.eventProgress = const {},
     this.eventClaimed = const [],
@@ -205,6 +207,10 @@ class GameSnapshot {
 
   /// Điểm hoạt động tuần này cho Hội (guild.dart).
   final int guildScore;
+  final bool guildJoined;
+
+  /// Buff thu nhập cả hội (mua bằng Xu Hội) đang còn hạn.
+  final bool guildBuffActive;
   final int eventPoints;
   final Map<String, double> eventProgress;
   final List<String> eventClaimed;

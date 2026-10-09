@@ -7,12 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/format.dart';
+import '../core/balance.dart';
 import '../core/guild.dart';
+import '../core/guild_shop.dart';
 import '../guild/guild_controller.dart';
 import '../guild/guild_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import 'guild_leaderboard_page.dart';
+import 'guild_shop_page.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -31,6 +34,12 @@ String guildFailureText(AppLocalizations l10n, GuildFailure f) => switch (f) {
       GuildFailure.notEnoughContribution => l10n.guildErrContribution,
       GuildFailure.notEnoughGems => l10n.guildErrGems(guildCreateCostGems),
       GuildFailure.approvalRequired => l10n.guildErrApproval,
+      GuildFailure.alreadyClaimed => l10n.guildErrClaimed,
+      GuildFailure.dailyLimit => l10n.guildErrDailyLimit(guildDonateDailyCap),
+      GuildFailure.notEnoughCoins => l10n.guildErrCoins,
+      GuildFailure.alreadyOwned => l10n.guildErrOwned,
+      GuildFailure.buffMaxed => l10n.guildErrBuffMaxed,
+      GuildFailure.invalidInput => l10n.guildErrInvalidInput,
       GuildFailure.requestsFull => l10n.guildErrRequestsFull,
       GuildFailure.network => l10n.guildErrNetwork,
     };
@@ -299,6 +308,7 @@ Future<void> _showCreateDialog(BuildContext context, WidgetRef ref) async {
                       key: Key('guild-emoji-$e'),
                       label: Text(e, style: const TextStyle(fontSize: 20)),
                       selected: emoji == e,
+                      showCheckmark: false,
                       onSelected: (_) => setState(() => emoji = e),
                     ),
                 ],
@@ -385,8 +395,38 @@ class _MyGuildView extends ConsumerWidget {
                 const SizedBox(height: 4),
                 Text(l10n.guildMembersCount(g.members.length, guildMaxMembers),
                     style: theme.textTheme.bodySmall),
+                if (g.streak > 0)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(l10n.guildStreakLine(g.streak),
+                        key: const Key('guild-streak'),
+                        style: theme.textTheme.bodyMedium
+                            ?.copyWith(fontWeight: FontWeight.w600)),
+                  ),
+                if (g.buffSeconds > 0)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                        l10n.guildBuffLine(
+                            ((Balance.guildBuffMult - 1) * 100).round(),
+                            formatDuration(g.buffSeconds)),
+                        key: const Key('guild-buff-line'),
+                        style: theme.textTheme.bodyMedium
+                            ?.copyWith(fontWeight: FontWeight.w600)),
+                  ),
               ],
             ),
+          ),
+          const SizedBox(height: 8),
+          OutlinedButton.icon(
+            key: const Key('guild-shop-button'),
+            icon: const Icon(Icons.storefront),
+            label: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                  '${l10n.guildShopButton} · ${l10n.guildCoinsLabel(g.wallet)}'),
+            ),
+            onPressed: () => showGuildShop(context),
           ),
           const SizedBox(height: 8),
           Text(l10n.guildGoalTitle,

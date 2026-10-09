@@ -18,6 +18,7 @@ import '../core/models.dart';
 import '../core/whats_new.dart';
 import '../data/cloud_save_controller.dart' show cloudLinkedProvider;
 import '../data/game_storage.dart';
+import '../guild/guild_controller.dart' show guildControllerProvider;
 import '../core/rival.dart';
 import '../iap/iap_products.dart';
 import '../iap/iap_service.dart';
@@ -120,6 +121,8 @@ class _HomePageState extends ConsumerState<HomePage>
       // Khôi phục sản phẩm non-consumable (Gỡ QC / Gói khởi động) đã mua.
       unawaited(ref.read(iapServiceProvider).restore());
       final state = ref.read(gameControllerProvider);
+      // Buff thu nhập cả hội (nếu đang ở hội): áp ngay lúc mở app, không cần mở màn Hội.
+      unawaited(ref.read(guildControllerProvider.notifier).syncBuff());
       final chapter = state.pendingStoryChapterId;
       // Hướng dẫn lần đầu là lớp phủ trên màn chơi (TutorialOverlay), không phải
       // popup. Chưa xong thì chỉ cho cutscene mở đầu hiện; mọi popup khác chờ.
@@ -246,6 +249,7 @@ class _HomePageState extends ConsumerState<HomePage>
         _scheduleReminders(controller.currentOfflineCapSeconds);
       case AppLifecycleState.resumed:
         controller.handleResume(); // bù tiền cho lúc ở nền
+        unawaited(ref.read(guildControllerProvider.notifier).syncBuff());
         Reminders.cancelAll(); // đã mở app rồi thì nhắc nữa là phiền
         // Xin quyền thông báo ở lần quay lại đầu tiên: lúc này app đang hiện
         // (dialog hệ thống mới bật được) và người chơi đã chơi ít nhất 1 phiên,

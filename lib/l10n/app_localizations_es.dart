@@ -273,37 +273,37 @@ class AppLocalizationsEs extends AppLocalizations {
   String get howToPlayTitle => 'Cómo jugar';
 
   @override
-  String get htpTap => '🧋 Toca el vaso para preparar té y ganar Monedas.';
+  String get htpTap => 'Toca el vaso para preparar té y ganar Monedas.';
 
   @override
   String get htpBuy =>
-      '🛒 Compra mejoras para tener ingresos automáticos cada segundo.';
+      'Compra mejoras para tener ingresos automáticos cada segundo.';
 
   @override
   String get htpStage =>
-      '🏪 Junta Monedas para desbloquear nuevas etapas con bebidas mejores.';
+      'Junta Monedas para desbloquear nuevas etapas con bebidas mejores.';
 
   @override
   String get htpCat =>
-      '🐱 Toca el gato de la suerte para una Lluvia Dorada ×3 breve.';
+      'Toca el gato de la suerte para una Lluvia Dorada ×3 breve.';
 
   @override
-  String get htpVip => '🚗 Atiende al cliente VIP para ganar Gemas 💎.';
+  String get htpVip => 'Atiende al cliente VIP para ganar Gemas 💎.';
 
   @override
-  String get htpGems => '💎 Gasta Gemas en la Tienda en mejoras permanentes.';
+  String get htpGems => 'Gasta Gemas en la Tienda en mejoras permanentes.';
 
   @override
   String get htpPrestige =>
-      '⭐ Franquicia para reiniciar y ganar Estrellas — un bono de ingresos permanente.';
+      'Franquicia para reiniciar y ganar Estrellas — un bono de ingresos permanente.';
 
   @override
   String get htpOffline =>
-      '😴 La tienda sigue vendiendo mientras no estás — vuelve por el dinero sin conexión.';
+      'La tienda sigue vendiendo mientras no estás — vuelve por el dinero sin conexión.';
 
   @override
   String get htpNumberFormat =>
-      '🔢 Los números grandes usan sufijos: K=mil, M=millón, B=mil millones, T=billón, luego aa, bb, cc... — cada paso es 1.000× el anterior.';
+      'Los números grandes usan sufijos: K=mil, M=millón, B=mil millones, T=billón, luego aa, bb, cc... — cada paso es 1.000× el anterior.';
 
   @override
   String get language => 'Idioma';
@@ -2654,4 +2654,183 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get ftueSkip => 'Omitir';
+
+  @override
+  String get accessoryGuildFlag => 'Bandera del gremio';
+
+  @override
+  String get accessoryGuildCastle => 'Castillo del gremio';
+
+  @override
+  String get accessoryGuildWolf => 'Lobo del gremio';
+
+  @override
+  String get accessoryGuildDragon => 'Dragón del gremio';
+
+  @override
+  String get accessoryGuildFox => 'Zorro del gremio';
+
+  @override
+  String get accessoryGuildTiger => 'Tigre del gremio';
+
+  @override
+  String get accessoryGuildShark => 'Tiburón del gremio';
+
+  @override
+  String get accessoryGuildTrex => 'T-Rex del gremio';
+
+  @override
+  String get accessoryGuildBoar => 'Jabalí del gremio';
+
+  @override
+  String get accessoryGuildBear => 'Oso del gremio';
+
+  @override
+  String get accessoryGuildScorpion => 'Escorpión del gremio';
+
+  @override
+  String get accessoryGuildMoai => 'Moai del gremio';
+
+  @override
+  String guildErrDailyLimit(int n) {
+    return 'Hoy ya donaste el máximo de $n 💎.';
+  }
+
+  @override
+  String get guildErrCoins => 'Monedas de gremio insuficientes.';
+
+  @override
+  String get guildErrOwned => 'Ya tienes este objeto.';
+
+  @override
+  String get guildErrBuffMaxed =>
+      'El beneficio del gremio está al máximo, espera un poco.';
+
+  @override
+  String get guildErrClaimed => 'Ya reclamaste esta recompensa.';
+
+  @override
+  String get guildErrInvalidInput => 'Acción no válida.';
+
+  @override
+  String get guildShopButton => 'Tienda del gremio';
+
+  @override
+  String get guildShopTitle => 'Tienda del gremio';
+
+  @override
+  String guildCoinsLabel(int n) {
+    return 'Monedas de gremio: $n';
+  }
+
+  @override
+  String get guildDonateTitle => 'Dona 💎 por monedas de gremio';
+
+  @override
+  String guildDonateHint(int used, int cap) {
+    return 'Hoy: $used/$cap 💎 · 1 💎 = 1 moneda de gremio';
+  }
+
+  @override
+  String guildDonateGems(int n) {
+    return '$n 💎';
+  }
+
+  @override
+  String guildDonated(int n) {
+    return 'Donado, recibes +$n monedas de gremio';
+  }
+
+  @override
+  String get guildQuestsTitle => 'Misiones semanales del gremio';
+
+  @override
+  String guildQuestProgress(int have, int need) {
+    return 'Aporta $need puntos esta semana ($have/$need)';
+  }
+
+  @override
+  String guildQuestReward(int n) {
+    return '+$n monedas de gremio';
+  }
+
+  @override
+  String guildQuestGot(int n) {
+    return 'Recibiste +$n monedas de gremio';
+  }
+
+  @override
+  String get guildItemsTitle => 'Accesorios exclusivos del gremio';
+
+  @override
+  String guildItemPrice(int n) {
+    return '$n monedas';
+  }
+
+  @override
+  String get guildItemOwned => 'Tienes';
+
+  @override
+  String get guildItemBought => '¡Canjeado! El accesorio está en tu colección.';
+
+  @override
+  String get guildBuffTitle => 'Beneficio de ingresos del gremio';
+
+  @override
+  String guildBuffDesc(int pct, int hours) {
+    return '+$pct% de monedas durante $hours horas para todos (no aplica sin conexión)';
+  }
+
+  @override
+  String guildBuffLeft(String time) {
+    return 'Quedan $time';
+  }
+
+  @override
+  String get guildBuffBought => '¡Beneficio del gremio activado!';
+
+  @override
+  String guildStreakLine(int n) {
+    return '🔥 $n semanas seguidas con los 3 hitos';
+  }
+
+  @override
+  String guildBuffLine(int pct, String time) {
+    return '⚡ Beneficio del gremio +$pct% · quedan $time';
+  }
+
+  @override
+  String get guildLbTabTotal => 'Total';
+
+  @override
+  String get guildLbTabAvg => 'Promedio';
+
+  @override
+  String get guildLbTabStreak => 'Racha';
+
+  @override
+  String guildLbAvgNote(int n) {
+    return 'Solo se clasifican gremios con $n+ miembros';
+  }
+
+  @override
+  String guildAvgPerMember(int n) {
+    return '$n/miembro';
+  }
+
+  @override
+  String guildStreakWeeks(int n) {
+    return '$n semanas';
+  }
+
+  @override
+  String get guildLbStreakNote =>
+      'Semanas seguidas en que el gremio logró los 3 hitos';
+
+  @override
+  String get guildLbStreakEmpty => 'Ningún gremio tiene racha aún.';
+
+  @override
+  String get guildLbAvgEmpty =>
+      'Ningún gremio cumple aún para el ranking de promedio.';
 }

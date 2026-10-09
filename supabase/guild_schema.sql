@@ -73,6 +73,50 @@ create table if not exists guild_join_requests (
 );
 create index if not exists guild_join_requests_guild_idx on guild_join_requests (guild_id);
 
+-- Buff thu nhập cả hội (mua bằng Xu Hội), hết hạn lúc buff_until.
+alter table guilds add column if not exists buff_until timestamptz;
+
+-- Lịch sử điểm theo tuần: phần điểm của thành viên được GHI VÀO ĐÂY khi họ sang
+-- tuần mới (guild_submit_score) hoặc rời/bị kick, trước khi hàng của họ bị đặt lại/
+-- xoá. Tổng một tuần quá khứ = bảng này + các hàng thành viên còn nằm ở tuần đó
+-- (xem guild_total_of). Dùng để tính chuỗi tuần đạt đủ 3 mốc.
+create table if not exists guild_week_totals (
+  guild_id uuid not null references guilds(id) on delete cascade,
+  week     date not null,
+  total    bigint not null default 0 check (total >= 0),
+  primary key (guild_id, week)
+);
+
+-- Ví "Xu Hội" cá nhân (theo người chơi, giữ nguyên khi đổi hội).
+create table if not exists guild_coin_wallets (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  balance bigint not null default 0 check (balance >= 0)
+);
+
+-- Số 💎 đã nạp mỗi ngày (UTC) — để giới hạn nạp.
+create table if not exists guild_donations (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  day     date not null,
+  gems    integer not null default 0 check (gems >= 0),
+  primary key (user_id, day)
+);
+
+-- Nhiệm vụ hội hàng tuần đã nhận thưởng.
+create table if not exists guild_quest_claims (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  week    date not null,
+  tier    integer not null,
+  primary key (user_id, week, tier)
+);
+
+-- Vật phẩm đã đổi (mỗi món một lần/người) — cũng là nguồn khôi phục khi mất save.
+create table if not exists guild_purchases (
+  user_id    uuid not null references auth.users(id) on delete cascade,
+  item_id    text not null,
+  created_at timestamptz not null default now(),
+  primary key (user_id, item_id)
+);
+
 -- Dọn bản cũ đã deploy (có mã mời + hội riêng, đã gỡ): bỏ cột và các hàm cũ để
 -- không còn overload cũ gọi được. Idempotent.
 alter table guilds drop column if exists is_public;
@@ -89,6 +133,11 @@ alter table guild_members       enable row level security;
 alter table guild_reward_claims enable row level security;
 alter table guild_reports       enable row level security;
 alter table guild_join_requests enable row level security;
+alter table guild_week_totals   enable row level security;
+alter table guild_coin_wallets  enable row level security;
+alter table guild_donations     enable row level security;
+alter table guild_quest_claims  enable row level security;
+alter table guild_purchases     enable row level security;
 -- Cố ý KHÔNG tạo policy: chỉ RPC security definer được đụng vào.
 
 -- --- Hằng số --------------------------------------------------------------
@@ -109,6 +158,51 @@ language sql immutable as $$ select 300 $$;
 -- Số yêu cầu chờ duyệt tối đa mỗi hội (chống spam làm ngập chủ hội).
 create or replace function guild_max_requests() returns integer
 language sql immutable as $$ select 30 $$;
+
+-- BXH "trung bình/người": chỉ hội đủ người mới lên bảng (chống lập hội 1 người).
+create or replace function guild_avg_min_members() returns integer
+language sql immutable as $$ select 5 $$;
+
+-- Xu Hội: nạp 💎 (1 💎 = 1 Xu Hội, tối đa 1000 💎/ngày/người), nhiệm vụ tuần theo
+-- điểm đóng góp cá nhân (1.000/5.000/20.000 điểm → 100/200/400 Xu Hội).
+create or replace function guild_donate_daily_cap() returns integer
+language sql immutable as $$ select 1000 $$;
+create or replace function guild_coins_per_gem() returns integer
+language sql immutable as $$ select 1 $$;
+create or replace function guild_quest_need(p_tier integer) returns bigint
+language sql immutable as $$
+  select case p_tier when 1 then 1000 when 2 then 5000 when 3 then 20000 end::bigint
+$$;
+create or replace function guild_quest_reward(p_tier integer) returns integer
+language sql immutable as $$
+  select case p_tier when 1 then 100 when 2 then 200 when 3 then 400 end
+$$;
+
+-- Cửa hàng hội: phụ kiện độc quyền (giá Xu Hội) + buff thu nhập cả hội.
+create or replace function guild_item_price(p_item text) returns integer
+language sql immutable as $$
+  select case p_item
+    when 'guild_flag' then 500
+    when 'guild_castle' then 1500
+    when 'guild_wolf' then 1500
+    when 'guild_dragon' then 4000
+    when 'guild_fox' then 800
+    when 'guild_tiger' then 1000
+    when 'guild_shark' then 2500
+    when 'guild_trex' then 6000
+    when 'guild_boar' then 600
+    when 'guild_bear' then 1200
+    when 'guild_scorpion' then 2000
+    when 'guild_moai' then 3000
+  end
+$$;
+create or replace function guild_buff_price() returns integer
+language sql immutable as $$ select 800 $$;
+create or replace function guild_buff_hours() returns integer
+language sql immutable as $$ select 24 $$;
+-- Buff còn lại không được vượt mức này khi mua thêm (chặn dồn buff vô hạn).
+create or replace function guild_buff_max_hours() returns integer
+language sql immutable as $$ select 48 $$;
 
 create or replace function guild_score_per_hour() returns integer
 language sql immutable as $$ select 100000 $$;
@@ -136,11 +230,50 @@ begin
 end;
 $$;
 
-create or replace function guild_week_total(p_guild uuid) returns bigint
+-- Tổng điểm của hội trong tuần [p_week]: phần đã ghi lịch sử + các thành viên còn
+-- nằm ở tuần đó. Gồm cả điểm của người đã rời hội trong tuần (họ đã đóng góp).
+create or replace function guild_total_of(p_guild uuid, p_week date) returns bigint
 language sql stable as $$
-  select coalesce(sum(week_points), 0)::bigint
-  from guild_members
-  where guild_id = p_guild and week = guild_current_week()
+  select (coalesce((select total from guild_week_totals
+                      where guild_id = p_guild and week = p_week), 0)
+        + coalesce((select sum(week_points) from guild_members
+                      where guild_id = p_guild and week = p_week), 0))::bigint
+$$;
+
+create or replace function guild_week_total(p_guild uuid) returns bigint
+language sql stable as $$ select guild_total_of(p_guild, guild_current_week()) $$;
+
+-- Ghi điểm của một hàng thành viên vào lịch sử (gọi TRƯỚC khi đặt lại/xoá hàng).
+create or replace function guild_log_week(p_guild uuid, p_week date, p_points bigint)
+returns void language plpgsql security definer set search_path = public as $$
+begin
+  if p_points is null or p_points <= 0 then return; end if;
+  insert into guild_week_totals (guild_id, week, total)
+  values (p_guild, p_week, p_points)
+  on conflict (guild_id, week) do update
+    set total = guild_week_totals.total + excluded.total;
+end;
+$$;
+
+-- Chuỗi tuần liên tiếp đạt ĐỦ 3 mốc (tổng ≥ mốc cao nhất). Tuần hiện tại tính nếu
+-- đã đạt; chưa đạt thì chuỗi tính từ tuần trước. Tối đa 52 tuần.
+-- ponytail: vòng lặp theo tuần cho từng hội; nếu BXH chuỗi thành nút thắt thì
+-- chuyển thành cột tính sẵn khi chốt tuần.
+create or replace function guild_streak(p_guild uuid) returns integer
+language plpgsql stable as $$
+declare
+  v_need bigint := guild_milestone_threshold(3);
+  v_w date := guild_current_week();
+  v_n integer := 0;
+begin
+  if guild_total_of(p_guild, v_w) >= v_need then v_n := 1; end if;
+  v_w := v_w - 7;
+  while v_n < 52 and guild_total_of(p_guild, v_w) >= v_need loop
+    v_n := v_n + 1;
+    v_w := v_w - 7;
+  end loop;
+  return v_n;
+end;
 $$;
 
 -- --- RPC ------------------------------------------------------------------
@@ -296,10 +429,14 @@ declare
   v_uid uuid := auth.uid();
   v_gid uuid;
   v_next uuid;
+  v_wk date;
+  v_pts bigint;
 begin
   if v_uid is null then raise exception 'not authenticated'; end if;
-  delete from guild_members where user_id = v_uid returning guild_id into v_gid;
+  delete from guild_members where user_id = v_uid
+    returning guild_id, week, week_points into v_gid, v_wk, v_pts;
   if v_gid is null then return; end if;
+  perform guild_log_week(v_gid, v_wk, v_pts);       -- điểm đã đóng góp vẫn thuộc hội
   select user_id into v_next from guild_members
     where guild_id = v_gid order by joined_at asc limit 1;
   if v_next is null then
@@ -316,6 +453,8 @@ language plpgsql security definer set search_path = public as $$
 declare
   v_uid uuid := auth.uid();
   v_gid uuid;
+  v_wk date;
+  v_pts bigint;
 begin
   if v_uid is null then raise exception 'not authenticated'; end if;
   if p_user = v_uid then raise exception 'cannot kick self'; end if;
@@ -323,7 +462,9 @@ begin
     join guilds g on g.id = m.guild_id
     where m.user_id = v_uid and g.owner_id = v_uid;
   if v_gid is null then raise exception 'not owner'; end if;
-  delete from guild_members where user_id = p_user and guild_id = v_gid;
+  delete from guild_members where user_id = p_user and guild_id = v_gid
+    returning week, week_points into v_wk, v_pts;
+  perform guild_log_week(v_gid, v_wk, v_pts);
 end;
 $$;
 
@@ -353,6 +494,7 @@ begin
   if v_m.week = v_week then
     v_last := v_m.last_score; v_pts := v_m.week_points;
   else
+    perform guild_log_week(v_m.guild_id, v_m.week, v_m.week_points);
     v_last := 0; v_pts := 0;                        -- sang tuần mới → reset
   end if;
   v_base := greatest(v_last, p_score);
@@ -381,6 +523,17 @@ begin
       'owner_id', v_g.owner_id, 'requires_approval', v_g.requires_approval),
     'week', v_week,
     'total', guild_week_total(v_g.id),
+    'streak', guild_streak(v_g.id),
+    'buff_seconds', greatest(
+        extract(epoch from (coalesce(v_g.buff_until, now()) - now()))::integer, 0),
+    'wallet', coalesce((select balance from guild_coin_wallets
+                          where user_id = v_uid), 0),
+    'quests_claimed', coalesce((select jsonb_agg(tier order by tier)
+       from guild_quest_claims where user_id = v_uid and week = v_week), '[]'::jsonb),
+    'owned_items', coalesce((select jsonb_agg(item_id order by item_id)
+       from guild_purchases where user_id = v_uid), '[]'::jsonb),
+    'donated_today', coalesce((select gems from guild_donations
+       where user_id = v_uid and day = (now() at time zone 'utc')::date), 0),
     'claimed', coalesce((select jsonb_agg(milestone order by milestone)
        from guild_reward_claims where user_id = v_uid and week = v_week), '[]'::jsonb),
     'members', coalesce((select jsonb_agg(jsonb_build_object(
@@ -480,6 +633,182 @@ begin
 end;
 $$;
 
+-- --- BXH phụ: trung bình/người & chuỗi tuần ---------------------------------
+create or replace function guild_leaderboard_avg(p_limit integer default 50)
+returns table (rank bigint, id uuid, name text, tag text, emoji text,
+               member_count bigint, week_total bigint, avg_points bigint)
+language sql stable security definer set search_path = public as $$
+  select row_number() over (order by s.avg desc, s.total desc, s.created_at asc),
+         s.id, s.name, s.tag, s.emoji, s.cnt, s.total, s.avg
+  from (
+    select g.id, g.name, g.tag, g.emoji, g.created_at,
+           (select count(*) from guild_members m where m.guild_id = g.id) as cnt,
+           guild_week_total(g.id) as total,
+           (guild_week_total(g.id) / greatest(
+              (select count(*) from guild_members m where m.guild_id = g.id), 1))::bigint
+             as avg
+    from guilds g
+    where not g.hidden
+  ) s
+  where s.cnt >= guild_avg_min_members() and s.total > 0
+  order by 1
+  limit least(p_limit, 100)
+$$;
+
+create or replace function guild_leaderboard_streak(p_limit integer default 50)
+returns table (rank bigint, id uuid, name text, tag text, emoji text,
+               member_count bigint, week_total bigint, streak integer)
+language sql stable security definer set search_path = public as $$
+  select row_number() over (order by s.streak desc, s.total desc, s.created_at asc),
+         s.id, s.name, s.tag, s.emoji, s.cnt, s.total, s.streak
+  from (
+    select g.id, g.name, g.tag, g.emoji, g.created_at,
+           (select count(*) from guild_members m where m.guild_id = g.id) as cnt,
+           guild_week_total(g.id) as total,
+           guild_streak(g.id) as streak
+    from guilds g
+    where not g.hidden
+  ) s
+  where s.streak > 0
+  order by 1
+  limit least(p_limit, 100)
+$$;
+
+-- --- Xu Hội: nạp 💎, nhiệm vụ tuần, cửa hàng, buff -----------------------------
+-- Client chỉ trừ 💎 cục bộ SAU KHI RPC thành công (cùng quy ước phí tạo hội).
+create or replace function guild_donate(p_gems integer) returns bigint
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_day date := (now() at time zone 'utc')::date;
+  v_today integer;
+  v_bal bigint;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  if not exists (select 1 from guild_members where user_id = v_uid) then
+    raise exception 'not in guild';
+  end if;
+  if p_gems is null or p_gems < 1 or p_gems > guild_donate_daily_cap() then
+    raise exception 'invalid amount';
+  end if;
+  insert into guild_donations (user_id, day, gems) values (v_uid, v_day, 0)
+    on conflict do nothing;
+  select gems into v_today from guild_donations
+    where user_id = v_uid and day = v_day for update;
+  if v_today + p_gems > guild_donate_daily_cap() then
+    raise exception 'daily limit';
+  end if;
+  update guild_donations set gems = gems + p_gems
+    where user_id = v_uid and day = v_day;
+  insert into guild_coin_wallets (user_id, balance)
+    values (v_uid, p_gems::bigint * guild_coins_per_gem())
+    on conflict (user_id) do update
+      set balance = guild_coin_wallets.balance + excluded.balance
+    returning balance into v_bal;
+  return v_bal;
+end;
+$$;
+
+create or replace function guild_claim_quest(p_tier integer) returns bigint
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_m guild_members%rowtype;
+  v_week date := guild_current_week();
+  v_need bigint := guild_quest_need(p_tier);
+  v_bal bigint;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  if v_need is null then raise exception 'invalid tier'; end if;
+  select * into v_m from guild_members where user_id = v_uid;
+  if not found then raise exception 'not in guild'; end if;
+  if v_m.week <> v_week or v_m.week_points < v_need then
+    raise exception 'not enough contribution';
+  end if;
+  begin
+    insert into guild_quest_claims (user_id, week, tier) values (v_uid, v_week, p_tier);
+  exception when unique_violation then
+    raise exception 'already claimed';
+  end;
+  insert into guild_coin_wallets (user_id, balance)
+    values (v_uid, guild_quest_reward(p_tier))
+    on conflict (user_id) do update
+      set balance = guild_coin_wallets.balance + excluded.balance
+    returning balance into v_bal;
+  return v_bal;
+end;
+$$;
+
+create or replace function guild_buy_item(p_item text) returns bigint
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_price integer := guild_item_price(p_item);
+  v_bal bigint;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  if v_price is null then raise exception 'invalid item'; end if;
+  if not exists (select 1 from guild_members where user_id = v_uid) then
+    raise exception 'not in guild';
+  end if;
+  if exists (select 1 from guild_purchases
+             where user_id = v_uid and item_id = p_item) then
+    raise exception 'already owned';
+  end if;
+  select balance into v_bal from guild_coin_wallets
+    where user_id = v_uid for update;
+  if coalesce(v_bal, 0) < v_price then raise exception 'not enough coins'; end if;
+  update guild_coin_wallets set balance = balance - v_price
+    where user_id = v_uid returning balance into v_bal;
+  insert into guild_purchases (user_id, item_id) values (v_uid, p_item);
+  return v_bal;
+end;
+$$;
+
+-- Mua buff thu nhập cho CẢ HỘI (ai trong hội cũng hưởng khi buff còn hạn).
+create or replace function guild_buy_buff() returns bigint
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_g guilds%rowtype;
+  v_bal bigint;
+  v_from timestamptz;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  select g.* into v_g from guilds g
+    join guild_members m on m.guild_id = g.id where m.user_id = v_uid for update of g;
+  if not found then raise exception 'not in guild'; end if;
+  v_from := greatest(coalesce(v_g.buff_until, now()), now());
+  if v_from > now() + make_interval(hours => guild_buff_max_hours() - guild_buff_hours())
+  then
+    raise exception 'buff maxed';
+  end if;
+  select balance into v_bal from guild_coin_wallets
+    where user_id = v_uid for update;
+  if coalesce(v_bal, 0) < guild_buff_price() then
+    raise exception 'not enough coins';
+  end if;
+  update guild_coin_wallets set balance = balance - guild_buff_price()
+    where user_id = v_uid returning balance into v_bal;
+  update guilds set buff_until = v_from + make_interval(hours => guild_buff_hours())
+    where id = v_g.id;
+  return v_bal;
+end;
+$$;
+
+-- Giây buff còn lại của hội mình (0 nếu không có/không ở hội) — client gọi nhẹ khi
+-- mở app để áp buff mà không cần mở màn Hội.
+create or replace function guild_buff_seconds() returns integer
+language plpgsql stable security definer set search_path = public as $$
+declare v_uid uuid := auth.uid(); v_until timestamptz;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  select g.buff_until into v_until from guilds g
+    join guild_members m on m.guild_id = g.id where m.user_id = v_uid;
+  return greatest(extract(epoch from (coalesce(v_until, now()) - now()))::integer, 0);
+end;
+$$;
+
 -- Quyền: chỉ người đã đăng nhập (kể cả ẩn danh) gọi được RPC.
 do $$
 declare f text;
@@ -491,9 +820,18 @@ begin
     'guild_respond_request(uuid,boolean)',
     'guild_leave()', 'guild_kick(uuid)', 'guild_submit_score(bigint)',
     'guild_my()', 'guild_list(integer)', 'guild_leaderboard(integer)',
-    'guild_report(uuid,text)', 'guild_claim_reward(integer)'
+    'guild_report(uuid,text)', 'guild_claim_reward(integer)',
+    'guild_leaderboard_avg(integer)', 'guild_leaderboard_streak(integer)',
+    'guild_donate(integer)', 'guild_claim_quest(integer)',
+    'guild_buy_item(text)', 'guild_buy_buff()', 'guild_buff_seconds()'
   ] loop
     execute format('revoke all on function %s from public', f);
     execute format('grant execute on function %s to authenticated', f);
   end loop;
 end $$;
+
+-- Hàm nội bộ: client KHÔNG được gọi trực tiếp (Supabase mặc định cấp execute cho
+-- anon/authenticated với hàm mới nên phải thu hồi rõ ràng) — nếu không ai cũng
+-- ghi được lịch sử điểm tuần của hội để nâng chuỗi.
+revoke all on function guild_log_week(uuid, date, bigint)
+  from public, anon, authenticated;

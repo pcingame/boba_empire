@@ -270,32 +270,32 @@ class AppLocalizationsKo extends AppLocalizations {
   String get howToPlayTitle => '플레이 방법';
 
   @override
-  String get htpTap => '🧋 컵을 탭해서 차를 만들고 코인을 벌어요.';
+  String get htpTap => '컵을 탭해서 차를 만들고 코인을 벌어요.';
 
   @override
-  String get htpBuy => '🛒 업그레이드를 사면 매초 자동으로 수입이 들어와요.';
+  String get htpBuy => '업그레이드를 사면 매초 자동으로 수입이 들어와요.';
 
   @override
-  String get htpStage => '🏪 코인을 모아 더 멋진 음료가 있는 새 단계를 해금하세요.';
+  String get htpStage => '코인을 모아 더 멋진 음료가 있는 새 단계를 해금하세요.';
 
   @override
-  String get htpCat => '🐱 복고양이를 탭하면 잠시 ×3 골든 러시가 시작돼요.';
+  String get htpCat => '복고양이를 탭하면 잠시 ×3 골든 러시가 시작돼요.';
 
   @override
-  String get htpVip => '🚗 VIP 손님을 응대하면 보석 💎을 얻어요.';
+  String get htpVip => 'VIP 손님을 응대하면 보석 💎을 얻어요.';
 
   @override
-  String get htpGems => '💎 상점에서 보석으로 영구 업그레이드를 사요.';
+  String get htpGems => '상점에서 보석으로 영구 업그레이드를 사요.';
 
   @override
-  String get htpPrestige => '⭐ 프랜차이즈로 다시 시작하고 별을 얻어요. 영구 수입 보너스예요.';
+  String get htpPrestige => '프랜차이즈로 다시 시작하고 별을 얻어요. 영구 수입 보너스예요.';
 
   @override
-  String get htpOffline => '😴 자리를 비워도 가게는 계속 팔려요. 돌아와서 오프라인 현금을 받으세요.';
+  String get htpOffline => '자리를 비워도 가게는 계속 팔려요. 돌아와서 오프라인 현금을 받으세요.';
 
   @override
   String get htpNumberFormat =>
-      '🔢 큰 숫자는 약어를 써요: K=천, M=백만, B=십억, T=조, 그다음 aa, bb, cc... — 한 단계마다 1,000배예요.';
+      '큰 숫자는 약어를 써요: K=천, M=백만, B=십억, T=조, 그다음 aa, bb, cc... — 한 단계마다 1,000배예요.';
 
   @override
   String get language => '언어';
@@ -2596,4 +2596,180 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get ftueSkip => '건너뛰기';
+
+  @override
+  String get accessoryGuildFlag => '길드 깃발';
+
+  @override
+  String get accessoryGuildCastle => '길드 성';
+
+  @override
+  String get accessoryGuildWolf => '길드 늑대';
+
+  @override
+  String get accessoryGuildDragon => '길드 용';
+
+  @override
+  String get accessoryGuildFox => '길드 여우';
+
+  @override
+  String get accessoryGuildTiger => '길드 호랑이';
+
+  @override
+  String get accessoryGuildShark => '길드 상어';
+
+  @override
+  String get accessoryGuildTrex => '길드 티라노';
+
+  @override
+  String get accessoryGuildBoar => '길드 멧돼지';
+
+  @override
+  String get accessoryGuildBear => '길드 곰';
+
+  @override
+  String get accessoryGuildScorpion => '길드 전갈';
+
+  @override
+  String get accessoryGuildMoai => '길드 모아이';
+
+  @override
+  String guildErrDailyLimit(int n) {
+    return '오늘은 최대 $n 💎까지 이미 기부했어요.';
+  }
+
+  @override
+  String get guildErrCoins => '길드 코인이 부족해요.';
+
+  @override
+  String get guildErrOwned => '이미 가지고 있는 아이템이에요.';
+
+  @override
+  String get guildErrBuffMaxed => '길드 버프가 최대예요. 잠시 후에 다시 시도하세요.';
+
+  @override
+  String get guildErrClaimed => '이미 받은 보상이에요.';
+
+  @override
+  String get guildErrInvalidInput => '올바르지 않은 동작이에요.';
+
+  @override
+  String get guildShopButton => '길드 상점';
+
+  @override
+  String get guildShopTitle => '길드 상점';
+
+  @override
+  String guildCoinsLabel(int n) {
+    return '길드 코인: $n';
+  }
+
+  @override
+  String get guildDonateTitle => '💎 기부하고 길드 코인 받기';
+
+  @override
+  String guildDonateHint(int used, int cap) {
+    return '오늘: $used/$cap 💎 · 1 💎 = 길드 코인 1';
+  }
+
+  @override
+  String guildDonateGems(int n) {
+    return '$n 💎';
+  }
+
+  @override
+  String guildDonated(int n) {
+    return '기부 완료! 길드 코인 +$n';
+  }
+
+  @override
+  String get guildQuestsTitle => '이번 주 길드 퀘스트';
+
+  @override
+  String guildQuestProgress(int have, int need) {
+    return '이번 주 $need점 기여 ($have/$need)';
+  }
+
+  @override
+  String guildQuestReward(int n) {
+    return '길드 코인 +$n';
+  }
+
+  @override
+  String guildQuestGot(int n) {
+    return '길드 코인 +$n 획득';
+  }
+
+  @override
+  String get guildItemsTitle => '길드 전용 액세서리';
+
+  @override
+  String guildItemPrice(int n) {
+    return '$n 코인';
+  }
+
+  @override
+  String get guildItemOwned => '보유 중';
+
+  @override
+  String get guildItemBought => '교환 완료! 액세서리는 컬렉션에 있어요.';
+
+  @override
+  String get guildBuffTitle => '길드 수익 버프';
+
+  @override
+  String guildBuffDesc(int pct, int hours) {
+    return '모든 멤버에게 $hours시간 동안 코인 +$pct% (오프라인에는 적용 안 됨)';
+  }
+
+  @override
+  String guildBuffLeft(String time) {
+    return '$time 남음';
+  }
+
+  @override
+  String get guildBuffBought => '길드 버프가 활성화되었어요!';
+
+  @override
+  String guildStreakLine(int n) {
+    return '🔥 3개 목표를 $n주 연속 달성';
+  }
+
+  @override
+  String guildBuffLine(int pct, String time) {
+    return '⚡ 길드 버프 +$pct% · $time 남음';
+  }
+
+  @override
+  String get guildLbTabTotal => '합계';
+
+  @override
+  String get guildLbTabAvg => '평균';
+
+  @override
+  String get guildLbTabStreak => '연속';
+
+  @override
+  String guildLbAvgNote(int n) {
+    return '멤버 $n명 이상인 길드만 순위에 올라요';
+  }
+
+  @override
+  String guildAvgPerMember(int n) {
+    return '인당 $n';
+  }
+
+  @override
+  String guildStreakWeeks(int n) {
+    return '$n주';
+  }
+
+  @override
+  String get guildLbStreakNote => '길드가 3개 목표를 연속으로 달성한 주 수';
+
+  @override
+  String get guildLbStreakEmpty => '아직 연속 기록이 있는 길드가 없어요.';
+
+  @override
+  String get guildLbAvgEmpty => '평균 순위 조건을 충족한 길드가 아직 없어요.';
 }

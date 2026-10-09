@@ -22,6 +22,7 @@ import '../core/daily_quests.dart';
 import '../core/economy.dart';
 import '../core/event_quests.dart';
 import '../core/guild.dart';
+import '../core/guild_shop.dart';
 import '../core/market_fee.dart' show weekendEventActive;
 import '../core/models.dart';
 import '../core/quests.dart';
@@ -181,7 +182,13 @@ class GameController extends Notifier<GameSnapshot> {
       _boostMultiplier() *
       _rivalModifier() *
       _eventMultiplier() *
-      _festivalMultiplier();
+      _festivalMultiplier() *
+      _guildBuffMultiplier();
+
+  /// Buff thu nhập cả hội: [Balance.guildBuffMult] khi còn hạn. Hạn do SERVER quyết
+  /// (xem applyGuildBuff), không áp offline như mọi boost tạm.
+  double _guildBuffMultiplier() =>
+      _clock() < _game.guildBuffUntilMillis ? Balance.guildBuffMult : 1.0;
 
   /// true nếu sự kiện đang chạy NGAY LÚC NÀY — UI dùng để hiện banner.
   bool get eventActive => _eventMultiplier() > 1.0;
@@ -521,6 +528,51 @@ class GameController extends Notifier<GameSnapshot> {
     unawaited(saveNow());
     state = _snapshot();
     return true;
+  }
+
+  /// Áp buff hội theo số giây server báo còn lại (0 = hết/không ở hội). Dùng đồng
+  /// hồ máy chỉ để đếm ngược phần còn lại, nên chỉnh giờ máy không kéo dài buff.
+  void applyGuildBuff(int secondsLeft) {
+    final until = secondsLeft > 0 ? _clock() + secondsLeft * 1000 : 0;
+    if (until == _game.guildBuffUntilMillis) return;
+    _game.guildBuffUntilMillis = until;
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  void setGuildJoined(bool joined) {
+    if (_game.guildJoined == joined) return;
+    _game.guildJoined = joined;
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Trừ 💎 nạp vào hội SAU KHI server đã ghi nhận. Trả false nếu lúc này không đủ.
+  bool chargeGuildDonation(int gems) {
+    if (gems <= 0 || _game.gems < gems) return false;
+    _game.gems -= gems;
+    logEvent('guild_donated', {'gems': gems});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
+  /// Cấp phụ kiện hội đã đổi (hoặc khôi phục từ server khi mất save). Chỉ nhận id có
+  /// trong cửa hàng hội; trả số món MỚI thêm vào.
+  int grantGuildItems(Iterable<String> ids) {
+    final valid = guildAccessories.map((a) => a.id).toSet();
+    var added = 0;
+    for (final id in ids) {
+      if (valid.contains(id) && !_game.ownedLimited.contains(id)) {
+        _game.ownedLimited.add(id);
+        added++;
+      }
+    }
+    if (added > 0) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return added;
   }
 
   DateTime _nowUtc() =>
@@ -1575,6 +1627,8 @@ class GameController extends Notifier<GameSnapshot> {
       ownedLimited: List.unmodifiable(_game.ownedLimited),
       eventId: _game.eventId,
       guildScore: guildScore(_game),
+      guildJoined: _game.guildJoined,
+      guildBuffActive: _clock() < _game.guildBuffUntilMillis,
       eventPoints: _game.eventPoints,
       eventProgress: Map.unmodifiable(_game.eventProgress),
       eventClaimed: List.unmodifiable(_game.eventClaimed),

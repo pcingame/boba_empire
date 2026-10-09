@@ -386,6 +386,10 @@ class Balance {
   /// cùng quy ước các boost tạm khác). ⚠️ ước lượng, chưa playtest.
   static const double festivalIncomeMult = 1.25;
 
+  /// Buff thu nhập CẢ HỘI mua bằng Xu Hội (guild_shop.dart): +10% khi còn hạn.
+  /// Không áp offline. ⚠️ ước lượng, chưa playtest.
+  static const double guildBuffMult = 1.10;
+
   /// Vòng quay phụ kiện: mỗi lượt = 1 QC hoặc [accessorySpinGems] 💎, rớt như
   /// thường (cùng tỉ lệ rớt chung). Lượt xem QC giới hạn/ngày để không biến thành
   /// máy in phụ kiện (bản dư bán được ở Chợ).
