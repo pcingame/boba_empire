@@ -923,6 +923,16 @@
   "accessoryGuildBear": "길드 곰",
   "accessoryGuildScorpion": "길드 전갈",
   "accessoryGuildMoai": "길드 모아이",
+  "guildChatTitle": "길드 채팅",
+  "guildChatEmpty": "아직 메시지가 없어요. 첫 마디를 남겨 보세요!",
+  "guildChatHint": "길드에 메시지 보내기…",
+  "guildChatSend": "보내기",
+  "guildChatPinned": "공지",
+  "guildChatPin": "고정",
+  "guildChatUnpin": "고정 해제",
+  "guildChatDelete": "메시지 삭제",
+  "guildErrChatRate": "너무 빨리 보내고 있어요. 잠시 기다려 주세요.",
+  "guildErrTextBlocked": "금지된 단어가 포함되어 있어요.",
   "guildErrDailyLimit": "오늘은 최대 {n} 💎까지 이미 기부했어요.",
   "@guildErrDailyLimit": {
     "placeholders": {

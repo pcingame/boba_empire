@@ -72,6 +72,46 @@ class GuildJoinRequest {
   final String nickname;
 }
 
+/// Một tin trong chat hội.
+class GuildMessage {
+  const GuildMessage({
+    required this.id,
+    required this.userId,
+    required this.nickname,
+    required this.body,
+  });
+
+  factory GuildMessage.fromJson(Map<String, dynamic> j) => GuildMessage(
+        id: (j['id'] as num).toInt(),
+        userId: j['user_id'] as String,
+        nickname: j['nickname'] as String,
+        body: j['body'] as String,
+      );
+
+  final int id;
+  final String userId;
+  final String nickname;
+  final String body;
+}
+
+/// Chat hội: tin ghim (nếu có) + các tin mới nhất, MỚI NHẤT Ở ĐẦU.
+class GuildChat {
+  const GuildChat({this.pinned, this.messages = const []});
+
+  factory GuildChat.fromJson(Map<String, dynamic> j) => GuildChat(
+        pinned: j['pinned'] == null
+            ? null
+            : GuildMessage.fromJson(j['pinned'] as Map<String, dynamic>),
+        messages: [
+          for (final m in j['messages'] as List)
+            GuildMessage.fromJson(m as Map<String, dynamic>),
+        ],
+      );
+
+  final GuildMessage? pinned;
+  final List<GuildMessage> messages;
+}
+
 class MyGuild {
   const MyGuild({
     required this.id,
@@ -194,6 +234,10 @@ enum GuildFailure {
 
   /// Hội đang có quá nhiều yêu cầu chờ duyệt.
   requestsFull,
+
+  /// Chat: gửi quá nhanh / nội dung bị lọc.
+  chatRateLimited,
+  textBlocked,
   network,
 }
 
@@ -224,6 +268,8 @@ GuildFailure guildFailureFromMessage(String message) {
     return GuildFailure.invalidInput;
   }
   if (m.contains('too many requests')) return GuildFailure.requestsFull;
+  if (m.contains('chat rate limited')) return GuildFailure.chatRateLimited;
+  if (m.contains('text blocked')) return GuildFailure.textBlocked;
   if (m.contains('not found')) return GuildFailure.notFound;
   if (m.contains('not enough contribution') ||
       m.contains('milestone not reached')) {
@@ -283,6 +329,13 @@ abstract class GuildRepository {
 
   /// Giây buff thu nhập cả hội còn lại (nhẹ — gọi khi mở app).
   Future<int> buffSeconds();
+
+  Future<GuildChat> chat();
+  Future<void> chatPost(String body);
+  Future<void> chatDelete(int id);
+
+  /// Chỉ chủ hội; [id] null = bỏ ghim.
+  Future<void> chatPin(int? id);
 }
 
 class SupabaseGuildRepository implements GuildRepository {
@@ -435,4 +488,17 @@ class SupabaseGuildRepository implements GuildRepository {
   @override
   Future<int> buffSeconds() async =>
       ((await _rpc('guild_buff_seconds')) as num).toInt();
+
+  @override
+  Future<GuildChat> chat() async => GuildChat.fromJson(
+      await _rpc('guild_chat_list', {'p_limit': 50}) as Map<String, dynamic>);
+
+  @override
+  Future<void> chatPost(String body) => _rpc('guild_chat_post', {'p_body': body});
+
+  @override
+  Future<void> chatDelete(int id) => _rpc('guild_chat_delete', {'p_id': id});
+
+  @override
+  Future<void> chatPin(int? id) => _rpc('guild_chat_pin', {'p_id': id});
 }

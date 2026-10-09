@@ -655,4 +655,57 @@ void main() {
     expect(g.pointsOf('m'), 6000);
     expect(g.pointsOf('nobody'), 0);
   });
+
+  group('chat hội', () {
+    test('guildFailureFromMessage: lỗi chat; RPC chưa có trên server cũ → network (không văng)', () {
+      expect(guildFailureFromMessage('chat rate limited'), GuildFailure.chatRateLimited);
+      expect(guildFailureFromMessage('text blocked'), GuildFailure.textBlocked);
+      expect(
+          guildFailureFromMessage(
+              'Could not find the function public.guild_chat_list(p_limit) in the schema cache'),
+          GuildFailure.network);
+    });
+
+    test('GuildChat.fromJson: ghim null / có ghim; thứ tự giữ nguyên (mới nhất đầu)', () {
+      final a = GuildChat.fromJson({
+        'pinned': null,
+        'messages': [
+          {'id': 5, 'user_id': 'a', 'nickname': 'A', 'body': 'x'},
+          {'id': 4, 'user_id': 'b', 'nickname': 'B', 'body': 'y'},
+        ],
+      });
+      expect(a.pinned, isNull);
+      expect(a.messages.map((m) => m.id), [5, 4]);
+      final b = GuildChat.fromJson({
+        'pinned': {'id': 9, 'user_id': 'o', 'nickname': 'O', 'body': 'z'},
+        'messages': [],
+      });
+      expect(b.pinned!.body, 'z');
+      expect(b.messages, isEmpty);
+    });
+
+    test('chatPost/Delete/Pin: thành công → ok; lỗi server → đúng failure; lỗi lạ → network', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild());
+      final c = _ctrl(await _open(repo));
+      expect((await c.chatPost('hi')).ok, isTrue);
+      expect(repo.chatMessages.single.body, 'hi');
+      expect((await c.chatPin(repo.chatMessages.single.id)).ok, isTrue);
+      expect(repo.chatPinnedId, repo.chatMessages.single.id);
+      expect((await c.chatDelete(repo.chatMessages.single.id)).ok, isTrue);
+
+      repo.failures['chatPost'] = const GuildException(GuildFailure.textBlocked);
+      expect((await c.chatPost('x')).failure, GuildFailure.textBlocked);
+      repo.failures['chatDelete'] = StateError('boom');
+      expect((await c.chatDelete(1)).failure, GuildFailure.network);
+      repo.failures['chatPin'] = const GuildException(GuildFailure.notFound);
+      expect((await c.chatPin(1)).failure, GuildFailure.notFound);
+    });
+
+    test('hành động chat KHÔNG tải lại trạng thái hội (không gọi myGuild)', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild());
+      final c = _ctrl(await _open(repo));
+      await c.chatPost('hi');
+      expect(repo.calls.where((e) => e == 'myGuild'), isEmpty);
+    });
+  });
 }

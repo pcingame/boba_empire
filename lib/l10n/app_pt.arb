@@ -1285,6 +1285,16 @@
   "accessoryGuildBear": "Urso da guilda",
   "accessoryGuildScorpion": "Escorpião da guilda",
   "accessoryGuildMoai": "Moai da guilda",
+  "guildChatTitle": "Chat da guilda",
+  "guildChatEmpty": "Nenhuma mensagem ainda. Seja o primeiro a falar!",
+  "guildChatHint": "Mensagem para a guilda…",
+  "guildChatSend": "Enviar",
+  "guildChatPinned": "Aviso",
+  "guildChatPin": "Fixar",
+  "guildChatUnpin": "Desafixar",
+  "guildChatDelete": "Apagar mensagem",
+  "guildErrChatRate": "Você está enviando rápido demais, aguarde alguns segundos.",
+  "guildErrTextBlocked": "Sua mensagem contém uma palavra bloqueada.",
   "guildErrDailyLimit": "Hoje você já doou o máximo de {n} 💎.",
   "@guildErrDailyLimit": {
     "placeholders": {

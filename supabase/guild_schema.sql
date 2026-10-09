@@ -119,6 +119,18 @@ create table if not exists guild_purchases (
 
 -- Dọn bản cũ đã deploy (có mã mời + hội riêng, đã gỡ): bỏ cột và các hàm cũ để
 -- không còn overload cũ gọi được. Idempotent.
+-- Chat hội: tin ngắn, giữ 200 tin gần nhất mỗi hội; chủ hội ghim 1 tin làm thông báo.
+create table if not exists guild_messages (
+  id         bigserial primary key,
+  guild_id   uuid not null references guilds(id) on delete cascade,
+  user_id    uuid not null,
+  nickname   text not null,
+  body       text not null check (char_length(body) between 1 and 200),
+  pinned     boolean not null default false,
+  created_at timestamptz not null default now()
+);
+create index if not exists guild_messages_guild_idx on guild_messages (guild_id, id desc);
+
 alter table guilds drop column if exists is_public;
 alter table guilds drop column if exists invite_code;
 drop function if exists guild_create(text, text, text, boolean, text, bigint);
@@ -138,6 +150,7 @@ alter table guild_coin_wallets  enable row level security;
 alter table guild_donations     enable row level security;
 alter table guild_quest_claims  enable row level security;
 alter table guild_purchases     enable row level security;
+alter table guild_messages      enable row level security;
 -- Cố ý KHÔNG tạo policy: chỉ RPC security definer được đụng vào.
 
 -- --- Hằng số --------------------------------------------------------------
@@ -809,6 +822,95 @@ begin
 end;
 $$;
 
+-- Chat hội. Chỉ thành viên đọc/ghi. Chống spam: tối đa 3 tin/10 giây/người; lọc từ cấm
+-- như tên hội. ponytail: không realtime — client kéo-để-tải + tải lại sau khi gửi.
+create or replace function guild_chat_post(p_body text) returns void
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_gid uuid;
+  v_nick text;
+  -- Cắt MỌI khoảng trắng (cả xuống dòng/tab) và ký tự rộng-0, không chỉ dấu cách.
+  v_body text := regexp_replace(coalesce(p_body, ''),
+    '^[[:space:]' || chr(8203) || ']+|[[:space:]' || chr(8203) || ']+$', '', 'g');
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  select guild_id, nickname into v_gid, v_nick from guild_members where user_id = v_uid;
+  if v_gid is null then raise exception 'not found'; end if;
+  if char_length(v_body) not between 1 and 200 then raise exception 'invalid input'; end if;
+  if not guild_text_ok(v_body) then raise exception 'text blocked'; end if;
+  if (select count(*) from guild_messages
+        where user_id = v_uid and created_at > now() - interval '10 seconds') >= 3 then
+    raise exception 'chat rate limited';
+  end if;
+  insert into guild_messages (guild_id, user_id, nickname, body)
+  values (v_gid, v_uid, v_nick, v_body);
+  delete from guild_messages where guild_id = v_gid and id <=
+    (select id from guild_messages where guild_id = v_gid
+       order by id desc offset 200 limit 1);
+end;
+$$;
+
+create or replace function guild_chat_list(p_limit integer default 50) returns jsonb
+language plpgsql stable security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_gid uuid;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  select guild_id into v_gid from guild_members where user_id = v_uid;
+  if v_gid is null then raise exception 'not found'; end if;
+  return jsonb_build_object(
+    'pinned', (select jsonb_build_object('id', id, 'user_id', user_id,
+        'nickname', nickname, 'body', body, 'created_at', created_at)
+        from guild_messages where guild_id = v_gid and pinned
+        order by id desc limit 1),
+    'messages', coalesce((select jsonb_agg(m order by (m->>'id')::bigint desc) from (
+        select jsonb_build_object('id', id, 'user_id', user_id, 'nickname', nickname,
+               'body', body, 'created_at', created_at) as m
+        from guild_messages where guild_id = v_gid
+        order by id desc limit least(greatest(coalesce(p_limit, 50), 1), 100)) s),
+      '[]'::jsonb));
+end;
+$$;
+
+-- Xoá: tác giả hoặc chủ hội.
+create or replace function guild_chat_delete(p_id bigint) returns void
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_gid uuid;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  select guild_id into v_gid from guild_members where user_id = v_uid;
+  if v_gid is null then raise exception 'not found'; end if;
+  delete from guild_messages m where m.id = p_id and m.guild_id = v_gid
+    and (m.user_id = v_uid
+         or exists (select 1 from guilds g where g.id = v_gid and g.owner_id = v_uid));
+  if not found then raise exception 'not found'; end if;
+end;
+$$;
+
+-- Ghim: chỉ chủ hội; p_id null = bỏ ghim. Mỗi hội chỉ 1 tin ghim.
+create or replace function guild_chat_pin(p_id bigint) returns void
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_gid uuid;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  select m.guild_id into v_gid from guild_members m
+    join guilds g on g.id = m.guild_id
+    where m.user_id = v_uid and g.owner_id = v_uid;
+  if v_gid is null then raise exception 'not owner'; end if;
+  update guild_messages set pinned = false where guild_id = v_gid and pinned;
+  if p_id is not null then
+    update guild_messages set pinned = true where id = p_id and guild_id = v_gid;
+    if not found then raise exception 'not found'; end if;
+  end if;
+end;
+$$;
+
 -- Quyền: chỉ người đã đăng nhập (kể cả ẩn danh) gọi được RPC.
 do $$
 declare f text;
@@ -823,7 +925,9 @@ begin
     'guild_report(uuid,text)', 'guild_claim_reward(integer)',
     'guild_leaderboard_avg(integer)', 'guild_leaderboard_streak(integer)',
     'guild_donate(integer)', 'guild_claim_quest(integer)',
-    'guild_buy_item(text)', 'guild_buy_buff()', 'guild_buff_seconds()'
+    'guild_buy_item(text)', 'guild_buy_buff()', 'guild_buff_seconds()',
+    'guild_chat_post(text)', 'guild_chat_list(integer)',
+    'guild_chat_delete(bigint)', 'guild_chat_pin(bigint)'
   ] loop
     execute format('revoke all on function %s from public', f);
     execute format('grant execute on function %s to authenticated', f);

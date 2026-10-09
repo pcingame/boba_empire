@@ -230,6 +230,22 @@ class GuildController extends Notifier<GuildViewState> {
     return out;
   }
 
+  /// Chat hội: không đụng trạng thái hội nên không refresh().
+  Future<GuildOutcome> _chatAct(Future<void> Function() action) async {
+    try {
+      await action();
+    } on GuildException catch (e) {
+      return GuildOutcome(failure: e.failure);
+    } catch (_) {
+      return const GuildOutcome(failure: GuildFailure.network);
+    }
+    return const GuildOutcome();
+  }
+
+  Future<GuildOutcome> chatPost(String body) => _chatAct(() => _repo.chatPost(body));
+  Future<GuildOutcome> chatDelete(int id) => _chatAct(() => _repo.chatDelete(id));
+  Future<GuildOutcome> chatPin(int? id) => _chatAct(() => _repo.chatPin(id));
+
   /// Mua buff thu nhập cho cả hội; buff áp ngay qua refresh (server báo giây còn lại).
   Future<GuildOutcome> buyBuff() => _act(_repo.buyBuff);
 

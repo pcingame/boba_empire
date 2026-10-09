@@ -504,4 +504,107 @@ select t_err($$select guild_leaderboard_avg(5)$$, 'permission denied');
 select t_err($$select guild_leaderboard_streak(5)$$, 'permission denied');
 reset role;
 
+-- ===== 16. Chat hội ======================================================
+select t_as(u(60));
+select guild_create('Chat Club', 'cc', '💬', false, 'Own', 0) as gc \gset
+select t_as(u(61)); select guild_join(:'gc'::uuid, 'Mem', 0);
+select guild_chat_post('  xin chào cả nhà  ');
+select t_eq('tin đã cắt khoảng trắng', guild_chat_list(10)->'messages'->0->>'body', 'xin chào cả nhà');
+select t_eq('tin mang tên thành viên', guild_chat_list(10)->'messages'->0->>'nickname', 'Mem');
+select t_err($$select guild_chat_post('')$$, 'invalid input');
+select t_err($$select guild_chat_post(repeat('a', 201))$$, 'invalid input');
+select t_err($$select guild_chat_post('đồ f u c k')$$, 'text blocked');
+-- Chống spam: 3 tin/10 giây (đã có 1 tin).
+select guild_chat_post('2'); select guild_chat_post('3');
+select t_err($$select guild_chat_post('4')$$, 'chat rate limited');
+-- Người ngoài hội không đọc/ghi được.
+select t_as(u(62));
+select t_err($$select guild_chat_list(10)$$, 'not found');
+select t_err($$select guild_chat_post('hi')$$, 'not found');
+-- Xoá: không xoá được tin hội khác; thành viên chỉ xoá tin của mình, chủ xoá được mọi tin.
+select t_as(u(61));
+select (guild_chat_list(10)->'messages'->0->>'id')::bigint as mid \gset
+select t_as(u(60));
+select guild_chat_post('thông báo của chủ');
+select (guild_chat_list(10)->'messages'->0->>'id')::bigint as oid \gset
+select t_as(u(61));
+select t_err(format($$select guild_chat_delete(%s)$$, :'oid'), 'not found');
+select t_err(format($$select guild_chat_pin(%s)$$, :'oid'), 'not owner');
+select guild_chat_delete(:'mid'::bigint);
+select t_as(u(60));
+select guild_chat_pin(:'oid'::bigint);
+select t_eq('có tin ghim', guild_chat_list(10)->'pinned'->>'body', 'thông báo của chủ');
+select t_eq('tin của thành viên đã xoá', jsonb_array_length(guild_chat_list(10)->'messages'), 3);
+select guild_chat_pin(null);
+select t_eq('bỏ ghim', guild_chat_list(10)->'pinned', 'null'::jsonb);
+select guild_chat_delete(:'oid'::bigint);
+-- Giới hạn 200 tin/hội.
+reset role;
+insert into guild_messages (guild_id, user_id, nickname, body, created_at)
+  select :'gc'::uuid, u(61), 'Mem', 'm' || i, now() - interval '1 hour'
+  from generate_series(1, 230) i;
+select t_as(u(61)); select guild_chat_post('mới');
+reset role;
+select t_eq('giữ đúng 200 tin', (select count(*) from guild_messages where guild_id = :'gc'::uuid), 200::bigint);
+-- Bảo mật: không đọc thẳng bảng, khách (anon) bị chặn.
+select t_as(u(61));
+select t_eq('không đọc thẳng tin nhắn', (select count(*) from guild_messages), 0::bigint);
+select t_as(null);
+select t_err($$select guild_chat_list(10)$$, 'permission denied');
+select t_err($$select guild_chat_post('hi')$$, 'permission denied');
+reset role;
+
+-- ===== 17. Chat hội: ca biên =============================================
+-- Hai hội riêng biệt: tin/ghim/xoá không xuyên hội.
+select t_as(u(63)); select guild_create('Chat Two', 'c2', '🗨', false, 'Own2', 0) as gd \gset
+select guild_chat_post('tin hội hai');
+select (guild_chat_list(10)->'messages'->0->>'id')::bigint as did \gset
+select t_as(u(60));
+select t_err(format($$select guild_chat_pin(%s)$$, :'did'), 'not found');
+select t_err(format($$select guild_chat_delete(%s)$$, :'did'), 'not found');
+select t_eq('chủ hội này không thấy tin hội kia', (select count(*) from jsonb_array_elements(guild_chat_list(100)->'messages') m where m->>'body' = 'tin hội hai'), 0::bigint);
+-- Biên nội dung: null, toàn khoảng trắng, đúng 200 ký tự, emoji tính theo ký tự.
+select t_err($$select guild_chat_post(null)$$, 'invalid input');
+select t_err($$select guild_chat_post(E'  \n\t ')$$, 'invalid input');
+select t_err($$select guild_chat_post(E'\u200b\u200b')$$, 'invalid input');
+select guild_chat_post(E'\n\t dòng giữa \n');
+select t_eq('cắt cả xuống dòng/tab hai đầu', guild_chat_list(1)->'messages'->0->>'body', 'dòng giữa');
+reset role; delete from guild_messages where user_id = u(60); select t_as(u(60));
+reset role; delete from guild_messages where user_id = u(60); select t_as(u(60));
+select guild_chat_post(repeat('a', 200));
+reset role; delete from guild_messages where user_id = u(60); select t_as(u(60));
+select guild_chat_post(repeat('🧋', 200));
+reset role; delete from guild_messages where user_id = u(60); select t_as(u(60));
+select t_err($$select guild_chat_post(repeat('🧋', 201))$$, 'invalid input');
+-- p_limit: kẹp 1..100; null dùng mặc định.
+reset role;
+insert into guild_messages (guild_id, user_id, nickname, body, created_at)
+  select :'gc'::uuid, u(61), 'Mem', 'k' || i, now() - interval '1 hour' from generate_series(1, 150) i;
+select t_as(u(60));
+select t_eq('limit 0 → 1', jsonb_array_length(guild_chat_list(0)->'messages'), 1);
+select t_eq('limit 9999 → 100', jsonb_array_length(guild_chat_list(9999)->'messages'), 100);
+select t_eq('limit null → 50', jsonb_array_length(guild_chat_list(null)->'messages'), 50);
+select t_eq('mới nhất đứng đầu', (guild_chat_list(3)->'messages'->0->>'id')::bigint >= (guild_chat_list(3)->'messages'->1->>'id')::bigint, true);
+-- Bị kick / rời hội → mất quyền đọc & ghi; tin cũ vẫn ở lại cho hội.
+select t_as(u(60));
+select guild_kick(u(61));
+select t_as(u(61));
+select t_err($$select guild_chat_list(10)$$, 'not found');
+select t_err($$select guild_chat_post('còn nói được không')$$, 'not found');
+select t_err($$select guild_chat_delete(1)$$, 'not found');
+-- Xoá tin đang ghim → hết ghim, không lỗi.
+select t_as(u(60));
+select guild_chat_post('sẽ bị xoá') ;
+select (guild_chat_list(1)->'messages'->0->>'id')::bigint as pid \gset
+select guild_chat_pin(:'pid'::bigint);
+select guild_chat_delete(:'pid'::bigint);
+select t_eq('xoá tin ghim → pinned null', guild_chat_list(10)->'pinned', 'null'::jsonb);
+-- Ghim tin không tồn tại: lỗi và KHÔNG làm mất ghim cũ? (giao dịch hoàn tác cả hàm).
+select guild_chat_post('ghim thật');
+select (guild_chat_list(1)->'messages'->0->>'id')::bigint as qid \gset
+select guild_chat_pin(:'qid'::bigint);
+select t_err($$select guild_chat_pin(999999999)$$, 'not found');
+select t_eq('ghim cũ còn nguyên sau lần ghim lỗi', guild_chat_list(10)->'pinned'->>'body', 'ghim thật');
+reset role;
+
 select 'ALL GUILD SQL SCENARIOS PASSED' as result;

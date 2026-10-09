@@ -2660,6 +2660,36 @@ class AppLocalizationsTh extends AppLocalizations {
   String get accessoryGuildMoai => 'โมอายกิลด์';
 
   @override
+  String get guildChatTitle => 'แชทกิลด์';
+
+  @override
+  String get guildChatEmpty => 'ยังไม่มีข้อความ เป็นคนแรกที่พูดเลย!';
+
+  @override
+  String get guildChatHint => 'ส่งข้อความถึงกิลด์…';
+
+  @override
+  String get guildChatSend => 'ส่ง';
+
+  @override
+  String get guildChatPinned => 'ประกาศ';
+
+  @override
+  String get guildChatPin => 'ปักหมุด';
+
+  @override
+  String get guildChatUnpin => 'เลิกปักหมุด';
+
+  @override
+  String get guildChatDelete => 'ลบข้อความ';
+
+  @override
+  String get guildErrChatRate => 'คุณส่งเร็วเกินไป รอสักครู่';
+
+  @override
+  String get guildErrTextBlocked => 'ข้อความมีคำที่ไม่อนุญาต';
+
+  @override
   String guildErrDailyLimit(int n) {
     return 'วันนี้คุณบริจาคครบสูงสุด $n 💎 แล้ว';
   }

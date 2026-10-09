@@ -2634,6 +2634,36 @@ class AppLocalizationsKo extends AppLocalizations {
   String get accessoryGuildMoai => '길드 모아이';
 
   @override
+  String get guildChatTitle => '길드 채팅';
+
+  @override
+  String get guildChatEmpty => '아직 메시지가 없어요. 첫 마디를 남겨 보세요!';
+
+  @override
+  String get guildChatHint => '길드에 메시지 보내기…';
+
+  @override
+  String get guildChatSend => '보내기';
+
+  @override
+  String get guildChatPinned => '공지';
+
+  @override
+  String get guildChatPin => '고정';
+
+  @override
+  String get guildChatUnpin => '고정 해제';
+
+  @override
+  String get guildChatDelete => '메시지 삭제';
+
+  @override
+  String get guildErrChatRate => '너무 빨리 보내고 있어요. 잠시 기다려 주세요.';
+
+  @override
+  String get guildErrTextBlocked => '금지된 단어가 포함되어 있어요.';
+
+  @override
   String guildErrDailyLimit(int n) {
     return '오늘은 최대 $n 💎까지 이미 기부했어요.';
   }

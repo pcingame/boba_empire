@@ -2692,6 +2692,38 @@ class AppLocalizationsEs extends AppLocalizations {
   String get accessoryGuildMoai => 'Moai del gremio';
 
   @override
+  String get guildChatTitle => 'Chat del gremio';
+
+  @override
+  String get guildChatEmpty => 'Aún no hay mensajes. ¡Sé el primero en hablar!';
+
+  @override
+  String get guildChatHint => 'Escribe a tu gremio…';
+
+  @override
+  String get guildChatSend => 'Enviar';
+
+  @override
+  String get guildChatPinned => 'Aviso';
+
+  @override
+  String get guildChatPin => 'Fijar';
+
+  @override
+  String get guildChatUnpin => 'Quitar fijado';
+
+  @override
+  String get guildChatDelete => 'Borrar mensaje';
+
+  @override
+  String get guildErrChatRate =>
+      'Envías demasiado rápido, espera unos segundos.';
+
+  @override
+  String get guildErrTextBlocked =>
+      'Tu mensaje contiene una palabra bloqueada.';
+
+  @override
   String guildErrDailyLimit(int n) {
     return 'Hoy ya donaste el máximo de $n 💎.';
   }

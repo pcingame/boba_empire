@@ -2677,6 +2677,37 @@ class AppLocalizationsId extends AppLocalizations {
   String get accessoryGuildMoai => 'Moai Guild';
 
   @override
+  String get guildChatTitle => 'Obrolan guild';
+
+  @override
+  String get guildChatEmpty => 'Belum ada pesan. Jadilah yang pertama bicara!';
+
+  @override
+  String get guildChatHint => 'Kirim pesan ke guild…';
+
+  @override
+  String get guildChatSend => 'Kirim';
+
+  @override
+  String get guildChatPinned => 'Pengumuman';
+
+  @override
+  String get guildChatPin => 'Sematkan';
+
+  @override
+  String get guildChatUnpin => 'Lepas sematan';
+
+  @override
+  String get guildChatDelete => 'Hapus pesan';
+
+  @override
+  String get guildErrChatRate =>
+      'Kamu mengirim terlalu cepat, tunggu beberapa detik.';
+
+  @override
+  String get guildErrTextBlocked => 'Pesanmu mengandung kata yang dilarang.';
+
+  @override
   String guildErrDailyLimit(int n) {
     return 'Kamu sudah menyumbang maksimum $n 💎 hari ini.';
   }

@@ -305,6 +305,17 @@ void main() {
     await tester.drag(find.byType(ListView).first, const Offset(0, -700));
     await shot(tester, 'B07_guild_shop_scrolled');
     await back(tester);
+    repo.chatMessages.addAll(const [
+      GuildMessage(id: 5, userId: 'me', nickname: 'Alice', body: 'Tối nay 8h đua top tuần nha cả nhà 🧋🧋'),
+      GuildMessage(id: 4, userId: 'u2', nickname: 'Biệt Danh Cực Kỳ Dài Không Khoảng Trắng', body: 'Mình vừa mua cờ hội, đẹp lắm mọi người ơi! ' 'Chữ dài để kiểm tra xuống dòng trong bong bóng chat nhé.'),
+      GuildMessage(id: 3, userId: 'u3', nickname: 'Cy', body: 'ok'),
+      GuildMessage(id: 2, userId: 'me', nickname: 'Alice', body: 'WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW'),
+      GuildMessage(id: 1, userId: 'boss', nickname: 'Chủ hội', body: 'Quy tắc: quyên góp 💎 mỗi ngày, hoàn thành nhiệm vụ tuần để cả hội nhận thưởng!'),
+    ]);
+    repo.chatPinnedId = 1;
+    await tester.tap(find.byKey(const Key('guild-chat-button')));
+    await shot(tester, 'B07b_guild_chat');
+    await back(tester);
     await tester.tap(find.byKey(const Key('guild-leaderboard-button')));
     await shot(tester, 'B08_guild_lb_total');
     await tester.tap(find.byKey(const Key('guild-lb-tab-avg')));

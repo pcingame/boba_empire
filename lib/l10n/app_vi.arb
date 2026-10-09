@@ -1741,6 +1741,16 @@
   "accessoryGuildBear": "Gấu hội",
   "accessoryGuildScorpion": "Bò cạp hội",
   "accessoryGuildMoai": "Tượng đá hội",
+  "guildChatTitle": "Chat hội",
+  "guildChatEmpty": "Chưa có tin nào. Hãy là người nói câu đầu tiên!",
+  "guildChatHint": "Nhắn cho cả hội…",
+  "guildChatSend": "Gửi",
+  "guildChatPinned": "Thông báo",
+  "guildChatPin": "Ghim",
+  "guildChatUnpin": "Bỏ ghim",
+  "guildChatDelete": "Xoá tin",
+  "guildErrChatRate": "Bạn gửi quá nhanh, chờ vài giây nhé.",
+  "guildErrTextBlocked": "Tin nhắn chứa từ không được phép.",
   "guildErrDailyLimit": "Hôm nay bạn đã nạp tối đa {n} 💎.",
   "@guildErrDailyLimit": {
     "placeholders": {

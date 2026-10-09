@@ -1285,6 +1285,16 @@
   "accessoryGuildBear": "Guild Bear",
   "accessoryGuildScorpion": "Guild Scorpion",
   "accessoryGuildMoai": "Guild Moai",
+  "guildChatTitle": "Guild chat",
+  "guildChatEmpty": "No messages yet. Be the first to say something!",
+  "guildChatHint": "Message your guild…",
+  "guildChatSend": "Send",
+  "guildChatPinned": "Announcement",
+  "guildChatPin": "Pin",
+  "guildChatUnpin": "Unpin",
+  "guildChatDelete": "Delete message",
+  "guildErrChatRate": "You're sending too fast, wait a few seconds.",
+  "guildErrTextBlocked": "Your message contains a blocked word.",
   "guildErrDailyLimit": "You've already donated the daily max of {n} 💎.",
   "@guildErrDailyLimit": {
     "placeholders": {

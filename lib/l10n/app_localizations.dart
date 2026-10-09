@@ -4710,6 +4710,66 @@ abstract class AppLocalizations {
   /// **'Tượng đá hội'**
   String get accessoryGuildMoai;
 
+  /// No description provided for @guildChatTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chat hội'**
+  String get guildChatTitle;
+
+  /// No description provided for @guildChatEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có tin nào. Hãy là người nói câu đầu tiên!'**
+  String get guildChatEmpty;
+
+  /// No description provided for @guildChatHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhắn cho cả hội…'**
+  String get guildChatHint;
+
+  /// No description provided for @guildChatSend.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi'**
+  String get guildChatSend;
+
+  /// No description provided for @guildChatPinned.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông báo'**
+  String get guildChatPinned;
+
+  /// No description provided for @guildChatPin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghim'**
+  String get guildChatPin;
+
+  /// No description provided for @guildChatUnpin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ ghim'**
+  String get guildChatUnpin;
+
+  /// No description provided for @guildChatDelete.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xoá tin'**
+  String get guildChatDelete;
+
+  /// No description provided for @guildErrChatRate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn gửi quá nhanh, chờ vài giây nhé.'**
+  String get guildErrChatRate;
+
+  /// No description provided for @guildErrTextBlocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tin nhắn chứa từ không được phép.'**
+  String get guildErrTextBlocked;
+
   /// No description provided for @guildErrDailyLimit.
   ///
   /// In vi, this message translates to:

@@ -168,6 +168,10 @@ void main() {
         'guild_buy_item(text)',
         'guild_buy_buff()',
         'guild_buff_seconds()',
+        'guild_chat_post(text)',
+        'guild_chat_list(integer)',
+        'guild_chat_delete(bigint)',
+        'guild_chat_pin(bigint)',
       ]) {
         expect(sql.contains("'$fn'"), isTrue, reason: '$fn chưa cấp quyền');
       }
@@ -180,6 +184,7 @@ void main() {
         'guild_donations',
         'guild_quest_claims',
         'guild_purchases',
+        'guild_messages',
       ]) {
         expect(sql.contains(RegExp('alter table $t\\s+enable row level security')), isTrue,
             reason: t);

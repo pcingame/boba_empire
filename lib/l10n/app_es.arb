@@ -1285,6 +1285,16 @@
   "accessoryGuildBear": "Oso del gremio",
   "accessoryGuildScorpion": "Escorpión del gremio",
   "accessoryGuildMoai": "Moai del gremio",
+  "guildChatTitle": "Chat del gremio",
+  "guildChatEmpty": "Aún no hay mensajes. ¡Sé el primero en hablar!",
+  "guildChatHint": "Escribe a tu gremio…",
+  "guildChatSend": "Enviar",
+  "guildChatPinned": "Aviso",
+  "guildChatPin": "Fijar",
+  "guildChatUnpin": "Quitar fijado",
+  "guildChatDelete": "Borrar mensaje",
+  "guildErrChatRate": "Envías demasiado rápido, espera unos segundos.",
+  "guildErrTextBlocked": "Tu mensaje contiene una palabra bloqueada.",
   "guildErrDailyLimit": "Hoy ya donaste el máximo de {n} 💎.",
   "@guildErrDailyLimit": {
     "placeholders": {

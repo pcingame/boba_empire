@@ -103,6 +103,37 @@ class FakeGuildRepository implements GuildRepository {
         wallet: g.wallet - guildBuffPrice, buffSeconds: serverBuffSeconds);
   }
 
+  /// Chat giả: mới nhất ở đầu; [chatPinnedId] là tin đang ghim.
+  final List<GuildMessage> chatMessages = [];
+  int? chatPinnedId;
+  int _nextMsgId = 1;
+
+  @override
+  Future<GuildChat> chat() async {
+    _hit('chat');
+    final pinned = chatMessages.where((m) => m.id == chatPinnedId).firstOrNull;
+    return GuildChat(pinned: pinned, messages: List.of(chatMessages));
+  }
+
+  @override
+  Future<void> chatPost(String body) async {
+    _hit('chatPost');
+    chatMessages.insert(
+        0, GuildMessage(id: _nextMsgId++, userId: me, nickname: 'Alice', body: body.trim()));
+  }
+
+  @override
+  Future<void> chatDelete(int id) async {
+    _hit('chatDelete');
+    chatMessages.removeWhere((m) => m.id == id);
+  }
+
+  @override
+  Future<void> chatPin(int? id) async {
+    _hit('chatPin');
+    chatPinnedId = id;
+  }
+
   @override
   Future<int> buffSeconds() async {
     _hit('buffSeconds');

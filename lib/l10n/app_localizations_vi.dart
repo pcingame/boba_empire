@@ -2671,6 +2671,37 @@ class AppLocalizationsVi extends AppLocalizations {
   String get accessoryGuildMoai => 'Tượng đá hội';
 
   @override
+  String get guildChatTitle => 'Chat hội';
+
+  @override
+  String get guildChatEmpty =>
+      'Chưa có tin nào. Hãy là người nói câu đầu tiên!';
+
+  @override
+  String get guildChatHint => 'Nhắn cho cả hội…';
+
+  @override
+  String get guildChatSend => 'Gửi';
+
+  @override
+  String get guildChatPinned => 'Thông báo';
+
+  @override
+  String get guildChatPin => 'Ghim';
+
+  @override
+  String get guildChatUnpin => 'Bỏ ghim';
+
+  @override
+  String get guildChatDelete => 'Xoá tin';
+
+  @override
+  String get guildErrChatRate => 'Bạn gửi quá nhanh, chờ vài giây nhé.';
+
+  @override
+  String get guildErrTextBlocked => 'Tin nhắn chứa từ không được phép.';
+
+  @override
   String guildErrDailyLimit(int n) {
     return 'Hôm nay bạn đã nạp tối đa $n 💎.';
   }

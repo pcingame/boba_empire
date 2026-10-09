@@ -2682,6 +2682,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get accessoryGuildMoai => 'Guild Moai';
 
   @override
+  String get guildChatTitle => 'Guild chat';
+
+  @override
+  String get guildChatEmpty =>
+      'No messages yet. Be the first to say something!';
+
+  @override
+  String get guildChatHint => 'Message your guild…';
+
+  @override
+  String get guildChatSend => 'Send';
+
+  @override
+  String get guildChatPinned => 'Announcement';
+
+  @override
+  String get guildChatPin => 'Pin';
+
+  @override
+  String get guildChatUnpin => 'Unpin';
+
+  @override
+  String get guildChatDelete => 'Delete message';
+
+  @override
+  String get guildErrChatRate =>
+      'You\'re sending too fast, wait a few seconds.';
+
+  @override
+  String get guildErrTextBlocked => 'Your message contains a blocked word.';
+
+  @override
   String guildErrDailyLimit(int n) {
     return 'You\'ve already donated the daily max of $n 💎.';
   }

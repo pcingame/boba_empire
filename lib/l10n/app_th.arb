@@ -1285,6 +1285,16 @@
   "accessoryGuildBear": "หมีกิลด์",
   "accessoryGuildScorpion": "แมงป่องกิลด์",
   "accessoryGuildMoai": "โมอายกิลด์",
+  "guildChatTitle": "แชทกิลด์",
+  "guildChatEmpty": "ยังไม่มีข้อความ เป็นคนแรกที่พูดเลย!",
+  "guildChatHint": "ส่งข้อความถึงกิลด์…",
+  "guildChatSend": "ส่ง",
+  "guildChatPinned": "ประกาศ",
+  "guildChatPin": "ปักหมุด",
+  "guildChatUnpin": "เลิกปักหมุด",
+  "guildChatDelete": "ลบข้อความ",
+  "guildErrChatRate": "คุณส่งเร็วเกินไป รอสักครู่",
+  "guildErrTextBlocked": "ข้อความมีคำที่ไม่อนุญาต",
   "guildErrDailyLimit": "วันนี้คุณบริจาคครบสูงสุด {n} 💎 แล้ว",
   "@guildErrDailyLimit": {
     "placeholders": {

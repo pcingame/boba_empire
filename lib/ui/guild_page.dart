@@ -15,6 +15,7 @@ import '../guild/guild_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import 'guild_leaderboard_page.dart';
+import 'guild_chat_page.dart';
 import 'guild_shop_page.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
@@ -41,6 +42,8 @@ String guildFailureText(AppLocalizations l10n, GuildFailure f) => switch (f) {
       GuildFailure.buffMaxed => l10n.guildErrBuffMaxed,
       GuildFailure.invalidInput => l10n.guildErrInvalidInput,
       GuildFailure.requestsFull => l10n.guildErrRequestsFull,
+      GuildFailure.chatRateLimited => l10n.guildErrChatRate,
+      GuildFailure.textBlocked => l10n.guildErrTextBlocked,
       GuildFailure.network => l10n.guildErrNetwork,
     };
 
@@ -72,6 +75,13 @@ class _GuildPageState extends ConsumerState<GuildPage> {
         appBar: AppBar(
           title: Text(l10n.guildTitle),
           actions: [
+            if (view is GuildMine)
+              IconButton(
+                key: const Key('guild-chat-button'),
+                tooltip: l10n.guildChatTitle,
+                icon: const Icon(Icons.chat_bubble_outline),
+                onPressed: () => showGuildChat(context),
+              ),
             IconButton(
               key: const Key('guild-leaderboard-button'),
               tooltip: l10n.guildLbTitle,

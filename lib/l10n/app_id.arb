@@ -1285,6 +1285,16 @@
   "accessoryGuildBear": "Beruang Guild",
   "accessoryGuildScorpion": "Kalajengking Guild",
   "accessoryGuildMoai": "Moai Guild",
+  "guildChatTitle": "Obrolan guild",
+  "guildChatEmpty": "Belum ada pesan. Jadilah yang pertama bicara!",
+  "guildChatHint": "Kirim pesan ke guild…",
+  "guildChatSend": "Kirim",
+  "guildChatPinned": "Pengumuman",
+  "guildChatPin": "Sematkan",
+  "guildChatUnpin": "Lepas sematan",
+  "guildChatDelete": "Hapus pesan",
+  "guildErrChatRate": "Kamu mengirim terlalu cepat, tunggu beberapa detik.",
+  "guildErrTextBlocked": "Pesanmu mengandung kata yang dilarang.",
   "guildErrDailyLimit": "Kamu sudah menyumbang maksimum {n} 💎 hari ini.",
   "@guildErrDailyLimit": {
     "placeholders": {
