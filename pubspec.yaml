@@ -67,6 +67,8 @@ dev_dependencies:
     sdk: flutter
   integration_test:
     sdk: flutter
+  # Quét rò rỉ bộ nhớ trong test (xem test/flutter_test_config.dart); đã có sẵn dạng transitive.
+  leak_tracker_flutter_testing: ^3.0.10
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

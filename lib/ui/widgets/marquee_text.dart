@@ -21,7 +21,7 @@ class MarqueeText extends StatefulWidget {
 class _MarqueeTextState extends State<MarqueeText>
     with SingleTickerProviderStateMixin {
   late final AnimationController _c = AnimationController(vsync: this);
-  late final Animation<double> _t = CurvedAnimation(
+  late final CurvedAnimation _t = CurvedAnimation(
     parent: _c,
     // Đứng yên 20% đầu/cuối mỗi chiều để kịp đọc.
     curve: const Interval(0.2, 0.8, curve: Curves.linear),
@@ -62,6 +62,7 @@ class _MarqueeTextState extends State<MarqueeText>
 
   @override
   void dispose() {
+    _t.dispose();
     _c.dispose();
     super.dispose();
   }

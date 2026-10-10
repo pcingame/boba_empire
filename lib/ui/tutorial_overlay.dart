@@ -34,6 +34,9 @@ class _TutorialOverlayState extends ConsumerState<TutorialOverlay>
     vsync: this,
     duration: const Duration(milliseconds: 900),
   );
+  // Một lần thôi: CurvedAnimation gắn listener vào _pulse, tạo trong build() sẽ rò dần.
+  late final CurvedAnimation _pulseCurve =
+      CurvedAnimation(parent: _pulse, curve: Curves.easeInOut);
   Rect? _target;
 
   /// Khoá của đích bước hiện tại (null: bước không có đích) — cập nhật mỗi lần dựng.
@@ -63,6 +66,7 @@ class _TutorialOverlayState extends ConsumerState<TutorialOverlay>
 
   @override
   void dispose() {
+    _pulseCurve.dispose();
     _pulse.dispose();
     super.dispose();
   }
@@ -134,9 +138,7 @@ class _TutorialOverlayState extends ConsumerState<TutorialOverlay>
               rect: target.inflate(6),
               child: IgnorePointer(
                 child: ScaleTransition(
-                  scale: Tween<double>(begin: 1.0, end: 1.06).animate(
-                      CurvedAnimation(
-                          parent: _pulse, curve: Curves.easeInOut)),
+                  scale: Tween<double>(begin: 1.0, end: 1.06).animate(_pulseCurve),
                   child: DecoratedBox(
                     key: const Key('ftue-ring'),
                     decoration: BoxDecoration(

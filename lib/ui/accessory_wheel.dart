@@ -41,6 +41,7 @@ class _AccessoryWheelState extends ConsumerState<AccessoryWheel>
   late List<String> _emojis = _randomEmojis();
   double _rotation = 0;
   Animation<double>? _anim;
+  CurvedAnimation? _curve; // mỗi lượt quay một cái; huỷ cái cũ trước khi tạo mới
   bool _busy = false;
   AccessoryDrop? _result;
 
@@ -49,6 +50,7 @@ class _AccessoryWheelState extends ConsumerState<AccessoryWheel>
 
   @override
   void dispose() {
+    _curve?.dispose();
     _ctrl.dispose();
     super.dispose();
   }
@@ -85,8 +87,9 @@ class _AccessoryWheelState extends ConsumerState<AccessoryWheel>
     final cur = _rotation % (2 * math.pi);
     final target =
         _rotation + 2 * math.pi * 4 + ((landMod - cur) % (2 * math.pi));
-    _anim = Tween<double>(begin: _rotation, end: target)
-        .animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOutCubic));
+    _curve?.dispose();
+    _curve = CurvedAnimation(parent: _ctrl, curve: Curves.easeOutCubic);
+    _anim = Tween<double>(begin: _rotation, end: target).animate(_curve!);
     await _ctrl.forward(from: 0);
     if (!mounted) return;
     _rotation = target;
@@ -196,6 +199,7 @@ class _Painter extends CustomPainter {
           canvas,
           c + Offset(math.cos(mid), math.sin(mid)) * (r * 0.64) -
               Offset(tp.width / 2, tp.height / 2));
+      tp.dispose(); // vẽ mỗi khung hình: không huỷ thì rò đoạn văn native
     }
     canvas.drawCircle(c, r,
         Paint()..style = PaintingStyle.stroke..strokeWidth = 6..color = Colors.white);

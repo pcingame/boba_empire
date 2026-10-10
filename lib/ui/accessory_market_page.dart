@@ -20,6 +20,7 @@ import '../market/accessory_market_repository.dart';
 import '../market/market_filter.dart';
 import '../market/market_highlight.dart';
 import '../state/game_providers.dart';
+import 'widgets/dispose_with_widget.dart';
 import 'widgets/accessory_rarity.dart';
 import 'widgets/motion.dart';
 import 'widgets/clay.dart';
@@ -1093,7 +1094,9 @@ Future<int?> _askPrice(BuildContext context, AppLocalizations l10n,
   final ctrl = TextEditingController();
   return showDialog<int>(
     context: context,
-    builder: (_) => StatefulBuilder(
+    builder: (_) => DisposeWithWidget(
+      controllers: [ctrl],
+      child: StatefulBuilder(
       builder: (context, setState) {
         final price = int.tryParse(ctrl.text.trim());
         final valid = price != null && price >= 1 && price <= 100000;
@@ -1152,6 +1155,7 @@ Future<int?> _askPrice(BuildContext context, AppLocalizations l10n,
           ],
         );
       },
+    ),
     ),
   );
 }

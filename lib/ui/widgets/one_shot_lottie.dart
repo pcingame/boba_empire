@@ -59,6 +59,7 @@ void playEffect(
     if (removed) return;
     removed = true;
     entry?.remove();
+    entry?.dispose();
     onFinished?.call();
   }
 

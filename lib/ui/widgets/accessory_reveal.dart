@@ -34,6 +34,7 @@ void playAccessoryReveal(BuildContext context, AccessoryDrop drop) {
     if (removed) return;
     removed = true;
     entry.remove();
+    entry.dispose();
   }
 
   entry = OverlayEntry(

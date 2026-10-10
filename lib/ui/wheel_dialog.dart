@@ -54,11 +54,13 @@ class _WheelDialogState extends ConsumerState<_WheelDialog>
   );
   double _rotation = 0; // góc hiện tại (accumulate)
   Animation<double>? _anim;
+  CurvedAnimation? _curve; // mỗi lượt quay một cái; huỷ cái cũ trước khi tạo mới
   bool _spinning = false;
   String? _result;
 
   @override
   void dispose() {
+    _curve?.dispose();
     _ctrl.dispose();
     super.dispose();
   }
@@ -90,8 +92,9 @@ class _WheelDialogState extends ConsumerState<_WheelDialog>
     final cur = _rotation % (2 * math.pi);
     final target =
         _rotation + 2 * math.pi * 5 + ((landMod - cur) % (2 * math.pi));
-    _anim = Tween<double>(begin: _rotation, end: target)
-        .animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeOutCubic));
+    _curve?.dispose();
+    _curve = CurvedAnimation(parent: _ctrl, curve: Curves.easeOutCubic);
+    _anim = Tween<double>(begin: _rotation, end: target).animate(_curve!);
     await _ctrl.forward(from: 0);
     if (!mounted) return; // dialog đã đóng giữa lúc quay.
 
@@ -212,6 +215,7 @@ class _WheelPainter extends CustomPainter {
           Offset(math.cos(mid), math.sin(mid)) * (r * 0.62) -
           Offset(tp.width / 2, tp.height / 2);
       tp.paint(canvas, pos);
+      tp.dispose(); // vẽ mỗi khung hình: không huỷ thì rò đoạn văn native
     }
     // Viền + tâm.
     canvas.drawCircle(c, r,

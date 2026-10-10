@@ -436,7 +436,7 @@ class _AppearInState extends State<_AppearIn>
       milliseconds: _body + _delay + (widget.glow == null ? 0 : 500),
     ),
   );
-  late final Animation<double> _t = CurvedAnimation(
+  late final CurvedAnimation _t = CurvedAnimation(
     parent: _c,
     curve: Interval(
       _delay / _c.duration!.inMilliseconds,
@@ -453,6 +453,7 @@ class _AppearInState extends State<_AppearIn>
 
   @override
   void dispose() {
+    _t.dispose();
     _c.dispose();
     super.dispose();
   }

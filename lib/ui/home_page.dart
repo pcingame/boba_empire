@@ -2441,6 +2441,10 @@ class _PulseState extends State<_Pulse>
     vsync: this,
     duration: const Duration(milliseconds: 700),
   );
+  // Tạo MỘT lần: CurvedAnimation tự gắn listener vào controller — tạo trong build()
+  // thì mỗi lần dựng lại thêm một listener không bao giờ gỡ.
+  late final CurvedAnimation _curve =
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
 
   @override
   void initState() {
@@ -2450,6 +2454,7 @@ class _PulseState extends State<_Pulse>
 
   @override
   void dispose() {
+    _curve.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -2458,9 +2463,7 @@ class _PulseState extends State<_Pulse>
   Widget build(BuildContext context) {
     return RepaintBoundary(
       child: ScaleTransition(
-        scale: Tween<double>(begin: 1.0, end: 1.12).animate(
-          CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-        ),
+        scale: Tween<double>(begin: 1.0, end: 1.12).animate(_curve),
         child: widget.child,
       ),
     );
