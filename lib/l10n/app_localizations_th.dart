@@ -2702,6 +2702,42 @@ class AppLocalizationsTh extends AppLocalizations {
   String get guildTransfer => 'โอนตำแหน่งหัวหน้า';
 
   @override
+  String get guildFundTitle => 'กองทุนกิลด์สัปดาห์นี้';
+
+  @override
+  String guildFundMine(int n) {
+    return 'คุณบริจาคแล้ว $n 💎';
+  }
+
+  @override
+  String guildFundClaim(int n) {
+    return 'รับ $n เหรียญกิลด์';
+  }
+
+  @override
+  String guildFundHint(int min) {
+    return 'ทุกคนช่วยกันบริจาค 💎 ให้ถึงเป้าหมาย (เพิ่มตามจำนวนสมาชิก) สมาชิกแต่ละคนต้องบริจาคอย่างน้อย $min 💎 จึงจะรับรางวัลได้';
+  }
+
+  @override
+  String guildFundGot(int n) {
+    return 'รับ $n เหรียญกิลด์จากกองทุนแล้ว!';
+  }
+
+  @override
+  String get guildErrFundNotReached => 'กองทุนกิลด์ยังไม่ถึงเป้าหมาย';
+
+  @override
+  String guildErrFundLow(int n) {
+    return 'คุณต้องบริจาคให้กองทุนอย่างน้อย $n 💎 จึงจะรับรางวัลได้';
+  }
+
+  @override
+  String guildFundProgress(int progress, int target) {
+    return '$progress / $target 💎';
+  }
+
+  @override
   String guildTransferConfirm(String name) {
     return 'โอนตำแหน่งหัวหน้าให้ $name? คุณจะกลายเป็นสมาชิกทั่วไป';
   }

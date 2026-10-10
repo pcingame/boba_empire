@@ -57,6 +57,28 @@ class GuildSummary {
   final int? streak;
 }
 
+/// Quỹ hội tuần (xem guild_shop.dart). [target] 0 = server cũ chưa có quỹ → ẩn thẻ.
+class GuildFund {
+  const GuildFund({this.progress = 0, this.target = 0, this.mine = 0, this.claimed = false});
+
+  factory GuildFund.fromJson(Map<String, dynamic>? j) => j == null
+      ? const GuildFund()
+      : GuildFund(
+          progress: (j['progress'] as num).toInt(),
+          target: (j['target'] as num).toInt(),
+          mine: (j['mine'] as num).toInt(),
+          claimed: j['claimed'] as bool,
+        );
+
+  final int progress;
+  final int target;
+  final int mine;
+  final bool claimed;
+
+  bool get available => target > 0;
+  bool get reached => available && progress >= target;
+}
+
 enum GuildRole { owner, officer, member }
 
 class GuildMemberInfo {
@@ -163,6 +185,7 @@ class MyGuild {
     this.ownedItems = const [],
     this.donatedToday = 0,
     this.chatLatestId = 0,
+    this.fund = const GuildFund(),
   });
 
   /// Đọc JSON trả về từ `guild_my()`.
@@ -194,6 +217,7 @@ class MyGuild {
       ],
       donatedToday: (j['donated_today'] as num?)?.toInt() ?? 0,
       chatLatestId: (j['chat_latest'] as num?)?.toInt() ?? 0,
+      fund: GuildFund.fromJson(j['fund'] as Map<String, dynamic>?),
       total: (j['total'] as num).toInt(),
       claimed: [for (final c in j['claimed'] as List) (c as num).toInt()],
       members: [
@@ -245,6 +269,9 @@ class MyGuild {
 
   /// Id tin chat mới nhất người này còn thấy (0 = chưa có / server cũ).
   final int chatLatestId;
+
+  /// Quỹ hội tuần này.
+  final GuildFund fund;
   final List<GuildMemberInfo> members;
 
   int pointsOf(String? userId) {
@@ -281,6 +308,10 @@ enum GuildFailure {
 
   /// Không đủ quyền với người này (vd. phó hội kick phó hội khác).
   notAllowed,
+
+  /// Quỹ hội chưa đạt mục tiêu / bạn chưa góp đủ mức tối thiểu.
+  fundNotReached,
+  fundDonationLow,
 
   /// Đã đủ số phó hội tối đa.
   officersFull,
@@ -319,6 +350,8 @@ GuildFailure guildFailureFromMessage(String message) {
   }
   if (m.contains('too many requests')) return GuildFailure.requestsFull;
   if (m.contains('not allowed')) return GuildFailure.notAllowed;
+  if (m.contains('goal not reached')) return GuildFailure.fundNotReached;
+  if (m.contains('fund donation too low')) return GuildFailure.fundDonationLow;
   if (m.contains('too many officers')) return GuildFailure.officersFull;
   if (m.contains('chat rate limited')) return GuildFailure.chatRateLimited;
   if (m.contains('text blocked')) return GuildFailure.textBlocked;
@@ -376,6 +409,9 @@ abstract class GuildRepository {
   /// Xu Hội (server giữ ví). Client trừ 💎 / cấp vật phẩm SAU KHI các lệnh này thành công.
   Future<void> donate(int gems);
   Future<void> claimQuest(int tier);
+
+  /// Nhận thưởng quỹ hội tuần (+[guildFundReward] Xu Hội, server giữ ví).
+  Future<void> claimFund();
   Future<void> buyItem(String itemId);
   Future<void> buyBuff();
 
@@ -537,6 +573,9 @@ class SupabaseGuildRepository implements GuildRepository {
 
   @override
   Future<void> donate(int gems) => _rpc('guild_donate', {'p_gems': gems});
+
+  @override
+  Future<void> claimFund() => _rpc('guild_claim_fund');
 
   @override
   Future<void> claimQuest(int tier) =>

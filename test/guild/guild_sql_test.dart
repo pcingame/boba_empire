@@ -133,6 +133,10 @@ void main() {
       expect(constant('guild_buff_max_hours'), guildBuffMaxHours);
       expect(constant('guild_avg_min_members'), guildAvgMinMembers);
       expect(constant('guild_max_officers'), guildMaxOfficers);
+      expect(constant('guild_fund_per_member'), guildFundPerMember);
+      expect(constant('guild_fund_min_target'), guildFundMinTarget);
+      expect(constant('guild_fund_reward'), guildFundReward);
+      expect(constant('guild_fund_min_donation'), guildFundMinDonation);
     });
 
     test('nhiệm vụ tuần: ngưỡng điểm và thưởng khớp từng bậc', () {
@@ -174,6 +178,7 @@ void main() {
         'guild_chat_delete(bigint)',
         'guild_chat_pin(bigint)',
         'guild_chat_report(bigint)',
+        'guild_claim_fund()',
       ]) {
         expect(sql.contains("'$fn'"), isTrue, reason: '$fn chưa cấp quyền');
       }
@@ -188,6 +193,7 @@ void main() {
         'guild_purchases',
         'guild_messages',
         'guild_message_reports',
+        'guild_fund_claims',
       ]) {
         expect(sql.contains(RegExp('alter table $t\\s+enable row level security')), isTrue,
             reason: t);

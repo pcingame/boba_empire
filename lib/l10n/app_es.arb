@@ -1299,6 +1299,59 @@
   "guildPromote": "Nombrar oficial",
   "guildDemote": "Quitar oficial",
   "guildTransfer": "Ceder el liderazgo",
+  "guildFundTitle": "Fondo del gremio de esta semana",
+  "guildFundMine": "Has aportado {n} 💎",
+  "@guildFundMine": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundClaim": "Reclamar {n} Monedas del Gremio",
+  "@guildFundClaim": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundHint": "Todos donan 💎 juntos para alcanzar la meta (crece con el número de miembros). Cada miembro debe aportar al menos {min} 💎 para reclamar la recompensa.",
+  "@guildFundHint": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundGot": "¡Has reclamado {n} Monedas del Gremio del fondo!",
+  "@guildFundGot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrFundNotReached": "El fondo del gremio aún no alcanza la meta.",
+  "guildErrFundLow": "Debes aportar al menos {n} 💎 al fondo para reclamar la recompensa.",
+  "@guildErrFundLow": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundProgress": "{progress} / {target} 💎",
+  "@guildFundProgress": {
+    "placeholders": {
+      "progress": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
   "guildTransferConfirm": "¿Ceder el liderazgo a {name}? Pasarás a ser miembro normal.",
   "@guildTransferConfirm": {
     "placeholders": {

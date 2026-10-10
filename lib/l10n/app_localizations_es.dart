@@ -2734,6 +2734,43 @@ class AppLocalizationsEs extends AppLocalizations {
   String get guildTransfer => 'Ceder el liderazgo';
 
   @override
+  String get guildFundTitle => 'Fondo del gremio de esta semana';
+
+  @override
+  String guildFundMine(int n) {
+    return 'Has aportado $n 💎';
+  }
+
+  @override
+  String guildFundClaim(int n) {
+    return 'Reclamar $n Monedas del Gremio';
+  }
+
+  @override
+  String guildFundHint(int min) {
+    return 'Todos donan 💎 juntos para alcanzar la meta (crece con el número de miembros). Cada miembro debe aportar al menos $min 💎 para reclamar la recompensa.';
+  }
+
+  @override
+  String guildFundGot(int n) {
+    return '¡Has reclamado $n Monedas del Gremio del fondo!';
+  }
+
+  @override
+  String get guildErrFundNotReached =>
+      'El fondo del gremio aún no alcanza la meta.';
+
+  @override
+  String guildErrFundLow(int n) {
+    return 'Debes aportar al menos $n 💎 al fondo para reclamar la recompensa.';
+  }
+
+  @override
+  String guildFundProgress(int progress, int target) {
+    return '$progress / $target 💎';
+  }
+
+  @override
   String guildTransferConfirm(String name) {
     return '¿Ceder el liderazgo a $name? Pasarás a ser miembro normal.';
   }

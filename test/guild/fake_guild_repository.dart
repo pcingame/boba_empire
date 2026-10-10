@@ -77,6 +77,14 @@ class FakeGuildRepository implements GuildRepository {
   }
 
   @override
+  Future<void> claimFund() async {
+    _hit('claimFund');
+    final g = mine!;
+    mine = withState(g, wallet: g.wallet + guildFundReward, fund: GuildFund(
+        progress: g.fund.progress, target: g.fund.target, mine: g.fund.mine, claimed: true));
+  }
+
+  @override
   Future<void> claimQuest(int tier) async {
     _hit('claimQuest');
     final g = mine!;
@@ -353,6 +361,7 @@ MyGuild fakeGuild({
   List<String> ownedItems = const [],
   int donatedToday = 0,
   int chatLatest = 0,
+  GuildFund fund = const GuildFund(),
 }) =>
     MyGuild(
       id: 'g1',
@@ -371,6 +380,7 @@ MyGuild fakeGuild({
       ownedItems: ownedItems,
       donatedToday: donatedToday,
       chatLatestId: chatLatest,
+      fund: fund,
       members: members ??
           const [
             GuildMemberInfo(userId: 'me', nickname: 'Alice', points: 400),
@@ -397,6 +407,7 @@ MyGuild withState(
   List<int>? questsClaimed,
   List<String>? ownedItems,
   int? donatedToday,
+  GuildFund? fund,
 }) =>
     MyGuild(
       id: g.id,
@@ -416,6 +427,7 @@ MyGuild withState(
       ownedItems: ownedItems ?? g.ownedItems,
       donatedToday: donatedToday ?? g.donatedToday,
       chatLatestId: g.chatLatestId,
+      fund: fund ?? g.fund,
     );
 
 /// Bản sao của [g] với danh sách thành viên (và chủ hội) đổi.
@@ -437,4 +449,5 @@ MyGuild withMembers(MyGuild g, List<GuildMemberInfo> members, {String? ownerId})
       ownedItems: g.ownedItems,
       donatedToday: g.donatedToday,
       chatLatestId: g.chatLatestId,
+      fund: g.fund,
     );

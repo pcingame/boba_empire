@@ -13,6 +13,17 @@ const int guildDonateDailyCap = 1000;
 /// Số 💎 gợi ý trên các nút nạp nhanh.
 const List<int> guildDonateChoices = [10, 50, 100, 500];
 
+/// Quỹ hội tuần: mục tiêu = [guildFundPerMember] 💎 × số thành viên (tối thiểu
+/// [guildFundMinTarget]); đạt thì mỗi người đã góp ≥ [guildFundMinDonation] 💎 nhận
+/// [guildFundReward] Xu Hội. Khớp `guild_fund_*` ở server.
+const int guildFundPerMember = 100;
+const int guildFundMinTarget = 500;
+const int guildFundReward = 200;
+const int guildFundMinDonation = 10;
+
+int guildFundTarget(int members) =>
+    members <= 0 ? guildFundMinTarget : (guildFundPerMember * members).clamp(guildFundMinTarget, 1 << 40);
+
 class GuildQuest {
   const GuildQuest(this.need, this.reward);
 

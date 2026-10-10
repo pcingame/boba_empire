@@ -1299,6 +1299,59 @@
   "guildPromote": "Appoint officer",
   "guildDemote": "Remove officer",
   "guildTransfer": "Transfer ownership",
+  "guildFundTitle": "This week's guild fund",
+  "guildFundMine": "You contributed {n} 💎",
+  "@guildFundMine": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundClaim": "Claim {n} Guild Coins",
+  "@guildFundClaim": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundHint": "Everyone donates 💎 together to hit the goal (it grows with member count). Each member must give at least {min} 💎 to claim the reward.",
+  "@guildFundHint": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundGot": "Claimed {n} Guild Coins from the fund!",
+  "@guildFundGot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrFundNotReached": "The guild fund hasn't reached its goal yet.",
+  "guildErrFundLow": "You need to give at least {n} 💎 to the fund to claim the reward.",
+  "@guildErrFundLow": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundProgress": "{progress} / {target} 💎",
+  "@guildFundProgress": {
+    "placeholders": {
+      "progress": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
   "guildTransferConfirm": "Transfer ownership to {name}? You'll become a regular member.",
   "@guildTransferConfirm": {
     "placeholders": {

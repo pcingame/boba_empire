@@ -1299,6 +1299,59 @@
   "guildPromote": "แต่งตั้งรองหัวหน้า",
   "guildDemote": "ปลดรองหัวหน้า",
   "guildTransfer": "โอนตำแหน่งหัวหน้า",
+  "guildFundTitle": "กองทุนกิลด์สัปดาห์นี้",
+  "guildFundMine": "คุณบริจาคแล้ว {n} 💎",
+  "@guildFundMine": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundClaim": "รับ {n} เหรียญกิลด์",
+  "@guildFundClaim": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundHint": "ทุกคนช่วยกันบริจาค 💎 ให้ถึงเป้าหมาย (เพิ่มตามจำนวนสมาชิก) สมาชิกแต่ละคนต้องบริจาคอย่างน้อย {min} 💎 จึงจะรับรางวัลได้",
+  "@guildFundHint": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundGot": "รับ {n} เหรียญกิลด์จากกองทุนแล้ว!",
+  "@guildFundGot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrFundNotReached": "กองทุนกิลด์ยังไม่ถึงเป้าหมาย",
+  "guildErrFundLow": "คุณต้องบริจาคให้กองทุนอย่างน้อย {n} 💎 จึงจะรับรางวัลได้",
+  "@guildErrFundLow": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundProgress": "{progress} / {target} 💎",
+  "@guildFundProgress": {
+    "placeholders": {
+      "progress": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
   "guildTransferConfirm": "โอนตำแหน่งหัวหน้าให้ {name}? คุณจะกลายเป็นสมาชิกทั่วไป",
   "@guildTransferConfirm": {
     "placeholders": {

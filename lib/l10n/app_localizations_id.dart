@@ -2720,6 +2720,42 @@ class AppLocalizationsId extends AppLocalizations {
   String get guildTransfer => 'Serahkan kepemimpinan';
 
   @override
+  String get guildFundTitle => 'Dana guild minggu ini';
+
+  @override
+  String guildFundMine(int n) {
+    return 'Kamu menyumbang $n 💎';
+  }
+
+  @override
+  String guildFundClaim(int n) {
+    return 'Klaim $n Koin Guild';
+  }
+
+  @override
+  String guildFundHint(int min) {
+    return 'Semua menyumbang 💎 bersama untuk mencapai target (naik sesuai jumlah anggota). Tiap anggota harus menyumbang minimal $min 💎 untuk klaim hadiah.';
+  }
+
+  @override
+  String guildFundGot(int n) {
+    return 'Berhasil klaim $n Koin Guild dari dana!';
+  }
+
+  @override
+  String get guildErrFundNotReached => 'Dana guild belum mencapai target.';
+
+  @override
+  String guildErrFundLow(int n) {
+    return 'Kamu harus menyumbang minimal $n 💎 ke dana untuk klaim hadiah.';
+  }
+
+  @override
+  String guildFundProgress(int progress, int target) {
+    return '$progress / $target 💎';
+  }
+
+  @override
   String guildTransferConfirm(String name) {
     return 'Serahkan kepemimpinan ke $name? Kamu akan menjadi anggota biasa.';
   }

@@ -2732,6 +2732,43 @@ class AppLocalizationsPt extends AppLocalizations {
   String get guildTransfer => 'Transferir liderança';
 
   @override
+  String get guildFundTitle => 'Fundo da guilda desta semana';
+
+  @override
+  String guildFundMine(int n) {
+    return 'Você contribuiu com $n 💎';
+  }
+
+  @override
+  String guildFundClaim(int n) {
+    return 'Receber $n Moedas da Guilda';
+  }
+
+  @override
+  String guildFundHint(int min) {
+    return 'Todos doam 💎 juntos para atingir a meta (cresce com o número de membros). Cada membro precisa doar pelo menos $min 💎 para receber a recompensa.';
+  }
+
+  @override
+  String guildFundGot(int n) {
+    return 'Você recebeu $n Moedas da Guilda do fundo!';
+  }
+
+  @override
+  String get guildErrFundNotReached =>
+      'O fundo da guilda ainda não atingiu a meta.';
+
+  @override
+  String guildErrFundLow(int n) {
+    return 'Você precisa doar pelo menos $n 💎 ao fundo para receber a recompensa.';
+  }
+
+  @override
+  String guildFundProgress(int progress, int target) {
+    return '$progress / $target 💎';
+  }
+
+  @override
   String guildTransferConfirm(String name) {
     return 'Transferir a liderança para $name? Você se tornará um membro comum.';
   }

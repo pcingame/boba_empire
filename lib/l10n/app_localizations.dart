@@ -4794,6 +4794,54 @@ abstract class AppLocalizations {
   /// **'Nhường chức chủ hội'**
   String get guildTransfer;
 
+  /// No description provided for @guildFundTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quỹ hội tuần này'**
+  String get guildFundTitle;
+
+  /// No description provided for @guildFundMine.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã góp {n} 💎'**
+  String guildFundMine(int n);
+
+  /// No description provided for @guildFundClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {n} Xu Hội'**
+  String guildFundClaim(int n);
+
+  /// No description provided for @guildFundHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cả hội cùng nạp 💎 để đạt mục tiêu (tăng theo số thành viên). Mỗi người cần góp ít nhất {min} 💎 mới nhận được thưởng.'**
+  String guildFundHint(int min);
+
+  /// No description provided for @guildFundGot.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận {n} Xu Hội từ quỹ hội!'**
+  String guildFundGot(int n);
+
+  /// No description provided for @guildErrFundNotReached.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quỹ hội chưa đạt mục tiêu.'**
+  String get guildErrFundNotReached;
+
+  /// No description provided for @guildErrFundLow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn cần góp ít nhất {n} 💎 vào quỹ để nhận thưởng.'**
+  String guildErrFundLow(int n);
+
+  /// No description provided for @guildFundProgress.
+  ///
+  /// In vi, this message translates to:
+  /// **'{progress} / {target} 💎'**
+  String guildFundProgress(int progress, int target);
+
   /// No description provided for @guildTransferConfirm.
   ///
   /// In vi, this message translates to:

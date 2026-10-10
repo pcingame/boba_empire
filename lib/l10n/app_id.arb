@@ -1299,6 +1299,59 @@
   "guildPromote": "Angkat perwira",
   "guildDemote": "Copot perwira",
   "guildTransfer": "Serahkan kepemimpinan",
+  "guildFundTitle": "Dana guild minggu ini",
+  "guildFundMine": "Kamu menyumbang {n} 💎",
+  "@guildFundMine": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundClaim": "Klaim {n} Koin Guild",
+  "@guildFundClaim": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundHint": "Semua menyumbang 💎 bersama untuk mencapai target (naik sesuai jumlah anggota). Tiap anggota harus menyumbang minimal {min} 💎 untuk klaim hadiah.",
+  "@guildFundHint": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundGot": "Berhasil klaim {n} Koin Guild dari dana!",
+  "@guildFundGot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrFundNotReached": "Dana guild belum mencapai target.",
+  "guildErrFundLow": "Kamu harus menyumbang minimal {n} 💎 ke dana untuk klaim hadiah.",
+  "@guildErrFundLow": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundProgress": "{progress} / {target} 💎",
+  "@guildFundProgress": {
+    "placeholders": {
+      "progress": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
   "guildTransferConfirm": "Serahkan kepemimpinan ke {name}? Kamu akan menjadi anggota biasa.",
   "@guildTransferConfirm": {
     "placeholders": {

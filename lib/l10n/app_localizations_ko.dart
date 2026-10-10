@@ -2676,6 +2676,42 @@ class AppLocalizationsKo extends AppLocalizations {
   String get guildTransfer => '길드장 위임';
 
   @override
+  String get guildFundTitle => '이번 주 길드 기금';
+
+  @override
+  String guildFundMine(int n) {
+    return '내가 기부한 💎 $n개';
+  }
+
+  @override
+  String guildFundClaim(int n) {
+    return '길드 코인 $n개 받기';
+  }
+
+  @override
+  String guildFundHint(int min) {
+    return '모두 함께 💎를 기부해 목표를 달성하세요(멤버 수에 따라 늘어나요). 보상을 받으려면 각자 최소 💎 $min개를 기부해야 해요.';
+  }
+
+  @override
+  String guildFundGot(int n) {
+    return '기금에서 길드 코인 $n개를 받았어요!';
+  }
+
+  @override
+  String get guildErrFundNotReached => '길드 기금이 아직 목표에 도달하지 못했어요.';
+
+  @override
+  String guildErrFundLow(int n) {
+    return '보상을 받으려면 기금에 최소 💎 $n개를 기부해야 해요.';
+  }
+
+  @override
+  String guildFundProgress(int progress, int target) {
+    return '$progress / $target 💎';
+  }
+
+  @override
   String guildTransferConfirm(String name) {
     return '$name 님에게 길드장을 위임할까요? 일반 멤버가 됩니다.';
   }

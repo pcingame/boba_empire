@@ -9,6 +9,7 @@ import '../core/balance.dart';
 import '../core/format.dart';
 import '../core/guild_shop.dart';
 import '../guild/guild_controller.dart';
+import '../guild/guild_repository.dart' show GuildFund;
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
@@ -80,6 +81,14 @@ class _Body extends ConsumerWidget {
             ],
           ),
         ),
+        if (g.fund.available) ...[
+          const SizedBox(height: 12),
+          _FundCard(
+            fund: g.fund,
+            onClaim: () => _run(context, ctrl.claimFund(),
+                (l) => l.guildFundGot(guildFundReward)),
+          ),
+        ],
         const SizedBox(height: 12),
         Text(l10n.guildDonateTitle,
             style: theme.textTheme.titleSmall
@@ -254,6 +263,59 @@ class _QuestRow extends StatelessWidget {
                 child: Text(claimed
                     ? l10n.dailyQuestClaimed
                     : l10n.guildQuestReward(quest.reward)),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Quỹ hội tuần: thanh tiến độ chung, phần mình đã góp, nút nhận thưởng.
+class _FundCard extends StatelessWidget {
+  const _FundCard({required this.fund, required this.onClaim});
+
+  final GuildFund fund;
+  final VoidCallback onClaim;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final canClaim = fund.reached && !fund.claimed && fund.mine >= guildFundMinDonation;
+    return ClayTile(
+      key: const Key('guild-fund-card'),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l10n.guildFundTitle,
+              style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(5),
+            child: LinearProgressIndicator(
+              key: const Key('guild-fund-bar'),
+              value: (fund.progress / fund.target).clamp(0.0, 1.0).toDouble(),
+              minHeight: 8,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(l10n.guildFundProgress(fund.progress, fund.target),
+              key: const Key('guild-fund-progress'),
+              style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+          Text(l10n.guildFundMine(fund.mine), style: theme.textTheme.bodySmall),
+          const SizedBox(height: 4),
+          Text(l10n.guildFundHint(guildFundMinDonation), style: theme.textTheme.bodySmall),
+          const SizedBox(height: 8),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton(
+              key: const Key('guild-fund-claim'),
+              onPressed: canClaim ? onClaim : null,
+              child: Text(
+                fund.claimed ? l10n.dailyQuestClaimed : l10n.guildFundClaim(guildFundReward),
+                textAlign: TextAlign.center,
               ),
             ),
           ),

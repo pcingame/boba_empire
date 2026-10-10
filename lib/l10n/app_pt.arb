@@ -1299,6 +1299,59 @@
   "guildPromote": "Nomear oficial",
   "guildDemote": "Remover oficial",
   "guildTransfer": "Transferir liderança",
+  "guildFundTitle": "Fundo da guilda desta semana",
+  "guildFundMine": "Você contribuiu com {n} 💎",
+  "@guildFundMine": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundClaim": "Receber {n} Moedas da Guilda",
+  "@guildFundClaim": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundHint": "Todos doam 💎 juntos para atingir a meta (cresce com o número de membros). Cada membro precisa doar pelo menos {min} 💎 para receber a recompensa.",
+  "@guildFundHint": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundGot": "Você recebeu {n} Moedas da Guilda do fundo!",
+  "@guildFundGot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrFundNotReached": "O fundo da guilda ainda não atingiu a meta.",
+  "guildErrFundLow": "Você precisa doar pelo menos {n} 💎 ao fundo para receber a recompensa.",
+  "@guildErrFundLow": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundProgress": "{progress} / {target} 💎",
+  "@guildFundProgress": {
+    "placeholders": {
+      "progress": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
   "guildTransferConfirm": "Transferir a liderança para {name}? Você se tornará um membro comum.",
   "@guildTransferConfirm": {
     "placeholders": {

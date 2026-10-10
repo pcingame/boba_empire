@@ -278,6 +278,7 @@ void main() {
       buffSeconds: 5400,
       wallet: 1234,
       donatedToday: 250,
+      fund: const GuildFund(progress: 1840, target: 2800, mine: 140),
       claimed: const [1],
       ownedItems: const ['guild_flag'],
       requiresApproval: true,

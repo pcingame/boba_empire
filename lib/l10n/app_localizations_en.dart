@@ -2726,6 +2726,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String get guildTransfer => 'Transfer ownership';
 
   @override
+  String get guildFundTitle => 'This week\'s guild fund';
+
+  @override
+  String guildFundMine(int n) {
+    return 'You contributed $n 💎';
+  }
+
+  @override
+  String guildFundClaim(int n) {
+    return 'Claim $n Guild Coins';
+  }
+
+  @override
+  String guildFundHint(int min) {
+    return 'Everyone donates 💎 together to hit the goal (it grows with member count). Each member must give at least $min 💎 to claim the reward.';
+  }
+
+  @override
+  String guildFundGot(int n) {
+    return 'Claimed $n Guild Coins from the fund!';
+  }
+
+  @override
+  String get guildErrFundNotReached =>
+      'The guild fund hasn\'t reached its goal yet.';
+
+  @override
+  String guildErrFundLow(int n) {
+    return 'You need to give at least $n 💎 to the fund to claim the reward.';
+  }
+
+  @override
+  String guildFundProgress(int progress, int target) {
+    return '$progress / $target 💎';
+  }
+
+  @override
   String guildTransferConfirm(String name) {
     return 'Transfer ownership to $name? You\'ll become a regular member.';
   }

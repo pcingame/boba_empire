@@ -226,6 +226,8 @@ class GuildController extends Notifier<GuildViewState> {
   }
 
   /// Nhận thưởng nhiệm vụ hội tuần [index] (0-based) → Xu Hội cộng ở server.
+  Future<GuildOutcome> claimFund() => _act(_repo.claimFund);
+
   Future<GuildOutcome> claimQuest(int index) async {
     if (index < 0 || index >= guildQuests.length) {
       return const GuildOutcome(failure: GuildFailure.invalidInput);

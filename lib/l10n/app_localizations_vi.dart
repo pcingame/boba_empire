@@ -2715,6 +2715,42 @@ class AppLocalizationsVi extends AppLocalizations {
   String get guildTransfer => 'Nhường chức chủ hội';
 
   @override
+  String get guildFundTitle => 'Quỹ hội tuần này';
+
+  @override
+  String guildFundMine(int n) {
+    return 'Bạn đã góp $n 💎';
+  }
+
+  @override
+  String guildFundClaim(int n) {
+    return 'Nhận $n Xu Hội';
+  }
+
+  @override
+  String guildFundHint(int min) {
+    return 'Cả hội cùng nạp 💎 để đạt mục tiêu (tăng theo số thành viên). Mỗi người cần góp ít nhất $min 💎 mới nhận được thưởng.';
+  }
+
+  @override
+  String guildFundGot(int n) {
+    return 'Đã nhận $n Xu Hội từ quỹ hội!';
+  }
+
+  @override
+  String get guildErrFundNotReached => 'Quỹ hội chưa đạt mục tiêu.';
+
+  @override
+  String guildErrFundLow(int n) {
+    return 'Bạn cần góp ít nhất $n 💎 vào quỹ để nhận thưởng.';
+  }
+
+  @override
+  String guildFundProgress(int progress, int target) {
+    return '$progress / $target 💎';
+  }
+
+  @override
   String guildTransferConfirm(String name) {
     return 'Nhường chức chủ hội cho $name? Bạn sẽ trở thành thành viên thường.';
   }

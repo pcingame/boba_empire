@@ -937,6 +937,59 @@
   "guildPromote": "부길드장 임명",
   "guildDemote": "부길드장 해임",
   "guildTransfer": "길드장 위임",
+  "guildFundTitle": "이번 주 길드 기금",
+  "guildFundMine": "내가 기부한 💎 {n}개",
+  "@guildFundMine": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundClaim": "길드 코인 {n}개 받기",
+  "@guildFundClaim": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundHint": "모두 함께 💎를 기부해 목표를 달성하세요(멤버 수에 따라 늘어나요). 보상을 받으려면 각자 최소 💎 {min}개를 기부해야 해요.",
+  "@guildFundHint": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundGot": "기금에서 길드 코인 {n}개를 받았어요!",
+  "@guildFundGot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrFundNotReached": "길드 기금이 아직 목표에 도달하지 못했어요.",
+  "guildErrFundLow": "보상을 받으려면 기금에 최소 💎 {n}개를 기부해야 해요.",
+  "@guildErrFundLow": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundProgress": "{progress} / {target} 💎",
+  "@guildFundProgress": {
+    "placeholders": {
+      "progress": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
   "guildTransferConfirm": "{name} 님에게 길드장을 위임할까요? 일반 멤버가 됩니다.",
   "@guildTransferConfirm": {
     "placeholders": {

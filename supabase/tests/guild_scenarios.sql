@@ -781,4 +781,66 @@ insert into guild_events (guild_id, kind, actor) select :'gl'::uuid, 'joined', '
 select guild_log_event(:'gl'::uuid, 'left', 'y', null);
 select t_eq('giữ đúng 50 sự kiện', (select count(*) from guild_events where guild_id = :'gl'::uuid), 50::bigint);
 
+-- ===== 21. Quỹ hội tuần ==================================================
+select t_as(u(30)); select guild_create('Fund Club', 'fc', '💰', false, 'F0', 0) as gf \gset
+select t_as(u(31)); select guild_join(:'gf'::uuid, 'F1', 0);
+select t_as(u(32)); select guild_join(:'gf'::uuid, 'F2', 0);
+select t_as(u(33)); select guild_join(:'gf'::uuid, 'F3', 0);
+select t_as(u(30));
+select t_eq('quỹ: tiến độ 0', (guild_my()->'fund'->>'progress')::bigint, 0::bigint);
+select t_eq('quỹ: 4 người → mục tiêu tối thiểu 500', (guild_my()->'fund'->>'target')::bigint, 500::bigint);
+select t_eq('quỹ: chưa góp', (guild_my()->'fund'->>'mine')::bigint, 0::bigint);
+select t_eq('quỹ: chưa nhận', (guild_my()->'fund'->>'claimed')::boolean, false);
+select t_err($$select guild_claim_fund()$$, 'goal not reached');
+select guild_donate(300);
+select t_as(u(31)); select guild_donate(150);
+select t_as(u(32)); select guild_donate(5);
+select t_eq('quỹ: cộng dồn mọi thành viên', (guild_my()->'fund'->>'progress')::bigint, 455::bigint);
+select t_eq('quỹ: phần của tôi', (guild_my()->'fund'->>'mine')::bigint, 5::bigint);
+select t_err($$select guild_claim_fund()$$, 'goal not reached');
+select t_as(u(33)); select guild_donate(50);
+select t_eq('quỹ: đạt mục tiêu', (guild_my()->'fund'->>'progress')::bigint, 505::bigint);
+-- Góp quá ít → không nhận được dù quỹ đạt.
+select t_as(u(32));
+select t_err($$select guild_claim_fund()$$, 'fund donation too low');
+-- Nhận: +200 Xu Hội, chỉ một lần.
+select t_as(u(33));
+select t_eq('ví trước khi nhận', (guild_my()->>'wallet')::bigint, 50::bigint);
+select t_eq('nhận quỹ trả về số dư mới', guild_claim_fund(), 250::bigint);
+select t_eq('ví sau khi nhận +200', (guild_my()->>'wallet')::bigint, 250::bigint);
+select t_eq('đã nhận → claimed = true', (guild_my()->'fund'->>'claimed')::boolean, true);
+select t_err($$select guild_claim_fund()$$, 'already claimed');
+select t_as(u(30)); select guild_claim_fund();
+select t_eq('người khác trong hội vẫn nhận độc lập', (guild_my()->'fund'->>'claimed')::boolean, true);
+-- Mục tiêu tăng theo số thành viên: 6 người → 600 > 505.
+select t_as(u(34)); select guild_join(:'gf'::uuid, 'F4', 0);
+select t_as(u(35)); select guild_join(:'gf'::uuid, 'F5', 0);
+select t_eq('quỹ: 6 người → mục tiêu 600', (guild_my()->'fund'->>'target')::bigint, 600::bigint);
+select t_as(u(31));
+select t_err($$select guild_claim_fund()$$, 'goal not reached');
+-- Chỉ tính 💎 góp SAU khi vào hội hiện tại: nạp "trước ngày vào" (giả lập) không tính.
+reset role;
+update guild_members set joined_at = now() + interval '2 days' where user_id = u(34);
+insert into guild_donations (user_id, day, gems) values (u(34), (now() at time zone 'utc')::date, 400)
+  on conflict (user_id, day) do update set gems = 400;
+select t_as(u(35));
+select t_eq('💎 nạp trước ngày vào hội không tính', (guild_my()->'fund'->>'progress')::bigint, 505::bigint);
+select t_eq('phần của người chưa góp', (guild_my()->'fund'->>'mine')::bigint, 0::bigint);
+-- 💎 của tuần trước không tính.
+reset role;
+insert into guild_donations (user_id, day, gems) values (u(30), guild_current_week() - 1, 9999);
+select t_as(u(30));
+select t_eq('💎 tuần trước không tính', (guild_my()->'fund'->>'progress')::bigint, 505::bigint);
+-- Hội khác không bị lẫn; người ngoài hội không nhận được; bảo mật.
+select t_as(u(63));
+select t_eq('hội khác: quỹ riêng', (guild_my()->'fund'->>'progress')::bigint, 0::bigint);
+select t_as(u(57));
+select t_err($$select guild_claim_fund()$$, 'not in guild');
+select t_eq('không đọc thẳng bảng nhận quỹ', (select count(*) from guild_fund_claims), 0::bigint);
+select t_err(format($$select guild_fund_progress(%L::uuid)$$, :'gf'), 'permission denied');
+select t_err(format($$select guild_fund_donated(%L::uuid)$$, u(30)), 'permission denied');
+select t_as(null);
+select t_err($$select guild_claim_fund()$$, 'permission denied');
+reset role;
+
 select 'ALL GUILD SQL SCENARIOS PASSED' as result;

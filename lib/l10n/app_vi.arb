@@ -1755,6 +1755,59 @@
   "guildPromote": "Bổ nhiệm phó hội",
   "guildDemote": "Bãi nhiệm phó hội",
   "guildTransfer": "Nhường chức chủ hội",
+  "guildFundTitle": "Quỹ hội tuần này",
+  "guildFundMine": "Bạn đã góp {n} 💎",
+  "@guildFundMine": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundClaim": "Nhận {n} Xu Hội",
+  "@guildFundClaim": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundHint": "Cả hội cùng nạp 💎 để đạt mục tiêu (tăng theo số thành viên). Mỗi người cần góp ít nhất {min} 💎 mới nhận được thưởng.",
+  "@guildFundHint": {
+    "placeholders": {
+      "min": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundGot": "Đã nhận {n} Xu Hội từ quỹ hội!",
+  "@guildFundGot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildErrFundNotReached": "Quỹ hội chưa đạt mục tiêu.",
+  "guildErrFundLow": "Bạn cần góp ít nhất {n} 💎 vào quỹ để nhận thưởng.",
+  "@guildErrFundLow": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildFundProgress": "{progress} / {target} 💎",
+  "@guildFundProgress": {
+    "placeholders": {
+      "progress": {
+        "type": "int"
+      },
+      "target": {
+        "type": "int"
+      }
+    }
+  },
   "guildTransferConfirm": "Nhường chức chủ hội cho {name}? Bạn sẽ trở thành thành viên thường.",
   "@guildTransferConfirm": {
     "placeholders": {
