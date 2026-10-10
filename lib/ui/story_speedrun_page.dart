@@ -239,7 +239,9 @@ class _SpeedrunList extends ConsumerWidget {
                               ),
                             ),
                             Expanded(
-                              child: Row(
+                              child: VipNameBlock(
+ userId: entry.userId,
+ child: Row(
                                 children: [
                                   FlairBadge(userId: entry.userId),
                                   Flexible(
@@ -251,6 +253,7 @@ class _SpeedrunList extends ConsumerWidget {
                                   ),
                                 ],
                               ),
+),
                             ),
                             Flexible(
                               child: Text(

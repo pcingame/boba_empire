@@ -188,7 +188,9 @@ class _ArenaLeaderboardList extends ConsumerWidget {
                             ),
                             const SizedBox(width: 8),
                             Expanded(
-                              child: Row(
+                              child: VipNameBlock(
+ userId: entry.userId,
+ child: Row(
                                 children: [
                                   FlairBadge(userId: entry.userId),
                                   Flexible(
@@ -200,6 +202,7 @@ class _ArenaLeaderboardList extends ConsumerWidget {
                                   ),
                                 ],
                               ),
+),
                             ),
                             // Flexible + ellipsis: cùng lớp bug RenderFlex overflow
                             // đã gặp ở _ShopTile (xem shop-tile-overflow-pattern

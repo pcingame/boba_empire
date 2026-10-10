@@ -29,6 +29,7 @@ import '../notify/reminders.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
 import '../leaderboard/flair.dart';
+import '../leaderboard/vip_presence.dart';
 import 'accessory_inventory_page.dart';
 import 'accessory_market_page.dart';
 import 'whats_new_dialog.dart';
@@ -105,6 +106,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage>
     with WidgetsBindingObserver {
   StreamSubscription<IapProduct>? _iapSub;
+  Timer? _vipPingTimer;
 
   @override
   void initState() {
@@ -121,6 +123,7 @@ class _HomePageState extends ConsumerState<HomePage>
           ref.read(sharedPreferencesProvider).containsKey(GameStorage.saveKey);
       // Khôi phục sản phẩm non-consumable (Gỡ QC / Gói khởi động) đã mua.
       unawaited(ref.read(iapServiceProvider).restore());
+      _startVipPresence();
       final state = ref.read(gameControllerProvider);
       // Buff thu nhập cả hội (nếu đang ở hội): áp ngay lúc mở app, không cần mở màn Hội.
       unawaited(ref.read(guildControllerProvider.notifier).syncBuff());
@@ -193,8 +196,32 @@ class _HomePageState extends ConsumerState<HomePage>
   @override
   void dispose() {
     _iapSub?.cancel();
+    _vipPingTimer?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  /// VIP ≥ cấp 5: báo mình online (mở app, mỗi 4 phút) và nghe banner khi VIP khác vào
+  /// game. Mọi lỗi mạng/Supabase được nuốt trong VipPresence.
+  void _startVipPresence() {
+    final presence = ref.read(vipPresenceProvider);
+    presence.listen(_showVipBanner);
+    unawaited(presence.ping());
+    _vipPingTimer = Timer.periodic(const Duration(minutes: 4), (_) {
+      if (mounted) unawaited(ref.read(vipPresenceProvider).ping());
+    });
+  }
+
+  void _showVipBanner(VipAnnouncement a) {
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context)!;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        key: const Key('vip-online-banner'),
+        content: Text(l10n.vipOnlineBanner(vipName(l10n, a.level), a.nickname)),
+        duration: const Duration(seconds: 4),
+      ),
+    );
   }
 
   /// Trao thưởng cho một sản phẩm vừa mua/khôi phục. Idempotent: không báo trùng
@@ -269,6 +296,7 @@ class _HomePageState extends ConsumerState<HomePage>
       case AppLifecycleState.resumed:
         controller.handleResume(); // bù tiền cho lúc ở nền
         unawaited(ref.read(guildControllerProvider.notifier).syncBuff());
+        unawaited(ref.read(vipPresenceProvider).ping());
         Reminders.cancelAll(); // đã mở app rồi thì nhắc nữa là phiền
         // Xin quyền thông báo ở lần quay lại đầu tiên: lúc này app đang hiện
         // (dialog hệ thống mới bật được) và người chơi đã chơi ít nhất 1 phiên,

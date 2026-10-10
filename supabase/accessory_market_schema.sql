@@ -574,16 +574,101 @@ $$;
 revoke all on function submit_vip_exp(text, bigint) from public, anon;
 grant execute on function submit_vip_exp(text, bigint) to authenticated;
 
+-- Hiện diện + thông báo online cho VIP từ cấp 5 (vipTitleMinLevel bên Dart; test khớp).
+-- vip_ping (client gọi lúc mở app và mỗi vài phút) ghi last_seen; lần đầu trong 1 giờ
+-- thì chèn một dòng vip_announcements → mọi client đang mở app nhận qua realtime và
+-- hiện banner. "Online" = last_seen trong 5 phút gần nhất. Cấp lấy từ vip_level (client
+-- tự khai, làm giả được — chỉ là banner/chấm xanh).
+create table if not exists vip_presence (
+  user_id         uuid primary key references auth.users(id) on delete cascade,
+  last_seen       timestamptz not null default now(),
+  last_announced  timestamptz
+);
+
+alter table vip_presence enable row level security;
+-- Không policy nào: đọc/ghi chỉ qua RPC.
+
+create table if not exists vip_announcements (
+  id          bigint generated always as identity primary key,
+  user_id     uuid not null references auth.users(id) on delete cascade,
+  nickname    text not null,
+  level       smallint not null,
+  created_at  timestamptz not null default now()
+);
+
+alter table vip_announcements enable row level security;
+drop policy if exists vip_announcements_select_all on vip_announcements;
+create policy vip_announcements_select_all on vip_announcements
+  for select to anon, authenticated using (true);
+grant select on vip_announcements to anon, authenticated;
+
+do $$
+begin
+  if not exists (
+    select 1 from pg_publication_tables
+    where pubname = 'supabase_realtime' and tablename = 'vip_announcements'
+  ) then
+    alter publication supabase_realtime add table vip_announcements;
+  end if;
+end $$;
+
+-- Trả true nếu vừa phát thông báo (tối đa 1 lần/giờ/người).
+create or replace function vip_ping(p_nickname text)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_name text := btrim(coalesce(p_nickname, ''));
+  v_level integer;
+  v_last timestamptz;
+begin
+  if auth.uid() is null then
+    raise exception 'not authenticated';
+  end if;
+  select level into v_level from vip_level where user_id = auth.uid();
+  if v_level is null or v_level < 5 then
+    return false;
+  end if;
+  if char_length(v_name) not between 1 and 20 then
+    raise exception 'bad nickname';
+  end if;
+  insert into vip_presence (user_id, last_seen)
+  values (auth.uid(), now())
+  on conflict (user_id) do update set last_seen = now();
+  select last_announced into v_last from vip_presence where user_id = auth.uid();
+  if v_last is not null and v_last > now() - interval '1 hour' then
+    return false;
+  end if;
+  update vip_presence set last_announced = now() where user_id = auth.uid();
+  delete from vip_announcements where created_at < now() - interval '1 day';
+  insert into vip_announcements (user_id, nickname, level)
+  values (auth.uid(), v_name, v_level);
+  return true;
+end;
+$$;
+
+revoke all on function vip_ping(text) from public, anon;
+grant execute on function vip_ping(text) to authenticated;
+
+-- Đổi cột trả về (thêm user_id, online) → drop hàm cũ.
+drop function if exists vip_leaderboard_top(integer);
+
 create or replace function vip_leaderboard_top(p_limit integer default 50)
-returns table (rank bigint, nickname text, vip_exp bigint, level integer)
+returns table (rank bigint, user_id uuid, nickname text, vip_exp bigint,
+               level integer, online boolean)
 language sql
 stable
 security definer
 set search_path = public
 as $$
   select row_number() over (order by e.vip_exp desc, e.updated_at asc),
-         e.nickname, e.vip_exp, vip_level_for_exp(e.vip_exp)
+         e.user_id, e.nickname, e.vip_exp, vip_level_for_exp(e.vip_exp),
+         coalesce(p.last_seen > now() - interval '5 minutes', false)
+         and vip_level_for_exp(e.vip_exp) >= 5
   from vip_leaderboard_entries e
+  left join vip_presence p on p.user_id = e.user_id
   order by e.vip_exp desc, e.updated_at asc
   limit least(greatest(p_limit, 1), 100);
 $$;
@@ -592,10 +677,11 @@ grant execute on function vip_leaderboard_top(integer) to anon, authenticated;
 
 -- Đổi cột trả về → phải drop hàm cũ. Bản app cũ chỉ đọc user_id/accessory_id
 -- (accessory_id có thể null với người chỉ có VIP → bỏ qua), nên vẫn tương thích.
+-- Thêm cột online (VIP ≥ 5 đang hiện diện).
 drop function if exists accessory_flairs(uuid[]);
 
 create or replace function accessory_flairs(p_user_ids uuid[])
-returns table (user_id uuid, accessory_id text, vip_level integer)
+returns table (user_id uuid, accessory_id text, vip_level integer, online boolean)
 language sql
 stable
 security definer
@@ -603,7 +689,9 @@ set search_path = public
 as $$
   select u.id,
          f.accessory_id,
-         v.level::integer
+         v.level::integer,
+         coalesce(p.last_seen > now() - interval '5 minutes', false)
+           and coalesce(v.level, 0) >= 5
   from unnest(p_user_ids[1:100]) as u(id)
   left join accessory_flair f
     on f.user_id = u.id
@@ -612,6 +700,7 @@ as $$
      where o.user_id = f.user_id and o.accessory_id = f.accessory_id
    )
   left join vip_level v on v.user_id = u.id
+  left join vip_presence p on p.user_id = u.id
   where f.accessory_id is not null or v.level is not null;
 $$;
 

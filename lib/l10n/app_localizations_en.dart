@@ -750,7 +750,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vipHtp1 =>
-      '👑 VIP has 10 levels, each with a title. Your level shows as a \"VIP n\" tag next to your name on leaderboards and in your Guild.';
+      '👑 VIP has 10 levels, each with a title. Your level shows as a \"VIP n\" tag next to your name on leaderboards and in your Guild. From VIP 5, your name gets a title line on every leaderboard, a green dot while you\'re online, and everyone online sees a banner when you join.';
 
   @override
   String vipHtp2(Object cap, Object exp, Object gems) {
@@ -772,6 +772,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vipHtp6 => '📍 Open it from the 💎 Shop → 👑 button.';
+
+  @override
+  String get vipLbTitle => 'VIP leaderboard';
+
+  @override
+  String get vipLbEmpty => 'Nobody is on the VIP leaderboard yet.';
+
+  @override
+  String get vipLbNoVip => 'Reach VIP 1 to get on the VIP leaderboard.';
+
+  @override
+  String vipLbExp(Object exp) {
+    return '$exp EXP';
+  }
+
+  @override
+  String vipOnlineBanner(Object nickname, Object title) {
+    return '👑 $title $nickname just came online!';
+  }
+
+  @override
+  String get vipLbOpen => 'VIP leaderboard';
 
   @override
   String get rewardsTitle => 'Earn more 🎁';

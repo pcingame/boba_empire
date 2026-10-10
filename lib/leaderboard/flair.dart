@@ -12,6 +12,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../core/accessories.dart';
 import '../core/topup.dart';
+import '../l10n/app_localizations.dart';
+import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 
 /// userId -> emoji ('' = không có huy hiệu / chưa tải được).
@@ -32,7 +34,23 @@ class VipLevels extends Notifier<Map<String, int>> {
   void merge(Map<String, int> found) => state = {...state, ...found};
 }
 
+/// userId -> VIP ≥ cấp 5 đang hiện diện (ping trong 5 phút gần nhất). Ghi bởi
+/// [FlairCache] cùng lần gọi RPC; người không có khoá = không online.
+final vipOnlineProvider = NotifierProvider<VipOnline, Map<String, bool>>(
+  VipOnline.new,
+);
+
+class VipOnline extends Notifier<Map<String, bool>> {
+  @override
+  Map<String, bool> build() => const {};
+
+  void merge(Map<String, bool> found) => state = {...state, ...found};
+}
+
 class FlairCache extends Notifier<Map<String, String>> {
+  /// Hiện diện đổi theo phút nên thông tin đã tải được coi là cũ sau chừng này.
+  static const _ttl = Duration(minutes: 2);
+  final _fetchedAt = <String, DateTime>{};
   final _pending = <String>{};
   Timer? _timer;
 
@@ -44,7 +62,10 @@ class FlairCache extends Notifier<Map<String, String>> {
 
   /// Xếp [userId] vào hàng đợi nếu chưa biết; gọi trong build() là an toàn.
   void ensure(String userId) {
-    if (state.containsKey(userId) || !_pending.add(userId)) return;
+    // Chưa từng tải (do seed/test) → coi là mới; đã tải mà cũ → tải lại để cập nhật online.
+    final at = _fetchedAt[userId];
+    final fresh = at == null || DateTime.now().difference(at) < _ttl;
+    if ((state.containsKey(userId) && fresh) || !_pending.add(userId)) return;
     _timer ??= Timer(const Duration(milliseconds: 50), _flush);
   }
 
@@ -114,6 +135,7 @@ class FlairCache extends Notifier<Map<String, String>> {
     _pending.removeAll(ids);
     final found = <String, String>{};
     final vips = <String, int>{};
+    final online = <String, bool>{};
     try {
       final rows = await Supabase.instance.client.rpc(
         'accessory_flairs',
@@ -124,11 +146,19 @@ class FlairCache extends Notifier<Map<String, String>> {
         if (emoji != null) found[r['user_id'] as String] = emoji;
         final vip = r['vip_level'];
         if (vip is num && vip > 0) vips[r['user_id'] as String] = vip.toInt();
+        if (r['online'] == true) online[r['user_id'] as String] = true;
       }
     } catch (_) {
       // Không có mạng/Supabase: hiện như chưa có huy hiệu, không thử lại ồ ạt.
     }
     ref.read(vipLevelProvider.notifier).merge(vips);
+    ref.read(vipOnlineProvider.notifier).merge({
+      for (final id in ids) id: online[id] ?? false,
+    });
+    final now = DateTime.now();
+    for (final id in ids) {
+      _fetchedAt[id] = now;
+    }
     state = {...state, for (final id in ids) id: found[id] ?? ''};
     if (_pending.isNotEmpty) _timer = Timer(Duration.zero, _flush);
   }
@@ -152,15 +182,17 @@ class FlairBadge extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final emoji = ref.watch(flairCacheProvider.select((m) => m[userId]));
-    if (emoji == null) {
-      Future.microtask(() {
-        // Widget có thể đã bị gỡ trước khi microtask chạy → ref đã dispose.
-        if (context.mounted) {
-          ref.read(flairCacheProvider.notifier).ensure(userId);
-        }
-      });
-    }
+    // Luôn hỏi cache: chưa có thì xếp hàng tải, có rồi mà cũ (hiện diện đổi theo
+    // phút) thì tải lại. ensure() thoát sớm nếu còn mới nên rẻ.
+    Future.microtask(() {
+      // Widget có thể đã bị gỡ trước khi microtask chạy → ref đã dispose.
+      if (context.mounted) {
+        ref.read(flairCacheProvider.notifier).ensure(userId);
+      }
+    });
     final vip = ref.watch(vipLevelProvider.select((m) => m[userId])) ?? 0;
+    final online =
+        ref.watch(vipOnlineProvider.select((m) => m[userId] ?? false));
     final hasEmoji = emoji != null && emoji.isNotEmpty;
     if (!hasEmoji && vip <= 0) return const SizedBox.shrink();
     return Padding(
@@ -168,6 +200,7 @@ class FlairBadge extends ConsumerWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (online) const _OnlineDot(),
           if (vip > 0) VipTag(level: vip, key: const Key('vip-badge')),
           if (vip > 0 && hasEmoji) const SizedBox(width: 3),
           if (hasEmoji) Text(emoji, key: const Key('flair-badge')),
@@ -198,5 +231,64 @@ class VipTag extends StatelessWidget {
             height: 1.2,
           ),
         ),
+      );
+}
+
+/// Chấm xanh "đang online" của VIP ≥ cấp 5.
+class _OnlineDot extends StatelessWidget {
+  const _OnlineDot();
+
+  @override
+  Widget build(BuildContext context) => Container(
+        key: const Key('vip-online-dot'),
+        width: 8,
+        height: 8,
+        margin: const EdgeInsets.only(right: 4),
+        decoration: const BoxDecoration(
+          color: Color(0xFF2E7D32),
+          shape: BoxShape.circle,
+        ),
+      );
+}
+
+/// Dòng danh hiệu (biệt danh cấp VIP) dưới tên người chơi — chỉ từ cấp
+/// [vipTitleMinLevel], còn lại không chiếm chỗ.
+class VipTitleLine extends ConsumerWidget {
+  const VipTitleLine({super.key, required this.userId});
+  final String userId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final level = ref.watch(vipLevelProvider.select((m) => m[userId])) ?? 0;
+    if (level < vipTitleMinLevel) return const SizedBox.shrink();
+    final theme = Theme.of(context);
+    return Text(
+      '👑 ${vipName(AppLocalizations.of(context)!, level)}',
+      key: const Key('vip-title-line'),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: theme.textTheme.labelSmall?.copyWith(
+        // Cùng cặp màu với danh hiệu top 20 Sưu tập (đủ tương phản sáng/tối).
+        color: theme.brightness == Brightness.light
+            ? const Color(0xFF9A5B00)
+            : const Color(0xFFFFA726),
+        fontWeight: FontWeight.w600,
+      ),
+    );
+  }
+}
+
+/// Khối tên của một hàng bảng xếp hạng: [child] (hàng huy hiệu + tên) và dưới nó là
+/// dòng danh hiệu VIP nếu có.
+class VipNameBlock extends StatelessWidget {
+  const VipNameBlock({super.key, required this.userId, required this.child});
+  final String userId;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [child, VipTitleLine(userId: userId)],
       );
 }

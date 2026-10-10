@@ -750,7 +750,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get vipHtp1 =>
-      '👑 VIP có 10 cấp, mỗi cấp một biệt danh. Cấp hiện thành nhãn \"VIP n\" cạnh tên bạn ở bảng xếp hạng và trong Hội.';
+      '👑 VIP có 10 cấp, mỗi cấp một biệt danh. Cấp hiện thành nhãn \"VIP n\" cạnh tên bạn ở bảng xếp hạng và trong Hội. Từ VIP 5, tên bạn có thêm dòng danh hiệu ở mọi bảng xếp hạng, có chấm xanh khi online và cả server thấy banner khi bạn vào game.';
 
   @override
   String vipHtp2(Object cap, Object exp, Object gems) {
@@ -772,6 +772,28 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get vipHtp6 => '📍 Mở ở Cửa hàng 💎 → nút 👑.';
+
+  @override
+  String get vipLbTitle => 'Bảng xếp hạng VIP';
+
+  @override
+  String get vipLbEmpty => 'Chưa có ai trong bảng xếp hạng VIP.';
+
+  @override
+  String get vipLbNoVip => 'Đạt VIP 1 để có tên trên bảng xếp hạng VIP.';
+
+  @override
+  String vipLbExp(Object exp) {
+    return '$exp EXP';
+  }
+
+  @override
+  String vipOnlineBanner(Object nickname, Object title) {
+    return '👑 $title $nickname vừa online!';
+  }
+
+  @override
+  String get vipLbOpen => 'Bảng xếp hạng VIP';
 
   @override
   String get rewardsTitle => 'Kiếm thêm 🎁';

@@ -740,7 +740,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get vipHtp1 =>
-      '👑 VIP는 10레벨이며 레벨마다 칭호가 있어요. 레벨은 리더보드와 길드에서 이름 옆에 \"VIP n\" 태그로 보여요.';
+      '👑 VIP는 10레벨이며 레벨마다 칭호가 있어요. 레벨은 리더보드와 길드에서 이름 옆에 \"VIP n\" 태그로 보여요. VIP 5부터는 모든 리더보드에서 이름 아래에 칭호 줄이 붙고, 온라인일 때 초록 점이 뜨며, 접속하면 온라인인 모두에게 배너가 보여요.';
 
   @override
   String vipHtp2(Object cap, Object exp, Object gems) {
@@ -762,6 +762,28 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get vipHtp6 => '📍 💎 상점 → 👑 버튼에서 열어요.';
+
+  @override
+  String get vipLbTitle => 'VIP 리더보드';
+
+  @override
+  String get vipLbEmpty => 'VIP 리더보드에 아직 아무도 없어요.';
+
+  @override
+  String get vipLbNoVip => 'VIP 1에 도달하면 VIP 리더보드에 올라요.';
+
+  @override
+  String vipLbExp(Object exp) {
+    return '$exp EXP';
+  }
+
+  @override
+  String vipOnlineBanner(Object nickname, Object title) {
+    return '👑 $title $nickname 님이 접속했어요!';
+  }
+
+  @override
+  String get vipLbOpen => 'VIP 리더보드';
 
   @override
   String get rewardsTitle => '더 벌기 🎁';

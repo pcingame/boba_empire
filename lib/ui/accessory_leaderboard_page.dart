@@ -252,6 +252,7 @@ class _List extends ConsumerWidget {
                                   ),
                                 ],
                               ),
+                              VipTitleLine(userId: e.userId),
                               // Danh hiệu top 20 — cùng màu vàng/cam đã dùng cho
                               // độ hiếm "huyền thoại" ở Kho phụ kiện, nhất quán
                               // trực quan trong cùng tính năng sưu tập.

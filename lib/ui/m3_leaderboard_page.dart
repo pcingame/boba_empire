@@ -166,7 +166,9 @@ class _List extends ConsumerWidget {
                       // Tên có thể rất dài: phải co lại, không được đẩy cột số
                       // sao ra khỏi hàng (lớp lỗi tràn đã gặp nhiều lần).
                       Expanded(
-                        child: Row(
+                        child: VipNameBlock(
+ userId: e.userId,
+ child: Row(
                           children: [
                             FlairBadge(userId: e.userId),
                             Flexible(
@@ -183,6 +185,7 @@ class _List extends ConsumerWidget {
                             ),
                           ],
                         ),
+),
                       ),
                       const SizedBox(width: 8),
                       Column(

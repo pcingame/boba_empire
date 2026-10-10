@@ -1329,7 +1329,7 @@ abstract class AppLocalizations {
   /// No description provided for @vipHtp1.
   ///
   /// In vi, this message translates to:
-  /// **'👑 VIP có 10 cấp, mỗi cấp một biệt danh. Cấp hiện thành nhãn \"VIP n\" cạnh tên bạn ở bảng xếp hạng và trong Hội.'**
+  /// **'👑 VIP có 10 cấp, mỗi cấp một biệt danh. Cấp hiện thành nhãn \"VIP n\" cạnh tên bạn ở bảng xếp hạng và trong Hội. Từ VIP 5, tên bạn có thêm dòng danh hiệu ở mọi bảng xếp hạng, có chấm xanh khi online và cả server thấy banner khi bạn vào game.'**
   String get vipHtp1;
 
   /// No description provided for @vipHtp2.
@@ -1361,6 +1361,42 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'📍 Mở ở Cửa hàng 💎 → nút 👑.'**
   String get vipHtp6;
+
+  /// No description provided for @vipLbTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảng xếp hạng VIP'**
+  String get vipLbTitle;
+
+  /// No description provided for @vipLbEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có ai trong bảng xếp hạng VIP.'**
+  String get vipLbEmpty;
+
+  /// No description provided for @vipLbNoVip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đạt VIP 1 để có tên trên bảng xếp hạng VIP.'**
+  String get vipLbNoVip;
+
+  /// No description provided for @vipLbExp.
+  ///
+  /// In vi, this message translates to:
+  /// **'{exp} EXP'**
+  String vipLbExp(Object exp);
+
+  /// No description provided for @vipOnlineBanner.
+  ///
+  /// In vi, this message translates to:
+  /// **'👑 {title} {nickname} vừa online!'**
+  String vipOnlineBanner(Object nickname, Object title);
+
+  /// No description provided for @vipLbOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảng xếp hạng VIP'**
+  String get vipLbOpen;
 
   /// No description provided for @rewardsTitle.
   ///

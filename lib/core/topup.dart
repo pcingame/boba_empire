@@ -36,6 +36,10 @@ const List<TopupTier> topupTiers = [
 /// +% thu nhập tự động cho MỖI cấp VIP.
 const double vipIncomeBonusPerLevel = 0.02;
 
+/// Từ cấp này, người chơi có thêm dòng danh hiệu ở mọi bảng xếp hạng, và được báo
+/// online cho cả server (supabase: vip_ping có cùng ngưỡng 5 — test khớp).
+const int vipTitleMinLevel = 5;
+
 /// Mua EXP bằng 💎: mỗi khối [vipExpBlock] EXP giá [vipExpBlockGems] 💎 (10 💎/EXP —
 /// cố ý đắt hơn nhiều so với nạp IAP cùng giá trị). Tổng EXP mua bằng 💎 chặn ở
 /// [vipExpGemCap] (≈ tới VIP 6) để cấp cao chỉ đạt được bằng nạp thật.

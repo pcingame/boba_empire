@@ -163,7 +163,9 @@ class _List extends ConsumerWidget {
                       ),
                       // Tên dài phải co lại, không đẩy cột điểm ra khỏi hàng.
                       Expanded(
-                        child: Row(
+                        child: VipNameBlock(
+ userId: e.userId,
+ child: Row(
                           children: [
                             FlairBadge(userId: e.userId),
                             Flexible(
@@ -179,6 +181,7 @@ class _List extends ConsumerWidget {
                             ),
                           ],
                         ),
+),
                       ),
                       const SizedBox(width: 8),
                       Text(l10n.eventLbScore(e.score),

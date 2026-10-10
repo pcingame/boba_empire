@@ -752,7 +752,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get vipHtp1 =>
-      '👑 VIP punya 10 level, masing-masing dengan gelar. Level kamu tampil sebagai label \"VIP n\" di samping namamu di papan peringkat dan di Guild.';
+      '👑 VIP punya 10 level, masing-masing dengan gelar. Level kamu tampil sebagai label \"VIP n\" di samping namamu di papan peringkat dan di Guild. Mulai VIP 5, namamu mendapat baris gelar di semua papan peringkat, titik hijau saat online, dan semua yang online melihat banner saat kamu masuk.';
 
   @override
   String vipHtp2(Object cap, Object exp, Object gems) {
@@ -774,6 +774,28 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get vipHtp6 => '📍 Buka dari Toko 💎 → tombol 👑.';
+
+  @override
+  String get vipLbTitle => 'Papan peringkat VIP';
+
+  @override
+  String get vipLbEmpty => 'Belum ada siapa pun di papan peringkat VIP.';
+
+  @override
+  String get vipLbNoVip => 'Capai VIP 1 untuk masuk papan peringkat VIP.';
+
+  @override
+  String vipLbExp(Object exp) {
+    return '$exp EXP';
+  }
+
+  @override
+  String vipOnlineBanner(Object nickname, Object title) {
+    return '👑 $title $nickname baru saja online!';
+  }
+
+  @override
+  String get vipLbOpen => 'Papan peringkat VIP';
 
   @override
   String get rewardsTitle => 'Dapat lebih 🎁';

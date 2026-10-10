@@ -757,7 +757,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get vipHtp1 =>
-      '👑 VIP tiene 10 niveles, cada uno con un título. Tu nivel aparece como etiqueta \"VIP n\" junto a tu nombre en las clasificaciones y en tu Gremio.';
+      '👑 VIP tiene 10 niveles, cada uno con un título. Tu nivel aparece como etiqueta \"VIP n\" junto a tu nombre en las clasificaciones y en tu Gremio. Desde VIP 5, tu nombre muestra una línea de título en todas las clasificaciones, un punto verde mientras estés en línea y todos ven un banner cuando te conectas.';
 
   @override
   String vipHtp2(Object cap, Object exp, Object gems) {
@@ -779,6 +779,29 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get vipHtp6 => '📍 Ábrelo en la Tienda 💎 → botón 👑.';
+
+  @override
+  String get vipLbTitle => 'Clasificación VIP';
+
+  @override
+  String get vipLbEmpty => 'Aún no hay nadie en la clasificación VIP.';
+
+  @override
+  String get vipLbNoVip =>
+      'Alcanza VIP 1 para aparecer en la clasificación VIP.';
+
+  @override
+  String vipLbExp(Object exp) {
+    return '$exp EXP';
+  }
+
+  @override
+  String vipOnlineBanner(Object nickname, Object title) {
+    return '👑 ¡$title $nickname acaba de conectarse!';
+  }
+
+  @override
+  String get vipLbOpen => 'Clasificación VIP';
 
   @override
   String get rewardsTitle => 'Gana más 🎁';

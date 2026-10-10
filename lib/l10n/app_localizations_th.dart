@@ -749,7 +749,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get vipHtp1 =>
-      '👑 VIP มี 10 เลเวล แต่ละเลเวลมีฉายา เลเวลของคุณแสดงเป็นป้าย \"VIP n\" ข้างชื่อบนกระดานอันดับและในกิลด์';
+      '👑 VIP มี 10 เลเวล แต่ละเลเวลมีฉายา เลเวลของคุณแสดงเป็นป้าย \"VIP n\" ข้างชื่อบนกระดานอันดับและในกิลด์ ตั้งแต่ VIP 5 ชื่อของคุณจะมีบรรทัดฉายาในทุกกระดานอันดับ มีจุดเขียวเมื่อออนไลน์ และทุกคนที่ออนไลน์เห็นแบนเนอร์เมื่อคุณเข้าเกม';
 
   @override
   String vipHtp2(Object cap, Object exp, Object gems) {
@@ -771,6 +771,28 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get vipHtp6 => '📍 เปิดที่ร้านค้า 💎 → ปุ่ม 👑';
+
+  @override
+  String get vipLbTitle => 'กระดานอันดับ VIP';
+
+  @override
+  String get vipLbEmpty => 'ยังไม่มีใครในกระดานอันดับ VIP';
+
+  @override
+  String get vipLbNoVip => 'ถึง VIP 1 เพื่อมีชื่อบนกระดานอันดับ VIP';
+
+  @override
+  String vipLbExp(Object exp) {
+    return '$exp EXP';
+  }
+
+  @override
+  String vipOnlineBanner(Object nickname, Object title) {
+    return '👑 $title $nickname เพิ่งออนไลน์!';
+  }
+
+  @override
+  String get vipLbOpen => 'กระดานอันดับ VIP';
 
   @override
   String get rewardsTitle => 'หาเพิ่ม 🎁';

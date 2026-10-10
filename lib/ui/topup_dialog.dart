@@ -9,6 +9,7 @@ import '../leaderboard/flair.dart';
 import '../state/game_controller.dart';
 import '../state/game_providers.dart';
 import 'vip_how_to_dialog.dart';
+import 'vip_leaderboard_page.dart';
 
 /// Mốc nạp & cấp VIP theo tổng nạp tích lũy (xem core/topup.dart).
 Future<void> showTopupDialog(BuildContext context) =>
@@ -136,6 +137,15 @@ class _TopupDialogState extends ConsumerState<_TopupDialog> {
                   key: const Key('vip-exp-capped'),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton.icon(
+                  key: const Key('vip-open-leaderboard'),
+                  onPressed: () => showVipLeaderboard(context),
+                  icon: const Icon(Icons.leaderboard),
+                  label: Text(l10n.vipLbOpen),
+                ),
+              ),
               const Divider(height: 24),
               Text(
                 l10n.vipBenefitsTitle,

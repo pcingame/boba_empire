@@ -11,6 +11,7 @@ import 'arena_page.dart';
 import 'guild_page.dart';
 import 'leaderboard_page.dart';
 import 'story_speedrun_page.dart';
+import 'vip_leaderboard_page.dart';
 
 Future<void> showCompeteHub(BuildContext context) {
   return showDialog<void>(
@@ -27,9 +28,10 @@ class _CompeteHubDialog extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
       title: Text(l10n.navCompete),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
           ListTile(
             leading: const Icon(Icons.sports_kabaddi),
             title: Text(l10n.navArena),
@@ -76,7 +78,18 @@ class _CompeteHubDialog extends StatelessWidget {
               showArenaLeaderboardPage(context);
             },
           ),
-        ],
+          ListTile(
+            key: const Key('compete-vip'),
+            leading: const Icon(Icons.workspace_premium),
+            title: Text(l10n.vipLbTitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              Navigator.of(context).pop();
+              showVipLeaderboard(context);
+            },
+          ),
+          ],
+        ),
       ),
       actions: [
         TextButton(

@@ -26,4 +26,18 @@ void main() {
     expect(File('docs/assets/site.js').readAsStringSync(),
         contains("rpc('vip_leaderboard_top')"));
   });
+
+  test('ngưỡng danh hiệu/online của vip_ping và accessory_flairs khớp vipTitleMinLevel',
+      () {
+    final n = vipTitleMinLevel;
+    expect(sql, contains('v_level < $n'));
+    expect(sql, contains('coalesce(v.level, 0) >= $n'));
+    expect(sql, contains('vip_level_for_exp(e.vip_exp) >= $n'));
+  });
+
+  test('vip_announcements nằm trong publication realtime và đọc được công khai', () {
+    expect(sql, contains("tablename = 'vip_announcements'"));
+    expect(sql, contains('alter publication supabase_realtime add table vip_announcements'));
+    expect(sql, contains('grant select on vip_announcements to anon, authenticated'));
+  });
 }

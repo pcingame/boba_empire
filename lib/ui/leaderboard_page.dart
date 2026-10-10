@@ -213,7 +213,9 @@ class _LeaderboardList extends ConsumerWidget {
                             ),
                             const SizedBox(width: 8),
                             Expanded(
-                              child: Row(
+                              child: VipNameBlock(
+ userId: entry.userId,
+ child: Row(
                                 children: [
                                   FlairBadge(userId: entry.userId),
                                   Flexible(
@@ -225,6 +227,7 @@ class _LeaderboardList extends ConsumerWidget {
                                   ),
                                 ],
                               ),
+),
                             ),
                             // Flexible + FittedBox: prestige_stars/lifetime_earnings
                             // của 1 hàng khác (VD whale hàng tỷ Sao) có thể rất dài
