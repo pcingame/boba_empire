@@ -29,7 +29,6 @@ import '../notify/reminders.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
 import '../leaderboard/flair.dart';
-import '../core/topup.dart';
 import 'accessory_inventory_page.dart';
 import 'accessory_market_page.dart';
 import 'whats_new_dialog.dart';
@@ -245,10 +244,10 @@ class _HomePageState extends ConsumerState<HomePage>
         message = l10n.iapVipSnack;
     }
     // Mua MỚI (các nhánh "đã có" ở trên đã return) → cộng điểm nạp, báo cấp VIP lên server.
-    controller.addTopupPoints(product.topup);
+    controller.addVipExp(product.vipExp);
     unawaited(ref
         .read(flairCacheProvider.notifier)
-        .reportVip(topupVipLevel(ref.read(gameControllerProvider).topupPoints)));
+        .reportVip(ref.read(gameControllerProvider).vipExp));
     ref.read(audioServiceProvider).play(Sfx.reward);
     if (mounted) {
       ScaffoldMessenger.of(context)

@@ -654,7 +654,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String topupSummary(Object points) {
-    return '$points điểm nạp';
+    return '$points VIP EXP';
   }
 
   @override
@@ -664,11 +664,11 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get topupNote =>
-      '1 điểm ≈ 1 USD đã nạp trong cửa hàng. Mỗi mốc nhận một lần.';
+      'Nạp tiền ở cửa hàng: ~100 EXP mỗi USD (gói lớn nhiều hơn). Mua EXP bằng 💎 đắt hơn nhiều và có giới hạn. Mỗi mốc nhận một lần.';
 
   @override
   String topupTier(Object points) {
-    return '$points điểm';
+    return '$points EXP';
   }
 
   @override
@@ -684,6 +684,94 @@ class AppLocalizationsVi extends AppLocalizations {
   String topupClaimSnack(Object gems) {
     return 'Đã nhận +$gems 💎';
   }
+
+  @override
+  String get vipName1 => 'Khách quen';
+
+  @override
+  String get vipName2 => 'Mê trà';
+
+  @override
+  String get vipName3 => 'Sành trà';
+
+  @override
+  String get vipName4 => 'Thượng khách';
+
+  @override
+  String get vipName5 => 'Chủ tiệm';
+
+  @override
+  String get vipName6 => 'Tỉ phú trà sữa';
+
+  @override
+  String get vipName7 => 'Ông trùm';
+
+  @override
+  String get vipName8 => 'Hoàng gia';
+
+  @override
+  String get vipName9 => 'Huyền thoại';
+
+  @override
+  String get vipName10 => 'Đế vương';
+
+  @override
+  String vipBuyExp(Object exp, Object gems) {
+    return 'Mua $exp EXP · $gems 💎';
+  }
+
+  @override
+  String vipBuyExpSnack(Object exp) {
+    return '+$exp VIP EXP';
+  }
+
+  @override
+  String vipBuyExpCapped(Object cap) {
+    return 'EXP mua bằng 💎 đã chạm giới hạn ($cap). Các cấp cao hơn chỉ đạt được bằng nạp tiền.';
+  }
+
+  @override
+  String get vipBenefitsTitle => 'Quyền lợi VIP';
+
+  @override
+  String get vipBenefitsLocked => 'Đạt VIP 1 để mở khoá quà ngày/tuần/tháng.';
+
+  @override
+  String get vipDaily => 'Hằng ngày';
+
+  @override
+  String get vipWeekly => 'Hằng tuần';
+
+  @override
+  String get vipMonthly => 'Hằng tháng';
+
+  @override
+  String get vipHowToTitle => 'Hướng dẫn VIP';
+
+  @override
+  String get vipHtp1 =>
+      '👑 VIP có 10 cấp, mỗi cấp một biệt danh. Cấp hiện thành nhãn \"VIP n\" cạnh tên bạn ở bảng xếp hạng và trong Hội.';
+
+  @override
+  String vipHtp2(Object cap, Object exp, Object gems) {
+    return '⭐ EXP VIP: nạp tiền thật trong cửa hàng (~100 EXP mỗi USD, gói 💎 lớn được thêm) hoặc mua bằng 💎 ($gems 💎 → $exp EXP, tối đa $cap EXP — nên VIP 7–10 chỉ đạt được bằng nạp thật).';
+  }
+
+  @override
+  String vipHtp3(Object percent) {
+    return '📈 Quyền lợi: +$percent% thu nhập tự động mỗi cấp (vĩnh viễn) và thưởng mốc một lần cho từng cấp (💎, có cấp kèm phụ kiện).';
+  }
+
+  @override
+  String get vipHtp4 =>
+      '🎁 Quà hằng ngày / tuần / tháng: 💎 tăng theo cấp, quà tuần và tháng kèm một phụ kiện. Đổi kỳ lúc 00:00 UTC (tuần bắt đầu thứ Hai, tháng theo lịch).';
+
+  @override
+  String get vipHtp5 =>
+      '♻️ Khác VIP Pass 30 ngày: VIP Pass (gỡ QC, x2 thu nhập…) là vé có hạn; cấp VIP này không bao giờ mất và hai thứ cộng dồn.';
+
+  @override
+  String get vipHtp6 => '📍 Mở ở Cửa hàng 💎 → nút 👑.';
 
   @override
   String get rewardsTitle => 'Kiếm thêm 🎁';

@@ -117,7 +117,11 @@ class GameState {
     this.questIndex = 0,
     this.doubleIncomeOwned = false,
     this.coldStorageOwned = false,
-    this.topupPoints = 0,
+    this.vipExp = 0,
+    this.vipExpFromGems = 0,
+    this.vipClaimDay = 0,
+    this.vipClaimWeek = 0,
+    this.vipClaimMonth = 0,
     List<int>? topupClaimed,
     this.x2IncomeUntilMillis = 0,
     this.boostUntilMillis = 0,
@@ -439,9 +443,14 @@ class GameState {
   /// Đã mua IAP "Kho lạnh vĩnh viễn" (+[Balance.coldStorageBonusSeconds] trần offline).
   bool coldStorageOwned;
 
-  /// Tổng điểm nạp tích lũy (≈ USD, xem core/topup.dart) và các bậc đã nhận thưởng
-  /// (lưu theo chỉ số trong [topupTiers]).
-  int topupPoints;
+  /// VIP EXP tích lũy (xem core/topup.dart), phần trong đó mua bằng 💎 (chặn trần),
+  /// các bậc đã nhận thưởng mốc (chỉ số trong [topupTiers]) và chỉ số kỳ
+  /// ngày/tuần/tháng đã nhận quà VIP gần nhất (0 = chưa từng).
+  int vipExp;
+  int vipExpFromGems;
+  int vipClaimDay;
+  int vipClaimWeek;
+  int vipClaimMonth;
   final List<int> topupClaimed;
 
   /// Mốc (epoch ms) hết hạn boost "x2 thu nhập 24h" từ xem QC; 0 = không có.
@@ -552,7 +561,11 @@ class GameState {
         'questIndex': questIndex,
         'doubleIncomeOwned': doubleIncomeOwned,
         'coldStorageOwned': coldStorageOwned,
-        'topupPoints': topupPoints,
+        'vipExp': vipExp,
+        'vipExpFromGems': vipExpFromGems,
+        'vipClaimDay': vipClaimDay,
+        'vipClaimWeek': vipClaimWeek,
+        'vipClaimMonth': vipClaimMonth,
         'topupClaimed': topupClaimed,
         'x2IncomeUntilMillis': x2IncomeUntilMillis,
         'boostUntilMillis': boostUntilMillis,
@@ -708,7 +721,11 @@ class GameState {
         questIndex: (json['questIndex'] as num?)?.toInt() ?? 0,
         doubleIncomeOwned: (json['doubleIncomeOwned'] as bool?) ?? false,
         coldStorageOwned: (json['coldStorageOwned'] as bool?) ?? false,
-        topupPoints: (json['topupPoints'] as num?)?.toInt() ?? 0,
+        vipExp: (json['vipExp'] as num?)?.toInt() ?? 0,
+        vipExpFromGems: (json['vipExpFromGems'] as num?)?.toInt() ?? 0,
+        vipClaimDay: (json['vipClaimDay'] as num?)?.toInt() ?? 0,
+        vipClaimWeek: (json['vipClaimWeek'] as num?)?.toInt() ?? 0,
+        vipClaimMonth: (json['vipClaimMonth'] as num?)?.toInt() ?? 0,
         topupClaimed: (json['topupClaimed'] as List?)?.map((e) => (e as num).toInt()).toList(),
         x2IncomeUntilMillis:
             (json['x2IncomeUntilMillis'] as num?)?.toInt() ?? 0,

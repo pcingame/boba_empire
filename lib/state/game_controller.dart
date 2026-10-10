@@ -1446,35 +1446,80 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
-  /// Cộng điểm nạp (≈ USD) sau một lần mua MỚI (không gọi khi chỉ khôi phục).
-  void addTopupPoints(int points) {
-    if (points <= 0) return;
-    _game.topupPoints += points;
+  /// Cộng VIP EXP sau một lần mua IAP MỚI (không gọi khi chỉ khôi phục).
+  void addVipExp(int exp) {
+    if (exp <= 0) return;
+    _game.vipExp += exp;
     unawaited(saveNow());
     state = _snapshot();
   }
 
-  /// Nhận thưởng bậc [index] của Mốc nạp một lần. Null nếu chưa đủ điểm / đã nhận /
+  /// Mua một khối EXP bằng 💎 ([vipExpBlockGems] 💎 → [vipExpBlock] EXP). False nếu
+  /// thiếu 💎 hoặc đã chạm trần [vipExpGemCap]. Lưu ngay (💎 là premium).
+  bool buyVipExp() {
+    if (!canBuyVipExp(_game.gems, _game.vipExpFromGems)) return false;
+    _game.gems -= vipExpBlockGems;
+    _game.vipExp += vipExpBlock;
+    _game.vipExpFromGems += vipExpBlock;
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
+  /// Rớt phụ kiện cho thưởng VIP: huyền thoại = đúng huyền thoại, còn lại là mức sàn.
+  AccessoryDrop _vipDrop(String source, AccessoryRarity r) => _dropAccessory(
+        source: source,
+        rarity: r == AccessoryRarity.legendary ? r : null,
+        minRarity: r,
+      );
+
+  /// Nhận thưởng bậc [index] của Mốc VIP một lần. Null nếu chưa đủ EXP / đã nhận /
   /// chỉ số sai. Lưu ngay (💎 là premium). Phụ kiện kèm theo ở [lastAccessoryDrop].
   ({double gems, AccessoryDrop? drop})? claimTopupTier(int index) {
     if (index < 0 || index >= topupTiers.length) return null;
     final tier = topupTiers[index];
-    if (_game.topupPoints < tier.points || _game.topupClaimed.contains(index)) {
+    if (_game.vipExp < tier.exp || _game.topupClaimed.contains(index)) {
       return null;
     }
     _game.topupClaimed.add(index);
     grantGems(_game, tier.gems);
     final r = tier.accessory;
-    final drop = r == null
-        ? null
-        : _dropAccessory(
-            source: 'topup',
-            rarity: r == AccessoryRarity.legendary ? r : null,
-            minRarity: r,
-          );
+    final drop = r == null ? null : _vipDrop('topup', r);
     unawaited(saveNow());
     state = _snapshot();
     return (gems: tier.gems, drop: drop);
+  }
+
+  /// Quà VIP theo kỳ đã nhận trong kỳ hiện tại chưa.
+  bool vipBenefitClaimed(VipPeriod period) {
+    final cur = vipPeriodIndex(period, _clock());
+    return switch (period) {
+      VipPeriod.daily => _game.vipClaimDay >= cur,
+      VipPeriod.weekly => _game.vipClaimWeek >= cur,
+      VipPeriod.monthly => _game.vipClaimMonth >= cur,
+    };
+  }
+
+  /// Nhận quà VIP của [period] (mỗi ngày/tuần/tháng UTC một lần). Null nếu chưa có
+  /// cấp VIP hoặc đã nhận trong kỳ này.
+  ({double gems, AccessoryDrop? drop})? claimVipBenefit(VipPeriod period) {
+    final benefit = vipBenefit(period, topupVipLevel(_game.vipExp));
+    if (benefit == null || vipBenefitClaimed(period)) return null;
+    final cur = vipPeriodIndex(period, _clock());
+    switch (period) {
+      case VipPeriod.daily:
+        _game.vipClaimDay = cur;
+      case VipPeriod.weekly:
+        _game.vipClaimWeek = cur;
+      case VipPeriod.monthly:
+        _game.vipClaimMonth = cur;
+    }
+    grantGems(_game, benefit.gems);
+    final r = benefit.accessory;
+    final drop = r == null ? null : _vipDrop('vip_${period.name}', r);
+    unawaited(saveNow());
+    state = _snapshot();
+    return (gems: benefit.gems, drop: drop);
   }
 
   /// Combo gỡ QC + x2 thu nhập (IAP): bật cả hai, idempotent.
@@ -1712,7 +1757,11 @@ class GameController extends Notifier<GameSnapshot> {
       autoBuyEnabled: _game.autoBuyEnabled,
       doubleIncomeOwned: _game.doubleIncomeOwned,
       coldStorageOwned: _game.coldStorageOwned,
-      topupPoints: _game.topupPoints,
+      vipExp: _game.vipExp,
+      vipExpFromGems: _game.vipExpFromGems,
+      vipClaimDay: _game.vipClaimDay,
+      vipClaimWeek: _game.vipClaimWeek,
+      vipClaimMonth: _game.vipClaimMonth,
       topupClaimed: List.unmodifiable(_game.topupClaimed),
       x2IncomeRemainingSeconds:
           max(0, (_game.x2IncomeUntilMillis - now) / 1000.0),

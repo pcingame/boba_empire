@@ -11,6 +11,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../core/accessories.dart';
+import '../core/topup.dart';
+import '../state/game_providers.dart';
 
 /// userId -> emoji ('' = không có huy hiệu / chưa tải được).
 final flairCacheProvider = NotifierProvider<FlairCache, Map<String, String>>(
@@ -62,10 +64,12 @@ class FlairCache extends Notifier<Map<String, String>> {
     }
   }
 
-  /// Báo cấp VIP (theo tổng nạp, xem core/topup.dart) của chính mình lên server để
-  /// hiện cạnh tên ở các bảng xếp hạng. Server chỉ cho cấp TĂNG; nuốt mọi lỗi
-  /// (mạng/Supabase chưa khởi tạo) vì chỉ là huy hiệu.
-  Future<void> reportVip(int level) async {
+  /// Báo VIP EXP của chính mình lên server: (1) cấp VIP để hiện huy hiệu cạnh tên ở
+  /// các bảng xếp hạng/Hội; (2) nếu đã đặt biệt danh (dùng chung với mọi BXH) thì
+  /// cập nhật hàng của mình ở bảng xếp hạng VIP trên web. Server chỉ cho số TĂNG;
+  /// nuốt mọi lỗi (mạng/Supabase chưa khởi tạo) vì chỉ là huy hiệu/xếp hạng.
+  Future<void> reportVip(int exp) async {
+    final level = topupVipLevel(exp);
     if (level <= 0) return;
     try {
       final client = Supabase.instance.client;
@@ -73,6 +77,15 @@ class FlairCache extends Notifier<Map<String, String>> {
           client.auth.currentUser ??
           (await client.auth.signInAnonymously()).user;
       await client.rpc('set_vip_level', params: {'p_level': level});
+      final nickname = ref
+          .read(sharedPreferencesProvider)
+          .getString('leaderboard_nickname');
+      if (nickname != null && nickname.isNotEmpty) {
+        await client.rpc(
+          'submit_vip_exp',
+          params: {'p_nickname': nickname, 'p_exp': exp},
+        );
+      }
       if (user != null) invalidate(user.id);
     } catch (_) {}
   }

@@ -367,7 +367,7 @@ double effectiveIncomePerSecond(
     prestigeIncomeMultiplier(state.prestigeIncomeLevel) *
     storyChoiceIncomeMultiplier(state) *
     (state.doubleIncomeOwned ? 2.0 : 1.0) *
-    vipIncomeMultiplier(state.topupPoints) *
+    vipIncomeMultiplier(state.vipExp) *
     boostMultiplier;
 
 /// Số Sao nhượng quyền tương ứng với tổng thu nhập cả đời.

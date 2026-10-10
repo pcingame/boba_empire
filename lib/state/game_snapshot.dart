@@ -90,7 +90,11 @@ class GameSnapshot {
     required this.questDone,
     required this.doubleIncomeOwned,
     required this.coldStorageOwned,
-    required this.topupPoints,
+    required this.vipExp,
+    required this.vipExpFromGems,
+    required this.vipClaimDay,
+    required this.vipClaimWeek,
+    required this.vipClaimMonth,
     required this.topupClaimed,
     required this.x2IncomeRemainingSeconds,
     required this.piggyGems,
@@ -265,7 +269,11 @@ class GameSnapshot {
   /// Đã mua x2 thu nhập vĩnh viễn (IAP) & số giây còn lại của x2 24h (xem QC).
   final bool doubleIncomeOwned;
   final bool coldStorageOwned;
-  final int topupPoints;
+  final int vipExp;
+  final int vipExpFromGems;
+  final int vipClaimDay;
+  final int vipClaimWeek;
+  final int vipClaimMonth;
   final List<int> topupClaimed;
   final double x2IncomeRemainingSeconds;
 

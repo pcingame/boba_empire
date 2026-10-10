@@ -1167,7 +1167,7 @@ abstract class AppLocalizations {
   /// No description provided for @topupSummary.
   ///
   /// In vi, this message translates to:
-  /// **'{points} điểm nạp'**
+  /// **'{points} VIP EXP'**
   String topupSummary(Object points);
 
   /// No description provided for @topupBuff.
@@ -1179,13 +1179,13 @@ abstract class AppLocalizations {
   /// No description provided for @topupNote.
   ///
   /// In vi, this message translates to:
-  /// **'1 điểm ≈ 1 USD đã nạp trong cửa hàng. Mỗi mốc nhận một lần.'**
+  /// **'Nạp tiền ở cửa hàng: ~100 EXP mỗi USD (gói lớn nhiều hơn). Mua EXP bằng 💎 đắt hơn nhiều và có giới hạn. Mỗi mốc nhận một lần.'**
   String get topupNote;
 
   /// No description provided for @topupTier.
   ///
   /// In vi, this message translates to:
-  /// **'{points} điểm'**
+  /// **'{points} EXP'**
   String topupTier(Object points);
 
   /// No description provided for @topupAccessory.
@@ -1211,6 +1211,156 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đã nhận +{gems} 💎'**
   String topupClaimSnack(Object gems);
+
+  /// No description provided for @vipName1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khách quen'**
+  String get vipName1;
+
+  /// No description provided for @vipName2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mê trà'**
+  String get vipName2;
+
+  /// No description provided for @vipName3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sành trà'**
+  String get vipName3;
+
+  /// No description provided for @vipName4.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thượng khách'**
+  String get vipName4;
+
+  /// No description provided for @vipName5.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chủ tiệm'**
+  String get vipName5;
+
+  /// No description provided for @vipName6.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tỉ phú trà sữa'**
+  String get vipName6;
+
+  /// No description provided for @vipName7.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ông trùm'**
+  String get vipName7;
+
+  /// No description provided for @vipName8.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàng gia'**
+  String get vipName8;
+
+  /// No description provided for @vipName9.
+  ///
+  /// In vi, this message translates to:
+  /// **'Huyền thoại'**
+  String get vipName9;
+
+  /// No description provided for @vipName10.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đế vương'**
+  String get vipName10;
+
+  /// No description provided for @vipBuyExp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua {exp} EXP · {gems} 💎'**
+  String vipBuyExp(Object exp, Object gems);
+
+  /// No description provided for @vipBuyExpSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{exp} VIP EXP'**
+  String vipBuyExpSnack(Object exp);
+
+  /// No description provided for @vipBuyExpCapped.
+  ///
+  /// In vi, this message translates to:
+  /// **'EXP mua bằng 💎 đã chạm giới hạn ({cap}). Các cấp cao hơn chỉ đạt được bằng nạp tiền.'**
+  String vipBuyExpCapped(Object cap);
+
+  /// No description provided for @vipBenefitsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quyền lợi VIP'**
+  String get vipBenefitsTitle;
+
+  /// No description provided for @vipBenefitsLocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đạt VIP 1 để mở khoá quà ngày/tuần/tháng.'**
+  String get vipBenefitsLocked;
+
+  /// No description provided for @vipDaily.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hằng ngày'**
+  String get vipDaily;
+
+  /// No description provided for @vipWeekly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hằng tuần'**
+  String get vipWeekly;
+
+  /// No description provided for @vipMonthly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hằng tháng'**
+  String get vipMonthly;
+
+  /// No description provided for @vipHowToTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hướng dẫn VIP'**
+  String get vipHowToTitle;
+
+  /// No description provided for @vipHtp1.
+  ///
+  /// In vi, this message translates to:
+  /// **'👑 VIP có 10 cấp, mỗi cấp một biệt danh. Cấp hiện thành nhãn \"VIP n\" cạnh tên bạn ở bảng xếp hạng và trong Hội.'**
+  String get vipHtp1;
+
+  /// No description provided for @vipHtp2.
+  ///
+  /// In vi, this message translates to:
+  /// **'⭐ EXP VIP: nạp tiền thật trong cửa hàng (~100 EXP mỗi USD, gói 💎 lớn được thêm) hoặc mua bằng 💎 ({gems} 💎 → {exp} EXP, tối đa {cap} EXP — nên VIP 7–10 chỉ đạt được bằng nạp thật).'**
+  String vipHtp2(Object cap, Object exp, Object gems);
+
+  /// No description provided for @vipHtp3.
+  ///
+  /// In vi, this message translates to:
+  /// **'📈 Quyền lợi: +{percent}% thu nhập tự động mỗi cấp (vĩnh viễn) và thưởng mốc một lần cho từng cấp (💎, có cấp kèm phụ kiện).'**
+  String vipHtp3(Object percent);
+
+  /// No description provided for @vipHtp4.
+  ///
+  /// In vi, this message translates to:
+  /// **'🎁 Quà hằng ngày / tuần / tháng: 💎 tăng theo cấp, quà tuần và tháng kèm một phụ kiện. Đổi kỳ lúc 00:00 UTC (tuần bắt đầu thứ Hai, tháng theo lịch).'**
+  String get vipHtp4;
+
+  /// No description provided for @vipHtp5.
+  ///
+  /// In vi, this message translates to:
+  /// **'♻️ Khác VIP Pass 30 ngày: VIP Pass (gỡ QC, x2 thu nhập…) là vé có hạn; cấp VIP này không bao giờ mất và hai thứ cộng dồn.'**
+  String get vipHtp5;
+
+  /// No description provided for @vipHtp6.
+  ///
+  /// In vi, this message translates to:
+  /// **'📍 Mở ở Cửa hàng 💎 → nút 👑.'**
+  String get vipHtp6;
 
   /// No description provided for @rewardsTitle.
   ///

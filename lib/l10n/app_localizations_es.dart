@@ -660,7 +660,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String topupSummary(Object points) {
-    return '$points puntos de recarga';
+    return '$points EXP VIP';
   }
 
   @override
@@ -670,11 +670,11 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get topupNote =>
-      '1 punto ≈ 1 USD gastado en la tienda. Cada recompensa se reclama una vez.';
+      'Compras en la tienda: ~100 EXP por USD (los paquetes grandes dan más). Comprar EXP con 💎 cuesta mucho más y tiene límite. Cada recompensa se reclama una vez.';
 
   @override
   String topupTier(Object points) {
-    return '$points puntos';
+    return '$points EXP';
   }
 
   @override
@@ -690,6 +690,95 @@ class AppLocalizationsEs extends AppLocalizations {
   String topupClaimSnack(Object gems) {
     return '¡Reclamado +$gems 💎!';
   }
+
+  @override
+  String get vipName1 => 'Cliente fiel';
+
+  @override
+  String get vipName2 => 'Amante del té';
+
+  @override
+  String get vipName3 => 'Sibarita del té';
+
+  @override
+  String get vipName4 => 'Invitado de honor';
+
+  @override
+  String get vipName5 => 'Dueño de tienda';
+
+  @override
+  String get vipName6 => 'Multimillonario del boba';
+
+  @override
+  String get vipName7 => 'Magnate';
+
+  @override
+  String get vipName8 => 'Realeza';
+
+  @override
+  String get vipName9 => 'Leyenda';
+
+  @override
+  String get vipName10 => 'Emperador del boba';
+
+  @override
+  String vipBuyExp(Object exp, Object gems) {
+    return 'Comprar $exp EXP · $gems 💎';
+  }
+
+  @override
+  String vipBuyExpSnack(Object exp) {
+    return '+$exp EXP VIP';
+  }
+
+  @override
+  String vipBuyExpCapped(Object cap) {
+    return 'La EXP comprada con 💎 llegó al límite ($cap). Los niveles altos requieren recargas reales.';
+  }
+
+  @override
+  String get vipBenefitsTitle => 'Beneficios VIP';
+
+  @override
+  String get vipBenefitsLocked =>
+      'Alcanza VIP 1 para desbloquear regalos diarios/semanales/mensuales.';
+
+  @override
+  String get vipDaily => 'Diario';
+
+  @override
+  String get vipWeekly => 'Semanal';
+
+  @override
+  String get vipMonthly => 'Mensual';
+
+  @override
+  String get vipHowToTitle => 'Guía VIP';
+
+  @override
+  String get vipHtp1 =>
+      '👑 VIP tiene 10 niveles, cada uno con un título. Tu nivel aparece como etiqueta \"VIP n\" junto a tu nombre en las clasificaciones y en tu Gremio.';
+
+  @override
+  String vipHtp2(Object cap, Object exp, Object gems) {
+    return '⭐ EXP VIP: compras con dinero real en la tienda (~100 EXP por USD, los paquetes grandes de 💎 dan extra) o cómprala con 💎 ($gems 💎 → $exp EXP, hasta $cap EXP; por eso VIP 7–10 requieren recargas reales).';
+  }
+
+  @override
+  String vipHtp3(Object percent) {
+    return '📈 Ventajas: +$percent% de ingresos pasivos por nivel (permanente) y una recompensa única por cada nivel (💎, y un accesorio en algunos).';
+  }
+
+  @override
+  String get vipHtp4 =>
+      '🎁 Regalos diarios / semanales / mensuales: los 💎 crecen con tu nivel; los semanales y mensuales añaden un accesorio. Se reinician a las 00:00 UTC (las semanas empiezan el lunes, los meses según el calendario).';
+
+  @override
+  String get vipHtp5 =>
+      '♻️ No es el Pase VIP de 30 días: el Pase VIP (sin anuncios, x2 ingresos…) es temporal; este nivel VIP nunca caduca y ambos se acumulan.';
+
+  @override
+  String get vipHtp6 => '📍 Ábrelo en la Tienda 💎 → botón 👑.';
 
   @override
   String get rewardsTitle => 'Gana más 🎁';

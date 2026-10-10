@@ -72,6 +72,21 @@ String stageName(AppLocalizations l10n, int stage) => switch (stage) {
       _ => '',
     };
 
+/// Biệt danh của cấp VIP theo tổng nạp (1..10); rỗng nếu ngoài khoảng.
+String vipName(AppLocalizations l10n, int level) => switch (level) {
+      1 => l10n.vipName1,
+      2 => l10n.vipName2,
+      3 => l10n.vipName3,
+      4 => l10n.vipName4,
+      5 => l10n.vipName5,
+      6 => l10n.vipName6,
+      7 => l10n.vipName7,
+      8 => l10n.vipName8,
+      9 => l10n.vipName9,
+      10 => l10n.vipName10,
+      _ => '',
+    };
+
 String iapTitle(AppLocalizations l10n, IapProduct p) => switch (p) {
       IapProduct.removeAds => l10n.iapRemoveAdsTitle,
       IapProduct.starterPack => l10n.iapStarterTitle,

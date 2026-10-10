@@ -121,20 +121,20 @@ void main() {
 
     iap.emit(IapProduct.removeAds);
     await tester.pump();
-    expect(container.read(gameControllerProvider).topupPoints,
-        IapProduct.removeAds.topup);
+    expect(container.read(gameControllerProvider).vipExp,
+        IapProduct.removeAds.vipExp);
 
     iap.emit(IapProduct.removeAds); // restore lúc mở app
     await tester.pump();
-    expect(container.read(gameControllerProvider).topupPoints,
-        IapProduct.removeAds.topup);
+    expect(container.read(gameControllerProvider).vipExp,
+        IapProduct.removeAds.vipExp);
 
     iap.emit(IapProduct.gemsMega); // gói tiêu hao: lần nào cũng mới
     await tester.pump();
     iap.emit(IapProduct.gemsMega);
     await tester.pump();
-    expect(container.read(gameControllerProvider).topupPoints,
-        IapProduct.removeAds.topup + 2 * IapProduct.gemsMega.topup);
+    expect(container.read(gameControllerProvider).vipExp,
+        IapProduct.removeAds.vipExp + 2 * IapProduct.gemsMega.vipExp);
     await tester.pumpWidget(const SizedBox());
   });
 

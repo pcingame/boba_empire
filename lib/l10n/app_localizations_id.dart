@@ -655,7 +655,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String topupSummary(Object points) {
-    return '$points poin top-up';
+    return '$points EXP VIP';
   }
 
   @override
@@ -665,11 +665,11 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get topupNote =>
-      '1 poin ≈ 1 USD yang dibelanjakan di toko. Tiap hadiah diklaim sekali.';
+      'Pembelian di toko: ~100 EXP per USD (paket besar lebih banyak). Membeli EXP dengan 💎 jauh lebih mahal dan dibatasi. Tiap hadiah diklaim sekali.';
 
   @override
   String topupTier(Object points) {
-    return '$points poin';
+    return '$points EXP';
   }
 
   @override
@@ -685,6 +685,95 @@ class AppLocalizationsId extends AppLocalizations {
   String topupClaimSnack(Object gems) {
     return 'Diklaim +$gems 💎';
   }
+
+  @override
+  String get vipName1 => 'Pelanggan setia';
+
+  @override
+  String get vipName2 => 'Pencinta teh';
+
+  @override
+  String get vipName3 => 'Ahli teh';
+
+  @override
+  String get vipName4 => 'Tamu kehormatan';
+
+  @override
+  String get vipName5 => 'Pemilik toko';
+
+  @override
+  String get vipName6 => 'Miliarder boba';
+
+  @override
+  String get vipName7 => 'Taipan';
+
+  @override
+  String get vipName8 => 'Bangsawan';
+
+  @override
+  String get vipName9 => 'Legenda';
+
+  @override
+  String get vipName10 => 'Kaisar boba';
+
+  @override
+  String vipBuyExp(Object exp, Object gems) {
+    return 'Beli $exp EXP · $gems 💎';
+  }
+
+  @override
+  String vipBuyExpSnack(Object exp) {
+    return '+$exp EXP VIP';
+  }
+
+  @override
+  String vipBuyExpCapped(Object cap) {
+    return 'EXP yang dibeli dengan 💎 mencapai batas ($cap). Level lebih tinggi butuh top-up asli.';
+  }
+
+  @override
+  String get vipBenefitsTitle => 'Keuntungan VIP';
+
+  @override
+  String get vipBenefitsLocked =>
+      'Capai VIP 1 untuk membuka hadiah harian/mingguan/bulanan.';
+
+  @override
+  String get vipDaily => 'Harian';
+
+  @override
+  String get vipWeekly => 'Mingguan';
+
+  @override
+  String get vipMonthly => 'Bulanan';
+
+  @override
+  String get vipHowToTitle => 'Panduan VIP';
+
+  @override
+  String get vipHtp1 =>
+      '👑 VIP punya 10 level, masing-masing dengan gelar. Level kamu tampil sebagai label \"VIP n\" di samping namamu di papan peringkat dan di Guild.';
+
+  @override
+  String vipHtp2(Object cap, Object exp, Object gems) {
+    return '⭐ EXP VIP: pembelian uang asli di toko (~100 EXP per USD, paket 💎 besar memberi tambahan) atau beli dengan 💎 ($gems 💎 → $exp EXP, maksimal $cap EXP — jadi VIP 7–10 butuh top-up asli).';
+  }
+
+  @override
+  String vipHtp3(Object percent) {
+    return '📈 Keuntungan: +$percent% pendapatan pasif per level (permanen) dan hadiah sekali untuk tiap level (💎, plus aksesori di beberapa level).';
+  }
+
+  @override
+  String get vipHtp4 =>
+      '🎁 Hadiah harian / mingguan / bulanan: 💎 naik sesuai level; hadiah mingguan dan bulanan menambah aksesori. Periode ganti pukul 00:00 UTC (minggu mulai Senin, bulan sesuai kalender).';
+
+  @override
+  String get vipHtp5 =>
+      '♻️ Berbeda dengan VIP Pass 30 hari: VIP Pass (tanpa iklan, x2 pendapatan…) bersifat sementara; level VIP ini tidak pernah hilang dan keduanya digabung.';
+
+  @override
+  String get vipHtp6 => '📍 Buka dari Toko 💎 → tombol 👑.';
 
   @override
   String get rewardsTitle => 'Dapat lebih 🎁';

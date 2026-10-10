@@ -479,12 +479,17 @@ $$;
 grant execute on function set_accessory_flair(text) to authenticated;
 
 -- Cấp VIP theo tổng nạp (IAP) — client tự khai (xem lib/core/topup.dart), CHỈ TĂNG,
--- trần 8. Hiện cạnh tên ở các bảng xếp hạng/Hội qua accessory_flairs bên dưới.
+-- trần 10. Hiện cạnh tên ở các bảng xếp hạng/Hội qua accessory_flairs bên dưới.
 create table if not exists vip_level (
   user_id     uuid primary key references auth.users(id) on delete cascade,
-  level       smallint not null check (level between 1 and 8),
+  level       smallint not null check (level between 1 and 10),
   updated_at  timestamptz not null default now()
 );
+
+-- Bảng đã tạo với trần 8: nâng lên 10 (idempotent).
+alter table vip_level drop constraint if exists vip_level_level_check;
+alter table vip_level add constraint vip_level_level_check
+  check (level between 1 and 10);
 
 alter table vip_level enable row level security;
 -- Không policy nào: client chỉ đi qua RPC.
@@ -503,7 +508,7 @@ begin
     return;
   end if;
   insert into vip_level (user_id, level)
-  values (auth.uid(), least(p_level, 8))
+  values (auth.uid(), least(p_level, 10))
   on conflict (user_id) do update
     set level = greatest(vip_level.level, excluded.level), updated_at = now();
 end;
@@ -511,6 +516,79 @@ $$;
 
 revoke all on function set_vip_level(integer) from public, anon;
 grant execute on function set_vip_level(integer) to authenticated;
+
+-- Bảng xếp hạng VIP (web): xếp theo VIP EXP, client tự khai (xem lib/core/topup.dart) —
+-- CHỈ TĂNG. Cấp suy ra ở server từ mốc EXP; mảng mốc PHẢI khớp `topupTiers` bên Dart
+-- (test/core/vip_sql_test.dart so khớp). Chỉ người đã đặt biệt danh mới có hàng.
+create table if not exists vip_leaderboard_entries (
+  user_id     uuid primary key references auth.users(id) on delete cascade,
+  nickname    text not null check (char_length(nickname) between 1 and 20),
+  vip_exp     bigint not null check (vip_exp between 0 and 100000000),
+  updated_at  timestamptz not null default now()
+);
+
+alter table vip_leaderboard_entries enable row level security;
+-- Không policy nào: ghi/đọc chỉ qua RPC.
+
+create index if not exists vip_leaderboard_entries_exp_idx
+  on vip_leaderboard_entries (vip_exp desc, updated_at asc);
+
+create or replace function vip_level_for_exp(p_exp bigint)
+returns integer
+language sql
+immutable
+as $$
+  select count(*)::integer
+  from unnest(array[500, 1500, 3000, 6000, 10000, 20000, 35000, 50000, 75000, 100000]::bigint[]) as t(m)
+  where p_exp >= t.m;
+$$;
+
+create or replace function submit_vip_exp(p_nickname text, p_exp bigint)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare v_name text := btrim(coalesce(p_nickname, ''));
+begin
+  if auth.uid() is null then
+    raise exception 'not authenticated';
+  end if;
+  -- Chưa có cấp VIP thì không lên bảng.
+  if p_exp is null or vip_level_for_exp(p_exp) < 1 then
+    return;
+  end if;
+  if char_length(v_name) not between 1 and 20 then
+    raise exception 'bad nickname';
+  end if;
+  insert into vip_leaderboard_entries (user_id, nickname, vip_exp)
+  values (auth.uid(), v_name, least(p_exp, 100000000))
+  on conflict (user_id) do update
+    set nickname = excluded.nickname,
+        updated_at = case when excluded.vip_exp > vip_leaderboard_entries.vip_exp
+                          then now() else vip_leaderboard_entries.updated_at end,
+        vip_exp = greatest(vip_leaderboard_entries.vip_exp, excluded.vip_exp);
+end;
+$$;
+
+revoke all on function submit_vip_exp(text, bigint) from public, anon;
+grant execute on function submit_vip_exp(text, bigint) to authenticated;
+
+create or replace function vip_leaderboard_top(p_limit integer default 50)
+returns table (rank bigint, nickname text, vip_exp bigint, level integer)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select row_number() over (order by e.vip_exp desc, e.updated_at asc),
+         e.nickname, e.vip_exp, vip_level_for_exp(e.vip_exp)
+  from vip_leaderboard_entries e
+  order by e.vip_exp desc, e.updated_at asc
+  limit least(greatest(p_limit, 1), 100);
+$$;
+
+grant execute on function vip_leaderboard_top(integer) to anon, authenticated;
 
 -- Đổi cột trả về → phải drop hàm cũ. Bản app cũ chỉ đọc user_id/accessory_id
 -- (accessory_id có thể null với người chỉ có VIP → bỏ qua), nên vẫn tương thích.

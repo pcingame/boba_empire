@@ -644,7 +644,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String topupSummary(Object points) {
-    return '충전 포인트 $points';
+    return 'VIP EXP $points';
   }
 
   @override
@@ -653,11 +653,12 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get topupNote => '1포인트 ≈ 상점에서 쓴 1달러. 보상은 단계마다 한 번만 받아요.';
+  String get topupNote =>
+      '상점 구매: 1달러당 약 100 EXP (큰 팩은 더 많이). 💎로 EXP를 사면 훨씬 비싸고 한도가 있어요. 보상은 단계마다 한 번만 받아요.';
 
   @override
   String topupTier(Object points) {
-    return '$points포인트';
+    return '$points EXP';
   }
 
   @override
@@ -673,6 +674,94 @@ class AppLocalizationsKo extends AppLocalizations {
   String topupClaimSnack(Object gems) {
     return '+$gems 💎 받았어요';
   }
+
+  @override
+  String get vipName1 => '단골';
+
+  @override
+  String get vipName2 => '차 애호가';
+
+  @override
+  String get vipName3 => '차 감별사';
+
+  @override
+  String get vipName4 => '귀빈';
+
+  @override
+  String get vipName5 => '가게 주인';
+
+  @override
+  String get vipName6 => '버블티 억만장자';
+
+  @override
+  String get vipName7 => '거물';
+
+  @override
+  String get vipName8 => '왕족';
+
+  @override
+  String get vipName9 => '전설';
+
+  @override
+  String get vipName10 => '버블티 황제';
+
+  @override
+  String vipBuyExp(Object exp, Object gems) {
+    return '$exp EXP 구매 · $gems 💎';
+  }
+
+  @override
+  String vipBuyExpSnack(Object exp) {
+    return '+$exp VIP EXP';
+  }
+
+  @override
+  String vipBuyExpCapped(Object cap) {
+    return '💎로 산 EXP가 한도($cap)에 도달했어요. 더 높은 레벨은 실제 충전이 필요해요.';
+  }
+
+  @override
+  String get vipBenefitsTitle => 'VIP 혜택';
+
+  @override
+  String get vipBenefitsLocked => 'VIP 1에 도달하면 일일/주간/월간 선물이 열려요.';
+
+  @override
+  String get vipDaily => '매일';
+
+  @override
+  String get vipWeekly => '매주';
+
+  @override
+  String get vipMonthly => '매월';
+
+  @override
+  String get vipHowToTitle => 'VIP 가이드';
+
+  @override
+  String get vipHtp1 =>
+      '👑 VIP는 10레벨이며 레벨마다 칭호가 있어요. 레벨은 리더보드와 길드에서 이름 옆에 \"VIP n\" 태그로 보여요.';
+
+  @override
+  String vipHtp2(Object cap, Object exp, Object gems) {
+    return '⭐ VIP EXP: 상점에서 실제 결제(1달러당 약 100 EXP, 큰 💎 팩은 추가 지급)하거나 💎로 구매($gems 💎 → $exp EXP, 최대 $cap EXP — 그래서 VIP 7–10은 실제 충전이 필요해요).';
+  }
+
+  @override
+  String vipHtp3(Object percent) {
+    return '📈 혜택: 레벨마다 자동 수입 +$percent%(영구)와 레벨별 1회 보상(💎, 일부 레벨은 액세서리 포함).';
+  }
+
+  @override
+  String get vipHtp4 =>
+      '🎁 일일 / 주간 / 월간 선물: 💎가 레벨에 따라 늘고, 주간·월간에는 액세서리도 줘요. 00:00 UTC에 초기화(주는 월요일 시작, 월은 달력 기준).';
+
+  @override
+  String get vipHtp5 =>
+      '♻️ 30일 VIP 패스와는 달라요: VIP 패스(광고 제거, 수입 x2…)는 기간제이고, 이 VIP 레벨은 사라지지 않으며 둘은 중복 적용돼요.';
+
+  @override
+  String get vipHtp6 => '📍 💎 상점 → 👑 버튼에서 열어요.';
 
   @override
   String get rewardsTitle => '더 벌기 🎁';

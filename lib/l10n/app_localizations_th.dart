@@ -652,7 +652,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String topupSummary(Object points) {
-    return '$points แต้มเติมเงิน';
+    return 'VIP EXP $points';
   }
 
   @override
@@ -662,11 +662,11 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get topupNote =>
-      '1 แต้ม ≈ 1 ดอลลาร์ที่ใช้ในร้าน รับรางวัลแต่ละขั้นได้ครั้งเดียว';
+      'ซื้อในร้าน: ประมาณ 100 EXP ต่อ 1 ดอลลาร์ (แพ็กใหญ่ได้มากกว่า) การซื้อ EXP ด้วย 💎 แพงกว่ามากและมีเพดาน รับรางวัลแต่ละขั้นได้ครั้งเดียว';
 
   @override
   String topupTier(Object points) {
-    return '$points แต้ม';
+    return '$points EXP';
   }
 
   @override
@@ -682,6 +682,95 @@ class AppLocalizationsTh extends AppLocalizations {
   String topupClaimSnack(Object gems) {
     return 'รับ +$gems 💎 แล้ว';
   }
+
+  @override
+  String get vipName1 => 'ขาประจำ';
+
+  @override
+  String get vipName2 => 'คนรักชา';
+
+  @override
+  String get vipName3 => 'เซียนชา';
+
+  @override
+  String get vipName4 => 'แขกผู้มีเกียรติ';
+
+  @override
+  String get vipName5 => 'เจ้าของร้าน';
+
+  @override
+  String get vipName6 => 'เศรษฐีบ็อบา';
+
+  @override
+  String get vipName7 => 'เจ้าพ่อธุรกิจ';
+
+  @override
+  String get vipName8 => 'ราชวงศ์';
+
+  @override
+  String get vipName9 => 'ตำนาน';
+
+  @override
+  String get vipName10 => 'จักรพรรดิบ็อบา';
+
+  @override
+  String vipBuyExp(Object exp, Object gems) {
+    return 'ซื้อ $exp EXP · $gems 💎';
+  }
+
+  @override
+  String vipBuyExpSnack(Object exp) {
+    return '+$exp VIP EXP';
+  }
+
+  @override
+  String vipBuyExpCapped(Object cap) {
+    return 'EXP ที่ซื้อด้วย 💎 ถึงเพดานแล้ว ($cap) เลเวลที่สูงกว่านี้ต้องเติมเงินจริง';
+  }
+
+  @override
+  String get vipBenefitsTitle => 'สิทธิพิเศษ VIP';
+
+  @override
+  String get vipBenefitsLocked =>
+      'ถึง VIP 1 เพื่อปลดล็อกของขวัญรายวัน/รายสัปดาห์/รายเดือน';
+
+  @override
+  String get vipDaily => 'รายวัน';
+
+  @override
+  String get vipWeekly => 'รายสัปดาห์';
+
+  @override
+  String get vipMonthly => 'รายเดือน';
+
+  @override
+  String get vipHowToTitle => 'คู่มือ VIP';
+
+  @override
+  String get vipHtp1 =>
+      '👑 VIP มี 10 เลเวล แต่ละเลเวลมีฉายา เลเวลของคุณแสดงเป็นป้าย \"VIP n\" ข้างชื่อบนกระดานอันดับและในกิลด์';
+
+  @override
+  String vipHtp2(Object cap, Object exp, Object gems) {
+    return '⭐ EXP VIP: ซื้อด้วยเงินจริงในร้าน (ประมาณ 100 EXP ต่อ 1 ดอลลาร์ แพ็ก 💎 ใหญ่ได้เพิ่ม) หรือซื้อด้วย 💎 ($gems 💎 → $exp EXP สูงสุด $cap EXP — ดังนั้น VIP 7–10 ต้องเติมเงินจริง)';
+  }
+
+  @override
+  String vipHtp3(Object percent) {
+    return '📈 สิทธิพิเศษ: รายได้อัตโนมัติ +$percent% ต่อเลเวล (ถาวร) และรางวัลครั้งเดียวทุกเลเวล (💎 และเครื่องประดับในบางเลเวล)';
+  }
+
+  @override
+  String get vipHtp4 =>
+      '🎁 ของขวัญรายวัน / รายสัปดาห์ / รายเดือน: 💎 เพิ่มตามเลเวล รายสัปดาห์และรายเดือนมีเครื่องประดับด้วย รีเซ็ตเวลา 00:00 UTC (สัปดาห์เริ่มวันจันทร์ เดือนตามปฏิทิน)';
+
+  @override
+  String get vipHtp5 =>
+      '♻️ ไม่ใช่ VIP Pass 30 วัน: VIP Pass (ไม่มีโฆษณา รายได้ x2…) มีอายุจำกัด เลเวล VIP นี้ไม่หมดอายุ และรวมกันได้';
+
+  @override
+  String get vipHtp6 => '📍 เปิดที่ร้านค้า 💎 → ปุ่ม 👑';
 
   @override
   String get rewardsTitle => 'หาเพิ่ม 🎁';
