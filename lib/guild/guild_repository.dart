@@ -57,12 +57,44 @@ class GuildSummary {
   final int? streak;
 }
 
+enum GuildRole { owner, officer, member }
+
 class GuildMemberInfo {
-  const GuildMemberInfo(
-      {required this.userId, required this.nickname, required this.points});
+  const GuildMemberInfo({
+    required this.userId,
+    required this.nickname,
+    required this.points,
+    this.role = GuildRole.member,
+  });
   final String userId;
   final String nickname;
   final int points;
+  final GuildRole role;
+}
+
+enum GuildEventKind { joined, left, kicked, promoted, demoted, transferred }
+
+/// Một dòng nhật ký hoạt động hội. [target] null với joined/left.
+class GuildEvent {
+  const GuildEvent({
+    required this.kind,
+    required this.actor,
+    this.target,
+    this.createdAt,
+  });
+
+  factory GuildEvent.fromJson(Map<String, dynamic> j) => GuildEvent(
+        kind: GuildEventKind.values.firstWhere((k) => k.name == j['kind'],
+            orElse: () => GuildEventKind.joined),
+        actor: j['actor'] as String,
+        target: j['target'] as String?,
+        createdAt: DateTime.tryParse('${j['created_at']}'),
+      );
+
+  final GuildEventKind kind;
+  final String actor;
+  final String? target;
+  final DateTime? createdAt;
 }
 
 /// Yêu cầu vào hội đang chờ chủ hội duyệt.
@@ -170,6 +202,13 @@ class MyGuild {
             userId: (m as Map)['user_id'] as String,
             nickname: m['nickname'] as String,
             points: (m['points'] as num).toInt(),
+            // Server cũ chưa có 'role': suy từ chủ hội.
+            role: switch (m['role']) {
+              'owner' => GuildRole.owner,
+              'officer' => GuildRole.officer,
+              null when m['user_id'] == g['owner_id'] => GuildRole.owner,
+              _ => GuildRole.member,
+            },
           ),
       ],
     );
@@ -240,6 +279,12 @@ enum GuildFailure {
   /// Hội đang có quá nhiều yêu cầu chờ duyệt.
   requestsFull,
 
+  /// Không đủ quyền với người này (vd. phó hội kick phó hội khác).
+  notAllowed,
+
+  /// Đã đủ số phó hội tối đa.
+  officersFull,
+
   /// Chat: gửi quá nhanh / nội dung bị lọc.
   chatRateLimited,
   textBlocked,
@@ -273,6 +318,8 @@ GuildFailure guildFailureFromMessage(String message) {
     return GuildFailure.invalidInput;
   }
   if (m.contains('too many requests')) return GuildFailure.requestsFull;
+  if (m.contains('not allowed')) return GuildFailure.notAllowed;
+  if (m.contains('too many officers')) return GuildFailure.officersFull;
   if (m.contains('chat rate limited')) return GuildFailure.chatRateLimited;
   if (m.contains('text blocked')) return GuildFailure.textBlocked;
   if (m.contains('not found')) return GuildFailure.notFound;
@@ -334,6 +381,15 @@ abstract class GuildRepository {
 
   /// Giây buff thu nhập cả hội còn lại (nhẹ — gọi khi mở app).
   Future<int> buffSeconds();
+
+  /// Chủ hội bổ nhiệm ([on] true) / bãi nhiệm phó hội.
+  Future<void> setOfficer(String userId, {required bool on});
+
+  /// Chủ hội nhường quyền cho [userId].
+  Future<void> transferOwner(String userId);
+
+  /// Nhật ký hoạt động, mới nhất trước.
+  Future<List<GuildEvent>> activity();
 
   Future<GuildChat> chat();
   Future<void> chatPost(String body);
@@ -496,6 +552,20 @@ class SupabaseGuildRepository implements GuildRepository {
   @override
   Future<int> buffSeconds() async =>
       ((await _rpc('guild_buff_seconds')) as num).toInt();
+
+  @override
+  Future<void> setOfficer(String userId, {required bool on}) =>
+      _rpc('guild_set_officer', {'p_user': userId, 'p_on': on});
+
+  @override
+  Future<void> transferOwner(String userId) =>
+      _rpc('guild_transfer_owner', {'p_user': userId});
+
+  @override
+  Future<List<GuildEvent>> activity() async => [
+        for (final e in (await _rpc('guild_activity', {'p_limit': 50})) as List)
+          GuildEvent.fromJson(e as Map<String, dynamic>),
+      ];
 
   @override
   Future<GuildChat> chat() async => GuildChat.fromJson(

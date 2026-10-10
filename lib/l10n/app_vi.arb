@@ -1751,6 +1751,89 @@
   "guildChatDelete": "Xoá tin",
   "guildChatReport": "Báo cáo tin",
   "guildChatReported": "Đã báo cáo tin nhắn. Bạn sẽ không còn thấy tin này.",
+  "guildManage": "Quản lý",
+  "guildPromote": "Bổ nhiệm phó hội",
+  "guildDemote": "Bãi nhiệm phó hội",
+  "guildTransfer": "Nhường chức chủ hội",
+  "guildTransferConfirm": "Nhường chức chủ hội cho {name}? Bạn sẽ trở thành thành viên thường.",
+  "@guildTransferConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildErrNotAllowed": "Bạn không đủ quyền với người này.",
+  "guildErrOfficersFull": "Hội đã đủ {n} phó hội.",
+  "@guildErrOfficersFull": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildActivityTitle": "Nhật ký hội",
+  "guildActivityEmpty": "Chưa có hoạt động nào.",
+  "guildEvJoined": "{name} đã vào hội",
+  "@guildEvJoined": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvLeft": "{name} đã rời hội",
+  "@guildEvLeft": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvKicked": "{actor} đã mời {target} ra khỏi hội",
+  "@guildEvKicked": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvPromoted": "{actor} đã bổ nhiệm {target} làm phó hội",
+  "@guildEvPromoted": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvDemoted": "{actor} đã bãi nhiệm phó hội {target}",
+  "@guildEvDemoted": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvTransferred": "{actor} đã nhường chức chủ hội cho {target}",
+  "@guildEvTransferred": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
   "guildErrChatRate": "Bạn gửi quá nhanh, chờ vài giây nhé.",
   "guildErrTextBlocked": "Tin nhắn chứa từ không được phép.",
   "guildErrDailyLimit": "Hôm nay bạn đã nạp tối đa {n} 💎.",

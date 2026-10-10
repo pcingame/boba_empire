@@ -2714,6 +2714,68 @@ class AppLocalizationsEn extends AppLocalizations {
       'Message reported. You won\'t see it anymore.';
 
   @override
+  String get guildManage => 'Manage';
+
+  @override
+  String get guildPromote => 'Appoint officer';
+
+  @override
+  String get guildDemote => 'Remove officer';
+
+  @override
+  String get guildTransfer => 'Transfer ownership';
+
+  @override
+  String guildTransferConfirm(String name) {
+    return 'Transfer ownership to $name? You\'ll become a regular member.';
+  }
+
+  @override
+  String get guildErrNotAllowed =>
+      'You don\'t have permission over this member.';
+
+  @override
+  String guildErrOfficersFull(int n) {
+    return 'The guild already has $n officers.';
+  }
+
+  @override
+  String get guildActivityTitle => 'Guild log';
+
+  @override
+  String get guildActivityEmpty => 'No activity yet.';
+
+  @override
+  String guildEvJoined(String name) {
+    return '$name joined the guild';
+  }
+
+  @override
+  String guildEvLeft(String name) {
+    return '$name left the guild';
+  }
+
+  @override
+  String guildEvKicked(String actor, String target) {
+    return '$actor removed $target from the guild';
+  }
+
+  @override
+  String guildEvPromoted(String actor, String target) {
+    return '$actor appointed $target as officer';
+  }
+
+  @override
+  String guildEvDemoted(String actor, String target) {
+    return '$actor removed $target as officer';
+  }
+
+  @override
+  String guildEvTransferred(String actor, String target) {
+    return '$actor transferred ownership to $target';
+  }
+
+  @override
   String get guildErrChatRate =>
       'You\'re sending too fast, wait a few seconds.';
 

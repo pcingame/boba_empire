@@ -2708,6 +2708,67 @@ class AppLocalizationsId extends AppLocalizations {
       'Pesan dilaporkan. Kamu tidak akan melihatnya lagi.';
 
   @override
+  String get guildManage => 'Kelola';
+
+  @override
+  String get guildPromote => 'Angkat perwira';
+
+  @override
+  String get guildDemote => 'Copot perwira';
+
+  @override
+  String get guildTransfer => 'Serahkan kepemimpinan';
+
+  @override
+  String guildTransferConfirm(String name) {
+    return 'Serahkan kepemimpinan ke $name? Kamu akan menjadi anggota biasa.';
+  }
+
+  @override
+  String get guildErrNotAllowed => 'Kamu tidak punya izin atas anggota ini.';
+
+  @override
+  String guildErrOfficersFull(int n) {
+    return 'Guild sudah punya $n perwira.';
+  }
+
+  @override
+  String get guildActivityTitle => 'Catatan guild';
+
+  @override
+  String get guildActivityEmpty => 'Belum ada aktivitas.';
+
+  @override
+  String guildEvJoined(String name) {
+    return '$name bergabung ke guild';
+  }
+
+  @override
+  String guildEvLeft(String name) {
+    return '$name keluar dari guild';
+  }
+
+  @override
+  String guildEvKicked(String actor, String target) {
+    return '$actor mengeluarkan $target dari guild';
+  }
+
+  @override
+  String guildEvPromoted(String actor, String target) {
+    return '$actor mengangkat $target sebagai perwira';
+  }
+
+  @override
+  String guildEvDemoted(String actor, String target) {
+    return '$actor mencopot $target dari perwira';
+  }
+
+  @override
+  String guildEvTransferred(String actor, String target) {
+    return '$actor menyerahkan kepemimpinan ke $target';
+  }
+
+  @override
   String get guildErrChatRate =>
       'Kamu mengirim terlalu cepat, tunggu beberapa detik.';
 

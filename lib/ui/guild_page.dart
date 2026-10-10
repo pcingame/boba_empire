@@ -16,6 +16,8 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import 'guild_leaderboard_page.dart';
 import '../guild/guild_chat_unread.dart';
+import 'guild_activity_page.dart';
+import 'widgets/dispose_with_widget.dart';
 import 'guild_chat_page.dart';
 import 'guild_shop_page.dart';
 import 'widgets/clay.dart';
@@ -43,6 +45,8 @@ String guildFailureText(AppLocalizations l10n, GuildFailure f) => switch (f) {
       GuildFailure.buffMaxed => l10n.guildErrBuffMaxed,
       GuildFailure.invalidInput => l10n.guildErrInvalidInput,
       GuildFailure.requestsFull => l10n.guildErrRequestsFull,
+      GuildFailure.notAllowed => l10n.guildErrNotAllowed,
+      GuildFailure.officersFull => l10n.guildErrOfficersFull(guildMaxOfficers),
       GuildFailure.chatRateLimited => l10n.guildErrChatRate,
       GuildFailure.textBlocked => l10n.guildErrTextBlocked,
       GuildFailure.network => l10n.guildErrNetwork,
@@ -87,6 +91,13 @@ class _GuildPageState extends ConsumerState<GuildPage> {
                   child: const Icon(Icons.chat_bubble_outline),
                 ),
                 onPressed: () => showGuildChat(context),
+              ),
+            if (view is GuildMine)
+              IconButton(
+                key: const Key('guild-activity-button'),
+                tooltip: l10n.guildActivityTitle,
+                icon: const Icon(Icons.history),
+                onPressed: () => showGuildActivity(context),
               ),
             IconButton(
               key: const Key('guild-leaderboard-button'),
@@ -254,7 +265,9 @@ Future<String?> _askNickname(BuildContext context, WidgetRef ref) {
       text: ref.read(guildRepositoryProvider).cachedNickname ?? '');
   return showDialog<String>(
     context: context,
-    builder: (ctx) => AlertDialog(
+    builder: (ctx) => DisposeWithWidget(
+      controllers: [ctrl],
+      child: AlertDialog(
       content: TextField(
         key: const Key('guild-nickname-field'),
         controller: ctrl,
@@ -274,6 +287,7 @@ Future<String?> _askNickname(BuildContext context, WidgetRef ref) {
         ),
       ],
     ),
+    ),
   );
 }
 
@@ -287,7 +301,9 @@ Future<void> _showCreateDialog(BuildContext context, WidgetRef ref) async {
   var requiresApproval = false;
   final ok = await showDialog<bool>(
     context: context,
-    builder: (ctx) => StatefulBuilder(
+    builder: (ctx) => DisposeWithWidget(
+      controllers: [name, tag, nick],
+      child: StatefulBuilder(
       builder: (ctx, setState) => AlertDialog(
         title: Text(l10n.guildCreate),
         content: SingleChildScrollView(
@@ -350,6 +366,7 @@ Future<void> _showCreateDialog(BuildContext context, WidgetRef ref) async {
           ),
         ],
       ),
+    ),
     ),
   );
   if (ok != true || !context.mounted) return;
@@ -466,7 +483,7 @@ class _MyGuildView extends ConsumerWidget {
           for (var i = 0; i < guildMilestones.length; i++)
             _MilestoneRow(index: i, view: view),
           const SizedBox(height: 8),
-          if (view.isOwner && g.requests.isNotEmpty) ...[
+          if (view.canModerate && g.requests.isNotEmpty) ...[
             Text(l10n.guildRequestsTitle(g.requests.length),
                 style: theme.textTheme.titleSmall
                     ?.copyWith(fontWeight: FontWeight.w700)),
@@ -503,7 +520,8 @@ class _MyGuildView extends ConsumerWidget {
                   Expanded(
                     child: Row(
                       children: [
-                        if (m.userId == g.ownerId) const Text('👑 '),
+                        if (m.role == GuildRole.owner) const Text('👑 '),
+                        if (m.role == GuildRole.officer) const Text('⭐ '),
                         Flexible(
                           child: Text(m.nickname,
                               maxLines: 1,
@@ -517,14 +535,62 @@ class _MyGuildView extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Text(l10n.guildPoints(m.points),
-                      style: const TextStyle(fontWeight: FontWeight.w600)),
-                  if (view.isOwner && m.userId != view.myUserId)
-                    IconButton(
-                      key: Key('guild-kick-${m.userId}'),
-                      tooltip: l10n.guildKick,
-                      icon: const Icon(Icons.person_remove, size: 20),
-                      onPressed: () => _kick(context, ref, m),
+                  // Cột điểm RỘNG CỐ ĐỊNH, căn phải: điểm các hàng thẳng cột dù hàng có
+                  // nút hay không (trước đây Flexible làm điểm lệch từng hàng).
+                  SizedBox(
+                    key: Key('guild-member-points-${m.userId}'),
+                    width: 88,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerRight,
+                      child: Text(l10n.guildPoints(m.points),
+                          style: const TextStyle(fontWeight: FontWeight.w600)),
+                    ),
+                  ),
+                  // Ô nút cũng cố định: chủ hội có 2 ô (menu + kick), phó hội 1 ô (kick);
+                  // ô trống giữ chỗ để các cột không xô lệch.
+                  if (view.isOwner)
+                    SizedBox(
+                      width: 36,
+                      child: m.userId == view.myUserId
+                          ? null
+                          : PopupMenuButton<String>(
+                              key: Key('guild-member-menu-${m.userId}'),
+                              tooltip: l10n.guildManage,
+                              padding: EdgeInsets.zero,
+                              iconSize: 20,
+                              icon: const Icon(Icons.more_vert),
+                              onSelected: (v) => _manage(context, ref, m, v),
+                              itemBuilder: (_) => [
+                                PopupMenuItem(
+                                  key: Key('guild-toggle-officer-${m.userId}'),
+                                  value: 'officer',
+                                  child: Text(m.role == GuildRole.officer
+                                      ? l10n.guildDemote
+                                      : l10n.guildPromote),
+                                ),
+                                PopupMenuItem(
+                                  key: Key('guild-transfer-${m.userId}'),
+                                  value: 'transfer',
+                                  child: Text(l10n.guildTransfer),
+                                ),
+                              ],
+                            ),
+                    ),
+                  if (view.canModerate)
+                    SizedBox(
+                      width: 36,
+                      child: view.canKick(m)
+                          ? IconButton(
+                              key: Key('guild-kick-${m.userId}'),
+                              tooltip: l10n.guildKick,
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(
+                                  minWidth: 36, minHeight: 36),
+                              icon: const Icon(Icons.person_remove, size: 20),
+                              onPressed: () => _kick(context, ref, m),
+                            )
+                          : null,
                     ),
                 ],
               ),
@@ -547,6 +613,22 @@ class _MyGuildView extends ConsumerWidget {
         .respond(userId, accept: accept);
     if (!context.mounted || out.ok) return;
     _toast(context, guildFailureText(AppLocalizations.of(context)!, out.failure!));
+  }
+
+  Future<void> _manage(
+      BuildContext context, WidgetRef ref, GuildMemberInfo m, String action) async {
+    final l10n = AppLocalizations.of(context)!;
+    final ctrl = ref.read(guildControllerProvider.notifier);
+    if (action == 'transfer') {
+      final ok = await _confirm(
+          context, l10n.guildTransferConfirm(m.nickname), l10n.guildTransfer);
+      if (!ok || !context.mounted) return;
+    }
+    final out = action == 'transfer'
+        ? await ctrl.transferOwner(m.userId)
+        : await ctrl.setOfficer(m.userId, on: m.role != GuildRole.officer);
+    if (!context.mounted || out.ok) return;
+    _toast(context, guildFailureText(l10n, out.failure!));
   }
 
   Future<void> _kick(

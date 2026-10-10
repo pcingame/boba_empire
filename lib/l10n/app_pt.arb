@@ -1295,6 +1295,89 @@
   "guildChatDelete": "Apagar mensagem",
   "guildChatReport": "Denunciar mensagem",
   "guildChatReported": "Mensagem denunciada. Você não a verá mais.",
+  "guildManage": "Gerenciar",
+  "guildPromote": "Nomear oficial",
+  "guildDemote": "Remover oficial",
+  "guildTransfer": "Transferir liderança",
+  "guildTransferConfirm": "Transferir a liderança para {name}? Você se tornará um membro comum.",
+  "@guildTransferConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildErrNotAllowed": "Você não tem permissão sobre este membro.",
+  "guildErrOfficersFull": "A guilda já tem {n} oficiais.",
+  "@guildErrOfficersFull": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildActivityTitle": "Registro da guilda",
+  "guildActivityEmpty": "Nenhuma atividade ainda.",
+  "guildEvJoined": "{name} entrou na guilda",
+  "@guildEvJoined": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvLeft": "{name} saiu da guilda",
+  "@guildEvLeft": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvKicked": "{actor} removeu {target} da guilda",
+  "@guildEvKicked": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvPromoted": "{actor} nomeou {target} oficial",
+  "@guildEvPromoted": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvDemoted": "{actor} removeu {target} do cargo de oficial",
+  "@guildEvDemoted": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvTransferred": "{actor} transferiu a liderança para {target}",
+  "@guildEvTransferred": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
   "guildErrChatRate": "Você está enviando rápido demais, aguarde alguns segundos.",
   "guildErrTextBlocked": "Sua mensagem contém uma palavra bloqueada.",
   "guildErrDailyLimit": "Hoje você já doou o máximo de {n} 💎.",

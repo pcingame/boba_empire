@@ -2703,6 +2703,67 @@ class AppLocalizationsVi extends AppLocalizations {
       'Đã báo cáo tin nhắn. Bạn sẽ không còn thấy tin này.';
 
   @override
+  String get guildManage => 'Quản lý';
+
+  @override
+  String get guildPromote => 'Bổ nhiệm phó hội';
+
+  @override
+  String get guildDemote => 'Bãi nhiệm phó hội';
+
+  @override
+  String get guildTransfer => 'Nhường chức chủ hội';
+
+  @override
+  String guildTransferConfirm(String name) {
+    return 'Nhường chức chủ hội cho $name? Bạn sẽ trở thành thành viên thường.';
+  }
+
+  @override
+  String get guildErrNotAllowed => 'Bạn không đủ quyền với người này.';
+
+  @override
+  String guildErrOfficersFull(int n) {
+    return 'Hội đã đủ $n phó hội.';
+  }
+
+  @override
+  String get guildActivityTitle => 'Nhật ký hội';
+
+  @override
+  String get guildActivityEmpty => 'Chưa có hoạt động nào.';
+
+  @override
+  String guildEvJoined(String name) {
+    return '$name đã vào hội';
+  }
+
+  @override
+  String guildEvLeft(String name) {
+    return '$name đã rời hội';
+  }
+
+  @override
+  String guildEvKicked(String actor, String target) {
+    return '$actor đã mời $target ra khỏi hội';
+  }
+
+  @override
+  String guildEvPromoted(String actor, String target) {
+    return '$actor đã bổ nhiệm $target làm phó hội';
+  }
+
+  @override
+  String guildEvDemoted(String actor, String target) {
+    return '$actor đã bãi nhiệm phó hội $target';
+  }
+
+  @override
+  String guildEvTransferred(String actor, String target) {
+    return '$actor đã nhường chức chủ hội cho $target';
+  }
+
+  @override
   String get guildErrChatRate => 'Bạn gửi quá nhanh, chờ vài giây nhé.';
 
   @override

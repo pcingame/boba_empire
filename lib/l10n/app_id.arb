@@ -1295,6 +1295,89 @@
   "guildChatDelete": "Hapus pesan",
   "guildChatReport": "Laporkan pesan",
   "guildChatReported": "Pesan dilaporkan. Kamu tidak akan melihatnya lagi.",
+  "guildManage": "Kelola",
+  "guildPromote": "Angkat perwira",
+  "guildDemote": "Copot perwira",
+  "guildTransfer": "Serahkan kepemimpinan",
+  "guildTransferConfirm": "Serahkan kepemimpinan ke {name}? Kamu akan menjadi anggota biasa.",
+  "@guildTransferConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildErrNotAllowed": "Kamu tidak punya izin atas anggota ini.",
+  "guildErrOfficersFull": "Guild sudah punya {n} perwira.",
+  "@guildErrOfficersFull": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildActivityTitle": "Catatan guild",
+  "guildActivityEmpty": "Belum ada aktivitas.",
+  "guildEvJoined": "{name} bergabung ke guild",
+  "@guildEvJoined": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvLeft": "{name} keluar dari guild",
+  "@guildEvLeft": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvKicked": "{actor} mengeluarkan {target} dari guild",
+  "@guildEvKicked": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvPromoted": "{actor} mengangkat {target} sebagai perwira",
+  "@guildEvPromoted": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvDemoted": "{actor} mencopot {target} dari perwira",
+  "@guildEvDemoted": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvTransferred": "{actor} menyerahkan kepemimpinan ke {target}",
+  "@guildEvTransferred": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
   "guildErrChatRate": "Kamu mengirim terlalu cepat, tunggu beberapa detik.",
   "guildErrTextBlocked": "Pesanmu mengandung kata yang dilarang.",
   "guildErrDailyLimit": "Kamu sudah menyumbang maksimum {n} 💎 hari ini.",

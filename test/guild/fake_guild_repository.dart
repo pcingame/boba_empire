@@ -103,6 +103,50 @@ class FakeGuildRepository implements GuildRepository {
         wallet: g.wallet - guildBuffPrice, buffSeconds: serverBuffSeconds);
   }
 
+  /// Ghi lại lệnh vai trò / chuyển chủ; áp vào `mine` để refresh() thấy.
+  final List<String> roleCalls = [];
+  List<GuildEvent> events = [];
+
+  @override
+  Future<void> setOfficer(String userId, {required bool on}) async {
+    _hit('setOfficer');
+    roleCalls.add('officer:$userId:$on');
+    final g = mine!;
+    mine = withMembers(g, [
+      for (final m in g.members)
+        m.userId == userId
+            ? GuildMemberInfo(
+                userId: m.userId,
+                nickname: m.nickname,
+                points: m.points,
+                role: on ? GuildRole.officer : GuildRole.member)
+            : m,
+    ]);
+  }
+
+  @override
+  Future<void> transferOwner(String userId) async {
+    _hit('transferOwner');
+    roleCalls.add('transfer:$userId');
+    final g = mine!;
+    mine = withMembers(g, [
+      for (final m in g.members)
+        GuildMemberInfo(
+            userId: m.userId,
+            nickname: m.nickname,
+            points: m.points,
+            role: m.userId == userId
+                ? GuildRole.owner
+                : (m.role == GuildRole.owner ? GuildRole.member : m.role)),
+    ], ownerId: userId);
+  }
+
+  @override
+  Future<List<GuildEvent>> activity() async {
+    _hit('activity');
+    return events;
+  }
+
   /// Chat giả: mới nhất ở đầu; [chatPinnedId] là tin đang ghim.
   final List<GuildMessage> chatMessages = [];
   int? chatPinnedId;
@@ -371,5 +415,26 @@ MyGuild withState(
       questsClaimed: questsClaimed ?? g.questsClaimed,
       ownedItems: ownedItems ?? g.ownedItems,
       donatedToday: donatedToday ?? g.donatedToday,
+      chatLatestId: g.chatLatestId,
+    );
+
+/// Bản sao của [g] với danh sách thành viên (và chủ hội) đổi.
+MyGuild withMembers(MyGuild g, List<GuildMemberInfo> members, {String? ownerId}) => MyGuild(
+      id: g.id,
+      name: g.name,
+      tag: g.tag,
+      emoji: g.emoji,
+      ownerId: ownerId ?? g.ownerId,
+      total: g.total,
+      claimed: g.claimed,
+      members: members,
+      requiresApproval: g.requiresApproval,
+      requests: g.requests,
+      streak: g.streak,
+      buffSeconds: g.buffSeconds,
+      wallet: g.wallet,
+      questsClaimed: g.questsClaimed,
+      ownedItems: g.ownedItems,
+      donatedToday: g.donatedToday,
       chatLatestId: g.chatLatestId,
     );

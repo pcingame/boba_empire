@@ -77,6 +77,9 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> {
     final l10n = AppLocalizations.of(context)!;
     final ctrl = ref.read(guildControllerProvider.notifier);
     final mine = m.userId == ref.read(guildRepositoryProvider).myUserId;
+    // Chủ hội và phó hội xoá được tin của người khác (ghim chỉ chủ hội).
+    final v = ref.read(guildControllerProvider);
+    final canDelete = v is GuildMine && v.canModerate;
     final choice = await showModalBottomSheet<String>(
       context: context,
       builder: (_) => SafeArea(
@@ -95,7 +98,7 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> {
               title: Text(pinned ? l10n.guildChatUnpin : l10n.guildChatPin),
               onTap: () => Navigator.pop(context, 'pin'),
             ),
-          if (mine || isOwner)
+          if (mine || canDelete)
             ListTile(
               key: const Key('guild-chat-delete'),
               leading: const Icon(Icons.delete_outline),
@@ -117,7 +120,7 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final view = ref.watch(guildControllerProvider);
-    final isOwner = view is GuildMine && view.guild.ownerId == ref.read(guildRepositoryProvider).myUserId;
+    final isOwner = view is GuildMine && view.isOwner;
     final chat = ref.watch(guildChatProvider);
     // Đã mở/tải chat = đã đọc tới tin mới nhất trong danh sách.
     ref.listen(guildChatProvider, (_, next) {

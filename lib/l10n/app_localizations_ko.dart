@@ -2664,6 +2664,67 @@ class AppLocalizationsKo extends AppLocalizations {
   String get guildChatReported => '메시지를 신고했어요. 이 메시지는 더 이상 보이지 않아요.';
 
   @override
+  String get guildManage => '관리';
+
+  @override
+  String get guildPromote => '부길드장 임명';
+
+  @override
+  String get guildDemote => '부길드장 해임';
+
+  @override
+  String get guildTransfer => '길드장 위임';
+
+  @override
+  String guildTransferConfirm(String name) {
+    return '$name 님에게 길드장을 위임할까요? 일반 멤버가 됩니다.';
+  }
+
+  @override
+  String get guildErrNotAllowed => '이 멤버에 대한 권한이 없어요.';
+
+  @override
+  String guildErrOfficersFull(int n) {
+    return '부길드장이 이미 $n명이에요.';
+  }
+
+  @override
+  String get guildActivityTitle => '길드 기록';
+
+  @override
+  String get guildActivityEmpty => '아직 활동이 없어요.';
+
+  @override
+  String guildEvJoined(String name) {
+    return '$name 님이 길드에 가입했어요';
+  }
+
+  @override
+  String guildEvLeft(String name) {
+    return '$name 님이 길드를 떠났어요';
+  }
+
+  @override
+  String guildEvKicked(String actor, String target) {
+    return '$actor 님이 $target 님을 내보냈어요';
+  }
+
+  @override
+  String guildEvPromoted(String actor, String target) {
+    return '$actor 님이 $target 님을 부길드장으로 임명했어요';
+  }
+
+  @override
+  String guildEvDemoted(String actor, String target) {
+    return '$actor 님이 $target 님의 부길드장을 해임했어요';
+  }
+
+  @override
+  String guildEvTransferred(String actor, String target) {
+    return '$actor 님이 $target 님에게 길드장을 위임했어요';
+  }
+
+  @override
   String get guildErrChatRate => '너무 빨리 보내고 있어요. 잠시 기다려 주세요.';
 
   @override

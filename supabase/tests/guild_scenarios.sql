@@ -676,4 +676,109 @@ select t_as(u(66));
 select t_eq('người khác chưa báo vẫn thấy tin đó', (guild_my()->>'chat_latest')::bigint, :'lid'::bigint);
 reset role;
 
+-- ===== 20. Phó hội, chuyển chủ, nhật ký =================================
+-- Chủ u(50); thành viên u(51..56); người ngoài u(57). Hội duyệt đơn để thử phó hội duyệt.
+select t_as(u(50)); select guild_create('Roles Club', 'rl', '🎖', true, 'Boss', 0) as gl \gset
+select t_as(u(51)); select guild_request_join(:'gl'::uuid, 'O1', 0);
+select t_as(u(52)); select guild_request_join(:'gl'::uuid, 'O2', 0);
+select t_as(u(53)); select guild_request_join(:'gl'::uuid, 'O3', 0);
+select t_as(u(54)); select guild_request_join(:'gl'::uuid, 'O4', 0);
+select t_as(u(55)); select guild_request_join(:'gl'::uuid, 'Mem5', 0);
+select t_as(u(56)); select guild_request_join(:'gl'::uuid, 'Mem6', 0);
+select t_as(u(50));
+select guild_respond_request(u(51), true);
+select guild_respond_request(u(52), true);
+select guild_respond_request(u(53), true);
+select guild_respond_request(u(54), true);
+select t_eq('chủ hội mang vai owner', (select r from (select m->>'user_id' as uid, m->>'role' as r from jsonb_array_elements(guild_my()->'members') m) s where uid = u(50)::text), 'owner');
+select t_eq('thành viên mặc định là member', (select r from (select m->>'user_id' as uid, m->>'role' as r from jsonb_array_elements(guild_my()->'members') m) s where uid = u(51)::text), 'member');
+-- Bổ nhiệm: chỉ chủ; không tự bổ nhiệm; người lạ; trần 3 phó hội.
+select t_as(u(51));
+select t_err(format($$select guild_set_officer(%L::uuid, true)$$, u(52)), 'not owner');
+select t_as(u(50));
+select t_err(format($$select guild_set_officer(%L::uuid, true)$$, u(50)), 'invalid input');
+select t_err(format($$select guild_set_officer(%L::uuid, true)$$, u(57)), 'not found');
+select guild_set_officer(u(51), true);
+select guild_set_officer(u(52), true);
+select guild_set_officer(u(53), true);
+select t_err(format($$select guild_set_officer(%L::uuid, true)$$, u(54)), 'too many officers');
+select guild_set_officer(u(51), true);  -- bổ nhiệm lại người đã là phó: không lỗi dù đã đủ 3
+select t_eq('vai officer hiện trong guild_my', (select r from (select m->>'user_id' as uid, m->>'role' as r from jsonb_array_elements(guild_my()->'members') m) s where uid = u(51)::text), 'officer');
+-- Phó hội duyệt đơn + thấy danh sách đơn; thành viên thường thì không.
+select t_as(u(51));
+select t_eq('phó hội thấy đơn xin vào', jsonb_array_length(guild_my()->'requests'), 2);
+select guild_respond_request(u(55), true);
+select t_as(u(54));
+select t_eq('thành viên thường không thấy đơn', jsonb_array_length(guild_my()->'requests'), 0);
+select t_err(format($$select guild_respond_request(%L::uuid, true)$$, u(56)), 'not owner');
+-- Phó hội kick thành viên thường; không kick được phó khác hay chủ.
+select t_as(u(51));
+select t_err(format($$select guild_kick(%L::uuid)$$, u(52)), 'not allowed');
+select t_err(format($$select guild_kick(%L::uuid)$$, u(50)), 'not allowed');
+select t_err(format($$select guild_kick(%L::uuid)$$, u(51)), 'cannot kick self');
+select guild_kick(u(55));
+select t_as(u(54));
+select t_err(format($$select guild_kick(%L::uuid)$$, u(53)), 'not owner');
+-- Chủ kick được cả phó hội.
+select t_as(u(50));
+select guild_set_officer(u(53), false);
+select t_eq('bãi nhiệm → member', (select r from (select m->>'user_id' as uid, m->>'role' as r from jsonb_array_elements(guild_my()->'members') m) s where uid = u(53)::text), 'member');
+select guild_set_officer(u(54), true);   -- chỗ trống → bổ nhiệm được
+select guild_kick(u(52));
+select t_err(format($$select guild_kick(%L::uuid)$$, u(57)), 'not found');
+-- Phó hội xoá được tin người khác; thành viên thường thì không.
+select t_as(u(53)); select guild_chat_post('tin của O3');
+select (guild_chat_list(1)->'messages'->0->>'id')::bigint as rid \gset
+select t_as(u(54));
+select guild_chat_delete(:'rid'::bigint);
+select t_eq('phó hội xoá được tin người khác', (select count(*) from jsonb_array_elements(guild_chat_list(50)->'messages') m where (m->>'id')::bigint = :'rid'::bigint), 0::bigint);
+select t_as(u(53)); select guild_chat_post('tin khác');
+select (guild_chat_list(1)->'messages'->0->>'id')::bigint as rid2 \gset
+select t_as(u(56));
+select t_err(format($$select guild_chat_delete(%s)$$, :'rid2'), 'not found');
+select t_as(u(54));
+select t_err(format($$select guild_chat_pin(%s)$$, :'rid2'), 'not owner');
+-- Chuyển chủ: chỉ chủ; không tự chuyển; phải là thành viên hội; vai cũ về member.
+select t_as(u(54));
+select t_err(format($$select guild_transfer_owner(%L::uuid)$$, u(53)), 'not owner');
+select t_as(u(50));
+select t_err(format($$select guild_transfer_owner(%L::uuid)$$, u(50)), 'invalid input');
+select t_err(format($$select guild_transfer_owner(%L::uuid)$$, u(57)), 'not found');
+select guild_transfer_owner(u(54));
+select t_eq('chủ mới', (guild_my()->'guild'->>'owner_id'), u(54)::text);
+select t_eq('chủ cũ thành member', (select r from (select m->>'user_id' as uid, m->>'role' as r from jsonb_array_elements(guild_my()->'members') m) s where uid = u(50)::text), 'member');
+select t_err(format($$select guild_kick(%L::uuid)$$, u(53)), 'not owner');
+select t_as(u(54));
+select guild_chat_pin(:'rid2'::bigint);
+select t_eq('chủ mới ghim được', guild_chat_list(10)->'pinned'->>'body', 'tin khác');
+select guild_kick(u(50));
+-- Chủ rời hội: người cũ nhất kế nhiệm, vai về member, có nhật ký.
+select t_as(u(54)); select guild_leave();
+reset role;
+select t_eq('chủ rời → vai chủ mới là member trong cột', (select role from guild_members where user_id = (select owner_id from guilds where id = :'gl'::uuid)), 'member');
+-- Nhật ký: thứ tự mới nhất trước, đúng loại; người ngoài hội không đọc được.
+select t_as(u(53));
+select t_eq('nhật ký có sự kiện', jsonb_array_length(guild_activity(50)) > 5, true);
+select t_eq('mới nhất = chủ rời → chuyển quyền', guild_activity(1)->0->>'kind', 'transferred');
+select t_eq('có sự kiện kicked', (select count(*) from jsonb_array_elements(guild_activity(50)) e where e->>'kind' = 'kicked') >= 2, true);
+select t_eq('có sự kiện promoted', (select count(*) from jsonb_array_elements(guild_activity(50)) e where e->>'kind' = 'promoted') >= 3, true);
+select t_eq('có sự kiện demoted', (select count(*) from jsonb_array_elements(guild_activity(50)) e where e->>'kind' = 'demoted') >= 1, true);
+select t_eq('có sự kiện joined', (select count(*) from jsonb_array_elements(guild_activity(50)) e where e->>'kind' = 'joined') >= 5, true);
+select t_eq('limit kẹp tối thiểu 1', jsonb_array_length(guild_activity(0)), 1);
+select t_as(u(63));
+select t_eq('hội khác không thấy nhật ký hội này', guild_activity(50), '[]'::jsonb);
+select t_as(u(57));
+select t_err($$select guild_activity(10)$$, 'not found');
+select t_eq('không đọc thẳng nhật ký', (select count(*) from guild_events), 0::bigint);
+select t_err(format($$select guild_log_event(%L::uuid, 'joined', 'x', null)$$, :'gl'), 'permission denied');
+select t_as(null);
+select t_err($$select guild_activity(10)$$, 'permission denied');
+select t_err(format($$select guild_set_officer(%L::uuid, true)$$, u(53)), 'permission denied');
+select t_err(format($$select guild_transfer_owner(%L::uuid)$$, u(53)), 'permission denied');
+reset role;
+-- Giữ tối đa 50 sự kiện/hội.
+insert into guild_events (guild_id, kind, actor) select :'gl'::uuid, 'joined', 'x' from generate_series(1, 80);
+select guild_log_event(:'gl'::uuid, 'left', 'y', null);
+select t_eq('giữ đúng 50 sự kiện', (select count(*) from guild_events where guild_id = :'gl'::uuid), 50::bigint);
+
 select 'ALL GUILD SQL SCENARIOS PASSED' as result;

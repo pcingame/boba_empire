@@ -708,4 +708,90 @@ void main() {
       expect(repo.calls.where((e) => e == 'myGuild'), isEmpty);
     });
   });
+
+  group('vai trò hội', () {
+    GuildMine view(String me, List<GuildMemberInfo> ms, {String owner = 'boss'}) => GuildMine(
+        guild: fakeGuild(ownerId: owner, members: ms), myUserId: me);
+    GuildMemberInfo m(String id, GuildRole r) =>
+        GuildMemberInfo(userId: id, nickname: id, points: 0, role: r);
+    final all = [
+      m('boss', GuildRole.owner),
+      m('off', GuildRole.officer),
+      m('off2', GuildRole.officer),
+      m('mem', GuildRole.member),
+    ];
+
+    test('chủ hội: canModerate, kick mọi người khác trừ chính mình', () {
+      final v = view('boss', all);
+      expect(v.isOwner, isTrue);
+      expect(v.canModerate, isTrue);
+      expect(all.where(v.canKick).map((e) => e.userId), ['off', 'off2', 'mem']);
+    });
+
+    test('phó hội: canModerate, chỉ kick thành viên thường', () {
+      final v = view('off', all);
+      expect(v.isOwner, isFalse);
+      expect(v.isOfficer, isTrue);
+      expect(v.canModerate, isTrue);
+      expect(all.where(v.canKick).map((e) => e.userId), ['mem']);
+    });
+
+    test('thành viên thường: không quyền gì', () {
+      final v = view('mem', all);
+      expect(v.isOfficer, isFalse);
+      expect(v.canModerate, isFalse);
+      expect(all.where(v.canKick), isEmpty);
+    });
+
+    test('MyGuild.fromJson: đọc role; server cũ (không có role) suy chủ từ owner_id', () {
+      Map<String, dynamic> json(Map<String, dynamic> extra) => {
+            'guild': {'id': 'g', 'name': 'N', 'tag': 'T', 'emoji': 'e', 'owner_id': 'a'},
+            'total': 0,
+            'claimed': [],
+            'members': [
+              {'user_id': 'a', 'nickname': 'A', 'points': 1, ...extra},
+              {'user_id': 'b', 'nickname': 'B', 'points': 2, 'role': 'officer'},
+              {'user_id': 'c', 'nickname': 'C', 'points': 3, 'role': 'member'},
+            ],
+          };
+      final withRole = MyGuild.fromJson(json({'role': 'owner'}));
+      expect(withRole.members.map((e) => e.role),
+          [GuildRole.owner, GuildRole.officer, GuildRole.member]);
+      final old = MyGuild.fromJson(json({}));
+      expect(old.members.first.role, GuildRole.owner, reason: 'server cũ: chủ suy từ owner_id');
+    });
+
+    test('GuildEvent.fromJson: loại lạ → joined (không văng); target null', () {
+      final e = GuildEvent.fromJson(
+          {'kind': 'kicked', 'actor': 'A', 'target': 'B', 'created_at': '2026-10-10T00:00:00Z'});
+      expect(e.kind, GuildEventKind.kicked);
+      expect(e.target, 'B');
+      expect(e.createdAt, isNotNull);
+      final u = GuildEvent.fromJson({'kind': 'tuongLai', 'actor': 'A', 'target': null});
+      expect(u.kind, GuildEventKind.joined);
+      expect(u.target, isNull);
+    });
+
+    test('lỗi RPC → GuildFailure; RPC chưa có trên server cũ → network', () {
+      expect(guildFailureFromMessage('not allowed'), GuildFailure.notAllowed);
+      expect(guildFailureFromMessage('too many officers'), GuildFailure.officersFull);
+      expect(guildFailureFromMessage('Could not find the function public.guild_set_officer'),
+          GuildFailure.network);
+    });
+
+    test('setOfficer/transferOwner: gọi repo, làm mới trạng thái; lỗi → failure', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild(members: [
+        m('me', GuildRole.owner),
+        m('x', GuildRole.member),
+      ]));
+      final c = _ctrl(await _open(repo));
+      expect((await c.setOfficer('x', on: true)).ok, isTrue);
+      expect(repo.roleCalls, ['officer:x:true']);
+      expect(repo.mine!.members.last.role, GuildRole.officer);
+      repo.failures['setOfficer'] = const GuildException(GuildFailure.officersFull);
+      expect((await c.setOfficer('x', on: false)).failure, GuildFailure.officersFull);
+      expect((await c.transferOwner('x')).ok, isTrue);
+      expect(repo.mine!.ownerId, 'x');
+    });
+  });
 }

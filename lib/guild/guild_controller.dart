@@ -33,6 +33,18 @@ class GuildMine extends GuildViewState {
   final String? myUserId;
 
   bool get isOwner => guild.ownerId == myUserId;
+  bool get isOfficer => guild.members
+      .any((m) => m.userId == myUserId && m.role == GuildRole.officer);
+
+  /// Chủ hội hoặc phó hội: duyệt đơn, xoá tin.
+  bool get canModerate => isOwner || isOfficer;
+
+  /// Chủ kick mọi người khác; phó hội chỉ kick thành viên thường.
+  bool canKick(GuildMemberInfo m) {
+    if (m.userId == myUserId) return false;
+    if (isOwner) return true;
+    return isOfficer && m.role == GuildRole.member;
+  }
   int get myPoints => guild.pointsOf(myUserId);
 }
 
@@ -159,6 +171,12 @@ class GuildController extends Notifier<GuildViewState> {
   Future<GuildOutcome> leave() => _act(_repo.leave);
 
   Future<GuildOutcome> kick(String userId) => _act(() => _repo.kick(userId));
+
+  Future<GuildOutcome> setOfficer(String userId, {required bool on}) =>
+      _act(() => _repo.setOfficer(userId, on: on));
+
+  Future<GuildOutcome> transferOwner(String userId) =>
+      _act(() => _repo.transferOwner(userId));
 
   Future<GuildOutcome> report(String guildId, String reason) async {
     try {

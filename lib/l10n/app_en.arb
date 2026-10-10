@@ -1295,6 +1295,89 @@
   "guildChatDelete": "Delete message",
   "guildChatReport": "Report message",
   "guildChatReported": "Message reported. You won't see it anymore.",
+  "guildManage": "Manage",
+  "guildPromote": "Appoint officer",
+  "guildDemote": "Remove officer",
+  "guildTransfer": "Transfer ownership",
+  "guildTransferConfirm": "Transfer ownership to {name}? You'll become a regular member.",
+  "@guildTransferConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildErrNotAllowed": "You don't have permission over this member.",
+  "guildErrOfficersFull": "The guild already has {n} officers.",
+  "@guildErrOfficersFull": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildActivityTitle": "Guild log",
+  "guildActivityEmpty": "No activity yet.",
+  "guildEvJoined": "{name} joined the guild",
+  "@guildEvJoined": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvLeft": "{name} left the guild",
+  "@guildEvLeft": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvKicked": "{actor} removed {target} from the guild",
+  "@guildEvKicked": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvPromoted": "{actor} appointed {target} as officer",
+  "@guildEvPromoted": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvDemoted": "{actor} removed {target} as officer",
+  "@guildEvDemoted": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvTransferred": "{actor} transferred ownership to {target}",
+  "@guildEvTransferred": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
   "guildErrChatRate": "You're sending too fast, wait a few seconds.",
   "guildErrTextBlocked": "Your message contains a blocked word.",
   "guildErrDailyLimit": "You've already donated the daily max of {n} 💎.",

@@ -132,6 +132,7 @@ void main() {
       expect(constant('guild_buff_hours'), guildBuffHours);
       expect(constant('guild_buff_max_hours'), guildBuffMaxHours);
       expect(constant('guild_avg_min_members'), guildAvgMinMembers);
+      expect(constant('guild_max_officers'), guildMaxOfficers);
     });
 
     test('nhiệm vụ tuần: ngưỡng điểm và thưởng khớp từng bậc', () {

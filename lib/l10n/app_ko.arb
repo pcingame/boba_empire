@@ -933,6 +933,89 @@
   "guildChatDelete": "메시지 삭제",
   "guildChatReport": "메시지 신고",
   "guildChatReported": "메시지를 신고했어요. 이 메시지는 더 이상 보이지 않아요.",
+  "guildManage": "관리",
+  "guildPromote": "부길드장 임명",
+  "guildDemote": "부길드장 해임",
+  "guildTransfer": "길드장 위임",
+  "guildTransferConfirm": "{name} 님에게 길드장을 위임할까요? 일반 멤버가 됩니다.",
+  "@guildTransferConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildErrNotAllowed": "이 멤버에 대한 권한이 없어요.",
+  "guildErrOfficersFull": "부길드장이 이미 {n}명이에요.",
+  "@guildErrOfficersFull": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildActivityTitle": "길드 기록",
+  "guildActivityEmpty": "아직 활동이 없어요.",
+  "guildEvJoined": "{name} 님이 길드에 가입했어요",
+  "@guildEvJoined": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvLeft": "{name} 님이 길드를 떠났어요",
+  "@guildEvLeft": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvKicked": "{actor} 님이 {target} 님을 내보냈어요",
+  "@guildEvKicked": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvPromoted": "{actor} 님이 {target} 님을 부길드장으로 임명했어요",
+  "@guildEvPromoted": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvDemoted": "{actor} 님이 {target} 님의 부길드장을 해임했어요",
+  "@guildEvDemoted": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvTransferred": "{actor} 님이 {target} 님에게 길드장을 위임했어요",
+  "@guildEvTransferred": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
   "guildErrChatRate": "너무 빨리 보내고 있어요. 잠시 기다려 주세요.",
   "guildErrTextBlocked": "금지된 단어가 포함되어 있어요.",
   "guildErrDailyLimit": "오늘은 최대 {n} 💎까지 이미 기부했어요.",

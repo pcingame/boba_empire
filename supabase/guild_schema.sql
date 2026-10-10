@@ -45,6 +45,24 @@ create table if not exists guild_members (
   last_score  bigint not null default 0 check (last_score >= 0)
 );
 create index if not exists guild_members_guild_idx on guild_members (guild_id);
+-- Vai trò: chủ hội là guilds.owner_id (không dùng cột này); phó hội = 'officer'.
+alter table guild_members add column if not exists role text not null default 'member';
+do $$ begin
+  alter table guild_members add constraint guild_members_role_check
+    check (role in ('member', 'officer'));
+exception when duplicate_object then null; end $$;
+
+-- Nhật ký hoạt động hội: giữ 50 sự kiện gần nhất mỗi hội (ghi qua guild_log_event).
+create table if not exists guild_events (
+  id         bigserial primary key,
+  guild_id   uuid not null references guilds(id) on delete cascade,
+  kind       text not null check (kind in
+               ('joined','left','kicked','promoted','demoted','transferred')),
+  actor      text not null,
+  target     text,
+  created_at timestamptz not null default now()
+);
+create index if not exists guild_events_guild_idx on guild_events (guild_id, id desc);
 
 create table if not exists guild_reward_claims (
   user_id   uuid not null references auth.users(id) on delete cascade,
@@ -159,6 +177,7 @@ alter table guild_donations     enable row level security;
 alter table guild_quest_claims  enable row level security;
 alter table guild_purchases     enable row level security;
 alter table guild_messages      enable row level security;
+alter table guild_events        enable row level security;
 alter table guild_message_reports enable row level security;
 -- Cố ý KHÔNG tạo policy: chỉ RPC security definer được đụng vào.
 
@@ -232,6 +251,24 @@ language sql immutable as $$ select 100000 $$;
 create or replace function guild_current_week() returns date
 language sql stable as $$
   select date_trunc('week', now() at time zone 'utc')::date
+$$;
+
+-- Tối đa 3 phó hội mỗi hội (chủ hội không tính).
+create or replace function guild_max_officers() returns integer
+language sql immutable as $$ select 3 $$;
+
+-- Ghi nhật ký (nội bộ — client KHÔNG gọi được, xem revoke cuối file).
+create or replace function guild_log_event(
+  p_guild uuid, p_kind text, p_actor text, p_target text
+) returns void
+language plpgsql security definer set search_path = public as $$
+begin
+  insert into guild_events (guild_id, kind, actor, target)
+  values (p_guild, p_kind, p_actor, p_target);
+  delete from guild_events where guild_id = p_guild and id <=
+    (select id from guild_events where guild_id = p_guild
+       order by id desc offset 50 limit 1);
+end;
 $$;
 
 -- Lọc từ cấm cơ bản + chống giả mạo ban quản trị. Chuẩn hoá: thường, bỏ khoảng
@@ -367,6 +404,7 @@ begin
   values (v_uid, v_g.id, p_nickname, guild_current_week(),
           greatest(coalesce(p_score, 0), 0));
   delete from guild_join_requests where user_id = v_uid;
+  perform guild_log_event(v_g.id, 'joined', p_nickname, null);
   return v_g.id;
 end;
 $$;
@@ -421,7 +459,10 @@ declare
   v_r guild_join_requests%rowtype;
 begin
   if v_uid is null then raise exception 'not authenticated'; end if;
-  select g.* into v_g from guilds g where g.owner_id = v_uid for update;
+  -- Chủ hội hoặc phó hội duyệt đơn.
+  select g.* into v_g from guilds g
+    join guild_members m on m.guild_id = g.id and m.user_id = v_uid
+    where g.owner_id = v_uid or m.role = 'officer' for update of g;
   if not found then raise exception 'not owner'; end if;
   select * into v_r from guild_join_requests
     where user_id = p_user and guild_id = v_g.id;
@@ -442,6 +483,7 @@ begin
   insert into guild_members (user_id, guild_id, nickname, week, last_score)
   values (p_user, v_g.id, v_r.nickname, guild_current_week(), v_r.score);
   delete from guild_join_requests where user_id = p_user;
+  perform guild_log_event(v_g.id, 'joined', v_r.nickname, null);
 end;
 $$;
 
@@ -453,19 +495,26 @@ declare
   v_next uuid;
   v_wk date;
   v_pts bigint;
+  v_nick text;
+  v_next_nick text;
 begin
   if v_uid is null then raise exception 'not authenticated'; end if;
   delete from guild_members where user_id = v_uid
-    returning guild_id, week, week_points into v_gid, v_wk, v_pts;
+    returning guild_id, week, week_points, nickname into v_gid, v_wk, v_pts, v_nick;
   if v_gid is null then return; end if;
   perform guild_log_week(v_gid, v_wk, v_pts);       -- điểm đã đóng góp vẫn thuộc hội
-  select user_id into v_next from guild_members
+  select user_id, nickname into v_next, v_next_nick from guild_members
     where guild_id = v_gid order by joined_at asc limit 1;
   if v_next is null then
     delete from guilds where id = v_gid;           -- hội trống → xoá
   else
+    perform guild_log_event(v_gid, 'left', v_nick, null);
     update guilds set owner_id = v_next
       where id = v_gid and owner_id = v_uid;       -- chủ rời → người cũ nhất kế nhiệm
+    if found then
+      update guild_members set role = 'member' where user_id = v_next;
+      perform guild_log_event(v_gid, 'transferred', v_nick, v_next_nick);
+    end if;
   end if;
 end;
 $$;
@@ -475,18 +524,31 @@ language plpgsql security definer set search_path = public as $$
 declare
   v_uid uuid := auth.uid();
   v_gid uuid;
+  v_owner uuid;
+  v_role text;
   v_wk date;
   v_pts bigint;
+  v_actor text;
+  v_target text;
 begin
   if v_uid is null then raise exception 'not authenticated'; end if;
   if p_user = v_uid then raise exception 'cannot kick self'; end if;
-  select guild_id into v_gid from guild_members m
-    join guilds g on g.id = m.guild_id
-    where m.user_id = v_uid and g.owner_id = v_uid;
-  if v_gid is null then raise exception 'not owner'; end if;
+  select m.guild_id, g.owner_id, m.role, m.nickname into v_gid, v_owner, v_role, v_actor
+    from guild_members m join guilds g on g.id = m.guild_id
+    where m.user_id = v_uid;
+  -- Chủ hội kick được mọi người; phó hội chỉ kick thành viên thường.
+  if v_gid is null or (v_uid <> v_owner and v_role <> 'officer') then
+    raise exception 'not owner';
+  end if;
+  if v_uid <> v_owner and (p_user = v_owner or exists (
+       select 1 from guild_members where user_id = p_user and role = 'officer')) then
+    raise exception 'not allowed';
+  end if;
   delete from guild_members where user_id = p_user and guild_id = v_gid
-    returning week, week_points into v_wk, v_pts;
+    returning week, week_points, nickname into v_wk, v_pts, v_target;
+  if not found then raise exception 'not found'; end if;
   perform guild_log_week(v_gid, v_wk, v_pts);
+  perform guild_log_event(v_gid, 'kicked', v_actor, v_target);
 end;
 $$;
 
@@ -565,12 +627,15 @@ begin
        from guild_reward_claims where user_id = v_uid and week = v_week), '[]'::jsonb),
     'members', coalesce((select jsonb_agg(jsonb_build_object(
          'user_id', m.user_id, 'nickname', m.nickname,
+         'role', case when m.user_id = v_g.owner_id then 'owner' else m.role end,
          'points', case when m.week = v_week then m.week_points else 0 end)
          order by (case when m.week = v_week then m.week_points else 0 end) desc,
                   m.joined_at asc)
        from guild_members m where m.guild_id = v_g.id), '[]'::jsonb),
     -- Chỉ chủ hội thấy danh sách yêu cầu.
-    'requests', case when v_g.owner_id = v_uid then coalesce((
+    'requests', case when v_g.owner_id = v_uid or exists (
+         select 1 from guild_members o where o.user_id = v_uid and o.role = 'officer')
+       then coalesce((
          select jsonb_agg(jsonb_build_object('user_id', r.user_id,
                 'nickname', r.nickname) order by r.created_at asc)
          from guild_join_requests r where r.guild_id = v_g.id), '[]'::jsonb)
@@ -904,7 +969,9 @@ begin
   if v_gid is null then raise exception 'not found'; end if;
   delete from guild_messages m where m.id = p_id and m.guild_id = v_gid
     and (m.user_id = v_uid
-         or exists (select 1 from guilds g where g.id = v_gid and g.owner_id = v_uid));
+         or exists (select 1 from guilds g where g.id = v_gid and g.owner_id = v_uid)
+         or exists (select 1 from guild_members o
+                      where o.user_id = v_uid and o.role = 'officer'));
   if not found then raise exception 'not found'; end if;
 end;
 $$;
@@ -953,6 +1020,84 @@ begin
 end;
 $$;
 
+-- Chủ hội bổ nhiệm / bãi nhiệm phó hội (tối đa guild_max_officers()).
+create or replace function guild_set_officer(p_user uuid, p_on boolean) returns void
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_gid uuid;
+  v_actor text;
+  v_target text;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  select m.guild_id, m.nickname into v_gid, v_actor from guild_members m
+    join guilds g on g.id = m.guild_id
+    where m.user_id = v_uid and g.owner_id = v_uid for update of g;
+  if v_gid is null then raise exception 'not owner'; end if;
+  if p_user = v_uid then raise exception 'invalid input'; end if;
+  select nickname into v_target from guild_members
+    where user_id = p_user and guild_id = v_gid;
+  if not found then raise exception 'not found'; end if;
+  if coalesce(p_on, false) then
+    if (select count(*) from guild_members
+          where guild_id = v_gid and role = 'officer' and user_id <> v_uid)
+         >= guild_max_officers()
+       and not exists (select 1 from guild_members
+                         where user_id = p_user and role = 'officer') then
+      raise exception 'too many officers';
+    end if;
+    update guild_members set role = 'officer' where user_id = p_user and role <> 'officer';
+    if found then perform guild_log_event(v_gid, 'promoted', v_actor, v_target); end if;
+  else
+    update guild_members set role = 'member' where user_id = p_user and role <> 'member';
+    if found then perform guild_log_event(v_gid, 'demoted', v_actor, v_target); end if;
+  end if;
+end;
+$$;
+
+-- Chủ hội nhường quyền cho thành viên khác; chủ cũ trở thành thành viên thường.
+create or replace function guild_transfer_owner(p_user uuid) returns void
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_gid uuid;
+  v_actor text;
+  v_target text;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  select m.guild_id, m.nickname into v_gid, v_actor from guild_members m
+    join guilds g on g.id = m.guild_id
+    where m.user_id = v_uid and g.owner_id = v_uid for update of g;
+  if v_gid is null then raise exception 'not owner'; end if;
+  if p_user = v_uid then raise exception 'invalid input'; end if;
+  select nickname into v_target from guild_members
+    where user_id = p_user and guild_id = v_gid;
+  if not found then raise exception 'not found'; end if;
+  update guilds set owner_id = p_user where id = v_gid;
+  update guild_members set role = 'member' where user_id in (p_user, v_uid);
+  perform guild_log_event(v_gid, 'transferred', v_actor, v_target);
+end;
+$$;
+
+-- Nhật ký hoạt động (mới nhất trước) — chỉ thành viên đọc được.
+create or replace function guild_activity(p_limit integer default 30) returns jsonb
+language plpgsql stable security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_gid uuid;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  select guild_id into v_gid from guild_members where user_id = v_uid;
+  if v_gid is null then raise exception 'not found'; end if;
+  return coalesce((select jsonb_agg(e order by (e->>'id')::bigint desc) from (
+      select jsonb_build_object('id', id, 'kind', kind, 'actor', actor,
+             'target', target, 'created_at', created_at) as e
+      from guild_events where guild_id = v_gid
+      order by id desc limit least(greatest(coalesce(p_limit, 30), 1), 50)) s),
+    '[]'::jsonb);
+end;
+$$;
+
 -- Quyền: chỉ người đã đăng nhập (kể cả ẩn danh) gọi được RPC.
 do $$
 declare f text;
@@ -970,7 +1115,8 @@ begin
     'guild_buy_item(text)', 'guild_buy_buff()', 'guild_buff_seconds()',
     'guild_chat_post(text)', 'guild_chat_list(integer)',
     'guild_chat_delete(bigint)', 'guild_chat_pin(bigint)',
-    'guild_chat_report(bigint)'
+    'guild_chat_report(bigint)', 'guild_set_officer(uuid,boolean)',
+    'guild_transfer_owner(uuid)', 'guild_activity(integer)'
   ] loop
     execute format('revoke all on function %s from public', f);
     execute format('grant execute on function %s to authenticated', f);
@@ -981,4 +1127,6 @@ end $$;
 -- anon/authenticated với hàm mới nên phải thu hồi rõ ràng) — nếu không ai cũng
 -- ghi được lịch sử điểm tuần của hội để nâng chuỗi.
 revoke all on function guild_log_week(uuid, date, bigint)
+  from public, anon, authenticated;
+revoke all on function guild_log_event(uuid, text, text, text)
   from public, anon, authenticated;

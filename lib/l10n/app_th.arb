@@ -1295,6 +1295,89 @@
   "guildChatDelete": "ลบข้อความ",
   "guildChatReport": "รายงานข้อความ",
   "guildChatReported": "รายงานข้อความแล้ว คุณจะไม่เห็นข้อความนี้อีก",
+  "guildManage": "จัดการ",
+  "guildPromote": "แต่งตั้งรองหัวหน้า",
+  "guildDemote": "ปลดรองหัวหน้า",
+  "guildTransfer": "โอนตำแหน่งหัวหน้า",
+  "guildTransferConfirm": "โอนตำแหน่งหัวหน้าให้ {name}? คุณจะกลายเป็นสมาชิกทั่วไป",
+  "@guildTransferConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildErrNotAllowed": "คุณไม่มีสิทธิ์จัดการสมาชิกคนนี้",
+  "guildErrOfficersFull": "กิลด์มีรองหัวหน้าครบ {n} คนแล้ว",
+  "@guildErrOfficersFull": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "guildActivityTitle": "บันทึกกิลด์",
+  "guildActivityEmpty": "ยังไม่มีกิจกรรม",
+  "guildEvJoined": "{name} เข้าร่วมกิลด์",
+  "@guildEvJoined": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvLeft": "{name} ออกจากกิลด์",
+  "@guildEvLeft": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvKicked": "{actor} เชิญ {target} ออกจากกิลด์",
+  "@guildEvKicked": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvPromoted": "{actor} แต่งตั้ง {target} เป็นรองหัวหน้า",
+  "@guildEvPromoted": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvDemoted": "{actor} ปลด {target} จากรองหัวหน้า",
+  "@guildEvDemoted": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "guildEvTransferred": "{actor} โอนตำแหน่งหัวหน้าให้ {target}",
+  "@guildEvTransferred": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
   "guildErrChatRate": "คุณส่งเร็วเกินไป รอสักครู่",
   "guildErrTextBlocked": "ข้อความมีคำที่ไม่อนุญาต",
   "guildErrDailyLimit": "วันนี้คุณบริจาคครบสูงสุด {n} 💎 แล้ว",

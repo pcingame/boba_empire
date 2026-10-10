@@ -2722,6 +2722,67 @@ class AppLocalizationsEs extends AppLocalizations {
   String get guildChatReported => 'Mensaje denunciado. Ya no lo verás.';
 
   @override
+  String get guildManage => 'Gestionar';
+
+  @override
+  String get guildPromote => 'Nombrar oficial';
+
+  @override
+  String get guildDemote => 'Quitar oficial';
+
+  @override
+  String get guildTransfer => 'Ceder el liderazgo';
+
+  @override
+  String guildTransferConfirm(String name) {
+    return '¿Ceder el liderazgo a $name? Pasarás a ser miembro normal.';
+  }
+
+  @override
+  String get guildErrNotAllowed => 'No tienes permiso sobre este miembro.';
+
+  @override
+  String guildErrOfficersFull(int n) {
+    return 'El gremio ya tiene $n oficiales.';
+  }
+
+  @override
+  String get guildActivityTitle => 'Registro del gremio';
+
+  @override
+  String get guildActivityEmpty => 'Aún no hay actividad.';
+
+  @override
+  String guildEvJoined(String name) {
+    return '$name se unió al gremio';
+  }
+
+  @override
+  String guildEvLeft(String name) {
+    return '$name salió del gremio';
+  }
+
+  @override
+  String guildEvKicked(String actor, String target) {
+    return '$actor expulsó a $target del gremio';
+  }
+
+  @override
+  String guildEvPromoted(String actor, String target) {
+    return '$actor nombró oficial a $target';
+  }
+
+  @override
+  String guildEvDemoted(String actor, String target) {
+    return '$actor quitó el cargo de oficial a $target';
+  }
+
+  @override
+  String guildEvTransferred(String actor, String target) {
+    return '$actor cedió el liderazgo a $target';
+  }
+
+  @override
   String get guildErrChatRate =>
       'Envías demasiado rápido, espera unos segundos.';
 

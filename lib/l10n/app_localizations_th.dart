@@ -2690,6 +2690,67 @@ class AppLocalizationsTh extends AppLocalizations {
   String get guildChatReported => 'รายงานข้อความแล้ว คุณจะไม่เห็นข้อความนี้อีก';
 
   @override
+  String get guildManage => 'จัดการ';
+
+  @override
+  String get guildPromote => 'แต่งตั้งรองหัวหน้า';
+
+  @override
+  String get guildDemote => 'ปลดรองหัวหน้า';
+
+  @override
+  String get guildTransfer => 'โอนตำแหน่งหัวหน้า';
+
+  @override
+  String guildTransferConfirm(String name) {
+    return 'โอนตำแหน่งหัวหน้าให้ $name? คุณจะกลายเป็นสมาชิกทั่วไป';
+  }
+
+  @override
+  String get guildErrNotAllowed => 'คุณไม่มีสิทธิ์จัดการสมาชิกคนนี้';
+
+  @override
+  String guildErrOfficersFull(int n) {
+    return 'กิลด์มีรองหัวหน้าครบ $n คนแล้ว';
+  }
+
+  @override
+  String get guildActivityTitle => 'บันทึกกิลด์';
+
+  @override
+  String get guildActivityEmpty => 'ยังไม่มีกิจกรรม';
+
+  @override
+  String guildEvJoined(String name) {
+    return '$name เข้าร่วมกิลด์';
+  }
+
+  @override
+  String guildEvLeft(String name) {
+    return '$name ออกจากกิลด์';
+  }
+
+  @override
+  String guildEvKicked(String actor, String target) {
+    return '$actor เชิญ $target ออกจากกิลด์';
+  }
+
+  @override
+  String guildEvPromoted(String actor, String target) {
+    return '$actor แต่งตั้ง $target เป็นรองหัวหน้า';
+  }
+
+  @override
+  String guildEvDemoted(String actor, String target) {
+    return '$actor ปลด $target จากรองหัวหน้า';
+  }
+
+  @override
+  String guildEvTransferred(String actor, String target) {
+    return '$actor โอนตำแหน่งหัวหน้าให้ $target';
+  }
+
+  @override
   String get guildErrChatRate => 'คุณส่งเร็วเกินไป รอสักครู่';
 
   @override

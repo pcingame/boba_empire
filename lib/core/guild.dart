@@ -16,6 +16,9 @@ const int guildCreateCostGems = 2000; // ⚠️ chưa playtest
 /// hội 1 người). Khớp `guild_avg_min_members` ở server.
 const int guildAvgMinMembers = 5;
 
+/// Số phó hội tối đa mỗi hội (chủ hội không tính). Khớp `guild_max_officers` ở server.
+const int guildMaxOfficers = 3;
+
 /// Điểm cá nhân tối thiểu trong tuần để được nhận thưởng mốc (chống ăn theo).
 const int guildMinPointsToClaim = 300;
 

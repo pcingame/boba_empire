@@ -4770,6 +4770,96 @@ abstract class AppLocalizations {
   /// **'Đã báo cáo tin nhắn. Bạn sẽ không còn thấy tin này.'**
   String get guildChatReported;
 
+  /// No description provided for @guildManage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quản lý'**
+  String get guildManage;
+
+  /// No description provided for @guildPromote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bổ nhiệm phó hội'**
+  String get guildPromote;
+
+  /// No description provided for @guildDemote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bãi nhiệm phó hội'**
+  String get guildDemote;
+
+  /// No description provided for @guildTransfer.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhường chức chủ hội'**
+  String get guildTransfer;
+
+  /// No description provided for @guildTransferConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhường chức chủ hội cho {name}? Bạn sẽ trở thành thành viên thường.'**
+  String guildTransferConfirm(String name);
+
+  /// No description provided for @guildErrNotAllowed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn không đủ quyền với người này.'**
+  String get guildErrNotAllowed;
+
+  /// No description provided for @guildErrOfficersFull.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hội đã đủ {n} phó hội.'**
+  String guildErrOfficersFull(int n);
+
+  /// No description provided for @guildActivityTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhật ký hội'**
+  String get guildActivityTitle;
+
+  /// No description provided for @guildActivityEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có hoạt động nào.'**
+  String get guildActivityEmpty;
+
+  /// No description provided for @guildEvJoined.
+  ///
+  /// In vi, this message translates to:
+  /// **'{name} đã vào hội'**
+  String guildEvJoined(String name);
+
+  /// No description provided for @guildEvLeft.
+  ///
+  /// In vi, this message translates to:
+  /// **'{name} đã rời hội'**
+  String guildEvLeft(String name);
+
+  /// No description provided for @guildEvKicked.
+  ///
+  /// In vi, this message translates to:
+  /// **'{actor} đã mời {target} ra khỏi hội'**
+  String guildEvKicked(String actor, String target);
+
+  /// No description provided for @guildEvPromoted.
+  ///
+  /// In vi, this message translates to:
+  /// **'{actor} đã bổ nhiệm {target} làm phó hội'**
+  String guildEvPromoted(String actor, String target);
+
+  /// No description provided for @guildEvDemoted.
+  ///
+  /// In vi, this message translates to:
+  /// **'{actor} đã bãi nhiệm phó hội {target}'**
+  String guildEvDemoted(String actor, String target);
+
+  /// No description provided for @guildEvTransferred.
+  ///
+  /// In vi, this message translates to:
+  /// **'{actor} đã nhường chức chủ hội cho {target}'**
+  String guildEvTransferred(String actor, String target);
+
   /// No description provided for @guildErrChatRate.
   ///
   /// In vi, this message translates to:

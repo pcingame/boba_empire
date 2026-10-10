@@ -286,8 +286,8 @@ void main() {
         GuildJoinRequest(userId: 'r2', nickname: 'Rin'),
       ],
       members: const [
-        GuildMemberInfo(userId: 'me', nickname: 'Alice', points: 23456),
-        GuildMemberInfo(userId: 'u2', nickname: 'Biệt Danh Cực Kỳ Dài Không Khoảng Trắng', points: 12345678),
+        GuildMemberInfo(userId: 'me', nickname: 'Alice', points: 23456, role: GuildRole.owner),
+        GuildMemberInfo(userId: 'u2', nickname: 'Biệt Danh Cực Kỳ Dài Không Khoảng Trắng', points: 12345678, role: GuildRole.officer),
         GuildMemberInfo(userId: 'u3', nickname: 'Cy', points: 0),
       ],
     );
@@ -315,6 +315,17 @@ void main() {
     repo.chatPinnedId = 1;
     await tester.tap(find.byKey(const Key('guild-chat-button')));
     await shot(tester, 'B07b_guild_chat');
+    await back(tester);
+    repo.events = const [
+      GuildEvent(kind: GuildEventKind.transferred, actor: 'Chủ Cũ', target: 'Alice'),
+      GuildEvent(kind: GuildEventKind.kicked, actor: 'Alice', target: 'Biệt Danh Cực Kỳ Dài Không Khoảng Trắng'),
+      GuildEvent(kind: GuildEventKind.promoted, actor: 'Alice', target: 'Bob'),
+      GuildEvent(kind: GuildEventKind.demoted, actor: 'Alice', target: 'Cy'),
+      GuildEvent(kind: GuildEventKind.left, actor: 'Rin'),
+      GuildEvent(kind: GuildEventKind.joined, actor: 'Mới Vào'),
+    ];
+    await tester.tap(find.byKey(const Key('guild-activity-button')));
+    await shot(tester, 'B07c_guild_activity');
     await back(tester);
     await tester.tap(find.byKey(const Key('guild-leaderboard-button')));
     await shot(tester, 'B08_guild_lb_total');
