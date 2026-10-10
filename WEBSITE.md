@@ -101,3 +101,36 @@ Quay từ iOS Simulator rồi nén; không cần công cụ ngoài ngoài `ffmpe
 - Trang tiếng Hàn trên store (mô tả/ảnh) và ảnh store tiếng Hàn để dùng cho web.
 - Bảng xếp hạng Hồi 2/3 và PK; chia sẻ link trực tiếp tới một tab (`#board?tab=…`).
 - Nút Google Play thật khi bản Android lên store.
+
+## SEO (cập nhật 2026-10-10)
+
+**Đã làm (kỹ thuật):** `docs/robots.txt` + `docs/sitemap.xml` (trang chủ, `guide.html`, `privacy-policy.html`);
+trong `index.html`: meta robots, canonical, Open Graph (+ `og:site_name`, `og:locale`), Twitter card đủ
+title/description/image, JSON-LD `MobileApplication` (mô tả, 7 ngôn ngữ, ảnh chụp), Smart App Banner;
+`privacy-policy.html` có description + canonical. Trang bài viết `docs/guide.html` (tiếng Việt, JSON-LD `Article`).
+
+**Search Console:** property `bobaempiregame.com` (loại Domain) đã xác minh bằng **bản ghi TXT ở Namecheap**
+(`google-site-verification=…`, host `@`) — ĐỪNG xoá bản ghi này. Thẻ `<meta name="google-site-verification">`
+trong `index.html` là dự phòng. Sitemap đã nộp 2026-10-10; trang chủ đã được lập chỉ mục.
+Namecheap đang dùng Email Forwarding + bản ghi Resend (OTP) → đừng đổi Mail Settings sang Custom MX.
+
+**Mỗi lần thêm trang mới:** thêm vào `sitemap.xml` (cập nhật `lastmod`), có `<title>` + `description` + `canonical` riêng,
+link tới nó từ trang chủ (footer/nav) để Google tìm thấy, rồi vào Search Console → URL inspection → Request indexing.
+Sửa trang chủ đáng kể (số liệu, tính năng) thì Request indexing lại.
+
+**Việc tiếp theo, theo thứ tự giá trị:**
+1. **Backlink / nhắc tên** (quan trọng nhất, phải tự làm): link `bobaempiregame.com` trong mô tả App Store, trang mạng xã hội,
+   bài trong `PROMO_POSTS.md`; đăng ở cộng đồng game (r/incremental_games, nhóm Facebook game Việt); gửi lên
+   AlternativeTo, IndieDB. Tên miền mới không có link thì rất khó lên top.
+2. **Thêm bài viết** bắt từ khoá người ta gõ thật (mỗi bài một trang trong `docs/`, vào sitemap): vd. mẹo nhượng quyền,
+   cách kiếm Kim Cương, danh sách phụ kiện, lịch sự kiện lễ. Bài `guide.html` mới là bản nháp — **đối chiếu số liệu với
+   game trước khi coi là chính thức** (viết có chủ đích tránh con số hay đổi: bậc mốc, trần offline, giá).
+3. **Theo dõi sau 1–2 tuần** ở Search Console: *Performance* (từ khoá, lượt hiển thị, CTR) để chỉnh title/description;
+   *Pages* để xem trang nào bị loại; *Core Web Vitals*.
+4. **Tốc độ:** chạy pagespeed.web.dev cho trang chủ (video hero + ảnh là phần nặng).
+5. **Đa ngôn ngữ thật (lớn):** hiện 7 ngôn ngữ chung một URL đổi bằng JS nên Google chủ yếu thấy tiếng Việt. Muốn có lượt tìm
+   quốc tế thì tách `/en/`, `/ko/`… mỗi ngôn ngữ một trang tĩnh + `hreflang`. Chỉ đáng làm nếu nhắm thị trường nước ngoài.
+6. Khi Android lên Play: thêm link Play vào trang, cập nhật JSON-LD `operatingSystem` thành `iOS, Android`.
+
+**Cố ý không làm:** `aggregateRating` (không có số đánh giá thật — bịa là vi phạm), FAQPage rich result (Google đã hạn chế),
+`hreflang` trên URL `?lang=` (canonical đều trỏ `/`, tín hiệu mâu thuẫn).
