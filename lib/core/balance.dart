@@ -242,7 +242,7 @@ class Balance {
   static const double iapGemsSmall = 100; // ~$0.99
   static const double iapGemsMedium = 600; // ~$4.99 (bonus theo giá)
   static const double iapGemsLarge = 1300; // ~$9.99
-  static const double iapGemsHuge = 4000; // ~$15.99
+  static const double iapGemsHuge = 4000; // ~$14.99
   static const double iapGemsMega = 10000; // ~$19.99
 
   /// "Kho lạnh vĩnh viễn" (IAP, mua một lần): cộng thẳng vào trần offline.

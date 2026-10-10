@@ -793,6 +793,16 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get emailGateTitle => 'Liên kết email để nạp';
+
+  @override
+  String get emailGateBody =>
+      'Giao dịch nạp được gắn với tài khoản của bạn để khôi phục được khi đổi máy hoặc có sự cố. Hãy liên kết email trước (miễn phí, mất khoảng một phút).';
+
+  @override
+  String get emailGateLink => 'Liên kết email';
+
+  @override
   String get vipLbOpen => 'Bảng xếp hạng VIP';
 
   @override

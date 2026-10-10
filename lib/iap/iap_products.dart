@@ -14,7 +14,7 @@ enum IapProduct {
   gemsMedium('boba_gems_medium', IapKind.consumable,
       gems: Balance.iapGemsMedium, vipExp: 500),
   gemsLarge('boba_gems_large', IapKind.consumable, gems: Balance.iapGemsLarge, vipExp: 1000),
-  gemsHuge('boba_gems_huge', IapKind.consumable, gems: Balance.iapGemsHuge, vipExp: 1760),
+  gemsHuge('boba_gems_huge', IapKind.consumable, gems: Balance.iapGemsHuge, vipExp: 1650),
   gemsMega('boba_gems_mega', IapKind.consumable, gems: Balance.iapGemsMega, vipExp: 2400),
 
   /// Gỡ quảng cáo — mua một lần, vĩnh viễn.

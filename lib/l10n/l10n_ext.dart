@@ -8,6 +8,8 @@ import '../core/achievements.dart';
 import '../core/format.dart';
 import '../core/quests.dart';
 import '../iap/iap_products.dart';
+import 'package:intl/intl.dart';
+
 import 'app_localizations.dart';
 
 String generatorName(AppLocalizations l10n, String id) => switch (id) {
@@ -94,7 +96,9 @@ String iapTitle(AppLocalizations l10n, IapProduct p) => switch (p) {
       IapProduct.vip30 => l10n.iapVipTitle,
       IapProduct.coldStorage => l10n.iapColdStorageTitle,
       IapProduct.comboNoAdsX2 => l10n.iapComboTitle,
-      _ => '${formatNumber(p.gems)} 💎', // gói gems: hiện luôn số lượng
+      // Gói gems: hiện đủ số có dấu phân cách theo ngôn ngữ (10,000 💎), không rút gọn
+      // "10.00K" — khớp với tên sản phẩm đăng trên store khi App Review so sánh.
+      _ => '${NumberFormat.decimalPattern(l10n.localeName).format(p.gems.round())} 💎',
     };
 
 String iapDescription(AppLocalizations l10n, IapProduct p) => switch (p) {

@@ -1392,6 +1392,24 @@ abstract class AppLocalizations {
   /// **'👑 {title} {nickname} vừa online!'**
   String vipOnlineBanner(Object nickname, Object title);
 
+  /// No description provided for @emailGateTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Liên kết email để nạp'**
+  String get emailGateTitle;
+
+  /// No description provided for @emailGateBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao dịch nạp được gắn với tài khoản của bạn để khôi phục được khi đổi máy hoặc có sự cố. Hãy liên kết email trước (miễn phí, mất khoảng một phút).'**
+  String get emailGateBody;
+
+  /// No description provided for @emailGateLink.
+  ///
+  /// In vi, this message translates to:
+  /// **'Liên kết email'**
+  String get emailGateLink;
+
   /// No description provided for @vipLbOpen.
   ///
   /// In vi, this message translates to:

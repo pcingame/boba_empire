@@ -792,6 +792,16 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get emailGateTitle => 'ผูกอีเมลก่อนเติมเงิน';
+
+  @override
+  String get emailGateBody =>
+      'การซื้อจะผูกกับบัญชีของคุณ เพื่อกู้คืนได้หากเปลี่ยนเครื่องหรือเกิดปัญหา กรุณาผูกอีเมลก่อน (ฟรี ใช้เวลาประมาณหนึ่งนาที)';
+
+  @override
+  String get emailGateLink => 'ผูกอีเมล';
+
+  @override
   String get vipLbOpen => 'กระดานอันดับ VIP';
 
   @override

@@ -4,9 +4,9 @@ Cập nhật 2026-10-10. Bốn product khớp `lib/iap/iap_products.dart` — **
 
 | Product ID | Loại (Type) | Giá gợi ý | Nội dung |
 |---|---|---|---|
-| `boba_gems_huge` | **Consumable** | $15.99 | 4000 💎 |
+| `boba_gems_huge` | **Consumable** | $14.99 | 4000 💎 |
 | `boba_gems_mega` | **Consumable** | $19.99 | 10000 💎 |
-| `boba_cold_storage` | **Non-Consumable** | $2.99 (hoặc $1.99) | +8 giờ trần tiền offline, vĩnh viễn |
+| `boba_cold_storage` | **Non-Consumable** | $2.99 | +8 giờ trần tiền offline, vĩnh viễn |
 | `boba_combo_noads_x2` | **Non-Consumable** | **$5.99** (đã chốt; ứng với `boba_double_income` = $4.99, xem bảng dưới) | Gỡ QC + x2 thu nhập |
 
 **Giá Combo (đã chốt 2026-10-10):** rẻ hơn tổng hai gói lẻ khoảng 20–25% và KHÔNG thấp hơn giá gói x2 lẻ. Giả sử `boba_remove_ads` = $2.99:

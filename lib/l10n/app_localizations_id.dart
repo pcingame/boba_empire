@@ -795,6 +795,16 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get emailGateTitle => 'Tautkan email untuk top-up';
+
+  @override
+  String get emailGateBody =>
+      'Pembelian dikaitkan dengan akunmu agar bisa dipulihkan jika ganti ponsel atau terjadi masalah. Tautkan email dulu (gratis, sekitar satu menit).';
+
+  @override
+  String get emailGateLink => 'Tautkan email';
+
+  @override
   String get vipLbOpen => 'Papan peringkat VIP';
 
   @override

@@ -11,6 +11,7 @@ import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import 'wheel_dialog.dart';
 import 'widgets/clay.dart';
+import 'email_gate.dart';
 
 /// "Kiếm thêm 🎁" — các ưu đãi xem quảng cáo thưởng: x2 thu nhập 24h, nhận Kim
 /// Cương, tua nhanh. Người đã mua "Gỡ QC" nhận thẳng, không phải xem.
@@ -81,8 +82,12 @@ class _RewardsDialogState extends ConsumerState<_RewardsDialog> {
               builder: (context, snap) => _PiggyCard(
                 gems: piggy,
                 price: snap.data?[IapProduct.piggyBreak],
-                onBreak: () =>
-                    ref.read(iapServiceProvider).buy(IapProduct.piggyBreak),
+                onBreak: () async {
+                  // Nạp tiền thật cần đã liên kết email (xem email_gate.dart).
+                  if (!await ensureEmailLinked(context, ref)) return;
+                  if (!mounted) return;
+                  ref.read(iapServiceProvider).buy(IapProduct.piggyBreak);
+                },
               ),
             ),
             _OfferRow(

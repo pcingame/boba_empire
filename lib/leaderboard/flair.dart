@@ -210,28 +210,60 @@ class FlairBadge extends ConsumerWidget {
   }
 }
 
-/// Nhãn "VIP n" nhỏ, màu vàng — dùng ở bảng xếp hạng/Hội và màn Mốc nạp.
+/// Màu nhãn VIP theo cấp 1..10 (đồng → bạc → vàng → xanh lá → xanh dương → tím → hồng →
+/// cam; cấp 9 và 10 là dải màu). Hai màu bằng nhau = màu đặc. Ngoài khoảng thì kẹp.
+const List<List<Color>> vipTagColors = [
+  [Color(0xFFC08A5A), Color(0xFFC08A5A)], // 1 đồng
+  [Color(0xFFB0BEC5), Color(0xFFB0BEC5)], // 2 bạc
+  [Color(0xFFE0A868), Color(0xFFE0A868)], // 3 vàng
+  [Color(0xFF66BB6A), Color(0xFF66BB6A)], // 4 xanh lá
+  [Color(0xFF42A5F5), Color(0xFF42A5F5)], // 5 xanh dương
+  [Color(0xFFAB47BC), Color(0xFFAB47BC)], // 6 tím
+  [Color(0xFFEC407A), Color(0xFFEC407A)], // 7 hồng
+  [Color(0xFFFF7043), Color(0xFFFF7043)], // 8 cam
+  [Color(0xFF5E35B1), Color(0xFFD81B60)], // 9 tím → hồng (đậm cho chữ trắng đọc rõ)
+  [Color(0xFFFFC107), Color(0xFFF4511E)], // 10 vàng → cam đỏ
+];
+
+/// Nhãn "VIP n" nhỏ, màu theo cấp ([vipTagColors]) — dùng ở bảng xếp hạng/Hội và màn
+/// Mốc nạp.
 class VipTag extends StatelessWidget {
   const VipTag({super.key, required this.level});
   final int level;
 
   @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-        decoration: BoxDecoration(
-          color: const Color(0xFFE0A868),
-          borderRadius: BorderRadius.circular(6),
+  Widget build(BuildContext context) {
+    final colors = vipTagColors[(level - 1).clamp(0, vipTagColors.length - 1)];
+    // Chọn chữ tối hoặc trắng — bên nào tương phản hơn với CẢ HAI đầu dải màu.
+    const dark = Color(0xFF24160A);
+    double worst(Color fg) => colors
+        .map((c) => _contrast(fg, c))
+        .reduce((a, b) => a < b ? a : b);
+    final fg = worst(dark) >= worst(Colors.white) ? dark : Colors.white;
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(colors: colors),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        'VIP $level',
+        style: TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w800,
+          color: fg,
+          height: 1.2,
         ),
-        child: Text(
-          'VIP $level',
-          style: const TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.w800,
-            color: Color(0xFF24160A),
-            height: 1.2,
-          ),
-        ),
-      );
+      ),
+    );
+  }
+}
+
+/// Tỉ lệ tương phản WCAG giữa hai màu.
+double _contrast(Color a, Color b) {
+  final la = a.computeLuminance(), lb = b.computeLuminance();
+  final hi = la > lb ? la : lb, lo = la > lb ? lb : la;
+  return (hi + 0.05) / (lo + 0.05);
 }
 
 /// Chấm xanh "đang online" của VIP ≥ cấp 5.

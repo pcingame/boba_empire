@@ -793,6 +793,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get emailGateTitle => 'Link your email to top up';
+
+  @override
+  String get emailGateBody =>
+      'Purchases are tied to your account so they can be recovered if you change phones or something goes wrong. Link an email first (free, takes about a minute).';
+
+  @override
+  String get emailGateLink => 'Link email';
+
+  @override
   String get vipLbOpen => 'VIP leaderboard';
 
   @override

@@ -85,9 +85,9 @@ App **miễn phí** (free-to-play + ads + IAP). Mốc giá gốc (USD):
 | `boba_gems_medium` | **$4.99** | 600 💎 (đã tính bonus theo giá). |
 | `boba_gems_large` | **$9.99** | 1300 💎 (bonus cao hơn → đẩy lên gói to). |
 | `boba_remove_ads` | **$2.99** (hoặc $1.99) | Trụ doanh thu ổn định nhất ở game casual. |
-| `boba_gems_huge` | **$15.99** | 4000 💎 — cho người chơi mạnh/Hội (ước lượng chưa playtest). |
+| `boba_gems_huge` | **$14.99** | 4000 💎 — cho người chơi mạnh/Hội (ước lượng chưa playtest). |
 | `boba_gems_mega` | **$19.99** | 10000 💎. |
-| `boba_cold_storage` | **$1.99–$2.99** | +8h trần offline vĩnh viễn. |
+| `boba_cold_storage` | **$2.99** | +8h trần offline vĩnh viễn. |
 | `boba_combo_noads_x2` | rẻ hơn tổng `remove_ads` + `double_income` | Combo; đặt giá theo giá hai gói lẻ ở App Store Connect. |
 
 **Giá theo vùng (quan trọng với tier-2):** cả Play lẫn App Store cho đặt giá từng

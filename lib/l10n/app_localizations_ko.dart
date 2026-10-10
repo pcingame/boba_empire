@@ -783,6 +783,16 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get emailGateTitle => '충전하려면 이메일을 연결하세요';
+
+  @override
+  String get emailGateBody =>
+      '구매 내역이 계정에 연결되어 기기를 바꾸거나 문제가 생겨도 복구할 수 있어요. 먼저 이메일을 연결해 주세요(무료, 약 1분).';
+
+  @override
+  String get emailGateLink => '이메일 연결';
+
+  @override
   String get vipLbOpen => 'VIP 리더보드';
 
   @override

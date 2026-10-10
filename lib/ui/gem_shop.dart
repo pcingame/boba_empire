@@ -11,8 +11,10 @@ import '../iap/iap_service.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
+import 'email_gate.dart';
 import 'topup_dialog.dart';
 import 'widgets/clay.dart';
+import 'widgets/iap_icon.dart';
 
 /// Mở Cửa hàng Kim Cương — chỗ tiêu gems kiếm từ VIP, và nạp bằng tiền thật.
 Future<void> showGemShop(BuildContext context) {
@@ -59,6 +61,13 @@ class _GemShopState extends ConsumerState<_GemShop> {
     if (mounted && _pendingPurchase == p) {
       setState(() => _pendingPurchase = null);
     }
+  }
+
+  /// Nạp tiền thật cần đã liên kết email (xem email_gate.dart).
+  Future<void> _onBuyTap(IapProduct p) async {
+    if (!await ensureEmailLinked(context, ref)) return;
+    if (!mounted) return;
+    _startBuy(p);
   }
 
   void _startBuy(IapProduct p) {
@@ -119,11 +128,11 @@ class _GemShopState extends ConsumerState<_GemShop> {
           children: [
             Align(
               alignment: Alignment.centerLeft,
-              child: TextButton.icon(
+              // topupOpen đã có sẵn emoji 👑 ở đầu chuỗi (mọi ngôn ngữ).
+              child: TextButton(
                 key: const Key('topup-open'),
                 onPressed: () => showTopupDialog(context),
-                icon: const Text('👑'),
-                label: Text(l10n.topupOpen),
+                child: Text(l10n.topupOpen),
               ),
             ),
             _GemItem(
@@ -232,6 +241,7 @@ class _GemShopState extends ConsumerState<_GemShop> {
         for (final p in products)
           ListTile(
             contentPadding: EdgeInsets.zero,
+            leading: IapIcon(product: p),
             title: Text(iapTitle(l10n, p)),
             subtitle: Text(iapDescription(l10n, p)),
             trailing: FilledButton.tonal(
@@ -240,7 +250,7 @@ class _GemShopState extends ConsumerState<_GemShop> {
               // (màn thanh toán của store vốn đã modal, tránh bấm chồng gây
               // rối luồng plugin) hoặc đang khôi phục.
               onPressed: _pendingPurchase == null && !_restoring
-                  ? () => _startBuy(p)
+                  ? () => _onBuyTap(p)
                   : null,
               child: _pendingPurchase == p
                   ? const SizedBox(

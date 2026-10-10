@@ -801,6 +801,16 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get emailGateTitle => 'Vincula tu correo para recargar';
+
+  @override
+  String get emailGateBody =>
+      'Las compras se asocian a tu cuenta para poder recuperarlas si cambias de teléfono o algo falla. Vincula primero un correo (gratis, tarda un minuto).';
+
+  @override
+  String get emailGateLink => 'Vincular correo';
+
+  @override
   String get vipLbOpen => 'Clasificación VIP';
 
   @override

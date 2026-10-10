@@ -96,4 +96,36 @@ void main() {
     expect(find.byKey(const Key('vip-title-line')), findsNWidgets(2));
     expect(find.byKey(const Key('vip-online-dot')), findsOneWidget); // chỉ 'w'
   });
+
+  test('mỗi cấp VIP một màu riêng', () {
+    expect(vipTagColors.length, 10);
+    final keys = {for (final c in vipTagColors) '${c[0].toARGB32()}-${c[1].toARGB32()}'};
+    expect(keys.length, 10, reason: 'trùng màu giữa các cấp');
+  });
+
+  testWidgets('VipTag đổi màu theo cấp và kẹp cấp ngoài khoảng', (tester) async {
+    Color? bgOf(int level) {
+      final box = tester.widget<Container>(find.descendant(
+        of: find.byKey(Key('tag-$level')),
+        matching: find.byType(Container),
+      ));
+      return ((box.decoration as BoxDecoration).gradient as LinearGradient)
+          .colors
+          .first;
+    }
+
+    await tester.pumpWidget(const MaterialApp(
+      home: Column(children: [
+        VipTag(key: Key('tag-1'), level: 1),
+        VipTag(key: Key('tag-5'), level: 5),
+        VipTag(key: Key('tag-10'), level: 10),
+        VipTag(key: Key('tag-99'), level: 99),
+      ]),
+    ));
+    expect(bgOf(1), vipTagColors[0][0]);
+    expect(bgOf(5), vipTagColors[4][0]);
+    expect(bgOf(10), vipTagColors[9][0]);
+    expect(bgOf(99), vipTagColors[9][0]); // kẹp về cấp cao nhất
+    expect(find.text('VIP 99'), findsOneWidget);
+  });
 }
