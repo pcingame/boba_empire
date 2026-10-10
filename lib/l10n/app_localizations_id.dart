@@ -625,6 +625,68 @@ class AppLocalizationsId extends AppLocalizations {
   String get iapDoubleSnack => 'x2 pendapatan permanen aktif!';
 
   @override
+  String get iapColdStorageTitle => 'Gudang dingin (permanen)';
+
+  @override
+  String iapColdStorageDesc(Object hours) {
+    return 'Menambah $hours jam pada batas pendapatan offline, selamanya';
+  }
+
+  @override
+  String iapColdStorageSnack(Object hours) {
+    return 'Batas offline bertambah $hours jam!';
+  }
+
+  @override
+  String get iapComboTitle => 'Kombo: Tanpa iklan + x2 pendapatan';
+
+  @override
+  String get iapComboDesc =>
+      'Hapus semua iklan dan gandakan pendapatan pasif selamanya, lebih murah daripada beli terpisah';
+
+  @override
+  String get iapComboSnack => 'Iklan dihapus dan x2 pendapatan permanen aktif!';
+
+  @override
+  String get topupTitle => 'Hadiah top-up & VIP';
+
+  @override
+  String get topupOpen => '👑 Top-up & VIP';
+
+  @override
+  String topupSummary(Object points) {
+    return '$points poin top-up';
+  }
+
+  @override
+  String topupBuff(Object now, Object percent) {
+    return 'Tiap level VIP: +$percent% pendapatan (sekarang +$now%)';
+  }
+
+  @override
+  String get topupNote =>
+      '1 poin ≈ 1 USD yang dibelanjakan di toko. Tiap hadiah diklaim sekali.';
+
+  @override
+  String topupTier(Object points) {
+    return '$points poin';
+  }
+
+  @override
+  String get topupAccessory => '+ aksesori';
+
+  @override
+  String get topupClaim => 'Klaim';
+
+  @override
+  String get topupClaimed => 'Diklaim';
+
+  @override
+  String topupClaimSnack(Object gems) {
+    return 'Diklaim +$gems 💎';
+  }
+
+  @override
   String get rewardsTitle => 'Dapat lebih 🎁';
 
   @override

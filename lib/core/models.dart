@@ -116,6 +116,9 @@ class GameState {
     this.buyCount = 0,
     this.questIndex = 0,
     this.doubleIncomeOwned = false,
+    this.coldStorageOwned = false,
+    this.topupPoints = 0,
+    List<int>? topupClaimed,
     this.x2IncomeUntilMillis = 0,
     this.boostUntilMillis = 0,
     this.piggyGems = 0,
@@ -151,6 +154,7 @@ class GameState {
         redeemedCodes = redeemedCodes ?? [],
         ownedAccessories = ownedAccessories ?? [],
         ownedLimited = ownedLimited ?? [],
+        topupClaimed = topupClaimed ?? [],
         eventProgress = eventProgress ?? {},
         eventClaimed = eventClaimed ?? [],
         accessorySpares = accessorySpares ?? {},
@@ -432,6 +436,14 @@ class GameState {
   /// Đã mua IAP "x2 thu nhập vĩnh viễn" — nhân đôi mọi thu nhập tự động.
   bool doubleIncomeOwned;
 
+  /// Đã mua IAP "Kho lạnh vĩnh viễn" (+[Balance.coldStorageBonusSeconds] trần offline).
+  bool coldStorageOwned;
+
+  /// Tổng điểm nạp tích lũy (≈ USD, xem core/topup.dart) và các bậc đã nhận thưởng
+  /// (lưu theo chỉ số trong [topupTiers]).
+  int topupPoints;
+  final List<int> topupClaimed;
+
   /// Mốc (epoch ms) hết hạn boost "x2 thu nhập 24h" từ xem QC; 0 = không có.
   int x2IncomeUntilMillis;
 
@@ -539,6 +551,9 @@ class GameState {
         'buyCount': buyCount,
         'questIndex': questIndex,
         'doubleIncomeOwned': doubleIncomeOwned,
+        'coldStorageOwned': coldStorageOwned,
+        'topupPoints': topupPoints,
+        'topupClaimed': topupClaimed,
         'x2IncomeUntilMillis': x2IncomeUntilMillis,
         'boostUntilMillis': boostUntilMillis,
         'piggyGems': piggyGems,
@@ -692,6 +707,9 @@ class GameState {
         buyCount: (json['buyCount'] as num?)?.toInt() ?? 0,
         questIndex: (json['questIndex'] as num?)?.toInt() ?? 0,
         doubleIncomeOwned: (json['doubleIncomeOwned'] as bool?) ?? false,
+        coldStorageOwned: (json['coldStorageOwned'] as bool?) ?? false,
+        topupPoints: (json['topupPoints'] as num?)?.toInt() ?? 0,
+        topupClaimed: (json['topupClaimed'] as List?)?.map((e) => (e as num).toInt()).toList(),
         x2IncomeUntilMillis:
             (json['x2IncomeUntilMillis'] as num?)?.toInt() ?? 0,
         boostUntilMillis: (json['boostUntilMillis'] as num?)?.toInt() ?? 0,

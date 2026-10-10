@@ -622,6 +622,68 @@ class AppLocalizationsTh extends AppLocalizations {
   String get iapDoubleSnack => 'เปิด x2 รายได้ถาวรแล้ว!';
 
   @override
+  String get iapColdStorageTitle => 'ห้องเย็นถาวร';
+
+  @override
+  String iapColdStorageDesc(Object hours) {
+    return 'เพิ่มเพดานรายได้ออฟไลน์อีก $hours ชั่วโมง ตลอดไป';
+  }
+
+  @override
+  String iapColdStorageSnack(Object hours) {
+    return 'เพิ่มเพดานออฟไลน์อีก $hours ชั่วโมงแล้ว!';
+  }
+
+  @override
+  String get iapComboTitle => 'คอมโบ: ไม่มีโฆษณา + รายได้ x2';
+
+  @override
+  String get iapComboDesc =>
+      'ลบโฆษณาทั้งหมดและเพิ่มรายได้อัตโนมัติ x2 ตลอดไป ถูกกว่าซื้อแยก';
+
+  @override
+  String get iapComboSnack => 'ลบโฆษณาและเปิดรายได้ x2 ถาวรแล้ว!';
+
+  @override
+  String get topupTitle => 'รางวัลเติมเงิน & VIP';
+
+  @override
+  String get topupOpen => '👑 เติมเงิน & VIP';
+
+  @override
+  String topupSummary(Object points) {
+    return '$points แต้มเติมเงิน';
+  }
+
+  @override
+  String topupBuff(Object now, Object percent) {
+    return 'VIP แต่ละเลเวล: รายได้ +$percent% (ตอนนี้ +$now%)';
+  }
+
+  @override
+  String get topupNote =>
+      '1 แต้ม ≈ 1 ดอลลาร์ที่ใช้ในร้าน รับรางวัลแต่ละขั้นได้ครั้งเดียว';
+
+  @override
+  String topupTier(Object points) {
+    return '$points แต้ม';
+  }
+
+  @override
+  String get topupAccessory => '+ เครื่องประดับ';
+
+  @override
+  String get topupClaim => 'รับ';
+
+  @override
+  String get topupClaimed => 'รับแล้ว';
+
+  @override
+  String topupClaimSnack(Object gems) {
+    return 'รับ +$gems 💎 แล้ว';
+  }
+
+  @override
   String get rewardsTitle => 'หาเพิ่ม 🎁';
 
   @override

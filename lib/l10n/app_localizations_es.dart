@@ -629,6 +629,69 @@ class AppLocalizationsEs extends AppLocalizations {
   String get iapDoubleSnack => '¡x2 ingresos permanentes activado!';
 
   @override
+  String get iapColdStorageTitle => 'Cámara fría (permanente)';
+
+  @override
+  String iapColdStorageDesc(Object hours) {
+    return 'Suma $hours horas al límite de ganancias sin conexión, para siempre';
+  }
+
+  @override
+  String iapColdStorageSnack(Object hours) {
+    return '¡Límite sin conexión aumentado en $hours horas!';
+  }
+
+  @override
+  String get iapComboTitle => 'Combo: Sin anuncios + x2 ingresos';
+
+  @override
+  String get iapComboDesc =>
+      'Quita todos los anuncios y duplica los ingresos pasivos para siempre, más barato que por separado';
+
+  @override
+  String get iapComboSnack =>
+      '¡Anuncios eliminados y x2 ingresos permanente activado!';
+
+  @override
+  String get topupTitle => 'Recompensas de recarga y VIP';
+
+  @override
+  String get topupOpen => '👑 Recarga y VIP';
+
+  @override
+  String topupSummary(Object points) {
+    return '$points puntos de recarga';
+  }
+
+  @override
+  String topupBuff(Object now, Object percent) {
+    return 'Cada nivel VIP: +$percent% de ingresos (ahora +$now%)';
+  }
+
+  @override
+  String get topupNote =>
+      '1 punto ≈ 1 USD gastado en la tienda. Cada recompensa se reclama una vez.';
+
+  @override
+  String topupTier(Object points) {
+    return '$points puntos';
+  }
+
+  @override
+  String get topupAccessory => '+ accesorio';
+
+  @override
+  String get topupClaim => 'Reclamar';
+
+  @override
+  String get topupClaimed => 'Reclamado';
+
+  @override
+  String topupClaimSnack(Object gems) {
+    return '¡Reclamado +$gems 💎!';
+  }
+
+  @override
   String get rewardsTitle => 'Gana más 🎁';
 
   @override

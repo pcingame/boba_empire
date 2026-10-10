@@ -77,6 +77,8 @@ String iapTitle(AppLocalizations l10n, IapProduct p) => switch (p) {
       IapProduct.starterPack => l10n.iapStarterTitle,
       IapProduct.doubleIncome => l10n.iapDoubleTitle,
       IapProduct.vip30 => l10n.iapVipTitle,
+      IapProduct.coldStorage => l10n.iapColdStorageTitle,
+      IapProduct.comboNoAdsX2 => l10n.iapComboTitle,
       _ => '${formatNumber(p.gems)} 💎', // gói gems: hiện luôn số lượng
     };
 
@@ -85,6 +87,8 @@ String iapDescription(AppLocalizations l10n, IapProduct p) => switch (p) {
       IapProduct.starterPack => l10n.iapStarterDesc,
       IapProduct.doubleIncome => l10n.iapDoubleDesc,
       IapProduct.vip30 => l10n.iapVipDesc,
+      IapProduct.coldStorage => l10n.iapColdStorageDesc(Balance.coldStorageBonusSeconds ~/ 3600),
+      IapProduct.comboNoAdsX2 => l10n.iapComboDesc,
       _ => l10n.iapGemsDesc,
     };
 

@@ -17,6 +17,19 @@ final flairCacheProvider = NotifierProvider<FlairCache, Map<String, String>>(
   FlairCache.new,
 );
 
+/// userId -> cấp VIP (>0) lấy từ cùng lần gọi RPC với huy hiệu phụ kiện; người
+/// không có cấp VIP không có khoá. Ghi bởi [FlairCache], không có logic riêng.
+final vipLevelProvider = NotifierProvider<VipLevels, Map<String, int>>(
+  VipLevels.new,
+);
+
+class VipLevels extends Notifier<Map<String, int>> {
+  @override
+  Map<String, int> build() => const {};
+
+  void merge(Map<String, int> found) => state = {...state, ...found};
+}
+
 class FlairCache extends Notifier<Map<String, String>> {
   final _pending = <String>{};
   Timer? _timer;
@@ -49,6 +62,21 @@ class FlairCache extends Notifier<Map<String, String>> {
     }
   }
 
+  /// Báo cấp VIP (theo tổng nạp, xem core/topup.dart) của chính mình lên server để
+  /// hiện cạnh tên ở các bảng xếp hạng. Server chỉ cho cấp TĂNG; nuốt mọi lỗi
+  /// (mạng/Supabase chưa khởi tạo) vì chỉ là huy hiệu.
+  Future<void> reportVip(int level) async {
+    if (level <= 0) return;
+    try {
+      final client = Supabase.instance.client;
+      final user =
+          client.auth.currentUser ??
+          (await client.auth.signInAnonymously()).user;
+      await client.rpc('set_vip_level', params: {'p_level': level});
+      if (user != null) invalidate(user.id);
+    } catch (_) {}
+  }
+
   /// Đặt (hoặc gỡ với null) huy hiệu của chính mình; true nếu server nhận.
   Future<bool> setMine(String? accessoryId) async {
     try {
@@ -72,6 +100,7 @@ class FlairCache extends Notifier<Map<String, String>> {
     final ids = _pending.take(100).toList();
     _pending.removeAll(ids);
     final found = <String, String>{};
+    final vips = <String, int>{};
     try {
       final rows = await Supabase.instance.client.rpc(
         'accessory_flairs',
@@ -80,10 +109,13 @@ class FlairCache extends Notifier<Map<String, String>> {
       for (final r in rows as List) {
         final emoji = flairEmoji((r as Map)['accessory_id']);
         if (emoji != null) found[r['user_id'] as String] = emoji;
+        final vip = r['vip_level'];
+        if (vip is num && vip > 0) vips[r['user_id'] as String] = vip.toInt();
       }
     } catch (_) {
       // Không có mạng/Supabase: hiện như chưa có huy hiệu, không thử lại ồ ạt.
     }
+    ref.read(vipLevelProvider.notifier).merge(vips);
     state = {...state, for (final id in ids) id: found[id] ?? ''};
     if (_pending.isNotEmpty) _timer = Timer(Duration.zero, _flush);
   }
@@ -115,10 +147,43 @@ class FlairBadge extends ConsumerWidget {
         }
       });
     }
-    if (emoji == null || emoji.isEmpty) return const SizedBox.shrink();
+    final vip = ref.watch(vipLevelProvider.select((m) => m[userId])) ?? 0;
+    final hasEmoji = emoji != null && emoji.isNotEmpty;
+    if (!hasEmoji && vip <= 0) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.only(right: 4),
-      child: Text(emoji, key: const Key('flair-badge')),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (vip > 0) VipTag(level: vip, key: const Key('vip-badge')),
+          if (vip > 0 && hasEmoji) const SizedBox(width: 3),
+          if (hasEmoji) Text(emoji, key: const Key('flair-badge')),
+        ],
+      ),
     );
   }
+}
+
+/// Nhãn "VIP n" nhỏ, màu vàng — dùng ở bảng xếp hạng/Hội và màn Mốc nạp.
+class VipTag extends StatelessWidget {
+  const VipTag({super.key, required this.level});
+  final int level;
+
+  @override
+  Widget build(BuildContext context) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+        decoration: BoxDecoration(
+          color: const Color(0xFFE0A868),
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Text(
+          'VIP $level',
+          style: const TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w800,
+            color: Color(0xFF24160A),
+            height: 1.2,
+          ),
+        ),
+      );
 }

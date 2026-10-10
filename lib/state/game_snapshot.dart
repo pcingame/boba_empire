@@ -89,6 +89,9 @@ class GameSnapshot {
     required this.questProgress,
     required this.questDone,
     required this.doubleIncomeOwned,
+    required this.coldStorageOwned,
+    required this.topupPoints,
+    required this.topupClaimed,
     required this.x2IncomeRemainingSeconds,
     required this.piggyGems,
     required this.adFree,
@@ -261,6 +264,9 @@ class GameSnapshot {
 
   /// Đã mua x2 thu nhập vĩnh viễn (IAP) & số giây còn lại của x2 24h (xem QC).
   final bool doubleIncomeOwned;
+  final bool coldStorageOwned;
+  final int topupPoints;
+  final List<int> topupClaimed;
   final double x2IncomeRemainingSeconds;
 
   /// Kim Cương đang tích trong heo đất (chờ "đập" bằng IAP).

@@ -28,6 +28,8 @@ import '../market/market_highlight.dart';
 import '../notify/reminders.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
+import '../leaderboard/flair.dart';
+import '../core/topup.dart';
 import 'accessory_inventory_page.dart';
 import 'accessory_market_page.dart';
 import 'whats_new_dialog.dart';
@@ -205,7 +207,9 @@ class _HomePageState extends ConsumerState<HomePage>
     switch (product) {
       case IapProduct.gemsSmall ||
             IapProduct.gemsMedium ||
-            IapProduct.gemsLarge:
+            IapProduct.gemsLarge ||
+            IapProduct.gemsHuge ||
+            IapProduct.gemsMega:
         controller.grantGemsPurchase(product.gems);
         message = l10n.iapGemsSnack(formatNumber(product.gems));
       case IapProduct.removeAds:
@@ -221,6 +225,17 @@ class _HomePageState extends ConsumerState<HomePage>
         controller.applyDoubleIncome();
         if (already) return; // chỉ khôi phục, không báo trùng.
         message = l10n.iapDoubleSnack;
+      case IapProduct.coldStorage:
+        final already = ref.read(gameControllerProvider).coldStorageOwned;
+        controller.applyColdStorage();
+        if (already) return; // chỉ khôi phục, không báo trùng.
+        message = l10n.iapColdStorageSnack(Balance.coldStorageBonusSeconds ~/ 3600);
+      case IapProduct.comboNoAdsX2:
+        final s = ref.read(gameControllerProvider);
+        final already = s.adsRemoved && s.doubleIncomeOwned;
+        controller.applyComboNoAdsX2();
+        if (already) return; // chỉ khôi phục, không báo trùng.
+        message = l10n.iapComboSnack;
       case IapProduct.piggyBreak:
         final gained = controller.breakPiggy();
         if (gained <= 0) return;
@@ -229,6 +244,11 @@ class _HomePageState extends ConsumerState<HomePage>
         controller.buyVip();
         message = l10n.iapVipSnack;
     }
+    // Mua MỚI (các nhánh "đã có" ở trên đã return) → cộng điểm nạp, báo cấp VIP lên server.
+    controller.addTopupPoints(product.topup);
+    unawaited(ref
+        .read(flairCacheProvider.notifier)
+        .reportVip(topupVipLevel(ref.read(gameControllerProvider).topupPoints)));
     ref.read(audioServiceProvider).play(Sfx.reward);
     if (mounted) {
       ScaffoldMessenger.of(context)

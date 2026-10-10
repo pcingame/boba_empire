@@ -9,6 +9,7 @@ import 'dart:math';
 
 import 'balance.dart';
 import 'models.dart';
+import 'topup.dart';
 
 /// Giá để nâng nguồn thu từ [currentLevel] lên cấp kế tiếp.
 ///
@@ -366,6 +367,7 @@ double effectiveIncomePerSecond(
     prestigeIncomeMultiplier(state.prestigeIncomeLevel) *
     storyChoiceIncomeMultiplier(state) *
     (state.doubleIncomeOwned ? 2.0 : 1.0) *
+    vipIncomeMultiplier(state.topupPoints) *
     boostMultiplier;
 
 /// Số Sao nhượng quyền tương ứng với tổng thu nhập cả đời.

@@ -1116,6 +1116,102 @@ abstract class AppLocalizations {
   /// **'Đã bật x2 thu nhập vĩnh viễn!'**
   String get iapDoubleSnack;
 
+  /// No description provided for @iapColdStorageTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kho lạnh vĩnh viễn'**
+  String get iapColdStorageTitle;
+
+  /// No description provided for @iapColdStorageDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tăng thêm {hours} giờ trần tiền offline, mãi mãi'**
+  String iapColdStorageDesc(Object hours);
+
+  /// No description provided for @iapColdStorageSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã tăng trần offline thêm {hours} giờ!'**
+  String iapColdStorageSnack(Object hours);
+
+  /// No description provided for @iapComboTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Combo: Gỡ QC + x2 Thu nhập'**
+  String get iapComboTitle;
+
+  /// No description provided for @iapComboDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gỡ toàn bộ quảng cáo và x2 thu nhập vĩnh viễn, rẻ hơn mua riêng'**
+  String get iapComboDesc;
+
+  /// No description provided for @iapComboSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gỡ quảng cáo và bật x2 thu nhập vĩnh viễn!'**
+  String get iapComboSnack;
+
+  /// No description provided for @topupTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mốc nạp & VIP'**
+  String get topupTitle;
+
+  /// No description provided for @topupOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'👑 Mốc nạp & VIP'**
+  String get topupOpen;
+
+  /// No description provided for @topupSummary.
+  ///
+  /// In vi, this message translates to:
+  /// **'{points} điểm nạp'**
+  String topupSummary(Object points);
+
+  /// No description provided for @topupBuff.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi cấp VIP +{percent}% thu nhập (hiện +{now}%)'**
+  String topupBuff(Object now, Object percent);
+
+  /// No description provided for @topupNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'1 điểm ≈ 1 USD đã nạp trong cửa hàng. Mỗi mốc nhận một lần.'**
+  String get topupNote;
+
+  /// No description provided for @topupTier.
+  ///
+  /// In vi, this message translates to:
+  /// **'{points} điểm'**
+  String topupTier(Object points);
+
+  /// No description provided for @topupAccessory.
+  ///
+  /// In vi, this message translates to:
+  /// **'+ phụ kiện'**
+  String get topupAccessory;
+
+  /// No description provided for @topupClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận'**
+  String get topupClaim;
+
+  /// No description provided for @topupClaimed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận'**
+  String get topupClaimed;
+
+  /// No description provided for @topupClaimSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận +{gems} 💎'**
+  String topupClaimSnack(Object gems);
+
   /// No description provided for @rewardsTitle.
   ///
   /// In vi, this message translates to:

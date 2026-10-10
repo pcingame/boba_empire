@@ -478,20 +478,63 @@ $$;
 
 grant execute on function set_accessory_flair(text) to authenticated;
 
+-- Cấp VIP theo tổng nạp (IAP) — client tự khai (xem lib/core/topup.dart), CHỈ TĂNG,
+-- trần 8. Hiện cạnh tên ở các bảng xếp hạng/Hội qua accessory_flairs bên dưới.
+create table if not exists vip_level (
+  user_id     uuid primary key references auth.users(id) on delete cascade,
+  level       smallint not null check (level between 1 and 8),
+  updated_at  timestamptz not null default now()
+);
+
+alter table vip_level enable row level security;
+-- Không policy nào: client chỉ đi qua RPC.
+
+create or replace function set_vip_level(p_level integer)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if auth.uid() is null then
+    raise exception 'not authenticated';
+  end if;
+  if p_level is null or p_level < 1 then
+    return;
+  end if;
+  insert into vip_level (user_id, level)
+  values (auth.uid(), least(p_level, 8))
+  on conflict (user_id) do update
+    set level = greatest(vip_level.level, excluded.level), updated_at = now();
+end;
+$$;
+
+revoke all on function set_vip_level(integer) from public, anon;
+grant execute on function set_vip_level(integer) to authenticated;
+
+-- Đổi cột trả về → phải drop hàm cũ. Bản app cũ chỉ đọc user_id/accessory_id
+-- (accessory_id có thể null với người chỉ có VIP → bỏ qua), nên vẫn tương thích.
+drop function if exists accessory_flairs(uuid[]);
+
 create or replace function accessory_flairs(p_user_ids uuid[])
-returns table (user_id uuid, accessory_id text)
+returns table (user_id uuid, accessory_id text, vip_level integer)
 language sql
 stable
 security definer
 set search_path = public
 as $$
-  select f.user_id, f.accessory_id
-  from accessory_flair f
-  where f.user_id = any (p_user_ids[1:100])
-    and exists (
-      select 1 from accessory_server_ownership o
-      where o.user_id = f.user_id and o.accessory_id = f.accessory_id
-    );
+  select u.id,
+         f.accessory_id,
+         v.level::integer
+  from unnest(p_user_ids[1:100]) as u(id)
+  left join accessory_flair f
+    on f.user_id = u.id
+   and exists (
+     select 1 from accessory_server_ownership o
+     where o.user_id = f.user_id and o.accessory_id = f.accessory_id
+   )
+  left join vip_level v on v.user_id = u.id
+  where f.accessory_id is not null or v.level is not null;
 $$;
 
 grant execute on function accessory_flairs(uuid[]) to anon, authenticated;

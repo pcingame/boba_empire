@@ -615,6 +615,66 @@ class AppLocalizationsKo extends AppLocalizations {
   String get iapDoubleSnack => '영구 수입 x2 적용!';
 
   @override
+  String get iapColdStorageTitle => '냉장고 (영구)';
+
+  @override
+  String iapColdStorageDesc(Object hours) {
+    return '오프라인 수입 한도를 영원히 $hours시간 늘려요';
+  }
+
+  @override
+  String iapColdStorageSnack(Object hours) {
+    return '오프라인 한도가 $hours시간 늘었어요!';
+  }
+
+  @override
+  String get iapComboTitle => '콤보: 광고 제거 + 수입 x2';
+
+  @override
+  String get iapComboDesc => '모든 광고를 없애고 자동 수입을 영원히 두 배로 — 따로 사는 것보다 저렴해요';
+
+  @override
+  String get iapComboSnack => '광고가 제거되고 영구 수입 x2가 적용됐어요!';
+
+  @override
+  String get topupTitle => '충전 보상 & VIP';
+
+  @override
+  String get topupOpen => '👑 충전 보상 & VIP';
+
+  @override
+  String topupSummary(Object points) {
+    return '충전 포인트 $points';
+  }
+
+  @override
+  String topupBuff(Object now, Object percent) {
+    return 'VIP 레벨마다 수입 +$percent% (현재 +$now%)';
+  }
+
+  @override
+  String get topupNote => '1포인트 ≈ 상점에서 쓴 1달러. 보상은 단계마다 한 번만 받아요.';
+
+  @override
+  String topupTier(Object points) {
+    return '$points포인트';
+  }
+
+  @override
+  String get topupAccessory => '+ 액세서리';
+
+  @override
+  String get topupClaim => '받기';
+
+  @override
+  String get topupClaimed => '받음';
+
+  @override
+  String topupClaimSnack(Object gems) {
+    return '+$gems 💎 받았어요';
+  }
+
+  @override
   String get rewardsTitle => '더 벌기 🎁';
 
   @override

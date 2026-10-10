@@ -624,6 +624,68 @@ class AppLocalizationsVi extends AppLocalizations {
   String get iapDoubleSnack => 'Đã bật x2 thu nhập vĩnh viễn!';
 
   @override
+  String get iapColdStorageTitle => 'Kho lạnh vĩnh viễn';
+
+  @override
+  String iapColdStorageDesc(Object hours) {
+    return 'Tăng thêm $hours giờ trần tiền offline, mãi mãi';
+  }
+
+  @override
+  String iapColdStorageSnack(Object hours) {
+    return 'Đã tăng trần offline thêm $hours giờ!';
+  }
+
+  @override
+  String get iapComboTitle => 'Combo: Gỡ QC + x2 Thu nhập';
+
+  @override
+  String get iapComboDesc =>
+      'Gỡ toàn bộ quảng cáo và x2 thu nhập vĩnh viễn, rẻ hơn mua riêng';
+
+  @override
+  String get iapComboSnack => 'Đã gỡ quảng cáo và bật x2 thu nhập vĩnh viễn!';
+
+  @override
+  String get topupTitle => 'Mốc nạp & VIP';
+
+  @override
+  String get topupOpen => '👑 Mốc nạp & VIP';
+
+  @override
+  String topupSummary(Object points) {
+    return '$points điểm nạp';
+  }
+
+  @override
+  String topupBuff(Object now, Object percent) {
+    return 'Mỗi cấp VIP +$percent% thu nhập (hiện +$now%)';
+  }
+
+  @override
+  String get topupNote =>
+      '1 điểm ≈ 1 USD đã nạp trong cửa hàng. Mỗi mốc nhận một lần.';
+
+  @override
+  String topupTier(Object points) {
+    return '$points điểm';
+  }
+
+  @override
+  String get topupAccessory => '+ phụ kiện';
+
+  @override
+  String get topupClaim => 'Nhận';
+
+  @override
+  String get topupClaimed => 'Đã nhận';
+
+  @override
+  String topupClaimSnack(Object gems) {
+    return 'Đã nhận +$gems 💎';
+  }
+
+  @override
   String get rewardsTitle => 'Kiếm thêm 🎁';
 
   @override

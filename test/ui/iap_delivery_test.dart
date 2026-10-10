@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:boba_empire/core/balance.dart';
 import 'package:boba_empire/iap/iap_products.dart';
 import 'package:boba_empire/iap/iap_service.dart';
 import 'package:boba_empire/main.dart';
@@ -78,6 +79,75 @@ void main() {
     await tester.pump();
 
     expect(container.read(gameControllerProvider).adsRemoved, true);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('mua gói gems huge/mega → cộng đúng số của bậc đó', (tester) async {
+    final iap = _FakeIap();
+    final container = await _pump(tester, iap);
+
+    iap.emit(IapProduct.gemsHuge);
+    await tester.pump();
+    iap.emit(IapProduct.gemsMega);
+    await tester.pump();
+
+    expect(container.read(gameControllerProvider).gems,
+        IapProduct.gemsHuge.gems + IapProduct.gemsMega.gems);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('kho lạnh vĩnh viễn: +8h trần offline, phát lại không cộng thêm',
+      (tester) async {
+    final iap = _FakeIap();
+    final container = await _pump(tester, iap);
+    final notifier = container.read(gameControllerProvider.notifier);
+    final before = notifier.currentOfflineCapSeconds;
+
+    iap.emit(IapProduct.coldStorage);
+    await tester.pump();
+    iap.emit(IapProduct.coldStorage); // restore
+    await tester.pump();
+
+    expect(container.read(gameControllerProvider).coldStorageOwned, true);
+    expect(notifier.currentOfflineCapSeconds,
+        before + Balance.coldStorageBonusSeconds);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('mua mới cộng điểm nạp; khôi phục gói vĩnh viễn không cộng lại',
+      (tester) async {
+    final iap = _FakeIap();
+    final container = await _pump(tester, iap);
+
+    iap.emit(IapProduct.removeAds);
+    await tester.pump();
+    expect(container.read(gameControllerProvider).topupPoints,
+        IapProduct.removeAds.topup);
+
+    iap.emit(IapProduct.removeAds); // restore lúc mở app
+    await tester.pump();
+    expect(container.read(gameControllerProvider).topupPoints,
+        IapProduct.removeAds.topup);
+
+    iap.emit(IapProduct.gemsMega); // gói tiêu hao: lần nào cũng mới
+    await tester.pump();
+    iap.emit(IapProduct.gemsMega);
+    await tester.pump();
+    expect(container.read(gameControllerProvider).topupPoints,
+        IapProduct.removeAds.topup + 2 * IapProduct.gemsMega.topup);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('combo gỡ QC + x2: bật cả hai cờ', (tester) async {
+    final iap = _FakeIap();
+    final container = await _pump(tester, iap);
+
+    iap.emit(IapProduct.comboNoAdsX2);
+    await tester.pump();
+
+    final s = container.read(gameControllerProvider);
+    expect(s.adsRemoved, true);
+    expect(s.doubleIncomeOwned, true);
     await tester.pumpWidget(const SizedBox());
   });
 

@@ -11,6 +11,7 @@ import '../iap/iap_service.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
+import 'topup_dialog.dart';
 import 'widgets/clay.dart';
 
 /// Mở Cửa hàng Kim Cương — chỗ tiêu gems kiếm từ VIP, và nạp bằng tiền thật.
@@ -103,6 +104,8 @@ class _GemShopState extends ConsumerState<_GemShop> {
         ref.watch(gameControllerProvider.select((s) => s.starterPackOwned));
     final doubleOwned =
         ref.watch(gameControllerProvider.select((s) => s.doubleIncomeOwned));
+    final coldOwned =
+        ref.watch(gameControllerProvider.select((s) => s.coldStorageOwned));
 
     final l10n = AppLocalizations.of(context)!;
     final boostPercent = (Balance.gemBoostPerLevel * 100).round();
@@ -114,6 +117,15 @@ class _GemShopState extends ConsumerState<_GemShop> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                key: const Key('topup-open'),
+                onPressed: () => showTopupDialog(context),
+                icon: const Text('👑'),
+                label: Text(l10n.topupOpen),
+              ),
+            ),
             _GemItem(
               name: l10n.gemBoostName,
               level: boostLevel,
@@ -166,6 +178,7 @@ class _GemShopState extends ConsumerState<_GemShop> {
                 adsRemoved: adsRemoved,
                 starterOwned: starterOwned,
                 doubleOwned: doubleOwned,
+                coldOwned: coldOwned,
               ),
             ),
           ],
@@ -186,6 +199,7 @@ class _GemShopState extends ConsumerState<_GemShop> {
     required bool adsRemoved,
     required bool starterOwned,
     required bool doubleOwned,
+    required bool coldOwned,
   }) {
     final iap = ref.read(iapServiceProvider);
     final l10n = AppLocalizations.of(context)!;
@@ -196,7 +210,10 @@ class _GemShopState extends ConsumerState<_GemShop> {
         if (p != IapProduct.piggyBreak &&
             !(p == IapProduct.removeAds && adsRemoved) &&
             !(p == IapProduct.starterPack && starterOwned) &&
-            !(p == IapProduct.doubleIncome && doubleOwned))
+            !(p == IapProduct.doubleIncome && doubleOwned) &&
+            !(p == IapProduct.coldStorage && coldOwned) &&
+            // Combo chỉ hiện khi chưa có gói nào trong hai gói lẻ.
+            !(p == IapProduct.comboNoAdsX2 && (adsRemoved || doubleOwned)))
           p,
     ];
     if (prices.isEmpty || products.isEmpty) return const SizedBox.shrink();

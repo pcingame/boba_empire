@@ -31,6 +31,7 @@ import '../core/rival.dart';
 import '../core/simulation.dart';
 import '../core/starter_pack.dart' as market_starter;
 import '../core/story.dart';
+import '../core/topup.dart';
 import '../core/vip.dart';
 import '../core/wheel.dart';
 import '../data/analytics_repository.dart';
@@ -208,7 +209,8 @@ class GameController extends Notifier<GameSnapshot> {
   /// Trần offline (giây) đã tính cấp "Kho lạnh" + cộng thưởng VIP nếu đang VIP.
   int _offlineCap() =>
       offlineCapSeconds(_game.offlineCapLevel) +
-      (vipActive(_game, _clock()) ? Balance.vipOfflineBonusSeconds : 0);
+      (vipActive(_game, _clock()) ? Balance.vipOfflineBonusSeconds : 0) +
+      (_game.coldStorageOwned ? Balance.coldStorageBonusSeconds : 0);
 
   /// Người chơi chạm con mèo → kích hoạt Mưa vàng ×3 trong 2 phút.
   void activateGoldenRush() {
@@ -1436,6 +1438,51 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
+  /// Bật "Kho lạnh vĩnh viễn" (IAP). Idempotent như [applyDoubleIncome].
+  void applyColdStorage() {
+    if (_game.coldStorageOwned) return;
+    _game.coldStorageOwned = true;
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Cộng điểm nạp (≈ USD) sau một lần mua MỚI (không gọi khi chỉ khôi phục).
+  void addTopupPoints(int points) {
+    if (points <= 0) return;
+    _game.topupPoints += points;
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Nhận thưởng bậc [index] của Mốc nạp một lần. Null nếu chưa đủ điểm / đã nhận /
+  /// chỉ số sai. Lưu ngay (💎 là premium). Phụ kiện kèm theo ở [lastAccessoryDrop].
+  ({double gems, AccessoryDrop? drop})? claimTopupTier(int index) {
+    if (index < 0 || index >= topupTiers.length) return null;
+    final tier = topupTiers[index];
+    if (_game.topupPoints < tier.points || _game.topupClaimed.contains(index)) {
+      return null;
+    }
+    _game.topupClaimed.add(index);
+    grantGems(_game, tier.gems);
+    final r = tier.accessory;
+    final drop = r == null
+        ? null
+        : _dropAccessory(
+            source: 'topup',
+            rarity: r == AccessoryRarity.legendary ? r : null,
+            minRarity: r,
+          );
+    unawaited(saveNow());
+    state = _snapshot();
+    return (gems: tier.gems, drop: drop);
+  }
+
+  /// Combo gỡ QC + x2 thu nhập (IAP): bật cả hai, idempotent.
+  void applyComboNoAdsX2() {
+    applyRemoveAds();
+    applyDoubleIncome();
+  }
+
   /// Kích hoạt/gia hạn VIP Pass 30 ngày (IAP). Nhận luôn Kim Cương VIP hôm nay.
   void buyVip() {
     activateVip(_game, _clock());
@@ -1664,6 +1711,9 @@ class GameController extends Notifier<GameSnapshot> {
       prestigeAutoBuyLevel: _game.prestigeAutoBuyLevel,
       autoBuyEnabled: _game.autoBuyEnabled,
       doubleIncomeOwned: _game.doubleIncomeOwned,
+      coldStorageOwned: _game.coldStorageOwned,
+      topupPoints: _game.topupPoints,
+      topupClaimed: List.unmodifiable(_game.topupClaimed),
       x2IncomeRemainingSeconds:
           max(0, (_game.x2IncomeUntilMillis - now) / 1000.0),
       piggyGems: _game.piggyGems,

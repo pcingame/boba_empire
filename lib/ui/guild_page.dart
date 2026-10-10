@@ -16,6 +16,7 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import 'guild_leaderboard_page.dart';
 import '../guild/guild_chat_unread.dart';
+import '../leaderboard/flair.dart';
 import 'guild_activity_page.dart';
 import 'widgets/dispose_with_widget.dart';
 import 'guild_chat_page.dart';
@@ -524,6 +525,7 @@ class _MyGuildView extends ConsumerWidget {
                       children: [
                         if (m.role == GuildRole.owner) const Text('👑 '),
                         if (m.role == GuildRole.officer) const Text('⭐ '),
+                        FlairBadge(userId: m.userId),
                         Flexible(
                           child: Text(m.nickname,
                               maxLines: 1,

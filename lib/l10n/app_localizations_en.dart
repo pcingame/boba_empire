@@ -623,6 +623,68 @@ class AppLocalizationsEn extends AppLocalizations {
   String get iapDoubleSnack => 'x2 permanent income enabled!';
 
   @override
+  String get iapColdStorageTitle => 'Cold Storage (permanent)';
+
+  @override
+  String iapColdStorageDesc(Object hours) {
+    return 'Adds $hours hours to your offline earnings cap, forever';
+  }
+
+  @override
+  String iapColdStorageSnack(Object hours) {
+    return 'Offline cap increased by $hours hours!';
+  }
+
+  @override
+  String get iapComboTitle => 'Combo: No Ads + x2 Income';
+
+  @override
+  String get iapComboDesc =>
+      'Remove all ads and double passive income forever — cheaper than buying separately';
+
+  @override
+  String get iapComboSnack => 'Ads removed and x2 permanent income enabled!';
+
+  @override
+  String get topupTitle => 'Top-up rewards & VIP';
+
+  @override
+  String get topupOpen => '👑 Top-up rewards & VIP';
+
+  @override
+  String topupSummary(Object points) {
+    return '$points top-up points';
+  }
+
+  @override
+  String topupBuff(Object now, Object percent) {
+    return 'Each VIP level: +$percent% income (now +$now%)';
+  }
+
+  @override
+  String get topupNote =>
+      '1 point ≈ \$1 spent in the store. Each reward is claimed once.';
+
+  @override
+  String topupTier(Object points) {
+    return '$points points';
+  }
+
+  @override
+  String get topupAccessory => '+ accessory';
+
+  @override
+  String get topupClaim => 'Claim';
+
+  @override
+  String get topupClaimed => 'Claimed';
+
+  @override
+  String topupClaimSnack(Object gems) {
+    return 'Claimed +$gems 💎';
+  }
+
+  @override
   String get rewardsTitle => 'Earn more 🎁';
 
   @override

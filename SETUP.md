@@ -55,6 +55,10 @@ Product ID phải **khớp** hằng trong `lib/iap/iap_products.dart`:
 | `boba_gems_small`   | Consumable      | +`iapGemsSmall` (100) 💎     |
 | `boba_gems_medium`  | Consumable      | +`iapGemsMedium` (600) 💎    |
 | `boba_gems_large`   | Consumable      | +`iapGemsLarge` (1300) 💎    |
+| `boba_gems_huge`    | Consumable      | +`iapGemsHuge` (4000) 💎     |
+| `boba_gems_mega`    | Consumable      | +`iapGemsMega` (10000) 💎     |
+| `boba_cold_storage` | Non-consumable  | `coldStorageOwned`: +8h trần offline (`coldStorageBonusSeconds`) |
+| `boba_combo_noads_x2` | Non-consumable | bật `adsRemoved` + `doubleIncomeOwned` (ẩn khi đã có một trong hai gói lẻ) |
 | `boba_remove_ads`   | Non-consumable  | bật `adsRemoved`            |
 | `boba_starter_pack` | Non-consumable  | +`iapStarterGems` (300) 💎, một lần |
 
@@ -81,6 +85,10 @@ App **miễn phí** (free-to-play + ads + IAP). Mốc giá gốc (USD):
 | `boba_gems_medium` | **$4.99** | 600 💎 (đã tính bonus theo giá). |
 | `boba_gems_large` | **$9.99** | 1300 💎 (bonus cao hơn → đẩy lên gói to). |
 | `boba_remove_ads` | **$2.99** (hoặc $1.99) | Trụ doanh thu ổn định nhất ở game casual. |
+| `boba_gems_huge` | **$15.99** | 4000 💎 — cho người chơi mạnh/Hội (ước lượng chưa playtest). |
+| `boba_gems_mega` | **$19.99** | 10000 💎. |
+| `boba_cold_storage` | **$1.99–$2.99** | +8h trần offline vĩnh viễn. |
+| `boba_combo_noads_x2` | rẻ hơn tổng `remove_ads` + `double_income` | Combo; đặt giá theo giá hai gói lẻ ở App Store Connect. |
 
 **Giá theo vùng (quan trọng với tier-2):** cả Play lẫn App Store cho đặt giá từng
 nước. ĐỪNG để chỉ quy đổi tỷ giá — **hạ giá ở thị trường sức mua thấp**
