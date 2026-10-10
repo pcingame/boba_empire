@@ -7,9 +7,17 @@ Cập nhật 2026-10-10. Bốn product khớp `lib/iap/iap_products.dart` — **
 | `boba_gems_huge` | **Consumable** | $15.99 | 4000 💎 |
 | `boba_gems_mega` | **Consumable** | $19.99 | 10000 💎 |
 | `boba_cold_storage` | **Non-Consumable** | $2.99 (hoặc $1.99) | +8 giờ trần tiền offline, vĩnh viễn |
-| `boba_combo_noads_x2` | **Non-Consumable** | ~80% tổng giá `boba_remove_ads` + `boba_double_income` | Gỡ QC + x2 thu nhập |
+| `boba_combo_noads_x2` | **Non-Consumable** | **$5.99** (đã chốt; ứng với `boba_double_income` = $4.99, xem bảng dưới) | Gỡ QC + x2 thu nhập |
 
-Combo: xem giá hai gói lẻ trên ASC, cộng lại, nhân ~0,8 rồi chọn mức giá hợp lệ gần nhất (phải RẺ HƠN tổng, nếu không không ai mua combo).
+**Giá Combo (đã chốt 2026-10-10):** rẻ hơn tổng hai gói lẻ khoảng 20–25% và KHÔNG thấp hơn giá gói x2 lẻ. Giả sử `boba_remove_ads` = $2.99:
+
+| Giá `boba_double_income` | Combo |
+|---|---|
+| $4.99 | **$5.99** |
+| $6.99 | **$7.99** |
+| $9.99 | **$9.99** |
+
+Xem giá gói x2 đang đặt trên ASC rồi chọn dòng tương ứng.
 
 ## 0. Điều kiện trước
 - **Business → Agreements**: hợp đồng **Paid Applications** phải ở trạng thái *Active* (kèm thông tin ngân hàng + thuế). Đã bán gói 💎 cũ được thì mục này đã ổn.
