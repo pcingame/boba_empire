@@ -147,7 +147,11 @@
       val: function (r) { return r.owned_count; }, sub: null },
     { id: 'speed', tab: 'lbTabSpeed', col: 'lbSpeed',
       get: function () { return rpc('story_speedrun_top'); },
-      val: function (r) { return dur(r.complete_seconds); }, sub: null }
+      val: function (r) { return dur(r.complete_seconds); }, sub: null },
+    { id: 'guild', tab: 'lbTabGuild', col: 'lbGuild', who: 'lbGuildName',
+      get: function () { return rpc('guild_leaderboard'); },
+      name: function (r) { return (r.emoji || '') + ' ' + r.name + ' [' + r.tag + ']'; },
+      val: function (r) { return big(r.week_total); }, sub: function (r, t) { return tpl(t.lbMembers, r.member_count); } }
   ];
   var cache = {}, current = BOARDS[0].id, boardStarted = false, reqId = 0;
 
@@ -175,7 +179,7 @@
     var t = T[lang], box = $('boardBox');
     if (!rows.length) return msg(t.lbEmpty);
     var table = document.createElement('table'), head = document.createElement('tr');
-    [[t.lbRank, ''], [t.lbPlayer, ''], [t[b.col], 'val']].forEach(function (c) {
+    [[t.lbRank, ''], [t[b.who || 'lbPlayer'], ''], [t[b.col], 'val']].forEach(function (c) {
       var th = document.createElement('th'); th.textContent = c[0]; if (c[1]) th.className = c[1]; head.appendChild(th);
     });
     var thead = document.createElement('thead'); thead.appendChild(head); table.appendChild(thead);
@@ -183,7 +187,7 @@
     rows.forEach(function (r, i) {
       var tr = document.createElement('tr'); tr.style.setProperty('--i', i);
       var tdR = document.createElement('td'); tdR.className = 'rank'; tdR.textContent = medals[i] || ('#' + (i + 1));
-      var tdW = document.createElement('td'); tdW.className = 'who'; tdW.textContent = r.nickname || '—';
+      var tdW = document.createElement('td'); tdW.className = 'who'; tdW.textContent = (b.name ? b.name(r) : r.nickname) || '—';
       var tdV = document.createElement('td'); tdV.className = 'val'; tdV.textContent = b.val(r);
       if (b.sub) { var s = document.createElement('span'); s.className = 'sub'; s.textContent = b.sub(r, t); tdV.appendChild(s); }
       tr.appendChild(tdR); tr.appendChild(tdW); tr.appendChild(tdV); tb.appendChild(tr);

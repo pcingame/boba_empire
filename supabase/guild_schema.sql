@@ -1204,6 +1204,10 @@ begin
   end loop;
 end $$;
 
+-- BXH Hội công khai cho trang web (khoá anon, chưa đăng nhập): chỉ tên/tag/emoji/
+-- số thành viên/điểm tuần của hội không bị ẩn — cùng dữ liệu đã hiện trong app.
+grant execute on function guild_leaderboard(integer) to anon;
+
 -- Hàm nội bộ: client KHÔNG được gọi trực tiếp (Supabase mặc định cấp execute cho
 -- anon/authenticated với hàm mới nên phải thu hồi rõ ràng) — nếu không ai cũng
 -- ghi được lịch sử điểm tuần của hội để nâng chuỗi.

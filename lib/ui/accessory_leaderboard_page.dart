@@ -48,12 +48,14 @@ class _AccessoryLeaderboardPageState
     final l10n = AppLocalizations.of(context)!;
     final notifier = ref.read(accessoryLeaderboardControllerProvider.notifier);
 
-    // Số phụ kiện khác nhau = đang có cục bộ + đang đăng bán trên Chợ (xem
+    // Số phụ kiện khác nhau = bộ chính + món độc quyền (lễ hội, hội: gộp chung một
+    // bộ để xếp hạng) + đang đăng bán trên Chợ (xem
     // AccessoryLeaderboardController.getMyOwnedCount) — lỗi mạng khi đọc
     // listing thì rơi về đếm cục bộ, không để lỗi Chợ chặn luôn bảng xếp
     // hạng.
     notifier.getMyOwnedCount = () async {
-      final ownedIds = ref.read(gameControllerProvider).ownedAccessories;
+      final game = ref.read(gameControllerProvider);
+      final ownedIds = {...game.ownedAccessories, ...game.ownedLimited};
       final local = ownedIds.length;
       // Chưa từng có phiên Supabase nào (chưa đụng Chợ/Đấu Trường/cloud save)
       // thì chắc chắn chưa có listing nào — khỏi ép đăng nhập ẩn danh chỉ để
