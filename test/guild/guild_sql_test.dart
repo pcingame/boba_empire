@@ -124,6 +124,21 @@ void main() {
     }
   });
 
+  test('tặng 💎: hằng số và mức tặng khớp SQL, mọi RPC bị khoá quyền', () {
+    expect(constant('guild_gift_send_daily_cap'), guildGiftSendDailyCap);
+    expect(constant('guild_gift_receive_daily_cap'), guildGiftReceiveDailyCap);
+    expect(constant('guild_gift_expire_days'), guildGiftExpireDays);
+    final m = RegExp(r'select p_amount in \(([\d, ]+)\)').firstMatch(sql);
+    expect(m, isNotNull);
+    expect(m!.group(1)!.split(',').map((e) => int.parse(e.trim())).toList(),
+        guildGiftAmounts);
+    expect(sql, contains('check (amount in (10, 20, 50))'));
+    expect(sql, contains('alter table guild_gifts enable row level security'));
+    for (final f in ['guild_gift_send(uuid,integer)', 'guild_gift_inbox()', 'guild_gift_claim(bigint)']) {
+      expect(sql, contains("'$f'"), reason: '$f phải nằm trong danh sách cấp quyền authenticated');
+    }
+  });
+
   group('Xu Hội / cửa hàng / BXH phụ khớp SQL', () {
     test('hằng số nạp 💎, buff, số người tối thiểu của BXH trung bình', () {
       expect(constant('guild_donate_daily_cap'), guildDonateDailyCap);

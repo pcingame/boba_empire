@@ -15,7 +15,7 @@ class _Seeded extends FlairCache {
 
 class _Vips extends VipLevels {
   @override
-  Map<String, int> build() => {'v': 3, 'w': 5, 'x': 4, 'y': 10};
+  Map<String, int> build() => {'v': 3, 'w': 5, 'x': 4, 'y': 10, 'z': 2, 'm': 8};
 }
 
 class _Online extends VipOnline {
@@ -127,5 +127,45 @@ void main() {
     expect(bgOf(10), vipTagColors[9][0]);
     expect(bgOf(99), vipTagColors[9][0]); // kẹp về cấp cao nhất
     expect(find.text('VIP 99'), findsOneWidget);
+  });
+
+  test('khung VIP: không có ở cấp 1–2, viền mảnh 3–7, viền dày + quầng sáng 8–10', () {
+    expect(vipFrameDecoration(0), isNull);
+    expect(vipFrameDecoration(2), isNull);
+    final mid = vipFrameDecoration(5)!;
+    expect((mid.border as Border).top.width, 1);
+    expect(mid.boxShadow, isNull);
+    for (final l in [8, 9, 10]) {
+      final top = vipFrameDecoration(l)!;
+      expect((top.border as Border).top.width, 2, reason: 'cấp $l');
+      expect(top.boxShadow, isNotEmpty, reason: 'cấp $l');
+    }
+    // Mỗi cấp có khung đều dùng màu của chính cấp đó.
+    expect((vipFrameDecoration(3)!.border as Border).top.color, vipTagColors[2].last);
+  });
+
+  testWidgets('VipNameBlock bọc khung theo cấp của người đó', (tester) async {
+    await tester.pumpWidget(ProviderScope(
+      overrides: [
+        flairCacheProvider.overrideWith(_Seeded.new),
+        vipLevelProvider.overrideWith(_Vips.new),
+      ],
+      child: const MaterialApp(
+        locale: Locale('en'),
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Column(children: [
+          VipNameBlock(userId: 'z', child: Text('z')), // VIP 2: không khung
+          VipNameBlock(userId: 'v', child: Text('v')), // VIP 3
+          VipNameBlock(userId: 'm', child: Text('m')), // VIP 8
+          VipNameBlock(userId: 'nobody', child: Text('n')),
+        ]),
+      ),
+    ));
+    expect(find.byKey(const Key('vip-frame')), findsNWidgets(2));
   });
 }

@@ -656,6 +656,69 @@ void main() {
     expect(g.pointsOf('nobody'), 0);
   });
 
+  group('tặng 💎 giữa hội viên', () {
+    Future<ProviderContainer> mine(FakeGuildRepository repo, {double gems = 0}) async {
+      final c = await _open(repo, gems: gems);
+      await _ctrl(c).refresh();
+      return c;
+    }
+
+    test('thiếu 💎 → từ chối, KHÔNG gọi server, không trừ', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild());
+      final c = await mine(repo, gems: 5);
+      final out = await _ctrl(c).sendGift('u2', 10);
+      expect(out.failure, GuildFailure.notEnoughGems);
+      expect(repo.calls.contains('giftSend'), isFalse);
+      expect(c.read(gameControllerProvider).gems, 5);
+    });
+
+    test('mức tặng ngoài danh sách bị chặn ngay', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild());
+      final c = await mine(repo, gems: 500);
+      expect((await _ctrl(c).sendGift('u2', 15)).failure, GuildFailure.invalidInput);
+      expect(repo.calls.contains('giftSend'), isFalse);
+    });
+
+    test('thành công → server ghi nhận rồi mới trừ đúng 💎', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild());
+      final c = await mine(repo, gems: 100);
+      expect((await _ctrl(c).sendGift('u2', 50)).ok, isTrue);
+      expect(repo.sentGifts, [('u2', 50)]);
+      expect(c.read(gameControllerProvider).gems, 50);
+    });
+
+    test('server báo quá trần ngày → giftLimit và KHÔNG trừ 💎', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild())
+        ..failures['giftSend'] = const GuildException(GuildFailure.dailyLimit);
+      final c = await mine(repo, gems: 100);
+      final out = await _ctrl(c).sendGift('u2', 50);
+      expect(out.failure, GuildFailure.giftLimit);
+      expect(c.read(gameControllerProvider).gems, 100);
+    });
+
+    test('nhận quà: server đánh dấu rồi mới cộng 💎; hộp thư giảm', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild())
+        ..gifts = [const GuildGift(id: 7, fromNickname: 'Bob', amount: 20)];
+      final c = await mine(repo, gems: 0);
+      expect((await _ctrl(c).giftInbox()).single.fromNickname, 'Bob');
+      final r = await _ctrl(c).claimGift(7);
+      expect(r.outcome.ok, isTrue);
+      expect(r.gems, 20);
+      expect(c.read(gameControllerProvider).gems, 20);
+      expect(await _ctrl(c).giftInbox(), isEmpty);
+    });
+
+    test('nhận quà lỗi → không cộng 💎', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild())
+        ..gifts = [const GuildGift(id: 7, fromNickname: 'Bob', amount: 20)]
+        ..failures['giftClaim'] = const GuildException(GuildFailure.alreadyClaimed);
+      final c = await mine(repo, gems: 0);
+      final r = await _ctrl(c).claimGift(7);
+      expect(r.outcome.failure, GuildFailure.alreadyClaimed);
+      expect(c.read(gameControllerProvider).gems, 0);
+    });
+  });
+
   group('chat hội', () {
     test('guildFailureFromMessage: lỗi chat; RPC chưa có trên server cũ → network (không văng)', () {
       expect(guildFailureFromMessage('chat rate limited'), GuildFailure.chatRateLimited);

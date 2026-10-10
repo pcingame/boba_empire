@@ -559,6 +559,25 @@ class GameController extends Notifier<GameSnapshot> {
     return true;
   }
 
+  /// Trừ 💎 tặng hội viên SAU KHI server đã ghi nhận. Trả false nếu lúc này không đủ.
+  bool chargeGuildGift(int gems) {
+    if (gems <= 0 || _game.gems < gems) return false;
+    _game.gems -= gems;
+    logEvent('guild_gift_sent', {'gems': gems});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
+  /// Cộng 💎 quà hội viên tặng SAU KHI server xác nhận nhận thành công.
+  void grantGuildGift(int gems) {
+    if (gems <= 0) return;
+    grantGems(_game, gems.toDouble());
+    logEvent('guild_gift_received', {'gems': gems});
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
   /// Cấp phụ kiện hội đã đổi (hoặc khôi phục từ server khi mất save). Chỉ nhận id có
   /// trong cửa hàng hội; trả số món MỚI thêm vào.
   int grantGuildItems(Iterable<String> ids) {
@@ -1549,10 +1568,17 @@ class GameController extends Notifier<GameSnapshot> {
   }
 
   /// Trao Kim Cương mua bằng tiền thật (IAP consumable). Lưu ngay vì premium.
-  void grantGemsPurchase(double amount) {
-    grantGems(_game, amount);
+  ///
+  /// [packId] (id sản phẩm): lần MUA ĐẦU của từng gói được thưởng gấp đôi — cộng thêm
+  /// đúng [amount] 💎, mỗi gói một lần. Trả về số 💎 thưởng thêm (0 nếu không).
+  double grantGemsPurchase(double amount, {String? packId}) {
+    final bonus =
+        packId != null && !_game.firstBuyClaimed.contains(packId) ? amount : 0.0;
+    if (bonus > 0) _game.firstBuyClaimed.add(packId!);
+    grantGems(_game, amount + bonus);
     unawaited(saveNow());
     state = _snapshot();
+    return bonus;
   }
 
   /// Trao Kim Cương thưởng sau trận Đấu Trường (thắng/thua) — xem
@@ -1763,6 +1789,7 @@ class GameController extends Notifier<GameSnapshot> {
       vipClaimWeek: _game.vipClaimWeek,
       vipClaimMonth: _game.vipClaimMonth,
       topupClaimed: List.unmodifiable(_game.topupClaimed),
+      firstBuyClaimed: List.unmodifiable(_game.firstBuyClaimed),
       x2IncomeRemainingSeconds:
           max(0, (_game.x2IncomeUntilMillis - now) / 1000.0),
       piggyGems: _game.piggyGems,

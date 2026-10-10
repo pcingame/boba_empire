@@ -802,6 +802,52 @@ class AppLocalizationsTh extends AppLocalizations {
   String get emailGateLink => 'ผูกอีเมล';
 
   @override
+  String iapGemsFirstSnack(Object amount) {
+    return 'ได้รับ +$amount 💎 — โบนัสซื้อครั้งแรกคูณสอง!';
+  }
+
+  @override
+  String get iapFirstBuyNote => '🎉 ซื้อครั้งแรก: รับ 💎 สองเท่า!';
+
+  @override
+  String get guildGiftTooltip => 'ส่ง 💎 เป็นของขวัญ';
+
+  @override
+  String guildGiftTitle(Object nickname) {
+    return 'ส่ง 💎 ให้ $nickname';
+  }
+
+  @override
+  String guildGiftHint(Object cap, Object days) {
+    return 'สูงสุด $cap 💎 ต่อวัน ผู้รับมี $days วันในการรับของขวัญ';
+  }
+
+  @override
+  String guildGiftSent(Object amount, Object nickname) {
+    return 'ส่ง $amount 💎 ให้ $nickname แล้ว';
+  }
+
+  @override
+  String guildGiftInboxTitle(Object count) {
+    return '🎁 ของขวัญจากสมาชิกกิลด์ ($count)';
+  }
+
+  @override
+  String guildGiftFrom(Object amount, Object nickname) {
+    return '$nickname · +$amount 💎';
+  }
+
+  @override
+  String guildGiftClaimed(Object amount) {
+    return 'รับ +$amount 💎 แล้ว';
+  }
+
+  @override
+  String guildErrGiftLimit(Object receive, Object send) {
+    return 'วันนี้ถึงขีดจำกัดการส่งของขวัญแล้ว (ส่งได้สูงสุด $send 💎/วัน ผู้รับหนึ่งคนรับได้สูงสุด $receive 💎/วัน)';
+  }
+
+  @override
   String get vipLbOpen => 'กระดานอันดับ VIP';
 
   @override

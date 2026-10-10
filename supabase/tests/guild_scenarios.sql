@@ -843,4 +843,44 @@ select t_as(null);
 select t_err($$select guild_claim_fund()$$, 'permission denied');
 reset role;
 
+-- === Tặng 💎 giữa thành viên cùng hội ===
+select t_as(u(31));
+select t_eq('tặng 50 💎 thành công trả id', (select guild_gift_send(u(32), 50) > 0), true);
+select t_err(format($$select guild_gift_send(%L::uuid, 15)$$, u(32)), 'invalid amount');
+select t_err(format($$select guild_gift_send(%L::uuid, 10)$$, u(31)), 'invalid amount');   -- tự tặng
+select t_err(format($$select guild_gift_send(%L::uuid, 10)$$, u(57)), 'not found');         -- người ngoài hội
+select t_eq('tặng đủ trần ngày gửi (100)', (select guild_gift_send(u(33), 50) > 0), true);
+select t_err(format($$select guild_gift_send(%L::uuid, 10)$$, u(32)), 'daily limit');       -- vượt 100/ngày
+select t_as(u(57));
+select t_err(format($$select guild_gift_send(%L::uuid, 10)$$, u(32)), 'not in guild');      -- người gửi ngoài hội
+-- Trần nhận 200/ngày: u(32) đã nhận 50 từ u(31); thêm 50 từ u(30), 50 từ u(33) → 150, +50 → 200.
+select t_as(u(30)); select guild_gift_send(u(32), 50);
+select t_as(u(33)); select guild_gift_send(u(32), 50);
+select t_as(u(34)); select guild_gift_send(u(32), 50);
+select t_as(u(35));
+select t_err(format($$select guild_gift_send(%L::uuid, 10)$$, u(32)), 'daily limit');       -- người nhận đã đủ 200
+-- Hộp thư & nhận quà.
+select t_as(u(32));
+select t_eq('hộp thư có 4 quà', (select count(*) from guild_gift_inbox()), 4::bigint);
+select t_eq('thư gửi từ nickname thành viên', (select count(*) from guild_gift_inbox() where from_nickname = '?'), 0::bigint);
+select id as gid from guild_gift_inbox() order by id limit 1 \gset
+select id as eid from guild_gift_inbox() order by id desc limit 1 \gset
+select t_eq('nhận một quà trả 50', guild_gift_claim(:gid), 50);
+select t_eq('còn 3 quà chưa nhận', (select count(*) from guild_gift_inbox()), 3::bigint);
+select t_err(format($$select guild_gift_claim(%s)$$, :gid), 'already claimed');   -- nhận lại
+select t_as(u(31));
+select t_err(format($$select guild_gift_claim(%s)$$, :eid), 'already claimed');   -- quà của người khác
+-- Hết hạn sau 7 ngày: không còn trong hộp thư và không nhận được.
+reset role;
+update guild_gifts set created_at = now() - interval '8 days' where to_user = u(32) and claimed_at is null;
+select t_as(u(32));
+select t_eq('quà quá hạn biến mất', (select count(*) from guild_gift_inbox()), 0::bigint);
+select t_err(format($$select guild_gift_claim(%s)$$, :eid), 'already claimed');
+-- Bảo mật: không đọc thẳng bảng, khách chưa đăng nhập không gọi được.
+select t_eq('không đọc thẳng bảng quà', (select count(*) from guild_gifts), 0::bigint);
+select t_as(null);
+select t_err(format($$select guild_gift_send(%L::uuid, 10)$$, u(32)), 'permission denied');
+select t_err($$select count(*) from guild_gift_inbox()$$, 'permission denied');
+reset role;
+
 select 'ALL GUILD SQL SCENARIOS PASSED' as result;

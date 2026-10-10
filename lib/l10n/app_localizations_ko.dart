@@ -793,6 +793,52 @@ class AppLocalizationsKo extends AppLocalizations {
   String get emailGateLink => '이메일 연결';
 
   @override
+  String iapGemsFirstSnack(Object amount) {
+    return '+$amount 💎 받았어요 — 첫 구매 2배 보너스!';
+  }
+
+  @override
+  String get iapFirstBuyNote => '🎉 첫 구매: 💎 2배!';
+
+  @override
+  String get guildGiftTooltip => '💎 선물하기';
+
+  @override
+  String guildGiftTitle(Object nickname) {
+    return '$nickname님에게 💎 선물';
+  }
+
+  @override
+  String guildGiftHint(Object cap, Object days) {
+    return '하루 최대 $cap 💎. 받는 사람은 $days일 안에 받아야 해요.';
+  }
+
+  @override
+  String guildGiftSent(Object amount, Object nickname) {
+    return '$nickname님에게 $amount 💎 선물했어요';
+  }
+
+  @override
+  String guildGiftInboxTitle(Object count) {
+    return '🎁 길드원이 보낸 선물 ($count)';
+  }
+
+  @override
+  String guildGiftFrom(Object amount, Object nickname) {
+    return '$nickname · +$amount 💎';
+  }
+
+  @override
+  String guildGiftClaimed(Object amount) {
+    return '+$amount 💎 받았어요';
+  }
+
+  @override
+  String guildErrGiftLimit(Object receive, Object send) {
+    return '오늘 선물 한도에 도달했어요(하루 최대 $send 💎 전송, 한 사람당 하루 최대 $receive 💎 수령).';
+  }
+
+  @override
   String get vipLbOpen => 'VIP 리더보드';
 
   @override

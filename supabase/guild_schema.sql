@@ -1178,6 +1178,99 @@ begin
 end;
 $$;
 
+-- Tặng 💎 giữa thành viên CÙNG hội. Hằng số khớp lib/guild/guild_repository.dart
+-- (guildGiftAmounts, guildGiftSendDailyCap, guildGiftReceiveDailyCap, guildGiftExpireDays;
+-- test/guild/guild_sql_test.dart so khớp). Người gửi bị trừ 💎 ở client SAU khi server OK;
+-- người nhận cộng 💎 ở client SAU khi nhận thành công — client tự khai 💎 nên mức trần
+-- ngày chặn thiệt hại nếu có người sửa save.
+create or replace function guild_gift_amount_ok(p_amount integer) returns boolean
+language sql immutable as $$ select p_amount in (10, 20, 50) $$;
+create or replace function guild_gift_send_daily_cap() returns integer
+language sql immutable as $$ select 100 $$;
+create or replace function guild_gift_receive_daily_cap() returns integer
+language sql immutable as $$ select 200 $$;
+create or replace function guild_gift_expire_days() returns integer
+language sql immutable as $$ select 7 $$;
+
+create table if not exists guild_gifts (
+  id          bigint generated always as identity primary key,
+  guild_id    uuid not null references guilds(id) on delete cascade,
+  from_user   uuid not null references auth.users(id) on delete cascade,
+  to_user     uuid not null references auth.users(id) on delete cascade,
+  amount      integer not null check (amount in (10, 20, 50)),
+  created_at  timestamptz not null default now(),
+  claimed_at  timestamptz
+);
+create index if not exists guild_gifts_to_idx on guild_gifts (to_user, claimed_at);
+create index if not exists guild_gifts_from_day_idx on guild_gifts (from_user, created_at);
+alter table guild_gifts enable row level security;
+-- Không policy nào: mọi truy cập qua RPC security definer.
+
+create or replace function guild_gift_send(p_to uuid, p_amount integer) returns bigint
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_gid uuid;
+  v_day timestamptz := date_trunc('day', now() at time zone 'utc') at time zone 'utc';
+  v_sent integer;
+  v_recv integer;
+  v_id bigint;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  if p_to is null or p_to = v_uid or not guild_gift_amount_ok(p_amount) then
+    raise exception 'invalid amount';
+  end if;
+  select guild_id into v_gid from guild_members where user_id = v_uid;
+  if v_gid is null then raise exception 'not in guild'; end if;
+  if not exists (select 1 from guild_members where user_id = p_to and guild_id = v_gid) then
+    raise exception 'not found';
+  end if;
+  select coalesce(sum(amount), 0) into v_sent from guild_gifts
+    where from_user = v_uid and created_at >= v_day;
+  if v_sent + p_amount > guild_gift_send_daily_cap() then
+    raise exception 'daily limit';
+  end if;
+  select coalesce(sum(amount), 0) into v_recv from guild_gifts
+    where to_user = p_to and created_at >= v_day;
+  if v_recv + p_amount > guild_gift_receive_daily_cap() then
+    raise exception 'daily limit';
+  end if;
+  insert into guild_gifts (guild_id, from_user, to_user, amount)
+  values (v_gid, v_uid, p_to, p_amount) returning id into v_id;
+  return v_id;
+end;
+$$;
+
+-- Quà chưa nhận, chưa hết hạn, mới nhất trước.
+create or replace function guild_gift_inbox()
+returns table (id bigint, from_nickname text, amount integer, created_at timestamptz)
+language sql stable security definer set search_path = public as $$
+  select g.id,
+         coalesce((select m.nickname from guild_members m where m.user_id = g.from_user), '?'),
+         g.amount, g.created_at
+  from guild_gifts g
+  where g.to_user = auth.uid()
+    and g.claimed_at is null
+    and g.created_at > now() - make_interval(days => guild_gift_expire_days())
+  order by g.created_at desc
+  limit 50
+$$;
+
+-- Nhận một món quà; trả số 💎. Mỗi quà nhận đúng một lần (update có điều kiện).
+create or replace function guild_gift_claim(p_id bigint) returns integer
+language plpgsql security definer set search_path = public as $$
+declare v_amount integer;
+begin
+  if auth.uid() is null then raise exception 'not authenticated'; end if;
+  update guild_gifts set claimed_at = now()
+    where id = p_id and to_user = auth.uid() and claimed_at is null
+      and created_at > now() - make_interval(days => guild_gift_expire_days())
+    returning amount into v_amount;
+  if v_amount is null then raise exception 'already claimed'; end if;
+  return v_amount;
+end;
+$$;
+
 -- Quyền: chỉ người đã đăng nhập (kể cả ẩn danh) gọi được RPC.
 do $$
 declare f text;
@@ -1197,7 +1290,8 @@ begin
     'guild_chat_delete(bigint)', 'guild_chat_pin(bigint)',
     'guild_chat_report(bigint)', 'guild_set_officer(uuid,boolean)',
     'guild_transfer_owner(uuid)', 'guild_activity(integer)',
-    'guild_claim_fund()'
+    'guild_claim_fund()', 'guild_gift_send(uuid,integer)',
+    'guild_gift_inbox()', 'guild_gift_claim(bigint)'
   ] loop
     execute format('revoke all on function %s from public', f);
     execute format('grant execute on function %s to authenticated', f);

@@ -119,6 +119,28 @@ class GuildEvent {
   final DateTime? createdAt;
 }
 
+/// Một món quà 💎 do hội viên khác tặng, chưa nhận.
+class GuildGift {
+  const GuildGift({
+    required this.id,
+    required this.fromNickname,
+    required this.amount,
+    this.createdAt,
+  });
+
+  factory GuildGift.fromJson(Map<String, dynamic> j) => GuildGift(
+        id: (j['id'] as num).toInt(),
+        fromNickname: j['from_nickname'] as String? ?? '?',
+        amount: (j['amount'] as num).toInt(),
+        createdAt: DateTime.tryParse('${j['created_at']}'),
+      );
+
+  final int id;
+  final String fromNickname;
+  final int amount;
+  final DateTime? createdAt;
+}
+
 /// Yêu cầu vào hội đang chờ chủ hội duyệt.
 class GuildJoinRequest {
   const GuildJoinRequest({required this.userId, required this.nickname});
@@ -298,6 +320,9 @@ enum GuildFailure {
 
   alreadyClaimed,
   dailyLimit,
+
+  /// Vượt trần tặng 💎 trong ngày (của bạn hoặc của người nhận).
+  giftLimit,
   notEnoughCoins,
   alreadyOwned,
   buffMaxed,
@@ -417,6 +442,15 @@ abstract class GuildRepository {
 
   /// Giây buff thu nhập cả hội còn lại (nhẹ — gọi khi mở app).
   Future<int> buffSeconds();
+
+  /// Tặng [amount] 💎 cho hội viên [toUserId] (server kiểm cùng hội + trần ngày).
+  Future<void> giftSend(String toUserId, int amount);
+
+  /// Quà chưa nhận, chưa hết hạn, mới nhất trước.
+  Future<List<GuildGift>> giftInbox();
+
+  /// Nhận quà [id]; trả số 💎 (server đánh dấu đã nhận — mỗi quà một lần).
+  Future<int> giftClaim(int id);
 
   /// Chủ hội bổ nhiệm ([on] true) / bãi nhiệm phó hội.
   Future<void> setOfficer(String userId, {required bool on});
@@ -591,6 +625,20 @@ class SupabaseGuildRepository implements GuildRepository {
   @override
   Future<int> buffSeconds() async =>
       ((await _rpc('guild_buff_seconds')) as num).toInt();
+
+  @override
+  Future<void> giftSend(String toUserId, int amount) =>
+      _rpc('guild_gift_send', {'p_to': toUserId, 'p_amount': amount});
+
+  @override
+  Future<List<GuildGift>> giftInbox() async => [
+        for (final g in (await _rpc('guild_gift_inbox')) as List)
+          GuildGift.fromJson(g as Map<String, dynamic>),
+      ];
+
+  @override
+  Future<int> giftClaim(int id) async =>
+      ((await _rpc('guild_gift_claim', {'p_id': id})) as num).toInt();
 
   @override
   Future<void> setOfficer(String userId, {required bool on}) =>

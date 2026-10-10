@@ -94,8 +94,9 @@ class _TopupDialogState extends ConsumerState<_TopupDialog> {
                 ),
               ],
               const SizedBox(height: 4),
+            // gen-l10n sắp tham số theo THỨ TỰ CHỮ CÁI: topupBuff(now, percent).
               Text(
-                l10n.topupBuff(bonus, level * bonus),
+                l10n.topupBuff(level * bonus, bonus),
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               Text(

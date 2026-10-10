@@ -96,6 +96,7 @@ class GameSnapshot {
     required this.vipClaimWeek,
     required this.vipClaimMonth,
     required this.topupClaimed,
+    required this.firstBuyClaimed,
     required this.x2IncomeRemainingSeconds,
     required this.piggyGems,
     required this.adFree,
@@ -275,6 +276,7 @@ class GameSnapshot {
   final int vipClaimWeek;
   final int vipClaimMonth;
   final List<int> topupClaimed;
+  final List<String> firstBuyClaimed;
   final double x2IncomeRemainingSeconds;
 
   /// Kim Cương đang tích trong heo đất (chờ "đập" bằng IAP).

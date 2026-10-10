@@ -1,4 +1,6 @@
+import 'package:boba_empire/core/format.dart';
 import 'package:boba_empire/core/topup.dart';
+import 'package:boba_empire/l10n/l10n_ext.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/ui/topup_dialog.dart';
@@ -10,6 +12,63 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   _overflowTests();
+
+  testWidgets('câu chữ ráp đúng tham số (gen-l10n sắp tham số theo chữ cái)', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final container = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(() => 100 * 24 * 60 * 60 * 1000),
+    ]);
+    container.read(gameControllerProvider.notifier).addVipExp(topupTiers[2].exp); // VIP 3
+    await tester.pumpWidget(UncontrolledProviderScope(
+      container: container,
+      child: MaterialApp(
+        locale: const Locale('en'),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: Builder(
+            builder: (c) => TextButton(
+              onPressed: () => showTopupDialog(c),
+              child: const Text('open'),
+            ),
+          ),
+        ),
+      ),
+    ));
+    await tester.tap(find.text('open'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    // VIP 3: mỗi cấp +2%, hiện +6% (không bị đảo chỗ hai con số).
+    expect(find.text('Each VIP level: +2% income (now +6%)'), findsOneWidget);
+
+    // Hộp Hướng dẫn VIP: 1.00K 💎 đổi 100 EXP, tối đa 20.0K EXP (không đảo cap/gems).
+    await tester.tap(find.byKey(const Key('vip-how-to-button')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    expect(
+      find.textContaining('(${formatNumber(1000)} 💎 → 100 EXP, up to ${formatNumber(20000)} EXP'),
+      findsOneWidget,
+    );
+    await tester.pumpWidget(const SizedBox());
+    container.dispose();
+  });
+
+  test('banner VIP online: tên người chơi và danh hiệu đúng chỗ', () {
+    final l10n = lookupAppLocalizations(const Locale('en'));
+    expect(vipOnlineText(l10n, nickname: 'Alice', level: 5),
+        '👑 Shop Owner Alice just came online!');
+    expect(vipOnlineText(lookupAppLocalizations(const Locale('vi')), nickname: 'An', level: 10),
+        '👑 Đế vương An vừa online!');
+  });
 
   testWidgets('Mốc nạp: nút Nhận chỉ bật khi đủ điểm, nhận xong hiện Đã nhận',
       (tester) async {

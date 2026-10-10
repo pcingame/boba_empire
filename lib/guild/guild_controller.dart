@@ -225,6 +225,41 @@ class GuildController extends Notifier<GuildViewState> {
     return out;
   }
 
+  /// Tặng [amount] 💎 cho hội viên: kiểm đủ 💎 TRƯỚC, trừ SAU khi server ghi nhận.
+  Future<GuildOutcome> sendGift(String toUserId, int amount) async {
+    if (!guildGiftAmounts.contains(amount)) {
+      return const GuildOutcome(failure: GuildFailure.invalidInput);
+    }
+    if (ref.read(gameControllerProvider).gems < amount) {
+      return const GuildOutcome(failure: GuildFailure.notEnoughGems);
+    }
+    var out = await _act(() => _repo.giftSend(toUserId, amount));
+    if (out.failure == GuildFailure.dailyLimit) {
+      out = const GuildOutcome(failure: GuildFailure.giftLimit);
+    }
+    if (out.ok) {
+      ref.read(gameControllerProvider.notifier).chargeGuildGift(amount);
+    }
+    return out;
+  }
+
+  /// Quà chưa nhận; lỗi mạng → rỗng (thẻ quà tự ẩn).
+  Future<List<GuildGift>> giftInbox() async {
+    try {
+      return await _repo.giftInbox();
+    } catch (_) {
+      return const [];
+    }
+  }
+
+  /// Nhận quà [id]: server đánh dấu đã nhận TRƯỚC, rồi mới cộng 💎 cục bộ. Trả số 💎.
+  Future<({GuildOutcome outcome, int gems})> claimGift(int id) async {
+    var gems = 0;
+    final out = await _act(() async => gems = await _repo.giftClaim(id));
+    if (out.ok) ref.read(gameControllerProvider.notifier).grantGuildGift(gems);
+    return (outcome: out, gems: out.ok ? gems : 0);
+  }
+
   /// Nhận thưởng nhiệm vụ hội tuần [index] (0-based) → Xu Hội cộng ở server.
   Future<GuildOutcome> claimFund() => _act(_repo.claimFund);
 

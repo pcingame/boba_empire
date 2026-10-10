@@ -63,6 +63,11 @@ class _GemShopState extends ConsumerState<_GemShop> {
     }
   }
 
+  /// Gói 💎 mà người chơi chưa mua lần nào → còn thưởng "mua lần đầu gấp đôi".
+  bool _firstBonus(IapProduct p) =>
+      p.isGems &&
+      !ref.read(gameControllerProvider).firstBuyClaimed.contains(p.id);
+
   /// Nạp tiền thật cần đã liên kết email (xem email_gate.dart).
   Future<void> _onBuyTap(IapProduct p) async {
     if (!await ensureEmailLinked(context, ref)) return;
@@ -241,9 +246,11 @@ class _GemShopState extends ConsumerState<_GemShop> {
         for (final p in products)
           ListTile(
             contentPadding: EdgeInsets.zero,
-            leading: IapIcon(product: p),
+            leading: IapIcon(product: p, firstBonus: _firstBonus(p)),
             title: Text(iapTitle(l10n, p)),
-            subtitle: Text(iapDescription(l10n, p)),
+            subtitle: Text(_firstBonus(p)
+                ? '${iapDescription(l10n, p)}\n${l10n.iapFirstBuyNote}'
+                : iapDescription(l10n, p)),
             trailing: FilledButton.tonal(
               key: Key('iap-buy-${p.id}'),
               // Chặn bấm tiếp trong lúc CÓ BẤT KỲ lượt mua nào đang xử lý

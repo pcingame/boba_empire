@@ -310,17 +310,44 @@ class VipTitleLine extends ConsumerWidget {
   }
 }
 
+/// Khung quanh khối tên theo cấp VIP: cấp 1–2 không khung; 3–7 viền mảnh màu của cấp
+/// ([vipTagColors]); 8–10 viền dày hơn và quầng sáng nhẹ cùng màu. Tĩnh (không animation)
+/// nên không tốn khung hình trong danh sách dài. Null nếu không có khung.
+BoxDecoration? vipFrameDecoration(int level) {
+  if (level < 3) return null;
+  final colors = vipTagColors[(level - 1).clamp(0, vipTagColors.length - 1)];
+  final strong = level >= 8;
+  return BoxDecoration(
+    borderRadius: BorderRadius.circular(10),
+    border: Border.all(color: colors.last, width: strong ? 2 : 1),
+    boxShadow: strong
+        ? [BoxShadow(color: colors.first.withValues(alpha: 0.45), blurRadius: 8)]
+        : null,
+  );
+}
+
 /// Khối tên của một hàng bảng xếp hạng: [child] (hàng huy hiệu + tên) và dưới nó là
 /// dòng danh hiệu VIP nếu có.
-class VipNameBlock extends StatelessWidget {
+class VipNameBlock extends ConsumerWidget {
   const VipNameBlock({super.key, required this.userId, required this.child});
   final String userId;
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [child, VipTitleLine(userId: userId)],
-      );
+  Widget build(BuildContext context, WidgetRef ref) {
+    final level = ref.watch(vipLevelProvider.select((m) => m[userId])) ?? 0;
+    final frame = vipFrameDecoration(level);
+    final block = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [child, VipTitleLine(userId: userId)],
+    );
+    if (frame == null) return block;
+    return Container(
+      key: const Key('vip-frame'),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+      decoration: frame,
+      child: block,
+    );
+  }
 }

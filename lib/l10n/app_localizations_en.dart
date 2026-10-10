@@ -803,6 +803,52 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emailGateLink => 'Link email';
 
   @override
+  String iapGemsFirstSnack(Object amount) {
+    return 'Received +$amount 💎 — first-purchase double bonus!';
+  }
+
+  @override
+  String get iapFirstBuyNote => '🎉 First purchase: get double 💎!';
+
+  @override
+  String get guildGiftTooltip => 'Gift 💎';
+
+  @override
+  String guildGiftTitle(Object nickname) {
+    return 'Gift 💎 to $nickname';
+  }
+
+  @override
+  String guildGiftHint(Object cap, Object days) {
+    return 'Up to $cap 💎 a day. The receiver has $days days to claim it.';
+  }
+
+  @override
+  String guildGiftSent(Object amount, Object nickname) {
+    return 'Sent $amount 💎 to $nickname';
+  }
+
+  @override
+  String guildGiftInboxTitle(Object count) {
+    return '🎁 Gifts from guildmates ($count)';
+  }
+
+  @override
+  String guildGiftFrom(Object amount, Object nickname) {
+    return '$nickname · +$amount 💎';
+  }
+
+  @override
+  String guildGiftClaimed(Object amount) {
+    return 'Claimed +$amount 💎';
+  }
+
+  @override
+  String guildErrGiftLimit(Object receive, Object send) {
+    return 'Gift limit reached today (you can send up to $send 💎/day; one person can receive up to $receive 💎/day).';
+  }
+
+  @override
   String get vipLbOpen => 'VIP leaderboard';
 
   @override

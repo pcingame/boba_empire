@@ -74,6 +74,11 @@ String stageName(AppLocalizations l10n, int stage) => switch (stage) {
       _ => '',
     };
 
+/// Dòng banner "VIP vừa online". gen-l10n sắp tham số theo THỨ TỰ CHỮ CÁI nên gói lại một
+/// chỗ + có test, khỏi gọi sai thứ tự (nickname, title).
+String vipOnlineText(AppLocalizations l10n, {required String nickname, required int level}) =>
+    l10n.vipOnlineBanner(nickname, vipName(l10n, level));
+
 /// Biệt danh của cấp VIP theo tổng nạp (1..10); rỗng nếu ngoài khoảng.
 String vipName(AppLocalizations l10n, int level) => switch (level) {
       1 => l10n.vipName1,

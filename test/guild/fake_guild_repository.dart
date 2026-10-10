@@ -76,6 +76,30 @@ class FakeGuildRepository implements GuildRepository {
         donatedToday: g.donatedToday + gems);
   }
 
+  /// Hộp thư giả: test nạp [gifts]; giftSend ghi lại để kiểm.
+  List<GuildGift> gifts = [];
+  final sentGifts = <(String, int)>[];
+
+  @override
+  Future<void> giftSend(String toUserId, int amount) async {
+    _hit('giftSend');
+    sentGifts.add((toUserId, amount));
+  }
+
+  @override
+  Future<List<GuildGift>> giftInbox() async {
+    _hit('giftInbox');
+    return List.of(gifts);
+  }
+
+  @override
+  Future<int> giftClaim(int id) async {
+    _hit('giftClaim');
+    final g = gifts.firstWhere((g) => g.id == id);
+    gifts.remove(g);
+    return g.amount;
+  }
+
   @override
   Future<void> claimFund() async {
     _hit('claimFund');

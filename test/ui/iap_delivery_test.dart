@@ -48,7 +48,7 @@ Future<ProviderContainer> _pump(WidgetTester tester, _FakeIap iap) async {
 }
 
 void main() {
-  testWidgets('mua gói gems nhỏ → +100 Kim Cương', (tester) async {
+  testWidgets('mua gói gems nhỏ lần đầu → +100 và thưởng gấp đôi +100', (tester) async {
     final iap = _FakeIap();
     final container = await _pump(tester, iap);
     expect(container.read(gameControllerProvider).gems, 0);
@@ -56,7 +56,27 @@ void main() {
     iap.emit(IapProduct.gemsSmall);
     await tester.pump();
 
-    expect(container.read(gameControllerProvider).gems, 100);
+    expect(container.read(gameControllerProvider).gems, 200);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('thưởng mua lần đầu: mỗi gói MỘT lần; gói khác vẫn có thưởng riêng',
+      (tester) async {
+    final iap = _FakeIap();
+    final container = await _pump(tester, iap);
+    int gems() => container.read(gameControllerProvider).gems.toInt();
+
+    iap.emit(IapProduct.gemsSmall);
+    await tester.pump();
+    expect(gems(), 200); // 100 + thưởng 100
+    iap.emit(IapProduct.gemsSmall);
+    await tester.pump();
+    expect(gems(), 300); // lần 2: chỉ 100
+    iap.emit(IapProduct.gemsMedium);
+    await tester.pump();
+    expect(gems(), 300 + 1200); // gói khác: lần đầu của nó cũng gấp đôi
+    expect(container.read(gameControllerProvider).firstBuyClaimed,
+        [IapProduct.gemsSmall.id, IapProduct.gemsMedium.id]);
     await tester.pumpWidget(const SizedBox());
   });
 
@@ -67,7 +87,8 @@ void main() {
     iap.emit(IapProduct.gemsLarge);
     await tester.pump();
 
-    expect(container.read(gameControllerProvider).gems, IapProduct.gemsLarge.gems);
+    // Lần mua đầu của gói: gấp đôi.
+    expect(container.read(gameControllerProvider).gems, IapProduct.gemsLarge.gems * 2);
     await tester.pumpWidget(const SizedBox());
   });
 
@@ -92,7 +113,7 @@ void main() {
     await tester.pump();
 
     expect(container.read(gameControllerProvider).gems,
-        IapProduct.gemsHuge.gems + IapProduct.gemsMega.gems);
+        (IapProduct.gemsHuge.gems + IapProduct.gemsMega.gems) * 2);
     await tester.pumpWidget(const SizedBox());
   });
 

@@ -1410,6 +1410,66 @@ abstract class AppLocalizations {
   /// **'Liên kết email'**
   String get emailGateLink;
 
+  /// No description provided for @iapGemsFirstSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận +{amount} 💎 — thưởng mua lần đầu gấp đôi!'**
+  String iapGemsFirstSnack(Object amount);
+
+  /// No description provided for @iapFirstBuyNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'🎉 Mua lần đầu: nhận gấp đôi 💎!'**
+  String get iapFirstBuyNote;
+
+  /// No description provided for @guildGiftTooltip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tặng 💎'**
+  String get guildGiftTooltip;
+
+  /// No description provided for @guildGiftTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tặng 💎 cho {nickname}'**
+  String guildGiftTitle(Object nickname);
+
+  /// No description provided for @guildGiftHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối đa {cap} 💎 mỗi ngày. Người nhận có {days} ngày để nhận quà.'**
+  String guildGiftHint(Object cap, Object days);
+
+  /// No description provided for @guildGiftSent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã tặng {amount} 💎 cho {nickname}'**
+  String guildGiftSent(Object amount, Object nickname);
+
+  /// No description provided for @guildGiftInboxTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'🎁 Quà từ hội viên ({count})'**
+  String guildGiftInboxTitle(Object count);
+
+  /// No description provided for @guildGiftFrom.
+  ///
+  /// In vi, this message translates to:
+  /// **'{nickname} · +{amount} 💎'**
+  String guildGiftFrom(Object amount, Object nickname);
+
+  /// No description provided for @guildGiftClaimed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận +{amount} 💎'**
+  String guildGiftClaimed(Object amount);
+
+  /// No description provided for @guildErrGiftLimit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay đã hết lượt tặng 💎 (bạn tặng tối đa {send} 💎/ngày, một người nhận tối đa {receive} 💎/ngày).'**
+  String guildErrGiftLimit(Object receive, Object send);
+
   /// No description provided for @vipLbOpen.
   ///
   /// In vi, this message translates to:

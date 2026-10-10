@@ -218,7 +218,7 @@ class _HomePageState extends ConsumerState<HomePage>
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         key: const Key('vip-online-banner'),
-        content: Text(l10n.vipOnlineBanner(vipName(l10n, a.level), a.nickname)),
+        content: Text(vipOnlineText(l10n, nickname: a.nickname, level: a.level)),
         duration: const Duration(seconds: 4),
       ),
     );
@@ -236,8 +236,11 @@ class _HomePageState extends ConsumerState<HomePage>
             IapProduct.gemsLarge ||
             IapProduct.gemsHuge ||
             IapProduct.gemsMega:
-        controller.grantGemsPurchase(product.gems);
-        message = l10n.iapGemsSnack(formatNumber(product.gems));
+        final bonus =
+            controller.grantGemsPurchase(product.gems, packId: product.id);
+        message = bonus > 0
+            ? l10n.iapGemsFirstSnack(formatNumber(product.gems + bonus))
+            : l10n.iapGemsSnack(formatNumber(product.gems));
       case IapProduct.removeAds:
         final already = ref.read(gameControllerProvider).adsRemoved;
         controller.applyRemoveAds();

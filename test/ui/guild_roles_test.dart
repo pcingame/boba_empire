@@ -115,6 +115,9 @@ void main() {
       await _open(tester,
           myRole: GuildRole.officer,
           requests: const [GuildJoinRequest(userId: 'r1', nickname: 'Người Xin')]);
+      // ListView dựng lười; thêm cột Tặng 💎 làm hàng thành viên cuối nằm ngoài vùng dựng sẵn.
+      await tester.dragUntilVisible(
+          _k('guild-kick-mem'), find.byType(ListView), const Offset(0, -150));
       expect(_k('guild-kick-mem'), findsOneWidget);
       expect(_k('guild-kick-off'), findsNothing, reason: 'không kick phó khác');
       expect(_k('guild-kick-boss'), findsNothing, reason: 'không kick chủ');

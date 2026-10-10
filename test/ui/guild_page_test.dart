@@ -498,6 +498,76 @@ void main() {
     expect(find.textContaining('Public Club'), findsOneWidget);
   });
 
+  group('tặng 💎 giữa hội viên', () {
+    gTest('mọi hội viên khác có nút tặng; chính mình thì không', (tester) async {
+      await _pump(tester, FakeGuildRepository(mine: fakeGuild()), locale: 'en');
+      await _scrollTo(tester, const Key('guild-gift-u3'));
+      expect(find.byKey(const Key('guild-gift-u2')), findsOneWidget);
+      expect(find.byKey(const Key('guild-gift-u3')), findsOneWidget);
+      expect(find.byKey(const Key('guild-gift-me')), findsNothing);
+    });
+
+    gTest('chọn mức tặng → gửi lên server, trừ 💎, báo đã tặng', (tester) async {
+      final repo = FakeGuildRepository(mine: fakeGuild());
+      final c = await _pump(tester, repo, locale: 'en', gems: 100);
+      await _scrollTo(tester, const Key('guild-gift-u2'));
+      await tester.tap(find.byKey(const Key('guild-gift-u2')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('guild-gift-dialog')), findsOneWidget);
+      for (final a in guildGiftAmounts) {
+        expect(find.byKey(Key('guild-gift-amount-$a')), findsOneWidget);
+      }
+      await tester.tap(find.byKey(const Key('guild-gift-amount-20')));
+      await tester.pumpAndSettle();
+      expect(repo.sentGifts, [('u2', 20)]);
+      expect(c.read(gameControllerProvider).gems, 80);
+      expect(find.text('Sent 20 💎 to Bob'), findsOneWidget);
+    });
+
+    gTest('thiếu 💎 → báo lỗi, không gửi', (tester) async {
+      final repo = FakeGuildRepository(mine: fakeGuild());
+      final c = await _pump(tester, repo, locale: 'en', gems: 5);
+      await _scrollTo(tester, const Key('guild-gift-u2'));
+      await tester.tap(find.byKey(const Key('guild-gift-u2')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('guild-gift-amount-10')));
+      await tester.pumpAndSettle();
+      expect(repo.sentGifts, isEmpty);
+      expect(c.read(gameControllerProvider).gems, 5);
+    });
+
+    gTest('hộp thư: thẻ quà hiện khi có quà, nhận → cộng 💎 và thẻ biến mất',
+        (tester) async {
+      final repo = FakeGuildRepository(mine: fakeGuild())
+        ..gifts = [const GuildGift(id: 7, fromNickname: 'Bob', amount: 20)];
+      final c = await _pump(tester, repo, locale: 'en', gems: 0);
+      expect(find.byKey(const Key('guild-gift-inbox')), findsOneWidget);
+      expect(find.text('Bob · +20 💎'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('guild-gift-claim-7')));
+      await tester.pumpAndSettle();
+      expect(c.read(gameControllerProvider).gems, 20);
+      expect(find.byKey(const Key('guild-gift-inbox')), findsNothing);
+    });
+
+    gTest('không có quà → không có thẻ quà', (tester) async {
+      await _pump(tester, FakeGuildRepository(mine: fakeGuild()), locale: 'en');
+      expect(find.byKey(const Key('guild-gift-inbox')), findsNothing);
+    });
+
+    for (final lang in ['vi', 'es', 'th', 'ko']) {
+      gTest('không tràn ở 320px khi có quà và nút tặng ($lang)', (tester) async {
+        final repo = FakeGuildRepository(mine: fakeGuild())
+          ..gifts = [
+            const GuildGift(id: 1, fromNickname: 'MộtBiệtDanhRấtDàiNhưThế', amount: 50),
+          ];
+        await _pump(tester, repo, locale: lang);
+        expect(tester.takeException(), isNull);
+        await _scrollTo(tester, const Key('guild-gift-u2'));
+        expect(tester.takeException(), isNull);
+      });
+    }
+  });
+
   group('BXH hội', () {
     gTest('hiện hạng, tên, điểm; tên rất dài không tràn', (tester) async {
       final repo = FakeGuildRepository()

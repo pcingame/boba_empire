@@ -19,6 +19,13 @@ const int guildAvgMinMembers = 5;
 /// Số phó hội tối đa mỗi hội (chủ hội không tính). Khớp `guild_max_officers` ở server.
 const int guildMaxOfficers = 3;
 
+/// Tặng 💎 giữa thành viên cùng hội — KHỚP supabase/guild_schema.sql (guild_gift_*; test
+/// so khớp). Mức tặng cố định, trần gửi/nhận theo ngày UTC, quà hết hạn sau [guildGiftExpireDays].
+const List<int> guildGiftAmounts = [10, 20, 50];
+const int guildGiftSendDailyCap = 100;
+const int guildGiftReceiveDailyCap = 200;
+const int guildGiftExpireDays = 7;
+
 /// Điểm cá nhân tối thiểu trong tuần để được nhận thưởng mốc (chống ăn theo).
 const int guildMinPointsToClaim = 300;
 

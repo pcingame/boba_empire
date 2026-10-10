@@ -803,6 +803,52 @@ class AppLocalizationsVi extends AppLocalizations {
   String get emailGateLink => 'Liên kết email';
 
   @override
+  String iapGemsFirstSnack(Object amount) {
+    return 'Nhận +$amount 💎 — thưởng mua lần đầu gấp đôi!';
+  }
+
+  @override
+  String get iapFirstBuyNote => '🎉 Mua lần đầu: nhận gấp đôi 💎!';
+
+  @override
+  String get guildGiftTooltip => 'Tặng 💎';
+
+  @override
+  String guildGiftTitle(Object nickname) {
+    return 'Tặng 💎 cho $nickname';
+  }
+
+  @override
+  String guildGiftHint(Object cap, Object days) {
+    return 'Tối đa $cap 💎 mỗi ngày. Người nhận có $days ngày để nhận quà.';
+  }
+
+  @override
+  String guildGiftSent(Object amount, Object nickname) {
+    return 'Đã tặng $amount 💎 cho $nickname';
+  }
+
+  @override
+  String guildGiftInboxTitle(Object count) {
+    return '🎁 Quà từ hội viên ($count)';
+  }
+
+  @override
+  String guildGiftFrom(Object amount, Object nickname) {
+    return '$nickname · +$amount 💎';
+  }
+
+  @override
+  String guildGiftClaimed(Object amount) {
+    return 'Đã nhận +$amount 💎';
+  }
+
+  @override
+  String guildErrGiftLimit(Object receive, Object send) {
+    return 'Hôm nay đã hết lượt tặng 💎 (bạn tặng tối đa $send 💎/ngày, một người nhận tối đa $receive 💎/ngày).';
+  }
+
+  @override
   String get vipLbOpen => 'Bảng xếp hạng VIP';
 
   @override

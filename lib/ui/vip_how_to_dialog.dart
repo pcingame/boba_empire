@@ -22,10 +22,11 @@ class _VipHowToDialog extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final lines = [
       l10n.vipHtp1,
+      // gen-l10n sắp tham số theo THỨ TỰ CHỮ CÁI (cap, exp, gems), không theo thứ tự trong câu.
       l10n.vipHtp2(
-        formatNumber(vipExpBlockGems.toDouble()),
-        vipExpBlock,
         formatNumber(vipExpGemCap.toDouble()),
+        vipExpBlock,
+        formatNumber(vipExpBlockGems.toDouble()),
       ),
       l10n.vipHtp3((vipIncomeBonusPerLevel * 100).round()),
       l10n.vipHtp4,

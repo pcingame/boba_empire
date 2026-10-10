@@ -5,9 +5,17 @@ import '../../iap/iap_products.dart';
 /// Biểu tượng của một gói IAP ở cửa hàng 💎: ô bo tròn nền dải màu + emoji lớn. Vẽ bằng
 /// code (không file ảnh) nên nhẹ và đổi màu/emoji ở một chỗ.
 class IapIcon extends StatelessWidget {
-  const IapIcon({super.key, required this.product, this.size = 46});
+  const IapIcon({
+    super.key,
+    required this.product,
+    this.size = 46,
+    this.firstBonus = false,
+  });
 
   final IapProduct product;
+
+  /// Gói 💎 chưa mua lần nào: hiện nhãn đỏ "x2" (thưởng mua lần đầu).
+  final bool firstBonus;
   final double size;
 
   @override
@@ -31,6 +39,27 @@ class IapIcon extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           Text(art.emoji, style: TextStyle(fontSize: size * 0.55)),
+          if (firstBonus)
+            Positioned(
+              right: -size * 0.1,
+              top: -size * 0.1,
+              child: Container(
+                key: const Key('iap-first-bonus'),
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE53935),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  'x2',
+                  style: TextStyle(
+                    fontSize: size * 0.24,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
           if (art.badge != null)
             Positioned(
               right: -size * 0.04,

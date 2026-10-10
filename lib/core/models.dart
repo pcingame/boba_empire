@@ -118,6 +118,7 @@ class GameState {
     this.doubleIncomeOwned = false,
     this.coldStorageOwned = false,
     this.vipExp = 0,
+    List<String>? firstBuyClaimed,
     this.vipExpFromGems = 0,
     this.vipClaimDay = 0,
     this.vipClaimWeek = 0,
@@ -159,6 +160,7 @@ class GameState {
         ownedAccessories = ownedAccessories ?? [],
         ownedLimited = ownedLimited ?? [],
         topupClaimed = topupClaimed ?? [],
+        firstBuyClaimed = firstBuyClaimed ?? [],
         eventProgress = eventProgress ?? {},
         eventClaimed = eventClaimed ?? [],
         accessorySpares = accessorySpares ?? {},
@@ -453,6 +455,9 @@ class GameState {
   int vipClaimMonth;
   final List<int> topupClaimed;
 
+  /// Id các gói 💎 đã nhận thưởng "mua lần đầu gấp đôi" (mỗi gói một lần).
+  final List<String> firstBuyClaimed;
+
   /// Mốc (epoch ms) hết hạn boost "x2 thu nhập 24h" từ xem QC; 0 = không có.
   int x2IncomeUntilMillis;
 
@@ -567,6 +572,7 @@ class GameState {
         'vipClaimWeek': vipClaimWeek,
         'vipClaimMonth': vipClaimMonth,
         'topupClaimed': topupClaimed,
+        'firstBuyClaimed': firstBuyClaimed,
         'x2IncomeUntilMillis': x2IncomeUntilMillis,
         'boostUntilMillis': boostUntilMillis,
         'piggyGems': piggyGems,
@@ -727,6 +733,7 @@ class GameState {
         vipClaimWeek: (json['vipClaimWeek'] as num?)?.toInt() ?? 0,
         vipClaimMonth: (json['vipClaimMonth'] as num?)?.toInt() ?? 0,
         topupClaimed: (json['topupClaimed'] as List?)?.map((e) => (e as num).toInt()).toList(),
+        firstBuyClaimed: (json['firstBuyClaimed'] as List?)?.cast<String>().toList(),
         x2IncomeUntilMillis:
             (json['x2IncomeUntilMillis'] as num?)?.toInt() ?? 0,
         boostUntilMillis: (json['boostUntilMillis'] as num?)?.toInt() ?? 0,

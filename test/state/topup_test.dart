@@ -193,6 +193,15 @@ void main() {
     expect(vipBenefit(VipPeriod.monthly, 1)!.accessory, isNotNull);
   });
 
+  test('thưởng mua lần đầu được lưu qua save/load (không nhận lại sau khi tải)', () {
+    final g = GameState.newGame(nowMillis: 0)..firstBuyClaimed.add('boba_gems_small');
+    final back = GameState.fromJson(g.toJson());
+    expect(back.firstBuyClaimed, ['boba_gems_small']);
+    final old = GameState.fromJson(GameState.newGame(nowMillis: 0).toJson()
+      ..remove('firstBuyClaimed'));
+    expect(old.firstBuyClaimed, isEmpty);
+  });
+
   test('EXP, EXP mua bằng 💎, bậc và kỳ đã nhận được lưu qua save/load', () {
     final g = GameState.newGame(nowMillis: 0)
       ..vipExp = 4200

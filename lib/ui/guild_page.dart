@@ -41,6 +41,8 @@ String guildFailureText(AppLocalizations l10n, GuildFailure f) => switch (f) {
       GuildFailure.approvalRequired => l10n.guildErrApproval,
       GuildFailure.alreadyClaimed => l10n.guildErrClaimed,
       GuildFailure.dailyLimit => l10n.guildErrDailyLimit(guildDonateDailyCap),
+      GuildFailure.giftLimit =>
+        l10n.guildErrGiftLimit(guildGiftReceiveDailyCap, guildGiftSendDailyCap),
       GuildFailure.notEnoughCoins => l10n.guildErrCoins,
       GuildFailure.alreadyOwned => l10n.guildErrOwned,
       GuildFailure.buffMaxed => l10n.guildErrBuffMaxed,
@@ -454,6 +456,7 @@ class _MyGuildView extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 8),
+          const _GiftInbox(),
           OutlinedButton.icon(
             key: const Key('guild-shop-button'),
             icon: const Icon(Icons.storefront),
@@ -551,6 +554,21 @@ class _MyGuildView extends ConsumerWidget {
                           style: const TextStyle(fontWeight: FontWeight.w600)),
                     ),
                   ),
+                  // Tặng 💎: mọi hội viên, trừ chính mình (ô trống giữ chỗ cho thẳng cột).
+                  SizedBox(
+                    width: 36,
+                    child: m.userId == view.myUserId
+                        ? null
+                        : IconButton(
+                            key: Key('guild-gift-${m.userId}'),
+                            tooltip: l10n.guildGiftTooltip,
+                            padding: EdgeInsets.zero,
+                            constraints:
+                                const BoxConstraints(minWidth: 36, minHeight: 36),
+                            icon: const Icon(Icons.card_giftcard, size: 20),
+                            onPressed: () => _gift(context, ref, m),
+                          ),
+                  ),
                   // Ô nút cũng cố định: chủ hội có 2 ô (menu + kick), phó hội 1 ô (kick);
                   // ô trống giữ chỗ để các cột không xô lệch.
                   if (view.isOwner)
@@ -644,6 +662,48 @@ class _MyGuildView extends ConsumerWidget {
     final out = await ref.read(guildControllerProvider.notifier).kick(m.userId);
     if (!context.mounted || out.ok) return;
     _toast(context, guildFailureText(l10n, out.failure!));
+  }
+
+  /// Chọn mức tặng ([guildGiftAmounts]) rồi gửi; lỗi hiện toast, thành công báo số 💎.
+  Future<void> _gift(
+      BuildContext context, WidgetRef ref, GuildMemberInfo m) async {
+    final l10n = AppLocalizations.of(context)!;
+    final amount = await showDialog<int>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        key: const Key('guild-gift-dialog'),
+        title: Text(l10n.guildGiftTitle(m.nickname)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (final a in guildGiftAmounts)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: FilledButton.tonal(
+                  key: Key('guild-gift-amount-$a'),
+                  onPressed: () => Navigator.of(ctx).pop(a),
+                  child: Text('$a 💎'),
+                ),
+              ),
+            Text(l10n.guildGiftHint(guildGiftSendDailyCap, guildGiftExpireDays),
+                style: Theme.of(ctx).textTheme.bodySmall),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(l10n.cancel),
+          ),
+        ],
+      ),
+    );
+    if (amount == null || !context.mounted) return;
+    final out =
+        await ref.read(guildControllerProvider.notifier).sendGift(m.userId, amount);
+    if (!context.mounted) return;
+    _toast(context,
+        out.ok ? l10n.guildGiftSent(amount, m.nickname) : guildFailureText(l10n, out.failure!));
   }
 
   Future<void> _leave(BuildContext context, WidgetRef ref) async {
@@ -741,5 +801,73 @@ class _MilestoneRow extends ConsumerWidget {
             ? l10n.guildRewardGot(out.gems)
             : l10n.guildRewardGotAccessory(
                 out.gems, accessoryName(l10n, out.drop!.accessory.id)));
+  }
+}
+
+/// Thẻ "Quà từ hội viên": chỉ hiện khi hộp thư có quà chưa nhận. Tải một lần khi mở trang,
+/// tải lại sau mỗi lần nhận.
+class _GiftInbox extends ConsumerStatefulWidget {
+  const _GiftInbox();
+
+  @override
+  ConsumerState<_GiftInbox> createState() => _GiftInboxState();
+}
+
+class _GiftInboxState extends ConsumerState<_GiftInbox> {
+  late Future<List<GuildGift>> _gifts =
+      ref.read(guildControllerProvider.notifier).giftInbox();
+
+  Future<void> _claim(GuildGift g) async {
+    final l10n = AppLocalizations.of(context)!;
+    final r = await ref.read(guildControllerProvider.notifier).claimGift(g.id);
+    if (!mounted) return;
+    _toast(context,
+        r.outcome.ok ? l10n.guildGiftClaimed(r.gems) : guildFailureText(l10n, r.outcome.failure!));
+    final next = ref.read(guildControllerProvider.notifier).giftInbox();
+    setState(() {
+      _gifts = next;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    return FutureBuilder<List<GuildGift>>(
+      future: _gifts,
+      builder: (context, snap) {
+        final gifts = snap.data ?? const <GuildGift>[];
+        if (gifts.isEmpty) return const SizedBox.shrink();
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: ClayTile(
+            key: const Key('guild-gift-inbox'),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(l10n.guildGiftInboxTitle(gifts.length),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall
+                        ?.copyWith(fontWeight: FontWeight.w700)),
+                for (final g in gifts)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(l10n.guildGiftFrom(g.amount, g.fromNickname),
+                            maxLines: 1, overflow: TextOverflow.ellipsis),
+                      ),
+                      TextButton(
+                        key: Key('guild-gift-claim-${g.id}'),
+                        onPressed: () => _claim(g),
+                        child: Text(l10n.topupClaim),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 }

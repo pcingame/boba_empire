@@ -157,7 +157,15 @@ class _List extends ConsumerWidget {
                         ),
                       ),
                       Expanded(
-                        child: Column(
+                        child: Container(
+                          key: vipFrameDecoration(e.level) == null
+                              ? null
+                              : const Key('vip-frame'),
+                          padding: vipFrameDecoration(e.level) == null
+                              ? EdgeInsets.zero
+                              : const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                          decoration: vipFrameDecoration(e.level),
+                          child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -197,6 +205,7 @@ class _List extends ConsumerWidget {
                               style: theme.textTheme.labelSmall,
                             ),
                           ],
+                        ),
                         ),
                       ),
                       const SizedBox(width: 8),
