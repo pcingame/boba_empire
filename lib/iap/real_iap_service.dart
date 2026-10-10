@@ -7,6 +7,7 @@
 library;
 
 import 'dart:async';
+import 'dart:developer' as developer;
 
 import 'package:in_app_purchase/in_app_purchase.dart';
 
@@ -15,15 +16,19 @@ import 'iap_service.dart';
 import 'receipt_verifier.dart';
 
 class RealIapService implements IapService {
-  RealIapService({ReceiptVerifier verifier = const NoopReceiptVerifier()})
-      : _verifier = verifier {
-    _sub = InAppPurchase.instance.purchaseStream.listen(
+  /// [iap] chỉ để test chèn bản giả; mặc định là plugin thật.
+  RealIapService({
+    ReceiptVerifier verifier = const NoopReceiptVerifier(),
+    InAppPurchase? iap,
+  })  : _verifier = verifier,
+        _iap = iap ?? InAppPurchase.instance {
+    _sub = _iap.purchaseStream.listen(
       _onPurchases,
       onError: (_) {},
     );
   }
 
-  final InAppPurchase _iap = InAppPurchase.instance;
+  final InAppPurchase _iap;
   final ReceiptVerifier _verifier;
   final StreamController<IapProduct> _delivered =
       StreamController<IapProduct>.broadcast();
@@ -40,53 +45,86 @@ class RealIapService implements IapService {
 
   @override
   Future<Map<IapProduct, String>> loadPrices() async {
-    if (!await _iap.isAvailable()) return const {};
-    final response = await _iap.queryProductDetails(
-      IapProduct.values.map((p) => p.id).toSet(),
-    );
-    final prices = <IapProduct, String>{};
-    for (final d in response.productDetails) {
-      final product = IapProduct.byId(d.id);
-      if (product != null) {
-        _details[product] = d;
-        prices[product] = d.price;
+    try {
+      if (!await _iap.isAvailable()) return const {};
+      final response = await _iap.queryProductDetails(
+        IapProduct.values.map((p) => p.id).toSet(),
+      );
+      final prices = <IapProduct, String>{};
+      for (final d in response.productDetails) {
+        final product = IapProduct.byId(d.id);
+        if (product != null) {
+          _details[product] = d;
+          prices[product] = d.price;
+        }
       }
+      return prices;
+    } catch (e) {
+      // Store lỗi (mạng/StoreKit): coi như chưa có giá, không văng lỗi chưa bắt.
+      developer.log('loadPrices: $e', name: 'Iap');
+      return const {};
     }
-    return prices;
   }
 
   @override
   void buy(IapProduct product) {
     final details = _details[product];
     if (details == null) return; // chưa loadPrices hoặc store không có sp này.
-    final param = PurchaseParam(productDetails: details);
-    if (product.kind == IapKind.consumable) {
-      _iap.buyConsumable(purchaseParam: param);
-    } else {
-      _iap.buyNonConsumable(purchaseParam: param);
+    unawaited(_startPurchase(product, PurchaseParam(productDetails: details)));
+  }
+
+  /// Plugin trả Future: StoreKit 2 NÉM PlatformException khi mua lỗi (không phải qua
+  /// purchaseStream). Không bắt thì thành lỗi bất đồng bộ chưa bắt → Crashlytics ghi
+  /// FATAL và nút mua kẹt "đang xử lý". Mọi lỗi → báo [purchaseFailed] cho UI.
+  Future<void> _startPurchase(IapProduct product, PurchaseParam param) async {
+    try {
+      final started = product.kind == IapKind.consumable
+          ? await _iap.buyConsumable(purchaseParam: param)
+          : await _iap.buyNonConsumable(purchaseParam: param);
+      if (!started) _failed.add(product);
+    } catch (e) {
+      developer.log('buy ${product.id}: $e', name: 'Iap');
+      if (!_failed.isClosed) _failed.add(product);
     }
   }
 
   @override
-  Future<void> restore() => _iap.restorePurchases();
+  Future<void> restore() async {
+    try {
+      await _iap.restorePurchases();
+    } catch (e) {
+      // Khôi phục lỗi (mạng/chưa đăng nhập store) không được làm văng app.
+      developer.log('restore: $e', name: 'Iap');
+    }
+  }
 
   Future<void> _onPurchases(List<PurchaseDetails> purchases) async {
     for (final pd in purchases) {
-      final product = IapProduct.byId(pd.productID);
-      if (pd.status == PurchaseStatus.purchased ||
-          pd.status == PurchaseStatus.restored) {
-        if (product != null && await _verified(pd)) {
-          _delivered.add(product);
+      // Một giao dịch lỗi (xác thực/hoàn tất ném ngoại lệ) không được làm hỏng cả luồng:
+      // lỗi bất đồng bộ trong listener chưa bắt → Crashlytics FATAL.
+      try {
+        final product = IapProduct.byId(pd.productID);
+        if (pd.status == PurchaseStatus.purchased ||
+            pd.status == PurchaseStatus.restored) {
+          if (product != null && await _verified(pd)) {
+            _delivered.add(product);
+          }
+        } else if (pd.status == PurchaseStatus.error ||
+            pd.status == PurchaseStatus.canceled) {
+          // Lỗi hoặc người chơi tự huỷ ở màn thanh toán — báo cho UI tắt
+          // trạng thái "đang xử lý" (xem [purchaseFailed]), không trao thưởng.
+          if (product != null) _failed.add(product);
         }
-      } else if (pd.status == PurchaseStatus.error ||
-          pd.status == PurchaseStatus.canceled) {
-        // Lỗi hoặc người chơi tự huỷ ở màn thanh toán — báo cho UI tắt
-        // trạng thái "đang xử lý" (xem [purchaseFailed]), không trao thưởng.
-        if (product != null) _failed.add(product);
+      } catch (e) {
+        developer.log('purchase ${pd.productID}: $e', name: 'Iap');
       }
       // Luôn hoàn tất giao dịch đang chờ, nếu không store sẽ gửi lại mãi.
-      if (pd.pendingCompletePurchase) {
-        await _iap.completePurchase(pd);
+      try {
+        if (pd.pendingCompletePurchase) {
+          await _iap.completePurchase(pd);
+        }
+      } catch (e) {
+        developer.log('completePurchase ${pd.productID}: $e', name: 'Iap');
       }
     }
   }
