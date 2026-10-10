@@ -851,6 +851,101 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get vipTitlePick => 'Gelar di bawah namamu';
+
+  @override
+  String get vipTitleAuto => 'Otomatis (tertinggi)';
+
+  @override
+  String get vipTitleHide => 'Sembunyikan';
+
+  @override
+  String get marketFilterWish => 'Wishlist';
+
+  @override
+  String get refEntry => '👥 Undang teman';
+
+  @override
+  String refEntryNote(Object gems) {
+    return 'Dapatkan $gems 💎 untuk setiap teman yang bergabung';
+  }
+
+  @override
+  String get refTitle => 'Undang teman';
+
+  @override
+  String get refYourCode => 'Kode undanganmu';
+
+  @override
+  String get refCopy => 'Salin kode';
+
+  @override
+  String get refCopied => 'Kode disalin';
+
+  @override
+  String get refShare => 'Bagikan';
+
+  @override
+  String refShareText(Object code) {
+    return 'Main Boba Empire bareng aku! Pakai kode undangan $code untuk bonus 💎: https://bobaempiregame.com';
+  }
+
+  @override
+  String refStats(Object invited, Object max, Object reached) {
+    return 'Diundang: $invited/$max · mencapai target: $reached';
+  }
+
+  @override
+  String refRule(Object gems, Object stage) {
+    return 'Kamu dapat $gems 💎 untuk setiap teman yang mencapai tahap $stage. Temanmu juga dapat 💎 saat memasukkan kodemu.';
+  }
+
+  @override
+  String refClaim(Object gems) {
+    return 'Klaim +$gems 💎';
+  }
+
+  @override
+  String refClaimedSnack(Object gems) {
+    return 'Diklaim +$gems 💎';
+  }
+
+  @override
+  String get refEnterTitle => 'Punya kode teman?';
+
+  @override
+  String get refEnterHint => 'Kode undangan';
+
+  @override
+  String get refRedeem => 'Tukar';
+
+  @override
+  String refRedeemedSnack(Object gems) {
+    return 'Kode diterima: +$gems 💎';
+  }
+
+  @override
+  String get refErrEmail => 'Tautkan email dulu.';
+
+  @override
+  String get refErrNotFound => 'Kode tidak ditemukan.';
+
+  @override
+  String get refErrInvalid => 'Kamu tidak bisa memakai kode ini.';
+
+  @override
+  String get refErrAlready => 'Kamu sudah memakai kode undangan.';
+
+  @override
+  String get refErrFull => 'Kode ini sudah mencapai batas undangan.';
+
+  @override
+  String get refErrNothing => 'Belum ada yang bisa diklaim.';
+
+  @override
+  String get refErrNetwork => 'Masalah jaringan, coba lagi.';
+
+  @override
   String get vipLbOpen => 'Papan peringkat VIP';
 
   @override

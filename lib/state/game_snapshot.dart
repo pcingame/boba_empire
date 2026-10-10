@@ -92,6 +92,9 @@ class GameSnapshot {
     required this.coldStorageOwned,
     required this.vipExp,
     required this.vipExpFromGems,
+    required this.referralRedeemed,
+    required this.referralStageSent,
+    required this.vipTitleChoice,
     required this.vipClaimDay,
     required this.vipClaimWeek,
     required this.vipClaimMonth,
@@ -272,6 +275,9 @@ class GameSnapshot {
   final bool coldStorageOwned;
   final int vipExp;
   final int vipExpFromGems;
+  final bool referralRedeemed;
+  final bool referralStageSent;
+  final int vipTitleChoice;
   final int vipClaimDay;
   final int vipClaimWeek;
   final int vipClaimMonth;

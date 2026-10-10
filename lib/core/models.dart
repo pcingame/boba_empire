@@ -118,6 +118,9 @@ class GameState {
     this.doubleIncomeOwned = false,
     this.coldStorageOwned = false,
     this.vipExp = 0,
+    this.referralRedeemed = false,
+    this.referralStageSent = false,
+    this.vipTitleChoice = -1,
     List<String>? firstBuyClaimed,
     this.vipExpFromGems = 0,
     this.vipClaimDay = 0,
@@ -450,6 +453,14 @@ class GameState {
   /// ngày/tuần/tháng đã nhận quà VIP gần nhất (0 = chưa từng).
   int vipExp;
   int vipExpFromGems;
+
+  /// Đã nhập mã mời của người khác / đã báo giai đoạn cho server (xem referral_controller).
+  bool referralRedeemed;
+  bool referralStageSent;
+
+  /// Danh hiệu VIP hiển thị dưới tên ở BXH: -1 tự động (cấp cao nhất), 0 ẩn, 1..cấp =
+  /// danh hiệu của cấp đó (người chơi tự chọn, xem setVipTitle).
+  int vipTitleChoice;
   int vipClaimDay;
   int vipClaimWeek;
   int vipClaimMonth;
@@ -568,6 +579,9 @@ class GameState {
         'coldStorageOwned': coldStorageOwned,
         'vipExp': vipExp,
         'vipExpFromGems': vipExpFromGems,
+        'referralRedeemed': referralRedeemed,
+        'referralStageSent': referralStageSent,
+        'vipTitleChoice': vipTitleChoice,
         'vipClaimDay': vipClaimDay,
         'vipClaimWeek': vipClaimWeek,
         'vipClaimMonth': vipClaimMonth,
@@ -729,6 +743,9 @@ class GameState {
         coldStorageOwned: (json['coldStorageOwned'] as bool?) ?? false,
         vipExp: (json['vipExp'] as num?)?.toInt() ?? 0,
         vipExpFromGems: (json['vipExpFromGems'] as num?)?.toInt() ?? 0,
+        referralRedeemed: (json['referralRedeemed'] as bool?) ?? false,
+        referralStageSent: (json['referralStageSent'] as bool?) ?? false,
+        vipTitleChoice: (json['vipTitleChoice'] as num?)?.toInt() ?? -1,
         vipClaimDay: (json['vipClaimDay'] as num?)?.toInt() ?? 0,
         vipClaimWeek: (json['vipClaimWeek'] as num?)?.toInt() ?? 0,
         vipClaimMonth: (json['vipClaimMonth'] as num?)?.toInt() ?? 0,

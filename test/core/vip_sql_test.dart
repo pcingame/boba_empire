@@ -40,4 +40,12 @@ void main() {
     expect(sql, contains('alter publication supabase_realtime add table vip_announcements'));
     expect(sql, contains('grant select on vip_announcements to anon, authenticated'));
   });
+
+  test('danh hiệu hiển thị: cột title, RPC set_vip_title và cột title_level khớp số bậc', () {
+    final n = topupTiers.length;
+    expect(sql, contains('check (title is null or title between 0 and $n)'));
+    expect(sql, contains('function set_vip_title(p_title integer)'));
+    expect(sql, contains('grant execute on function set_vip_title(integer) to authenticated'));
+    expect(sql, contains('title_level integer'));
+  });
 }

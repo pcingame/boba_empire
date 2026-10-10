@@ -30,6 +30,7 @@ import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
 import '../leaderboard/flair.dart';
 import '../leaderboard/vip_presence.dart';
+import '../referral/referral_controller.dart';
 import 'accessory_inventory_page.dart';
 import 'accessory_market_page.dart';
 import 'whats_new_dialog.dart';
@@ -124,6 +125,7 @@ class _HomePageState extends ConsumerState<HomePage>
       // Khôi phục sản phẩm non-consumable (Gỡ QC / Gói khởi động) đã mua.
       unawaited(ref.read(iapServiceProvider).restore());
       _startVipPresence();
+      unawaited(ref.read(referralControllerProvider.notifier).reportStageIfNeeded());
       final state = ref.read(gameControllerProvider);
       // Buff thu nhập cả hội (nếu đang ở hội): áp ngay lúc mở app, không cần mở màn Hội.
       unawaited(ref.read(guildControllerProvider.notifier).syncBuff());
@@ -300,6 +302,7 @@ class _HomePageState extends ConsumerState<HomePage>
         controller.handleResume(); // bù tiền cho lúc ở nền
         unawaited(ref.read(guildControllerProvider.notifier).syncBuff());
         unawaited(ref.read(vipPresenceProvider).ping());
+        unawaited(ref.read(referralControllerProvider.notifier).reportStageIfNeeded());
         Reminders.cancelAll(); // đã mở app rồi thì nhắc nữa là phiền
         // Xin quyền thông báo ở lần quay lại đầu tiên: lúc này app đang hiện
         // (dialog hệ thống mới bật được) và người chơi đã chơi ít nhất 1 phiên,

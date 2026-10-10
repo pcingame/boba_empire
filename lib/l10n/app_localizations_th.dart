@@ -848,6 +848,101 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get vipTitlePick => 'ฉายาที่แสดงใต้ชื่อ';
+
+  @override
+  String get vipTitleAuto => 'อัตโนมัติ (สูงสุด)';
+
+  @override
+  String get vipTitleHide => 'ซ่อน';
+
+  @override
+  String get marketFilterWish => 'อยากได้';
+
+  @override
+  String get refEntry => '👥 ชวนเพื่อน';
+
+  @override
+  String refEntryNote(Object gems) {
+    return 'รับ $gems 💎 ต่อเพื่อนที่เข้าร่วมทุกคน';
+  }
+
+  @override
+  String get refTitle => 'ชวนเพื่อน';
+
+  @override
+  String get refYourCode => 'รหัสเชิญของคุณ';
+
+  @override
+  String get refCopy => 'คัดลอกรหัส';
+
+  @override
+  String get refCopied => 'คัดลอกรหัสแล้ว';
+
+  @override
+  String get refShare => 'แชร์';
+
+  @override
+  String refShareText(Object code) {
+    return 'มาเล่น Boba Empire กับฉัน! ใช้รหัสเชิญ $code รับ 💎 โบนัส: https://bobaempiregame.com';
+  }
+
+  @override
+  String refStats(Object invited, Object max, Object reached) {
+    return 'เชิญแล้ว: $invited/$max · ถึงเป้าหมาย: $reached';
+  }
+
+  @override
+  String refRule(Object gems, Object stage) {
+    return 'คุณได้รับ $gems 💎 ต่อเพื่อนที่ถึงด่าน $stage เพื่อนของคุณก็ได้ 💎 เมื่อกรอกรหัสของคุณ';
+  }
+
+  @override
+  String refClaim(Object gems) {
+    return 'รับ +$gems 💎';
+  }
+
+  @override
+  String refClaimedSnack(Object gems) {
+    return 'รับ +$gems 💎 แล้ว';
+  }
+
+  @override
+  String get refEnterTitle => 'มีรหัสของเพื่อนไหม?';
+
+  @override
+  String get refEnterHint => 'รหัสเชิญ';
+
+  @override
+  String get refRedeem => 'ใช้รหัส';
+
+  @override
+  String refRedeemedSnack(Object gems) {
+    return 'รหัสถูกต้อง: +$gems 💎';
+  }
+
+  @override
+  String get refErrEmail => 'กรุณาผูกอีเมลก่อน';
+
+  @override
+  String get refErrNotFound => 'ไม่พบรหัสนี้';
+
+  @override
+  String get refErrInvalid => 'คุณใช้รหัสนี้ไม่ได้';
+
+  @override
+  String get refErrAlready => 'คุณใช้รหัสเชิญไปแล้ว';
+
+  @override
+  String get refErrFull => 'รหัสนี้เชิญครบจำนวนแล้ว';
+
+  @override
+  String get refErrNothing => 'ยังไม่มีอะไรให้รับ';
+
+  @override
+  String get refErrNetwork => 'เครือข่ายมีปัญหา ลองใหม่อีกครั้ง';
+
+  @override
   String get vipLbOpen => 'กระดานอันดับ VIP';
 
   @override

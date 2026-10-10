@@ -18,6 +18,12 @@ class _Vips extends VipLevels {
   Map<String, int> build() => {'v': 3, 'w': 5, 'x': 4, 'y': 10, 'z': 2, 'm': 8};
 }
 
+class _Titles extends VipTitles {
+  @override
+  // w (VIP 5) chọn danh hiệu cấp 2; y (VIP 10) chọn ẩn; x không có khoá → dùng cấp của mình.
+  Map<String, int> build() => {'w': 2, 'y': 0};
+}
+
 class _Online extends VipOnline {
   @override
   Map<String, bool> build() => {'w': true, 'v': false};
@@ -167,5 +173,33 @@ void main() {
       ),
     ));
     expect(find.byKey(const Key('vip-frame')), findsNWidgets(2));
+  });
+
+  testWidgets('dòng danh hiệu theo lựa chọn: chọn cấp thấp, ẩn, hoặc tự động', (tester) async {
+    await tester.pumpWidget(ProviderScope(
+      overrides: [
+        flairCacheProvider.overrideWith(_Seeded.new),
+        vipLevelProvider.overrideWith(_Vips.new),
+        vipTitleProvider.overrideWith(_Titles.new),
+      ],
+      child: const MaterialApp(
+        locale: Locale('en'),
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Column(children: [
+          VipTitleLine(userId: 'w'), // VIP 5 chọn cấp 2 → "Tea Lover"
+          VipTitleLine(userId: 'y'), // VIP 10 chọn ẩn → không dòng
+          VipTitleLine(userId: 'm'), // VIP 8 tự động → "Royalty"
+        ]),
+      ),
+    ));
+    expect(find.text('👑 Tea Lover'), findsOneWidget);
+    expect(find.text('👑 Royalty'), findsOneWidget);
+    expect(find.text('👑 Boba Emperor'), findsNothing);
+    expect(find.byKey(const Key('vip-title-line')), findsNWidgets(2));
   });
 }

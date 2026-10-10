@@ -547,6 +547,7 @@ class _BrowseTab extends ConsumerStatefulWidget {
 class _BrowseTabState extends ConsumerState<_BrowseTab> {
   AccessoryRarity? _rarity;
   bool _missingOnly = false;
+  bool _wishOnly = false;
   MarketSort _sort = MarketSort.newest;
 
   // Listing xuất hiện SAU lần dựng đầu (realtime/làm mới) trượt vào; danh sách ban
@@ -584,6 +585,8 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
       rarity: _rarity,
       missingOnly: _missingOnly,
       owned: owned,
+      wishOnly: _wishOnly,
+      wishlist: ref.watch(gameControllerProvider.select((s) => s.wishlist)).toSet(),
       sort: _sort,
     );
 
@@ -603,12 +606,15 @@ class _BrowseTabState extends ConsumerState<_BrowseTab> {
           _FilterBar(
             rarity: _rarity,
             missingOnly: _missingOnly,
+            wishOnly: _wishOnly,
             priceSort: _sort == MarketSort.priceAsc,
             onAll: () => setState(() {
               _rarity = null;
               _missingOnly = false;
+              _wishOnly = false;
             }),
             onMissing: (v) => setState(() => _missingOnly = v),
+            onWish: (v) => setState(() => _wishOnly = v),
             onRarity: (r) => setState(() => _rarity = r),
             onPriceSort: (v) => setState(
                 () => _sort = v ? MarketSort.priceAsc : MarketSort.newest),
@@ -679,17 +685,21 @@ class _FilterBar extends StatelessWidget {
   const _FilterBar({
     required this.rarity,
     required this.missingOnly,
+    required this.wishOnly,
     required this.priceSort,
     required this.onAll,
     required this.onMissing,
+    required this.onWish,
     required this.onRarity,
     required this.onPriceSort,
   });
   final AccessoryRarity? rarity;
   final bool missingOnly;
+  final bool wishOnly;
   final bool priceSort;
   final VoidCallback onAll;
   final ValueChanged<bool> onMissing;
+  final ValueChanged<bool> onWish;
   final ValueChanged<AccessoryRarity?> onRarity;
   final ValueChanged<bool> onPriceSort;
 
@@ -705,7 +715,7 @@ class _FilterBar extends StatelessWidget {
         children: [
           ChoiceChip(
             label: Text(l10n.marketFilterAll),
-            selected: rarity == null && !missingOnly,
+            selected: rarity == null && !missingOnly && !wishOnly,
             onSelected: (_) => onAll(),
           ),
           gap(),
@@ -713,6 +723,13 @@ class _FilterBar extends StatelessWidget {
             label: Text('🆕 ${l10n.marketFilterMissing}'),
             selected: missingOnly,
             onSelected: onMissing,
+          ),
+          gap(),
+          ChoiceChip(
+            key: const Key('market-filter-wish'),
+            label: Text('❤️ ${l10n.marketFilterWish}'),
+            selected: wishOnly,
+            onSelected: onWish,
           ),
           for (final r in AccessoryRarity.values) ...[
             gap(),

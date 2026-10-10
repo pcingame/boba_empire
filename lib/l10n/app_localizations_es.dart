@@ -857,6 +857,101 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get vipTitlePick => 'Título bajo tu nombre';
+
+  @override
+  String get vipTitleAuto => 'Auto (el más alto)';
+
+  @override
+  String get vipTitleHide => 'Ocultar';
+
+  @override
+  String get marketFilterWish => 'Deseos';
+
+  @override
+  String get refEntry => '👥 Invitar amigos';
+
+  @override
+  String refEntryNote(Object gems) {
+    return 'Gana $gems 💎 por cada amigo que se una';
+  }
+
+  @override
+  String get refTitle => 'Invitar amigos';
+
+  @override
+  String get refYourCode => 'Tu código de invitación';
+
+  @override
+  String get refCopy => 'Copiar código';
+
+  @override
+  String get refCopied => 'Código copiado';
+
+  @override
+  String get refShare => 'Compartir';
+
+  @override
+  String refShareText(Object code) {
+    return '¡Juega Boba Empire conmigo! Usa mi código $code para ganar 💎 extra: https://bobaempiregame.com';
+  }
+
+  @override
+  String refStats(Object invited, Object max, Object reached) {
+    return 'Invitados: $invited/$max · llegaron a la meta: $reached';
+  }
+
+  @override
+  String refRule(Object gems, Object stage) {
+    return 'Ganas $gems 💎 por cada amigo que llegue a la etapa $stage. Tu amigo también recibe 💎 al ingresar tu código.';
+  }
+
+  @override
+  String refClaim(Object gems) {
+    return 'Reclamar +$gems 💎';
+  }
+
+  @override
+  String refClaimedSnack(Object gems) {
+    return 'Reclamaste +$gems 💎';
+  }
+
+  @override
+  String get refEnterTitle => '¿Tienes el código de un amigo?';
+
+  @override
+  String get refEnterHint => 'Código de invitación';
+
+  @override
+  String get refRedeem => 'Canjear';
+
+  @override
+  String refRedeemedSnack(Object gems) {
+    return 'Código aceptado: +$gems 💎';
+  }
+
+  @override
+  String get refErrEmail => 'Vincula primero tu correo.';
+
+  @override
+  String get refErrNotFound => 'Código no encontrado.';
+
+  @override
+  String get refErrInvalid => 'No puedes usar este código.';
+
+  @override
+  String get refErrAlready => 'Ya usaste un código de invitación.';
+
+  @override
+  String get refErrFull => 'Este código alcanzó su límite de invitaciones.';
+
+  @override
+  String get refErrNothing => 'Aún no hay nada que reclamar.';
+
+  @override
+  String get refErrNetwork => 'Problema de red, inténtalo de nuevo.';
+
+  @override
   String get vipLbOpen => 'Clasificación VIP';
 
   @override

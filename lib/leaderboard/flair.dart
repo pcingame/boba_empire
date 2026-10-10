@@ -34,6 +34,19 @@ class VipLevels extends Notifier<Map<String, int>> {
   void merge(Map<String, int> found) => state = {...state, ...found};
 }
 
+/// userId -> danh hiệu VIP đang hiển thị (cấp của danh hiệu; 0 = người đó chọn ẩn). Người
+/// không có khoá thì dùng chính cấp VIP của họ. Ghi bởi [FlairCache] cùng RPC.
+final vipTitleProvider = NotifierProvider<VipTitles, Map<String, int>>(
+  VipTitles.new,
+);
+
+class VipTitles extends Notifier<Map<String, int>> {
+  @override
+  Map<String, int> build() => const {};
+
+  void merge(Map<String, int> found) => state = {...state, ...found};
+}
+
 /// userId -> VIP ≥ cấp 5 đang hiện diện (ping trong 5 phút gần nhất). Ghi bởi
 /// [FlairCache] cùng lần gọi RPC; người không có khoá = không online.
 final vipOnlineProvider = NotifierProvider<VipOnline, Map<String, bool>>(
@@ -98,6 +111,9 @@ class FlairCache extends Notifier<Map<String, String>> {
           client.auth.currentUser ??
           (await client.auth.signInAnonymously()).user;
       await client.rpc('set_vip_level', params: {'p_level': level});
+      // Đồng bộ danh hiệu đang chọn (-1 = tự động) để người khác thấy đúng lựa chọn.
+      await client.rpc('set_vip_title',
+          params: {'p_title': ref.read(gameControllerProvider).vipTitleChoice});
       final nickname = ref
           .read(sharedPreferencesProvider)
           .getString('leaderboard_nickname');
@@ -136,6 +152,7 @@ class FlairCache extends Notifier<Map<String, String>> {
     final found = <String, String>{};
     final vips = <String, int>{};
     final online = <String, bool>{};
+    final titles = <String, int>{};
     try {
       final rows = await Supabase.instance.client.rpc(
         'accessory_flairs',
@@ -147,11 +164,14 @@ class FlairCache extends Notifier<Map<String, String>> {
         final vip = r['vip_level'];
         if (vip is num && vip > 0) vips[r['user_id'] as String] = vip.toInt();
         if (r['online'] == true) online[r['user_id'] as String] = true;
+        final title = r['title_level'];
+        if (title is num) titles[r['user_id'] as String] = title.toInt();
       }
     } catch (_) {
       // Không có mạng/Supabase: hiện như chưa có huy hiệu, không thử lại ồ ạt.
     }
     ref.read(vipLevelProvider.notifier).merge(vips);
+    ref.read(vipTitleProvider.notifier).merge(titles);
     ref.read(vipOnlineProvider.notifier).merge({
       for (final id in ids) id: online[id] ?? false,
     });
@@ -293,9 +313,12 @@ class VipTitleLine extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final level = ref.watch(vipLevelProvider.select((m) => m[userId])) ?? 0;
     if (level < vipTitleMinLevel) return const SizedBox.shrink();
+    // Danh hiệu người đó chọn (mặc định = cấp cao nhất; 0 = ẩn dòng này).
+    final title = ref.watch(vipTitleProvider.select((m) => m[userId])) ?? level;
+    if (title < 1) return const SizedBox.shrink();
     final theme = Theme.of(context);
     return Text(
-      '👑 ${vipName(AppLocalizations.of(context)!, level)}',
+      '👑 ${vipName(AppLocalizations.of(context)!, title.clamp(1, level))}',
       key: const Key('vip-title-line'),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,

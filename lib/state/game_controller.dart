@@ -1485,6 +1485,40 @@ class GameController extends Notifier<GameSnapshot> {
     return true;
   }
 
+  /// Cộng 💎 thưởng "Mời bạn" SAU KHI server xác nhận (người nhập mã hoặc người mời nhận thưởng).
+  void grantReferralGems(int gems) {
+    if (gems <= 0) return;
+    grantGems(_game, gems.toDouble());
+    logEvent('referral_reward', {'gems': gems});
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  void markReferralRedeemed() {
+    if (_game.referralRedeemed) return;
+    _game.referralRedeemed = true;
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  void markReferralStageSent() {
+    if (_game.referralStageSent) return;
+    _game.referralStageSent = true;
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Chọn danh hiệu VIP hiển thị dưới tên ở BXH: -1 tự động, 0 ẩn, 1..cấp hiện tại. False nếu
+  /// ngoài khoảng (không đổi gì). Lưu ngay; đồng bộ lên server do UI gọi reportVip.
+  bool setVipTitle(int choice) {
+    final level = topupVipLevel(_game.vipExp);
+    if (choice < -1 || choice > level) return false;
+    _game.vipTitleChoice = choice;
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
   /// Rớt phụ kiện cho thưởng VIP: huyền thoại = đúng huyền thoại, còn lại là mức sàn.
   AccessoryDrop _vipDrop(String source, AccessoryRarity r) => _dropAccessory(
         source: source,
@@ -1785,6 +1819,9 @@ class GameController extends Notifier<GameSnapshot> {
       coldStorageOwned: _game.coldStorageOwned,
       vipExp: _game.vipExp,
       vipExpFromGems: _game.vipExpFromGems,
+      referralRedeemed: _game.referralRedeemed,
+      referralStageSent: _game.referralStageSent,
+      vipTitleChoice: _game.vipTitleChoice,
       vipClaimDay: _game.vipClaimDay,
       vipClaimWeek: _game.vipClaimWeek,
       vipClaimMonth: _game.vipClaimMonth,

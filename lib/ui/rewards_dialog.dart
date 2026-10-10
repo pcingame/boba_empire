@@ -12,6 +12,8 @@ import '../state/game_providers.dart';
 import 'wheel_dialog.dart';
 import 'widgets/clay.dart';
 import 'email_gate.dart';
+import 'invite_dialog.dart';
+import '../referral/referral_repository.dart';
 
 /// "Kiếm thêm 🎁" — các ưu đãi xem quảng cáo thưởng: x2 thu nhập 24h, nhận Kim
 /// Cương, tua nhanh. Người đã mua "Gỡ QC" nhận thẳng, không phải xem.
@@ -89,6 +91,20 @@ class _RewardsDialogState extends ConsumerState<_RewardsDialog> {
                   ref.read(iapServiceProvider).buy(IapProduct.piggyBreak);
                 },
               ),
+            ),
+            ListTile(
+              key: const Key('rewards-invite'),
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.group_add),
+              title: Text(l10n.refEntry),
+              subtitle: Text(l10n.refEntryNote(referralInviterReward)),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () async {
+                // Mời bạn gắn với tài khoản: cần đã liên kết email (xem email_gate.dart).
+                if (!await ensureEmailLinked(context, ref)) return;
+                if (!context.mounted) return;
+                showInviteDialog(context);
+              },
             ),
             _OfferRow(
               emoji: '⚡',

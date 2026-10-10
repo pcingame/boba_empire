@@ -62,6 +62,69 @@ void main() {
     container.dispose();
   });
 
+  testWidgets('chọn danh hiệu: chỉ hiện từ VIP 5; bấm chip đổi lựa chọn', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final container = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(() => 100 * 24 * 60 * 60 * 1000),
+    ]);
+    final game = container.read(gameControllerProvider.notifier);
+    Future<void> open() async {
+      await tester.pumpWidget(UncontrolledProviderScope(
+        container: container,
+        child: MaterialApp(
+          locale: const Locale('en'),
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: Builder(
+              builder: (c) => TextButton(
+                onPressed: () => showTopupDialog(c),
+                child: const Text('open'),
+              ),
+            ),
+          ),
+        ),
+      ));
+      await tester.tap(find.text('open'));
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 300));
+    }
+
+    game.addVipExp(topupTiers[3].exp); // VIP 4: chưa đủ cấp 5
+    await open();
+    expect(find.byKey(const Key('vip-title-auto')), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+
+    game.addVipExp(topupTiers[4].exp); // lên VIP 5+
+    await open();
+    expect(find.byKey(const Key('vip-title-auto')), findsOneWidget);
+    expect(find.byKey(const Key('vip-title-5')), findsOneWidget);
+    expect(find.byKey(const Key('vip-title-6')), findsNothing); // chưa đạt cấp 6
+    await tester.ensureVisible(find.byKey(const Key('vip-title-3')));
+    await tester.tap(find.byKey(const Key('vip-title-3')));
+    await tester.pump();
+    expect(container.read(gameControllerProvider).vipTitleChoice, 3);
+    await tester.ensureVisible(find.byKey(const Key('vip-title-0')));
+    await tester.tap(find.byKey(const Key('vip-title-0')));
+    await tester.pump();
+    expect(container.read(gameControllerProvider).vipTitleChoice, 0);
+    await tester.ensureVisible(find.byKey(const Key('vip-title-auto')));
+    await tester.tap(find.byKey(const Key('vip-title-auto')));
+    await tester.pump();
+    expect(container.read(gameControllerProvider).vipTitleChoice, -1);
+    await tester.pumpWidget(const SizedBox());
+    container.dispose();
+  });
+
   test('banner VIP online: tên người chơi và danh hiệu đúng chỗ', () {
     final l10n = lookupAppLocalizations(const Locale('en'));
     expect(vipOnlineText(l10n, nickname: 'Alice', level: 5),

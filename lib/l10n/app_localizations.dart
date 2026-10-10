@@ -1470,6 +1470,168 @@ abstract class AppLocalizations {
   /// **'Hôm nay đã hết lượt tặng 💎 (bạn tặng tối đa {send} 💎/ngày, một người nhận tối đa {receive} 💎/ngày).'**
   String guildErrGiftLimit(Object receive, Object send);
 
+  /// No description provided for @vipTitlePick.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh hiệu hiển thị dưới tên'**
+  String get vipTitlePick;
+
+  /// No description provided for @vipTitleAuto.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự động (cao nhất)'**
+  String get vipTitleAuto;
+
+  /// No description provided for @vipTitleHide.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ẩn'**
+  String get vipTitleHide;
+
+  /// No description provided for @marketFilterWish.
+  ///
+  /// In vi, this message translates to:
+  /// **'Muốn mua'**
+  String get marketFilterWish;
+
+  /// No description provided for @refEntry.
+  ///
+  /// In vi, this message translates to:
+  /// **'👥 Mời bạn bè'**
+  String get refEntry;
+
+  /// No description provided for @refEntryNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {gems} 💎 cho mỗi bạn tham gia'**
+  String refEntryNote(Object gems);
+
+  /// No description provided for @refTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mời bạn bè'**
+  String get refTitle;
+
+  /// No description provided for @refYourCode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã mời của bạn'**
+  String get refYourCode;
+
+  /// No description provided for @refCopy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chép mã'**
+  String get refCopy;
+
+  /// No description provided for @refCopied.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã chép mã'**
+  String get refCopied;
+
+  /// No description provided for @refShare.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia sẻ'**
+  String get refShare;
+
+  /// No description provided for @refShareText.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chơi Boba Empire cùng mình nhé! Nhập mã mời {code} để nhận 💎 thưởng: https://bobaempiregame.com'**
+  String refShareText(Object code);
+
+  /// No description provided for @refStats.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã mời: {invited}/{max} · đạt mục tiêu: {reached}'**
+  String refStats(Object invited, Object max, Object reached);
+
+  /// No description provided for @refRule.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn nhận {gems} 💎 cho mỗi bạn đạt giai đoạn {stage}. Bạn của bạn cũng nhận 💎 khi nhập mã.'**
+  String refRule(Object gems, Object stage);
+
+  /// No description provided for @refClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận +{gems} 💎'**
+  String refClaim(Object gems);
+
+  /// No description provided for @refClaimedSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận +{gems} 💎'**
+  String refClaimedSnack(Object gems);
+
+  /// No description provided for @refEnterTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Có mã của bạn bè?'**
+  String get refEnterTitle;
+
+  /// No description provided for @refEnterHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã mời'**
+  String get refEnterHint;
+
+  /// No description provided for @refRedeem.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập mã'**
+  String get refRedeem;
+
+  /// No description provided for @refRedeemedSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã hợp lệ: +{gems} 💎'**
+  String refRedeemedSnack(Object gems);
+
+  /// No description provided for @refErrEmail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hãy liên kết email trước.'**
+  String get refErrEmail;
+
+  /// No description provided for @refErrNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy mã này.'**
+  String get refErrNotFound;
+
+  /// No description provided for @refErrInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn không thể dùng mã này.'**
+  String get refErrInvalid;
+
+  /// No description provided for @refErrAlready.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã dùng một mã mời rồi.'**
+  String get refErrAlready;
+
+  /// No description provided for @refErrFull.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã này đã hết lượt mời.'**
+  String get refErrFull;
+
+  /// No description provided for @refErrNothing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có gì để nhận.'**
+  String get refErrNothing;
+
+  /// No description provided for @refErrNetwork.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lỗi mạng, thử lại nhé.'**
+  String get refErrNetwork;
+
   /// No description provided for @vipLbOpen.
   ///
   /// In vi, this message translates to:

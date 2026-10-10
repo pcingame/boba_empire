@@ -227,4 +227,31 @@ void main() {
 
     await tester.pumpWidget(const SizedBox());
   });
+
+  testWidgets('Mời bạn (hộp Kiếm thêm): chưa liên kết email → hộp yêu cầu, chưa mở hộp mời',
+      (tester) async {
+    await _pump(tester, _ControlledIap(), linked: false);
+    await tester.tap(find.byKey(const Key('rewards-chip')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('rewards-invite')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('email-gate-dialog')), findsOneWidget);
+    expect(find.byKey(const Key('invite-retry')), findsNothing);
+    expect(find.byKey(const Key('invite-code')), findsNothing);
+
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('Mời bạn: đã liên kết email → mở thẳng hộp mời', (tester) async {
+    await _pump(tester, _ControlledIap(), linked: true);
+    await tester.tap(find.byKey(const Key('rewards-chip')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('rewards-invite')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('email-gate-dialog')), findsNothing);
+    // Hộp mời đã mở (test không có Supabase nên thân hộp báo lỗi mạng + Thử lại).
+    expect(find.byKey(const Key('invite-retry')), findsOneWidget);
+
+    await tester.pumpWidget(const SizedBox());
+  });
 }

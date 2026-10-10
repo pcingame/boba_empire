@@ -849,6 +849,101 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get vipTitlePick => 'Title shown under your name';
+
+  @override
+  String get vipTitleAuto => 'Auto (highest)';
+
+  @override
+  String get vipTitleHide => 'Hide';
+
+  @override
+  String get marketFilterWish => 'Wishlist';
+
+  @override
+  String get refEntry => '👥 Invite friends';
+
+  @override
+  String refEntryNote(Object gems) {
+    return 'Earn $gems 💎 for every friend who joins';
+  }
+
+  @override
+  String get refTitle => 'Invite friends';
+
+  @override
+  String get refYourCode => 'Your invite code';
+
+  @override
+  String get refCopy => 'Copy code';
+
+  @override
+  String get refCopied => 'Code copied';
+
+  @override
+  String get refShare => 'Share';
+
+  @override
+  String refShareText(Object code) {
+    return 'Join me in Boba Empire! Use my invite code $code for bonus 💎: https://bobaempiregame.com';
+  }
+
+  @override
+  String refStats(Object invited, Object max, Object reached) {
+    return 'Invited: $invited/$max · reached the goal: $reached';
+  }
+
+  @override
+  String refRule(Object gems, Object stage) {
+    return 'You get $gems 💎 for each friend who reaches stage $stage. Your friend gets 💎 too when they enter your code.';
+  }
+
+  @override
+  String refClaim(Object gems) {
+    return 'Claim +$gems 💎';
+  }
+
+  @override
+  String refClaimedSnack(Object gems) {
+    return 'Claimed +$gems 💎';
+  }
+
+  @override
+  String get refEnterTitle => 'Got a friend\'s code?';
+
+  @override
+  String get refEnterHint => 'Invite code';
+
+  @override
+  String get refRedeem => 'Redeem';
+
+  @override
+  String refRedeemedSnack(Object gems) {
+    return 'Code accepted: +$gems 💎';
+  }
+
+  @override
+  String get refErrEmail => 'Link your email first.';
+
+  @override
+  String get refErrNotFound => 'Code not found.';
+
+  @override
+  String get refErrInvalid => 'You can\'t use this code.';
+
+  @override
+  String get refErrAlready => 'You\'ve already used an invite code.';
+
+  @override
+  String get refErrFull => 'This code has reached its invite limit.';
+
+  @override
+  String get refErrNothing => 'Nothing to claim yet.';
+
+  @override
+  String get refErrNetwork => 'Network problem, try again.';
+
+  @override
   String get vipLbOpen => 'VIP leaderboard';
 
   @override

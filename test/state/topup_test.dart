@@ -193,6 +193,28 @@ void main() {
     expect(vipBenefit(VipPeriod.monthly, 1)!.accessory, isNotNull);
   });
 
+  test('chọn danh hiệu hiển thị: chỉ -1, 0 hoặc 1..cấp hiện tại; lưu qua save/load', () async {
+    final c = await _ctl(GameState.newGame(nowMillis: 0));
+    final n = c.read(gameControllerProvider.notifier);
+    n.addVipExp(topupTiers[5].exp); // VIP 6
+    expect(c.read(gameControllerProvider).vipTitleChoice, -1); // mặc định tự động
+    expect(n.setVipTitle(3), isTrue);
+    expect(c.read(gameControllerProvider).vipTitleChoice, 3);
+    expect(n.setVipTitle(0), isTrue); // ẩn
+    expect(n.setVipTitle(6), isTrue); // đúng cấp hiện tại
+    expect(n.setVipTitle(7), isFalse); // vượt cấp: bị từ chối, giữ nguyên
+    expect(n.setVipTitle(-2), isFalse);
+    expect(c.read(gameControllerProvider).vipTitleChoice, 6);
+    expect(n.setVipTitle(-1), isTrue);
+    expect(c.read(gameControllerProvider).vipTitleChoice, -1);
+
+    final g = GameState.newGame(nowMillis: 0)..vipTitleChoice = 4;
+    expect(GameState.fromJson(g.toJson()).vipTitleChoice, 4);
+    final old = GameState.fromJson(GameState.newGame(nowMillis: 0).toJson()
+      ..remove('vipTitleChoice'));
+    expect(old.vipTitleChoice, -1);
+  });
+
   test('thưởng mua lần đầu được lưu qua save/load (không nhận lại sau khi tải)', () {
     final g = GameState.newGame(nowMillis: 0)..firstBuyClaimed.add('boba_gems_small');
     final back = GameState.fromJson(g.toJson());

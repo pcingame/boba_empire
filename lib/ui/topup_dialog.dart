@@ -160,6 +160,15 @@ class _TopupDialogState extends ConsumerState<_TopupDialog> {
               else
                 for (final period in VipPeriod.values)
                   _benefitRow(context, l10n, period, level, controller),
+              if (level >= vipTitleMinLevel) ...[
+                const Divider(height: 24),
+                Text(
+                  l10n.vipTitlePick,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                const SizedBox(height: 4),
+                _titlePicker(l10n, level, s.vipTitleChoice, controller),
+              ],
               const Divider(height: 24),
               for (var i = 0; i < topupTiers.length; i++)
                 _tierRow(
@@ -178,6 +187,44 @@ class _TopupDialogState extends ConsumerState<_TopupDialog> {
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: Text(l10n.close),
+        ),
+      ],
+    );
+  }
+
+  /// Chọn danh hiệu hiện dưới tên ở BXH: tự động (cấp cao nhất) · ẩn · hoặc danh hiệu của
+  /// bất kỳ cấp nào đã đạt.
+  Widget _titlePicker(
+      AppLocalizations l10n, int level, int choice, GameController controller) {
+    void pick(int v) {
+      if (!controller.setVipTitle(v)) return;
+      ref
+          .read(flairCacheProvider.notifier)
+          .reportVip(ref.read(gameControllerProvider).vipExp);
+    }
+
+    return Wrap(
+      spacing: 6,
+      runSpacing: 0,
+      children: [
+        ChoiceChip(
+          key: const Key('vip-title-auto'),
+          label: Text(l10n.vipTitleAuto),
+          selected: choice == -1,
+          onSelected: (_) => pick(-1),
+        ),
+        for (var n = 1; n <= level; n++)
+          ChoiceChip(
+            key: Key('vip-title-$n'),
+            label: Text(vipName(l10n, n)),
+            selected: choice == n,
+            onSelected: (_) => pick(n),
+          ),
+        ChoiceChip(
+          key: const Key('vip-title-0'),
+          label: Text(l10n.vipTitleHide),
+          selected: choice == 0,
+          onSelected: (_) => pick(0),
         ),
       ],
     );

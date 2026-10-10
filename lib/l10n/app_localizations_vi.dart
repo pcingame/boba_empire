@@ -849,6 +849,101 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get vipTitlePick => 'Danh hiệu hiển thị dưới tên';
+
+  @override
+  String get vipTitleAuto => 'Tự động (cao nhất)';
+
+  @override
+  String get vipTitleHide => 'Ẩn';
+
+  @override
+  String get marketFilterWish => 'Muốn mua';
+
+  @override
+  String get refEntry => '👥 Mời bạn bè';
+
+  @override
+  String refEntryNote(Object gems) {
+    return 'Nhận $gems 💎 cho mỗi bạn tham gia';
+  }
+
+  @override
+  String get refTitle => 'Mời bạn bè';
+
+  @override
+  String get refYourCode => 'Mã mời của bạn';
+
+  @override
+  String get refCopy => 'Chép mã';
+
+  @override
+  String get refCopied => 'Đã chép mã';
+
+  @override
+  String get refShare => 'Chia sẻ';
+
+  @override
+  String refShareText(Object code) {
+    return 'Chơi Boba Empire cùng mình nhé! Nhập mã mời $code để nhận 💎 thưởng: https://bobaempiregame.com';
+  }
+
+  @override
+  String refStats(Object invited, Object max, Object reached) {
+    return 'Đã mời: $invited/$max · đạt mục tiêu: $reached';
+  }
+
+  @override
+  String refRule(Object gems, Object stage) {
+    return 'Bạn nhận $gems 💎 cho mỗi bạn đạt giai đoạn $stage. Bạn của bạn cũng nhận 💎 khi nhập mã.';
+  }
+
+  @override
+  String refClaim(Object gems) {
+    return 'Nhận +$gems 💎';
+  }
+
+  @override
+  String refClaimedSnack(Object gems) {
+    return 'Đã nhận +$gems 💎';
+  }
+
+  @override
+  String get refEnterTitle => 'Có mã của bạn bè?';
+
+  @override
+  String get refEnterHint => 'Mã mời';
+
+  @override
+  String get refRedeem => 'Nhập mã';
+
+  @override
+  String refRedeemedSnack(Object gems) {
+    return 'Mã hợp lệ: +$gems 💎';
+  }
+
+  @override
+  String get refErrEmail => 'Hãy liên kết email trước.';
+
+  @override
+  String get refErrNotFound => 'Không tìm thấy mã này.';
+
+  @override
+  String get refErrInvalid => 'Bạn không thể dùng mã này.';
+
+  @override
+  String get refErrAlready => 'Bạn đã dùng một mã mời rồi.';
+
+  @override
+  String get refErrFull => 'Mã này đã hết lượt mời.';
+
+  @override
+  String get refErrNothing => 'Chưa có gì để nhận.';
+
+  @override
+  String get refErrNetwork => 'Lỗi mạng, thử lại nhé.';
+
+  @override
   String get vipLbOpen => 'Bảng xếp hạng VIP';
 
   @override

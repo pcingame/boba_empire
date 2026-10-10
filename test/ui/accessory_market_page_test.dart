@@ -254,12 +254,41 @@ void main() {
   testWidgets('bộ lọc: độ hiếm không khớp -> thông báo rỗng; Tất cả -> hiện lại',
       (tester) async {
     final (container, _) = await _pump(tester);
+    // Thanh lọc cuộn ngang và có thêm chip "Muốn mua": cuộn tới chip trước khi bấm.
+    await tester.ensureVisible(find.text('Thường'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Thường')); // listing duy nhất là huyền thoại
     await tester.pumpAndSettle();
     expect(find.text('Không có món nào khớp bộ lọc.'), findsOneWidget);
     expect(find.text('Rồng nhỏ'), findsNothing);
 
+    // Cuộn thanh lọc ngang về đầu (chip "Tất cả" dựng lười, đã trượt ra ngoài).
+    await tester.drag(
+        find.byWidgetPredicate((w) => w is ListView && w.scrollDirection == Axis.horizontal),
+        const Offset(1500, 0));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Tất cả'));
+    await tester.pumpAndSettle();
+    expect(find.text('Rồng nhỏ'), findsOneWidget);
+    container.dispose();
+  });
+
+  testWidgets('chip Muốn mua: chỉ hiện món trong wishlist; Tất cả -> hiện lại', (tester) async {
+    final (container, _) = await _pump(tester);
+    // Listing duy nhất là "Rồng nhỏ" (dragon); wishlist rỗng → lọc ra không còn gì.
+    await tester.tap(find.byKey(const Key('market-filter-wish')));
+    await tester.pumpAndSettle();
+    expect(find.text('Không có món nào khớp bộ lọc.'), findsOneWidget);
+    expect(find.text('Rồng nhỏ'), findsNothing);
+
+    await tester.tap(find.text('Tất cả'));
+    await tester.pumpAndSettle();
+    expect(find.text('Rồng nhỏ'), findsOneWidget);
+
+    // Thêm dragon vào wishlist → chip Muốn mua hiện đúng món đó.
+    container.read(gameControllerProvider.notifier).toggleWishlist('dragon');
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('market-filter-wish')));
     await tester.pumpAndSettle();
     expect(find.text('Rồng nhỏ'), findsOneWidget);
     container.dispose();

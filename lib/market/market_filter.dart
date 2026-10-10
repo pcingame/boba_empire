@@ -7,12 +7,14 @@ import 'accessory_market_repository.dart';
 enum MarketSort { newest, priceAsc }
 
 /// [rarity] chỉ giữ món độ hiếm đó; [missingOnly] chỉ giữ món CHƯA có trong
-/// [owned]. Listing có id lạ (món của bản app mới hơn) bị loại.
+/// [owned]; [wishOnly] chỉ giữ món trong danh sách muốn mua [wishlist]. Listing có id lạ (món của bản app mới hơn) bị loại.
 List<MarketListing> filterMarketListings(
   List<MarketListing> listings, {
   AccessoryRarity? rarity,
   bool missingOnly = false,
   Set<String> owned = const {},
+  bool wishOnly = false,
+  Set<String> wishlist = const {},
   MarketSort sort = MarketSort.newest,
 }) {
   final rarityById = {for (final a in accessories) a.id: a.rarity};
@@ -21,6 +23,7 @@ List<MarketListing> filterMarketListings(
     if (r == null) return false;
     if (rarity != null && r != rarity) return false;
     if (missingOnly && owned.contains(l.accessoryId)) return false;
+    if (wishOnly && !wishlist.contains(l.accessoryId)) return false;
     return true;
   }).toList();
   out.sort((a, b) {

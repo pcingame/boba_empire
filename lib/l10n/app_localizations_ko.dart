@@ -839,6 +839,101 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get vipTitlePick => '이름 아래에 표시할 칭호';
+
+  @override
+  String get vipTitleAuto => '자동(최고)';
+
+  @override
+  String get vipTitleHide => '숨기기';
+
+  @override
+  String get marketFilterWish => '위시리스트';
+
+  @override
+  String get refEntry => '👥 친구 초대';
+
+  @override
+  String refEntryNote(Object gems) {
+    return '친구가 가입할 때마다 $gems 💎';
+  }
+
+  @override
+  String get refTitle => '친구 초대';
+
+  @override
+  String get refYourCode => '내 초대 코드';
+
+  @override
+  String get refCopy => '코드 복사';
+
+  @override
+  String get refCopied => '코드를 복사했어요';
+
+  @override
+  String get refShare => '공유';
+
+  @override
+  String refShareText(Object code) {
+    return '나랑 Boba Empire 같이 해요! 초대 코드 $code 입력하면 💎 보너스: https://bobaempiregame.com';
+  }
+
+  @override
+  String refStats(Object invited, Object max, Object reached) {
+    return '초대: $invited/$max · 목표 달성: $reached';
+  }
+
+  @override
+  String refRule(Object gems, Object stage) {
+    return '친구가 $stage단계에 도달할 때마다 $gems 💎를 받아요. 친구도 코드를 입력하면 💎를 받아요.';
+  }
+
+  @override
+  String refClaim(Object gems) {
+    return '+$gems 💎 받기';
+  }
+
+  @override
+  String refClaimedSnack(Object gems) {
+    return '+$gems 💎 받았어요';
+  }
+
+  @override
+  String get refEnterTitle => '친구의 코드가 있나요?';
+
+  @override
+  String get refEnterHint => '초대 코드';
+
+  @override
+  String get refRedeem => '코드 입력';
+
+  @override
+  String refRedeemedSnack(Object gems) {
+    return '코드 확인: +$gems 💎';
+  }
+
+  @override
+  String get refErrEmail => '먼저 이메일을 연결해 주세요.';
+
+  @override
+  String get refErrNotFound => '코드를 찾을 수 없어요.';
+
+  @override
+  String get refErrInvalid => '이 코드는 사용할 수 없어요.';
+
+  @override
+  String get refErrAlready => '이미 초대 코드를 사용했어요.';
+
+  @override
+  String get refErrFull => '이 코드는 초대 한도에 도달했어요.';
+
+  @override
+  String get refErrNothing => '아직 받을 게 없어요.';
+
+  @override
+  String get refErrNetwork => '네트워크 문제예요. 다시 시도해 주세요.';
+
+  @override
   String get vipLbOpen => 'VIP 리더보드';
 
   @override

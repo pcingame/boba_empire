@@ -55,4 +55,26 @@ void main() {
         ['c']);
     expect(filterMarketListings(const []), isEmpty);
   });
+
+  test('lọc món muốn mua: chỉ giữ món trong wishlist; kết hợp với các bộ lọc khác', () {
+    expect(
+        ids(filterMarketListings(listings,
+            wishOnly: true, wishlist: {'dragon', 'mint_leaf'})),
+        ['b', 'a']);
+    // Không bật wishOnly thì wishlist không ảnh hưởng.
+    expect(ids(filterMarketListings(listings, wishlist: {'dragon'})), ['c', 'b', 'a']);
+    // Wishlist rỗng + wishOnly → không còn gì; id lạ vẫn bị loại dù có trong wishlist.
+    expect(filterMarketListings(listings, wishOnly: true), isEmpty);
+    expect(
+        filterMarketListings(listings,
+            wishOnly: true, wishlist: {'item_from_future'}),
+        isEmpty);
+    expect(
+        ids(filterMarketListings(listings,
+            wishOnly: true,
+            wishlist: {'mint_leaf', 'cupcake', 'dragon'},
+            rarity: AccessoryRarity.common,
+            sort: MarketSort.priceAsc)),
+        ['c', 'a']);
+  });
 }

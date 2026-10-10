@@ -491,6 +491,13 @@ alter table vip_level drop constraint if exists vip_level_level_check;
 alter table vip_level add constraint vip_level_level_check
   check (level between 1 and 10);
 
+-- Danh hiệu hiển thị do người chơi chọn: null = tự động (cấp cao nhất), 0 = ẩn, 1..level =
+-- danh hiệu của cấp đó. Bảng đã tạo từ trước chưa có cột → add column if not exists.
+alter table vip_level add column if not exists title smallint;
+alter table vip_level drop constraint if exists vip_level_title_check;
+alter table vip_level add constraint vip_level_title_check
+  check (title is null or title between 0 and 10);
+
 alter table vip_level enable row level security;
 -- Không policy nào: client chỉ đi qua RPC.
 
@@ -513,6 +520,35 @@ begin
     set level = greatest(vip_level.level, excluded.level), updated_at = now();
 end;
 $$;
+
+-- Chọn danh hiệu hiển thị: null/-1 = tự động, 0 = ẩn, 1..cấp hiện tại = danh hiệu cấp đó.
+create or replace function set_vip_title(p_title integer)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare v_level integer;
+begin
+  if auth.uid() is null then
+    raise exception 'not authenticated';
+  end if;
+  select level into v_level from vip_level where user_id = auth.uid();
+  if v_level is null then
+    return; -- chưa có cấp VIP thì chưa có gì để chọn
+  end if;
+  if p_title is not null and p_title <> -1 and (p_title < 0 or p_title > v_level) then
+    raise exception 'invalid title';
+  end if;
+  update vip_level
+    set title = case when p_title is null or p_title = -1 then null else p_title end,
+        updated_at = now()
+    where user_id = auth.uid();
+end;
+$$;
+
+revoke all on function set_vip_title(integer) from public, anon;
+grant execute on function set_vip_title(integer) to authenticated;
 
 revoke all on function set_vip_level(integer) from public, anon;
 grant execute on function set_vip_level(integer) to authenticated;
@@ -681,7 +717,8 @@ grant execute on function vip_leaderboard_top(integer) to anon, authenticated;
 drop function if exists accessory_flairs(uuid[]);
 
 create or replace function accessory_flairs(p_user_ids uuid[])
-returns table (user_id uuid, accessory_id text, vip_level integer, online boolean)
+returns table (user_id uuid, accessory_id text, vip_level integer, online boolean,
+               title_level integer)
 language sql
 stable
 security definer
@@ -691,7 +728,10 @@ as $$
          f.accessory_id,
          v.level::integer,
          coalesce(p.last_seen > now() - interval '5 minutes', false)
-           and coalesce(v.level, 0) >= 5
+           and coalesce(v.level, 0) >= 5,
+         -- Danh hiệu đang hiển thị: tự động = cấp hiện tại; 0 = ẩn.
+         case when v.level is null then null
+              else coalesce(v.title, v.level)::integer end
   from unnest(p_user_ids[1:100]) as u(id)
   left join accessory_flair f
     on f.user_id = u.id
