@@ -4,16 +4,19 @@ import 'dart:ui' as ui;
 
 import 'package:boba_empire/core/guild.dart';
 import 'package:boba_empire/core/models.dart';
+import 'package:boba_empire/core/topup.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/guild/guild_chat_unread.dart';
 import 'package:boba_empire/guild/guild_controller.dart';
 import 'package:boba_empire/guild/guild_repository.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
+import 'package:boba_empire/leaderboard/flair.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/ui/guild_chat_page.dart';
 import 'package:boba_empire/ui/guild_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,6 +35,16 @@ class _SlowChat extends FakeGuildRepository {
 
 final _now = DateTime.utc(2026, 10, 8).millisecondsSinceEpoch;
 
+class _ChatFlair extends FlairCache {
+  @override
+  Map<String, String> build() => {};
+}
+
+class _ChatVips extends VipLevels {
+  @override
+  Map<String, int> build() => {'vipman': 7, 'plain': 2, 'mid': 5, 'top': 10};
+}
+
 GuildMessage _msg(int id, String body, {String user = 'other', String nick = 'Bob'}) =>
     GuildMessage(id: id, userId: user, nickname: nick, body: body);
 
@@ -42,13 +55,17 @@ Future<(ProviderContainer, FakeGuildRepository)> _open(
   String locale = 'vi',
   Size size = const Size(360, 800),
   void Function(FakeGuildRepository)? seed,
+  List<Override> extra = const [],
+  int vipExp = 0,
 }) async {
   await tester.binding.setSurfaceSize(size);
   addTearDown(() => tester.binding.setSurfaceSize(null));
   SharedPreferences.setMockInitialValues({});
   final prefs = await SharedPreferences.getInstance();
   await GameStorage(prefs).save(
-      GameState.newGame(nowMillis: _now)..guildWeek = guildWeekIndex(_now),
+      GameState.newGame(nowMillis: _now)
+        ..vipExp = vipExp
+        ..guildWeek = guildWeekIndex(_now),
       nowMillis: _now);
   final repo = FakeGuildRepository(mine: fakeGuild(ownerId: owner ? 'me' : 'boss'));
   seed?.call(repo);
@@ -56,6 +73,7 @@ Future<(ProviderContainer, FakeGuildRepository)> _open(
     sharedPreferencesProvider.overrideWithValue(prefs),
     clockProvider.overrideWithValue(() => _now),
     guildRepositoryProvider.overrideWithValue(repo),
+    ...extra,
   ]);
   _live.add(c);
   await c.read(guildControllerProvider.notifier).refresh();
@@ -84,6 +102,89 @@ Future<void> _end(WidgetTester tester) async {
 }
 
 void main() {
+  testWidgets('chat: tin của VIP từ cấp 5 nổi bật (nền + viền theo cấp), cấp thấp thì không',
+      (tester) async {
+    await _open(
+      tester,
+      locale: 'en',
+      vipExp: topupTiers[7].exp, // mình là VIP 8
+      extra: [
+        flairCacheProvider.overrideWith(_ChatFlair.new),
+        vipLevelProvider.overrideWith(_ChatVips.new),
+      ],
+      seed: (r) => r.chatMessages.addAll([
+        _msg(5, 'của mình', user: 'me', nick: 'Alice'),
+        _msg(4, 'top', user: 'top', nick: 'Top'),
+        _msg(3, 'mid', user: 'mid', nick: 'Mid'),
+        _msg(2, 'vip7', user: 'vipman', nick: 'Tom'),
+        _msg(1, 'thường', user: 'plain', nick: 'Pat'),
+      ]),
+    );
+    BoxDecoration deco(int id) => tester
+        .widget<Container>(find.byKey(Key('guild-chat-msg-$id')))
+        .decoration as BoxDecoration;
+    final theme = Theme.of(tester.element(find.byType(GuildChatPage)));
+
+    // Cấp thấp: không viền, màu mặc định.
+    expect(deco(1).border, isNull);
+    expect(deco(1).color, theme.colorScheme.surfaceContainerHighest);
+    // VIP 5 và 7: viền mảnh màu cấp, nền pha khác mặc định, không quầng sáng.
+    for (final id in [3, 2]) {
+      final d = deco(id);
+      expect((d.border as Border).top.width, 1, reason: 'tin $id');
+      expect(d.boxShadow, isNull, reason: 'tin $id');
+      expect(d.color, isNot(theme.colorScheme.surfaceContainerHighest), reason: 'tin $id');
+    }
+    expect((deco(3).border as Border).top.color, vipTagColors[4].last);
+    expect((deco(2).border as Border).top.color, vipTagColors[6].last);
+    // VIP 10 (người khác) và VIP 8 (chính mình): viền dày + quầng sáng.
+    for (final id in [4, 5]) {
+      expect((deco(id).border as Border).top.width, 2, reason: 'tin $id');
+      expect(deco(id).boxShadow, isNotEmpty, reason: 'tin $id');
+    }
+    expect((deco(5).border as Border).top.color, vipTagColors[7].last); // mình VIP 8
+    await _end(tester);
+  });
+
+  testWidgets('chat: không tràn ở 320px với tin VIP 10 và tên rất dài (7 ngôn ngữ)',
+      (tester) async {
+    for (final lang in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
+      await _open(
+        tester,
+        locale: lang,
+        size: const Size(320, 640),
+        extra: [
+          flairCacheProvider.overrideWith(_ChatFlair.new),
+          vipLevelProvider.overrideWith(_ChatVips.new),
+        ],
+        seed: (r) => r.chatMessages.add(_msg(1, 'Một tin nhắn khá dài ' * 6,
+            user: 'top', nick: 'MộtBiệtDanhRấtRấtDàiNhưThếNày')),
+      );
+      expect(tester.takeException(), isNull, reason: lang);
+      await _end(tester);
+    }
+  });
+
+  testWidgets('chat: tin của người khác có nhãn VIP cạnh tên; tin của mình không lặp tên',
+      (tester) async {
+    await _open(
+      tester,
+      locale: 'en',
+      extra: [
+        flairCacheProvider.overrideWith(_ChatFlair.new),
+        vipLevelProvider.overrideWith(_ChatVips.new),
+      ],
+      seed: (r) => r.chatMessages.addAll([
+        _msg(3, 'xin chào', user: 'vipman', nick: 'Tycoon Tom'),
+        _msg(2, 'hi', user: 'plain', nick: 'Pat'),
+      ]),
+    );
+    expect(find.text('Tycoon Tom'), findsOneWidget);
+    expect(find.text('VIP 7'), findsOneWidget);
+    expect(find.text('VIP 2'), findsOneWidget); // cấp thấp cũng có nhãn
+    await _end(tester);
+  });
+
   testWidgets('màn Hội: biểu tượng chat chỉ hiện khi đang ở hội và mở được chat', (tester) async {
     await tester.binding.setSurfaceSize(const Size(360, 800));
     addTearDown(() => tester.binding.setSurfaceSize(null));

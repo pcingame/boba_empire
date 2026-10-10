@@ -883,4 +883,62 @@ select t_err(format($$select guild_gift_send(%L::uuid, 10)$$, u(32)), 'permissio
 select t_err($$select count(*) from guild_gift_inbox()$$, 'permission denied');
 reset role;
 
+-- === BXH Hội theo tổng VIP EXP ===
+-- Chưa có bảng vip_leaderboard_entries (accessory_market_schema.sql chưa chạy) → trả rỗng, không lỗi.
+select t_as(u(31));
+select t_eq('chưa có bảng VIP: trả rỗng', (select count(*) from guild_leaderboard_vip(10)), 0::bigint);
+reset role;
+create table vip_leaderboard_entries (user_id uuid primary key, vip_exp bigint not null);
+grant select on vip_leaderboard_entries to authenticated;
+-- Hội gf: u30..u35 có người nộp EXP; hội khác (u63) cũng có; người ngoài hội (u57) không tính.
+insert into vip_leaderboard_entries values (u(30), 5000), (u(31), 2500), (u(57), 999999), (u(63), 100);
+select t_as(u(31));
+select t_eq('chỉ hội có EXP lên bảng (2 hội)', (select count(*) from guild_leaderboard_vip(10)), 2::bigint);
+select t_eq('hạng 1 là hội tổng EXP lớn nhất (5000+2500)', (select vip_exp from guild_leaderboard_vip(10) where rank = 1), 7500::bigint);
+select t_eq('hạng 2: hội u63 (100)', (select vip_exp from guild_leaderboard_vip(10) where rank = 2), 100::bigint);
+select t_eq('người ngoài hội không cộng vào hội nào', (select sum(vip_exp)::bigint from guild_leaderboard_vip(10)), 7600::bigint);
+select t_eq('p_limit chặn số dòng', (select count(*) from guild_leaderboard_vip(1)), 1::bigint);
+-- Hội ẩn không lên bảng.
+reset role;
+update guilds set hidden = true where id = (select guild_id from guild_members where user_id = u(63));
+select t_as(u(31));
+select t_eq('hội ẩn bị loại', (select count(*) from guild_leaderboard_vip(10)), 1::bigint);
+select t_as(null);
+select t_err($$select count(*) from guild_leaderboard_vip(10)$$, 'permission denied');
+reset role;
+drop table vip_leaderboard_entries;
+
+-- === Thưởng thu nhập theo số thành viên VIP ===
+select t_as(u(31));
+select t_eq('chưa có bảng vip_level: thưởng 0, không lỗi', guild_vip_bonus(), 0);
+select t_eq('guild_my báo vip_bonus 0 khi chưa có bảng', (guild_my()->>'vip_bonus')::int, 0);
+reset role;
+create table vip_level (user_id uuid primary key, level smallint not null);
+grant select on vip_level to authenticated;
+-- Hội gf: u30(VIP5) u31(VIP4: chưa đủ) u32(VIP10) → 2 VIP đủ cấp; u57 ngoài hội VIP 10 không tính.
+insert into vip_level values (u(30), 5), (u(31), 4), (u(32), 10), (u(57), 10);
+select t_as(u(31));
+select t_eq('2 thành viên VIP>=5 → +2%', guild_vip_bonus(), 2);
+select t_eq('guild_my: vip_members', (guild_my()->>'vip_members')::int, 2);
+select t_eq('guild_my: vip_bonus', (guild_my()->>'vip_bonus')::int, 2);
+-- Trần 5%: thêm nhiều VIP vào hội.
+reset role;
+insert into vip_level values (u(33), 6), (u(34), 7), (u(35), 8);
+select t_as(u(31));
+select t_eq('5 VIP → 5% (đúng trần)', guild_vip_bonus(), 5);
+reset role;
+update vip_level set level = 5 where user_id = u(31);   -- người thứ 6 đủ cấp → thô 6% nhưng bị chặn ở 5%
+select t_as(u(31));
+select t_eq('6 VIP (thô 6%) vẫn chỉ 5%', guild_vip_bonus(), 5);
+select t_eq('vip_members đếm đủ 6', (guild_my()->>'vip_members')::int, 6);
+-- Người không ở hội: 0. Hàm nội bộ không gọi được. Khách chưa đăng nhập bị chặn.
+select t_as(u(57));
+select t_eq('không ở hội → 0', guild_vip_bonus(), 0);
+select t_err(format($$select guild_vip_count(%L::uuid)$$, :'gf'), 'permission denied');
+select t_err(format($$select guild_vip_bonus_pct(%L::uuid)$$, :'gf'), 'permission denied');
+select t_as(null);
+select t_err($$select guild_vip_bonus()$$, 'permission denied');
+reset role;
+drop table vip_level;
+
 select 'ALL GUILD SQL SCENARIOS PASSED' as result;

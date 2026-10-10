@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/format.dart';
 import '../core/balance.dart';
 import '../core/guild.dart';
+import '../core/topup.dart';
 import '../core/guild_shop.dart';
 import '../guild/guild_controller.dart';
 import '../guild/guild_repository.dart';
@@ -17,6 +18,7 @@ import '../l10n/l10n_ext.dart';
 import 'guild_leaderboard_page.dart';
 import '../guild/guild_chat_unread.dart';
 import '../leaderboard/flair.dart';
+import '../state/game_providers.dart';
 import 'guild_activity_page.dart';
 import 'widgets/dispose_with_widget.dart';
 import 'guild_chat_page.dart';
@@ -30,14 +32,18 @@ Future<void> showGuildPage(BuildContext context) => Navigator.of(context)
 /// Emoji chọn khi tạo hội (chip cố định: không cho nhập tự do để khỏi nhét chữ).
 const guildEmojis = ['🧋', '🐉', '🦊', '🐼', '🔥', '⭐', '🌸', '👑'];
 
-String guildFailureText(AppLocalizations l10n, GuildFailure f) => switch (f) {
+/// [createCost] = phí tạo hội hiện tại của người chơi (đã trừ ưu đãi VIP) cho lời nhắn thiếu 💎.
+String guildFailureText(AppLocalizations l10n, GuildFailure f,
+        {int createCost = guildCreateCostGems}) =>
+    switch (f) {
       GuildFailure.nameTaken => l10n.guildErrNameTaken,
       GuildFailure.guildFull => l10n.guildErrFull,
       GuildFailure.alreadyInGuild => l10n.guildErrAlready,
       GuildFailure.invalidName => l10n.guildErrInvalid,
       GuildFailure.notFound => l10n.guildErrNotFound,
       GuildFailure.notEnoughContribution => l10n.guildErrContribution,
-      GuildFailure.notEnoughGems => l10n.guildErrGems(guildCreateCostGems),
+      GuildFailure.notEnoughGems => l10n.guildErrGems(createCost),
+      GuildFailure.notEnoughGemsToSpend => l10n.guildErrGemsSpend,
       GuildFailure.approvalRequired => l10n.guildErrApproval,
       GuildFailure.alreadyClaimed => l10n.guildErrClaimed,
       GuildFailure.dailyLimit => l10n.guildErrDailyLimit(guildDonateDailyCap),
@@ -302,6 +308,10 @@ Future<void> _showCreateDialog(BuildContext context, WidgetRef ref) async {
   final tag = TextEditingController();
   final nick = TextEditingController(
       text: ref.read(guildRepositoryProvider).cachedNickname ?? '');
+  // Phí tạo hội theo cấp VIP hiện tại (ưu đãi từ VIP 5).
+  final vipLevel = topupVipLevel(ref.read(gameControllerProvider).vipExp);
+  final createCost = guildCreateCostFor(vipLevel);
+  final discount = guildCreateDiscountPercent(vipLevel);
   var emoji = guildEmojis.first;
   var requiresApproval = false;
   final ok = await showDialog<bool>(
@@ -315,8 +325,12 @@ Future<void> _showCreateDialog(BuildContext context, WidgetRef ref) async {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(l10n.guildCreateCost(guildCreateCostGems),
+              Text(l10n.guildCreateCost(createCost),
                   key: const Key('guild-create-cost')),
+              if (discount > 0)
+                Text(l10n.guildCreateVipDiscount(discount),
+                    key: const Key('guild-create-discount'),
+                    style: Theme.of(ctx).textTheme.bodySmall),
               TextField(
                 key: const Key('guild-name-field'),
                 controller: name,
@@ -391,7 +405,11 @@ Future<void> _showCreateDialog(BuildContext context, WidgetRef ref) async {
         nickname: nk,
       );
   if (!context.mounted || out.ok) return;
-  _toast(context, guildFailureText(l10n, out.failure!));
+  _toast(
+      context,
+      guildFailureText(l10n, out.failure!,
+          createCost:
+              guildCreateCostFor(topupVipLevel(ref.read(gameControllerProvider).vipExp))));
 }
 
 // --- Đang ở hội ---------------------------------------------------------------
@@ -440,6 +458,21 @@ class _MyGuildView extends ConsumerWidget {
                         key: const Key('guild-streak'),
                         style: theme.textTheme.bodyMedium
                             ?.copyWith(fontWeight: FontWeight.w600)),
+                  ),
+                // Thưởng thu nhập từ thành viên VIP: chỉ hiện khi đã có (không chiếm chỗ ở hội chưa
+                // có VIP); chạm giữ để xem cách có thưởng.
+                if (g.vipBonus > 0)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Tooltip(
+                      message: l10n.guildVipBonusHint(
+                          guildVipBonusCap, guildVipMinLevel, guildVipBonusPerMember),
+                      triggerMode: TooltipTriggerMode.tap,
+                      child: Text(l10n.guildVipBonusLine(g.vipMembers, g.vipBonus),
+                          key: const Key('guild-vip-bonus'),
+                          style: theme.textTheme.bodyMedium
+                              ?.copyWith(fontWeight: FontWeight.w600)),
+                    ),
                   ),
                 if (g.buffSeconds > 0)
                   Padding(
@@ -499,8 +532,18 @@ class _MyGuildView extends ConsumerWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text(r.nickname,
-                          maxLines: 1, overflow: TextOverflow.ellipsis),
+                      child: VipNameBlock(
+                        userId: r.userId,
+                        child: Row(
+                          children: [
+                            FlairBadge(userId: r.userId),
+                            Flexible(
+                              child: Text(r.nickname,
+                                  maxLines: 1, overflow: TextOverflow.ellipsis),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     IconButton(
                       key: Key('guild-accept-${r.userId}'),
@@ -524,22 +567,36 @@ class _MyGuildView extends ConsumerWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: Row(
+                    child: VipNameBlock(
+ userId: m.userId,
+ // Hai dòng thay vì một Row: ở màn hẹp, cột điểm + 3 nút cố định chỉ chừa ~60px cho tên.
+ // Dòng trên (👑/⭐ + nhãn VIP/huy hiệu) co nhỏ vừa khung bằng FittedBox, dòng dưới là tên
+ // (cắt "…" khi quá dài) nên không tràn dù tên và nhãn VIP 10 rất dài.
+ child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        if (m.role == GuildRole.owner) const Text('👑 '),
-                        if (m.role == GuildRole.officer) const Text('⭐ '),
-                        FlairBadge(userId: m.userId),
-                        Flexible(
-                          child: Text(m.nickname,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  fontWeight: m.userId == view.myUserId
-                                      ? FontWeight.bold
-                                      : FontWeight.normal)),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (m.role == GuildRole.owner) const Text('👑 '),
+                              if (m.role == GuildRole.officer) const Text('⭐ '),
+                              FlairBadge(userId: m.userId),
+                            ],
+                          ),
                         ),
+                        Text(m.nickname,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontWeight: m.userId == view.myUserId
+                                    ? FontWeight.bold
+                                    : FontWeight.normal)),
                       ],
-                    ),
+                    )),
                   ),
                   const SizedBox(width: 8),
                   // Cột điểm RỘNG CỐ ĐỊNH, căn phải: điểm các hàng thẳng cột dù hàng có

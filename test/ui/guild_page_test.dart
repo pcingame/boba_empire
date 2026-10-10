@@ -2,8 +2,10 @@
 // ở màn 320px mọi ngôn ngữ (tên hội/biệt danh rất dài).
 import 'dart:ui' as ui;
 
+import 'package:boba_empire/core/format.dart';
 import 'package:boba_empire/core/guild.dart';
 import 'package:boba_empire/core/models.dart';
+import 'package:boba_empire/core/topup.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/guild/guild_controller.dart';
 import 'package:boba_empire/guild/guild_repository.dart';
@@ -53,6 +55,12 @@ void gTest(String name, Future<void> Function(WidgetTester) body) {
   });
 }
 
+/// Cấp VIP giả theo userId (me=2 không khung; u2=5; u3=10).
+class _Vips extends VipLevels {
+  @override
+  Map<String, int> build() => {'me': 2, 'u2': 5, 'u3': 10, 'r1': 6};
+}
+
 class _Flair extends FlairCache {
   @override
   Map<String, String> build() => {};
@@ -66,6 +74,8 @@ Future<ProviderContainer> _pump(
   double score = 0,
   double gems = 5000,
   Size size = const Size(320, 640),
+  List<Override> extra = const [],
+  int vipExp = 0,
 }) async {
   await tester.binding.setSurfaceSize(size);
   addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -74,6 +84,7 @@ Future<ProviderContainer> _pump(
   await GameStorage(prefs).save(
       GameState.newGame(nowMillis: _now)
         ..gems = gems
+        ..vipExp = vipExp
         ..guildWeek = guildWeekIndex(_now)
         ..guildWeekScore = score,
       nowMillis: _now);
@@ -82,6 +93,7 @@ Future<ProviderContainer> _pump(
     clockProvider.overrideWithValue(() => _now),
     guildRepositoryProvider.overrideWithValue(repo),
     flairCacheProvider.overrideWith(_Flair.new),
+    ...extra,
   ];
   final c = ProviderContainer(overrides: overrides);
   _live.add(c);
@@ -498,6 +510,130 @@ void main() {
     expect(find.textContaining('Public Club'), findsOneWidget);
   });
 
+  group('phí tạo hội theo VIP (giao diện)', () {
+    Future<void> openCreate(WidgetTester tester) async {
+      await tester.tap(find.byKey(const Key('guild-create-button')));
+      await tester.pumpAndSettle();
+    }
+
+    gTest('không VIP: phí 2000, không dòng ưu đãi', (tester) async {
+      await _pump(tester, FakeGuildRepository(listing: sampleListing), locale: 'en');
+      await openCreate(tester);
+      expect(find.text('Guild creation fee: 2000 💎'), findsOneWidget);
+      expect(find.byKey(const Key('guild-create-discount')), findsNothing);
+    });
+
+    gTest('VIP 8: phí 1000 kèm dòng ưu đãi 50%', (tester) async {
+      await _pump(tester, FakeGuildRepository(listing: sampleListing),
+          locale: 'en', vipExp: topupTiers[7].exp);
+      await openCreate(tester);
+      expect(find.text('Guild creation fee: 1000 💎'), findsOneWidget);
+      expect(find.text('VIP perk: 50% off the guild creation fee'), findsOneWidget);
+    });
+
+    gTest('VIP 10: phí 0 kèm ưu đãi 100%', (tester) async {
+      await _pump(tester, FakeGuildRepository(listing: sampleListing),
+          locale: 'en', vipExp: topupTiers[9].exp);
+      await openCreate(tester);
+      expect(find.text('Guild creation fee: 0 💎'), findsOneWidget);
+      expect(find.text('VIP perk: 100% off the guild creation fee'), findsOneWidget);
+    });
+
+    gTest('thiếu 💎 nạp/tặng không còn báo nhầm "cần 2000 💎 để tạo hội"', (tester) async {
+      final repo = FakeGuildRepository(mine: fakeGuild());
+      await _pump(tester, repo, locale: 'en', gems: 5);
+      await _scrollTo(tester, const Key('guild-gift-u2'));
+      await tester.tap(find.byKey(const Key('guild-gift-u2')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('guild-gift-amount-10')));
+      await tester.pumpAndSettle();
+      expect(find.text('Not enough 💎.'), findsOneWidget);
+      expect(find.textContaining('to create a guild'), findsNothing);
+    });
+  });
+
+  group('thưởng thu nhập theo VIP của hội (giao diện)', () {
+    gTest('có VIP: hiện đúng số thành viên và % (tham số không bị đảo)', (tester) async {
+      await _pump(
+          tester, FakeGuildRepository(mine: fakeGuild(vipMembers: 3, vipBonus: 3)),
+          locale: 'en');
+      expect(find.text('VIP bonus: 3 VIP members → +3% income for the whole guild'),
+          findsOneWidget);
+    });
+
+    gTest('chạm vào dòng thưởng: hiện cách có thưởng, đúng số (tham số không bị đảo)',
+        (tester) async {
+      await _pump(
+          tester, FakeGuildRepository(mine: fakeGuild(vipMembers: 3, vipBonus: 3)),
+          locale: 'en');
+      await tester.tap(find.byKey(const Key('guild-vip-bonus')));
+      await tester.pumpAndSettle();
+      expect(
+          find.text('Each member at VIP 5+ adds +1% income for the whole guild (max +5%)'),
+          findsOneWidget);
+    });
+
+    for (final lang in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
+      gTest('dòng thưởng VIP + gợi ý không tràn ở 320px ($lang)', (tester) async {
+        await _pump(tester,
+            FakeGuildRepository(mine: fakeGuild(vipMembers: 12, vipBonus: 5)),
+            locale: lang);
+        expect(tester.takeException(), isNull);
+        await tester.tap(find.byKey(const Key('guild-vip-bonus')));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      });
+    }
+
+    gTest('chưa có VIP: không có dòng thưởng, không chiếm chỗ', (tester) async {
+      await _pump(tester, FakeGuildRepository(mine: fakeGuild()), locale: 'en');
+      expect(find.byKey(const Key('guild-vip-bonus')), findsNothing);
+    });
+  });
+
+  group('VIP trong Hội', () {
+    final vip = [vipLevelProvider.overrideWith(_Vips.new)];
+
+    gTest('danh sách thành viên: nhãn VIP, khung theo cấp và dòng danh hiệu từ VIP 5',
+        (tester) async {
+      await _pump(tester, FakeGuildRepository(mine: fakeGuild()),
+          locale: 'en', extra: vip, size: const Size(360, 900));
+      await _scrollTo(tester, const Key('guild-gift-u3'));
+      expect(find.text('VIP 2'), findsOneWidget);
+      expect(find.text('VIP 5'), findsOneWidget);
+      expect(find.text('VIP 10'), findsOneWidget);
+      // Khung: chỉ cấp ≥ 3 (u2, u3); dòng danh hiệu: chỉ cấp ≥ 5 (u2, u3).
+      expect(find.byKey(const Key('vip-frame')), findsNWidgets(2));
+      expect(find.text('👑 Shop Owner'), findsOneWidget);
+      expect(find.text('👑 Boba Emperor'), findsOneWidget);
+      expect(find.byKey(const Key('vip-title-line')), findsNWidgets(2));
+    });
+
+    gTest('đơn xin vào hội: chủ hội thấy nhãn VIP của người xin', (tester) async {
+      final repo = FakeGuildRepository(
+          mine: fakeGuild(
+              requests: const [GuildJoinRequest(userId: 'r1', nickname: 'Người Xin')]));
+      await _pump(tester, repo, locale: 'en', extra: vip);
+      expect(find.text('Người Xin'), findsOneWidget);
+      expect(find.text('VIP 6'), findsOneWidget);
+      expect(find.byKey(const Key('guild-accept-r1')), findsOneWidget);
+    });
+
+    for (final lang in ['vi', 'es', 'th', 'ko']) {
+      gTest('VIP 10 + tên rất dài không tràn ở 320px ($lang)', (tester) async {
+        const longName = 'MộtBiệtDanhRấtRấtDàiNhưThế';
+        final repo = FakeGuildRepository(
+            mine: fakeGuild(members: const [
+          GuildMemberInfo(userId: 'me', nickname: 'Alice', points: 400),
+          GuildMemberInfo(userId: 'u3', nickname: longName, points: 12345678),
+        ]));
+        await _pump(tester, repo, locale: lang, extra: vip);
+        await _scrollTo(tester, const Key('guild-gift-u3'));
+        expect(tester.takeException(), isNull);
+      });
+    }
+  });
+
   group('tặng 💎 giữa hội viên', () {
     gTest('mọi hội viên khác có nút tặng; chính mình thì không', (tester) async {
       await _pump(tester, FakeGuildRepository(mine: fakeGuild()), locale: 'en');
@@ -593,6 +729,69 @@ void main() {
       await _pump(tester, bad, home: const GuildLeaderboardPage());
       expect(find.byType(FilledButton), findsOneWidget);
     });
+
+    gTest('tab VIP: xếp hội theo tổng VIP EXP, có ghi chú; rỗng và lỗi có thông báo', (tester) async {
+      final repo = FakeGuildRepository()
+        ..boardVip = const [
+          GuildSummary(
+              id: 'a', name: 'Rồng Vàng', tag: 'RV', emoji: '🐉',
+              memberCount: 10, weekTotal: 100, rank: 1, vipExp: 123456),
+          GuildSummary(
+              id: 'b', name: 'Nhỏ', tag: 'BB', emoji: '🧋',
+              memberCount: 2, weekTotal: 5, rank: 2, vipExp: 600),
+        ];
+      await _pump(tester, repo, home: const GuildLeaderboardPage(), locale: 'en');
+      // Thanh tab cuộn ngang ở màn hẹp: cuộn tới tab VIP trước khi bấm.
+      await tester.ensureVisible(find.byKey(const Key('guild-lb-tab-vip')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('guild-lb-tab-vip')));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('[RV] Rồng Vàng'), findsOneWidget);
+      expect(find.text('${formatNumber(123456)} EXP'), findsOneWidget);
+      expect(find.text('${formatNumber(600)} EXP'), findsOneWidget);
+      expect(find.byKey(const Key('guild-lb-note')), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await _teardown(tester);
+
+      await _pump(tester, FakeGuildRepository(), home: const GuildLeaderboardPage(), locale: 'en');
+      // Thanh tab cuộn ngang ở màn hẹp: cuộn tới tab VIP trước khi bấm.
+      await tester.ensureVisible(find.byKey(const Key('guild-lb-tab-vip')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('guild-lb-tab-vip')));
+      await tester.pumpAndSettle();
+      expect(find.text('No guild has VIP members on the board yet.'), findsOneWidget);
+      await _teardown(tester);
+
+      final bad = FakeGuildRepository()
+        ..failures['leaderboardVip'] = const GuildException(GuildFailure.network);
+      await _pump(tester, bad, home: const GuildLeaderboardPage(), locale: 'en');
+      // Thanh tab cuộn ngang ở màn hẹp: cuộn tới tab VIP trước khi bấm.
+      await tester.ensureVisible(find.byKey(const Key('guild-lb-tab-vip')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('guild-lb-tab-vip')));
+      await tester.pumpAndSettle();
+      expect(find.byType(FilledButton), findsOneWidget); // Thử lại
+    });
+
+    for (final lang in ['vi', 'es', 'th', 'ko', 'id', 'pt']) {
+      gTest('4 tab BXH Hội không tràn ở 320px ($lang)', (tester) async {
+        final repo = FakeGuildRepository()
+          ..boardVip = const [
+            GuildSummary(
+                id: 'a', name: 'TênHộiRấtRấtRấtDàiĐếnMứcPhảiCắt', tag: 'AAAA', emoji: '🐉',
+                memberCount: 30, weekTotal: 1, rank: 1, vipExp: 99999999999),
+          ];
+        await _pump(tester, repo, home: const GuildLeaderboardPage(), locale: lang);
+        expect(tester.takeException(), isNull);
+        for (final k in ['total', 'avg', 'streak', 'vip']) {
+          await tester.ensureVisible(find.byKey(Key('guild-lb-tab-$k')));
+          await tester.pumpAndSettle();
+          await tester.tap(find.byKey(Key('guild-lb-tab-$k')));
+          await tester.pumpAndSettle();
+          expect(tester.takeException(), isNull, reason: '$lang tab $k');
+        }
+      });
+    }
 
     gTest('mở BXH từ nút trên trang Hội', (tester) async {
       final repo = FakeGuildRepository()..board = const [];

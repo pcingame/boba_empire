@@ -26,6 +26,26 @@ const int guildGiftSendDailyCap = 100;
 const int guildGiftReceiveDailyCap = 200;
 const int guildGiftExpireDays = 7;
 
+/// Thưởng thu nhập theo số thành viên VIP: mỗi thành viên từ cấp [guildVipMinLevel] cộng
+/// [guildVipBonusPerMember]% cho CẢ HỘI (trần [guildVipBonusCap]%) — KHỚP supabase/guild_schema.sql
+/// (guild_vip_*; test so khớp). Chỉ áp khi đang ở hội. Con số là ước lượng chưa playtest.
+const int guildVipBonusPerMember = 1;
+const int guildVipBonusCap = 5;
+const int guildVipMinLevel = 5;
+
+/// Hệ số thu nhập từ thưởng VIP của hội ([pct] % do server báo, kẹp trong trần).
+double guildVipBonusMultiplier({required bool joined, required int pct}) =>
+    joined ? 1 + pct.clamp(0, guildVipBonusCap) / 100 : 1.0;
+
+/// Ưu đãi phí tạo hội theo cấp VIP (% giảm): VIP 5 → 25%, VIP 8 → 50%, VIP 10 → miễn phí.
+/// Phí chỉ kiểm/trừ ở client (server không thu 💎) nên đây là ưu đãi cục bộ.
+int guildCreateDiscountPercent(int vipLevel) =>
+    vipLevel >= 10 ? 100 : vipLevel >= 8 ? 50 : vipLevel >= 5 ? 25 : 0;
+
+/// Phí tạo hội (💎) sau ưu đãi của [vipLevel].
+int guildCreateCostFor(int vipLevel) =>
+    guildCreateCostGems * (100 - guildCreateDiscountPercent(vipLevel)) ~/ 100;
+
 /// Điểm cá nhân tối thiểu trong tuần để được nhận thưởng mốc (chống ăn theo).
 const int guildMinPointsToClaim = 300;
 

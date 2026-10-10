@@ -5,6 +5,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/format.dart';
 import '../core/guild.dart';
 import '../guild/guild_controller.dart';
 import '../guild/guild_repository.dart';
@@ -30,6 +31,10 @@ final guildLeaderboardStreakProvider =
         (ref) => ref.read(guildRepositoryProvider).leaderboardStreak(),
         retry: (_, _) => null);
 
+final guildLeaderboardVipProvider = FutureProvider.autoDispose<List<GuildSummary>>(
+    (ref) => ref.read(guildRepositoryProvider).leaderboardVip(),
+    retry: (_, _) => null);
+
 class GuildLeaderboardPage extends StatelessWidget {
   const GuildLeaderboardPage({super.key});
 
@@ -38,15 +43,19 @@ class GuildLeaderboardPage extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return PhoneWidth(
       child: DefaultTabController(
-        length: 3,
+        length: 4,
         child: Scaffold(
           appBar: AppBar(
             title: Text(l10n.guildLbTitle),
             bottom: TabBar(
+              // 4 tab + chữ dài (7 ngôn ngữ) không vừa màn 320px: cho cuộn ngang.
+              isScrollable: true,
+              tabAlignment: TabAlignment.start,
               tabs: [
                 Tab(key: const Key('guild-lb-tab-total'), text: l10n.guildLbTabTotal),
                 Tab(key: const Key('guild-lb-tab-avg'), text: l10n.guildLbTabAvg),
                 Tab(key: const Key('guild-lb-tab-streak'), text: l10n.guildLbTabStreak),
+                Tab(key: const Key('guild-lb-tab-vip'), text: l10n.guildLbTabVip),
               ],
             ),
           ),
@@ -68,6 +77,12 @@ class GuildLeaderboardPage extends StatelessWidget {
                 emptyText: l10n.guildLbStreakEmpty,
                 note: l10n.guildLbStreakNote,
                 metric: (l, g) => l.guildStreakWeeks(g.streak ?? 0),
+              ),
+              _Board(
+                provider: guildLeaderboardVipProvider,
+                emptyText: l10n.guildLbVipEmpty,
+                note: l10n.guildLbVipNote,
+                metric: (l, g) => l.guildVipExpTotal(formatNumber((g.vipExp ?? 0).toDouble())),
               ),
             ],
           ),

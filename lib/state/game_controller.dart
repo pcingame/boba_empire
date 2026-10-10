@@ -524,9 +524,10 @@ class GameController extends Notifier<GameSnapshot> {
   /// Trừ phí tạo hội SAU KHI server đã tạo xong. Trả false nếu lúc này không đủ
   /// 💎 (vừa tiêu mất giữa chừng) — khi đó không trừ âm. Lưu ngay.
   bool chargeGuildCreation() {
-    if (_game.gems < guildCreateCostGems) return false;
-    _game.gems -= guildCreateCostGems;
-    logEvent('guild_created', {'cost': guildCreateCostGems});
+    final cost = guildCreateCostFor(topupVipLevel(_game.vipExp));
+    if (_game.gems < cost) return false;
+    _game.gems -= cost;
+    logEvent('guild_created', {'cost': cost});
     unawaited(saveNow());
     state = _snapshot();
     return true;
@@ -545,6 +546,16 @@ class GameController extends Notifier<GameSnapshot> {
   void setGuildJoined(bool joined) {
     if (_game.guildJoined == joined) return;
     _game.guildJoined = joined;
+    if (!joined) _game.guildVipBonusPct = 0; // rời/bị kick hội → mất thưởng ngay
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Áp % thưởng thu nhập từ thành viên VIP của hội (server báo), kẹp 0..[guildVipBonusCap].
+  void applyGuildVipBonus(int pct) {
+    final v = pct.clamp(0, guildVipBonusCap);
+    if (v == _game.guildVipBonusPct) return;
+    _game.guildVipBonusPct = v;
     unawaited(saveNow());
     state = _snapshot();
   }
@@ -1780,6 +1791,7 @@ class GameController extends Notifier<GameSnapshot> {
       eventId: _game.eventId,
       guildScore: guildScore(_game),
       guildJoined: _game.guildJoined,
+      guildVipBonusPct: _game.guildVipBonusPct,
       guildBuffActive: _clock() < _game.guildBuffUntilMillis,
       eventPoints: _game.eventPoints,
       eventProgress: Map.unmodifiable(_game.eventProgress),

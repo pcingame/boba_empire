@@ -215,6 +215,14 @@ void main() {
     expect(old.vipTitleChoice, -1);
   });
 
+  test('thưởng VIP của hội được lưu qua save/load; save cũ → 0', () {
+    final g = GameState.newGame(nowMillis: 0)..guildVipBonusPct = 4;
+    expect(GameState.fromJson(g.toJson()).guildVipBonusPct, 4);
+    final old = GameState.fromJson(GameState.newGame(nowMillis: 0).toJson()
+      ..remove('guildVipBonusPct'));
+    expect(old.guildVipBonusPct, 0);
+  });
+
   test('thưởng mua lần đầu được lưu qua save/load (không nhận lại sau khi tải)', () {
     final g = GameState.newGame(nowMillis: 0)..firstBuyClaimed.add('boba_gems_small');
     final back = GameState.fromJson(g.toJson());

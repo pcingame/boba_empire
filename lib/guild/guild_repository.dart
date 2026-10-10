@@ -21,6 +21,7 @@ class GuildSummary {
     this.rank,
     this.avgPoints,
     this.streak,
+    this.vipExp,
   });
 
   factory GuildSummary.fromRow(Map<String, dynamic> r) => GuildSummary(
@@ -35,6 +36,7 @@ class GuildSummary {
         rank: (r['rank'] as num?)?.toInt(),
         avgPoints: (r['avg_points'] as num?)?.toInt(),
         streak: (r['streak'] as num?)?.toInt(),
+        vipExp: (r['vip_exp'] as num?)?.toInt(),
       );
 
   final String id;
@@ -55,6 +57,9 @@ class GuildSummary {
   /// mốc (chỉ BXH chuỗi).
   final int? avgPoints;
   final int? streak;
+
+  /// Tổng VIP EXP của thành viên (chỉ BXH VIP; chỉ tính người đã đặt biệt danh và nộp EXP).
+  final int? vipExp;
 }
 
 /// Quỹ hội tuần (xem guild_shop.dart). [target] 0 = server cũ chưa có quỹ → ẩn thẻ.
@@ -208,6 +213,8 @@ class MyGuild {
     this.donatedToday = 0,
     this.chatLatestId = 0,
     this.fund = const GuildFund(),
+    this.vipBonus = 0,
+    this.vipMembers = 0,
   });
 
   /// Đọc JSON trả về từ `guild_my()`.
@@ -240,6 +247,8 @@ class MyGuild {
       donatedToday: (j['donated_today'] as num?)?.toInt() ?? 0,
       chatLatestId: (j['chat_latest'] as num?)?.toInt() ?? 0,
       fund: GuildFund.fromJson(j['fund'] as Map<String, dynamic>?),
+      vipBonus: (j['vip_bonus'] as num?)?.toInt() ?? 0,
+      vipMembers: (j['vip_members'] as num?)?.toInt() ?? 0,
       total: (j['total'] as num).toInt(),
       claimed: [for (final c in j['claimed'] as List) (c as num).toInt()],
       members: [
@@ -294,6 +303,10 @@ class MyGuild {
 
   /// Quỹ hội tuần này.
   final GuildFund fund;
+
+  /// Số thành viên VIP đủ cấp và % thưởng thu nhập cả hội nhận được từ họ (server tính).
+  final int vipMembers;
+  final int vipBonus;
   final List<GuildMemberInfo> members;
 
   int pointsOf(String? userId) {
@@ -314,6 +327,9 @@ enum GuildFailure {
 
   /// Thiếu 💎 để tạo hội (kiểm cục bộ, không đến từ server).
   notEnoughGems,
+
+  /// Thiếu 💎 để nạp vào hội / tặng hội viên (kiểm cục bộ).
+  notEnoughGemsToSpend,
 
   /// Hội này cần duyệt — phải xin vào thay vì vào thẳng.
   approvalRequired,
@@ -398,6 +414,9 @@ abstract class GuildRepository {
   Future<List<GuildSummary>> leaderboard();
   Future<List<GuildSummary>> leaderboardAvg();
   Future<List<GuildSummary>> leaderboardStreak();
+
+  /// BXH Hội theo tổng VIP EXP của thành viên.
+  Future<List<GuildSummary>> leaderboardVip();
   Future<void> create({
     required String name,
     required String tag,
@@ -442,6 +461,9 @@ abstract class GuildRepository {
 
   /// Giây buff thu nhập cả hội còn lại (nhẹ — gọi khi mở app).
   Future<int> buffSeconds();
+
+  /// % thưởng thu nhập từ thành viên VIP của hội mình (nhẹ — gọi khi mở app).
+  Future<int> vipBonus();
 
   /// Tặng [amount] 💎 cho hội viên [toUserId] (server kiểm cùng hội + trần ngày).
   Future<void> giftSend(String toUserId, int amount);
@@ -602,6 +624,10 @@ class SupabaseGuildRepository implements GuildRepository {
       _rows(await _rpc('guild_leaderboard_streak', {'p_limit': 50}));
 
   @override
+  Future<List<GuildSummary>> leaderboardVip() async =>
+      _rows(await _rpc('guild_leaderboard_vip', {'p_limit': 50}));
+
+  @override
   Future<void> claimReward(int milestone) =>
       _rpc('guild_claim_reward', {'p_milestone': milestone});
 
@@ -625,6 +651,9 @@ class SupabaseGuildRepository implements GuildRepository {
   @override
   Future<int> buffSeconds() async =>
       ((await _rpc('guild_buff_seconds')) as num).toInt();
+
+  @override
+  Future<int> vipBonus() async => ((await _rpc('guild_vip_bonus')) as num).toInt();
 
   @override
   Future<void> giftSend(String toUserId, int amount) =>

@@ -139,6 +139,27 @@ void main() {
     }
   });
 
+  test('thưởng thu nhập theo VIP của hội: hằng số SQL ↔ Dart, hàm nội bộ bị khoá', () {
+    expect(constant('guild_vip_bonus_per_member'), guildVipBonusPerMember);
+    expect(constant('guild_vip_bonus_cap'), guildVipBonusCap);
+    expect(constant('guild_vip_min_level'), guildVipMinLevel);
+    expect(sql, contains("'guild_vip_bonus()'"));
+    expect(sql, contains('revoke all on function guild_vip_count(uuid) from public, anon, authenticated'));
+    expect(sql, contains('revoke all on function guild_vip_bonus_pct(uuid) from public, anon, authenticated'));
+    expect(sql, contains("'vip_bonus', guild_vip_bonus_pct(v_g.id)"));
+    expect(repo, contains("'guild_vip_bonus'"));
+    expect(repo, contains("j['vip_bonus']"));
+  });
+
+  test('BXH VIP của Hội: hàm SQL có mặt, khoá quyền, chịu được thiếu bảng VIP', () {
+    expect(sql, contains('function guild_leaderboard_vip(p_limit integer default 50)'));
+    expect(sql, contains("'guild_leaderboard_vip(integer)'"));
+    expect(sql, contains('exception when undefined_table then'));
+    // App đọc đúng tên RPC và cột.
+    expect(repo, contains("'guild_leaderboard_vip'"));
+    expect(repo, contains("r['vip_exp']"));
+  });
+
   group('Xu Hội / cửa hàng / BXH phụ khớp SQL', () {
     test('hằng số nạp 💎, buff, số người tối thiểu của BXH trung bình', () {
       expect(constant('guild_donate_daily_cap'), guildDonateDailyCap);

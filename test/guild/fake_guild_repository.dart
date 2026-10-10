@@ -61,6 +61,14 @@ class FakeGuildRepository implements GuildRepository {
     return boardAvg;
   }
 
+  List<GuildSummary> boardVip = [];
+
+  @override
+  Future<List<GuildSummary>> leaderboardVip() async {
+    _hit('leaderboardVip');
+    return boardVip;
+  }
+
   @override
   Future<List<GuildSummary>> leaderboardStreak() async {
     _hit('leaderboardStreak');
@@ -218,6 +226,15 @@ class FakeGuildRepository implements GuildRepository {
   Future<void> chatPin(int? id) async {
     _hit('chatPin');
     chatPinnedId = id;
+  }
+
+  /// % thưởng VIP mà vipBonus() báo (đổi được trong test).
+  int serverVipBonus = 0;
+
+  @override
+  Future<int> vipBonus() async {
+    _hit('vipBonus');
+    return serverVipBonus;
   }
 
   @override
@@ -386,6 +403,8 @@ MyGuild fakeGuild({
   int donatedToday = 0,
   int chatLatest = 0,
   GuildFund fund = const GuildFund(),
+  int vipMembers = 0,
+  int vipBonus = 0,
 }) =>
     MyGuild(
       id: 'g1',
@@ -405,6 +424,8 @@ MyGuild fakeGuild({
       donatedToday: donatedToday,
       chatLatestId: chatLatest,
       fund: fund,
+      vipMembers: vipMembers,
+      vipBonus: vipBonus,
       members: members ??
           const [
             GuildMemberInfo(userId: 'me', nickname: 'Alice', points: 400),
@@ -452,6 +473,8 @@ MyGuild withState(
       donatedToday: donatedToday ?? g.donatedToday,
       chatLatestId: g.chatLatestId,
       fund: fund ?? g.fund,
+      vipBonus: g.vipBonus,
+      vipMembers: g.vipMembers,
     );
 
 /// Bản sao của [g] với danh sách thành viên (và chủ hội) đổi.
@@ -474,4 +497,6 @@ MyGuild withMembers(MyGuild g, List<GuildMemberInfo> members, {String? ownerId})
       donatedToday: g.donatedToday,
       chatLatestId: g.chatLatestId,
       fund: g.fund,
+      vipBonus: g.vipBonus,
+      vipMembers: g.vipMembers,
     );

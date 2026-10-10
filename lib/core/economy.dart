@@ -8,6 +8,7 @@ library;
 import 'dart:math';
 
 import 'balance.dart';
+import 'guild.dart' show guildVipBonusMultiplier;
 import 'models.dart';
 import 'topup.dart';
 
@@ -368,6 +369,7 @@ double effectiveIncomePerSecond(
     storyChoiceIncomeMultiplier(state) *
     (state.doubleIncomeOwned ? 2.0 : 1.0) *
     vipIncomeMultiplier(state.vipExp) *
+    guildVipBonusMultiplier(joined: state.guildJoined, pct: state.guildVipBonusPct) *
     boostMultiplier;
 
 /// Số Sao nhượng quyền tương ứng với tổng thu nhập cả đời.

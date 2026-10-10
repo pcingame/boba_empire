@@ -860,6 +860,39 @@ class AppLocalizationsTh extends AppLocalizations {
   String get marketFilterWish => 'อยากได้';
 
   @override
+  String get guildErrGemsSpend => '💎 ไม่พอ';
+
+  @override
+  String guildCreateVipDiscount(Object percent) {
+    return 'สิทธิ์ VIP: ลด $percent% ค่าสร้างกิลด์';
+  }
+
+  @override
+  String get guildLbTabVip => 'VIP';
+
+  @override
+  String get guildLbVipEmpty => 'ยังไม่มีกิลด์ที่มีสมาชิก VIP บนกระดาน';
+
+  @override
+  String get guildLbVipNote =>
+      'VIP EXP รวมของสมาชิก (นับเฉพาะคนที่ตั้งชื่อเล่นแล้ว)';
+
+  @override
+  String guildVipExpTotal(Object exp) {
+    return '$exp EXP';
+  }
+
+  @override
+  String guildVipBonusLine(Object members, Object pct) {
+    return 'โบนัส VIP: สมาชิก VIP $members คน → รายได้ทั้งกิลด์ +$pct%';
+  }
+
+  @override
+  String guildVipBonusHint(Object cap, Object level, Object per) {
+    return 'สมาชิกระดับ VIP $level+ แต่ละคนเพิ่มรายได้ทั้งกิลด์ +$per% (สูงสุด +$cap%)';
+  }
+
+  @override
   String get refEntry => '👥 ชวนเพื่อน';
 
   @override

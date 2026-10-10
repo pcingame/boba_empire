@@ -1494,6 +1494,54 @@ abstract class AppLocalizations {
   /// **'Muốn mua'**
   String get marketFilterWish;
 
+  /// No description provided for @guildErrGemsSpend.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đủ 💎.'**
+  String get guildErrGemsSpend;
+
+  /// No description provided for @guildCreateVipDiscount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ưu đãi VIP: giảm {percent}% phí tạo hội'**
+  String guildCreateVipDiscount(Object percent);
+
+  /// No description provided for @guildLbTabVip.
+  ///
+  /// In vi, this message translates to:
+  /// **'VIP'**
+  String get guildLbTabVip;
+
+  /// No description provided for @guildLbVipEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có hội nào có thành viên VIP trên bảng.'**
+  String get guildLbVipEmpty;
+
+  /// No description provided for @guildLbVipNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng VIP EXP của các thành viên (chỉ tính người đã đặt biệt danh).'**
+  String get guildLbVipNote;
+
+  /// No description provided for @guildVipExpTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'{exp} EXP'**
+  String guildVipExpTotal(Object exp);
+
+  /// No description provided for @guildVipBonusLine.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thưởng VIP: {members} thành viên VIP → +{pct}% thu nhập cả hội'**
+  String guildVipBonusLine(Object members, Object pct);
+
+  /// No description provided for @guildVipBonusHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi thành viên từ VIP {level} cộng +{per}% thu nhập cho cả hội (tối đa +{cap}%)'**
+  String guildVipBonusHint(Object cap, Object level, Object per);
+
   /// No description provided for @refEntry.
   ///
   /// In vi, this message translates to:

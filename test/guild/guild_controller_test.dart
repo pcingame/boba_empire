@@ -3,6 +3,7 @@
 import 'package:boba_empire/core/guild.dart';
 import 'package:boba_empire/core/guild_shop.dart';
 import 'package:boba_empire/core/models.dart';
+import 'package:boba_empire/core/topup.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/guild/guild_controller.dart';
 import 'package:boba_empire/guild/guild_repository.dart';
@@ -16,12 +17,13 @@ import 'fake_guild_repository.dart';
 final _now = DateTime.utc(2026, 10, 8).millisecondsSinceEpoch;
 
 Future<ProviderContainer> _open(FakeGuildRepository repo,
-    {double score = 500, double gems = 0}) async {
+    {double score = 500, double gems = 0, int vipExp = 0}) async {
   SharedPreferences.setMockInitialValues({});
   final prefs = await SharedPreferences.getInstance();
   await GameStorage(prefs).save(
       GameState.newGame(nowMillis: _now)
         ..gems = gems
+        ..vipExp = vipExp
         ..guildWeek = guildWeekIndex(_now)
         ..guildWeekScore = score,
       nowMillis: _now);
@@ -413,7 +415,7 @@ void main() {
       final repo = FakeGuildRepository(mine: fakeGuild());
       final c = await mine(repo, gems: 50);
       final out = await _ctrl(c).donate(100);
-      expect(out.failure, GuildFailure.notEnoughGems);
+      expect(out.failure, GuildFailure.notEnoughGemsToSpend);
       expect(repo.calls.contains('donate'), isFalse);
       expect(c.read(gameControllerProvider).gems, 50);
     });
@@ -554,10 +556,69 @@ void main() {
       final c = await mine(repo);
       repo.calls.clear();
       await _ctrl(c).syncBuff();
-      expect(repo.calls, ['buffSeconds']);
+      expect(repo.calls, ['buffSeconds', 'vipBonus']);
       expect(c.read(gameControllerProvider).guildBuffActive, isTrue);
       await _ctrl(c).syncBuff();
-      expect(repo.calls, ['buffSeconds'], reason: 'giới hạn tần suất');
+      expect(repo.calls, ['buffSeconds', 'vipBonus'], reason: 'giới hạn tần suất');
+    });
+
+    test('thưởng VIP của hội: refresh áp %, rời hội thì mất ngay', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild(vipMembers: 3, vipBonus: 3));
+      final c = await mine(repo);
+      var g = c.read(gameControllerProvider);
+      expect((g.guildJoined, g.guildVipBonusPct), (true, 3));
+      await _ctrl(c).leave();
+      g = c.read(gameControllerProvider);
+      expect((g.guildJoined, g.guildVipBonusPct), (false, 0));
+    });
+
+    test('thưởng VIP: kẹp ở trần dù server báo quá cao hoặc âm', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild(vipBonus: 99));
+      final c = await mine(repo);
+      expect(c.read(gameControllerProvider).guildVipBonusPct, guildVipBonusCap);
+      c.read(gameControllerProvider.notifier).applyGuildVipBonus(-4);
+      expect(c.read(gameControllerProvider).guildVipBonusPct, 0);
+    });
+
+    test('syncBuff cũng lấy thưởng VIP; RPC lỗi thì giữ giá trị cũ, buff vẫn áp', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild(vipBonus: 2))..serverVipBonus = 4;
+      final c = await mine(repo);
+      expect(c.read(gameControllerProvider).guildVipBonusPct, 2);
+      repo.calls.clear();
+      await _ctrl(c).syncBuff();
+      expect(c.read(gameControllerProvider).guildVipBonusPct, 4);
+
+      final repo2 = FakeGuildRepository(mine: fakeGuild(vipBonus: 2))
+        ..serverBuffSeconds = 7200
+        ..failures['vipBonus'] = const GuildException(GuildFailure.network);
+      final c2 = await mine(repo2);
+      await _ctrl(c2).syncBuff();
+      expect(c2.read(gameControllerProvider).guildVipBonusPct, 2); // giữ nguyên
+      expect(c2.read(gameControllerProvider).guildBuffActive, isTrue);
+    });
+
+    test('thu nhập: thưởng VIP của hội nhân vào thu nhập chỉ khi ở hội; kẹp ở trần', () async {
+      final repo = FakeGuildRepository();
+      final c = await _open(repo);
+      final game = c.read(gameControllerProvider.notifier);
+      // Có sẵn nguồn thu để thu nhập > 0.
+      final base = c.read(gameControllerProvider).incomePerSecond;
+      game.applyGuildVipBonus(3);
+      expect(c.read(gameControllerProvider).incomePerSecond, base, reason: 'chưa ở hội → không áp');
+      game.setGuildJoined(true);
+      game.applyGuildVipBonus(3);
+      final withBonus = c.read(gameControllerProvider).incomePerSecond;
+      expect(withBonus, closeTo(base * 1.03, base * 1e-9 + 1e-9));
+      game.applyGuildVipBonus(50);
+      expect(c.read(gameControllerProvider).incomePerSecond, closeTo(base * 1.05, base * 1e-9 + 1e-9));
+    });
+
+    test('guildVipBonusMultiplier: không ở hội = 1; kẹp 0..trần', () {
+      expect(guildVipBonusMultiplier(joined: false, pct: 5), 1.0);
+      expect(guildVipBonusMultiplier(joined: true, pct: 0), 1.0);
+      expect(guildVipBonusMultiplier(joined: true, pct: 3), closeTo(1.03, 1e-12));
+      expect(guildVipBonusMultiplier(joined: true, pct: 99), closeTo(1.05, 1e-12));
+      expect(guildVipBonusMultiplier(joined: true, pct: -5), 1.0);
     });
 
     test('syncBuff: lỗi mạng bị nuốt, buff cũ giữ nguyên', () async {
@@ -656,6 +717,54 @@ void main() {
     expect(g.pointsOf('nobody'), 0);
   });
 
+  group('ưu đãi phí tạo hội theo cấp VIP', () {
+    Future<GuildOutcome> create(ProviderContainer c) => _ctrl(c).create(
+        name: 'Boba', tag: 'BB', emoji: '🧋', requiresApproval: false, nickname: 'Alice');
+
+    test('bảng ưu đãi: <5 không giảm, 5→25%, 8→50%, 10→miễn phí', () {
+      expect([for (final l in [0, 4, 5, 7, 8, 9, 10]) guildCreateDiscountPercent(l)],
+          [0, 0, 25, 25, 50, 50, 100]);
+      expect([for (final l in [0, 4, 5, 8, 10]) guildCreateCostFor(l)],
+          [2000, 2000, 1500, 1000, 0]);
+    });
+
+    test('VIP 8: thiếu 💎 so với phí đã giảm → từ chối; đủ → trừ đúng 1000', () async {
+      final repo = FakeGuildRepository(listing: sampleListing);
+      final c = await _open(repo, gems: 999, vipExp: topupTiers[7].exp);
+      expect((await create(c)).failure, GuildFailure.notEnoughGems);
+      expect(repo.calls.contains('create'), isFalse);
+
+      final repo2 = FakeGuildRepository(listing: sampleListing);
+      final c2 = await _open(repo2, gems: 1500, vipExp: topupTiers[7].exp);
+      expect((await create(c2)).ok, isTrue);
+      expect(c2.read(gameControllerProvider).gems, 500);
+    });
+
+    test('VIP 10: tạo hội miễn phí kể cả khi 0 💎; không bị trừ âm', () async {
+      final repo = FakeGuildRepository(listing: sampleListing);
+      final c = await _open(repo, gems: 0, vipExp: topupTiers[9].exp);
+      expect((await create(c)).ok, isTrue);
+      expect(c.read(gameControllerProvider).gems, 0);
+    });
+
+    test('VIP 5: giảm 25% (1500)', () async {
+      final repo = FakeGuildRepository(listing: sampleListing);
+      final c = await _open(repo, gems: 1499, vipExp: topupTiers[4].exp);
+      expect((await create(c)).failure, GuildFailure.notEnoughGems);
+      final repo2 = FakeGuildRepository(listing: sampleListing);
+      final c2 = await _open(repo2, gems: 2000, vipExp: topupTiers[4].exp);
+      expect((await create(c2)).ok, isTrue);
+      expect(c2.read(gameControllerProvider).gems, 500);
+    });
+
+    test('không VIP: vẫn 2000 như cũ', () async {
+      final repo = FakeGuildRepository(listing: sampleListing);
+      final c = await _open(repo, gems: 5000);
+      expect((await create(c)).ok, isTrue);
+      expect(c.read(gameControllerProvider).gems, 3000);
+    });
+  });
+
   group('tặng 💎 giữa hội viên', () {
     Future<ProviderContainer> mine(FakeGuildRepository repo, {double gems = 0}) async {
       final c = await _open(repo, gems: gems);
@@ -667,7 +776,7 @@ void main() {
       final repo = FakeGuildRepository(mine: fakeGuild());
       final c = await mine(repo, gems: 5);
       final out = await _ctrl(c).sendGift('u2', 10);
-      expect(out.failure, GuildFailure.notEnoughGems);
+      expect(out.failure, GuildFailure.notEnoughGemsToSpend);
       expect(repo.calls.contains('giftSend'), isFalse);
       expect(c.read(gameControllerProvider).gems, 5);
     });

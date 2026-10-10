@@ -869,6 +869,40 @@ class AppLocalizationsEs extends AppLocalizations {
   String get marketFilterWish => 'Deseos';
 
   @override
+  String get guildErrGemsSpend => 'No tienes suficientes 💎.';
+
+  @override
+  String guildCreateVipDiscount(Object percent) {
+    return 'Ventaja VIP: $percent% de descuento en la creación de gremio';
+  }
+
+  @override
+  String get guildLbTabVip => 'VIP';
+
+  @override
+  String get guildLbVipEmpty =>
+      'Aún ningún gremio tiene miembros VIP en la clasificación.';
+
+  @override
+  String get guildLbVipNote =>
+      'EXP VIP total de los miembros (solo cuentan quienes tienen apodo).';
+
+  @override
+  String guildVipExpTotal(Object exp) {
+    return '$exp EXP';
+  }
+
+  @override
+  String guildVipBonusLine(Object members, Object pct) {
+    return 'Bono VIP: $members miembros VIP → +$pct% de ingresos para todo el gremio';
+  }
+
+  @override
+  String guildVipBonusHint(Object cap, Object level, Object per) {
+    return 'Cada miembro con VIP $level+ suma +$per% de ingresos a todo el gremio (máx. +$cap%)';
+  }
+
+  @override
   String get refEntry => '👥 Invitar amigos';
 
   @override

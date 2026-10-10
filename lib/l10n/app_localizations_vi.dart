@@ -861,6 +861,39 @@ class AppLocalizationsVi extends AppLocalizations {
   String get marketFilterWish => 'Muốn mua';
 
   @override
+  String get guildErrGemsSpend => 'Không đủ 💎.';
+
+  @override
+  String guildCreateVipDiscount(Object percent) {
+    return 'Ưu đãi VIP: giảm $percent% phí tạo hội';
+  }
+
+  @override
+  String get guildLbTabVip => 'VIP';
+
+  @override
+  String get guildLbVipEmpty => 'Chưa có hội nào có thành viên VIP trên bảng.';
+
+  @override
+  String get guildLbVipNote =>
+      'Tổng VIP EXP của các thành viên (chỉ tính người đã đặt biệt danh).';
+
+  @override
+  String guildVipExpTotal(Object exp) {
+    return '$exp EXP';
+  }
+
+  @override
+  String guildVipBonusLine(Object members, Object pct) {
+    return 'Thưởng VIP: $members thành viên VIP → +$pct% thu nhập cả hội';
+  }
+
+  @override
+  String guildVipBonusHint(Object cap, Object level, Object per) {
+    return 'Mỗi thành viên từ VIP $level cộng +$per% thu nhập cho cả hội (tối đa +$cap%)';
+  }
+
+  @override
   String get refEntry => '👥 Mời bạn bè';
 
   @override

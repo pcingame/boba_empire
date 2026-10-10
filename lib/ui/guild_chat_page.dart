@@ -10,7 +10,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../guild/guild_chat_unread.dart';
 import '../guild/guild_controller.dart';
 import '../guild/guild_repository.dart';
+import '../core/topup.dart';
 import '../l10n/app_localizations.dart';
+import '../leaderboard/flair.dart';
+import '../state/game_providers.dart';
 import 'guild_page.dart' show guildFailureText;
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
@@ -266,29 +269,10 @@ class _List extends StatelessWidget {
                         child: ConstrainedBox(
                           constraints: BoxConstraints(
                               maxWidth: MediaQuery.sizeOf(context).width * 0.75),
-                          child: Container(
-                            key: Key('guild-chat-msg-${m.id}'),
-                            margin: const EdgeInsets.symmetric(vertical: 3),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: mine
-                                  ? theme.colorScheme.primaryContainer
-                                  : theme.colorScheme.surfaceContainerHighest,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (!mine)
-                                  Text(m.nickname,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: theme.textTheme.labelSmall
-                                          ?.copyWith(fontWeight: FontWeight.w700)),
-                                Text(m.body),
-                              ],
-                            ),
+                          child: _Bubble(
+                            message: m,
+                            mine: mine,
+                            theme: theme,
                           ),
                         ),
                       ),
@@ -297,6 +281,65 @@ class _List extends StatelessWidget {
                 ),
         ),
       ],
+    );
+  }
+}
+
+/// Một bong bóng tin nhắn. Tin của VIP từ cấp [vipTitleMinLevel] có nền pha màu + viền theo
+/// cấp (8+ có thêm quầng sáng); tin của chính mình theo cấp VIP cục bộ.
+class _Bubble extends ConsumerWidget {
+  const _Bubble({required this.message, required this.mine, required this.theme});
+
+  final GuildMessage message;
+  final bool mine;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final m = message;
+    final level = mine
+        ? topupVipLevel(ref.watch(gameControllerProvider.select((s) => s.vipExp)))
+        : (ref.watch(vipLevelProvider.select((v) => v[m.userId])) ?? 0);
+    final vip = level >= vipTitleMinLevel ? vipFrameDecoration(level) : null;
+    final base = mine
+        ? theme.colorScheme.primaryContainer
+        : theme.colorScheme.surfaceContainerHighest;
+    return Container(
+      key: Key('guild-chat-msg-${m.id}'),
+      margin: const EdgeInsets.symmetric(vertical: 3),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: vip == null
+            ? base
+            : Color.alphaBlend(
+                vipTagColors[level.clamp(1, vipTagColors.length) - 1]
+                    .first
+                    .withValues(alpha: 0.2),
+                base),
+        borderRadius: BorderRadius.circular(12),
+        border: vip?.border,
+        boxShadow: vip?.boxShadow,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (!mine)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FlairBadge(userId: m.userId),
+                Flexible(
+                  child: Text(m.nickname,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.labelSmall
+                          ?.copyWith(fontWeight: FontWeight.w700)),
+                ),
+              ],
+            ),
+          Text(m.body),
+        ],
+      ),
     );
   }
 }

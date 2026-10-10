@@ -9,6 +9,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../core/accessories.dart';
 import '../core/guild.dart';
+import '../core/topup.dart';
 import '../core/guild_shop.dart';
 import '../state/game_providers.dart';
 import 'guild_repository.dart';
@@ -95,6 +96,7 @@ class GuildController extends Notifier<GuildViewState> {
       final game = ref.read(gameControllerProvider.notifier);
       game.setGuildJoined(my != null);
       game.applyGuildBuff(my?.buffSeconds ?? 0);
+      game.applyGuildVipBonus(my?.vipBonus ?? 0);
       if (my != null) game.grantGuildItems(my.ownedItems);
       state = my == null
           ? GuildNone(await _repo.list())
@@ -117,7 +119,7 @@ class GuildController extends Notifier<GuildViewState> {
     return const GuildOutcome();
   }
 
-  /// Tạo hội tốn [guildCreateCostGems] 💎: kiểm đủ TRƯỚC, trừ SAU khi server
+  /// Tạo hội tốn [guildCreateCostFor] (theo cấp VIP) 💎: kiểm đủ TRƯỚC, trừ SAU khi server
   /// thành công (server lỗi/app tắt giữa chừng thì không mất 💎).
   Future<GuildOutcome> create({
     required String name,
@@ -126,7 +128,8 @@ class GuildController extends Notifier<GuildViewState> {
     required bool requiresApproval,
     required String nickname,
   }) async {
-    if (ref.read(gameControllerProvider).gems < guildCreateCostGems) {
+    final game = ref.read(gameControllerProvider);
+    if (game.gems < guildCreateCostFor(topupVipLevel(game.vipExp))) {
       return const GuildOutcome(failure: GuildFailure.notEnoughGems);
     }
     final out = await _act(() => _repo.create(
@@ -204,6 +207,13 @@ class GuildController extends Notifier<GuildViewState> {
     } catch (e) {
       developer.log('syncBuff: $e', name: 'Guild');
     }
+    // Thưởng VIP của hội lấy riêng: server cũ chưa có RPC thì giữ nguyên giá trị đã lưu.
+    try {
+      final pct = await _repo.vipBonus();
+      ref.read(gameControllerProvider.notifier).applyGuildVipBonus(pct);
+    } catch (e) {
+      developer.log('syncVipBonus: $e', name: 'Guild');
+    }
   }
 
   /// Nạp [gems] 💎 lấy Xu Hội: kiểm đủ 💎 và còn hạn mức ngày TRƯỚC, trừ 💎 SAU khi
@@ -213,7 +223,7 @@ class GuildController extends Notifier<GuildViewState> {
     final doneToday = s is GuildMine ? s.guild.donatedToday : 0;
     if (gems <= 0) return const GuildOutcome(failure: GuildFailure.invalidInput);
     if (ref.read(gameControllerProvider).gems < gems) {
-      return const GuildOutcome(failure: GuildFailure.notEnoughGems);
+      return const GuildOutcome(failure: GuildFailure.notEnoughGemsToSpend);
     }
     if (doneToday + gems > guildDonateDailyCap) {
       return const GuildOutcome(failure: GuildFailure.dailyLimit);
@@ -231,7 +241,7 @@ class GuildController extends Notifier<GuildViewState> {
       return const GuildOutcome(failure: GuildFailure.invalidInput);
     }
     if (ref.read(gameControllerProvider).gems < amount) {
-      return const GuildOutcome(failure: GuildFailure.notEnoughGems);
+      return const GuildOutcome(failure: GuildFailure.notEnoughGemsToSpend);
     }
     var out = await _act(() => _repo.giftSend(toUserId, amount));
     if (out.failure == GuildFailure.dailyLimit) {

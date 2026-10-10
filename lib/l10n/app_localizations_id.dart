@@ -863,6 +863,39 @@ class AppLocalizationsId extends AppLocalizations {
   String get marketFilterWish => 'Wishlist';
 
   @override
+  String get guildErrGemsSpend => '💎 tidak cukup.';
+
+  @override
+  String guildCreateVipDiscount(Object percent) {
+    return 'Keuntungan VIP: diskon $percent% biaya membuat guild';
+  }
+
+  @override
+  String get guildLbTabVip => 'VIP';
+
+  @override
+  String get guildLbVipEmpty => 'Belum ada guild dengan anggota VIP di papan.';
+
+  @override
+  String get guildLbVipNote =>
+      'Total EXP VIP anggota (hanya yang sudah punya nama panggilan).';
+
+  @override
+  String guildVipExpTotal(Object exp) {
+    return '$exp EXP';
+  }
+
+  @override
+  String guildVipBonusLine(Object members, Object pct) {
+    return 'Bonus VIP: $members anggota VIP → +$pct% pendapatan seluruh guild';
+  }
+
+  @override
+  String guildVipBonusHint(Object cap, Object level, Object per) {
+    return 'Tiap anggota VIP $level+ menambah +$per% pendapatan seluruh guild (maks +$cap%)';
+  }
+
+  @override
   String get refEntry => '👥 Undang teman';
 
   @override

@@ -631,6 +631,47 @@ begin
 end;
 $$;
 
+-- Thưởng thu nhập theo số thành viên VIP: mỗi thành viên có cấp VIP >= guild_vip_min_level()
+-- cộng guild_vip_bonus_per_member() % thu nhập cho CẢ HỘI, trần guild_vip_bonus_cap() %. Hằng số khớp
+-- lib/core/guild.dart (test so khớp). Cấp lấy từ vip_level (accessory_market_schema.sql; client tự
+-- khai, làm giả được — trần thấp chặn thiệt hại). plpgsql để file chạy được khi chưa có bảng đó.
+create or replace function guild_vip_bonus_per_member() returns integer
+language sql immutable as $$ select 1 $$;
+create or replace function guild_vip_bonus_cap() returns integer
+language sql immutable as $$ select 5 $$;
+create or replace function guild_vip_min_level() returns integer
+language sql immutable as $$ select 5 $$;
+
+create or replace function guild_vip_count(p_guild uuid) returns integer
+language plpgsql stable security definer set search_path = public as $$
+declare v integer;
+begin
+  select count(*) into v from guild_members m
+    join vip_level l on l.user_id = m.user_id
+    where m.guild_id = p_guild and l.level >= guild_vip_min_level();
+  return v;
+exception when undefined_table then
+  return 0;
+end
+$$;
+
+create or replace function guild_vip_bonus_pct(p_guild uuid) returns integer
+language sql stable security definer set search_path = public as $$
+  select least(guild_vip_count(p_guild) * guild_vip_bonus_per_member(), guild_vip_bonus_cap())
+$$;
+
+-- % thưởng của hội mình (nhẹ — gọi khi mở app cùng guild_buff_seconds). 0 nếu không ở hội.
+create or replace function guild_vip_bonus() returns integer
+language plpgsql stable security definer set search_path = public as $$
+declare v_gid uuid;
+begin
+  if auth.uid() is null then raise exception 'not authenticated'; end if;
+  select guild_id into v_gid from guild_members where user_id = auth.uid();
+  if v_gid is null then return 0; end if;
+  return guild_vip_bonus_pct(v_gid);
+end
+$$;
+
 create or replace function guild_my() returns jsonb
 language plpgsql stable security definer set search_path = public as $$
 declare
@@ -660,6 +701,8 @@ begin
                              where c.user_id = v_uid and c.week = v_week)),
     'total', guild_week_total(v_g.id),
     'streak', guild_streak(v_g.id),
+    'vip_members', guild_vip_count(v_g.id),
+    'vip_bonus', guild_vip_bonus_pct(v_g.id),
     'buff_seconds', greatest(
         extract(epoch from (coalesce(v_g.buff_until, now()) - now()))::integer, 0),
     'wallet', coalesce((select balance from guild_coin_wallets
@@ -811,6 +854,36 @@ language sql stable security definer set search_path = public as $$
   where s.streak > 0
   order by 1
   limit least(p_limit, 100)
+$$;
+
+-- BXH Hội theo TỔNG VIP EXP của thành viên (lấy từ vip_leaderboard_entries, tạo bởi
+-- accessory_market_schema.sql — chỉ tính thành viên đã đặt biệt danh và nộp EXP). plpgsql để
+-- file này vẫn chạy được khi bảng đó chưa tồn tại (khi đó trả rỗng thay vì lỗi).
+create or replace function guild_leaderboard_vip(p_limit integer default 50)
+returns table (rank bigint, id uuid, name text, tag text, emoji text,
+               member_count bigint, week_total bigint, vip_exp bigint)
+language plpgsql stable security definer set search_path = public as $$
+begin
+  return query
+  select row_number() over (order by s.vexp desc, s.created_at asc),
+         s.gid, s.gname, s.gtag, s.gemoji, s.cnt, s.total, s.vexp
+  from (
+    select g.id as gid, g.name as gname, g.tag as gtag, g.emoji as gemoji, g.created_at,
+           (select count(*) from guild_members m where m.guild_id = g.id) as cnt,
+           guild_week_total(g.id) as total,
+           coalesce((select sum(e.vip_exp)
+                     from guild_members m2
+                     join vip_leaderboard_entries e on e.user_id = m2.user_id
+                     where m2.guild_id = g.id), 0)::bigint as vexp
+    from guilds g
+    where not g.hidden
+  ) s
+  where s.vexp > 0
+  order by 1
+  limit least(p_limit, 100);
+exception when undefined_table then
+  return;
+end
 $$;
 
 -- --- Xu Hội: nạp 💎, nhiệm vụ tuần, cửa hàng, buff -----------------------------
@@ -1291,7 +1364,8 @@ begin
     'guild_chat_report(bigint)', 'guild_set_officer(uuid,boolean)',
     'guild_transfer_owner(uuid)', 'guild_activity(integer)',
     'guild_claim_fund()', 'guild_gift_send(uuid,integer)',
-    'guild_gift_inbox()', 'guild_gift_claim(bigint)'
+    'guild_gift_inbox()', 'guild_gift_claim(bigint)', 'guild_leaderboard_vip(integer)',
+    'guild_vip_bonus()'
   ] loop
     execute format('revoke all on function %s from public', f);
     execute format('grant execute on function %s to authenticated', f);
@@ -1309,6 +1383,9 @@ revoke all on function guild_log_week(uuid, date, bigint)
   from public, anon, authenticated;
 revoke all on function guild_log_event(uuid, text, text, text)
   from public, anon, authenticated;
+-- Đếm VIP của hội tuỳ ý → không cho client gọi (lộ số liệu hội khác).
+revoke all on function guild_vip_count(uuid) from public, anon, authenticated;
+revoke all on function guild_vip_bonus_pct(uuid) from public, anon, authenticated;
 -- Hàm tính quỹ nhận user/guild tuỳ ý → không cho client gọi (lộ số liệu hội khác).
 revoke all on function guild_fund_donated(uuid) from public, anon, authenticated;
 revoke all on function guild_fund_progress(uuid) from public, anon, authenticated;

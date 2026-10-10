@@ -64,6 +64,7 @@ class GameSnapshot {
     this.eventId = '',
     this.guildScore = 0,
     this.guildJoined = false,
+    this.guildVipBonusPct = 0,
     this.guildBuffActive = false,
     this.eventPoints = 0,
     this.eventProgress = const {},
@@ -219,6 +220,7 @@ class GameSnapshot {
   /// Điểm hoạt động tuần này cho Hội (guild.dart).
   final int guildScore;
   final bool guildJoined;
+  final int guildVipBonusPct;
 
   /// Buff thu nhập cả hội (mua bằng Xu Hội) đang còn hạn.
   final bool guildBuffActive;

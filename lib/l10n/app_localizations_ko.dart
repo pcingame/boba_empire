@@ -851,6 +851,38 @@ class AppLocalizationsKo extends AppLocalizations {
   String get marketFilterWish => '위시리스트';
 
   @override
+  String get guildErrGemsSpend => '💎가 부족해요.';
+
+  @override
+  String guildCreateVipDiscount(Object percent) {
+    return 'VIP 혜택: 길드 생성 비용 $percent% 할인';
+  }
+
+  @override
+  String get guildLbTabVip => 'VIP';
+
+  @override
+  String get guildLbVipEmpty => 'VIP 멤버가 있는 길드가 아직 없어요.';
+
+  @override
+  String get guildLbVipNote => '멤버의 VIP EXP 합계(닉네임을 정한 멤버만 포함).';
+
+  @override
+  String guildVipExpTotal(Object exp) {
+    return '$exp EXP';
+  }
+
+  @override
+  String guildVipBonusLine(Object members, Object pct) {
+    return 'VIP 보너스: VIP 멤버 $members명 → 길드 전체 수입 +$pct%';
+  }
+
+  @override
+  String guildVipBonusHint(Object cap, Object level, Object per) {
+    return 'VIP $level+ 멤버 한 명당 길드 전체 수입 +$per% (최대 +$cap%)';
+  }
+
+  @override
   String get refEntry => '👥 친구 초대';
 
   @override
