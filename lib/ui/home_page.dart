@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../analytics/analytics.dart';
 import '../core/topup.dart';
 import '../audio/audio_service.dart';
 import '../core/accessories.dart';
@@ -230,6 +231,7 @@ class _HomePageState extends ConsumerState<HomePage>
   /// Trao thưởng cho một sản phẩm vừa mua/khôi phục. Idempotent: không báo trùng
   /// khi restore lặp lại lúc mở app.
   void _onPurchase(IapProduct product) {
+    ref.read(analyticsProvider)('purchase_delivered', {'product': product.id});
     final controller = ref.read(gameControllerProvider.notifier);
     final l10n = AppLocalizations.of(context)!;
     String message;
@@ -720,6 +722,7 @@ class _MarketBannerState extends ConsumerState<_MarketBanner> {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final acc = accessoryById(listing.accessoryId);
+    final wished = ref.read(gameControllerProvider).wishlist.contains(acc.id);
     return Material(
       key: const Key('market-banner'),
       color: theme.colorScheme.tertiaryContainer,
@@ -729,6 +732,10 @@ class _MarketBannerState extends ConsumerState<_MarketBanner> {
           padding: const EdgeInsets.only(left: 12, top: 2, bottom: 2),
           child: Row(
             children: [
+              if (wished)
+                const Text('❤️',
+                    key: Key('market-banner-wish'),
+                    style: TextStyle(fontSize: 16)),
               Text(acc.emoji, style: const TextStyle(fontSize: 18)),
               const SizedBox(width: 8),
               Expanded(

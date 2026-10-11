@@ -80,4 +80,42 @@ void main() {
       expect(s.dailyStreak, 1);
     });
   });
+
+  group('thưởng mốc chuỗi + VIP', () {
+    GameState streakAt(int n) {
+      final s = GameState.newGame(nowMillis: 0)
+        ..dailyStreak = n - 1
+        ..lastDailyDay = 4;
+      return s;
+    }
+
+    test('chạm mốc chuỗi nhận thêm đúng thưởng mốc, ngày thường thì không', () {
+      for (final e in dailyStreakMilestoneGems.entries) {
+        final s = streakAt(e.key);
+        expect(claimDaily(s, 5 * _day), dailyGemsForStreak(e.key) + e.value,
+            reason: 'chuỗi ${e.key}');
+      }
+      final s = streakAt(8);
+      expect(claimDaily(s, 5 * _day), dailyGemsForStreak(8));
+    });
+
+    test('VIP cộng % 💎 ngày (làm tròn xuống), không cộng vào thưởng mốc', () {
+      final s = streakAt(7);
+      final base = dailyGemsForStreak(7); // 60
+      expect(claimDaily(s, 5 * _day, vipLevel: 10),
+          base + base * 50 ~/ 100 + dailyStreakMilestoneGems[7]!);
+      expect(s.gems, base + 30 + 50);
+      expect(dailyVipBonusPercent(0), 0);
+      final t = streakAt(1);
+      expect(claimDaily(t, 5 * _day, vipLevel: 3), 10 + 1); // 10 + 15% = 11
+    });
+
+    test('mốc chỉ nhận một lần: cùng ngày nhận lại = 0', () {
+      final s = streakAt(7);
+      claimDaily(s, 5 * _day);
+      final gems = s.gems;
+      expect(claimDaily(s, 5 * _day), 0);
+      expect(s.gems, gems);
+    });
+  });
 }

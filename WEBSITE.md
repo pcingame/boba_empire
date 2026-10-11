@@ -45,6 +45,11 @@ Liên kết sâu: `/?board=<income|pearls|collection|speed|guild|vip>#board` m�
 "Xem/Chia sẻ trên web" ở các màn BXH — `webBoardUrl` trong `lib/ui/web_links.dart`). Thêm tab mới thì
 thêm cả vào enum `WebBoard`; test `web_board_actions_test.dart` sẽ báo nếu hai bên lệch nhau.
 
+Hồ sơ người chơi: `/?player=<tên>#board` hiện thẻ hạng + điểm của tên đó ở 5 BXH cá nhân (nguồn: RPC
+`player_profile` trong `supabase/player_profile_schema.sql` — PHẢI chạy file này trên Supabase, chưa chạy
+thì thẻ im lặng không hiện). Ứng dụng tạo liên kết ở Cài đặt → "Chia sẻ hồ sơ xếp hạng của tôi"
+(`webProfileUrl`). Tên hiển thị bằng `textContent`; trùng tên thì lấy hạng cao nhất.
+
 | Tab | Endpoint | Cột dùng |
 |---|---|---|
 | Thu nhập | `GET /rest/v1/leaderboard_entries?select=nickname,lifetime_earnings,stage&order=lifetime_earnings.desc&limit=20` | `lifetime_earnings`, `stage` |

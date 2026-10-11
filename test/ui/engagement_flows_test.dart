@@ -2,6 +2,7 @@ import 'package:boba_empire/ads/ad_service.dart';
 import 'package:boba_empire/core/accessories.dart';
 import 'package:boba_empire/core/daily.dart';
 import 'package:boba_empire/core/models.dart';
+import 'package:boba_empire/core/topup.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/main.dart';
 import 'package:boba_empire/ui/accessory_pack_dialog.dart';
@@ -60,6 +61,42 @@ GameState _streakSave(int now, {double gems = 100}) =>
 
 void main() {
   final now = 102 * _day + 1000;
+
+  group('thưởng mốc chuỗi + VIP (dialog điểm danh thật)', () {
+    setUp(() => debugAutoShowDaily = true);
+    tearDown(() => debugAutoShowDaily = false);
+    testWidgets('chuỗi 7 + VIP5: hiện cả hai dòng, cộng đúng 💎', (tester) async {
+      final seed = GameState.newGame(nowMillis: now)
+        ..tutorialSeen = true
+        ..dailyStreak = 6
+        ..lastDailyDay = 101
+        ..vipExp = topupTiers[4].exp
+        ..gems = 0;
+      final c = await _pump(tester, seed, _Ads(RewardOutcome.earned), now: now);
+      await tester.tap(find.byKey(const Key('daily-claim')));
+      await tester.pumpAndSettle();
+      final base = dailyGemsForStreak(7);
+      final total = base + base * 25 ~/ 100 + dailyStreakMilestoneGems[7]!;
+      expect(find.text('Thưởng VIP: +25% 💎'), findsOneWidget);
+      expect(find.text('Thưởng mốc chuỗi: +50 💎'), findsOneWidget);
+      expect(find.text('+$total 💎'), findsOneWidget);
+      expect(c.read(gameControllerProvider).gems, total.toDouble());
+      await tester.pumpWidget(const SizedBox());
+    });
+
+    testWidgets('chuỗi thường, không VIP: không có dòng thưởng thêm', (tester) async {
+      final seed = GameState.newGame(nowMillis: now)
+        ..tutorialSeen = true
+        ..dailyStreak = 2
+        ..lastDailyDay = 101;
+      await _pump(tester, seed, _Ads(RewardOutcome.earned), now: now);
+      await tester.tap(find.byKey(const Key('daily-claim')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('daily-vip-bonus')), findsNothing);
+      expect(find.byKey(const Key('daily-milestone-bonus')), findsNothing);
+      await tester.pumpWidget(const SizedBox());
+    });
+  });
 
   group('cứu streak (dialog điểm danh thật)', () {
     setUp(() => debugAutoShowDaily = true);

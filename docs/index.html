@@ -185,6 +185,11 @@
 
   /* ---------- bảng xếp hạng ---------- */
   .tabs { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 18px; }
+  .profile { max-width: 720px; margin: 0 auto 18px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
+  .profile h3 { margin: 0 0 10px; }
+  .profile ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .profile li { background: var(--bg2); border-radius: 12px; padding: 8px 12px; font-size: .92rem; }
+  .profile li b { margin-right: 6px; }
   .tab { border: 1px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 8px 18px; font: inherit; font-weight: 700; font-size: .92rem; cursor: pointer; }
   .tab[aria-selected="true"] { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
   .board { max-width: 720px; margin: 0 auto; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
@@ -508,6 +513,7 @@
   <div class="wrap">
     <h2 class="reveal" data-i18n="lbTitle">Bảng xếp hạng</h2>
     <p class="lead reveal" data-i18n="lbLead">Dữ liệu trực tiếp từ game.</p>
+    <div class="profile reveal" id="profileBox" hidden></div>
     <div class="tabs" role="tablist" id="boardTabs"></div>
     <div class="board reveal" id="boardBox" aria-live="polite"></div>
   </div>

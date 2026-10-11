@@ -91,6 +91,8 @@
  "lbMembers": "{n} members",
  "lbLoading": "Loading…",
  "lbError": "Couldn’t load the leaderboard. Please try again later.",
+ "pfTitle": "{n}’s profile",
+ "pfEmpty": "No leaderboard entries found for {n} yet.",
  "lbEmpty": "Nobody on the board yet.",
  "evTitle": "Exclusive holiday accessories",
  "evLead": "Every holiday brings its own set, available only during the event — miss it and you wait until next year.",

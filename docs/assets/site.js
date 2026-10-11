@@ -215,6 +215,35 @@
     }).catch(function () { if (id === reqId) msg(T[lang].lbError); });
   }
 
+  /* ---------- hồ sơ người chơi: ?player=<tên> (liên kết chia sẻ từ app) ---------- */
+  var who = ''; try { who = (new URLSearchParams(location.search).get('player') || '').trim().slice(0, 20); } catch (e) {}
+  var profileRows = null,
+      PF = { income: ['lbTabIncome', big], pearls: ['lbTabPearls', function (v) { return v + ' ⭐'; }],
+             collection: ['lbTabCollection', String], speed: ['lbTabSpeed', dur], vip: ['lbTabVip', big] };
+  function renderProfile() {
+    var box = $('profileBox'), t = T[lang];
+    if (!box || !who || !profileRows || !t) return;
+    box.textContent = ''; box.hidden = false;
+    var h = document.createElement('h3'); h.textContent = tpl(t.pfTitle, who); box.appendChild(h);
+    var rows = profileRows.filter(function (r) { return PF[r.board]; });
+    if (!rows.length) { var p = document.createElement('p'); p.textContent = tpl(t.pfEmpty, who); box.appendChild(p); return; }
+    var ul = document.createElement('ul');
+    rows.forEach(function (r) {
+      var li = document.createElement('li'), b = document.createElement('b');
+      b.textContent = '#' + r.rank; li.appendChild(b);
+      li.appendChild(document.createTextNode(t[PF[r.board][0]] + ' · ' + PF[r.board][1](Number(r.value))));
+      ul.appendChild(li);
+    });
+    box.appendChild(ul);
+  }
+  function loadProfile() {
+    if (!who) return;
+    fetch(API + 'rpc/player_profile', { method: 'POST', headers: Object.assign({ 'Content-Type': 'application/json' }, H()), body: JSON.stringify({ p_nickname: who }) })
+      .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
+      .then(function (rows) { profileRows = rows; renderProfile(); })
+      .catch(function () {});   // lỗi mạng/chưa chạy SQL: im lặng, trang vẫn dùng bình thường
+  }
+
   /* ---------- áp dụng ngôn ngữ ---------- */
   function apply() {
     var t = T[lang];
@@ -238,7 +267,7 @@
       if (hv.getAttribute('src') !== want) { hv.poster = 'assets/video/poster' + suf + '.webp'; hv.src = want; hv.load(); if (hv.autoplay) hv.play().catch(function () {}); }
     }
     $('langSel').value = lang;
-    renderEvents(); renderTabs(); renderCountdown();
+    renderEvents(); renderTabs(); renderCountdown(); renderProfile();
     window.__LANG_CUR = lang; document.dispatchEvent(new CustomEvent('langchange'));
     if (boardStarted) loadBoard();
     root.className = root.className.replace(' i18n-pending', '');
@@ -295,6 +324,7 @@
 
   // Chỉ gọi API khi người dùng cuộn gần tới mục xếp hạng.
   var boardEl = $('board');
+  loadProfile();
   function start() { if (!boardStarted) { boardStarted = true; loadBoard(); } }
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { start(); o.disconnect(); } }, { rootMargin: '300px' }).observe(boardEl);

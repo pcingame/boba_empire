@@ -501,6 +501,16 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String dailyMilestoneBonus(String gems) {
+    return 'Bonus tonggak streak: +$gems 💎';
+  }
+
+  @override
+  String dailyVipBonus(int percent) {
+    return 'Bonus VIP: +$percent% 💎';
+  }
+
+  @override
   String get achievementsTitle => 'Pencapaian';
 
   @override
@@ -1074,6 +1084,14 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String webBoardShareText(Object url) {
     return 'Lihat papan peringkat Boba Empire: $url';
+  }
+
+  @override
+  String get settingsShareProfile => 'Bagikan profil peringkat saya';
+
+  @override
+  String profileShareText(String name, String url) {
+    return 'Lihat peringkat $name di Boba Empire: $url';
   }
 
   @override

@@ -14,25 +14,42 @@ import 'accessory_market_repository.dart';
 const marketSeenKey = 'market_last_seen_ms';
 const marketIntroSeenKey = 'market_intro_seen';
 
+/// Chọn listing nổi bật: món trong danh sách muốn mua [wishlist] luôn thắng, còn lại
+/// theo độ hiếm. Bỏ listing của chính mình, listing cũ hơn mốc [seenMs] và id lạ.
+MarketListing? pickHighlight(
+  List<MarketListing> listings, {
+  required String? me,
+  required int seenMs,
+  Set<String> wishlist = const {},
+}) {
+  final fresh = listings.where(
+    (l) =>
+        l.sellerId != me &&
+        l.createdAt.millisecondsSinceEpoch > seenMs &&
+        accessories.any((a) => a.id == l.accessoryId),
+  );
+  if (fresh.isEmpty) return null;
+  int rank(MarketListing l) =>
+      accessoryById(l.accessoryId).rarity.index +
+      (wishlist.contains(l.accessoryId) ? 100 : 0);
+  return fresh.reduce((a, b) => rank(b) > rank(a) ? b : a);
+}
+
 // ponytail: mốc "đã xem" là đồng hồ máy so với created_at của server — lệch
 // giờ máy thì chấm đỏ sai nhẹ; đổi sang lưu max(created_at) nếu thành vấn đề.
 final marketHighlightProvider = FutureProvider<MarketListing?>((ref) async {
   final seen = ref.watch(sharedPreferencesProvider).getInt(marketSeenKey) ?? 0;
   try {
     final client = Supabase.instance.client;
-    final me = client.auth.currentUser?.id;
     final listings = await AccessoryMarketRepository(
       client,
     ).fetchActiveListings();
-    final fresh = listings.where(
-      (l) =>
-          l.sellerId != me &&
-          l.createdAt.millisecondsSinceEpoch > seen &&
-          accessories.any((a) => a.id == l.accessoryId),
+    return pickHighlight(
+      listings,
+      me: client.auth.currentUser?.id,
+      seenMs: seen,
+      wishlist: ref.read(gameControllerProvider).wishlist.toSet(),
     );
-    if (fresh.isEmpty) return null;
-    int rank(MarketListing l) => accessoryById(l.accessoryId).rarity.index;
-    return fresh.reduce((a, b) => rank(b) > rank(a) ? b : a);
   } catch (_) {
     return null;
   }

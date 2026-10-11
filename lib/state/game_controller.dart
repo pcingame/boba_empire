@@ -953,7 +953,8 @@ class GameController extends Notifier<GameSnapshot> {
         _game.gems -= streakRestoreGems;
       }
     }
-    final gems = claimDaily(_game, _clock(), restore: restore);
+    final gems = claimDaily(_game, _clock(),
+        restore: restore, vipLevel: topupVipLevel(_game.vipExp));
     if (gems > 0) {
       unawaited(saveNow());
       state = _snapshot();

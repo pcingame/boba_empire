@@ -91,6 +91,8 @@
  "lbMembers": "{n} miembros",
  "lbLoading": "Cargando…",
  "lbError": "No se pudo cargar la clasificación. Inténtalo más tarde.",
+ "pfTitle": "Perfil de {n}",
+ "pfEmpty": "Aún no hay datos de {n} en las clasificaciones.",
  "lbEmpty": "Aún no hay nadie en la tabla.",
  "evTitle": "Accesorios exclusivos de festividades",
  "evLead": "Cada festividad trae su propio conjunto, disponible solo durante el evento: si te lo pierdes, toca esperar al año que viene.",

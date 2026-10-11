@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../ads/ad_service.dart';
+import '../analytics/analytics.dart';
 import '../audio/audio_service.dart';
 import '../core/daily.dart';
 import '../core/format.dart';
+import '../core/topup.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 
@@ -27,6 +29,7 @@ class _DailyDialog extends ConsumerStatefulWidget {
 class _DailyDialogState extends ConsumerState<_DailyDialog> {
   int? _gems; // null = chưa nhận
   int _streak = 0;
+  int _vipPercent = 0;
 
   bool _watchingAd = false;
 
@@ -34,8 +37,12 @@ class _DailyDialogState extends ConsumerState<_DailyDialog> {
     final r = ref
         .read(gameControllerProvider.notifier)
         .claimDailyReward(restore: restore, payGems: payGems);
+    ref.read(analyticsProvider)(
+        'daily_claim', {'streak': r.streak, 'restore': restore ? 1 : 0});
     ref.read(audioServiceProvider).play(Sfx.reward);
     setState(() {
+      _vipPercent = dailyVipBonusPercent(
+          topupVipLevel(ref.read(gameControllerProvider).vipExp));
       _gems = r.gems;
       _streak = r.streak;
     });
@@ -85,6 +92,16 @@ class _DailyDialogState extends ConsumerState<_DailyDialog> {
               ),
               const SizedBox(height: 6),
               Text(l10n.dailyStreak(_streak)),
+              if (_vipPercent > 0)
+                Text(l10n.dailyVipBonus(_vipPercent),
+                    key: const Key('daily-vip-bonus')),
+              if (dailyStreakMilestoneBonus(_streak) > 0)
+                Text(
+                  l10n.dailyMilestoneBonus(
+                      formatNumber(dailyStreakMilestoneBonus(_streak).toDouble())),
+                  key: const Key('daily-milestone-bonus'),
+                  textAlign: TextAlign.center,
+                ),
               const SizedBox(height: 14),
               _WeekRow(streak: _streak),
             ],

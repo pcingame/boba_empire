@@ -68,6 +68,13 @@ create policy analytics_events_insert_anyone on analytics_events
 -- accessory_dropped{source: daily_quest|wheel|ascension|match3, accessory, rarity, isNew}
 -- collection_milestone{milestone,coins} · starter_pack_claimed{accessory}
 --
+-- Mở cửa hàng/web/điểm danh (không PII; chỉ ghi khi người chơi bấm):
+-- open_gem_shop · open_vip_shop · purchase_delivered{product} · daily_claim{streak,restore}
+-- web_open{page: đường dẫn trên bobaempiregame.com} · web_share{board}
+--
+--   select props->>'page' as page, count(*) from analytics_events
+--   where event = 'web_open' group by 1 order by 2 desc;   -- web được mở từ đâu trong app
+--
 -- Phễu Chợ: bao nhiêu máy mở Chợ → đăng bán → có giao dịch:
 --   select count(distinct device_id) filter (where event = 'market_open')     as opened,
 --          count(distinct device_id) filter (where event = 'listing_created') as listed,

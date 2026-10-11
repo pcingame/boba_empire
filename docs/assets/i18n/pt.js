@@ -91,6 +91,8 @@
  "lbMembers": "{n} membros",
  "lbLoading": "Carregando…",
  "lbError": "Não foi possível carregar o ranking. Tente novamente mais tarde.",
+ "pfTitle": "Perfil de {n}",
+ "pfEmpty": "{n} ainda não aparece em nenhum ranking.",
  "lbEmpty": "Ninguém no ranking ainda.",
  "evTitle": "Acessórios exclusivos de festividades",
  "evLead": "Cada festividade traz seu próprio conjunto, disponível só durante o evento — perdeu, só no ano que vem.",

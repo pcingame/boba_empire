@@ -494,6 +494,16 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String dailyMilestoneBonus(String gems) {
+    return '연속 출석 달성 보너스: +$gems 💎';
+  }
+
+  @override
+  String dailyVipBonus(int percent) {
+    return 'VIP 보너스: +$percent% 💎';
+  }
+
+  @override
   String get achievementsTitle => '업적';
 
   @override
@@ -1054,6 +1064,14 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String webBoardShareText(Object url) {
     return 'Boba Empire 리더보드를 확인해 보세요: $url';
+  }
+
+  @override
+  String get settingsShareProfile => '내 순위 프로필 공유';
+
+  @override
+  String profileShareText(String name, String url) {
+    return 'Boba Empire에서 $name님의 순위를 확인해 보세요: $url';
   }
 
   @override

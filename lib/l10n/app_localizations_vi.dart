@@ -500,6 +500,16 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String dailyMilestoneBonus(String gems) {
+    return 'Thưởng mốc chuỗi: +$gems 💎';
+  }
+
+  @override
+  String dailyVipBonus(int percent) {
+    return 'Thưởng VIP: +$percent% 💎';
+  }
+
+  @override
   String get achievementsTitle => 'Thành tựu';
 
   @override
@@ -1071,6 +1081,14 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String webBoardShareText(Object url) {
     return 'Xem bảng xếp hạng Boba Empire nè: $url';
+  }
+
+  @override
+  String get settingsShareProfile => 'Chia sẻ hồ sơ xếp hạng của tôi';
+
+  @override
+  String profileShareText(String name, String url) {
+    return 'Xem thứ hạng của $name trong Boba Empire nè: $url';
   }
 
   @override

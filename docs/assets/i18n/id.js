@@ -91,6 +91,8 @@
  "lbMembers": "{n} anggota",
  "lbLoading": "Memuat…",
  "lbError": "Gagal memuat peringkat. Coba lagi nanti.",
+ "pfTitle": "Profil {n}",
+ "pfEmpty": "{n} belum ada di peringkat mana pun.",
  "lbEmpty": "Belum ada siapa pun di papan.",
  "evTitle": "Aksesori eksklusif hari raya",
  "evLead": "Setiap hari raya punya set sendiri yang hanya tersedia selama event — lewatkan, tunggu tahun depan.",

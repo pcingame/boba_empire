@@ -9,6 +9,25 @@ const int _msPerDay = 24 * 60 * 60 * 1000;
 /// Bảng thưởng Kim Cương theo chu kỳ 7 ngày; streak dài hơn quay vòng lại.
 const List<int> dailyRewardGems = [10, 15, 20, 25, 30, 40, 60];
 
+/// Thưởng thêm khi chuỗi chạm đúng mốc (nhận một lần vì chuỗi chỉ đi lên từng ngày).
+const Map<int, int> dailyStreakMilestoneGems = {
+  7: 50,
+  14: 100,
+  30: 300,
+  60: 600,
+  100: 1000,
+};
+
+/// +5% 💎 điểm danh mỗi cấp VIP (VIP 10 = +50%).
+const int dailyVipBonusPercentPerLevel = 5;
+
+int dailyVipBonusPercent(int vipLevel) =>
+    vipLevel * dailyVipBonusPercentPerLevel;
+
+/// 💎 thưởng mốc cho [streak] (0 nếu không phải mốc).
+int dailyStreakMilestoneBonus(int streak) =>
+    dailyStreakMilestoneGems[streak] ?? 0;
+
 /// Chỉ số ngày (UTC) từ epoch ms — mốc so sánh "đã sang ngày mới".
 int dayIndex(int nowMillis) => nowMillis ~/ _msPerDay;
 
@@ -40,15 +59,20 @@ bool streakRestorable(GameState s, int nowMillis) =>
 
 /// Nhận thưởng hằng ngày: cập nhật streak + mốc ngày, cộng gems. Trả về gems
 /// nhận (0 nếu chưa tới ngày mới). [restore] (chỉ có tác dụng khi
-/// [streakRestorable]) coi ngày bỏ lỡ như đã nhận → streak +1. MUTATE [s].
-int claimDaily(GameState s, int nowMillis, {bool restore = false}) {
+/// [streakRestorable]) coi ngày bỏ lỡ như đã nhận → streak +1. Gems nhận =
+/// thưởng ngày × (1 + bonus VIP theo [vipLevel]) + thưởng mốc chuỗi. MUTATE [s].
+int claimDaily(GameState s, int nowMillis,
+    {bool restore = false, int vipLevel = 0}) {
   if (!dailyAvailable(s, nowMillis)) return 0;
   final streak = restore && streakRestorable(s, nowMillis)
       ? s.dailyStreak + 1
       : nextDailyStreak(s, nowMillis);
   s.dailyStreak = streak;
   s.lastDailyDay = dayIndex(nowMillis);
-  final gems = dailyGemsForStreak(streak);
+  final base = dailyGemsForStreak(streak);
+  final gems = base +
+      base * dailyVipBonusPercent(vipLevel) ~/ 100 +
+      dailyStreakMilestoneBonus(streak);
   s.gems += gems;
   return gems;
 }

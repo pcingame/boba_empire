@@ -91,6 +91,8 @@
  "lbMembers": "{n} thành viên",
  "lbLoading": "Đang tải…",
  "lbError": "Không tải được bảng xếp hạng. Thử lại sau nhé.",
+ "pfTitle": "Hồ sơ của {n}",
+ "pfEmpty": "Chưa thấy {n} trong bảng xếp hạng nào.",
  "lbEmpty": "Chưa có ai trên bảng.",
  "evTitle": "Phụ kiện độc quyền theo dịp lễ",
  "evLead": "Mỗi dịp lễ có bộ phụ kiện riêng, chỉ mua được trong thời gian sự kiện — bỏ lỡ là phải đợi năm sau.",

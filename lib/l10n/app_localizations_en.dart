@@ -499,6 +499,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String dailyMilestoneBonus(String gems) {
+    return 'Streak milestone bonus: +$gems 💎';
+  }
+
+  @override
+  String dailyVipBonus(int percent) {
+    return 'VIP bonus: +$percent% 💎';
+  }
+
+  @override
   String get achievementsTitle => 'Achievements';
 
   @override
@@ -1072,6 +1082,14 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String webBoardShareText(Object url) {
     return 'Check out the Boba Empire leaderboard: $url';
+  }
+
+  @override
+  String get settingsShareProfile => 'Share my ranking profile';
+
+  @override
+  String profileShareText(String name, String url) {
+    return 'See $name’s ranks in Boba Empire: $url';
   }
 
   @override

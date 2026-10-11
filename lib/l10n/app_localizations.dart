@@ -930,6 +930,18 @@ abstract class AppLocalizations {
   /// **'Chuỗi {days} ngày 🔥'**
   String dailyStreak(int days);
 
+  /// No description provided for @dailyMilestoneBonus.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thưởng mốc chuỗi: +{gems} 💎'**
+  String dailyMilestoneBonus(String gems);
+
+  /// No description provided for @dailyVipBonus.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thưởng VIP: +{percent}% 💎'**
+  String dailyVipBonus(int percent);
+
   /// No description provided for @achievementsTitle.
   ///
   /// In vi, this message translates to:
@@ -1841,6 +1853,18 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Xem bảng xếp hạng Boba Empire nè: {url}'**
   String webBoardShareText(Object url);
+
+  /// No description provided for @settingsShareProfile.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia sẻ hồ sơ xếp hạng của tôi'**
+  String get settingsShareProfile;
+
+  /// No description provided for @profileShareText.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem thứ hạng của {name} trong Boba Empire nè: {url}'**
+  String profileShareText(String name, String url);
 
   /// No description provided for @refEntry.
   ///

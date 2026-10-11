@@ -5,6 +5,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../analytics/analytics.dart';
 import '../core/format.dart';
 import '../core/topup.dart';
 import '../core/vip_shop.dart';
@@ -12,7 +13,12 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 
-Future<void> showVipShop(BuildContext context) => showDialog<void>(
+Future<void> showVipShop(BuildContext context) {
+  trackEvent(context, 'open_vip_shop');
+  return _showVipShop(context);
+}
+
+Future<void> _showVipShop(BuildContext context) => showDialog<void>(
       context: context,
       builder: (_) => const _VipShopDialog(),
     );

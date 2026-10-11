@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../analytics/analytics.dart';
 import '../core/accessories.dart';
 import '../core/balance.dart';
 import '../core/format.dart';
@@ -32,6 +33,7 @@ import 'widgets/weekend_banner.dart';
 bool _known(String id) => accessories.any((a) => a.id == id);
 
 Future<void> showAccessoryMarket(BuildContext context) {
+  trackEvent(context, 'market_open');
   return Navigator.of(
     context,
   ).push(MaterialPageRoute(builder: (_) => const AccessoryMarketPage()));

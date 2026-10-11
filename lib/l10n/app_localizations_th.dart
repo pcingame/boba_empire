@@ -498,6 +498,16 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String dailyMilestoneBonus(String gems) {
+    return 'โบนัสเหรียญสตรีค: +$gems 💎';
+  }
+
+  @override
+  String dailyVipBonus(int percent) {
+    return 'โบนัส VIP: +$percent% 💎';
+  }
+
+  @override
   String get achievementsTitle => 'ความสำเร็จ';
 
   @override
@@ -1071,6 +1081,14 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String webBoardShareText(Object url) {
     return 'ดูกระดานอันดับของ Boba Empire: $url';
+  }
+
+  @override
+  String get settingsShareProfile => 'แชร์โปรไฟล์อันดับของฉัน';
+
+  @override
+  String profileShareText(String name, String url) {
+    return 'ดูอันดับของ $name ใน Boba Empire: $url';
   }
 
   @override

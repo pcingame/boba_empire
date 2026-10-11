@@ -8,6 +8,7 @@ import 'cloud_save_dialog.dart';
 import 'how_to_play_dialog.dart';
 import 'language_dialog.dart';
 import 'redeem_dialog.dart';
+import 'invite_dialog.dart' show shareTextProvider;
 import 'web_links.dart';
 
 /// Cài đặt: đổi ngôn ngữ, bật/tắt âm thanh, chơi lại từ đầu.
@@ -51,6 +52,29 @@ class _SettingsDialog extends ConsumerWidget {
             trailing: const Icon(Icons.open_in_new, size: 18),
             onTap: () => openWebLink(context, ref, webHomeUrl),
           ),
+          // Chỉ khi đã đặt tên ở bảng xếp hạng (có tên mới có hạng để khoe).
+          if ((ref.read(sharedPreferencesProvider).getString('leaderboard_nickname') ?? '')
+              .isNotEmpty)
+            Builder(
+              builder: (tileContext) => ListTile(
+                key: const Key('settings-share-profile'),
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.emoji_events_outlined),
+                title: Text(l10n.settingsShareProfile),
+                trailing: const Icon(Icons.share, size: 18),
+                onTap: () {
+                  final name = ref
+                      .read(sharedPreferencesProvider)
+                      .getString('leaderboard_nickname')!;
+                  final box = tileContext.findRenderObject() as RenderBox?;
+                  final origin = box == null
+                      ? null
+                      : box.localToGlobal(Offset.zero) & box.size;
+                  ref.read(shareTextProvider)(
+                      l10n.profileShareText(name, webProfileUrl(name)), origin);
+                },
+              ),
+            ),
           ListTile(
             key: const Key('settings-web-guide'),
             contentPadding: EdgeInsets.zero,
