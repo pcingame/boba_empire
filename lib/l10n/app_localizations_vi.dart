@@ -2511,30 +2511,30 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get whatsNewCollection =>
-      '🎀 Bộ sưu tập lên 160 phụ kiện, có hướng dẫn sưu tầm và hiệu ứng khi nhận món mới';
+  String get whatsNewVip =>
+      '👑 Hệ thống VIP: 10 cấp, quà mỗi ngày/tuần/tháng, bảng xếp hạng VIP, Cửa hàng VIP và nạp lần đầu x2 💎';
 
   @override
-  String get whatsNewMilestones =>
-      '🏅 Thêm mốc sưu tập 80/100/120/140/160 với thưởng Xu Chợ lớn hơn';
+  String get whatsNewGuild =>
+      '🛡️ Hội: Boss tuần, nhãn và khung VIP trong Hội, tặng 💎 cho nhau, bảng xếp hạng Hội theo VIP';
 
   @override
-  String get whatsNewMatch3 =>
-      '🧋 Trân Châu Rơi lên 80 màn, dễ chơi hơn (25 nước mỗi màn)';
+  String get whatsNewQuests =>
+      '📋 Nhiệm vụ tuần với rương thưởng, thưởng mốc chuỗi điểm danh (7/14/30/60/100 ngày) và Ưu đãi hôm nay';
 
   @override
-  String get whatsNewAds =>
-      '📺 Hết nước? Xem quảng cáo để +5 nước, xem bao nhiêu lần tuỳ bạn; back giữa chừng vẫn giữ ván';
+  String get whatsNewSocial =>
+      '🏆 Bấm một dòng ở bảng xếp hạng để xem hồ sơ; xem và chia sẻ bảng xếp hạng trên web; mời bạn bè nhận 💎';
 
   @override
-  String get whatsNewFixes =>
-      '🛠️ Sửa lỗi: danh sách Chợ bị co khi cuộn, xem quảng cáo bị tính là rời game, vài lỗi crash';
+  String get whatsNewShop =>
+      '💎 Thêm gói Kim Cương lớn, Kho lạnh vĩnh viễn và combo Gỡ quảng cáo + x2 thu nhập (cần email để nạp)';
 
   @override
   String get whatsNewLater => 'Để sau';
 
   @override
-  String get whatsNewOpen => 'Xem bộ sưu tập';
+  String get whatsNewOpen => 'Khám phá VIP';
 
   @override
   String marketWallet(int n) {

@@ -967,13 +967,13 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewCollection": "🎀 A coleção sobe para 160 acessórios, com guia de coleção e animação ao ganhar um novo item",
-  "whatsNewMilestones": "🏅 Novos marcos de coleção em 80/100/120/140/160 com mais Moedas de Mercado",
-  "whatsNewMatch3": "🧋 Pérolas Caindo agora tem 80 fases e ficou mais fácil (25 jogadas por fase)",
-  "whatsNewAds": "📺 Sem jogadas? Veja um anúncio para +5, quantas vezes quiser; sair no meio mantém a partida",
-  "whatsNewFixes": "🛠️ Correções: lista do Mercado encolhia ao rolar, anúncios contavam como sair do jogo, alguns travamentos",
+  "whatsNewVip": "👑 Sistema VIP: 10 níveis, presentes diários/semanais/mensais, ranking VIP, Loja VIP e 2x 💎 na primeira recarga",
+  "whatsNewGuild": "🛡️ Guildas: Chefe semanal, selos e molduras VIP, presentear 💎 e ranking de guildas por VIP",
+  "whatsNewQuests": "📋 Missões semanais com baú, bônus de marcos da sequência (7/14/30/60/100 dias) e Oferta de hoje",
+  "whatsNewSocial": "🏆 Toque numa linha do ranking para ver o perfil; veja e compartilhe rankings na web; convide amigos e ganhe 💎",
+  "whatsNewShop": "💎 Novos pacotes grandes de gemas, Câmara fria permanente e combo Sem anúncios + renda 2x (é preciso e-mail para recarregar)",
   "whatsNewLater": "Depois",
-  "whatsNewOpen": "Ver coleção",
+  "whatsNewOpen": "Conhecer o VIP",
   "marketWallet": "{n} Moedas de Mercado",
   "@marketWallet": {
     "placeholders": {

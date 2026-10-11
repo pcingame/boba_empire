@@ -2515,30 +2515,30 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get whatsNewCollection =>
-      '🎀 Koleksi bertambah jadi 160 aksesori, dengan panduan koleksi dan animasi saat dapat item baru';
+  String get whatsNewVip =>
+      '👑 Sistem VIP: 10 level, hadiah harian/mingguan/bulanan, peringkat VIP, Toko VIP, dan 2x 💎 untuk isi ulang pertama';
 
   @override
-  String get whatsNewMilestones =>
-      '🏅 Tonggak koleksi baru di 80/100/120/140/160 dengan hadiah Koin Pasar lebih besar';
+  String get whatsNewGuild =>
+      '🛡️ Guild: Boss mingguan, label dan bingkai VIP, saling kirim 💎, dan peringkat guild berdasarkan VIP';
 
   @override
-  String get whatsNewMatch3 =>
-      '🧋 Mutiara Jatuh kini punya 80 level dan lebih mudah (25 langkah per level)';
+  String get whatsNewQuests =>
+      '📋 Misi mingguan dengan peti hadiah, bonus tonggak streak (7/14/30/60/100 hari), dan Penawaran Hari Ini';
 
   @override
-  String get whatsNewAds =>
-      '📺 Langkah habis? Tonton iklan untuk +5 langkah, sebanyak yang kamu mau; keluar di tengah main tetap menyimpan permainan';
+  String get whatsNewSocial =>
+      '🏆 Ketuk baris peringkat untuk melihat profil; lihat dan bagikan peringkat di web; undang teman untuk 💎';
 
   @override
-  String get whatsNewFixes =>
-      '🛠️ Perbaikan: daftar Pasar menyusut saat digulir, iklan dihitung sebagai keluar game, beberapa crash';
+  String get whatsNewShop =>
+      '💎 Paket Permata besar baru, Cold Storage permanen, dan kombo Tanpa Iklan + pendapatan 2x (butuh email untuk isi ulang)';
 
   @override
   String get whatsNewLater => 'Nanti';
 
   @override
-  String get whatsNewOpen => 'Lihat koleksi';
+  String get whatsNewOpen => 'Jelajahi VIP';
 
   @override
   String marketWallet(int n) {

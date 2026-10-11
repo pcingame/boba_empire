@@ -967,13 +967,13 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewCollection": "🎀 La colección sube a 160 accesorios, con guía de colección y animación al conseguir uno nuevo",
-  "whatsNewMilestones": "🏅 Nuevos hitos de colección en 80/100/120/140/160 con más Monedas de Mercado",
-  "whatsNewMatch3": "🧋 Perlas que caen ahora tiene 80 niveles y es más fácil (25 movimientos por nivel)",
-  "whatsNewAds": "📺 ¿Sin movimientos? Mira un anuncio para +5, tantas veces como quieras; si sales a medias, conservas la partida",
-  "whatsNewFixes": "🛠️ Arreglos: la lista del Mercado se encogía al desplazar, los anuncios contaban como salir del juego, algunos cierres",
+  "whatsNewVip": "👑 Sistema VIP: 10 niveles, regalos diarios/semanales/mensuales, clasificación VIP, Tienda VIP y 2x 💎 en tu primera recarga",
+  "whatsNewGuild": "🛡️ Gremios: Jefe semanal, etiquetas y marcos VIP, regalar 💎 y clasificación de gremios por VIP",
+  "whatsNewQuests": "📋 Misiones semanales con cofre, bonos por hitos de racha (7/14/30/60/100 días) y la Oferta de hoy",
+  "whatsNewSocial": "🏆 Toca una fila de la clasificación para ver el perfil; mira y comparte clasificaciones en la web; invita amigos y gana 💎",
+  "whatsNewShop": "💎 Nuevos paquetes grandes de gemas, Almacén frío permanente y combo Sin anuncios + ingresos x2 (se requiere correo para recargar)",
   "whatsNewLater": "Después",
-  "whatsNewOpen": "Ver colección",
+  "whatsNewOpen": "Descubrir VIP",
   "marketWallet": "{n} Monedas de Mercado",
   "@marketWallet": {
     "placeholders": {

@@ -4446,35 +4446,35 @@ abstract class AppLocalizations {
   /// **'Có gì mới ở {version}'**
   String whatsNewTitle(String version);
 
-  /// No description provided for @whatsNewCollection.
+  /// No description provided for @whatsNewVip.
   ///
   /// In vi, this message translates to:
-  /// **'🎀 Bộ sưu tập lên 160 phụ kiện, có hướng dẫn sưu tầm và hiệu ứng khi nhận món mới'**
-  String get whatsNewCollection;
+  /// **'👑 Hệ thống VIP: 10 cấp, quà mỗi ngày/tuần/tháng, bảng xếp hạng VIP, Cửa hàng VIP và nạp lần đầu x2 💎'**
+  String get whatsNewVip;
 
-  /// No description provided for @whatsNewMilestones.
+  /// No description provided for @whatsNewGuild.
   ///
   /// In vi, this message translates to:
-  /// **'🏅 Thêm mốc sưu tập 80/100/120/140/160 với thưởng Xu Chợ lớn hơn'**
-  String get whatsNewMilestones;
+  /// **'🛡️ Hội: Boss tuần, nhãn và khung VIP trong Hội, tặng 💎 cho nhau, bảng xếp hạng Hội theo VIP'**
+  String get whatsNewGuild;
 
-  /// No description provided for @whatsNewMatch3.
+  /// No description provided for @whatsNewQuests.
   ///
   /// In vi, this message translates to:
-  /// **'🧋 Trân Châu Rơi lên 80 màn, dễ chơi hơn (25 nước mỗi màn)'**
-  String get whatsNewMatch3;
+  /// **'📋 Nhiệm vụ tuần với rương thưởng, thưởng mốc chuỗi điểm danh (7/14/30/60/100 ngày) và Ưu đãi hôm nay'**
+  String get whatsNewQuests;
 
-  /// No description provided for @whatsNewAds.
+  /// No description provided for @whatsNewSocial.
   ///
   /// In vi, this message translates to:
-  /// **'📺 Hết nước? Xem quảng cáo để +5 nước, xem bao nhiêu lần tuỳ bạn; back giữa chừng vẫn giữ ván'**
-  String get whatsNewAds;
+  /// **'🏆 Bấm một dòng ở bảng xếp hạng để xem hồ sơ; xem và chia sẻ bảng xếp hạng trên web; mời bạn bè nhận 💎'**
+  String get whatsNewSocial;
 
-  /// No description provided for @whatsNewFixes.
+  /// No description provided for @whatsNewShop.
   ///
   /// In vi, this message translates to:
-  /// **'🛠️ Sửa lỗi: danh sách Chợ bị co khi cuộn, xem quảng cáo bị tính là rời game, vài lỗi crash'**
-  String get whatsNewFixes;
+  /// **'💎 Thêm gói Kim Cương lớn, Kho lạnh vĩnh viễn và combo Gỡ quảng cáo + x2 thu nhập (cần email để nạp)'**
+  String get whatsNewShop;
 
   /// No description provided for @whatsNewLater.
   ///
@@ -4485,7 +4485,7 @@ abstract class AppLocalizations {
   /// No description provided for @whatsNewOpen.
   ///
   /// In vi, this message translates to:
-  /// **'Xem bộ sưu tập'**
+  /// **'Khám phá VIP'**
   String get whatsNewOpen;
 
   /// No description provided for @marketWallet.

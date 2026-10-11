@@ -2526,30 +2526,30 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get whatsNewCollection =>
-      '🎀 A coleção sobe para 160 acessórios, com guia de coleção e animação ao ganhar um novo item';
+  String get whatsNewVip =>
+      '👑 Sistema VIP: 10 níveis, presentes diários/semanais/mensais, ranking VIP, Loja VIP e 2x 💎 na primeira recarga';
 
   @override
-  String get whatsNewMilestones =>
-      '🏅 Novos marcos de coleção em 80/100/120/140/160 com mais Moedas de Mercado';
+  String get whatsNewGuild =>
+      '🛡️ Guildas: Chefe semanal, selos e molduras VIP, presentear 💎 e ranking de guildas por VIP';
 
   @override
-  String get whatsNewMatch3 =>
-      '🧋 Pérolas Caindo agora tem 80 fases e ficou mais fácil (25 jogadas por fase)';
+  String get whatsNewQuests =>
+      '📋 Missões semanais com baú, bônus de marcos da sequência (7/14/30/60/100 dias) e Oferta de hoje';
 
   @override
-  String get whatsNewAds =>
-      '📺 Sem jogadas? Veja um anúncio para +5, quantas vezes quiser; sair no meio mantém a partida';
+  String get whatsNewSocial =>
+      '🏆 Toque numa linha do ranking para ver o perfil; veja e compartilhe rankings na web; convide amigos e ganhe 💎';
 
   @override
-  String get whatsNewFixes =>
-      '🛠️ Correções: lista do Mercado encolhia ao rolar, anúncios contavam como sair do jogo, alguns travamentos';
+  String get whatsNewShop =>
+      '💎 Novos pacotes grandes de gemas, Câmara fria permanente e combo Sem anúncios + renda 2x (é preciso e-mail para recarregar)';
 
   @override
   String get whatsNewLater => 'Depois';
 
   @override
-  String get whatsNewOpen => 'Ver coleção';
+  String get whatsNewOpen => 'Conhecer o VIP';
 
   @override
   String marketWallet(int n) {

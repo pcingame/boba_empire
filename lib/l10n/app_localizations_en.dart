@@ -2520,30 +2520,30 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get whatsNewCollection =>
-      '🎀 Collection grows to 160 accessories, with a collecting guide and a reveal animation for new items';
+  String get whatsNewVip =>
+      '👑 VIP system: 10 levels, daily/weekly/monthly gifts, a VIP leaderboard, a VIP Shop and 2x 💎 on your first top-up';
 
   @override
-  String get whatsNewMilestones =>
-      '🏅 New collection milestones at 80/100/120/140/160 with bigger Market Coin rewards';
+  String get whatsNewGuild =>
+      '🛡️ Guilds: weekly Boss, VIP tags and frames, gifting 💎 to each other, and a VIP guild leaderboard';
 
   @override
-  String get whatsNewMatch3 =>
-      '🧋 Falling Pearls now has 80 levels and is easier to play (25 moves per level)';
+  String get whatsNewQuests =>
+      '📋 Weekly quests with a reward chest, streak milestone bonuses (7/14/30/60/100 days) and Today’s Deal';
 
   @override
-  String get whatsNewAds =>
-      '📺 Out of moves? Watch an ad for +5 moves, as many times as you like; backing out keeps your game';
+  String get whatsNewSocial =>
+      '🏆 Tap a leaderboard row to see a profile; view and share leaderboards on the web; invite friends for 💎';
 
   @override
-  String get whatsNewFixes =>
-      '🛠️ Fixes: Market list squashing when scrolling, ads counted as leaving the game, a few crashes';
+  String get whatsNewShop =>
+      '💎 New big Gem packs, a permanent Cold Storage and a No Ads + 2x income combo (an email is needed to top up)';
 
   @override
   String get whatsNewLater => 'Later';
 
   @override
-  String get whatsNewOpen => 'View collection';
+  String get whatsNewOpen => 'Explore VIP';
 
   @override
   String marketWallet(int n) {

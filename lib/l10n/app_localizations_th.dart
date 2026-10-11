@@ -2507,30 +2507,30 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
-  String get whatsNewCollection =>
-      '🎀 คอลเลกชันเพิ่มเป็น 160 ชิ้น มีคู่มือการสะสมและแอนิเมชันเมื่อได้ของใหม่';
+  String get whatsNewVip =>
+      '👑 ระบบ VIP: 10 ระดับ ของขวัญรายวัน/สัปดาห์/เดือน อันดับ VIP ร้านค้า VIP และเติมครั้งแรกได้ 💎 x2';
 
   @override
-  String get whatsNewMilestones =>
-      '🏅 หมุดหมายการสะสมใหม่ที่ 80/100/120/140/160 พร้อมรางวัลเหรียญตลาดที่มากขึ้น';
+  String get whatsNewGuild =>
+      '🛡️ กิลด์: บอสประจำสัปดาห์ ป้ายและกรอบ VIP ส่ง 💎 ให้กัน และอันดับกิลด์ตาม VIP';
 
   @override
-  String get whatsNewMatch3 =>
-      '🧋 ไข่มุกร่วงมี 80 ด่าน เล่นง่ายขึ้น (25 ครั้งเดินต่อด่าน)';
+  String get whatsNewQuests =>
+      '📋 ภารกิจประจำสัปดาห์พร้อมหีบรางวัล โบนัสสตรีค (7/14/30/60/100 วัน) และดีลวันนี้';
 
   @override
-  String get whatsNewAds =>
-      '📺 หมดตาเดิน? ดูโฆษณารับ +5 ครั้งเดิน ดูกี่ครั้งก็ได้ ออกกลางคันก็ยังเก็บเกมไว้';
+  String get whatsNewSocial =>
+      '🏆 แตะแถวในอันดับเพื่อดูโปรไฟล์ ดูและแชร์อันดับบนเว็บ และชวนเพื่อนรับ 💎';
 
   @override
-  String get whatsNewFixes =>
-      '🛠️ แก้ไข: รายการตลาดหดตอนเลื่อน โฆษณาถูกนับเป็นออกจากเกม และข้อผิดพลาดบางส่วน';
+  String get whatsNewShop =>
+      '💎 แพ็กเพชรใหญ่ใหม่ ห้องเย็นถาวร และคอมโบไม่มีโฆษณา + รายได้ x2 (ต้องมีอีเมลก่อนเติม)';
 
   @override
   String get whatsNewLater => 'ไว้ทีหลัง';
 
   @override
-  String get whatsNewOpen => 'ดูคอลเลกชัน';
+  String get whatsNewOpen => 'ดู VIP';
 
   @override
   String marketWallet(int n) {

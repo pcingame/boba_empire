@@ -9,6 +9,23 @@ người bản ngữ soát.
 
 ---
 
+## 1.0.9 (+23) — chuẩn bị 2026-10-11
+
+**Bản trước:** 1.0.8 (+22). Nộp store bằng **+23**. Nội dung: VIP 10 cấp + quà ngày/tuần/tháng + BXH VIP + Cửa hàng VIP + nạp lần đầu x2 (cần email để nạp), Hội (Boss tuần, nhãn/khung VIP, tặng 💎), Nhiệm vụ tuần + rương, thưởng mốc chuỗi điểm danh + bonus VIP, Ưu đãi hôm nay, hồ sơ người chơi (bấm dòng BXH), liên kết app→web (BXH/hồ sơ/hướng dẫn), Mời bạn bè, gói 💎 lớn (huge 14.99$ / mega 19.99$), Kho lạnh 2.99$, combo Gỡ QC + x2 5.99$.
+
+Soạn sẵn: `assets/store/whatsnew_1.0.9/` (7 ngôn ngữ, đều < 500 ký tự), `assets/store/description_1.0.9/` (thêm mục "VIP & HỘI"; thẻ force update giữ nguyên), hộp "Có gì mới" trong app (`whatsNewVersion` = `1.0.9`, nút mở hướng dẫn VIP).
+
+**BẮT BUỘC trước khi nộp (Apple sẽ từ chối / nút mua hỏng nếu thiếu):**
+- App Store Connect: tạo đủ **4 sản phẩm IAP mới** (`boba_gems_huge` 14.99$, `boba_gems_mega` 19.99$, `boba_cold_storage` 2.99$ non-consumable, `boba_combo_noads_x2` 5.99$ non-consumable — xem `IAP_APP_STORE_SETUP.md`), đính ảnh chụp review, rồi **chọn chúng trong mục "In-App Purchases and Subscriptions" của phiên bản 1.0.9** để gửi duyệt cùng bản app. (Lần trước bị chặn "maximum number of submissions allowed in review" → đợi bản đang duyệt xong, hoặc huỷ nộp.)
+- Supabase đã chạy lại (xác nhận 2026-10-11): `guild_schema.sql`, `accessory_market_schema.sql`, `referral_schema.sql`, `player_profile_schema.sql`.
+- Review Notes (đã soạn chung, nhắc kiểm tra thư mục Spam để nhận OTP email): dán lại vào mục App Review Information.
+
+**Lệnh build:** `flutter build ipa --release --export-options-plist=ios/ExportOptions.plist --dart-define=IAP_VERIFY_ENDPOINT=https://boba-receipt-server-411559711815.asia-southeast1.run.app/verify` → upload bằng Xcode Organizer (Transporter từng báo "Processing failed").
+
+⚠️ Mọi số cân bằng VIP/nhiệm vụ tuần/điểm danh là ước lượng, chưa playtest. Bản dịch do máy soạn.
+
+---
+
 ## 1.0.8 (+21) — 2026-10-07
 
 **Bản trước:** 1.0.7 đã lên store. Nộp store bằng **+21**.

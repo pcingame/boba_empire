@@ -2532,30 +2532,30 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get whatsNewCollection =>
-      '🎀 La colección sube a 160 accesorios, con guía de colección y animación al conseguir uno nuevo';
+  String get whatsNewVip =>
+      '👑 Sistema VIP: 10 niveles, regalos diarios/semanales/mensuales, clasificación VIP, Tienda VIP y 2x 💎 en tu primera recarga';
 
   @override
-  String get whatsNewMilestones =>
-      '🏅 Nuevos hitos de colección en 80/100/120/140/160 con más Monedas de Mercado';
+  String get whatsNewGuild =>
+      '🛡️ Gremios: Jefe semanal, etiquetas y marcos VIP, regalar 💎 y clasificación de gremios por VIP';
 
   @override
-  String get whatsNewMatch3 =>
-      '🧋 Perlas que caen ahora tiene 80 niveles y es más fácil (25 movimientos por nivel)';
+  String get whatsNewQuests =>
+      '📋 Misiones semanales con cofre, bonos por hitos de racha (7/14/30/60/100 días) y la Oferta de hoy';
 
   @override
-  String get whatsNewAds =>
-      '📺 ¿Sin movimientos? Mira un anuncio para +5, tantas veces como quieras; si sales a medias, conservas la partida';
+  String get whatsNewSocial =>
+      '🏆 Toca una fila de la clasificación para ver el perfil; mira y comparte clasificaciones en la web; invita amigos y gana 💎';
 
   @override
-  String get whatsNewFixes =>
-      '🛠️ Arreglos: la lista del Mercado se encogía al desplazar, los anuncios contaban como salir del juego, algunos cierres';
+  String get whatsNewShop =>
+      '💎 Nuevos paquetes grandes de gemas, Almacén frío permanente y combo Sin anuncios + ingresos x2 (se requiere correo para recargar)';
 
   @override
   String get whatsNewLater => 'Después';
 
   @override
-  String get whatsNewOpen => 'Ver colección';
+  String get whatsNewOpen => 'Descubrir VIP';
 
   @override
   String marketWallet(int n) {

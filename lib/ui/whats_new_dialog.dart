@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
-import 'accessory_inventory_page.dart';
+import 'vip_how_to_dialog.dart';
 
 Future<void> showWhatsNew(BuildContext context, String version) {
   return showDialog<void>(
@@ -12,11 +12,11 @@ Future<void> showWhatsNew(BuildContext context, String version) {
     builder: (ctx) {
       final l10n = AppLocalizations.of(ctx)!;
       final items = [
-        l10n.whatsNewCollection,
-        l10n.whatsNewMilestones,
-        l10n.whatsNewMatch3,
-        l10n.whatsNewAds,
-        l10n.whatsNewFixes,
+        l10n.whatsNewVip,
+        l10n.whatsNewGuild,
+        l10n.whatsNewQuests,
+        l10n.whatsNewSocial,
+        l10n.whatsNewShop,
       ];
       return AlertDialog(
         key: const Key('whats-new'),
@@ -43,7 +43,7 @@ Future<void> showWhatsNew(BuildContext context, String version) {
             key: const Key('whats-new-open'),
             onPressed: () {
               Navigator.of(ctx).pop();
-              showAccessoryInventory(context);
+              showVipHowTo(context);
             },
             child: Text(l10n.whatsNewOpen),
           ),

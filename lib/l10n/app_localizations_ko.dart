@@ -2482,29 +2482,28 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get whatsNewCollection =>
-      '🎀 컬렉션이 액세서리 160종으로 늘고, 수집 가이드와 새 아이템 획득 애니메이션이 추가됐어요';
+  String get whatsNewVip =>
+      '👑 VIP 시스템: 10단계, 일/주/월 선물, VIP 순위, VIP 상점, 첫 충전 💎 2배';
 
   @override
-  String get whatsNewMilestones =>
-      '🏅 80/100/120/140/160 컬렉션 이정표 추가, 더 큰 마켓 코인 보상';
+  String get whatsNewGuild => '🛡️ 길드: 주간 보스, VIP 태그와 프레임, 💎 선물, VIP 길드 순위';
 
   @override
-  String get whatsNewMatch3 => '🧋 떨어지는 펄이 80레벨로 늘고 더 쉬워졌어요 (레벨당 25번 이동)';
+  String get whatsNewQuests =>
+      '📋 보상 상자가 있는 주간 퀘스트, 연속 출석 보너스(7/14/30/60/100일), 오늘의 특가';
 
   @override
-  String get whatsNewAds =>
-      '📺 이동이 끝났나요? 광고를 보면 +5회, 횟수 제한 없음. 중간에 나가도 게임이 유지돼요';
+  String get whatsNewSocial => '🏆 순위 항목을 눌러 프로필 보기, 웹에서 순위 보기·공유, 친구 초대 시 💎';
 
   @override
-  String get whatsNewFixes =>
-      '🛠️ 수정: 스크롤 시 마켓 목록이 찌그러지던 문제, 광고가 게임 이탈로 집계되던 문제, 일부 크래시';
+  String get whatsNewShop =>
+      '💎 새 대용량 보석 팩, 영구 냉장 보관, 광고 제거 + 수입 2배 콤보 (충전에는 이메일 필요)';
 
   @override
   String get whatsNewLater => '나중에';
 
   @override
-  String get whatsNewOpen => '컬렉션 보기';
+  String get whatsNewOpen => 'VIP 보기';
 
   @override
   String marketWallet(int n) {
