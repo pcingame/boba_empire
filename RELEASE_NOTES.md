@@ -9,7 +9,7 @@ người bản ngữ soát.
 
 ---
 
-## 1.0.9 (+23) — chuẩn bị 2026-10-11
+## 1.0.9 (+23) — 2026-10-11
 
 **Bản trước:** 1.0.8 (+22). Nộp store bằng **+23**. Nội dung: VIP 10 cấp + quà ngày/tuần/tháng + BXH VIP + Cửa hàng VIP + nạp lần đầu x2 (cần email để nạp), Hội (Boss tuần, nhãn/khung VIP, tặng 💎), Nhiệm vụ tuần + rương, thưởng mốc chuỗi điểm danh + bonus VIP, Ưu đãi hôm nay, hồ sơ người chơi (bấm dòng BXH), liên kết app→web (BXH/hồ sơ/hướng dẫn), Mời bạn bè, gói 💎 lớn (huge 14.99$ / mega 19.99$), Kho lạnh 2.99$, combo Gỡ QC + x2 5.99$.
 
@@ -23,6 +23,90 @@ Soạn sẵn: `assets/store/whatsnew_1.0.9/` (7 ngôn ngữ, đều < 500 ký t�
 **Lệnh build:** `flutter build ipa --release --export-options-plist=ios/ExportOptions.plist --dart-define=IAP_VERIFY_ENDPOINT=https://boba-receipt-server-411559711815.asia-southeast1.run.app/verify` → upload bằng Xcode Organizer (Transporter từng báo "Processing failed").
 
 ⚠️ Mọi số cân bằng VIP/nhiệm vụ tuần/điểm danh là ước lượng, chưa playtest. Bản dịch do máy soạn.
+
+### 🇻🇳 Tiếng Việt (vi)
+
+```
+Mới: HỆ THỐNG VIP & NHIỆM VỤ TUẦN!
+
+• VIP 10 cấp: quà mỗi ngày/tuần/tháng, bảng xếp hạng VIP, Cửa hàng VIP, nạp lần đầu x2 Kim Cương
+• Hội: Boss tuần, nhãn & khung VIP, tặng Kim Cương cho nhau
+• Nhiệm vụ tuần có rương thưởng, thưởng mốc chuỗi điểm danh, Ưu đãi hôm nay
+• Bấm dòng bảng xếp hạng để xem hồ sơ; xem & chia sẻ bảng xếp hạng trên web; mời bạn bè nhận Kim Cương
+• Thêm gói Kim Cương lớn, Kho lạnh vĩnh viễn, combo Gỡ QC + x2 thu nhập
+```
+
+### 🇬🇧 English (en)
+
+```
+New: VIP SYSTEM & WEEKLY QUESTS!
+
+• 10 VIP levels: daily/weekly/monthly gifts, a VIP leaderboard, a VIP Shop, 2x Gems on your first top-up
+• Guilds: weekly Boss, VIP tags & frames, gift Gems to each other
+• Weekly quests with a reward chest, streak milestone bonuses, Today's Deal
+• Tap a leaderboard row to see a profile; view & share leaderboards on the web; invite friends for Gems
+• New big Gem packs, permanent Cold Storage, No Ads + 2x income combo
+```
+
+### 🇧🇷 Português (pt-BR)
+
+```
+Novo: SISTEMA VIP E MISSÕES SEMANAIS!
+
+• 10 níveis VIP: presentes diários/semanais/mensais, ranking VIP, Loja VIP e 2x gemas na primeira recarga
+• Guildas: Chefe semanal, selos e molduras VIP, presentear gemas
+• Missões semanais com baú, bônus de marcos da sequência e Oferta de hoje
+• Toque numa linha do ranking para ver o perfil; veja e compartilhe rankings na web; convide amigos e ganhe gemas
+• Novos pacotes grandes de gemas, Câmara fria permanente e combo Sem anúncios + renda 2x
+```
+
+### 🇪🇸 Español (es)
+
+```
+Nuevo: SISTEMA VIP Y MISIONES SEMANALES
+
+• 10 niveles VIP: regalos diarios/semanales/mensuales, clasificación VIP, Tienda VIP y 2x gemas en la 1.ª recarga
+• Gremios: jefe semanal, etiquetas y marcos VIP, regalo de gemas
+• Misiones semanales con cofre, bonos de racha y Oferta de hoy
+• Toca una fila de la clasificación para ver el perfil; compártela en la web; invita amigos y gana gemas
+• Nuevos paquetes grandes de gemas, Almacén frío y combo Sin anuncios + ingresos x2
+```
+
+### 🇮🇩 Bahasa Indonesia (id)
+
+```
+Baru: SISTEM VIP & MISI MINGGUAN!
+
+• 10 level VIP: hadiah harian/mingguan/bulanan, peringkat VIP, Toko VIP, 2x Permata pada isi ulang pertama
+• Guild: Boss mingguan, label & bingkai VIP, saling kirim Permata
+• Misi mingguan dengan peti hadiah, bonus tonggak streak, Penawaran Hari Ini
+• Ketuk baris peringkat untuk melihat profil; lihat & bagikan peringkat di web; undang teman untuk Permata
+• Paket Permata besar baru, Cold Storage permanen, kombo Tanpa Iklan + pendapatan 2x
+```
+
+### 🇹🇭 ภาษาไทย (th)
+
+```
+ใหม่: ระบบ VIP & ภารกิจประจำสัปดาห์!
+
+• VIP 10 ระดับ: ของขวัญรายวัน/สัปดาห์/เดือน อันดับ VIP ร้านค้า VIP เติมครั้งแรกได้เพชร x2
+• กิลด์: บอสประจำสัปดาห์ ป้ายและกรอบ VIP ส่งเพชรให้กัน
+• ภารกิจประจำสัปดาห์พร้อมหีบรางวัล โบนัสสตรีค ดีลวันนี้
+• แตะแถวในอันดับเพื่อดูโปรไฟล์ ดูและแชร์อันดับบนเว็บ ชวนเพื่อนรับเพชร
+• แพ็กเพชรใหญ่ใหม่ ห้องเย็นถาวร คอมโบไม่มีโฆษณา + รายได้ x2
+```
+
+### 🇰🇷 한국어 (ko)
+
+```
+신규: VIP 시스템 & 주간 퀘스트!
+
+• VIP 10단계: 일/주/월 선물, VIP 순위, VIP 상점, 첫 충전 보석 2배
+• 길드: 주간 보스, VIP 태그와 프레임, 보석 선물
+• 보상 상자가 있는 주간 퀘스트, 연속 출석 보너스, 오늘의 특가
+• 순위 항목을 눌러 프로필 보기, 웹에서 순위 보기·공유, 친구 초대 시 보석
+• 새 대용량 보석 팩, 영구 냉장 보관, 광고 제거 + 수입 2배 콤보
+```
 
 ---
 
