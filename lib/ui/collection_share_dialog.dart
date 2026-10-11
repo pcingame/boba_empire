@@ -14,6 +14,7 @@ import 'package:share_plus/share_plus.dart';
 import '../core/accessories.dart';
 import '../core/collection_milestones.dart';
 import '../l10n/app_localizations.dart';
+import 'web_links.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import 'widgets/accessory_rarity.dart';
@@ -41,11 +42,11 @@ Future<void> showCollectionShare(BuildContext context) => showDialog<void>(
 
 /// Câu chia sẻ dạng chữ (cũng dùng làm chú thích cho ảnh).
 String collectionShareText(AppLocalizations l10n, Set<String> owned) =>
-    l10n.collectionShareText(
+    '${l10n.collectionShareText(
       owned.length,
       accessories.length,
       accessories.where((a) => owned.contains(a.id)).map((a) => a.emoji).join(),
-    );
+    )}\n$webHomeUrl';
 
 /// Tấm thẻ: rộng cố định để ảnh xuất ra giống nhau trên mọi máy.
 class CollectionCard extends StatelessWidget {

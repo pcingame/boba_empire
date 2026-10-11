@@ -1050,6 +1050,19 @@ class AppLocalizationsVi extends AppLocalizations {
   String get vipEntryHint => 'Nạp để mở khoá quà VIP hằng ngày, tuần, tháng';
 
   @override
+  String get settingsWebsite => 'Trang web';
+
+  @override
+  String get settingsWebGuide => 'Hướng dẫn chơi (trên web)';
+
+  @override
+  String get guideOnWeb => 'Xem hướng dẫn đầy đủ trên web';
+
+  @override
+  String get webOpenFailed =>
+      'Không mở được trang web. Kiểm tra mạng rồi thử lại.';
+
+  @override
   String get refEntry => '👥 Mời bạn bè';
 
   @override

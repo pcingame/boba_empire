@@ -1050,6 +1050,19 @@ class AppLocalizationsTh extends AppLocalizations {
       'เติมเงินเพื่อปลดล็อกของขวัญ VIP รายวัน รายสัปดาห์ และรายเดือน';
 
   @override
+  String get settingsWebsite => 'เว็บไซต์';
+
+  @override
+  String get settingsWebGuide => 'คู่มือการเล่น (เว็บ)';
+
+  @override
+  String get guideOnWeb => 'ดูคู่มือฉบับเต็มบนเว็บไซต์';
+
+  @override
+  String get webOpenFailed =>
+      'เปิดเว็บไซต์ไม่ได้ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่';
+
+  @override
   String get refEntry => '👥 ชวนเพื่อน';
 
   @override

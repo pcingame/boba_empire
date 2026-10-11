@@ -1034,6 +1034,18 @@ class AppLocalizationsKo extends AppLocalizations {
   String get vipEntryHint => '충전하면 일일·주간·월간 VIP 선물이 열려요';
 
   @override
+  String get settingsWebsite => '웹사이트';
+
+  @override
+  String get settingsWebGuide => '플레이 가이드(웹)';
+
+  @override
+  String get guideOnWeb => '웹사이트에서 전체 가이드 보기';
+
+  @override
+  String get webOpenFailed => '웹사이트를 열 수 없어요. 연결을 확인하고 다시 시도해 주세요.';
+
+  @override
   String get refEntry => '👥 친구 초대';
 
   @override

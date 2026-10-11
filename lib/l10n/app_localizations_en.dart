@@ -1051,6 +1051,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'Top up to unlock daily, weekly and monthly VIP gifts';
 
   @override
+  String get settingsWebsite => 'Website';
+
+  @override
+  String get settingsWebGuide => 'How-to guide (web)';
+
+  @override
+  String get guideOnWeb => 'Full guide on the website';
+
+  @override
+  String get webOpenFailed =>
+      'Couldn\'t open the website. Check your connection and try again.';
+
+  @override
   String get refEntry => '👥 Invite friends';
 
   @override

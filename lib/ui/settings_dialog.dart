@@ -8,6 +8,7 @@ import 'cloud_save_dialog.dart';
 import 'how_to_play_dialog.dart';
 import 'language_dialog.dart';
 import 'redeem_dialog.dart';
+import 'web_links.dart';
 
 /// Cài đặt: đổi ngôn ngữ, bật/tắt âm thanh, chơi lại từ đầu.
 Future<void> showSettings(BuildContext context) {
@@ -29,7 +30,8 @@ class _SettingsDialog extends ConsumerWidget {
 
     return AlertDialog(
       title: Text(l10n.settingsTitle),
-      content: Column(
+      content: SingleChildScrollView(
+        child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
@@ -39,6 +41,23 @@ class _SettingsDialog extends ConsumerWidget {
             title: Text(l10n.howToPlayTitle),
             trailing: const Icon(Icons.chevron_right),
             onTap: () => showHowToPlay(context),
+          ),
+          ListTile(
+            key: const Key('settings-website'),
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.public),
+            title: Text(l10n.settingsWebsite),
+            subtitle: const Text('bobaempiregame.com'),
+            trailing: const Icon(Icons.open_in_new, size: 18),
+            onTap: () => openWebLink(context, ref, webHomeUrl),
+          ),
+          ListTile(
+            key: const Key('settings-web-guide'),
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.menu_book_outlined),
+            title: Text(l10n.settingsWebGuide),
+            trailing: const Icon(Icons.open_in_new, size: 18),
+            onTap: () => openWebLink(context, ref, webGuideUrl()),
           ),
           ListTile(
             contentPadding: EdgeInsets.zero,
@@ -84,6 +103,7 @@ class _SettingsDialog extends ConsumerWidget {
             onTap: () => _confirmReset(context, ref),
           ),
         ],
+      ),
       ),
       actions: [
         TextButton(

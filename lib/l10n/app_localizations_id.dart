@@ -1053,6 +1053,19 @@ class AppLocalizationsId extends AppLocalizations {
       'Top up untuk membuka hadiah VIP harian, mingguan, dan bulanan';
 
   @override
+  String get settingsWebsite => 'Situs web';
+
+  @override
+  String get settingsWebGuide => 'Panduan bermain (web)';
+
+  @override
+  String get guideOnWeb => 'Panduan lengkap di situs web';
+
+  @override
+  String get webOpenFailed =>
+      'Tidak bisa membuka situs web. Periksa koneksi dan coba lagi.';
+
+  @override
   String get refEntry => '👥 Undang teman';
 
   @override

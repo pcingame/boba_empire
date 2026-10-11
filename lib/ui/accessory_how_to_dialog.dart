@@ -3,9 +3,11 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/balance.dart';
 import '../l10n/app_localizations.dart';
+import 'web_links.dart';
 
 Future<void> showAccessoryHowTo(BuildContext context) {
   return showDialog<void>(
@@ -14,11 +16,11 @@ Future<void> showAccessoryHowTo(BuildContext context) {
   );
 }
 
-class _AccessoryHowToDialog extends StatelessWidget {
+class _AccessoryHowToDialog extends ConsumerWidget {
   const _AccessoryHowToDialog();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     // Thứ tự theo lúc người chơi cần biết: mục tiêu -> cách nhận -> vòng quay
     // -> độ hiếm -> trùng -> Chợ -> mốc/xếp hạng -> trưng bày.
@@ -48,6 +50,11 @@ class _AccessoryHowToDialog extends StatelessWidget {
         ),
       ),
       actions: [
+        TextButton(
+          key: const Key('how-to-web-guide'),
+          onPressed: () => openWebLink(context, ref, webGuideUrl('phu-kien')),
+          child: Text(l10n.guideOnWeb),
+        ),
         FilledButton(
           key: const Key('accessory-how-to-close'),
           onPressed: () => Navigator.of(context).pop(),

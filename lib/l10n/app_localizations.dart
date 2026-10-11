@@ -1800,6 +1800,30 @@ abstract class AppLocalizations {
   /// **'Nạp để mở khoá quà VIP hằng ngày, tuần, tháng'**
   String get vipEntryHint;
 
+  /// No description provided for @settingsWebsite.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trang web'**
+  String get settingsWebsite;
+
+  /// No description provided for @settingsWebGuide.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hướng dẫn chơi (trên web)'**
+  String get settingsWebGuide;
+
+  /// No description provided for @guideOnWeb.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem hướng dẫn đầy đủ trên web'**
+  String get guideOnWeb;
+
+  /// No description provided for @webOpenFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không mở được trang web. Kiểm tra mạng rồi thử lại.'**
+  String get webOpenFailed;
+
   /// No description provided for @refEntry.
   ///
   /// In vi, this message translates to:

@@ -1057,6 +1057,19 @@ class AppLocalizationsPt extends AppLocalizations {
       'Recarregue para liberar presentes VIP diários, semanais e mensais';
 
   @override
+  String get settingsWebsite => 'Site';
+
+  @override
+  String get settingsWebGuide => 'Guia de jogo (web)';
+
+  @override
+  String get guideOnWeb => 'Guia completo no site';
+
+  @override
+  String get webOpenFailed =>
+      'Não foi possível abrir o site. Verifique sua conexão e tente de novo.';
+
+  @override
   String get refEntry => '👥 Convidar amigos';
 
   @override

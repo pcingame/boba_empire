@@ -18,7 +18,6 @@ import '../state/game_providers.dart';
 import 'email_gate.dart';
 import 'topup_dialog.dart';
 import 'widgets/clay.dart';
-import 'widgets/iap_icon.dart';
 
 /// Mở Cửa hàng Kim Cương — chỗ tiêu gems kiếm từ VIP, và nạp bằng tiền thật.
 Future<void> showGemShop(BuildContext context) {
@@ -243,7 +242,6 @@ class _GemShopState extends ConsumerState<_GemShop> {
         for (final p in products)
           ListTile(
             contentPadding: EdgeInsets.zero,
-            leading: IapIcon(product: p, firstBonus: _firstBonus(p)),
             title: Text(iapTitle(l10n, p)),
             subtitle: Text(_firstBonus(p)
                 ? '${iapDescription(l10n, p)}\n${l10n.iapFirstBuyNote}'

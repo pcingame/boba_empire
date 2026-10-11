@@ -1060,6 +1060,19 @@ class AppLocalizationsEs extends AppLocalizations {
       'Recarga para desbloquear regalos VIP diarios, semanales y mensuales';
 
   @override
+  String get settingsWebsite => 'Sitio web';
+
+  @override
+  String get settingsWebGuide => 'Guía de juego (web)';
+
+  @override
+  String get guideOnWeb => 'Guía completa en la web';
+
+  @override
+  String get webOpenFailed =>
+      'No se pudo abrir el sitio web. Revisa tu conexión e inténtalo de nuevo.';
+
+  @override
   String get refEntry => '👥 Invitar amigos';
 
   @override

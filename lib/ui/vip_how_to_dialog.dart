@@ -4,21 +4,23 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/format.dart';
 import '../core/topup.dart';
 import '../l10n/app_localizations.dart';
+import 'web_links.dart';
 
 Future<void> showVipHowTo(BuildContext context) => showDialog<void>(
       context: context,
       builder: (_) => const _VipHowToDialog(),
     );
 
-class _VipHowToDialog extends StatelessWidget {
+class _VipHowToDialog extends ConsumerWidget {
   const _VipHowToDialog();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final lines = [
       l10n.vipHtp1,
@@ -49,6 +51,11 @@ class _VipHowToDialog extends StatelessWidget {
         ),
       ),
       actions: [
+        TextButton(
+          key: const Key('how-to-web-guide'),
+          onPressed: () => openWebLink(context, ref, webGuideUrl('vip')),
+          child: Text(l10n.guideOnWeb),
+        ),
         FilledButton(
           key: const Key('vip-how-to-close'),
           onPressed: () => Navigator.of(context).pop(),
