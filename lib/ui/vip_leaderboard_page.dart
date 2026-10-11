@@ -12,6 +12,7 @@ import '../l10n/l10n_ext.dart';
 import '../leaderboard/flair.dart';
 import '../leaderboard/vip_leaderboard_controller.dart';
 import 'web_links.dart';
+import 'player_profile_dialog.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -144,6 +145,7 @@ class _List extends ConsumerWidget {
                 final isMe = e.userId == view.myUserId;
                 return ClayTile(
                   key: Key('vip-lb-row-${e.userId}'),
+                  onTap: () => showPlayerProfile(context, e.nickname),
                   child: Row(
                     children: [
                       SizedBox(

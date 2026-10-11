@@ -13,6 +13,7 @@ import 'daily.dart' show dayIndex;
 import 'event_quests.dart' show addEventProgress;
 import 'guild.dart' show addGuildProgress;
 import 'models.dart';
+import 'weekly_quests.dart' show WeeklyQuestKind, addWeeklyFromDaily, addWeeklyProgress;
 
 enum DailyQuestKind { tap, buy, earn, cat, vip, spin }
 
@@ -75,6 +76,7 @@ void addDailyProgress(GameState s, DailyQuestKind k, double n) {
   if (v.isFinite) s.dailyProgress[k.name] = v;
   addEventProgress(s, k, n);
   addGuildProgress(s, k, n);
+  addWeeklyFromDaily(s, k, n);
 }
 
 /// Sang ngày mới thì đổi bộ: xoá tiến độ + cờ đã nhận, chốt ngưỡng "Kiếm Xu" theo
@@ -103,6 +105,7 @@ int claimDailyQuest(GameState s, int index) {
   s.dailyClaimed.add(q.kind.name);
   s.dailyQuestEverClaimed = true;
   s.gems += q.rewardGems;
+  addWeeklyProgress(s, WeeklyQuestKind.dailyDone, 1);
   return q.rewardGems;
 }
 

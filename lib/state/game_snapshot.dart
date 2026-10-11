@@ -8,6 +8,7 @@ library;
 import '../core/achievements.dart';
 import '../core/daily_quests.dart';
 import '../core/quests.dart';
+import '../core/weekly_quests.dart';
 import '../core/rival.dart';
 
 /// Ảnh chụp bất biến của một nhiệm vụ ngày cho UI.
@@ -23,6 +24,25 @@ class DailyQuestView {
   final DailyQuestKind kind;
   final double target;
   final double progress;
+  final int rewardGems;
+  final bool claimed;
+
+  bool get done => progress >= target;
+}
+
+/// Ảnh chụp bất biến của một nhiệm vụ tuần cho UI.
+class WeeklyQuestView {
+  const WeeklyQuestView({
+    required this.kind,
+    required this.target,
+    required this.progress,
+    required this.rewardGems,
+    required this.claimed,
+  });
+
+  final WeeklyQuestKind kind;
+  final int target;
+  final int progress;
   final int rewardGems;
   final bool claimed;
 
@@ -129,6 +149,9 @@ class GameSnapshot {
     required this.dailyBonusClaimed,
     required this.starterPackReady,
     required this.dailyClaimableCount,
+    required this.weeklyQuests,
+    required this.weeklyChestAvailable,
+    required this.weeklyChestClaimed,
     required this.ascensionCount,
     required this.ascensionPointsAvailable,
     required this.ascensionPointsSpendable,
@@ -353,6 +376,9 @@ class GameSnapshot {
   /// Đủ điều kiện hiện thẻ Gói Khởi Nghiệp Chợ (xem starter_pack.dart).
   final bool starterPackReady;
   final int dailyClaimableCount;
+  final List<WeeklyQuestView> weeklyQuests;
+  final bool weeklyChestAvailable;
+  final bool weeklyChestClaimed;
 
   final int ascensionCount;
   final int ascensionPointsAvailable;

@@ -1866,6 +1866,60 @@ abstract class AppLocalizations {
   /// **'Xem thứ hạng của {name} trong Boba Empire nè: {url}'**
   String profileShareText(String name, String url);
 
+  /// No description provided for @profileTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hồ sơ: {name}'**
+  String profileTitle(String name);
+
+  /// No description provided for @profileBoardIncome.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu nhập'**
+  String get profileBoardIncome;
+
+  /// No description provided for @profileBoardPearls.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trân châu'**
+  String get profileBoardPearls;
+
+  /// No description provided for @profileBoardCollection.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sưu tầm'**
+  String get profileBoardCollection;
+
+  /// No description provided for @profileBoardSpeed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tốc độ cốt truyện'**
+  String get profileBoardSpeed;
+
+  /// No description provided for @profileBoardVip.
+  ///
+  /// In vi, this message translates to:
+  /// **'VIP'**
+  String get profileBoardVip;
+
+  /// No description provided for @profileNoRanks.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có hạng nào trên bảng xếp hạng.'**
+  String get profileNoRanks;
+
+  /// No description provided for @profileViewButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hồ sơ'**
+  String get profileViewButton;
+
+  /// No description provided for @profileOpenWeb.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem trên web'**
+  String get profileOpenWeb;
+
   /// No description provided for @refEntry.
   ///
   /// In vi, this message translates to:
@@ -4805,6 +4859,66 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Quay vòng quay may mắn'**
   String get dqSpin;
+
+  /// No description provided for @weeklyQuestsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiệm vụ tuần'**
+  String get weeklyQuestsTitle;
+
+  /// No description provided for @weeklyQuestsOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiệm vụ tuần 🗓️'**
+  String get weeklyQuestsOpen;
+
+  /// No description provided for @wqPrestige.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhượng quyền {n} lần'**
+  String wqPrestige(int n);
+
+  /// No description provided for @wqM3Win.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thắng {n} màn Trân Châu Rơi'**
+  String wqM3Win(int n);
+
+  /// No description provided for @wqTrade.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao dịch {n} lần ở Chợ (đăng bán hoặc mua)'**
+  String wqTrade(int n);
+
+  /// No description provided for @wqDailyDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận thưởng {n} nhiệm vụ ngày'**
+  String wqDailyDone(int n);
+
+  /// No description provided for @wqSpin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay vòng quay {n} lần'**
+  String wqSpin(int n);
+
+  /// No description provided for @wqBuy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua nâng cấp {n} lần'**
+  String wqBuy(int n);
+
+  /// No description provided for @weeklyChestLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rương tuần: xong cả 3 → +1 phụ kiện Hiếm trở lên'**
+  String get weeklyChestLabel;
+
+  /// No description provided for @weeklyResetsIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Làm mới sau {time}'**
+  String weeklyResetsIn(String time);
 
   /// No description provided for @notifyOfflineFullTitle.
   ///

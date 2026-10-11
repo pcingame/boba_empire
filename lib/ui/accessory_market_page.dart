@@ -110,7 +110,14 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
         .removeOwnedAccessoryLocally(id);
     notifier.onAccessoryAddedLocally = (id) =>
         ref.read(gameControllerProvider.notifier).addOwnedAccessoryLocally(id);
-    notifier.onEvent = ref.read(gameControllerProvider.notifier).logEvent;
+    final game = ref.read(gameControllerProvider.notifier);
+    notifier.onEvent = (event, props) {
+      game.logEvent(event, props);
+      // Đăng bán hoặc mua thành công đều tính là một giao dịch cho nhiệm vụ tuần.
+      if (event == 'listing_created' || event == 'trade_done') {
+        game.recordMarketTrade();
+      }
+    };
 
     if (!_loaded) {
       _loaded = true;

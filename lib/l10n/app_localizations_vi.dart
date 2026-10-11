@@ -1092,6 +1092,35 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String profileTitle(String name) {
+    return 'Hồ sơ: $name';
+  }
+
+  @override
+  String get profileBoardIncome => 'Thu nhập';
+
+  @override
+  String get profileBoardPearls => 'Trân châu';
+
+  @override
+  String get profileBoardCollection => 'Sưu tầm';
+
+  @override
+  String get profileBoardSpeed => 'Tốc độ cốt truyện';
+
+  @override
+  String get profileBoardVip => 'VIP';
+
+  @override
+  String get profileNoRanks => 'Chưa có hạng nào trên bảng xếp hạng.';
+
+  @override
+  String get profileViewButton => 'Hồ sơ';
+
+  @override
+  String get profileOpenWeb => 'Xem trên web';
+
+  @override
   String get refEntry => '👥 Mời bạn bè';
 
   @override
@@ -2737,6 +2766,51 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get dqSpin => 'Quay vòng quay may mắn';
+
+  @override
+  String get weeklyQuestsTitle => 'Nhiệm vụ tuần';
+
+  @override
+  String get weeklyQuestsOpen => 'Nhiệm vụ tuần 🗓️';
+
+  @override
+  String wqPrestige(int n) {
+    return 'Nhượng quyền $n lần';
+  }
+
+  @override
+  String wqM3Win(int n) {
+    return 'Thắng $n màn Trân Châu Rơi';
+  }
+
+  @override
+  String wqTrade(int n) {
+    return 'Giao dịch $n lần ở Chợ (đăng bán hoặc mua)';
+  }
+
+  @override
+  String wqDailyDone(int n) {
+    return 'Nhận thưởng $n nhiệm vụ ngày';
+  }
+
+  @override
+  String wqSpin(int n) {
+    return 'Quay vòng quay $n lần';
+  }
+
+  @override
+  String wqBuy(int n) {
+    return 'Mua nâng cấp $n lần';
+  }
+
+  @override
+  String get weeklyChestLabel =>
+      'Rương tuần: xong cả 3 → +1 phụ kiện Hiếm trở lên';
+
+  @override
+  String weeklyResetsIn(String time) {
+    return 'Làm mới sau $time';
+  }
 
   @override
   String get notifyOfflineFullTitle => 'Kho Xu đã đầy! 🧋';

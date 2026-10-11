@@ -1099,6 +1099,35 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String profileTitle(String name) {
+    return 'Perfil: $name';
+  }
+
+  @override
+  String get profileBoardIncome => 'Renda';
+
+  @override
+  String get profileBoardPearls => 'Pérolas';
+
+  @override
+  String get profileBoardCollection => 'Coleção';
+
+  @override
+  String get profileBoardSpeed => 'Speedrun da história';
+
+  @override
+  String get profileBoardVip => 'VIP';
+
+  @override
+  String get profileNoRanks => 'Ainda não está em nenhum ranking.';
+
+  @override
+  String get profileViewButton => 'Perfil';
+
+  @override
+  String get profileOpenWeb => 'Ver na web';
+
+  @override
   String get refEntry => '👥 Convidar amigos';
 
   @override
@@ -2754,6 +2783,51 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get dqSpin => 'Gire a Roda da Sorte';
+
+  @override
+  String get weeklyQuestsTitle => 'Missões semanais';
+
+  @override
+  String get weeklyQuestsOpen => 'Missões semanais 🗓️';
+
+  @override
+  String wqPrestige(int n) {
+    return 'Prestigie $n vezes';
+  }
+
+  @override
+  String wqM3Win(int n) {
+    return 'Vença $n fases de Pérolas Caindo';
+  }
+
+  @override
+  String wqTrade(int n) {
+    return 'Faça $n negociações no Mercado (vender ou comprar)';
+  }
+
+  @override
+  String wqDailyDone(int n) {
+    return 'Resgate $n recompensas de missões diárias';
+  }
+
+  @override
+  String wqSpin(int n) {
+    return 'Gire a roleta $n vezes';
+  }
+
+  @override
+  String wqBuy(int n) {
+    return 'Compre $n melhorias';
+  }
+
+  @override
+  String get weeklyChestLabel =>
+      'Baú semanal: conclua as 3 → +1 acessório Raro ou melhor';
+
+  @override
+  String weeklyResetsIn(String time) {
+    return 'Reinicia em $time';
+  }
 
   @override
   String get notifyOfflineFullTitle => 'Seu caixa está cheio! 🧋';

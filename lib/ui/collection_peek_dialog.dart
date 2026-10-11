@@ -3,6 +3,7 @@
 /// `accessory_collection_of`; id lạ (bản app cũ hơn) bị bỏ qua.
 library;
 
+import 'player_profile_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -113,6 +114,11 @@ class _CollectionPeekDialog extends ConsumerWidget {
         ),
       ),
       actions: [
+        TextButton(
+          key: const Key('peek-open-profile'),
+          onPressed: () => showPlayerProfile(context, nickname),
+          child: Text(l10n.profileViewButton),
+        ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: Text(MaterialLocalizations.of(context).closeButtonLabel),

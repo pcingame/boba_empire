@@ -16,6 +16,7 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
+import 'weekly_quests_dialog.dart';
 import 'widgets/accessory_reveal.dart';
 import 'widgets/accessory_rarity.dart';
 import 'widgets/anim_assets.dart';
@@ -176,6 +177,11 @@ class _DailyQuestsDialogState extends ConsumerState<_DailyQuestsDialog> {
         ),
       ),
       actions: [
+        TextButton(
+          key: const Key('weekly-quests-open'),
+          onPressed: () => showWeeklyQuests(context),
+          child: Text(l10n.weeklyQuestsOpen),
+        ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: Text(l10n.close),

@@ -877,3 +877,13 @@ hạn giao dịch/ngày). Điểm mấu chốt:
   `accessory_market_trades` gọi Edge Function `supabase/functions/notify-market-sale`
   (FCM HTTP v1, 6 ngôn ngữ, số Xu nhận = giá − phí). Các bước deploy ở đầu file index.ts.
 - **Chưa làm**: popup lúc rớt món (hiện chưa có popup rớt phụ kiện).
+
+## 28. Nhiệm vụ tuần + hồ sơ người chơi (2026-10-11, chưa playtest)
+
+- **Nhiệm vụ tuần** (`lib/core/weekly_quests.dart`, UI `weekly_quests_dialog.dart`, mở bằng nút trong hộp thoại Nhiệm
+  vụ ngày): tuần bắt đầu thứ Hai 00:00 UTC; mỗi tuần chọn xác định 3/6 loại — Nhượng quyền ×2, thắng 5 màn Ghép 3, 3
+  giao dịch Chợ (đăng bán hoặc mua), nhận thưởng 5 nhiệm vụ ngày, quay vòng quay ×10, mua 300 nâng cấp. Mỗi cái 50💎;
+  nhận đủ 3 mở rương tuần: 150💎 + 1 phụ kiện Hiếm trở lên. Chấm đỏ ở chip Nhiệm vụ đã gộp cả tuần. Số liệu là
+  ước lượng — cần playtest.
+- **Hồ sơ người chơi:** bấm một dòng ở BXH Thu nhập/Trân châu/Speedrun/VIP (hoặc nút "Hồ sơ" ở hộp thoại xem bộ sưu tập)
+  → hạng + điểm ở 5 bảng cá nhân qua RPC `player_profile`; có nút "Xem trên web" (`?player=`). Bảng Hội/Đấu Trường chưa có.

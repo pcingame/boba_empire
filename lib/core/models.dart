@@ -87,6 +87,10 @@ class GameState {
     this.dailyQuestDay = 0,
     this.dailyEarnTarget = 0,
     this.dailyBonusClaimed = false,
+    this.weeklyQuestWeek = 0,
+    this.weeklyBonusClaimed = false,
+    Map<String, double>? weeklyProgress,
+    List<String>? weeklyClaimed,
     this.accessoryAdDropDay = 0,
     this.accessoryAdSpinDay = 0,
     this.accessoryAdSpins = 0,
@@ -175,6 +179,8 @@ class GameState {
         wishlist = wishlist ?? [],
         dailyProgress = dailyProgress ?? {},
         dailyClaimed = dailyClaimed ?? [],
+        weeklyProgress = weeklyProgress ?? {},
+        weeklyClaimed = weeklyClaimed ?? [],
         firstPlayedMillis = firstPlayedMillis ?? lastSeenMillis;
 
   /// Ván mới tinh.
@@ -348,6 +354,13 @@ class GameState {
   bool starterPackClaimed;
   final Map<String, double> dailyProgress;
   final List<String> dailyClaimed;
+
+  /// Nhiệm vụ tuần (xem weekly_quests.dart): tuần của bộ đang có, tiến độ theo loại
+  /// (khoá = WeeklyQuestKind.name), loại đã nhận, và đã mở rương chưa. Giữ qua Nhượng quyền/Kỷ Nguyên.
+  int weeklyQuestWeek;
+  bool weeklyBonusClaimed;
+  final Map<String, double> weeklyProgress;
+  final List<String> weeklyClaimed;
 
   /// Kỷ Nguyên (prestige tầng 2, xem Balance.ascension*): số lần đã Kỷ Nguyên
   /// hoá, tổng Điểm đã nhận (đã tiêu = suy ra từ cấp perk, giống Kho Sao), và
@@ -562,6 +575,10 @@ class GameState {
         'starterPackClaimed': starterPackClaimed,
         'dailyProgress': dailyProgress,
         'dailyClaimed': dailyClaimed,
+        'weeklyQuestWeek': weeklyQuestWeek,
+        'weeklyBonusClaimed': weeklyBonusClaimed,
+        'weeklyProgress': weeklyProgress,
+        'weeklyClaimed': weeklyClaimed,
         'ascensionCount': ascensionCount,
         'ascensionPointsEarned': ascensionPointsEarned,
         'ascensionLifetime': ascensionLifetime,
@@ -706,6 +723,11 @@ class GameState {
         dailyProgress: (json['dailyProgress'] as Map?)
             ?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),
         dailyClaimed: (json['dailyClaimed'] as List?)?.cast<String>().toList(),
+        weeklyQuestWeek: (json['weeklyQuestWeek'] as num?)?.toInt() ?? 0,
+        weeklyBonusClaimed: json['weeklyBonusClaimed'] == true,
+        weeklyProgress: (json['weeklyProgress'] as Map?)
+            ?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),
+        weeklyClaimed: (json['weeklyClaimed'] as List?)?.cast<String>().toList(),
         ascensionCount: (json['ascensionCount'] as num?)?.toInt() ?? 0,
         ascensionPointsEarned:
             (json['ascensionPointsEarned'] as num?)?.toInt() ?? 0,

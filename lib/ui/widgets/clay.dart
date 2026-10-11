@@ -50,16 +50,20 @@ class ClayTile extends StatelessWidget {
     required this.child,
     this.padding = const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
     this.margin = const EdgeInsets.symmetric(vertical: 4),
+    this.onTap,
   });
 
   final Widget child;
   final EdgeInsetsGeometry padding;
   final EdgeInsetsGeometry margin;
 
+  /// Có thì cả ô bấm được (vd mở hồ sơ người chơi); không có thì y như cũ.
+  final VoidCallback? onTap;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
+    final tile = Container(
       margin: margin,
       padding: padding,
       decoration: BoxDecoration(
@@ -74,6 +78,12 @@ class ClayTile extends StatelessWidget {
         ],
       ),
       child: child,
+    );
+    if (onTap == null) return tile;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: tile,
     );
   }
 }

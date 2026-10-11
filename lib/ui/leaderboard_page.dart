@@ -12,6 +12,7 @@ import '../leaderboard/flair.dart';
 import '../leaderboard/leaderboard_controller.dart';
 import '../state/game_providers.dart';
 import 'web_links.dart';
+import 'player_profile_dialog.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -196,6 +197,8 @@ class _LeaderboardList extends ConsumerWidget {
                       final entry = view.entries[i];
                       final isMe = entry.userId == view.myUserId;
                       final tile = ClayTile(
+                        onTap: () =>
+                            showPlayerProfile(context, entry.nickname),
                         child: Row(
                           children: [
                             SizedBox(

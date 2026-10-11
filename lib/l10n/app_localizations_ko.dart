@@ -1075,6 +1075,35 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String profileTitle(String name) {
+    return '프로필: $name';
+  }
+
+  @override
+  String get profileBoardIncome => '수입';
+
+  @override
+  String get profileBoardPearls => '진주';
+
+  @override
+  String get profileBoardCollection => '수집';
+
+  @override
+  String get profileBoardSpeed => '스토리 스피드런';
+
+  @override
+  String get profileBoardVip => 'VIP';
+
+  @override
+  String get profileNoRanks => '아직 어떤 순위에도 없어요.';
+
+  @override
+  String get profileViewButton => '프로필';
+
+  @override
+  String get profileOpenWeb => '웹에서 보기';
+
+  @override
   String get refEntry => '👥 친구 초대';
 
   @override
@@ -2705,6 +2734,50 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get dqSpin => '럭키 룰렛 돌리기';
+
+  @override
+  String get weeklyQuestsTitle => '주간 퀘스트';
+
+  @override
+  String get weeklyQuestsOpen => '주간 퀘스트 🗓️';
+
+  @override
+  String wqPrestige(int n) {
+    return '프레스티지 $n회';
+  }
+
+  @override
+  String wqM3Win(int n) {
+    return '떨어지는 진주 $n판 승리';
+  }
+
+  @override
+  String wqTrade(int n) {
+    return '마켓 거래 $n회 (등록 또는 구매)';
+  }
+
+  @override
+  String wqDailyDone(int n) {
+    return '일일 퀘스트 보상 $n개 수령';
+  }
+
+  @override
+  String wqSpin(int n) {
+    return '룰렛 $n회 돌리기';
+  }
+
+  @override
+  String wqBuy(int n) {
+    return '업그레이드 $n회 구매';
+  }
+
+  @override
+  String get weeklyChestLabel => '주간 상자: 3개 모두 완료 → 레어 이상 액세서리 +1';
+
+  @override
+  String weeklyResetsIn(String time) {
+    return '$time 후 초기화';
+  }
 
   @override
   String get notifyOfflineFullTitle => '코인 창고가 가득 찼어요! 🧋';

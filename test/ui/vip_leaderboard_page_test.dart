@@ -4,6 +4,7 @@ import 'package:boba_empire/core/topup.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
 import 'package:boba_empire/leaderboard/flair.dart';
+import 'package:boba_empire/leaderboard/player_profile.dart';
 import 'package:boba_empire/leaderboard/vip_leaderboard_controller.dart';
 import 'package:boba_empire/leaderboard/vip_leaderboard_repository.dart';
 import 'package:boba_empire/state/game_providers.dart';
@@ -135,6 +136,21 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 100));
     expect(find.text('Nobody is on the VIP leaderboard yet.'), findsOneWidget);
+    await _close(tester, c);
+  });
+
+  testWidgets('bấm một dòng -> mở hồ sơ người đó (hạng + điểm từng bảng)', (tester) async {
+    final c = await _open(
+      tester,
+      repo: _FakeRepo([_e('u1', 'Alice', 900, 1), _e('u2', 'Bob', 100, 2)]),
+    );
+    await tester.tap(find.byKey(const Key('vip-lb-row-u2')));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 50));
+    // Supabase chưa khởi tạo trong test -> RPC lỗi -> hộp thoại báo lỗi mạng, không crash.
+    expect(find.text('Profile: Bob'), findsOneWidget);
+    expect(find.byKey(const Key('profile-error')), findsOneWidget);
+    expect(playerProfileProvider('Bob'), isNotNull);
     await _close(tester, c);
   });
 }

@@ -1093,6 +1093,35 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String profileTitle(String name) {
+    return 'Profile: $name';
+  }
+
+  @override
+  String get profileBoardIncome => 'Income';
+
+  @override
+  String get profileBoardPearls => 'Pearls';
+
+  @override
+  String get profileBoardCollection => 'Collection';
+
+  @override
+  String get profileBoardSpeed => 'Story speedrun';
+
+  @override
+  String get profileBoardVip => 'VIP';
+
+  @override
+  String get profileNoRanks => 'Not on any leaderboard yet.';
+
+  @override
+  String get profileViewButton => 'Profile';
+
+  @override
+  String get profileOpenWeb => 'View on web';
+
+  @override
   String get refEntry => '👥 Invite friends';
 
   @override
@@ -2747,6 +2776,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dqSpin => 'Spin the Lucky Wheel';
+
+  @override
+  String get weeklyQuestsTitle => 'Weekly quests';
+
+  @override
+  String get weeklyQuestsOpen => 'Weekly quests 🗓️';
+
+  @override
+  String wqPrestige(int n) {
+    return 'Prestige $n times';
+  }
+
+  @override
+  String wqM3Win(int n) {
+    return 'Win $n Falling Pearls levels';
+  }
+
+  @override
+  String wqTrade(int n) {
+    return 'Make $n Market trades (list or buy)';
+  }
+
+  @override
+  String wqDailyDone(int n) {
+    return 'Claim $n daily quest rewards';
+  }
+
+  @override
+  String wqSpin(int n) {
+    return 'Spin the wheel $n times';
+  }
+
+  @override
+  String wqBuy(int n) {
+    return 'Buy $n upgrades';
+  }
+
+  @override
+  String get weeklyChestLabel =>
+      'Weekly chest: finish all 3 → +1 Rare+ accessory';
+
+  @override
+  String weeklyResetsIn(String time) {
+    return 'Resets in $time';
+  }
 
   @override
   String get notifyOfflineFullTitle => 'Your coin stash is full! 🧋';

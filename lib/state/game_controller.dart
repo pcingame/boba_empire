@@ -33,6 +33,7 @@ import '../core/simulation.dart';
 import '../core/starter_pack.dart' as market_starter;
 import '../core/story.dart';
 import '../core/topup.dart';
+import '../core/weekly_quests.dart';
 import '../core/vip.dart';
 import '../core/vip_shop.dart';
 import '../core/wheel.dart';
@@ -481,6 +482,7 @@ class GameController extends Notifier<GameSnapshot> {
     rollGuildWeek(_game, _clock());
     rollEvent(
         _game, DateTime.fromMillisecondsSinceEpoch(_clock(), isUtc: true));
+    rollWeeklyQuests(_game, _clock());
     rollDailyQuests(
       _game,
       _clock(),
@@ -631,6 +633,35 @@ class GameController extends Notifier<GameSnapshot> {
       state = _snapshot();
     }
     return gems;
+  }
+
+  /// Nhận thưởng nhiệm vụ tuần thứ [index] (0..2). Trả về 💎 nhận (0 nếu chưa xong/đã nhận).
+  int claimWeeklyQuestReward(int index) {
+    final gems = claimWeeklyQuest(_game, index);
+    if (gems > 0) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return gems;
+  }
+
+  /// Mở rương tuần: 💎 + 1 phụ kiện Hiếm trở lên (xem [lastAccessoryDrop]). 0 nếu chưa đủ điều kiện.
+  int claimWeeklyChestReward() {
+    lastAccessoryDrop = null;
+    final gems = claimWeeklyChest(_game);
+    if (gems > 0) {
+      _dropAccessory(source: 'weekly_quest', minRarity: AccessoryRarity.rare);
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return gems;
+  }
+
+  /// Một giao dịch ở Chợ (đăng bán hoặc mua thành công) — tính cho nhiệm vụ tuần.
+  void recordMarketTrade() {
+    addWeeklyProgress(_game, WeeklyQuestKind.trade, 1);
+    unawaited(saveNow());
+    state = _snapshot();
   }
 
   /// Nhận thưởng "xong cả 3 nhiệm vụ ngày" — kèm rớt 1 phụ kiện sưu tập
@@ -1024,6 +1055,7 @@ class GameController extends Notifier<GameSnapshot> {
         : 0.0;
     final gained = prestige(_game);
     if (gained > 0) {
+      addWeeklyProgress(_game, WeeklyQuestKind.prestige, 1);
       grantBonus(_game, bonusCash); // tự chặn NaN/Infinity
       _awardAchievements();
       unawaited(saveNow());
@@ -1725,6 +1757,7 @@ class GameController extends Notifier<GameSnapshot> {
     // màn sau. Chỉ lưu khi có thưởng thì người chơi mới (thu nhập/giây = 0) qua
     // màn 1 mà màn 2 vẫn khoá, mở lại app là mất sạch tiến độ.
     if (stars > 0) {
+      addWeeklyProgress(_game, WeeklyQuestKind.m3Win, 1);
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -1938,7 +1971,20 @@ class GameController extends Notifier<GameSnapshot> {
       dailyBonusAvailable: dailyBonusAvailable(_game),
       dailyBonusClaimed: _game.dailyBonusClaimed,
       starterPackReady: market_starter.starterPackEligible(_game),
-      dailyClaimableCount: dailyClaimableCount(_game),
+      dailyClaimableCount:
+          dailyClaimableCount(_game) + weeklyClaimableCount(_game),
+      weeklyQuests: [
+        for (final q in currentWeeklyQuests(_game))
+          WeeklyQuestView(
+            kind: q.kind,
+            target: q.target,
+            progress: weeklyQuestProgress(_game, q.kind),
+            rewardGems: q.rewardGems,
+            claimed: weeklyQuestClaimed(_game, q),
+          ),
+      ],
+      weeklyChestAvailable: weeklyChestAvailable(_game),
+      weeklyChestClaimed: _game.weeklyBonusClaimed,
       ascensionCount: _game.ascensionCount,
       ascensionPointsAvailable: ascensionPointsAvailable(_game),
       ascensionPointsSpendable: ascensionPointsSpendable(_game),

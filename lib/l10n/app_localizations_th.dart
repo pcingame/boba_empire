@@ -1092,6 +1092,35 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String profileTitle(String name) {
+    return 'โปรไฟล์: $name';
+  }
+
+  @override
+  String get profileBoardIncome => 'รายได้';
+
+  @override
+  String get profileBoardPearls => 'ไข่มุก';
+
+  @override
+  String get profileBoardCollection => 'สะสม';
+
+  @override
+  String get profileBoardSpeed => 'สปีดรันเนื้อเรื่อง';
+
+  @override
+  String get profileBoardVip => 'VIP';
+
+  @override
+  String get profileNoRanks => 'ยังไม่อยู่ในอันดับใด ๆ';
+
+  @override
+  String get profileViewButton => 'โปรไฟล์';
+
+  @override
+  String get profileOpenWeb => 'ดูบนเว็บ';
+
+  @override
   String get refEntry => '👥 ชวนเพื่อน';
 
   @override
@@ -2732,6 +2761,51 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get dqSpin => 'หมุนวงล้อนำโชค';
+
+  @override
+  String get weeklyQuestsTitle => 'ภารกิจประจำสัปดาห์';
+
+  @override
+  String get weeklyQuestsOpen => 'ภารกิจสัปดาห์ 🗓️';
+
+  @override
+  String wqPrestige(int n) {
+    return 'เพรสทีจ $n ครั้ง';
+  }
+
+  @override
+  String wqM3Win(int n) {
+    return 'ชนะ $n ด่านไข่มุกร่วง';
+  }
+
+  @override
+  String wqTrade(int n) {
+    return 'ซื้อขายในตลาด $n ครั้ง (ลงขายหรือซื้อ)';
+  }
+
+  @override
+  String wqDailyDone(int n) {
+    return 'รับรางวัลภารกิจประจำวัน $n ครั้ง';
+  }
+
+  @override
+  String wqSpin(int n) {
+    return 'หมุนวงล้อ $n ครั้ง';
+  }
+
+  @override
+  String wqBuy(int n) {
+    return 'ซื้ออัปเกรด $n ครั้ง';
+  }
+
+  @override
+  String get weeklyChestLabel =>
+      'หีบประจำสัปดาห์: ทำครบ 3 → ได้ของตกแต่งระดับหายากขึ้นไป 1 ชิ้น';
+
+  @override
+  String weeklyResetsIn(String time) {
+    return 'รีเซ็ตใน $time';
+  }
 
   @override
   String get notifyOfflineFullTitle => 'คลังเหรียญเต็มแล้ว! 🧋';

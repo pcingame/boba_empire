@@ -13,6 +13,7 @@ import '../leaderboard/story_speedrun_controller.dart';
 import '../leaderboard/story_speedrun_repository.dart';
 import '../state/game_providers.dart';
 import 'web_links.dart';
+import 'player_profile_dialog.dart';
 import 'widgets/clay.dart';
 
 Future<void> showStorySpeedrunPage(BuildContext context) {
@@ -229,6 +230,8 @@ class _SpeedrunList extends ConsumerWidget {
                       final entry = view.entries[i];
                       final isMe = entry.userId == view.myUserId;
                       final tile = ClayTile(
+                        onTap: () =>
+                            showPlayerProfile(context, entry.nickname),
                         child: Row(
                           children: [
                             SizedBox(

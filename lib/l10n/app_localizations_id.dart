@@ -1095,6 +1095,35 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String profileTitle(String name) {
+    return 'Profil: $name';
+  }
+
+  @override
+  String get profileBoardIncome => 'Pendapatan';
+
+  @override
+  String get profileBoardPearls => 'Mutiara';
+
+  @override
+  String get profileBoardCollection => 'Koleksi';
+
+  @override
+  String get profileBoardSpeed => 'Speedrun cerita';
+
+  @override
+  String get profileBoardVip => 'VIP';
+
+  @override
+  String get profileNoRanks => 'Belum ada di peringkat mana pun.';
+
+  @override
+  String get profileViewButton => 'Profil';
+
+  @override
+  String get profileOpenWeb => 'Lihat di web';
+
+  @override
   String get refEntry => '👥 Undang teman';
 
   @override
@@ -2741,6 +2770,51 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get dqSpin => 'Putar Roda Keberuntungan';
+
+  @override
+  String get weeklyQuestsTitle => 'Misi mingguan';
+
+  @override
+  String get weeklyQuestsOpen => 'Misi mingguan 🗓️';
+
+  @override
+  String wqPrestige(int n) {
+    return 'Prestise $n kali';
+  }
+
+  @override
+  String wqM3Win(int n) {
+    return 'Menangkan $n level Mutiara Jatuh';
+  }
+
+  @override
+  String wqTrade(int n) {
+    return 'Lakukan $n transaksi Pasar (jual atau beli)';
+  }
+
+  @override
+  String wqDailyDone(int n) {
+    return 'Klaim $n hadiah misi harian';
+  }
+
+  @override
+  String wqSpin(int n) {
+    return 'Putar roda $n kali';
+  }
+
+  @override
+  String wqBuy(int n) {
+    return 'Beli $n peningkatan';
+  }
+
+  @override
+  String get weeklyChestLabel =>
+      'Peti mingguan: selesaikan 3 → +1 aksesori Langka ke atas';
+
+  @override
+  String weeklyResetsIn(String time) {
+    return 'Reset dalam $time';
+  }
 
   @override
   String get notifyOfflineFullTitle => 'Kas Koin sudah penuh! 🧋';

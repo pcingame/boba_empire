@@ -679,6 +679,22 @@
       }
     }
   },
+  "profileTitle": "Hồ sơ: {name}",
+  "@profileTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "profileBoardIncome": "Thu nhập",
+  "profileBoardPearls": "Trân châu",
+  "profileBoardCollection": "Sưu tầm",
+  "profileBoardSpeed": "Tốc độ cốt truyện",
+  "profileBoardVip": "VIP",
+  "profileNoRanks": "Chưa có hạng nào trên bảng xếp hạng.",
+  "profileViewButton": "Hồ sơ",
+  "profileOpenWeb": "Xem trên web",
   "refEntry": "👥 Mời bạn bè",
   "refEntryNote": "Nhận {gems} 💎 cho mỗi bạn tham gia",
   "refTitle": "Mời bạn bè",
@@ -1566,6 +1582,65 @@
   "dqCat": "Bắt mèo Mưa vàng",
   "dqVip": "Phục vụ khách VIP",
   "dqSpin": "Quay vòng quay may mắn",
+  "weeklyQuestsTitle": "Nhiệm vụ tuần",
+  "weeklyQuestsOpen": "Nhiệm vụ tuần 🗓️",
+  "wqPrestige": "Nhượng quyền {n} lần",
+  "@wqPrestige": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "wqM3Win": "Thắng {n} màn Trân Châu Rơi",
+  "@wqM3Win": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "wqTrade": "Giao dịch {n} lần ở Chợ (đăng bán hoặc mua)",
+  "@wqTrade": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "wqDailyDone": "Nhận thưởng {n} nhiệm vụ ngày",
+  "@wqDailyDone": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "wqSpin": "Quay vòng quay {n} lần",
+  "@wqSpin": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "wqBuy": "Mua nâng cấp {n} lần",
+  "@wqBuy": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "weeklyChestLabel": "Rương tuần: xong cả 3 → +1 phụ kiện Hiếm trở lên",
+  "weeklyResetsIn": "Làm mới sau {time}",
+  "@weeklyResetsIn": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "notifyOfflineFullTitle": "Kho Xu đã đầy! 🧋",
   "notifyOfflineFullBody": "Quán ngừng tích Xu mất rồi — ghé nhận và mở ca mới nào.",
   "notifyDailyTitle": "Ngày mới, việc mới 📋",
