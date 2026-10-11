@@ -1,6 +1,7 @@
 // Bản giả của GuildRepository cho test controller/UI: ghi lại lệnh gọi, cho phép
 // ép lỗi theo tên phương thức, và có trạng thái đủ để refresh() đọc lại.
 import 'package:boba_empire/core/guild_shop.dart';
+import 'package:boba_empire/core/guild.dart';
 import 'package:boba_empire/guild/guild_repository.dart';
 
 class FakeGuildRepository implements GuildRepository {
@@ -106,6 +107,15 @@ class FakeGuildRepository implements GuildRepository {
     final g = gifts.firstWhere((g) => g.id == id);
     gifts.remove(g);
     return g.amount;
+  }
+
+  /// Boss tuần của fake: claimBoss đặt bossClaimed và trả rương theo bậc.
+  @override
+  Future<({int gems, int coins})> claimBoss() async {
+    _hit('claimBoss');
+    final g = mine!;
+    mine = withState(g, bossClaimed: true);
+    return (gems: guildBossRewardGems(g.bossTier), coins: guildBossRewardCoins(g.bossTier));
   }
 
   @override
@@ -405,6 +415,9 @@ MyGuild fakeGuild({
   GuildFund fund = const GuildFund(),
   int vipMembers = 0,
   int vipBonus = 0,
+  int bossHp = 0,
+  int bossTier = 0,
+  bool bossClaimed = false,
 }) =>
     MyGuild(
       id: 'g1',
@@ -426,6 +439,9 @@ MyGuild fakeGuild({
       fund: fund,
       vipMembers: vipMembers,
       vipBonus: vipBonus,
+      bossHp: bossHp,
+      bossTier: bossTier,
+      bossClaimed: bossClaimed,
       members: members ??
           const [
             GuildMemberInfo(userId: 'me', nickname: 'Alice', points: 400),
@@ -453,6 +469,7 @@ MyGuild withState(
   List<String>? ownedItems,
   int? donatedToday,
   GuildFund? fund,
+  bool? bossClaimed,
 }) =>
     MyGuild(
       id: g.id,
@@ -475,6 +492,9 @@ MyGuild withState(
       fund: fund ?? g.fund,
       vipBonus: g.vipBonus,
       vipMembers: g.vipMembers,
+      bossHp: g.bossHp,
+      bossTier: g.bossTier,
+      bossClaimed: bossClaimed ?? g.bossClaimed,
     );
 
 /// Bản sao của [g] với danh sách thành viên (và chủ hội) đổi.
@@ -499,4 +519,7 @@ MyGuild withMembers(MyGuild g, List<GuildMemberInfo> members, {String? ownerId})
       fund: g.fund,
       vipBonus: g.vipBonus,
       vipMembers: g.vipMembers,
+      bossHp: g.bossHp,
+      bossTier: g.bossTier,
+      bossClaimed: g.bossClaimed,
     );

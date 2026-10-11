@@ -896,6 +896,163 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get reminderVipTitle => '👑 Hadiah VIP-mu menunggu';
+
+  @override
+  String get reminderVipDailyBody =>
+      'Hadiah VIP harian, absen, dan misimu siap — ayo klaim!';
+
+  @override
+  String get reminderVipWeeklyBody =>
+      'Hadiah VIP mingguanmu (dengan aksesori) siap!';
+
+  @override
+  String get reminderVipMonthlyBody =>
+      'Hadiah VIP bulananmu tiba — hadiah besar menunggu!';
+
+  @override
+  String get reminderVipUnclaimedBody =>
+      'Kamu masih punya hadiah VIP yang belum diklaim hari ini.';
+
+  @override
+  String get dealTitle => 'Penawaran hari ini';
+
+  @override
+  String dealResets(Object time) {
+    return 'Berganti pukul 00:00 UTC · sisa $time';
+  }
+
+  @override
+  String get dealClaimed => 'Sudah dibeli hari ini — kembali besok';
+
+  @override
+  String dealGotAccessory(Object name) {
+    return 'Mendapat $name!';
+  }
+
+  @override
+  String get dealUnavailable => 'Penawaran ini belum bisa dibeli sekarang.';
+
+  @override
+  String get guildBossTitle => 'Bos mingguan guild';
+
+  @override
+  String guildBossTier(Object tier) {
+    return 'Tingkat $tier';
+  }
+
+  @override
+  String guildBossProgress(Object damage, Object hp) {
+    return '$damage / $hp damage';
+  }
+
+  @override
+  String guildBossClaim(Object coins, Object gems) {
+    return 'Klaim peti: +$gems 💎 +$coins Koin Guild';
+  }
+
+  @override
+  String get guildBossClaimedLabel => 'Peti diklaim';
+
+  @override
+  String guildBossClaimedSnack(Object coins, Object gems) {
+    return 'Peti bos: +$gems 💎 +$coins Koin Guild';
+  }
+
+  @override
+  String get guildBossErrAlive => 'Bos masih hidup.';
+
+  @override
+  String get guildBossName1 => 'Naga Mutiara';
+
+  @override
+  String get guildBossName2 => 'Titan Es Serut';
+
+  @override
+  String get guildBossName3 => 'Kraken Teh Hitam';
+
+  @override
+  String get guildBossName4 => 'Beruang Puding';
+
+  @override
+  String get guildBossName5 => 'Harimau Matcha';
+
+  @override
+  String get guildBossName6 => 'Phoenix Busa Keju';
+
+  @override
+  String get accessoryVipWatch => 'Jam tangan mewah';
+
+  @override
+  String get accessoryVipLuggage => 'Koper mewah';
+
+  @override
+  String get accessoryVipBriefcase => 'Tas kerja eksekutif';
+
+  @override
+  String get accessoryVipTophat => 'Topi tinggi';
+
+  @override
+  String get accessoryVipRacecar => 'Mobil super';
+
+  @override
+  String get accessoryVipHeli => 'Helikopter';
+
+  @override
+  String get accessoryVipYacht => 'Kapal pesiar';
+
+  @override
+  String get accessoryVipJet => 'Jet pribadi';
+
+  @override
+  String get vipShopOpen => '🛍️ Toko VIP';
+
+  @override
+  String get vipShopTitle => 'Toko VIP';
+
+  @override
+  String vipCoinsLabel(Object n) {
+    return 'Koin VIP: $n';
+  }
+
+  @override
+  String vipShopLocked(Object level) {
+    return 'Butuh VIP $level';
+  }
+
+  @override
+  String get vipShopOwned => 'Dimiliki';
+
+  @override
+  String get vipShopNeedCoins => 'Koin VIP tidak cukup';
+
+  @override
+  String vipShopBoughtSnack(Object name) {
+    return 'Mendapat $name!';
+  }
+
+  @override
+  String get vipShopHint =>
+      'Dapatkan Koin VIP dengan mengklaim hadiah VIP harian, mingguan, dan bulanan.';
+
+  @override
+  String vipBenefitSnack(Object coins, Object gems) {
+    return 'Diklaim +$gems 💎 +$coins Koin VIP';
+  }
+
+  @override
+  String get vipItemsTitle => 'Eksklusif VIP';
+
+  @override
+  String vipShopPrice(Object n) {
+    return '$n Koin VIP';
+  }
+
+  @override
+  String get vipEntryHint =>
+      'Top up untuk membuka hadiah VIP harian, mingguan, dan bulanan';
+
+  @override
   String get refEntry => '👥 Undang teman';
 
   @override

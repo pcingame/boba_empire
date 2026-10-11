@@ -3,12 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/format.dart';
 import '../core/topup.dart';
+import '../core/vip_shop.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../leaderboard/flair.dart';
 import '../state/game_controller.dart';
 import '../state/game_providers.dart';
 import 'vip_how_to_dialog.dart';
+import 'vip_shop_dialog.dart';
 import 'vip_leaderboard_page.dart';
 
 /// Mốc nạp & cấp VIP theo tổng nạp tích lũy (xem core/topup.dart).
@@ -140,6 +142,15 @@ class _TopupDialogState extends ConsumerState<_TopupDialog> {
                 ),
               Align(
                 alignment: Alignment.centerLeft,
+                child: TextButton(
+                  key: const Key('vip-shop-open'),
+                  onPressed: () => showVipShop(context),
+                  child: Text(
+                      '${l10n.vipShopOpen} · ${l10n.vipCoinsLabel(formatNumber(s.vipCoins.toDouble()))}'),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
                 child: TextButton.icon(
                   key: const Key('vip-open-leaderboard'),
                   onPressed: () => showVipLeaderboard(context),
@@ -249,7 +260,7 @@ class _TopupDialogState extends ConsumerState<_TopupDialog> {
       contentPadding: EdgeInsets.zero,
       title: Text(label),
       subtitle: Text(
-        '+${formatNumber(b.gems)} 💎${b.accessory == null ? '' : '  ${l10n.topupAccessory}'}',
+        '+${formatNumber(b.gems)} 💎 +${vipCoinsFor(period, level)} 🛍️${b.accessory == null ? '' : '  ${l10n.topupAccessory}'}',
       ),
       trailing: claimed
           ? Text(l10n.topupClaimed)
@@ -260,7 +271,7 @@ class _TopupDialogState extends ConsumerState<_TopupDialog> {
                 if (r != null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(l10n.topupClaimSnack(formatNumber(r.gems))),
+                      content: Text(l10n.vipBenefitSnack(r.coins, formatNumber(r.gems))),
                     ),
                   );
                 }

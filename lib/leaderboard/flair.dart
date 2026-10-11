@@ -245,6 +245,15 @@ const List<List<Color>> vipTagColors = [
   [Color(0xFFFFC107), Color(0xFFF4511E)], // 10 vàng → cam đỏ
 ];
 
+/// Màu chữ (tối hoặc trắng) đọc rõ nhất trên dải màu [colors] — bên nào tương phản hơn với CẢ HAI
+/// đầu dải.
+Color vipOnColor(List<Color> colors) {
+  const dark = Color(0xFF24160A);
+  double worst(Color fg) =>
+      colors.map((c) => _contrast(fg, c)).reduce((a, b) => a < b ? a : b);
+  return worst(dark) >= worst(Colors.white) ? dark : Colors.white;
+}
+
 /// Nhãn "VIP n" nhỏ, màu theo cấp ([vipTagColors]) — dùng ở bảng xếp hạng/Hội và màn
 /// Mốc nạp.
 class VipTag extends StatelessWidget {
@@ -254,12 +263,7 @@ class VipTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = vipTagColors[(level - 1).clamp(0, vipTagColors.length - 1)];
-    // Chọn chữ tối hoặc trắng — bên nào tương phản hơn với CẢ HAI đầu dải màu.
-    const dark = Color(0xFF24160A);
-    double worst(Color fg) => colors
-        .map((c) => _contrast(fg, c))
-        .reduce((a, b) => a < b ? a : b);
-    final fg = worst(dark) >= worst(Colors.white) ? dark : Colors.white;
+    final fg = vipOnColor(colors);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
       decoration: BoxDecoration(

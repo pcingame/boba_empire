@@ -1542,6 +1542,264 @@ abstract class AppLocalizations {
   /// **'Mỗi thành viên từ VIP {level} cộng +{per}% thu nhập cho cả hội (tối đa +{cap}%)'**
   String guildVipBonusHint(Object cap, Object level, Object per);
 
+  /// No description provided for @reminderVipTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'👑 Quà VIP đang chờ bạn'**
+  String get reminderVipTitle;
+
+  /// No description provided for @reminderVipDailyBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quà VIP, điểm danh và nhiệm vụ hôm nay đã sẵn sàng — vào nhận ngay!'**
+  String get reminderVipDailyBody;
+
+  /// No description provided for @reminderVipWeeklyBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quà VIP hằng tuần (kèm phụ kiện) đã sẵn sàng!'**
+  String get reminderVipWeeklyBody;
+
+  /// No description provided for @reminderVipMonthlyBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quà VIP hằng tháng đã về — một phần quà lớn đang chờ!'**
+  String get reminderVipMonthlyBody;
+
+  /// No description provided for @reminderVipUnclaimedBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn vẫn còn quà VIP chưa nhận hôm nay.'**
+  String get reminderVipUnclaimedBody;
+
+  /// No description provided for @dealTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ưu đãi hôm nay'**
+  String get dealTitle;
+
+  /// No description provided for @dealResets.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi lúc 00:00 UTC · còn {time}'**
+  String dealResets(Object time);
+
+  /// No description provided for @dealClaimed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay đã mua — mai quay lại nhé'**
+  String get dealClaimed;
+
+  /// No description provided for @dealGotAccessory.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {name}!'**
+  String dealGotAccessory(Object name);
+
+  /// No description provided for @dealUnavailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hiện chưa mua được ưu đãi này.'**
+  String get dealUnavailable;
+
+  /// No description provided for @guildBossTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Boss tuần của Hội'**
+  String get guildBossTitle;
+
+  /// No description provided for @guildBossTier.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bậc {tier}'**
+  String guildBossTier(Object tier);
+
+  /// No description provided for @guildBossProgress.
+  ///
+  /// In vi, this message translates to:
+  /// **'{damage} / {hp} sát thương'**
+  String guildBossProgress(Object damage, Object hp);
+
+  /// No description provided for @guildBossClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận rương: +{gems} 💎 +{coins} Xu Hội'**
+  String guildBossClaim(Object coins, Object gems);
+
+  /// No description provided for @guildBossClaimedLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận rương'**
+  String get guildBossClaimedLabel;
+
+  /// No description provided for @guildBossClaimedSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận rương boss: +{gems} 💎 +{coins} Xu Hội'**
+  String guildBossClaimedSnack(Object coins, Object gems);
+
+  /// No description provided for @guildBossErrAlive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Boss chưa bị hạ.'**
+  String get guildBossErrAlive;
+
+  /// No description provided for @guildBossName1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rồng Trân Châu'**
+  String get guildBossName1;
+
+  /// No description provided for @guildBossName2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quái Vật Đá Bào'**
+  String get guildBossName2;
+
+  /// No description provided for @guildBossName3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mực Khổng Lồ Trà Đen'**
+  String get guildBossName3;
+
+  /// No description provided for @guildBossName4.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gấu Pudding'**
+  String get guildBossName4;
+
+  /// No description provided for @guildBossName5.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hổ Matcha'**
+  String get guildBossName5;
+
+  /// No description provided for @guildBossName6.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phượng Hoàng Kem Phô Mai'**
+  String get guildBossName6;
+
+  /// No description provided for @accessoryVipWatch.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đồng Hồ Sang Trọng'**
+  String get accessoryVipWatch;
+
+  /// No description provided for @accessoryVipLuggage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vali Hạng Sang'**
+  String get accessoryVipLuggage;
+
+  /// No description provided for @accessoryVipBriefcase.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cặp Da Doanh Nhân'**
+  String get accessoryVipBriefcase;
+
+  /// No description provided for @accessoryVipTophat.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mũ Quý Ông'**
+  String get accessoryVipTophat;
+
+  /// No description provided for @accessoryVipRacecar.
+  ///
+  /// In vi, this message translates to:
+  /// **'Siêu Xe'**
+  String get accessoryVipRacecar;
+
+  /// No description provided for @accessoryVipHeli.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trực Thăng'**
+  String get accessoryVipHeli;
+
+  /// No description provided for @accessoryVipYacht.
+  ///
+  /// In vi, this message translates to:
+  /// **'Du Thuyền'**
+  String get accessoryVipYacht;
+
+  /// No description provided for @accessoryVipJet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Máy Bay Riêng'**
+  String get accessoryVipJet;
+
+  /// No description provided for @vipShopOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'🛍️ Cửa hàng VIP'**
+  String get vipShopOpen;
+
+  /// No description provided for @vipShopTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cửa hàng VIP'**
+  String get vipShopTitle;
+
+  /// No description provided for @vipCoinsLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xu VIP: {n}'**
+  String vipCoinsLabel(Object n);
+
+  /// No description provided for @vipShopLocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần VIP {level}'**
+  String vipShopLocked(Object level);
+
+  /// No description provided for @vipShopOwned.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã có'**
+  String get vipShopOwned;
+
+  /// No description provided for @vipShopNeedCoins.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đủ Xu VIP'**
+  String get vipShopNeedCoins;
+
+  /// No description provided for @vipShopBoughtSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đổi: {name}!'**
+  String vipShopBoughtSnack(Object name);
+
+  /// No description provided for @vipShopHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiếm Xu VIP bằng cách nhận quà VIP hằng ngày, tuần, tháng.'**
+  String get vipShopHint;
+
+  /// No description provided for @vipBenefitSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận +{gems} 💎 +{coins} Xu VIP'**
+  String vipBenefitSnack(Object coins, Object gems);
+
+  /// No description provided for @vipItemsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Độc quyền VIP'**
+  String get vipItemsTitle;
+
+  /// No description provided for @vipShopPrice.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} Xu VIP'**
+  String vipShopPrice(Object n);
+
+  /// No description provided for @vipEntryHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nạp để mở khoá quà VIP hằng ngày, tuần, tháng'**
+  String get vipEntryHint;
+
   /// No description provided for @refEntry.
   ///
   /// In vi, this message translates to:

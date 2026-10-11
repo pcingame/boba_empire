@@ -4,6 +4,7 @@
 library;
 
 import 'package:boba_empire/core/accessories.dart';
+import 'package:boba_empire/core/vip_shop.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/ui/accessory_inventory_page.dart';
@@ -56,6 +57,19 @@ void main() {
 
     expect(find.text('Đã có 0/160'), findsOneWidget);
     expect(find.text('???'), findsNWidgets(accessories.length + limitedAccessories.length));
+  });
+
+  testWidgets('Kho có mục "Độc quyền VIP" với đủ 8 ô (khoá khi chưa có)', (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 12800));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    await tester.pumpWidget(await _app(const Locale('en')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('inventory-vip-section')), findsOneWidget);
+    expect(find.text('VIP exclusives'), findsOneWidget);
+    for (final a in vipAccessories) {
+      expect(find.byKey(Key('accessory-cell-${a.id}')), findsOneWidget, reason: a.id);
+    }
+    expect(vipAccessories.length, 8);
   });
 
   for (final locale in AppLocalizations.supportedLocales) {

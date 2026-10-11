@@ -613,6 +613,20 @@ void main() {
       expect(c.read(gameControllerProvider).incomePerSecond, closeTo(base * 1.05, base * 1e-9 + 1e-9));
     });
 
+    test('applyGuildVipBonus khi KHÔNG ở hội luôn về 0 (RPC báo trễ sau khi rời hội)', () async {
+      final repo = FakeGuildRepository();
+      final c = await _open(repo);
+      final game = c.read(gameControllerProvider.notifier);
+      game.applyGuildVipBonus(4);
+      expect(c.read(gameControllerProvider).guildVipBonusPct, 0);
+      game.setGuildJoined(true);
+      game.applyGuildVipBonus(4);
+      expect(c.read(gameControllerProvider).guildVipBonusPct, 4);
+      game.setGuildJoined(false);
+      game.applyGuildVipBonus(4); // trễ
+      expect(c.read(gameControllerProvider).guildVipBonusPct, 0);
+    });
+
     test('guildVipBonusMultiplier: không ở hội = 1; kẹp 0..trần', () {
       expect(guildVipBonusMultiplier(joined: false, pct: 5), 1.0);
       expect(guildVipBonusMultiplier(joined: true, pct: 0), 1.0);
@@ -715,6 +729,78 @@ void main() {
     expect(g.claimed, [1]);
     expect(g.pointsOf('m'), 6000);
     expect(g.pointsOf('nobody'), 0);
+  });
+
+  group('Boss Hội hàng tuần', () {
+    Future<ProviderContainer> mine(FakeGuildRepository repo, {double gems = 0}) async {
+      final c = await _open(repo, gems: gems);
+      await _ctrl(c).refresh();
+      return c;
+    }
+
+    test('hằng số và thưởng theo bậc; boss xoay vòng theo tuần', () {
+      expect([for (var t = 0; t <= guildBossMaxTier; t++) guildBossRewardGems(t)],
+          [100, 150, 200, 250, 300]);
+      expect([for (var t = 0; t <= guildBossMaxTier; t++) guildBossRewardCoins(t)],
+          [100, 200, 300, 400, 500]);
+      expect(guildBossEmojis.length, 6);
+      expect({for (var w = 0; w < 6; w++) guildBossIndex(w)}.length, 6);
+      expect(guildBossIndex(6), guildBossIndex(0));
+    });
+
+    test('MyGuild.fromJson đọc boss; server cũ không có boss → HP 0 (ẩn thẻ)', () {
+      final base = {
+        'guild': {'id': 'g', 'name': 'N', 'tag': 'TG', 'emoji': '🧋', 'owner_id': 'o'},
+        'total': 0, 'claimed': [], 'members': [],
+      };
+      final old = MyGuild.fromJson(base);
+      expect((old.bossHp, old.bossTier, old.bossClaimed), (0, 0, false));
+      final f = MyGuild.fromJson({
+        ...base,
+        'boss': {'hp': 36000, 'tier': 2, 'claimed': true},
+      });
+      expect((f.bossHp, f.bossTier, f.bossClaimed), (36000, 2, true));
+    });
+
+    test('nhận rương: server OK rồi mới cộng đúng 💎 theo bậc; trả cả Xu Hội', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild(total: 40000, bossHp: 36000, bossTier: 2));
+      final c = await mine(repo, gems: 10);
+      final out = await _ctrl(c).claimBoss();
+      expect(out.ok, isTrue);
+      expect((out.gems, out.coins), (200, 300));
+      expect(c.read(gameControllerProvider).gems, 210);
+      final s = c.read(guildControllerProvider) as GuildMine;
+      expect(s.guild.bossClaimed, isTrue);
+    });
+
+    test('mọi lỗi server → không cộng 💎, trả đúng loại lỗi', () async {
+      for (final f in [
+        GuildFailure.bossAlive,
+        GuildFailure.notEnoughContribution,
+        GuildFailure.alreadyClaimed,
+        GuildFailure.network,
+      ]) {
+        final repo = FakeGuildRepository(mine: fakeGuild(bossHp: 1000))
+          ..failures['claimBoss'] = GuildException(f);
+        final c = await mine(repo, gems: 5);
+        final out = await _ctrl(c).claimBoss();
+        expect(out.failure, f);
+        expect(c.read(gameControllerProvider).gems, 5, reason: '$f');
+      }
+    });
+
+    test('báo điểm tuần trước khi nhận (server thấy đóng góp mới nhất)', () async {
+      final repo = FakeGuildRepository(mine: fakeGuild(bossHp: 1000));
+      final c = await _open(repo, score: 800);
+      await _ctrl(c).refresh();
+      repo.calls.clear();
+      await _ctrl(c).claimBoss();
+      expect(repo.calls.indexOf('submitScore'), lessThan(repo.calls.indexOf('claimBoss')));
+    });
+
+    test('thông điệp "boss alive" của server ánh xạ thành bossAlive', () {
+      expect(guildFailureFromMessage('PostgrestException: boss alive'), GuildFailure.bossAlive);
+    });
   });
 
   group('ưu đãi phí tạo hội theo cấp VIP', () {

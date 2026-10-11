@@ -631,6 +631,76 @@ begin
 end;
 $$;
 
+-- --- Boss Hội hàng tuần ------------------------------------------------------------
+-- Sát thương = tổng điểm tuần của cả hội (guild_week_total). HP boss = max(HP tối thiểu,
+-- số thành viên × HP/người) × (1 + 25% × bậc), bậc = min(chuỗi tuần đủ 3 mốc, 4). Hạ boss thì mỗi
+-- thành viên đủ điểm tối thiểu nhận rương: 💎 (client cộng sau khi server OK) + Xu Hội (server cộng
+-- vào ví). Hằng số khớp lib/core/guild.dart (test so khớp). Con số là ước lượng chưa playtest.
+create or replace function guild_boss_hp_per_member() returns integer
+language sql immutable as $$ select 4000 $$;
+create or replace function guild_boss_min_hp() returns integer
+language sql immutable as $$ select 20000 $$;
+create or replace function guild_boss_max_tier() returns integer
+language sql immutable as $$ select 4 $$;
+create or replace function guild_boss_reward_gems(p_tier integer) returns integer
+language sql immutable as $$ select 100 + 50 * p_tier $$;
+create or replace function guild_boss_reward_coins(p_tier integer) returns integer
+language sql immutable as $$ select 100 + 100 * p_tier $$;
+
+create table if not exists guild_boss_claims (
+  user_id  uuid not null references auth.users(id) on delete cascade,
+  week     date not null,
+  primary key (user_id, week)
+);
+alter table guild_boss_claims enable row level security;
+-- Không policy nào: mọi truy cập qua RPC security definer.
+
+create or replace function guild_boss_tier(p_guild uuid) returns integer
+language sql stable as $$ select least(guild_streak(p_guild), guild_boss_max_tier()) $$;
+
+create or replace function guild_boss_hp(p_guild uuid) returns bigint
+language sql stable as $$
+  select (greatest(guild_boss_min_hp()::bigint,
+                   (select count(*) from guild_members m where m.guild_id = p_guild)
+                     * guild_boss_hp_per_member())
+          * (100 + 25 * guild_boss_tier(p_guild)) / 100)::bigint
+$$;
+
+-- Nhận rương boss tuần này. Trả {gems, coins}; Xu Hội đã cộng vào ví ở server.
+create or replace function guild_claim_boss() returns jsonb
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_m guild_members%rowtype;
+  v_week date := guild_current_week();
+  v_tier integer;
+  v_gems integer;
+  v_coins integer;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  select * into v_m from guild_members where user_id = v_uid;
+  if not found then raise exception 'not in guild'; end if;
+  if guild_week_total(v_m.guild_id) < guild_boss_hp(v_m.guild_id) then
+    raise exception 'boss alive';
+  end if;
+  if v_m.week <> v_week or v_m.week_points < guild_min_points_to_claim() then
+    raise exception 'not enough contribution';
+  end if;
+  begin
+    insert into guild_boss_claims (user_id, week) values (v_uid, v_week);
+  exception when unique_violation then
+    raise exception 'already claimed';
+  end;
+  v_tier := guild_boss_tier(v_m.guild_id);
+  v_gems := guild_boss_reward_gems(v_tier);
+  v_coins := guild_boss_reward_coins(v_tier);
+  insert into guild_coin_wallets (user_id, balance) values (v_uid, v_coins)
+    on conflict (user_id) do update
+      set balance = guild_coin_wallets.balance + excluded.balance;
+  return jsonb_build_object('gems', v_gems, 'coins', v_coins);
+end;
+$$;
+
 -- Thưởng thu nhập theo số thành viên VIP: mỗi thành viên có cấp VIP >= guild_vip_min_level()
 -- cộng guild_vip_bonus_per_member() % thu nhập cho CẢ HỘI, trần guild_vip_bonus_cap() %. Hằng số khớp
 -- lib/core/guild.dart (test so khớp). Cấp lấy từ vip_level (accessory_market_schema.sql; client tự
@@ -701,6 +771,11 @@ begin
                              where c.user_id = v_uid and c.week = v_week)),
     'total', guild_week_total(v_g.id),
     'streak', guild_streak(v_g.id),
+    'boss', jsonb_build_object(
+        'hp', guild_boss_hp(v_g.id),
+        'tier', guild_boss_tier(v_g.id),
+        'claimed', exists (select 1 from guild_boss_claims c
+                             where c.user_id = v_uid and c.week = v_week)),
     'vip_members', guild_vip_count(v_g.id),
     'vip_bonus', guild_vip_bonus_pct(v_g.id),
     'buff_seconds', greatest(
@@ -1365,7 +1440,7 @@ begin
     'guild_transfer_owner(uuid)', 'guild_activity(integer)',
     'guild_claim_fund()', 'guild_gift_send(uuid,integer)',
     'guild_gift_inbox()', 'guild_gift_claim(bigint)', 'guild_leaderboard_vip(integer)',
-    'guild_vip_bonus()'
+    'guild_vip_bonus()', 'guild_claim_boss()'
   ] loop
     execute format('revoke all on function %s from public', f);
     execute format('grant execute on function %s to authenticated', f);
@@ -1383,6 +1458,9 @@ revoke all on function guild_log_week(uuid, date, bigint)
   from public, anon, authenticated;
 revoke all on function guild_log_event(uuid, text, text, text)
   from public, anon, authenticated;
+-- HP/bậc boss của hội tuỳ ý → không cho client gọi (lộ số liệu hội khác).
+revoke all on function guild_boss_tier(uuid) from public, anon, authenticated;
+revoke all on function guild_boss_hp(uuid) from public, anon, authenticated;
 -- Đếm VIP của hội tuỳ ý → không cho client gọi (lộ số liệu hội khác).
 revoke all on function guild_vip_count(uuid) from public, anon, authenticated;
 revoke all on function guild_vip_bonus_pct(uuid) from public, anon, authenticated;

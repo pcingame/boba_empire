@@ -883,6 +883,157 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get reminderVipTitle => '👑 VIP 선물이 기다려요';
+
+  @override
+  String get reminderVipDailyBody => '오늘의 VIP 선물, 출석 체크, 퀘스트가 준비됐어요. 받으러 오세요!';
+
+  @override
+  String get reminderVipWeeklyBody => '주간 VIP 선물(액세서리 포함)이 준비됐어요!';
+
+  @override
+  String get reminderVipMonthlyBody => '월간 VIP 선물이 도착했어요. 큰 선물이 기다려요!';
+
+  @override
+  String get reminderVipUnclaimedBody => '오늘 아직 받지 않은 VIP 선물이 있어요.';
+
+  @override
+  String get dealTitle => '오늘의 특가';
+
+  @override
+  String dealResets(Object time) {
+    return '00:00 UTC에 바뀌어요 · $time 남음';
+  }
+
+  @override
+  String get dealClaimed => '오늘 구매 완료, 내일 또 오세요';
+
+  @override
+  String dealGotAccessory(Object name) {
+    return '$name 획득!';
+  }
+
+  @override
+  String get dealUnavailable => '지금은 이 특가를 살 수 없어요.';
+
+  @override
+  String get guildBossTitle => '길드 주간 보스';
+
+  @override
+  String guildBossTier(Object tier) {
+    return '$tier단계';
+  }
+
+  @override
+  String guildBossProgress(Object damage, Object hp) {
+    return '피해 $damage / $hp';
+  }
+
+  @override
+  String guildBossClaim(Object coins, Object gems) {
+    return '상자 받기: +$gems 💎 +$coins 길드 코인';
+  }
+
+  @override
+  String get guildBossClaimedLabel => '상자를 받았어요';
+
+  @override
+  String guildBossClaimedSnack(Object coins, Object gems) {
+    return '보스 상자: +$gems 💎 +$coins 길드 코인';
+  }
+
+  @override
+  String get guildBossErrAlive => '보스가 아직 살아 있어요.';
+
+  @override
+  String get guildBossName1 => '펄 드래곤';
+
+  @override
+  String get guildBossName2 => '빙수 타이탄';
+
+  @override
+  String get guildBossName3 => '홍차 크라켄';
+
+  @override
+  String get guildBossName4 => '푸딩 곰';
+
+  @override
+  String get guildBossName5 => '말차 호랑이';
+
+  @override
+  String get guildBossName6 => '치즈폼 불사조';
+
+  @override
+  String get accessoryVipWatch => '고급 시계';
+
+  @override
+  String get accessoryVipLuggage => '고급 여행 가방';
+
+  @override
+  String get accessoryVipBriefcase => '고급 서류 가방';
+
+  @override
+  String get accessoryVipTophat => '신사 모자';
+
+  @override
+  String get accessoryVipRacecar => '슈퍼카';
+
+  @override
+  String get accessoryVipHeli => '헬리콥터';
+
+  @override
+  String get accessoryVipYacht => '요트';
+
+  @override
+  String get accessoryVipJet => '전용기';
+
+  @override
+  String get vipShopOpen => '🛍️ VIP 상점';
+
+  @override
+  String get vipShopTitle => 'VIP 상점';
+
+  @override
+  String vipCoinsLabel(Object n) {
+    return 'VIP 코인: $n';
+  }
+
+  @override
+  String vipShopLocked(Object level) {
+    return 'VIP $level 필요';
+  }
+
+  @override
+  String get vipShopOwned => '보유 중';
+
+  @override
+  String get vipShopNeedCoins => 'VIP 코인이 부족해요';
+
+  @override
+  String vipShopBoughtSnack(Object name) {
+    return '$name 획득!';
+  }
+
+  @override
+  String get vipShopHint => '일일·주간·월간 VIP 선물을 받으면 VIP 코인을 얻어요.';
+
+  @override
+  String vipBenefitSnack(Object coins, Object gems) {
+    return '+$gems 💎 +$coins VIP 코인 받았어요';
+  }
+
+  @override
+  String get vipItemsTitle => 'VIP 한정';
+
+  @override
+  String vipShopPrice(Object n) {
+    return '$n VIP 코인';
+  }
+
+  @override
+  String get vipEntryHint => '충전하면 일일·주간·월간 VIP 선물이 열려요';
+
+  @override
   String get refEntry => '👥 친구 초대';
 
   @override

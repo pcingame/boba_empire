@@ -894,6 +894,162 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get reminderVipTitle => '👑 Quà VIP đang chờ bạn';
+
+  @override
+  String get reminderVipDailyBody =>
+      'Quà VIP, điểm danh và nhiệm vụ hôm nay đã sẵn sàng — vào nhận ngay!';
+
+  @override
+  String get reminderVipWeeklyBody =>
+      'Quà VIP hằng tuần (kèm phụ kiện) đã sẵn sàng!';
+
+  @override
+  String get reminderVipMonthlyBody =>
+      'Quà VIP hằng tháng đã về — một phần quà lớn đang chờ!';
+
+  @override
+  String get reminderVipUnclaimedBody =>
+      'Bạn vẫn còn quà VIP chưa nhận hôm nay.';
+
+  @override
+  String get dealTitle => 'Ưu đãi hôm nay';
+
+  @override
+  String dealResets(Object time) {
+    return 'Đổi lúc 00:00 UTC · còn $time';
+  }
+
+  @override
+  String get dealClaimed => 'Hôm nay đã mua — mai quay lại nhé';
+
+  @override
+  String dealGotAccessory(Object name) {
+    return 'Nhận $name!';
+  }
+
+  @override
+  String get dealUnavailable => 'Hiện chưa mua được ưu đãi này.';
+
+  @override
+  String get guildBossTitle => 'Boss tuần của Hội';
+
+  @override
+  String guildBossTier(Object tier) {
+    return 'Bậc $tier';
+  }
+
+  @override
+  String guildBossProgress(Object damage, Object hp) {
+    return '$damage / $hp sát thương';
+  }
+
+  @override
+  String guildBossClaim(Object coins, Object gems) {
+    return 'Nhận rương: +$gems 💎 +$coins Xu Hội';
+  }
+
+  @override
+  String get guildBossClaimedLabel => 'Đã nhận rương';
+
+  @override
+  String guildBossClaimedSnack(Object coins, Object gems) {
+    return 'Nhận rương boss: +$gems 💎 +$coins Xu Hội';
+  }
+
+  @override
+  String get guildBossErrAlive => 'Boss chưa bị hạ.';
+
+  @override
+  String get guildBossName1 => 'Rồng Trân Châu';
+
+  @override
+  String get guildBossName2 => 'Quái Vật Đá Bào';
+
+  @override
+  String get guildBossName3 => 'Mực Khổng Lồ Trà Đen';
+
+  @override
+  String get guildBossName4 => 'Gấu Pudding';
+
+  @override
+  String get guildBossName5 => 'Hổ Matcha';
+
+  @override
+  String get guildBossName6 => 'Phượng Hoàng Kem Phô Mai';
+
+  @override
+  String get accessoryVipWatch => 'Đồng Hồ Sang Trọng';
+
+  @override
+  String get accessoryVipLuggage => 'Vali Hạng Sang';
+
+  @override
+  String get accessoryVipBriefcase => 'Cặp Da Doanh Nhân';
+
+  @override
+  String get accessoryVipTophat => 'Mũ Quý Ông';
+
+  @override
+  String get accessoryVipRacecar => 'Siêu Xe';
+
+  @override
+  String get accessoryVipHeli => 'Trực Thăng';
+
+  @override
+  String get accessoryVipYacht => 'Du Thuyền';
+
+  @override
+  String get accessoryVipJet => 'Máy Bay Riêng';
+
+  @override
+  String get vipShopOpen => '🛍️ Cửa hàng VIP';
+
+  @override
+  String get vipShopTitle => 'Cửa hàng VIP';
+
+  @override
+  String vipCoinsLabel(Object n) {
+    return 'Xu VIP: $n';
+  }
+
+  @override
+  String vipShopLocked(Object level) {
+    return 'Cần VIP $level';
+  }
+
+  @override
+  String get vipShopOwned => 'Đã có';
+
+  @override
+  String get vipShopNeedCoins => 'Không đủ Xu VIP';
+
+  @override
+  String vipShopBoughtSnack(Object name) {
+    return 'Đã đổi: $name!';
+  }
+
+  @override
+  String get vipShopHint =>
+      'Kiếm Xu VIP bằng cách nhận quà VIP hằng ngày, tuần, tháng.';
+
+  @override
+  String vipBenefitSnack(Object coins, Object gems) {
+    return 'Nhận +$gems 💎 +$coins Xu VIP';
+  }
+
+  @override
+  String get vipItemsTitle => 'Độc quyền VIP';
+
+  @override
+  String vipShopPrice(Object n) {
+    return '$n Xu VIP';
+  }
+
+  @override
+  String get vipEntryHint => 'Nạp để mở khoá quà VIP hằng ngày, tuần, tháng';
+
+  @override
   String get refEntry => '👥 Mời bạn bè';
 
   @override

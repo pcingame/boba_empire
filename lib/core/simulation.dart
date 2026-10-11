@@ -266,6 +266,27 @@ double buyGemTimeSkip(
   return reward;
 }
 
+/// "Tua nhanh" của ưu đãi hôm nay: cùng thưởng [Balance.gemTimeSkipSeconds] giây sản xuất
+/// nhưng giá [price] 💎 và KHÔNG tính vào hạn mức [Balance.maxGemTimeSkipPerDay]. Trả Xu vừa cộng
+/// (0 nếu thiếu 💎 / chưa có thu nhập — khi đó không trừ gì).
+double claimTimeSkipDeal(
+  GameState state,
+  int price, {
+  List<GeneratorConfig> configs = Balance.generators,
+}) {
+  if (state.gems < price) return 0;
+  final reward = effectiveIncomePerSecond(
+        state,
+        configs,
+        bonusPerStar: Balance.bonusPerStar,
+      ) *
+      Balance.gemTimeSkipSeconds;
+  if (reward <= 0) return 0;
+  state.gems -= price;
+  _credit(state, reward);
+  return reward;
+}
+
 /// Tính tiền kiếm được lúc offline khi mở lại app.
 ///
 /// - Chống lùi giờ (mục 8): nếu [nowMillis] < lastSeen thì coi như 0 và chỉ

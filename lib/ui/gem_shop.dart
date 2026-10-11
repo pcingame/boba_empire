@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/balance.dart';
+import '../leaderboard/flair.dart';
+import '../core/topup.dart';
+import '../core/daily_deal.dart';
+import '../core/daily.dart' show dayIndex;
 import '../core/economy.dart';
 import '../core/format.dart';
 import '../iap/iap_products.dart';
@@ -131,15 +135,8 @@ class _GemShopState extends ConsumerState<_GemShop> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              // topupOpen đã có sẵn emoji 👑 ở đầu chuỗi (mọi ngôn ngữ).
-              child: TextButton(
-                key: const Key('topup-open'),
-                onPressed: () => showTopupDialog(context),
-                child: Text(l10n.topupOpen),
-              ),
-            ),
+            const _VipEntryCard(),
+            const _DailyDealCard(),
             _GemItem(
               name: l10n.gemBoostName,
               level: boostLevel,
@@ -424,6 +421,188 @@ class _GemItem extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Thẻ "Ưu đãi hôm nay": một món giảm giá, mua một lần mỗi ngày (UTC), đổi món lúc 00:00 UTC.
+class _DailyDealCard extends ConsumerWidget {
+  const _DailyDealCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final now = ref.read(clockProvider)();
+    final today = dayIndex(now);
+    final deal = dailyDealFor(today);
+    final claimed =
+        ref.watch(gameControllerProvider.select((s) => s.dealClaimedDay)) == today;
+    final gems = ref.watch(gameControllerProvider.select((s) => s.gems));
+    final name = switch (deal.kind) {
+      DealKind.packBasic => l10n.accessoryPackBasic,
+      DealKind.packRare => l10n.accessoryPackRare,
+      DealKind.packEpic => l10n.accessoryPackEpic,
+      DealKind.timeSkip => l10n.gemTimeSkipName,
+    };
+    void snack(String text) => ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(text)));
+
+    return ClayTile(
+      key: const Key('daily-deal'),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(deal.kind == DealKind.timeSkip ? '⏩' : '🎁',
+                  style: const TextStyle(fontSize: 28)),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(l10n.dealTitle,
+                        style: theme.textTheme.labelMedium
+                            ?.copyWith(fontWeight: FontWeight.w700)),
+                    Text(name,
+                        key: const Key('daily-deal-name'),
+                        style: theme.textTheme.titleSmall
+                            ?.copyWith(fontWeight: FontWeight.w600)),
+                  ],
+                ),
+              ),
+              Container(
+                key: const Key('daily-deal-off'),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE53935),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text('-${deal.discountPercent}%',
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w800)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          // Wrap (không phải Row): hộp thoại ở màn 320px chỉ rộng ~140px cho thẻ này.
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 8,
+            runSpacing: 4,
+            children: [
+              Text('${deal.baseGems} 💎',
+                  key: const Key('daily-deal-base'),
+                  style: theme.textTheme.bodySmall
+                      ?.copyWith(decoration: TextDecoration.lineThrough)),
+              if (claimed)
+                Text(l10n.dealClaimed,
+                    key: const Key('daily-deal-claimed'),
+                    style: theme.textTheme.bodySmall),
+              FilledButton.tonal(
+                key: const Key('daily-deal-buy'),
+                onPressed: claimed || gems < deal.price
+                    ? null
+                    : () {
+                        final r = ref.read(gameControllerProvider.notifier).buyDailyDeal();
+                        if (r == null) {
+                          snack(l10n.dealUnavailable);
+                        } else if (r.drop != null) {
+                          snack(l10n.dealGotAccessory(
+                              accessoryName(l10n, r.drop!.accessory.id)));
+                        } else {
+                          snack(l10n.instantCashSnack(formatNumber(r.cash)));
+                        }
+                      },
+                child: Text('${deal.price} 💎'),
+              ),
+            ],
+          ),
+          Text(l10n.dealResets(formatDuration(dealSecondsLeft(now))),
+              key: const Key('daily-deal-resets'), style: theme.textTheme.bodySmall),
+        ],
+      ),
+    );
+  }
+}
+
+/// Lối vào màn "Mốc nạp & VIP": thẻ toàn chiều ngang ở đầu cửa hàng, nền theo màu cấp VIP hiện tại
+/// (mặc định vàng khi chưa có cấp), kèm cấp/biệt danh/EXP và chấm đỏ khi còn quà VIP chưa nhận.
+class _VipEntryCard extends ConsumerWidget {
+  const _VipEntryCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final exp = ref.watch(gameControllerProvider.select((s) => s.vipExp));
+    // Theo dõi các mốc đã nhận để chấm đỏ cập nhật ngay sau khi nhận quà.
+    ref.watch(gameControllerProvider.select(
+        (s) => '${s.vipClaimDay}/${s.vipClaimWeek}/${s.vipClaimMonth}'));
+    final level = topupVipLevel(exp);
+    final unclaimed = ref.read(gameControllerProvider.notifier).vipUnclaimedNow;
+    final colors = vipTagColors[level == 0 ? 2 : level - 1];
+    final fg = vipOnColor(colors);
+    final subtitle = level == 0
+        ? l10n.vipEntryHint
+        : '${vipName(l10n, level)} · ${l10n.topupSummary(formatNumber(exp.toDouble()))}';
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Material(
+        key: const Key('topup-open'),
+        color: Colors.transparent,
+        child: Ink(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: colors),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                  color: colors.first.withValues(alpha: 0.45),
+                  blurRadius: 10,
+                  offset: const Offset(0, 3)),
+            ],
+          ),
+          child: InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: () => showTopupDialog(context),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              child: Row(
+                children: [
+                  const Text('👑', style: TextStyle(fontSize: 30)),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(l10n.topupTitle,
+                            key: const Key('topup-open-title'),
+                            style: TextStyle(
+                                color: fg, fontWeight: FontWeight.w800, fontSize: 15)),
+                        Text(subtitle,
+                            key: const Key('topup-open-subtitle'),
+                            style: TextStyle(color: fg.withValues(alpha: 0.9), fontSize: 12)),
+                      ],
+                    ),
+                  ),
+                  if (unclaimed)
+                    Container(
+                      key: const Key('topup-open-dot'),
+                      width: 10,
+                      height: 10,
+                      margin: const EdgeInsets.only(right: 6),
+                      decoration: const BoxDecoration(
+                          color: Color(0xFFE53935), shape: BoxShape.circle),
+                    ),
+                  Icon(Icons.chevron_right, color: fg),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

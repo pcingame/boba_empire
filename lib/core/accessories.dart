@@ -8,6 +8,7 @@ import 'dart:math';
 
 import 'balance.dart';
 import 'guild_shop.dart' show guildAccessories;
+import 'vip_shop.dart' show vipAccessories;
 import 'daily.dart' show dayIndex;
 import 'models.dart';
 
@@ -381,6 +382,7 @@ final List<Festival> festivals = [
 List<Accessory> get limitedAccessories => [
       for (final f in festivals) ...f.items,
       ...guildAccessories,
+      ...vipAccessories,
     ];
 
 Festival? activeFestival(DateTime nowUtc) {

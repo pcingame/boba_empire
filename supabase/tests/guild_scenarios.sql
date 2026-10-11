@@ -941,4 +941,59 @@ select t_err($$select guild_vip_bonus()$$, 'permission denied');
 reset role;
 drop table vip_level;
 
+-- === Boss Hội hàng tuần ===
+-- Hội gf có 6 thành viên (u30..u35): HP = max(20000, 6×4000=24000) × 1.0 (chưa có chuỗi) = 24000.
+select t_as(u(31));
+select t_eq('HP boss = 6 người × 4000', (guild_my()->'boss'->>'hp')::bigint, 24000::bigint);
+select t_eq('bậc 0 khi chưa có chuỗi', (guild_my()->'boss'->>'tier')::int, 0);
+select t_eq('chưa nhận rương', (guild_my()->'boss'->>'claimed')::boolean, false);
+select t_err($$select guild_claim_boss()$$, 'boss alive');
+-- Hạ boss: đặt điểm tuần (tổng 24000). u33 không đóng góp.
+reset role;
+update guild_members set week = guild_current_week(), week_points = 0 where guild_id = :'gf'::uuid;
+update guild_members set week_points = 10000 where user_id = u(30);
+update guild_members set week_points = 8000 where user_id = u(31);
+update guild_members set week_points = 6000 where user_id = u(32);
+select t_as(u(33));
+select t_err($$select guild_claim_boss()$$, 'not enough contribution');   -- 0 điểm
+select t_as(u(31));
+select (guild_my()->>'wallet')::int as w31 \gset
+select t_eq('rương bậc 0: 100 💎', (guild_claim_boss()->>'gems')::int, 100);
+select t_eq('ví Xu Hội +100', (guild_my()->>'wallet')::int, :w31 + 100);
+select t_eq('đã nhận', (guild_my()->'boss'->>'claimed')::boolean, true);
+select t_err($$select guild_claim_boss()$$, 'already claimed');
+select t_as(u(57));
+select t_err($$select guild_claim_boss()$$, 'not in guild');
+-- Có chuỗi 2 tuần trước đạt đủ 3 mốc → bậc 2: HP ×1.5 = 36000, rương 200💎 + 300 Xu.
+reset role;
+insert into guild_week_totals (guild_id, week, total) values
+  (:'gf'::uuid, guild_current_week() - 7, 130000), (:'gf'::uuid, guild_current_week() - 14, 130000);
+update guild_members set week_points = 600 where user_id = u(34);
+select t_as(u(34));
+select t_eq('chuỗi 2 → bậc 2', (guild_my()->'boss'->>'tier')::int, 2);
+select t_eq('HP bậc 2 = 24000 × 1.5', (guild_my()->'boss'->>'hp')::bigint, 36000::bigint);
+select t_err($$select guild_claim_boss()$$, 'boss alive');                -- tổng 24600 < 36000
+reset role;
+update guild_members set week_points = 12000 where user_id = u(35);        -- tổng ≥ 36000
+select t_as(u(34));
+select (guild_my()->>'wallet')::int as w34 \gset
+select t_eq('rương bậc 2: 200 💎', (guild_claim_boss()->>'gems')::int, 200);
+select t_eq('ví Xu Hội +300', (guild_my()->>'wallet')::int, :w34 + 300);
+-- Bậc tối đa 4: nhiều tuần chuỗi vẫn chỉ bậc 4.
+reset role;
+insert into guild_week_totals (guild_id, week, total)
+  select :'gf'::uuid, guild_current_week() - 7 * n, 130000 from generate_series(3, 9) n;
+select t_as(u(34));
+select t_eq('bậc kẹp ở 4', (guild_my()->'boss'->>'tier')::int, 4);
+select t_eq('HP bậc 4 = 24000 × 2', (guild_my()->'boss'->>'hp')::bigint, 48000::bigint);
+-- Bảo mật: hàm nội bộ và bảng không đọc được; khách chưa đăng nhập bị chặn.
+select t_err(format($$select guild_boss_hp(%L::uuid)$$, :'gf'), 'permission denied');
+select t_err(format($$select guild_boss_tier(%L::uuid)$$, :'gf'), 'permission denied');
+do $$ begin
+  if exists (select 1 from guild_boss_claims) then raise exception 'ĐỌC ĐƯỢC guild_boss_claims'; end if;
+exception when insufficient_privilege then null; end $$;
+select t_as(null);
+select t_err($$select guild_claim_boss()$$, 'permission denied');
+reset role;
+
 select 'ALL GUILD SQL SCENARIOS PASSED' as result;

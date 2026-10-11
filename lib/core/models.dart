@@ -118,6 +118,8 @@ class GameState {
     this.doubleIncomeOwned = false,
     this.coldStorageOwned = false,
     this.vipExp = 0,
+    this.vipCoins = 0,
+    this.dealClaimedDay = 0,
     this.referralRedeemed = false,
     this.referralStageSent = false,
     this.vipTitleChoice = -1,
@@ -458,6 +460,12 @@ class GameState {
   int vipExp;
   int vipExpFromGems;
 
+  /// Xu VIP (kiếm từ quà VIP theo kỳ, đổi phụ kiện độc quyền ở Cửa hàng VIP).
+  int vipCoins;
+
+  /// Chỉ số ngày (UTC) đã mua "Ưu đãi hôm nay" gần nhất; 0 = chưa từng.
+  int dealClaimedDay;
+
   /// Đã nhập mã mời của người khác / đã báo giai đoạn cho server (xem referral_controller).
   bool referralRedeemed;
   bool referralStageSent;
@@ -584,6 +592,8 @@ class GameState {
         'coldStorageOwned': coldStorageOwned,
         'vipExp': vipExp,
         'vipExpFromGems': vipExpFromGems,
+        'vipCoins': vipCoins,
+        'dealClaimedDay': dealClaimedDay,
         'referralRedeemed': referralRedeemed,
         'referralStageSent': referralStageSent,
         'vipTitleChoice': vipTitleChoice,
@@ -749,6 +759,8 @@ class GameState {
         coldStorageOwned: (json['coldStorageOwned'] as bool?) ?? false,
         vipExp: (json['vipExp'] as num?)?.toInt() ?? 0,
         vipExpFromGems: (json['vipExpFromGems'] as num?)?.toInt() ?? 0,
+        vipCoins: (json['vipCoins'] as num?)?.toInt() ?? 0,
+        dealClaimedDay: (json['dealClaimedDay'] as num?)?.toInt() ?? 0,
         referralRedeemed: (json['referralRedeemed'] as bool?) ?? false,
         referralStageSent: (json['referralStageSent'] as bool?) ?? false,
         vipTitleChoice: (json['vipTitleChoice'] as num?)?.toInt() ?? -1,

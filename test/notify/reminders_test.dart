@@ -88,4 +88,60 @@ void main() {
       expect(d7.difference(d3), const Duration(days: 4));
     }
   });
+
+  // --- Nhắc quà VIP: tuần mới (thứ Hai UTC), tháng mới (mùng 1 UTC), còn quà chưa nhận ---
+
+  test('tuần mới: thứ Hai 00:00 UTC kế tiếp; đang là thứ Hai thì lấy thứ Hai tuần sau', () {
+    // 2026-10-05 là thứ Hai.
+    final weekdays = {
+      DateTime.utc(2026, 10, 5, 3): DateTime.utc(2026, 10, 12), // thứ Hai
+      DateTime.utc(2026, 10, 6, 23): DateTime.utc(2026, 10, 12), // thứ Ba
+      DateTime.utc(2026, 10, 11, 23, 59): DateTime.utc(2026, 10, 12), // Chủ nhật
+    };
+    weekdays.forEach((now, resetUtc) {
+      final at = weeklyResetAt(now);
+      expect(at.isAfter(now), isTrue, reason: '$now');
+      expect(at == resetUtc || at.toLocal().hour == 10, isTrue, reason: '$now → $at');
+      // Luôn rơi đúng vào ngày reset hoặc được dời tối đa ~1 ngày để né đêm.
+      expect(at.difference(resetUtc).inHours.abs(), lessThan(30), reason: '$now');
+    });
+  });
+
+  test('tháng mới: mùng 1 UTC tháng sau, qua cả ranh giới năm', () {
+    final cases = {
+      DateTime.utc(2026, 10, 15, 8): DateTime.utc(2026, 11, 1),
+      DateTime.utc(2026, 12, 31, 23): DateTime.utc(2027, 1, 1), // tháng 12 → tháng 1 năm sau
+      DateTime.utc(2027, 1, 31): DateTime.utc(2027, 2, 1),
+    };
+    cases.forEach((now, resetUtc) {
+      final at = monthlyResetAt(now);
+      expect(at.isAfter(now), isTrue, reason: '$now');
+      expect(at == resetUtc || at.toLocal().hour == 10, isTrue, reason: '$now → $at');
+      expect(at.difference(resetUtc).inHours.abs(), lessThan(30), reason: '$now');
+    });
+  });
+
+  test('nhắc "còn quà chưa nhận" = sau 6 giờ và không rơi vào đêm giờ máy', () {
+    for (var h = 0; h < 24; h++) {
+      final now = DateTime.utc(2026, 10, 10, h, 15);
+      final at = vipUnclaimedAt(now);
+      expect(at.isAfter(now), isTrue, reason: 'giờ UTC $h');
+      expect(at.toLocal().hour >= 8 && at.toLocal().hour < 22, isTrue, reason: 'giờ UTC $h');
+      expect(at.difference(now).inHours, lessThan(36), reason: 'giờ UTC $h');
+    }
+  });
+
+  test('các mốc VIP: có tuần + tháng; chỉ thêm "chưa nhận" khi còn quà; id không trùng mốc cũ', () {
+    final now = DateTime.utc(2026, 10, 10, 12);
+    final none = vipReminderSlots(now, unclaimed: false);
+    expect([for (final s in none) s.id], [vipWeeklyReminderId, vipMonthlyReminderId]);
+    final withUnclaimed = vipReminderSlots(now, unclaimed: true);
+    expect([for (final s in withUnclaimed) s.id],
+        [vipWeeklyReminderId, vipMonthlyReminderId, vipUnclaimedReminderId]);
+    // Id 1-4 là các mốc cũ (offline đầy, ngày mới, D3, D7): VIP không được đè lên.
+    for (final s in withUnclaimed) {
+      expect(s.id, greaterThan(4));
+    }
+    expect({for (final s in withUnclaimed) s.id}.length, 3);
+  });
 }

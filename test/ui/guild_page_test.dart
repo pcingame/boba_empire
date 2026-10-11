@@ -552,6 +552,96 @@ void main() {
     });
   });
 
+  group('Boss Hội (giao diện)', () {
+    // fakeGuild: ở test này người chơi (me) có điểm tuần 400 ≥ 300 nên đủ điều kiện nhận.
+    String bossName(int idx) => const [
+          'Pearl Dragon', 'Shaved-Ice Titan', 'Black-Tea Kraken',
+          'Pudding Bear', 'Matcha Tiger', 'Cheese-Foam Phoenix',
+        ][idx];
+
+    gTest('server cũ chưa có boss (HP 0): không hiện thẻ', (tester) async {
+      await _pump(tester, FakeGuildRepository(mine: fakeGuild()), locale: 'en');
+      await _scrollTo(tester, const Key('guild-leave-button'));
+      expect(find.byKey(const Key('guild-boss')), findsNothing);
+    });
+
+    gTest('boss còn sống: tên theo tuần, bậc, tiến độ; chưa có nút nhận', (tester) async {
+      final repo = FakeGuildRepository(
+          mine: fakeGuild(total: 12000, bossHp: 36000, bossTier: 2));
+      await _pump(tester, repo, locale: 'en');
+      await _scrollTo(tester, const Key('guild-boss'));
+      final idx = guildBossIndex(guildWeekIndex(_now));
+      expect(find.text(bossName(idx)), findsOneWidget);
+      expect(find.text(guildBossEmojis[idx]), findsOneWidget);
+      expect(find.text('Tier 3'), findsOneWidget); // bậc 2 hiển thị là "Bậc 3" (bắt đầu từ 1)
+      expect(find.text('${formatNumber(12000)} / ${formatNumber(36000)} damage'),
+          findsOneWidget);
+      expect(find.byKey(const Key('guild-boss-claim')), findsNothing);
+    });
+
+    gTest('hạ boss + đủ điểm: nhận rương → cộng 💎, nút đổi thành "đã nhận"', (tester) async {
+      final repo = FakeGuildRepository(
+          mine: fakeGuild(total: 40000, bossHp: 36000, bossTier: 2));
+      final c = await _pump(tester, repo, locale: 'en', gems: 0);
+      await _scrollTo(tester, const Key('guild-boss-claim'));
+      await tester.ensureVisible(find.byKey(const Key('guild-boss-claim')));
+      await tester.pumpAndSettle();
+      expect(find.text('Claim chest: +200 💎 +300 Guild Coins'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('guild-boss-claim')));
+      await tester.pumpAndSettle();
+      expect(c.read(gameControllerProvider).gems, 200);
+      expect(find.text('Chest claimed'), findsOneWidget);
+      expect(find.text('Boss chest: +200 💎 +300 Guild Coins'), findsOneWidget);
+      expect(tester.widget<FilledButton>(find.byKey(const Key('guild-boss-claim'))).onPressed,
+          isNull);
+    });
+
+    gTest('hạ boss nhưng mình chưa đủ điểm tối thiểu: nút tắt + lời nhắc', (tester) async {
+      final repo = FakeGuildRepository(
+          mine: fakeGuild(total: 40000, bossHp: 36000, bossTier: 0, members: const [
+        GuildMemberInfo(userId: 'me', nickname: 'Alice', points: 100),
+        GuildMemberInfo(userId: 'u2', nickname: 'Bob', points: 39900),
+      ]));
+      await _pump(tester, repo, locale: 'en');
+      await _scrollTo(tester, const Key('guild-boss-claim'));
+      expect(tester.widget<FilledButton>(find.byKey(const Key('guild-boss-claim'))).onPressed,
+          isNull);
+      expect(find.textContaining('300'), findsWidgets);
+    });
+
+    gTest('đã nhận rương từ trước (từ server): nút tắt, ghi "đã nhận"', (tester) async {
+      final repo = FakeGuildRepository(
+          mine: fakeGuild(total: 99999, bossHp: 36000, bossClaimed: true));
+      await _pump(tester, repo, locale: 'en');
+      await _scrollTo(tester, const Key('guild-boss-claim'));
+      expect(find.text('Chest claimed'), findsOneWidget);
+    });
+
+    gTest('server từ chối nhận (boss chưa hạ): hiện lỗi, không cộng 💎', (tester) async {
+      final repo = FakeGuildRepository(
+          mine: fakeGuild(total: 40000, bossHp: 36000))
+        ..failures['claimBoss'] = const GuildException(GuildFailure.bossAlive);
+      final c = await _pump(tester, repo, locale: 'en', gems: 0);
+      await _scrollTo(tester, const Key('guild-boss-claim'));
+      await tester.ensureVisible(find.byKey(const Key('guild-boss-claim')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('guild-boss-claim')));
+      await tester.pumpAndSettle();
+      expect(find.text('The boss is still alive.'), findsOneWidget);
+      expect(c.read(gameControllerProvider).gems, 0);
+    });
+
+    for (final lang in ['vi', 'es', 'id', 'pt', 'th', 'ko']) {
+      gTest('thẻ boss bậc 5 đã hạ không tràn ở 320px ($lang)', (tester) async {
+        final repo = FakeGuildRepository(
+            mine: fakeGuild(total: 99999999, bossHp: 48000, bossTier: 4));
+        await _pump(tester, repo, locale: lang);
+        await _scrollTo(tester, const Key('guild-boss-claim'));
+        expect(tester.takeException(), isNull);
+      });
+    }
+  });
+
   group('thưởng thu nhập theo VIP của hội (giao diện)', () {
     gTest('có VIP: hiện đúng số thành viên và % (tham số không bị đảo)', (tester) async {
       await _pump(

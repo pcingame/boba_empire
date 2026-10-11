@@ -55,9 +55,10 @@ class GuildError extends GuildViewState {
 
 /// Kết quả một hành động: [failure] null = thành công.
 class GuildOutcome {
-  const GuildOutcome({this.failure, this.gems = 0, this.drop});
+  const GuildOutcome({this.failure, this.gems = 0, this.coins = 0, this.drop});
   final GuildFailure? failure;
   final int gems;
+  final int coins;
   final AccessoryDrop? drop;
   bool get ok => failure == null;
 }
@@ -314,6 +315,23 @@ class GuildController extends Notifier<GuildViewState> {
 
   /// Mua buff thu nhập cho cả hội; buff áp ngay qua refresh (server báo giây còn lại).
   Future<GuildOutcome> buyBuff() => _act(_repo.buyBuff);
+
+  /// Nhận rương boss tuần: server đánh dấu + cộng Xu Hội TRƯỚC, rồi mới cộng 💎 cục bộ (app tắt
+  /// giữa chừng thì mất phần 💎, không bao giờ được 💎 ảo).
+  Future<GuildOutcome> claimBoss() async {
+    try {
+      // Báo điểm mới nhất để server thấy đóng góp hiện tại của mình.
+      if (_score > 0) await _repo.submitScore(_score);
+      final r = await _repo.claimBoss();
+      ref.read(gameControllerProvider.notifier).grantGuildBossGems(r.gems);
+      await refresh(silent: true);
+      return GuildOutcome(gems: r.gems, coins: r.coins);
+    } on GuildException catch (e) {
+      return GuildOutcome(failure: e.failure);
+    } catch (_) {
+      return const GuildOutcome(failure: GuildFailure.network);
+    }
+  }
 
   /// Nhận thưởng mốc [index] (0-based). Server xác nhận TRƯỚC, rồi mới cộng 💎 /
   /// phụ kiện cục bộ — server chặn nhận hai lần trong tuần.

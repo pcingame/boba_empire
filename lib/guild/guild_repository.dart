@@ -215,6 +215,9 @@ class MyGuild {
     this.fund = const GuildFund(),
     this.vipBonus = 0,
     this.vipMembers = 0,
+    this.bossHp = 0,
+    this.bossTier = 0,
+    this.bossClaimed = false,
   });
 
   /// Đọc JSON trả về từ `guild_my()`.
@@ -249,6 +252,9 @@ class MyGuild {
       fund: GuildFund.fromJson(j['fund'] as Map<String, dynamic>?),
       vipBonus: (j['vip_bonus'] as num?)?.toInt() ?? 0,
       vipMembers: (j['vip_members'] as num?)?.toInt() ?? 0,
+      bossHp: ((j['boss'] as Map?)?['hp'] as num?)?.toInt() ?? 0,
+      bossTier: ((j['boss'] as Map?)?['tier'] as num?)?.toInt() ?? 0,
+      bossClaimed: ((j['boss'] as Map?)?['claimed'] as bool?) ?? false,
       total: (j['total'] as num).toInt(),
       claimed: [for (final c in j['claimed'] as List) (c as num).toInt()],
       members: [
@@ -307,6 +313,12 @@ class MyGuild {
   /// Số thành viên VIP đủ cấp và % thưởng thu nhập cả hội nhận được từ họ (server tính).
   final int vipMembers;
   final int vipBonus;
+
+  /// Boss tuần: HP (0 = server cũ chưa có boss → ẩn thẻ), bậc và đã nhận rương chưa.
+  /// Sát thương = [total] (tổng điểm tuần cả hội).
+  final int bossHp;
+  final int bossTier;
+  final bool bossClaimed;
   final List<GuildMemberInfo> members;
 
   int pointsOf(String? userId) {
@@ -330,6 +342,9 @@ enum GuildFailure {
 
   /// Thiếu 💎 để nạp vào hội / tặng hội viên (kiểm cục bộ).
   notEnoughGemsToSpend,
+
+  /// Boss tuần chưa bị hạ nên chưa nhận được rương.
+  bossAlive,
 
   /// Hội này cần duyệt — phải xin vào thay vì vào thẳng.
   approvalRequired,
@@ -394,6 +409,7 @@ GuildFailure guildFailureFromMessage(String message) {
   if (m.contains('goal not reached')) return GuildFailure.fundNotReached;
   if (m.contains('fund donation too low')) return GuildFailure.fundDonationLow;
   if (m.contains('too many officers')) return GuildFailure.officersFull;
+  if (m.contains('boss alive')) return GuildFailure.bossAlive;
   if (m.contains('chat rate limited')) return GuildFailure.chatRateLimited;
   if (m.contains('text blocked')) return GuildFailure.textBlocked;
   if (m.contains('not found')) return GuildFailure.notFound;
@@ -449,6 +465,9 @@ abstract class GuildRepository {
 
   /// [milestone] 1-based (khớp server).
   Future<void> claimReward(int milestone);
+
+  /// Nhận rương boss tuần này (server cộng Xu Hội vào ví; client cộng [gems] 💎 sau khi OK).
+  Future<({int gems, int coins})> claimBoss();
 
   /// Xu Hội (server giữ ví). Client trừ 💎 / cấp vật phẩm SAU KHI các lệnh này thành công.
   Future<void> donate(int gems);
@@ -626,6 +645,12 @@ class SupabaseGuildRepository implements GuildRepository {
   @override
   Future<List<GuildSummary>> leaderboardVip() async =>
       _rows(await _rpc('guild_leaderboard_vip', {'p_limit': 50}));
+
+  @override
+  Future<({int gems, int coins})> claimBoss() async {
+    final r = await _rpc('guild_claim_boss') as Map<String, dynamic>;
+    return (gems: (r['gems'] as num).toInt(), coins: (r['coins'] as num).toInt());
+  }
 
   @override
   Future<void> claimReward(int milestone) =>

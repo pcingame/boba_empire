@@ -12,6 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/accessories.dart';
 import '../core/collection_milestones.dart';
 import '../core/guild_shop.dart' show guildAccessories;
+import '../core/vip_shop.dart' show vipAccessories;
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../leaderboard/flair.dart';
@@ -202,6 +203,26 @@ class AccessoryInventoryPage extends ConsumerWidget {
                   ),
                 ),
               ],
+              // Phụ kiện độc quyền VIP: đổi bằng Xu VIP ở Cửa hàng VIP (màn Mốc nạp & VIP).
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 6),
+                  child: Text(
+                    l10n.vipItemsTitle,
+                    key: const Key('inventory-vip-section'),
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                sliver: SliverGrid.builder(
+                  gridDelegate: _limitedGridDelegate,
+                  itemCount: vipAccessories.length,
+                  itemBuilder: (context, i) =>
+                      _AccessoryCell(accessory: vipAccessories[i], limited: true),
+                ),
+              ),
               // Phụ kiện độc quyền của hội: đổi bằng Xu Hội ở Cửa hàng hội.
               SliverToBoxAdapter(
                 child: Padding(

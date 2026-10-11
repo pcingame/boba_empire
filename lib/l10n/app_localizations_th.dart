@@ -893,6 +893,163 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get reminderVipTitle => '👑 ของขวัญ VIP กำลังรอคุณ';
+
+  @override
+  String get reminderVipDailyBody =>
+      'ของขวัญ VIP รายวัน เช็กอิน และภารกิจพร้อมแล้ว มารับเลย!';
+
+  @override
+  String get reminderVipWeeklyBody =>
+      'ของขวัญ VIP รายสัปดาห์ (พร้อมเครื่องประดับ) พร้อมแล้ว!';
+
+  @override
+  String get reminderVipMonthlyBody =>
+      'ของขวัญ VIP รายเดือนมาแล้ว ชิ้นใหญ่กำลังรออยู่!';
+
+  @override
+  String get reminderVipUnclaimedBody =>
+      'วันนี้คุณยังมีของขวัญ VIP ที่ยังไม่ได้รับ';
+
+  @override
+  String get dealTitle => 'ดีลวันนี้';
+
+  @override
+  String dealResets(Object time) {
+    return 'เปลี่ยนเวลา 00:00 UTC · เหลือ $time';
+  }
+
+  @override
+  String get dealClaimed => 'ซื้อแล้ววันนี้ พรุ่งนี้มาใหม่นะ';
+
+  @override
+  String dealGotAccessory(Object name) {
+    return 'ได้รับ $name!';
+  }
+
+  @override
+  String get dealUnavailable => 'ตอนนี้ยังซื้อดีลนี้ไม่ได้';
+
+  @override
+  String get guildBossTitle => 'บอสประจำสัปดาห์ของกิลด์';
+
+  @override
+  String guildBossTier(Object tier) {
+    return 'ระดับ $tier';
+  }
+
+  @override
+  String guildBossProgress(Object damage, Object hp) {
+    return '$damage / $hp ความเสียหาย';
+  }
+
+  @override
+  String guildBossClaim(Object coins, Object gems) {
+    return 'รับหีบ: +$gems 💎 +$coins เหรียญกิลด์';
+  }
+
+  @override
+  String get guildBossClaimedLabel => 'รับหีบแล้ว';
+
+  @override
+  String guildBossClaimedSnack(Object coins, Object gems) {
+    return 'หีบบอส: +$gems 💎 +$coins เหรียญกิลด์';
+  }
+
+  @override
+  String get guildBossErrAlive => 'บอสยังไม่ถูกโค่น';
+
+  @override
+  String get guildBossName1 => 'มังกรไข่มุก';
+
+  @override
+  String get guildBossName2 => 'ไททันน้ำแข็งใส';
+
+  @override
+  String get guildBossName3 => 'คราเคนชาดำ';
+
+  @override
+  String get guildBossName4 => 'หมีพุดดิ้ง';
+
+  @override
+  String get guildBossName5 => 'เสือมัทฉะ';
+
+  @override
+  String get guildBossName6 => 'ฟีนิกซ์ชีสโฟม';
+
+  @override
+  String get accessoryVipWatch => 'นาฬิกาหรู';
+
+  @override
+  String get accessoryVipLuggage => 'กระเป๋าเดินทางหรู';
+
+  @override
+  String get accessoryVipBriefcase => 'กระเป๋าเอกสารผู้บริหาร';
+
+  @override
+  String get accessoryVipTophat => 'หมวกทรงสูง';
+
+  @override
+  String get accessoryVipRacecar => 'ซูเปอร์คาร์';
+
+  @override
+  String get accessoryVipHeli => 'เฮลิคอปเตอร์';
+
+  @override
+  String get accessoryVipYacht => 'เรือยอชต์';
+
+  @override
+  String get accessoryVipJet => 'เครื่องบินส่วนตัว';
+
+  @override
+  String get vipShopOpen => '🛍️ ร้านค้า VIP';
+
+  @override
+  String get vipShopTitle => 'ร้านค้า VIP';
+
+  @override
+  String vipCoinsLabel(Object n) {
+    return 'เหรียญ VIP: $n';
+  }
+
+  @override
+  String vipShopLocked(Object level) {
+    return 'ต้องการ VIP $level';
+  }
+
+  @override
+  String get vipShopOwned => 'มีแล้ว';
+
+  @override
+  String get vipShopNeedCoins => 'เหรียญ VIP ไม่พอ';
+
+  @override
+  String vipShopBoughtSnack(Object name) {
+    return 'ได้รับ $name!';
+  }
+
+  @override
+  String get vipShopHint =>
+      'รับเหรียญ VIP จากการรับของขวัญ VIP รายวัน รายสัปดาห์ และรายเดือน';
+
+  @override
+  String vipBenefitSnack(Object coins, Object gems) {
+    return 'รับ +$gems 💎 +$coins เหรียญ VIP แล้ว';
+  }
+
+  @override
+  String get vipItemsTitle => 'ของพิเศษ VIP';
+
+  @override
+  String vipShopPrice(Object n) {
+    return '$n เหรียญ VIP';
+  }
+
+  @override
+  String get vipEntryHint =>
+      'เติมเงินเพื่อปลดล็อกของขวัญ VIP รายวัน รายสัปดาห์ และรายเดือน';
+
+  @override
   String get refEntry => '👥 ชวนเพื่อน';
 
   @override

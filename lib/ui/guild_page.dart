@@ -44,6 +44,7 @@ String guildFailureText(AppLocalizations l10n, GuildFailure f,
       GuildFailure.notEnoughContribution => l10n.guildErrContribution,
       GuildFailure.notEnoughGems => l10n.guildErrGems(createCost),
       GuildFailure.notEnoughGemsToSpend => l10n.guildErrGemsSpend,
+      GuildFailure.bossAlive => l10n.guildBossErrAlive,
       GuildFailure.approvalRequired => l10n.guildErrApproval,
       GuildFailure.alreadyClaimed => l10n.guildErrClaimed,
       GuildFailure.dailyLimit => l10n.guildErrDailyLimit(guildDonateDailyCap),
@@ -521,6 +522,7 @@ class _MyGuildView extends ConsumerWidget {
           const SizedBox(height: 6),
           for (var i = 0; i < guildMilestones.length; i++)
             _MilestoneRow(index: i, view: view),
+          if (g.bossHp > 0) _BossCard(view: view),
           const SizedBox(height: 8),
           if (view.canModerate && g.requests.isNotEmpty) ...[
             Text(l10n.guildRequestsTitle(g.requests.length),
@@ -926,5 +928,115 @@ class _GiftInboxState extends ConsumerState<_GiftInbox> {
         );
       },
     );
+  }
+}
+
+/// Thẻ Boss Hội hàng tuần: thanh HP (sát thương = tổng điểm tuần cả hội), bậc theo chuỗi tuần, và
+/// nút nhận rương khi boss bị hạ (cần đủ điểm đóng góp tối thiểu như nhận thưởng mốc).
+class _BossCard extends ConsumerWidget {
+  const _BossCard({required this.view});
+  final GuildMine view;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final g = view.guild;
+    final week = guildWeekIndex(ref.read(clockProvider)());
+    final idx = guildBossIndex(week);
+    final name = switch (idx) {
+      0 => l10n.guildBossName1,
+      1 => l10n.guildBossName2,
+      2 => l10n.guildBossName3,
+      3 => l10n.guildBossName4,
+      4 => l10n.guildBossName5,
+      _ => l10n.guildBossName6,
+    };
+    final defeated = g.total >= g.bossHp;
+    final enough = view.myPoints >= guildMinPointsToClaim;
+    final canClaim = defeated && enough && !g.bossClaimed;
+    final gems = guildBossRewardGems(g.bossTier);
+    final coins = guildBossRewardCoins(g.bossTier);
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: ClayTile(
+        key: const Key('guild-boss'),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(guildBossEmojis[idx], style: const TextStyle(fontSize: 32)),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(l10n.guildBossTitle,
+                          style: theme.textTheme.labelMedium
+                              ?.copyWith(fontWeight: FontWeight.w700)),
+                      Text(name,
+                          key: const Key('guild-boss-name'),
+                          style: theme.textTheme.titleSmall
+                              ?.copyWith(fontWeight: FontWeight.w600)),
+                    ],
+                  ),
+                ),
+                Text(l10n.guildBossTier(g.bossTier + 1),
+                    key: const Key('guild-boss-tier'),
+                    style: theme.textTheme.labelMedium),
+              ],
+            ),
+            const SizedBox(height: 6),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: LinearProgressIndicator(
+                key: const Key('guild-boss-hp'),
+                value: g.bossHp == 0 ? 0 : (g.total / g.bossHp).clamp(0.0, 1.0).toDouble(),
+                minHeight: 10,
+                color: defeated ? Colors.green : theme.colorScheme.error,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              l10n.guildBossProgress(formatNumber(g.total.clamp(0, g.bossHp).toDouble()),
+                  formatNumber(g.bossHp.toDouble())),
+              key: const Key('guild-boss-progress'),
+              style: theme.textTheme.bodySmall,
+            ),
+            if (defeated && !g.bossClaimed && !enough)
+              Text(l10n.guildNeedPoints(guildMinPointsToClaim),
+                  style: theme.textTheme.bodySmall),
+            if (defeated) ...[
+              const SizedBox(height: 6),
+              SizedBox(
+                width: double.infinity,
+                child: FilledButton(
+                  key: const Key('guild-boss-claim'),
+                  onPressed: canClaim ? () => _claim(context, ref) : null,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(g.bossClaimed
+                        ? l10n.guildBossClaimedLabel
+                        : l10n.guildBossClaim(coins, gems)),
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _claim(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context)!;
+    final out = await ref.read(guildControllerProvider.notifier).claimBoss();
+    if (!context.mounted) return;
+    _toast(
+        context,
+        out.ok
+            ? l10n.guildBossClaimedSnack(out.coins, out.gems)
+            : guildFailureText(l10n, out.failure!));
   }
 }

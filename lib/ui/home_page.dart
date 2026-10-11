@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/topup.dart';
 import '../audio/audio_service.dart';
 import '../core/accessories.dart';
 import '../core/balance.dart';
@@ -335,6 +336,17 @@ class _HomePageState extends ConsumerState<HomePage>
       d3Body: l10n.notifyD3Body,
       d7Title: l10n.notifyD7Title,
       d7Body: l10n.notifyD7Body,
+      // Người có VIP: nhắc cả quà VIP (null → giữ nguyên lịch nhắc cũ).
+      vip: topupVipLevel(ref.read(gameControllerProvider).vipExp) >= 1
+          ? VipReminderTexts(
+              title: l10n.reminderVipTitle,
+              dailyBody: l10n.reminderVipDailyBody,
+              weeklyBody: l10n.reminderVipWeeklyBody,
+              monthlyBody: l10n.reminderVipMonthlyBody,
+              unclaimedBody: l10n.reminderVipUnclaimedBody,
+            )
+          : null,
+      vipUnclaimed: ref.read(gameControllerProvider.notifier).vipUnclaimedNow,
     );
   }
 

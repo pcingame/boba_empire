@@ -18,6 +18,7 @@ import '../core/achievements.dart';
 import '../core/balance.dart';
 import '../core/collection_milestones.dart';
 import '../core/daily.dart';
+import '../core/daily_deal.dart';
 import '../core/daily_quests.dart';
 import '../core/economy.dart';
 import '../core/event_quests.dart';
@@ -33,6 +34,7 @@ import '../core/starter_pack.dart' as market_starter;
 import '../core/story.dart';
 import '../core/topup.dart';
 import '../core/vip.dart';
+import '../core/vip_shop.dart';
 import '../core/wheel.dart';
 import '../data/analytics_repository.dart';
 import '../data/cloud_save_repository.dart';
@@ -553,7 +555,8 @@ class GameController extends Notifier<GameSnapshot> {
 
   /// Áp % thưởng thu nhập từ thành viên VIP của hội (server báo), kẹp 0..[guildVipBonusCap].
   void applyGuildVipBonus(int pct) {
-    final v = pct.clamp(0, guildVipBonusCap);
+    // Không ở hội thì không có thưởng (chặn cả trường hợp RPC trễ báo về sau khi đã rời hội).
+    final v = _game.guildJoined ? pct.clamp(0, guildVipBonusCap) : 0;
     if (v == _game.guildVipBonusPct) return;
     _game.guildVipBonusPct = v;
     unawaited(saveNow());
@@ -585,6 +588,15 @@ class GameController extends Notifier<GameSnapshot> {
     if (gems <= 0) return;
     grantGems(_game, gems.toDouble());
     logEvent('guild_gift_received', {'gems': gems});
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Cộng 💎 rương boss Hội SAU KHI server xác nhận.
+  void grantGuildBossGems(int gems) {
+    if (gems <= 0) return;
+    grantGems(_game, gems.toDouble());
+    logEvent('guild_boss_claimed', {'gems': gems});
     unawaited(saveNow());
     state = _snapshot();
   }
@@ -901,6 +913,31 @@ class GameController extends Notifier<GameSnapshot> {
       state = _snapshot();
     }
     return reward;
+  }
+
+  /// Mua "Ưu đãi hôm nay" (mỗi ngày UTC một lần): gói phụ kiện hoặc tua nhanh với giá đã giảm.
+  /// Null nếu hôm nay đã mua, thiếu 💎 hoặc (tua nhanh) chưa có thu nhập — không đổi gì. Lưu ngay.
+  ({double cash, AccessoryDrop? drop})? buyDailyDeal() {
+    final now = _clock();
+    final today = dayIndex(now);
+    if (_game.dealClaimedDay == today) return null;
+    final deal = dailyDealFor(today);
+    var cash = 0.0;
+    AccessoryDrop? drop;
+    if (deal.kind == DealKind.timeSkip) {
+      cash = claimTimeSkipDeal(_game, deal.price);
+      if (cash <= 0) return null;
+    } else {
+      if (_game.gems < deal.price) return null;
+      _game.gems -= deal.price;
+      drop = _dropAccessory(
+          source: 'deal_${deal.kind.name}', minRarity: deal.pack!.minRarity);
+    }
+    _game.dealClaimedDay = today;
+    logEvent('daily_deal_bought', {'deal': deal.kind.name, 'gems': deal.price});
+    unawaited(saveNow());
+    state = _snapshot();
+    return (cash: cash, drop: drop);
   }
 
   /// Nhận thưởng đăng nhập hằng ngày. Trả về (gems nhận, streak mới); gems=0
@@ -1564,9 +1601,30 @@ class GameController extends Notifier<GameSnapshot> {
     };
   }
 
+  /// Đổi Xu VIP lấy phụ kiện độc quyền [itemId] (vào [GameState.ownedLimited]). Chỉ trừ Xu khi
+  /// thành công; mọi lý do thất bại trả về mã tương ứng và không đổi gì. Lưu ngay.
+  VipShopResult buyVipShopItem(String itemId) {
+    final item = vipShopItems.where((i) => i.id == itemId).firstOrNull;
+    if (item == null) return VipShopResult.unknownItem;
+    if (_game.ownedLimited.contains(itemId)) return VipShopResult.alreadyOwned;
+    if (topupVipLevel(_game.vipExp) < item.minLevel) return VipShopResult.locked;
+    if (_game.vipCoins < item.price) return VipShopResult.notEnoughCoins;
+    _game.vipCoins -= item.price;
+    _game.ownedLimited.add(itemId);
+    logEvent('vip_shop_bought', {'item': itemId, 'coins': item.price});
+    unawaited(saveNow());
+    state = _snapshot();
+    return VipShopResult.ok;
+  }
+
+  /// Có cấp VIP mà còn ít nhất một quà kỳ (ngày/tuần/tháng) chưa nhận — dùng để hẹn nhắc.
+  bool get vipUnclaimedNow =>
+      topupVipLevel(_game.vipExp) >= 1 &&
+      VipPeriod.values.any((p) => !vipBenefitClaimed(p));
+
   /// Nhận quà VIP của [period] (mỗi ngày/tuần/tháng UTC một lần). Null nếu chưa có
   /// cấp VIP hoặc đã nhận trong kỳ này.
-  ({double gems, AccessoryDrop? drop})? claimVipBenefit(VipPeriod period) {
+  ({double gems, int coins, AccessoryDrop? drop})? claimVipBenefit(VipPeriod period) {
     final benefit = vipBenefit(period, topupVipLevel(_game.vipExp));
     if (benefit == null || vipBenefitClaimed(period)) return null;
     final cur = vipPeriodIndex(period, _clock());
@@ -1579,11 +1637,13 @@ class GameController extends Notifier<GameSnapshot> {
         _game.vipClaimMonth = cur;
     }
     grantGems(_game, benefit.gems);
+    final coins = vipCoinsFor(period, topupVipLevel(_game.vipExp));
+    _game.vipCoins += coins;
     final r = benefit.accessory;
     final drop = r == null ? null : _vipDrop('vip_${period.name}', r);
     unawaited(saveNow());
     state = _snapshot();
-    return (gems: benefit.gems, drop: drop);
+    return (gems: benefit.gems, coins: coins, drop: drop);
   }
 
   /// Combo gỡ QC + x2 thu nhập (IAP): bật cả hai, idempotent.
@@ -1831,6 +1891,8 @@ class GameController extends Notifier<GameSnapshot> {
       coldStorageOwned: _game.coldStorageOwned,
       vipExp: _game.vipExp,
       vipExpFromGems: _game.vipExpFromGems,
+      vipCoins: _game.vipCoins,
+      dealClaimedDay: _game.dealClaimedDay,
       referralRedeemed: _game.referralRedeemed,
       referralStageSent: _game.referralStageSent,
       vipTitleChoice: _game.vipTitleChoice,

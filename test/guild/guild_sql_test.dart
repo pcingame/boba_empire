@@ -139,6 +139,28 @@ void main() {
     }
   });
 
+  test('Boss Hội: hằng số, công thức thưởng, RPC và cột guild_my khớp Dart', () {
+    expect(constant('guild_boss_hp_per_member'), guildBossHpPerMember);
+    expect(constant('guild_boss_min_hp'), guildBossMinHp);
+    expect(constant('guild_boss_max_tier'), guildBossMaxTier);
+    // Công thức thưởng theo bậc (SQL ghi dạng biểu thức) khớp hàm Dart.
+    expect(sql, contains('select 100 + 50 * p_tier'));
+    expect(sql, contains('select 100 + 100 * p_tier'));
+    for (final t in [0, 1, 4]) {
+      expect(guildBossRewardGems(t), 100 + 50 * t);
+      expect(guildBossRewardCoins(t), 100 + 100 * t);
+    }
+    expect(sql, contains("'guild_claim_boss()'"));
+    expect(sql, contains("'boss', jsonb_build_object("));
+    expect(sql, contains('alter table guild_boss_claims enable row level security'));
+    expect(sql, contains('revoke all on function guild_boss_hp(uuid) from public, anon, authenticated'));
+    expect(sql, contains('revoke all on function guild_boss_tier(uuid) from public, anon, authenticated'));
+    expect(repo, contains("'guild_claim_boss'"));
+    expect(repo, contains("'boss alive'"));
+    // Phần trăm tăng HP mỗi bậc (25%) khớp lời nói trong chú thích của app.
+    expect(sql, contains('100 + 25 * guild_boss_tier'));
+  });
+
   test('thưởng thu nhập theo VIP của hội: hằng số SQL ↔ Dart, hàm nội bộ bị khoá', () {
     expect(constant('guild_vip_bonus_per_member'), guildVipBonusPerMember);
     expect(constant('guild_vip_bonus_cap'), guildVipBonusCap);

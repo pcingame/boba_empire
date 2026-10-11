@@ -903,6 +903,163 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get reminderVipTitle => '👑 Tu regalo VIP te espera';
+
+  @override
+  String get reminderVipDailyBody =>
+      'Tu regalo VIP diario, la asistencia y las misiones ya están listos, ¡ven a reclamarlos!';
+
+  @override
+  String get reminderVipWeeklyBody =>
+      '¡Tu regalo VIP semanal (con un accesorio) está listo!';
+
+  @override
+  String get reminderVipMonthlyBody =>
+      '¡Llegó tu regalo VIP mensual, uno grande te espera!';
+
+  @override
+  String get reminderVipUnclaimedBody =>
+      'Aún tienes regalos VIP sin reclamar hoy.';
+
+  @override
+  String get dealTitle => 'Oferta de hoy';
+
+  @override
+  String dealResets(Object time) {
+    return 'Cambia a las 00:00 UTC · quedan $time';
+  }
+
+  @override
+  String get dealClaimed => 'Comprada hoy: vuelve mañana';
+
+  @override
+  String dealGotAccessory(Object name) {
+    return '¡Obtuviste $name!';
+  }
+
+  @override
+  String get dealUnavailable => 'Esta oferta no se puede comprar ahora.';
+
+  @override
+  String get guildBossTitle => 'Jefe semanal del gremio';
+
+  @override
+  String guildBossTier(Object tier) {
+    return 'Nivel $tier';
+  }
+
+  @override
+  String guildBossProgress(Object damage, Object hp) {
+    return '$damage / $hp de daño';
+  }
+
+  @override
+  String guildBossClaim(Object coins, Object gems) {
+    return 'Reclamar cofre: +$gems 💎 +$coins Monedas del Gremio';
+  }
+
+  @override
+  String get guildBossClaimedLabel => 'Cofre reclamado';
+
+  @override
+  String guildBossClaimedSnack(Object coins, Object gems) {
+    return 'Cofre del jefe: +$gems 💎 +$coins Monedas del Gremio';
+  }
+
+  @override
+  String get guildBossErrAlive => 'El jefe sigue vivo.';
+
+  @override
+  String get guildBossName1 => 'Dragón de Perlas';
+
+  @override
+  String get guildBossName2 => 'Titán de Hielo Raspado';
+
+  @override
+  String get guildBossName3 => 'Kraken de Té Negro';
+
+  @override
+  String get guildBossName4 => 'Oso Pudín';
+
+  @override
+  String get guildBossName5 => 'Tigre Matcha';
+
+  @override
+  String get guildBossName6 => 'Fénix de Espuma de Queso';
+
+  @override
+  String get accessoryVipWatch => 'Reloj de lujo';
+
+  @override
+  String get accessoryVipLuggage => 'Equipaje de lujo';
+
+  @override
+  String get accessoryVipBriefcase => 'Maletín ejecutivo';
+
+  @override
+  String get accessoryVipTophat => 'Sombrero de copa';
+
+  @override
+  String get accessoryVipRacecar => 'Superdeportivo';
+
+  @override
+  String get accessoryVipHeli => 'Helicóptero';
+
+  @override
+  String get accessoryVipYacht => 'Yate';
+
+  @override
+  String get accessoryVipJet => 'Jet privado';
+
+  @override
+  String get vipShopOpen => '🛍️ Tienda VIP';
+
+  @override
+  String get vipShopTitle => 'Tienda VIP';
+
+  @override
+  String vipCoinsLabel(Object n) {
+    return 'Monedas VIP: $n';
+  }
+
+  @override
+  String vipShopLocked(Object level) {
+    return 'Requiere VIP $level';
+  }
+
+  @override
+  String get vipShopOwned => 'Obtenido';
+
+  @override
+  String get vipShopNeedCoins => 'Monedas VIP insuficientes';
+
+  @override
+  String vipShopBoughtSnack(Object name) {
+    return '¡Obtuviste $name!';
+  }
+
+  @override
+  String get vipShopHint =>
+      'Gana Monedas VIP reclamando tus regalos VIP diarios, semanales y mensuales.';
+
+  @override
+  String vipBenefitSnack(Object coins, Object gems) {
+    return 'Reclamaste +$gems 💎 +$coins Monedas VIP';
+  }
+
+  @override
+  String get vipItemsTitle => 'Exclusivos VIP';
+
+  @override
+  String vipShopPrice(Object n) {
+    return '$n Monedas VIP';
+  }
+
+  @override
+  String get vipEntryHint =>
+      'Recarga para desbloquear regalos VIP diarios, semanales y mensuales';
+
+  @override
   String get refEntry => '👥 Invitar amigos';
 
   @override

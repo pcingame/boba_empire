@@ -26,6 +26,23 @@ const int guildGiftSendDailyCap = 100;
 const int guildGiftReceiveDailyCap = 200;
 const int guildGiftExpireDays = 7;
 
+/// Boss Hội hàng tuần — KHỚP supabase/guild_schema.sql (guild_boss_*; test so khớp). Sát thương =
+/// tổng điểm tuần của cả hội; HP = max(HP tối thiểu, số người × HP/người) × (1 + 25% × bậc), bậc =
+/// chuỗi tuần đủ 3 mốc kẹp ở [guildBossMaxTier]. Con số là ước lượng chưa playtest.
+const int guildBossHpPerMember = 4000;
+const int guildBossMinHp = 20000;
+const int guildBossMaxTier = 4;
+
+/// Rương boss theo bậc: 💎 (client cộng sau khi server OK) và Xu Hội (server cộng vào ví).
+int guildBossRewardGems(int tier) => 100 + 50 * tier;
+int guildBossRewardCoins(int tier) => 100 + 100 * tier;
+
+/// Emoji của các boss, xoay vòng theo tuần (tên dịch ở l10n `guildBossName1..6`).
+const List<String> guildBossEmojis = ['🐉', '🧊', '🦑', '🐻', '🐯', '🔥'];
+
+/// Boss của tuần [weekIndex] (xem [guildWeekIndex]).
+int guildBossIndex(int weekIndex) => weekIndex % guildBossEmojis.length;
+
 /// Thưởng thu nhập theo số thành viên VIP: mỗi thành viên từ cấp [guildVipMinLevel] cộng
 /// [guildVipBonusPerMember]% cho CẢ HỘI (trần [guildVipBonusCap]%) — KHỚP supabase/guild_schema.sql
 /// (guild_vip_*; test so khớp). Chỉ áp khi đang ở hội. Con số là ước lượng chưa playtest.

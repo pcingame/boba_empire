@@ -1,4 +1,5 @@
 import 'package:boba_empire/core/accessories.dart' show AccessoryRarity;
+import 'package:boba_empire/core/balance.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/core/topup.dart';
 import 'package:boba_empire/data/game_storage.dart';
@@ -155,7 +156,11 @@ void main() {
     final m = n.claimVipBenefit(VipPeriod.monthly)!;
     expect(m.gems, 900);
     expect(m.drop, isNotNull);
-    expect(c.read(gameControllerProvider).gems, gems0 + 30 + 210 + 900);
+    // Phụ kiện rớt trùng món đã có thì được đổi thành 💎 (ngẫu nhiên, ~1%): tính vào kỳ vọng
+    // thay vì để test chập chờn.
+    final dup = [w.drop, m.drop].where((d) => d != null && !d.isNew).length *
+        Balance.duplicateAccessoryGems;
+    expect(c.read(gameControllerProvider).gems, gems0 + 30 + 210 + 900 + dup);
 
     now += _day; // ngày kế: chỉ quà ngày được nhận lại
     expect(n.claimVipBenefit(VipPeriod.daily), isNotNull);
@@ -164,6 +169,21 @@ void main() {
     now += 40 * _day; // qua cả tuần lẫn tháng
     expect(n.claimVipBenefit(VipPeriod.weekly), isNotNull);
     expect(n.claimVipBenefit(VipPeriod.monthly), isNotNull);
+  });
+
+  test('vipUnclaimedNow: chưa có VIP → false; có VIP và còn quà → true; nhận hết → false', () async {
+    var now = 100 * _day;
+    final c = await _ctl(GameState.newGame(nowMillis: 0), clock: () => now);
+    final n = c.read(gameControllerProvider.notifier);
+    expect(n.vipUnclaimedNow, isFalse); // chưa có cấp VIP
+    n.addVipExp(topupTiers[0].exp); // VIP 1
+    expect(n.vipUnclaimedNow, isTrue);
+    for (final p in VipPeriod.values) {
+      n.claimVipBenefit(p);
+    }
+    expect(n.vipUnclaimedNow, isFalse);
+    now += _day; // sang ngày mới: quà ngày lại có
+    expect(n.vipUnclaimedNow, isTrue);
   });
 
   test('chỉ số kỳ: tuần bắt đầu thứ Hai, tháng theo lịch UTC', () {
