@@ -12,6 +12,7 @@ import '../leaderboard/flair.dart';
 import '../leaderboard/story_speedrun_controller.dart';
 import '../leaderboard/story_speedrun_repository.dart';
 import '../state/game_providers.dart';
+import 'web_links.dart';
 import 'widgets/clay.dart';
 
 Future<void> showStorySpeedrunPage(BuildContext context) {
@@ -42,6 +43,7 @@ class StorySpeedrunPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Text(l10n.storySpeedrunTitle),
+          actions: const [WebBoardActions(WebBoard.speed)],
           bottom: TabBar(
             tabs: [
               Tab(text: l10n.storySpeedrunTabMain),

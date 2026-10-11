@@ -1073,6 +1073,17 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se pudo abrir el sitio web. Revisa tu conexión e inténtalo de nuevo.';
 
   @override
+  String get webBoardOpenTip => 'Ver esta clasificación en la web';
+
+  @override
+  String get webBoardShareTip => 'Compartir enlace de la clasificación';
+
+  @override
+  String webBoardShareText(Object url) {
+    return 'Mira la clasificación de Boba Empire: $url';
+  }
+
+  @override
   String get refEntry => '👥 Invitar amigos';
 
   @override

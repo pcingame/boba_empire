@@ -15,6 +15,7 @@ import '../market/accessory_market_controller.dart';
 import '../market/accessory_market_repository.dart';
 import '../state/game_providers.dart';
 import 'collection_peek_dialog.dart';
+import 'web_links.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -81,7 +82,10 @@ class _AccessoryLeaderboardPageState
     final view = ref.watch(accessoryLeaderboardControllerProvider);
     return PhoneWidth(
       child: Scaffold(
-        appBar: AppBar(title: Text(l10n.accessoryLbTitle)),
+        appBar: AppBar(
+          title: Text(l10n.accessoryLbTitle),
+          actions: const [WebBoardActions(WebBoard.collection)],
+        ),
         body: switch (view) {
           AccessoryLeaderboardLoading() => const Center(
             child: CircularProgressIndicator(),

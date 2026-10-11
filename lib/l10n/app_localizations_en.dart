@@ -1064,6 +1064,17 @@ class AppLocalizationsEn extends AppLocalizations {
       'Couldn\'t open the website. Check your connection and try again.';
 
   @override
+  String get webBoardOpenTip => 'View this leaderboard on the web';
+
+  @override
+  String get webBoardShareTip => 'Share leaderboard link';
+
+  @override
+  String webBoardShareText(Object url) {
+    return 'Check out the Boba Empire leaderboard: $url';
+  }
+
+  @override
   String get refEntry => '👥 Invite friends';
 
   @override

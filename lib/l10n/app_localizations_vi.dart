@@ -1063,6 +1063,17 @@ class AppLocalizationsVi extends AppLocalizations {
       'Không mở được trang web. Kiểm tra mạng rồi thử lại.';
 
   @override
+  String get webBoardOpenTip => 'Xem bảng xếp hạng này trên web';
+
+  @override
+  String get webBoardShareTip => 'Chia sẻ liên kết bảng xếp hạng';
+
+  @override
+  String webBoardShareText(Object url) {
+    return 'Xem bảng xếp hạng Boba Empire nè: $url';
+  }
+
+  @override
   String get refEntry => '👥 Mời bạn bè';
 
   @override

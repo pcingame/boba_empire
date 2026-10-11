@@ -10,6 +10,7 @@ import '../core/guild.dart';
 import '../guild/guild_controller.dart';
 import '../guild/guild_repository.dart';
 import '../l10n/app_localizations.dart';
+import 'web_links.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -47,6 +48,7 @@ class GuildLeaderboardPage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: Text(l10n.guildLbTitle),
+            actions: const [WebBoardActions(WebBoard.guild)],
             bottom: TabBar(
               // 4 tab + chữ dài (7 ngôn ngữ) không vừa màn 320px: cho cuộn ngang.
               isScrollable: true,

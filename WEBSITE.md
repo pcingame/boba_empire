@@ -41,6 +41,10 @@ Gọi trực tiếp REST của Supabase từ trình duyệt (CORS mở `*`), **c
 mục** (IntersectionObserver), cache 60 giây mỗi tab, hiển thị bằng `textContent` (tên người
 chơi KHÔNG bao giờ được chèn dưới dạng HTML).
 
+Liên kết sâu: `/?board=<income|pearls|collection|speed|guild|vip>#board` mở sẵn đúng tab (app dùng cho nút
+"Xem/Chia sẻ trên web" ở các màn BXH — `webBoardUrl` trong `lib/ui/web_links.dart`). Thêm tab mới thì
+thêm cả vào enum `WebBoard`; test `web_board_actions_test.dart` sẽ báo nếu hai bên lệch nhau.
+
 | Tab | Endpoint | Cột dùng |
 |---|---|---|
 | Thu nhập | `GET /rest/v1/leaderboard_entries?select=nickname,lifetime_earnings,stage&order=lifetime_earnings.desc&limit=20` | `lifetime_earnings`, `stage` |

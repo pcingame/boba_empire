@@ -1063,6 +1063,17 @@ class AppLocalizationsTh extends AppLocalizations {
       'เปิดเว็บไซต์ไม่ได้ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่';
 
   @override
+  String get webBoardOpenTip => 'ดูกระดานอันดับนี้บนเว็บ';
+
+  @override
+  String get webBoardShareTip => 'แชร์ลิงก์กระดานอันดับ';
+
+  @override
+  String webBoardShareText(Object url) {
+    return 'ดูกระดานอันดับของ Boba Empire: $url';
+  }
+
+  @override
   String get refEntry => '👥 ชวนเพื่อน';
 
   @override

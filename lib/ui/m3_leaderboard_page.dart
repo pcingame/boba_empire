@@ -12,6 +12,7 @@ import '../l10n/app_localizations.dart';
 import '../leaderboard/flair.dart';
 import '../leaderboard/m3_leaderboard_controller.dart';
 import '../state/game_providers.dart';
+import 'web_links.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -57,7 +58,10 @@ class _M3LeaderboardPageState extends ConsumerState<M3LeaderboardPage> {
     final view = ref.watch(m3LeaderboardControllerProvider);
     return PhoneWidth(
       child: Scaffold(
-        appBar: AppBar(title: Text(l10n.m3LbTitle)),
+        appBar: AppBar(
+          title: Text(l10n.m3LbTitle),
+          actions: const [WebBoardActions(WebBoard.pearls)],
+        ),
         body: switch (view) {
           M3LeaderboardLoading() => const Center(
             child: CircularProgressIndicator(),

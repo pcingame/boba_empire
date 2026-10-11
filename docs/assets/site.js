@@ -157,7 +157,10 @@
       name: function (r) { return (r.emoji || '') + ' ' + r.name + ' [' + r.tag + ']'; },
       val: function (r) { return big(r.week_total); }, sub: function (r, t) { return tpl(t.lbMembers, r.member_count); } }
   ];
-  var cache = {}, current = BOARDS[0].id, boardStarted = false, reqId = 0;
+  // ?board=vip (từ liên kết trong app) mở sẵn tab tương ứng; id lạ thì dùng tab đầu.
+  var wanted = ''; try { wanted = new URLSearchParams(location.search).get('board') || ''; } catch (e) {}
+  var cache = {}, boardStarted = false, reqId = 0,
+      current = BOARDS.some(function (b) { return b.id === wanted; }) ? wanted : BOARDS[0].id;
 
   function renderTabs() {
     var t = T[lang], box = $('boardTabs');

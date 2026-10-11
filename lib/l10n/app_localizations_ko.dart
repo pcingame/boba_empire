@@ -1046,6 +1046,17 @@ class AppLocalizationsKo extends AppLocalizations {
   String get webOpenFailed => '웹사이트를 열 수 없어요. 연결을 확인하고 다시 시도해 주세요.';
 
   @override
+  String get webBoardOpenTip => '웹에서 이 리더보드 보기';
+
+  @override
+  String get webBoardShareTip => '리더보드 링크 공유';
+
+  @override
+  String webBoardShareText(Object url) {
+    return 'Boba Empire 리더보드를 확인해 보세요: $url';
+  }
+
+  @override
   String get refEntry => '👥 친구 초대';
 
   @override

@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../l10n/app_localizations.dart';
+import 'invite_dialog.dart' show shareTextProvider;
 
 /// Tên miền của trang web (khớp docs/CNAME; test so khớp).
 const webHomeUrl = 'https://bobaempiregame.com';
@@ -34,4 +35,47 @@ Future<void> openWebLink(BuildContext context, WidgetRef ref, String url) async 
   final failText = AppLocalizations.of(context)!.webOpenFailed;
   final ok = await ref.read(urlOpenerProvider)(Uri.parse(url));
   if (!ok) messenger.showSnackBar(SnackBar(content: Text(failText)));
+}
+
+/// Các tab bảng xếp hạng trên web (id khớp `BOARDS` trong docs/assets/site.js; test so khớp).
+enum WebBoard { income, pearls, collection, speed, guild, vip }
+
+/// Địa chỉ bảng xếp hạng web, mở sẵn tab [board] (site.js đọc tham số `board`, cuộn tới #board).
+String webBoardUrl(WebBoard board) => '$webHomeUrl/?board=${board.name}#board';
+
+/// Hai nút ở AppBar của màn bảng xếp hạng: mở bảng này trên web, và chia sẻ liên kết cho người
+/// chưa cài game xem (web công khai, không cần đăng nhập).
+class WebBoardActions extends ConsumerWidget {
+  const WebBoardActions(this.board, {super.key});
+  final WebBoard board;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final url = webBoardUrl(board);
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          key: const Key('web-board-open'),
+          tooltip: l10n.webBoardOpenTip,
+          icon: const Icon(Icons.public),
+          onPressed: () => openWebLink(context, ref, url),
+        ),
+        Builder(
+          builder: (btnContext) => IconButton(
+            key: const Key('web-board-share'),
+            tooltip: l10n.webBoardShareTip,
+            icon: const Icon(Icons.share),
+            onPressed: () {
+              final box = btnContext.findRenderObject() as RenderBox?;
+              final origin =
+                  box == null ? null : box.localToGlobal(Offset.zero) & box.size;
+              ref.read(shareTextProvider)(l10n.webBoardShareText(url), origin);
+            },
+          ),
+        ),
+      ],
+    );
+  }
 }

@@ -11,6 +11,7 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../leaderboard/flair.dart';
 import '../leaderboard/vip_leaderboard_controller.dart';
+import 'web_links.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -47,7 +48,10 @@ class _VipLeaderboardPageState extends ConsumerState<VipLeaderboardPage> {
     final view = ref.watch(vipLeaderboardControllerProvider);
     return PhoneWidth(
       child: Scaffold(
-        appBar: AppBar(title: Text(l10n.vipLbTitle)),
+        appBar: AppBar(
+          title: Text(l10n.vipLbTitle),
+          actions: const [WebBoardActions(WebBoard.vip)],
+        ),
         body: switch (view) {
           VipLeaderboardLoading() => const Center(
               child: CircularProgressIndicator(),

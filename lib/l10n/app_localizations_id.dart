@@ -1066,6 +1066,17 @@ class AppLocalizationsId extends AppLocalizations {
       'Tidak bisa membuka situs web. Periksa koneksi dan coba lagi.';
 
   @override
+  String get webBoardOpenTip => 'Lihat papan peringkat ini di web';
+
+  @override
+  String get webBoardShareTip => 'Bagikan tautan papan peringkat';
+
+  @override
+  String webBoardShareText(Object url) {
+    return 'Lihat papan peringkat Boba Empire: $url';
+  }
+
+  @override
   String get refEntry => '👥 Undang teman';
 
   @override

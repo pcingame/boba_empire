@@ -11,6 +11,7 @@ import '../l10n/app_localizations.dart';
 import '../leaderboard/flair.dart';
 import '../leaderboard/leaderboard_controller.dart';
 import '../state/game_providers.dart';
+import 'web_links.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -72,7 +73,10 @@ class _LeaderboardPageState extends ConsumerState<LeaderboardPage> {
 
     return PhoneWidth(
       child: Scaffold(
-        appBar: AppBar(title: Text(l10n.leaderboardTitle)),
+        appBar: AppBar(
+          title: Text(l10n.leaderboardTitle),
+          actions: const [WebBoardActions(WebBoard.income)],
+        ),
         body: SafeArea(
           child: switch (viewState) {
             LeaderboardLoading() => const Center(

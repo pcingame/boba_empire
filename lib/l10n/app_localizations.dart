@@ -1824,6 +1824,24 @@ abstract class AppLocalizations {
   /// **'Không mở được trang web. Kiểm tra mạng rồi thử lại.'**
   String get webOpenFailed;
 
+  /// No description provided for @webBoardOpenTip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem bảng xếp hạng này trên web'**
+  String get webBoardOpenTip;
+
+  /// No description provided for @webBoardShareTip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia sẻ liên kết bảng xếp hạng'**
+  String get webBoardShareTip;
+
+  /// No description provided for @webBoardShareText.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem bảng xếp hạng Boba Empire nè: {url}'**
+  String webBoardShareText(Object url);
+
   /// No description provided for @refEntry.
   ///
   /// In vi, this message translates to:
