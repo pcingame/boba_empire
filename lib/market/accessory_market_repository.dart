@@ -46,6 +46,46 @@ class MarketListing {
   }
 }
 
+/// Đề nghị trao đổi: người đăng đưa [giveId] (ký quỹ), muốn [wantId]. Hết hạn cùng thời hạn tin đăng.
+class AccessorySwap {
+  const AccessorySwap({
+    required this.id,
+    required this.sellerId,
+    required this.giveId,
+    required this.wantId,
+    required this.createdAt,
+  });
+
+  factory AccessorySwap.fromRow(Map<String, dynamic> row) => AccessorySwap(
+        id: row['id'] as String,
+        sellerId: row['seller_id'] as String,
+        giveId: row['give_id'] as String,
+        wantId: row['want_id'] as String,
+        createdAt: DateTime.parse(row['created_at'] as String),
+      );
+
+  final String id;
+  final String sellerId;
+  final String giveId;
+  final String wantId;
+  final DateTime createdAt;
+
+  DateTime get expiresAt => createdAt.add(const Duration(days: marketListingDays));
+  Duration remaining(DateTime now) {
+    final d = expiresAt.difference(now);
+    return d.isNegative ? Duration.zero : d;
+  }
+}
+
+/// Món máy người đăng cần thêm vào kho cục bộ sau khi đề nghị xong/hết hạn: [accessoryId] là món đổi được
+/// (done) hoặc món ký quỹ được trả lại (expired). Phải [AccessoryMarketRepository.ackSwaps] sau khi thêm.
+class SwapPickup {
+  const SwapPickup({required this.id, required this.expired, required this.accessoryId});
+  final String id;
+  final bool expired;
+  final String accessoryId;
+}
+
 class MarketTrade {
   const MarketTrade({
     required this.id,
@@ -101,6 +141,9 @@ class AccessoryMarketRepository {
   static const _listingsTable = 'accessory_listings';
   static const _tradesTable = 'accessory_market_trades';
   static const _ownershipTable = 'accessory_server_ownership';
+
+  /// Id người dùng hiện tại (null nếu chưa đăng nhập) — tách ra để test không cần Supabase thật.
+  String? get currentUserId => _client.auth.currentUser?.id;
 
   Future<String> ensureSignedIn() async {
     return requireLinkedId(_client.auth.currentUser);
@@ -216,6 +259,67 @@ class AccessoryMarketRepository {
   Future<void> ackExpiredListings(List<String> listingIds) async {
     await ensureSignedIn();
     await _client.rpc('ack_expired_listings', params: {'p_ids': listingIds});
+  }
+
+  // --- Trao đổi vật phẩm (supabase/accessory_swap_schema.sql) ---
+
+  Future<List<AccessorySwap>> fetchOpenSwaps({int limit = 50}) async {
+    await ensureSignedIn();
+    final rows = await _client
+        .from('accessory_swaps')
+        .select()
+        .eq('status', 'open')
+        .order('created_at', ascending: false)
+        .limit(limit);
+    return [for (final r in rows as List) AccessorySwap.fromRow(r as Map<String, dynamic>)];
+  }
+
+  Future<List<AccessorySwap>> fetchMyOpenSwaps() async {
+    final uid = await ensureSignedIn();
+    final rows = await _client
+        .from('accessory_swaps')
+        .select()
+        .eq('seller_id', uid)
+        .eq('status', 'open')
+        .order('created_at', ascending: false);
+    return [for (final r in rows as List) AccessorySwap.fromRow(r as Map<String, dynamic>)];
+  }
+
+  /// Tạo đề nghị: ký quỹ [giveId], muốn [wantId]. Ném PostgrestException `not_owned` / `too_many_swaps` /
+  /// `invalid_swap`.
+  Future<String> createSwap(String giveId, String wantId) async {
+    await ensureSignedIn();
+    return await _client.rpc('swap_create', params: {'p_give': giveId, 'p_want': wantId}) as String;
+  }
+
+  Future<void> cancelSwap(String swapId) async {
+    await ensureSignedIn();
+    await _client.rpc('swap_cancel', params: {'p_id': swapId});
+  }
+
+  /// Ném `swap_not_open` / `not_owned_want` / `cannot_accept_own_swap`.
+  Future<void> acceptSwap(String swapId) async {
+    await ensureSignedIn();
+    await _client.rpc('swap_accept', params: {'p_id': swapId});
+  }
+
+  /// Quét đề nghị hết hạn của mình rồi trả các món máy CHƯA thêm vào kho cục bộ (xem [SwapPickup]).
+  Future<List<SwapPickup>> collectSwaps() async {
+    await ensureSignedIn();
+    final rows = await _client.rpc('swap_collect');
+    return [
+      for (final r in rows as List)
+        SwapPickup(
+          id: (r as Map<String, dynamic>)['id'] as String,
+          expired: r['status'] == 'expired',
+          accessoryId: (r['status'] == 'expired' ? r['give_id'] : r['want_id']) as String,
+        ),
+    ];
+  }
+
+  Future<void> ackSwaps(List<String> ids) async {
+    await ensureSignedIn();
+    await _client.rpc('swap_ack', params: {'p_ids': ids});
   }
 
   Future<void> cancelListing(String listingId) async {

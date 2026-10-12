@@ -21,6 +21,7 @@ import '../market/accessory_market_repository.dart';
 import '../market/market_filter.dart';
 import '../market/market_highlight.dart';
 import '../state/game_providers.dart';
+import 'accessory_swap.dart';
 import 'widgets/dispose_with_widget.dart';
 import 'widgets/accessory_rarity.dart';
 import 'widgets/motion.dart';
@@ -111,11 +112,12 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
     notifier.onAccessoryAddedLocally = (id) =>
         ref.read(gameControllerProvider.notifier).addOwnedAccessoryLocally(id);
     notifier.onListingsExpired = (n) => _snack(l10n.marketExpiredToast(n));
+    notifier.onSwapsCollected = (n) => _snack(l10n.swapCollectedToast(n));
     final game = ref.read(gameControllerProvider.notifier);
     notifier.onEvent = (event, props) {
       game.logEvent(event, props);
       // Đăng bán hoặc mua thành công đều tính là một giao dịch cho nhiệm vụ tuần.
-      if (event == 'listing_created' || event == 'trade_done') {
+      if (event == 'listing_created' || event == 'trade_done' || event == 'swap_done') {
         game.recordMarketTrade();
       }
     };
@@ -143,13 +145,14 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
 
     return PhoneWidth(
       child: DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           appBar: AppBar(
             title: Text(l10n.marketTitle),
             bottom: TabBar(
               tabs: [
                 Tab(text: l10n.marketTabBrowse),
+                Tab(text: l10n.swapTab, key: const Key('market-tab-swap')),
                 Tab(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -188,6 +191,7 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
                 child: TabBarView(
                   children: [
                     _BrowseTab(view: view, onAction: _snack),
+                    SwapTab(view: view, onAction: _snack),
                     _MineTab(view: view, onAction: _snack),
                   ],
                 ),
@@ -1049,6 +1053,8 @@ class _MineTab extends ConsumerWidget {
                   child: Text(l10n.marketCancelButton),
                 ),
               ),
+          const SizedBox(height: 12),
+          MySwapsSection(view: view, onAction: onAction),
           const SizedBox(height: 20),
           _SectionHeader(emoji: '🎒', text: l10n.marketSellableHeader),
           if (owned.isEmpty)

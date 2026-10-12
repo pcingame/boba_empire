@@ -2616,6 +2616,111 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get swapTab => 'Trao đổi';
+
+  @override
+  String get swapCreate => 'Tạo đề nghị';
+
+  @override
+  String get swapCreateOk => 'Đăng đề nghị';
+
+  @override
+  String swapIntro(int days) {
+    return 'Đổi món lấy món với người khác — không tốn Xu Chợ. Món bạn đưa được giữ lại cho tới khi có người nhận (tối đa $days ngày, hết hạn sẽ tự về kho).';
+  }
+
+  @override
+  String get swapEmpty =>
+      'Chưa có đề nghị trao đổi nào. Hãy tạo đề nghị đầu tiên!';
+
+  @override
+  String get swapMine => 'Đề nghị trao đổi của tôi';
+
+  @override
+  String get swapMineEmpty => 'Bạn chưa đăng đề nghị nào.';
+
+  @override
+  String get swapGive => 'Đưa';
+
+  @override
+  String get swapWant => 'Cần';
+
+  @override
+  String get swapAccept => 'Đổi';
+
+  @override
+  String get swapNeedItem => 'Chưa có món cần';
+
+  @override
+  String get swapCancel => 'Huỷ';
+
+  @override
+  String get swapPickGive => 'Chọn món bạn đưa';
+
+  @override
+  String get swapPickWant => 'Chọn món bạn muốn';
+
+  @override
+  String get swapPickSearch => 'Tìm theo tên';
+
+  @override
+  String get swapPickNone => 'Không có món nào.';
+
+  @override
+  String swapMaxNote(int n) {
+    return 'Tối đa $n đề nghị cùng lúc.';
+  }
+
+  @override
+  String get swapConfirmTitle => 'Xác nhận đổi';
+
+  @override
+  String swapConfirmBody(String give, String want) {
+    return 'Bạn nhận $give và đưa $want?';
+  }
+
+  @override
+  String get swapCreatedToast => 'Đã đăng đề nghị trao đổi!';
+
+  @override
+  String swapDoneToast(String name) {
+    return 'Đã đổi xong! Bạn nhận được $name.';
+  }
+
+  @override
+  String get swapCancelledToast => 'Đã huỷ đề nghị, món đã về kho.';
+
+  @override
+  String swapCollectedToast(int n) {
+    return '$n món từ trao đổi đã về kho của bạn.';
+  }
+
+  @override
+  String get swapErrNotOwned =>
+      'Bạn chưa có món này (thử mở lại Chợ để đối chiếu).';
+
+  @override
+  String get swapErrNotOwnedWant => 'Bạn chưa có món người ta cần.';
+
+  @override
+  String swapErrTooMany(int n) {
+    return 'Bạn đang có quá nhiều đề nghị mở (tối đa $n).';
+  }
+
+  @override
+  String get swapErrNotOpen =>
+      'Đề nghị này vừa được nhận hoặc đã huỷ — danh sách đã cập nhật.';
+
+  @override
+  String get swapErrOwn => 'Không thể tự nhận đề nghị của chính mình.';
+
+  @override
+  String get swapErrInvalid => 'Đề nghị không hợp lệ.';
+
+  @override
+  String get swapErrNetwork => 'Không kết nối được, thử lại sau nhé.';
+
+  @override
   String get marketCancelButton => 'Huỷ đăng';
 
   @override

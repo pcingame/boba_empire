@@ -2632,6 +2632,111 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get swapTab => 'Trocas';
+
+  @override
+  String get swapCreate => 'Criar oferta';
+
+  @override
+  String get swapCreateOk => 'Publicar oferta';
+
+  @override
+  String swapIntro(int days) {
+    return 'Troque um item por outro com outros jogadores, sem Moedas do Mercado. Seu item fica guardado até alguém aceitar (até $days dias; se expirar, volta ao seu inventário).';
+  }
+
+  @override
+  String get swapEmpty => 'Ainda não há ofertas de troca. Crie a primeira!';
+
+  @override
+  String get swapMine => 'Minhas ofertas de troca';
+
+  @override
+  String get swapMineEmpty => 'Você não publicou ofertas.';
+
+  @override
+  String get swapGive => 'Dá';
+
+  @override
+  String get swapWant => 'Quer';
+
+  @override
+  String get swapAccept => 'Trocar';
+
+  @override
+  String get swapNeedItem => 'Falta o item';
+
+  @override
+  String get swapCancel => 'Cancelar';
+
+  @override
+  String get swapPickGive => 'Escolha o item que você dá';
+
+  @override
+  String get swapPickWant => 'Escolha o item que você quer';
+
+  @override
+  String get swapPickSearch => 'Buscar por nome';
+
+  @override
+  String get swapPickNone => 'Nenhum item.';
+
+  @override
+  String swapMaxNote(int n) {
+    return 'Até $n ofertas ao mesmo tempo.';
+  }
+
+  @override
+  String get swapConfirmTitle => 'Confirmar troca';
+
+  @override
+  String swapConfirmBody(String give, String want) {
+    return 'Você recebe $give e dá $want?';
+  }
+
+  @override
+  String get swapCreatedToast => 'Oferta de troca publicada!';
+
+  @override
+  String swapDoneToast(String name) {
+    return 'Troca feita! Você recebeu $name.';
+  }
+
+  @override
+  String get swapCancelledToast =>
+      'Oferta cancelada, o item voltou ao seu inventário.';
+
+  @override
+  String swapCollectedToast(int n) {
+    return '$n item(ns) de trocas voltaram ao seu inventário.';
+  }
+
+  @override
+  String get swapErrNotOwned =>
+      'Você não tem este item (reabra o Mercado para sincronizar).';
+
+  @override
+  String get swapErrNotOwnedWant => 'Você não tem o item que pedem.';
+
+  @override
+  String swapErrTooMany(int n) {
+    return 'Você tem ofertas abertas demais (máx. $n).';
+  }
+
+  @override
+  String get swapErrNotOpen =>
+      'Esta oferta acabou de ser aceita ou cancelada; a lista foi atualizada.';
+
+  @override
+  String get swapErrOwn => 'Você não pode aceitar a própria oferta.';
+
+  @override
+  String get swapErrInvalid => 'Oferta inválida.';
+
+  @override
+  String get swapErrNetwork => 'Não foi possível conectar, tente mais tarde.';
+
+  @override
   String get marketCancelButton => 'Cancelar anúncio';
 
   @override

@@ -2625,6 +2625,111 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get swapTab => 'Swaps';
+
+  @override
+  String get swapCreate => 'Create offer';
+
+  @override
+  String get swapCreateOk => 'Post offer';
+
+  @override
+  String swapIntro(int days) {
+    return 'Swap an item for another with other players — no Market Coins needed. Your item is held until someone accepts (up to $days days; it returns to your inventory if it expires).';
+  }
+
+  @override
+  String get swapEmpty => 'No swap offers yet. Create the first one!';
+
+  @override
+  String get swapMine => 'My swap offers';
+
+  @override
+  String get swapMineEmpty => 'You have no offers posted.';
+
+  @override
+  String get swapGive => 'Give';
+
+  @override
+  String get swapWant => 'Want';
+
+  @override
+  String get swapAccept => 'Swap';
+
+  @override
+  String get swapNeedItem => 'Item needed';
+
+  @override
+  String get swapCancel => 'Cancel';
+
+  @override
+  String get swapPickGive => 'Pick the item you give';
+
+  @override
+  String get swapPickWant => 'Pick the item you want';
+
+  @override
+  String get swapPickSearch => 'Search by name';
+
+  @override
+  String get swapPickNone => 'No items.';
+
+  @override
+  String swapMaxNote(int n) {
+    return 'Up to $n offers at once.';
+  }
+
+  @override
+  String get swapConfirmTitle => 'Confirm swap';
+
+  @override
+  String swapConfirmBody(String give, String want) {
+    return 'You get $give and give $want?';
+  }
+
+  @override
+  String get swapCreatedToast => 'Swap offer posted!';
+
+  @override
+  String swapDoneToast(String name) {
+    return 'Swapped! You received $name.';
+  }
+
+  @override
+  String get swapCancelledToast =>
+      'Offer cancelled, the item is back in your inventory.';
+
+  @override
+  String swapCollectedToast(int n) {
+    return '$n item(s) from swaps returned to your inventory.';
+  }
+
+  @override
+  String get swapErrNotOwned =>
+      'You don\'t have this item (reopen the Market to re-sync).';
+
+  @override
+  String get swapErrNotOwnedWant => 'You don\'t have the item they want.';
+
+  @override
+  String swapErrTooMany(int n) {
+    return 'You have too many open offers (max $n).';
+  }
+
+  @override
+  String get swapErrNotOpen =>
+      'This offer was just taken or cancelled — the list has been updated.';
+
+  @override
+  String get swapErrOwn => 'You can\'t accept your own offer.';
+
+  @override
+  String get swapErrInvalid => 'Invalid offer.';
+
+  @override
+  String get swapErrNetwork => 'Couldn\'t connect, try again later.';
+
+  @override
   String get marketCancelButton => 'Cancel listing';
 
   @override

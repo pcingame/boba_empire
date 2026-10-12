@@ -35,6 +35,8 @@ class AccessoryMarketLoaded extends AccessoryMarketViewState {
     required this.walletBalance,
     required this.myUserId,
     this.recentSales = const [],
+    this.swaps = const [],
+    this.mySwaps = const [],
   });
 
   final List<MarketListing> listings;
@@ -42,6 +44,24 @@ class AccessoryMarketLoaded extends AccessoryMarketViewState {
   final int walletBalance;
   final String? myUserId;
   final List<RecentSale> recentSales;
+
+  /// Đề nghị trao đổi đang mở của mọi người (gồm cả của mình) và riêng của mình.
+  final List<AccessorySwap> swaps;
+  final List<AccessorySwap> mySwaps;
+}
+
+/// Lỗi thao tác trao đổi (UI dịch ra chữ — controller không có BuildContext).
+enum SwapError { notOwned, notOwnedWant, tooMany, notOpen, ownSwap, invalid, network }
+
+SwapError _swapErrorFrom(Object e) {
+  final m = e is PostgrestException ? e.message : '$e';
+  if (m.contains('not_owned_want')) return SwapError.notOwnedWant;
+  if (m.contains('not_owned')) return SwapError.notOwned;
+  if (m.contains('too_many_swaps')) return SwapError.tooMany;
+  if (m.contains('swap_not_open')) return SwapError.notOpen;
+  if (m.contains('cannot_accept_own_swap')) return SwapError.ownSwap;
+  if (m.contains('invalid_swap')) return SwapError.invalid;
+  return SwapError.network;
 }
 
 class AccessoryMarketError extends AccessoryMarketViewState {
@@ -61,6 +81,10 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
   /// Báo UI có [count] món vừa hết hạn đăng và đã về kho.
   void Function(int count)? onListingsExpired;
   final _appliedExpired = <String>{};
+  final _appliedSwapPickups = <String>{};
+
+  /// Báo UI có [count] món về kho từ đề nghị trao đổi (đổi được hoặc bị trả lại do hết hạn).
+  void Function(int count)? onSwapsCollected;
 
   /// Ghi analytics (gán từ UI, trỏ tới GameController.logEvent).
   void Function(String event, Map<String, dynamic> props)? onEvent;
@@ -214,6 +238,25 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
     }
   }
 
+  /// Nhận lại món từ đề nghị trao đổi đã xong/hết hạn: thêm vào kho cục bộ rồi mới ack (hai pha như
+  /// [_collectExpired]). Lỗi (mạng / server cũ chưa có RPC) nuốt im lặng.
+  Future<void> _collectSwaps() async {
+    try {
+      final back = await _repository.collectSwaps();
+      final fresh = [for (final b in back) if (_appliedSwapPickups.add(b.id)) b];
+      for (final b in fresh) {
+        onAccessoryAddedLocally?.call(b.accessoryId);
+      }
+      if (back.isNotEmpty) await _repository.ackSwaps([for (final b in back) b.id]);
+      if (fresh.isNotEmpty) {
+        onEvent?.call('swap_collected', {'count': fresh.length});
+        onSwapsCollected?.call(fresh.length);
+      }
+    } catch (e) {
+      developer.log('nhận lại món trao đổi lỗi: $e', name: 'Market');
+    }
+  }
+
   Future<void> refresh({bool silent = false}) async {
     if (!silent) {
       state = const AccessoryMarketLoading();
@@ -221,6 +264,7 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
     }
     try {
       await _collectExpired();
+      await _collectSwaps();
       await _reconcileOwnership();
       final listings = await _repository.fetchActiveListings();
       final myListings = await _repository.fetchMyActiveListings();
@@ -229,12 +273,17 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
       final recentSales = await _repository.fetchRecentSales().catchError(
         (_) => const <RecentSale>[],
       );
+      // Trao đổi là phần thêm: server cũ chưa có bảng thì danh sách rỗng, Chợ vẫn dùng được.
+      final swaps = await _repository.fetchOpenSwaps().catchError((_) => const <AccessorySwap>[]);
+      final mySwaps = await _repository.fetchMyOpenSwaps().catchError((_) => const <AccessorySwap>[]);
       state = AccessoryMarketLoaded(
         listings: listings,
         myListings: myListings,
         walletBalance: balance,
-        myUserId: Supabase.instance.client.auth.currentUser?.id,
+        myUserId: _repository.currentUserId,
         recentSales: recentSales,
+        swaps: swaps,
+        mySwaps: mySwaps,
       );
     } catch (e) {
       _fail(e);
@@ -301,6 +350,48 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
       return null;
     } catch (e) {
       return 'Huỷ đăng thất bại, thử lại sau nhé.';
+    }
+  }
+
+  /// Tạo đề nghị: ký quỹ [giveId] muốn [wantId]. Null = thành công; món rời kho cục bộ ngay.
+  Future<SwapError?> createSwap(String giveId, String wantId) async {
+    try {
+      await _repository.createSwap(giveId, wantId);
+      onEvent?.call('swap_created', {'give': giveId, 'want': wantId});
+      onAccessoryRemovedLocally?.call(giveId);
+      await refresh(silent: true);
+      return null;
+    } catch (e) {
+      return _swapErrorFrom(e);
+    }
+  }
+
+  /// Huỷ đề nghị của mình: món ký quỹ về kho (server và cục bộ).
+  Future<SwapError?> cancelSwap(AccessorySwap swap) async {
+    try {
+      await _repository.cancelSwap(swap.id);
+      onAccessoryAddedLocally?.call(swap.giveId);
+      await refresh(silent: true);
+      return null;
+    } catch (e) {
+      unawaited(refresh(silent: true));
+      return _swapErrorFrom(e);
+    }
+  }
+
+  /// Nhận đề nghị của người khác: mất [AccessorySwap.wantId], được [AccessorySwap.giveId].
+  Future<SwapError?> acceptSwap(AccessorySwap swap) async {
+    try {
+      await _repository.acceptSwap(swap.id);
+      onEvent?.call('swap_done', {'give': swap.giveId, 'want': swap.wantId});
+      onAccessoryRemovedLocally?.call(swap.wantId);
+      onAccessoryAddedLocally?.call(swap.giveId);
+      await refresh(silent: true);
+      return null;
+    } catch (e) {
+      // Dù lỗi (vd đề nghị vừa bị nhận/huỷ) danh sách cũng có thể đã đổi.
+      unawaited(refresh(silent: true));
+      return _swapErrorFrom(e);
     }
   }
 

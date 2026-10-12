@@ -2612,6 +2612,109 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get swapTab => 'แลกเปลี่ยน';
+
+  @override
+  String get swapCreate => 'สร้างข้อเสนอ';
+
+  @override
+  String get swapCreateOk => 'โพสต์ข้อเสนอ';
+
+  @override
+  String swapIntro(int days) {
+    return 'แลกไอเท็มกับผู้เล่นอื่นโดยไม่ต้องใช้เหรียญตลาด ไอเท็มของคุณจะถูกเก็บไว้จนกว่าจะมีคนรับ (สูงสุด $days วัน หมดอายุจะกลับเข้าคลัง)';
+  }
+
+  @override
+  String get swapEmpty => 'ยังไม่มีข้อเสนอแลกเปลี่ยน สร้างอันแรกเลย!';
+
+  @override
+  String get swapMine => 'ข้อเสนอแลกเปลี่ยนของฉัน';
+
+  @override
+  String get swapMineEmpty => 'คุณยังไม่ได้โพสต์ข้อเสนอ';
+
+  @override
+  String get swapGive => 'ให้';
+
+  @override
+  String get swapWant => 'ต้องการ';
+
+  @override
+  String get swapAccept => 'แลก';
+
+  @override
+  String get swapNeedItem => 'ยังไม่มีไอเท็มที่ต้องการ';
+
+  @override
+  String get swapCancel => 'ยกเลิก';
+
+  @override
+  String get swapPickGive => 'เลือกไอเท็มที่จะให้';
+
+  @override
+  String get swapPickWant => 'เลือกไอเท็มที่ต้องการ';
+
+  @override
+  String get swapPickSearch => 'ค้นหาตามชื่อ';
+
+  @override
+  String get swapPickNone => 'ไม่มีไอเท็ม';
+
+  @override
+  String swapMaxNote(int n) {
+    return 'โพสต์ได้พร้อมกันสูงสุด $n ข้อเสนอ';
+  }
+
+  @override
+  String get swapConfirmTitle => 'ยืนยันการแลก';
+
+  @override
+  String swapConfirmBody(String give, String want) {
+    return 'คุณจะได้ $give และให้ $want ใช่ไหม?';
+  }
+
+  @override
+  String get swapCreatedToast => 'โพสต์ข้อเสนอแลกเปลี่ยนแล้ว!';
+
+  @override
+  String swapDoneToast(String name) {
+    return 'แลกสำเร็จ! คุณได้รับ $name';
+  }
+
+  @override
+  String get swapCancelledToast => 'ยกเลิกข้อเสนอแล้ว ไอเท็มกลับเข้าคลัง';
+
+  @override
+  String swapCollectedToast(int n) {
+    return 'ไอเท็มจากการแลก $n ชิ้นกลับเข้าคลังแล้ว';
+  }
+
+  @override
+  String get swapErrNotOwned => 'คุณยังไม่มีไอเท็มนี้ (เปิดตลาดใหม่เพื่อซิงก์)';
+
+  @override
+  String get swapErrNotOwnedWant => 'คุณไม่มีไอเท็มที่เขาต้องการ';
+
+  @override
+  String swapErrTooMany(int n) {
+    return 'คุณมีข้อเสนอที่เปิดอยู่มากเกินไป (สูงสุด $n)';
+  }
+
+  @override
+  String get swapErrNotOpen =>
+      'ข้อเสนอนี้เพิ่งถูกรับหรือถูกยกเลิก — อัปเดตรายการแล้ว';
+
+  @override
+  String get swapErrOwn => 'รับข้อเสนอของตัวเองไม่ได้';
+
+  @override
+  String get swapErrInvalid => 'ข้อเสนอไม่ถูกต้อง';
+
+  @override
+  String get swapErrNetwork => 'เชื่อมต่อไม่ได้ ลองใหม่ภายหลัง';
+
+  @override
   String get marketCancelButton => 'ยกเลิกการขาย';
 
   @override

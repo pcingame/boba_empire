@@ -4602,6 +4602,186 @@ abstract class AppLocalizations {
   /// **'{n} món hết hạn đăng đã về kho của bạn.'**
   String marketExpiredToast(int n);
 
+  /// No description provided for @swapTab.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trao đổi'**
+  String get swapTab;
+
+  /// No description provided for @swapCreate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo đề nghị'**
+  String get swapCreate;
+
+  /// No description provided for @swapCreateOk.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng đề nghị'**
+  String get swapCreateOk;
+
+  /// No description provided for @swapIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi món lấy món với người khác — không tốn Xu Chợ. Món bạn đưa được giữ lại cho tới khi có người nhận (tối đa {days} ngày, hết hạn sẽ tự về kho).'**
+  String swapIntro(int days);
+
+  /// No description provided for @swapEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có đề nghị trao đổi nào. Hãy tạo đề nghị đầu tiên!'**
+  String get swapEmpty;
+
+  /// No description provided for @swapMine.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đề nghị trao đổi của tôi'**
+  String get swapMine;
+
+  /// No description provided for @swapMineEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa đăng đề nghị nào.'**
+  String get swapMineEmpty;
+
+  /// No description provided for @swapGive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đưa'**
+  String get swapGive;
+
+  /// No description provided for @swapWant.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần'**
+  String get swapWant;
+
+  /// No description provided for @swapAccept.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi'**
+  String get swapAccept;
+
+  /// No description provided for @swapNeedItem.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có món cần'**
+  String get swapNeedItem;
+
+  /// No description provided for @swapCancel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Huỷ'**
+  String get swapCancel;
+
+  /// No description provided for @swapPickGive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn món bạn đưa'**
+  String get swapPickGive;
+
+  /// No description provided for @swapPickWant.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn món bạn muốn'**
+  String get swapPickWant;
+
+  /// No description provided for @swapPickSearch.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm theo tên'**
+  String get swapPickSearch;
+
+  /// No description provided for @swapPickNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có món nào.'**
+  String get swapPickNone;
+
+  /// No description provided for @swapMaxNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối đa {n} đề nghị cùng lúc.'**
+  String swapMaxNote(int n);
+
+  /// No description provided for @swapConfirmTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận đổi'**
+  String get swapConfirmTitle;
+
+  /// No description provided for @swapConfirmBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn nhận {give} và đưa {want}?'**
+  String swapConfirmBody(String give, String want);
+
+  /// No description provided for @swapCreatedToast.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đăng đề nghị trao đổi!'**
+  String get swapCreatedToast;
+
+  /// No description provided for @swapDoneToast.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đổi xong! Bạn nhận được {name}.'**
+  String swapDoneToast(String name);
+
+  /// No description provided for @swapCancelledToast.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã huỷ đề nghị, món đã về kho.'**
+  String get swapCancelledToast;
+
+  /// No description provided for @swapCollectedToast.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} món từ trao đổi đã về kho của bạn.'**
+  String swapCollectedToast(int n);
+
+  /// No description provided for @swapErrNotOwned.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa có món này (thử mở lại Chợ để đối chiếu).'**
+  String get swapErrNotOwned;
+
+  /// No description provided for @swapErrNotOwnedWant.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa có món người ta cần.'**
+  String get swapErrNotOwnedWant;
+
+  /// No description provided for @swapErrTooMany.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang có quá nhiều đề nghị mở (tối đa {n}).'**
+  String swapErrTooMany(int n);
+
+  /// No description provided for @swapErrNotOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đề nghị này vừa được nhận hoặc đã huỷ — danh sách đã cập nhật.'**
+  String get swapErrNotOpen;
+
+  /// No description provided for @swapErrOwn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể tự nhận đề nghị của chính mình.'**
+  String get swapErrOwn;
+
+  /// No description provided for @swapErrInvalid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đề nghị không hợp lệ.'**
+  String get swapErrInvalid;
+
+  /// No description provided for @swapErrNetwork.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không kết nối được, thử lại sau nhé.'**
+  String get swapErrNetwork;
+
   /// No description provided for @marketCancelButton.
   ///
   /// In vi, this message translates to:

@@ -2584,6 +2584,108 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get swapTab => '교환';
+
+  @override
+  String get swapCreate => '제안 만들기';
+
+  @override
+  String get swapCreateOk => '제안 올리기';
+
+  @override
+  String swapIntro(int days) {
+    return '다른 플레이어와 아이템을 맞교환해요. 마켓 코인이 필요 없어요. 내 아이템은 누군가 받을 때까지 보관되고 (최대 $days일), 만료되면 보관함으로 돌아와요.';
+  }
+
+  @override
+  String get swapEmpty => '아직 교환 제안이 없어요. 첫 제안을 만들어 보세요!';
+
+  @override
+  String get swapMine => '내 교환 제안';
+
+  @override
+  String get swapMineEmpty => '올린 제안이 없어요.';
+
+  @override
+  String get swapGive => '줄 것';
+
+  @override
+  String get swapWant => '원하는 것';
+
+  @override
+  String get swapAccept => '교환';
+
+  @override
+  String get swapNeedItem => '필요한 아이템 없음';
+
+  @override
+  String get swapCancel => '취소';
+
+  @override
+  String get swapPickGive => '줄 아이템 고르기';
+
+  @override
+  String get swapPickWant => '원하는 아이템 고르기';
+
+  @override
+  String get swapPickSearch => '이름으로 검색';
+
+  @override
+  String get swapPickNone => '아이템이 없어요.';
+
+  @override
+  String swapMaxNote(int n) {
+    return '동시에 최대 $n개까지 올릴 수 있어요.';
+  }
+
+  @override
+  String get swapConfirmTitle => '교환 확인';
+
+  @override
+  String swapConfirmBody(String give, String want) {
+    return '$give을(를) 받고 $want을(를) 줄까요?';
+  }
+
+  @override
+  String get swapCreatedToast => '교환 제안을 올렸어요!';
+
+  @override
+  String swapDoneToast(String name) {
+    return '교환 완료! $name을(를) 받았어요.';
+  }
+
+  @override
+  String get swapCancelledToast => '제안을 취소했고 아이템이 보관함으로 돌아왔어요.';
+
+  @override
+  String swapCollectedToast(int n) {
+    return '교환 아이템 $n개가 보관함으로 돌아왔어요.';
+  }
+
+  @override
+  String get swapErrNotOwned => '이 아이템이 없어요 (마켓을 다시 열어 동기화해 보세요).';
+
+  @override
+  String get swapErrNotOwnedWant => '상대가 원하는 아이템이 없어요.';
+
+  @override
+  String swapErrTooMany(int n) {
+    return '열린 제안이 너무 많아요 (최대 $n개).';
+  }
+
+  @override
+  String get swapErrNotOpen => '이 제안은 방금 수락되었거나 취소되었어요. 목록을 갱신했어요.';
+
+  @override
+  String get swapErrOwn => '내 제안은 직접 수락할 수 없어요.';
+
+  @override
+  String get swapErrInvalid => '올바르지 않은 제안이에요.';
+
+  @override
+  String get swapErrNetwork => '연결할 수 없어요. 잠시 후 다시 시도해 주세요.';
+
+  @override
   String get marketCancelButton => '등록 취소';
 
   @override

@@ -924,3 +924,15 @@ vì là thời gian nhanh nhất): mỗi tuần top 3 nhận **300 / 200 / 100 �
   UI: dòng "Thưởng top tuần" trong hộp Thi đấu (có chấm đỏ, cũng bật chấm đỏ nút Thi đấu), tải khi mở app/quay lại (10 phút).
 - ⚠️ Tối đa 4 bảng × 600 = 2400 💎/tuần phát ra cho cả game; người ở top nhận lặp lại mỗi tuần (bảng tích lũy ít đổi top).
   ⚠️ Số liệu ước lượng chưa playtest. Kiểm server: `scripts/test_lb_rewards_sql.sh`.
+
+## 32. Trao đổi vật phẩm ở Chợ (2026-10-12, chưa playtest)
+
+Góp ý người chơi: "thêm tính năng trao đổi vật phẩm", "Chợ toàn vô hạn xu". Tab thứ 3 "Trao đổi" trong Chợ: đổi MÓN LẤY MÓN, không qua Xu Chợ.
+- **Đề nghị**: người đăng đưa món X (ký quỹ — rời `accessory_server_ownership` ngay) và nói muốn món Y (cụ thể). Tối đa 5 đề nghị mở/người
+  (`swapMaxOpen`, khớp `swap_max_open()`), sống 3 ngày như tin đăng (`market_listing_days()`), hết hạn thì món về kho.
+- **Nhận**: người khác đang có Y và bấm Đổi (nút khoá nếu chưa có Y) → MỘT transaction ở server: Y sang người đăng, X sang người nhận.
+  Không phí, không ai tự nhận đề nghị của mình. Máy người nhận cập nhật kho ngay; máy người đăng nhận món qua `swap_collect()`
+  khi mở Chợ — hai pha thêm-local-rồi-ack như `expire_my_listings` (app tắt giữa chừng không mất món, tối đa dư 1 bản).
+- Server: `supabase/accessory_swap_schema.sql` (sau accessory_market_schema). Kiểm: `scripts/test_swap_sql.sh`.
+- ⚠️ Cùng mức tin cậy với Chợ: số bản sao do client tự khai (`register_accessory_copies`), nên người gian lận có thể khai món ảo rồi đổi lấy món thật.
+  Chưa có: thông báo đẩy khi đề nghị được nhận, "muốn bất kỳ món độ hiếm X", gợi ý theo danh sách muốn có.

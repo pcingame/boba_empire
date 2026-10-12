@@ -2620,6 +2620,111 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get swapTab => 'Tukar';
+
+  @override
+  String get swapCreate => 'Buat penawaran';
+
+  @override
+  String get swapCreateOk => 'Posting penawaran';
+
+  @override
+  String swapIntro(int days) {
+    return 'Tukar item dengan item lain bersama pemain lain — tanpa Koin Pasar. Itemmu ditahan sampai ada yang menerima (maks. $days hari; kembali ke inventaris jika kedaluwarsa).';
+  }
+
+  @override
+  String get swapEmpty => 'Belum ada penawaran tukar. Buat yang pertama!';
+
+  @override
+  String get swapMine => 'Penawaran tukarku';
+
+  @override
+  String get swapMineEmpty => 'Kamu belum memposting penawaran.';
+
+  @override
+  String get swapGive => 'Beri';
+
+  @override
+  String get swapWant => 'Mau';
+
+  @override
+  String get swapAccept => 'Tukar';
+
+  @override
+  String get swapNeedItem => 'Item belum ada';
+
+  @override
+  String get swapCancel => 'Batalkan';
+
+  @override
+  String get swapPickGive => 'Pilih item yang kamu beri';
+
+  @override
+  String get swapPickWant => 'Pilih item yang kamu mau';
+
+  @override
+  String get swapPickSearch => 'Cari berdasarkan nama';
+
+  @override
+  String get swapPickNone => 'Tidak ada item.';
+
+  @override
+  String swapMaxNote(int n) {
+    return 'Maksimal $n penawaran sekaligus.';
+  }
+
+  @override
+  String get swapConfirmTitle => 'Konfirmasi tukar';
+
+  @override
+  String swapConfirmBody(String give, String want) {
+    return 'Kamu dapat $give dan memberi $want?';
+  }
+
+  @override
+  String get swapCreatedToast => 'Penawaran tukar diposting!';
+
+  @override
+  String swapDoneToast(String name) {
+    return 'Berhasil tukar! Kamu menerima $name.';
+  }
+
+  @override
+  String get swapCancelledToast =>
+      'Penawaran dibatalkan, item kembali ke inventaris.';
+
+  @override
+  String swapCollectedToast(int n) {
+    return '$n item dari tukar kembali ke inventarismu.';
+  }
+
+  @override
+  String get swapErrNotOwned =>
+      'Kamu belum punya item ini (buka ulang Pasar untuk sinkron).';
+
+  @override
+  String get swapErrNotOwnedWant => 'Kamu tidak punya item yang mereka mau.';
+
+  @override
+  String swapErrTooMany(int n) {
+    return 'Penawaran terbukamu terlalu banyak (maks. $n).';
+  }
+
+  @override
+  String get swapErrNotOpen =>
+      'Penawaran ini baru saja diterima atau dibatalkan — daftar diperbarui.';
+
+  @override
+  String get swapErrOwn => 'Tidak bisa menerima penawaran sendiri.';
+
+  @override
+  String get swapErrInvalid => 'Penawaran tidak valid.';
+
+  @override
+  String get swapErrNetwork => 'Tidak bisa terhubung, coba lagi nanti.';
+
+  @override
   String get marketCancelButton => 'Batalkan penjualan';
 
   @override

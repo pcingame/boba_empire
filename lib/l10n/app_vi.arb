@@ -1485,6 +1485,81 @@
       }
     }
   },
+  "swapTab": "Trao đổi",
+  "swapCreate": "Tạo đề nghị",
+  "swapCreateOk": "Đăng đề nghị",
+  "swapIntro": "Đổi món lấy món với người khác — không tốn Xu Chợ. Món bạn đưa được giữ lại cho tới khi có người nhận (tối đa {days} ngày, hết hạn sẽ tự về kho).",
+  "@swapIntro": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "swapEmpty": "Chưa có đề nghị trao đổi nào. Hãy tạo đề nghị đầu tiên!",
+  "swapMine": "Đề nghị trao đổi của tôi",
+  "swapMineEmpty": "Bạn chưa đăng đề nghị nào.",
+  "swapGive": "Đưa",
+  "swapWant": "Cần",
+  "swapAccept": "Đổi",
+  "swapNeedItem": "Chưa có món cần",
+  "swapCancel": "Huỷ",
+  "swapPickGive": "Chọn món bạn đưa",
+  "swapPickWant": "Chọn món bạn muốn",
+  "swapPickSearch": "Tìm theo tên",
+  "swapPickNone": "Không có món nào.",
+  "swapMaxNote": "Tối đa {n} đề nghị cùng lúc.",
+  "@swapMaxNote": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "swapConfirmTitle": "Xác nhận đổi",
+  "swapConfirmBody": "Bạn nhận {give} và đưa {want}?",
+  "@swapConfirmBody": {
+    "placeholders": {
+      "give": {
+        "type": "String"
+      },
+      "want": {
+        "type": "String"
+      }
+    }
+  },
+  "swapCreatedToast": "Đã đăng đề nghị trao đổi!",
+  "swapDoneToast": "Đã đổi xong! Bạn nhận được {name}.",
+  "@swapDoneToast": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "swapCancelledToast": "Đã huỷ đề nghị, món đã về kho.",
+  "swapCollectedToast": "{n} món từ trao đổi đã về kho của bạn.",
+  "@swapCollectedToast": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "swapErrNotOwned": "Bạn chưa có món này (thử mở lại Chợ để đối chiếu).",
+  "swapErrNotOwnedWant": "Bạn chưa có món người ta cần.",
+  "swapErrTooMany": "Bạn đang có quá nhiều đề nghị mở (tối đa {n}).",
+  "@swapErrTooMany": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "swapErrNotOpen": "Đề nghị này vừa được nhận hoặc đã huỷ — danh sách đã cập nhật.",
+  "swapErrOwn": "Không thể tự nhận đề nghị của chính mình.",
+  "swapErrInvalid": "Đề nghị không hợp lệ.",
+  "swapErrNetwork": "Không kết nối được, thử lại sau nhé.",
   "marketCancelButton": "Huỷ đăng",
   "marketCancelledToast": "Đã huỷ đăng.",
   "marketSellableHeader": "Phụ kiện có thể đăng bán",
