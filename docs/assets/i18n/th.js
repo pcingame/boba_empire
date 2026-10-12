@@ -7,6 +7,7 @@
  "navScreens": "ภาพหน้าจอ",
  "navBoard": "อันดับ",
  "navEvents": "กิจกรรม",
+ "navGuide": "คู่มือ",
  "heroTitle1": "สร้างอาณาจักร",
  "heroTitle2": "ชานมไข่มุก",
  "heroTitle3": "จากรถเข็นคันเดียว",

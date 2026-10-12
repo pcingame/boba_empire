@@ -7,6 +7,7 @@
  "navScreens": "Capturas",
  "navBoard": "Ranking",
  "navEvents": "Eventos",
+ "navGuide": "Guia",
  "heroTitle1": "Construa um império de",
  "heroTitle2": "chá de bolhas",
  "heroTitle3": "a partir de uma carrocinha",

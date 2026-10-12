@@ -7,6 +7,7 @@
  "navScreens": "Capturas",
  "navBoard": "Clasificación",
  "navEvents": "Eventos",
+ "navGuide": "Guía",
  "heroTitle1": "Construye un imperio de",
  "heroTitle2": "té de burbujas",
  "heroTitle3": "desde un carrito",

@@ -7,6 +7,7 @@
  "navScreens": "Hình ảnh",
  "navBoard": "Xếp hạng",
  "navEvents": "Sự kiện",
+ "navGuide": "Hướng dẫn",
  "heroTitle1": "Xây đế chế",
  "heroTitle2": "trà sữa",
  "heroTitle3": "từ một chiếc xe đẩy",

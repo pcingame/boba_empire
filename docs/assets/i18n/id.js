@@ -7,6 +7,7 @@
  "navScreens": "Tangkapan layar",
  "navBoard": "Peringkat",
  "navEvents": "Event",
+ "navGuide": "Panduan",
  "heroTitle1": "Bangun kerajaan",
  "heroTitle2": "teh boba",
  "heroTitle3": "dari sebuah gerobak",

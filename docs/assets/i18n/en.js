@@ -7,6 +7,7 @@
  "navScreens": "Screenshots",
  "navBoard": "Leaderboard",
  "navEvents": "Events",
+ "navGuide": "Guide",
  "heroTitle1": "Build a",
  "heroTitle2": "bubble tea",
  "heroTitle3": "empire from a street cart",

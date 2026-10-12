@@ -7,6 +7,7 @@
  "navScreens": "스크린샷",
  "navBoard": "리더보드",
  "navEvents": "이벤트",
+ "navGuide": "가이드",
  "heroTitle1": "포장마차 하나로",
  "heroTitle2": "버블티",
  "heroTitle3": "제국을 세워 보세요",
