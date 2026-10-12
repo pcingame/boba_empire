@@ -132,8 +132,25 @@
 
   /* ---------- bảng xếp hạng ---------- */
   function H() { return { apikey: KEY, Authorization: 'Bearer ' + KEY }; }
-  function rpc(name) {
-    return fetch(API + 'rpc/' + name, { method: 'POST', headers: Object.assign({ 'Content-Type': 'application/json' }, H()), body: JSON.stringify({ p_limit: 20 }) });
+  function rpc(name, limit) {
+    return fetch(API + 'rpc/' + name, { method: 'POST', headers: Object.assign({ 'Content-Type': 'application/json' }, H()), body: JSON.stringify({ p_limit: limit || 20 }) });
+  }
+  // Bảng Phá đảo gộp 3 hồi: mỗi người chỉ một dòng, ở hồi xa nhất đã xong (hồi cao hơn xếp trên;
+  // cùng hồi thì thời gian ngắn hơn xếp trên). Một hồi lỗi/chưa có bảng thì bỏ qua; cả ba lỗi mới báo lỗi.
+  function speedRows() {
+    var fails = 0;
+    return Promise.all(['story_speedrun_top', 'story_speedrun2_top', 'story_speedrun3_top'].map(function (name, i) {
+      return rpc(name, 100).then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
+        .then(function (rows) { return rows.map(function (r) { r.act = i + 1; return r; }); })
+        .catch(function () { fails++; return []; });
+    })).then(function (parts) {
+      if (fails === parts.length) throw new Error('speedrun');
+      var best = {};
+      parts.forEach(function (rows) { rows.forEach(function (r) { if (!best[r.user_id] || r.act > best[r.user_id].act) best[r.user_id] = r; }); });
+      return Object.keys(best).map(function (k) { return best[k]; }).sort(function (a, b) {
+        return b.act - a.act || a.complete_seconds - b.complete_seconds || String(a.completed_at).localeCompare(String(b.completed_at));
+      }).slice(0, 20);
+    });
   }
   var BOARDS = [
     { id: 'income', tab: 'lbTabIncome', col: 'lbIncome',
@@ -146,8 +163,8 @@
       get: function () { return rpc('accessory_leaderboard_top'); },
       val: function (r) { return r.owned_count; }, sub: null },
     { id: 'speed', tab: 'lbTabSpeed', col: 'lbSpeed',
-      get: function () { return rpc('story_speedrun_top'); },
-      val: function (r) { return dur(r.complete_seconds); }, sub: null },
+      rows: speedRows,
+      val: function (r) { return dur(r.complete_seconds); }, sub: function (r, t) { return tpl(t.lbAct, r.act); } },
     { id: 'vip', tab: 'lbTabVip', col: 'lbVip',
       get: function () { return rpc('vip_leaderboard_top'); },
       val: function (r) { return big(r.vip_exp); },
@@ -206,10 +223,10 @@
     var c = cache[b.id];
     if (c && Date.now() - c.at < 60000) return renderBoard(b, c.rows);
     skeleton();
-    b.get().then(function (res) {
+    (b.rows ? b.rows() : b.get().then(function (res) {
       if (!res.ok) throw new Error(res.status);
       return res.json();
-    }).then(function (rows) {
+    })).then(function (rows) {
       cache[b.id] = { at: Date.now(), rows: rows };
       if (id === reqId) renderBoard(b, rows);   // bỏ kết quả của tab cũ nếu đã chuyển tab
     }).catch(function () { if (id === reqId) msg(T[lang].lbError); });

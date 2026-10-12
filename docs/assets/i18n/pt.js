@@ -89,6 +89,7 @@
  "vipNames": ["Cliente fiel", "Amante de chá", "Conhecedor de chá", "Convidado de honra", "Dono da loja", "Bilionário do boba", "Magnata", "Realeza", "Lenda", "Imperador do boba"],
  "lbStage": "Fase {n}",
  "lbLevels": "{n} níveis",
+ "lbAct": "Ato {n}",
  "lbMembers": "{n} membros",
  "lbLoading": "Carregando…",
  "lbError": "Não foi possível carregar o ranking. Tente novamente mais tarde.",

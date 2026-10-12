@@ -89,6 +89,7 @@
  "vipNames": ["Cliente fiel", "Amante del té", "Sibarita del té", "Invitado de honor", "Dueño de tienda", "Multimillonario del boba", "Magnate", "Realeza", "Leyenda", "Emperador del boba"],
  "lbStage": "Etapa {n}",
  "lbLevels": "{n} niveles",
+ "lbAct": "Acto {n}",
  "lbMembers": "{n} miembros",
  "lbLoading": "Cargando…",
  "lbError": "No se pudo cargar la clasificación. Inténtalo más tarde.",

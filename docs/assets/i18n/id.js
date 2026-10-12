@@ -89,6 +89,7 @@
  "vipNames": ["Pelanggan setia", "Pencinta teh", "Ahli teh", "Tamu kehormatan", "Pemilik toko", "Miliarder boba", "Taipan", "Bangsawan", "Legenda", "Kaisar boba"],
  "lbStage": "Tahap {n}",
  "lbLevels": "{n} level",
+ "lbAct": "Babak {n}",
  "lbMembers": "{n} anggota",
  "lbLoading": "Memuat…",
  "lbError": "Gagal memuat peringkat. Coba lagi nanti.",

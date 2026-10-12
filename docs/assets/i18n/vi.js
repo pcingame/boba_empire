@@ -89,6 +89,7 @@
  "vipNames": ["Khách quen", "Mê trà", "Sành trà", "Thượng khách", "Chủ tiệm", "Tỉ phú trà sữa", "Ông trùm", "Hoàng gia", "Huyền thoại", "Đế vương"],
  "lbStage": "Giai đoạn {n}",
  "lbLevels": "{n} màn",
+ "lbAct": "Hồi {n}",
  "lbMembers": "{n} thành viên",
  "lbLoading": "Đang tải…",
  "lbError": "Không tải được bảng xếp hạng. Thử lại sau nhé.",

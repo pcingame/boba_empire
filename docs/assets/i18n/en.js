@@ -89,6 +89,7 @@
  "vipNames": ["Regular", "Tea Lover", "Tea Connoisseur", "Honored Guest", "Shop Owner", "Boba Billionaire", "Tycoon", "Royalty", "Legend", "Boba Emperor"],
  "lbStage": "Stage {n}",
  "lbLevels": "{n} levels",
+ "lbAct": "Act {n}",
  "lbMembers": "{n} members",
  "lbLoading": "Loading…",
  "lbError": "Couldn’t load the leaderboard. Please try again later.",
