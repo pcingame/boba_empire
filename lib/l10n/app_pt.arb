@@ -1469,6 +1469,13 @@
   "guildPromote": "Nomear oficial",
   "guildDemote": "Remover oficial",
   "guildTransfer": "Transferir liderança",
+  "guildTeamTitle": "Missão de equipe da semana",
+  "guildTeamProgress": "{active} / {need} membros concluíram",
+  "guildTeamHint": "Se metade da guilda (mínimo 2) chegar a {n} pontos semanais, todos que chegaram recebem a recompensa. Joguem juntos!",
+  "guildTeamClaim": "Receber {n} Moedas da Guilda",
+  "guildTeamGot": "Você recebeu {n} Moedas da Guilda da missão de equipe!",
+  "guildErrTeamNotReached": "Ainda não há membros suficientes com esses pontos.",
+  "guildErrTeamLow": "Você precisa de pelo menos {n} pontos semanais para receber.",
   "guildFundTitle": "Fundo da guilda desta semana",
   "guildFundMine": "Você contribuiu com {n} 💎",
   "@guildFundMine": {

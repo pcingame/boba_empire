@@ -195,6 +195,8 @@ void main() {
       expect(constant('guild_fund_min_target'), guildFundMinTarget);
       expect(constant('guild_fund_reward'), guildFundReward);
       expect(constant('guild_fund_min_donation'), guildFundMinDonation);
+      expect(constant('guild_team_min_points'), guildTeamMinPoints);
+      expect(constant('guild_team_reward'), guildTeamReward);
     });
 
     test('nhiệm vụ tuần: ngưỡng điểm và thưởng khớp từng bậc', () {
@@ -237,6 +239,7 @@ void main() {
         'guild_chat_pin(bigint)',
         'guild_chat_report(bigint)',
         'guild_claim_fund()',
+        'guild_claim_team()',
       ]) {
         expect(sql.contains("'$fn'"), isTrue, reason: '$fn chưa cấp quyền');
       }

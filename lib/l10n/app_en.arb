@@ -1469,6 +1469,13 @@
   "guildPromote": "Appoint officer",
   "guildDemote": "Remove officer",
   "guildTransfer": "Transfer ownership",
+  "guildTeamTitle": "This week's team quest",
+  "guildTeamProgress": "{active} / {need} members done",
+  "guildTeamHint": "Half the guild (at least 2 members) reaching {n} weekly points unlocks the reward for everyone who got there. Play together!",
+  "guildTeamClaim": "Claim {n} Guild Coins",
+  "guildTeamGot": "Got {n} Guild Coins from the team quest!",
+  "guildErrTeamNotReached": "Not enough members have reached the points yet.",
+  "guildErrTeamLow": "You need at least {n} weekly points to claim.",
   "guildFundTitle": "This week's guild fund",
   "guildFundMine": "You contributed {n} 💎",
   "@guildFundMine": {

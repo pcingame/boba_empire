@@ -996,4 +996,50 @@ select t_as(null);
 select t_err($$select guild_claim_boss()$$, 'permission denied');
 reset role;
 
+-- ===== 22. Nhiệm vụ chung "cả hội cùng tham gia" ========================
+select t_eq('cần: 1 người → 1', guild_team_need(1), 1);
+select t_eq('cần: 2 người → 2', guild_team_need(2), 2);
+select t_eq('cần: 3 người → 2', guild_team_need(3), 2);
+select t_eq('cần: 4 người → 2', guild_team_need(4), 2);
+select t_eq('cần: 5 người → 3', guild_team_need(5), 3);
+select t_eq('cần: 30 người → 15', guild_team_need(30), 15);
+select t_as(u(20)); select guild_create('Team Club', 'tc', '🤝', false, 'T0', 0) as gt \gset
+select t_as(u(21)); select guild_join(:'gt'::uuid, 'T1', 0);
+select t_as(u(22)); select guild_join(:'gt'::uuid, 'T2', 0);
+select t_as(u(23)); select guild_join(:'gt'::uuid, 'T3', 0);
+select t_as(u(20));
+select t_eq('chưa nhận', (guild_my()->>'team_claimed')::boolean, false);
+select t_err($$select guild_claim_team()$$, 'team not reached');
+-- Mới 1 người đạt 1000 (cần 2 trong hội 4 người) → chưa đủ.
+reset role;
+update guild_members set week = guild_current_week(), week_points = 1000 where user_id = u(20);
+select t_as(u(20));
+select t_err($$select guild_claim_team()$$, 'team not reached');
+-- 999 điểm thì không tính.
+reset role;
+update guild_members set week = guild_current_week(), week_points = 999 where user_id = u(21);
+select t_as(u(20));
+select t_err($$select guild_claim_team()$$, 'team not reached');
+-- Người thứ hai đạt 1000 → đủ; người đạt nhận, người chưa đạt thì không.
+reset role;
+update guild_members set week = guild_current_week(), week_points = 1500 where user_id = u(22);
+select t_as(u(21));
+select t_err($$select guild_claim_team()$$, 'team points too low');
+select t_as(u(20));
+select t_eq('nhận trả về số dư mới', guild_claim_team(), 150::bigint);
+select t_eq('đã nhận → team_claimed', (guild_my()->>'team_claimed')::boolean, true);
+select t_err($$select guild_claim_team()$$, 'already claimed');
+select t_as(u(22)); select guild_claim_team();
+select t_eq('người đạt khác nhận độc lập', (guild_my()->>'wallet')::bigint, 150::bigint);
+-- Điểm tuần cũ (week lệch) không tính.
+reset role;
+update guild_members set week = guild_current_week() - 7, week_points = 5000 where user_id = u(23);
+select t_as(u(23));
+select t_err($$select guild_claim_team()$$, 'team points too low');
+-- Bảo mật: hàm nội bộ không gọi được; khách chưa đăng nhập bị chặn.
+select t_err(format($$select guild_team_active(%L::uuid)$$, :'gt'), 'permission denied');
+select t_as(null);
+select t_err($$select guild_claim_team()$$, 'permission denied');
+reset role;
+
 select 'ALL GUILD SQL SCENARIOS PASSED' as result;

@@ -3358,6 +3358,38 @@ class AppLocalizationsId extends AppLocalizations {
   String get guildTransfer => 'Serahkan kepemimpinan';
 
   @override
+  String get guildTeamTitle => 'Misi tim minggu ini';
+
+  @override
+  String guildTeamProgress(int active, int need) {
+    return '$active / $need anggota tercapai';
+  }
+
+  @override
+  String guildTeamHint(int n) {
+    return 'Jika setengah guild (minimal 2 orang) mencapai $n poin mingguan, semua yang mencapainya dapat hadiah. Mainlah bersama!';
+  }
+
+  @override
+  String guildTeamClaim(int n) {
+    return 'Klaim $n Koin Guild';
+  }
+
+  @override
+  String guildTeamGot(int n) {
+    return 'Dapat $n Koin Guild dari misi tim!';
+  }
+
+  @override
+  String get guildErrTeamNotReached =>
+      'Belum cukup anggota yang mencapai poin itu.';
+
+  @override
+  String guildErrTeamLow(int n) {
+    return 'Kamu butuh minimal $n poin mingguan untuk klaim.';
+  }
+
+  @override
   String get guildFundTitle => 'Dana guild minggu ini';
 
   @override

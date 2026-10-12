@@ -1469,6 +1469,13 @@
   "guildPromote": "แต่งตั้งรองหัวหน้า",
   "guildDemote": "ปลดรองหัวหน้า",
   "guildTransfer": "โอนตำแหน่งหัวหน้า",
+  "guildTeamTitle": "ภารกิจทีมสัปดาห์นี้",
+  "guildTeamProgress": "{active} / {need} คนทำสำเร็จ",
+  "guildTeamHint": "ถ้าครึ่งหนึ่งของกิลด์ (อย่างน้อย 2 คน) ได้ {n} แต้มรายสัปดาห์ ทุกคนที่ทำถึงจะได้รางวัล เล่นด้วยกันนะ!",
+  "guildTeamClaim": "รับ {n} เหรียญกิลด์",
+  "guildTeamGot": "ได้รับ {n} เหรียญกิลด์จากภารกิจทีม!",
+  "guildErrTeamNotReached": "ยังมีสมาชิกทำแต้มถึงไม่พอ",
+  "guildErrTeamLow": "ต้องมีอย่างน้อย {n} แต้มรายสัปดาห์จึงจะรับได้",
   "guildFundTitle": "กองทุนกิลด์สัปดาห์นี้",
   "guildFundMine": "คุณบริจาคแล้ว {n} 💎",
   "@guildFundMine": {

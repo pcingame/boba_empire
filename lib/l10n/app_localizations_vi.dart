@@ -3351,6 +3351,37 @@ class AppLocalizationsVi extends AppLocalizations {
   String get guildTransfer => 'Nhường chức chủ hội';
 
   @override
+  String get guildTeamTitle => 'Nhiệm vụ chung tuần này';
+
+  @override
+  String guildTeamProgress(int active, int need) {
+    return '$active / $need người đã đạt';
+  }
+
+  @override
+  String guildTeamHint(int n) {
+    return 'Một nửa hội (ít nhất 2 người) cùng đạt $n điểm tuần thì ai đạt mức này đều nhận thưởng. Rủ nhau chơi nhé!';
+  }
+
+  @override
+  String guildTeamClaim(int n) {
+    return 'Nhận $n Xu Hội';
+  }
+
+  @override
+  String guildTeamGot(int n) {
+    return 'Đã nhận $n Xu Hội từ nhiệm vụ chung!';
+  }
+
+  @override
+  String get guildErrTeamNotReached => 'Chưa đủ người trong hội đạt mức điểm.';
+
+  @override
+  String guildErrTeamLow(int n) {
+    return 'Bạn cần đạt ít nhất $n điểm tuần để nhận thưởng.';
+  }
+
+  @override
   String get guildFundTitle => 'Quỹ hội tuần này';
 
   @override

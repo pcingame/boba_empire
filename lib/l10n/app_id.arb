@@ -1469,6 +1469,13 @@
   "guildPromote": "Angkat perwira",
   "guildDemote": "Copot perwira",
   "guildTransfer": "Serahkan kepemimpinan",
+  "guildTeamTitle": "Misi tim minggu ini",
+  "guildTeamProgress": "{active} / {need} anggota tercapai",
+  "guildTeamHint": "Jika setengah guild (minimal 2 orang) mencapai {n} poin mingguan, semua yang mencapainya dapat hadiah. Mainlah bersama!",
+  "guildTeamClaim": "Klaim {n} Koin Guild",
+  "guildTeamGot": "Dapat {n} Koin Guild dari misi tim!",
+  "guildErrTeamNotReached": "Belum cukup anggota yang mencapai poin itu.",
+  "guildErrTeamLow": "Kamu butuh minimal {n} poin mingguan untuk klaim.",
   "guildFundTitle": "Dana guild minggu ini",
   "guildFundMine": "Kamu menyumbang {n} 💎",
   "@guildFundMine": {

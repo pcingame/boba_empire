@@ -135,6 +135,13 @@ create table if not exists guild_fund_claims (
   claimed_at timestamptz not null default now(),
   primary key (user_id, week)
 );
+-- Nhiệm vụ chung "cả hội cùng tham gia": thưởng đã nhận (mỗi người 1 lần/tuần).
+create table if not exists guild_team_claims (
+  user_id    uuid not null references auth.users(id) on delete cascade,
+  week       date not null,
+  claimed_at timestamptz not null default now(),
+  primary key (user_id, week)
+);
 create table if not exists guild_purchases (
   user_id    uuid not null references auth.users(id) on delete cascade,
   item_id    text not null,
@@ -186,6 +193,7 @@ alter table guild_purchases     enable row level security;
 alter table guild_messages      enable row level security;
 alter table guild_events        enable row level security;
 alter table guild_fund_claims   enable row level security;
+alter table guild_team_claims   enable row level security;
 alter table guild_message_reports enable row level security;
 -- Cố ý KHÔNG tạo policy: chỉ RPC security definer được đụng vào.
 
@@ -292,6 +300,24 @@ create or replace function guild_fund_progress(p_guild uuid) returns bigint
 language sql stable security definer set search_path = public as $$
   select coalesce(sum(guild_fund_donated(m.user_id)), 0)::bigint
   from guild_members m where m.guild_id = p_guild
+$$;
+
+-- Nhiệm vụ chung: một nửa hội (làm tròn lên, tối thiểu 2 người, tối đa cả hội) mỗi người đạt
+-- ≥ 1000 điểm tuần thì ai đạt nhận 150 Xu Hội. Khớp guild_shop.dart (guildTeam*).
+create or replace function guild_team_min_points() returns integer
+language sql immutable as $$ select 1000 $$;
+create or replace function guild_team_reward() returns integer
+language sql immutable as $$ select 150 $$;
+create or replace function guild_team_need(p_members integer) returns integer
+language sql immutable as $$
+  select least(greatest(p_members, 0), greatest(2, ceil(p_members / 2.0)::integer))
+$$;
+-- Số thành viên đã đạt mức tối thiểu tuần này.
+create or replace function guild_team_active(p_guild uuid) returns integer
+language sql stable security definer set search_path = public as $$
+  select count(*)::integer from guild_members m
+  where m.guild_id = p_guild and m.week = guild_current_week()
+    and m.week_points >= guild_team_min_points()
 $$;
 
 -- Tối đa 3 phó hội mỗi hội (chủ hội không tính).
@@ -769,6 +795,8 @@ begin
         'mine', guild_fund_donated(v_uid),
         'claimed', exists (select 1 from guild_fund_claims c
                              where c.user_id = v_uid and c.week = v_week)),
+    'team_claimed', exists (select 1 from guild_team_claims c
+                             where c.user_id = v_uid and c.week = v_week),
     'total', guild_week_total(v_g.id),
     'streak', guild_streak(v_g.id),
     'boss', jsonb_build_object(
@@ -1326,6 +1354,40 @@ begin
 end;
 $$;
 
+-- Nhận thưởng nhiệm vụ chung: đủ người đạt mức tối thiểu VÀ chính mình đạt mức đó.
+create or replace function guild_claim_team() returns bigint
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_gid uuid;
+  v_week date := guild_current_week();
+  v_bal bigint;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  select guild_id into v_gid from guild_members where user_id = v_uid;
+  if v_gid is null then raise exception 'not in guild'; end if;
+  if guild_team_active(v_gid) < guild_team_need(
+       (select count(*) from guild_members where guild_id = v_gid)::integer) then
+    raise exception 'team not reached';
+  end if;
+  if not exists (select 1 from guild_members m where m.user_id = v_uid
+       and m.week = v_week and m.week_points >= guild_team_min_points()) then
+    raise exception 'team points too low';
+  end if;
+  begin
+    insert into guild_team_claims (user_id, week) values (v_uid, v_week);
+  exception when unique_violation then
+    raise exception 'already claimed';
+  end;
+  insert into guild_coin_wallets (user_id, balance)
+    values (v_uid, guild_team_reward())
+    on conflict (user_id) do update
+      set balance = guild_coin_wallets.balance + excluded.balance
+    returning balance into v_bal;
+  return v_bal;
+end;
+$$;
+
 -- Tặng 💎 giữa thành viên CÙNG hội. Hằng số khớp lib/guild/guild_repository.dart
 -- (guildGiftAmounts, guildGiftSendDailyCap, guildGiftReceiveDailyCap, guildGiftExpireDays;
 -- test/guild/guild_sql_test.dart so khớp). Người gửi bị trừ 💎 ở client SAU khi server OK;
@@ -1440,7 +1502,7 @@ begin
     'guild_transfer_owner(uuid)', 'guild_activity(integer)',
     'guild_claim_fund()', 'guild_gift_send(uuid,integer)',
     'guild_gift_inbox()', 'guild_gift_claim(bigint)', 'guild_leaderboard_vip(integer)',
-    'guild_vip_bonus()', 'guild_claim_boss()'
+    'guild_vip_bonus()', 'guild_claim_boss()', 'guild_claim_team()'
   ] loop
     execute format('revoke all on function %s from public', f);
     execute format('grant execute on function %s to authenticated', f);
@@ -1467,3 +1529,4 @@ revoke all on function guild_vip_bonus_pct(uuid) from public, anon, authenticate
 -- Hàm tính quỹ nhận user/guild tuỳ ý → không cho client gọi (lộ số liệu hội khác).
 revoke all on function guild_fund_donated(uuid) from public, anon, authenticated;
 revoke all on function guild_fund_progress(uuid) from public, anon, authenticated;
+revoke all on function guild_team_active(uuid) from public, anon, authenticated;

@@ -4,6 +4,8 @@
 /// test/guild/guild_sql_test.dart so khớp).
 library;
 
+import 'dart:math' as math;
+
 import 'accessories.dart';
 
 /// 1 💎 nạp = [guildCoinsPerGem] Xu Hội, tối đa [guildDonateDailyCap] 💎/ngày/người.
@@ -23,6 +25,14 @@ const int guildFundMinDonation = 10;
 
 int guildFundTarget(int members) =>
     members <= 0 ? guildFundMinTarget : (guildFundPerMember * members).clamp(guildFundMinTarget, 1 << 40);
+
+/// Nhiệm vụ chung "cả hội cùng tham gia": [guildTeamNeed] thành viên mỗi người đạt
+/// [guildTeamMinPoints] điểm tuần thì ai đạt nhận [guildTeamReward] Xu Hội. Khớp `guild_team_*`.
+const int guildTeamMinPoints = 1000;
+const int guildTeamReward = 150;
+
+int guildTeamNeed(int members) =>
+    members <= 0 ? 0 : math.min(members, math.max(2, (members / 2).ceil()));
 
 class GuildQuest {
   const GuildQuest(this.need, this.reward);

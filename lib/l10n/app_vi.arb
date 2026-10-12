@@ -2012,6 +2012,51 @@
   "guildPromote": "Bổ nhiệm phó hội",
   "guildDemote": "Bãi nhiệm phó hội",
   "guildTransfer": "Nhường chức chủ hội",
+  "guildTeamTitle": "Nhiệm vụ chung tuần này",
+  "guildTeamProgress": "{active} / {need} người đã đạt",
+  "guildTeamHint": "Một nửa hội (ít nhất 2 người) cùng đạt {n} điểm tuần thì ai đạt mức này đều nhận thưởng. Rủ nhau chơi nhé!",
+  "guildTeamClaim": "Nhận {n} Xu Hội",
+  "guildTeamGot": "Đã nhận {n} Xu Hội từ nhiệm vụ chung!",
+  "guildErrTeamNotReached": "Chưa đủ người trong hội đạt mức điểm.",
+  "guildErrTeamLow": "Bạn cần đạt ít nhất {n} điểm tuần để nhận thưởng.",
+  "@guildTeamProgress": {
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "need": {
+        "type": "int"
+      }
+    }
+  },
+  "@guildTeamHint": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "@guildTeamClaim": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "@guildTeamGot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "@guildErrTeamLow": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "guildFundTitle": "Quỹ hội tuần này",
   "guildFundMine": "Bạn đã góp {n} 💎",
   "@guildFundMine": {

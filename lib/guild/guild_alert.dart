@@ -24,6 +24,9 @@ bool guildHasClaimable(GuildMine v) {
   for (var i = 0; i < guildQuests.length; i++) {
     if (v.myPoints >= guildQuests[i].need && !g.questsClaimed.contains(i + 1)) return true;
   }
+  if (g.teamAvailable && g.teamReached && !g.teamClaimed && v.myPoints >= guildTeamMinPoints) {
+    return true;
+  }
   return g.fund.reached && !g.fund.claimed && g.fund.mine >= guildFundMinDonation;
 }
 

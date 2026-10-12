@@ -1469,6 +1469,13 @@
   "guildPromote": "Nombrar oficial",
   "guildDemote": "Quitar oficial",
   "guildTransfer": "Ceder el liderazgo",
+  "guildTeamTitle": "Misión de equipo de la semana",
+  "guildTeamProgress": "{active} / {need} miembros listos",
+  "guildTeamHint": "Si la mitad del gremio (mínimo 2) llega a {n} puntos semanales, todos los que lo lograron reciben la recompensa. ¡Jueguen juntos!",
+  "guildTeamClaim": "Reclamar {n} Monedas del Gremio",
+  "guildTeamGot": "¡Obtuviste {n} Monedas del Gremio de la misión de equipo!",
+  "guildErrTeamNotReached": "Aún no hay suficientes miembros con esos puntos.",
+  "guildErrTeamLow": "Necesitas al menos {n} puntos semanales para reclamar.",
   "guildFundTitle": "Fondo del gremio de esta semana",
   "guildFundMine": "Has aportado {n} 💎",
   "@guildFundMine": {

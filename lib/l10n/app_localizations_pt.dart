@@ -3372,6 +3372,38 @@ class AppLocalizationsPt extends AppLocalizations {
   String get guildTransfer => 'Transferir liderança';
 
   @override
+  String get guildTeamTitle => 'Missão de equipe da semana';
+
+  @override
+  String guildTeamProgress(int active, int need) {
+    return '$active / $need membros concluíram';
+  }
+
+  @override
+  String guildTeamHint(int n) {
+    return 'Se metade da guilda (mínimo 2) chegar a $n pontos semanais, todos que chegaram recebem a recompensa. Joguem juntos!';
+  }
+
+  @override
+  String guildTeamClaim(int n) {
+    return 'Receber $n Moedas da Guilda';
+  }
+
+  @override
+  String guildTeamGot(int n) {
+    return 'Você recebeu $n Moedas da Guilda da missão de equipe!';
+  }
+
+  @override
+  String get guildErrTeamNotReached =>
+      'Ainda não há membros suficientes com esses pontos.';
+
+  @override
+  String guildErrTeamLow(int n) {
+    return 'Você precisa de pelo menos $n pontos semanais para receber.';
+  }
+
+  @override
   String get guildFundTitle => 'Fundo da guilda desta semana';
 
   @override

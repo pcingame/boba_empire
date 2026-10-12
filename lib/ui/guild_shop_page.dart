@@ -9,7 +9,7 @@ import '../core/balance.dart';
 import '../core/format.dart';
 import '../core/guild_shop.dart';
 import '../guild/guild_controller.dart';
-import '../guild/guild_repository.dart' show GuildFund;
+import '../guild/guild_repository.dart' show GuildFund, MyGuild;
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
@@ -87,6 +87,15 @@ class _Body extends ConsumerWidget {
             fund: g.fund,
             onClaim: () => _run(context, ctrl.claimFund(),
                 (l) => l.guildFundGot(guildFundReward)),
+          ),
+        ],
+        if (g.teamAvailable) ...[
+          const SizedBox(height: 12),
+          _TeamCard(
+            guild: g,
+            myPoints: myPoints,
+            onClaim: () => _run(context, ctrl.claimTeam(),
+                (l) => l.guildTeamGot(guildTeamReward)),
           ),
         ],
         const SizedBox(height: 12),
@@ -315,6 +324,60 @@ class _FundCard extends StatelessWidget {
               onPressed: canClaim ? onClaim : null,
               child: Text(
                 fund.claimed ? l10n.dailyQuestClaimed : l10n.guildFundClaim(guildFundReward),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Nhiệm vụ chung "cả hội cùng tham gia": X/Y người đã đạt mức điểm tuần tối thiểu.
+class _TeamCard extends StatelessWidget {
+  const _TeamCard({required this.guild, required this.myPoints, required this.onClaim});
+
+  final MyGuild guild;
+  final int myPoints;
+  final VoidCallback onClaim;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final need = guild.teamNeed;
+    final canClaim = guild.teamReached && !guild.teamClaimed && myPoints >= guildTeamMinPoints;
+    return ClayTile(
+      key: const Key('guild-team-card'),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l10n.guildTeamTitle,
+              style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(5),
+            child: LinearProgressIndicator(
+              key: const Key('guild-team-bar'),
+              value: need == 0 ? 0 : (guild.teamActive / need).clamp(0.0, 1.0).toDouble(),
+              minHeight: 8,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(l10n.guildTeamProgress(guild.teamActive, need),
+              key: const Key('guild-team-progress'),
+              style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+          const SizedBox(height: 4),
+          Text(l10n.guildTeamHint(guildTeamMinPoints), style: theme.textTheme.bodySmall),
+          const SizedBox(height: 8),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton(
+              key: const Key('guild-team-claim'),
+              onPressed: canClaim ? onClaim : null,
+              child: Text(
+                guild.teamClaimed ? l10n.dailyQuestClaimed : l10n.guildTeamClaim(guildTeamReward),
                 textAlign: TextAlign.center,
               ),
             ),

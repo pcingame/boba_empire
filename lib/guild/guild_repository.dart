@@ -8,6 +8,8 @@ library;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../core/guild_shop.dart';
+
 class GuildSummary {
   const GuildSummary({
     required this.id,
@@ -213,6 +215,8 @@ class MyGuild {
     this.donatedToday = 0,
     this.chatLatestId = 0,
     this.fund = const GuildFund(),
+    this.teamAvailable = false,
+    this.teamClaimed = false,
     this.vipBonus = 0,
     this.vipMembers = 0,
     this.bossHp = 0,
@@ -250,6 +254,8 @@ class MyGuild {
       donatedToday: (j['donated_today'] as num?)?.toInt() ?? 0,
       chatLatestId: (j['chat_latest'] as num?)?.toInt() ?? 0,
       fund: GuildFund.fromJson(j['fund'] as Map<String, dynamic>?),
+      teamAvailable: j.containsKey('team_claimed'),
+      teamClaimed: (j['team_claimed'] as bool?) ?? false,
       vipBonus: (j['vip_bonus'] as num?)?.toInt() ?? 0,
       vipMembers: (j['vip_members'] as num?)?.toInt() ?? 0,
       bossHp: ((j['boss'] as Map?)?['hp'] as num?)?.toInt() ?? 0,
@@ -310,6 +316,14 @@ class MyGuild {
   /// Quỹ hội tuần này.
   final GuildFund fund;
 
+  /// Nhiệm vụ chung: [teamAvailable] false = server cũ chưa có → ẩn thẻ; [teamClaimed] = mình
+  /// đã nhận tuần này. Số người đạt/cần tính từ [members] (điểm tuần đã có sẵn).
+  final bool teamAvailable;
+  final bool teamClaimed;
+  int get teamActive => members.where((m) => m.points >= guildTeamMinPoints).length;
+  int get teamNeed => guildTeamNeed(members.length);
+  bool get teamReached => teamNeed > 0 && teamActive >= teamNeed;
+
   /// Số thành viên VIP đủ cấp và % thưởng thu nhập cả hội nhận được từ họ (server tính).
   final int vipMembers;
   final int vipBonus;
@@ -369,6 +383,10 @@ enum GuildFailure {
   fundNotReached,
   fundDonationLow,
 
+  /// Nhiệm vụ chung chưa đủ người / bạn chưa đạt điểm tối thiểu.
+  teamNotReached,
+  teamPointsLow,
+
   /// Đã đủ số phó hội tối đa.
   officersFull,
 
@@ -406,6 +424,8 @@ GuildFailure guildFailureFromMessage(String message) {
   }
   if (m.contains('too many requests')) return GuildFailure.requestsFull;
   if (m.contains('not allowed')) return GuildFailure.notAllowed;
+  if (m.contains('team not reached')) return GuildFailure.teamNotReached;
+  if (m.contains('team points too low')) return GuildFailure.teamPointsLow;
   if (m.contains('goal not reached')) return GuildFailure.fundNotReached;
   if (m.contains('fund donation too low')) return GuildFailure.fundDonationLow;
   if (m.contains('too many officers')) return GuildFailure.officersFull;
@@ -475,6 +495,9 @@ abstract class GuildRepository {
 
   /// Nhận thưởng quỹ hội tuần (+[guildFundReward] Xu Hội, server giữ ví).
   Future<void> claimFund();
+
+  /// Nhận thưởng nhiệm vụ chung tuần (+[guildTeamReward] Xu Hội).
+  Future<void> claimTeam();
   Future<void> buyItem(String itemId);
   Future<void> buyBuff();
 
@@ -661,6 +684,9 @@ class SupabaseGuildRepository implements GuildRepository {
 
   @override
   Future<void> claimFund() => _rpc('guild_claim_fund');
+
+  @override
+  Future<void> claimTeam() => _rpc('guild_claim_team');
 
   @override
   Future<void> claimQuest(int tier) =>

@@ -127,6 +127,13 @@ class FakeGuildRepository implements GuildRepository {
   }
 
   @override
+  Future<void> claimTeam() async {
+    _hit('claimTeam');
+    final g = mine!;
+    mine = withState(g, wallet: g.wallet + guildTeamReward, teamClaimed: true);
+  }
+
+  @override
   Future<void> claimQuest(int tier) async {
     _hit('claimQuest');
     final g = mine!;
@@ -413,6 +420,8 @@ MyGuild fakeGuild({
   int donatedToday = 0,
   int chatLatest = 0,
   GuildFund fund = const GuildFund(),
+  bool teamAvailable = false,
+  bool teamClaimed = false,
   int vipMembers = 0,
   int vipBonus = 0,
   int bossHp = 0,
@@ -437,6 +446,8 @@ MyGuild fakeGuild({
       donatedToday: donatedToday,
       chatLatestId: chatLatest,
       fund: fund,
+      teamAvailable: teamAvailable,
+      teamClaimed: teamClaimed,
       vipMembers: vipMembers,
       vipBonus: vipBonus,
       bossHp: bossHp,
@@ -470,6 +481,7 @@ MyGuild withState(
   int? donatedToday,
   GuildFund? fund,
   bool? bossClaimed,
+  bool? teamClaimed,
 }) =>
     MyGuild(
       id: g.id,
@@ -490,6 +502,8 @@ MyGuild withState(
       donatedToday: donatedToday ?? g.donatedToday,
       chatLatestId: g.chatLatestId,
       fund: fund ?? g.fund,
+      teamAvailable: g.teamAvailable,
+      teamClaimed: teamClaimed ?? g.teamClaimed,
       vipBonus: g.vipBonus,
       vipMembers: g.vipMembers,
       bossHp: g.bossHp,

@@ -11,6 +11,9 @@ GuildMine _view({
   int bossHp = 0,
   bool bossClaimed = false,
   GuildFund fund = const GuildFund(),
+  bool teamAvailable = false,
+  bool teamClaimed = false,
+  List<GuildMemberInfo> others = const [],
 }) =>
     GuildMine(
       myUserId: 'me',
@@ -26,7 +29,9 @@ GuildMine _view({
         bossHp: bossHp,
         bossClaimed: bossClaimed,
         fund: fund,
-        members: [GuildMemberInfo(userId: 'me', nickname: 'me', points: myPoints)],
+        teamAvailable: teamAvailable,
+        teamClaimed: teamClaimed,
+        members: [GuildMemberInfo(userId: 'me', nickname: 'me', points: myPoints), ...others],
       ),
     );
 
@@ -56,5 +61,20 @@ void main() {
             _view(fund: const GuildFund(progress: 500, target: 500, mine: 10, claimed: true))),
         isFalse);
     expect(guildHasClaimable(_view(fund: const GuildFund(progress: 500, target: 500, mine: 5))), isFalse);
+  });
+
+  test('nhiệm vụ chung: đủ người + mình đạt + chưa nhận = có thưởng', () {
+    const other = [GuildMemberInfo(userId: 'u', nickname: 'u', points: 1000)];
+    expect(guildHasClaimable(_view(myPoints: 1000, teamAvailable: true, others: other)), isTrue);
+    expect(
+        guildHasClaimable(_view(
+            myPoints: 1000,
+            teamAvailable: true,
+            teamClaimed: true,
+            questsClaimed: [1],
+            others: other)),
+        isFalse);
+    expect(guildHasClaimable(_view(myPoints: 1000, others: other)), isTrue,
+        reason: 'server cũ không có nhiệm vụ chung → chỉ còn nhiệm vụ cá nhân 1000 điểm');
   });
 }

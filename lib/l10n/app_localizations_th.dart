@@ -3340,6 +3340,37 @@ class AppLocalizationsTh extends AppLocalizations {
   String get guildTransfer => 'โอนตำแหน่งหัวหน้า';
 
   @override
+  String get guildTeamTitle => 'ภารกิจทีมสัปดาห์นี้';
+
+  @override
+  String guildTeamProgress(int active, int need) {
+    return '$active / $need คนทำสำเร็จ';
+  }
+
+  @override
+  String guildTeamHint(int n) {
+    return 'ถ้าครึ่งหนึ่งของกิลด์ (อย่างน้อย 2 คน) ได้ $n แต้มรายสัปดาห์ ทุกคนที่ทำถึงจะได้รางวัล เล่นด้วยกันนะ!';
+  }
+
+  @override
+  String guildTeamClaim(int n) {
+    return 'รับ $n เหรียญกิลด์';
+  }
+
+  @override
+  String guildTeamGot(int n) {
+    return 'ได้รับ $n เหรียญกิลด์จากภารกิจทีม!';
+  }
+
+  @override
+  String get guildErrTeamNotReached => 'ยังมีสมาชิกทำแต้มถึงไม่พอ';
+
+  @override
+  String guildErrTeamLow(int n) {
+    return 'ต้องมีอย่างน้อย $n แต้มรายสัปดาห์จึงจะรับได้';
+  }
+
+  @override
   String get guildFundTitle => 'กองทุนกิลด์สัปดาห์นี้';
 
   @override

@@ -1107,6 +1107,13 @@
   "guildPromote": "부길드장 임명",
   "guildDemote": "부길드장 해임",
   "guildTransfer": "길드장 위임",
+  "guildTeamTitle": "이번 주 팀 퀘스트",
+  "guildTeamProgress": "{active} / {need}명 달성",
+  "guildTeamHint": "길드원 절반(최소 2명)이 주간 {n}점에 도달하면 달성한 모두가 보상을 받아요. 함께 해요!",
+  "guildTeamClaim": "길드 코인 {n}개 받기",
+  "guildTeamGot": "팀 퀘스트로 길드 코인 {n}개를 받았어요!",
+  "guildErrTeamNotReached": "아직 점수에 도달한 길드원이 부족해요.",
+  "guildErrTeamLow": "보상을 받으려면 주간 {n}점 이상이 필요해요.",
   "guildFundTitle": "이번 주 길드 기금",
   "guildFundMine": "내가 기부한 💎 {n}개",
   "@guildFundMine": {

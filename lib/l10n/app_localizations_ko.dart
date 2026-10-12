@@ -3302,6 +3302,37 @@ class AppLocalizationsKo extends AppLocalizations {
   String get guildTransfer => '길드장 위임';
 
   @override
+  String get guildTeamTitle => '이번 주 팀 퀘스트';
+
+  @override
+  String guildTeamProgress(int active, int need) {
+    return '$active / $need명 달성';
+  }
+
+  @override
+  String guildTeamHint(int n) {
+    return '길드원 절반(최소 2명)이 주간 $n점에 도달하면 달성한 모두가 보상을 받아요. 함께 해요!';
+  }
+
+  @override
+  String guildTeamClaim(int n) {
+    return '길드 코인 $n개 받기';
+  }
+
+  @override
+  String guildTeamGot(int n) {
+    return '팀 퀘스트로 길드 코인 $n개를 받았어요!';
+  }
+
+  @override
+  String get guildErrTeamNotReached => '아직 점수에 도달한 길드원이 부족해요.';
+
+  @override
+  String guildErrTeamLow(int n) {
+    return '보상을 받으려면 주간 $n점 이상이 필요해요.';
+  }
+
+  @override
   String get guildFundTitle => '이번 주 길드 기금';
 
   @override

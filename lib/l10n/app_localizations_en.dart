@@ -3364,6 +3364,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get guildTransfer => 'Transfer ownership';
 
   @override
+  String get guildTeamTitle => 'This week\'s team quest';
+
+  @override
+  String guildTeamProgress(int active, int need) {
+    return '$active / $need members done';
+  }
+
+  @override
+  String guildTeamHint(int n) {
+    return 'Half the guild (at least 2 members) reaching $n weekly points unlocks the reward for everyone who got there. Play together!';
+  }
+
+  @override
+  String guildTeamClaim(int n) {
+    return 'Claim $n Guild Coins';
+  }
+
+  @override
+  String guildTeamGot(int n) {
+    return 'Got $n Guild Coins from the team quest!';
+  }
+
+  @override
+  String get guildErrTeamNotReached =>
+      'Not enough members have reached the points yet.';
+
+  @override
+  String guildErrTeamLow(int n) {
+    return 'You need at least $n weekly points to claim.';
+  }
+
+  @override
   String get guildFundTitle => 'This week\'s guild fund';
 
   @override

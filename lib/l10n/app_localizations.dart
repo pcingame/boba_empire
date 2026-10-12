@@ -5814,6 +5814,48 @@ abstract class AppLocalizations {
   /// **'Nhường chức chủ hội'**
   String get guildTransfer;
 
+  /// No description provided for @guildTeamTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiệm vụ chung tuần này'**
+  String get guildTeamTitle;
+
+  /// No description provided for @guildTeamProgress.
+  ///
+  /// In vi, this message translates to:
+  /// **'{active} / {need} người đã đạt'**
+  String guildTeamProgress(int active, int need);
+
+  /// No description provided for @guildTeamHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Một nửa hội (ít nhất 2 người) cùng đạt {n} điểm tuần thì ai đạt mức này đều nhận thưởng. Rủ nhau chơi nhé!'**
+  String guildTeamHint(int n);
+
+  /// No description provided for @guildTeamClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {n} Xu Hội'**
+  String guildTeamClaim(int n);
+
+  /// No description provided for @guildTeamGot.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận {n} Xu Hội từ nhiệm vụ chung!'**
+  String guildTeamGot(int n);
+
+  /// No description provided for @guildErrTeamNotReached.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đủ người trong hội đạt mức điểm.'**
+  String get guildErrTeamNotReached;
+
+  /// No description provided for @guildErrTeamLow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn cần đạt ít nhất {n} điểm tuần để nhận thưởng.'**
+  String guildErrTeamLow(int n);
+
   /// No description provided for @guildFundTitle.
   ///
   /// In vi, this message translates to:
