@@ -3388,6 +3388,27 @@ class AppLocalizationsPt extends AppLocalizations {
   String get guildErrFull => 'Esta guilda está cheia.';
 
   @override
+  String guildExpandButton(int cost, int max) {
+    return 'Ampliar para $max vagas · $cost 💎';
+  }
+
+  @override
+  String guildExpandConfirm(int cost, int max) {
+    return 'Ampliar a guilda para $max membros por $cost 💎?';
+  }
+
+  @override
+  String get guildExpandAction => 'Ampliar';
+
+  @override
+  String guildExpandDone(int max) {
+    return 'A guilda agora comporta até $max membros!';
+  }
+
+  @override
+  String get guildExpandMaxed => 'A guilda já está na capacidade máxima.';
+
+  @override
   String get guildErrAlready => 'Você já está numa guilda.';
 
   @override
@@ -3596,6 +3617,13 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get guildMemberProfile => 'Ver perfil';
+
+  @override
+  String get guildQuestsSection => 'Missões da Guilda';
+
+  @override
+  String get guildQuestsSectionHint =>
+      'Reiniciam toda segunda 00:00 UTC · dão Moedas da Guilda';
 
   @override
   String get guildManage => 'Gerenciar';

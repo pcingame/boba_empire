@@ -6,7 +6,6 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../core/guild.dart';
 import '../guild/guild_controller.dart';
 import '../guild/guild_repository.dart';
 import '../l10n/app_localizations.dart';
@@ -174,7 +173,7 @@ class _GuildMembersSectionState extends ConsumerState<GuildMembersSection> {
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(4, 8, 4, 6),
-          child: Text('👥 ${l10n.guildMembersHeader} (${all.length}/$guildMaxMembers)',
+          child: Text('👥 ${l10n.guildMembersHeader} (${all.length}/${view.guild.maxMembers})',
               key: const Key('guild-members-header'),
               style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
         ),

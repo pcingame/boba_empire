@@ -9,6 +9,15 @@ import 'models.dart';
 
 const int guildMaxMembers = 30;
 
+/// Sức chứa ban đầu của một hội; chủ hội mở thêm [guildExpandStep] chỗ mỗi lần bằng 💎
+/// ([guildExpandCostFor]) tới trần [guildMaxMembers]. KHỚP guild_base_members /
+/// guild_expand_step / guild_expand_cost ở server.
+const int guildBaseMembers = 20;
+const int guildExpandStep = 5;
+
+/// Giá 💎 mở rộng khi hội đang có [current] chỗ; null = đã tối đa.
+int? guildExpandCostFor(int current) => switch (current) { 20 => 1000, 25 => 2000, _ => null };
+
 /// Phí tạo hội (💎). Trừ SAU khi server tạo thành công; vào hội thì miễn phí.
 const int guildCreateCostGems = 2000; // ⚠️ chưa playtest
 

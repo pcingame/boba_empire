@@ -3391,6 +3391,27 @@ class AppLocalizationsEs extends AppLocalizations {
   String get guildErrFull => 'Este gremio está lleno.';
 
   @override
+  String guildExpandButton(int cost, int max) {
+    return 'Ampliar a $max plazas · $cost 💎';
+  }
+
+  @override
+  String guildExpandConfirm(int cost, int max) {
+    return '¿Ampliar el gremio a $max miembros por $cost 💎?';
+  }
+
+  @override
+  String get guildExpandAction => 'Ampliar';
+
+  @override
+  String guildExpandDone(int max) {
+    return '¡El gremio ahora admite hasta $max miembros!';
+  }
+
+  @override
+  String get guildExpandMaxed => 'El gremio ya está en su capacidad máxima.';
+
+  @override
   String get guildErrAlready => 'Ya estás en un gremio.';
 
   @override
@@ -3598,6 +3619,13 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get guildMemberProfile => 'Ver perfil';
+
+  @override
+  String get guildQuestsSection => 'Misiones del Gremio';
+
+  @override
+  String get guildQuestsSectionHint =>
+      'Se reinician cada lunes 00:00 UTC · dan Monedas del Gremio';
 
   @override
   String get guildManage => 'Gestionar';

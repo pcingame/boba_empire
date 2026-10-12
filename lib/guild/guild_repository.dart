@@ -8,6 +8,7 @@ library;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../core/guild.dart';
 import '../core/guild_shop.dart';
 
 class GuildSummary {
@@ -18,6 +19,7 @@ class GuildSummary {
     required this.emoji,
     required this.memberCount,
     required this.weekTotal,
+    this.maxMembers = guildBaseMembers,
     this.requiresApproval = false,
     this.requested = false,
     this.rank,
@@ -33,6 +35,7 @@ class GuildSummary {
         emoji: r['emoji'] as String,
         memberCount: (r['member_count'] as num).toInt(),
         weekTotal: (r['week_total'] as num).toInt(),
+        maxMembers: (r['max_members'] as num?)?.toInt() ?? guildBaseMembers,
         requiresApproval: (r['requires_approval'] as bool?) ?? false,
         requested: (r['requested'] as bool?) ?? false,
         rank: (r['rank'] as num?)?.toInt(),
@@ -47,6 +50,9 @@ class GuildSummary {
   final String emoji;
   final int memberCount;
   final int weekTotal;
+
+  /// Sức chứa của hội (server cũ chưa có cột → mặc định ban đầu).
+  final int maxMembers;
 
   /// Hội cần chủ hội duyệt: bấm "Xin vào" thay vì vào ngay.
   final bool requiresApproval;
@@ -227,6 +233,7 @@ class MyGuild {
     required this.total,
     required this.claimed,
     required this.members,
+    this.maxMembers = guildBaseMembers,
     this.requiresApproval = false,
     this.requests = const [],
     this.streak = 0,
@@ -255,6 +262,7 @@ class MyGuild {
       tag: g['tag'] as String,
       emoji: g['emoji'] as String,
       ownerId: g['owner_id'] as String,
+      maxMembers: (g['max_members'] as num?)?.toInt() ?? guildBaseMembers,
       requiresApproval: (g['requires_approval'] as bool?) ?? false,
       requests: [
         for (final r in (j['requests'] as List?) ?? const [])
@@ -308,6 +316,7 @@ class MyGuild {
   final String tag;
   final String emoji;
   final String ownerId;
+  final int maxMembers;
   final bool requiresApproval;
 
   /// Yêu cầu chờ duyệt — server chỉ trả cho CHỦ hội (người khác nhận rỗng).
@@ -372,6 +381,9 @@ enum GuildFailure {
   invalidName,
   notFound,
   notEnoughContribution,
+
+  /// Hội đã ở sức chứa tối đa, không mở thêm được.
+  guildMaxed,
 
   /// Thiếu 💎 để tạo hội (kiểm cục bộ, không đến từ server).
   notEnoughGems,
@@ -439,6 +451,7 @@ GuildFailure guildFailureFromMessage(String message) {
   if (m.contains('nickname taken')) return GuildFailure.nicknameTaken;
   if (m.contains('name taken')) return GuildFailure.nameTaken;
   if (m.contains('guild full')) return GuildFailure.guildFull;
+  if (m.contains('guild maxed')) return GuildFailure.guildMaxed;
   if (m.contains('already in guild')) return GuildFailure.alreadyInGuild;
   if (m.contains('invalid name')) return GuildFailure.invalidName;
   if (m.contains('approval required')) return GuildFailure.approvalRequired;
@@ -551,6 +564,9 @@ abstract class GuildRepository {
 
   /// Chủ hội nhường quyền cho [userId].
   Future<void> transferOwner(String userId);
+
+  /// Chủ hội mở thêm [guildExpandStep] chỗ; trả sức chứa mới. Client tự trừ 💎 sau đó.
+  Future<int> expand();
 
   /// Nhật ký hoạt động, mới nhất trước.
   Future<List<GuildEvent>> activity();
@@ -759,6 +775,9 @@ class SupabaseGuildRepository implements GuildRepository {
   @override
   Future<void> transferOwner(String userId) =>
       _rpc('guild_transfer_owner', {'p_user': userId});
+
+  @override
+  Future<int> expand() async => ((await _rpc('guild_expand', {})) as num).toInt();
 
   @override
   Future<List<GuildEvent>> activity() async => [

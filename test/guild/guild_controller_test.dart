@@ -803,6 +803,46 @@ void main() {
     });
   });
 
+  group('mở rộng sức chứa hội', () {
+    Future<ProviderContainer> open(double gems) async {
+      final repo = FakeGuildRepository(mine: fakeGuild());
+      final c = await _open(repo, gems: gems);
+      await _ctrl(c).refresh();
+      return c;
+    }
+
+    test('đủ 💎: server mở +5 rồi mới trừ giá bậc (1000 rồi 2000)', () async {
+      final c = await open(5000);
+      expect((await _ctrl(c).expand()).ok, isTrue);
+      expect((c.read(guildControllerProvider) as GuildMine).guild.maxMembers, 25);
+      expect(c.read(gameControllerProvider).gems, 4000);
+      expect((await _ctrl(c).expand()).ok, isTrue);
+      expect((c.read(guildControllerProvider) as GuildMine).guild.maxMembers, 30);
+      expect(c.read(gameControllerProvider).gems, 2000);
+    });
+
+    test('thiếu 💎: không gọi server, không trừ', () async {
+      final c = await open(999);
+      final out = await _ctrl(c).expand();
+      expect(out.failure, GuildFailure.notEnoughGemsToSpend);
+      expect((c.read(guildControllerProvider) as GuildMine).guild.maxMembers, 20);
+      expect(c.read(gameControllerProvider).gems, 999);
+    });
+
+    test('đã tối đa: guildMaxed, không trừ 💎', () async {
+      final c = await open(9000);
+      await _ctrl(c).expand();
+      await _ctrl(c).expand();
+      final out = await _ctrl(c).expand();
+      expect(out.failure, GuildFailure.guildMaxed);
+      expect(c.read(gameControllerProvider).gems, 6000);
+    });
+
+    test('thông điệp "guild maxed" của server ánh xạ thành guildMaxed', () {
+      expect(guildFailureFromMessage('PostgrestException: guild maxed'), GuildFailure.guildMaxed);
+    });
+  });
+
   group('ưu đãi phí tạo hội theo cấp VIP', () {
     Future<GuildOutcome> create(ProviderContainer c) => _ctrl(c).create(
         name: 'Boba', tag: 'BB', emoji: '🧋', requiresApproval: false, nickname: 'Alice');

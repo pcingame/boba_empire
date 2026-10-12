@@ -3368,6 +3368,27 @@ class AppLocalizationsVi extends AppLocalizations {
   String get guildErrFull => 'Hội đã đủ thành viên.';
 
   @override
+  String guildExpandButton(int cost, int max) {
+    return 'Mở rộng lên $max chỗ · $cost 💎';
+  }
+
+  @override
+  String guildExpandConfirm(int cost, int max) {
+    return 'Mở rộng hội lên $max thành viên với $cost 💎?';
+  }
+
+  @override
+  String get guildExpandAction => 'Mở rộng';
+
+  @override
+  String guildExpandDone(int max) {
+    return 'Hội giờ chứa tối đa $max thành viên!';
+  }
+
+  @override
+  String get guildExpandMaxed => 'Hội đã ở sức chứa tối đa.';
+
+  @override
   String get guildErrAlready => 'Bạn đang ở trong một hội rồi.';
 
   @override
@@ -3574,6 +3595,13 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get guildMemberProfile => 'Xem hồ sơ';
+
+  @override
+  String get guildQuestsSection => 'Nhiệm vụ Hội';
+
+  @override
+  String get guildQuestsSectionHint =>
+      'Làm mới mỗi thứ Hai 00:00 UTC · thưởng Xu Hội';
 
   @override
   String get guildManage => 'Quản lý';

@@ -182,6 +182,15 @@ class FakeGuildRepository implements GuildRepository {
   }
 
   @override
+  Future<int> expand() async {
+    _hit('expand');
+    final g = mine!;
+    final next = g.maxMembers + guildExpandStep;
+    mine = withState(g, maxMembers: next);
+    return next;
+  }
+
+  @override
   Future<void> transferOwner(String userId) async {
     _hit('transferOwner');
     roleCalls.add('transfer:$userId');
@@ -430,6 +439,7 @@ MyGuild fakeGuild({
   String tag = 'BB',
   String emoji = '🧋',
   String ownerId = 'me',
+  int maxMembers = guildBaseMembers,
   int total = 0,
   List<int> claimed = const [],
   bool requiresApproval = false,
@@ -457,6 +467,7 @@ MyGuild fakeGuild({
       tag: tag,
       emoji: emoji,
       ownerId: ownerId,
+      maxMembers: maxMembers,
       total: total,
       claimed: claimed,
       requiresApproval: requiresApproval,
@@ -505,6 +516,7 @@ MyGuild withState(
   GuildFund? fund,
   bool? bossClaimed,
   bool? teamClaimed,
+  int? maxMembers,
 }) =>
     MyGuild(
       id: g.id,
@@ -512,6 +524,7 @@ MyGuild withState(
       tag: g.tag,
       emoji: g.emoji,
       ownerId: g.ownerId,
+      maxMembers: maxMembers ?? g.maxMembers,
       total: g.total,
       claimed: g.claimed,
       members: g.members,
@@ -541,6 +554,7 @@ MyGuild withMembers(MyGuild g, List<GuildMemberInfo> members, {String? ownerId})
       tag: g.tag,
       emoji: g.emoji,
       ownerId: ownerId ?? g.ownerId,
+      maxMembers: g.maxMembers,
       total: g.total,
       claimed: g.claimed,
       members: members,

@@ -405,10 +405,15 @@ void main() {
         GuildJoinRequest(userId: 'r2', nickname: 'Rex'),
       ]));
       await _pump(tester, repo);
+      await _scrollTo(tester, const Key('guild-accept-r1'));
       await tester.tap(find.byKey(const Key('guild-accept-r1')));
       await tester.pumpAndSettle();
       expect(repo.responded, ['r1:accept']);
+      await _scrollTo(tester, const Key('guild-reject-r2'));
+      await tester.drag(find.byType(ListView), const Offset(0, 150));
+      await tester.pumpAndSettle();
       expect(find.text('Yêu cầu vào hội (1)'), findsOneWidget);
+      await _scrollTo(tester, const Key('guild-reject-r2'));
       await tester.tap(find.byKey(const Key('guild-reject-r2')));
       await tester.pumpAndSettle();
       expect(repo.responded, ['r1:accept', 'r2:reject']);
@@ -425,6 +430,7 @@ void main() {
       ]))
         ..failures['respondRequest'] = const GuildException(GuildFailure.guildFull);
       await _pump(tester, repo);
+      await _scrollTo(tester, const Key('guild-accept-r1'));
       await tester.tap(find.byKey(const Key('guild-accept-r1')));
       await tester.pumpAndSettle();
       expect(find.text('Hội đã đủ thành viên.'), findsOneWidget);
@@ -1024,7 +1030,9 @@ void main() {
     gTest('vòng trạng thái mốc: 🔒 chưa đạt, 🎁 nhận được, ✅ đã nhận, ⚠️ thiếu điểm cá nhân',
         (tester) async {
       // Tổng 50000: mốc 1 (10k) và mốc 2 (40k) đạt, mốc 3 (120k) chưa. Mốc 1 đã nhận.
-      await _pump(tester, FakeGuildRepository(mine: fakeGuild(total: 50000, claimed: const [1])));
+      // Màn cao để cả 3 mốc cùng được dựng (danh sách dựng lười; mục Nhiệm vụ Hội phía dưới làm trang dài hơn).
+      await _pump(tester, FakeGuildRepository(mine: fakeGuild(total: 50000, claimed: const [1])),
+          size: const Size(360, 1200));
       await _scrollTo(tester, const Key('guild-claim-2'));
       expect(find.text('✅'), findsOneWidget);
       expect(find.text('🎁'), findsWidgets); // mốc 2 nhận được (🎁 còn xuất hiện ở phần thưởng mốc cuối)
@@ -1070,6 +1078,59 @@ void main() {
           await tester.pumpAndSettle(); // chờ huy hiệu thành viên mới dựng (bộ đếm 50ms)
           expect(tester.takeException(), isNull, reason: 'cuộn lần $i');
         }
+      });
+    }
+  });
+  group('mở rộng sức chứa hội', () {
+    gTest('chủ hội: xác nhận → +5 chỗ, trừ 1000💎, banner đổi 20→25', (tester) async {
+      final repo = FakeGuildRepository(mine: fakeGuild());
+      final c = await _pump(tester, repo, locale: 'en', gems: 5000);
+      expect(find.textContaining('/20 members'), findsOneWidget);
+      await _scrollTo(tester, const Key('guild-expand-button'));
+      expect(find.text('Expand to 25 slots · 1000 💎'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('guild-expand-button')));
+      await tester.pumpAndSettle();
+      expect(repo.calls.contains('expand'), isFalse); // chưa xác nhận thì chưa gọi
+      await tester.tap(find.byKey(const Key('guild-confirm-ok')));
+      await tester.pumpAndSettle();
+      expect(repo.calls.where((x) => x == 'expand').length, 1);
+      expect(c.read(gameControllerProvider).gems, 4000);
+      expect(find.text('The guild now holds up to 25 members!'), findsOneWidget);
+      await tester.pumpAndSettle(const Duration(seconds: 5));
+      await tester.dragUntilVisible(find.byKey(const Key('guild-expand-button')),
+          find.byType(ListView), const Offset(0, -150));
+      expect(find.text('Expand to 30 slots · 2000 💎'), findsOneWidget);
+    });
+
+    gTest('thiếu 💎: báo lỗi, không đổi sức chứa', (tester) async {
+      final repo = FakeGuildRepository(mine: fakeGuild());
+      final c = await _pump(tester, repo, locale: 'en', gems: 10);
+      await _scrollTo(tester, const Key('guild-expand-button'));
+      await tester.tap(find.byKey(const Key('guild-expand-button')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('guild-confirm-ok')));
+      await tester.pumpAndSettle();
+      expect(repo.calls.contains('expand'), isFalse);
+      expect(c.read(gameControllerProvider).gems, 10);
+    });
+
+    gTest('hội đã 30 chỗ hoặc người không phải chủ: không có nút', (tester) async {
+      await _pump(tester, FakeGuildRepository(mine: fakeGuild(maxMembers: 30)));
+      await _scrollTo(tester, const Key('guild-leave-button'));
+      expect(find.byKey(const Key('guild-expand-button')), findsNothing);
+      await _teardown(tester);
+      await _pump(tester, FakeGuildRepository(mine: fakeGuild(ownerId: 'u2')));
+      await _scrollTo(tester, const Key('guild-leave-button'));
+      expect(find.byKey(const Key('guild-expand-button')), findsNothing);
+    });
+
+    for (final lang in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
+      gTest('nút + hộp xác nhận không tràn ở 320px ($lang)', (tester) async {
+        await _pump(tester, FakeGuildRepository(mine: fakeGuild()), locale: lang);
+        await _scrollTo(tester, const Key('guild-expand-button'));
+        await tester.tap(find.byKey(const Key('guild-expand-button')));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
       });
     }
   });

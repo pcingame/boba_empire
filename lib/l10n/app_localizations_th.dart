@@ -3357,6 +3357,27 @@ class AppLocalizationsTh extends AppLocalizations {
   String get guildErrFull => 'กิลด์เต็มแล้ว';
 
   @override
+  String guildExpandButton(int cost, int max) {
+    return 'ขยายเป็น $max ที่ · $cost 💎';
+  }
+
+  @override
+  String guildExpandConfirm(int cost, int max) {
+    return 'ขยายกิลด์เป็น $max คนด้วย $cost 💎 ไหม?';
+  }
+
+  @override
+  String get guildExpandAction => 'ขยาย';
+
+  @override
+  String guildExpandDone(int max) {
+    return 'กิลด์รองรับได้สูงสุด $max คนแล้ว!';
+  }
+
+  @override
+  String get guildExpandMaxed => 'กิลด์มีความจุสูงสุดแล้ว';
+
+  @override
   String get guildErrAlready => 'คุณอยู่ในกิลด์แล้ว';
 
   @override
@@ -3560,6 +3581,13 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get guildMemberProfile => 'ดูโปรไฟล์';
+
+  @override
+  String get guildQuestsSection => 'ภารกิจกิลด์';
+
+  @override
+  String get guildQuestsSectionHint =>
+      'รีเซ็ตทุกวันจันทร์ 00:00 UTC · รับเหรียญกิลด์';
 
   @override
   String get guildManage => 'จัดการ';

@@ -5802,6 +5802,36 @@ abstract class AppLocalizations {
   /// **'Hội đã đủ thành viên.'**
   String get guildErrFull;
 
+  /// No description provided for @guildExpandButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở rộng lên {max} chỗ · {cost} 💎'**
+  String guildExpandButton(int cost, int max);
+
+  /// No description provided for @guildExpandConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở rộng hội lên {max} thành viên với {cost} 💎?'**
+  String guildExpandConfirm(int cost, int max);
+
+  /// No description provided for @guildExpandAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở rộng'**
+  String get guildExpandAction;
+
+  /// No description provided for @guildExpandDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hội giờ chứa tối đa {max} thành viên!'**
+  String guildExpandDone(int max);
+
+  /// No description provided for @guildExpandMaxed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hội đã ở sức chứa tối đa.'**
+  String get guildExpandMaxed;
+
   /// No description provided for @guildErrAlready.
   ///
   /// In vi, this message translates to:
@@ -6173,6 +6203,18 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Xem hồ sơ'**
   String get guildMemberProfile;
+
+  /// No description provided for @guildQuestsSection.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiệm vụ Hội'**
+  String get guildQuestsSection;
+
+  /// No description provided for @guildQuestsSectionHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Làm mới mỗi thứ Hai 00:00 UTC · thưởng Xu Hội'**
+  String get guildQuestsSectionHint;
 
   /// No description provided for @guildManage.
   ///

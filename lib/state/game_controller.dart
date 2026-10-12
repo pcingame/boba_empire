@@ -538,6 +538,16 @@ class GameController extends Notifier<GameSnapshot> {
     return true;
   }
 
+  /// Trừ [cost] 💎 sau khi server đã mở thêm chỗ cho hội.
+  bool chargeGuildExpansion(int cost) {
+    if (_game.gems < cost) return false;
+    _game.gems -= cost;
+    logEvent('guild_expanded', {'cost': cost});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
   /// Áp buff hội theo số giây server báo còn lại (0 = hết/không ở hội). Dùng đồng
   /// hồ máy chỉ để đếm ngược phần còn lại, nên chỉnh giờ máy không kéo dài buff.
   void applyGuildBuff(int secondsLeft) {

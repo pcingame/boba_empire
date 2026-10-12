@@ -3319,6 +3319,27 @@ class AppLocalizationsKo extends AppLocalizations {
   String get guildErrFull => '길드 인원이 가득 찼어요.';
 
   @override
+  String guildExpandButton(int cost, int max) {
+    return '$max명으로 확장 · $cost 💎';
+  }
+
+  @override
+  String guildExpandConfirm(int cost, int max) {
+    return '$cost 💎로 길드를 $max명까지 확장할까요?';
+  }
+
+  @override
+  String get guildExpandAction => '확장';
+
+  @override
+  String guildExpandDone(int max) {
+    return '이제 길드에 최대 $max명이 들어갈 수 있어요!';
+  }
+
+  @override
+  String get guildExpandMaxed => '길드가 이미 최대 인원이에요.';
+
+  @override
   String get guildErrAlready => '이미 길드에 가입되어 있어요.';
 
   @override
@@ -3519,6 +3540,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get guildMemberProfile => '프로필 보기';
+
+  @override
+  String get guildQuestsSection => '길드 퀘스트';
+
+  @override
+  String get guildQuestsSectionHint => '매주 월요일 00:00 UTC 초기화 · 길드 코인 보상';
 
   @override
   String get guildManage => '관리';

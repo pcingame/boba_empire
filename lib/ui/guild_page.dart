@@ -23,6 +23,7 @@ import 'guild_activity_page.dart';
 import 'widgets/dispose_with_widget.dart';
 import 'guild_chat_page.dart';
 import 'guild_members.dart';
+import 'guild_quests_section.dart';
 import 'guild_shop_page.dart';
 import 'widgets/clay.dart';
 import 'web_links.dart';
@@ -40,6 +41,7 @@ String guildFailureText(AppLocalizations l10n, GuildFailure f,
     switch (f) {
       GuildFailure.nameTaken => l10n.guildErrNameTaken,
       GuildFailure.guildFull => l10n.guildErrFull,
+      GuildFailure.guildMaxed => l10n.guildExpandMaxed,
       GuildFailure.alreadyInGuild => l10n.guildErrAlready,
       GuildFailure.invalidName => l10n.guildErrInvalid,
       GuildFailure.notFound => l10n.guildErrNotFound,
@@ -204,7 +206,7 @@ class _NoGuild extends ConsumerWidget {
                             style: theme.textTheme.titleSmall
                                 ?.copyWith(fontWeight: FontWeight.w600)),
                         Text(
-                          '${l10n.guildMembersCount(g.memberCount, guildMaxMembers)}'
+                          '${l10n.guildMembersCount(g.memberCount, g.maxMembers)}'
                           ' · ${l10n.guildPoints(g.weekTotal)}',
                           style: theme.textTheme.bodySmall,
                         ),
@@ -481,9 +483,20 @@ class _MyGuildView extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 8),
-          Text('🎯 ${l10n.guildGoalTitle}',
-              style: theme.textTheme.titleMedium
-                  ?.copyWith(fontWeight: FontWeight.w800)),
+          Row(children: [
+            Expanded(
+              child: Text('🎯 ${l10n.guildGoalTitle}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleMedium
+                      ?.copyWith(fontWeight: FontWeight.w800)),
+            ),
+            Text(
+                '${formatNumber(g.total.toDouble(), decimals: 0)} / '
+                '${formatNumber(guildMilestones.firstWhere((m) => m.threshold > g.total, orElse: () => guildMilestones.last).threshold.toDouble(), decimals: 0)}',
+                key: const Key('guild-goal-target'),
+                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+          ]),
           const SizedBox(height: 6),
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
@@ -543,6 +556,8 @@ class _MyGuildView extends ConsumerWidget {
               ),
             const SizedBox(height: 8),
           ],
+          // Nhiệm vụ Hội nằm TRƯỚC danh sách thành viên (danh sách có thể dài tới 30 người).
+          GuildQuestsSection(view: view),
           GuildMembersSection(
             view: view,
             onGift: (m) => _gift(context, ref, m),
@@ -552,6 +567,16 @@ class _MyGuildView extends ConsumerWidget {
             onMention: (m) => showGuildChat(context, prefill: '@${m.nickname} '),
           ),
           const SizedBox(height: 12),
+          if (view.isOwner && guildExpandCostFor(g.maxMembers) != null) ...[
+            FilledButton.tonal(
+              key: const Key('guild-expand-button'),
+              onPressed: () => _expand(context, ref, g.maxMembers),
+              child: Text(
+                  l10n.guildExpandButton(guildExpandCostFor(g.maxMembers)!, g.maxMembers + guildExpandStep),
+                  textAlign: TextAlign.center),
+            ),
+            const SizedBox(height: 8),
+          ],
           OutlinedButton(
             key: const Key('guild-leave-button'),
             onPressed: () => _leave(context, ref),
@@ -638,6 +663,17 @@ class _MyGuildView extends ConsumerWidget {
     if (!context.mounted) return;
     _toast(context,
         out.ok ? l10n.guildGiftSent(amount, m.nickname) : guildFailureText(l10n, out.failure!));
+  }
+
+  Future<void> _expand(BuildContext context, WidgetRef ref, int current) async {
+    final l10n = AppLocalizations.of(context)!;
+    final cost = guildExpandCostFor(current)!;
+    final next = current + guildExpandStep;
+    final ok = await _confirm(context, l10n.guildExpandConfirm(cost, next), l10n.guildExpandAction);
+    if (!ok || !context.mounted) return;
+    final out = await ref.read(guildControllerProvider.notifier).expand();
+    if (!context.mounted) return;
+    _toast(context, out.ok ? l10n.guildExpandDone(next) : guildFailureText(l10n, out.failure!));
   }
 
   Future<void> _leave(BuildContext context, WidgetRef ref) async {
@@ -1012,7 +1048,7 @@ class _GuildBanner extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: theme.textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.w800, color: onBanner)),
-                    Text(l10n.guildMembersCount(g.members.length, guildMaxMembers),
+                    Text(l10n.guildMembersCount(g.members.length, g.maxMembers),
                         style: theme.textTheme.bodyMedium
                             ?.copyWith(color: onBanner)),
                   ],

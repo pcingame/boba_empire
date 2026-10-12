@@ -182,6 +182,19 @@ class GuildController extends Notifier<GuildViewState> {
   Future<GuildOutcome> transferOwner(String userId) =>
       _act(() => _repo.transferOwner(userId));
 
+  /// Mở thêm chỗ cho hội: kiểm đủ 💎 TRƯỚC, trừ SAU khi server thành công (như [create]).
+  Future<GuildOutcome> expand() async {
+    final s = state;
+    final cost = s is GuildMine ? guildExpandCostFor(s.guild.maxMembers) : null;
+    if (cost == null) return const GuildOutcome(failure: GuildFailure.guildMaxed);
+    if (ref.read(gameControllerProvider).gems < cost) {
+      return const GuildOutcome(failure: GuildFailure.notEnoughGemsToSpend);
+    }
+    final out = await _act(_repo.expand);
+    if (out.ok) ref.read(gameControllerProvider.notifier).chargeGuildExpansion(cost);
+    return out;
+  }
+
   Future<GuildOutcome> report(String guildId, String reason) async {
     try {
       await _repo.report(guildId, reason);

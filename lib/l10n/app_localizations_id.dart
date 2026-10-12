@@ -3373,6 +3373,27 @@ class AppLocalizationsId extends AppLocalizations {
   String get guildErrFull => 'Guild ini penuh.';
 
   @override
+  String guildExpandButton(int cost, int max) {
+    return 'Perluas ke $max slot · $cost 💎';
+  }
+
+  @override
+  String guildExpandConfirm(int cost, int max) {
+    return 'Perluas guild ke $max anggota seharga $cost 💎?';
+  }
+
+  @override
+  String get guildExpandAction => 'Perluas';
+
+  @override
+  String guildExpandDone(int max) {
+    return 'Guild kini menampung hingga $max anggota!';
+  }
+
+  @override
+  String get guildExpandMaxed => 'Guild sudah mencapai kapasitas maksimal.';
+
+  @override
   String get guildErrAlready => 'Kamu sudah berada di guild.';
 
   @override
@@ -3580,6 +3601,13 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get guildMemberProfile => 'Lihat profil';
+
+  @override
+  String get guildQuestsSection => 'Misi Guild';
+
+  @override
+  String get guildQuestsSectionHint =>
+      'Reset tiap Senin 00:00 UTC · hadiah Koin Guild';
 
   @override
   String get guildManage => 'Kelola';

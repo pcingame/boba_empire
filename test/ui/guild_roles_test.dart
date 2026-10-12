@@ -113,6 +113,7 @@ void main() {
     testWidgets('chủ hội: 👑 cạnh chủ, ⭐ cạnh phó; menu quản lý + kick cho MỌI người khác',
         (tester) async {
       await _open(tester, myRole: GuildRole.owner);
+      await tester.dragUntilVisible(_k('guild-member-mem'), find.byType(ListView), const Offset(0, -150));
       expect(find.text('👑 '), findsOneWidget);
       expect(find.text('⭐ '), findsOneWidget);
       for (final id in ['off', 'mem']) {
@@ -134,6 +135,7 @@ void main() {
       await _open(tester,
           myRole: GuildRole.officer,
           requests: const [GuildJoinRequest(userId: 'r1', nickname: 'Người Xin')]);
+      expect(_k('guild-accept-r1'), findsOneWidget, reason: 'phó hội duyệt được đơn');
       await _openMember(tester, 'mem');
       expect(_k('guild-kick-mem'), findsOneWidget);
       expect(_k('guild-toggle-officer-mem'), findsNothing, reason: 'phó hội không bổ nhiệm/bãi nhiệm');
@@ -145,7 +147,6 @@ void main() {
       await _openMember(tester, 'boss');
       expect(_k('guild-kick-boss'), findsNothing, reason: 'không kick chủ');
       await _closeSheet(tester);
-      expect(_k('guild-accept-r1'), findsOneWidget);
       await _end(tester);
     });
 
@@ -176,6 +177,11 @@ void main() {
           if (role != GuildRole.officer) _m('off', 'Phó', GuildRole.officer, points: 7),
           if (role != GuildRole.member) _m('mem', 'Thường', GuildRole.member, points: 987654321),
         ]);
+        // Danh sách dựng lười: cuộn tới hàng cuối để mọi hàng thành viên cùng được dựng.
+        await tester.dragUntilVisible(
+            find.byWidgetPredicate((w) => w.key == const Key('guild-leave-button')),
+            find.byType(ListView),
+            const Offset(0, -200));
         final rights = [
           for (final e in find.byWidgetPredicate((w) =>
                   w.key is ValueKey<String> &&

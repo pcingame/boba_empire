@@ -1099,4 +1099,36 @@ select t_as(u(36)); select guild_chat_delete(:'mid');
 reset role;
 select t_eq('xoá tin → reaction mất theo', (select count(*) from guild_message_reactions), 0::bigint);
 
+-- ===== 23. Sức chứa hội: mở đầu 20, chủ mua thêm +5 (20→25→30) ============
+reset role;
+delete from guild_members;  -- dọn các hội cũ để lấy lại chỗ cho user mẫu
+select t_as(u(86)); select guild_create('Cap Club', 'cc', '🏰', false, 'Owner', 0) as gc \gset
+select t_eq('hội mới có 20 chỗ', (guild_my()->'guild'->>'max_members')::int, 20);
+select t_eq('danh sách báo sức chứa', (select max_members from guild_list(50) where id = :'gc'::uuid), 20);
+reset role;
+insert into guild_members (user_id, guild_id, nickname)
+  select u(i), :'gc'::uuid, 'c' || i from generate_series(10, 28) i;  -- + chủ = 20
+select t_as(u(88));
+select t_err(format($$select guild_join(%L::uuid, 'Late', 0)$$, :'gc'), 'guild full');
+select t_eq('đủ 20 người → không còn trong danh sách', (select count(*) from guild_list(50) where id = :'gc'::uuid), 0::bigint);
+-- Chỉ chủ hội mới mở rộng.
+select t_as(u(10));
+select t_err($$select guild_expand()$$, 'not owner');
+select t_as(u(89));
+select t_err($$select guild_expand()$$, 'not owner');
+select t_as(null);
+select t_err($$select guild_expand()$$, 'permission denied');
+select t_as(u(86));
+select t_eq('20→25', guild_expand(), 25);
+select t_as(u(88));
+select guild_join(:'gc'::uuid, 'Late', 0);
+reset role;
+select t_eq('vào được sau khi mở rộng', (select count(*) from guild_members where guild_id = :'gc'::uuid), 21::bigint);
+select t_as(u(86));
+select t_eq('25→30', guild_expand(), 30);
+select t_eq('guild_my báo 30', (guild_my()->'guild'->>'max_members')::int, 30);
+select t_err($$select guild_expand()$$, 'guild maxed');
+reset role;
+select t_eq('không vượt trần 30', (select max_members from guilds where id = :'gc'::uuid), 30);
+
 select 'ALL GUILD SQL SCENARIOS PASSED' as result;

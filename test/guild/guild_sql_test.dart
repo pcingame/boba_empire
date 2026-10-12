@@ -21,6 +21,22 @@ void main() {
     expect(constant('guild_min_points_to_claim'), guildMinPointsToClaim);
   });
 
+  test('sức chứa ban đầu / bước mở rộng / giá khớp Dart', () {
+    expect(constant('guild_base_members'), guildBaseMembers);
+    expect(constant('guild_expand_step'), guildExpandStep);
+    final costs = {
+      for (final m in RegExp(r'when (\d+) then (\d+)').allMatches(
+          sql.substring(sql.indexOf('function guild_expand_cost')).split(r'$$;').first.split(r'$$').elementAt(1)))
+        int.parse(m.group(1)!): int.parse(m.group(2)!)
+    };
+    // Mọi bậc từ ban đầu tới trần: SQL và Dart cùng giá; tới trần thì Dart trả null.
+    for (var c = guildBaseMembers; c < guildMaxMembers; c += guildExpandStep) {
+      expect(costs[c], guildExpandCostFor(c), reason: '$c');
+    }
+    expect(costs.length, (guildMaxMembers - guildBaseMembers) ~/ guildExpandStep);
+    expect(guildExpandCostFor(guildMaxMembers), isNull);
+  });
+
   test('mốc tuần khớp Dart (thứ tự và giá trị)', () {
     final m = RegExp(r'when (\d) then (\d+)')
         .allMatches(sql.substring(sql.indexOf('guild_milestone_threshold')))

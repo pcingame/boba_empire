@@ -30,6 +30,8 @@ create table if not exists guilds (
 );
 -- Bản đã deploy trước đó chưa có cột này.
 alter table guilds add column if not exists requires_approval boolean not null default false;
+-- Sức chứa riêng của từng hội: mở đầu 20, chủ hội mua thêm +5 (tối đa 30).
+alter table guilds add column if not exists max_members integer not null default 20;
 create unique index if not exists guilds_name_lower_idx on guilds (lower(name));
 
 create table if not exists guild_members (
@@ -220,9 +222,23 @@ alter table guild_team_claims   enable row level security;
 alter table guild_message_reports enable row level security;
 -- Cố ý KHÔNG tạo policy: chỉ RPC security definer được đụng vào.
 
+-- Hội cũ đã đông hơn 20 người thì giữ nguyên chỗ đang có (không đuổi ai).
+update guilds g set max_members = least(30, (select count(*) from guild_members m where m.guild_id = g.id))
+ where (select count(*) from guild_members m where m.guild_id = g.id) > g.max_members;
+
 -- --- Hằng số --------------------------------------------------------------
 create or replace function guild_max_members() returns integer
 language sql immutable as $$ select 30 $$;
+
+-- Sức chứa ban đầu / mỗi lần mở thêm; giá 💎 của lần mở thứ n (n=0: 20→25, n=1: 25→30).
+create or replace function guild_base_members() returns integer
+language sql immutable as $$ select 20 $$;
+create or replace function guild_expand_step() returns integer
+language sql immutable as $$ select 5 $$;
+create or replace function guild_expand_cost(p_current integer) returns integer
+language sql immutable as $$
+  select case p_current when 20 then 1000 when 25 then 2000 end
+$$;
 
 -- Mốc tuần của CẢ HỘI (tổng điểm): 1→10.000, 2→40.000, 3→120.000.
 create or replace function guild_milestone_threshold(p_milestone integer)
@@ -486,7 +502,7 @@ begin
   if v_g.requires_approval then raise exception 'approval required'; end if;
 
   if (select count(*) from guild_members where guild_id = v_g.id)
-       >= guild_max_members() then
+       >= v_g.max_members then
     raise exception 'guild full';
   end if;
   if exists (select 1 from guild_members
@@ -575,7 +591,7 @@ begin
     return;
   end if;
   if (select count(*) from guild_members where guild_id = v_g.id)
-       >= guild_max_members() then
+       >= v_g.max_members then
     raise exception 'guild full';
   end if;
   -- Có người cùng tên vào hội trong lúc đơn đang chờ: không duyệt được (chủ hội từ chối đơn).
@@ -818,7 +834,8 @@ begin
   return jsonb_build_object(
     'guild', jsonb_build_object(
       'id', v_g.id, 'name', v_g.name, 'tag', v_g.tag, 'emoji', v_g.emoji,
-      'owner_id', v_g.owner_id, 'requires_approval', v_g.requires_approval),
+      'owner_id', v_g.owner_id, 'requires_approval', v_g.requires_approval,
+      'max_members', v_g.max_members),
     'week', v_week,
     -- Id tin mới nhất người này còn thấy (để client tính "chưa đọc").
     'chat_latest', coalesce((select max(m.id) from guild_messages m
@@ -872,21 +889,23 @@ begin
 end;
 $$;
 
+drop function if exists guild_list(integer);
 create or replace function guild_list(p_limit integer default 30)
 returns table (id uuid, name text, tag text, emoji text,
                member_count bigint, week_total bigint,
-               requires_approval boolean, requested boolean)
+               requires_approval boolean, requested boolean, max_members integer)
 language sql stable security definer set search_path = public as $$
   select g.id, g.name, g.tag, g.emoji,
          (select count(*) from guild_members m where m.guild_id = g.id),
          guild_week_total(g.id),
          g.requires_approval,
          exists (select 1 from guild_join_requests r
-                 where r.guild_id = g.id and r.user_id = auth.uid())
+                 where r.guild_id = g.id and r.user_id = auth.uid()),
+         g.max_members
   from guilds g
   where not g.hidden
     and (select count(*) from guild_members m where m.guild_id = g.id)
-        < guild_max_members()
+        < g.max_members
   order by 6 desc, 5 desc, g.created_at asc
   limit least(p_limit, 50)
 $$;
@@ -1385,6 +1404,23 @@ begin
 end;
 $$;
 
+-- Chủ hội mở thêm chỗ: +5 mỗi lần (20→25→30). Client tự trừ 💎 SAU khi RPC thành công.
+create or replace function guild_expand() returns integer
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_g guilds%rowtype;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  select * into v_g from guilds where owner_id = v_uid for update;
+  if not found then raise exception 'not owner'; end if;
+  if v_g.max_members >= guild_max_members() then raise exception 'guild maxed'; end if;
+  update guilds set max_members = v_g.max_members + guild_expand_step()
+   where id = v_g.id returning max_members into v_g.max_members;
+  return v_g.max_members;
+end;
+$$;
+
 -- Nhật ký hoạt động (mới nhất trước) — chỉ thành viên đọc được.
 create or replace function guild_activity(p_limit integer default 30) returns jsonb
 language plpgsql stable security definer set search_path = public as $$
@@ -1585,7 +1621,7 @@ begin
     'guild_transfer_owner(uuid)', 'guild_activity(integer)',
     'guild_claim_fund()', 'guild_gift_send(uuid,integer)',
     'guild_gift_inbox()', 'guild_gift_claim(bigint)', 'guild_leaderboard_vip(integer)',
-    'guild_vip_bonus()', 'guild_claim_boss()', 'guild_claim_team()', 'guild_chat_react(bigint,text)'
+    'guild_vip_bonus()', 'guild_claim_boss()', 'guild_claim_team()', 'guild_chat_react(bigint,text)', 'guild_expand()'
   ] loop
     execute format('revoke all on function %s from public', f);
     execute format('grant execute on function %s to authenticated', f);

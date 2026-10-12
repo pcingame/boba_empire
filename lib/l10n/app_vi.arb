@@ -2100,6 +2100,38 @@
   "guildEmpty": "Chưa có hội công khai nào. Hãy tạo hội đầu tiên!",
   "guildErrNameTaken": "Tên hội đã có người dùng.",
   "guildErrFull": "Hội đã đủ thành viên.",
+  "guildExpandButton": "Mở rộng lên {max} chỗ · {cost} 💎",
+  "@guildExpandButton": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "guildExpandConfirm": "Mở rộng hội lên {max} thành viên với {cost} 💎?",
+  "@guildExpandConfirm": {
+    "placeholders": {
+      "cost": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "guildExpandAction": "Mở rộng",
+  "guildExpandDone": "Hội giờ chứa tối đa {max} thành viên!",
+  "@guildExpandDone": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "guildExpandMaxed": "Hội đã ở sức chứa tối đa.",
   "guildErrAlready": "Bạn đang ở trong một hội rồi.",
   "guildErrInvalid": "Tên hoặc tag không hợp lệ.",
   "guildErrNotFound": "Không tìm thấy hội (có thể hội đã đóng).",
@@ -2217,6 +2249,8 @@
   "guildRoleMember": "Thành viên",
   "guildMemberMention": "Nhắc trong chat",
   "guildMemberProfile": "Xem hồ sơ",
+  "guildQuestsSection": "Nhiệm vụ Hội",
+  "guildQuestsSectionHint": "Làm mới mỗi thứ Hai 00:00 UTC · thưởng Xu Hội",
   "guildManage": "Quản lý",
   "guildPromote": "Bổ nhiệm phó hội",
   "guildDemote": "Bãi nhiệm phó hội",

@@ -113,9 +113,10 @@ void main() {
     });
   });
 
-  testWidgets('tiêu đề đếm đủ n/30; hội ≤ 8 người không có ô tìm', (tester) async {
+  testWidgets('tiêu đề đếm đủ n/20; hội ≤ 8 người không có ô tìm', (tester) async {
     await _open(tester, _crowd(5));
-    expect(find.text('👥 Thành viên (5/$guildMaxMembers)'), findsOneWidget);
+    await _scrollTo(tester, _k('guild-members-header'));
+    expect(find.text('👥 Thành viên (5/$guildBaseMembers)'), findsOneWidget);
     expect(_k('guild-member-search'), findsNothing);
     await _end(tester);
   });
