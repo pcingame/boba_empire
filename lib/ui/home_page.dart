@@ -1099,6 +1099,8 @@ class _StageScene extends ConsumerWidget {
             color: theme.colorScheme.surface.withValues(alpha: 0.4),
           ),
         const _TapArea(),
+        // Chip "tự động chạm" nằm TRONG cảnh quán (góc trên phải), không đè thanh tiêu đề.
+        const _AutoTapIndicator(),
         // Cơ hội giới hạn thời gian: neo trong vùng cảnh (không đè panel Shop).
         const _GoldenCat(),
         const _VipCustomer(),
@@ -2464,6 +2466,35 @@ class _EventBanner extends ConsumerWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Chip nhỏ góc trên phải khi tự động chạm đang chạy: đếm ngược nếu bật bằng QC, "VIP" nếu mở sẵn.
+class _AutoTapIndicator extends ConsumerWidget {
+  const _AutoTapIndicator();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final active = ref.watch(gameControllerProvider.select((s) => s.autoTapActive));
+    if (!active) return const SizedBox.shrink();
+    final remaining = ref.watch(gameControllerProvider.select((s) => s.autoTapRemainingSeconds));
+    final theme = Theme.of(context);
+    final text = remaining > 0 ? '🤖 ${formatDuration(remaining.ceil())}' : '🤖 VIP';
+    return Positioned(
+      top: 8,
+      right: 8,
+      child: Container(
+        key: const Key('auto-tap-chip'),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.secondaryContainer,
+          borderRadius: BorderRadius.circular(999),
+        ),
+        child: Text(text,
+            style: theme.textTheme.labelMedium?.copyWith(
+                fontWeight: FontWeight.w700, color: theme.colorScheme.onSecondaryContainer)),
       ),
     );
   }

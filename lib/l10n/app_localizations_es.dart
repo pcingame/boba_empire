@@ -1230,6 +1230,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String get rewardsChip => 'Gana más';
 
   @override
+  String rewardAutoTapName(int m) {
+    return 'Toque automático $m min';
+  }
+
+  @override
+  String rewardAutoTapActive(String t) {
+    return 'Activo · quedan $t';
+  }
+
+  @override
+  String rewardAutoTapVip(int n) {
+    return 'VIP $n+ tiene toque automático permanente';
+  }
+
+  @override
+  String rewardAutoTapHint(int n) {
+    return 'Mira un anuncio para tocar el vaso solo (VIP $n+ lo desbloquea para siempre)';
+  }
+
+  @override
+  String get rewardAutoTapSnack =>
+      '¡Toque automático activado! Solo da monedas, sin puntos de Gremio ni misiones.';
+
+  @override
   String get rewardX2Name => 'x2 ingresos por 24h';
 
   @override

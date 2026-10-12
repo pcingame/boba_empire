@@ -65,6 +65,12 @@ class _RewardsDialogState extends ConsumerState<_RewardsDialog> {
       gameControllerProvider.select((s) => s.x2IncomeRemainingSeconds),
     );
     final x2Hours = (x2sec / 3600).ceil();
+    final autoTapSec = ref.watch(
+      gameControllerProvider.select((s) => s.autoTapRemainingSeconds),
+    );
+    final autoTapVip = ref.watch(
+      gameControllerProvider.select((s) => s.autoTapActive && s.autoTapRemainingSeconds <= 0),
+    );
     final piggy = ref.watch(gameControllerProvider.select((s) => s.piggyGems));
     final freeSpin = ref.watch(
       gameControllerProvider.select((s) => s.freeSpinAvailable),
@@ -114,6 +120,21 @@ class _RewardsDialogState extends ConsumerState<_RewardsDialog> {
               onWatch: () => _watch(() {
                 controller.activateX2Income();
                 _snack(l10n.rewardX2Snack);
+              }),
+            ),
+            _OfferRow(
+              key: const Key('reward-auto-tap'),
+              emoji: '🤖',
+              name: l10n.rewardAutoTapName(Balance.autoTapAdMs ~/ 60000),
+              note: autoTapVip
+                  ? l10n.rewardAutoTapVip(Balance.autoTapVipLevel)
+                  : autoTapSec > 0
+                      ? l10n.rewardAutoTapActive(formatDuration(autoTapSec.ceil()))
+                      : l10n.rewardAutoTapHint(Balance.autoTapVipLevel),
+              busy: _busy,
+              onWatch: () => _watch(() {
+                controller.activateAutoTap();
+                _snack(l10n.rewardAutoTapSnack);
               }),
             ),
             _OfferRow(
@@ -211,6 +232,7 @@ class _WheelRow extends StatelessWidget {
 
 class _OfferRow extends StatelessWidget {
   const _OfferRow({
+    super.key,
     required this.emoji,
     required this.name,
     required this.busy,
@@ -232,7 +254,7 @@ class _OfferRow extends StatelessWidget {
       child: Row(
         children: [
           Text(emoji, style: const TextStyle(fontSize: 24)),
-          const SizedBox(width: 12),
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -254,11 +276,14 @@ class _OfferRow extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 10),
-          FilledButton.icon(
-            onPressed: busy ? null : onWatch,
-            icon: const Icon(Icons.play_circle_outline, size: 20),
-            label: Text(l10n.watchAd),
+          const SizedBox(width: 6),
+          // Flexible + FittedBox: nhãn dài (en/es/id/pt) co lại thay vì tràn ở màn hẹp.
+          Flexible(
+            child: FilledButton.icon(
+              onPressed: busy ? null : onWatch,
+              icon: const Icon(Icons.play_circle_outline, size: 20),
+              label: FittedBox(fit: BoxFit.scaleDown, child: Text(l10n.watchAd)),
+            ),
           ),
         ],
       ),

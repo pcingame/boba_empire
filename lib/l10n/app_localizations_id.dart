@@ -1223,6 +1223,30 @@ class AppLocalizationsId extends AppLocalizations {
   String get rewardsChip => 'Dapat lebih';
 
   @override
+  String rewardAutoTapName(int m) {
+    return 'Ketuk otomatis $m menit';
+  }
+
+  @override
+  String rewardAutoTapActive(String t) {
+    return 'Aktif · sisa $t';
+  }
+
+  @override
+  String rewardAutoTapVip(int n) {
+    return 'VIP $n+ dapat ketuk otomatis permanen';
+  }
+
+  @override
+  String rewardAutoTapHint(int n) {
+    return 'Tonton iklan untuk mengetuk gelas otomatis (VIP $n+ membukanya selamanya)';
+  }
+
+  @override
+  String get rewardAutoTapSnack =>
+      'Ketuk otomatis aktif! Hanya menambah koin, tanpa poin Guild atau misi.';
+
+  @override
   String get rewardX2Name => 'x2 pendapatan 24 jam';
 
   @override

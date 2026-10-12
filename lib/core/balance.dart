@@ -264,6 +264,19 @@ class Balance {
   /// "Tua nhanh": xem QC nhận ngay chừng này giây sản xuất.
   static const int rewardedTimeSkipSeconds = 4 * 60 * 60; // 4 giờ
 
+  // --- Tự động chạm (góp ý người chơi: "tap tay mỏi quá") ---
+  /// Số lần tự chạm mỗi giây khi đang bật, và hiệu suất so với MỘT lần chạm tay (0..1) — thấp hơn
+  /// chạm tay để chạm tay vẫn có lợi. Tự chạm CHỈ cộng Xu: KHÔNG tính điểm Hội/điểm sự kiện/nhiệm
+  /// vụ/thành tựu (điểm Hội là +1/lần chạm, tự chạm sẽ cày đầy mốc tuần trong vài giờ).
+  static const double autoTapPerSecond = 2.0;
+  static const double autoTapEfficiency = 0.5;
+
+  /// Xem 1 QC → tự chạm [autoTapAdMs]; cộng dồn tối đa [autoTapMaxMs]. VIP từ cấp
+  /// [autoTapVipLevel] được bật vĩnh viễn. ⚠️ ước lượng, chưa playtest.
+  static const int autoTapAdMs = 10 * 60 * 1000;
+  static const int autoTapMaxMs = 60 * 60 * 1000;
+  static const int autoTapVipLevel = 3;
+
   // --- Heo đất (Piggy Bank) ---
   /// Heo tự tích Kim Cương theo THỜI GIAN chơi/vắng (không theo Xu — vì thu nhập
   /// lớn thì fill tức thì, mất cảm giác chờ). Đầy sau [piggyFillHours] giờ; tới

@@ -887,3 +887,16 @@ hạn giao dịch/ngày). Điểm mấu chốt:
   ước lượng — cần playtest.
 - **Hồ sơ người chơi:** bấm một dòng ở BXH Thu nhập/Trân châu/Speedrun/VIP (hoặc nút "Hồ sơ" ở hộp thoại xem bộ sưu tập)
   → hạng + điểm ở 5 bảng cá nhân qua RPC `player_profile`; có nút "Xem trên web" (`?player=`). Bảng Hội/Đấu Trường chưa có.
+
+## 29. Tự động chạm (2026-10-12, chưa playtest)
+
+Góp ý thật của người chơi ("tap tay mỏi quá", xin auto click). Cơ chế:
+- **Bật**: xem 1 QC → 10 phút (`Balance.autoTapAdMs`), cộng dồn tối đa 1 giờ (`autoTapMaxMs`); hoặc **VIP ≥ 3**
+  (`autoTapVipLevel`) bật vĩnh viễn. Mốc hết hạn lưu ở `GameState.autoTapUntilMillis` (persist, save cũ → 0).
+- **Tốc độ**: `autoTapPerSecond` = 2 lần/giây × `autoTapEfficiency` = 50% một lần chạm tay (chạm tay vẫn lợi hơn).
+  Công thức dùng chung với chạm tay (`tapGain` trong core/simulation.dart): Sao, perk chạm, nhân vĩnh viễn, Mưa vàng đều áp.
+- **CHỈ cộng Xu**: KHÔNG tăng `tapCount`, tiến độ nhiệm vụ, điểm Hội, điểm sự kiện, thành tựu — điểm Hội là +1/lần
+  chạm nên tự chạm sẽ cày đầy mốc tuần (120k) trong vài giờ. Test chặn hồi quy (`test/state/auto_tap_test.dart`).
+- Chạy trong `_onTick` (không áp khi offline; dt bị cắt 5 giây để nhịp trễ không thành cú cộng lớn).
+- UI: hàng "🤖 Tự động chạm 10 phút" trong hộp Kiếm thêm; chip `🤖 mm:ss` / `🤖 VIP` trong cảnh quán.
+- ⚠️ Mọi số là ước lượng chưa playtest (xem `Balance`).

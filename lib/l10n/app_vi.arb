@@ -723,6 +723,39 @@
   "vipLbOpen": "Bảng xếp hạng VIP",
   "rewardsTitle": "Kiếm thêm 🎁",
   "rewardsChip": "Kiếm thêm",
+  "rewardAutoTapName": "Tự động chạm {m} phút",
+  "@rewardAutoTapName": {
+    "placeholders": {
+      "m": {
+        "type": "int"
+      }
+    }
+  },
+  "rewardAutoTapActive": "Đang bật · còn {t}",
+  "@rewardAutoTapActive": {
+    "placeholders": {
+      "t": {
+        "type": "String"
+      }
+    }
+  },
+  "rewardAutoTapVip": "VIP {n}+ được tự động chạm vĩnh viễn",
+  "@rewardAutoTapVip": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "rewardAutoTapHint": "Xem QC để tự chạm cốc trà (VIP {n}+ bật vĩnh viễn)",
+  "@rewardAutoTapHint": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "rewardAutoTapSnack": "Đã bật tự động chạm! Chỉ cộng Xu, không tính điểm Hội/nhiệm vụ.",
   "rewardX2Name": "x2 thu nhập 24 giờ",
   "rewardX2Active": "Đang bật · còn {hours}h",
   "@rewardX2Active": {

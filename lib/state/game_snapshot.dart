@@ -124,6 +124,8 @@ class GameSnapshot {
     required this.topupClaimed,
     required this.firstBuyClaimed,
     required this.x2IncomeRemainingSeconds,
+    required this.autoTapRemainingSeconds,
+    required this.autoTapActive,
     required this.piggyGems,
     required this.adFree,
     required this.vipActive,
@@ -313,6 +315,10 @@ class GameSnapshot {
   final List<int> topupClaimed;
   final List<String> firstBuyClaimed;
   final double x2IncomeRemainingSeconds;
+
+  /// Giây còn lại của tự động chạm bật bằng QC, và có đang chạy không (QC còn hạn hoặc VIP đủ cấp).
+  final double autoTapRemainingSeconds;
+  final bool autoTapActive;
 
   /// Kim Cương đang tích trong heo đất (chờ "đập" bằng IAP).
   final double piggyGems;

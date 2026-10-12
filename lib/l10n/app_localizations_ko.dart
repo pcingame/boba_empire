@@ -1203,6 +1203,29 @@ class AppLocalizationsKo extends AppLocalizations {
   String get rewardsChip => '더 벌기';
 
   @override
+  String rewardAutoTapName(int m) {
+    return '자동 터치 $m분';
+  }
+
+  @override
+  String rewardAutoTapActive(String t) {
+    return '작동 중 · $t 남음';
+  }
+
+  @override
+  String rewardAutoTapVip(int n) {
+    return 'VIP $n+는 자동 터치가 영구 적용돼요';
+  }
+
+  @override
+  String rewardAutoTapHint(int n) {
+    return '광고를 보면 컵을 자동으로 터치해요 (VIP $n+는 영구)';
+  }
+
+  @override
+  String get rewardAutoTapSnack => '자동 터치 켜짐! 코인만 얻고 길드 점수나 퀘스트에는 반영되지 않아요.';
+
+  @override
   String get rewardX2Name => '24시간 수입 x2';
 
   @override

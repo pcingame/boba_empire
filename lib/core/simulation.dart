@@ -13,17 +13,34 @@ import 'daily_quests.dart';
 import 'economy.dart';
 import 'models.dart';
 
+/// Xu của MỘT lần chạm (chưa cộng vào ví). [boostMultiplier] là hệ số Mưa vàng đang có.
+double tapGain(GameState state, {double boostMultiplier = 1.0}) =>
+    state.tapValue *
+    prestigeMultiplier(
+        state.prestigeStars,
+        Balance.bonusPerStar *
+            ascensionStarBonusFactor(state.ascensionStarBonusLevel)) *
+    permanentMultiplier(state.gemBoostLevel) *
+    prestigeTapMultiplier(state.prestigeTapLevel) *
+    storyChoiceTapMultiplier(state) *
+    boostMultiplier;
+
 /// Kết quả một lần chạm ly. [boostMultiplier] là hệ số Mưa vàng đang có.
 double tap(GameState state, {double boostMultiplier = 1.0}) {
-  final gain = state.tapValue *
-      prestigeMultiplier(
-          state.prestigeStars,
-          Balance.bonusPerStar *
-              ascensionStarBonusFactor(state.ascensionStarBonusLevel)) *
-      permanentMultiplier(state.gemBoostLevel) *
-      prestigeTapMultiplier(state.prestigeTapLevel) *
-      storyChoiceTapMultiplier(state) *
-      boostMultiplier;
+  final gain = tapGain(state, boostMultiplier: boostMultiplier);
+  _credit(state, gain);
+  return gain;
+}
+
+/// Tự động chạm trong [dt] giây: [Balance.autoTapPerSecond] lần/giây × [Balance.autoTapEfficiency]
+/// của một lần chạm tay. CHỈ cộng Xu — không đụng tapCount, nhiệm vụ, điểm Hội/sự kiện (xem
+/// Balance.autoTapPerSecond). Trả về số Xu vừa cộng.
+double autoTap(GameState state, double dt, {double boostMultiplier = 1.0}) {
+  if (dt <= 0) return 0;
+  final gain = tapGain(state, boostMultiplier: boostMultiplier) *
+      Balance.autoTapPerSecond *
+      Balance.autoTapEfficiency *
+      dt;
   _credit(state, gain);
   return gain;
 }

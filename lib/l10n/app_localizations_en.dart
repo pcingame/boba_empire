@@ -1221,6 +1221,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rewardsChip => 'Earn more';
 
   @override
+  String rewardAutoTapName(int m) {
+    return 'Auto-tap for $m min';
+  }
+
+  @override
+  String rewardAutoTapActive(String t) {
+    return 'Active · $t left';
+  }
+
+  @override
+  String rewardAutoTapVip(int n) {
+    return 'VIP $n+ gets auto-tap permanently';
+  }
+
+  @override
+  String rewardAutoTapHint(int n) {
+    return 'Watch an ad to auto-tap the cup (VIP $n+ unlocks it for good)';
+  }
+
+  @override
+  String get rewardAutoTapSnack =>
+      'Auto-tap on! It only earns coins — no Guild points or quest progress.';
+
+  @override
   String get rewardX2Name => 'x2 income for 24h';
 
   @override

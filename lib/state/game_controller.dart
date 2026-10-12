@@ -1450,6 +1450,20 @@ class GameController extends Notifier<GameSnapshot> {
     return reward;
   }
 
+  /// Tự động chạm đang chạy: còn hạn từ QC, hoặc VIP đủ cấp ([Balance.autoTapVipLevel]).
+  bool autoTapActive(int now) =>
+      now < _game.autoTapUntilMillis ||
+      topupVipLevel(_game.vipExp) >= Balance.autoTapVipLevel;
+
+  /// Bật tự động chạm thêm [Balance.autoTapAdMs] (sau khi xem QC), cộng dồn tới [Balance.autoTapMaxMs].
+  void activateAutoTap() {
+    final now = _clock();
+    final from = now > _game.autoTapUntilMillis ? now : _game.autoTapUntilMillis;
+    _game.autoTapUntilMillis = min(from + Balance.autoTapAdMs, now + Balance.autoTapMaxMs);
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
   /// Bật "x2 thu nhập 24h" (sau khi xem QC). Cộng dồn thời gian nếu đang có.
   void activateX2Income() {
     final now = _clock();
@@ -1815,6 +1829,10 @@ class GameController extends Notifier<GameSnapshot> {
     if (dt > 0) {
       tick(_game, dt,
           boostMultiplier: _timedMultiplier());
+      // Tự động chạm (QC / VIP đủ cấp): cắt dt để một nhịp trễ không đổi thành cú cộng lớn.
+      if (autoTapActive(now)) {
+        autoTap(_game, min(dt, 5.0), boostMultiplier: _timedMultiplier());
+      }
       fillPiggy(_game, dt); // heo đất tích theo thời gian chơi
       // Sự kiện đối thủ đang chờ trả lời → đối thủ "lấn tới" (nhỏ, tạo cảm giác gấp).
       if (_rivalEventPending != null && rivalActive(_game)) {
@@ -1937,6 +1955,8 @@ class GameController extends Notifier<GameSnapshot> {
       firstBuyClaimed: List.unmodifiable(_game.firstBuyClaimed),
       x2IncomeRemainingSeconds:
           max(0, (_game.x2IncomeUntilMillis - now) / 1000.0),
+      autoTapRemainingSeconds: max(0, (_game.autoTapUntilMillis - now) / 1000.0),
+      autoTapActive: autoTapActive(now),
       piggyGems: _game.piggyGems,
       adFree: _game.adsRemoved || vip,
       vipActive: vip,

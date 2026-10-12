@@ -1227,6 +1227,30 @@ class AppLocalizationsPt extends AppLocalizations {
   String get rewardsChip => 'Ganhe mais';
 
   @override
+  String rewardAutoTapName(int m) {
+    return 'Toque automático $m min';
+  }
+
+  @override
+  String rewardAutoTapActive(String t) {
+    return 'Ativo · restam $t';
+  }
+
+  @override
+  String rewardAutoTapVip(int n) {
+    return 'VIP $n+ tem toque automático permanente';
+  }
+
+  @override
+  String rewardAutoTapHint(int n) {
+    return 'Assista a um anúncio para tocar o copo sozinho (VIP $n+ libera para sempre)';
+  }
+
+  @override
+  String get rewardAutoTapSnack =>
+      'Toque automático ativado! Só rende moedas, sem pontos de Guilda ou missões.';
+
+  @override
   String get rewardX2Name => 'x2 renda por 24h';
 
   @override

@@ -1220,6 +1220,30 @@ class AppLocalizationsTh extends AppLocalizations {
   String get rewardsChip => 'หาเพิ่ม';
 
   @override
+  String rewardAutoTapName(int m) {
+    return 'แตะอัตโนมัติ $m นาที';
+  }
+
+  @override
+  String rewardAutoTapActive(String t) {
+    return 'กำลังทำงาน · เหลือ $t';
+  }
+
+  @override
+  String rewardAutoTapVip(int n) {
+    return 'VIP $n+ ได้แตะอัตโนมัติถาวร';
+  }
+
+  @override
+  String rewardAutoTapHint(int n) {
+    return 'ดูโฆษณาเพื่อแตะแก้วอัตโนมัติ (VIP $n+ ปลดล็อกถาวร)';
+  }
+
+  @override
+  String get rewardAutoTapSnack =>
+      'เปิดแตะอัตโนมัติแล้ว! ได้แค่เหรียญ ไม่นับแต้มกิลด์หรือภารกิจ';
+
+  @override
   String get rewardX2Name => 'x2 รายได้ 24 ชม.';
 
   @override

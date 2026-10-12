@@ -134,6 +134,7 @@ class GameState {
     this.vipClaimMonth = 0,
     List<int>? topupClaimed,
     this.x2IncomeUntilMillis = 0,
+    this.autoTapUntilMillis = 0,
     this.boostUntilMillis = 0,
     this.piggyGems = 0,
     this.vipUntilMillis = 0,
@@ -497,6 +498,10 @@ class GameState {
   /// Mốc (epoch ms) hết hạn boost "x2 thu nhập 24h" từ xem QC; 0 = không có.
   int x2IncomeUntilMillis;
 
+  /// Mốc (epoch ms) hết hạn "tự động chạm" bật bằng xem QC; 0 = không có. VIP đủ cấp được bật
+  /// vĩnh viễn nên không cần mốc này (xem Balance.autoTapVipLevel).
+  int autoTapUntilMillis;
+
   /// Mốc (epoch ms) hết hạn Mưa vàng ×3 (chạm mèo); 0 = không có. Trước đây
   /// runtime-only ở GameController, kill app giữa buff là mất — nay persist
   /// giống x2IncomeUntilMillis (xem GAME_DESIGN.md §14.3).
@@ -620,6 +625,7 @@ class GameState {
         'topupClaimed': topupClaimed,
         'firstBuyClaimed': firstBuyClaimed,
         'x2IncomeUntilMillis': x2IncomeUntilMillis,
+        'autoTapUntilMillis': autoTapUntilMillis,
         'boostUntilMillis': boostUntilMillis,
         'piggyGems': piggyGems,
         'vipUntilMillis': vipUntilMillis,
@@ -793,6 +799,7 @@ class GameState {
         firstBuyClaimed: (json['firstBuyClaimed'] as List?)?.cast<String>().toList(),
         x2IncomeUntilMillis:
             (json['x2IncomeUntilMillis'] as num?)?.toInt() ?? 0,
+        autoTapUntilMillis: (json['autoTapUntilMillis'] as num?)?.toInt() ?? 0,
         boostUntilMillis: (json['boostUntilMillis'] as num?)?.toInt() ?? 0,
         piggyGems: (json['piggyGems'] as num?)?.toDouble() ?? 0,
         vipUntilMillis: (json['vipUntilMillis'] as num?)?.toInt() ?? 0,

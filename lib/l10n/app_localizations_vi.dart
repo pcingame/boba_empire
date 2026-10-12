@@ -1220,6 +1220,30 @@ class AppLocalizationsVi extends AppLocalizations {
   String get rewardsChip => 'Kiếm thêm';
 
   @override
+  String rewardAutoTapName(int m) {
+    return 'Tự động chạm $m phút';
+  }
+
+  @override
+  String rewardAutoTapActive(String t) {
+    return 'Đang bật · còn $t';
+  }
+
+  @override
+  String rewardAutoTapVip(int n) {
+    return 'VIP $n+ được tự động chạm vĩnh viễn';
+  }
+
+  @override
+  String rewardAutoTapHint(int n) {
+    return 'Xem QC để tự chạm cốc trà (VIP $n+ bật vĩnh viễn)';
+  }
+
+  @override
+  String get rewardAutoTapSnack =>
+      'Đã bật tự động chạm! Chỉ cộng Xu, không tính điểm Hội/nhiệm vụ.';
+
+  @override
   String get rewardX2Name => 'x2 thu nhập 24 giờ';
 
   @override

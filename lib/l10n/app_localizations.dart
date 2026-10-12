@@ -2088,6 +2088,36 @@ abstract class AppLocalizations {
   /// **'Kiếm thêm'**
   String get rewardsChip;
 
+  /// No description provided for @rewardAutoTapName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự động chạm {m} phút'**
+  String rewardAutoTapName(int m);
+
+  /// No description provided for @rewardAutoTapActive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang bật · còn {t}'**
+  String rewardAutoTapActive(String t);
+
+  /// No description provided for @rewardAutoTapVip.
+  ///
+  /// In vi, this message translates to:
+  /// **'VIP {n}+ được tự động chạm vĩnh viễn'**
+  String rewardAutoTapVip(int n);
+
+  /// No description provided for @rewardAutoTapHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem QC để tự chạm cốc trà (VIP {n}+ bật vĩnh viễn)'**
+  String rewardAutoTapHint(int n);
+
+  /// No description provided for @rewardAutoTapSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã bật tự động chạm! Chỉ cộng Xu, không tính điểm Hội/nhiệm vụ.'**
+  String get rewardAutoTapSnack;
+
   /// No description provided for @rewardX2Name.
   ///
   /// In vi, this message translates to:
