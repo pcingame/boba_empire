@@ -2812,6 +2812,49 @@ class AppLocalizationsPt extends AppLocalizations {
   String get chBonusLabel => 'Conclua os dois desafios';
 
   @override
+  String get lbrTitle => 'Recompensas do top semanal';
+
+  @override
+  String lbrIntro(int first, int second, int third) {
+    return 'Toda semana o top 3 de quatro rankings (Renda, Pérola Caindo, Coleção, VIP) recebe $first / $second / $third 💎. Os rankings fecham no início da semana (segunda, UTC); dá para resgatar por mais uma semana.';
+  }
+
+  @override
+  String get lbrEmpty =>
+      'Ainda não há recompensas — suba para o top 3 dos rankings!';
+
+  @override
+  String lbrRow(String board, String week) {
+    return '$board · semana $week';
+  }
+
+  @override
+  String lbrClaim(int n) {
+    return 'Resgatar $n 💎';
+  }
+
+  @override
+  String lbrGot(int n) {
+    return 'Você resgatou $n 💎 da recompensa do top semanal!';
+  }
+
+  @override
+  String get lbrErrGone =>
+      'Esta recompensa expirou ou não está mais disponível.';
+
+  @override
+  String get lbrBoardIncome => 'Renda';
+
+  @override
+  String get lbrBoardPearls => 'Pérola Caindo';
+
+  @override
+  String get lbrBoardCollection => 'Coleção';
+
+  @override
+  String get lbrBoardVip => 'VIP';
+
+  @override
   String get dailyQuestsBonusLabel => 'Conclua as 3 missões';
 
   @override

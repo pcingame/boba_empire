@@ -2761,6 +2761,47 @@ class AppLocalizationsKo extends AppLocalizations {
   String get chBonusLabel => '도전 과제 2개 모두 완료';
 
   @override
+  String get lbrTitle => '주간 TOP 보상';
+
+  @override
+  String lbrIntro(int first, int second, int third) {
+    return '매주 네 개 순위(수입, 진주 낙하, 수집, VIP)의 TOP 3가 $first / $second / $third 💎를 받아요. 순위는 주 초(월요일, UTC)에 확정되고 보상은 한 주 더 받을 수 있어요.';
+  }
+
+  @override
+  String get lbrEmpty => '아직 보상이 없어요 — 순위 TOP 3에 올라보세요!';
+
+  @override
+  String lbrRow(String board, String week) {
+    return '$board · $week 주';
+  }
+
+  @override
+  String lbrClaim(int n) {
+    return '$n 💎 받기';
+  }
+
+  @override
+  String lbrGot(int n) {
+    return '주간 TOP 보상 $n 💎를 받았어요!';
+  }
+
+  @override
+  String get lbrErrGone => '이 보상은 만료되었거나 더는 받을 수 없어요.';
+
+  @override
+  String get lbrBoardIncome => '수입';
+
+  @override
+  String get lbrBoardPearls => '진주 낙하';
+
+  @override
+  String get lbrBoardCollection => '수집';
+
+  @override
+  String get lbrBoardVip => 'VIP';
+
+  @override
   String get dailyQuestsBonusLabel => '퀘스트 3개 모두 완료';
 
   @override

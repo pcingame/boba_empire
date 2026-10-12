@@ -604,6 +604,15 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
+  /// Cộng 💎 thưởng top bảng xếp hạng tuần SAU KHI server xác nhận.
+  void grantLeaderboardRewardGems(int gems) {
+    if (gems <= 0) return;
+    grantGems(_game, gems.toDouble());
+    logEvent('lb_reward_claimed', {'gems': gems});
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
   /// Cấp phụ kiện hội đã đổi (hoặc khôi phục từ server khi mất save). Chỉ nhận id có
   /// trong cửa hàng hội; trả số món MỚI thêm vào.
   int grantGuildItems(Iterable<String> ids) {

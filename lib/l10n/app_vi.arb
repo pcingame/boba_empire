@@ -1636,6 +1636,54 @@
     }
   },
   "chBonusLabel": "Xong cả 2 thử thách",
+  "lbrTitle": "Thưởng top tuần",
+  "lbrIntro": "Mỗi tuần, top 3 của bốn bảng (Thu nhập, Trân Châu Rơi, Sưu tập, VIP) nhận {first} / {second} / {third} 💎. Bảng được chốt vào đầu tuần (thứ Hai, giờ UTC); thưởng còn nhận được thêm một tuần.",
+  "@lbrIntro": {
+    "placeholders": {
+      "first": {
+        "type": "int"
+      },
+      "second": {
+        "type": "int"
+      },
+      "third": {
+        "type": "int"
+      }
+    }
+  },
+  "lbrEmpty": "Chưa có thưởng — hãy leo lên top 3 các bảng xếp hạng!",
+  "lbrRow": "{board} · tuần {week}",
+  "@lbrRow": {
+    "placeholders": {
+      "board": {
+        "type": "String"
+      },
+      "week": {
+        "type": "String"
+      }
+    }
+  },
+  "lbrClaim": "Nhận {n} 💎",
+  "@lbrClaim": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "lbrGot": "Đã nhận {n} 💎 thưởng top tuần!",
+  "@lbrGot": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "lbrErrGone": "Phần thưởng đã hết hạn hoặc không còn.",
+  "lbrBoardIncome": "Thu nhập",
+  "lbrBoardPearls": "Trân Châu Rơi",
+  "lbrBoardCollection": "Sưu tập",
+  "lbrBoardVip": "VIP",
   "dailyQuestsBonusLabel": "Xong cả 3 nhiệm vụ",
   "dailyQuestsResetsIn": "Đổi nhiệm vụ sau {time}",
   "dailyQuestClaimed": "Đã nhận",

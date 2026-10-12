@@ -2799,6 +2799,47 @@ class AppLocalizationsId extends AppLocalizations {
   String get chBonusLabel => 'Selesaikan kedua tantangan';
 
   @override
+  String get lbrTitle => 'Hadiah top mingguan';
+
+  @override
+  String lbrIntro(int first, int second, int third) {
+    return 'Setiap minggu, top 3 dari empat papan (Pendapatan, Mutiara Jatuh, Koleksi, VIP) mendapat $first / $second / $third 💎. Papan dikunci di awal minggu (Senin, UTC); hadiah bisa diklaim satu minggu lagi.';
+  }
+
+  @override
+  String get lbrEmpty => 'Belum ada hadiah — naiklah ke top 3 papan peringkat!';
+
+  @override
+  String lbrRow(String board, String week) {
+    return '$board · minggu $week';
+  }
+
+  @override
+  String lbrClaim(int n) {
+    return 'Klaim $n 💎';
+  }
+
+  @override
+  String lbrGot(int n) {
+    return 'Berhasil klaim $n 💎 hadiah top mingguan!';
+  }
+
+  @override
+  String get lbrErrGone => 'Hadiah ini sudah kedaluwarsa atau tidak tersedia.';
+
+  @override
+  String get lbrBoardIncome => 'Pendapatan';
+
+  @override
+  String get lbrBoardPearls => 'Mutiara Jatuh';
+
+  @override
+  String get lbrBoardCollection => 'Koleksi';
+
+  @override
+  String get lbrBoardVip => 'VIP';
+
+  @override
   String get dailyQuestsBonusLabel => 'Selesaikan ketiga misi';
 
   @override

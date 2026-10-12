@@ -2805,6 +2805,48 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chBonusLabel => 'Finish both challenges';
 
   @override
+  String get lbrTitle => 'Weekly top rewards';
+
+  @override
+  String lbrIntro(int first, int second, int third) {
+    return 'Each week the top 3 of four boards (Income, Pearl Drop, Collection, VIP) get $first / $second / $third 💎. Boards are locked at the start of the week (Monday, UTC); rewards can be claimed for one more week.';
+  }
+
+  @override
+  String get lbrEmpty =>
+      'No rewards yet — climb into the top 3 of the leaderboards!';
+
+  @override
+  String lbrRow(String board, String week) {
+    return '$board · week $week';
+  }
+
+  @override
+  String lbrClaim(int n) {
+    return 'Claim $n 💎';
+  }
+
+  @override
+  String lbrGot(int n) {
+    return 'Claimed $n 💎 weekly top reward!';
+  }
+
+  @override
+  String get lbrErrGone => 'This reward has expired or is no longer available.';
+
+  @override
+  String get lbrBoardIncome => 'Income';
+
+  @override
+  String get lbrBoardPearls => 'Pearl Drop';
+
+  @override
+  String get lbrBoardCollection => 'Collection';
+
+  @override
+  String get lbrBoardVip => 'VIP';
+
+  @override
   String get dailyQuestsBonusLabel => 'Finish all 3 quests';
 
   @override

@@ -4890,6 +4890,72 @@ abstract class AppLocalizations {
   /// **'Xong cả 2 thử thách'**
   String get chBonusLabel;
 
+  /// No description provided for @lbrTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thưởng top tuần'**
+  String get lbrTitle;
+
+  /// No description provided for @lbrIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi tuần, top 3 của bốn bảng (Thu nhập, Trân Châu Rơi, Sưu tập, VIP) nhận {first} / {second} / {third} 💎. Bảng được chốt vào đầu tuần (thứ Hai, giờ UTC); thưởng còn nhận được thêm một tuần.'**
+  String lbrIntro(int first, int second, int third);
+
+  /// No description provided for @lbrEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có thưởng — hãy leo lên top 3 các bảng xếp hạng!'**
+  String get lbrEmpty;
+
+  /// No description provided for @lbrRow.
+  ///
+  /// In vi, this message translates to:
+  /// **'{board} · tuần {week}'**
+  String lbrRow(String board, String week);
+
+  /// No description provided for @lbrClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {n} 💎'**
+  String lbrClaim(int n);
+
+  /// No description provided for @lbrGot.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận {n} 💎 thưởng top tuần!'**
+  String lbrGot(int n);
+
+  /// No description provided for @lbrErrGone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phần thưởng đã hết hạn hoặc không còn.'**
+  String get lbrErrGone;
+
+  /// No description provided for @lbrBoardIncome.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu nhập'**
+  String get lbrBoardIncome;
+
+  /// No description provided for @lbrBoardPearls.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trân Châu Rơi'**
+  String get lbrBoardPearls;
+
+  /// No description provided for @lbrBoardCollection.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sưu tập'**
+  String get lbrBoardCollection;
+
+  /// No description provided for @lbrBoardVip.
+  ///
+  /// In vi, this message translates to:
+  /// **'VIP'**
+  String get lbrBoardVip;
+
   /// No description provided for @dailyQuestsBonusLabel.
   ///
   /// In vi, this message translates to:

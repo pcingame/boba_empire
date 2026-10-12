@@ -84,11 +84,11 @@ void main() {
     expect(find.byType(GuildPage), findsNothing);
   });
 
-  testWidgets('hub Thi đấu: cả 6 mục đều bị chặn khi chưa liên kết', (tester) async {
+  testWidgets('hub Thi đấu: cả 7 mục đều bị chặn khi chưa liên kết', (tester) async {
     await _openHub(tester, linked: false);
     final tiles = find.descendant(of: find.byType(AlertDialog), matching: find.byType(ListTile));
     final n = tester.widgetList(tiles).length;
-    expect(n, 6);
+    expect(n, 7);
     for (var i = 0; i < n; i++) {
       await tester.tap(tiles.at(i));
       await tester.pumpAndSettle();

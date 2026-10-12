@@ -2790,6 +2790,47 @@ class AppLocalizationsTh extends AppLocalizations {
   String get chBonusLabel => 'ทำภารกิจท้าทายครบทั้ง 2';
 
   @override
+  String get lbrTitle => 'รางวัลท็อปประจำสัปดาห์';
+
+  @override
+  String lbrIntro(int first, int second, int third) {
+    return 'ทุกสัปดาห์ท็อป 3 ของสี่กระดาน (รายได้ ไข่มุกร่วง สะสม VIP) รับ $first / $second / $third 💎 กระดานจะถูกล็อกต้นสัปดาห์ (วันจันทร์ UTC) และรับรางวัลได้อีกหนึ่งสัปดาห์';
+  }
+
+  @override
+  String get lbrEmpty => 'ยังไม่มีรางวัล — ไต่ขึ้นท็อป 3 ของกระดานอันดับ!';
+
+  @override
+  String lbrRow(String board, String week) {
+    return '$board · สัปดาห์ $week';
+  }
+
+  @override
+  String lbrClaim(int n) {
+    return 'รับ $n 💎';
+  }
+
+  @override
+  String lbrGot(int n) {
+    return 'รับ $n 💎 รางวัลท็อปประจำสัปดาห์แล้ว!';
+  }
+
+  @override
+  String get lbrErrGone => 'รางวัลนี้หมดอายุหรือไม่มีแล้ว';
+
+  @override
+  String get lbrBoardIncome => 'รายได้';
+
+  @override
+  String get lbrBoardPearls => 'ไข่มุกร่วง';
+
+  @override
+  String get lbrBoardCollection => 'สะสม';
+
+  @override
+  String get lbrBoardVip => 'VIP';
+
+  @override
   String get dailyQuestsBonusLabel => 'ทำครบ 3 ภารกิจ';
 
   @override

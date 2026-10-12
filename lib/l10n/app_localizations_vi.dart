@@ -2795,6 +2795,48 @@ class AppLocalizationsVi extends AppLocalizations {
   String get chBonusLabel => 'Xong cả 2 thử thách';
 
   @override
+  String get lbrTitle => 'Thưởng top tuần';
+
+  @override
+  String lbrIntro(int first, int second, int third) {
+    return 'Mỗi tuần, top 3 của bốn bảng (Thu nhập, Trân Châu Rơi, Sưu tập, VIP) nhận $first / $second / $third 💎. Bảng được chốt vào đầu tuần (thứ Hai, giờ UTC); thưởng còn nhận được thêm một tuần.';
+  }
+
+  @override
+  String get lbrEmpty =>
+      'Chưa có thưởng — hãy leo lên top 3 các bảng xếp hạng!';
+
+  @override
+  String lbrRow(String board, String week) {
+    return '$board · tuần $week';
+  }
+
+  @override
+  String lbrClaim(int n) {
+    return 'Nhận $n 💎';
+  }
+
+  @override
+  String lbrGot(int n) {
+    return 'Đã nhận $n 💎 thưởng top tuần!';
+  }
+
+  @override
+  String get lbrErrGone => 'Phần thưởng đã hết hạn hoặc không còn.';
+
+  @override
+  String get lbrBoardIncome => 'Thu nhập';
+
+  @override
+  String get lbrBoardPearls => 'Trân Châu Rơi';
+
+  @override
+  String get lbrBoardCollection => 'Sưu tập';
+
+  @override
+  String get lbrBoardVip => 'VIP';
+
+  @override
   String get dailyQuestsBonusLabel => 'Xong cả 3 nhiệm vụ';
 
   @override

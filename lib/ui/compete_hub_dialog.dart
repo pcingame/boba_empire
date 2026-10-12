@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../guild/guild_alert.dart';
+import '../leaderboard/lb_rewards.dart';
 import '../l10n/app_localizations.dart';
 import 'arena_leaderboard_page.dart';
 import 'email_gate.dart';
 import 'arena_page.dart';
 import 'guild_page.dart';
+import 'lb_rewards_dialog.dart';
 import 'leaderboard_page.dart';
 import 'story_speedrun_page.dart';
 import 'vip_leaderboard_page.dart';
@@ -70,6 +72,30 @@ class _CompeteHubDialog extends ConsumerWidget {
               if (!await ensureOnlineLinked(context) || !context.mounted) return;
               Navigator.of(context).pop();
               showGuildPage(context);
+            },
+          ),
+          ListTile(
+            key: const Key('compete-lb-rewards'),
+            leading: const Icon(Icons.emoji_events),
+            title: Row(children: [
+              Flexible(child: Text(l10n.lbrTitle, maxLines: 1, overflow: TextOverflow.ellipsis)),
+              if (ref.watch(lbRewardAlertProvider)) ...[
+                const SizedBox(width: 8),
+                Container(
+                  key: const Key('compete-lb-rewards-dot'),
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.error,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ],
+            ]),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () async {
+              if (!await ensureOnlineLinked(context) || !context.mounted) return;
+              showLbRewards(context);
             },
           ),
           ListTile(

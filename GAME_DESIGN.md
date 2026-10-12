@@ -911,3 +911,16 @@ ngày (UTC) như nhiệm vụ ngày (`core/challenges.dart`), hiện thành mụ
   ⚠️ Mọi số là ước lượng chưa playtest — theo dõi lượng 💎 phát ra/ngày (tối đa 80).
 - Không thêm trường lưu: dùng lại `dailyProgress`/`dailyClaimed` (khoá `challenge:*`; riêng thắng màn dùng khoá `m3Win`)
   nên tự xoá khi sang ngày. Tự động chạm KHÔNG tính (xem §29). Chấm đỏ nhiệm vụ cộng cả thử thách xong chưa nhận.
+
+## 31. Thưởng top bảng xếp hạng theo tuần (2026-10-12, chưa playtest)
+
+Góp ý người chơi: "thưởng cho top 1,2,3 BXH". Bốn bảng TÍCH LŨY (Thu nhập, Trân Châu Rơi, Sưu tập, VIP — không gồm Phá đảo
+vì là thời gian nhanh nhất): mỗi tuần top 3 nhận **300 / 200 / 100 💎** (`core/lb_rewards.dart`, khớp SQL).
+- **Server** (`supabase/leaderboard_rewards_schema.sql`): lần đầu có người gọi `lb_reward_status()` trong tuần mới thì
+  server CHỤP top 3 từng bảng (lười, không cần cron; tuỳ chọn pg_cron 00:00 thứ Hai). Ai trong ảnh chụp nhận được trong
+  tuần chụp + tuần kế (`lbRewardValidWeeks` = 2), MỘT lần cho mỗi (tuần, bảng) (`lb_reward_claim`). Cùng điểm → nộp sớm hơn xếp trên.
+- **Chống gian lận**: điểm BXH do client tự khai nên chỉ tài khoản đã LIÊN KẾT email (không ẩn danh) và điểm > 0 vào ảnh chụp.
+- **Client**: nhận → server xác nhận RỒI mới cộng 💎 cục bộ (`grantLeaderboardRewardGems`); bấm đúp được chặn; lỗi bị nuốt.
+  UI: dòng "Thưởng top tuần" trong hộp Thi đấu (có chấm đỏ, cũng bật chấm đỏ nút Thi đấu), tải khi mở app/quay lại (10 phút).
+- ⚠️ Tối đa 4 bảng × 600 = 2400 💎/tuần phát ra cho cả game; người ở top nhận lặp lại mỗi tuần (bảng tích lũy ít đổi top).
+  ⚠️ Số liệu ước lượng chưa playtest. Kiểm server: `scripts/test_lb_rewards_sql.sh`.
