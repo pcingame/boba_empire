@@ -800,6 +800,13 @@ class AppLocalizationsKo extends AppLocalizations {
       '구매 내역이 계정에 연결되어 기기를 바꾸거나 문제가 생겨도 복구할 수 있어요. 먼저 이메일을 연결해 주세요(무료, 약 1분).';
 
   @override
+  String get emailGateOnlineTitle => '온라인으로 즐기려면 이메일을 연결하세요';
+
+  @override
+  String get emailGateOnlineBody =>
+      '길드, 마켓, 아레나, 리더보드는 이메일이 연결된 계정이 필요해요. 기기를 바꾸거나 다시 설치해도 데이터를 안전하게 복구할 수 있어요. 무료이고 약 1분이면 돼요.';
+
+  @override
   String get emailGateLink => '이메일 연결';
 
   @override

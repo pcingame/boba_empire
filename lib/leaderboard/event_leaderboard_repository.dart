@@ -7,6 +7,8 @@ library;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../data/linked_session.dart';
+
 class EventLeaderboardEntry {
   const EventLeaderboardEntry({
     required this.userId,
@@ -41,11 +43,7 @@ class EventLeaderboardRepository {
   String? get cachedNickname => _prefs.getString(_nicknameKey);
 
   Future<void> _ensureSignedIn() async {
-    if (_client.auth.currentUser != null) return;
-    final res = await _client.auth.signInAnonymously();
-    if (res.user == null) {
-      throw StateError('Đăng nhập ẩn danh Supabase thất bại (user null).');
-    }
+    requireLinkedId(_client.auth.currentUser);
   }
 
   Future<void> submit({

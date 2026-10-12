@@ -76,6 +76,10 @@ không bao giờ được phép chặn/làm hỏng luồng lưu game chính.**
 - Dashboard → Authentication → Emails → Email Templates → "Magic Link" →
   thêm biến `{{ .Token }}` vào nội dung (mặc định chỉ có link, app cần mã số
   để người chơi gõ tay — không dùng deep link).
+- (2026-10-12) Cũng thêm `{{ .Token }}` vào template **"Change Email Address"**: người chơi đang
+  có phiên ẩn danh được nâng cấp tại chỗ bằng `updateUser(email)` (giữ nguyên user_id) và mã của
+  luồng đó dùng template này. Liên kết email nay BẮT BUỘC với tính năng online (Hội, Chợ, Đấu
+  Trường, BXH) — xem `lib/data/linked_session.dart`; app không còn tạo tài khoản ẩn danh.
 
 ## 6. Việc CHƯA làm (ghi lại để khỏi quên)
 

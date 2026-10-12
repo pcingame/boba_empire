@@ -18,6 +18,7 @@ import '../l10n/l10n_ext.dart';
 import '../leaderboard/flair.dart';
 import '../state/game_providers.dart';
 import 'accessory_how_to_dialog.dart';
+import 'email_gate.dart';
 import 'accessory_leaderboard_page.dart';
 import 'accessory_pack_dialog.dart';
 import 'collection_share_dialog.dart';
@@ -78,12 +79,18 @@ class AccessoryInventoryPage extends ConsumerWidget {
                 child: const Icon(Icons.storefront),
               ),
               tooltip: l10n.marketTitle,
-              onPressed: () => showAccessoryMarket(context),
+              onPressed: () async {
+                if (!await ensureOnlineLinked(context) || !context.mounted) return;
+                showAccessoryMarket(context);
+              },
             ),
             IconButton(
               icon: const Text('🏆', style: TextStyle(fontSize: 20)),
               tooltip: l10n.accessoryLbTitle,
-              onPressed: () => showAccessoryLeaderboard(context),
+              onPressed: () async {
+                if (!await ensureOnlineLinked(context) || !context.mounted) return;
+                showAccessoryLeaderboard(context);
+              },
             ),
           ],
         ),

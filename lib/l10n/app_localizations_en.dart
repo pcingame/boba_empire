@@ -810,6 +810,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Purchases are tied to your account so they can be recovered if you change phones or something goes wrong. Link an email first (free, takes about a minute).';
 
   @override
+  String get emailGateOnlineTitle => 'Link your email to play online';
+
+  @override
+  String get emailGateOnlineBody =>
+      'Guilds, the Market, the Arena and leaderboards need an email-linked account, so your data stays safe and can be restored if you change phones or reinstall. It\'s free and takes about a minute.';
+
+  @override
   String get emailGateLink => 'Link email';
 
   @override

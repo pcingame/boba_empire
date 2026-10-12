@@ -594,6 +594,8 @@
   "vipOnlineBanner": "👑 {title} {nickname} vừa online!",
   "emailGateTitle": "Liên kết email để nạp",
   "emailGateBody": "Giao dịch nạp được gắn với tài khoản của bạn để khôi phục được khi đổi máy hoặc có sự cố. Hãy liên kết email trước (miễn phí, mất khoảng một phút).",
+  "emailGateOnlineTitle": "Liên kết email để chơi online",
+  "emailGateOnlineBody": "Hội, Chợ, Đấu Trường và bảng xếp hạng cần tài khoản đã liên kết email — để dữ liệu của bạn được giữ an toàn và khôi phục được khi đổi máy hoặc cài lại. Miễn phí, chỉ mất khoảng một phút.",
   "emailGateLink": "Liên kết email",
   "iapGemsFirstSnack": "Nhận +{amount} 💎 — thưởng mua lần đầu gấp đôi!",
   "iapFirstBuyNote": "🎉 Mua lần đầu: nhận gấp đôi 💎!",

@@ -218,6 +218,8 @@
   "vipOnlineBanner": "👑 {title} {nickname} acabou de ficar online!",
   "emailGateTitle": "Vincule seu e-mail para recarregar",
   "emailGateBody": "As compras ficam ligadas à sua conta para poderem ser recuperadas se você trocar de celular ou algo der errado. Vincule um e-mail primeiro (grátis, leva um minuto).",
+  "emailGateOnlineTitle": "Vincule seu e-mail para jogar online",
+  "emailGateOnlineBody": "Guildas, Mercado, Arena e rankings exigem uma conta vinculada a um e-mail, para seus dados ficarem seguros e poderem ser restaurados se você trocar de celular ou reinstalar. É grátis e leva cerca de um minuto.",
   "emailGateLink": "Vincular e-mail",
   "iapGemsFirstSnack": "Recebeu +{amount} 💎 — bônus dobrado da primeira compra!",
   "iapFirstBuyNote": "🎉 Primeira compra: 💎 em dobro!",

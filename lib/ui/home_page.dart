@@ -36,6 +36,7 @@ import '../leaderboard/vip_presence.dart';
 import '../referral/referral_controller.dart';
 import 'accessory_inventory_page.dart';
 import 'accessory_market_page.dart';
+import 'email_gate.dart';
 import 'whats_new_dialog.dart';
 import 'achievements_dialog.dart';
 import 'cloud_remind_dialog.dart';
@@ -732,7 +733,10 @@ class _MarketBannerState extends ConsumerState<_MarketBanner> {
       key: const Key('market-banner'),
       color: theme.colorScheme.tertiaryContainer,
       child: InkWell(
-        onTap: () => showAccessoryMarket(context),
+        onTap: () async {
+          if (!await ensureOnlineLinked(context) || !context.mounted) return;
+          showAccessoryMarket(context);
+        },
         child: Padding(
           padding: const EdgeInsets.only(left: 12, top: 2, bottom: 2),
           child: Row(

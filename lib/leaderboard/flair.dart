@@ -107,9 +107,8 @@ class FlairCache extends Notifier<Map<String, String>> {
     if (level <= 0) return;
     try {
       final client = Supabase.instance.client;
-      final user =
-          client.auth.currentUser ??
-          (await client.auth.signInAnonymously()).user;
+      final user = client.auth.currentUser;
+      if (user == null || user.isAnonymous) return; // chỉ tài khoản đã liên kết email
       await client.rpc('set_vip_level', params: {'p_level': level});
       // Đồng bộ danh hiệu đang chọn (-1 = tự động) để người khác thấy đúng lựa chọn.
       await client.rpc('set_vip_title',
@@ -123,7 +122,7 @@ class FlairCache extends Notifier<Map<String, String>> {
           params: {'p_nickname': nickname, 'p_exp': exp},
         );
       }
-      if (user != null) invalidate(user.id);
+      invalidate(user.id);
     } catch (_) {}
   }
 
@@ -131,14 +130,13 @@ class FlairCache extends Notifier<Map<String, String>> {
   Future<bool> setMine(String? accessoryId) async {
     try {
       final client = Supabase.instance.client;
-      final user =
-          client.auth.currentUser ??
-          (await client.auth.signInAnonymously()).user;
+      final user = client.auth.currentUser;
+      if (user == null || user.isAnonymous) return false; // chỉ tài khoản đã liên kết email
       await client.rpc(
         'set_accessory_flair',
         params: {'p_accessory_id': accessoryId},
       );
-      if (user != null) invalidate(user.id);
+      invalidate(user.id);
       return true;
     } catch (_) {
       return false;

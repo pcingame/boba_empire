@@ -1416,6 +1416,18 @@ abstract class AppLocalizations {
   /// **'Giao dịch nạp được gắn với tài khoản của bạn để khôi phục được khi đổi máy hoặc có sự cố. Hãy liên kết email trước (miễn phí, mất khoảng một phút).'**
   String get emailGateBody;
 
+  /// No description provided for @emailGateOnlineTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Liên kết email để chơi online'**
+  String get emailGateOnlineTitle;
+
+  /// No description provided for @emailGateOnlineBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hội, Chợ, Đấu Trường và bảng xếp hạng cần tài khoản đã liên kết email — để dữ liệu của bạn được giữ an toàn và khôi phục được khi đổi máy hoặc cài lại. Miễn phí, chỉ mất khoảng một phút.'**
+  String get emailGateOnlineBody;
+
   /// No description provided for @emailGateLink.
   ///
   /// In vi, this message translates to:

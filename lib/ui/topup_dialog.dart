@@ -11,6 +11,7 @@ import '../state/game_controller.dart';
 import '../state/game_providers.dart';
 import 'vip_how_to_dialog.dart';
 import 'vip_shop_dialog.dart';
+import 'email_gate.dart';
 import 'vip_leaderboard_page.dart';
 
 /// Mốc nạp & cấp VIP theo tổng nạp tích lũy (xem core/topup.dart).
@@ -153,7 +154,10 @@ class _TopupDialogState extends ConsumerState<_TopupDialog> {
                 alignment: Alignment.centerLeft,
                 child: TextButton.icon(
                   key: const Key('vip-open-leaderboard'),
-                  onPressed: () => showVipLeaderboard(context),
+                  onPressed: () async {
+                if (!await ensureOnlineLinked(context) || !context.mounted) return;
+                showVipLeaderboard(context);
+              },
                   icon: const Icon(Icons.leaderboard),
                   label: Text(l10n.vipLbOpen),
                 ),

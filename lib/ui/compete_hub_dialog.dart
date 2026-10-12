@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../guild/guild_alert.dart';
 import '../l10n/app_localizations.dart';
 import 'arena_leaderboard_page.dart';
+import 'email_gate.dart';
 import 'arena_page.dart';
 import 'guild_page.dart';
 import 'leaderboard_page.dart';
@@ -38,7 +39,9 @@ class _CompeteHubDialog extends ConsumerWidget {
             leading: const Icon(Icons.sports_kabaddi),
             title: Text(l10n.navArena),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {
+            onTap: () async {
+              // Tính năng online: cần đã liên kết email (xem email_gate.dart).
+              if (!await ensureOnlineLinked(context) || !context.mounted) return;
               Navigator.of(context).pop();
               showArenaPage(context);
             },
@@ -62,7 +65,9 @@ class _CompeteHubDialog extends ConsumerWidget {
               ],
             ]),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {
+            onTap: () async {
+              // Tính năng online: cần đã liên kết email (xem email_gate.dart).
+              if (!await ensureOnlineLinked(context) || !context.mounted) return;
               Navigator.of(context).pop();
               showGuildPage(context);
             },
@@ -71,7 +76,9 @@ class _CompeteHubDialog extends ConsumerWidget {
             leading: const Icon(Icons.leaderboard),
             title: Text(l10n.leaderboardMenuTitle),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {
+            onTap: () async {
+              // Tính năng online: cần đã liên kết email (xem email_gate.dart).
+              if (!await ensureOnlineLinked(context) || !context.mounted) return;
               Navigator.of(context).pop();
               showLeaderboardPage(context);
             },
@@ -80,7 +87,9 @@ class _CompeteHubDialog extends ConsumerWidget {
             leading: const Icon(Icons.timer),
             title: Text(l10n.storySpeedrunMenuTitle),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {
+            onTap: () async {
+              // Tính năng online: cần đã liên kết email (xem email_gate.dart).
+              if (!await ensureOnlineLinked(context) || !context.mounted) return;
               Navigator.of(context).pop();
               showStorySpeedrunPage(context);
             },
@@ -89,7 +98,9 @@ class _CompeteHubDialog extends ConsumerWidget {
             leading: const Icon(Icons.military_tech),
             title: Text(l10n.arenaLeaderboardMenuTitle),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {
+            onTap: () async {
+              // Tính năng online: cần đã liên kết email (xem email_gate.dart).
+              if (!await ensureOnlineLinked(context) || !context.mounted) return;
               Navigator.of(context).pop();
               showArenaLeaderboardPage(context);
             },
@@ -99,7 +110,9 @@ class _CompeteHubDialog extends ConsumerWidget {
             leading: const Icon(Icons.workspace_premium),
             title: Text(l10n.vipLbTitle),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {
+            onTap: () async {
+              // Tính năng online: cần đã liên kết email (xem email_gate.dart).
+              if (!await ensureOnlineLinked(context) || !context.mounted) return;
               Navigator.of(context).pop();
               showVipLeaderboard(context);
             },

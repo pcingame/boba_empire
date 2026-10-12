@@ -11,6 +11,8 @@ library;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../data/linked_session.dart';
+
 /// Bảng nào: "Hồi 1" (tới Chương 18, `story_speedrun_schema.sql`), "Hồi 2"
 /// (tới Chương 28, `story_speedrun2_schema.sql`) hay "Hồi 3" (tới Chương 34,
 /// `story_speedrun3_schema.sql`). Ba bảng riêng, cùng khuôn.
@@ -64,14 +66,7 @@ class StorySpeedrunRepository {
       _prefs.setString(_nicknameKey, nickname);
 
   Future<String> ensureSignedIn() async {
-    final existing = _client.auth.currentUser;
-    if (existing != null) return existing.id;
-    final res = await _client.auth.signInAnonymously();
-    final user = res.user;
-    if (user == null) {
-      throw StateError('Đăng nhập ẩn danh Supabase thất bại (user null).');
-    }
-    return user.id;
+    return requireLinkedId(_client.auth.currentUser);
   }
 
   /// Nộp mốc hoàn thành — CHỈ 1 LẦN cho mỗi tài khoản (bảng không cho update,

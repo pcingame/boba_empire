@@ -8,6 +8,8 @@ import 'dart:math';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../data/linked_session.dart';
+
 import 'arena_models.dart';
 import 'arena_rules.dart';
 
@@ -19,14 +21,7 @@ class ArenaRepository {
   /// Đăng nhập ẩn danh nếu chưa có phiên. Đấu Trường không cần tài khoản đầy
   /// đủ ở bản MVP (xem PROPOSAL_ARENA_PVP.md §1).
   Future<String> ensureSignedIn() async {
-    final existing = _client.auth.currentUser;
-    if (existing != null) return existing.id;
-    final res = await _client.auth.signInAnonymously();
-    final user = res.user;
-    if (user == null) {
-      throw StateError('Đăng nhập ẩn danh Supabase thất bại (user null).');
-    }
-    return user.id;
+    return requireLinkedId(_client.auth.currentUser);
   }
 
   String? get myUserId => _client.auth.currentUser?.id;

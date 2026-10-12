@@ -11,6 +11,7 @@ import '../core/match3_levels.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import 'match3_board.dart';
+import 'email_gate.dart';
 import 'm3_leaderboard_page.dart';
 import 'match3_how_to_dialog.dart';
 import 'match3_play_page.dart';
@@ -84,7 +85,10 @@ class _Match3JourneyPageState extends ConsumerState<Match3JourneyPage> {
               key: const Key('m3-leaderboard-button'),
               icon: const Icon(Icons.emoji_events_outlined),
               tooltip: l10n.m3LbTitle,
-              onPressed: () => showM3Leaderboard(context),
+              onPressed: () async {
+                if (!await ensureOnlineLinked(context) || !context.mounted) return;
+                showM3Leaderboard(context);
+              },
             ),
             IconButton(
               key: const Key('m3-how-to-button'),

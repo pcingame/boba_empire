@@ -48,3 +48,43 @@ Future<bool> ensureEmailLinked(BuildContext context, WidgetRef ref) async {
   await showCloudSaveDialog(context);
   return context.mounted && _linked(ref);
 }
+
+/// Cổng cho tính năng ONLINE (Hội, Chợ, Đấu Trường, bảng xếp hạng…): chỉ tài khoản đã liên kết email
+/// mới vào được (xem data/linked_session.dart). Chưa liên kết thì giải thích và mở màn liên kết email;
+/// trả true chỉ khi liên kết xong. Không cần WidgetRef — lấy container từ context.
+Future<bool> ensureOnlineLinked(BuildContext context) async {
+  final container = ProviderScope.containerOf(context);
+  bool linked() {
+    try {
+      return container.read(cloudSaveControllerProvider) is CloudSaveLinked;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  if (linked()) return true;
+  final l10n = AppLocalizations.of(context)!;
+  final go = await showDialog<bool>(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      key: const Key('online-gate-dialog'),
+      title: Text(l10n.emailGateOnlineTitle),
+      content: Text(l10n.emailGateOnlineBody),
+      actions: [
+        TextButton(
+          key: const Key('online-gate-cancel'),
+          onPressed: () => Navigator.of(ctx).pop(false),
+          child: Text(l10n.cancel),
+        ),
+        FilledButton(
+          key: const Key('online-gate-link'),
+          onPressed: () => Navigator.of(ctx).pop(true),
+          child: Text(l10n.emailGateLink),
+        ),
+      ],
+    ),
+  );
+  if (go != true || !context.mounted) return false;
+  await showCloudSaveDialog(context);
+  return context.mounted && linked();
+}

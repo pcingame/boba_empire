@@ -13,6 +13,7 @@ import '../core/format.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
+import 'email_gate.dart';
 import 'event_leaderboard_page.dart';
 import 'widgets/clay.dart';
 
@@ -100,7 +101,10 @@ class _EventDialog extends ConsumerWidget {
       actions: [
         TextButton(
           key: const Key('event-leaderboard-button'),
-          onPressed: () => showEventLeaderboard(context),
+          onPressed: () async {
+                if (!await ensureOnlineLinked(context) || !context.mounted) return;
+                showEventLeaderboard(context);
+              },
           child: Text('🏆 ${l10n.eventLbTitle}'),
         ),
         TextButton(

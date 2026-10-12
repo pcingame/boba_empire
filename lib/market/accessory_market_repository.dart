@@ -9,6 +9,8 @@ library;
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../data/linked_session.dart';
+
 /// Tin đăng sống tối đa bấy nhiêu ngày rồi hết hạn (khớp `market_listing_days()` trong
 /// accessory_market_schema.sql; test so khớp).
 const int marketListingDays = 3;
@@ -101,14 +103,7 @@ class AccessoryMarketRepository {
   static const _ownershipTable = 'accessory_server_ownership';
 
   Future<String> ensureSignedIn() async {
-    final existing = _client.auth.currentUser;
-    if (existing != null) return existing.id;
-    final res = await _client.auth.signInAnonymously();
-    final user = res.user;
-    if (user == null) {
-      throw StateError('Đăng nhập ẩn danh Supabase thất bại (user null).');
-    }
-    return user.id;
+    return requireLinkedId(_client.auth.currentUser);
   }
 
   /// Ghi nhận 1 món vừa rớt hợp lệ — gọi lúc rớt món MỚI (game_controller.dart)

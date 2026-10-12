@@ -810,6 +810,13 @@ class AppLocalizationsVi extends AppLocalizations {
       'Giao dịch nạp được gắn với tài khoản của bạn để khôi phục được khi đổi máy hoặc có sự cố. Hãy liên kết email trước (miễn phí, mất khoảng một phút).';
 
   @override
+  String get emailGateOnlineTitle => 'Liên kết email để chơi online';
+
+  @override
+  String get emailGateOnlineBody =>
+      'Hội, Chợ, Đấu Trường và bảng xếp hạng cần tài khoản đã liên kết email — để dữ liệu của bạn được giữ an toàn và khôi phục được khi đổi máy hoặc cài lại. Miễn phí, chỉ mất khoảng một phút.';
+
+  @override
   String get emailGateLink => 'Liên kết email';
 
   @override

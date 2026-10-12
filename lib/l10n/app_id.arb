@@ -218,6 +218,8 @@
   "vipOnlineBanner": "👑 {title} {nickname} baru saja online!",
   "emailGateTitle": "Tautkan email untuk top-up",
   "emailGateBody": "Pembelian dikaitkan dengan akunmu agar bisa dipulihkan jika ganti ponsel atau terjadi masalah. Tautkan email dulu (gratis, sekitar satu menit).",
+  "emailGateOnlineTitle": "Tautkan email untuk main online",
+  "emailGateOnlineBody": "Guild, Pasar, Arena, dan papan peringkat memerlukan akun yang terhubung ke email agar datamu aman dan bisa dipulihkan saat ganti ponsel atau instal ulang. Gratis dan hanya sekitar satu menit.",
   "emailGateLink": "Tautkan email",
   "iapGemsFirstSnack": "Diterima +{amount} 💎 — bonus ganda pembelian pertama!",
   "iapFirstBuyNote": "🎉 Pembelian pertama: 💎 dobel!",

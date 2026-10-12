@@ -812,6 +812,13 @@ class AppLocalizationsId extends AppLocalizations {
       'Pembelian dikaitkan dengan akunmu agar bisa dipulihkan jika ganti ponsel atau terjadi masalah. Tautkan email dulu (gratis, sekitar satu menit).';
 
   @override
+  String get emailGateOnlineTitle => 'Tautkan email untuk main online';
+
+  @override
+  String get emailGateOnlineBody =>
+      'Guild, Pasar, Arena, dan papan peringkat memerlukan akun yang terhubung ke email agar datamu aman dan bisa dipulihkan saat ganti ponsel atau instal ulang. Gratis dan hanya sekitar satu menit.';
+
+  @override
   String get emailGateLink => 'Tautkan email';
 
   @override

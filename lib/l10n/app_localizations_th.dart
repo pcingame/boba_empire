@@ -809,6 +809,13 @@ class AppLocalizationsTh extends AppLocalizations {
       'การซื้อจะผูกกับบัญชีของคุณ เพื่อกู้คืนได้หากเปลี่ยนเครื่องหรือเกิดปัญหา กรุณาผูกอีเมลก่อน (ฟรี ใช้เวลาประมาณหนึ่งนาที)';
 
   @override
+  String get emailGateOnlineTitle => 'ผูกอีเมลเพื่อเล่นออนไลน์';
+
+  @override
+  String get emailGateOnlineBody =>
+      'กิลด์ ตลาด สนามประลอง และกระดานอันดับต้องใช้บัญชีที่ผูกอีเมล เพื่อให้ข้อมูลของคุณปลอดภัยและกู้คืนได้เมื่อเปลี่ยนเครื่องหรือติดตั้งใหม่ ฟรีและใช้เวลาประมาณหนึ่งนาที';
+
+  @override
   String get emailGateLink => 'ผูกอีเมล';
 
   @override

@@ -401,6 +401,9 @@ enum GuildFailure {
   /// Trong hội đã có thành viên trùng tên (không phân biệt hoa thường).
   nicknameTaken,
 
+  /// Chưa liên kết email (tài khoản chưa/còn ẩn danh) nên chưa dùng được Hội.
+  notLinked,
+
   /// Không đủ quyền với người này (vd. phó hội kick phó hội khác).
   notAllowed,
 
@@ -581,9 +584,8 @@ class SupabaseGuildRepository implements GuildRepository {
   String? get myUserId => _client.auth.currentUser?.id;
 
   Future<void> _ensureSignedIn() async {
-    if (_client.auth.currentUser != null) return;
-    final res = await _client.auth.signInAnonymously();
-    if (res.user == null) throw const GuildException(GuildFailure.network);
+    final user = _client.auth.currentUser;
+    if (user == null || user.isAnonymous) throw const GuildException(GuildFailure.notLinked);
   }
 
   Future<dynamic> _rpc(String fn, [Map<String, dynamic>? params]) async {

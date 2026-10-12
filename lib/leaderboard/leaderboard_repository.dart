@@ -9,6 +9,8 @@ library;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../data/linked_session.dart';
+
 class LeaderboardEntry {
   const LeaderboardEntry({
     required this.userId,
@@ -61,14 +63,7 @@ class LeaderboardRepository {
   /// Đăng nhập ẩn danh nếu chưa có phiên nào (kể cả phiên có sẵn từ Đấu
   /// Trường/Đồng bộ đám mây) — trả về user id.
   Future<String> ensureSignedIn() async {
-    final existing = _client.auth.currentUser;
-    if (existing != null) return existing.id;
-    final res = await _client.auth.signInAnonymously();
-    final user = res.user;
-    if (user == null) {
-      throw StateError('Đăng nhập ẩn danh Supabase thất bại (user null).');
-    }
-    return user.id;
+    return requireLinkedId(_client.auth.currentUser);
   }
 
   /// Nộp/cập nhật điểm của CHÍNH mình — LUÔN kèm [nickname] (xem

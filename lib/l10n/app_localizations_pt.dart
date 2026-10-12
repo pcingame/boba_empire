@@ -815,6 +815,13 @@ class AppLocalizationsPt extends AppLocalizations {
       'As compras ficam ligadas à sua conta para poderem ser recuperadas se você trocar de celular ou algo der errado. Vincule um e-mail primeiro (grátis, leva um minuto).';
 
   @override
+  String get emailGateOnlineTitle => 'Vincule seu e-mail para jogar online';
+
+  @override
+  String get emailGateOnlineBody =>
+      'Guildas, Mercado, Arena e rankings exigem uma conta vinculada a um e-mail, para seus dados ficarem seguros e poderem ser restaurados se você trocar de celular ou reinstalar. É grátis e leva cerca de um minuto.';
+
+  @override
   String get emailGateLink => 'Vincular e-mail';
 
   @override

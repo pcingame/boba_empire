@@ -82,4 +82,10 @@ create trigger player_saves_set_updated_at
 --
 -- Thiếu bước này thì email gửi tới người chơi sẽ không có mã số nào để họ
 -- gõ vào app.
+--
+-- ⚠️ THÊM (2026-10-12, liên kết email bắt buộc): người chơi đang có phiên ẩn danh (bản cũ) được
+-- NÂNG CẤP tại chỗ bằng updateUser(email) để giữ nguyên user_id (Hội/ví Chợ/BXH không mất). Mã của
+-- luồng này dùng template "Change Email Address" (KHÔNG phải "Magic Link") → cũng PHẢI thêm
+-- {{ .Token }} vào template đó, nếu không người chơi cũ không nhận được mã. Template "Confirm
+-- signup"/"Magic Link" vẫn dùng cho người mới/đăng nhập máy khác.
 -- ─────────────────────────────────────────────────────────────────────────
