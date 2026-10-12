@@ -20,6 +20,7 @@ import '../core/models.dart';
 import '../core/whats_new.dart';
 import '../data/cloud_save_controller.dart' show cloudLinkedProvider;
 import '../data/game_storage.dart';
+import '../guild/guild_alert.dart';
 import '../guild/guild_controller.dart' show guildControllerProvider;
 import '../core/rival.dart';
 import '../iap/iap_products.dart';
@@ -131,6 +132,7 @@ class _HomePageState extends ConsumerState<HomePage>
       final state = ref.read(gameControllerProvider);
       // Buff thu nhập cả hội (nếu đang ở hội): áp ngay lúc mở app, không cần mở màn Hội.
       unawaited(ref.read(guildControllerProvider.notifier).syncBuff());
+      unawaited(ref.read(guildControllerProvider.notifier).syncAlerts());
       final chapter = state.pendingStoryChapterId;
       // Hướng dẫn lần đầu là lớp phủ trên màn chơi (TutorialOverlay), không phải
       // popup. Chưa xong thì chỉ cho cutscene mở đầu hiện; mọi popup khác chờ.
@@ -304,6 +306,7 @@ class _HomePageState extends ConsumerState<HomePage>
       case AppLifecycleState.resumed:
         controller.handleResume(); // bù tiền cho lúc ở nền
         unawaited(ref.read(guildControllerProvider.notifier).syncBuff());
+        unawaited(ref.read(guildControllerProvider.notifier).syncAlerts());
         unawaited(ref.read(vipPresenceProvider).ping());
         unawaited(ref.read(referralControllerProvider.notifier).reportStageIfNeeded());
         Reminders.cancelAll(); // đã mở app rồi thì nhắc nữa là phiền
@@ -545,6 +548,7 @@ class _BottomBar extends ConsumerWidget {
     final newAch = ref.watch(
       gameControllerProvider.select((s) => s.newAchievements.isNotEmpty),
     );
+    final guildAlert = ref.watch(guildAlertProvider);
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
@@ -589,6 +593,7 @@ class _BottomBar extends ConsumerWidget {
                   buttonKey: const Key('compete-button'),
                   icon: Icons.sports_kabaddi,
                   label: l10n.navCompete,
+                  badge: guildAlert,
                   onTap: () => showCompeteHub(context)),
               _navItem(theme,
                   buttonKey: const Key('match3-button'),

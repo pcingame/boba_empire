@@ -217,6 +217,19 @@ class GuildController extends Notifier<GuildViewState> {
     }
   }
 
+  int _lastAlertSyncMs = 0;
+
+  /// Tải trạng thái hội lúc mở app/quay lại để chấm đỏ ở menu Thi đấu có dữ liệu mà không
+  /// cần mở màn Hội. Chỉ khi đang ở hội, cách nhau ≥ 10 phút; refresh im lặng nên không
+  /// nháy màn Hội đang mở.
+  Future<void> syncAlerts() async {
+    if (!ref.read(gameControllerProvider).guildJoined) return;
+    final now = ref.read(clockProvider)();
+    if (_lastAlertSyncMs != 0 && now - _lastAlertSyncMs < 10 * 60 * 1000) return;
+    _lastAlertSyncMs = now;
+    await refresh(silent: true);
+  }
+
   /// Nạp [gems] 💎 lấy Xu Hội: kiểm đủ 💎 và còn hạn mức ngày TRƯỚC, trừ 💎 SAU khi
   /// server ghi nhận.
   Future<GuildOutcome> donate(int gems) async {

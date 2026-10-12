@@ -4,7 +4,9 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../guild/guild_alert.dart';
 import '../l10n/app_localizations.dart';
 import 'arena_leaderboard_page.dart';
 import 'arena_page.dart';
@@ -20,11 +22,11 @@ Future<void> showCompeteHub(BuildContext context) {
   );
 }
 
-class _CompeteHubDialog extends StatelessWidget {
+class _CompeteHubDialog extends ConsumerWidget {
   const _CompeteHubDialog();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
       title: Text(l10n.navCompete),
@@ -44,7 +46,21 @@ class _CompeteHubDialog extends StatelessWidget {
           ListTile(
             key: const Key('compete-guild'),
             leading: const Icon(Icons.groups),
-            title: Text(l10n.guildTitle),
+            title: Row(children: [
+              Text(l10n.guildTitle),
+              if (ref.watch(guildAlertProvider)) ...[
+                const SizedBox(width: 8),
+                Container(
+                  key: const Key('compete-guild-dot'),
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.error,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ],
+            ]),
             trailing: const Icon(Icons.chevron_right),
             onTap: () {
               Navigator.of(context).pop();
