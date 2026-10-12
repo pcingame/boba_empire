@@ -3558,6 +3558,30 @@ class AppLocalizationsId extends AppLocalizations {
       'Pesan dilaporkan. Kamu tidak akan melihatnya lagi.';
 
   @override
+  String get guildMembersHeader => 'Anggota';
+
+  @override
+  String get guildMemberSearchHint => 'Cari anggota';
+
+  @override
+  String get guildMemberNoMatch => 'Tidak ada anggota yang cocok.';
+
+  @override
+  String get guildRoleOwner => 'Ketua';
+
+  @override
+  String get guildRoleOfficer => 'Wakil';
+
+  @override
+  String get guildRoleMember => 'Anggota';
+
+  @override
+  String get guildMemberMention => 'Sebut di chat';
+
+  @override
+  String get guildMemberProfile => 'Lihat profil';
+
+  @override
   String get guildManage => 'Kelola';
 
   @override

@@ -3552,6 +3552,30 @@ class AppLocalizationsVi extends AppLocalizations {
       'Đã báo cáo tin nhắn. Bạn sẽ không còn thấy tin này.';
 
   @override
+  String get guildMembersHeader => 'Thành viên';
+
+  @override
+  String get guildMemberSearchHint => 'Tìm thành viên';
+
+  @override
+  String get guildMemberNoMatch => 'Không có thành viên nào khớp.';
+
+  @override
+  String get guildRoleOwner => 'Chủ hội';
+
+  @override
+  String get guildRoleOfficer => 'Phó hội';
+
+  @override
+  String get guildRoleMember => 'Thành viên';
+
+  @override
+  String get guildMemberMention => 'Nhắc trong chat';
+
+  @override
+  String get guildMemberProfile => 'Xem hồ sơ';
+
+  @override
   String get guildManage => 'Quản lý';
 
   @override

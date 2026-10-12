@@ -3565,6 +3565,30 @@ class AppLocalizationsEn extends AppLocalizations {
       'Message reported. You won\'t see it anymore.';
 
   @override
+  String get guildMembersHeader => 'Members';
+
+  @override
+  String get guildMemberSearchHint => 'Search members';
+
+  @override
+  String get guildMemberNoMatch => 'No matching members.';
+
+  @override
+  String get guildRoleOwner => 'Owner';
+
+  @override
+  String get guildRoleOfficer => 'Officer';
+
+  @override
+  String get guildRoleMember => 'Member';
+
+  @override
+  String get guildMemberMention => 'Mention in chat';
+
+  @override
+  String get guildMemberProfile => 'View profile';
+
+  @override
   String get guildManage => 'Manage';
 
   @override

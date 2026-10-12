@@ -39,6 +39,19 @@ Future<void> _scrollTo(WidgetTester tester, Key key) async {
   await tester.pumpAndSettle();
 }
 
+/// Mở bảng thao tác của thành viên [id]: cuộn tới hàng rồi chạm (các nút Tặng/Kick/… nằm trong bảng này).
+Future<void> _openMember(WidgetTester tester, String id) async {
+  await _scrollTo(tester, Key('guild-member-$id'));
+  await tester.tap(find.byKey(Key('guild-member-$id')));
+  await tester.pumpAndSettle();
+}
+
+/// Đóng bảng thao tác (chạm vùng mờ phía trên).
+Future<void> _closeSheet(WidgetTester tester) async {
+  await tester.tapAt(const Offset(10, 10));
+  await tester.pumpAndSettle();
+}
+
 /// Gỡ cây widget rồi dispose mọi container đang sống (dùng giữa hai lần _pump
 /// trong cùng một test: hai GameController sống song song làm pumpAndSettle
 /// không bao giờ yên).
@@ -424,25 +437,31 @@ void main() {
         (tester) async {
       await _pump(tester, FakeGuildRepository(mine: fakeGuild()));
       expect(find.textContaining('[BB] Boba Club'), findsOneWidget);
-      await _scrollTo(tester, const Key('guild-kick-u2'));
+      await _openMember(tester, 'u2');
       expect(find.byKey(const Key('guild-kick-u2')), findsOneWidget);
       expect(find.byKey(const Key('guild-kick-me')), findsNothing, reason: 'không tự kick');
+      await _closeSheet(tester);
+      await _openMember(tester, 'me');
+      expect(find.byKey(const Key('guild-kick-me')), findsNothing, reason: 'không tự kick (bảng của chính mình)');
     });
 
     gTest('không phải chủ → không có nút kick', (tester) async {
       await _pump(tester, FakeGuildRepository(mine: fakeGuild(ownerId: 'u2')));
+      await _openMember(tester, 'u3');
+      expect(find.byKey(const Key('guild-member-sheet-u3')), findsOneWidget, reason: 'bảng đã mở');
       expect(find.byKey(const Key('guild-kick-u3')), findsNothing);
     });
 
     gTest('kick: hỏi xác nhận rồi gọi server; huỷ thì không', (tester) async {
       final repo = FakeGuildRepository(mine: fakeGuild());
       await _pump(tester, repo);
-      await _scrollTo(tester, const Key('guild-kick-u2'));
+      await _openMember(tester, 'u2');
       await tester.tap(find.byKey(const Key('guild-kick-u2')));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Hủy').evaluate().isNotEmpty ? find.text('Hủy') : find.text('Huỷ'));
       await tester.pumpAndSettle();
       expect(repo.calls.contains('kick'), isFalse);
+      await _openMember(tester, 'u2');
       await tester.tap(find.byKey(const Key('guild-kick-u2')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('guild-confirm-ok')));
@@ -566,7 +585,7 @@ void main() {
     gTest('thiếu 💎 nạp/tặng không còn báo nhầm "cần 2000 💎 để tạo hội"', (tester) async {
       final repo = FakeGuildRepository(mine: fakeGuild());
       await _pump(tester, repo, locale: 'en', gems: 5);
-      await _scrollTo(tester, const Key('guild-gift-u2'));
+      await _openMember(tester, 'u2');
       await tester.tap(find.byKey(const Key('guild-gift-u2')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('guild-gift-amount-10')));
@@ -712,7 +731,7 @@ void main() {
         (tester) async {
       await _pump(tester, FakeGuildRepository(mine: fakeGuild()),
           locale: 'en', extra: vip, size: const Size(360, 900));
-      await _scrollTo(tester, const Key('guild-gift-u3'));
+      await _scrollTo(tester, const Key('guild-member-u3'));
       expect(find.text('VIP 2'), findsOneWidget);
       expect(find.text('VIP 5'), findsOneWidget);
       expect(find.text('VIP 10'), findsOneWidget);
@@ -742,7 +761,7 @@ void main() {
           GuildMemberInfo(userId: 'u3', nickname: longName, points: 12345678),
         ]));
         await _pump(tester, repo, locale: lang, extra: vip);
-        await _scrollTo(tester, const Key('guild-gift-u3'));
+        await _scrollTo(tester, const Key('guild-member-u3'));
         expect(tester.takeException(), isNull);
       });
     }
@@ -751,16 +770,19 @@ void main() {
   group('tặng 💎 giữa hội viên', () {
     gTest('mọi hội viên khác có nút tặng; chính mình thì không', (tester) async {
       await _pump(tester, FakeGuildRepository(mine: fakeGuild()), locale: 'en');
-      await _scrollTo(tester, const Key('guild-gift-u3'));
-      expect(find.byKey(const Key('guild-gift-u2')), findsOneWidget);
-      expect(find.byKey(const Key('guild-gift-u3')), findsOneWidget);
+      for (final id in ['u2', 'u3']) {
+        await _openMember(tester, id);
+        expect(find.byKey(Key('guild-gift-$id')), findsOneWidget, reason: id);
+        await _closeSheet(tester);
+      }
+      await _openMember(tester, 'me');
       expect(find.byKey(const Key('guild-gift-me')), findsNothing);
     });
 
     gTest('chọn mức tặng → gửi lên server, trừ 💎, báo đã tặng', (tester) async {
       final repo = FakeGuildRepository(mine: fakeGuild());
       final c = await _pump(tester, repo, locale: 'en', gems: 100);
-      await _scrollTo(tester, const Key('guild-gift-u2'));
+      await _openMember(tester, 'u2');
       await tester.tap(find.byKey(const Key('guild-gift-u2')));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('guild-gift-dialog')), findsOneWidget);
@@ -777,7 +799,7 @@ void main() {
     gTest('thiếu 💎 → báo lỗi, không gửi', (tester) async {
       final repo = FakeGuildRepository(mine: fakeGuild());
       final c = await _pump(tester, repo, locale: 'en', gems: 5);
-      await _scrollTo(tester, const Key('guild-gift-u2'));
+      await _openMember(tester, 'u2');
       await tester.tap(find.byKey(const Key('guild-gift-u2')));
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('guild-gift-amount-10')));
@@ -812,7 +834,7 @@ void main() {
           ];
         await _pump(tester, repo, locale: lang);
         expect(tester.takeException(), isNull);
-        await _scrollTo(tester, const Key('guild-gift-u2'));
+        await _openMember(tester, 'u2');
         expect(tester.takeException(), isNull);
       });
     }

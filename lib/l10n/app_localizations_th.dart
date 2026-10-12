@@ -3538,6 +3538,30 @@ class AppLocalizationsTh extends AppLocalizations {
   String get guildChatReported => 'รายงานข้อความแล้ว คุณจะไม่เห็นข้อความนี้อีก';
 
   @override
+  String get guildMembersHeader => 'สมาชิก';
+
+  @override
+  String get guildMemberSearchHint => 'ค้นหาสมาชิก';
+
+  @override
+  String get guildMemberNoMatch => 'ไม่พบสมาชิกที่ตรงกัน';
+
+  @override
+  String get guildRoleOwner => 'หัวหน้ากิลด์';
+
+  @override
+  String get guildRoleOfficer => 'รองหัวหน้า';
+
+  @override
+  String get guildRoleMember => 'สมาชิก';
+
+  @override
+  String get guildMemberMention => 'แท็กในแชต';
+
+  @override
+  String get guildMemberProfile => 'ดูโปรไฟล์';
+
+  @override
   String get guildManage => 'จัดการ';
 
   @override

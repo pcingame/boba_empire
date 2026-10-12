@@ -1086,7 +1086,12 @@ select t_as(u(38)); select guild_create('Other React', 'or', '🙃', false, 'R9'
 select t_err(format($$select guild_chat_react(%s, '👍')$$, :'mid'), 'not found');
 select t_err($$select guild_chat_react(999999999, '👍')$$, 'not found');
 -- Bảo mật: hàm nội bộ/bảng không đọc được; khách bị chặn.
-select t_err(format($$select guild_message_reactions_json(%s, %L::uuid)$$, :'mid', u(36)), 'permission denied');
+-- Tin ghim cũng mang reaction, cùng dữ liệu với bản trong danh sách (một truy vấn gom cho cả hai).
+select t_as(u(36)); select guild_chat_pin(:'mid');
+select t_eq('tin ghim có reaction', jsonb_array_length(guild_chat_list()->'pinned'->'reactions'), 2);
+select t_eq('tin ghim và tin thường cùng reaction',
+  (guild_chat_list()->'messages'->0->'reactions') = (guild_chat_list()->'pinned'->'reactions'), true);
+select t_as(u(38));
 select t_as(null);
 select t_err(format($$select guild_chat_react(%s, '👍')$$, :'mid'), 'permission denied');
 -- Xoá tin kéo theo reaction.

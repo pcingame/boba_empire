@@ -3497,6 +3497,30 @@ class AppLocalizationsKo extends AppLocalizations {
   String get guildChatReported => '메시지를 신고했어요. 이 메시지는 더 이상 보이지 않아요.';
 
   @override
+  String get guildMembersHeader => '멤버';
+
+  @override
+  String get guildMemberSearchHint => '멤버 검색';
+
+  @override
+  String get guildMemberNoMatch => '일치하는 멤버가 없어요.';
+
+  @override
+  String get guildRoleOwner => '길드장';
+
+  @override
+  String get guildRoleOfficer => '부길드장';
+
+  @override
+  String get guildRoleMember => '멤버';
+
+  @override
+  String get guildMemberMention => '채팅에서 멘션';
+
+  @override
+  String get guildMemberProfile => '프로필 보기';
+
+  @override
   String get guildManage => '관리';
 
   @override

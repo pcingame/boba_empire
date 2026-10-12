@@ -3576,6 +3576,30 @@ class AppLocalizationsEs extends AppLocalizations {
   String get guildChatReported => 'Mensaje denunciado. Ya no lo verás.';
 
   @override
+  String get guildMembersHeader => 'Miembros';
+
+  @override
+  String get guildMemberSearchHint => 'Buscar miembros';
+
+  @override
+  String get guildMemberNoMatch => 'Ningún miembro coincide.';
+
+  @override
+  String get guildRoleOwner => 'Líder';
+
+  @override
+  String get guildRoleOfficer => 'Oficial';
+
+  @override
+  String get guildRoleMember => 'Miembro';
+
+  @override
+  String get guildMemberMention => 'Mencionar en el chat';
+
+  @override
+  String get guildMemberProfile => 'Ver perfil';
+
+  @override
   String get guildManage => 'Gestionar';
 
   @override

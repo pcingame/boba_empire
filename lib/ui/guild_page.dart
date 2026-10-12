@@ -22,6 +22,7 @@ import '../state/game_providers.dart';
 import 'guild_activity_page.dart';
 import 'widgets/dispose_with_widget.dart';
 import 'guild_chat_page.dart';
+import 'guild_members.dart';
 import 'guild_shop_page.dart';
 import 'widgets/clay.dart';
 import 'web_links.dart';
@@ -542,135 +543,14 @@ class _MyGuildView extends ConsumerWidget {
               ),
             const SizedBox(height: 8),
           ],
-          for (final (i, m) in g.members.indexed)
-            ClayTile(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: VipNameBlock(
- userId: m.userId,
- // Hai dòng thay vì một Row: ở màn hẹp, cột điểm + 3 nút cố định chỉ chừa ~60px cho tên.
- // Dòng trên (👑/⭐ + nhãn VIP/huy hiệu) co nhỏ vừa khung bằng FittedBox, dòng dưới là tên
- // (cắt "…" khi quá dài) nên không tràn dù tên và nhãn VIP 10 rất dài.
- child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              if (m.points > 0 && i < 3)
-                                Text('${const ['🥇', '🥈', '🥉'][i]} '),
-                              if (m.role == GuildRole.owner) const Text('👑 '),
-                              if (m.role == GuildRole.officer) const Text('⭐ '),
-                              FlairBadge(userId: m.userId),
-                            ],
-                          ),
-                        ),
-                        Text(m.nickname,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                fontWeight: m.userId == view.myUserId
-                                    ? FontWeight.bold
-                                    : FontWeight.normal)),
-                        // Thanh điểm tương đối so với người cao nhất (members đã xếp giảm dần).
-                        Padding(
-                          padding: const EdgeInsets.only(top: 3),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(3),
-                            child: LinearProgressIndicator(
-                              value: g.members.first.points <= 0
-                                  ? 0
-                                  : (m.points / g.members.first.points)
-                                      .clamp(0.0, 1.0)
-                                      .toDouble(),
-                              minHeight: 4,
-                            ),
-                          ),
-                        ),
-                      ],
-                    )),
-                  ),
-                  const SizedBox(width: 8),
-                  // Cột điểm RỘNG CỐ ĐỊNH, căn phải: điểm các hàng thẳng cột dù hàng có
-                  // nút hay không (trước đây Flexible làm điểm lệch từng hàng).
-                  SizedBox(
-                    key: Key('guild-member-points-${m.userId}'),
-                    width: 88,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerRight,
-                      child: Text(l10n.guildPoints(m.points),
-                          style: const TextStyle(fontWeight: FontWeight.w600)),
-                    ),
-                  ),
-                  // Tặng 💎: mọi hội viên, trừ chính mình (ô trống giữ chỗ cho thẳng cột).
-                  SizedBox(
-                    width: 36,
-                    child: m.userId == view.myUserId
-                        ? null
-                        : IconButton(
-                            key: Key('guild-gift-${m.userId}'),
-                            tooltip: l10n.guildGiftTooltip,
-                            padding: EdgeInsets.zero,
-                            constraints:
-                                const BoxConstraints(minWidth: 36, minHeight: 36),
-                            icon: const Icon(Icons.card_giftcard, size: 20),
-                            onPressed: () => _gift(context, ref, m),
-                          ),
-                  ),
-                  // Ô nút cũng cố định: chủ hội có 2 ô (menu + kick), phó hội 1 ô (kick);
-                  // ô trống giữ chỗ để các cột không xô lệch.
-                  if (view.isOwner)
-                    SizedBox(
-                      width: 36,
-                      child: m.userId == view.myUserId
-                          ? null
-                          : PopupMenuButton<String>(
-                              key: Key('guild-member-menu-${m.userId}'),
-                              tooltip: l10n.guildManage,
-                              padding: EdgeInsets.zero,
-                              iconSize: 20,
-                              icon: const Icon(Icons.more_vert),
-                              onSelected: (v) => _manage(context, ref, m, v),
-                              itemBuilder: (_) => [
-                                PopupMenuItem(
-                                  key: Key('guild-toggle-officer-${m.userId}'),
-                                  value: 'officer',
-                                  child: Text(m.role == GuildRole.officer
-                                      ? l10n.guildDemote
-                                      : l10n.guildPromote),
-                                ),
-                                PopupMenuItem(
-                                  key: Key('guild-transfer-${m.userId}'),
-                                  value: 'transfer',
-                                  child: Text(l10n.guildTransfer),
-                                ),
-                              ],
-                            ),
-                    ),
-                  if (view.canModerate)
-                    SizedBox(
-                      width: 36,
-                      child: view.canKick(m)
-                          ? IconButton(
-                              key: Key('guild-kick-${m.userId}'),
-                              tooltip: l10n.guildKick,
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(
-                                  minWidth: 36, minHeight: 36),
-                              icon: const Icon(Icons.person_remove, size: 20),
-                              onPressed: () => _kick(context, ref, m),
-                            )
-                          : null,
-                    ),
-                ],
-              ),
-            ),
+          GuildMembersSection(
+            view: view,
+            onGift: (m) => _gift(context, ref, m),
+            onManage: (m, action) => _manage(context, ref, m, action),
+            onKick: (m) => _kick(context, ref, m),
+            // "Nhắc trong chat": mở chat với "@tên " điền sẵn.
+            onMention: (m) => showGuildChat(context, prefill: '@${m.nickname} '),
+          ),
           const SizedBox(height: 12),
           OutlinedButton(
             key: const Key('guild-leave-button'),

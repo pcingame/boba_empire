@@ -6126,6 +6126,54 @@ abstract class AppLocalizations {
   /// **'Đã báo cáo tin nhắn. Bạn sẽ không còn thấy tin này.'**
   String get guildChatReported;
 
+  /// No description provided for @guildMembersHeader.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thành viên'**
+  String get guildMembersHeader;
+
+  /// No description provided for @guildMemberSearchHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm thành viên'**
+  String get guildMemberSearchHint;
+
+  /// No description provided for @guildMemberNoMatch.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có thành viên nào khớp.'**
+  String get guildMemberNoMatch;
+
+  /// No description provided for @guildRoleOwner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chủ hội'**
+  String get guildRoleOwner;
+
+  /// No description provided for @guildRoleOfficer.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phó hội'**
+  String get guildRoleOfficer;
+
+  /// No description provided for @guildRoleMember.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thành viên'**
+  String get guildRoleMember;
+
+  /// No description provided for @guildMemberMention.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhắc trong chat'**
+  String get guildMemberMention;
+
+  /// No description provided for @guildMemberProfile.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem hồ sơ'**
+  String get guildMemberProfile;
+
   /// No description provided for @guildManage.
   ///
   /// In vi, this message translates to:

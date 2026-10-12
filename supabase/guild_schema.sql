@@ -1195,42 +1195,50 @@ language sql immutable as $$
   select p_emoji = any (array['👍', '❤️', '😂', '😮', '😢', '🎉'])
 $$;
 
--- Reaction của một tin dạng [{emoji, count, mine}], theo thứ tự ai bấm trước.
-create or replace function guild_message_reactions_json(p_message bigint, p_user uuid)
-returns jsonb
-language sql stable security definer set search_path = public as $$
-  select coalesce(jsonb_agg(jsonb_build_object('emoji', x.emoji, 'count', x.cnt, 'mine', x.mine)
-                            order by x.first_at), '[]'::jsonb)
-  from (select emoji, count(*) as cnt, bool_or(user_id = p_user) as mine, min(created_at) as first_at
-          from guild_message_reactions where message_id = p_message group by emoji) x
-$$;
-
 create or replace function guild_chat_list(p_limit integer default 50) returns jsonb
 language plpgsql stable security definer set search_path = public as $$
 declare
   v_uid uuid := auth.uid();
   v_gid uuid;
+  v_lim integer := least(greatest(coalesce(p_limit, 50), 1), 100);
+  v_out jsonb;
 begin
   if v_uid is null then raise exception 'not authenticated'; end if;
   select guild_id into v_gid from guild_members where user_id = v_uid;
   if v_gid is null then raise exception 'not found'; end if;
-  return jsonb_build_object(
-    'pinned', (select jsonb_build_object('id', id, 'user_id', user_id,
-        'nickname', nickname, 'body', body, 'created_at', created_at,
-        'reactions', guild_message_reactions_json(id, v_uid))
-        from guild_messages where guild_id = v_gid and pinned and not hidden
-          and not exists (select 1 from guild_message_reports r
-                            where r.message_id = guild_messages.id and r.reporter_id = v_uid)
-        order by id desc limit 1),
-    'messages', coalesce((select jsonb_agg(m order by (m->>'id')::bigint desc) from (
-        select jsonb_build_object('id', id, 'user_id', user_id, 'nickname', nickname,
-               'body', body, 'created_at', created_at,
-               'reactions', guild_message_reactions_json(id, v_uid)) as m
-        from guild_messages where guild_id = v_gid and not hidden
-          and not exists (select 1 from guild_message_reports r
-                            where r.message_id = guild_messages.id and r.reporter_id = v_uid)
-        order by id desc limit least(greatest(coalesce(p_limit, 50), 1), 100)) s),
-      '[]'::jsonb));
+  -- Một lượt duy nhất: chọn tin hiển thị (không ẩn, không bị MÌNH báo cáo) → N tin gần nhất + tin ghim → gom
+  -- reaction của đúng các tin đó bằng MỘT truy vấn (trước đây gọi một hàm riêng cho từng tin).
+  with vis as (
+    select m.* from guild_messages m
+     where m.guild_id = v_gid and not m.hidden
+       and not exists (select 1 from guild_message_reports r
+                        where r.message_id = m.id and r.reporter_id = v_uid)
+  ), recent as (
+    select * from vis order by id desc limit v_lim
+  ), pin as (
+    select * from vis where pinned order by id desc limit 1
+  ), rx as (
+    select g.message_id,
+           jsonb_agg(jsonb_build_object('emoji', g.emoji, 'count', g.cnt, 'mine', g.mine)
+                     order by g.first_at) as j
+      from (select r.message_id, r.emoji, count(*) as cnt, bool_or(r.user_id = v_uid) as mine,
+                   min(r.created_at) as first_at
+              from guild_message_reactions r
+             where r.message_id in (select id from recent union select id from pin)
+             group by r.message_id, r.emoji) g
+     group by g.message_id
+  )
+  select jsonb_build_object(
+    'pinned', (select jsonb_build_object('id', p.id, 'user_id', p.user_id, 'nickname', p.nickname,
+                      'body', p.body, 'created_at', p.created_at,
+                      'reactions', coalesce(rx.j, '[]'::jsonb))
+                 from pin p left join rx on rx.message_id = p.id),
+    'messages', coalesce((select jsonb_agg(jsonb_build_object('id', r.id, 'user_id', r.user_id,
+                      'nickname', r.nickname, 'body', r.body, 'created_at', r.created_at,
+                      'reactions', coalesce(rx.j, '[]'::jsonb)) order by r.id desc)
+                 from recent r left join rx on rx.message_id = r.id), '[]'::jsonb))
+    into v_out;
+  return v_out;
 end;
 $$;
 
@@ -1605,5 +1613,3 @@ revoke all on function guild_vip_bonus_pct(uuid) from public, anon, authenticate
 revoke all on function guild_fund_donated(uuid) from public, anon, authenticated;
 revoke all on function guild_fund_progress(uuid) from public, anon, authenticated;
 revoke all on function guild_team_active(uuid) from public, anon, authenticated;
--- Tổng hợp reaction của tin tuỳ ý → không cho client gọi (lộ tin hội khác).
-revoke all on function guild_message_reactions_json(bigint, uuid) from public, anon, authenticated;

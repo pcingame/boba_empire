@@ -94,6 +94,20 @@ Future<FakeGuildRepository> _open(
 
 Finder _k(String k) => find.byKey(Key(k));
 
+/// Mở bảng thao tác của thành viên [id] (chạm hàng; các nút quản lý/kick nằm trong bảng này).
+Future<void> _openMember(WidgetTester tester, String id) async {
+  await tester.dragUntilVisible(_k('guild-member-$id'), find.byType(ListView), const Offset(0, -150));
+  await tester.ensureVisible(_k('guild-member-$id'));
+  await tester.pumpAndSettle();
+  await tester.tap(_k('guild-member-$id'));
+  await tester.pumpAndSettle();
+}
+
+Future<void> _closeSheet(WidgetTester tester) async {
+  await tester.tapAt(const Offset(10, 10));
+  await tester.pumpAndSettle();
+}
+
 void main() {
   group('hiển thị theo vai', () {
     testWidgets('chủ hội: 👑 cạnh chủ, ⭐ cạnh phó; menu quản lý + kick cho MỌI người khác',
@@ -102,10 +116,15 @@ void main() {
       expect(find.text('👑 '), findsOneWidget);
       expect(find.text('⭐ '), findsOneWidget);
       for (final id in ['off', 'mem']) {
-        expect(_k('guild-member-menu-$id'), findsOneWidget, reason: id);
+        await _openMember(tester, id);
+        expect(_k('guild-toggle-officer-$id'), findsOneWidget, reason: id);
+        expect(_k('guild-transfer-$id'), findsOneWidget, reason: id);
         expect(_k('guild-kick-$id'), findsOneWidget, reason: id);
+        await _closeSheet(tester);
       }
-      expect(_k('guild-member-menu-me'), findsNothing);
+      await _openMember(tester, 'me');
+      expect(_k('guild-toggle-officer-me'), findsNothing);
+      expect(_k('guild-transfer-me'), findsNothing);
       expect(_k('guild-kick-me'), findsNothing);
       await _end(tester);
     });
@@ -115,13 +134,17 @@ void main() {
       await _open(tester,
           myRole: GuildRole.officer,
           requests: const [GuildJoinRequest(userId: 'r1', nickname: 'Người Xin')]);
-      // ListView dựng lười; thêm cột Tặng 💎 làm hàng thành viên cuối nằm ngoài vùng dựng sẵn.
-      await tester.dragUntilVisible(
-          _k('guild-kick-mem'), find.byType(ListView), const Offset(0, -150));
+      await _openMember(tester, 'mem');
       expect(_k('guild-kick-mem'), findsOneWidget);
+      expect(_k('guild-toggle-officer-mem'), findsNothing, reason: 'phó hội không bổ nhiệm/bãi nhiệm');
+      expect(_k('guild-transfer-mem'), findsNothing, reason: 'phó hội không nhường chủ');
+      await _closeSheet(tester);
+      await _openMember(tester, 'off');
       expect(_k('guild-kick-off'), findsNothing, reason: 'không kick phó khác');
+      await _closeSheet(tester);
+      await _openMember(tester, 'boss');
       expect(_k('guild-kick-boss'), findsNothing, reason: 'không kick chủ');
-      expect(find.byType(PopupMenuButton<String>), findsNothing);
+      await _closeSheet(tester);
       expect(_k('guild-accept-r1'), findsOneWidget);
       await _end(tester);
     });
@@ -130,8 +153,14 @@ void main() {
       await _open(tester,
           myRole: GuildRole.member,
           requests: const [GuildJoinRequest(userId: 'r1', nickname: 'Người Xin')]);
-      expect(find.byIcon(Icons.person_remove), findsNothing);
-      expect(find.byType(PopupMenuButton<String>), findsNothing);
+      for (final id in ['off', 'mem', 'boss']) {
+        await _openMember(tester, id);
+        expect(_k('guild-member-sheet-$id'), findsOneWidget, reason: 'bảng $id mở được (xem hồ sơ/nhắc tên)');
+        expect(_k('guild-kick-$id'), findsNothing, reason: id);
+        expect(_k('guild-toggle-officer-$id'), findsNothing, reason: id);
+        expect(_k('guild-transfer-$id'), findsNothing, reason: id);
+        await _closeSheet(tester);
+      }
       expect(_k('guild-accept-r1'), findsNothing);
       await _end(tester);
     });
@@ -166,8 +195,7 @@ void main() {
     testWidgets('bổ nhiệm → gọi setOfficer(on:true); phó hội hiện ⭐ sau khi tải lại',
         (tester) async {
       final repo = await _open(tester, myRole: GuildRole.owner);
-      await tester.tap(_k('guild-member-menu-mem'));
-      await tester.pumpAndSettle();
+      await _openMember(tester, 'mem');
       expect(find.text('Bổ nhiệm phó hội'), findsOneWidget);
       await tester.tap(_k('guild-toggle-officer-mem'));
       await tester.pumpAndSettle();
@@ -178,8 +206,7 @@ void main() {
 
     testWidgets('bãi nhiệm: menu của phó hội ghi "Bãi nhiệm" và gọi on:false', (tester) async {
       final repo = await _open(tester, myRole: GuildRole.owner);
-      await tester.tap(_k('guild-member-menu-off'));
-      await tester.pumpAndSettle();
+      await _openMember(tester, 'off');
       expect(find.text('Bãi nhiệm phó hội'), findsOneWidget);
       await tester.tap(_k('guild-toggle-officer-off'));
       await tester.pumpAndSettle();
@@ -191,8 +218,7 @@ void main() {
     testWidgets('đủ phó hội → thông báo lỗi đúng, không đổi vai', (tester) async {
       final repo = await _open(tester, myRole: GuildRole.owner);
       repo.failures['setOfficer'] = const GuildException(GuildFailure.officersFull);
-      await tester.tap(_k('guild-member-menu-mem'));
-      await tester.pumpAndSettle();
+      await _openMember(tester, 'mem');
       await tester.tap(_k('guild-toggle-officer-mem'));
       await tester.pumpAndSettle();
       expect(find.text('Hội đã đủ $guildMaxOfficers phó hội.'), findsOneWidget);
@@ -203,8 +229,7 @@ void main() {
     testWidgets('nhường chức: hỏi xác nhận; huỷ thì không gọi; đồng ý thì đổi chủ và mất quyền chủ',
         (tester) async {
       final repo = await _open(tester, myRole: GuildRole.owner);
-      await tester.tap(_k('guild-member-menu-mem'));
-      await tester.pumpAndSettle();
+      await _openMember(tester, 'mem');
       await tester.tap(_k('guild-transfer-mem'));
       await tester.pumpAndSettle();
       expect(find.textContaining('Thường'), findsWidgets);
@@ -213,24 +238,24 @@ void main() {
       await tester.pumpAndSettle();
       expect(repo.roleCalls, isEmpty);
 
-      await tester.tap(_k('guild-member-menu-mem'));
-      await tester.pumpAndSettle();
+      await _openMember(tester, 'mem');
       await tester.tap(_k('guild-transfer-mem'));
       await tester.pumpAndSettle();
       await tester.tap(_k('guild-confirm-ok'));
       await tester.pumpAndSettle();
       expect(repo.roleCalls, ['transfer:mem']);
       expect(repo.mine!.ownerId, 'mem');
-      // Tôi không còn là chủ: hết menu quản lý.
-      expect(find.byType(PopupMenuButton<String>), findsNothing);
+      // Tôi không còn là chủ: hết quyền quản lý trong bảng thao tác.
+      await _openMember(tester, 'off');
+      expect(_k('guild-toggle-officer-off'), findsNothing);
+      expect(_k('guild-transfer-off'), findsNothing);
       await _end(tester);
     });
 
     testWidgets('server từ chối (không đủ quyền) → báo lỗi', (tester) async {
       final repo = await _open(tester, myRole: GuildRole.owner);
       repo.failures['transferOwner'] = const GuildException(GuildFailure.notAllowed);
-      await tester.tap(_k('guild-member-menu-mem'));
-      await tester.pumpAndSettle();
+      await _openMember(tester, 'mem');
       await tester.tap(_k('guild-transfer-mem'));
       await tester.pumpAndSettle();
       await tester.tap(_k('guild-confirm-ok'));
