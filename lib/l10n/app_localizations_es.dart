@@ -2801,6 +2801,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dailyQuestsChip => 'Misiones';
 
   @override
+  String get chHeader => '🔥 Desafíos (difíciles — gran recompensa)';
+
+  @override
+  String chCat(int n) {
+    return 'Atrapa $n gatos de Lluvia Dorada';
+  }
+
+  @override
+  String chVip(int n) {
+    return 'Atiende a $n clientes VIP';
+  }
+
+  @override
+  String get chBonusLabel => 'Completa ambos desafíos';
+
+  @override
   String get dailyQuestsBonusLabel => 'Completa las 3 misiones';
 
   @override

@@ -2779,6 +2779,22 @@ class AppLocalizationsVi extends AppLocalizations {
   String get dailyQuestsChip => 'Nhiệm vụ';
 
   @override
+  String get chHeader => '🔥 Thử thách (khó — thưởng cao)';
+
+  @override
+  String chCat(int n) {
+    return 'Bắt $n mèo Mưa vàng';
+  }
+
+  @override
+  String chVip(int n) {
+    return 'Phục vụ $n khách VIP';
+  }
+
+  @override
+  String get chBonusLabel => 'Xong cả 2 thử thách';
+
+  @override
   String get dailyQuestsBonusLabel => 'Xong cả 3 nhiệm vụ';
 
   @override

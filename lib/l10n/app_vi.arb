@@ -1618,6 +1618,24 @@
   "achAscend": "Kỷ Nguyên hoá lần đầu",
   "dailyQuestsTitle": "Nhiệm vụ ngày",
   "dailyQuestsChip": "Nhiệm vụ",
+  "chHeader": "🔥 Thử thách (khó — thưởng cao)",
+  "chCat": "Bắt {n} mèo Mưa vàng",
+  "@chCat": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chVip": "Phục vụ {n} khách VIP",
+  "@chVip": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "chBonusLabel": "Xong cả 2 thử thách",
   "dailyQuestsBonusLabel": "Xong cả 3 nhiệm vụ",
   "dailyQuestsResetsIn": "Đổi nhiệm vụ sau {time}",
   "dailyQuestClaimed": "Đã nhận",

@@ -10,6 +10,7 @@ import '../ads/ad_service.dart';
 import '../audio/audio_service.dart';
 import '../core/accessories.dart';
 import '../core/balance.dart';
+import '../core/challenges.dart' show ChallengeKind;
 import '../core/daily_quests.dart';
 import '../core/format.dart';
 import '../l10n/app_localizations.dart';
@@ -101,6 +102,11 @@ class _DailyQuestsDialogState extends ConsumerState<_DailyQuestsDialog> {
         .watch(gameControllerProvider.select((s) => s.dailyBonusAvailable));
     final bonusClaimed =
         ref.watch(gameControllerProvider.select((s) => s.dailyBonusClaimed));
+    final challenges = ref.watch(gameControllerProvider.select((s) => s.challenges));
+    final challengeBonusAvailable =
+        ref.watch(gameControllerProvider.select((s) => s.challengeBonusAvailable));
+    final challengeBonusClaimed =
+        ref.watch(gameControllerProvider.select((s) => s.challengeBonusClaimed));
     // Đếm ngược tới 00:00 UTC (cùng ngày với điểm danh). Dialog build lại mỗi
     // tick vì `dailyQuests` là danh sách mới ở mỗi snapshot → số tự nhảy.
     final now = ref.read(clockProvider)();
@@ -168,6 +174,48 @@ class _DailyQuestsDialogState extends ConsumerState<_DailyQuestsDialog> {
                   label: Text(l10n.accessoryAdDropButton),
                 ),
               ),
+            // Thử thách khó: mục tiêu cao hơn hẳn, thưởng cao hơn (xem core/challenges.dart).
+            Padding(
+              padding: const EdgeInsets.only(top: 12, bottom: 2),
+              child: Text(l10n.chHeader,
+                  key: const Key('challenge-header'),
+                  style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800)),
+            ),
+            for (var i = 0; i < challenges.length; i++)
+              _ChallengeRow(
+                title: _challengeTitle(l10n, challenges[i]),
+                view: challenges[i],
+                onClaim: () => claim(() => controller.claimChallengeReward(i)),
+              ),
+            ClayTile(
+              child: Row(
+                children: [
+                  const Text('🏆', style: TextStyle(fontSize: 24)),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      l10n.chBonusLabel,
+                      style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Flexible(
+                    child: FilledButton(
+                      key: const Key('challenge-bonus'),
+                      onPressed: challengeBonusAvailable
+                          ? () => claim(controller.claimChallengeBonusReward)
+                          : null,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(challengeBonusClaimed
+                            ? l10n.dailyQuestClaimed
+                            : l10n.dailyReward('${Balance.challengeBonusGems}')),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 8),
             Text(
               l10n.dailyQuestsResetsIn(formatDuration(secondsLeft)),
@@ -187,6 +235,70 @@ class _DailyQuestsDialogState extends ConsumerState<_DailyQuestsDialog> {
           child: Text(l10n.close),
         ),
       ],
+    );
+  }
+}
+
+String _challengeTitle(AppLocalizations l10n, ChallengeView c) => switch (c.kind) {
+      ChallengeKind.tap => l10n.dqTap(c.target),
+      ChallengeKind.buy => l10n.dqBuy(c.target),
+      ChallengeKind.cat => l10n.chCat(c.target),
+      ChallengeKind.vip => l10n.chVip(c.target),
+      ChallengeKind.m3Win => l10n.wqM3Win(c.target),
+    };
+
+/// Một hàng thử thách: cùng dáng hàng nhiệm vụ ngày, khoá riêng `challenge-*`.
+class _ChallengeRow extends StatelessWidget {
+  const _ChallengeRow({required this.title, required this.view, required this.onClaim});
+
+  final String title;
+  final ChallengeView view;
+  final VoidCallback onClaim;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final ratio = (view.progress / view.target).clamp(0.0, 1.0).toDouble();
+    return ClayTile(
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(title,
+                    style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
+                const SizedBox(height: 5),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: LinearProgressIndicator(value: ratio, minHeight: 6),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  '${formatNumber(view.progress.clamp(0, view.target).toDouble(), decimals: 0)} / ${view.target}',
+                  key: Key('challenge-progress-${view.kind.name}'),
+                  style: theme.textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10),
+          Flexible(
+            child: FilledButton(
+              key: Key('challenge-claim-${view.kind.name}'),
+              onPressed: (view.done && !view.claimed) ? onClaim : null,
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(view.claimed
+                    ? l10n.dailyQuestClaimed
+                    : l10n.dailyReward('${view.rewardGems}')),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -2783,6 +2783,22 @@ class AppLocalizationsId extends AppLocalizations {
   String get dailyQuestsChip => 'Misi';
 
   @override
+  String get chHeader => '🔥 Tantangan (sulit — hadiah besar)';
+
+  @override
+  String chCat(int n) {
+    return 'Tangkap $n kucing Hujan Emas';
+  }
+
+  @override
+  String chVip(int n) {
+    return 'Layani $n pelanggan VIP';
+  }
+
+  @override
+  String get chBonusLabel => 'Selesaikan kedua tantangan';
+
+  @override
   String get dailyQuestsBonusLabel => 'Selesaikan ketiga misi';
 
   @override

@@ -19,6 +19,7 @@ import '../core/balance.dart';
 import '../core/collection_milestones.dart';
 import '../core/daily.dart';
 import '../core/daily_deal.dart';
+import '../core/challenges.dart';
 import '../core/daily_quests.dart';
 import '../core/economy.dart';
 import '../core/event_quests.dart';
@@ -628,6 +629,26 @@ class GameController extends Notifier<GameSnapshot> {
   /// xong/đã nhận). Lưu ngay vì 💎 là premium.
   int claimDailyQuestReward(int index) {
     final gems = claimDailyQuest(_game, index);
+    if (gems > 0) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return gems;
+  }
+
+  /// Nhận thưởng thử thách ngày thứ [index]. Trả về 💎 nhận (0 nếu chưa xong/đã nhận). Lưu ngay vì 💎 là premium.
+  int claimChallengeReward(int index) {
+    final gems = claimChallenge(_game, index);
+    if (gems > 0) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return gems;
+  }
+
+  /// Nhận thưởng "xong cả bộ thử thách" (một lần/ngày). 0 nếu chưa đủ điều kiện.
+  int claimChallengeBonusReward() {
+    final gems = claimChallengeBonus(_game);
     if (gems > 0) {
       unawaited(saveNow());
       state = _snapshot();
@@ -1772,6 +1793,7 @@ class GameController extends Notifier<GameSnapshot> {
     // màn 1 mà màn 2 vẫn khoá, mở lại app là mất sạch tiến độ.
     if (stars > 0) {
       addWeeklyProgress(_game, WeeklyQuestKind.m3Win, 1);
+      addChallengeM3Win(_game);
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -1991,8 +2013,21 @@ class GameController extends Notifier<GameSnapshot> {
       dailyBonusAvailable: dailyBonusAvailable(_game),
       dailyBonusClaimed: _game.dailyBonusClaimed,
       starterPackReady: market_starter.starterPackEligible(_game),
-      dailyClaimableCount:
-          dailyClaimableCount(_game) + weeklyClaimableCount(_game),
+      dailyClaimableCount: dailyClaimableCount(_game) +
+          weeklyClaimableCount(_game) +
+          challengeClaimableCount(_game),
+      challenges: [
+        for (final c in currentChallenges(_game))
+          ChallengeView(
+            kind: c.kind,
+            target: c.target,
+            progress: challengeProgress(_game, c),
+            rewardGems: c.rewardGems,
+            claimed: challengeClaimed(_game, c),
+          ),
+      ],
+      challengeBonusAvailable: challengeBonusAvailable(_game),
+      challengeBonusClaimed: challengeBonusClaimed(_game),
       weeklyQuests: [
         for (final q in currentWeeklyQuests(_game))
           WeeklyQuestView(

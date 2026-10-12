@@ -900,3 +900,14 @@ Góp ý thật của người chơi ("tap tay mỏi quá", xin auto click). Cơ 
 - Chạy trong `_onTick` (không áp khi offline; dt bị cắt 5 giây để nhịp trễ không thành cú cộng lớn).
 - UI: hàng "🤖 Tự động chạm 10 phút" trong hộp Kiếm thêm; chip `🤖 mm:ss` / `🤖 VIP` trong cảnh quán.
 - ⚠️ Mọi số là ước lượng chưa playtest (xem `Balance`).
+
+## 30. Thử thách hằng ngày (2026-10-12, chưa playtest)
+
+Góp ý người chơi: "tăng nhiệm vụ / tăng độ khó nhiệm vụ (tăng cả thưởng)". 2 nhiệm vụ KHÓ mỗi ngày, chọn xác định theo
+ngày (UTC) như nhiệm vụ ngày (`core/challenges.dart`), hiện thành mục "🔥 Thử thách" ở cuối hộp Nhiệm vụ ngày.
+- Loại: Chạm 800–1200 · Nâng cấp 120–200 · Bắt 4–6 mèo Mưa vàng · Phục vụ 3–5 khách VIP · Thắng 2–4 màn Trân Châu Rơi
+  (≥1★). Luôn cao hơn trần mục tiêu của nhiệm vụ ngày cùng loại (test chặn).
+- Thưởng 25 💎/cái (`Balance.challengeRewardGems`, ≈3× nhiệm vụ ngày) + 30 💎 khi nhận cả 2 (`challengeBonusGems`).
+  ⚠️ Mọi số là ước lượng chưa playtest — theo dõi lượng 💎 phát ra/ngày (tối đa 80).
+- Không thêm trường lưu: dùng lại `dailyProgress`/`dailyClaimed` (khoá `challenge:*`; riêng thắng màn dùng khoá `m3Win`)
+  nên tự xoá khi sang ngày. Tự động chạm KHÔNG tính (xem §29). Chấm đỏ nhiệm vụ cộng cả thử thách xong chưa nhận.

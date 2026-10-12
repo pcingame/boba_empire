@@ -343,6 +343,12 @@ class Balance {
   /// Thưởng thêm khi xong (và nhận) cả bộ — nhận một lần/ngày.
   static int dailyQuestBonusGems = 15;
 
+  // --- Thử thách hằng ngày (2026-10-12, góp ý người chơi) — ⚠️ ước lượng, chưa playtest ---
+  /// Nhiệm vụ KHÓ hơn nhiệm vụ ngày (xem core/challenges.dart): thưởng gấp ~3 mỗi cái.
+  static const int challengeCount = 2;
+  static const int challengeRewardGems = 25;
+  static const int challengeBonusGems = 30;
+
   /// Ngưỡng "Kiếm Xu" = max([dailyEarnMinTarget], thu nhập/giây × giây) chốt lúc
   /// sang ngày (~30 phút thu nhập).
   static const double dailyEarnMinTarget = 500;

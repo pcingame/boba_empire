@@ -4866,6 +4866,30 @@ abstract class AppLocalizations {
   /// **'Nhiệm vụ'**
   String get dailyQuestsChip;
 
+  /// No description provided for @chHeader.
+  ///
+  /// In vi, this message translates to:
+  /// **'🔥 Thử thách (khó — thưởng cao)'**
+  String get chHeader;
+
+  /// No description provided for @chCat.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắt {n} mèo Mưa vàng'**
+  String chCat(int n);
+
+  /// No description provided for @chVip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phục vụ {n} khách VIP'**
+  String chVip(int n);
+
+  /// No description provided for @chBonusLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xong cả 2 thử thách'**
+  String get chBonusLabel;
+
   /// No description provided for @dailyQuestsBonusLabel.
   ///
   /// In vi, this message translates to:

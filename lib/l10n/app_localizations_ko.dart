@@ -2745,6 +2745,22 @@ class AppLocalizationsKo extends AppLocalizations {
   String get dailyQuestsChip => '퀘스트';
 
   @override
+  String get chHeader => '🔥 도전 과제 (어려움 — 큰 보상)';
+
+  @override
+  String chCat(int n) {
+    return '황금 비 고양이 $n마리 잡기';
+  }
+
+  @override
+  String chVip(int n) {
+    return 'VIP 손님 $n명 응대';
+  }
+
+  @override
+  String get chBonusLabel => '도전 과제 2개 모두 완료';
+
+  @override
   String get dailyQuestsBonusLabel => '퀘스트 3개 모두 완료';
 
   @override

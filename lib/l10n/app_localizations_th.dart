@@ -2774,6 +2774,22 @@ class AppLocalizationsTh extends AppLocalizations {
   String get dailyQuestsChip => 'ภารกิจ';
 
   @override
+  String get chHeader => '🔥 ภารกิจท้าทาย (ยาก — รางวัลสูง)';
+
+  @override
+  String chCat(int n) {
+    return 'จับแมวฝนทอง $n ตัว';
+  }
+
+  @override
+  String chVip(int n) {
+    return 'เสิร์ฟลูกค้า VIP $n คน';
+  }
+
+  @override
+  String get chBonusLabel => 'ทำภารกิจท้าทายครบทั้ง 2';
+
+  @override
   String get dailyQuestsBonusLabel => 'ทำครบ 3 ภารกิจ';
 
   @override
