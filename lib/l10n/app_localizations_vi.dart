@@ -3129,6 +3129,14 @@ class AppLocalizationsVi extends AppLocalizations {
   String get guildClaim => 'Nhận';
 
   @override
+  String get guildHowToTitle => 'Cách kiếm điểm Hội';
+
+  @override
+  String guildHowTo(int n) {
+    return '⭐ Điểm Hội = hoạt động của BẠN trong tuần: chạm ly +1, bắt mèo +50, phục vụ khách VIP +50.\n🎯 Điểm của cả hội cộng lại để mở các mốc thưởng; điểm tuần reset thứ Hai 00:00 UTC.\n🎁 Cần đóng góp ≥$n điểm cá nhân mới được nhận thưởng mốc.';
+  }
+
+  @override
   String guildNeedPoints(int n) {
     return 'Cần đóng góp ≥$n điểm để nhận';
   }

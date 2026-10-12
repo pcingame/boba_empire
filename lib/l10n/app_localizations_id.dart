@@ -3135,6 +3135,14 @@ class AppLocalizationsId extends AppLocalizations {
   String get guildClaim => 'Klaim';
 
   @override
+  String get guildHowToTitle => 'Cara dapat poin Guild';
+
+  @override
+  String guildHowTo(int n) {
+    return '⭐ Poin Guild berasal dari aktivitas KAMU minggu ini: ketuk gelas +1, tangkap kucing +50, layani pelanggan VIP +50.\n🎯 Poin semua anggota dijumlahkan untuk membuka hadiah tonggak; minggu reset Senin 00:00 UTC.\n🎁 Kamu harus menyumbang ≥$n poin pribadi untuk mengklaim hadiah tonggak.';
+  }
+
+  @override
   String guildNeedPoints(int n) {
     return 'Sumbang ≥$n poin untuk klaim';
   }

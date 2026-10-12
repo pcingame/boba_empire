@@ -3152,6 +3152,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get guildClaim => 'Reclamar';
 
   @override
+  String get guildHowToTitle => 'Cómo ganar puntos de Gremio';
+
+  @override
+  String guildHowTo(int n) {
+    return '⭐ Los puntos de Gremio salen de TU actividad esta semana: tocar un vaso +1, atrapar un gato +50, atender a un cliente VIP +50.\n🎯 Los puntos de todos suman para desbloquear recompensas de hito; la semana se reinicia el lunes 00:00 UTC.\n🎁 Debes aportar ≥$n puntos personales para reclamar una recompensa de hito.';
+  }
+
+  @override
   String guildNeedPoints(int n) {
     return 'Aporta ≥$n pts para reclamar';
   }

@@ -1871,6 +1871,15 @@
   "guildReportSent": "Đã gửi báo cáo, cảm ơn bạn.",
   "guildGoalTitle": "Mục tiêu tuần",
   "guildClaim": "Nhận",
+  "guildHowToTitle": "Cách kiếm điểm Hội",
+  "guildHowTo": "⭐ Điểm Hội = hoạt động của BẠN trong tuần: chạm ly +1, bắt mèo +50, phục vụ khách VIP +50.\n🎯 Điểm của cả hội cộng lại để mở các mốc thưởng; điểm tuần reset thứ Hai 00:00 UTC.\n🎁 Cần đóng góp ≥{n} điểm cá nhân mới được nhận thưởng mốc.",
+  "@guildHowTo": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "guildNeedPoints": "Cần đóng góp ≥{n} điểm để nhận",
   "@guildNeedPoints": {
     "placeholders": {

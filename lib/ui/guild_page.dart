@@ -24,6 +24,7 @@ import 'widgets/dispose_with_widget.dart';
 import 'guild_chat_page.dart';
 import 'guild_shop_page.dart';
 import 'widgets/clay.dart';
+import 'web_links.dart';
 import 'widgets/phone_width.dart';
 
 Future<void> showGuildPage(BuildContext context) => Navigator.of(context)
@@ -92,6 +93,31 @@ class _GuildPageState extends ConsumerState<GuildPage> {
         appBar: AppBar(
           title: Text(l10n.guildTitle),
           actions: [
+            IconButton(
+              key: const Key('guild-how-to-button'),
+              icon: const Icon(Icons.help_outline),
+              tooltip: l10n.guildHowToTitle,
+              onPressed: () => showDialog<void>(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text(l10n.guildHowToTitle),
+                  content: SingleChildScrollView(
+                      child: Text(l10n.guildHowTo(guildMinPointsToClaim))),
+                  actions: [
+                    TextButton(
+                      key: const Key('guild-how-to-web'),
+                      onPressed: () =>
+                          openWebLink(context, ref, webGuideUrl('hoi')),
+                      child: Text(l10n.guideOnWeb),
+                    ),
+                    FilledButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text(l10n.close),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             if (view is GuildMine)
               IconButton(
                 key: const Key('guild-chat-button'),

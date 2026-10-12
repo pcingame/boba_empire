@@ -3140,6 +3140,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get guildClaim => 'Claim';
 
   @override
+  String get guildHowToTitle => 'How to earn Guild points';
+
+  @override
+  String guildHowTo(int n) {
+    return '⭐ Guild points come from YOUR activity this week: tap a cup +1, catch a cat +50, serve a VIP customer +50.\n🎯 Everyone\'s points add up to unlock milestone rewards; the week resets Monday 00:00 UTC.\n🎁 You must contribute ≥$n personal points to claim a milestone reward.';
+  }
+
+  @override
   String guildNeedPoints(int n) {
     return 'Contribute ≥$n pts to claim';
   }

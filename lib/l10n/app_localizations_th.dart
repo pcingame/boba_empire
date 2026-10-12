@@ -3121,6 +3121,14 @@ class AppLocalizationsTh extends AppLocalizations {
   String get guildClaim => 'รับ';
 
   @override
+  String get guildHowToTitle => 'วิธีหาแต้มกิลด์';
+
+  @override
+  String guildHowTo(int n) {
+    return '⭐ แต้มกิลด์มาจากกิจกรรมของคุณในสัปดาห์นี้: แตะแก้ว +1 จับแมว +50 เสิร์ฟลูกค้า VIP +50\n🎯 แต้มของทุกคนรวมกันเพื่อปลดล็อกรางวัลเป้าหมาย รีเซ็ตทุกวันจันทร์ 00:00 UTC\n🎁 ต้องสะสมแต้มส่วนตัว ≥$n จึงจะรับรางวัลเป้าหมายได้';
+  }
+
+  @override
   String guildNeedPoints(int n) {
     return 'ต้องสะสม ≥$n แต้มเพื่อรับ';
   }

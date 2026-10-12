@@ -3085,6 +3085,14 @@ class AppLocalizationsKo extends AppLocalizations {
   String get guildClaim => '받기';
 
   @override
+  String get guildHowToTitle => '길드 포인트 얻는 법';
+
+  @override
+  String guildHowTo(int n) {
+    return '⭐ 길드 포인트는 이번 주 나의 활동으로 쌓여요: 컵 터치 +1, 고양이 잡기 +50, VIP 손님 응대 +50.\n🎯 모두의 포인트가 합쳐져 단계 보상이 열리고, 매주 월요일 00:00 UTC에 초기화돼요.\n🎁 단계 보상을 받으려면 개인 포인트를 ≥$n 기여해야 해요.';
+  }
+
+  @override
   String guildNeedPoints(int n) {
     return '받으려면 ≥$n점 기여 필요';
   }

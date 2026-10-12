@@ -1335,6 +1335,8 @@
   "guildReportSent": "Denúncia enviada, obrigado.",
   "guildGoalTitle": "Meta semanal",
   "guildClaim": "Resgatar",
+  "guildHowToTitle": "Como ganhar pontos da Guilda",
+  "guildHowTo": "⭐ Os pontos da Guilda vêm da SUA atividade nesta semana: tocar num copo +1, pegar um gato +50, atender um cliente VIP +50.\n🎯 Os pontos de todos somam para liberar recompensas de marco; a semana reinicia na segunda 00:00 UTC.\n🎁 Você precisa contribuir com ≥{n} pontos pessoais para resgatar uma recompensa de marco.",
   "guildNeedPoints": "Contribua ≥{n} pts para resgatar",
   "@guildNeedPoints": {
     "placeholders": {

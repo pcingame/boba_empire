@@ -1335,6 +1335,8 @@
   "guildReportSent": "Laporan terkirim, terima kasih.",
   "guildGoalTitle": "Target mingguan",
   "guildClaim": "Klaim",
+  "guildHowToTitle": "Cara dapat poin Guild",
+  "guildHowTo": "⭐ Poin Guild berasal dari aktivitas KAMU minggu ini: ketuk gelas +1, tangkap kucing +50, layani pelanggan VIP +50.\n🎯 Poin semua anggota dijumlahkan untuk membuka hadiah tonggak; minggu reset Senin 00:00 UTC.\n🎁 Kamu harus menyumbang ≥{n} poin pribadi untuk mengklaim hadiah tonggak.",
   "guildNeedPoints": "Sumbang ≥{n} poin untuk klaim",
   "@guildNeedPoints": {
     "placeholders": {

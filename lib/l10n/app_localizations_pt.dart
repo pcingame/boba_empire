@@ -3148,6 +3148,14 @@ class AppLocalizationsPt extends AppLocalizations {
   String get guildClaim => 'Resgatar';
 
   @override
+  String get guildHowToTitle => 'Como ganhar pontos da Guilda';
+
+  @override
+  String guildHowTo(int n) {
+    return '⭐ Os pontos da Guilda vêm da SUA atividade nesta semana: tocar num copo +1, pegar um gato +50, atender um cliente VIP +50.\n🎯 Os pontos de todos somam para liberar recompensas de marco; a semana reinicia na segunda 00:00 UTC.\n🎁 Você precisa contribuir com ≥$n pontos pessoais para resgatar uma recompensa de marco.';
+  }
+
+  @override
   String guildNeedPoints(int n) {
     return 'Contribua ≥$n pts para resgatar';
   }

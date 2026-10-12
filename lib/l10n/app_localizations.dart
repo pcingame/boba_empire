@@ -5424,6 +5424,18 @@ abstract class AppLocalizations {
   /// **'Nhận'**
   String get guildClaim;
 
+  /// No description provided for @guildHowToTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cách kiếm điểm Hội'**
+  String get guildHowToTitle;
+
+  /// No description provided for @guildHowTo.
+  ///
+  /// In vi, this message translates to:
+  /// **'⭐ Điểm Hội = hoạt động của BẠN trong tuần: chạm ly +1, bắt mèo +50, phục vụ khách VIP +50.\n🎯 Điểm của cả hội cộng lại để mở các mốc thưởng; điểm tuần reset thứ Hai 00:00 UTC.\n🎁 Cần đóng góp ≥{n} điểm cá nhân mới được nhận thưởng mốc.'**
+  String guildHowTo(int n);
+
   /// No description provided for @guildNeedPoints.
   ///
   /// In vi, this message translates to:
