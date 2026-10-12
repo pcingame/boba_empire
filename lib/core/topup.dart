@@ -20,17 +20,19 @@ class TopupTier {
   final AccessoryRarity? accessory;
 }
 
+// VIP 3-10 giảm 20% ngưỡng EXP (2026-10-13, góp ý "VIP 10 khó quá"); VIP 1-2 giữ nguyên. Ngưỡng PHẢI khớp
+// `vip_level_for_exp` trong supabase/accessory_market_schema.sql (test/core/vip_sql_test.dart so khớp).
 const List<TopupTier> topupTiers = [
   TopupTier(500, 100),
   TopupTier(1500, 200),
-  TopupTier(3000, 400, accessory: AccessoryRarity.rare),
-  TopupTier(6000, 800),
-  TopupTier(10000, 1500, accessory: AccessoryRarity.epic),
-  TopupTier(20000, 3000),
-  TopupTier(35000, 5000),
-  TopupTier(50000, 8000, accessory: AccessoryRarity.legendary),
-  TopupTier(75000, 12000, accessory: AccessoryRarity.epic),
-  TopupTier(100000, 20000, accessory: AccessoryRarity.legendary),
+  TopupTier(2400, 400, accessory: AccessoryRarity.rare),
+  TopupTier(4800, 800),
+  TopupTier(8000, 1500, accessory: AccessoryRarity.epic),
+  TopupTier(16000, 3000),
+  TopupTier(28000, 5000),
+  TopupTier(40000, 8000, accessory: AccessoryRarity.legendary),
+  TopupTier(60000, 12000, accessory: AccessoryRarity.epic),
+  TopupTier(80000, 20000, accessory: AccessoryRarity.legendary),
 ];
 
 /// +% thu nhập tự động cho MỖI cấp VIP.
@@ -40,11 +42,11 @@ const double vipIncomeBonusPerLevel = 0.02;
 /// online cho cả server (supabase: vip_ping có cùng ngưỡng 5 — test khớp).
 const int vipTitleMinLevel = 5;
 
-/// Mua EXP bằng 💎: mỗi khối [vipExpBlock] EXP giá [vipExpBlockGems] 💎 (10 💎/EXP —
-/// cố ý đắt hơn nhiều so với nạp IAP cùng giá trị). Tổng EXP mua bằng 💎 chặn ở
-/// [vipExpGemCap] (≈ tới VIP 6) để cấp cao chỉ đạt được bằng nạp thật.
+/// Mua EXP bằng 💎: mỗi khối [vipExpBlock] EXP giá [vipExpBlockGems] 💎 (8 💎/EXP —
+/// vẫn đắt hơn nạp IAP cùng giá trị; giảm từ 10 💎/EXP sau góp ý "1000💎 chỉ được 100 EXP" 2026-10-13).
+/// Tổng EXP mua bằng 💎 chặn ở [vipExpGemCap] (≈ tới VIP 6) để cấp cao chỉ đạt được bằng nạp thật.
 const int vipExpBlock = 100;
-const int vipExpBlockGems = 1000;
+const int vipExpBlockGems = 800;
 const int vipExpGemCap = 20000;
 
 /// Cấp VIP (0 = chưa đủ bậc đầu) theo [exp].

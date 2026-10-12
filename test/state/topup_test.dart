@@ -34,8 +34,8 @@ void main() {
     expect(topupVipLevel(0), 0);
     expect(topupVipLevel(499), 0);
     expect(topupVipLevel(500), 1);
-    expect(topupVipLevel(2999), 2);
-    expect(topupVipLevel(3000), 3);
+    expect(topupVipLevel(2399), 2);
+    expect(topupVipLevel(2400), 3); // VIP 3 (đã giảm 20%: 3000 → 2400)
     expect(topupVipLevel(99999999), topupTiers.length);
     expect(vipIncomeMultiplier(0), 1.0);
     expect(vipIncomeMultiplier(500), closeTo(1.02, 1e-9));
@@ -76,12 +76,13 @@ void main() {
   });
 
   test('mua EXP bằng 💎: trừ 💎, cộng EXP, thiếu 💎 thì không; trần chặn', () async {
-    final c = await _ctl(GameState.newGame(nowMillis: 0)..gems = 999);
+    final c = await _ctl(GameState.newGame(nowMillis: 0)..gems = (vipExpBlockGems - 1).toDouble());
     final n = c.read(gameControllerProvider.notifier);
     expect(n.buyVipExp(), isFalse); // thiếu 1 💎
     expect(c.read(gameControllerProvider).vipExp, 0);
 
     final c2 = await _ctl(GameState.newGame(nowMillis: 0)..gems = 5000);
+    expect(5000, greaterThanOrEqualTo(vipExpBlockGems));
     final n2 = c2.read(gameControllerProvider.notifier);
     expect(n2.buyVipExp(), isTrue);
     final s = c2.read(gameControllerProvider);

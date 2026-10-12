@@ -55,7 +55,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 300));
     expect(
-      find.textContaining('(${formatNumber(1000)} 💎 → 100 EXP, up to ${formatNumber(20000)} EXP'),
+      find.textContaining('(${formatNumber(vipExpBlockGems.toDouble())} 💎 → $vipExpBlock EXP, up to ${formatNumber(vipExpGemCap.toDouble())} EXP'),
       findsOneWidget,
     );
     await tester.pumpWidget(const SizedBox());

@@ -651,7 +651,7 @@ language sql
 immutable
 as $$
   select count(*)::integer
-  from unnest(array[500, 1500, 3000, 6000, 10000, 20000, 35000, 50000, 75000, 100000]::bigint[]) as t(m)
+  from unnest(array[500, 1500, 2400, 4800, 8000, 16000, 28000, 40000, 60000, 80000]::bigint[]) as t(m)
   where p_exp >= t.m;
 $$;
 
