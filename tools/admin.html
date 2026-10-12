@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Chỉ cho trang nói chuyện với đúng Supabase của game: khóa admin không thể bị gửi đi chỗ khác. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://orphyhtnaaqfglytffkn.supabase.co; base-uri 'none'; form-action 'none'">
+<meta name="robots" content="noindex, nofollow">
+<title>Boba Empire Admin</title>
+<style>
+  :root { --bg:#16120f; --card:#241d18; --ink:#f1e8dd; --muted:#b9a999; --line:#3b2f26; --brand:#e0a868; --ok:#6fcf97; --bad:#ff6b6b; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; }
+  header { display:flex; align-items:center; gap:12px; padding:10px 16px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--bg); z-index:5; flex-wrap:wrap; }
+  header h1 { font-size:16px; margin:0; }
+  .badge { background:var(--bad); color:#fff; font-weight:800; font-size:11px; padding:2px 8px; border-radius:999px; }
+  nav { display:flex; gap:6px; flex-wrap:wrap; padding:10px 16px; border-bottom:1px solid var(--line); }
+  nav button, button, .btn { background:var(--card); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:6px 12px; cursor:pointer; font:inherit; }
+  nav button.on { background:var(--brand); color:#24160a; border-color:var(--brand); font-weight:700; }
+  button.danger { border-color:var(--bad); color:var(--bad); }
+  button.primary { background:var(--brand); color:#24160a; border-color:var(--brand); font-weight:700; }
+  button:disabled { opacity:.45; cursor:not-allowed; }
+  main { padding:16px; max-width:1200px; margin:0 auto; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; margin-bottom:14px; }
+  h2 { font-size:15px; margin:0 0 10px; }
+  input, select, textarea { background:#120e0b; color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:6px 10px; font:inherit; }
+  input[type=text], input[type=password], input[type=number], textarea { width:100%; }
+  textarea { min-height:220px; font-family:ui-monospace,Menlo,monospace; font-size:12px; }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:6px 0; }
+  .row > input[type=text], .row > input[type=password] { flex:1 1 220px; width:auto; }
+  .muted { color:var(--muted); }
+  .ok { color:var(--ok); } .bad { color:var(--bad); }
+  table { border-collapse:collapse; width:100%; font-size:13px; }
+  th, td { border-bottom:1px solid var(--line); padding:5px 8px; text-align:left; vertical-align:top; max-width:340px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  th { color:var(--muted); font-weight:600; position:sticky; top:0; background:var(--card); }
+  tr.click { cursor:pointer; } tr.click:hover { background:#2e251e; }
+  .scroll { overflow:auto; max-height:60vh; }
+  code { font-family:ui-monospace,Menlo,monospace; font-size:12px; color:var(--brand); }
+  #toast { position:fixed; right:16px; bottom:16px; max-width:420px; padding:10px 14px; border-radius:10px; background:var(--card); border:1px solid var(--line); display:none; z-index:20; }
+  #modal { position:fixed; inset:0; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; z-index:30; padding:16px; }
+  #modal .box { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; width:min(720px,100%); max-height:90vh; overflow:auto; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🧋 Boba Empire Admin</h1><span class="badge">PRODUCTION</span>
+  <span id="conn" class="muted">chưa kết nối</span>
+  <span style="flex:1"></span>
+  <button id="logout" hidden>Xoá khóa &amp; thoát</button>
+</header>
+<nav id="tabs" hidden></nav>
+<main id="app"></main>
+<div id="toast"></div>
+<div id="modal"><div class="box" id="modalBox"></div></div>
+<script>
+(function () {
+  'use strict';
+  /* Công cụ CHẠY TRÊN MÁY: mở file này trực tiếp bằng trình duyệt, KHÔNG đặt vào docs/ (web công khai).
+     Khóa service_role chỉ nằm trong bộ nhớ trang (hoặc sessionStorage nếu tick "nhớ trong phiên"). */
+  var BASE = 'https://orphyhtnaaqfglytffkn.supabase.co';
+  var KEY = '', spec = null, tab = 'players', logs = [];
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- tiện ích DOM (luôn textContent — tên người chơi không bao giờ thành HTML) ---------- */
+  function el(tag, attrs) {
+    var n = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (k) {
+      if (k === 'text') n.textContent = attrs[k];
+      else if (k === 'class') n.className = attrs[k];
+      else if (k.indexOf('on') === 0) n.addEventListener(k.slice(2), attrs[k]);
+      else if (attrs[k] === true) n.setAttribute(k, '');
+      else if (attrs[k] !== false && attrs[k] != null) n.setAttribute(k, attrs[k]);
+    });
+    for (var i = 2; i < arguments.length; i++) {
+      var c = arguments[i];
+      if (c == null || c === false) continue;
+      if (Array.isArray(c)) { c.forEach(function (x) { n.appendChild(x); }); continue; }
+      n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+    }
+    return n;
+  }
+  function clear(n) { while (n.firstChild) n.removeChild(n.firstChild); return n; }
+  var toastTimer = null;
+  function toast(msg, bad) {
+    var t = $('toast'); t.textContent = msg; t.style.display = 'block';
+    t.style.borderColor = bad ? 'var(--bad)' : 'var(--ok)';
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.style.display = 'none'; }, bad ? 9000 : 3500);
+  }
+  function modal(content) {
+    var box = clear($('modalBox')); box.appendChild(content); $('modal').style.display = 'flex';
+  }
+  function closeModal() { $('modal').style.display = 'none'; }
+  $('modal').addEventListener('click', function (e) { if (e.target === $('modal')) closeModal(); });
+  function short(v) {
+    if (v == null) return '';
+    var s = typeof v === 'object' ? JSON.stringify(v) : String(v);
+    return s.length > 80 ? s.slice(0, 80) + '…' : s;
+  }
+
+  /* ---------- gọi Supabase ---------- */
+  function headers(extra) {
+    var h = { apikey: KEY, 'Content-Type': 'application/json' };
+    if (KEY.indexOf('eyJ') === 0) h.Authorization = 'Bearer ' + KEY;   // khóa kiểu cũ (JWT); khóa sb_secret_ chỉ dùng apikey
+    return Object.assign(h, extra || {});
+  }
+  function api(method, path, body, extra) {
+    var t0 = new Date();
+    return fetch(BASE + path, { method: method, headers: headers(extra), body: body === undefined ? undefined : JSON.stringify(body) })
+      .then(function (res) {
+        return res.text().then(function (txt) {
+          if (method !== 'GET') logs.unshift({ at: t0, method: method, path: path, status: res.status });
+          var data = null; try { data = txt ? JSON.parse(txt) : null; } catch (e) { data = txt; }
+          if (!res.ok) throw new Error((data && (data.message || data.msg || data.error_description || data.hint)) || ('HTTP ' + res.status));
+          return data;
+        });
+      });
+  }
+  function enc(v) { return encodeURIComponent(v); }
+  function confirmAct(msg) { return window.confirm('⚠️ TRÊN DỮ LIỆU THẬT\n\n' + msg + '\n\nTiếp tục?'); }
+  function fail(e) { toast('Lỗi: ' + (e && e.message ? e.message : e), true); }
+
+  /* ---------- đăng nhập bằng khóa ---------- */
+  function renderLogin() {
+    $('tabs').hidden = true; $('logout').hidden = true; $('conn').textContent = 'chưa kết nối';
+    var keyIn = el('input', { type: 'password', placeholder: 'service_role (eyJ…) hoặc sb_secret_…', autocomplete: 'off' });
+    var remember = el('input', { type: 'checkbox' });
+    var app = clear($('app'));
+    app.appendChild(el('div', { class: 'card' },
+      el('h2', { text: 'Kết nối' }),
+      el('p', { class: 'muted', text: 'Dán khóa service_role (Supabase → Project Settings → API Keys). Khóa này toàn quyền: chỉ giữ trong bộ nhớ trang, không gửi đi đâu ngoài Supabase của game, và không bao giờ nên được commit hay đưa lên web công khai.' }),
+      el('div', { class: 'row' }, keyIn, el('button', { class: 'primary', text: 'Kết nối', onclick: function () { connect(keyIn.value.trim(), remember.checked); } })),
+      el('label', { class: 'muted' }, remember, ' Nhớ trong phiên này (sessionStorage — mất khi đóng tab)')));
+    keyIn.addEventListener('keydown', function (e) { if (e.key === 'Enter') connect(keyIn.value.trim(), remember.checked); });
+  }
+  function connect(key, remember) {
+    if (!key) return toast('Chưa nhập khóa', true);
+    KEY = key;
+    api('GET', '/rest/v1/guilds?select=id&limit=1').then(function () {
+      if (remember) { try { sessionStorage.setItem('adminKey', key); } catch (e) {} }
+      $('conn').textContent = '● đã kết nối'; $('conn').className = 'ok';
+      $('logout').hidden = false;
+      return loadSpec();
+    }).then(function () { renderTabs(); show(tab); }).catch(function (e) {
+      KEY = ''; fail(e); renderLogin();
+    });
+  }
+  $('logout').addEventListener('click', function () {
+    KEY = ''; spec = null; try { sessionStorage.removeItem('adminKey'); } catch (e) {}
+    renderLogin();
+  });
+  function loadSpec() {
+    return api('GET', '/rest/v1/', undefined, { Accept: 'application/openapi+json' }).then(function (s) { spec = s; }).catch(function () { spec = null; });
+  }
+  function schemas() { return spec ? (spec.definitions || (spec.components && spec.components.schemas) || {}) : {}; }
+
+  /* ---------- tab ---------- */
+  var TABS = [['players', '👤 Người chơi'], ['guilds', '🛡️ Hội'], ['boards', '🏆 Bảng xếp hạng'], ['tables', '🗄️ Bảng dữ liệu'], ['log', '📜 Nhật ký']];
+  function renderTabs() {
+    var nav = clear($('tabs')); nav.hidden = false;
+    TABS.forEach(function (t) {
+      nav.appendChild(el('button', { class: t[0] === tab ? 'on' : '', text: t[1], onclick: function () { show(t[0]); } }));
+    });
+  }
+  function show(t) {
+    tab = t; renderTabs();
+    var app = clear($('app'));
+    ({ players: viewPlayers, guilds: viewGuilds, boards: viewBoards, tables: viewTables, log: viewLog })[t](app);
+  }
+
+  /* ---------- bảng chung ---------- */
+  function dataTable(cols, rows, onRow) {
+    var thead = el('thead', {}, el('tr', {}, cols.map(function (c) { return el('th', { text: c }); })));
+    var tbody = el('tbody');
+    rows.forEach(function (r) {
+      var tr = el('tr', onRow ? { class: 'click', onclick: function () { onRow(r); } } : {});
+      cols.forEach(function (c) { tr.appendChild(el('td', { text: short(r[c]), title: typeof r[c] === 'object' ? JSON.stringify(r[c]) : String(r[c] == null ? '' : r[c]) })); });
+      tbody.appendChild(tr);
+    });
+    return el('div', { class: 'scroll' }, el('table', {}, thead, tbody));
+  }
+  var UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+  /* ================= NGƯỜI CHƠI ================= */
+  function viewPlayers(app) {
+    var q = el('input', { type: 'text', placeholder: 'Biệt danh, email hoặc user_id' });
+    var out = el('div');
+    function go() {
+      var s = q.value.trim(); if (!s) return;
+      clear(out).appendChild(el('p', { class: 'muted', text: 'Đang tìm…' }));
+      findPlayers(s).then(function (list) {
+        clear(out);
+        if (!list.length) return out.appendChild(el('p', { class: 'muted', text: 'Không thấy ai.' }));
+        out.appendChild(dataTable(['nickname', 'user_id', 'nguồn'], list, function (r) { showPlayer(r.user_id); }));
+      }).catch(fail);
+    }
+    q.addEventListener('keydown', function (e) { if (e.key === 'Enter') go(); });
+    app.appendChild(el('div', { class: 'card' }, el('h2', { text: 'Tìm người chơi' }),
+      el('div', { class: 'row' }, q, el('button', { class: 'primary', text: 'Tìm', onclick: go })), out));
+  }
+  function findPlayers(s) {
+    if (UUID.test(s)) return Promise.resolve([{ nickname: '', user_id: s, 'nguồn': 'user_id' }]);
+    var like = '*' + s.replace(/[*,()]/g, '') + '*';
+    if (s.indexOf('@') > -1) {
+      return api('GET', '/auth/v1/admin/users?page=1&per_page=1000').then(function (r) {
+        var users = (r && r.users) || [];
+        return users.filter(function (u) { return (u.email || '').toLowerCase().indexOf(s.toLowerCase()) > -1; })
+          .map(function (u) { return { nickname: u.email, user_id: u.id, 'nguồn': 'email' }; });
+      });
+    }
+    var srcs = [['guild_members', 'Hội'], ['leaderboard_entries', 'BXH thu nhập'], ['vip_leaderboard_entries', 'BXH VIP'], ['m3_leaderboard_entries', 'BXH Ghép 3']];
+    return Promise.all(srcs.map(function (x) {
+      return api('GET', '/rest/v1/' + x[0] + '?select=user_id,nickname&nickname=ilike.' + enc(like) + '&limit=20')
+        .then(function (rows) { return rows.map(function (r) { r['nguồn'] = x[1]; return r; }); }).catch(function () { return []; });
+    })).then(function (parts) {
+      var by = {};
+      parts.forEach(function (rows) { rows.forEach(function (r) {
+        if (by[r.user_id]) by[r.user_id]['nguồn'] += ', ' + r['nguồn']; else by[r.user_id] = r;
+      }); });
+      return Object.keys(by).map(function (k) { return by[k]; });
+    });
+  }
+  function showPlayer(uid) {
+    var box = el('div', { class: 'card' }, el('p', { class: 'muted', text: 'Đang tải hồ sơ…' }));
+    var old = document.getElementById('profile'); if (old) old.remove();
+    box.id = 'profile'; $('app').appendChild(box);
+    Promise.all([
+      api('GET', '/auth/v1/admin/users/' + uid).catch(function () { return null; }),
+      api('GET', '/rest/v1/player_saves?user_id=eq.' + uid + '&select=user_id,version,updated_at,data'),
+      api('GET', '/rest/v1/guild_members?user_id=eq.' + uid + '&select=*,guilds(name,tag)'),
+    ]).then(function (r) { renderProfile(box, uid, r[0], r[1][0] || null, r[2][0] || null); }).catch(function (e) { clear(box).appendChild(el('p', { class: 'bad', text: e.message })); });
+  }
+  function renderProfile(box, uid, user, save, gm) {
+    clear(box);
+    box.appendChild(el('h2', { text: 'Hồ sơ ' + uid }));
+    var info = el('table');
+    function line(k, v) { info.appendChild(el('tr', {}, el('th', { text: k }), el('td', { text: v == null ? '—' : String(v) }))); }
+    line('Email', user ? (user.email || '(không có)') : '(không đọc được — khóa không có quyền Auth admin?)');
+    line('Ẩn danh?', user ? (user.is_anonymous ? 'có (chưa liên kết)' : 'không') : '—');
+    line('Tạo lúc', user && user.created_at); line('Đăng nhập gần nhất', user && user.last_sign_in_at);
+    line('Hội', gm ? '[' + (gm.guilds && gm.guilds.tag) + '] ' + (gm.guilds && gm.guilds.name) + ' · tên trong hội: ' + gm.nickname + ' · ' + gm.role : 'không ở hội nào');
+    box.appendChild(info);
+    if (!save) {
+      box.appendChild(el('p', { class: 'bad', text: 'Không có cloud save (player_saves) → tài khoản chưa liên kết email. Không cộng 💎 bằng cách này được; người chơi phải liên kết email trước.' }));
+      return;
+    }
+    var d = save.data || {}, gems = Number(d.gems) || 0;
+    box.appendChild(el('h2', { text: 'Cloud save' }));
+    var sv = el('table');
+    [['version', save.version], ['cập nhật', save.updated_at], ['💎 hiện có', gems], ['lifetimeEarnings', d.lifetimeEarnings], ['stage', d.stage], ['prestigeStars', d.prestigeStars], ['vipExp', d.vipExp]]
+      .forEach(function (p) { sv.appendChild(el('tr', {}, el('th', { text: p[0] }), el('td', { text: p[1] == null ? '—' : String(p[1]) }))); });
+    box.appendChild(sv);
+    var amt = el('input', { type: 'number', value: '15000', min: '0', style: 'width:140px' });
+    var bump = el('input', { type: 'checkbox', checked: true });
+    function change(mode) {
+      var n = Number(amt.value); if (!(n >= 0) || !isFinite(n)) return toast('Số 💎 không hợp lệ', true);
+      var next = mode === 'add' ? gems + n : mode === 'sub' ? Math.max(0, gems - n) : n;
+      if (!confirmAct('Đổi 💎 của ' + uid + ': ' + gems + ' → ' + next + (bump.checked ? '\n(kèm tăng lifetimeEarnings 5% để ép hộp thoại xung đột)' : ''))) return;
+      var nd = Object.assign({}, d); nd.gems = next;
+      if (bump.checked && Number(d.lifetimeEarnings) > 0) nd.lifetimeEarnings = Number(d.lifetimeEarnings) * 1.05;
+      // Khoá theo version: nếu máy người chơi vừa lưu (version đổi) thì không ghi đè mù.
+      api('PATCH', '/rest/v1/player_saves?user_id=eq.' + uid + '&version=eq.' + save.version, { data: nd }, { Prefer: 'return=representation' })
+        .then(function (rows) {
+          if (!rows || !rows.length) return toast('Save vừa đổi (máy người chơi vừa lưu). Tải lại hồ sơ rồi thử lại.', true);
+          toast('Đã đổi 💎: ' + gems + ' → ' + next); showPlayer(uid);
+        }).catch(fail);
+    }
+    box.appendChild(el('div', { class: 'row' }, el('span', { text: '💎' }), amt,
+      el('button', { class: 'primary', text: 'Cộng', onclick: function () { change('add'); } }),
+      el('button', { text: 'Trừ', onclick: function () { change('sub'); } }),
+      el('button', { class: 'danger', text: 'Đặt bằng', onclick: function () { change('set'); } })));
+    box.appendChild(el('label', { class: 'muted' }, bump, ' Ép hộp thoại xung đột (tăng lifetimeEarnings 5%) — cần cho bản app cũ; bản 1.0.9 chỉ cần 💎 lệch ≥10'));
+    box.appendChild(el('p', { class: 'muted', text: 'Người chơi phải vào Cài đặt → Đồng bộ đám mây và chọn "Khôi phục từ cloud" để nhận. Chọn "Giữ máy này" sẽ ĐÈ MẤT quà.' }));
+  }
+
+  /* ================= HỘI ================= */
+  function viewGuilds(app) {
+    var list = el('div'), detail = el('div');
+    app.appendChild(el('div', { class: 'card' }, el('h2', { text: 'Danh sách hội' }), list));
+    app.appendChild(detail);
+    Promise.all([
+      api('GET', '/rest/v1/guilds?select=id,name,tag,emoji,owner_id,hidden,requires_approval,created_at&order=created_at.asc'),
+      api('GET', '/rest/v1/guild_members?select=guild_id&limit=5000'),
+    ]).then(function (r) {
+      var cnt = {}; r[1].forEach(function (m) { cnt[m.guild_id] = (cnt[m.guild_id] || 0) + 1; });
+      var rows = r[0].map(function (g) { g['thành viên'] = cnt[g.id] || 0; return g; });
+      list.appendChild(dataTable(['emoji', 'name', 'tag', 'thành viên', 'hidden', 'requires_approval', 'created_at', 'id'], rows, function (g) { showGuild(g, detail); }));
+    }).catch(fail);
+  }
+  function showGuild(g, detail) {
+    clear(detail);
+    var card = el('div', { class: 'card' }, el('p', { class: 'muted', text: 'Đang tải…' }));
+    detail.appendChild(card);
+    Promise.all([
+      api('GET', '/rest/v1/guild_members?guild_id=eq.' + g.id + '&select=*&order=week_points.desc'),
+      api('GET', '/rest/v1/guild_join_requests?guild_id=eq.' + g.id + '&select=*'),
+    ]).then(function (r) { renderGuild(card, g, r[0], r[1], detail); }).catch(fail);
+  }
+  function renderGuild(card, g, members, reqs, detail) {
+    clear(card);
+    var reload = function () { api('GET', '/rest/v1/guilds?id=eq.' + g.id + '&select=*').then(function (r) { if (r[0]) showGuild(r[0], detail); else clear(detail); }).catch(fail); };
+    card.appendChild(el('h2', { text: g.emoji + ' [' + g.tag + '] ' + g.name }));
+    card.appendChild(el('div', { class: 'row' },
+      el('button', { text: g.hidden ? 'Bỏ ẩn hội' : 'Ẩn hội', onclick: function () {
+        if (confirmAct((g.hidden ? 'Bỏ ẩn' : 'Ẩn') + ' hội ' + g.name)) api('PATCH', '/rest/v1/guilds?id=eq.' + g.id, { hidden: !g.hidden }).then(function () { toast('Đã đổi'); reload(); }).catch(fail); } }),
+      el('button', { text: 'Đổi tên hội', onclick: function () {
+        var n = window.prompt('Tên hội mới (3-20 ký tự)', g.name); if (!n) return;
+        if (confirmAct('Đổi tên hội "' + g.name + '" → "' + n + '"')) api('PATCH', '/rest/v1/guilds?id=eq.' + g.id, { name: n }).then(function () { toast('Đã đổi'); reload(); }).catch(fail); } }),
+      el('button', { class: 'danger', text: 'Xoá cả hội', onclick: function () {
+        if (window.prompt('Gõ đúng tên hội "' + g.name + '" để XOÁ VĨNH VIỄN (kéo theo mọi thành viên, chat, nhật ký)') !== g.name) return;
+        api('DELETE', '/rest/v1/guilds?id=eq.' + g.id).then(function () { toast('Đã xoá hội'); clear(detail); }).catch(fail); } })));
+    var rows = members.map(function (m) { return { nickname: m.nickname, 'vai trò': m.user_id === g.owner_id ? 'owner' : m.role, week_points: m.week_points, joined_at: m.joined_at, user_id: m.user_id, _m: m }; });
+    var t = el('table'); t.appendChild(el('thead', {}, el('tr', {}, ['Tên', 'Vai trò', 'Điểm tuần', 'Vào lúc', 'Thao tác'].map(function (h) { return el('th', { text: h }); }))));
+    var tb = el('tbody');
+    rows.forEach(function (r) {
+      var m = r._m, isOwner = m.user_id === g.owner_id;
+      var act = el('td', {});
+      act.appendChild(el('button', { text: 'Đổi tên', onclick: function () {
+        var n = window.prompt('Tên mới (1-20 ký tự, không trùng trong hội)', m.nickname); if (!n || n === m.nickname) return;
+        if (confirmAct('Đổi tên ' + m.nickname + ' → ' + n)) api('PATCH', '/rest/v1/guild_members?user_id=eq.' + m.user_id, { nickname: n }).then(function () { toast('Đã đổi tên'); reload(); }).catch(fail); } }));
+      if (!isOwner) {
+        act.appendChild(el('button', { text: m.role === 'officer' ? 'Bỏ phó hội' : 'Phó hội', onclick: function () {
+          if (confirmAct((m.role === 'officer' ? 'Bãi nhiệm' : 'Bổ nhiệm phó hội') + ' ' + m.nickname)) api('PATCH', '/rest/v1/guild_members?user_id=eq.' + m.user_id, { role: m.role === 'officer' ? 'member' : 'officer' }).then(function () { toast('Đã đổi'); reload(); }).catch(fail); } }));
+        act.appendChild(el('button', { text: 'Làm chủ hội', onclick: function () {
+          if (!confirmAct('Chuyển quyền chủ hội cho ' + m.nickname)) return;
+          api('PATCH', '/rest/v1/guilds?id=eq.' + g.id, { owner_id: m.user_id }).then(function () { return api('PATCH', '/rest/v1/guild_members?user_id=eq.' + m.user_id, { role: 'member' }); }).then(function () { toast('Đã chuyển chủ hội'); reload(); }).catch(fail); } }));
+      }
+      act.appendChild(el('button', { class: 'danger', text: 'Kick', onclick: function () {
+        if (isOwner && !window.confirm('Đây là CHỦ HỘI — kick xong hội không có chủ. Vẫn kick?')) return;
+        if (confirmAct('Kick ' + m.nickname + ' khỏi hội (điểm tuần của họ sẽ không được ghi vào lịch sử hội)')) api('DELETE', '/rest/v1/guild_members?user_id=eq.' + m.user_id).then(function () { toast('Đã kick'); reload(); }).catch(fail); } }));
+      tb.appendChild(el('tr', {}, el('td', { text: r.nickname }), el('td', { text: r['vai trò'] }), el('td', { text: String(r.week_points) }), el('td', { text: String(r.joined_at).slice(0, 16) }), act));
+    });
+    t.appendChild(tb); card.appendChild(el('div', { class: 'scroll' }, t));
+    if (reqs.length) { card.appendChild(el('h2', { text: 'Đơn xin vào (' + reqs.length + ')' })); card.appendChild(dataTable(['nickname', 'created_at', 'user_id'], reqs)); }
+  }
+
+  /* ================= BẢNG XẾP HẠNG ================= */
+  var BOARDS = [
+    ['leaderboard_entries', 'Thu nhập', 'lifetime_earnings.desc', ['nickname', 'lifetime_earnings', 'prestige_stars', 'stage', 'updated_at'], 'user_id'],
+    ['m3_leaderboard_entries', 'Trân Châu Rơi', 'stars.desc', ['nickname', 'stars', 'levels_cleared', 'updated_at'], 'user_id'],
+    ['accessory_leaderboard_entries', 'Sưu tập', 'owned_count.desc', ['nickname', 'owned_count', 'updated_at'], 'user_id'],
+    ['story_speedrun_entries', 'Phá đảo Hồi 1', 'complete_seconds.asc', ['nickname', 'complete_seconds', 'completed_at'], 'user_id'],
+    ['story_speedrun2_entries', 'Phá đảo Hồi 2', 'complete_seconds.asc', ['nickname', 'complete_seconds', 'completed_at'], 'user_id'],
+    ['story_speedrun3_entries', 'Phá đảo Hồi 3', 'complete_seconds.asc', ['nickname', 'complete_seconds', 'completed_at'], 'user_id'],
+    ['vip_leaderboard_entries', 'VIP', 'vip_exp.desc', ['nickname', 'vip_exp', 'updated_at'], 'user_id'],
+  ];
+  function viewBoards(app) {
+    var sel = el('select', {}, BOARDS.map(function (b, i) { return el('option', { value: String(i), text: b[1] }); }));
+    var out = el('div');
+    function load() {
+      var b = BOARDS[Number(sel.value)];
+      clear(out).appendChild(el('p', { class: 'muted', text: 'Đang tải…' }));
+      api('GET', '/rest/v1/' + b[0] + '?select=*&order=' + b[2] + '&limit=100').then(function (rows) {
+        clear(out);
+        var cols = ['hạng'].concat(b[3], ['user_id']);
+        var t = el('table'); t.appendChild(el('thead', {}, el('tr', {}, cols.concat(['']).map(function (h) { return el('th', { text: h }); }))));
+        var tb = el('tbody');
+        rows.forEach(function (r, i) {
+          var tr = el('tr', {}, el('td', { text: String(i + 1) }));
+          b[3].forEach(function (c) { tr.appendChild(el('td', { text: short(r[c]) })); });
+          tr.appendChild(el('td', { text: r.user_id, title: r.user_id }));
+          tr.appendChild(el('td', {}, el('button', { class: 'danger', text: 'Xoá dòng', onclick: function () {
+            if (confirmAct('Xoá "' + r.nickname + '" khỏi bảng ' + b[1] + ' (người chơi sẽ lên lại bảng ở lần nộp điểm sau)')) {
+              api('DELETE', '/rest/v1/' + b[0] + '?user_id=eq.' + r.user_id).then(function () { toast('Đã xoá'); load(); }).catch(fail); } } })));
+          tb.appendChild(tr);
+        });
+        t.appendChild(tb); out.appendChild(el('div', { class: 'scroll' }, t));
+        if (!rows.length) out.appendChild(el('p', { class: 'muted', text: 'Bảng trống.' }));
+      }).catch(fail);
+    }
+    sel.addEventListener('change', load);
+    app.appendChild(el('div', { class: 'card' }, el('h2', { text: 'Bảng xếp hạng (top 100)' }), el('div', { class: 'row' }, sel, el('button', { text: 'Tải lại', onclick: load })), out));
+    load();
+  }
+
+  /* ================= BẢNG DỮ LIỆU (duyệt/sửa bảng bất kỳ) ================= */
+  function pkOf(name) {
+    var props = (schemas()[name] || {}).properties || {}, pk = [];
+    Object.keys(props).forEach(function (c) { if (String(props[c].description || '').indexOf('<pk/>') > -1) pk.push(c); });
+    return pk;
+  }
+  function viewTables(app) {
+    var names = Object.keys(schemas()).sort();
+    if (!names.length) return app.appendChild(el('div', { class: 'card' }, el('p', { class: 'bad', text: 'Không đọc được danh sách bảng (OpenAPI). Dùng tab Người chơi / Hội / Bảng xếp hạng.' })));
+    var sel = el('select', {}, names.map(function (n) { return el('option', { value: n, text: n }); }));
+    var fcol = el('select'), fop = el('select', {}, ['eq', 'ilike', 'neq', 'gt', 'lt', 'is'].map(function (o) { return el('option', { value: o, text: o }); }));
+    var fval = el('input', { type: 'text', placeholder: 'giá trị (ilike: dùng *)', style: 'width:200px' });
+    var ocol = el('select'), odir = el('select', {}, [el('option', { value: 'desc', text: 'giảm' }), el('option', { value: 'asc', text: 'tăng' })]);
+    var lim = el('input', { type: 'number', value: '50', min: '1', max: '500', style: 'width:80px' });
+    var page = 0, ro = el('input', { type: 'checkbox', checked: true });
+    var out = el('div');
+    function cols() { return Object.keys((schemas()[sel.value] || {}).properties || {}); }
+    function fillCols() {
+      [fcol, ocol].forEach(function (s) { clear(s); s.appendChild(el('option', { value: '', text: s === fcol ? '(không lọc)' : '(không sắp)' })); cols().forEach(function (c) { s.appendChild(el('option', { value: c, text: c })); }); });
+      page = 0;
+    }
+    function load() {
+      var q = '?select=*&limit=' + (Number(lim.value) || 50) + '&offset=' + page * (Number(lim.value) || 50);
+      if (fcol.value && fval.value !== '') q += '&' + fcol.value + '=' + fop.value + '.' + enc(fval.value);
+      if (ocol.value) q += '&order=' + ocol.value + '.' + odir.value;
+      clear(out).appendChild(el('p', { class: 'muted', text: 'Đang tải…' }));
+      api('GET', '/rest/v1/' + sel.value + q).then(function (rows) {
+        clear(out);
+        out.appendChild(el('p', { class: 'muted', text: rows.length + ' dòng · trang ' + (page + 1) + (pkOf(sel.value).length ? ' · khóa chính: ' + pkOf(sel.value).join(', ') : ' · KHÔNG tìm thấy khóa chính (không sửa/xoá được)') }));
+        if (rows.length) out.appendChild(dataTable(Object.keys(rows[0]), rows, function (r) { editRow(sel.value, r, ro.checked, load); }));
+        out.appendChild(el('div', { class: 'row' },
+          el('button', { text: '◀', disabled: page === 0, onclick: function () { page--; load(); } }),
+          el('button', { text: '▶', disabled: rows.length < (Number(lim.value) || 50), onclick: function () { page++; load(); } }),
+          el('button', { text: '＋ Thêm dòng', disabled: ro.checked, onclick: function () { insertRow(sel.value, load); } })));
+      }).catch(fail);
+    }
+    sel.addEventListener('change', function () { fillCols(); load(); });
+    fillCols();
+    app.appendChild(el('div', { class: 'card' }, el('h2', { text: 'Duyệt / sửa bảng bất kỳ' }),
+      el('div', { class: 'row' }, el('span', { text: 'Bảng' }), sel, el('span', { text: 'Lọc' }), fcol, fop, fval),
+      el('div', { class: 'row' }, el('span', { text: 'Sắp' }), ocol, odir, el('span', { text: 'Số dòng' }), lim, el('button', { class: 'primary', text: 'Tải', onclick: function () { page = 0; load(); } }),
+        el('label', {}, ro, ' Chỉ xem (bỏ tick để sửa/xoá/thêm)')),
+      out));
+  }
+  function editRow(table, row, readOnly, reload) {
+    var pk = pkOf(table);
+    var ta = el('textarea', { spellcheck: 'false' }); ta.value = JSON.stringify(row, null, 2);
+    var filter = pk.length ? pk.map(function (c) { return c + '=eq.' + enc(row[c]); }).join('&') : '';
+    modal(el('div', {}, el('h2', { text: table + (filter ? ' · ' + filter : '') }), ta,
+      el('div', { class: 'row' },
+        el('button', { class: 'primary', text: 'Lưu thay đổi', disabled: readOnly || !pk.length, onclick: function () {
+          var obj; try { obj = JSON.parse(ta.value); } catch (e) { return toast('JSON sai: ' + e.message, true); }
+          if (!confirmAct('SỬA dòng ' + filter + ' của bảng ' + table)) return;
+          api('PATCH', '/rest/v1/' + table + '?' + filter, obj, { Prefer: 'return=representation' }).then(function (r) { toast(r && r.length ? 'Đã lưu' : 'Không dòng nào khớp', !(r && r.length)); closeModal(); reload(); }).catch(fail); } }),
+        el('button', { class: 'danger', text: 'Xoá dòng', disabled: readOnly || !pk.length, onclick: function () {
+          if (!confirmAct('XOÁ dòng ' + filter + ' của bảng ' + table)) return;
+          api('DELETE', '/rest/v1/' + table + '?' + filter, undefined, { Prefer: 'return=representation' }).then(function (r) { toast(r && r.length ? 'Đã xoá' : 'Không dòng nào khớp', !(r && r.length)); closeModal(); reload(); }).catch(fail); } }),
+        el('button', { text: 'Đóng', onclick: closeModal }))));
+  }
+  function insertRow(table, reload) {
+    var ta = el('textarea', { spellcheck: 'false' }); ta.value = '{\n  \n}';
+    modal(el('div', {}, el('h2', { text: 'Thêm dòng vào ' + table }), ta,
+      el('div', { class: 'row' }, el('button', { class: 'primary', text: 'Thêm', onclick: function () {
+        var obj; try { obj = JSON.parse(ta.value); } catch (e) { return toast('JSON sai: ' + e.message, true); }
+        if (!confirmAct('THÊM dòng vào bảng ' + table)) return;
+        api('POST', '/rest/v1/' + table, obj, { Prefer: 'return=representation' }).then(function () { toast('Đã thêm'); closeModal(); reload(); }).catch(fail); } }),
+        el('button', { text: 'Đóng', onclick: closeModal }))));
+  }
+
+  /* ================= NHẬT KÝ ================= */
+  function viewLog(app) {
+    app.appendChild(el('div', { class: 'card' }, el('h2', { text: 'Thao tác ghi trong phiên này' }),
+      logs.length ? dataTable(['thời gian', 'method', 'status', 'đường dẫn'], logs.map(function (l) { return { 'thời gian': l.at.toLocaleTimeString(), method: l.method, status: l.status, 'đường dẫn': l.path }; }))
+        : el('p', { class: 'muted', text: 'Chưa có thao tác ghi nào. (Nhật ký chỉ nằm trong bộ nhớ trang, không lưu khóa hay nội dung.)' })));
+  }
+
+  /* ---------- khởi động ---------- */
+  var saved = ''; try { saved = sessionStorage.getItem('adminKey') || ''; } catch (e) {}
+  if (saved) connect(saved, true); else renderLogin();
+})();
+</script>
+</body>
+</html>
