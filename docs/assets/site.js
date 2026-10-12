@@ -219,7 +219,8 @@
   var who = ''; try { who = (new URLSearchParams(location.search).get('player') || '').trim().slice(0, 20); } catch (e) {}
   var profileRows = null,
       PF = { income: ['lbTabIncome', big], pearls: ['lbTabPearls', function (v) { return v + ' ⭐'; }],
-             collection: ['lbTabCollection', String], speed: ['lbTabSpeed', dur], vip: ['lbTabVip', big] };
+             collection: ['lbTabCollection', String], speed: ['lbTabSpeed', dur], vip: ['lbTabVip', big],
+             guild: ['lbTabGuild', function (v, r, t) { return (r.label ? r.label + ' · ' : '') + big(v) + ' ' + t.lbGuild; }] };
   function renderProfile() {
     var box = $('profileBox'), t = T[lang];
     if (!box || !who || !profileRows || !t) return;
@@ -231,7 +232,7 @@
     rows.forEach(function (r) {
       var li = document.createElement('li'), b = document.createElement('b');
       b.textContent = '#' + r.rank; li.appendChild(b);
-      li.appendChild(document.createTextNode(t[PF[r.board][0]] + ' · ' + PF[r.board][1](Number(r.value))));
+      li.appendChild(document.createTextNode(t[PF[r.board][0]] + ' · ' + PF[r.board][1](Number(r.value), r, t)));
       ul.appendChild(li);
     });
     box.appendChild(ul);

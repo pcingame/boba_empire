@@ -49,6 +49,10 @@ void main() {
       );
       final sql = File('supabase/player_profile_schema.sql').readAsStringSync();
       expect(sql, contains('function player_profile(p_nickname text)'));
+      expect(sql, contains('drop function if exists player_profile(text)'),
+          reason: 'đổi kiểu trả về (thêm label) cần drop hàm cũ');
+      expect(sql, contains("'guild'::text"), reason: 'dòng hội trong hồ sơ');
+      expect(js, contains('guild: [\'lbTabGuild\''), reason: 'web hiện dòng hội');
       expect(
         sql,
         contains('grant execute on function player_profile(text) to anon'),

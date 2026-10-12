@@ -16,6 +16,7 @@ void main() {
         {'board': 'vip', 'rank': 3, 'value': 500},
         {'board': 'income', 'rank': 1, 'value': 1.5e30},
         {'board': 'bang_moi_cua_server', 'rank': 1, 'value': 1},
+        {'board': 'guild', 'rank': 1, 'value': 1200, 'label': 'Alpha'}, // chỉ web hiện dòng hội
         {'board': 'pearls', 'rank': 'x', 'value': 1},
         {'board': 'speed', 'rank': 2, 'value': null},
         'rac',
@@ -43,7 +44,8 @@ void main() {
           )
           .map((m) => m.group(1))
           .toSet();
-      expect(sql, {for (final b in ProfileBoard.values) b.name});
+      // 'guild' chỉ dành cho web (app bỏ qua) nên không có trong ProfileBoard.
+      expect(sql, {for (final b in ProfileBoard.values) b.name, 'guild'});
     });
   });
 
