@@ -998,6 +998,9 @@
   },
   "marketMyListingsHeader": "Seus anúncios",
   "marketEmptyMine": "Você ainda não colocou nada à venda.",
+  "marketExpiresIn": "Expira em {t}",
+  "marketListExpiryNote": "Os anúncios duram no máximo {days} dias; ao expirar, o item volta ao seu inventário.",
+  "marketExpiredToast": "{n} anúncio(s) expirado(s) devolvido(s) ao seu inventário.",
   "marketCancelButton": "Cancelar anúncio",
   "marketCancelledToast": "Anúncio cancelado.",
   "marketSellableHeader": "Acessórios que você pode vender",
@@ -1422,6 +1425,7 @@
   "guildAccept": "Aprovar",
   "guildReject": "Recusar",
   "guildErrApproval": "Esta guilda precisa da aprovação do líder — toque em \"Solicitar\".",
+  "guildErrNicknameTaken": "Já existe alguém com esse nome nesta guilda; escolha outro.",
   "guildErrRequestsFull": "Esta guilda tem pedidos pendentes demais.",
   "cloudSaveConflictGems": "💎 Este dispositivo: {local} · Na nuvem: {cloud}",
   "@cloudSaveConflictGems": {

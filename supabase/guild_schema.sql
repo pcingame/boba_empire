@@ -45,6 +45,19 @@ create table if not exists guild_members (
   last_score  bigint not null default 0 check (last_score >= 0)
 );
 create index if not exists guild_members_guild_idx on guild_members (guild_id);
+-- Tên thành viên KHÔNG trùng trong cùng hội (không phân biệt hoa thường): tài khoản không liên kết
+-- cài lại sẽ thành uid mới và vào lại hội với đúng tên cũ → hai dòng giống hệt nhau, không biết ai
+-- là ai. Dữ liệu cũ đã trùng thì đổi tên người vào SAU thành "<tên>#2", "#3"… trước khi tạo chỉ mục
+-- (idempotent: lần chạy sau không còn trùng nên không đổi gì).
+update guild_members m
+   set nickname = left(m.nickname, 16) || '#' || d.rn
+  from (select user_id,
+               row_number() over (partition by guild_id, lower(nickname)
+                                  order by joined_at, user_id) as rn
+          from guild_members) d
+ where d.user_id = m.user_id and d.rn > 1;
+create unique index if not exists guild_members_nick_idx
+  on guild_members (guild_id, lower(nickname));
 -- Vai trò: chủ hội là guilds.owner_id (không dùng cột này); phó hội = 'officer'.
 alter table guild_members add column if not exists role text not null default 'member';
 do $$ begin
@@ -170,6 +183,15 @@ create table if not exists guild_message_reports (
   primary key (message_id, reporter_id)
 );
 create index if not exists guild_messages_guild_idx on guild_messages (guild_id, id desc);
+-- Reaction (emoji) vào tin chat: mỗi người bật/tắt từng emoji (tối đa 6 loại) trên mỗi tin.
+create table if not exists guild_message_reactions (
+  message_id bigint not null references guild_messages(id) on delete cascade,
+  user_id    uuid not null,
+  emoji      text not null,
+  created_at timestamptz not null default now(),
+  primary key (message_id, user_id, emoji)
+);
+create index if not exists guild_message_reactions_msg_idx on guild_message_reactions (message_id);
 
 alter table guilds drop column if exists is_public;
 alter table guilds drop column if exists invite_code;
@@ -193,6 +215,7 @@ alter table guild_purchases     enable row level security;
 alter table guild_messages      enable row level security;
 alter table guild_events        enable row level security;
 alter table guild_fund_claims   enable row level security;
+alter table guild_message_reactions enable row level security;
 alter table guild_team_claims   enable row level security;
 alter table guild_message_reports enable row level security;
 -- Cố ý KHÔNG tạo policy: chỉ RPC security definer được đụng vào.
@@ -466,6 +489,10 @@ begin
        >= guild_max_members() then
     raise exception 'guild full';
   end if;
+  if exists (select 1 from guild_members
+              where guild_id = v_g.id and lower(nickname) = lower(p_nickname)) then
+    raise exception 'nickname taken';
+  end if;
 
   insert into guild_members (user_id, guild_id, nickname, week, last_score)
   values (v_uid, v_g.id, p_nickname, guild_current_week(),
@@ -496,6 +523,10 @@ begin
   select * into v_g from guilds where id = p_guild and not hidden for update;
   if not found then raise exception 'not found'; end if;
   if not v_g.requires_approval then raise exception 'no approval needed'; end if;
+  if exists (select 1 from guild_members
+              where guild_id = v_g.id and lower(nickname) = lower(p_nickname)) then
+    raise exception 'nickname taken';
+  end if;
   if (select count(*) from guild_join_requests
         where guild_id = v_g.id and user_id <> v_uid) >= guild_max_requests() then
     raise exception 'too many requests';
@@ -546,6 +577,11 @@ begin
   if (select count(*) from guild_members where guild_id = v_g.id)
        >= guild_max_members() then
     raise exception 'guild full';
+  end if;
+  -- Có người cùng tên vào hội trong lúc đơn đang chờ: không duyệt được (chủ hội từ chối đơn).
+  if exists (select 1 from guild_members
+              where guild_id = v_g.id and lower(nickname) = lower(v_r.nickname)) then
+    raise exception 'nickname taken';
   end if;
   insert into guild_members (user_id, guild_id, nickname, week, last_score)
   values (p_user, v_g.id, v_r.nickname, guild_current_week(), v_r.score);
@@ -1153,6 +1189,22 @@ begin
 end;
 $$;
 
+-- Emoji được phép (khớp guildReactionEmojis ở lib/core/guild.dart; test so khớp).
+create or replace function guild_reaction_ok(p_emoji text) returns boolean
+language sql immutable as $$
+  select p_emoji = any (array['👍', '❤️', '😂', '😮', '😢', '🎉'])
+$$;
+
+-- Reaction của một tin dạng [{emoji, count, mine}], theo thứ tự ai bấm trước.
+create or replace function guild_message_reactions_json(p_message bigint, p_user uuid)
+returns jsonb
+language sql stable security definer set search_path = public as $$
+  select coalesce(jsonb_agg(jsonb_build_object('emoji', x.emoji, 'count', x.cnt, 'mine', x.mine)
+                            order by x.first_at), '[]'::jsonb)
+  from (select emoji, count(*) as cnt, bool_or(user_id = p_user) as mine, min(created_at) as first_at
+          from guild_message_reactions where message_id = p_message group by emoji) x
+$$;
+
 create or replace function guild_chat_list(p_limit integer default 50) returns jsonb
 language plpgsql stable security definer set search_path = public as $$
 declare
@@ -1164,19 +1216,42 @@ begin
   if v_gid is null then raise exception 'not found'; end if;
   return jsonb_build_object(
     'pinned', (select jsonb_build_object('id', id, 'user_id', user_id,
-        'nickname', nickname, 'body', body, 'created_at', created_at)
+        'nickname', nickname, 'body', body, 'created_at', created_at,
+        'reactions', guild_message_reactions_json(id, v_uid))
         from guild_messages where guild_id = v_gid and pinned and not hidden
           and not exists (select 1 from guild_message_reports r
                             where r.message_id = guild_messages.id and r.reporter_id = v_uid)
         order by id desc limit 1),
     'messages', coalesce((select jsonb_agg(m order by (m->>'id')::bigint desc) from (
         select jsonb_build_object('id', id, 'user_id', user_id, 'nickname', nickname,
-               'body', body, 'created_at', created_at) as m
+               'body', body, 'created_at', created_at,
+               'reactions', guild_message_reactions_json(id, v_uid)) as m
         from guild_messages where guild_id = v_gid and not hidden
           and not exists (select 1 from guild_message_reports r
                             where r.message_id = guild_messages.id and r.reporter_id = v_uid)
         order by id desc limit least(greatest(coalesce(p_limit, 50), 1), 100)) s),
       '[]'::jsonb));
+end;
+$$;
+
+-- Bật/tắt reaction [p_emoji] của mình trên tin [p_id] (cùng hội, tin chưa bị ẩn).
+create or replace function guild_chat_react(p_id bigint, p_emoji text) returns void
+language plpgsql security definer set search_path = public as $$
+declare
+  v_uid uuid := auth.uid();
+  v_gid uuid;
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  if not coalesce(guild_reaction_ok(p_emoji), false) then raise exception 'invalid amount'; end if;
+  select guild_id into v_gid from guild_members where user_id = v_uid;
+  if v_gid is null then raise exception 'not found'; end if;
+  if not exists (select 1 from guild_messages where id = p_id and guild_id = v_gid and not hidden) then
+    raise exception 'not found';
+  end if;
+  delete from guild_message_reactions where message_id = p_id and user_id = v_uid and emoji = p_emoji;
+  if not found then
+    insert into guild_message_reactions (message_id, user_id, emoji) values (p_id, v_uid, p_emoji);
+  end if;
 end;
 $$;
 
@@ -1502,7 +1577,7 @@ begin
     'guild_transfer_owner(uuid)', 'guild_activity(integer)',
     'guild_claim_fund()', 'guild_gift_send(uuid,integer)',
     'guild_gift_inbox()', 'guild_gift_claim(bigint)', 'guild_leaderboard_vip(integer)',
-    'guild_vip_bonus()', 'guild_claim_boss()', 'guild_claim_team()'
+    'guild_vip_bonus()', 'guild_claim_boss()', 'guild_claim_team()', 'guild_chat_react(bigint,text)'
   ] loop
     execute format('revoke all on function %s from public', f);
     execute format('grant execute on function %s to authenticated', f);
@@ -1530,3 +1605,5 @@ revoke all on function guild_vip_bonus_pct(uuid) from public, anon, authenticate
 revoke all on function guild_fund_donated(uuid) from public, anon, authenticated;
 revoke all on function guild_fund_progress(uuid) from public, anon, authenticated;
 revoke all on function guild_team_active(uuid) from public, anon, authenticated;
+-- Tổng hợp reaction của tin tuỳ ý → không cho client gọi (lộ tin hội khác).
+revoke all on function guild_message_reactions_json(bigint, uuid) from public, anon, authenticated;

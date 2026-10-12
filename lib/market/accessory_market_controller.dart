@@ -58,6 +58,10 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
   void Function(String accessoryId)? onAccessoryRemovedLocally;
   void Function(String accessoryId)? onAccessoryAddedLocally;
 
+  /// Báo UI có [count] món vừa hết hạn đăng và đã về kho.
+  void Function(int count)? onListingsExpired;
+  final _appliedExpired = <String>{};
+
   /// Ghi analytics (gán từ UI, trỏ tới GameController.logEvent).
   void Function(String event, Map<String, dynamic> props)? onEvent;
 
@@ -187,12 +191,36 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
     }
   }
 
+  /// Nhận lại món từ tin đã hết hạn (server đã trả về kho server): thêm vào kho cục bộ rồi mới
+  /// ack — app tắt giữa chừng thì lần sau nhận lại, không mất món. Lỗi (mạng / server cũ chưa có
+  /// RPC) nuốt im lặng: món vẫn an toàn ở server.
+  Future<void> _collectExpired() async {
+    try {
+      final back = await _repository.expireMyListings();
+      // Đã thêm trong phiên này mà ack chưa tới server → không thêm lần hai.
+      final fresh = [for (final b in back) if (_appliedExpired.add(b.listingId)) b];
+      for (final b in fresh) {
+        onAccessoryAddedLocally?.call(b.accessoryId);
+      }
+      if (back.isNotEmpty) {
+        await _repository.ackExpiredListings([for (final b in back) b.listingId]);
+      }
+      if (fresh.isNotEmpty) {
+        onEvent?.call('listing_expired', {'count': fresh.length});
+        onListingsExpired?.call(fresh.length);
+      }
+    } catch (e) {
+      developer.log('nhận lại món hết hạn lỗi: $e', name: 'Market');
+    }
+  }
+
   Future<void> refresh({bool silent = false}) async {
     if (!silent) {
       state = const AccessoryMarketLoading();
       unawaited(_registerPush(ask: false));
     }
     try {
+      await _collectExpired();
       await _reconcileOwnership();
       final listings = await _repository.fetchActiveListings();
       final myListings = await _repository.fetchMyActiveListings();

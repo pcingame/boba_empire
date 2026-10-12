@@ -9,6 +9,10 @@ library;
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+/// Tin đăng sống tối đa bấy nhiêu ngày rồi hết hạn (khớp `market_listing_days()` trong
+/// accessory_market_schema.sql; test so khớp).
+const int marketListingDays = 3;
+
 class MarketListing {
   const MarketListing({
     required this.id,
@@ -31,6 +35,13 @@ class MarketListing {
   final String accessoryId;
   final int price;
   final DateTime createdAt;
+
+  /// Thời điểm tin hết hạn; còn lại bao lâu so với [now] (không âm).
+  DateTime get expiresAt => createdAt.add(const Duration(days: marketListingDays));
+  Duration remaining(DateTime now) {
+    final d = expiresAt.difference(now);
+    return d.isNegative ? Duration.zero : d;
+  }
 }
 
 class MarketTrade {
@@ -190,6 +201,26 @@ class AccessoryMarketRepository {
             )
             as String;
     return id;
+  }
+
+  /// Quét tin hết hạn của mình (server trả món về kho SERVER) rồi trả danh sách (id tin, id món)
+  /// mà máy CHƯA thêm lại vào kho cục bộ. Máy thêm xong phải gọi [ackExpiredListings]; chưa ack
+  /// thì lần sau vẫn trả lại (app tắt giữa chừng không mất món).
+  Future<List<({String listingId, String accessoryId})>> expireMyListings() async {
+    await ensureSignedIn();
+    final rows = await _client.rpc('expire_my_listings');
+    return [
+      for (final r in rows as List)
+        (
+          listingId: (r as Map<String, dynamic>)['id'] as String,
+          accessoryId: r['accessory_id'] as String,
+        ),
+    ];
+  }
+
+  Future<void> ackExpiredListings(List<String> listingIds) async {
+    await ensureSignedIn();
+    await _client.rpc('ack_expired_listings', params: {'p_ids': listingIds});
   }
 
   Future<void> cancelListing(String listingId) async {

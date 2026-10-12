@@ -84,6 +84,9 @@ const List<GuildMilestone> guildMilestones = [
   GuildMilestone(120000, 60, accessory: true),
 ];
 
+/// Emoji reaction được phép vào tin chat hội (khớp `guild_reaction_ok` ở server; test so khớp).
+const List<String> guildReactionEmojis = ['👍', '❤️', '😂', '😮', '😢', '🎉'];
+
 /// Tuần tính từ thứ Hai 00:00 UTC (khớp `date_trunc('week')` của Postgres).
 /// 1970-01-05 (ngày epoch số 4) là thứ Hai.
 int guildWeekIndex(int nowMillis) => (dayIndex(nowMillis) - 4) ~/ 7;

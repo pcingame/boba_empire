@@ -2539,6 +2539,21 @@ class AppLocalizationsKo extends AppLocalizations {
   String get marketEmptyMine => '아직 등록한 물건이 없어요.';
 
   @override
+  String marketExpiresIn(String t) {
+    return '$t 후 만료';
+  }
+
+  @override
+  String marketListExpiryNote(int days) {
+    return '등록은 최대 $days일 유지돼요. 만료되면 아이템이 보관함으로 돌아와요.';
+  }
+
+  @override
+  String marketExpiredToast(int n) {
+    return '만료된 등록 $n개가 보관함으로 돌아왔어요.';
+  }
+
+  @override
   String get marketCancelButton => '등록 취소';
 
   @override
@@ -3185,6 +3200,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get guildErrApproval => '이 길드는 길드장 승인이 필요해요. \"신청\"을 눌러 주세요.';
+
+  @override
+  String get guildErrNicknameTaken => '이 길드에 이미 같은 이름이 있어요. 다른 이름을 골라주세요.';
 
   @override
   String get guildErrRequestsFull => '이 길드에 대기 중인 신청이 너무 많아요.';

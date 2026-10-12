@@ -440,4 +440,27 @@ void main() {
     expect(fake.listCalls, 1);
     container.dispose();
   });
+
+  testWidgets('tin của mình hiện "Hết hạn sau …"; tab Chợ (tin người khác) không hiện', (tester) async {
+    final (container, _) = await _pump(tester);
+    expect(find.byKey(Key('listing-expiry-${_otherListing.id}')), findsNothing);
+    await tester.tap(find.text('Của tôi'));
+    await tester.pumpAndSettle();
+    final line = find.byKey(Key('listing-expiry-${_myListing.id}'));
+    expect(line, findsOneWidget);
+    expect(tester.widget<Text>(line).data, startsWith('Hết hạn sau'));
+    container.dispose();
+  });
+
+  testWidgets('hộp đăng bán nhắc tin sống tối đa 3 ngày', (tester) async {
+    final (container, _) = await _pump(tester);
+    await tester.tap(find.text('Của tôi'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Đăng bán'));
+    await tester.pumpAndSettle();
+    final note = find.byKey(const Key('market-list-expiry-note'));
+    expect(note, findsOneWidget);
+    expect(tester.widget<Text>(note).data, contains('3 ngày'));
+    container.dispose();
+  });
 }

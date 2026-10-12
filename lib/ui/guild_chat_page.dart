@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/guild.dart' show guildReactionEmojis;
 import '../guild/guild_chat_unread.dart';
 import '../guild/guild_controller.dart';
 import '../guild/guild_repository.dart';
@@ -76,6 +77,9 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> {
     await _run(Future.value(out));
   }
 
+  Future<void> _react(GuildMessage m, String emoji) =>
+      _run(ref.read(guildControllerProvider.notifier).chatReact(m.id, emoji));
+
   Future<void> _menu(GuildMessage m, bool isOwner, bool pinned) async {
     final l10n = AppLocalizations.of(context)!;
     final ctrl = ref.read(guildControllerProvider.notifier);
@@ -87,6 +91,23 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> {
       context: context,
       builder: (_) => SafeArea(
         child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 4,
+              children: [
+                for (final e in guildReactionEmojis)
+                  IconButton(
+                    key: Key('guild-chat-pick-$e'),
+                    tooltip: e,
+                    isSelected: m.reactions.any((r) => r.emoji == e && r.mine),
+                    onPressed: () => Navigator.pop(context, 'react:$e'),
+                    icon: Text(e, style: const TextStyle(fontSize: 26)),
+                  ),
+              ],
+            ),
+          ),
           if (!mine)
             ListTile(
               key: const Key('guild-chat-report'),
@@ -112,6 +133,7 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> {
       ),
     );
     if (!mounted || choice == null) return;
+    if (choice.startsWith('react:')) await _react(m, choice.substring(6));
     if (choice == 'pin') await _run(ctrl.chatPin(pinned ? null : m.id));
     if (choice == 'delete') await _run(ctrl.chatDelete(m.id));
     if (choice == 'report') {
@@ -146,6 +168,7 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> {
                     myId: myId,
                     isOwner: isOwner,
                     onLongPress: _menu,
+                    onReact: _react,
                   ),
                 AsyncError() => Center(
                     child: TextButton(
@@ -203,12 +226,14 @@ class _List extends StatelessWidget {
     required this.myId,
     required this.isOwner,
     required this.onLongPress,
+    required this.onReact,
   });
 
   final GuildChat chat;
   final String? myId;
   final bool isOwner;
   final Future<void> Function(GuildMessage, bool isOwner, bool pinned) onLongPress;
+  final Future<void> Function(GuildMessage, String emoji) onReact;
 
   @override
   Widget build(BuildContext context) {
@@ -273,6 +298,7 @@ class _List extends StatelessWidget {
                             message: m,
                             mine: mine,
                             theme: theme,
+                            onReact: onReact,
                           ),
                         ),
                       ),
@@ -288,11 +314,13 @@ class _List extends StatelessWidget {
 /// Một bong bóng tin nhắn. Tin của VIP từ cấp [vipTitleMinLevel] có nền pha màu + viền theo
 /// cấp (8+ có thêm quầng sáng); tin của chính mình theo cấp VIP cục bộ.
 class _Bubble extends ConsumerWidget {
-  const _Bubble({required this.message, required this.mine, required this.theme});
+  const _Bubble(
+      {required this.message, required this.mine, required this.theme, required this.onReact});
 
   final GuildMessage message;
   final bool mine;
   final ThemeData theme;
+  final Future<void> Function(GuildMessage, String emoji) onReact;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -338,6 +366,37 @@ class _Bubble extends ConsumerWidget {
               ],
             ),
           Text(m.body),
+          if (m.reactions.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Wrap(
+                spacing: 4,
+                runSpacing: 4,
+                children: [
+                  for (final r in m.reactions)
+                    InkWell(
+                      key: Key('guild-chat-chip-${m.id}-${r.emoji}'),
+                      borderRadius: BorderRadius.circular(10),
+                      onTap: () => onReact(m, r.emoji),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: r.mine
+                              ? theme.colorScheme.primary.withValues(alpha: 0.18)
+                              : theme.colorScheme.surface.withValues(alpha: 0.6),
+                          border: Border.all(
+                            color: r.mine ? theme.colorScheme.primary : Colors.transparent,
+                          ),
+                        ),
+                        child: Text('${r.emoji} ${r.count}',
+                            style: theme.textTheme.labelMedium
+                                ?.copyWith(fontWeight: FontWeight.w600)),
+                      ),
+                    ),
+                ],
+              ),
+            ),
         ],
       ),
     );

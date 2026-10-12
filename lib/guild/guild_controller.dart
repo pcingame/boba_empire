@@ -327,6 +327,8 @@ class GuildController extends Notifier<GuildViewState> {
   Future<GuildOutcome> chatDelete(int id) => _chatAct(() => _repo.chatDelete(id));
   Future<GuildOutcome> chatReport(int id) => _chatAct(() => _repo.chatReport(id));
   Future<GuildOutcome> chatPin(int? id) => _chatAct(() => _repo.chatPin(id));
+  Future<GuildOutcome> chatReact(int id, String emoji) =>
+      _chatAct(() => _repo.chatReact(id, emoji));
 
   /// Mua buff thu nhập cho cả hội; buff áp ngay qua refresh (server báo giây còn lại).
   Future<GuildOutcome> buyBuff() => _act(_repo.buyBuff);

@@ -4542,6 +4542,24 @@ abstract class AppLocalizations {
   /// **'Bạn chưa đăng bán món nào.'**
   String get marketEmptyMine;
 
+  /// No description provided for @marketExpiresIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hết hạn sau {t}'**
+  String marketExpiresIn(String t);
+
+  /// No description provided for @marketListExpiryNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tin đăng tồn tại tối đa {days} ngày; hết hạn món sẽ tự về kho của bạn.'**
+  String marketListExpiryNote(int days);
+
+  /// No description provided for @marketExpiredToast.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} món hết hạn đăng đã về kho của bạn.'**
+  String marketExpiredToast(int n);
+
   /// No description provided for @marketCancelButton.
   ///
   /// In vi, this message translates to:
@@ -5591,6 +5609,12 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Hội này cần chủ hội duyệt — hãy bấm \"Xin vào\".'**
   String get guildErrApproval;
+
+  /// No description provided for @guildErrNicknameTaken.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trong hội này đã có người dùng tên đó, hãy chọn tên khác.'**
+  String get guildErrNicknameTaken;
 
   /// No description provided for @guildErrRequestsFull.
   ///

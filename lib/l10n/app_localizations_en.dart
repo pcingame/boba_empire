@@ -2579,6 +2579,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get marketEmptyMine => 'You haven\'t listed anything yet.';
 
   @override
+  String marketExpiresIn(String t) {
+    return 'Expires in $t';
+  }
+
+  @override
+  String marketListExpiryNote(int days) {
+    return 'Listings last at most $days days; when one expires the item returns to your inventory.';
+  }
+
+  @override
+  String marketExpiredToast(int n) {
+    return '$n expired listing(s) returned to your inventory.';
+  }
+
+  @override
   String get marketCancelButton => 'Cancel listing';
 
   @override
@@ -3243,6 +3258,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get guildErrApproval =>
       'This guild needs the owner\'s approval — tap \"Request\".';
+
+  @override
+  String get guildErrNicknameTaken =>
+      'Someone in this guild already uses that name — pick another one.';
 
   @override
   String get guildErrRequestsFull =>

@@ -739,6 +739,9 @@
   "marketPriceTag": "마켓 코인 {price}개",
   "marketMyListingsHeader": "내 등록 목록",
   "marketEmptyMine": "아직 등록한 물건이 없어요.",
+  "marketExpiresIn": "{t} 후 만료",
+  "marketListExpiryNote": "등록은 최대 {days}일 유지돼요. 만료되면 아이템이 보관함으로 돌아와요.",
+  "marketExpiredToast": "만료된 등록 {n}개가 보관함으로 돌아왔어요.",
   "marketCancelButton": "등록 취소",
   "marketCancelledToast": "등록을 취소했어요.",
   "marketSellableHeader": "판매 가능한 액세서리",
@@ -1060,6 +1063,7 @@
   "guildAccept": "승인",
   "guildReject": "거절",
   "guildErrApproval": "이 길드는 길드장 승인이 필요해요. \"신청\"을 눌러 주세요.",
+  "guildErrNicknameTaken": "이 길드에 이미 같은 이름이 있어요. 다른 이름을 골라주세요.",
   "guildErrRequestsFull": "이 길드에 대기 중인 신청이 너무 많아요.",
   "cloudSaveConflictGems": "💎 이 기기: {local} · 클라우드: {cloud}",
   "@cloudSaveConflictGems": {

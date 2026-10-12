@@ -998,6 +998,9 @@
   },
   "marketMyListingsHeader": "Your listings",
   "marketEmptyMine": "You haven't listed anything yet.",
+  "marketExpiresIn": "Expires in {t}",
+  "marketListExpiryNote": "Listings last at most {days} days; when one expires the item returns to your inventory.",
+  "marketExpiredToast": "{n} expired listing(s) returned to your inventory.",
   "marketCancelButton": "Cancel listing",
   "marketCancelledToast": "Listing cancelled.",
   "marketSellableHeader": "Accessories you can sell",
@@ -1422,6 +1425,7 @@
   "guildAccept": "Approve",
   "guildReject": "Reject",
   "guildErrApproval": "This guild needs the owner's approval — tap \"Request\".",
+  "guildErrNicknameTaken": "Someone in this guild already uses that name — pick another one.",
   "guildErrRequestsFull": "This guild has too many pending requests.",
   "cloudSaveConflictGems": "💎 This device: {local} · On the cloud: {cloud}",
   "@cloudSaveConflictGems": {

@@ -2570,6 +2570,21 @@ class AppLocalizationsVi extends AppLocalizations {
   String get marketEmptyMine => 'Bạn chưa đăng bán món nào.';
 
   @override
+  String marketExpiresIn(String t) {
+    return 'Hết hạn sau $t';
+  }
+
+  @override
+  String marketListExpiryNote(int days) {
+    return 'Tin đăng tồn tại tối đa $days ngày; hết hạn món sẽ tự về kho của bạn.';
+  }
+
+  @override
+  String marketExpiredToast(int n) {
+    return '$n món hết hạn đăng đã về kho của bạn.';
+  }
+
+  @override
   String get marketCancelButton => 'Huỷ đăng';
 
   @override
@@ -3231,6 +3246,10 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get guildErrApproval =>
       'Hội này cần chủ hội duyệt — hãy bấm \"Xin vào\".';
+
+  @override
+  String get guildErrNicknameTaken =>
+      'Trong hội này đã có người dùng tên đó, hãy chọn tên khác.';
 
   @override
   String get guildErrRequestsFull => 'Hội đang có quá nhiều yêu cầu chờ duyệt.';

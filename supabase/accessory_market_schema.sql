@@ -73,10 +73,17 @@ create table if not exists accessory_listings (
   accessory_id  text not null,
   -- Giá tự do, chỉ chặn biên rộng (xem PROPOSAL §9.1) — không khung theo độ hiếm.
   price         bigint not null check (price between 1 and 100000),
-  status        text not null default 'active', -- active|sold|cancelled
+  status        text not null default 'active', -- active|sold|cancelled|expired
   created_at    timestamptz not null default now(),
   resolved_at   timestamptz
 );
+
+-- Tin đăng sống tối đa market_listing_days() ngày rồi hết hạn (status 'expired', món về kho người
+-- bán). seller_acked = false: món đã về kho SERVER nhưng máy người bán chưa thêm lại vào kho cục bộ
+-- (xem expire_my_listings/ack_expired_listings) — hai pha để app tắt giữa chừng không mất món.
+alter table accessory_listings add column if not exists seller_acked boolean not null default true;
+create or replace function market_listing_days() returns integer
+language sql immutable as $$ select 3 $$;
 
 create index if not exists accessory_listings_active_idx
   on accessory_listings (status, created_at desc);
@@ -86,9 +93,11 @@ create index if not exists accessory_listings_seller_idx
 alter table accessory_listings enable row level security;
 
 -- Đọc: AI CŨNG được, kể cả chưa đăng nhập — chợ công khai (xem đang bán gì).
+-- Tin đã quá hạn nhưng chưa được quét sang 'expired' cũng bị ẩn (client cũ không cần sửa gì).
 drop policy if exists accessory_listings_select_all on accessory_listings;
 create policy accessory_listings_select_all on accessory_listings
-  for select to anon, authenticated using (true);
+  for select to anon, authenticated
+  using (status <> 'active' or created_at > now() - make_interval(days => market_listing_days()));
 -- Không có policy insert/update cho client — chỉ qua RPC bên dưới.
 
 create table if not exists accessory_market_trades (
@@ -177,6 +186,9 @@ begin
     raise exception 'invalid_price';
   end if;
 
+  -- Quét tin quá hạn của chính mình trước: món về kho server mới đăng lại được ngay.
+  perform market_sweep(auth.uid());
+
   update accessory_server_ownership set copies = copies - 1
   where user_id = auth.uid() and accessory_id = p_accessory_id
   returning copies into v_left;
@@ -199,6 +211,68 @@ $$;
 
 grant execute on function list_accessory(text, bigint) to authenticated;
 
+-- Quét tin quá hạn: đổi sang 'expired' và trả món về kho SERVER của người bán (gộp theo món để
+-- ON CONFLICT không đụng một hàng hai lần). [p_seller] null = mọi người bán. Nội bộ — client
+-- KHÔNG gọi trực tiếp (xem revoke cuối file); chạy lười khi có người đăng/mua/mở Chợ, hoặc theo
+-- lịch nếu bật pg_cron: select cron.schedule('market-sweep', '*/30 * * * *', 'select market_sweep()').
+create or replace function market_sweep(p_seller uuid default null)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  with e as (
+    update accessory_listings
+       set status = 'expired', resolved_at = now(), seller_acked = false
+     where status = 'active'
+       and created_at <= now() - make_interval(days => market_listing_days())
+       and (p_seller is null or seller_id = p_seller)
+    returning seller_id, accessory_id
+  ), g as (
+    select seller_id, accessory_id, count(*)::integer as n from e group by seller_id, accessory_id
+  )
+  insert into accessory_server_ownership (user_id, accessory_id, copies)
+  select seller_id, accessory_id, n from g
+  on conflict (user_id, accessory_id) do update
+    set copies = accessory_server_ownership.copies + excluded.copies;
+end;
+$$;
+
+-- Người bán mở Chợ: quét tin hết hạn của mình rồi trả danh sách món về kho mà máy chưa thêm lại.
+create or replace function expire_my_listings()
+returns table (id uuid, accessory_id text)
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if auth.uid() is null then raise exception 'not authenticated'; end if;
+  perform market_sweep(auth.uid());
+  return query
+    select l.id, l.accessory_id from accessory_listings l
+     where l.seller_id = auth.uid() and l.status = 'expired' and not l.seller_acked
+     order by l.resolved_at;
+end;
+$$;
+
+-- Máy đã thêm các món trên vào kho cục bộ → đánh dấu để lần sau không trả lại.
+create or replace function ack_expired_listings(p_ids uuid[])
+returns void
+language sql
+security definer
+set search_path = public
+as $$
+  update accessory_listings set seller_acked = true
+   where seller_id = auth.uid() and status = 'expired' and id = any (p_ids);
+$$;
+
+revoke all on function expire_my_listings() from public, anon;
+revoke all on function ack_expired_listings(uuid[]) from public, anon;
+grant execute on function expire_my_listings() to authenticated;
+grant execute on function ack_expired_listings(uuid[]) to authenticated;
+revoke all on function market_sweep(uuid) from public, anon, authenticated;
+
 -- Huỷ đăng — trả món lại accessory_server_ownership cho người bán.
 create or replace function cancel_listing(p_listing_id uuid)
 returns void
@@ -213,6 +287,7 @@ begin
   select seller_id, accessory_id into v_seller, v_accessory
   from accessory_listings
   where id = p_listing_id and status = 'active'
+    and created_at > now() - make_interval(days => market_listing_days())
   for update;
 
   if not found then
@@ -269,6 +344,7 @@ begin
   select seller_id, accessory_id, price into v_seller, v_accessory, v_price
   from accessory_listings
   where id = p_listing_id and status = 'active'
+    and created_at > now() - make_interval(days => market_listing_days())
   for update;
 
   if not found then
@@ -880,7 +956,8 @@ as $$
     (select price from accessory_market_trades
        where accessory_id = p_accessory_id order by traded_at desc limit 1),
     (select min(price) from accessory_listings
-       where accessory_id = p_accessory_id and status = 'active'),
+       where accessory_id = p_accessory_id and status = 'active'
+         and created_at > now() - make_interval(days => market_listing_days())),
     (select count(*)::integer from accessory_market_trades
        where accessory_id = p_accessory_id
          and traded_at > now() - interval '7 days'),

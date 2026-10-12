@@ -2566,6 +2566,21 @@ class AppLocalizationsTh extends AppLocalizations {
   String get marketEmptyMine => 'คุณยังไม่ได้ลงขายอะไรเลย';
 
   @override
+  String marketExpiresIn(String t) {
+    return 'หมดอายุใน $t';
+  }
+
+  @override
+  String marketListExpiryNote(int days) {
+    return 'ประกาศอยู่ได้สูงสุด $days วัน เมื่อหมดอายุไอเท็มจะกลับเข้าคลังของคุณ';
+  }
+
+  @override
+  String marketExpiredToast(int n) {
+    return 'ประกาศที่หมดอายุ $n รายการกลับเข้าคลังแล้ว';
+  }
+
+  @override
   String get marketCancelButton => 'ยกเลิกการขาย';
 
   @override
@@ -3222,6 +3237,10 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get guildErrApproval =>
       'กิลด์นี้ต้องให้หัวหน้าอนุมัติ — กด \"ขอเข้าร่วม\"';
+
+  @override
+  String get guildErrNicknameTaken =>
+      'มีคนในกิลด์นี้ใช้ชื่อนี้แล้ว โปรดเลือกชื่ออื่น';
 
   @override
   String get guildErrRequestsFull => 'กิลด์นี้มีคำขอรออนุมัติมากเกินไป';

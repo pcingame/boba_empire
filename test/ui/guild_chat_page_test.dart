@@ -502,4 +502,87 @@ void main() {
       await _end(tester);
     });
   }
+
+  group('reaction', () {
+    testWidgets('giữ chạm → chọn emoji → chip hiện số 1, đánh dấu của mình; bấm chip → bỏ', (tester) async {
+      final (_, repo) = await _open(tester, seed: (r) => r.chatMessages.add(_msg(1, 'chào cả nhà')));
+      expect(find.byKey(const Key('guild-chat-chip-1-👍')), findsNothing);
+      await tester.longPress(find.byKey(const Key('guild-chat-msg-1')));
+      await tester.pumpAndSettle();
+      for (final e in guildReactionEmojis) {
+        expect(find.byKey(Key('guild-chat-pick-$e')), findsOneWidget, reason: e);
+      }
+      await tester.tap(find.byKey(const Key('guild-chat-pick-👍')));
+      await tester.pumpAndSettle();
+      expect(repo.calls, contains('chatReact'));
+      expect(find.text('👍 1'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('guild-chat-chip-1-👍')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('guild-chat-chip-1-👍')), findsNothing);
+      await _end(tester);
+    });
+
+    testWidgets('chip của người khác: bấm vào cộng thêm của mình (2); số hiện đúng', (tester) async {
+      await _open(tester, seed: (r) => r.chatMessages.add(GuildMessage(
+          id: 1,
+          userId: 'other',
+          nickname: 'Bob',
+          body: 'hi',
+          reactions: const [GuildReaction(emoji: '❤️', count: 1, mine: false)])));
+      expect(find.text('❤️ 1'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('guild-chat-chip-1-❤️')));
+      await tester.pumpAndSettle();
+      expect(find.text('❤️ 2'), findsOneWidget);
+      await _end(tester);
+    });
+
+    testWidgets('tin đã bị xoá trong lúc bấm: báo lỗi, không văng', (tester) async {
+      final (_, repo) = await _open(tester, seed: (r) => r.chatMessages.add(_msg(1, 'x')));
+      repo.failures['chatReact'] = const GuildException(GuildFailure.notFound);
+      await tester.longPress(find.byKey(const Key('guild-chat-msg-1')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('guild-chat-pick-😂')));
+      await tester.pumpAndSettle();
+      expect(find.text('Không tìm thấy hội (có thể hội đã đóng).'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await _end(tester);
+    });
+
+    test('server cũ không có khoá reactions → danh sách rỗng; có thì đọc đúng', () {
+      final old = GuildMessage.fromJson({'id': 1, 'user_id': 'u', 'nickname': 'n', 'body': 'b'});
+      expect(old.reactions, isEmpty);
+      final m = GuildMessage.fromJson({
+        'id': 2,
+        'user_id': 'u',
+        'nickname': 'n',
+        'body': 'b',
+        'reactions': [
+          {'emoji': '😂', 'count': 3, 'mine': true},
+          {'emoji': '🎉', 'count': 1, 'mine': false},
+        ],
+      });
+      expect(m.reactions.map((r) => (r.emoji, r.count, r.mine)), [('😂', 3, true), ('🎉', 1, false)]);
+    });
+
+    for (final locale in ['vi', 'en', 'pt', 'es', 'id', 'th', 'ko']) {
+      testWidgets('[$locale] 320px: đủ 6 loại reaction số lớn trên tin dài không tràn', (tester) async {
+        await _open(tester, locale: locale, size: const Size(320, 640), seed: (r) {
+          r.chatMessages.add(GuildMessage(
+            id: 1,
+            userId: 'other',
+            nickname: 'W' * 20,
+            body: 'dòng dài ' * 25,
+            reactions: [
+              for (final e in guildReactionEmojis) GuildReaction(emoji: e, count: 99999, mine: e == '👍'),
+            ],
+          ));
+        });
+        expect(tester.takeException(), isNull);
+        await tester.longPress(find.byKey(const Key('guild-chat-msg-1')));
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull, reason: 'bảng chọn emoji ở 320px');
+        await _end(tester);
+      });
+    }
+  });
 }

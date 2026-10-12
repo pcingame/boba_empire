@@ -2586,6 +2586,21 @@ class AppLocalizationsPt extends AppLocalizations {
   String get marketEmptyMine => 'Você ainda não colocou nada à venda.';
 
   @override
+  String marketExpiresIn(String t) {
+    return 'Expira em $t';
+  }
+
+  @override
+  String marketListExpiryNote(int days) {
+    return 'Os anúncios duram no máximo $days dias; ao expirar, o item volta ao seu inventário.';
+  }
+
+  @override
+  String marketExpiredToast(int n) {
+    return '$n anúncio(s) expirado(s) devolvido(s) ao seu inventário.';
+  }
+
+  @override
   String get marketCancelButton => 'Cancelar anúncio';
 
   @override
@@ -3252,6 +3267,10 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get guildErrApproval =>
       'Esta guilda precisa da aprovação do líder — toque em \"Solicitar\".';
+
+  @override
+  String get guildErrNicknameTaken =>
+      'Já existe alguém com esse nome nesta guilda; escolha outro.';
 
   @override
   String get guildErrRequestsFull =>

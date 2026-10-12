@@ -1042,4 +1042,56 @@ select t_as(null);
 select t_err($$select guild_claim_team()$$, 'permission denied');
 reset role;
 
+-- ===== 23. Tên thành viên không trùng trong cùng hội ====================
+select t_as(u(24)); select guild_create('Nick Club', 'nc', '🪪', false, 'Mai', 0) as gn \gset
+select t_as(u(25));
+select t_err(format($$select guild_join(%L::uuid, 'mai', 0)$$, :'gn'), 'nickname taken');
+select t_err(format($$select guild_join(%L::uuid, 'MAI', 0)$$, :'gn'), 'nickname taken');
+select guild_join(:'gn'::uuid, 'Mai2', 0);
+-- Hội khác dùng cùng tên thì được.
+select t_as(u(26)); select guild_create('Other Nick', 'on', '🧿', false, 'Mai', 0);
+-- Hội cần duyệt: xin vào với tên trùng bị chặn; đổi tên thì được; tên bị chiếm lúc chờ → không duyệt được.
+select t_as(u(27)); select guild_create('Gate Nick', 'gn', '🚪', true, 'Boss', 0) as gg \gset
+select t_as(u(28));
+select t_err(format($$select guild_request_join(%L::uuid, 'boss', 0)$$, :'gg'), 'nickname taken');
+select guild_request_join(:'gg'::uuid, 'Pip', 0);
+select t_as(u(29)); select guild_request_join(:'gg'::uuid, 'Pip', 0);
+select t_as(u(27)); select guild_respond_request(u(28), true);
+select t_err(format($$select guild_respond_request(%L::uuid, true)$$, u(29)), 'nickname taken');
+select guild_respond_request(u(29), false);
+reset role;
+
+-- ===== 24. Reaction vào tin chat ========================================
+select t_as(u(36)); select guild_create('React Club', 'rc', '😀', false, 'R0', 0) as gr \gset
+select t_as(u(37)); select guild_join(:'gr'::uuid, 'R1', 0);
+select t_as(u(36)); select guild_chat_post('xin chào');
+select (guild_chat_list()->'messages'->0->>'id')::bigint as mid \gset
+select t_eq('chưa có reaction', jsonb_array_length(guild_chat_list()->'messages'->0->'reactions'), 0);
+select t_as(u(37)); select guild_chat_react(:'mid', '👍');
+select t_eq('người bấm thấy mine = true', (guild_chat_list()->'messages'->0->'reactions'->0->>'mine')::boolean, true);
+select t_eq('đếm 1', (guild_chat_list()->'messages'->0->'reactions'->0->>'count')::int, 1);
+select t_as(u(36));
+select t_eq('người khác thấy mine = false', (guild_chat_list()->'messages'->0->'reactions'->0->>'mine')::boolean, false);
+select guild_chat_react(:'mid', '👍'); select guild_chat_react(:'mid', '❤️');
+select t_eq('hai người cùng 👍 → 2', (guild_chat_list()->'messages'->0->'reactions'->0->>'count')::int, 2);
+select t_eq('có 2 loại emoji', jsonb_array_length(guild_chat_list()->'messages'->0->'reactions'), 2);
+-- Bấm lại = bỏ.
+select t_as(u(37)); select guild_chat_react(:'mid', '👍');
+select t_eq('bỏ 👍 của mình → còn 1', (guild_chat_list()->'messages'->0->'reactions'->0->>'count')::int, 1);
+-- Emoji lạ bị chặn.
+select t_err(format($$select guild_chat_react(%s, '🍕')$$, :'mid'), 'invalid amount');
+select t_err(format($$select guild_chat_react(%s, '')$$, :'mid'), 'invalid amount');
+-- Không cùng hội thì không thấy tin.
+select t_as(u(38)); select guild_create('Other React', 'or', '🙃', false, 'R9', 0);
+select t_err(format($$select guild_chat_react(%s, '👍')$$, :'mid'), 'not found');
+select t_err($$select guild_chat_react(999999999, '👍')$$, 'not found');
+-- Bảo mật: hàm nội bộ/bảng không đọc được; khách bị chặn.
+select t_err(format($$select guild_message_reactions_json(%s, %L::uuid)$$, :'mid', u(36)), 'permission denied');
+select t_as(null);
+select t_err(format($$select guild_chat_react(%s, '👍')$$, :'mid'), 'permission denied');
+-- Xoá tin kéo theo reaction.
+select t_as(u(36)); select guild_chat_delete(:'mid');
+reset role;
+select t_eq('xoá tin → reaction mất theo', (select count(*) from guild_message_reactions), 0::bigint);
+
 select 'ALL GUILD SQL SCENARIOS PASSED' as result;

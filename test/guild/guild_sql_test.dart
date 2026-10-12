@@ -245,6 +245,13 @@ void main() {
       }
     });
 
+    test('emoji reaction khớp danh sách ở guild_reaction_ok', () {
+      final fn = RegExp(r'function guild_reaction_ok.*?\$\$;', dotAll: true).firstMatch(sql)!.group(0)!;
+      final inSql = RegExp(r"'([^']+)'").allMatches(fn.substring(fn.indexOf('array['))).map((m) => m.group(1)).toList();
+      expect(inSql, guildReactionEmojis);
+      expect(sql.contains("'guild_chat_react(bigint,text)'"), isTrue, reason: 'chưa cấp quyền');
+    });
+
     test('mọi bảng mới bật RLS và không có policy', () {
       for (final t in [
         'guild_week_totals',

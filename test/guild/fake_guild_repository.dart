@@ -240,6 +240,29 @@ class FakeGuildRepository implements GuildRepository {
   }
 
   @override
+  Future<void> chatReact(int id, String emoji) async {
+    _hit('chatReact');
+    final i = chatMessages.indexWhere((m) => m.id == id);
+    if (i < 0) throw const GuildException(GuildFailure.notFound);
+    final m = chatMessages[i];
+    final rs = [...m.reactions];
+    final j = rs.indexWhere((r) => r.emoji == emoji);
+    if (j < 0) {
+      rs.add(GuildReaction(emoji: emoji, count: 1, mine: true));
+    } else if (rs[j].mine) {
+      if (rs[j].count <= 1) {
+        rs.removeAt(j);
+      } else {
+        rs[j] = GuildReaction(emoji: emoji, count: rs[j].count - 1, mine: false);
+      }
+    } else {
+      rs[j] = GuildReaction(emoji: emoji, count: rs[j].count + 1, mine: true);
+    }
+    chatMessages[i] = GuildMessage(
+        id: m.id, userId: m.userId, nickname: m.nickname, body: m.body, reactions: rs);
+  }
+
+  @override
   Future<void> chatPin(int? id) async {
     _hit('chatPin');
     chatPinnedId = id;

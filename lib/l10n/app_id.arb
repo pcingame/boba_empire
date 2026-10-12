@@ -998,6 +998,9 @@
   },
   "marketMyListingsHeader": "Daftar jualanmu",
   "marketEmptyMine": "Kamu belum menjual apa pun.",
+  "marketExpiresIn": "Kedaluwarsa dalam {t}",
+  "marketListExpiryNote": "Iklan bertahan maksimal {days} hari; saat kedaluwarsa, item kembali ke inventarismu.",
+  "marketExpiredToast": "{n} iklan kedaluwarsa dikembalikan ke inventarismu.",
   "marketCancelButton": "Batalkan penjualan",
   "marketCancelledToast": "Penjualan dibatalkan.",
   "marketSellableHeader": "Aksesori yang bisa dijual",
@@ -1422,6 +1425,7 @@
   "guildAccept": "Setujui",
   "guildReject": "Tolak",
   "guildErrApproval": "Guild ini perlu persetujuan ketua — tekan \"Minta gabung\".",
+  "guildErrNicknameTaken": "Sudah ada anggota guild ini dengan nama itu — pilih nama lain.",
   "guildErrRequestsFull": "Guild ini punya terlalu banyak permintaan tertunda.",
   "cloudSaveConflictGems": "💎 Perangkat ini: {local} · Di cloud: {cloud}",
   "@cloudSaveConflictGems": {

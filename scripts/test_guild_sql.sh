@@ -32,6 +32,17 @@ create function guild_create(text,text,text,text,bigint) returns uuid
 drop function guild_list(integer);
 create function guild_list(integer) returns int language sql as 'select 1';
 alter table guilds drop column if exists requires_approval;
+-- Dữ liệu cũ có tên trùng trong cùng hội (bản trước khi có chỉ mục tên duy nhất).
+drop index guild_members_nick_idx;
+insert into auth.users select ('ffffffff-0000-0000-0000-0000000000' || lpad(i::text, 2, '0'))::uuid
+  from generate_series(1, 4) i;
+insert into guilds (id, owner_id, name, tag, emoji)
+  values ('eeeeeeee-0000-0000-0000-000000000001', 'ffffffff-0000-0000-0000-000000000001', 'DupClub', 'DC', '🧋');
+insert into guild_members (user_id, guild_id, nickname, joined_at) values
+  ('ffffffff-0000-0000-0000-000000000001', 'eeeeeeee-0000-0000-0000-000000000001', 'Bob', now() - interval '3 days'),
+  ('ffffffff-0000-0000-0000-000000000002', 'eeeeeeee-0000-0000-0000-000000000001', 'bob', now() - interval '2 days'),
+  ('ffffffff-0000-0000-0000-000000000003', 'eeeeeeee-0000-0000-0000-000000000001', 'BOB', now() - interval '1 day'),
+  ('ffffffff-0000-0000-0000-000000000004', 'eeeeeeee-0000-0000-0000-000000000001', 'Zed', now());
 SQL
 P -f supabase/guild_schema.sql >/dev/null 2>&1   # idempotent + dọn bản cũ
 LEFT=$(P -t -A -c "select (select count(*) from pg_proc where proname in ('guild_list_public')
@@ -40,5 +51,10 @@ LEFT=$(P -t -A -c "select (select count(*) from pg_proc where proname in ('guild
      where table_name='guilds' and column_name in ('is_public','invite_code'))")
 P -c "select requires_approval, requested from guild_list(1)" >/dev/null 2>&1 \
   || { echo "MIGRATION FAIL: guild_list chưa nâng cấp"; exit 1; }
+NICKS=$(P -t -A -c "select string_agg(nickname, ',' order by joined_at) from guild_members where guild_id = 'eeeeeeee-0000-0000-0000-000000000001'")
+[ "$NICKS" = "Bob,bob#2,BOB#3,Zed" ] || { echo "MIGRATION FAIL: tên trùng chưa được đổi đúng: $NICKS"; exit 1; }
+P -c "insert into guild_members (user_id, guild_id, nickname) values ('ffffffff-0000-0000-0000-000000000004', 'eeeeeeee-0000-0000-0000-000000000001', 'x')" >/dev/null 2>&1 \
+  && { echo "MIGRATION FAIL: chỉ mục tên duy nhất chưa có"; exit 1; }
+P -q -c "delete from guilds where id = 'eeeeeeee-0000-0000-0000-000000000001'; delete from auth.users where id::text like 'ffffffff-%'"
 [ "$LEFT" = "0" ] || { echo "MIGRATION FAIL: còn $LEFT dấu vết bản cũ"; exit 1; }
 P -t -A -f supabase/tests/guild_scenarios.sql 2>&1 | grep -v "^NOTICE\|^$\|^t_as\|^guild_\|^ *$" | tail -${TAIL:-15}

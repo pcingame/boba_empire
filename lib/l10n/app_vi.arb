@@ -1426,6 +1426,30 @@
   },
   "marketMyListingsHeader": "Đang đăng bán",
   "marketEmptyMine": "Bạn chưa đăng bán món nào.",
+  "marketExpiresIn": "Hết hạn sau {t}",
+  "@marketExpiresIn": {
+    "placeholders": {
+      "t": {
+        "type": "String"
+      }
+    }
+  },
+  "marketListExpiryNote": "Tin đăng tồn tại tối đa {days} ngày; hết hạn món sẽ tự về kho của bạn.",
+  "@marketListExpiryNote": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "marketExpiredToast": "{n} món hết hạn đăng đã về kho của bạn.",
+  "@marketExpiredToast": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "marketCancelButton": "Huỷ đăng",
   "marketCancelledToast": "Đã huỷ đăng.",
   "marketSellableHeader": "Phụ kiện có thể đăng bán",
@@ -1965,6 +1989,7 @@
   "guildAccept": "Duyệt",
   "guildReject": "Từ chối",
   "guildErrApproval": "Hội này cần chủ hội duyệt — hãy bấm \"Xin vào\".",
+  "guildErrNicknameTaken": "Trong hội này đã có người dùng tên đó, hãy chọn tên khác.",
   "guildErrRequestsFull": "Hội đang có quá nhiều yêu cầu chờ duyệt.",
   "cloudSaveConflictGems": "💎 Máy này: {local} · Trên cloud: {cloud}",
   "@cloudSaveConflictGems": {

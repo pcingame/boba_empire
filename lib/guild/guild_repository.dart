@@ -155,6 +155,21 @@ class GuildJoinRequest {
   final String nickname;
 }
 
+/// Một loại reaction trên một tin: số người bấm và mình có bấm không.
+class GuildReaction {
+  const GuildReaction({required this.emoji, required this.count, required this.mine});
+
+  factory GuildReaction.fromJson(Map<String, dynamic> j) => GuildReaction(
+        emoji: j['emoji'] as String,
+        count: (j['count'] as num).toInt(),
+        mine: j['mine'] == true,
+      );
+
+  final String emoji;
+  final int count;
+  final bool mine;
+}
+
 /// Một tin trong chat hội.
 class GuildMessage {
   const GuildMessage({
@@ -162,6 +177,7 @@ class GuildMessage {
     required this.userId,
     required this.nickname,
     required this.body,
+    this.reactions = const [],
   });
 
   factory GuildMessage.fromJson(Map<String, dynamic> j) => GuildMessage(
@@ -169,12 +185,18 @@ class GuildMessage {
         userId: j['user_id'] as String,
         nickname: j['nickname'] as String,
         body: j['body'] as String,
+        // Server cũ chưa có reaction → không có khoá này.
+        reactions: [
+          for (final r in (j['reactions'] as List?) ?? const [])
+            GuildReaction.fromJson(r as Map<String, dynamic>),
+        ],
       );
 
   final int id;
   final String userId;
   final String nickname;
   final String body;
+  final List<GuildReaction> reactions;
 }
 
 /// Chat hội: tin ghim (nếu có) + các tin mới nhất, MỚI NHẤT Ở ĐẦU.
@@ -376,6 +398,9 @@ enum GuildFailure {
   /// Hội đang có quá nhiều yêu cầu chờ duyệt.
   requestsFull,
 
+  /// Trong hội đã có thành viên trùng tên (không phân biệt hoa thường).
+  nicknameTaken,
+
   /// Không đủ quyền với người này (vd. phó hội kick phó hội khác).
   notAllowed,
 
@@ -407,6 +432,8 @@ class GuildException implements Exception {
 /// Thông điệp lạ / lỗi mạng → [GuildFailure.network].
 GuildFailure guildFailureFromMessage(String message) {
   final m = message.toLowerCase();
+  // 'nickname taken' chứa 'name taken' → phải xét TRƯỚC.
+  if (m.contains('nickname taken')) return GuildFailure.nicknameTaken;
   if (m.contains('name taken')) return GuildFailure.nameTaken;
   if (m.contains('guild full')) return GuildFailure.guildFull;
   if (m.contains('already in guild')) return GuildFailure.alreadyInGuild;
@@ -534,6 +561,9 @@ abstract class GuildRepository {
 
   /// Chỉ chủ hội; [id] null = bỏ ghim.
   Future<void> chatPin(int? id);
+
+  /// Bật/tắt reaction [emoji] của mình trên tin [id].
+  Future<void> chatReact(int id, String emoji);
 }
 
 class SupabaseGuildRepository implements GuildRepository {
@@ -749,4 +779,8 @@ class SupabaseGuildRepository implements GuildRepository {
 
   @override
   Future<void> chatPin(int? id) => _rpc('guild_chat_pin', {'p_id': id});
+
+  @override
+  Future<void> chatReact(int id, String emoji) =>
+      _rpc('guild_chat_react', {'p_id': id, 'p_emoji': emoji});
 }

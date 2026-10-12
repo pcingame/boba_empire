@@ -159,6 +159,23 @@ void main() {
       expect(find.byKey(const Key('guild-leave-button')), findsNothing);
     });
 
+    gTest('trùng tên trong hội: báo "chọn tên khác", không vào hội', (tester) async {
+      final repo = FakeGuildRepository(listing: sampleListing)
+        ..failures['join'] = const GuildException(GuildFailure.nicknameTaken);
+      await _pump(tester, repo);
+      await tester.tap(find.byKey(const Key('guild-join-g9')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('guild-nickname-ok')));
+      await tester.pumpAndSettle();
+      expect(find.text('Trong hội này đã có người dùng tên đó, hãy chọn tên khác.'), findsOneWidget);
+      expect(find.byKey(const Key('guild-leave-button')), findsNothing);
+    });
+
+    test('thông điệp server "nickname taken" không bị nhầm với tên HỘI trùng ("name taken")', () {
+      expect(guildFailureFromMessage('nickname taken'), GuildFailure.nicknameTaken);
+      expect(guildFailureFromMessage('name taken'), GuildFailure.nameTaken);
+    });
+
     gTest('báo cáo hội từ menu danh sách', (tester) async {
       final repo = FakeGuildRepository(listing: sampleListing);
       await _pump(tester, repo);

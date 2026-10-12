@@ -110,6 +110,7 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
         .removeOwnedAccessoryLocally(id);
     notifier.onAccessoryAddedLocally = (id) =>
         ref.read(gameControllerProvider.notifier).addOwnedAccessoryLocally(id);
+    notifier.onListingsExpired = (n) => _snack(l10n.marketExpiredToast(n));
     final game = ref.read(gameControllerProvider.notifier);
     notifier.onEvent = (event, props) {
       game.logEvent(event, props);
@@ -861,9 +862,15 @@ class _PriceReference extends ConsumerWidget {
 
 class _ListingTile extends StatelessWidget {
   const _ListingTile(
-      {required this.listing, required this.trailing, this.isNew = false});
+      {required this.listing,
+      required this.trailing,
+      this.isNew = false,
+      this.showExpiry = false});
   final MarketListing listing;
   final Widget trailing;
+
+  /// Tin của chính mình: hiện còn bao lâu nữa hết hạn (món sẽ tự về kho).
+  final bool showExpiry;
 
   /// Món người chơi CHƯA có trong bộ sưu tập — gắn nhãn "MỚI" để dễ nhận ra.
   final bool isNew;
@@ -940,6 +947,16 @@ class _ListingTile extends StatelessWidget {
                           ),
                         ],
                       ),
+                      if (showExpiry)
+                        Text(
+                          l10n.marketExpiresIn(formatDuration(
+                              listing.remaining(DateTime.now()).inSeconds)),
+                          key: Key('listing-expiry-${listing.id}'),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodySmall
+                              ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                        ),
                     ],
                   ),
                 ),
@@ -1021,6 +1038,7 @@ class _MineTab extends ConsumerWidget {
             for (final listing in view.myListings.where((l) => _known(l.accessoryId)))
               _ListingTile(
                 listing: listing,
+                showExpiry: true,
                 trailing: OutlinedButton(
                   onPressed: () async {
                     final msg = await ref
@@ -1167,6 +1185,10 @@ Future<int?> _askPrice(BuildContext context, AppLocalizations l10n,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
+              const SizedBox(height: 8),
+              Text(l10n.marketListExpiryNote(marketListingDays),
+                  key: const Key('market-list-expiry-note'),
+                  style: Theme.of(context).textTheme.bodySmall),
             ],
           ),
           actions: [

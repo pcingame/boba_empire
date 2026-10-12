@@ -998,6 +998,9 @@
   },
   "marketMyListingsHeader": "รายการที่คุณลงขาย",
   "marketEmptyMine": "คุณยังไม่ได้ลงขายอะไรเลย",
+  "marketExpiresIn": "หมดอายุใน {t}",
+  "marketListExpiryNote": "ประกาศอยู่ได้สูงสุด {days} วัน เมื่อหมดอายุไอเท็มจะกลับเข้าคลังของคุณ",
+  "marketExpiredToast": "ประกาศที่หมดอายุ {n} รายการกลับเข้าคลังแล้ว",
   "marketCancelButton": "ยกเลิกการขาย",
   "marketCancelledToast": "ยกเลิกการขายแล้ว",
   "marketSellableHeader": "ของสะสมที่ขายได้",
@@ -1422,6 +1425,7 @@
   "guildAccept": "อนุมัติ",
   "guildReject": "ปฏิเสธ",
   "guildErrApproval": "กิลด์นี้ต้องให้หัวหน้าอนุมัติ — กด \"ขอเข้าร่วม\"",
+  "guildErrNicknameTaken": "มีคนในกิลด์นี้ใช้ชื่อนี้แล้ว โปรดเลือกชื่ออื่น",
   "guildErrRequestsFull": "กิลด์นี้มีคำขอรออนุมัติมากเกินไป",
   "cloudSaveConflictGems": "💎 เครื่องนี้: {local} · บนคลาวด์: {cloud}",
   "@cloudSaveConflictGems": {

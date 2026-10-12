@@ -998,6 +998,9 @@
   },
   "marketMyListingsHeader": "Tus publicaciones",
   "marketEmptyMine": "Aún no has puesto nada a la venta.",
+  "marketExpiresIn": "Caduca en {t}",
+  "marketListExpiryNote": "Los anuncios duran como máximo {days} días; al caducar, el objeto vuelve a tu inventario.",
+  "marketExpiredToast": "{n} anuncio(s) caducado(s) devuelto(s) a tu inventario.",
   "marketCancelButton": "Cancelar publicación",
   "marketCancelledToast": "Publicación cancelada.",
   "marketSellableHeader": "Accesorios que puedes vender",
@@ -1422,6 +1425,7 @@
   "guildAccept": "Aprobar",
   "guildReject": "Rechazar",
   "guildErrApproval": "Este gremio requiere aprobación del líder: pulsa \"Solicitar\".",
+  "guildErrNicknameTaken": "Alguien en este gremio ya usa ese nombre; elige otro.",
   "guildErrRequestsFull": "Este gremio tiene demasiadas solicitudes pendientes.",
   "cloudSaveConflictGems": "💎 Este dispositivo: {local} · En la nube: {cloud}",
   "@cloudSaveConflictGems": {

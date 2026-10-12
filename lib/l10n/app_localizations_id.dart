@@ -2574,6 +2574,21 @@ class AppLocalizationsId extends AppLocalizations {
   String get marketEmptyMine => 'Kamu belum menjual apa pun.';
 
   @override
+  String marketExpiresIn(String t) {
+    return 'Kedaluwarsa dalam $t';
+  }
+
+  @override
+  String marketListExpiryNote(int days) {
+    return 'Iklan bertahan maksimal $days hari; saat kedaluwarsa, item kembali ke inventarismu.';
+  }
+
+  @override
+  String marketExpiredToast(int n) {
+    return '$n iklan kedaluwarsa dikembalikan ke inventarismu.';
+  }
+
+  @override
   String get marketCancelButton => 'Batalkan penjualan';
 
   @override
@@ -3238,6 +3253,10 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get guildErrApproval =>
       'Guild ini perlu persetujuan ketua — tekan \"Minta gabung\".';
+
+  @override
+  String get guildErrNicknameTaken =>
+      'Sudah ada anggota guild ini dengan nama itu — pilih nama lain.';
 
   @override
   String get guildErrRequestsFull =>
