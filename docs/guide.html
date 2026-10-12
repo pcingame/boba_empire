@@ -34,26 +34,73 @@
     :root { --bg: #1b1511; --card: #2a211b; --ink: #f1e8dd; --muted: #b9a999; --brand: #e0a868; --brand-ink: #24160a; --line: #3b2f26; }
   }
   * { box-sizing: border-box; }
-  body { margin: 0; color: var(--ink); background: var(--bg); font: 17px/1.7 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
-  main { max-width: 760px; margin: 0 auto; padding: 24px 20px 64px; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; color: var(--ink); background: var(--bg); font: 17px/1.75 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; }
+  .top { position: sticky; top: 0; z-index: 5; background: var(--card); border-bottom: 1px solid var(--line); }
+  .top div { max-width: 760px; margin: 0 auto; padding: 8px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .brand { display: flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 800; text-decoration: none; }
+  .brand img { border-radius: 8px; }
+  .top .btn { padding: 7px 16px; font-size: .9rem; }
+  main { max-width: 760px; margin: 0 auto; padding: 28px 20px 72px; counter-reset: sec; }
   a { color: var(--brand); }
-  h1 { font-size: 2rem; line-height: 1.25; margin: .4em 0 .3em; }
-  h2 { font-size: 1.4rem; margin: 2em 0 .4em; padding-bottom: .2em; border-bottom: 2px solid var(--brand); }
+  h1 { font-size: 2.1rem; line-height: 1.2; margin: .3em 0 .3em; letter-spacing: -.01em; }
+  h2 { counter-increment: sec; scroll-margin-top: 72px; display: flex; align-items: center; gap: 12px; font-size: 1.4rem; line-height: 1.3; margin: 2.4em 0 .6em; }
+  h2::before { content: counter(sec); flex: none; width: 36px; height: 36px; border-radius: 12px; background: var(--brand); color: var(--brand-ink); font-size: 1rem; font-weight: 800; display: grid; place-items: center; }
   .lead, .meta { color: var(--muted); }
-  .toc { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 22px; }
-  .toc ol { margin: 0; padding-left: 1.2em; }
-  .tip { background: var(--card); border-left: 4px solid var(--brand); border-radius: 8px; padding: 10px 16px; margin: 1em 0; }
-  .cta { margin-top: 2.5em; text-align: center; }
+  .meta { font-size: .92rem; }
+  .lead { font-size: 1.08rem; }
+  strong { color: var(--ink); }
+  .toc { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px 20px; box-shadow: 0 6px 20px rgba(0,0,0,.05); }
+  .toc ol { margin: 0; padding: 0; list-style: none; counter-reset: t; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 4px 16px; }
+  .toc li { counter-increment: t; }
+  .toc a { display: block; padding: 5px 10px; border-radius: 10px; text-decoration: none; color: var(--ink); font-size: .96rem; line-height: 1.45; }
+  .toc a::before { content: counter(t) ". "; color: var(--brand); font-weight: 800; }
+  .toc a:hover { background: var(--bg); }
+  ul { list-style: none; padding: 0; margin: .8em 0; display: grid; gap: 8px; }
+  li { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px 10px 40px; position: relative; }
+  li::before { content: "🧋"; position: absolute; left: 12px; top: 10px; font-size: .95rem; }
+  .toc li { background: none; border: 0; padding: 0; }
+  .toc li::before { content: none; }
+  .tip { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--brand); border-radius: 12px; padding: 12px 16px; margin: 1.1em 0; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 1em 0; }
+  .stats div { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 8px; text-align: center; font-size: .9rem; color: var(--muted); line-height: 1.4; }
+  .stats b { display: block; color: var(--brand); font-size: 1.7rem; line-height: 1.2; }
+  .hero { display: flex; align-items: center; gap: 24px; background: linear-gradient(135deg, var(--brand), #3b2312); color: #fff; border-radius: 24px; padding: 28px; margin: 4px 0 24px; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+  .hero h1, .hero .lead, .hero .meta { color: #fff; margin-top: 0; }
+  .hero .lead { opacity: .92; }
+  .hero .meta { opacity: .75; }
+  .hero img { flex: none; width: 150px; height: auto; border-radius: 18px; border: 3px solid rgba(255,255,255,.35); transform: rotate(3deg); }
+  .shot { float: right; width: 190px; margin: 4px 0 12px 20px; }
+  .shot img { display: block; width: 100%; height: auto; border-radius: 18px; border: 1px solid var(--line); box-shadow: 0 8px 22px rgba(0,0,0,.2); }
+  .shot figcaption { margin-top: 6px; text-align: center; font-size: .8rem; color: var(--muted); }
+  h2 { clear: both; }
+  @media (max-width: 560px) {
+    .hero { flex-direction: column-reverse; padding: 22px; }
+    .hero img { width: 120px; }
+    .shot { float: none; width: 170px; margin: 12px auto; }
+  }
+  .cta { margin-top: 2.8em; text-align: center; }
   .btn { display: inline-block; background: var(--brand); color: var(--brand-ink); font-weight: 800; text-decoration: none; padding: 12px 26px; border-radius: 999px; }
+  .btn:hover { filter: brightness(1.08); }
+  .totop { position: fixed; right: 16px; bottom: 16px; width: 44px; height: 44px; border-radius: 50%; background: var(--brand); color: var(--brand-ink); display: grid; place-items: center; text-decoration: none; font-weight: 800; box-shadow: 0 4px 14px rgba(0,0,0,.25); }
   footer { margin-top: 3em; color: var(--muted); font-size: .92rem; text-align: center; }
 </style>
 </head>
 <body>
-<main>
-<p><a href="./">← Boba Empire</a></p>
+<header class="top"><div>
+  <a class="brand" href="./"><img src="assets/icon-256.png" alt="" width="32" height="32"> Boba Empire</a>
+  <a class="btn" href="https://apps.apple.com/app/id6808940339" rel="noopener">Tải game</a>
+</div></header>
+<main id="top">
+<section class="hero">
+<div>
 <h1>Hướng dẫn chơi Boba Empire cho người mới</h1>
 <p class="meta">Cập nhật 10/10/2026 · Dành cho người mới bắt đầu</p>
 <p class="lead">Boba Empire là game idle tycoon trà sữa: bạn chạm để pha trà, nâng cấp để quán tự kiếm tiền, rồi xây từ chiếc xe đẩy lên cả đế chế. Bài này gom những điều nên biết để lên nhanh mà không phí tài nguyên.</p>
+</div>
+<img src="assets/vi/01_home.webp" alt="Màn hình chính Boba Empire" width="150" height="326">
+</section>
 
 <nav class="toc" aria-label="Mục lục">
   <ol>
@@ -82,6 +129,7 @@
 <p>Game có 18 giai đoạn, từ xe đẩy vỉa hè tới hành tinh trà sữa. Mỗi lần mở giai đoạn, bạn có thêm nguồn thu mới và đổi cảnh quán. Khi đủ Xu thì mở ngay, vì giai đoạn mới mở thêm nguồn thu có thu nhập cao hơn hẳn. Bạn cũng có thể dùng Kim Cương để mở giai đoạn tức thì, nhưng nên để dành Kim Cương cho việc khác nếu Xu đang đủ.</p>
 
 <h2 id="nhuong-quyen">Nhượng quyền và Sao</h2>
+<figure class="shot"><img src="assets/vi/08_prestige.webp" alt="Nhượng quyền" width="190" height="413" loading="lazy"><figcaption>Nhượng quyền</figcaption></figure>
 <p>Khi tiến độ chậm lại, bạn có thể <strong>nhượng quyền</strong>: reset tiền và cấp nâng cấp để đổi lấy Sao ⭐. Sao cho thu nhập tăng vĩnh viễn và dùng để mua perk trong Kho Sao (tăng thu nhập, tăng giá trị chạm, tăng thu nhập offline, vốn khởi nghiệp, giảm giá nâng cấp…).</p>
 <p>Đừng nhượng quyền quá sớm: số Sao nhận được tăng theo tổng thu nhập từ trước tới nay, nên nhượng quyền khi mới được ít Sao là phí. Hãy đợi khi số Sao nhận thêm đủ đáng kể, rồi quay lại leo nhanh hơn vòng trước. Đi hết tuyến, chế độ Kỷ Nguyên mở một vòng chơi mới mạnh hơn.</p>
 
@@ -89,6 +137,7 @@
 <p>Quán vẫn bán khi bạn vắng mặt, nhưng có trần thời gian tính offline. Có thể nâng trần này bằng nâng cấp Kho lạnh trong Cửa hàng Kim Cương. Khi mở lại game, bạn có thể xem quảng cáo để nhân đôi số tiền nhận được. Lưu ý: xem quảng cáo toàn màn hình không bị tính là bạn rời game.</p>
 
 <h2 id="kim-cuong">Kiếm Kim Cương</h2>
+<figure class="shot"><img src="assets/vi/04_daily_quests.webp" alt="Nhiệm vụ hằng ngày" width="190" height="413" loading="lazy"><figcaption>Nhiệm vụ hằng ngày</figcaption></figure>
 <ul>
   <li><strong>Điểm danh mỗi ngày</strong>: chuỗi càng dài, thưởng càng lớn. Lỡ một ngày vẫn có cách cứu chuỗi.</li>
   <li><strong>Nhiệm vụ hằng ngày</strong> và nhiệm vụ trong game: hoàn thành đủ bộ để nhận thưởng, kèm một lượt rớt phụ kiện.</li>
@@ -102,6 +151,7 @@
 </ul>
 
 <h2 id="phu-kien">Sưu tầm phụ kiện và Chợ</h2>
+<figure class="shot"><img src="assets/vi/02_collection.webp" alt="Kho phụ kiện" width="190" height="413" loading="lazy"><figcaption>Kho phụ kiện</figcaption></figure>
 <p>Có 160 phụ kiện chia theo độ hiếm (thường, hiếm, sử thi, huyền thoại), trưng bày quanh ly trà và chỉ để làm đẹp, không ảnh hưởng thu nhập. Nguồn có phụ kiện: rớt khi hoàn thành nhiệm vụ ngày, vòng quay phụ kiện, và gói phụ kiện mua bằng Kim Cương (tỉ lệ rớt được công bố trong game). Món trùng được đổi thành Kim Cương.</p>
 <p>Món dư có thể bán ở <strong>Chợ</strong> cho người chơi khác, hoặc mua món còn thiếu. Số phụ kiện khác nhau bạn sở hữu quyết định thứ hạng trên bảng xếp hạng Sưu tập, và đạt các mốc sưu tập sẽ nhận thưởng. Các món độc quyền theo dịp lễ và từ cửa hàng Hội cũng được tính vào tổng này.</p>
 
@@ -116,9 +166,13 @@
 </ul>
 
 <h2 id="hoi">Chơi Hội (Guild)</h2>
-<p><strong>Cách kiếm điểm Hội:</strong></p>
+<p><strong>Cách kiếm điểm Hội:</strong> điểm là hoạt động của chính bạn trong tuần.</p>
+<div class="stats">
+  <div><b>+1</b>mỗi lần chạm ly</div>
+  <div><b>+50</b>mỗi lần bắt mèo</div>
+  <div><b>+50</b>mỗi khách VIP phục vụ</div>
+</div>
 <ul>
-  <li><strong>Điểm là hoạt động của chính bạn trong tuần</strong>: chạm ly +1 điểm, bắt mèo +50, phục vụ khách VIP +50.</li>
   <li><strong>Điểm cả hội cộng lại</strong> để mở các mốc thưởng; điểm tuần reset vào thứ Hai 00:00 (giờ UTC).</li>
   <li><strong>Cần đóng góp ít nhất 300 điểm cá nhân</strong> trong tuần mới được nhận thưởng mốc.</li>
 </ul>
@@ -129,6 +183,7 @@
 
 <p class="cta"><a class="btn" href="https://apps.apple.com/app/id6808940339" rel="noopener">Tải Boba Empire trên App Store</a></p>
 <footer><p><a href="./">Trang chủ</a> · <a href="privacy-policy.html">Chính sách quyền riêng tư</a></p></footer>
+<a class="totop" href="#top" aria-label="Lên đầu trang">↑</a>
 </main>
 </body>
 </html>
