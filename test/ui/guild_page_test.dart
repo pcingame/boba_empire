@@ -30,9 +30,14 @@ final _now = DateTime.utc(2026, 10, 8).millisecondsSinceEpoch;
 final _live = <ProviderContainer>[];
 
 /// Cuộn tới widget trong ListView (ListView dựng lười: chưa cuộn tới thì chưa có).
-Future<void> _scrollTo(WidgetTester tester, Key key) =>
-    tester.dragUntilVisible(
-        find.byKey(key), find.byType(ListView), const Offset(0, -150));
+Future<void> _scrollTo(WidgetTester tester, Key key) async {
+  await tester.dragUntilVisible(
+      find.byKey(key), find.byType(ListView), const Offset(0, -150));
+  // dragUntilVisible dừng khi widget vừa được dựng (có thể còn lấp ló dưới mép màn): kéo hẳn vào
+  // vùng nhìn thấy để tap() trúng.
+  await tester.ensureVisible(find.byKey(key));
+  await tester.pumpAndSettle();
+}
 
 /// Gỡ cây widget rồi dispose mọi container đang sống (dùng giữa hai lần _pump
 /// trong cùng một test: hai GameController sống song song làm pumpAndSettle
@@ -402,6 +407,7 @@ void main() {
         (tester) async {
       await _pump(tester, FakeGuildRepository(mine: fakeGuild()));
       expect(find.textContaining('[BB] Boba Club'), findsOneWidget);
+      await _scrollTo(tester, const Key('guild-kick-u2'));
       expect(find.byKey(const Key('guild-kick-u2')), findsOneWidget);
       expect(find.byKey(const Key('guild-kick-me')), findsNothing, reason: 'không tự kick');
     });
@@ -414,6 +420,7 @@ void main() {
     gTest('kick: hỏi xác nhận rồi gọi server; huỷ thì không', (tester) async {
       final repo = FakeGuildRepository(mine: fakeGuild());
       await _pump(tester, repo);
+      await _scrollTo(tester, const Key('guild-kick-u2'));
       await tester.tap(find.byKey(const Key('guild-kick-u2')));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Hủy').evaluate().isNotEmpty ? find.text('Hủy') : find.text('Huỷ'));
@@ -933,4 +940,98 @@ void main() {
       expect(tester.takeException(), isNull);
     });
   }
+
+  group('giao diện nâng cấp', () {
+    gTest('banner: chip chuỗi/VIP/buff chỉ hiện khi có giá trị', (tester) async {
+      await _pump(tester, FakeGuildRepository(mine: fakeGuild()));
+      for (final k in ['guild-streak', 'guild-vip-bonus', 'guild-buff-line']) {
+        expect(find.byKey(Key(k)), findsNothing, reason: k);
+      }
+      await _teardown(tester);
+      await _pump(
+          tester,
+          FakeGuildRepository(
+              mine: fakeGuild(streak: 3, vipMembers: 2, vipBonus: 2, buffSeconds: 3600)));
+      for (final k in ['guild-streak', 'guild-vip-bonus', 'guild-buff-line']) {
+        expect(find.byKey(Key(k)), findsOneWidget, reason: k);
+      }
+    });
+
+    gTest('lối tắt Chat/Hoạt động nằm trong trang, không còn ở thanh tiêu đề', (tester) async {
+      await _pump(tester, FakeGuildRepository(mine: fakeGuild()));
+      for (final k in ['guild-chat-button', 'guild-activity-button']) {
+        expect(find.byKey(Key(k)), findsOneWidget, reason: k);
+        expect(find.descendant(of: find.byType(AppBar), matching: find.byKey(Key(k))), findsNothing,
+            reason: '$k không còn ở AppBar');
+      }
+      expect(find.descendant(of: find.byType(AppBar), matching: find.byKey(const Key('guild-leaderboard-button'))),
+          findsOneWidget);
+    });
+
+    gTest('huy chương chỉ cho top 3 có điểm; người 0 điểm không có', (tester) async {
+      final g = fakeGuild(members: const [
+        GuildMemberInfo(userId: 'me', nickname: 'Alice', points: 400),
+        GuildMemberInfo(userId: 'u2', nickname: 'Bob', points: 100),
+        GuildMemberInfo(userId: 'u3', nickname: 'Cy', points: 0),
+        GuildMemberInfo(userId: 'u4', nickname: 'Dee', points: 0),
+      ]);
+      await _pump(tester, FakeGuildRepository(mine: g));
+      await _scrollTo(tester, const Key('guild-leave-button'));
+      expect(find.text('🥇 '), findsOneWidget);
+      expect(find.text('🥈 '), findsOneWidget);
+      expect(find.text('🥉 '), findsNothing, reason: 'hạng 3 có 0 điểm');
+    });
+
+    gTest('vòng trạng thái mốc: 🔒 chưa đạt, 🎁 nhận được, ✅ đã nhận, ⚠️ thiếu điểm cá nhân',
+        (tester) async {
+      // Tổng 50000: mốc 1 (10k) và mốc 2 (40k) đạt, mốc 3 (120k) chưa. Mốc 1 đã nhận.
+      await _pump(tester, FakeGuildRepository(mine: fakeGuild(total: 50000, claimed: const [1])));
+      await _scrollTo(tester, const Key('guild-claim-2'));
+      expect(find.text('✅'), findsOneWidget);
+      expect(find.text('🎁'), findsWidgets); // mốc 2 nhận được (🎁 còn xuất hiện ở phần thưởng mốc cuối)
+      expect(find.text('🔒'), findsOneWidget);
+      await _teardown(tester);
+      // Mình chỉ 50 điểm (<300): mốc đạt nhưng chưa nhận được → ⚠️.
+      await _pump(
+          tester,
+          FakeGuildRepository(
+              mine: fakeGuild(total: 15000, members: const [
+            GuildMemberInfo(userId: 'me', nickname: 'Alice', points: 50),
+            GuildMemberInfo(userId: 'u2', nickname: 'Bob', points: 14950),
+          ])));
+      await _scrollTo(tester, const Key('guild-claim-0'));
+      expect(find.text('⚠️'), findsOneWidget);
+    });
+
+    for (final l in ['vi', 'en', 'pt', 'es', 'id', 'th', 'ko']) {
+      gTest('[$l] chế độ tối 320px: banner đủ chip + 30 thành viên + boss, không tràn', (tester) async {
+        final g = fakeGuild(
+          name: 'Câu Lạc Bộ Trà Sữa Rất Dài Tên Để Thử Tràn',
+          streak: 12,
+          vipMembers: 7,
+          vipBonus: 5,
+          buffSeconds: 90000,
+          total: 130000,
+          bossHp: 120000,
+          bossTier: 4,
+          members: [
+            for (var i = 0; i < 30; i++)
+              GuildMemberInfo(
+                  userId: i == 0 ? 'me' : 'u$i',
+                  nickname: 'Người chơi tên khá dài $i',
+                  points: 100000 - i * 3000,
+                  role: i == 1 ? GuildRole.officer : GuildRole.member),
+          ],
+        );
+        await _pump(tester, FakeGuildRepository(mine: g),
+            locale: l, home: Theme(data: ThemeData.dark(), child: const GuildPage()));
+        expect(tester.takeException(), isNull);
+        for (var i = 0; i < 12; i++) {
+          await tester.drag(find.byType(ListView), const Offset(0, -400));
+          await tester.pumpAndSettle(); // chờ huy hiệu thành viên mới dựng (bộ đếm 50ms)
+          expect(tester.takeException(), isNull, reason: 'cuộn lần $i');
+        }
+      });
+    }
+  });
 }

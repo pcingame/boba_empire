@@ -120,25 +120,6 @@ class _GuildPageState extends ConsumerState<GuildPage> {
                 ),
               ),
             ),
-            if (view is GuildMine)
-              IconButton(
-                key: const Key('guild-chat-button'),
-                tooltip: l10n.guildChatTitle,
-                icon: Badge(
-                  key: const Key('guild-chat-unread'),
-                  isLabelVisible: ref.watch(guildChatUnreadProvider),
-                  smallSize: 9,
-                  child: const Icon(Icons.chat_bubble_outline),
-                ),
-                onPressed: () => showGuildChat(context),
-              ),
-            if (view is GuildMine)
-              IconButton(
-                key: const Key('guild-activity-button'),
-                tooltip: l10n.guildActivityTitle,
-                icon: const Icon(Icons.history),
-                onPressed: () => showGuildActivity(context),
-              ),
             IconButton(
               key: const Key('guild-leaderboard-button'),
               tooltip: l10n.guildLbTitle,
@@ -459,87 +440,54 @@ class _MyGuildView extends ConsumerWidget {
       child: ListView(
         padding: const EdgeInsets.all(12),
         children: [
-          ClayTile(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Text(g.emoji, style: const TextStyle(fontSize: 32)),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                          '${g.requiresApproval ? '🔒 ' : ''}[${g.tag}] ${g.name}',
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.bold)),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(l10n.guildMembersCount(g.members.length, guildMaxMembers),
-                    style: theme.textTheme.bodySmall),
-                if (g.streak > 0)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Text(l10n.guildStreakLine(g.streak),
-                        key: const Key('guild-streak'),
-                        style: theme.textTheme.bodyMedium
-                            ?.copyWith(fontWeight: FontWeight.w600)),
-                  ),
-                // Thưởng thu nhập từ thành viên VIP: chỉ hiện khi đã có (không chiếm chỗ ở hội chưa
-                // có VIP); chạm giữ để xem cách có thưởng.
-                if (g.vipBonus > 0)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Tooltip(
-                      message: l10n.guildVipBonusHint(
-                          guildVipBonusCap, guildVipMinLevel, guildVipBonusPerMember),
-                      triggerMode: TooltipTriggerMode.tap,
-                      child: Text(l10n.guildVipBonusLine(g.vipMembers, g.vipBonus),
-                          key: const Key('guild-vip-bonus'),
-                          style: theme.textTheme.bodyMedium
-                              ?.copyWith(fontWeight: FontWeight.w600)),
-                    ),
-                  ),
-                if (g.buffSeconds > 0)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Text(
-                        l10n.guildBuffLine(
-                            ((Balance.guildBuffMult - 1) * 100).round(),
-                            formatDuration(g.buffSeconds)),
-                        key: const Key('guild-buff-line'),
-                        style: theme.textTheme.bodyMedium
-                            ?.copyWith(fontWeight: FontWeight.w600)),
-                  ),
-              ],
-            ),
-          ),
+          _GuildBanner(guild: g),
           const SizedBox(height: 8),
           const _GiftInbox(),
-          OutlinedButton.icon(
-            key: const Key('guild-shop-button'),
-            icon: const Icon(Icons.storefront),
-            label: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                  '${l10n.guildShopButton} · ${l10n.guildCoinsLabel(g.wallet)}'),
-            ),
-            onPressed: () => showGuildShop(context),
+          Row(
+            children: [
+              Expanded(
+                child: FilledButton.tonalIcon(
+                  key: const Key('guild-shop-button'),
+                  icon: const Icon(Icons.storefront),
+                  label: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                        '${l10n.guildShopButton} · ${l10n.guildCoinsLabel(g.wallet)}'),
+                  ),
+                  onPressed: () => showGuildShop(context),
+                ),
+              ),
+              const SizedBox(width: 6),
+              IconButton.filledTonal(
+                key: const Key('guild-chat-button'),
+                tooltip: l10n.guildChatTitle,
+                icon: Badge(
+                  key: const Key('guild-chat-unread'),
+                  isLabelVisible: ref.watch(guildChatUnreadProvider),
+                  smallSize: 9,
+                  child: const Icon(Icons.chat_bubble_outline),
+                ),
+                onPressed: () => showGuildChat(context),
+              ),
+              IconButton.filledTonal(
+                key: const Key('guild-activity-button'),
+                tooltip: l10n.guildActivityTitle,
+                icon: const Icon(Icons.history),
+                onPressed: () => showGuildActivity(context),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
-          Text(l10n.guildGoalTitle,
-              style: theme.textTheme.titleSmall
-                  ?.copyWith(fontWeight: FontWeight.w700)),
-          const SizedBox(height: 4),
+          Text('🎯 ${l10n.guildGoalTitle}',
+              style: theme.textTheme.titleMedium
+                  ?.copyWith(fontWeight: FontWeight.w800)),
+          const SizedBox(height: 6),
           ClipRRect(
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(8),
             child: LinearProgressIndicator(
               key: const Key('guild-progress'),
               value: (g.total / top).clamp(0.0, 1.0).toDouble(),
-              minHeight: 10,
+              minHeight: 14,
             ),
           ),
           const SizedBox(height: 2),
@@ -592,7 +540,7 @@ class _MyGuildView extends ConsumerWidget {
               ),
             const SizedBox(height: 8),
           ],
-          for (final m in g.members)
+          for (final (i, m) in g.members.indexed)
             ClayTile(
               child: Row(
                 children: [
@@ -612,6 +560,8 @@ class _MyGuildView extends ConsumerWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
+                              if (m.points > 0 && i < 3)
+                                Text('${const ['🥇', '🥈', '🥉'][i]} '),
                               if (m.role == GuildRole.owner) const Text('👑 '),
                               if (m.role == GuildRole.officer) const Text('⭐ '),
                               FlairBadge(userId: m.userId),
@@ -625,6 +575,21 @@ class _MyGuildView extends ConsumerWidget {
                                 fontWeight: m.userId == view.myUserId
                                     ? FontWeight.bold
                                     : FontWeight.normal)),
+                        // Thanh điểm tương đối so với người cao nhất (members đã xếp giảm dần).
+                        Padding(
+                          padding: const EdgeInsets.only(top: 3),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(3),
+                            child: LinearProgressIndicator(
+                              value: g.members.first.points <= 0
+                                  ? 0
+                                  : (m.points / g.members.first.points)
+                                      .clamp(0.0, 1.0)
+                                      .toDouble(),
+                              minHeight: 4,
+                            ),
+                          ),
+                        ),
                       ],
                     )),
                   ),
@@ -841,6 +806,8 @@ class _MilestoneRow extends ConsumerWidget {
     return ClayTile(
       child: Row(
         children: [
+          _StatusDot(done: claimed, ready: canClaim, reached: reached),
+          const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -987,14 +954,32 @@ class _BossCard extends ConsumerWidget {
     final coins = guildBossRewardCoins(g.bossTier);
     return Padding(
       padding: const EdgeInsets.only(top: 8),
-      child: ClayTile(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          gradient: LinearGradient(colors: [
+            theme.colorScheme.errorContainer.withValues(alpha: 0.55),
+            theme.colorScheme.surface,
+          ]),
+        ),
+        child: ClayTile(
         key: const Key('guild-boss'),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Text(guildBossEmojis[idx], style: const TextStyle(fontSize: 32)),
+                Container(
+                  width: 52,
+                  height: 52,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: theme.colorScheme.errorContainer,
+                  ),
+                  child: Text(guildBossEmojis[idx],
+                      style: const TextStyle(fontSize: 30)),
+                ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -1053,6 +1038,7 @@ class _BossCard extends ConsumerWidget {
             ],
           ],
         ),
+        ),
       ),
     );
   }
@@ -1066,5 +1052,145 @@ class _BossCard extends ConsumerWidget {
         out.ok
             ? l10n.guildBossClaimedSnack(out.coins, out.gems)
             : guildFailureText(l10n, out.failure!));
+  }
+}
+
+/// Banner đầu trang hội: nền gradient, emoji lớn trong vòng tròn, tên + số thành viên và các chip
+/// trạng thái (chuỗi tuần, thưởng VIP, buff). Giữ nguyên chuỗi chữ/khoá cũ — chỉ đổi cách trình bày.
+class _GuildBanner extends StatelessWidget {
+  const _GuildBanner({required this.guild});
+  final MyGuild guild;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final g = guild;
+    final onBanner = theme.colorScheme.onPrimaryContainer;
+    Widget chip(Key key, String text, {String? tooltip}) {
+      final w = Container(
+        key: key,
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        decoration: BoxDecoration(
+          color: theme.colorScheme.surface.withValues(alpha: 0.7),
+          borderRadius: BorderRadius.circular(999),
+        ),
+        child: Text(text,
+            style: theme.textTheme.bodySmall
+                ?.copyWith(fontWeight: FontWeight.w700, color: theme.colorScheme.onSurface)),
+      );
+      return tooltip == null
+          ? w
+          : Tooltip(message: tooltip, triggerMode: TooltipTriggerMode.tap, child: w);
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            theme.colorScheme.primaryContainer,
+            theme.colorScheme.tertiaryContainer,
+          ],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.12),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 60,
+                height: 60,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: theme.colorScheme.surface.withValues(alpha: 0.85),
+                ),
+                child: Text(g.emoji, style: const TextStyle(fontSize: 34)),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                        '${g.requiresApproval ? '🔒 ' : ''}[${g.tag}] ${g.name}',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w800, color: onBanner)),
+                    Text(l10n.guildMembersCount(g.members.length, guildMaxMembers),
+                        style: theme.textTheme.bodyMedium
+                            ?.copyWith(color: onBanner)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          if (g.streak > 0 || g.vipBonus > 0 || g.buffSeconds > 0) ...[
+            const SizedBox(height: 10),
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: [
+                if (g.streak > 0)
+                  chip(const Key('guild-streak'), l10n.guildStreakLine(g.streak)),
+                // Thưởng thu nhập từ thành viên VIP: chỉ hiện khi đã có; chạm giữ để xem cách có thưởng.
+                if (g.vipBonus > 0)
+                  chip(const Key('guild-vip-bonus'),
+                      l10n.guildVipBonusLine(g.vipMembers, g.vipBonus),
+                      tooltip: l10n.guildVipBonusHint(
+                          guildVipBonusCap, guildVipMinLevel, guildVipBonusPerMember)),
+                if (g.buffSeconds > 0)
+                  chip(
+                      const Key('guild-buff-line'),
+                      l10n.guildBuffLine(
+                          ((Balance.guildBuffMult - 1) * 100).round(),
+                          formatDuration(g.buffSeconds))),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Vòng trạng thái của một mốc tuần: ✓ đã nhận, 🎁 sẵn sàng nhận, ● đạt nhưng chưa đủ điểm cá nhân,
+/// 🔒 chưa đạt.
+class _StatusDot extends StatelessWidget {
+  const _StatusDot({required this.done, required this.ready, required this.reached});
+  final bool done;
+  final bool ready;
+  final bool reached;
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final (String glyph, Color bg) = done
+        ? ('✅', cs.primaryContainer)
+        : ready
+            ? ('🎁', cs.tertiaryContainer)
+            : reached
+                ? ('⚠️', cs.errorContainer)
+                : ('🔒', cs.surfaceContainerHighest);
+    return Container(
+      width: 36,
+      height: 36,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(shape: BoxShape.circle, color: bg),
+      child: Text(glyph, style: const TextStyle(fontSize: 18)),
+    );
   }
 }
