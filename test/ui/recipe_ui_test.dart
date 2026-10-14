@@ -10,6 +10,7 @@ import 'package:boba_empire/core/daily_quests.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/core/weekly_quests.dart';
 import 'package:boba_empire/core/recipe_mastery.dart';
+import 'package:boba_empire/core/recipe_names.dart';
 import 'package:boba_empire/core/recipe_quiz.dart';
 import 'package:boba_empire/core/recipes.dart';
 import 'package:boba_empire/data/game_storage.dart';
@@ -27,6 +28,9 @@ const _day = 24 * 60 * 60 * 1000;
 
 RecipeCatalog _catalog() => RecipeCatalog.fromJson(
     jsonDecode(File('assets/recipes/recipes.json').readAsStringSync()) as Map<String, dynamic>);
+
+RecipeNames _names() =>
+    RecipeNames.fromJson(jsonDecode(File('assets/recipes/names.json').readAsStringSync()) as Map<String, dynamic>);
 
 /// Quảng cáo giả: đếm số lần được gọi, kết quả chỉnh được.
 class _Ads implements AdService {
@@ -76,6 +80,7 @@ Future<ProviderContainer> _pump(
     sharedPreferencesProvider.overrideWithValue(prefs),
     clockProvider.overrideWithValue(() => day * _day),
     recipeCatalogProvider.overrideWith((ref) async => _catalog()),
+    recipeNamesProvider.overrideWith((ref) async => _names()),
     recipeRandomProvider.overrideWithValue(Random(seed)),
     if (ads != null) adServiceProvider.overrideWithValue(ads),
   ]);
@@ -781,5 +786,115 @@ void main() {
         await _teardown(tester);
       });
     }
+  });
+
+  group('tên món/nguyên liệu theo ngôn ngữ', () {
+    final catalog = _catalog();
+    final names = _names();
+    final first = catalog.byId(1)!;
+
+    for (final lang in ['en', 'es', 'id', 'ko', 'pt', 'th']) {
+      testWidgets('[$lang] màn công thức: nhóm, món, thẻ công thức đều đã dịch; không còn tên tiếng Việt', (tester) async {
+        await _pump(tester, locale: lang, size: const Size(360, 800));
+        final l = RecipeLabels(names, lang);
+        expect(find.text('🧋 ${l.group(1, catalog.groupNames[1]!)}'), findsOneWidget);
+        expect(find.text(l.recipe(first)), findsOneWidget);
+        expect(find.text(first.name), findsNothing, reason: 'tên tiếng Việt "${first.name}" còn trên màn $lang');
+        // Thẻ công thức: tên + nguyên liệu đã dịch.
+        await tester.tap(find.byKey(const Key('recipe-tile-1')));
+        await tester.pumpAndSettle();
+        expect(find.byKey(const Key('recipe-card')), findsOneWidget);
+        for (final ing in first.ingredients) {
+          expect(find.text(l.ingredient(ing.name)), findsWidgets, reason: '$lang: thiếu "${l.ingredient(ing.name)}"');
+          expect(find.text(ing.name == l.ingredient(ing.name) ? '__' : ing.name), findsNothing);
+        }
+        await _teardown(tester);
+      });
+
+      testWidgets('[$lang] buổi luyện: đề, danh sách nguyên liệu và các lựa chọn đều đã dịch (điền thiếu + công thức đầy đủ)',
+          (tester) async {
+        final l = RecipeLabels(names, lang);
+        // Câu 1 là "điền nguyên liệu thiếu" (món mới); các món còn lại bậc Thuộc hẹn xa để tách bạch.
+        await _pump(tester, locale: lang, size: const Size(360, 900));
+        await tester.tap(find.byKey(const Key('recipe-practice')));
+        await tester.pumpAndSettle();
+        final q = _expected(1)[0];
+        expect(q.kind, QuizKind.missingIngredient);
+        final prompt = tester.widget<Text>(find.byKey(const Key('recipe-quiz-prompt'))).data!;
+        expect(prompt, contains(l.recipe(q.recipe)));
+        expect(prompt, isNot(contains(q.recipe.name)), reason: 'đề còn tên tiếng Việt');
+        for (final o in q.options) {
+          expect(find.textContaining(l.ingredient(o)), findsWidgets, reason: '$lang: thiếu lựa chọn "${l.ingredient(o)}"');
+        }
+        // Các dòng nguyên liệu còn lại của món (đã dịch) hiện trong khung gợi ý.
+        for (var k = 0; k < q.recipe.ingredients.length; k++) {
+          if (k == q.target) continue;
+          expect(find.text(l.ingredient(q.recipe.ingredients[k].name)), findsWidgets);
+        }
+        await _teardown(tester);
+
+        // Công thức đầy đủ (bậc Thuộc).
+        // 9 món bậc Thuộc đến hạn (chưa đủ 10 nên nhóm 2 chưa mở); 11 món còn lại hẹn xa: buổi chỉ có câu bậc Thuộc.
+        final g1 = _catalog().inGroup(1);
+        final prog = {
+          for (var k = 0; k < g1.length; k++) '${g1[k].id}': k < 9 ? [2, 0, 2] : [1, 9999, 1],
+        };
+        await _pump(tester, locale: lang, size: const Size(360, 900), progress: prog);
+        await tester.tap(find.byKey(const Key('recipe-practice')));
+        await tester.pumpAndSettle();
+        final qs = _expected(1, progress: {for (final e in prog.entries) int.parse(e.key): RecipeProgress.fromList(e.value)});
+        final full = qs.firstWhere((x) => x.kind == QuizKind.fullRecipe);
+        // Tìm câu full: trả lời lần lượt tới khi gặp (câu đầu có thể là quantity).
+        var idx = qs.indexOf(full);
+        for (var k = 0; k < idx; k++) {
+          await _answer(tester, qs[k], correct: true);
+          await tester.tap(find.byKey(const Key('recipe-quiz-next')));
+          await tester.pumpAndSettle();
+        }
+        final lines = full.options[full.answer].split('\n');
+        for (final line in lines) {
+          final shown = l.ingredientLine(line);
+          final name = shown.substring(0, shown.lastIndexOf(RegExp(r'\s\d')));
+          expect(find.text(name), findsWidgets, reason: '$lang: thiếu dòng "$name"');
+        }
+        await _teardown(tester);
+      });
+    }
+
+    testWidgets('[vi] giữ nguyên tên tiếng Việt (không bị dịch nhầm)', (tester) async {
+      await _pump(tester, locale: 'vi');
+      expect(find.text(first.name), findsOneWidget);
+      expect(find.text('🧋 ${catalog.groupNames[1]}'), findsOneWidget);
+      await _teardown(tester);
+    });
+
+    testWidgets('chưa nạp xong bản dịch (hoặc lỗi nạp): hiện tên tiếng Việt, không trống, không ném', (tester) async {
+      tester.view.physicalSize = const Size(360 * 2, 800 * 2);
+      tester.view.devicePixelRatio = 2;
+      addTearDown(tester.view.reset);
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      await GameStorage(prefs).save(GameState.newGame(nowMillis: 0)..tutorialSeen = true, nowMillis: 0);
+      final c = ProviderContainer(overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        clockProvider.overrideWithValue(() => 100 * _day),
+        recipeCatalogProvider.overrideWith((ref) async => _catalog()),
+        recipeNamesProvider.overrideWith((ref) async => null), // lỗi nạp bản dịch
+      ]);
+      _live.add(c);
+      await tester.pumpWidget(UncontrolledProviderScope(
+        container: c,
+        child: MaterialApp(
+          locale: const ui.Locale('en'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: const RecipeHubPage(),
+        ),
+      ));
+      await tester.pumpAndSettle();
+      expect(find.text(first.name), findsOneWidget); // en nhưng không có bản dịch → tiếng Việt
+      expect(tester.takeException(), isNull);
+      await _teardown(tester);
+    });
   });
 }

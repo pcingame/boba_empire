@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../ads/ad_service.dart';
 import '../core/daily.dart';
 import '../core/recipe_mastery.dart';
+import '../core/recipe_names.dart';
 import '../core/recipes.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
@@ -73,6 +74,7 @@ class _Body extends ConsumerWidget {
     final theme = Theme.of(context);
     final progress = ref.watch(gameControllerProvider.select((s) => s.recipeProgress));
     final today = dayIndex(ref.watch(clockProvider)());
+    final labels = recipeLabelsOf(ref, context);
     RecipeProgress p(Recipe r) => progress[r.id] ?? const RecipeProgress();
     int bestOf(int id) => progress[id]?.best ?? 0;
     // Chỉ các nhóm ĐÃ MỞ mới tính vào tiến độ/ôn/danh sách (xem recipeGroupUnlocked).
@@ -157,16 +159,16 @@ class _Body extends ConsumerWidget {
           if (recipeGroupUnlocked(catalog, g, bestOf)) ...[
             Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 4),
-              child: Text('🧋 ${catalog.groupNames[g] ?? ''}',
+              child: Text('🧋 ${labels.group(g, catalog.groupNames[g] ?? '')}',
                   key: Key('recipe-group-$g'),
                   style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
             ),
             for (final r in catalog.inGroup(g))
-              AppearIn(child: _RecipeTile(recipe: r, progress: p(r), today: today)),
+              AppearIn(child: _RecipeTile(recipe: r, progress: p(r), today: today, labels: labels)),
           ] else
             _LockedGroup(
               key: Key('recipe-group-locked-$g'),
-              name: catalog.groupNames[g] ?? '',
+              name: labels.group(g, catalog.groupNames[g] ?? ''),
               // Chỉ nhóm KẾ TIẾP hiện tiến độ mở khoá; các nhóm xa hơn chỉ ghi tên + khoá.
               learned: recipeGroupUnlocked(catalog, recipePlayableGroups[recipePlayableGroups.indexOf(g) - 1], bestOf)
                   ? recipeGroupLearned(catalog, recipePlayableGroups[recipePlayableGroups.indexOf(g) - 1], bestOf)
@@ -200,7 +202,8 @@ class _BoxChip extends StatelessWidget {
 }
 
 class _RecipeTile extends StatelessWidget {
-  const _RecipeTile({required this.recipe, required this.progress, required this.today});
+  const _RecipeTile({required this.recipe, required this.progress, required this.today, required this.labels});
+  final RecipeLabels labels;
   final Recipe recipe;
   final RecipeProgress progress;
   final int today;
@@ -224,7 +227,7 @@ class _RecipeTile extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(recipe.name,
+                Text(labels.recipe(recipe),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800)),
@@ -251,14 +254,15 @@ class _RecipeTile extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
-      builder: (_) => _RecipeCard(recipe: recipe, progress: progress, today: today),
+      builder: (_) => _RecipeCard(recipe: recipe, progress: progress, today: today, labels: labels),
     );
   }
 }
 
 /// Thẻ công thức: nguyên liệu kèm lượng + lịch ôn kế tiếp.
 class _RecipeCard extends StatelessWidget {
-  const _RecipeCard({required this.recipe, required this.progress, required this.today});
+  const _RecipeCard({required this.recipe, required this.progress, required this.today, required this.labels});
+  final RecipeLabels labels;
   final Recipe recipe;
   final RecipeProgress progress;
   final int today;
@@ -277,7 +281,7 @@ class _RecipeCard extends StatelessWidget {
         children: [
           Row(children: [
             Expanded(
-                child: Text(recipe.name,
+                child: Text(labels.recipe(recipe),
                     style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800))),
             const SizedBox(width: 8),
             ConstrainedBox(constraints: const BoxConstraints(maxWidth: 110), child: _BoxChip(progress.box)),
@@ -293,7 +297,7 @@ class _RecipeCard extends StatelessWidget {
               child: Row(children: [
                 Text(ingredientEmoji(i.name), style: const TextStyle(fontSize: 20)),
                 const SizedBox(width: 10),
-                Expanded(child: Text(i.name, style: theme.textTheme.bodyLarge)),
+                Expanded(child: Text(labels.ingredient(i.name), style: theme.textTheme.bodyLarge)),
                 const SizedBox(width: 8),
                 Text(i.amount, style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w800)),
               ]),

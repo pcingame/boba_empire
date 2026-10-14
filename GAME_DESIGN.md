@@ -1000,3 +1000,9 @@ Mọi chuyển động theo mức hiệu ứng (`EffectsQuality`/`reduceMotion`,
 - Đáp án nhiễu lấy từ CÙNG nhóm (đồ cà phê nhiễu bằng nguyên liệu cà phê). Emoji: mọi nguyên liệu của 100 món đều có emoji riêng (test kiểm).
 - Rương phụ kiện mở rộng: 5 → Hiếm, 10 → Sử thi, 20/40/60/80/100 → Huyền thoại. BXH Thợ pha chế trần 100 (SQL đã khớp) — KHÔNG cần chạy lại SQL.
 - Tên món/nguyên liệu/nhóm vẫn chỉ tiếng Việt (nội dung dữ liệu). Chưa làm: hình nguyên liệu riêng, PK, kéo-thả pha theo đơn.
+
+### 34h. Công thức pha chế — tên món/nguyên liệu/nhóm đủ 7 ngôn ngữ (2026-10-15)
+- Dịch 100 tên món + 96 nguyên liệu + 5 nhóm sang en/es/id/ko/pt/th (vi là dữ liệu gốc). Nguồn: `scripts/data/recipe_names.py` → `python3 scripts/make_recipe_names.py` → `assets/recipes/names.json` (script kiểm đủ/khớp với recipes.json).
+- Dữ liệu gốc (tiếng Việt) vẫn là KHOÁ ra đề và so đáp án; bản dịch chỉ dùng HIỂN THỊ (`RecipeNames`/`RecipeLabels` trong `lib/core/recipe_names.dart`). Thiếu bản dịch / chưa nạp xong / lỗi nạp → rơi về tên tiếng Việt, không bao giờ trống. Đơn vị và lượng (g, ml) không đổi theo ngôn ngữ.
+- Test: đủ và khớp dữ liệu gốc ở cả 6 ngôn ngữ, không trùng nhãn trong cùng ngôn ngữ, đúng chữ viết (không sót tiếng Việt ở en/es/id/pt; có chữ Hàn/Thái ở ko/th), độ dài ≤ 48 ký tự; giao diện hiện tên đã dịch ở hộp thẻ, đề, lựa chọn, công thức đầy đủ.
+- ⚠️ Bản dịch do AI soạn, CHƯA có người bản ngữ rà — nên nhờ người bản ngữ xem tên nguyên liệu/món ở ko, th, id trước khi phát hành rộng. Một số cách gọi cố ý giữ như tên thông dụng (Bac Xiu, Thai tea, Boba).

@@ -6,6 +6,7 @@ import '../ads/banner_ad_box.dart';
 import '../core/daily.dart';
 import '../core/format.dart';
 import '../core/recipe_mastery.dart';
+import '../core/recipe_names.dart';
 import '../core/recipe_quiz.dart';
 import '../core/recipes.dart';
 import '../l10n/app_localizations.dart';
@@ -40,6 +41,9 @@ class _Answered {
 }
 
 class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
+  /// Nhãn theo ngôn ngữ hiện tại (gán lại mỗi lần dựng; mặc định tiếng Việt cho tới khi bản dịch nạp xong).
+  RecipeLabels _labels = const RecipeLabels(null, 'vi');
+
   late List<QuizQuestion> _questions = _newSession();
   final _answers = <_Answered>[];
   int _index = 0;
@@ -219,6 +223,7 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
 
   @override
   Widget build(BuildContext context) {
+    _labels = recipeLabelsOf(ref, context);
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
@@ -280,12 +285,12 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
   // --- câu hỏi ---------------------------------------------------------------
 
   String _prompt(AppLocalizations l10n, QuizQuestion q) => switch (q.kind) {
-    QuizKind.missingIngredient => l10n.recipeQMissing(q.recipe.name),
+    QuizKind.missingIngredient => l10n.recipeQMissing(_labels.recipe(q.recipe)),
     QuizKind.quantity => l10n.recipeQQuantity(
-      q.recipe.name,
-      q.recipe.ingredients[q.target].name,
+      _labels.recipe(q.recipe),
+      _labels.ingredient(q.recipe.ingredients[q.target].name),
     ),
-    QuizKind.fullRecipe => l10n.recipeQFull(q.recipe.name),
+    QuizKind.fullRecipe => l10n.recipeQFull(_labels.recipe(q.recipe)),
   };
 
   Widget _hint(BuildContext context, QuizQuestion q) {
@@ -302,7 +307,7 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
               style: const TextStyle(fontSize: 28),
             ),
             const SizedBox(width: 10),
-            Expanded(child: Text(ing.name, style: theme.textTheme.titleMedium)),
+            Expanded(child: Text(_labels.ingredient(ing.name), style: theme.textTheme.titleMedium)),
           ],
         ),
       );
@@ -326,7 +331,7 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      i == q.target ? '_ _ _ _' : q.recipe.ingredients[i].name,
+                      i == q.target ? '_ _ _ _' : _labels.ingredient(q.recipe.ingredients[i].name),
                       style: theme.textTheme.bodyLarge,
                     ),
                   ),
@@ -504,10 +509,10 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: q.kind == QuizKind.fullRecipe
-                            ? _RecipeLines(text: q.options[i])
+                            ? _RecipeLines(text: q.options[i], labels: _labels)
                             : Text(
                                 q.kind == QuizKind.missingIngredient
-                                    ? '${ingredientEmoji(q.options[i])}  ${q.options[i]}'
+                                    ? '${ingredientEmoji(q.options[i])}  ${_labels.ingredient(q.options[i])}'
                                     : q.options[i],
                                 style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
                               ),
@@ -535,7 +540,7 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
       if (r.outcome.leveledUp)
         l10n.recipeLevelUp(
           recipeBoxName(l10n, r.after.box),
-          a.question.recipe.name,
+          _labels.recipe(a.question.recipe),
         ),
       if (r.milestone > 0) l10n.recipeMilestone(r.milestone),
       if (r.streakGems > 0)
@@ -672,7 +677,7 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
               key: Key('recipe-group-opened-$g'),
               child: Text(
                 l10n.recipeGroupOpened(
-                  ref.read(recipeCatalogProvider).requireValue.groupNames[g] ?? '',
+                  _labels.group(g, ref.read(recipeCatalogProvider).requireValue.groupNames[g] ?? ''),
                 ),
                 textAlign: TextAlign.center,
                 style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
@@ -726,8 +731,9 @@ class _LetterBadge extends StatelessWidget {
 
 /// Một công thức đầy đủ (mỗi dòng "Tên nguyên liệu 10 g") vẽ thành các hàng emoji + tên + lượng.
 class _RecipeLines extends StatelessWidget {
-  const _RecipeLines({required this.text});
+  const _RecipeLines({required this.text, required this.labels});
   final String text;
+  final RecipeLabels labels;
 
   static final _amount = RegExp(r'^(.*?)\s+(\d+(?:\.\d+)?\s*(?:g|ml))$');
 
@@ -746,7 +752,7 @@ class _RecipeLines extends StatelessWidget {
               child: Row(children: [
                 Text(ingredientEmoji(name), style: const TextStyle(fontSize: 15)),
                 const SizedBox(width: 8),
-                Expanded(child: Text(name, style: theme.textTheme.bodyMedium)),
+                Expanded(child: Text(labels.ingredient(name), style: theme.textTheme.bodyMedium)),
                 if (m != null)
                   Text(m.group(2)!, style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w800)),
               ]),
