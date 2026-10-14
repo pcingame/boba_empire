@@ -2472,6 +2472,24 @@ abstract class AppLocalizations {
   /// **'Âm thanh'**
   String get settingsSound;
 
+  /// No description provided for @recipeGroupLocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'🔒 {name} — mở khi Thuộc {need} món của nhóm trước ({learned}/{need})'**
+  String recipeGroupLocked(String name, int need, int learned);
+
+  /// No description provided for @recipeGroupLockedFar.
+  ///
+  /// In vi, this message translates to:
+  /// **'🔒 {name}'**
+  String recipeGroupLockedFar(String name);
+
+  /// No description provided for @recipeGroupOpened.
+  ///
+  /// In vi, this message translates to:
+  /// **'🔓 Đã mở nhóm mới: {name}!'**
+  String recipeGroupOpened(String name);
+
   /// No description provided for @recipeStreak.
   ///
   /// In vi, this message translates to:

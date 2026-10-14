@@ -32,7 +32,8 @@ RecipeCatalog _catalog() => RecipeCatalog.fromJson(
     jsonDecode(File('assets/recipes/recipes.json').readAsStringSync()) as Map<String, dynamic>);
 
 List<QuizQuestion> _expected(int seed, {Map<int, RecipeProgress> progress = const {}}) =>
-    buildSession(_catalog(), progress, 100, Random(seed));
+    buildSession(_catalog(), progress, 100, Random(seed),
+        pool: unlockedRecipes(_catalog(), (id) => progress[id]?.best ?? 0));
 
 final _live = <ProviderContainer>[];
 Future<void> _teardown(WidgetTester tester) async {

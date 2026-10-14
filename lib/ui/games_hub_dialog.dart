@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/daily.dart';
 import '../core/recipe_mastery.dart';
+import '../core/recipes.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import '../state/recipe_providers.dart';
@@ -28,7 +29,9 @@ class _GamesHubDialog extends ConsumerWidget {
     final today = dayIndex(ref.watch(clockProvider)());
     final due = catalog == null
         ? 0
-        : catalog.playable.where((r) => (progress[r.id] ?? const RecipeProgress()).isDue(today)).length;
+        : unlockedRecipes(catalog, (id) => progress[id]?.best ?? 0)
+            .where((r) => (progress[r.id] ?? const RecipeProgress()).isDue(today))
+            .length;
 
     return AlertDialog(
       title: Text(l10n.navMatch3),

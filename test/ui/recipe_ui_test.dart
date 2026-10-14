@@ -95,7 +95,8 @@ Future<ProviderContainer> _pump(
 
 /// Buổi luyện sẽ hiện ra trong lần mở đầu tiên: cùng Random(seed) ⇒ cùng câu hỏi (kiểm xác định).
 List<QuizQuestion> _expected(int seed, {Map<int, RecipeProgress> progress = const {}, int day = 100}) =>
-    buildSession(_catalog(), progress, day, Random(seed));
+    buildSession(_catalog(), progress, day, Random(seed),
+        pool: unlockedRecipes(_catalog(), (id) => progress[id]?.best ?? 0)); // như màn luyện: chỉ nhóm đã mở
 
 Future<void> _answer(WidgetTester tester, QuizQuestion q, {required bool correct}) async {
   final pick = correct ? q.answer : (q.answer + 1) % 4;
@@ -181,7 +182,7 @@ void main() {
 
   testWidgets('món chưa tới hạn chỉ để luyện: báo rõ và không đổi bậc', (tester) async {
     // 20 món đều đã Quen và hẹn ngày mai → cả buổi chỉ là luyện.
-    final progress = {for (final r in _catalog().playable) '${r.id}': [1, 101, 1]};
+    final progress = {for (final r in _catalog().inGroup(1)) '${r.id}': [1, 101, 1]};
     final c = await _pump(tester, progress: progress);
     expect(find.text('Hôm nay bạn đã ôn xong! Vẫn có thể luyện thêm (không tính bậc).'), findsOneWidget);
     await tester.tap(find.byKey(const Key('recipe-practice')));
@@ -281,7 +282,7 @@ void main() {
     SharedPreferences.setMockInitialValues({});
     final prefs = await SharedPreferences.getInstance();
     final g = GameState.newGame(nowMillis: 0)..tutorialSeen = true;
-    for (final r in _catalog().playable) {
+    for (final r in _catalog().inGroup(1)) {
       g.recipeProgress['${r.id}'] = [1, 101, 1]; // đã ôn xong hôm nay
     }
     await GameStorage(prefs).save(g, nowMillis: 0);
@@ -422,7 +423,7 @@ void main() {
   });
 
   testWidgets('món Thạo thứ 5: màn luyện báo nhận phụ kiện (một lần), lưu cờ mốc', (tester) async {
-    final ids = _catalog().playable.map((r) => r.id).toList();
+    final ids = _catalog().inGroup(1).map((r) => r.id).toList();
     // 4 món đã Thạo (hẹn xa); 1 món bậc Thuộc đến hạn → đúng một câu đến hạn, lên Thạo = món thứ 5.
     final progress = <String, List<int>>{
       for (final id in ids) '$id': [3, 9999, 3],
@@ -650,4 +651,135 @@ void main() {
       await _teardown(tester);
     });
   }
+
+  group('mở thêm nhóm công thức', () {
+    /// Danh sách nhóm nằm dưới thẻ tóm tắt và dựng lười: cuộn tới khi thấy [key].
+    Future<void> reveal(WidgetTester tester, Key key) async {
+      await tester.dragUntilVisible(find.byKey(key), find.byType(ListView), const Offset(0, -250));
+      await tester.pumpAndSettle();
+    }
+
+    /// [learned] món đầu của nhóm 1 ở bậc Thuộc (best 2, hẹn xa); các món còn lại của nhóm 1 ở bậc Quen hẹn xa.
+    Map<String, List<int>> group1(int learned) {
+      final ids = _catalog().inGroup(1).map((r) => r.id).toList();
+      return {
+        for (var k = 0; k < ids.length; k++) '${ids[k]}': k < learned ? [2, 9999, 2] : [1, 9999, 1],
+      };
+    }
+
+    testWidgets('mới vào: chỉ nhóm 1; nhóm 2 hiện dòng khoá có tiến độ 0/10; nhóm 3–5 chỉ ghi tên + khoá', (tester) async {
+      await _pump(tester);
+      expect(find.byKey(const Key('recipe-group-1')), findsOneWidget);
+      expect(find.text('Thạo 0/20 món'), findsOneWidget);
+      expect(find.byKey(const Key('recipe-group-2')), findsNothing);
+      await reveal(tester, const Key('recipe-group-locked-5'));
+      expect(find.text('🔒 Trà trái cây — mở khi Thuộc 10 món của nhóm trước (0/10)'), findsOneWidget);
+      expect(find.text('🔒 Latte và đồ uống sữa'), findsOneWidget);
+      expect(find.text('🔒 Cà phê và espresso'), findsOneWidget);
+      expect(find.text('🔒 Đồ uống đặc biệt'), findsOneWidget);
+      // Không có món của nhóm khoá trong danh sách.
+      final locked = _catalog().inGroup(2).first;
+      expect(find.byKey(Key('recipe-tile-${locked.id}')), findsNothing);
+      await _teardown(tester);
+    });
+
+    testWidgets('tiến độ mở khoá cập nhật theo số món đã Thuộc; đủ 10 thì mở nhóm 2 và nhóm 3 thành dòng kế tiếp', (tester) async {
+      await _pump(tester, progress: group1(6));
+      await reveal(tester, const Key('recipe-group-locked-2'));
+      expect(find.text('🔒 Trà trái cây — mở khi Thuộc 10 món của nhóm trước (6/10)'), findsOneWidget);
+      await _teardown(tester);
+
+      await _pump(tester, progress: group1(10));
+      // Tiến độ tính trên nhóm đã mở: 40 món; số món cần ôn = 20 món nhóm 2 mới + 0 món nhóm 1 (đều hẹn xa).
+      expect(find.text('Thạo 0/40 món'), findsOneWidget);
+      expect(find.text('20 món cần ôn hôm nay'), findsOneWidget);
+      await reveal(tester, const Key('recipe-group-2'));
+      expect(find.byKey(const Key('recipe-group-2')), findsOneWidget);
+      expect(find.byKey(const Key('recipe-group-locked-2')), findsNothing);
+      final g2 = _catalog().inGroup(2).first;
+      await reveal(tester, Key('recipe-tile-${g2.id}'));
+      expect(find.byKey(Key('recipe-tile-${g2.id}')), findsOneWidget);
+      // Nhóm 3 giờ là nhóm kế tiếp: hiện tiến độ (nhóm 2 chưa có món nào Thuộc); nhóm 4–5 chỉ ghi tên.
+      await reveal(tester, const Key('recipe-group-locked-5'));
+      expect(find.text('🔒 Latte và đồ uống sữa — mở khi Thuộc 10 món của nhóm trước (0/10)'), findsOneWidget);
+      expect(find.text('🔒 Cà phê và espresso'), findsOneWidget);
+      await _teardown(tester);
+    });
+
+    testWidgets('buổi luyện chỉ ra món của nhóm đã mở: nhóm 1 hẹn xa → cả buổi là món nhóm 2', (tester) async {
+      final c = await _pump(tester, progress: group1(10));
+      await tester.tap(find.byKey(const Key('recipe-practice')));
+      await tester.pumpAndSettle();
+      final qs = _expected(1, progress: {for (final e in group1(10).entries) int.parse(e.key): RecipeProgress.fromList(e.value)});
+      expect(qs.every((q) => q.recipe.group == 2), isTrue);
+      await _answer(tester, qs[0], correct: true);
+      expect(find.textContaining('lên bậc'), findsOneWidget);
+      expect(c.read(gameControllerProvider).recipeProgress.containsKey(qs[0].recipe.id), isTrue);
+      await _teardown(tester);
+    });
+
+    testWidgets('trả lời món thứ 10 lên Thuộc: cuối buổi báo "Đã mở nhóm mới" (một lần, nhóm 2)', (tester) async {
+      final ids = _catalog().inGroup(1).map((r) => r.id).toList();
+      // 9 món Thuộc, 1 món (ids[9]) ở bậc Quen đến hạn: đúng → Thuộc → đủ 10 → mở nhóm 2.
+      final progress = group1(9)..['${ids[9]}'] = [1, 0, 1];
+      await _pump(tester, progress: progress);
+      await tester.tap(find.byKey(const Key('recipe-practice')));
+      await tester.pumpAndSettle();
+      final qs = _expected(1, progress: {for (final e in progress.entries) int.parse(e.key): RecipeProgress.fromList(e.value)});
+      expect(qs.first.recipe.id, ids[9]); // món đến hạn duy nhất đứng đầu
+      for (var i = 0; i < 8; i++) {
+        await _answer(tester, qs[i], correct: true);
+        if (i == 0) expect(find.textContaining('lên bậc'), findsOneWidget);
+        await tester.tap(find.byKey(const Key('recipe-quiz-next')));
+        await tester.pumpAndSettle();
+      }
+      expect(find.byKey(const Key('recipe-group-opened-2')), findsOneWidget);
+      expect(find.text('🔓 Đã mở nhóm mới: Trà trái cây!'), findsOneWidget);
+      // Buổi kế (luyện tiếp) không báo lại nhóm đã mở.
+      await tester.tap(find.byKey(const Key('recipe-again')));
+      await tester.pumpAndSettle();
+      for (var i = 0; i < 8; i++) {
+        await tester.ensureVisible(find.byKey(const Key('recipe-quiz-option-0')));
+        await tester.tap(find.byKey(const Key('recipe-quiz-option-0')));
+        await tester.pumpAndSettle();
+        await tester.tap(find.byKey(const Key('recipe-quiz-next')));
+        await tester.pumpAndSettle();
+      }
+      expect(find.byKey(const Key('recipe-group-opened-2')), findsNothing);
+      await _teardown(tester);
+    });
+
+    testWidgets('hộp Trò chơi: số món cần ôn tính cả nhóm đã mở', (tester) async {
+      tester.view.physicalSize = const Size(390 * 3, 844 * 3);
+      tester.view.devicePixelRatio = 3;
+      addTearDown(tester.view.reset);
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final g = GameState.newGame(nowMillis: 0)..tutorialSeen = true;
+      g.recipeProgress.addAll(group1(10));
+      await GameStorage(prefs).save(g, nowMillis: 0);
+      final c = ProviderContainer(overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        clockProvider.overrideWithValue(() => 100 * _day),
+        recipeCatalogProvider.overrideWith((ref) async => _catalog()),
+      ]);
+      _live.add(c);
+      await tester.pumpWidget(UncontrolledProviderScope(container: c, child: const BobaEmpireApp()));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('match3-button')));
+      await tester.pumpAndSettle();
+      expect(find.text('20 món cần ôn hôm nay'), findsOneWidget); // nhóm 2 mới mở: 20 món chưa học
+      await _teardown(tester);
+    });
+
+    for (final lang in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
+      testWidgets('dòng khoá + nhiều nhóm không tràn ở 320px, chữ 1.5× ($lang)', (tester) async {
+        await _pump(tester, locale: lang, textScale: 1.5, size: const Size(320, 640), progress: group1(10));
+        expect(tester.takeException(), isNull);
+        await tester.dragUntilVisible(find.byKey(const Key('recipe-group-locked-3')), find.byType(ListView), const Offset(0, -200));
+        expect(tester.takeException(), isNull);
+        await _teardown(tester);
+      });
+    }
+  });
 }

@@ -29,6 +29,10 @@ const Map<int, AccessoryRarity> recipeAccessoryMilestones = {
   5: AccessoryRarity.rare,
   10: AccessoryRarity.epic,
   20: AccessoryRarity.legendary,
+  40: AccessoryRarity.legendary,
+  60: AccessoryRarity.legendary,
+  80: AccessoryRarity.legendary,
+  100: AccessoryRarity.legendary,
 };
 
 /// Số món đã từng đạt Thạo (best == [recipeMaxBox]) trong bản lưu `id → [box, dueDay, best]`.

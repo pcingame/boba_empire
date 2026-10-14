@@ -1429,6 +1429,21 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsSound => 'Âm thanh';
 
   @override
+  String recipeGroupLocked(String name, int need, int learned) {
+    return '🔒 $name — mở khi Thuộc $need món của nhóm trước ($learned/$need)';
+  }
+
+  @override
+  String recipeGroupLockedFar(String name) {
+    return '🔒 $name';
+  }
+
+  @override
+  String recipeGroupOpened(String name) {
+    return '🔓 Đã mở nhóm mới: $name!';
+  }
+
+  @override
   String recipeStreak(int n) {
     return '🔥 Chuỗi ôn: $n ngày';
   }

@@ -53,13 +53,32 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
     final catalog = ref.read(recipeCatalogProvider).requireValue;
     final progress = ref.read(gameControllerProvider).recipeProgress;
     final today = dayIndex(ref.read(clockProvider)());
+    _groupsAtStart = _unlockedGroups();
     return buildSession(
       catalog,
       progress,
       today,
       ref.read(recipeRandomProvider),
+      // Chỉ luyện các món của nhóm đã mở.
+      pool: unlockedRecipes(catalog, (id) => progress[id]?.best ?? 0),
     );
   }
+
+  /// Các nhóm đã mở theo tiến độ HIỆN TẠI.
+  Set<int> _unlockedGroups() {
+    final catalog = ref.read(recipeCatalogProvider).requireValue;
+    final progress = ref.read(gameControllerProvider).recipeProgress;
+    return {
+      for (final g in recipePlayableGroups)
+        if (recipeGroupUnlocked(catalog, g, (id) => progress[id]?.best ?? 0)) g,
+    };
+  }
+
+  /// Nhóm đã mở lúc bắt đầu buổi — để cuối buổi biết nhóm nào vừa được mở thêm.
+  Set<int> _groupsAtStart = {};
+
+  /// Nhóm mới mở nhờ buổi luyện này.
+  List<int> get _newGroups => (_unlockedGroups().difference(_groupsAtStart)).toList()..sort();
 
   bool get _finished => _index >= _questions.length;
 
@@ -130,8 +149,8 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
       _hidden = {};
     });
     if (_finished) {
-      // Đúng hết cả buổi: pháo giấy (qua playEffect nên tự bỏ ở mức Thấp/Tắt).
-      if (_answers.isNotEmpty && _answers.every((a) => a.correct)) {
+      // Đúng hết cả buổi, hoặc vừa mở nhóm mới: pháo giấy (qua playEffect nên tự bỏ ở mức Thấp/Tắt).
+      if ((_answers.isNotEmpty && _answers.every((a) => a.correct)) || _newGroups.isNotEmpty) {
         playEffect(context, AnimAssets.confetti, size: 260);
       }
       // Buổi chỉ tính cho nhiệm vụ nếu có ít nhất một câu thật sự được tính bậc.
@@ -646,6 +665,20 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
               label: Text(l10n.recipeDouble),
             ),
         ],
+        for (final g in _newGroups)
+          Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: ClayTile(
+              key: Key('recipe-group-opened-$g'),
+              child: Text(
+                l10n.recipeGroupOpened(
+                  ref.read(recipeCatalogProvider).requireValue.groupNames[g] ?? '',
+                ),
+                textAlign: TextAlign.center,
+                style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+              ),
+            ),
+          ),
         const SizedBox(height: 16),
         FilledButton(
           key: const Key('recipe-again'),

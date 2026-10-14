@@ -73,8 +73,10 @@ class _Body extends ConsumerWidget {
     final theme = Theme.of(context);
     final progress = ref.watch(gameControllerProvider.select((s) => s.recipeProgress));
     final today = dayIndex(ref.watch(clockProvider)());
-    final recipes = catalog.playable;
     RecipeProgress p(Recipe r) => progress[r.id] ?? const RecipeProgress();
+    int bestOf(int id) => progress[id]?.best ?? 0;
+    // Chỉ các nhóm ĐÃ MỞ mới tính vào tiến độ/ôn/danh sách (xem recipeGroupUnlocked).
+    final recipes = unlockedRecipes(catalog, bestOf);
     final streak = ref.watch(gameControllerProvider.select((s) => s.recipeStreak));
     final alive = streak.aliveDays(today);
     final restorable = streak.restorable(today);
@@ -151,16 +153,25 @@ class _Body extends ConsumerWidget {
         const SizedBox(height: 6),
         Text(l10n.recipeDisclaimer, style: theme.textTheme.bodySmall),
         const SizedBox(height: 10),
-        for (final g in recipePlayableGroups) ...[
-          if (catalog.groupNames[g] != null)
+        for (final g in recipePlayableGroups)
+          if (recipeGroupUnlocked(catalog, g, bestOf)) ...[
             Padding(
               padding: const EdgeInsets.only(top: 10, bottom: 4),
-              child: Text('🧋 ${catalog.groupNames[g]!}',
+              child: Text('🧋 ${catalog.groupNames[g] ?? ''}',
+                  key: Key('recipe-group-$g'),
                   style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
             ),
-          for (final r in recipes.where((r) => r.group == g))
-            AppearIn(child: _RecipeTile(recipe: r, progress: p(r), today: today)),
-        ],
+            for (final r in catalog.inGroup(g))
+              AppearIn(child: _RecipeTile(recipe: r, progress: p(r), today: today)),
+          ] else
+            _LockedGroup(
+              key: Key('recipe-group-locked-$g'),
+              name: catalog.groupNames[g] ?? '',
+              // Chỉ nhóm KẾ TIẾP hiện tiến độ mở khoá; các nhóm xa hơn chỉ ghi tên + khoá.
+              learned: recipeGroupUnlocked(catalog, recipePlayableGroups[recipePlayableGroups.indexOf(g) - 1], bestOf)
+                  ? recipeGroupLearned(catalog, recipePlayableGroups[recipePlayableGroups.indexOf(g) - 1], bestOf)
+                  : null,
+            ),
       ],
     );
   }
@@ -431,6 +442,33 @@ class _MilestoneBar extends StatelessWidget {
           }),
         ),
       ],
+    );
+  }
+}
+
+/// Nhóm chưa mở: một dòng khoá (kèm tiến độ "x/10" nếu là nhóm kế tiếp).
+class _LockedGroup extends StatelessWidget {
+  const _LockedGroup({super.key, required this.name, required this.learned});
+  final String name;
+
+  /// Số món đã thuộc của nhóm trước; null = nhóm còn xa (chưa tới lượt).
+  final int? learned;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    return Opacity(
+      opacity: learned == null ? 0.55 : 0.85,
+      child: ClayTile(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        child: Text(
+          learned == null
+              ? l10n.recipeGroupLockedFar(name)
+              : l10n.recipeGroupLocked(name, recipeGroupUnlockLearned, learned!),
+          style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700),
+        ),
+      ),
     );
   }
 }

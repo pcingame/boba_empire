@@ -52,7 +52,9 @@ QuizKind kindForBox(int box, math.Random r) => switch (box) {
 List<T> _shuffled<T>(Iterable<T> it, math.Random r) => it.toList()..shuffle(r);
 
 QuizQuestion buildQuestion(Recipe recipe, QuizKind kind, RecipeCatalog catalog, math.Random r) {
-  final pool = catalog.playable;
+  // Đáp án nhiễu lấy từ CÙNG NHÓM cho hợp lý (nhóm cà phê thì nhiễu là đồ cà phê…); nhóm quá nhỏ thì lấy chung.
+  final groupPool = catalog.inGroup(recipe.group);
+  final pool = groupPool.length >= 8 ? groupPool : catalog.playable;
   switch (kind) {
     case QuizKind.missingIngredient:
       final t = r.nextInt(recipe.ingredients.length);
@@ -140,9 +142,11 @@ List<QuizQuestion> buildSession(
   int today,
   math.Random r, {
   int count = 8,
+  Iterable<Recipe>? pool,
 }) {
   RecipeProgress p(Recipe x) => progress[x.id] ?? const RecipeProgress();
-  final all = _shuffled(catalog.playable, r); // xáo trước: ngang bậc thì ngẫu nhiên
+  // Mặc định luyện mọi món chơi được; UI truyền [pool] = các món của nhóm đã mở.
+  final all = _shuffled(pool ?? catalog.playable, r); // xáo trước: ngang bậc thì ngẫu nhiên
   // Bậc thấp trước; cùng bậc giữ thứ tự đã xáo (so thêm chỉ số — List.sort không đảm bảo ổn định).
   final due = [for (final x in all) if (p(x).isDue(today)) x]
     ..sort((a, b) {

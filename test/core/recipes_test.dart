@@ -15,10 +15,14 @@ void main() {
   final catalog = _catalog();
 
   group('dữ liệu', () {
-    test('100 món, id 1..100 liên tục, 5 nhóm; nhóm chơi được có 20 món', () {
+    test('100 món, id 1..100 liên tục, 5 nhóm, mỗi nhóm 20 món; cả 5 nhóm chơi được theo thứ tự mở', () {
       expect(catalog.recipes.map((r) => r.id), List.generate(100, (i) => i + 1));
       expect(catalog.groupNames.length, 5);
-      expect(catalog.playable.length, 20);
+      expect(catalog.playable.length, 100);
+      expect(recipePlayableGroups, [1, 2, 3, 4, 5]);
+      for (final g in recipePlayableGroups) {
+        expect(catalog.inGroup(g).length, 20, reason: 'nhóm $g');
+      }
       expect({for (final r in catalog.playable) r.group}, recipePlayableGroups.toSet());
     });
 
@@ -46,16 +50,22 @@ void main() {
       expect(catalog.byId(100), isNotNull);
     });
 
-    test('mọi nguyên liệu nhóm chơi được đều có emoji hợp lệ (không rơi vào dự phòng sai) hoặc dự phòng 🥤', () {
-      for (final r in catalog.playable) {
+    test('MỌI nguyên liệu của cả 100 món đều có emoji riêng (không rơi về 🥤); từ khoá cụ thể thắng từ khoá chung', () {
+      final missing = <String>{};
+      for (final r in catalog.recipes) {
         for (final i in r.ingredients) {
-          final e = ingredientEmoji(i.name);
-          expect(e, isNotEmpty);
+          if (ingredientEmoji(i.name) == '🥤') missing.add('${r.group}:${i.name}');
         }
       }
+      expect(missing, isEmpty, reason: 'thiếu emoji: $missing');
       expect(ingredientEmoji('Matcha'), '🍵');
       expect(ingredientEmoji('Bột kem béo'), '🥄');
       expect(ingredientEmoji('Kem cheese'), '🧀');
+      expect(ingredientEmoji('Syrup hoa hồng'), '🌹'); // không rơi vào "syrup"/"hồng trà"
+      expect(ingredientEmoji('Nước cốt tắc'), '🍊'); // không rơi vào "nước"
+      expect(ingredientEmoji('Nước cốt dừa'), '🥥');
+      expect(ingredientEmoji('Nước nóng'), '♨️');
+      expect(ingredientEmoji('Nước'), '💧');
       expect(ingredientEmoji('thứ lạ'), '🥤');
     });
   });
@@ -217,7 +227,8 @@ void main() {
 
     test('count tuỳ chỉnh; không vượt quá số món có', () {
       expect(buildSession(catalog, {}, 0, Random(7), count: 3).length, 3);
-      expect(buildSession(catalog, {}, 0, Random(7), count: 99).length, 20);
+      expect(buildSession(catalog, {}, 0, Random(7), count: 999).length, 100);
+      expect(buildSession(catalog, {}, 0, Random(7), count: 99, pool: catalog.inGroup(1)).length, 20);
     });
   });
 
@@ -293,6 +304,72 @@ void main() {
       final keys = recipeStreakMilestoneGems.keys.toList();
       expect(keys, [...keys]..sort());
       expect(recipeStreakMilestoneGems.values.every((g) => g > 0), isTrue);
+    });
+  });
+
+  group('mở nhóm theo thứ tự', () {
+    int Function(int) bests(Map<int, int> m) => (id) => m[id] ?? 0;
+
+    test('nhóm 1 luôn mở; nhóm sau chỉ mở khi nhóm ngay trước có ≥ 10 món từng "Thuộc" (best ≥ 2)', () {
+      expect(recipeGroupUnlocked(catalog, 1, bests({})), isTrue);
+      expect([for (final g in [2, 3, 4, 5]) recipeGroupUnlocked(catalog, g, bests({}))], [false, false, false, false]);
+      final g1 = catalog.inGroup(1).map((r) => r.id).toList();
+      // 9 món Thuộc: chưa đủ; thêm 1 món → mở nhóm 2.
+      final nine = {for (final id in g1.take(9)) id: 2};
+      expect(recipeGroupLearned(catalog, 1, bests(nine)), 9);
+      expect(recipeGroupUnlocked(catalog, 2, bests(nine)), isFalse);
+      final ten = {...nine, g1[9]: 2};
+      expect(recipeGroupUnlocked(catalog, 2, bests(ten)), isTrue);
+      // Bậc Quen (best = 1) không tính; bậc Thạo (3) tính.
+      expect(recipeGroupLearned(catalog, 1, bests({for (final id in g1) id: 1})), 0);
+      expect(recipeGroupLearned(catalog, 1, bests({for (final id in g1.take(4)) id: 3})), 4);
+    });
+
+    test('mở theo CHUỖI: nhóm 3 cần nhóm 2 đủ (nhóm 1 đủ không đủ để nhảy cóc); nhóm ngoài danh sách không mở', () {
+      final g1 = {for (final r in catalog.inGroup(1)) r.id: 3};
+      expect(recipeGroupUnlocked(catalog, 2, bests(g1)), isTrue);
+      expect(recipeGroupUnlocked(catalog, 3, bests(g1)), isFalse);
+      final both = {...g1, for (final r in catalog.inGroup(2).take(10)) r.id: 2};
+      expect(recipeGroupUnlocked(catalog, 3, bests(both)), isTrue);
+      expect(recipeGroupUnlocked(catalog, 4, bests(both)), isFalse);
+      expect(recipeGroupUnlocked(catalog, 99, bests(both)), isFalse);
+    });
+
+    test('unlockedRecipes: chỉ món của nhóm đã mở, theo thứ tự nhóm; đã mở thì mở mãi (best chỉ tăng)', () {
+      expect(unlockedRecipes(catalog, bests({})).map((r) => r.group).toSet(), {1});
+      expect(unlockedRecipes(catalog, bests({})).length, 20);
+      final g1 = {for (final r in catalog.inGroup(1).take(10)) r.id: 2};
+      final u = unlockedRecipes(catalog, bests(g1));
+      expect(u.length, 40);
+      expect(u.map((r) => r.group), [...List.filled(20, 1), ...List.filled(20, 2)]);
+      // Dù món sau đó tụt bậc hiện tại, `best` vẫn giữ nên nhóm vẫn mở (hàm chỉ đọc best).
+      expect(unlockedRecipes(catalog, bests(g1)).length, 40);
+    });
+
+    test('buổi luyện với pool: chỉ ra câu hỏi của món trong pool', () {
+      final pool = catalog.inGroup(2);
+      final s = buildSession(catalog, {}, 0, Random(3), pool: pool);
+      expect(s.every((q) => q.recipe.group == 2), isTrue);
+      expect(s.length, 8);
+    });
+
+    test('đáp án nhiễu lấy từ CÙNG nhóm (nhóm cà phê: nhiễu là nguyên liệu của nhóm cà phê)', () {
+      final r = Random(11);
+      final coffee = {for (final x in catalog.inGroup(4)) for (final i in x.ingredients) i.name};
+      for (final recipe in catalog.inGroup(4)) {
+        final q = buildQuestion(recipe, QuizKind.missingIngredient, catalog, r);
+        for (final o in q.options) {
+          expect(coffee, contains(o), reason: '${recipe.name}: nhiễu "$o" không thuộc nhóm cà phê');
+        }
+      }
+    });
+
+    test('mốc rương phụ kiện mở rộng theo 100 món: tăng dần, độ hiếm không giảm, mốc cuối = 100', () {
+      final keys = recipeAccessoryMilestones.keys.toList();
+      expect(keys, [...keys]..sort());
+      expect(keys.last, catalog.playable.length);
+      final rar = recipeAccessoryMilestones.values.map((x) => x.index).toList();
+      expect(rar, [...rar]..sort());
     });
   });
 }

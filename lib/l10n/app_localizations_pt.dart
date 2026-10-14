@@ -1437,6 +1437,21 @@ class AppLocalizationsPt extends AppLocalizations {
   String get settingsSound => 'Som';
 
   @override
+  String recipeGroupLocked(String name, int need, int learned) {
+    return '🔒 $name — desbloqueia ao aprender $need receitas do grupo anterior ($learned/$need)';
+  }
+
+  @override
+  String recipeGroupLockedFar(String name) {
+    return '🔒 $name';
+  }
+
+  @override
+  String recipeGroupOpened(String name) {
+    return '🔓 Novo grupo desbloqueado: $name!';
+  }
+
+  @override
   String recipeStreak(int n) {
     return '🔥 Sequência de revisão: $n dias';
   }

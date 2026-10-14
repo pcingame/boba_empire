@@ -1429,6 +1429,21 @@ class AppLocalizationsTh extends AppLocalizations {
   String get settingsSound => 'เสียง';
 
   @override
+  String recipeGroupLocked(String name, int need, int learned) {
+    return '🔒 $name — ปลดล็อกเมื่อจำสูตรของกลุ่มก่อนหน้าได้ $need สูตร ($learned/$need)';
+  }
+
+  @override
+  String recipeGroupLockedFar(String name) {
+    return '🔒 $name';
+  }
+
+  @override
+  String recipeGroupOpened(String name) {
+    return '🔓 ปลดล็อกกลุ่มใหม่แล้ว: $name!';
+  }
+
+  @override
   String recipeStreak(int n) {
     return '🔥 ทบทวนต่อเนื่อง: $n วัน';
   }

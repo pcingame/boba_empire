@@ -2,9 +2,13 @@
 /// source.md) cho trò luyện nhớ công thức. Hàm thuần — không đụng Flutter.
 library;
 
-/// Nhóm công thức đang chơi được (1 = Trà sữa truyền thống, 20 món). Các nhóm còn lại đã có sẵn trong
-/// dữ liệu, mở thêm bằng cách thêm số nhóm vào đây.
-const List<int> recipePlayableGroups = [1];
+/// Nhóm công thức chơi được, THEO THỨ TỰ MỞ: nhóm đầu mở sẵn, mỗi nhóm sau mở khi người chơi đã thuộc đủ món của
+/// nhóm ngay trước (xem [recipeGroupUnlocked]) — để mỗi buổi luyện tập trung vào một nhóm chứ không rải đều 100 món.
+const List<int> recipePlayableGroups = [1, 2, 3, 4, 5];
+
+/// Để mở nhóm kế: cần chừng này món của nhóm trước đã từng đạt bậc "Thuộc" trở lên (`best` ≥ [recipeGroupUnlockBox]).
+const int recipeGroupUnlockLearned = 10;
+const int recipeGroupUnlockBox = 2;
 
 class RecipeIngredient {
   const RecipeIngredient(this.name, this.qty, this.unit);
@@ -64,6 +68,9 @@ class RecipeCatalog {
   /// Các món chơi được (theo [recipePlayableGroups]).
   List<Recipe> get playable => [for (final r in recipes) if (recipePlayableGroups.contains(r.group)) r];
 
+  /// Các món của nhóm [group] (theo thứ tự id).
+  List<Recipe> inGroup(int group) => [for (final r in recipes) if (r.group == group) r];
+
   Recipe? byId(int id) {
     for (final r in recipes) {
       if (r.id == id) return r;
@@ -77,6 +84,29 @@ class RecipeCatalog {
 String ingredientEmoji(String name) {
   final n = name.toLowerCase();
   const table = <(String, String)>[
+    ('hoa hồng', '🌹'),
+    ('việt quất', '🫐'),
+    ('dưa hấu', '🍉'),
+    ('kiwi', '🥝'),
+    ('nho', '🍇'),
+    ('mận', '🟣'),
+    ('nhãn', '🟡'),
+    ('vải', '🍒'),
+    ('táo', '🍎'),
+    ('ổi', '🍐'),
+    ('lựu', '🔴'),
+    ('tắc', '🍊'),
+    ('sả', '🌾'),
+    ('bột quế', '🪵'),
+    ('gạo rang', '🍚'),
+    ('mè đen', '🖤'),
+    ('đậu đỏ', '🫘'),
+    ('hạt phỉ', '🌰'),
+    ('lòng đỏ', '🥚'),
+    ('vanilla', '🌼'),
+    ('tonic', '🫧'),
+    ('soda', '🫧'),
+    ('cold brew', '🧊'),
     ('matcha', '🍵'),
     ('lục trà', '🍵'),
     ('hồng trà', '🫖'),
@@ -112,9 +142,30 @@ String ingredientEmoji(String name) {
     ('espresso', '☕'),
     ('trân châu', '⚫'),
     ('oreo', '🍪'),
+    ('nước', '💧'),
   ];
   for (final (k, e) in table) {
     if (n.contains(k)) return e;
   }
   return '🥤';
 }
+
+/// Số món của nhóm [group] đã từng đạt bậc [recipeGroupUnlockBox] trở lên (đếm theo `best` nên chỉ tăng).
+/// [bestOf] trả về `best` của một món (0 nếu chưa luyện).
+int recipeGroupLearned(RecipeCatalog catalog, int group, int Function(int recipeId) bestOf) =>
+    catalog.inGroup(group).where((r) => bestOf(r.id) >= recipeGroupUnlockBox).length;
+
+/// Nhóm đã mở chưa: nhóm đầu luôn mở; nhóm sau mở khi nhóm ngay trước có ≥ [recipeGroupUnlockLearned] món đã thuộc.
+/// Vì đếm theo `best` (chỉ tăng) nên đã mở là mở mãi. Nhóm không nằm trong [recipePlayableGroups] không mở.
+bool recipeGroupUnlocked(RecipeCatalog catalog, int group, int Function(int recipeId) bestOf) {
+  final i = recipePlayableGroups.indexOf(group);
+  if (i < 0) return false;
+  if (i == 0) return true;
+  return recipeGroupLearned(catalog, recipePlayableGroups[i - 1], bestOf) >= recipeGroupUnlockLearned;
+}
+
+/// Các món chơi được ngay bây giờ: thuộc các nhóm đã mở.
+List<Recipe> unlockedRecipes(RecipeCatalog catalog, int Function(int recipeId) bestOf) => [
+      for (final g in recipePlayableGroups)
+        if (recipeGroupUnlocked(catalog, g, bestOf)) ...catalog.inGroup(g),
+    ];

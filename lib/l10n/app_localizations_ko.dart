@@ -1411,6 +1411,21 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsSound => '소리';
 
   @override
+  String recipeGroupLocked(String name, int need, int learned) {
+    return '🔒 $name — 이전 그룹 레시피 $need개를 익히면 열려요 ($learned/$need)';
+  }
+
+  @override
+  String recipeGroupLockedFar(String name) {
+    return '🔒 $name';
+  }
+
+  @override
+  String recipeGroupOpened(String name) {
+    return '🔓 새 그룹이 열렸어요: $name!';
+  }
+
+  @override
   String recipeStreak(int n) {
     return '🔥 복습 연속: $n일';
   }

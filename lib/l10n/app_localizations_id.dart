@@ -1433,6 +1433,21 @@ class AppLocalizationsId extends AppLocalizations {
   String get settingsSound => 'Suara';
 
   @override
+  String recipeGroupLocked(String name, int need, int learned) {
+    return '🔒 $name — terbuka setelah kamu hafal $need resep dari grup sebelumnya ($learned/$need)';
+  }
+
+  @override
+  String recipeGroupLockedFar(String name) {
+    return '🔒 $name';
+  }
+
+  @override
+  String recipeGroupOpened(String name) {
+    return '🔓 Grup baru terbuka: $name!';
+  }
+
+  @override
   String recipeStreak(int n) {
     return '🔥 Streak ulangan: $n hari';
   }

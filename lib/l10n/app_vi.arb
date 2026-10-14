@@ -843,6 +843,36 @@
   "genUltimateTea": "Trà sữa tối thượng",
   "settingsTitle": "Cài đặt",
   "settingsSound": "Âm thanh",
+  "recipeGroupLocked": "🔒 {name} — mở khi Thuộc {need} món của nhóm trước ({learned}/{need})",
+  "@recipeGroupLocked": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "need": {
+        "type": "int"
+      },
+      "learned": {
+        "type": "int"
+      }
+    }
+  },
+  "recipeGroupLockedFar": "🔒 {name}",
+  "@recipeGroupLockedFar": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "recipeGroupOpened": "🔓 Đã mở nhóm mới: {name}!",
+  "@recipeGroupOpened": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "recipeStreak": "🔥 Chuỗi ôn: {n} ngày",
   "@recipeStreak": {
     "placeholders": {

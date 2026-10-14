@@ -993,3 +993,10 @@ Mọi chuyển động theo mức hiệu ứng (`EffectsQuality`/`reduceMotion`,
 - Màn công thức: thẻ tóm tắt nổi (tiêu đề lớn, thanh "Thạo" dày có 3 hòm quà mốc 5/10/20 sáng/mờ, viên thuốc "N món cần ôn" và "🔥 chuỗi", nút Luyện tập to có biểu tượng); mỗi món có vạch màu theo bậc ở mép trái, emoji nguyên liệu lớn hơn, chip bậc sát mép phải (lỗi cũ: Flexible chia đôi chỗ với Expanded làm chip nằm lưng chừng).
 - Buổi luyện: câu hỏi trong "phiếu gọi món" (🧋), lựa chọn là thẻ nổi có huy hiệu A–D → ✓/✗ sau khi trả lời, công thức đầy đủ vẽ thành các hàng emoji + tên + lượng (thay vì chữ thô), khung phản hồi ngả xanh/đỏ kèm 🎉/💡; tổng kết có 🏆/🎉/💪 và 1–3 sao theo tỉ lệ đúng.
 - BXH: 🥇🥈🥉 cho top 3, hàng của mình có viền màu chủ đạo.
+
+### 34g. Công thức pha chế — mở cả 5 nhóm (100 món) (2026-10-15, chưa playtest)
+- **5 nhóm × 20 món** (Trà sữa truyền thống, Trà trái cây, Latte và đồ uống sữa, Cà phê và espresso, Đồ uống đặc biệt), mở THEO THỨ TỰ: nhóm 1 mở sẵn; nhóm kế mở khi nhóm ngay trước có ≥ `recipeGroupUnlockLearned` = 10 món từng đạt bậc Thuộc (`best` ≥ 2) — đếm theo `best` nên đã mở là mở mãi. Lý do: nếu mở cả 100 món ngay, buổi luyện (8 câu, ưu tiên món đến hạn — món mới đều "đến hạn") sẽ rải ngẫu nhiên khắp 100 món và gần như không ôn lại được món nào.
+- Hiển thị: nhóm đã mở có tiêu đề + danh sách; nhóm KẾ TIẾP hiện dòng khoá có tiến độ "x/10"; các nhóm xa hơn chỉ "🔒 tên nhóm". "Thạo n/N", thanh mốc, số món cần ôn, buổi luyện, hộp Trò chơi đều chỉ tính nhóm đã mở. Cuối buổi vừa mở nhóm mới → thẻ "🔓 Đã mở nhóm mới" + pháo giấy.
+- Đáp án nhiễu lấy từ CÙNG nhóm (đồ cà phê nhiễu bằng nguyên liệu cà phê). Emoji: mọi nguyên liệu của 100 món đều có emoji riêng (test kiểm).
+- Rương phụ kiện mở rộng: 5 → Hiếm, 10 → Sử thi, 20/40/60/80/100 → Huyền thoại. BXH Thợ pha chế trần 100 (SQL đã khớp) — KHÔNG cần chạy lại SQL.
+- Tên món/nguyên liệu/nhóm vẫn chỉ tiếng Việt (nội dung dữ liệu). Chưa làm: hình nguyên liệu riêng, PK, kéo-thả pha theo đơn.
