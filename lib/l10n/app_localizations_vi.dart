@@ -1429,6 +1429,24 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsSound => 'Âm thanh';
 
   @override
+  String get settingsEffects => 'Hiệu ứng động';
+
+  @override
+  String get settingsEffectsAuto => 'Tự động (theo máy)';
+
+  @override
+  String get settingsEffectsHigh => 'Cao';
+
+  @override
+  String get settingsEffectsMedium => 'Vừa';
+
+  @override
+  String get settingsEffectsLow => 'Thấp (tiết kiệm pin)';
+
+  @override
+  String get settingsEffectsOff => 'Tắt';
+
+  @override
   String get settingsReset => 'Chơi lại từ đầu';
 
   @override

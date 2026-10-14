@@ -1430,6 +1430,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsSound => 'Sound';
 
   @override
+  String get settingsEffects => 'Visual effects';
+
+  @override
+  String get settingsEffectsAuto => 'Auto (match device)';
+
+  @override
+  String get settingsEffectsHigh => 'High';
+
+  @override
+  String get settingsEffectsMedium => 'Medium';
+
+  @override
+  String get settingsEffectsLow => 'Low (saves battery)';
+
+  @override
+  String get settingsEffectsOff => 'Off';
+
+  @override
   String get settingsReset => 'Reset game';
 
   @override

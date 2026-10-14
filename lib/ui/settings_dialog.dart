@@ -10,6 +10,7 @@ import 'language_dialog.dart';
 import 'redeem_dialog.dart';
 import 'invite_dialog.dart' show shareTextProvider;
 import 'web_links.dart';
+import 'widgets/effects_quality.dart';
 
 /// Cài đặt: đổi ngôn ngữ, bật/tắt âm thanh, chơi lại từ đầu.
 Future<void> showSettings(BuildContext context) {
@@ -17,6 +18,39 @@ Future<void> showSettings(BuildContext context) {
     context: context,
     builder: (_) => const _SettingsDialog(),
   );
+}
+
+String _effectsLabel(AppLocalizations l10n, EffectsPref p) => switch (p) {
+      EffectsPref.auto => l10n.settingsEffectsAuto,
+      EffectsPref.high => l10n.settingsEffectsHigh,
+      EffectsPref.medium => l10n.settingsEffectsMedium,
+      EffectsPref.low => l10n.settingsEffectsLow,
+      EffectsPref.off => l10n.settingsEffectsOff,
+    };
+
+Future<void> _pickEffects(BuildContext context) async {
+  final l10n = AppLocalizations.of(context)!;
+  final picked = await showDialog<EffectsPref>(
+    context: context,
+    builder: (ctx) => SimpleDialog(
+      title: Text(l10n.settingsEffects),
+      children: [
+        for (final p in EffectsPref.values)
+          SimpleDialogOption(
+            key: Key('settings-effects-${p.name}'),
+            onPressed: () => Navigator.pop(ctx, p),
+            child: Row(children: [
+              Icon(p == EffectsController.instance.pref
+                  ? Icons.radio_button_checked
+                  : Icons.radio_button_unchecked),
+              const SizedBox(width: 12),
+              Expanded(child: Text(_effectsLabel(l10n, p))),
+            ]),
+          ),
+      ],
+    ),
+  );
+  if (picked != null) await EffectsController.instance.setPref(picked);
 }
 
 class _SettingsDialog extends ConsumerWidget {
@@ -116,6 +150,20 @@ class _SettingsDialog extends ConsumerWidget {
             title: Text(l10n.settingsSound),
             value: soundOn,
             onChanged: (_) => ref.read(soundOnProvider.notifier).toggle(),
+          ),
+          StatefulBuilder(
+            builder: (ctx, setTile) => ListTile(
+              key: const Key('settings-effects'),
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.auto_awesome),
+              title: Text(l10n.settingsEffects),
+              subtitle: Text(_effectsLabel(l10n, EffectsController.instance.pref)),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () async {
+                await _pickEffects(ctx);
+                if (ctx.mounted) setTile(() {});
+              },
+            ),
           ),
           ListTile(
             contentPadding: EdgeInsets.zero,

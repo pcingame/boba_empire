@@ -15,4 +15,14 @@ class AnimAssets {
   static const String confetti = 'assets/anim/confetti.json';
   static const String celebration = 'assets/anim/celebration.json';
   static const String fireworks = 'assets/anim/fireworks.json';
+
+  // --- Bộ thêm 2026-10-14 (chưa nối vào màn nào; xem PLAN_ANIMATION.md) ---
+  static const String coinFly = 'assets/anim/coin_fly.json';
+  static const String sparkle = 'assets/anim/sparkle.json';
+  static const String levelUp = 'assets/anim/level_up.json';
+  static const String gemBurst = 'assets/anim/gem_burst.json';
+  static const String giftOpen = 'assets/anim/gift_open.json'; // 16:9, 5s
+  static const String crown = 'assets/anim/crown.json'; // 60fps, 5.3s
+  static const String steam = 'assets/anim/steam.json'; // cốc + hơi nước, lặp
+  static const String customerWalking = 'assets/anim/customer_walking.json'; // 1080px, 60fps
 }

@@ -4,6 +4,8 @@ import 'dart:ui' show PlatformDispatcher;
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'ui/widgets/device_tier.dart';
+import 'ui/widgets/effects_quality.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -67,6 +69,7 @@ Future<void> main() async {
   );
   final prefs = await SharedPreferences.getInstance();
   audioMuted = !(prefs.getBool('sound_on') ?? true); // khôi phục cài đặt tắt tiếng
+  EffectsController.instance.init(prefs, platformStart: await detectDeviceTier()); // mức hiệu ứng đã lưu + theo dõi khung hình
   final audio = FlameAudioService();
   unawaited(audio.preload());
 

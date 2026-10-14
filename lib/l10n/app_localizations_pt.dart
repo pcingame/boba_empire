@@ -1437,6 +1437,24 @@ class AppLocalizationsPt extends AppLocalizations {
   String get settingsSound => 'Som';
 
   @override
+  String get settingsEffects => 'Efeitos visuais';
+
+  @override
+  String get settingsEffectsAuto => 'Automático (conforme o aparelho)';
+
+  @override
+  String get settingsEffectsHigh => 'Alto';
+
+  @override
+  String get settingsEffectsMedium => 'Médio';
+
+  @override
+  String get settingsEffectsLow => 'Baixo (poupa bateria)';
+
+  @override
+  String get settingsEffectsOff => 'Desativado';
+
+  @override
   String get settingsReset => 'Recomeçar';
 
   @override

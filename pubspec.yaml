@@ -55,6 +55,7 @@ dependencies:
   share_plus: ^13.3.1
   package_info_plus: ^10.2.2
   url_launcher: ^6.3.3
+  device_info_plus: ^13.3.0
 
 # path_provider_android 2.3.x chuyển sang jni/jni_flutter, làm hỏng build Android
 # (module jni_flutter báo "Plugin with id 'com.android.library' not found"). App

@@ -42,6 +42,7 @@ import '../data/analytics_repository.dart';
 import '../data/cloud_save_repository.dart';
 import '../data/game_storage.dart';
 import '../market/accessory_market_repository.dart';
+import '../ui/widgets/effects_quality.dart' show EffectsController;
 import 'game_providers.dart';
 import 'game_snapshot.dart';
 
@@ -143,7 +144,12 @@ class GameController extends Notifier<GameSnapshot> {
       'stage': _game.stage,
       'prestigeStars': _game.prestigeStars,
       'lifetimeEarnings': _game.lifetimeEarnings,
+      'fx': EffectsController.instance.quality.value.name,
     }));
+    // Máy đuối nên tự hạ hiệu ứng: ghi lại để biết tỉ lệ máy rơi vào mỗi mức.
+    EffectsController.instance.onAutoDrop =
+        (from, to) => logEvent('fx_auto_drop', {'from': from.name, 'to': to.name});
+    ref.onDispose(() => EffectsController.instance.onAutoDrop = null);
     return _snapshot();
   }
 

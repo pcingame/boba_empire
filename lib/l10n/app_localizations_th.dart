@@ -1429,6 +1429,24 @@ class AppLocalizationsTh extends AppLocalizations {
   String get settingsSound => 'เสียง';
 
   @override
+  String get settingsEffects => 'เอฟเฟกต์ภาพ';
+
+  @override
+  String get settingsEffectsAuto => 'อัตโนมัติ (ตามเครื่อง)';
+
+  @override
+  String get settingsEffectsHigh => 'สูง';
+
+  @override
+  String get settingsEffectsMedium => 'ปานกลาง';
+
+  @override
+  String get settingsEffectsLow => 'ต่ำ (ประหยัดแบตเตอรี่)';
+
+  @override
+  String get settingsEffectsOff => 'ปิด';
+
+  @override
   String get settingsReset => 'เริ่มใหม่';
 
   @override

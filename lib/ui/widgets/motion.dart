@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+import 'effects_quality.dart' show effectsOff;
 import 'mascot.dart' show debugDisableMascotAnimation;
 
 /// Có nên tắt animation trang trí không: khi test HOẶC khi người dùng bật "giảm
 /// chuyển động" ở hệ điều hành (accessibility). Mọi widget trong file này tôn trọng nó.
 bool get reduceMotion =>
     debugDisableMascotAnimation ||
+    effectsOff ||
     WidgetsBinding.instance.platformDispatcher.accessibilityFeatures
         .disableAnimations;
 

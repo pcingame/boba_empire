@@ -1,4 +1,6 @@
+import 'package:boba_empire/ui/widgets/effects_quality.dart';
 import 'package:boba_empire/ui/widgets/idle_mascot.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -116,6 +118,43 @@ void main() {
     navKey.currentState!.pop();
     await tester.pumpAndSettle();
     expect(await changesIn1s(), greaterThan(15), reason: 'đóng hộp thoại phải chạy lại');
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('mức Thấp ~15 khung/giây; mức Tắt đứng yên hẳn; bật lại chạy tiếp', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    final fx = EffectsController.instance;
+    fx.init(await SharedPreferences.getInstance(),
+        platformStart: EffectsQuality.medium, listenFrames: false);
+    addTearDown(fx.debugReset);
+    await fx.setPref(EffectsPref.low);
+    final low = await bobChangesIn1s(tester, animate: true);
+    expect(low, inInclusiveRange(8, 22), reason: 'Thấp ≈ 15Hz ($low/60)');
+    await fx.setPref(EffectsPref.off);
+    await tester.pump(const Duration(milliseconds: 100));
+    var scheduled = 0;
+    for (var i = 0; i < 30; i++) {
+      await tester.pump(const Duration(milliseconds: 16));
+      if (tester.binding.hasScheduledFrame) scheduled++;
+    }
+    expect(scheduled, 0, reason: 'Tắt: không khung nào được lên lịch');
+    await fx.setPref(EffectsPref.high);
+    await tester.pump(const Duration(milliseconds: 100));
+    double y() => tester
+        .widget<Transform>(find
+            .descendant(of: find.byType(IdleMascot), matching: find.byType(Transform))
+            .first)
+        .transform
+        .getTranslation()
+        .y;
+    var last = y();
+    var moved = 0;
+    for (var i = 0; i < 30; i++) {
+      await tester.pump(const Duration(milliseconds: 16));
+      if (y() != last) moved++;
+      last = y();
+    }
+    expect(moved, greaterThan(0), reason: 'bật lại phải chạy tiếp');
     await tester.pumpWidget(const SizedBox());
   });
 }

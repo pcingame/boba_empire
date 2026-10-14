@@ -1433,6 +1433,24 @@ class AppLocalizationsId extends AppLocalizations {
   String get settingsSound => 'Suara';
 
   @override
+  String get settingsEffects => 'Efek visual';
+
+  @override
+  String get settingsEffectsAuto => 'Otomatis (sesuai perangkat)';
+
+  @override
+  String get settingsEffectsHigh => 'Tinggi';
+
+  @override
+  String get settingsEffectsMedium => 'Sedang';
+
+  @override
+  String get settingsEffectsLow => 'Rendah (hemat baterai)';
+
+  @override
+  String get settingsEffectsOff => 'Mati';
+
+  @override
   String get settingsReset => 'Mulai ulang';
 
   @override

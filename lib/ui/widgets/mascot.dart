@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+import 'effects_quality.dart' show effectsOff;
+
 /// Test bật cờ này để tắt animation lặp (ticker lặp làm pumpAndSettle treo).
 /// App thật luôn để false. Xem test/flutter_test_config.dart.
 bool debugDisableMascotAnimation = false;
@@ -39,6 +41,7 @@ class Mascot extends StatelessWidget {
         fit: BoxFit.contain,
         // Tắt animation lặp khi test HOẶC người dùng bật "giảm chuyển động".
         animate: !debugDisableMascotAnimation &&
+            !effectsOff &&
             !WidgetsBinding
                 .instance.platformDispatcher.accessibilityFeatures
                 .disableAnimations,

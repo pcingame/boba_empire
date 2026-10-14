@@ -1,7 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+
+import 'ambient_ticker.dart';
 
 /// Nhân vật "sống" (Lottie + nhún nhẹ) chạy ở 30 khung/giây bằng [Timer] thay vì
 /// ticker vsync 60Hz.
@@ -35,13 +35,12 @@ class IdleMascot extends StatefulWidget {
 
 class _IdleMascotState extends State<IdleMascot>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-  static const _stepMs = 33; // ~30Hz
   static const _bobSeconds = 1.4; // chu kỳ nhún (đi + về)
   static const _bobPixels = 7.0;
 
   // KHÔNG forward()/repeat(): controller không có ticker chạy → không ép khung vsync.
   late final AnimationController _c = AnimationController(vsync: this);
-  Timer? _timer;
+  VoidCallback? _unsub;
   // Bị hộp thoại/trang khác phủ lên (route không còn là route hiện tại): cốc ở sau lớp
   // phủ tối, animate cũng vô ích mà còn buộc vẽ lại cả màn chính + hộp thoại cao ở 30Hz
   // suốt lúc hộp thoại mở. Dừng hẳn → hộp thoại mở xong là TĨNH (0 khung nền).
@@ -73,16 +72,17 @@ class _IdleMascotState extends State<IdleMascot>
   }
 
   void _start() {
-    _timer ??= Timer.periodic(const Duration(milliseconds: _stepMs), (_) {
+    // Nhịp chung (30Hz; 15Hz ở mức Thấp; không tick khi mức Tắt hoặc app ra nền).
+    _unsub ??= AmbientTicker.instance.subscribe((dt) {
       if (_covered) return; // không đổi giá trị → không lên lịch khung nào
-      _t += _stepMs / 1000.0;
+      _t += dt;
       _c.value = (_t % _loopSeconds) / _loopSeconds;
     });
   }
 
   void _stop() {
-    _timer?.cancel();
-    _timer = null;
+    _unsub?.call();
+    _unsub = null;
   }
 
   // Ra nền thì dừng hẳn (không đốt pin vô ích); quay lại thì chạy tiếp.

@@ -1411,6 +1411,24 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsSound => '소리';
 
   @override
+  String get settingsEffects => '시각 효과';
+
+  @override
+  String get settingsEffectsAuto => '자동 (기기에 맞춤)';
+
+  @override
+  String get settingsEffectsHigh => '높음';
+
+  @override
+  String get settingsEffectsMedium => '보통';
+
+  @override
+  String get settingsEffectsLow => '낮음 (배터리 절약)';
+
+  @override
+  String get settingsEffectsOff => '끔';
+
+  @override
   String get settingsReset => '게임 초기화';
 
   @override

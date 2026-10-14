@@ -2472,6 +2472,42 @@ abstract class AppLocalizations {
   /// **'Âm thanh'**
   String get settingsSound;
 
+  /// No description provided for @settingsEffects.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hiệu ứng động'**
+  String get settingsEffects;
+
+  /// No description provided for @settingsEffectsAuto.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự động (theo máy)'**
+  String get settingsEffectsAuto;
+
+  /// No description provided for @settingsEffectsHigh.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cao'**
+  String get settingsEffectsHigh;
+
+  /// No description provided for @settingsEffectsMedium.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vừa'**
+  String get settingsEffectsMedium;
+
+  /// No description provided for @settingsEffectsLow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thấp (tiết kiệm pin)'**
+  String get settingsEffectsLow;
+
+  /// No description provided for @settingsEffectsOff.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tắt'**
+  String get settingsEffectsOff;
+
   /// No description provided for @settingsReset.
   ///
   /// In vi, this message translates to:
