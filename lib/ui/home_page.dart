@@ -64,6 +64,7 @@ import 'widgets/mascot.dart';
 import 'widgets/motion.dart';
 import 'widgets/one_shot_lottie.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/stage_ambience.dart';
 import 'widgets/trailing_box.dart';
 
 /// Cho phép tự hiện "Cách chơi" ở lần chơi đầu. App luôn bật; test tắt qua
@@ -1101,6 +1102,8 @@ class _StageScene extends ConsumerWidget {
           ColoredBox(
             color: theme.colorScheme.surface.withValues(alpha: 0.4),
           ),
+        // Hạt trang trí theo giai đoạn (bụi, lá, hơi nước, đốm vàng, sao…); theo mức chất lượng.
+        StageAmbience(stage: n),
         const _TapArea(),
         // Chip "tự động chạm" nằm TRONG cảnh quán (góc trên phải), không đè thanh tiêu đề.
         const _AutoTapIndicator(),

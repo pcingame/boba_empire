@@ -98,14 +98,16 @@ class _RewardsDialogState extends ConsumerState<_RewardsDialog> {
                 },
               ),
             ),
-            ListTile(
-              key: const Key('rewards-invite'),
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.group_add),
-              title: Text(l10n.refEntry),
-              subtitle: Text(l10n.refEntryNote(referralInviterReward)),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () async {
+            // Cùng dạng hàng + nút như các mục "Xem QC" bên dưới để nhìn ra đây là thứ bấm được.
+            _OfferRow(
+              emoji: '',
+              name: l10n.refEntry,
+              note: l10n.refEntryNote(referralInviterReward),
+              busy: false,
+              buttonKey: const Key('rewards-invite'),
+              buttonLabel: l10n.refShare,
+              buttonIcon: Icons.group_add,
+              onWatch: () async {
                 // Mời bạn gắn với tài khoản: cần đã liên kết email (xem email_gate.dart).
                 if (!await ensureEmailLinked(context, ref)) return;
                 if (!context.mounted) return;
@@ -238,8 +240,16 @@ class _OfferRow extends StatelessWidget {
     required this.busy,
     required this.onWatch,
     this.note,
+    this.buttonKey,
+    this.buttonLabel,
+    this.buttonIcon = Icons.play_circle_outline,
   });
 
+  final Key? buttonKey;
+
+  /// Null = nhãn "Xem QC".
+  final String? buttonLabel;
+  final IconData buttonIcon;
   final String emoji;
   final String name;
   final String? note;
@@ -253,8 +263,10 @@ class _OfferRow extends StatelessWidget {
     return ClayTile(
       child: Row(
         children: [
-          Text(emoji, style: const TextStyle(fontSize: 24)),
-          const SizedBox(width: 8),
+          if (emoji.isNotEmpty) ...[
+            Text(emoji, style: const TextStyle(fontSize: 24)),
+            const SizedBox(width: 8),
+          ],
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -280,9 +292,10 @@ class _OfferRow extends StatelessWidget {
           // Flexible + FittedBox: nhãn dài (en/es/id/pt) co lại thay vì tràn ở màn hẹp.
           Flexible(
             child: FilledButton.icon(
+              key: buttonKey,
               onPressed: busy ? null : onWatch,
-              icon: const Icon(Icons.play_circle_outline, size: 20),
-              label: FittedBox(fit: BoxFit.scaleDown, child: Text(l10n.watchAd)),
+              icon: Icon(buttonIcon, size: 20),
+              label: FittedBox(fit: BoxFit.scaleDown, child: Text(buttonLabel ?? l10n.watchAd)),
             ),
           ),
         ],
