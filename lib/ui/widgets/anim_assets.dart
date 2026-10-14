@@ -25,4 +25,6 @@ class AnimAssets {
   static const String crown = 'assets/anim/crown.json'; // 60fps, 5.3s
   static const String steam = 'assets/anim/steam.json'; // cốc + hơi nước, lặp
   static const String customerWalking = 'assets/anim/customer_walking.json'; // 1080px, 60fps
+  static const String customerWalking2 = 'assets/anim/customer_walking_2.json'; // người dắt chó (ảnh PNG)
+  static const String customerWalking3 = 'assets/anim/customer_walking_3.json'; // doanh nhân xách cặp
 }

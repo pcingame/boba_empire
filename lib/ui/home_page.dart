@@ -66,6 +66,7 @@ import 'widgets/motion.dart';
 import 'widgets/one_shot_lottie.dart';
 import 'widgets/phone_width.dart';
 import 'widgets/stage_ambience.dart';
+import 'widgets/stage_walkers.dart';
 import 'widgets/trailing_box.dart';
 
 /// Cho phép tự hiện "Cách chơi" ở lần chơi đầu. App luôn bật; test tắt qua
@@ -1110,6 +1111,8 @@ class _StageScene extends ConsumerWidget {
           ),
         // Hạt trang trí theo giai đoạn (bụi, lá, hơi nước, đốm vàng, sao…); theo mức chất lượng.
         StageAmbience(stage: n),
+        // Khách đi ngang quán (giai đoạn 1–12); thưa dần theo mức chất lượng, Tắt = không có.
+        StageWalkers(stage: n, sceneZoom: _sceneZoom),
         const _TapArea(),
         // Chip "tự động chạm" nằm TRONG cảnh quán (góc trên phải), không đè thanh tiêu đề.
         const _AutoTapIndicator(),
