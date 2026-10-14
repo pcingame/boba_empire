@@ -10,6 +10,8 @@ import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import '../state/recipe_providers.dart';
 import 'recipe_leaderboard_page.dart';
+import 'email_gate.dart';
+import 'recipe_order_page.dart';
 import 'recipe_quiz_page.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
@@ -51,7 +53,11 @@ class RecipeHubPage extends ConsumerWidget {
             key: const Key('recipe-leaderboard'),
             tooltip: l10n.rlbTitle,
             icon: const Icon(Icons.emoji_events),
-            onPressed: () => showRecipeLeaderboard(context),
+            onPressed: () async {
+              // Tính năng online: cần đã liên kết email (xem email_gate.dart).
+              if (!await ensureOnlineLinked(context) || !context.mounted) return;
+              showRecipeLeaderboard(context);
+            },
           ),
         ],
       ),
@@ -145,6 +151,18 @@ class _Body extends ConsumerWidget {
                       .push(MaterialPageRoute<void>(builder: (_) => const RecipeQuizPage())),
                   icon: const Icon(Icons.play_arrow_rounded, size: 26),
                   label: Text(l10n.recipePractice),
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  key: const Key('recipe-orders'),
+                  style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48)),
+                  onPressed: () => Navigator.of(context)
+                      .push(MaterialPageRoute<void>(builder: (_) => const RecipeOrderPage())),
+                  icon: const Text('🧋', style: TextStyle(fontSize: 20)),
+                  label: Text(l10n.recipeOrderOrders),
                 ),
               ),
             ],

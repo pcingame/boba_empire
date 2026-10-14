@@ -4169,4 +4169,92 @@ class AppLocalizationsPt extends AppLocalizations {
   @override
   String get guildLbAvgEmpty =>
       'Nenhuma guilda se qualifica para o ranking de média ainda.';
+
+  @override
+  String get recipeOrderOrders => 'Preparar pedidos';
+
+  @override
+  String recipeOrderAsk(String drink) {
+    return 'O cliente pede: $drink';
+  }
+
+  @override
+  String get recipeOrderGuideFull => 'Receita de exemplo';
+
+  @override
+  String get recipeOrderGuideNames =>
+      'Ingredientes a usar (lembre as quantidades)';
+
+  @override
+  String recipeOrderGuideCount(int n) {
+    return 'Esta bebida tem $n ingredientes — lembre-se deles!';
+  }
+
+  @override
+  String get recipeOrderGuideNone => 'Sem dicas — prepare de memória!';
+
+  @override
+  String get recipeOrderTray =>
+      'Bandeja de ingredientes — arraste para o copo ou toque para escolher';
+
+  @override
+  String get recipeOrderCupEmpty => 'O copo está vazio';
+
+  @override
+  String recipeOrderSetAmount(String name) {
+    return 'Quantidade de $name';
+  }
+
+  @override
+  String get recipeOrderPour => 'Pôr no copo';
+
+  @override
+  String get recipeOrderRemove => 'Remover';
+
+  @override
+  String get recipeOrderServe => 'Servir';
+
+  @override
+  String get recipeOrderPerfect => 'Perfeito! Todas as quantidades certas';
+
+  @override
+  String get recipeOrderGood => 'Aprovado — quantidades um pouco fora';
+
+  @override
+  String get recipeOrderFail => 'Não é a bebida certa';
+
+  @override
+  String recipeOrderMissing(String amount, String name) {
+    return 'Falta $name ($amount)';
+  }
+
+  @override
+  String recipeOrderExtra(String name) {
+    return 'Sobrou $name — não está na receita';
+  }
+
+  @override
+  String recipeOrderOff(String mine, String name, String right) {
+    return '$name: você pôs $mine, o certo é $right';
+  }
+
+  @override
+  String get recipeOrderHint =>
+      'Dica: toque num ingrediente adicionado para mudar a quantidade';
+
+  @override
+  String get rlbTabQuiz => 'Quiz';
+
+  @override
+  String get rlbOrderEmpty =>
+      'Ninguém está no ranking ainda. Seja o primeiro a preparar uma bebida perfeita sem a receita de exemplo!';
+
+  @override
+  String get rlbNoPerfect =>
+      'Você ainda não preparou nenhuma bebida perfeita (sem a receita de exemplo), então não está no ranking.';
+
+  @override
+  String rlbPerfect(int n) {
+    return '$n bebidas perfeitas';
+  }
 }

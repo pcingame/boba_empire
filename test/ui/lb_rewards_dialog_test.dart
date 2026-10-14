@@ -10,6 +10,8 @@ import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/ui/compete_hub_dialog.dart';
 import 'package:boba_empire/ui/lb_rewards_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart' show FontLoader, rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -166,4 +168,54 @@ void main() {
     expect(find.byKey(const Key('compete-lb-rewards-dot')), findsNothing);
     await _end(tester, c);
   });
+
+  // Lỗi thật: ở bản tiếng Anh dòng "Weekly top rewards" trong hub Thi đấu bị cắt thành "Weekly top rew…" dù màn
+  // rộng 390dp: hộp thoại chừa lề 40dp mỗi bên + ListTile chừa lề/biểu tượng nên nhãn chỉ còn ~126dp, và Text
+  // lại đặt maxLines: 1. Test mặc định dùng font Ahem (rộng gấp ~2 lần chữ thật) nên KHÔNG đo "bị cắt" được —
+  // ở đây nạp font thật của app và đo đúng.
+  group('hub Thi đấu: nhãn menu hiện đủ', () {
+    setUpAll(() async {
+      // Thay font mặc định của test (Roboto → Ahem) bằng font thật của app để độ rộng chữ sát thực tế.
+      final loader = FontLoader('Roboto')..addFont(rootBundle.load('assets/fonts/Baloo2.ttf'));
+      await loader.load();
+    });
+
+    for (final l in ['vi', 'en', 'pt', 'es', 'id']) {
+      for (final (w, scale) in [(390.0, 1.0), (360.0, 1.0), (320.0, 1.0), (360.0, 1.3)]) {
+        testWidgets('[$l] ${w.toInt()}px chữ $scale×: mọi nhãn menu hiện trọn vẹn, không "…"', (tester) async {
+          tester.platformDispatcher.textScaleFactorTestValue = scale;
+          addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+          final (c, _) = await _open(tester, rewards: [_r(LbBoard.income, 2)], hub: true, locale: l, size: Size(w, 900));
+          final texts = find.descendant(of: find.byType(ListTile), matching: find.byType(Text));
+          expect(texts, findsWidgets);
+          for (final e in texts.evaluate()) {
+            final ro = e.renderObject;
+            if (ro is! RenderParagraph) continue;
+            expect(ro.didExceedMaxLines, isFalse, reason: '[$l ${w.toInt()}px ×$scale] "${ro.text.toPlainText()}" bị cắt (rộng ${ro.size.width})');
+          }
+          expect(tester.takeException(), isNull);
+          await _end(tester, c);
+        });
+      }
+    }
+  });
+
+  // Mọi ngôn ngữ (kể cả ko/th không đo được bằng font Latin): nhãn phải có chỗ rộng tối thiểu và được xuống dòng.
+  for (final l in ['vi', 'en', 'pt', 'es', 'id', 'th', 'ko']) {
+    testWidgets('[$l] hub Thi đấu: hộp rộng gần hết màn, hàng menu không bị lề thừa, nhãn tối đa 2 dòng', (tester) async {
+      for (final w in [360.0, 320.0]) {
+        final (c, _) = await _open(tester, rewards: [_r(LbBoard.income, 2)], hub: true, locale: l, size: Size(w, 900));
+        final dialog = tester.getSize(find.byType(AlertDialog));
+        expect(dialog.width, greaterThanOrEqualTo(w - 32 - 0.5), reason: 'hộp chỉ rộng ${dialog.width} trên màn ${w}px');
+        // Hàng menu phải rộng gần hết hộp (không còn lề ListTile thừa): trước đây ~232dp trên màn 360 → nhãn ~126dp.
+        final row = tester.getSize(find.byKey(const Key('compete-lb-rewards'))).width;
+        expect(row, greaterThanOrEqualTo(w - 32 - 48 - 0.5), reason: '[$l ${w.toInt()}px] hàng menu chỉ rộng $row');
+        // Nhãn được xuống tối đa 2 dòng thay vì cắt "…".
+        final labelText = find.descendant(of: find.byKey(const Key('compete-lb-rewards')), matching: find.byType(Text)).first;
+        final title = tester.renderObject<RenderParagraph>(find.descendant(of: labelText, matching: find.byType(RichText)));
+        expect(title.maxLines, 2);
+        await _end(tester, c);
+      }
+    });
+  }
 }

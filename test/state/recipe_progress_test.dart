@@ -345,4 +345,22 @@ void main() {
       expect(b.recipeStreakBest, lessThanOrEqualTo(100000));
     });
   });
+
+  test('recordOrderPerfect: không trùng, lưu bền, snapshot là bản sao bất biến, save hỏng không ném', () async {
+    final (c, prefs, _) = await _harness(GameState.newGame(nowMillis: 0));
+    final ctrl = c.read(gameControllerProvider.notifier);
+    ctrl.recordOrderPerfect(3);
+    ctrl.recordOrderPerfect(3);
+    ctrl.recordOrderPerfect(8);
+    expect(_game(c).recipeOrderPerfect, [3, 8]);
+    expect(c.read(gameControllerProvider).recipeOrderPerfect, [3, 8]);
+    expect(() => c.read(gameControllerProvider).recipeOrderPerfect.add(1), throwsUnsupportedError);
+
+    final reloaded = GameState.fromJson(jsonDecode(jsonEncode(_game(c).toJson())) as Map<String, dynamic>);
+    expect(reloaded.recipeOrderPerfect, [3, 8]);
+    final dirty = _game(c).toJson()..['recipeOrderPerfect'] = [5, 5, 'x', null, 6.0];
+    expect(GameState.fromJson(dirty).recipeOrderPerfect, [5, 6]);
+    expect(GameState.fromJson(_game(c).toJson()..remove('recipeOrderPerfect')).recipeOrderPerfect, isEmpty);
+    expect(prefs, isNotNull);
+  });
 }

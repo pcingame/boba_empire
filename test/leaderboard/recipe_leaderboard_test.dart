@@ -67,4 +67,28 @@ void main() {
     expect(rarities, [...rarities]..sort());
     expect(keys.last, lessThanOrEqualTo(catalog.playable.length));
   });
+
+  group('bảng Pha theo đơn', () {
+    final osql = File('supabase/recipe_order_leaderboard_schema.sql').readAsStringSync();
+
+    test('trần SQL = số món; chỉ tăng; ghi cần đã liên kết email ở SERVER; không policy xoá', () {
+      final cap = int.parse(
+          RegExp(r'perfected\s+integer not null check \(perfected between 0 and (\d+)\)').firstMatch(osql)!.group(1)!);
+      expect(cap, catalog.recipes.length);
+      expect(osql, contains('new.perfected < old.perfected'));
+      expect(osql, contains('least(coalesce(p_limit, 50), 100)'));
+      // Cả INSERT lẫn UPDATE (using + with check) đều đòi is_linked_user().
+      expect(RegExp(r'is_linked_user\(\)').allMatches(osql.split('create table').last).length, greaterThanOrEqualTo(3));
+      expect(osql, isNot(contains('for delete')));
+    });
+
+    test('enum bảng: tên bảng/RPC/cột khớp SQL; đọc hàng theo đúng cột', () {
+      expect(osql, contains('create table if not exists ${RecipeBoard.orders.table}'));
+      expect(osql, contains('function ${RecipeBoard.orders.topRpc}'));
+      expect(sql, contains('function ${RecipeBoard.quiz.topRpc}'));
+      final row = {'user_id': 'u', 'nickname': 'n', 'perfected': 7, 'mastered': 1, 'rank': 2};
+      expect(RecipeLeaderboardEntry.fromRow(row, RecipeBoard.orders).mastered, 7);
+      expect(RecipeLeaderboardEntry.fromRow(row).mastered, 1);
+    });
+  });
 }

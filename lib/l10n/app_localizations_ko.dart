@@ -4076,4 +4076,88 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get guildLbAvgEmpty => '평균 순위 조건을 충족한 길드가 아직 없어요.';
+
+  @override
+  String get recipeOrderOrders => '주문대로 만들기';
+
+  @override
+  String recipeOrderAsk(String drink) {
+    return '손님 주문: $drink';
+  }
+
+  @override
+  String get recipeOrderGuideFull => '레시피 예시';
+
+  @override
+  String get recipeOrderGuideNames => '사용할 재료 (양은 기억해 보세요)';
+
+  @override
+  String recipeOrderGuideCount(int n) {
+    return '이 음료에는 재료가 $n가지 들어가요. 기억해 보세요!';
+  }
+
+  @override
+  String get recipeOrderGuideNone => '힌트 없음 — 기억으로 만들어요!';
+
+  @override
+  String get recipeOrderTray => '재료 트레이 — 컵으로 끌어 놓거나 눌러서 선택';
+
+  @override
+  String get recipeOrderCupEmpty => '컵이 비어 있어요';
+
+  @override
+  String recipeOrderSetAmount(String name) {
+    return '$name 양';
+  }
+
+  @override
+  String get recipeOrderPour => '컵에 넣기';
+
+  @override
+  String get recipeOrderRemove => '빼기';
+
+  @override
+  String get recipeOrderServe => '서빙';
+
+  @override
+  String get recipeOrderPerfect => '완벽해요! 모든 양이 정확해요';
+
+  @override
+  String get recipeOrderGood => '통과 — 양이 조금 달라요';
+
+  @override
+  String get recipeOrderFail => '음료가 맞지 않아요';
+
+  @override
+  String recipeOrderMissing(String amount, String name) {
+    return '$name 부족 ($amount)';
+  }
+
+  @override
+  String recipeOrderExtra(String name) {
+    return '$name 초과 — 레시피에 없어요';
+  }
+
+  @override
+  String recipeOrderOff(String mine, String name, String right) {
+    return '$name: $mine 넣었어요, 정답은 $right';
+  }
+
+  @override
+  String get recipeOrderHint => '팁: 넣은 재료를 눌러 양을 바꿀 수 있어요';
+
+  @override
+  String get rlbTabQuiz => '퀴즈';
+
+  @override
+  String get rlbOrderEmpty =>
+      '아직 순위에 아무도 없어요. 레시피 예시 없이 음료를 완벽하게 만든 첫 번째 사람이 되어 보세요!';
+
+  @override
+  String get rlbNoPerfect => '레시피 예시 없이 완벽하게 만든 음료가 아직 없어서 순위에 이름이 없어요.';
+
+  @override
+  String rlbPerfect(int n) {
+    return '완벽 $n잔';
+  }
 }

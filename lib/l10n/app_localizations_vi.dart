@@ -4140,4 +4140,90 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get guildLbAvgEmpty =>
       'Chưa hội nào đủ điều kiện xếp hạng trung bình.';
+
+  @override
+  String get recipeOrderOrders => 'Pha theo đơn';
+
+  @override
+  String recipeOrderAsk(String drink) {
+    return 'Khách gọi: $drink';
+  }
+
+  @override
+  String get recipeOrderGuideFull => 'Công thức mẫu';
+
+  @override
+  String get recipeOrderGuideNames => 'Nguyên liệu cần dùng (tự nhớ lượng)';
+
+  @override
+  String recipeOrderGuideCount(int n) {
+    return 'Món này có $n nguyên liệu — tự nhớ nhé!';
+  }
+
+  @override
+  String get recipeOrderGuideNone => 'Không gợi ý — pha theo trí nhớ!';
+
+  @override
+  String get recipeOrderTray =>
+      'Khay nguyên liệu — kéo vào ly hoặc chạm để chọn';
+
+  @override
+  String get recipeOrderCupEmpty => 'Ly còn trống';
+
+  @override
+  String recipeOrderSetAmount(String name) {
+    return 'Lượng $name';
+  }
+
+  @override
+  String get recipeOrderPour => 'Cho vào ly';
+
+  @override
+  String get recipeOrderRemove => 'Bỏ ra';
+
+  @override
+  String get recipeOrderServe => 'Phục vụ';
+
+  @override
+  String get recipeOrderPerfect => 'Hoàn hảo! Đúng từng lượng';
+
+  @override
+  String get recipeOrderGood => 'Đạt — còn lệch chút lượng';
+
+  @override
+  String get recipeOrderFail => 'Chưa đúng món';
+
+  @override
+  String recipeOrderMissing(String amount, String name) {
+    return 'Thiếu $name ($amount)';
+  }
+
+  @override
+  String recipeOrderExtra(String name) {
+    return 'Thừa $name — không có trong công thức';
+  }
+
+  @override
+  String recipeOrderOff(String mine, String name, String right) {
+    return '$name: bạn cho $mine, đúng là $right';
+  }
+
+  @override
+  String get recipeOrderHint => 'Gợi ý: chạm nguyên liệu đã cho để sửa lượng';
+
+  @override
+  String get rlbTabQuiz => 'Trắc nghiệm';
+
+  @override
+  String get rlbOrderEmpty =>
+      'Chưa có ai trên bảng. Hãy là người đầu tiên pha hoàn hảo một món không cần công thức mẫu!';
+
+  @override
+  String get rlbNoPerfect =>
+      'Bạn chưa pha hoàn hảo món nào (không nhìn công thức mẫu) nên chưa có tên trên bảng.';
+
+  @override
+  String rlbPerfect(int n) {
+    return 'Hoàn hảo $n món';
+  }
 }

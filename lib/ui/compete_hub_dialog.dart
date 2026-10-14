@@ -17,6 +17,7 @@ import 'lb_rewards_dialog.dart';
 import 'leaderboard_page.dart';
 import 'story_speedrun_page.dart';
 import 'vip_leaderboard_page.dart';
+import 'widgets/phone_width.dart';
 
 Future<void> showCompeteHub(BuildContext context) {
   return showDialog<void>(
@@ -32,12 +33,23 @@ class _CompeteHubDialog extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
+      // Hộp rộng hơn mặc định (lề 40dp mỗi bên): nhãn dài như "Weekly top rewards" từng chỉ còn ~126dp → bị cắt "…".
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       title: Text(l10n.navCompete),
-      content: SingleChildScrollView(
+      // width: maxFinite — AlertDialog co theo nội dung (IntrinsicWidth) nên với hàng menu ngắn nó chỉ rộng 280dp dù
+      // insetPadding cho phép hơn; ép rộng hết cỡ (kẹp ở bề ngang điện thoại trên iPad) để nhãn dài có chỗ.
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: kPhoneMaxWidth - 48), // + lề nội dung 2×24 = đúng bề ngang điện thoại
+        child: SizedBox(
+        width: double.maxFinite,
+        child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
           ListTile(
+            contentPadding: EdgeInsets.zero,
+            horizontalTitleGap: 12,
+            minLeadingWidth: 28,
             leading: const Icon(Icons.sports_kabaddi),
             title: Text(l10n.navArena),
             trailing: const Icon(Icons.chevron_right),
@@ -49,6 +61,9 @@ class _CompeteHubDialog extends ConsumerWidget {
             },
           ),
           ListTile(
+            contentPadding: EdgeInsets.zero,
+            horizontalTitleGap: 12,
+            minLeadingWidth: 28,
             key: const Key('compete-guild'),
             leading: const Icon(Icons.groups),
             title: Row(children: [
@@ -75,10 +90,14 @@ class _CompeteHubDialog extends ConsumerWidget {
             },
           ),
           ListTile(
+            contentPadding: EdgeInsets.zero,
+            horizontalTitleGap: 12,
+            minLeadingWidth: 28,
             key: const Key('compete-lb-rewards'),
             leading: const Icon(Icons.emoji_events),
             title: Row(children: [
-              Flexible(child: Text(l10n.lbrTitle, maxLines: 1, overflow: TextOverflow.ellipsis)),
+              // Cho xuống 2 dòng thay vì cắt "…" (từng hiện "Weekly top rew…" ở bản tiếng Anh).
+              Flexible(child: Text(l10n.lbrTitle, maxLines: 2, overflow: TextOverflow.ellipsis)),
               if (ref.watch(lbRewardAlertProvider)) ...[
                 const SizedBox(width: 8),
                 Container(
@@ -99,6 +118,9 @@ class _CompeteHubDialog extends ConsumerWidget {
             },
           ),
           ListTile(
+            contentPadding: EdgeInsets.zero,
+            horizontalTitleGap: 12,
+            minLeadingWidth: 28,
             leading: const Icon(Icons.leaderboard),
             title: Text(l10n.leaderboardMenuTitle),
             trailing: const Icon(Icons.chevron_right),
@@ -110,6 +132,9 @@ class _CompeteHubDialog extends ConsumerWidget {
             },
           ),
           ListTile(
+            contentPadding: EdgeInsets.zero,
+            horizontalTitleGap: 12,
+            minLeadingWidth: 28,
             leading: const Icon(Icons.timer),
             title: Text(l10n.storySpeedrunMenuTitle),
             trailing: const Icon(Icons.chevron_right),
@@ -121,6 +146,9 @@ class _CompeteHubDialog extends ConsumerWidget {
             },
           ),
           ListTile(
+            contentPadding: EdgeInsets.zero,
+            horizontalTitleGap: 12,
+            minLeadingWidth: 28,
             leading: const Icon(Icons.military_tech),
             title: Text(l10n.arenaLeaderboardMenuTitle),
             trailing: const Icon(Icons.chevron_right),
@@ -132,6 +160,9 @@ class _CompeteHubDialog extends ConsumerWidget {
             },
           ),
           ListTile(
+            contentPadding: EdgeInsets.zero,
+            horizontalTitleGap: 12,
+            minLeadingWidth: 28,
             key: const Key('compete-vip'),
             leading: const Icon(Icons.workspace_premium),
             title: Text(l10n.vipLbTitle),
@@ -145,6 +176,8 @@ class _CompeteHubDialog extends ConsumerWidget {
           ),
           ],
         ),
+      ),
+      ),
       ),
       actions: [
         TextButton(

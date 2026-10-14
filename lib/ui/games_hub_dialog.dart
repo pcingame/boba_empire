@@ -35,7 +35,10 @@ class _GamesHubDialog extends ConsumerWidget {
 
     return AlertDialog(
       title: Text(l10n.navMatch3),
-      content: SingleChildScrollView(
+      // Rộng hết cỡ (AlertDialog co theo nội dung): tên trò/dòng phụ dài không bị cắt "…".
+      content: SizedBox(
+        width: double.maxFinite,
+        child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -64,6 +67,7 @@ class _GamesHubDialog extends ConsumerWidget {
             ),
           ],
         ),
+      ),
       ),
       actions: [
         TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(l10n.close)),

@@ -48,8 +48,11 @@ class RecipeLeaderboardController extends Notifier<RecipeLeaderboardViewState> {
   @override
   RecipeLeaderboardViewState build() => const RecipeLeaderboardLoading();
 
+  /// Bảng mà bộ điều phối này phục vụ — [RecipeOrderLeaderboardController] đổi sang bảng Pha theo đơn.
+  RecipeBoard get board => RecipeBoard.quiz;
+
   RecipeLeaderboardRepository get _repository => _repo ??=
-      RecipeLeaderboardRepository(Supabase.instance.client, ref.read(sharedPreferencesProvider));
+      RecipeLeaderboardRepository(Supabase.instance.client, ref.read(sharedPreferencesProvider), board);
 
   /// Lazy + tự nuốt lỗi: analytics không bao giờ được cản việc xem bảng.
   AnalyticsRepository? get _analytics {
@@ -64,7 +67,7 @@ class RecipeLeaderboardController extends Notifier<RecipeLeaderboardViewState> {
 
   Future<void> refresh({bool silent = false}) async {
     if (!silent) state = const RecipeLeaderboardLoading();
-    unawaited(_analytics?.log('recipe_leaderboard_viewed'));
+    unawaited(_analytics?.log(board == RecipeBoard.quiz ? 'recipe_leaderboard_viewed' : 'recipe_order_leaderboard_viewed'));
     try {
       final mastered = getMyMastered?.call() ?? 0;
       if (mastered > 0) {
@@ -107,6 +110,15 @@ class RecipeLeaderboardController extends Notifier<RecipeLeaderboardViewState> {
     state = const RecipeLeaderboardError();
   }
 }
+
+class RecipeOrderLeaderboardController extends RecipeLeaderboardController {
+  @override
+  RecipeBoard get board => RecipeBoard.orders;
+}
+
+final recipeOrderLeaderboardControllerProvider =
+    NotifierProvider<RecipeOrderLeaderboardController, RecipeLeaderboardViewState>(
+        RecipeOrderLeaderboardController.new);
 
 final recipeLeaderboardControllerProvider =
     NotifierProvider<RecipeLeaderboardController, RecipeLeaderboardViewState>(RecipeLeaderboardController.new);

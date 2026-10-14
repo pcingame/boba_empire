@@ -93,6 +93,7 @@ class GameState {
     List<String>? weeklyClaimed,
     Map<String, List<int>>? recipeProgress,
     List<int>? recipeMilestonesClaimed,
+    List<int>? recipeOrderPerfect,
     this.recipeStreak = 0,
     this.recipeStreakLastDay = 0,
     this.recipeStreakBest = 0,
@@ -189,6 +190,7 @@ class GameState {
         weeklyClaimed = weeklyClaimed ?? [],
         recipeProgress = recipeProgress ?? {},
         recipeMilestonesClaimed = recipeMilestonesClaimed ?? [],
+        recipeOrderPerfect = recipeOrderPerfect ?? [],
         firstPlayedMillis = firstPlayedMillis ?? lastSeenMillis;
 
   /// Ván mới tinh.
@@ -375,6 +377,10 @@ class GameState {
 
   /// Các mốc rương phụ kiện công thức đã nhận (số món Thạo), xem `recipeAccessoryMilestones`.
   final List<int> recipeMilestonesClaimed;
+
+  /// Id các món đã TỪNG pha hoàn hảo ở chế độ "Pha theo đơn" mà không nhìn công thức mẫu (không gợi ý, không
+  /// bậc Mới) — nguồn của bảng xếp hạng Pha theo đơn. Không trùng, chỉ tăng.
+  final List<int> recipeOrderPerfect;
 
   /// Chuỗi ngày ôn công thức (xem recipe_mastery.dart): số ngày, ngày ôn gần nhất (dayIndex), kỷ lục.
   int recipeStreak;
@@ -604,6 +610,7 @@ class GameState {
         'weeklyClaimed': weeklyClaimed,
         'recipeProgress': recipeProgress,
         'recipeMilestonesClaimed': recipeMilestonesClaimed,
+        'recipeOrderPerfect': recipeOrderPerfect,
         'recipeStreak': recipeStreak,
         'recipeStreakLastDay': recipeStreakLastDay,
         'recipeStreakBest': recipeStreakBest,
@@ -765,6 +772,9 @@ class GameState {
         recipeMilestonesClaimed: [
           for (final x in (json['recipeMilestonesClaimed'] as List?) ?? const []) if (x is num) x.toInt(),
         ],
+        recipeOrderPerfect: {
+          for (final x in (json['recipeOrderPerfect'] as List?) ?? const []) if (x is num) x.toInt(),
+        }.toList(),
         // Giá trị âm/hỏng được kẹp về hợp lệ (save lạ từ cloud không làm hỏng cả game).
         recipeStreak: ((json['recipeStreak'] as num?)?.toInt() ?? 0).clamp(0, 100000),
         recipeStreakLastDay: ((json['recipeStreakLastDay'] as num?)?.toInt() ?? 0).clamp(0, 10000000),

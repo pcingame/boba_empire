@@ -54,7 +54,7 @@ void main() {
     const entries = [
       'showArenaPage', 'showGuildPage', 'showLeaderboardPage', 'showStorySpeedrunPage',
       'showArenaLeaderboardPage', 'showVipLeaderboard', 'showEventLeaderboard',
-      'showM3Leaderboard', 'showAccessoryMarket', 'showAccessoryLeaderboard',
+      'showM3Leaderboard', 'showAccessoryMarket', 'showAccessoryLeaderboard', 'showRecipeLeaderboard',
     ];
     final bad = <String>[];
     var found = 0;
@@ -74,6 +74,38 @@ void main() {
     }
     expect(found, greaterThanOrEqualTo(entries.length), reason: 'quét không thấy đủ điểm vào');
     expect(bad, isEmpty, reason: 'điểm vào lọt cổng: $bad');
+  });
+
+  test('MỌI hàm mở bảng xếp hạng (tự dò) đều được gọi sau cổng email, trừ bảng Hội (đã nằm trong trang Hội)', () {
+    final defs = RegExp(r'^(?:Future<void>|void) (show\w*(?:Leaderboard|Speedrun)\w*)\(', multiLine: true);
+    const exempt = {'showGuildLeaderboard'};
+    final names = <String>{};
+    final files = [
+      for (final f in Directory('lib').listSync(recursive: true).whereType<File>())
+        if (f.path.endsWith('.dart') && !f.path.contains('/l10n/')) f,
+    ];
+    for (final f in files) {
+      for (final m in defs.allMatches(f.readAsStringSync())) {
+        names.add(m.group(1)!);
+      }
+    }
+    names.removeAll(exempt);
+    expect(names.length, greaterThanOrEqualTo(8), reason: 'dò không thấy đủ hàm bảng xếp hạng: $names');
+    final bad = <String>[];
+    for (final name in names) {
+      var calls = 0;
+      for (final f in files) {
+        final lines = f.readAsLinesSync();
+        for (var i = 0; i < lines.length; i++) {
+          if (!lines[i].contains('$name(context') || RegExp('Future<void> $name').hasMatch(lines[i])) continue;
+          calls++;
+          final window = lines.sublist(i < 6 ? 0 : i - 6, i + 1).join('\n');
+          if (!window.contains('ensureOnlineLinked')) bad.add('${f.path}:${i + 1} $name');
+        }
+      }
+      expect(calls, greaterThan(0), reason: '$name không có nơi gọi nào');
+    }
+    expect(bad, isEmpty, reason: 'bảng xếp hạng lọt cổng email: $bad');
   });
 
   testWidgets('hub Thi đấu: chưa liên kết → bấm Hội bị chặn, không mở trang', (tester) async {

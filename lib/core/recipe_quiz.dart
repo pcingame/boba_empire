@@ -134,9 +134,10 @@ List<double> _nearbyQuantities(RecipeIngredient ing, List<Recipe> pool, math.Ran
   return out;
 }
 
-/// Một buổi luyện: ưu tiên món ĐẾN HẠN ôn (bậc thấp trước), thiếu thì bù món chưa tới hạn (chỉ để luyện).
-/// [progress] theo id món; món chưa có thì là bậc 0 đến hạn.
-List<QuizQuestion> buildSession(
+/// Chọn [count] món cho một buổi: ưu tiên món ĐẾN HẠN ôn (bậc thấp trước), thiếu thì bù món chưa tới hạn (chỉ để
+/// luyện). [pool] = các món được phép (mặc định mọi món chơi được; UI truyền các món của nhóm đã mở). Dùng chung
+/// cho buổi trắc nghiệm ([buildSession]) và buổi pha theo đơn (recipe_orders.dart).
+List<Recipe> pickRecipes(
   RecipeCatalog catalog,
   Map<int, RecipeProgress> progress,
   int today,
@@ -145,7 +146,6 @@ List<QuizQuestion> buildSession(
   Iterable<Recipe>? pool,
 }) {
   RecipeProgress p(Recipe x) => progress[x.id] ?? const RecipeProgress();
-  // Mặc định luyện mọi món chơi được; UI truyền [pool] = các món của nhóm đã mở.
   final all = _shuffled(pool ?? catalog.playable, r); // xáo trước: ngang bậc thì ngẫu nhiên
   // Bậc thấp trước; cùng bậc giữ thứ tự đã xáo (so thêm chỉ số — List.sort không đảm bảo ổn định).
   final due = [for (final x in all) if (p(x).isDue(today)) x]
@@ -154,7 +154,20 @@ List<QuizQuestion> buildSession(
       return c != 0 ? c : all.indexOf(a).compareTo(all.indexOf(b));
     });
   final rest = [for (final x in all) if (!p(x).isDue(today)) x];
-  final picked = [...due, ...rest].take(count).toList();
+  return [...due, ...rest].take(count).toList();
+}
+
+/// Một buổi luyện trắc nghiệm: [pickRecipes] rồi sinh câu hỏi theo bậc của từng món.
+List<QuizQuestion> buildSession(
+  RecipeCatalog catalog,
+  Map<int, RecipeProgress> progress,
+  int today,
+  math.Random r, {
+  int count = 8,
+  Iterable<Recipe>? pool,
+}) {
+  final picked = pickRecipes(catalog, progress, today, r, count: count, pool: pool);
+  RecipeProgress p(Recipe x) => progress[x.id] ?? const RecipeProgress();
   return [
     for (final x in picked) buildQuestion(x, kindForBox(p(x).box, r), catalog, r),
   ];

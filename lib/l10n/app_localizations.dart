@@ -7031,6 +7031,144 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Chưa hội nào đủ điều kiện xếp hạng trung bình.'**
   String get guildLbAvgEmpty;
+
+  /// No description provided for @recipeOrderOrders.
+  ///
+  /// In vi, this message translates to:
+  /// **'Pha theo đơn'**
+  String get recipeOrderOrders;
+
+  /// No description provided for @recipeOrderAsk.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khách gọi: {drink}'**
+  String recipeOrderAsk(String drink);
+
+  /// No description provided for @recipeOrderGuideFull.
+  ///
+  /// In vi, this message translates to:
+  /// **'Công thức mẫu'**
+  String get recipeOrderGuideFull;
+
+  /// No description provided for @recipeOrderGuideNames.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nguyên liệu cần dùng (tự nhớ lượng)'**
+  String get recipeOrderGuideNames;
+
+  /// No description provided for @recipeOrderGuideCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Món này có {n} nguyên liệu — tự nhớ nhé!'**
+  String recipeOrderGuideCount(int n);
+
+  /// No description provided for @recipeOrderGuideNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không gợi ý — pha theo trí nhớ!'**
+  String get recipeOrderGuideNone;
+
+  /// No description provided for @recipeOrderTray.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khay nguyên liệu — kéo vào ly hoặc chạm để chọn'**
+  String get recipeOrderTray;
+
+  /// No description provided for @recipeOrderCupEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ly còn trống'**
+  String get recipeOrderCupEmpty;
+
+  /// No description provided for @recipeOrderSetAmount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lượng {name}'**
+  String recipeOrderSetAmount(String name);
+
+  /// No description provided for @recipeOrderPour.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cho vào ly'**
+  String get recipeOrderPour;
+
+  /// No description provided for @recipeOrderRemove.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ ra'**
+  String get recipeOrderRemove;
+
+  /// No description provided for @recipeOrderServe.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phục vụ'**
+  String get recipeOrderServe;
+
+  /// No description provided for @recipeOrderPerfect.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn hảo! Đúng từng lượng'**
+  String get recipeOrderPerfect;
+
+  /// No description provided for @recipeOrderGood.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đạt — còn lệch chút lượng'**
+  String get recipeOrderGood;
+
+  /// No description provided for @recipeOrderFail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đúng món'**
+  String get recipeOrderFail;
+
+  /// No description provided for @recipeOrderMissing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thiếu {name} ({amount})'**
+  String recipeOrderMissing(String amount, String name);
+
+  /// No description provided for @recipeOrderExtra.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thừa {name} — không có trong công thức'**
+  String recipeOrderExtra(String name);
+
+  /// No description provided for @recipeOrderOff.
+  ///
+  /// In vi, this message translates to:
+  /// **'{name}: bạn cho {mine}, đúng là {right}'**
+  String recipeOrderOff(String mine, String name, String right);
+
+  /// No description provided for @recipeOrderHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gợi ý: chạm nguyên liệu đã cho để sửa lượng'**
+  String get recipeOrderHint;
+
+  /// No description provided for @rlbTabQuiz.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trắc nghiệm'**
+  String get rlbTabQuiz;
+
+  /// No description provided for @rlbOrderEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có ai trên bảng. Hãy là người đầu tiên pha hoàn hảo một món không cần công thức mẫu!'**
+  String get rlbOrderEmpty;
+
+  /// No description provided for @rlbNoPerfect.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa pha hoàn hảo món nào (không nhìn công thức mẫu) nên chưa có tên trên bảng.'**
+  String get rlbNoPerfect;
+
+  /// No description provided for @rlbPerfect.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn hảo {n} món'**
+  String rlbPerfect(int n);
 }
 
 class _AppLocalizationsDelegate

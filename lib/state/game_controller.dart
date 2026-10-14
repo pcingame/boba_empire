@@ -387,6 +387,14 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
+  /// Ghi món vừa pha hoàn hảo không nhìn công thức mẫu (bảng xếp hạng Pha theo đơn). Không trùng.
+  void recordOrderPerfect(int recipeId) {
+    if (_game.recipeOrderPerfect.contains(recipeId)) return;
+    _game.recipeOrderPerfect.add(recipeId);
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
   /// Nhân đôi phần Xu thưởng của một buổi sau khi người chơi xem quảng cáo (chỉ Xu, không 💎).
   void doubleRecipeReward(double cash) {
     if (!cash.isFinite || cash <= 0) return;
@@ -2207,6 +2215,7 @@ class GameController extends Notifier<GameSnapshot> {
           ),
       ],
       recipeStreak: _recipeStreak,
+      recipeOrderPerfect: List.unmodifiable(_game.recipeOrderPerfect),
       recipeProgress: {
         for (final e in _game.recipeProgress.entries)
           if (int.tryParse(e.key) != null) int.parse(e.key): RecipeProgress.fromList(e.value),

@@ -4160,4 +4160,91 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get guildLbAvgEmpty =>
       'No guild qualifies for the average ranking yet.';
+
+  @override
+  String get recipeOrderOrders => 'Brew by order';
+
+  @override
+  String recipeOrderAsk(String drink) {
+    return 'Customer orders: $drink';
+  }
+
+  @override
+  String get recipeOrderGuideFull => 'Sample recipe';
+
+  @override
+  String get recipeOrderGuideNames => 'Ingredients to use (recall the amounts)';
+
+  @override
+  String recipeOrderGuideCount(int n) {
+    return 'This drink has $n ingredients — recall them!';
+  }
+
+  @override
+  String get recipeOrderGuideNone => 'No hints — brew from memory!';
+
+  @override
+  String get recipeOrderTray =>
+      'Ingredient tray — drag into the cup or tap to pick';
+
+  @override
+  String get recipeOrderCupEmpty => 'The cup is empty';
+
+  @override
+  String recipeOrderSetAmount(String name) {
+    return 'Amount of $name';
+  }
+
+  @override
+  String get recipeOrderPour => 'Add to cup';
+
+  @override
+  String get recipeOrderRemove => 'Remove';
+
+  @override
+  String get recipeOrderServe => 'Serve';
+
+  @override
+  String get recipeOrderPerfect => 'Perfect! Every amount is right';
+
+  @override
+  String get recipeOrderGood => 'Passed — amounts slightly off';
+
+  @override
+  String get recipeOrderFail => 'Not the right drink';
+
+  @override
+  String recipeOrderMissing(String amount, String name) {
+    return 'Missing $name ($amount)';
+  }
+
+  @override
+  String recipeOrderExtra(String name) {
+    return 'Extra $name — not in the recipe';
+  }
+
+  @override
+  String recipeOrderOff(String mine, String name, String right) {
+    return '$name: you added $mine, correct is $right';
+  }
+
+  @override
+  String get recipeOrderHint =>
+      'Tip: tap an added ingredient to change its amount';
+
+  @override
+  String get rlbTabQuiz => 'Quiz';
+
+  @override
+  String get rlbOrderEmpty =>
+      'Nobody is on the board yet. Be the first to brew a drink perfectly without the sample recipe!';
+
+  @override
+  String get rlbNoPerfect =>
+      'You haven\'t brewed any drink perfectly (without the sample recipe) yet, so you\'re not on the board.';
+
+  @override
+  String rlbPerfect(int n) {
+    return '$n perfect drinks';
+  }
 }

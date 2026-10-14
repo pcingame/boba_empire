@@ -4125,4 +4125,89 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get guildLbAvgEmpty => 'ยังไม่มีกิลด์ที่เข้าเงื่อนไขอันดับเฉลี่ย';
+
+  @override
+  String get recipeOrderOrders => 'ชงตามออเดอร์';
+
+  @override
+  String recipeOrderAsk(String drink) {
+    return 'ลูกค้าสั่ง: $drink';
+  }
+
+  @override
+  String get recipeOrderGuideFull => 'สูตรตัวอย่าง';
+
+  @override
+  String get recipeOrderGuideNames => 'วัตถุดิบที่ต้องใช้ (จำปริมาณให้ได้)';
+
+  @override
+  String recipeOrderGuideCount(int n) {
+    return 'เมนูนี้มีวัตถุดิบ $n อย่าง — ลองจำดูนะ!';
+  }
+
+  @override
+  String get recipeOrderGuideNone => 'ไม่มีคำใบ้ — ชงจากความจำ!';
+
+  @override
+  String get recipeOrderTray => 'ถาดวัตถุดิบ — ลากใส่แก้วหรือแตะเพื่อเลือก';
+
+  @override
+  String get recipeOrderCupEmpty => 'แก้วยังว่างอยู่';
+
+  @override
+  String recipeOrderSetAmount(String name) {
+    return 'ปริมาณ $name';
+  }
+
+  @override
+  String get recipeOrderPour => 'ใส่แก้ว';
+
+  @override
+  String get recipeOrderRemove => 'เอาออก';
+
+  @override
+  String get recipeOrderServe => 'เสิร์ฟ';
+
+  @override
+  String get recipeOrderPerfect => 'เยี่ยม! ปริมาณถูกทุกอย่าง';
+
+  @override
+  String get recipeOrderGood => 'ผ่าน — ปริมาณคลาดเล็กน้อย';
+
+  @override
+  String get recipeOrderFail => 'ยังไม่ใช่เมนูที่สั่ง';
+
+  @override
+  String recipeOrderMissing(String amount, String name) {
+    return 'ขาด $name ($amount)';
+  }
+
+  @override
+  String recipeOrderExtra(String name) {
+    return 'เกิน $name — ไม่มีในสูตร';
+  }
+
+  @override
+  String recipeOrderOff(String mine, String name, String right) {
+    return '$name: คุณใส่ $mine ที่ถูกคือ $right';
+  }
+
+  @override
+  String get recipeOrderHint => 'เคล็ดลับ: แตะวัตถุดิบที่ใส่แล้วเพื่อแก้ปริมาณ';
+
+  @override
+  String get rlbTabQuiz => 'ควิซ';
+
+  @override
+  String get rlbOrderEmpty =>
+      'ยังไม่มีใครในอันดับ มาเป็นคนแรกที่ชงเมนูได้สมบูรณ์แบบโดยไม่ดูสูตรตัวอย่าง!';
+
+  @override
+  String get rlbNoPerfect =>
+      'คุณยังไม่เคยชงเมนูได้สมบูรณ์แบบ (โดยไม่ดูสูตรตัวอย่าง) จึงยังไม่มีชื่อในอันดับ';
+
+  @override
+  String rlbPerfect(int n) {
+    return 'สมบูรณ์แบบ $n เมนู';
+  }
 }

@@ -4149,4 +4149,91 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get guildLbAvgEmpty =>
       'Belum ada guild yang memenuhi syarat peringkat rata-rata.';
+
+  @override
+  String get recipeOrderOrders => 'Racik sesuai pesanan';
+
+  @override
+  String recipeOrderAsk(String drink) {
+    return 'Pelanggan memesan: $drink';
+  }
+
+  @override
+  String get recipeOrderGuideFull => 'Contoh resep';
+
+  @override
+  String get recipeOrderGuideNames => 'Bahan yang dipakai (ingat takarannya)';
+
+  @override
+  String recipeOrderGuideCount(int n) {
+    return 'Minuman ini punya $n bahan — ingat ya!';
+  }
+
+  @override
+  String get recipeOrderGuideNone => 'Tanpa petunjuk — racik dari ingatan!';
+
+  @override
+  String get recipeOrderTray =>
+      'Nampan bahan — seret ke gelas atau ketuk untuk memilih';
+
+  @override
+  String get recipeOrderCupEmpty => 'Gelas masih kosong';
+
+  @override
+  String recipeOrderSetAmount(String name) {
+    return 'Takaran $name';
+  }
+
+  @override
+  String get recipeOrderPour => 'Masukkan ke gelas';
+
+  @override
+  String get recipeOrderRemove => 'Keluarkan';
+
+  @override
+  String get recipeOrderServe => 'Sajikan';
+
+  @override
+  String get recipeOrderPerfect => 'Sempurna! Semua takaran tepat';
+
+  @override
+  String get recipeOrderGood => 'Lulus — takaran agak meleset';
+
+  @override
+  String get recipeOrderFail => 'Minuman belum tepat';
+
+  @override
+  String recipeOrderMissing(String amount, String name) {
+    return 'Kurang $name ($amount)';
+  }
+
+  @override
+  String recipeOrderExtra(String name) {
+    return 'Kelebihan $name — tidak ada di resep';
+  }
+
+  @override
+  String recipeOrderOff(String mine, String name, String right) {
+    return '$name: kamu memasukkan $mine, yang benar $right';
+  }
+
+  @override
+  String get recipeOrderHint =>
+      'Tips: ketuk bahan yang sudah masuk untuk mengubah takarannya';
+
+  @override
+  String get rlbTabQuiz => 'Kuis';
+
+  @override
+  String get rlbOrderEmpty =>
+      'Belum ada siapa pun di papan. Jadilah yang pertama meracik minuman dengan sempurna tanpa contoh resep!';
+
+  @override
+  String get rlbNoPerfect =>
+      'Kamu belum meracik minuman apa pun dengan sempurna (tanpa contoh resep), jadi belum masuk papan.';
+
+  @override
+  String rlbPerfect(int n) {
+    return '$n minuman sempurna';
+  }
 }

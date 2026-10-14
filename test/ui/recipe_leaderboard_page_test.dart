@@ -4,6 +4,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:boba_empire/core/recipes.dart';
+import 'package:boba_empire/data/cloud_save_controller.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
 import 'package:boba_empire/leaderboard/flair.dart';
 import 'package:boba_empire/leaderboard/recipe_leaderboard_controller.dart';
@@ -39,13 +40,30 @@ class _Fake extends RecipeLeaderboardController {
   }
 }
 
+class _FakeOrders extends RecipeOrderLeaderboardController {
+  _FakeOrders(this.initial);
+  final RecipeLeaderboardViewState initial;
+  int refreshes = 0;
+  @override
+  RecipeLeaderboardViewState build() => initial;
+  @override
+  Future<void> refresh({bool silent = false}) async => refreshes++;
+}
+
+class _Cloud extends CloudSaveController {
+  _Cloud(this._linked);
+  final bool _linked;
+  @override
+  CloudSaveViewState build() => _linked ? const CloudSaveLinked('a@b.c') : const CloudSaveUnlinked();
+}
+
 class _Flair extends FlairCache {
   @override
   Map<String, String> build() => {};
 }
 
 Future<_Fake> _pump(WidgetTester tester, RecipeLeaderboardViewState s,
-    {String locale = 'vi', Widget home = const RecipeLeaderboardPage(), double scale = 1.0}) async {
+    {String locale = 'vi', Widget home = const RecipeLeaderboardPage(), double scale = 1.0, bool linked = true, _FakeOrders? orders}) async {
   tester.view.physicalSize = const Size(320 * 2, 640 * 2);
   tester.view.devicePixelRatio = 2;
   tester.platformDispatcher.textScaleFactorTestValue = scale;
@@ -61,7 +79,9 @@ Future<_Fake> _pump(WidgetTester tester, RecipeLeaderboardViewState s,
     overrides: [
       sharedPreferencesProvider.overrideWithValue(prefs),
       recipeLeaderboardControllerProvider.overrideWith(() => fake),
+      recipeOrderLeaderboardControllerProvider.overrideWith(() => orders ?? _FakeOrders(const RecipeLeaderboardLoading())),
       flairCacheProvider.overrideWith(_Flair.new),
+      cloudSaveControllerProvider.overrideWith(() => _Cloud(linked)),
       recipeCatalogProvider.overrideWith((ref) async => catalog),
     ],
     child: MaterialApp(
@@ -139,6 +159,61 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('rlb-row-0')), findsOneWidget);
   });
+
+  testWidgets('chưa liên kết email: bấm cúp bị chặn bởi cổng, không mở bảng xếp hạng', (tester) async {
+    final fake = await _pump(tester, RecipeLeaderboardLoaded(entries: _entries, myUserId: 'me', myMastered: 1),
+        home: const RecipeHubPage(), linked: false);
+    await tester.tap(find.byKey(const Key('recipe-leaderboard')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('online-gate-dialog')), findsOneWidget);
+    expect(find.byKey(const Key('rlb-row-0')), findsNothing);
+    expect(fake.refreshes, 0);
+  });
+
+  testWidgets('tab Pha theo đơn: chỉ tải khi mở tab; hàng hiện "Hoàn hảo N món"; tab trắc nghiệm không bị lẫn', (tester) async {
+    final orders = _FakeOrders(RecipeLeaderboardLoaded(entries: _entries, myUserId: 'me', myMastered: 0));
+    final quiz = await _pump(tester, RecipeLeaderboardLoaded(entries: _entries, myUserId: 'me', myMastered: 1), orders: orders);
+    expect(quiz.refreshes, 1);
+    expect(orders.refreshes, 0);
+    expect(find.text('Thạo 100 món'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('rlb-tab-orders')));
+    await tester.pumpAndSettle();
+    expect(orders.refreshes, 1);
+    expect(find.text('Hoàn hảo 100 món'), findsOneWidget);
+    expect(find.text('Hoàn hảo 5 món'), findsOneWidget);
+    expect(find.byKey(const Key('olb-row-2')), findsOneWidget);
+    expect(find.byKey(const Key('olb-none')), findsOneWidget); // myMastered 0 ⇒ chưa có tên
+    expect(find.text('Thạo 100 món'), findsNothing);
+    await tester.tap(find.byKey(const Key('rlb-tab-quiz')));
+    await tester.pumpAndSettle();
+    expect(find.text('Thạo 100 món'), findsOneWidget);
+  });
+
+  testWidgets('mở thẳng tab Pha theo đơn khi truyền initialBoard; trạng thái rỗng có câu mời riêng', (tester) async {
+    final orders = _FakeOrders(const RecipeLeaderboardLoaded(entries: [], myUserId: null, myMastered: 0));
+    await _pump(tester, const RecipeLeaderboardLoading(),
+        home: const RecipeLeaderboardPage(initialBoard: RecipeBoard.orders), orders: orders);
+    expect(orders.refreshes, 1);
+    expect(find.textContaining('pha hoàn hảo một món'), findsOneWidget);
+  });
+
+  for (final lang in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
+    testWidgets('tab Pha theo đơn không tràn ở 320px, chữ 1.5× ($lang)', (tester) async {
+      for (final s in <RecipeLeaderboardViewState>[
+        RecipeLeaderboardLoaded(entries: _entries, myUserId: 'me', myMastered: 0),
+        const RecipeLeaderboardNeedsNickname(),
+        const RecipeLeaderboardError(),
+        const RecipeLeaderboardLoaded(entries: [], myUserId: null, myMastered: 0),
+      ]) {
+        await _pump(tester, const RecipeLeaderboardLoading(),
+            locale: lang,
+            scale: 1.5,
+            home: const RecipeLeaderboardPage(initialBoard: RecipeBoard.orders),
+            orders: _FakeOrders(s));
+        expect(tester.takeException(), isNull, reason: '$lang · $s');
+      }
+    });
+  }
 
   for (final lang in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
     testWidgets('không tràn ở 320px, chữ 1.5×, tên rất dài ($lang)', (tester) async {
