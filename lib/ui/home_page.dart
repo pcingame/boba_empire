@@ -1047,6 +1047,21 @@ class _MoneyHeader extends ConsumerWidget {
   }
 }
 
+/// Bấm bong bóng boa của khách: nhận Xu rồi báo (xu bay + âm thanh + thông báo ngắn).
+void _collectWalkerTip(BuildContext context, WidgetRef ref, Offset at) {
+  final cash = ref.read(gameControllerProvider.notifier).collectWalkerTip();
+  if (cash == null) return;
+  HapticFeedback.selectionClick();
+  ref.read(audioServiceProvider).play(Sfx.reward);
+  playEffect(context, AnimAssets.coinFly, size: 140, center: at, heavy: false);
+  ScaffoldMessenger.of(context)
+    ..clearSnackBars()
+    ..showSnackBar(SnackBar(
+      content: Text(AppLocalizations.of(context)!.walkerTipSnack(formatNumber(cash))),
+      duration: const Duration(seconds: 2),
+    ));
+}
+
 /// Backdrop cảnh quán theo giai đoạn (Xe đẩy → Kiosk → Chuỗi cafe) với vùng
 /// chạm nổi lên trên. Đổi cảnh mượt (crossfade) khi mở khóa giai đoạn mới —
 /// phần thưởng thị giác cho tiến trình.
@@ -1111,9 +1126,15 @@ class _StageScene extends ConsumerWidget {
           ),
         // Hạt trang trí theo giai đoạn (bụi, lá, hơi nước, đốm vàng, sao…); theo mức chất lượng.
         StageAmbience(stage: n),
-        // Khách đi ngang quán (giai đoạn 1–12); thưa dần theo mức chất lượng, Tắt = không có.
-        StageWalkers(stage: n, sceneZoom: _sceneZoom),
         const _TapArea(),
+        // Khách đi ngang quán (giai đoạn 1–12); thưa dần theo mức chất lượng, Tắt = không có. Nằm TRÊN
+        // vùng chạm để bong bóng boa luôn bấm được (phần Lottie của khách không chặn chạm).
+        StageWalkers(
+          stage: n,
+          sceneZoom: _sceneZoom,
+          canTip: () => ref.read(gameControllerProvider.notifier).walkerTipReady,
+          onTip: (at) => _collectWalkerTip(context, ref, at),
+        ),
         // Chip "tự động chạm" nằm TRONG cảnh quán (góc trên phải), không đè thanh tiêu đề.
         const _AutoTapIndicator(),
         // Cơ hội giới hạn thời gian: neo trong vùng cảnh (không đè panel Shop).

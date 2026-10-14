@@ -282,6 +282,32 @@ class GameController extends Notifier<GameSnapshot> {
     return (cash: cash, gems: gems);
   }
 
+  // Chỉ trong bộ nhớ: mở lại app là hết thời gian hồi, nhưng muốn có boa vẫn phải bấm trúng một khách
+  // (xuất hiện thưa), nên không đáng lưu bền.
+  int _nextWalkerTipMillis = 0;
+
+  /// Khách đi ngang có được phép mang bong bóng boa không (hết thời gian hồi chưa).
+  bool get walkerTipReady => _clock() >= _nextWalkerTipMillis;
+
+  /// Nhận boa của khách: [Balance.walkerTipSeconds] giây sản xuất (sàn [Balance.walkerTipFloorTaps]
+  /// lần chạm). Null nếu còn thời gian hồi (bấm trúng bong bóng cũ lúc vừa nhận xong).
+  double? collectWalkerTip() {
+    final now = _clock();
+    if (now < _nextWalkerTipMillis) return null;
+    final production = effectiveIncomePerSecond(
+          _game,
+          Balance.generators,
+          bonusPerStar: Balance.bonusPerStar,
+        ) *
+        Balance.walkerTipSeconds;
+    final cash = max(production, _game.tapValue * Balance.walkerTipFloorTaps);
+    grantBonus(_game, cash);
+    _nextWalkerTipMillis = now + Balance.walkerTipCooldownMs;
+    logEvent('walker_tip', {'cash': cash});
+    state = _snapshot();
+    return cash;
+  }
+
   void _scheduleNextVip(int now) {
     final span = Balance.vipSpawnMaxMs - Balance.vipSpawnMinMs;
     _nextVipMillis = now + Balance.vipSpawnMinMs + _random.nextInt(span + 1);

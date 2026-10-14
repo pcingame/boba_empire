@@ -2472,6 +2472,12 @@ abstract class AppLocalizations {
   /// **'Âm thanh'**
   String get settingsSound;
 
+  /// No description provided for @walkerTipSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khách boa +{amount} Xu 🧋'**
+  String walkerTipSnack(String amount);
+
   /// No description provided for @settingsEffects.
   ///
   /// In vi, this message translates to:

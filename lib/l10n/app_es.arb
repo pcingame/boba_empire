@@ -394,6 +394,7 @@
   "genUltimateTea": "Té con Leche Supremo",
   "settingsTitle": "Ajustes",
   "settingsSound": "Sonido",
+  "walkerTipSnack": "Un cliente dejó +{amount} monedas de propina 🧋",
   "settingsEffects": "Efectos visuales",
   "settingsEffectsAuto": "Automático (según el dispositivo)",
   "settingsEffectsHigh": "Alto",

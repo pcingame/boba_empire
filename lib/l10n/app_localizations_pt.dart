@@ -1437,6 +1437,11 @@ class AppLocalizationsPt extends AppLocalizations {
   String get settingsSound => 'Som';
 
   @override
+  String walkerTipSnack(String amount) {
+    return 'Um cliente deixou +$amount moedas de gorjeta 🧋';
+  }
+
+  @override
   String get settingsEffects => 'Efeitos visuais';
 
   @override

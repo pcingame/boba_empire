@@ -394,6 +394,7 @@
   "genUltimateTea": "Chá com Leite Supremo",
   "settingsTitle": "Configurações",
   "settingsSound": "Som",
+  "walkerTipSnack": "Um cliente deixou +{amount} moedas de gorjeta 🧋",
   "settingsEffects": "Efeitos visuais",
   "settingsEffectsAuto": "Automático (conforme o aparelho)",
   "settingsEffectsHigh": "Alto",

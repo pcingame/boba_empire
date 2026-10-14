@@ -394,6 +394,7 @@
   "genUltimateTea": "ชานมสูงสุด",
   "settingsTitle": "ตั้งค่า",
   "settingsSound": "เสียง",
+  "walkerTipSnack": "ลูกค้าให้ทิป +{amount} เหรียญ 🧋",
   "settingsEffects": "เอฟเฟกต์ภาพ",
   "settingsEffectsAuto": "อัตโนมัติ (ตามเครื่อง)",
   "settingsEffectsHigh": "สูง",

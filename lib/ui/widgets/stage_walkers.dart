@@ -7,6 +7,10 @@ import 'ambient_ticker.dart';
 import 'anim_assets.dart';
 import 'effects_quality.dart';
 import 'motion.dart' show reduceMotion;
+import 'one_shot_lottie.dart' show effectCenterOf;
+
+/// Test đặt để lượt khách (và việc có bong bóng boa) xác định; app thật để null.
+math.Random? debugWalkerRandom;
 
 /// Một nhân vật khách: file Lottie + cách đặt vào cảnh + (tuỳ chọn) các bộ màu đổi qua delegate.
 class WalkerSpec {
@@ -174,12 +178,25 @@ class WalkerScript {
 /// trong lúc đang đi; lúc chờ không dựng gì và không tốn khung. Theo mức chất lượng: Tắt /
 /// "giảm chuyển động" không dựng; Thấp đi rất thưa. Dừng khi bị hộp thoại phủ lên.
 class StageWalkers extends StatefulWidget {
-  const StageWalkers({super.key, required this.stage, this.sceneZoom = 1.5, this.random});
+  const StageWalkers({
+    super.key,
+    required this.stage,
+    this.sceneZoom = 1.5,
+    this.canTip,
+    this.onTip,
+    this.random,
+  });
 
   final int stage;
 
   /// Hệ số phóng của ảnh cảnh (khớp `_sceneZoom` ở màn chính) — để đặt chân khách lên dải đất.
   final double sceneZoom;
+
+  /// Có cho khách lượt này mang bong bóng boa không (hỏi lúc khách bắt đầu đi; null = không bao giờ).
+  final bool Function()? canTip;
+
+  /// Người chơi bấm bong bóng boa; [center] là toạ độ toàn cục của bong bóng (để phát hiệu ứng).
+  final void Function(Offset center)? onTip;
 
   /// Chỉ cho test.
   final math.Random? random;
@@ -195,13 +212,14 @@ class _StageWalkersState extends State<StageWalkers> with SingleTickerProviderSt
   late final WalkerScript _script;
   VoidCallback? _unsub;
   bool _covered = false;
+  bool _tipOffered = false; // lượt hiện tại có bong bóng boa chưa bị bấm
   double _cycle = 0; // giây trong chu kỳ bước chân
   double _loopSeconds = 1.0;
 
   @override
   void initState() {
     super.initState();
-    _script = WalkerScript(widget.random ?? math.Random(), EffectsController.instance.quality.value);
+    _script = WalkerScript(widget.random ?? debugWalkerRandom ?? math.Random(), EffectsController.instance.quality.value);
     EffectsController.instance.quality.addListener(_onQuality);
     _sync();
   }
@@ -241,10 +259,25 @@ class _StageWalkersState extends State<StageWalkers> with SingleTickerProviderSt
       _c.value = (_cycle % _loopSeconds) / _loopSeconds;
       _tick.value++;
     }
-    if (!was && _script.walking) _cycle = 0; // lượt mới: bước chân bắt đầu từ khung đầu
+    if (!was && _script.walking) {
+      _cycle = 0; // lượt mới: bước chân bắt đầu từ khung đầu
+      // 70% khách có boa (khi hết thời gian hồi) — không phải khách nào cũng boa, nên bong bóng là
+      // thứ đáng để mắt tìm chứ không phải việc phải làm mỗi lượt.
+      _tipOffered = (widget.canTip?.call() ?? false) && _script.random.nextDouble() < 0.7;
+    }
+    if (finished) _tipOffered = false;
     if (was != _script.walking || finished) {
       if (mounted) setState(() {}); // bắt đầu/kết thúc lượt: dựng/gỡ Lottie
     }
+  }
+
+  final _bubbleKey = GlobalKey();
+
+  void _onTipTap() {
+    if (!_tipOffered) return;
+    final center = _bubbleKey.currentContext == null ? null : effectCenterOf(_bubbleKey.currentContext!);
+    setState(() => _tipOffered = false);
+    widget.onTip?.call(center ?? Offset.zero);
   }
 
   @override
@@ -266,9 +299,7 @@ class _StageWalkersState extends State<StageWalkers> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     if (!_active || !_script.walking) return const SizedBox.shrink();
-    return IgnorePointer(
-      child: RepaintBoundary(
-        child: LayoutBuilder(builder: (context, box) {
+    return LayoutBuilder(builder: (context, box) {
           // Nhân vật chiếm ~90% chiều cao khung Lottie, đứng giữa khung: khung = chiều cao mong muốn.
           final spec = walkerSpecs[_script.spec];
           final canvas = box.maxHeight * spec.canvasFrac * _script.scale;
@@ -296,12 +327,50 @@ class _StageWalkersState extends State<StageWalkers> with SingleTickerProviderSt
               final to = _script.dir == 1 ? 1.12 : -0.12;
               final cx = (from + (to - from) * p) * box.maxWidth;
               return Stack(children: [
-                Positioned(left: cx - canvas / 2, bottom: bottom, child: child!),
+                Positioned(
+                  left: cx - canvas / 2,
+                  bottom: bottom,
+                  child: IgnorePointer(child: RepaintBoundary(child: child!)),
+                ),
+                if (_tipOffered)
+                  Positioned(
+                    left: cx - _tipBubbleSize / 2,
+                    // Ngay trên đầu nhân vật (đầu sát mép trên khung Lottie), lắc nhẹ theo nhịp bước.
+                    bottom: bottom + canvas * 0.93 + 3 * math.sin(_cycle * 5),
+                    child: _TipBubble(key: _bubbleKey, onTap: _onTipTap),
+                  ),
               ]);
             },
             child: Transform.flip(flipX: (_script.dir == 1) != spec.facesRight, child: lottie),
           );
-        }),
+        });
+  }
+}
+
+const _tipBubbleSize = 44.0; // vùng chạm tối thiểu cho ngón tay
+
+/// Bong bóng boa trên đầu khách: đồng xu vàng viền trắng.
+class _TipBubble extends StatelessWidget {
+  const _TipBubble({super.key, required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      key: const Key('walker-tip'),
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Container(
+        width: _tipBubbleSize,
+        height: _tipBubbleSize,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: const Color(0xFFFFC107),
+          border: Border.all(color: Colors.white, width: 3),
+          boxShadow: const [BoxShadow(color: Color(0x55000000), blurRadius: 6, offset: Offset(0, 2))],
+        ),
+        child: const Icon(Icons.attach_money_rounded, color: Colors.white, size: 26),
       ),
     );
   }

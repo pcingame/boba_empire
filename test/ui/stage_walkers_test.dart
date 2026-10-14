@@ -217,5 +217,74 @@ void main() {
       await run(tester, 10);
       await tester.pumpWidget(const SizedBox());
     });
+
+    group('boa', () {
+      Widget host({bool Function()? canTip, void Function(Offset)? onTip, int seed = 3}) => app(
+          Stack(children: [
+            Positioned.fill(child: StageWalkers(stage: 1, random: Random(seed), canTip: canTip, onTip: onTip)),
+          ]));
+
+      // Seed cho nhiều lượt đầu: tìm seed có bong bóng ở lượt đầu (xác suất 70%).
+      Future<int?> seedWithTip(WidgetTester tester) async {
+        for (var seed = 1; seed < 30; seed++) {
+          await tester.pumpWidget(host(canTip: () => true, seed: seed));
+          await run(tester, 6);
+          final found = find.byKey(const Key('walker-tip')).evaluate().isNotEmpty;
+          await tester.pumpWidget(const SizedBox()); // gỡ hẳn để lần dựng sau bắt đầu lại từ đầu
+          if (found) return seed;
+        }
+        return null;
+      }
+
+      testWidgets('canTip=true: có lượt khách mang bong bóng; bấm → onTip một lần, bong bóng biến mất', (tester) async {
+        final taps = <Offset>[];
+        final seed = await seedWithTip(tester);
+        expect(seed, isNotNull, reason: 'trong 30 lượt phải có ít nhất một khách có boa');
+        await tester.pumpWidget(host(canTip: () => true, onTip: taps.add, seed: seed!));
+        await run(tester, 6);
+        final bubble = find.byKey(const Key('walker-tip'));
+        expect(bubble, findsOneWidget);
+        // Vùng chạm đủ cho ngón tay (≥ 44dp).
+        expect(tester.getSize(bubble).shortestSide, greaterThanOrEqualTo(44));
+        await tester.tap(bubble);
+        await tester.pump();
+        expect(taps, hasLength(1));
+        expect(bubble, findsNothing);
+        // Đã bấm thì khách đó không còn gì để bấm tiếp.
+        await run(tester, 1);
+        expect(find.byKey(const Key('walker-tip')), findsNothing);
+        expect(taps, hasLength(1));
+        await run(tester, 10);
+        await tester.pumpWidget(const SizedBox());
+      });
+
+      testWidgets('canTip=false hoặc không truyền: không bao giờ có bong bóng', (tester) async {
+        for (final canTip in <bool Function()?>[() => false, null]) {
+          for (var seed = 1; seed < 8; seed++) {
+            await tester.pumpWidget(host(canTip: canTip, seed: seed));
+            await run(tester, 6);
+            expect(find.byKey(const Key('walker-tip')), findsNothing, reason: 'seed $seed');
+            await run(tester, 10);
+          }
+        }
+        await tester.pumpWidget(const SizedBox());
+      });
+
+      testWidgets('bong bóng mất khi khách đi khỏi cảnh dù chưa bấm; không chặn chạm vùng khác', (tester) async {
+        final seed = await seedWithTip(tester);
+        var under = 0;
+        await tester.pumpWidget(app(Stack(children: [
+          GestureDetector(onTap: () => under++, behavior: HitTestBehavior.opaque, child: const SizedBox.expand()),
+          Positioned.fill(child: StageWalkers(stage: 1, random: Random(seed!), canTip: () => true)),
+        ])));
+        await run(tester, 6);
+        expect(find.byKey(const Key('walker-tip')), findsOneWidget);
+        await tester.tapAt(const Offset(5, 395)); // góc xa bong bóng
+        expect(under, 1);
+        await run(tester, 10);
+        expect(find.byKey(const Key('walker-tip')), findsNothing);
+        await tester.pumpWidget(const SizedBox());
+      });
+    });
   });
 }

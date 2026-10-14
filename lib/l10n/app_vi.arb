@@ -843,6 +843,14 @@
   "genUltimateTea": "Trà sữa tối thượng",
   "settingsTitle": "Cài đặt",
   "settingsSound": "Âm thanh",
+  "walkerTipSnack": "Khách boa +{amount} Xu 🧋",
+  "@walkerTipSnack": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
   "settingsEffects": "Hiệu ứng động",
   "settingsEffectsAuto": "Tự động (theo máy)",
   "settingsEffectsHigh": "Cao",

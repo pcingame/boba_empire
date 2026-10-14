@@ -1433,6 +1433,11 @@ class AppLocalizationsId extends AppLocalizations {
   String get settingsSound => 'Suara';
 
   @override
+  String walkerTipSnack(String amount) {
+    return 'Pelanggan memberi tip +$amount koin 🧋';
+  }
+
+  @override
   String get settingsEffects => 'Efek visual';
 
   @override

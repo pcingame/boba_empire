@@ -936,3 +936,14 @@ Góp ý người chơi: "thêm tính năng trao đổi vật phẩm", "Chợ to�
 - Server: `supabase/accessory_swap_schema.sql` (sau accessory_market_schema). Kiểm: `scripts/test_swap_sql.sh`.
 - ⚠️ Cùng mức tin cậy với Chợ: số bản sao do client tự khai (`register_accessory_copies`), nên người gian lận có thể khai món ảo rồi đổi lấy món thật.
   Chưa có: thông báo đẩy khi đề nghị được nhận, "muốn bất kỳ món độ hiếm X", gợi ý theo danh sách muốn có.
+
+## 33. Animation, khách đi ngang cảnh và boa (2026-10-14, chưa playtest)
+
+Kế hoạch đầy đủ ở `PLAN_ANIMATION.md`. Tóm tắt phần ảnh hưởng chơi:
+- **Mức hiệu ứng** (Tắt/Thấp/Vừa/Cao; Cài đặt → "Hiệu ứng động"): tự chọn theo RAM/đời máy lúc mở app, tự hạ khi >15% khung chậm, người chơi chỉnh tay được. Chỉ là hình ảnh — không đổi cân bằng.
+- **Khách đi ngang** (giai đoạn 1–12): 3 kiểu, thưa dần theo mức hiệu ứng (Cao 6–14s, Vừa 12–26s, Thấp 45–70s giữa hai lượt).
+- **Boa** (có tác động kinh tế nhỏ): ~70% khách mang bong bóng 💲 trên đầu khi hết thời gian hồi; bấm → nhận
+  `walkerTipSeconds`=8 giây sản xuất (sàn `walkerTipFloorTaps`=5 lần chạm), CHỈ Xu, không 💎. Thời gian hồi
+  `walkerTipCooldownMs`=90s (chỉ trong bộ nhớ) ⇒ tối đa ~9% thu nhập thêm (khách VIP ~18%).
+  Người chơi để mức hiệu ứng Tắt thì không có khách nên không nhận boa — chấp nhận (boa chỉ là thưởng nhỏ cho người nhìn màn chính).
+  ⚠️ Số liệu ước lượng, chưa playtest; cân nhắc hạ nếu tổng với VIP quá hào phóng.

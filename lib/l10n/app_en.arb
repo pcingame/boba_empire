@@ -394,6 +394,7 @@
   "genUltimateTea": "Ultimate Milk Tea",
   "settingsTitle": "Settings",
   "settingsSound": "Sound",
+  "walkerTipSnack": "A customer tipped +{amount} coins 🧋",
   "settingsEffects": "Visual effects",
   "settingsEffectsAuto": "Auto (match device)",
   "settingsEffectsHigh": "High",

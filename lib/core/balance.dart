@@ -183,6 +183,15 @@ class Balance {
   static const int vipGemsMin = 1;
   static const int vipGemsMax = 3;
 
+  // --- Boa của khách đi ngang cảnh (bấm bong bóng) ---
+
+  /// Boa = chừng này giây sản xuất (sàn: [walkerTipFloorTaps] lần chạm), chỉ Xu — KHÔNG có 💎.
+  /// Mỗi [walkerTipCooldownMs] chỉ nhận được một lần ⇒ tối đa ~9% thu nhập thêm (so với khách VIP
+  /// ~18%). ⚠️ chưa playtest.
+  static const int walkerTipSeconds = 8;
+  static const int walkerTipFloorTaps = 5;
+  static const int walkerTipCooldownMs = 90 * 1000;
+
   // --- Cửa hàng Kim Cương (chỗ tiêu gems) ---
 
   /// Hệ số tăng giá gems mỗi cấp (dùng chung cho các vật phẩm).

@@ -1429,6 +1429,11 @@ class AppLocalizationsTh extends AppLocalizations {
   String get settingsSound => 'เสียง';
 
   @override
+  String walkerTipSnack(String amount) {
+    return 'ลูกค้าให้ทิป +$amount เหรียญ 🧋';
+  }
+
+  @override
   String get settingsEffects => 'เอฟเฟกต์ภาพ';
 
   @override

@@ -394,6 +394,7 @@
   "genUltimateTea": "궁극의 밀크티",
   "settingsTitle": "설정",
   "settingsSound": "소리",
+  "walkerTipSnack": "손님이 팁으로 +{amount} 코인을 줬어요 🧋",
   "settingsEffects": "시각 효과",
   "settingsEffectsAuto": "자동 (기기에 맞춤)",
   "settingsEffectsHigh": "높음",

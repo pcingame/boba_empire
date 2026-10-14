@@ -1429,6 +1429,11 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsSound => 'Âm thanh';
 
   @override
+  String walkerTipSnack(String amount) {
+    return 'Khách boa +$amount Xu 🧋';
+  }
+
+  @override
   String get settingsEffects => 'Hiệu ứng động';
 
   @override

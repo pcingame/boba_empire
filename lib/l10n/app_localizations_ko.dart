@@ -1411,6 +1411,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsSound => '소리';
 
   @override
+  String walkerTipSnack(String amount) {
+    return '손님이 팁으로 +$amount 코인을 줬어요 🧋';
+  }
+
+  @override
   String get settingsEffects => '시각 효과';
 
   @override

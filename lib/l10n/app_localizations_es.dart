@@ -1440,6 +1440,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsSound => 'Sonido';
 
   @override
+  String walkerTipSnack(String amount) {
+    return 'Un cliente dejó +$amount monedas de propina 🧋';
+  }
+
+  @override
   String get settingsEffects => 'Efectos visuales';
 
   @override
