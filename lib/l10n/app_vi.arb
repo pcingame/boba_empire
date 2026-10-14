@@ -843,6 +843,150 @@
   "genUltimateTea": "Trà sữa tối thượng",
   "settingsTitle": "Cài đặt",
   "settingsSound": "Âm thanh",
+  "dqRecipe": "Hoàn thành 1 buổi luyện công thức",
+  "wqRecipeSessions": "Hoàn thành {n} buổi luyện công thức",
+  "@wqRecipeSessions": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "wqRecipeLevels": "Lên bậc {n} công thức",
+  "@wqRecipeLevels": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "recipeHint": "Gợi ý (xem quảng cáo)",
+  "recipeHintNoCount": "Đã dùng gợi ý nên câu này không tính bậc.",
+  "recipeDouble": "Xem quảng cáo, nhân đôi Xu",
+  "recipeDoubled": "Đã nhân đôi Xu thưởng!",
+  "recipeTitle": "Công thức pha chế",
+  "recipeEntryNote": "Học thuộc công thức, nhận thưởng",
+  "recipeEntryButton": "Chơi",
+  "recipeMastered": "Thạo {n}/{total} món",
+  "@recipeMastered": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "recipeDueToday": "{n} món cần ôn hôm nay",
+  "@recipeDueToday": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "recipeAllDone": "Hôm nay bạn đã ôn xong! Vẫn có thể luyện thêm (không tính bậc).",
+  "recipePractice": "Luyện tập",
+  "recipeBox0": "Mới",
+  "recipeBox1": "Quen",
+  "recipeBox2": "Thuộc",
+  "recipeBox3": "Thạo",
+  "recipeReviewToday": "Ôn lại: hôm nay",
+  "recipeReviewIn": "Ôn lại sau {n} ngày",
+  "@recipeReviewIn": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "recipeQMissing": "{name} còn thiếu nguyên liệu nào?",
+  "@recipeQMissing": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "recipeQQuantity": "{drink}: cần bao nhiêu {ingredient}?",
+  "@recipeQQuantity": {
+    "placeholders": {
+      "drink": {
+        "type": "String"
+      },
+      "ingredient": {
+        "type": "String"
+      }
+    }
+  },
+  "recipeQFull": "Công thức đúng của {name} là?",
+  "@recipeQFull": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "recipeCorrect": "Chính xác!",
+  "recipeWrongShort": "Chưa đúng — đáp án được tô xanh.",
+  "recipeLevelUp": "{name} lên bậc {box}!",
+  "@recipeLevelUp": {
+    "placeholders": {
+      "box": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "recipePracticeOnly": "Món này chưa tới hạn ôn nên chỉ để luyện, không tính bậc.",
+  "recipeNext": "Câu tiếp",
+  "recipeSeeResult": "Xem kết quả",
+  "recipeResultTitle": "Kết quả",
+  "recipeScore": "{correct}/{total} câu đúng",
+  "@recipeScore": {
+    "placeholders": {
+      "correct": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "recipeLevelUps": "{n} món lên bậc",
+  "@recipeLevelUps": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "recipeRewardCash": "Thưởng: +{cash} Xu",
+  "@recipeRewardCash": {
+    "placeholders": {
+      "cash": {
+        "type": "String"
+      }
+    }
+  },
+  "recipeRewardBoth": "Thưởng: +{cash} Xu, +{gems} 💎",
+  "@recipeRewardBoth": {
+    "placeholders": {
+      "cash": {
+        "type": "String"
+      },
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "recipeAgain": "Luyện tiếp",
+  "recipeDone": "Xong",
+  "recipeDisclaimer": "Công thức mang tính tham khảo cho trò chơi, không phải công thức chuẩn của thương hiệu nào.",
+  "recipeIngredients": "Nguyên liệu",
   "walkerTipSnack": "Khách boa +{amount} Xu 🧋",
   "@walkerTipSnack": {
     "placeholders": {
@@ -1865,7 +2009,7 @@
   "notifyD7Body": "Kỷ Nguyên, Trân Châu Rơi và bao nhiêu thứ mới đang chờ bạn quay lại.",
   "eventBannerLabel": "🎉 Sự kiện: ×{mult} thu nhập! Còn {timeLeft}",
   "@eventBannerLabel": {"placeholders": {"mult": {"type": "String"}, "timeLeft": {"type": "String"}}},
-  "navMatch3": "Trân châu",
+  "navMatch3": "Trò chơi",
   "m3Title": "Trân Châu Rơi",
   "m3Level": "Màn {n}",
   "@m3Level": {

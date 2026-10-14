@@ -43,6 +43,7 @@ import '../data/cloud_save_repository.dart';
 import '../data/game_storage.dart';
 import '../market/accessory_market_repository.dart';
 import '../ui/widgets/effects_quality.dart' show EffectsController;
+import '../core/recipe_mastery.dart';
 import 'game_providers.dart';
 import 'game_snapshot.dart';
 
@@ -282,6 +283,66 @@ class GameController extends Notifier<GameSnapshot> {
     return (cash: cash, gems: gems);
   }
 
+  /// Ghi một câu trả lời luyện công thức [recipeId]: cập nhật bậc (chỉ khi món đến hạn ôn — xem
+  /// recipe_mastery.dart) và trao thưởng LẦN ĐẦU đạt mỗi bậc cao hơn: Xu theo giây sản xuất (có sàn),
+  /// thêm 💎 ở bậc Thạo. Lưu ngay (có 💎).
+  ///
+  /// [hinted] = câu đã dùng gợi ý (xem quảng cáo loại 2 đáp án sai): không tính bậc, không thưởng — nếu
+  /// không người chơi sẽ mua bậc bằng quảng cáo và phá cơ chế ôn cách quãng.
+  RecipeAnswerResult answerRecipe(int recipeId, bool correct, {bool hinted = false}) {
+    final today = dayIndex(_clock());
+    final key = '$recipeId';
+    final stored = _game.recipeProgress[key];
+    final before = stored == null ? const RecipeProgress() : RecipeProgress.fromList(stored);
+    final out = applyRecipeAnswer(before, correct, today);
+    if (hinted || !out.counted) {
+      return RecipeAnswerResult(
+          before, before, RecipeAnswerOutcome(before, counted: false, leveledUp: false, newBest: false), 0, 0);
+    }
+    _game.recipeProgress[key] = out.next.toList();
+    if (out.leveledUp) addWeeklyProgress(_game, WeeklyQuestKind.recipeLevels, 1);
+    var cash = 0.0;
+    var gems = 0;
+    if (out.newBest) {
+      final box = out.next.box;
+      final production = effectiveIncomePerSecond(
+            _game,
+            Balance.generators,
+            bonusPerStar: Balance.bonusPerStar,
+          ) *
+          recipeRewardSeconds[box];
+      cash = max(production, _game.tapValue * recipeRewardFloorTaps[box]);
+      grantBonus(_game, cash);
+      if (box == recipeMaxBox) {
+        gems = recipeMaxBoxGems;
+        _game.gems += gems;
+      }
+      logEvent('recipe_level', {'recipe': recipeId, 'box': box});
+    }
+    unawaited(saveNow());
+    state = _snapshot();
+    return RecipeAnswerResult(before, out.next, out, cash, gems);
+  }
+
+  /// Kết thúc một buổi luyện công thức: tính cho nhiệm vụ ngày/tuần CHỈ khi có ít nhất một câu thật sự
+  /// được tính bậc ([anyCounted]) — buổi toàn món chưa tới hạn (chỉ luyện) hay toàn câu dùng gợi ý
+  /// không đếm, nên không thể cày nhiệm vụ bằng cách bấm đại.
+  void completeRecipeSession({required bool anyCounted}) {
+    if (!anyCounted) return;
+    addDailyProgress(_game, DailyQuestKind.recipe, 1);
+    addWeeklyProgress(_game, WeeklyQuestKind.recipeSessions, 1);
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Nhân đôi phần Xu thưởng của một buổi sau khi người chơi xem quảng cáo (chỉ Xu, không 💎).
+  void doubleRecipeReward(double cash) {
+    if (!cash.isFinite || cash <= 0) return;
+    grantBonus(_game, cash);
+    logEvent('recipe_double', {'cash': cash});
+    state = _snapshot();
+  }
+
   // Chỉ trong bộ nhớ: mở lại app là hết thời gian hồi, nhưng muốn có boa vẫn phải bấm trúng một khách
   // (xuất hiện thưa), nên không đáng lưu bền.
   int _nextWalkerTipMillis = 0;
@@ -488,6 +549,10 @@ class GameController extends Notifier<GameSnapshot> {
     _rivalEventPending = type;
     state = _snapshot();
   }
+
+  /// Trạng thái game đang giữ (chỉ cho test: đọc tiến độ nhiệm vụ/ô nhớ không có trong snapshot).
+  @visibleForTesting
+  GameState get debugGame => _game;
 
   /// Chạy một nhịp tick (chỉ dùng cho test, thay cho việc chờ timer thật).
   @visibleForTesting
@@ -2089,6 +2154,10 @@ class GameController extends Notifier<GameSnapshot> {
             claimed: weeklyQuestClaimed(_game, q),
           ),
       ],
+      recipeProgress: {
+        for (final e in _game.recipeProgress.entries)
+          if (int.tryParse(e.key) != null) int.parse(e.key): RecipeProgress.fromList(e.value),
+      },
       weeklyChestAvailable: weeklyChestAvailable(_game),
       weeklyChestClaimed: _game.weeklyBonusClaimed,
       ascensionCount: _game.ascensionCount,

@@ -1430,6 +1430,150 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsSound => 'Sound';
 
   @override
+  String get dqRecipe => 'Finish 1 recipe practice session';
+
+  @override
+  String wqRecipeSessions(int n) {
+    return 'Finish $n recipe practice sessions';
+  }
+
+  @override
+  String wqRecipeLevels(int n) {
+    return 'Level up $n recipes';
+  }
+
+  @override
+  String get recipeHint => 'Hint (watch an ad)';
+
+  @override
+  String get recipeHintNoCount =>
+      'You used a hint, so this question doesn\'t count toward levels.';
+
+  @override
+  String get recipeDouble => 'Watch an ad to double the coins';
+
+  @override
+  String get recipeDoubled => 'Coin reward doubled!';
+
+  @override
+  String get recipeTitle => 'Drink recipes';
+
+  @override
+  String get recipeEntryNote => 'Memorize recipes, earn rewards';
+
+  @override
+  String get recipeEntryButton => 'Play';
+
+  @override
+  String recipeMastered(int n, int total) {
+    return 'Mastered $n/$total';
+  }
+
+  @override
+  String recipeDueToday(int n) {
+    return '$n recipes to review today';
+  }
+
+  @override
+  String get recipeAllDone =>
+      'All reviewed for today! You can still practice (won\'t count toward levels).';
+
+  @override
+  String get recipePractice => 'Practice';
+
+  @override
+  String get recipeBox0 => 'New';
+
+  @override
+  String get recipeBox1 => 'Familiar';
+
+  @override
+  String get recipeBox2 => 'Learned';
+
+  @override
+  String get recipeBox3 => 'Mastered';
+
+  @override
+  String get recipeReviewToday => 'Review: today';
+
+  @override
+  String recipeReviewIn(int n) {
+    return 'Review in $n days';
+  }
+
+  @override
+  String recipeQMissing(String name) {
+    return 'Which ingredient is missing from $name?';
+  }
+
+  @override
+  String recipeQQuantity(String drink, String ingredient) {
+    return '$drink: how much $ingredient?';
+  }
+
+  @override
+  String recipeQFull(String name) {
+    return 'Which is the correct recipe for $name?';
+  }
+
+  @override
+  String get recipeCorrect => 'Correct!';
+
+  @override
+  String get recipeWrongShort => 'Not quite — the right answer is highlighted.';
+
+  @override
+  String recipeLevelUp(String box, String name) {
+    return '$name reached $box!';
+  }
+
+  @override
+  String get recipePracticeOnly =>
+      'Not due for review yet — practice only, no level change.';
+
+  @override
+  String get recipeNext => 'Next';
+
+  @override
+  String get recipeSeeResult => 'See results';
+
+  @override
+  String get recipeResultTitle => 'Results';
+
+  @override
+  String recipeScore(int correct, int total) {
+    return '$correct/$total correct';
+  }
+
+  @override
+  String recipeLevelUps(int n) {
+    return '$n recipes leveled up';
+  }
+
+  @override
+  String recipeRewardCash(String cash) {
+    return 'Reward: +$cash coins';
+  }
+
+  @override
+  String recipeRewardBoth(String cash, int gems) {
+    return 'Reward: +$cash coins, +$gems 💎';
+  }
+
+  @override
+  String get recipeAgain => 'Practice again';
+
+  @override
+  String get recipeDone => 'Done';
+
+  @override
+  String get recipeDisclaimer =>
+      'Recipes are for gameplay reference only, not any brand\'s official recipe.';
+
+  @override
+  String get recipeIngredients => 'Ingredients';
+
+  @override
   String walkerTipSnack(String amount) {
     return 'A customer tipped +$amount coins 🧋';
   }
@@ -3088,7 +3232,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get navMatch3 => 'Pearls';
+  String get navMatch3 => 'Games';
 
   @override
   String get m3Title => 'Falling Pearls';

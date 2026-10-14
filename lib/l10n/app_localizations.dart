@@ -2472,6 +2472,234 @@ abstract class AppLocalizations {
   /// **'Âm thanh'**
   String get settingsSound;
 
+  /// No description provided for @dqRecipe.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn thành 1 buổi luyện công thức'**
+  String get dqRecipe;
+
+  /// No description provided for @wqRecipeSessions.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn thành {n} buổi luyện công thức'**
+  String wqRecipeSessions(int n);
+
+  /// No description provided for @wqRecipeLevels.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lên bậc {n} công thức'**
+  String wqRecipeLevels(int n);
+
+  /// No description provided for @recipeHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gợi ý (xem quảng cáo)'**
+  String get recipeHint;
+
+  /// No description provided for @recipeHintNoCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã dùng gợi ý nên câu này không tính bậc.'**
+  String get recipeHintNoCount;
+
+  /// No description provided for @recipeDouble.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem quảng cáo, nhân đôi Xu'**
+  String get recipeDouble;
+
+  /// No description provided for @recipeDoubled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhân đôi Xu thưởng!'**
+  String get recipeDoubled;
+
+  /// No description provided for @recipeTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Công thức pha chế'**
+  String get recipeTitle;
+
+  /// No description provided for @recipeEntryNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Học thuộc công thức, nhận thưởng'**
+  String get recipeEntryNote;
+
+  /// No description provided for @recipeEntryButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chơi'**
+  String get recipeEntryButton;
+
+  /// No description provided for @recipeMastered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thạo {n}/{total} món'**
+  String recipeMastered(int n, int total);
+
+  /// No description provided for @recipeDueToday.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} món cần ôn hôm nay'**
+  String recipeDueToday(int n);
+
+  /// No description provided for @recipeAllDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay bạn đã ôn xong! Vẫn có thể luyện thêm (không tính bậc).'**
+  String get recipeAllDone;
+
+  /// No description provided for @recipePractice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Luyện tập'**
+  String get recipePractice;
+
+  /// No description provided for @recipeBox0.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mới'**
+  String get recipeBox0;
+
+  /// No description provided for @recipeBox1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quen'**
+  String get recipeBox1;
+
+  /// No description provided for @recipeBox2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thuộc'**
+  String get recipeBox2;
+
+  /// No description provided for @recipeBox3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thạo'**
+  String get recipeBox3;
+
+  /// No description provided for @recipeReviewToday.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ôn lại: hôm nay'**
+  String get recipeReviewToday;
+
+  /// No description provided for @recipeReviewIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ôn lại sau {n} ngày'**
+  String recipeReviewIn(int n);
+
+  /// No description provided for @recipeQMissing.
+  ///
+  /// In vi, this message translates to:
+  /// **'{name} còn thiếu nguyên liệu nào?'**
+  String recipeQMissing(String name);
+
+  /// No description provided for @recipeQQuantity.
+  ///
+  /// In vi, this message translates to:
+  /// **'{drink}: cần bao nhiêu {ingredient}?'**
+  String recipeQQuantity(String drink, String ingredient);
+
+  /// No description provided for @recipeQFull.
+  ///
+  /// In vi, this message translates to:
+  /// **'Công thức đúng của {name} là?'**
+  String recipeQFull(String name);
+
+  /// No description provided for @recipeCorrect.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chính xác!'**
+  String get recipeCorrect;
+
+  /// No description provided for @recipeWrongShort.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đúng — đáp án được tô xanh.'**
+  String get recipeWrongShort;
+
+  /// No description provided for @recipeLevelUp.
+  ///
+  /// In vi, this message translates to:
+  /// **'{name} lên bậc {box}!'**
+  String recipeLevelUp(String box, String name);
+
+  /// No description provided for @recipePracticeOnly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Món này chưa tới hạn ôn nên chỉ để luyện, không tính bậc.'**
+  String get recipePracticeOnly;
+
+  /// No description provided for @recipeNext.
+  ///
+  /// In vi, this message translates to:
+  /// **'Câu tiếp'**
+  String get recipeNext;
+
+  /// No description provided for @recipeSeeResult.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem kết quả'**
+  String get recipeSeeResult;
+
+  /// No description provided for @recipeResultTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kết quả'**
+  String get recipeResultTitle;
+
+  /// No description provided for @recipeScore.
+  ///
+  /// In vi, this message translates to:
+  /// **'{correct}/{total} câu đúng'**
+  String recipeScore(int correct, int total);
+
+  /// No description provided for @recipeLevelUps.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} món lên bậc'**
+  String recipeLevelUps(int n);
+
+  /// No description provided for @recipeRewardCash.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thưởng: +{cash} Xu'**
+  String recipeRewardCash(String cash);
+
+  /// No description provided for @recipeRewardBoth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thưởng: +{cash} Xu, +{gems} 💎'**
+  String recipeRewardBoth(String cash, int gems);
+
+  /// No description provided for @recipeAgain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Luyện tiếp'**
+  String get recipeAgain;
+
+  /// No description provided for @recipeDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xong'**
+  String get recipeDone;
+
+  /// No description provided for @recipeDisclaimer.
+  ///
+  /// In vi, this message translates to:
+  /// **'Công thức mang tính tham khảo cho trò chơi, không phải công thức chuẩn của thương hiệu nào.'**
+  String get recipeDisclaimer;
+
+  /// No description provided for @recipeIngredients.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nguyên liệu'**
+  String get recipeIngredients;
+
   /// No description provided for @walkerTipSnack.
   ///
   /// In vi, this message translates to:
@@ -5349,7 +5577,7 @@ abstract class AppLocalizations {
   /// No description provided for @navMatch3.
   ///
   /// In vi, this message translates to:
-  /// **'Trân châu'**
+  /// **'Trò chơi'**
   String get navMatch3;
 
   /// No description provided for @m3Title.

@@ -1411,6 +1411,146 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsSound => '소리';
 
   @override
+  String get dqRecipe => '레시피 연습 1회 완료';
+
+  @override
+  String wqRecipeSessions(int n) {
+    return '레시피 연습 $n회 완료';
+  }
+
+  @override
+  String wqRecipeLevels(int n) {
+    return '레시피 $n개 단계 올리기';
+  }
+
+  @override
+  String get recipeHint => '힌트 (광고 보기)';
+
+  @override
+  String get recipeHintNoCount => '힌트를 사용해서 이 문제는 단계에 반영되지 않아요.';
+
+  @override
+  String get recipeDouble => '광고 보고 코인 2배';
+
+  @override
+  String get recipeDoubled => '코인 보상이 2배가 됐어요!';
+
+  @override
+  String get recipeTitle => '음료 레시피';
+
+  @override
+  String get recipeEntryNote => '레시피를 외우고 보상을 받으세요';
+
+  @override
+  String get recipeEntryButton => '플레이';
+
+  @override
+  String recipeMastered(int n, int total) {
+    return '마스터 $n/$total';
+  }
+
+  @override
+  String recipeDueToday(int n) {
+    return '오늘 복습할 레시피 $n개';
+  }
+
+  @override
+  String get recipeAllDone => '오늘 복습을 모두 마쳤어요! 더 연습할 수 있어요 (단계에는 반영되지 않아요).';
+
+  @override
+  String get recipePractice => '연습';
+
+  @override
+  String get recipeBox0 => '새로움';
+
+  @override
+  String get recipeBox1 => '익숙함';
+
+  @override
+  String get recipeBox2 => '암기';
+
+  @override
+  String get recipeBox3 => '마스터';
+
+  @override
+  String get recipeReviewToday => '복습: 오늘';
+
+  @override
+  String recipeReviewIn(int n) {
+    return '$n일 후 복습';
+  }
+
+  @override
+  String recipeQMissing(String name) {
+    return '$name에 빠진 재료는 무엇일까요?';
+  }
+
+  @override
+  String recipeQQuantity(String drink, String ingredient) {
+    return '$drink: $ingredient은(는) 얼마나 필요할까요?';
+  }
+
+  @override
+  String recipeQFull(String name) {
+    return '$name의 올바른 레시피는?';
+  }
+
+  @override
+  String get recipeCorrect => '정답!';
+
+  @override
+  String get recipeWrongShort => '아쉬워요 — 정답이 표시되어 있어요.';
+
+  @override
+  String recipeLevelUp(String box, String name) {
+    return '$name이(가) $box 단계가 됐어요!';
+  }
+
+  @override
+  String get recipePracticeOnly => '아직 복습 시기가 아니에요 — 연습만 가능하고 단계는 변하지 않아요.';
+
+  @override
+  String get recipeNext => '다음';
+
+  @override
+  String get recipeSeeResult => '결과 보기';
+
+  @override
+  String get recipeResultTitle => '결과';
+
+  @override
+  String recipeScore(int correct, int total) {
+    return '$correct/$total 정답';
+  }
+
+  @override
+  String recipeLevelUps(int n) {
+    return '레시피 $n개 단계 상승';
+  }
+
+  @override
+  String recipeRewardCash(String cash) {
+    return '보상: +$cash 코인';
+  }
+
+  @override
+  String recipeRewardBoth(String cash, int gems) {
+    return '보상: +$cash 코인, +$gems 💎';
+  }
+
+  @override
+  String get recipeAgain => '다시 연습';
+
+  @override
+  String get recipeDone => '완료';
+
+  @override
+  String get recipeDisclaimer => '레시피는 게임 참고용이며 특정 브랜드의 공식 레시피가 아니에요.';
+
+  @override
+  String get recipeIngredients => '재료';
+
+  @override
   String walkerTipSnack(String amount) {
     return '손님이 팁으로 +$amount 코인을 줬어요 🧋';
   }
@@ -3035,7 +3175,7 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get navMatch3 => '펄';
+  String get navMatch3 => '게임';
 
   @override
   String get m3Title => '떨어지는 펄';

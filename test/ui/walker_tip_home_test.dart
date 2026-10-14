@@ -33,13 +33,13 @@ void main() {
   final fx = EffectsController.instance;
   var now = 0;
   // GameController có Timer.periodic: container phải dispose NGAY sau khi gỡ cây, trước bước kiểm "không còn timer".
-  final _live = <ProviderContainer>[];
+  final liveContainers = <ProviderContainer>[];
   Future<void> teardown(WidgetTester tester) async {
     await tester.pumpWidget(const SizedBox());
-    for (final c in _live) {
+    for (final c in liveContainers) {
       c.dispose();
     }
-    _live.clear();
+    liveContainers.clear();
   }
 
   setUp(() async {
@@ -71,7 +71,7 @@ void main() {
       sharedPreferencesProvider.overrideWithValue(prefs),
       clockProvider.overrideWithValue(() => now),
     ]);
-    _live.add(c);
+    liveContainers.add(c);
     await tester.pumpWidget(UncontrolledProviderScope(container: c, child: const BobaEmpireApp()));
     return c;
   }

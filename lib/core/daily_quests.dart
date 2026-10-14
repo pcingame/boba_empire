@@ -13,9 +13,21 @@ import 'daily.dart' show dayIndex;
 import 'event_quests.dart' show addEventProgress;
 import 'guild.dart' show addGuildProgress;
 import 'models.dart';
+import 'recipe_mastery.dart' show recipeQuestsStartDay;
 import 'weekly_quests.dart' show WeeklyQuestKind, addWeeklyFromDaily, addWeeklyProgress;
 
-enum DailyQuestKind { tap, buy, earn, cat, vip, spin }
+enum DailyQuestKind { tap, buy, earn, cat, vip, spin, recipe }
+
+/// Các loại ngoài [DailyQuestKind.recipe]: bộ rút ngẫu nhiên vẫn xáo đúng danh sách cũ (giữ nguyên kết
+/// quả những ngày chưa có nhiệm vụ công thức).
+const List<DailyQuestKind> _baseDailyKinds = [
+  DailyQuestKind.tap,
+  DailyQuestKind.buy,
+  DailyQuestKind.earn,
+  DailyQuestKind.cat,
+  DailyQuestKind.vip,
+  DailyQuestKind.spin,
+];
 
 class DailyQuest {
   const DailyQuest(this.kind, this.target, this.rewardGems);
@@ -31,8 +43,10 @@ class DailyQuest {
 /// KHÔNG ảnh hưởng việc chọn loại nào (cùng ngày luôn cùng bộ loại).
 List<DailyQuest> dailyQuestsFor(int day, double earnTarget) {
   final rng = Random(day * 2654435761 ^ 0x5bd1e995);
-  final kinds = [...DailyQuestKind.values]..shuffle(rng);
-  final chosen = kinds.take(Balance.dailyQuestCount);
+  final kinds = [..._baseDailyKinds]..shuffle(rng);
+  final chosen = kinds.take(Balance.dailyQuestCount).toList();
+  // Từ ngày bắt đầu, cách ngày một lần: nhiệm vụ cuối được thay bằng "luyện công thức".
+  if (day >= recipeQuestsStartDay && day.isEven) chosen[chosen.length - 1] = DailyQuestKind.recipe;
   // Rút các số ngẫu nhiên theo thứ tự cố định để kết quả không phụ thuộc loại nào
   // được chọn trước.
   final tapTarget = 100 + rng.nextInt(3) * 100; // 100..300
@@ -50,7 +64,8 @@ List<DailyQuest> dailyQuestsFor(int day, double earnTarget) {
             Balance.dailyQuestEarnRewardGems),
         DailyQuestKind.cat ||
         DailyQuestKind.vip ||
-        DailyQuestKind.spin =>
+        DailyQuestKind.spin ||
+        DailyQuestKind.recipe =>
           DailyQuest(k, 1, Balance.dailyQuestRewardGems),
       },
   ];

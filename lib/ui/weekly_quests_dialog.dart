@@ -29,6 +29,8 @@ String _title(AppLocalizations l10n, WeeklyQuestView q) => switch (q.kind) {
       WeeklyQuestKind.dailyDone => l10n.wqDailyDone(q.target),
       WeeklyQuestKind.spin => l10n.wqSpin(q.target),
       WeeklyQuestKind.buy => l10n.wqBuy(q.target),
+      WeeklyQuestKind.recipeSessions => l10n.wqRecipeSessions(q.target),
+      WeeklyQuestKind.recipeLevels => l10n.wqRecipeLevels(q.target),
     };
 
 class _WeeklyQuestsDialog extends ConsumerStatefulWidget {

@@ -61,6 +61,7 @@ void main() {
             case DailyQuestKind.cat:
             case DailyQuestKind.vip:
             case DailyQuestKind.spin:
+            case DailyQuestKind.recipe:
               expect(q.target, 1);
             case DailyQuestKind.earn:
               break;

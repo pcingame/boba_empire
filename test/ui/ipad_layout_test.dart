@@ -173,6 +173,8 @@ void _journeyTests() {
       await tester.pump(const Duration(milliseconds: 300));
       await tester.tap(find.byKey(const Key('match3-button')));
       await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('games-match3'))); // hộp "Trò chơi" → Trân Châu Rơi
+      await tester.pumpAndSettle();
 
       final grid = tester.getSize(find.byType(GridView));
       expect(grid.width, lessThanOrEqualTo(kPhoneMaxWidth + 1),

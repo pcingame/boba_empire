@@ -118,6 +118,8 @@ flutter:
     # audio_service.dart (tap/buy/unlock/prestige/vip/reward.wav); tải bộ CC0
     # sẵn bằng scripts/fetch_sfx.sh. Thiếu file thì game chạy im lặng.
     - assets/audio/
+    # Công thức pha chế cho trò luyện nhớ (recipes.json sinh bằng scripts/make_recipes.py từ source.md).
+    - assets/recipes/
 
   # Font tiêu đề (bề mặt hiển thị lớn: số tiền, tiêu đề); body giữ font hệ thống.
   #  - Baloo 2: bo tròn chunky, hợp game trà sữa. Có subset `vietnamese`

@@ -947,3 +947,22 @@ Kế hoạch đầy đủ ở `PLAN_ANIMATION.md`. Tóm tắt phần ảnh hư�
   `walkerTipCooldownMs`=90s (chỉ trong bộ nhớ) ⇒ tối đa ~9% thu nhập thêm (khách VIP ~18%).
   Người chơi để mức hiệu ứng Tắt thì không có khách nên không nhận boa — chấp nhận (boa chỉ là thưởng nhỏ cho người nhìn màn chính).
   ⚠️ Số liệu ước lượng, chưa playtest; cân nhắc hạ nếu tổng với VIP quá hào phóng.
+
+## 34. Công thức pha chế — trò luyện nhớ (2026-10-14, lộ trình A, chưa playtest)
+
+Mở rộng game bằng trò ghi nhớ công thức. Dữ liệu: `scripts/data/recipes_source.md` (100 món, chủ dự án cung cấp) → `scripts/make_recipes.py` → `assets/recipes/recipes.json`. Mới chơi được nhóm 1 (20 món trà sữa truyền thống, `recipePlayableGroups`); 80 món còn lại đã có sẵn trong dữ liệu.
+- **Vào**: tab "Trò chơi" (cuối thanh dưới, trước là tab "Trân châu") → hộp gộp 2 trò: Trân Châu Rơi + Công thức pha chế (hiện số món cần ôn hôm nay). `lib/ui/games_hub_dialog.dart`, cùng kiểu hộp Thi đấu. Màn: tiến độ "Thạo n/20", số món cần ôn hôm nay, nút Luyện tập, danh sách món kèm bậc; bấm món xem thẻ công thức (nguyên liệu + lượng + lịch ôn).
+- **Bậc thuộc** (0 Mới → 1 Quen → 2 Thuộc → 3 Thạo) theo ôn cách quãng: chỉ khi món ĐẾN HẠN ôn (`dueDay`) câu trả lời mới đổi bậc — đúng: lên một bậc, hẹn sau 0/1/3/7 ngày (`recipeIntervalDays`); sai: xuống một bậc, ôn lại ngay. Món chưa tới hạn chỉ để luyện (có báo) ⇒ không cày một món lên bậc trong một buổi; chạm Thạo cần ≥ 4 ngày.
+- **Buổi luyện** 8 câu trắc nghiệm 4 lựa chọn: ưu tiên món đến hạn (bậc thấp trước), thiếu thì bù món chưa tới hạn. Loại câu theo bậc: Mới = điền nguyên liệu còn thiếu (thấy lượng); Quen = đoán lượng; Thuộc/Thạo = chọn công thức đầy đủ đúng (3 bản sai lệch đúng một chi tiết) xen câu đoán lượng. Bậc ghi ngay sau mỗi câu (thoát giữa chừng không mất).
+- **Thưởng** (chỉ khi LẦN ĐẦU đạt bậc cao hơn mọi lần trước của món — `best`, nên sai-rồi-đúng-lại không thưởng lần hai): Xu = 30/60/120 giây sản xuất ở bậc 1/2/3 (sàn 5/10/20 lần chạm); thêm 3 💎 ở bậc Thạo. Tổng tối đa một lần duy nhất: 20 món × (Xu + 3💎) = 60 💎. ⚠️ số liệu ước lượng.
+- **Lưu**: `GameState.recipeProgress` (id → `[box, dueDay, best]`) — đi theo save/cloud; mục hỏng bị bỏ khi đọc.
+- **Ngôn ngữ**: giao diện đủ 7 thứ tiếng; TÊN món/nguyên liệu chỉ có tiếng Việt (nội dung dữ liệu) — người chơi ngôn ngữ khác thấy tên Việt.
+- **Chưa làm** (lộ trình B–D trong thảo luận): kéo-thả pha theo đơn khách, nối khách đi ngang/thực đơn, BXH, PK Đấu Trường, nhóm 2–5, hình nguyên liệu riêng (đang dùng emoji + chữ).
+
+### 34b. Công thức pha chế — đợt 1: quảng cáo + nhiệm vụ (2026-10-14, chưa playtest)
+- **Banner** dưới màn luyện (cùng `BannerAdBox` với Trân Châu Rơi; tự ẩn khi gỡ QC/VIP hoặc không phải di động), cách nút "Câu tiếp" 8dp để khỏi bấm nhầm.
+- **Gợi ý 50:50** (xem quảng cáo thưởng): bỏ 2 đáp án sai của câu hiện tại, mỗi câu một lần. Câu dùng gợi ý **không tính bậc, không thưởng** (`answerRecipe(hinted: true)`) — nếu không người chơi mua bậc bằng quảng cáo và phá ôn cách quãng.
+- **Nhân đôi Xu thưởng** ở màn tổng kết (xem QC, một lần mỗi buổi; chỉ Xu, không 💎).
+- **Nhiệm vụ**: ngày — "Hoàn thành 1 buổi luyện công thức" thay nhiệm vụ cuối vào các ngày CHẴN từ 2026-10-20 (`recipeQuestsStartDay`); tuần — nhiệm vụ cuối luôn là công thức, luân phiên "4 buổi" / "lên bậc 6 công thức" theo tuần chẵn/lẻ từ tuần đó. Trước mốc, bộ chọn giữ y thuật toán cũ (các ngày/tuần đã qua không đổi). Một buổi chỉ được tính khi có ≥ 1 câu thật sự tính bậc (món đến hạn, không dùng gợi ý) — buổi chỉ-luyện không cày được nhiệm vụ.
+- Cập nhật app giữa ngày/tuần đúng vào mốc có thể làm bộ nhiệm vụ đổi một lần (không tránh được vì bộ chọn xác định theo ngày).
+- **Chưa làm** (đợt 2–3): BXH "Thợ pha chế" + thưởng top tuần, rương phụ kiện theo mốc, chuỗi ngày ôn + cứu chuỗi, thông báo nhắc.

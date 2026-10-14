@@ -8,8 +8,18 @@ import 'dart:math';
 import 'daily.dart' show dayIndex;
 import 'daily_quests.dart' show DailyQuestKind;
 import 'models.dart';
+import 'recipe_mastery.dart' show recipeQuestsStartDay;
 
-enum WeeklyQuestKind { prestige, m3Win, trade, dailyDone, spin, buy }
+enum WeeklyQuestKind { prestige, m3Win, trade, dailyDone, spin, buy, recipeSessions, recipeLevels }
+
+const List<WeeklyQuestKind> _baseWeeklyKinds = [
+  WeeklyQuestKind.prestige,
+  WeeklyQuestKind.m3Win,
+  WeeklyQuestKind.trade,
+  WeeklyQuestKind.dailyDone,
+  WeeklyQuestKind.spin,
+  WeeklyQuestKind.buy,
+];
 
 class WeeklyQuest {
   const WeeklyQuest(this.kind, this.target);
@@ -30,6 +40,8 @@ const Map<WeeklyQuestKind, int> _targets = {
   WeeklyQuestKind.dailyDone: 5,
   WeeklyQuestKind.spin: 10,
   WeeklyQuestKind.buy: 300,
+  WeeklyQuestKind.recipeSessions: 4,
+  WeeklyQuestKind.recipeLevels: 6,
 };
 
 /// Chỉ số tuần (thứ Hai là ngày đầu: 1970-01-01 là thứ Năm nên lệch 3 ngày).
@@ -43,11 +55,13 @@ int weeklySecondsLeft(int nowMillis) {
 }
 
 List<WeeklyQuest> weeklyQuestsFor(int week) {
-  final kinds = [...WeeklyQuestKind.values]
-    ..shuffle(Random(week * 2246822519 ^ 0x27d4eb2f));
-  return [
-    for (final k in kinds.take(weeklyQuestCount)) WeeklyQuest(k, _targets[k]!),
-  ];
+  final kinds = [..._baseWeeklyKinds]..shuffle(Random(week * 2246822519 ^ 0x27d4eb2f));
+  final chosen = kinds.take(weeklyQuestCount).toList();
+  // Từ tuần bắt đầu: nhiệm vụ cuối thay bằng nhiệm vụ công thức, luân phiên theo tuần.
+  if (week >= (recipeQuestsStartDay + 3) ~/ 7) {
+    chosen[chosen.length - 1] = week.isEven ? WeeklyQuestKind.recipeSessions : WeeklyQuestKind.recipeLevels;
+  }
+  return [for (final k in chosen) WeeklyQuest(k, _targets[k]!)];
 }
 
 List<WeeklyQuest> currentWeeklyQuests(GameState s) =>

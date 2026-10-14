@@ -91,6 +91,7 @@ class GameState {
     this.weeklyBonusClaimed = false,
     Map<String, double>? weeklyProgress,
     List<String>? weeklyClaimed,
+    Map<String, List<int>>? recipeProgress,
     this.accessoryAdDropDay = 0,
     this.accessoryAdSpinDay = 0,
     this.accessoryAdSpins = 0,
@@ -182,6 +183,7 @@ class GameState {
         dailyClaimed = dailyClaimed ?? [],
         weeklyProgress = weeklyProgress ?? {},
         weeklyClaimed = weeklyClaimed ?? [],
+        recipeProgress = recipeProgress ?? {},
         firstPlayedMillis = firstPlayedMillis ?? lastSeenMillis;
 
   /// Ván mới tinh.
@@ -362,6 +364,9 @@ class GameState {
   bool weeklyBonusClaimed;
   final Map<String, double> weeklyProgress;
   final List<String> weeklyClaimed;
+
+  /// Bậc thuộc công thức pha chế (xem recipe_mastery.dart): id món → `[box, dueDay, best]`.
+  final Map<String, List<int>> recipeProgress;
 
   /// Kỷ Nguyên (prestige tầng 2, xem Balance.ascension*): số lần đã Kỷ Nguyên
   /// hoá, tổng Điểm đã nhận (đã tiêu = suy ra từ cấp perk, giống Kho Sao), và
@@ -584,6 +589,7 @@ class GameState {
         'weeklyBonusClaimed': weeklyBonusClaimed,
         'weeklyProgress': weeklyProgress,
         'weeklyClaimed': weeklyClaimed,
+        'recipeProgress': recipeProgress,
         'ascensionCount': ascensionCount,
         'ascensionPointsEarned': ascensionPointsEarned,
         'ascensionLifetime': ascensionLifetime,
@@ -734,6 +740,11 @@ class GameState {
         weeklyProgress: (json['weeklyProgress'] as Map?)
             ?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),
         weeklyClaimed: (json['weeklyClaimed'] as List?)?.cast<String>().toList(),
+        recipeProgress: {
+          // Bỏ mục hỏng thay vì ném (save cũ / cloud lạ): mất bậc một món tốt hơn mất cả save.
+          for (final e in ((json['recipeProgress'] as Map?) ?? const {}).entries)
+            if (e.key is String && e.value is List) e.key as String: [...(e.value as List).map((x) => x is num ? x.toInt() : 0)],
+        },
         ascensionCount: (json['ascensionCount'] as num?)?.toInt() ?? 0,
         ascensionPointsEarned:
             (json['ascensionPointsEarned'] as num?)?.toInt() ?? 0,

@@ -81,6 +81,8 @@ void main() {
       final c = await _pump(tester, entry.value);
       await tester.tap(find.byKey(const Key('match3-button')));
       await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('games-match3'))); // hộp "Trò chơi" → Trân Châu Rơi
+      await tester.pumpAndSettle();
       // Ô màn 1 ở góc trên trái của lưới.
       await tester.tap(find.text('1').first);
       await tester.pumpAndSettle();

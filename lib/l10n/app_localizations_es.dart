@@ -1440,6 +1440,151 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsSound => 'Sonido';
 
   @override
+  String get dqRecipe => 'Completa 1 sesión de práctica de recetas';
+
+  @override
+  String wqRecipeSessions(int n) {
+    return 'Completa $n sesiones de práctica de recetas';
+  }
+
+  @override
+  String wqRecipeLevels(int n) {
+    return 'Sube de nivel $n recetas';
+  }
+
+  @override
+  String get recipeHint => 'Pista (ver anuncio)';
+
+  @override
+  String get recipeHintNoCount =>
+      'Usaste una pista: esta pregunta no cuenta para los niveles.';
+
+  @override
+  String get recipeDouble => 'Ver anuncio para duplicar las monedas';
+
+  @override
+  String get recipeDoubled => '¡Monedas de recompensa duplicadas!';
+
+  @override
+  String get recipeTitle => 'Recetas de bebidas';
+
+  @override
+  String get recipeEntryNote => 'Memoriza recetas y gana recompensas';
+
+  @override
+  String get recipeEntryButton => 'Jugar';
+
+  @override
+  String recipeMastered(int n, int total) {
+    return 'Dominadas $n/$total';
+  }
+
+  @override
+  String recipeDueToday(int n) {
+    return '$n recetas por repasar hoy';
+  }
+
+  @override
+  String get recipeAllDone =>
+      '¡Todo repasado por hoy! Aún puedes practicar (no cuenta para los niveles).';
+
+  @override
+  String get recipePractice => 'Practicar';
+
+  @override
+  String get recipeBox0 => 'Nueva';
+
+  @override
+  String get recipeBox1 => 'Conocida';
+
+  @override
+  String get recipeBox2 => 'Aprendida';
+
+  @override
+  String get recipeBox3 => 'Dominada';
+
+  @override
+  String get recipeReviewToday => 'Repaso: hoy';
+
+  @override
+  String recipeReviewIn(int n) {
+    return 'Repaso en $n días';
+  }
+
+  @override
+  String recipeQMissing(String name) {
+    return '¿Qué ingrediente falta en $name?';
+  }
+
+  @override
+  String recipeQQuantity(String drink, String ingredient) {
+    return '$drink: ¿cuánto $ingredient?';
+  }
+
+  @override
+  String recipeQFull(String name) {
+    return '¿Cuál es la receta correcta de $name?';
+  }
+
+  @override
+  String get recipeCorrect => '¡Correcto!';
+
+  @override
+  String get recipeWrongShort =>
+      'No exacto: la respuesta correcta está resaltada.';
+
+  @override
+  String recipeLevelUp(String box, String name) {
+    return '¡$name alcanzó el nivel $box!';
+  }
+
+  @override
+  String get recipePracticeOnly =>
+      'Aún no toca repasarla: solo práctica, sin cambio de nivel.';
+
+  @override
+  String get recipeNext => 'Siguiente';
+
+  @override
+  String get recipeSeeResult => 'Ver resultados';
+
+  @override
+  String get recipeResultTitle => 'Resultados';
+
+  @override
+  String recipeScore(int correct, int total) {
+    return '$correct/$total correctas';
+  }
+
+  @override
+  String recipeLevelUps(int n) {
+    return '$n recetas subieron de nivel';
+  }
+
+  @override
+  String recipeRewardCash(String cash) {
+    return 'Recompensa: +$cash monedas';
+  }
+
+  @override
+  String recipeRewardBoth(String cash, int gems) {
+    return 'Recompensa: +$cash monedas, +$gems 💎';
+  }
+
+  @override
+  String get recipeAgain => 'Practicar de nuevo';
+
+  @override
+  String get recipeDone => 'Hecho';
+
+  @override
+  String get recipeDisclaimer =>
+      'Las recetas son solo una referencia para el juego, no la receta oficial de ninguna marca.';
+
+  @override
+  String get recipeIngredients => 'Ingredientes';
+
+  @override
   String walkerTipSnack(String amount) {
     return 'Un cliente dejó +$amount monedas de propina 🧋';
   }
@@ -3100,7 +3245,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get navMatch3 => 'Perlas';
+  String get navMatch3 => 'Juegos';
 
   @override
   String get m3Title => 'Perlas que caen';

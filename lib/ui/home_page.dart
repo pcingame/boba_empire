@@ -42,11 +42,11 @@ import 'whats_new_dialog.dart';
 import 'achievements_dialog.dart';
 import 'cloud_remind_dialog.dart';
 import 'compete_hub_dialog.dart';
+import 'games_hub_dialog.dart';
 import 'daily_quests_dialog.dart';
 import 'daily_dialog.dart';
 import 'event_dialog.dart';
 import 'gem_shop.dart';
-import 'match3_journey_page.dart';
 import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
 import 'rewards_dialog.dart';
@@ -605,9 +605,9 @@ class _BottomBar extends ConsumerWidget {
                   onTap: () => showCompeteHub(context)),
               _navItem(theme,
                   buttonKey: const Key('match3-button'),
-                  icon: Icons.grid_view_rounded,
+                  icon: Icons.sports_esports_rounded,
                   label: l10n.navMatch3,
-                  onTap: () => showMatch3Journey(context)),
+                  onTap: () => showGamesHub(context)),
             ],
           ),
         ),

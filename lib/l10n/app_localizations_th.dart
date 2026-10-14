@@ -1429,6 +1429,149 @@ class AppLocalizationsTh extends AppLocalizations {
   String get settingsSound => 'เสียง';
 
   @override
+  String get dqRecipe => 'ฝึกสูตรให้จบ 1 รอบ';
+
+  @override
+  String wqRecipeSessions(int n) {
+    return 'ฝึกสูตรให้จบ $n รอบ';
+  }
+
+  @override
+  String wqRecipeLevels(int n) {
+    return 'เลื่อนระดับสูตร $n สูตร';
+  }
+
+  @override
+  String get recipeHint => 'คำใบ้ (ดูโฆษณา)';
+
+  @override
+  String get recipeHintNoCount => 'คุณใช้คำใบ้ ข้อนี้จึงไม่นับระดับ';
+
+  @override
+  String get recipeDouble => 'ดูโฆษณาเพื่อรับเหรียญ 2 เท่า';
+
+  @override
+  String get recipeDoubled => 'รางวัลเหรียญเป็น 2 เท่าแล้ว!';
+
+  @override
+  String get recipeTitle => 'สูตรเครื่องดื่ม';
+
+  @override
+  String get recipeEntryNote => 'จำสูตรให้แม่น รับรางวัล';
+
+  @override
+  String get recipeEntryButton => 'เล่น';
+
+  @override
+  String recipeMastered(int n, int total) {
+    return 'เชี่ยวชาญ $n/$total';
+  }
+
+  @override
+  String recipeDueToday(int n) {
+    return 'มี $n สูตรต้องทบทวนวันนี้';
+  }
+
+  @override
+  String get recipeAllDone =>
+      'วันนี้ทบทวนครบแล้ว! ยังฝึกเพิ่มได้ (ไม่นับระดับ)';
+
+  @override
+  String get recipePractice => 'ฝึก';
+
+  @override
+  String get recipeBox0 => 'ใหม่';
+
+  @override
+  String get recipeBox1 => 'เริ่มคุ้น';
+
+  @override
+  String get recipeBox2 => 'จำได้';
+
+  @override
+  String get recipeBox3 => 'เชี่ยวชาญ';
+
+  @override
+  String get recipeReviewToday => 'ทบทวน: วันนี้';
+
+  @override
+  String recipeReviewIn(int n) {
+    return 'ทบทวนในอีก $n วัน';
+  }
+
+  @override
+  String recipeQMissing(String name) {
+    return '$name ขาดวัตถุดิบอะไร?';
+  }
+
+  @override
+  String recipeQQuantity(String drink, String ingredient) {
+    return '$drink: ต้องใช้ $ingredient เท่าไร?';
+  }
+
+  @override
+  String recipeQFull(String name) {
+    return 'สูตรที่ถูกต้องของ $name คือข้อใด?';
+  }
+
+  @override
+  String get recipeCorrect => 'ถูกต้อง!';
+
+  @override
+  String get recipeWrongShort => 'ยังไม่ถูก — คำตอบที่ถูกต้องถูกไฮไลต์ไว้';
+
+  @override
+  String recipeLevelUp(String box, String name) {
+    return '$name ขึ้นเป็น$boxแล้ว!';
+  }
+
+  @override
+  String get recipePracticeOnly =>
+      'ยังไม่ถึงเวลาทบทวน — ฝึกได้อย่างเดียว ระดับไม่เปลี่ยน';
+
+  @override
+  String get recipeNext => 'ต่อไป';
+
+  @override
+  String get recipeSeeResult => 'ดูผลลัพธ์';
+
+  @override
+  String get recipeResultTitle => 'ผลลัพธ์';
+
+  @override
+  String recipeScore(int correct, int total) {
+    return 'ถูก $correct/$total ข้อ';
+  }
+
+  @override
+  String recipeLevelUps(int n) {
+    return '$n สูตรขึ้นระดับ';
+  }
+
+  @override
+  String recipeRewardCash(String cash) {
+    return 'รางวัล: +$cash เหรียญ';
+  }
+
+  @override
+  String recipeRewardBoth(String cash, int gems) {
+    return 'รางวัล: +$cash เหรียญ, +$gems 💎';
+  }
+
+  @override
+  String get recipeAgain => 'ฝึกอีกครั้ง';
+
+  @override
+  String get recipeDone => 'เสร็จสิ้น';
+
+  @override
+  String get recipeDisclaimer =>
+      'สูตรเป็นข้อมูลอ้างอิงสำหรับเกมเท่านั้น ไม่ใช่สูตรทางการของแบรนด์ใด';
+
+  @override
+  String get recipeIngredients => 'วัตถุดิบ';
+
+  @override
   String walkerTipSnack(String amount) {
     return 'ลูกค้าให้ทิป +$amount เหรียญ 🧋';
   }
@@ -3068,7 +3211,7 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
-  String get navMatch3 => 'ไข่มุก';
+  String get navMatch3 => 'เกม';
 
   @override
   String get m3Title => 'ไข่มุกร่วง';

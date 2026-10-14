@@ -1429,6 +1429,149 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsSound => 'Âm thanh';
 
   @override
+  String get dqRecipe => 'Hoàn thành 1 buổi luyện công thức';
+
+  @override
+  String wqRecipeSessions(int n) {
+    return 'Hoàn thành $n buổi luyện công thức';
+  }
+
+  @override
+  String wqRecipeLevels(int n) {
+    return 'Lên bậc $n công thức';
+  }
+
+  @override
+  String get recipeHint => 'Gợi ý (xem quảng cáo)';
+
+  @override
+  String get recipeHintNoCount => 'Đã dùng gợi ý nên câu này không tính bậc.';
+
+  @override
+  String get recipeDouble => 'Xem quảng cáo, nhân đôi Xu';
+
+  @override
+  String get recipeDoubled => 'Đã nhân đôi Xu thưởng!';
+
+  @override
+  String get recipeTitle => 'Công thức pha chế';
+
+  @override
+  String get recipeEntryNote => 'Học thuộc công thức, nhận thưởng';
+
+  @override
+  String get recipeEntryButton => 'Chơi';
+
+  @override
+  String recipeMastered(int n, int total) {
+    return 'Thạo $n/$total món';
+  }
+
+  @override
+  String recipeDueToday(int n) {
+    return '$n món cần ôn hôm nay';
+  }
+
+  @override
+  String get recipeAllDone =>
+      'Hôm nay bạn đã ôn xong! Vẫn có thể luyện thêm (không tính bậc).';
+
+  @override
+  String get recipePractice => 'Luyện tập';
+
+  @override
+  String get recipeBox0 => 'Mới';
+
+  @override
+  String get recipeBox1 => 'Quen';
+
+  @override
+  String get recipeBox2 => 'Thuộc';
+
+  @override
+  String get recipeBox3 => 'Thạo';
+
+  @override
+  String get recipeReviewToday => 'Ôn lại: hôm nay';
+
+  @override
+  String recipeReviewIn(int n) {
+    return 'Ôn lại sau $n ngày';
+  }
+
+  @override
+  String recipeQMissing(String name) {
+    return '$name còn thiếu nguyên liệu nào?';
+  }
+
+  @override
+  String recipeQQuantity(String drink, String ingredient) {
+    return '$drink: cần bao nhiêu $ingredient?';
+  }
+
+  @override
+  String recipeQFull(String name) {
+    return 'Công thức đúng của $name là?';
+  }
+
+  @override
+  String get recipeCorrect => 'Chính xác!';
+
+  @override
+  String get recipeWrongShort => 'Chưa đúng — đáp án được tô xanh.';
+
+  @override
+  String recipeLevelUp(String box, String name) {
+    return '$name lên bậc $box!';
+  }
+
+  @override
+  String get recipePracticeOnly =>
+      'Món này chưa tới hạn ôn nên chỉ để luyện, không tính bậc.';
+
+  @override
+  String get recipeNext => 'Câu tiếp';
+
+  @override
+  String get recipeSeeResult => 'Xem kết quả';
+
+  @override
+  String get recipeResultTitle => 'Kết quả';
+
+  @override
+  String recipeScore(int correct, int total) {
+    return '$correct/$total câu đúng';
+  }
+
+  @override
+  String recipeLevelUps(int n) {
+    return '$n món lên bậc';
+  }
+
+  @override
+  String recipeRewardCash(String cash) {
+    return 'Thưởng: +$cash Xu';
+  }
+
+  @override
+  String recipeRewardBoth(String cash, int gems) {
+    return 'Thưởng: +$cash Xu, +$gems 💎';
+  }
+
+  @override
+  String get recipeAgain => 'Luyện tiếp';
+
+  @override
+  String get recipeDone => 'Xong';
+
+  @override
+  String get recipeDisclaimer =>
+      'Công thức mang tính tham khảo cho trò chơi, không phải công thức chuẩn của thương hiệu nào.';
+
+  @override
+  String get recipeIngredients => 'Nguyên liệu';
+
+  @override
   String walkerTipSnack(String amount) {
     return 'Khách boa +$amount Xu 🧋';
   }
@@ -3078,7 +3221,7 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get navMatch3 => 'Trân châu';
+  String get navMatch3 => 'Trò chơi';
 
   @override
   String get m3Title => 'Trân Châu Rơi';

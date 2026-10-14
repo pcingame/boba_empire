@@ -1,0 +1,2771 @@
+{
+ "groups": [
+  {
+   "id": 1,
+   "name": "Trà sữa truyền thống"
+  },
+  {
+   "id": 2,
+   "name": "Trà trái cây"
+  },
+  {
+   "id": 3,
+   "name": "Latte và đồ uống sữa"
+  },
+  {
+   "id": 4,
+   "name": "Cà phê và espresso"
+  },
+  {
+   "id": 5,
+   "name": "Đồ uống đặc biệt"
+  }
+ ],
+ "recipes": [
+  {
+   "id": 1,
+   "name": "Hồng trà sữa",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 10,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 30,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa đặc",
+     "qty": 15,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "name": "Lục trà sữa",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Lục trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 30,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa đặc",
+     "qty": 15,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "name": "Ô long sữa",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Ô long khô",
+     "qty": 10,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 25,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa đặc",
+     "qty": 15,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "name": "Trà sữa Thái xanh",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Trà Thái xanh",
+     "qty": 12,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa đặc",
+     "qty": 25,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 50,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "name": "Trà sữa Thái đỏ",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Trà Thái đỏ",
+     "qty": 12,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa đặc",
+     "qty": 25,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 50,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "name": "Trà sữa đường đen",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 10,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 100,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường đen",
+     "qty": 25,
+     "unit": "g"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 15,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "name": "Trà sữa khoai môn",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột khoai môn",
+     "qty": 25,
+     "unit": "g"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 25,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 8,
+   "name": "Trà sữa matcha",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Matcha",
+     "qty": 5,
+     "unit": "g"
+    },
+    {
+     "name": "Hồng trà khô",
+     "qty": 5,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 100,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 9,
+   "name": "Trà sữa chocolate",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột cacao",
+     "qty": 12,
+     "unit": "g"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 25,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 25,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 10,
+   "name": "Trà sữa caramel",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 10,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 80,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup caramel",
+     "qty": 25,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 20,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 11,
+   "name": "Trà sữa mật ong",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 10,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 80,
+     "unit": "ml"
+    },
+    {
+     "name": "Mật ong",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 20,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 12,
+   "name": "Trà sữa bạc hà",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 100,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup bạc hà",
+     "qty": 15,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 20,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 13,
+   "name": "Trà sữa dâu",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 100,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup dâu",
+     "qty": 25,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 20,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 14,
+   "name": "Trà sữa chuối",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 100,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup chuối",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 20,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 15,
+   "name": "Trà sữa dừa",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Ô long khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Nước cốt dừa",
+     "qty": 50,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 60,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 16,
+   "name": "Trà sữa hạnh nhân",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 10,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa hạnh nhân",
+     "qty": 100,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 20,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 17,
+   "name": "Trà sữa bạc hà chocolate",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 80,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột cacao",
+     "qty": 10,
+     "unit": "g"
+    },
+    {
+     "name": "Syrup bạc hà",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 18,
+   "name": "Trà sữa pudding",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 10,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 25,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Pudding trứng",
+     "qty": 60,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 19,
+   "name": "Trà sữa phô mai",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 10,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 20,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 15,
+     "unit": "ml"
+    },
+    {
+     "name": "Kem cheese",
+     "qty": 40,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 20,
+   "name": "Trà sữa kem muối",
+   "group": 1,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 10,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 60,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 15,
+     "unit": "ml"
+    },
+    {
+     "name": "Kem muối",
+     "qty": 40,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 21,
+   "name": "Trà đào",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup đào",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Đào miếng",
+     "qty": 60,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 22,
+   "name": "Trà đào cam sả",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup đào",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Cam",
+     "qty": 40,
+     "unit": "g"
+    },
+    {
+     "name": "Sả",
+     "qty": 15,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 23,
+   "name": "Trà vải",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Lục trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup vải",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Vải",
+     "qty": 60,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 24,
+   "name": "Trà nhãn",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Ô long khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Nhãn",
+     "qty": 60,
+     "unit": "g"
+    },
+    {
+     "name": "Syrup nhãn",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Mật ong",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 25,
+   "name": "Trà chanh",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Lục trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 230,
+     "unit": "ml"
+    },
+    {
+     "name": "Nước cốt chanh",
+     "qty": 25,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 25,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 26,
+   "name": "Trà tắc",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Lục trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Nước cốt tắc",
+     "qty": 30,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 25,
+     "unit": "ml"
+    },
+    {
+     "name": "Tắc tươi",
+     "qty": 20,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 27,
+   "name": "Trà chanh dây",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Cốt chanh dây",
+     "qty": 35,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 25,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 28,
+   "name": "Trà dâu",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Lục trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Dâu tây",
+     "qty": 60,
+     "unit": "g"
+    },
+    {
+     "name": "Syrup dâu",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 29,
+   "name": "Trà xoài",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Lục trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Xoài",
+     "qty": 70,
+     "unit": "g"
+    },
+    {
+     "name": "Puree xoài",
+     "qty": 25,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 30,
+   "name": "Trà dứa",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Dứa",
+     "qty": 60,
+     "unit": "g"
+    },
+    {
+     "name": "Syrup dứa",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 31,
+   "name": "Trà kiwi",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Lục trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Kiwi",
+     "qty": 60,
+     "unit": "g"
+    },
+    {
+     "name": "Syrup kiwi",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 32,
+   "name": "Trà táo",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Ô long khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Táo",
+     "qty": 60,
+     "unit": "g"
+    },
+    {
+     "name": "Syrup táo",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 33,
+   "name": "Trà nho",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Lục trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Nho",
+     "qty": 60,
+     "unit": "g"
+    },
+    {
+     "name": "Syrup nho",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 34,
+   "name": "Trà dưa hấu",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Lục trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Dưa hấu",
+     "qty": 100,
+     "unit": "g"
+    },
+    {
+     "name": "Syrup đường",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 35,
+   "name": "Trà ổi hồng",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Lục trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Ổi hồng",
+     "qty": 70,
+     "unit": "g"
+    },
+    {
+     "name": "Puree ổi",
+     "qty": 25,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 36,
+   "name": "Trà cam quế",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Cam",
+     "qty": 50,
+     "unit": "g"
+    },
+    {
+     "name": "Syrup cam",
+     "qty": 15,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột quế",
+     "qty": 1,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 37,
+   "name": "Trà mận",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Hồng trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Mận",
+     "qty": 60,
+     "unit": "g"
+    },
+    {
+     "name": "Syrup mận",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 38,
+   "name": "Trà dâu tằm",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Ô long khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup dâu tằm",
+     "qty": 25,
+     "unit": "ml"
+    },
+    {
+     "name": "Dâu tằm",
+     "qty": 40,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 39,
+   "name": "Trà việt quất",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Lục trà khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Việt quất",
+     "qty": 50,
+     "unit": "g"
+    },
+    {
+     "name": "Puree việt quất",
+     "qty": 25,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 40,
+   "name": "Trà vải hoa hồng",
+   "group": 2,
+   "ingredients": [
+    {
+     "name": "Ô long khô",
+     "qty": 8,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Vải",
+     "qty": 50,
+     "unit": "g"
+    },
+    {
+     "name": "Syrup hoa hồng",
+     "qty": 10,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 41,
+   "name": "Matcha latte",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Matcha",
+     "qty": 5,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 50,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 42,
+   "name": "Matcha dâu",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Matcha",
+     "qty": 4,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 40,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 150,
+     "unit": "ml"
+    },
+    {
+     "name": "Puree dâu",
+     "qty": 40,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 43,
+   "name": "Matcha dừa",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Matcha",
+     "qty": 5,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 50,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa dừa",
+     "qty": 150,
+     "unit": "ml"
+    },
+    {
+     "name": "Nước cốt dừa",
+     "qty": 30,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 44,
+   "name": "Matcha đậu đỏ",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Matcha",
+     "qty": 5,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 50,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Đậu đỏ",
+     "qty": 60,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 45,
+   "name": "Cacao sữa",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Bột cacao",
+     "qty": 15,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 50,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 46,
+   "name": "Chocolate nóng",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Chocolate",
+     "qty": 35,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Kem tươi",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 47,
+   "name": "Chocolate bạc hà",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Bột cacao",
+     "qty": 15,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup bạc hà",
+     "qty": 15,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 48,
+   "name": "Chocolate dâu",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Chocolate",
+     "qty": 25,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Puree dâu",
+     "qty": 35,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 49,
+   "name": "Khoai môn sữa",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Bột khoai môn",
+     "qty": 30,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 20,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 50,
+   "name": "Dâu sữa",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Dâu tây",
+     "qty": 80,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup dâu",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 51,
+   "name": "Chuối sữa",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Chuối",
+     "qty": 100,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Mật ong",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 52,
+   "name": "Xoài sữa",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Xoài",
+     "qty": 100,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa đặc",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 53,
+   "name": "Việt quất sữa",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Việt quất",
+     "qty": 70,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup việt quất",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 54,
+   "name": "Sữa tươi đường đen",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Sữa tươi",
+     "qty": 250,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường đen",
+     "qty": 30,
+     "unit": "g"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 15,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 55,
+   "name": "Sữa dừa",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Sữa tươi",
+     "qty": 150,
+     "unit": "ml"
+    },
+    {
+     "name": "Nước cốt dừa",
+     "qty": 70,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa đặc",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 56,
+   "name": "Sữa hạnh nhân mật ong",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Sữa hạnh nhân",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Mật ong",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Vanilla",
+     "qty": 2,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 57,
+   "name": "Sữa mè đen",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Bột mè đen",
+     "qty": 20,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa đặc",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 58,
+   "name": "Sữa bắp",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Sữa bắp",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 50,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa đặc",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 59,
+   "name": "Sữa gạo rang",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Gạo rang",
+     "qty": 15,
+     "unit": "g"
+    },
+    {
+     "name": "Nước",
+     "qty": 150,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 100,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 60,
+   "name": "Latte mật ong quế",
+   "group": 3,
+   "ingredients": [
+    {
+     "name": "Sữa tươi",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Mật ong",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột quế",
+     "qty": 1,
+     "unit": "g"
+    },
+    {
+     "name": "Vanilla",
+     "qty": 2,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 61,
+   "name": "Cà phê đen đá",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Cà phê pha",
+     "qty": 60,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 15,
+     "unit": "ml"
+    },
+    {
+     "name": "Nước",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 62,
+   "name": "Cà phê sữa đá",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Cà phê pha",
+     "qty": 60,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa đặc",
+     "qty": 30,
+     "unit": "ml"
+    },
+    {
+     "name": "Nước",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 63,
+   "name": "Bạc xỉu",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Cà phê pha",
+     "qty": 30,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa đặc",
+     "qty": 25,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 150,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 64,
+   "name": "Espresso",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Espresso",
+     "qty": 30,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 65,
+   "name": "Americano",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Espresso",
+     "qty": 60,
+     "unit": "ml"
+    },
+    {
+     "name": "Nước",
+     "qty": 180,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 66,
+   "name": "Latte",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Espresso",
+     "qty": 30,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Bọt sữa",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 67,
+   "name": "Cappuccino",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Espresso",
+     "qty": 30,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa nóng",
+     "qty": 100,
+     "unit": "ml"
+    },
+    {
+     "name": "Bọt sữa",
+     "qty": 100,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 68,
+   "name": "Mocha",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Espresso",
+     "qty": 30,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột cacao",
+     "qty": 15,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 69,
+   "name": "Caramel macchiato",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Espresso",
+     "qty": 30,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Vanilla syrup",
+     "qty": 15,
+     "unit": "ml"
+    },
+    {
+     "name": "Caramel",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 70,
+   "name": "Vanilla latte",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Espresso",
+     "qty": 30,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Vanilla syrup",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 71,
+   "name": "Hazelnut latte",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Espresso",
+     "qty": 30,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup hạt phỉ",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 72,
+   "name": "Coconut coffee",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Cà phê pha",
+     "qty": 60,
+     "unit": "ml"
+    },
+    {
+     "name": "Nước cốt dừa",
+     "qty": 70,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa đặc",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 73,
+   "name": "Cà phê muối",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Cà phê pha",
+     "qty": 60,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa đặc",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Kem muối",
+     "qty": 40,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 74,
+   "name": "Cà phê trứng",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Cà phê pha",
+     "qty": 60,
+     "unit": "ml"
+    },
+    {
+     "name": "Lòng đỏ trứng",
+     "qty": 20,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa đặc",
+     "qty": 25,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 75,
+   "name": "Cà phê chocolate",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Espresso",
+     "qty": 30,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột cacao",
+     "qty": 12,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 76,
+   "name": "Cà phê mật ong",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Espresso",
+     "qty": 60,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 150,
+     "unit": "ml"
+    },
+    {
+     "name": "Mật ong",
+     "qty": 20,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 77,
+   "name": "Cà phê bạc hà",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Espresso",
+     "qty": 30,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup bạc hà",
+     "qty": 15,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột cacao",
+     "qty": 5,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 78,
+   "name": "Espresso tonic",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Espresso",
+     "qty": 30,
+     "unit": "ml"
+    },
+    {
+     "name": "Tonic",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Chanh",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 79,
+   "name": "Cold brew cam",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Cold brew",
+     "qty": 120,
+     "unit": "ml"
+    },
+    {
+     "name": "Nước cam",
+     "qty": 80,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup đường",
+     "qty": 10,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 80,
+   "name": "Cold brew sữa",
+   "group": 4,
+   "ingredients": [
+    {
+     "name": "Cold brew",
+     "qty": 120,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 120,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa đặc",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 81,
+   "name": "Trà kem cheese",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Hồng trà đã pha",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 15,
+     "unit": "ml"
+    },
+    {
+     "name": "Kem cheese",
+     "qty": 40,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 82,
+   "name": "Ô long kem muối",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Ô long đã pha",
+     "qty": 220,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 15,
+     "unit": "ml"
+    },
+    {
+     "name": "Kem muối",
+     "qty": 40,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 83,
+   "name": "Matcha kem cheese",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Matcha",
+     "qty": 5,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 50,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 150,
+     "unit": "ml"
+    },
+    {
+     "name": "Kem cheese",
+     "qty": 40,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 84,
+   "name": "Trà đào kem cheese",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Hồng trà đã pha",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup đào",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Đào",
+     "qty": 40,
+     "unit": "g"
+    },
+    {
+     "name": "Kem cheese",
+     "qty": 35,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 85,
+   "name": "Trà dâu kem cheese",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Lục trà đã pha",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Puree dâu",
+     "qty": 30,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    },
+    {
+     "name": "Kem cheese",
+     "qty": 35,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 86,
+   "name": "Trà xoài kem cheese",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Lục trà đã pha",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Puree xoài",
+     "qty": 35,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 10,
+     "unit": "ml"
+    },
+    {
+     "name": "Kem cheese",
+     "qty": 35,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 87,
+   "name": "Trà sữa ba tầng",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Hồng trà đã pha",
+     "qty": 150,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 80,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup đường đen",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Kem cheese",
+     "qty": 30,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 88,
+   "name": "Trà sữa pudding trứng",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Hồng trà đã pha",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 20,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 15,
+     "unit": "ml"
+    },
+    {
+     "name": "Pudding trứng",
+     "qty": 70,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 89,
+   "name": "Trà sữa thạch cà phê",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Hồng trà đã pha",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 25,
+     "unit": "g"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 15,
+     "unit": "ml"
+    },
+    {
+     "name": "Thạch cà phê",
+     "qty": 60,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 90,
+   "name": "Trà sữa trân châu đường đen",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Hồng trà đã pha",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 100,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường đen",
+     "qty": 25,
+     "unit": "g"
+    },
+    {
+     "name": "Trân châu",
+     "qty": 70,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 91,
+   "name": "Trà sữa Oreo",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Hồng trà đã pha",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 80,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 20,
+     "unit": "g"
+    },
+    {
+     "name": "Oreo",
+     "qty": 25,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 92,
+   "name": "Matcha Oreo",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Matcha",
+     "qty": 5,
+     "unit": "g"
+    },
+    {
+     "name": "Nước nóng",
+     "qty": 50,
+     "unit": "ml"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Oreo",
+     "qty": 25,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 93,
+   "name": "Chocolate Oreo",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Bột cacao",
+     "qty": 15,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 180,
+     "unit": "ml"
+    },
+    {
+     "name": "Bột kem béo",
+     "qty": 20,
+     "unit": "g"
+    },
+    {
+     "name": "Oreo",
+     "qty": 25,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 94,
+   "name": "Smoothie dâu",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Dâu tây",
+     "qty": 100,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa chua",
+     "qty": 80,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 100,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup đường",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 95,
+   "name": "Smoothie xoài",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Xoài",
+     "qty": 120,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa chua",
+     "qty": 80,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 100,
+     "unit": "ml"
+    },
+    {
+     "name": "Mật ong",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 96,
+   "name": "Smoothie việt quất",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Việt quất",
+     "qty": 80,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa chua",
+     "qty": 100,
+     "unit": "g"
+    },
+    {
+     "name": "Sữa tươi",
+     "qty": 100,
+     "unit": "ml"
+    },
+    {
+     "name": "Mật ong",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 97,
+   "name": "Chanh dây soda",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Cốt chanh dây",
+     "qty": 35,
+     "unit": "ml"
+    },
+    {
+     "name": "Soda",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Đường nước",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Chanh",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 98,
+   "name": "Dâu soda",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Puree dâu",
+     "qty": 35,
+     "unit": "g"
+    },
+    {
+     "name": "Soda",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Chanh",
+     "qty": 10,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup đường",
+     "qty": 15,
+     "unit": "ml"
+    }
+   ]
+  },
+  {
+   "id": 99,
+   "name": "Vải hoa hồng soda",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Syrup vải",
+     "qty": 25,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup hoa hồng",
+     "qty": 10,
+     "unit": "ml"
+    },
+    {
+     "name": "Soda",
+     "qty": 200,
+     "unit": "ml"
+    },
+    {
+     "name": "Vải",
+     "qty": 40,
+     "unit": "g"
+    }
+   ]
+  },
+  {
+   "id": 100,
+   "name": "Tropical sunset",
+   "group": 5,
+   "ingredients": [
+    {
+     "name": "Nước cam",
+     "qty": 100,
+     "unit": "ml"
+    },
+    {
+     "name": "Nước dứa",
+     "qty": 80,
+     "unit": "ml"
+    },
+    {
+     "name": "Syrup lựu",
+     "qty": 20,
+     "unit": "ml"
+    },
+    {
+     "name": "Soda",
+     "qty": 50,
+     "unit": "ml"
+    }
+   ]
+  }
+ ]
+}

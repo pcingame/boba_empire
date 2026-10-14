@@ -39,6 +39,7 @@ String _title(AppLocalizations l10n, DailyQuestView q) => switch (q.kind) {
       DailyQuestKind.cat => l10n.dqCat,
       DailyQuestKind.vip => l10n.dqVip,
       DailyQuestKind.spin => l10n.dqSpin,
+      DailyQuestKind.recipe => l10n.dqRecipe,
     };
 
 class _DailyQuestsDialog extends ConsumerStatefulWidget {

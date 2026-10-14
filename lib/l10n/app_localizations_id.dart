@@ -1433,6 +1433,150 @@ class AppLocalizationsId extends AppLocalizations {
   String get settingsSound => 'Suara';
 
   @override
+  String get dqRecipe => 'Selesaikan 1 sesi latihan resep';
+
+  @override
+  String wqRecipeSessions(int n) {
+    return 'Selesaikan $n sesi latihan resep';
+  }
+
+  @override
+  String wqRecipeLevels(int n) {
+    return 'Naikkan level $n resep';
+  }
+
+  @override
+  String get recipeHint => 'Petunjuk (tonton iklan)';
+
+  @override
+  String get recipeHintNoCount =>
+      'Kamu memakai petunjuk, jadi soal ini tidak dihitung untuk level.';
+
+  @override
+  String get recipeDouble => 'Tonton iklan untuk melipatgandakan koin';
+
+  @override
+  String get recipeDoubled => 'Hadiah koin digandakan!';
+
+  @override
+  String get recipeTitle => 'Resep minuman';
+
+  @override
+  String get recipeEntryNote => 'Hafalkan resep, dapat hadiah';
+
+  @override
+  String get recipeEntryButton => 'Main';
+
+  @override
+  String recipeMastered(int n, int total) {
+    return 'Dikuasai $n/$total';
+  }
+
+  @override
+  String recipeDueToday(int n) {
+    return '$n resep untuk diulang hari ini';
+  }
+
+  @override
+  String get recipeAllDone =>
+      'Semua sudah diulang hari ini! Kamu masih bisa berlatih (tidak dihitung untuk level).';
+
+  @override
+  String get recipePractice => 'Latihan';
+
+  @override
+  String get recipeBox0 => 'Baru';
+
+  @override
+  String get recipeBox1 => 'Mulai kenal';
+
+  @override
+  String get recipeBox2 => 'Hafal';
+
+  @override
+  String get recipeBox3 => 'Mahir';
+
+  @override
+  String get recipeReviewToday => 'Ulangi: hari ini';
+
+  @override
+  String recipeReviewIn(int n) {
+    return 'Ulangi dalam $n hari';
+  }
+
+  @override
+  String recipeQMissing(String name) {
+    return 'Bahan apa yang kurang dari $name?';
+  }
+
+  @override
+  String recipeQQuantity(String drink, String ingredient) {
+    return '$drink: berapa banyak $ingredient?';
+  }
+
+  @override
+  String recipeQFull(String name) {
+    return 'Mana resep yang benar untuk $name?';
+  }
+
+  @override
+  String get recipeCorrect => 'Benar!';
+
+  @override
+  String get recipeWrongShort => 'Belum tepat — jawaban benar ditandai.';
+
+  @override
+  String recipeLevelUp(String box, String name) {
+    return '$name naik ke $box!';
+  }
+
+  @override
+  String get recipePracticeOnly =>
+      'Belum waktunya diulang — hanya latihan, level tidak berubah.';
+
+  @override
+  String get recipeNext => 'Berikutnya';
+
+  @override
+  String get recipeSeeResult => 'Lihat hasil';
+
+  @override
+  String get recipeResultTitle => 'Hasil';
+
+  @override
+  String recipeScore(int correct, int total) {
+    return '$correct/$total benar';
+  }
+
+  @override
+  String recipeLevelUps(int n) {
+    return '$n resep naik level';
+  }
+
+  @override
+  String recipeRewardCash(String cash) {
+    return 'Hadiah: +$cash koin';
+  }
+
+  @override
+  String recipeRewardBoth(String cash, int gems) {
+    return 'Hadiah: +$cash koin, +$gems 💎';
+  }
+
+  @override
+  String get recipeAgain => 'Latihan lagi';
+
+  @override
+  String get recipeDone => 'Selesai';
+
+  @override
+  String get recipeDisclaimer =>
+      'Resep hanya referensi untuk game, bukan resep resmi merek mana pun.';
+
+  @override
+  String get recipeIngredients => 'Bahan';
+
+  @override
   String walkerTipSnack(String amount) {
     return 'Pelanggan memberi tip +$amount koin 🧋';
   }
@@ -3081,7 +3225,7 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get navMatch3 => 'Mutiara';
+  String get navMatch3 => 'Game';
 
   @override
   String get m3Title => 'Mutiara Jatuh';
