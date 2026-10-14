@@ -35,6 +35,15 @@ insert into accessory_leaderboard_entries (user_id, nickname, owned_count) value
 insert into vip_leaderboard_entries (user_id, nickname, vip_exp) values
   ('00000000-0000-0000-0000-000000000003', 'C', 5000), ('00000000-0000-0000-0000-000000000001', 'A', 3000);
 
+-- Thợ pha chế: B và C hoà 12 (B nộp sớm hơn → hạng 1); D 5; A 3 (hạng 4: ngoài top); u7 ẩn danh 50; u8 0 món.
+insert into recipe_leaderboard_entries (user_id, nickname, mastered, updated_at) values
+  ('00000000-0000-0000-0000-000000000002', 'B', 12, now() - interval '2 hours'),
+  ('00000000-0000-0000-0000-000000000003', 'C', 12, now() - interval '1 hour'),
+  ('00000000-0000-0000-0000-000000000004', 'D', 5,  now()),
+  ('00000000-0000-0000-0000-000000000001', 'A', 3,  now()),
+  ('00000000-0000-0000-0000-000000000007', 'Anon', 50, now()),
+  ('00000000-0000-0000-0000-000000000008', 'Zero', 0, now());
+
 select chk('hằng số thưởng 300/200/100, hạng ngoài top = 0',
   lb_reward_gems(1) = 300 and lb_reward_gems(2) = 200 and lb_reward_gems(3) = 100 and lb_reward_gems(4) = 0);
 
@@ -46,6 +55,8 @@ select chk('thu nhập top 1-2-3 = A, B, C (hoà → nộp sớm hơn xếp trê
   (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'income') = 'A,B,C');
 select chk('Ghép 3: D rồi A', (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'pearls') = 'D,A');
 select chk('Sưu tập: B rồi C', (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'collection') = 'B,C');
+select chk('Thợ pha chế: B, C, D (hoà → nộp sớm hơn xếp trên; loại ẩn danh, 0 món, và A hạng 4)',
+  (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'recipes') = 'B,C,D');
 select chk('VIP: C rồi A', (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'vip') = 'C,A');
 select count(*) as n0 from lb_reward_snapshots \gset
 select week as w from lb_reward_snapshots limit 1 \gset
@@ -67,6 +78,10 @@ select chk('nhận lần hai bị chặn', err_of(format('select lb_reward_claim
 select chk('sau khi nhận: claimed = true', (select (e->>'claimed')::boolean from jsonb_array_elements(lb_reward_status()) e where e->>'board' = 'income'));
 select chk('nhận bảng khác độc lập (Ghép 3 hạng 2 = 200)', lb_reward_claim(:'w', 'pearls') = 200);
 select chk('nhận bảng mình KHÔNG có trong top bị từ chối', err_of(format('select lb_reward_claim(%L, ''collection'')', :'w')) like '%not found%');
+select chk('A (hạng 4 Thợ pha chế) không nhận được', err_of(format('select lb_reward_claim(%L, ''recipes'')', :'w')) like '%not found%');
+select as_u(2); select chk('B Thợ pha chế hạng 1 = 300', lb_reward_claim(:'w', 'recipes') = 300);
+select chk('B nhận Thợ pha chế lần hai bị chặn', err_of(format('select lb_reward_claim(%L, ''recipes'')', :'w')) like '%already claimed%');
+select as_u(4); select chk('D Thợ pha chế hạng 3 = 100', lb_reward_claim(:'w', 'recipes') = 100);
 select as_u(2); select chk('B thu nhập hạng 2 = 200', lb_reward_claim(:'w', 'income') = 200);
 select as_u(3); select chk('C thu nhập hạng 3 = 100', lb_reward_claim(:'w', 'income') = 100);
 select as_u(4); select chk('D (hạng 4 thu nhập) không nhận được', err_of(format('select lb_reward_claim(%L, ''income'')', :'w')) like '%not found%');

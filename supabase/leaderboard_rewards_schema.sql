@@ -1,10 +1,10 @@
 -- Thưởng top bảng xếp hạng theo tuần (góp ý người chơi: "thưởng cho top 1,2,3 BXH").
--- Bốn bảng TÍCH LŨY: income (Thu nhập), pearls (Trân Châu Rơi), collection (Sưu tập), vip. Mỗi tuần
+-- Năm bảng TÍCH LŨY: income (Thu nhập), pearls (Trân Châu Rơi), collection (Sưu tập), vip, recipes (Thợ pha chế). Mỗi tuần
 -- (thứ Hai 00:00 UTC) top 3 của mỗi bảng nhận 300 / 200 / 100 💎 — nhận MỘT LẦN cho mỗi (tuần, bảng).
 --
 -- Cách deploy: dán TOÀN BỘ file này vào Supabase SQL Editor → Run. Idempotent. Chạy SAU
--- leaderboard_schema, m3_leaderboard_schema, accessory_leaderboard_schema và accessory_market_schema
--- (bảng vip_leaderboard_entries nằm ở đó). KHÔNG đụng bảng/hàm cũ.
+-- leaderboard_schema, m3_leaderboard_schema, accessory_leaderboard_schema, recipe_leaderboard_schema và
+-- accessory_market_schema (bảng vip_leaderboard_entries nằm ở đó). KHÔNG đụng bảng/hàm cũ.
 --
 -- Cách tính: KHÔNG cần cron. Lần đầu có người gọi lb_reward_status() trong tuần mới thì server chụp top 3
 -- hiện tại của từng bảng và gắn nhãn tuần đó ("bảng xếp hạng chốt đầu tuần"); ai nằm trong ảnh chụp thì
@@ -17,7 +17,7 @@
 
 create table if not exists lb_reward_snapshots (
   week      date    not null,
-  board     text    not null check (board in ('income', 'pearls', 'collection', 'vip')),
+  board     text    not null,
   rank      integer not null check (rank between 1 and 3),
   user_id   uuid    not null references auth.users(id) on delete cascade,
   nickname  text    not null,
@@ -34,6 +34,11 @@ create table if not exists lb_reward_claims (
   claimed_at timestamptz not null default now(),
   primary key (user_id, week, board)
 );
+
+-- Bảng đã tạo từ khi còn 4 bảng có CHECK cũ: bỏ rồi tạo lại với bảng 'recipes' (idempotent).
+alter table lb_reward_snapshots drop constraint if exists lb_reward_snapshots_board_check;
+alter table lb_reward_snapshots add constraint lb_reward_snapshots_board_check
+  check (board in ('income', 'pearls', 'collection', 'vip', 'recipes'));
 
 alter table lb_reward_snapshots enable row level security;
 alter table lb_reward_claims    enable row level security;
@@ -93,6 +98,14 @@ begin
       from (select e.user_id, e.nickname, e.vip_exp::numeric as v, e.updated_at
               from vip_leaderboard_entries e join auth.users u on u.id = e.user_id
              where not u.is_anonymous and e.vip_exp > 0) r
+  ) b where b.rn <= 3
+  union all
+  select v_week, b.board, b.rn, b.user_id, b.nickname, b.v from (
+    select 'recipes'::text as board, r.user_id, r.nickname, r.v,
+           row_number() over (order by r.v desc, r.updated_at asc)::integer as rn
+      from (select e.user_id, e.nickname, e.mastered::numeric as v, e.updated_at
+              from recipe_leaderboard_entries e join auth.users u on u.id = e.user_id
+             where not u.is_anonymous and e.mastered > 0) r
   ) b where b.rn <= 3;
 end;
 $$;

@@ -7,6 +7,7 @@ import '../core/recipes.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import '../state/recipe_providers.dart';
+import 'recipe_leaderboard_page.dart';
 import 'recipe_quiz_page.dart';
 import 'widgets/clay.dart';
 
@@ -37,7 +38,17 @@ class RecipeHubPage extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final catalog = ref.watch(recipeCatalogProvider);
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.recipeTitle)),
+      appBar: AppBar(
+        title: Text(l10n.recipeTitle),
+        actions: [
+          IconButton(
+            key: const Key('recipe-leaderboard'),
+            tooltip: l10n.rlbTitle,
+            icon: const Icon(Icons.emoji_events),
+            onPressed: () => showRecipeLeaderboard(context),
+          ),
+        ],
+      ),
       body: catalog.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, _) => Center(child: Text(l10n.guildErrNetwork)),

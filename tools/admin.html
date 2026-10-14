@@ -207,7 +207,7 @@
           .map(function (u) { return { nickname: u.email, user_id: u.id, 'nguồn': 'email' }; });
       });
     }
-    var srcs = [['guild_members', 'Hội'], ['leaderboard_entries', 'BXH thu nhập'], ['vip_leaderboard_entries', 'BXH VIP'], ['m3_leaderboard_entries', 'BXH Ghép 3']];
+    var srcs = [['guild_members', 'Hội'], ['leaderboard_entries', 'BXH thu nhập'], ['vip_leaderboard_entries', 'BXH VIP'], ['m3_leaderboard_entries', 'BXH Ghép 3'], ['recipe_leaderboard_entries', 'BXH Thợ pha chế']];
     return Promise.all(srcs.map(function (x) {
       return api('GET', '/rest/v1/' + x[0] + '?select=user_id,nickname&nickname=ilike.' + enc(like) + '&limit=20')
         .then(function (rows) { return rows.map(function (r) { r['nguồn'] = x[1]; return r; }); }).catch(function () { return []; });
@@ -342,6 +342,7 @@
     ['story_speedrun2_entries', 'Phá đảo Hồi 2', 'complete_seconds.asc', ['nickname', 'complete_seconds', 'completed_at'], 'user_id'],
     ['story_speedrun3_entries', 'Phá đảo Hồi 3', 'complete_seconds.asc', ['nickname', 'complete_seconds', 'completed_at'], 'user_id'],
     ['vip_leaderboard_entries', 'VIP', 'vip_exp.desc', ['nickname', 'vip_exp', 'updated_at'], 'user_id'],
+    ['recipe_leaderboard_entries', 'Thợ pha chế', 'mastered.desc', ['nickname', 'mastered', 'updated_at'], 'user_id'],
   ];
   function viewBoards(app) {
     var sel = el('select', {}, BOARDS.map(function (b, i) { return el('option', { value: String(i), text: b[1] }); }));

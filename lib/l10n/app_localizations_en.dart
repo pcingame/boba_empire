@@ -1430,6 +1430,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsSound => 'Sound';
 
   @override
+  String get rlbTitle => 'Recipe Masters';
+
+  @override
+  String get lbrBoardRecipes => 'Recipe Masters';
+
+  @override
+  String get rlbEmpty =>
+      'Nobody is on the board yet. Be the first to master a recipe!';
+
+  @override
+  String get rlbNoMastered =>
+      'You haven\'t mastered any recipe yet, so you\'re not on the board.';
+
+  @override
+  String rlbMastered(int n) {
+    return '$n mastered';
+  }
+
+  @override
+  String get rlbError => 'Couldn\'t load the leaderboard, try again later.';
+
+  @override
+  String recipeMilestone(int n) {
+    return '$n recipes mastered — you got an accessory!';
+  }
+
+  @override
   String get dqRecipe => 'Finish 1 recipe practice session';
 
   @override
@@ -3081,7 +3108,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String lbrIntro(int first, int second, int third) {
-    return 'Each week the top 3 of four boards (Income, Pearl Drop, Collection, VIP) get $first / $second / $third 💎. Boards are locked at the start of the week (Monday, UTC); rewards can be claimed for one more week.';
+    return 'Each week the top 3 of five boards (Income, Pearl Drop, Collection, VIP, Recipe Masters) get $first / $second / $third 💎. Boards are locked at the start of the week (Monday, UTC); rewards can be claimed for one more week.';
   }
 
   @override

@@ -420,4 +420,25 @@ void main() {
       await _teardown(tester);
     });
   });
+
+  testWidgets('món Thạo thứ 5: màn luyện báo nhận phụ kiện (một lần), lưu cờ mốc', (tester) async {
+    final ids = _catalog().playable.map((r) => r.id).toList();
+    // 4 món đã Thạo (hẹn xa); 1 món bậc Thuộc đến hạn → đúng một câu đến hạn, lên Thạo = món thứ 5.
+    final progress = <String, List<int>>{
+      for (final id in ids) '$id': [3, 9999, 3],
+      '${ids[4]}': [2, 0, 2],
+    };
+    for (final id in ids.skip(5)) {
+      progress['$id'] = [1, 9999, 1]; // chưa tới hạn
+    }
+    final c = await _pump(tester, progress: progress);
+    await openPractice(tester);
+    final qs = _expected(1, progress: {for (final e in progress.entries) int.parse(e.key): RecipeProgress.fromList(e.value)});
+    expect(qs.first.recipe.id, ids[4]);
+    await _answer(tester, qs.first, correct: true);
+    expect(find.textContaining('lên bậc'), findsOneWidget);
+    expect(find.text('Thạo 5 món — bạn nhận được một phụ kiện!'), findsOneWidget);
+    expect(c.read(gameControllerProvider.notifier).debugGame.recipeMilestonesClaimed, [5]);
+    await _teardown(tester);
+  });
 }

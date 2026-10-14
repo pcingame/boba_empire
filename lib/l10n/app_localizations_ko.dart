@@ -1411,6 +1411,31 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsSound => '소리';
 
   @override
+  String get rlbTitle => '레시피 마스터';
+
+  @override
+  String get lbrBoardRecipes => '레시피 마스터';
+
+  @override
+  String get rlbEmpty => '아직 순위에 아무도 없어요. 첫 번째로 레시피를 마스터해 보세요!';
+
+  @override
+  String get rlbNoMastered => '아직 마스터한 레시피가 없어서 순위에 없어요.';
+
+  @override
+  String rlbMastered(int n) {
+    return '$n개 마스터';
+  }
+
+  @override
+  String get rlbError => '순위를 불러오지 못했어요. 나중에 다시 시도해 주세요.';
+
+  @override
+  String recipeMilestone(int n) {
+    return '레시피 $n개 마스터 — 장식품을 받았어요!';
+  }
+
+  @override
   String get dqRecipe => '레시피 연습 1회 완료';
 
   @override
@@ -3030,7 +3055,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String lbrIntro(int first, int second, int third) {
-    return '매주 네 개 순위(수입, 진주 낙하, 수집, VIP)의 TOP 3가 $first / $second / $third 💎를 받아요. 순위는 주 초(월요일, UTC)에 확정되고 보상은 한 주 더 받을 수 있어요.';
+    return '매주 다섯 개 순위(수입, 진주 낙하, 수집, VIP, 레시피 마스터)의 TOP 3가 $first / $second / $third 💎를 받아요. 순위는 주 초(월요일, UTC)에 확정되고 보상은 한 주 더 받을 수 있어요.';
   }
 
   @override

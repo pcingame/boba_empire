@@ -7,6 +7,8 @@ library;
 
 import 'dart:math' as math;
 
+import 'accessories.dart' show AccessoryDrop, AccessoryRarity;
+
 const int recipeMaxBox = 3;
 
 /// Ngày (dayIndex) bắt đầu có nhiệm vụ công thức xen vào bộ nhiệm vụ ngày/tuần (2026-10-20, thứ Ba).
@@ -19,6 +21,20 @@ const List<int> recipeIntervalDays = [0, 1, 3, 7];
 /// Thưởng Xu khi LẦN ĐẦU đạt bậc [i] của một món, tính theo giây sản xuất (sàn: số lần chạm tương ứng).
 const List<int> recipeRewardSeconds = [0, 30, 60, 120];
 const List<int> recipeRewardFloorTaps = [0, 5, 10, 20];
+
+/// Rương phụ kiện theo số món ĐÃ TỪNG đạt Thạo (mốc → độ hiếm tối thiểu của món), nhận tự động một lần
+/// mỗi mốc — cùng ý tưởng mốc màn 10/30/60 của Trân Châu Rơi. Đếm theo `best` nên sai-rồi-đúng-lại
+/// không làm mất hay nhận lặp mốc.
+const Map<int, AccessoryRarity> recipeAccessoryMilestones = {
+  5: AccessoryRarity.rare,
+  10: AccessoryRarity.epic,
+  20: AccessoryRarity.legendary,
+};
+
+/// Số món đã từng đạt Thạo (best == [recipeMaxBox]) trong bản lưu `id → [box, dueDay, best]`.
+/// Cũng là con số nộp lên bảng xếp hạng "Thợ pha chế" (chỉ tăng, khớp trigger không-hạ-cấp ở server).
+int recipeMasteredEver(Map<String, List<int>> progress) =>
+    progress.values.where((l) => RecipeProgress.fromList(l).best == recipeMaxBox).length;
 
 /// 💎 thưởng khi lần đầu đạt bậc Thạo của một món.
 const int recipeMaxBoxGems = 3;
@@ -78,7 +94,8 @@ RecipeAnswerOutcome applyRecipeAnswer(RecipeProgress p, bool correct, int today)
 
 /// Kết quả ghi một câu trả lời (do controller trả về cho giao diện).
 class RecipeAnswerResult {
-  const RecipeAnswerResult(this.before, this.after, this.outcome, this.cash, this.gems);
+  const RecipeAnswerResult(this.before, this.after, this.outcome, this.cash, this.gems,
+      {this.milestone = 0, this.drop});
 
   final RecipeProgress before;
   final RecipeProgress after;
@@ -87,4 +104,8 @@ class RecipeAnswerResult {
   /// Thưởng vừa trao (0 nếu không phải kỷ lục mới).
   final double cash;
   final int gems;
+
+  /// Mốc rương phụ kiện vừa đạt (số món Thạo; 0 = không) và phụ kiện nhận được.
+  final int milestone;
+  final AccessoryDrop? drop;
 }

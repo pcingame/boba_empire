@@ -319,9 +319,22 @@ class GameController extends Notifier<GameSnapshot> {
       }
       logEvent('recipe_level', {'recipe': recipeId, 'box': box});
     }
+    // Rương phụ kiện theo mốc số món đã từng Thạo (nhận tự động, một lần mỗi mốc).
+    var milestone = 0;
+    AccessoryDrop? drop;
+    if (out.newBest && out.next.box == recipeMaxBox) {
+      final mastered = recipeMasteredEver(_game.recipeProgress);
+      for (final m in recipeAccessoryMilestones.keys) {
+        if (mastered >= m && !_game.recipeMilestonesClaimed.contains(m)) {
+          _game.recipeMilestonesClaimed.add(m);
+          milestone = m;
+          drop = _dropAccessory(source: 'recipe', rarity: recipeAccessoryMilestones[m]);
+        }
+      }
+    }
     unawaited(saveNow());
     state = _snapshot();
-    return RecipeAnswerResult(before, out.next, out, cash, gems);
+    return RecipeAnswerResult(before, out.next, out, cash, gems, milestone: milestone, drop: drop);
   }
 
   /// Kết thúc một buổi luyện công thức: tính cho nhiệm vụ ngày/tuần CHỈ khi có ít nhất một câu thật sự

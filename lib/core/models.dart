@@ -92,6 +92,7 @@ class GameState {
     Map<String, double>? weeklyProgress,
     List<String>? weeklyClaimed,
     Map<String, List<int>>? recipeProgress,
+    List<int>? recipeMilestonesClaimed,
     this.accessoryAdDropDay = 0,
     this.accessoryAdSpinDay = 0,
     this.accessoryAdSpins = 0,
@@ -184,6 +185,7 @@ class GameState {
         weeklyProgress = weeklyProgress ?? {},
         weeklyClaimed = weeklyClaimed ?? [],
         recipeProgress = recipeProgress ?? {},
+        recipeMilestonesClaimed = recipeMilestonesClaimed ?? [],
         firstPlayedMillis = firstPlayedMillis ?? lastSeenMillis;
 
   /// Ván mới tinh.
@@ -367,6 +369,9 @@ class GameState {
 
   /// Bậc thuộc công thức pha chế (xem recipe_mastery.dart): id món → `[box, dueDay, best]`.
   final Map<String, List<int>> recipeProgress;
+
+  /// Các mốc rương phụ kiện công thức đã nhận (số món Thạo), xem `recipeAccessoryMilestones`.
+  final List<int> recipeMilestonesClaimed;
 
   /// Kỷ Nguyên (prestige tầng 2, xem Balance.ascension*): số lần đã Kỷ Nguyên
   /// hoá, tổng Điểm đã nhận (đã tiêu = suy ra từ cấp perk, giống Kho Sao), và
@@ -590,6 +595,7 @@ class GameState {
         'weeklyProgress': weeklyProgress,
         'weeklyClaimed': weeklyClaimed,
         'recipeProgress': recipeProgress,
+        'recipeMilestonesClaimed': recipeMilestonesClaimed,
         'ascensionCount': ascensionCount,
         'ascensionPointsEarned': ascensionPointsEarned,
         'ascensionLifetime': ascensionLifetime,
@@ -745,6 +751,9 @@ class GameState {
           for (final e in ((json['recipeProgress'] as Map?) ?? const {}).entries)
             if (e.key is String && e.value is List) e.key as String: [...(e.value as List).map((x) => x is num ? x.toInt() : 0)],
         },
+        recipeMilestonesClaimed: [
+          for (final x in (json['recipeMilestonesClaimed'] as List?) ?? const []) if (x is num) x.toInt(),
+        ],
         ascensionCount: (json['ascensionCount'] as num?)?.toInt() ?? 0,
         ascensionPointsEarned:
             (json['ascensionPointsEarned'] as num?)?.toInt() ?? 0,

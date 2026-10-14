@@ -2472,6 +2472,48 @@ abstract class AppLocalizations {
   /// **'Âm thanh'**
   String get settingsSound;
 
+  /// No description provided for @rlbTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'BXH Thợ pha chế'**
+  String get rlbTitle;
+
+  /// No description provided for @lbrBoardRecipes.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thợ pha chế'**
+  String get lbrBoardRecipes;
+
+  /// No description provided for @rlbEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có ai trên bảng. Hãy là người đầu tiên đạt Thạo một công thức!'**
+  String get rlbEmpty;
+
+  /// No description provided for @rlbNoMastered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa có món nào đạt Thạo nên chưa có tên trên bảng.'**
+  String get rlbNoMastered;
+
+  /// No description provided for @rlbMastered.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thạo {n} món'**
+  String rlbMastered(int n);
+
+  /// No description provided for @rlbError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tải được bảng xếp hạng, thử lại sau nhé.'**
+  String get rlbError;
+
+  /// No description provided for @recipeMilestone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thạo {n} món — bạn nhận được một phụ kiện!'**
+  String recipeMilestone(int n);
+
   /// No description provided for @dqRecipe.
   ///
   /// In vi, this message translates to:
@@ -5349,7 +5391,7 @@ abstract class AppLocalizations {
   /// No description provided for @lbrIntro.
   ///
   /// In vi, this message translates to:
-  /// **'Mỗi tuần, top 3 của bốn bảng (Thu nhập, Trân Châu Rơi, Sưu tập, VIP) nhận {first} / {second} / {third} 💎. Bảng được chốt vào đầu tuần (thứ Hai, giờ UTC); thưởng còn nhận được thêm một tuần.'**
+  /// **'Mỗi tuần, top 3 của năm bảng (Thu nhập, Trân Châu Rơi, Sưu tập, VIP, Thợ pha chế) nhận {first} / {second} / {third} 💎. Bảng được chốt vào đầu tuần (thứ Hai, giờ UTC); thưởng còn nhận được thêm một tuần.'**
   String lbrIntro(int first, int second, int third);
 
   /// No description provided for @lbrEmpty.

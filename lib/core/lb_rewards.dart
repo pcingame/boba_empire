@@ -3,8 +3,8 @@
 /// một lần. ⚠️ ước lượng chưa playtest.
 library;
 
-/// Bốn bảng TÍCH LŨY có thưởng; `name` khớp cột `board` của server.
-enum LbBoard { income, pearls, collection, vip }
+/// Năm bảng TÍCH LŨY có thưởng; `name` khớp cột `board` của server.
+enum LbBoard { income, pearls, collection, vip, recipes }
 
 /// 💎 theo hạng (1-based); hạng ngoài top 3 = 0.
 const List<int> lbRewardGemsByRank = [300, 200, 100];

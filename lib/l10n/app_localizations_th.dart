@@ -1429,6 +1429,33 @@ class AppLocalizationsTh extends AppLocalizations {
   String get settingsSound => 'เสียง';
 
   @override
+  String get rlbTitle => 'ผู้เชี่ยวชาญสูตร';
+
+  @override
+  String get lbrBoardRecipes => 'ผู้เชี่ยวชาญสูตร';
+
+  @override
+  String get rlbEmpty =>
+      'ยังไม่มีใครบนกระดาน มาเป็นคนแรกที่เชี่ยวชาญสูตรกันเถอะ!';
+
+  @override
+  String get rlbNoMastered =>
+      'คุณยังไม่มีสูตรที่เชี่ยวชาญ จึงยังไม่อยู่บนกระดาน';
+
+  @override
+  String rlbMastered(int n) {
+    return 'เชี่ยวชาญ $n สูตร';
+  }
+
+  @override
+  String get rlbError => 'โหลดกระดานอันดับไม่ได้ ลองใหม่ภายหลัง';
+
+  @override
+  String recipeMilestone(int n) {
+    return 'เชี่ยวชาญ $n สูตร — คุณได้รับของตกแต่ง!';
+  }
+
+  @override
   String get dqRecipe => 'ฝึกสูตรให้จบ 1 รอบ';
 
   @override
@@ -3063,7 +3090,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String lbrIntro(int first, int second, int third) {
-    return 'ทุกสัปดาห์ท็อป 3 ของสี่กระดาน (รายได้ ไข่มุกร่วง สะสม VIP) รับ $first / $second / $third 💎 กระดานจะถูกล็อกต้นสัปดาห์ (วันจันทร์ UTC) และรับรางวัลได้อีกหนึ่งสัปดาห์';
+    return 'ทุกสัปดาห์ท็อป 3 ของห้ากระดาน (รายได้ ไข่มุกร่วง สะสม VIP ผู้เชี่ยวชาญสูตร) รับ $first / $second / $third 💎 กระดานจะถูกล็อกต้นสัปดาห์ (วันจันทร์ UTC) และรับรางวัลได้อีกหนึ่งสัปดาห์';
   }
 
   @override

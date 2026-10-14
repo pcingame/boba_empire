@@ -12,6 +12,7 @@ import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import '../state/recipe_providers.dart';
 import 'recipe_hub_page.dart' show recipeBoxName;
+import 'widgets/accessory_reveal.dart';
 import 'widgets/clay.dart';
 
 /// Một buổi luyện công thức: lần lượt các câu hỏi trắc nghiệm 4 lựa chọn, ghi bậc ngay sau mỗi câu
@@ -62,6 +63,9 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
       _chosen = i;
       _answers.add(_Answered(q, i, result, hinted: _hinted));
     });
+    // Rương theo mốc số món Thạo: hiện khoảnh khắc nhận phụ kiện (như mốc Trân Châu Rơi).
+    final drop = result.drop;
+    if (drop != null) playAccessoryReveal(context, drop);
   }
 
   void _next() {
@@ -307,6 +311,7 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
       a.correct ? l10n.recipeCorrect : l10n.recipeWrongShort,
       if (a.hinted) l10n.recipeHintNoCount else if (!r.outcome.counted) l10n.recipePracticeOnly,
       if (r.outcome.leveledUp) l10n.recipeLevelUp(recipeBoxName(l10n, r.after.box), a.question.recipe.name),
+      if (r.milestone > 0) l10n.recipeMilestone(r.milestone),
       if (r.cash > 0 && r.gems > 0)
         l10n.recipeRewardBoth(formatNumber(r.cash), r.gems)
       else if (r.cash > 0)

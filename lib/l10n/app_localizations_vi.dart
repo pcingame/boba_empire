@@ -1429,6 +1429,33 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsSound => 'Âm thanh';
 
   @override
+  String get rlbTitle => 'BXH Thợ pha chế';
+
+  @override
+  String get lbrBoardRecipes => 'Thợ pha chế';
+
+  @override
+  String get rlbEmpty =>
+      'Chưa có ai trên bảng. Hãy là người đầu tiên đạt Thạo một công thức!';
+
+  @override
+  String get rlbNoMastered =>
+      'Bạn chưa có món nào đạt Thạo nên chưa có tên trên bảng.';
+
+  @override
+  String rlbMastered(int n) {
+    return 'Thạo $n món';
+  }
+
+  @override
+  String get rlbError => 'Không tải được bảng xếp hạng, thử lại sau nhé.';
+
+  @override
+  String recipeMilestone(int n) {
+    return 'Thạo $n món — bạn nhận được một phụ kiện!';
+  }
+
+  @override
   String get dqRecipe => 'Hoàn thành 1 buổi luyện công thức';
 
   @override
@@ -3070,7 +3097,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String lbrIntro(int first, int second, int third) {
-    return 'Mỗi tuần, top 3 của bốn bảng (Thu nhập, Trân Châu Rơi, Sưu tập, VIP) nhận $first / $second / $third 💎. Bảng được chốt vào đầu tuần (thứ Hai, giờ UTC); thưởng còn nhận được thêm một tuần.';
+    return 'Mỗi tuần, top 3 của năm bảng (Thu nhập, Trân Châu Rơi, Sưu tập, VIP, Thợ pha chế) nhận $first / $second / $third 💎. Bảng được chốt vào đầu tuần (thứ Hai, giờ UTC); thưởng còn nhận được thêm một tuần.';
   }
 
   @override

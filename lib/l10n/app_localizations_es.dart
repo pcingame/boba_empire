@@ -1440,6 +1440,34 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsSound => 'Sonido';
 
   @override
+  String get rlbTitle => 'Maestros de recetas';
+
+  @override
+  String get lbrBoardRecipes => 'Maestros de recetas';
+
+  @override
+  String get rlbEmpty =>
+      'Aún no hay nadie en la clasificación. ¡Sé el primero en dominar una receta!';
+
+  @override
+  String get rlbNoMastered =>
+      'Aún no dominas ninguna receta, así que no estás en la clasificación.';
+
+  @override
+  String rlbMastered(int n) {
+    return '$n dominadas';
+  }
+
+  @override
+  String get rlbError =>
+      'No se pudo cargar la clasificación, inténtalo más tarde.';
+
+  @override
+  String recipeMilestone(int n) {
+    return '¡$n recetas dominadas: ganaste un accesorio!';
+  }
+
+  @override
   String get dqRecipe => 'Completa 1 sesión de práctica de recetas';
 
   @override
@@ -3094,7 +3122,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String lbrIntro(int first, int second, int third) {
-    return 'Cada semana el top 3 de cuatro clasificaciones (Ingresos, Perla Caída, Colección, VIP) recibe $first / $second / $third 💎. Se cierran al inicio de la semana (lunes, UTC); puedes reclamar una semana más.';
+    return 'Cada semana el top 3 de cinco clasificaciones (Ingresos, Perla Caída, Colección, VIP, Maestros de recetas) recibe $first / $second / $third 💎. Se cierran al inicio de la semana (lunes, UTC); puedes reclamar una semana más.';
   }
 
   @override

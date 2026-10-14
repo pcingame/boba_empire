@@ -1,6 +1,7 @@
 // Bậc thuộc công thức qua controller: thưởng chỉ lần đầu đạt bậc mới, chống cày, lưu bền, save hỏng.
 import 'dart:convert';
 
+import 'package:boba_empire/core/accessories.dart';
 import 'package:boba_empire/core/daily.dart';
 import 'package:boba_empire/core/daily_quests.dart';
 import 'package:boba_empire/core/weekly_quests.dart';
@@ -184,6 +185,71 @@ void main() {
         ctrl.doubleRecipeReward(bad);
       }
       expect(c.read(gameControllerProvider).money, closeTo(12.5, 1e-9));
+    });
+  });
+
+  group('rương phụ kiện theo mốc số món Thạo', () {
+    /// [mastered] món (id 1..mastered) đã từng Thạo; món [target] ở bậc Thuộc, đến hạn, best=2.
+    GameState seed(int mastered, {int target = 20, List<int> claimed = const []}) {
+      final g = GameState.newGame(nowMillis: 0);
+      for (var id = 1; id <= mastered; id++) {
+        g.recipeProgress['$id'] = [3, 9999, 3];
+      }
+      g.recipeProgress['$target'] = [2, 0, 2];
+      g.recipeMilestonesClaimed.addAll(claimed);
+      return g;
+    }
+
+    test('món Thạo thứ 5 → 1 phụ kiện Hiếm, đúng một lần; món thứ 6 không có thêm', () async {
+      final (c, _, _) = await _harness(seed(4));
+      final ctrl = c.read(gameControllerProvider.notifier);
+      final r = ctrl.answerRecipe(20, true);
+      expect(r.after.box, recipeMaxBox);
+      expect(r.milestone, 5);
+      expect(r.drop, isNotNull);
+      expect(r.drop!.accessory.rarity.index, greaterThanOrEqualTo(AccessoryRarity.rare.index));
+      expect(ctrl.debugGame.recipeMilestonesClaimed, [5]);
+      expect(ctrl.debugGame.ownedAccessories.contains(r.drop!.accessory.id), isTrue);
+      // Món 21 (id khác) lên Thạo tiếp: đã nhận mốc 5, chưa tới mốc 10.
+      ctrl.debugGame.recipeProgress['21'] = [2, 0, 2];
+      final r2 = ctrl.answerRecipe(21, true);
+      expect((r2.milestone, r2.drop), (0, null));
+    });
+
+    test('đã nhận mốc 5 rồi thì không nhận lại dù đếm lại ≥ 5; mốc 10 và 20 có độ hiếm cao dần', () async {
+      final (c, _, _) = await _harness(seed(5, claimed: [5]));
+      final ctrl = c.read(gameControllerProvider.notifier);
+      expect(ctrl.answerRecipe(20, true).milestone, 0); // 6 món, mốc 5 đã nhận
+      final (c2, _, _) = await _harness(seed(9, claimed: [5]));
+      final r10 = c2.read(gameControllerProvider.notifier).answerRecipe(20, true);
+      expect(r10.milestone, 10);
+      expect(r10.drop!.accessory.rarity.index, greaterThanOrEqualTo(AccessoryRarity.epic.index));
+      final (c3, _, _) = await _harness(seed(19, claimed: [5, 10]));
+      final r20 = c3.read(gameControllerProvider.notifier).answerRecipe(20, true);
+      expect(r20.milestone, 20);
+      expect(r20.drop!.accessory.rarity, AccessoryRarity.legendary);
+    });
+
+    test('sai rồi đúng lại (best đã 3) không tính lại mốc; câu dùng gợi ý không đụng tới mốc', () async {
+      final (c, _, _) = await _harness(seed(4));
+      final ctrl = c.read(gameControllerProvider.notifier);
+      expect(ctrl.answerRecipe(20, true, hinted: true).milestone, 0);
+      expect(ctrl.debugGame.recipeMilestonesClaimed, isEmpty);
+      expect(ctrl.answerRecipe(20, true).milestone, 5);
+      // Tụt bậc món 1 rồi đúng lại: best vẫn 3 ⇒ số món từng Thạo vẫn 5, không có mốc mới.
+      ctrl.debugGame.recipeProgress['1'] = [2, 0, 3];
+      final r = ctrl.answerRecipe(1, true);
+      expect((r.milestone, r.outcome.newBest), (0, false));
+    });
+
+    test('lưu/đọc cờ mốc đã nhận; dữ liệu hỏng bị bỏ', () {
+      final g = GameState.newGame(nowMillis: 0)..recipeMilestonesClaimed.addAll([5, 10]);
+      final back = GameState.fromJson(jsonDecode(jsonEncode(g.toJson())) as Map<String, dynamic>);
+      expect(back.recipeMilestonesClaimed, [5, 10]);
+      final bad = g.toJson()..['recipeMilestonesClaimed'] = [5, 'x', null, 10.0];
+      expect(GameState.fromJson(jsonDecode(jsonEncode(bad)) as Map<String, dynamic>).recipeMilestonesClaimed, [5, 10]);
+      final old = g.toJson()..remove('recipeMilestonesClaimed');
+      expect(GameState.fromJson(jsonDecode(jsonEncode(old)) as Map<String, dynamic>).recipeMilestonesClaimed, isEmpty);
     });
   });
 }

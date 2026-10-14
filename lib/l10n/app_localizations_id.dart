@@ -1433,6 +1433,33 @@ class AppLocalizationsId extends AppLocalizations {
   String get settingsSound => 'Suara';
 
   @override
+  String get rlbTitle => 'Ahli Resep';
+
+  @override
+  String get lbrBoardRecipes => 'Ahli Resep';
+
+  @override
+  String get rlbEmpty =>
+      'Belum ada siapa pun di papan. Jadilah yang pertama menguasai resep!';
+
+  @override
+  String get rlbNoMastered =>
+      'Kamu belum menguasai resep apa pun, jadi belum ada di papan.';
+
+  @override
+  String rlbMastered(int n) {
+    return '$n dikuasai';
+  }
+
+  @override
+  String get rlbError => 'Papan peringkat gagal dimuat, coba lagi nanti.';
+
+  @override
+  String recipeMilestone(int n) {
+    return '$n resep dikuasai — kamu dapat aksesori!';
+  }
+
+  @override
   String get dqRecipe => 'Selesaikan 1 sesi latihan resep';
 
   @override
@@ -3075,7 +3102,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String lbrIntro(int first, int second, int third) {
-    return 'Setiap minggu, top 3 dari empat papan (Pendapatan, Mutiara Jatuh, Koleksi, VIP) mendapat $first / $second / $third 💎. Papan dikunci di awal minggu (Senin, UTC); hadiah bisa diklaim satu minggu lagi.';
+    return 'Setiap minggu, top 3 dari lima papan (Pendapatan, Mutiara Jatuh, Koleksi, VIP, Ahli Resep) mendapat $first / $second / $third 💎. Papan dikunci di awal minggu (Senin, UTC); hadiah bisa diklaim satu minggu lagi.';
   }
 
   @override
