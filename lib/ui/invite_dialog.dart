@@ -61,7 +61,8 @@ class _InviteDialogState extends ConsumerState<_InviteDialog> {
   }
 
   void _toast(String text) => ScaffoldMessenger.of(context)
-      .showSnackBar(SnackBar(content: Text(text)));
+      ..clearSnackBars()
+      ..showSnackBar(SnackBar(content: Text(text)));
 
   Future<void> _redeem() async {
     final l10n = AppLocalizations.of(context)!;

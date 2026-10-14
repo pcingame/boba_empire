@@ -74,7 +74,8 @@ String guildFailureText(AppLocalizations l10n, GuildFailure f,
 
 void _toast(BuildContext context, String text) =>
     ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(text)));
+        ..clearSnackBars()
+        ..showSnackBar(SnackBar(content: Text(text)));
 
 class GuildPage extends ConsumerStatefulWidget {
   const GuildPage({super.key});

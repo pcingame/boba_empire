@@ -119,7 +119,7 @@ class _AscensionDialog extends ConsumerWidget {
     // Đóng cả dialog Nhượng quyền phía dưới (nó đang hiện số Sao đã reset).
     Navigator.of(context).popUntil((r) => r.isFirst);
     if (gained > 0) {
-      messenger.showSnackBar(
+      messenger..clearSnackBars()..showSnackBar(
         SnackBar(
           content: Text(
             drop == null

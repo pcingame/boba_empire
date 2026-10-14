@@ -93,7 +93,8 @@ Future<void> main() async {
           final l10n = _l10n;
           if (l10n == null) return;
           _messengerKey.currentState
-              ?.showSnackBar(SnackBar(content: Text(l10n.adNotReady)));
+              ?..clearSnackBars()
+              ..showSnackBar(SnackBar(content: Text(l10n.adNotReady)));
         },
       )),
     );

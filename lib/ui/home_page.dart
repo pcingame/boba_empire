@@ -59,6 +59,7 @@ import 'widgets/marquee_text.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/animated_count.dart';
 import 'widgets/clay.dart';
+import 'widgets/gain_effects.dart';
 import 'widgets/idle_mascot.dart';
 import 'widgets/mascot.dart';
 import 'widgets/motion.dart';
@@ -225,7 +226,7 @@ class _HomePageState extends ConsumerState<HomePage>
   void _showVipBanner(VipAnnouncement a) {
     if (!mounted) return;
     final l10n = AppLocalizations.of(context)!;
-    ScaffoldMessenger.of(context).showSnackBar(
+    ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(
       SnackBar(
         key: const Key('vip-online-banner'),
         content: Text(vipOnlineText(l10n, nickname: a.nickname, level: a.level)),
@@ -292,7 +293,8 @@ class _HomePageState extends ConsumerState<HomePage>
     ref.read(audioServiceProvider).play(Sfx.reward);
     if (mounted) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(message)));
+          ..clearSnackBars()
+          ..showSnackBar(SnackBar(content: Text(message)));
     }
   }
 
@@ -421,10 +423,10 @@ class _HomePageState extends ConsumerState<HomePage>
     if (!mounted) return;
     if (choice == null) {
       ctrl.ignoreRivalEvent();
-      messenger.showSnackBar(SnackBar(content: Text(l10n.rivalIgnoredSnack)));
+      messenger..clearSnackBars()..showSnackBar(SnackBar(content: Text(l10n.rivalIgnoredSnack)));
     } else if (ctrl.resolveRivalEvent(choice)) {
       ref.read(audioServiceProvider).play(Sfx.reward);
-      messenger.showSnackBar(SnackBar(content: Text(l10n.rivalResolvedSnack)));
+      messenger..clearSnackBars()..showSnackBar(SnackBar(content: Text(l10n.rivalResolvedSnack)));
     }
   }
 
@@ -913,13 +915,17 @@ class _MoneyHeader extends ConsumerWidget {
                 ),
                 const SizedBox(width: 6),
               ],
-              ClayChip(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                child: Text(
-                  '💎 ${formatNumber(gems)}',
-                  style: theme.textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: onContainer,
+              EffectOnIncrease(
+                value: gems,
+                asset: AnimAssets.gemBurst,
+                child: ClayChip(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Text(
+                    '💎 ${formatNumber(gems)}',
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: onContainer,
+                    ),
                   ),
                 ),
               ),
@@ -1026,14 +1032,14 @@ class _MoneyHeader extends ConsumerWidget {
         adFree ? RewardOutcome.earned : await ads.showRewardedAd();
     if (!context.mounted) return;
     if (outcome != RewardOutcome.earned) {
-      messenger.showSnackBar(SnackBar(content: Text(l10n.adNotReadySnack)));
+      messenger..clearSnackBars()..showSnackBar(SnackBar(content: Text(l10n.adNotReadySnack)));
       return;
     }
     final reward = controller.claimInstantCash();
     if (reward > 0) {
       HapticFeedback.mediumImpact();
       ref.read(audioServiceProvider).play(Sfx.reward);
-      messenger.showSnackBar(
+      messenger..clearSnackBars()..showSnackBar(
         SnackBar(content: Text(l10n.instantCashSnack(formatNumber(reward)))),
       );
     }
@@ -2290,7 +2296,15 @@ class _ShopTile extends ConsumerWidget {
                         if (bought > 0) {
                           HapticFeedback.selectionClick();
                           ref.read(audioServiceProvider).play(Sfx.buy);
-                          playEffect(context, AnimAssets.confetti, size: 160);
+                          // Tia sáng nhỏ tại ô vừa mua (rẻ hơn pháo giấy giữa màn); chạm mốc ×
+                          // (mỗi Balance.milestoneStep cấp) thì thêm hiệu ứng lớn hơn.
+                          final at = effectCenterOf(context);
+                          playEffect(context, AnimAssets.sparkle,
+                              size: 120, center: at, heavy: false);
+                          if (level ~/ Balance.milestoneStep !=
+                              (level + bought) ~/ Balance.milestoneStep) {
+                            playEffect(context, AnimAssets.levelUp, size: 200, center: at);
+                          }
                         }
                       }
                     : null,
@@ -2657,7 +2671,7 @@ class _VipCustomer extends ConsumerWidget {
           if (reward.gems > 0) {
             HapticFeedback.mediumImpact();
             ref.read(audioServiceProvider).play(Sfx.vip);
-            messenger.showSnackBar(
+            messenger..clearSnackBars()..showSnackBar(
               SnackBar(
                 content: Text(
                   AppLocalizations.of(context)!

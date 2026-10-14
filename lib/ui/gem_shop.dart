@@ -101,7 +101,7 @@ class _GemShopState extends ConsumerState<_GemShop> {
   }
 
   void _snack(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(SnackBar(content: Text(msg)));
   }
 
   @override
@@ -447,7 +447,8 @@ class _DailyDealCard extends ConsumerWidget {
       DealKind.timeSkip => l10n.gemTimeSkipName,
     };
     void snack(String text) => ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(text)));
+        ..clearSnackBars()
+        ..showSnackBar(SnackBar(content: Text(text)));
 
     return ClayTile(
       key: const Key('daily-deal'),

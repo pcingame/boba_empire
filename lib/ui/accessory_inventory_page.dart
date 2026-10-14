@@ -316,7 +316,7 @@ class _AccessoryCell extends ConsumerWidget {
         HapticFeedback.selectionClick();
       } else {
         // Đã đủ chỗ trưng bày: báo thay vì im lặng.
-        ScaffoldMessenger.of(context).showSnackBar(
+        ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(
           SnackBar(
             content: Text(
               l10n.accessoryEquipFull(
@@ -335,7 +335,7 @@ class _AccessoryCell extends ConsumerWidget {
       final isCurrent = cache.isMine(accessory.emoji);
       final ok = await cache.setMine(isCurrent ? null : accessory.id);
       if (!context.mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
+      ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(
         SnackBar(
           content: Text(
             !ok
@@ -586,11 +586,11 @@ class _MilestoneStripState extends ConsumerState<_MilestoneStrip> {
     setState(() => _busy = false);
     if (r.coins != null) {
       HapticFeedback.mediumImpact();
-      messenger.showSnackBar(
+      messenger..clearSnackBars()..showSnackBar(
         SnackBar(content: Text(l10n.collectionMilestoneDone(r.coins!))),
       );
     } else if (r.error == 'network') {
-      messenger.showSnackBar(
+      messenger..clearSnackBars()..showSnackBar(
         SnackBar(content: Text(l10n.collectionMilestoneErrNet)),
       );
     }

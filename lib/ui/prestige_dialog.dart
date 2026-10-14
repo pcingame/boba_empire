@@ -143,7 +143,7 @@ class _PrestigeDialog extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     Navigator.of(context).pop();
     if (gained > 0) {
-      messenger.showSnackBar(
+      messenger..clearSnackBars()..showSnackBar(
         SnackBar(content: Text(l10n.prestigeSuccess(formatNumber(gained)))),
       );
     }

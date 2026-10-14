@@ -87,7 +87,7 @@ class _VipShopDialog extends ConsumerWidget {
                   ? null
                   : () {
                       final r = ref.read(gameControllerProvider.notifier).buyVipShopItem(item.id);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(SnackBar(
                         content: Text(r == VipShopResult.ok
                             ? l10n.vipShopBoughtSnack(accessoryName(l10n, item.id))
                             : l10n.vipShopNeedCoins),

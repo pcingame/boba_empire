@@ -327,7 +327,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
         : await ref.read(adServiceProvider).showRewardedAd();
     if (!mounted) return;
     if (outcome != RewardOutcome.earned) {
-      messenger.showSnackBar(SnackBar(content: Text(l10n.adNotReadySnack)));
+      messenger..clearSnackBars()..showSnackBar(SnackBar(content: Text(l10n.adNotReadySnack)));
       return;
     }
     _continuedWithAd = true;

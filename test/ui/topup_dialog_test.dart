@@ -62,6 +62,55 @@ void main() {
     container.dispose();
   });
 
+  testWidgets('mua EXP liên tiếp: thông báo KHÔNG xếp hàng (chỉ cái mới nhất, hết sau vài giây dù đã thoát màn)',
+      (tester) async {
+    await tester.binding.setSurfaceSize(const Size(400, 900));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final container = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(() => 100 * 24 * 60 * 60 * 1000),
+    ]);
+    container.read(gameControllerProvider.notifier).grantReferralGems(20000);
+    await tester.pumpWidget(UncontrolledProviderScope(
+      container: container,
+      child: MaterialApp(
+        locale: const Locale('en'),
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: Builder(
+            builder: (c) => TextButton(onPressed: () => showTopupDialog(c), child: const Text('open')),
+          ),
+        ),
+      ),
+    ));
+    await tester.tap(find.text('open'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.ensureVisible(find.byKey(const Key('vip-buy-exp')));
+    for (var i = 0; i < 6; i++) {
+      await tester.tap(find.byKey(const Key('vip-buy-exp')));
+      await tester.pump(const Duration(milliseconds: 50));
+    }
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(find.byType(SnackBar), findsOneWidget);
+    // Thoát màn VIP: thông báo cũ không được còn nối đuôi nhau hiện tiếp.
+    await tester.tapAt(const Offset(5, 5));
+    await tester.pump(const Duration(seconds: 5));
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.byType(SnackBar), findsNothing);
+
+    await tester.pumpWidget(const SizedBox());
+    container.dispose();
+  });
+
   testWidgets('chọn danh hiệu: chỉ hiện từ VIP 5; bấm chip đổi lựa chọn', (tester) async {
     await tester.binding.setSurfaceSize(const Size(400, 900));
     addTearDown(() => tester.binding.setSurfaceSize(null));

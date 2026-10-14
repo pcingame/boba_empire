@@ -61,7 +61,7 @@ class _LbRewardsDialogState extends ConsumerState<_LbRewardsDialog> {
       text = l10n.guildErrNetwork;
     }
     if (!mounted || text.isEmpty) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
+    ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(SnackBar(content: Text(text)));
   }
 
   @override

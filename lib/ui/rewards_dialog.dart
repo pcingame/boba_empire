@@ -54,7 +54,7 @@ class _RewardsDialogState extends ConsumerState<_RewardsDialog> {
   }
 
   void _snack(String msg) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+    ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(SnackBar(content: Text(msg)));
   }
 
   @override

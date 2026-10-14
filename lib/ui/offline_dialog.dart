@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../ads/ad_service.dart';
 import '../core/format.dart';
 import '../l10n/app_localizations.dart';
+import 'widgets/anim_assets.dart';
+import 'widgets/one_shot_lottie.dart';
 import '../state/game_providers.dart';
 
 /// Popup "chào mừng trở lại": nhận tiền offline, hoặc xem quảng cáo để nhân đôi.
@@ -43,7 +45,7 @@ class _OfflineDialogState extends ConsumerState<_OfflineDialog> {
     }
     navigator.pop();
     if (bonus > 0) {
-      messenger.showSnackBar(
+      messenger..clearSnackBars()..showSnackBar(
         SnackBar(content: Text(l10n.offlineDoubleSnack(formatNumber(bonus)))),
       );
     }
@@ -57,8 +59,13 @@ class _OfflineDialogState extends ConsumerState<_OfflineDialog> {
       content: Text(l10n.offlineBody(formatNumber(widget.earned))),
       actions: [
         TextButton(
-          onPressed:
-              _watchingAd ? null : () => Navigator.of(context).pop(),
+          onPressed: _watchingAd
+              ? null
+              : () {
+                  // Xu đã vào ví lúc mở app; hiệu ứng chỉ để "nhận" có cảm giác.
+                  playEffect(context, AnimAssets.coinFly, size: 220, heavy: false);
+                  Navigator.of(context).pop();
+                },
           child: Text(l10n.offlineClaim),
         ),
         FilledButton.icon(

@@ -166,7 +166,7 @@ class _CollectionShareDialogState
     try {
       await share(await _capture(), text, origin);
     } catch (_) {
-      messenger.showSnackBar(
+      messenger..clearSnackBars()..showSnackBar(
         SnackBar(content: Text(l10n.collectionShareFailed)),
       );
     }
@@ -179,7 +179,7 @@ class _CollectionShareDialogState
     await Clipboard.setData(
       ClipboardData(text: collectionShareText(l10n, _owned)),
     );
-    messenger.showSnackBar(SnackBar(content: Text(l10n.collectionShareCopied)));
+    messenger..clearSnackBars()..showSnackBar(SnackBar(content: Text(l10n.collectionShareCopied)));
   }
 
   @override

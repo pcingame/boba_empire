@@ -21,7 +21,7 @@ Future<void> showGuildShop(BuildContext context) => Navigator.of(context)
     .push(MaterialPageRoute(builder: (_) => const GuildShopPage()));
 
 void _toast(BuildContext context, String text) =>
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
+    ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(SnackBar(content: Text(text)));
 
 class GuildShopPage extends ConsumerWidget {
   const GuildShopPage({super.key});

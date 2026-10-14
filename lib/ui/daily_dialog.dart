@@ -8,6 +8,8 @@ import '../core/daily.dart';
 import '../core/format.dart';
 import '../core/topup.dart';
 import '../l10n/app_localizations.dart';
+import 'widgets/anim_assets.dart';
+import 'widgets/one_shot_lottie.dart';
 import '../state/game_providers.dart';
 
 /// Popup điểm danh hằng ngày: bấm nhận → cộng Kim Cương theo chuỗi ngày.
@@ -40,6 +42,7 @@ class _DailyDialogState extends ConsumerState<_DailyDialog> {
     ref.read(analyticsProvider)(
         'daily_claim', {'streak': r.streak, 'restore': restore ? 1 : 0});
     ref.read(audioServiceProvider).play(Sfx.reward);
+    playEffect(context, AnimAssets.giftOpen, size: 260, speed: 1.8);
     setState(() {
       _vipPercent = dailyVipBonusPercent(
           topupVipLevel(ref.read(gameControllerProvider).vipExp));

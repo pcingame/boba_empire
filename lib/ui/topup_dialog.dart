@@ -119,7 +119,7 @@ class _TopupDialogState extends ConsumerState<_TopupDialog> {
                                 .reportVip(
                                   ref.read(gameControllerProvider).vipExp,
                                 );
-                            ScaffoldMessenger.of(context).showSnackBar(
+                            ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(
                               SnackBar(
                                 content: Text(l10n.vipBuyExpSnack(vipExpBlock)),
                               ),
@@ -273,7 +273,7 @@ class _TopupDialogState extends ConsumerState<_TopupDialog> {
               onPressed: () {
                 final r = controller.claimVipBenefit(period);
                 if (r != null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(
                     SnackBar(
                       content: Text(l10n.vipBenefitSnack(r.coins, formatNumber(r.gems))),
                     ),
@@ -311,7 +311,7 @@ class _TopupDialogState extends ConsumerState<_TopupDialog> {
                   ? () {
                       final r = controller.claimTopupTier(i);
                       if (r != null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
+                        ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(
                           SnackBar(
                             content: Text(
                               l10n.topupClaimSnack(formatNumber(r.gems)),

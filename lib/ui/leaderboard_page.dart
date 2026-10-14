@@ -60,7 +60,7 @@ class _LeaderboardPageState extends ConsumerState<LeaderboardPage> {
     final game = ref.read(gameControllerProvider.notifier);
     notifier.onRewardGems = (gems) {
       game.grantLeaderboardReward(gems);
-      messenger.showSnackBar(
+      messenger..clearSnackBars()..showSnackBar(
         SnackBar(content: Text(l10n.leaderboardRewardSnack(gems))),
       );
     };

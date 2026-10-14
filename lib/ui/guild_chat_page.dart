@@ -117,7 +117,7 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> with WidgetsBindi
     final out = await action;
     if (!mounted) return;
     if (!out.ok || okText != null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(SnackBar(
           content: Text(out.ok ? okText!(l10n) : guildFailureText(l10n, out.failure!))));
     }
     ref.invalidate(guildChatProvider);
@@ -145,7 +145,8 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> with WidgetsBindi
       if (_input.text.isEmpty) _input.text = text;
       final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(guildFailureText(l10n, out.failure!))));
+          ..clearSnackBars()
+          ..showSnackBar(SnackBar(content: Text(guildFailureText(l10n, out.failure!))));
     }
   }
 
@@ -162,7 +163,8 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> with WidgetsBindi
     if (!out.ok) {
       final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(guildFailureText(l10n, out.failure!))));
+          ..clearSnackBars()
+          ..showSnackBar(SnackBar(content: Text(guildFailureText(l10n, out.failure!))));
     }
   }
 

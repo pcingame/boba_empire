@@ -61,7 +61,7 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
     if (message == null || !mounted) return;
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(SnackBar(content: Text(message)));
+    )..clearSnackBars()..showSnackBar(SnackBar(content: Text(message)));
   }
 
   /// Hướng dẫn 3 bước, chỉ hiện đúng một lần (cờ trong SharedPreferences).
@@ -1304,7 +1304,7 @@ class _WishStar extends ConsumerWidget {
             .read(gameControllerProvider.notifier)
             .toggleWishlist(accessoryId);
         if (list == null) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(SnackBar(
               content: Text(l10n.marketWishFull(Balance.maxWishlist))));
           return;
         }

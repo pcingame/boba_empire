@@ -21,7 +21,7 @@ class GuildQuestsSection extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final out = await action;
     if (!context.mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
+    ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(
         SnackBar(content: Text(out.ok ? ok(l10n) : guildFailureText(l10n, out.failure!))));
   }
 

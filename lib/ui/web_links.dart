@@ -38,7 +38,7 @@ Future<void> openWebLink(BuildContext context, WidgetRef ref, String url) async 
   ref.read(analyticsProvider)(
       'web_open', {'page': uri.hasQuery ? '${uri.path}?${uri.query}' : uri.path});
   final ok = await ref.read(urlOpenerProvider)(uri);
-  if (!ok) messenger.showSnackBar(SnackBar(content: Text(failText)));
+  if (!ok) messenger..clearSnackBars()..showSnackBar(SnackBar(content: Text(failText)));
 }
 
 /// Các tab bảng xếp hạng trên web (id khớp `BOARDS` trong docs/assets/site.js; test so khớp).

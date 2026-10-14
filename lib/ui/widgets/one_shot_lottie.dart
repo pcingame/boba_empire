@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+import 'effects_quality.dart';
+import 'motion.dart' show reduceMotion;
+
 /// Gộp bớt hiệu ứng khi bị gọi liên tục quá nhanh (chạm liên tục kiểu idle/
 /// clicker) — [playEffect] dựng MỚI 1 OverlayEntry + AnimationController +
 /// render Lottie MỖI LẦN gọi; không giới hạn thì gọi càng nhanh, hiệu ứng
@@ -28,7 +31,30 @@ class TapEffectGate {
   }
 }
 
+/// Số hiệu ứng một-lần đang sống (mọi nơi gọi [playEffect] dùng chung một trần).
+int _liveEffects = 0;
+
+int _maxLiveEffects(EffectsQuality q) => switch (q) {
+      EffectsQuality.off => 0,
+      EffectsQuality.low => 2,
+      EffectsQuality.medium => 3,
+      EffectsQuality.high => 5,
+    };
+
+/// Tâm (toạ độ toàn cục) của widget có [context] — để phát hiệu ứng đúng chỗ vừa bấm. Null nếu chưa
+/// có kích thước.
+Offset? effectCenterOf(BuildContext context) {
+  final box = context.findRenderObject();
+  if (box is! RenderBox || !box.hasSize || !box.attached) return null;
+  return box.localToGlobal(box.size.center(Offset.zero));
+}
+
 /// Phát một hiệu ứng Lottie MỘT LẦN ở lớp overlay rồi tự gỡ.
+///
+/// Theo mức chất lượng ([EffectsController]): Tắt / giảm chuyển động = không phát; Thấp bỏ hiệu ứng
+/// [heavy] (pháo giấy, pháo hoa… nhiều lớp); và mọi mức đều có trần số hiệu ứng sống cùng lúc để các
+/// lần gọi dồn dập không chồng lên nhau gây giật. Mặc định [heavy] = true (an toàn cho nơi gọi cũ);
+/// hiệu ứng nhỏ (tia sáng, xu bay…) truyền `heavy: false`.
 ///
 /// Dùng cho phản hồi tức thời: coin bắn khi chạm, pháo giấy khi mua, pháo hoa
 /// khi prestige... Nếu file asset chưa có thì **bỏ qua** (không hiện gì) — hiệu
@@ -49,15 +75,30 @@ void playEffect(
   // Gọi đúng MỘT lần khi hiệu ứng kết thúc/bị gỡ — để chỗ gọi đếm số hiệu ứng
   // đang sống và giới hạn đồng thời.
   VoidCallback? onFinished,
+  bool heavy = true,
 }) {
+  final quality = EffectsController.instance.quality.value;
+  if (reduceMotion || (heavy && quality == EffectsQuality.low)) {
+    onFinished?.call(); // không phát: vẫn "kết thúc" để chỗ gọi đếm đúng
+    return;
+  }
+  if (_liveEffects >= _maxLiveEffects(quality)) {
+    onFinished?.call();
+    return;
+  }
   final overlay = Overlay.maybeOf(context, rootOverlay: true);
-  if (overlay == null) return;
+  if (overlay == null) {
+    onFinished?.call();
+    return;
+  }
+  _liveEffects++;
 
   OverlayEntry? entry;
   var removed = false;
   void dismiss() {
     if (removed) return;
     removed = true;
+    _liveEffects--;
     entry?.remove();
     entry?.dispose();
     onFinished?.call();
