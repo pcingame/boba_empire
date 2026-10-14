@@ -300,6 +300,16 @@ class GameController extends Notifier<GameSnapshot> {
           before, before, RecipeAnswerOutcome(before, counted: false, leveledUp: false, newBest: false), 0, 0);
     }
     _game.recipeProgress[key] = out.next.toList();
+    // Chuỗi ngày ôn: chỉ câu thật sự được tính bậc mới nối chuỗi (không phải câu gợi ý / chỉ luyện).
+    final streakUp = updateRecipeStreak(_recipeStreak, today);
+    _game
+      ..recipeStreak = streakUp.next.days
+      ..recipeStreakLastDay = streakUp.next.lastDay
+      ..recipeStreakBest = streakUp.next.best;
+    if (streakUp.milestoneGems > 0) {
+      _game.gems += streakUp.milestoneGems;
+      logEvent('recipe_streak', {'days': streakUp.next.days});
+    }
     if (out.leveledUp) addWeeklyProgress(_game, WeeklyQuestKind.recipeLevels, 1);
     var cash = 0.0;
     var gems = 0;
@@ -334,7 +344,36 @@ class GameController extends Notifier<GameSnapshot> {
     }
     unawaited(saveNow());
     state = _snapshot();
-    return RecipeAnswerResult(before, out.next, out, cash, gems, milestone: milestone, drop: drop);
+    return RecipeAnswerResult(before, out.next, out, cash, gems,
+        milestone: milestone,
+        drop: drop,
+        streakDays: streakUp.next.days,
+        streakExtended: streakUp.extended,
+        streakGems: streakUp.milestoneGems);
+  }
+
+  RecipeStreak get _recipeStreak => RecipeStreak(
+      days: _game.recipeStreak, lastDay: _game.recipeStreakLastDay, best: _game.recipeStreakBest);
+
+  /// Cứu chuỗi ôn đã đứt đúng một ngày. [payGems] true: trừ [recipeStreakRestoreGems] 💎 (false nếu
+  /// thiếu 💎 hoặc không còn cứu được); false: người chơi đã xem quảng cáo thưởng (UI lo phần xem).
+  bool restoreRecipeStreakNow({required bool payGems}) {
+    final today = dayIndex(_clock());
+    final s = _recipeStreak;
+    if (!s.restorable(today)) return false;
+    if (payGems) {
+      if (_game.gems < recipeStreakRestoreGems) return false;
+      _game.gems -= recipeStreakRestoreGems;
+    }
+    final r = restoreRecipeStreak(s, today);
+    _game
+      ..recipeStreak = r.days
+      ..recipeStreakLastDay = r.lastDay
+      ..recipeStreakBest = r.best;
+    logEvent('recipe_streak_restore', {'gems': payGems ? recipeStreakRestoreGems : 0});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
   }
 
   /// Kết thúc một buổi luyện công thức: tính cho nhiệm vụ ngày/tuần CHỈ khi có ít nhất một câu thật sự
@@ -2167,6 +2206,7 @@ class GameController extends Notifier<GameSnapshot> {
             claimed: weeklyQuestClaimed(_game, q),
           ),
       ],
+      recipeStreak: _recipeStreak,
       recipeProgress: {
         for (final e in _game.recipeProgress.entries)
           if (int.tryParse(e.key) != null) int.parse(e.key): RecipeProgress.fromList(e.value),

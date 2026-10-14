@@ -1429,6 +1429,60 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsSound => 'Âm thanh';
 
   @override
+  String recipeStreak(int n) {
+    return '🔥 Chuỗi ôn: $n ngày';
+  }
+
+  @override
+  String get recipeStreakToday => 'Hôm nay đã ôn ✓';
+
+  @override
+  String get recipeStreakPending =>
+      'Hôm nay chưa ôn — ôn một buổi để giữ chuỗi';
+
+  @override
+  String recipeRescueTitle(int n) {
+    return 'Bạn lỡ một ngày — chuỗi $n ngày sắp mất!';
+  }
+
+  @override
+  String recipeRescueGems(int n) {
+    return 'Cứu bằng $n 💎';
+  }
+
+  @override
+  String get recipeRescueAd => 'Xem quảng cáo để cứu';
+
+  @override
+  String get recipeRescued => 'Đã cứu chuỗi!';
+
+  @override
+  String get recipeRescueNoGems => 'Không đủ 💎 để cứu chuỗi.';
+
+  @override
+  String recipeStreakGems(int n, int gems) {
+    return '🔥 Chuỗi $n ngày! +$gems 💎';
+  }
+
+  @override
+  String recipeStreakFeedback(int n) {
+    return '🔥 Chuỗi ôn: $n ngày';
+  }
+
+  @override
+  String get recipeNotifyTitle => 'Công thức pha chế';
+
+  @override
+  String recipeNotifyStreak(int n) {
+    return 'Chuỗi ôn $n ngày sắp mất! Ôn một buổi để giữ lại nhé';
+  }
+
+  @override
+  String recipeNotifyDue(int n) {
+    return '$n món công thức đến hạn ôn hôm nay';
+  }
+
+  @override
   String get rlbTitle => 'BXH Thợ pha chế';
 
   @override

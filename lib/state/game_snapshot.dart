@@ -177,6 +177,7 @@ class GameSnapshot {
     required this.challengeBonusClaimed,
     required this.weeklyQuests,
     this.recipeProgress = const {},
+    this.recipeStreak = const RecipeStreak(),
     required this.weeklyChestAvailable,
     required this.weeklyChestClaimed,
     required this.ascensionCount,
@@ -416,6 +417,9 @@ class GameSnapshot {
 
   /// Bậc thuộc công thức theo id món (bản sao — không chia sẻ Map với GameState).
   final Map<int, RecipeProgress> recipeProgress;
+
+  /// Chuỗi ngày ôn công thức (bất biến — an toàn khi chia sẻ với snapshot).
+  final RecipeStreak recipeStreak;
   final bool weeklyChestAvailable;
   final bool weeklyChestClaimed;
 

@@ -34,6 +34,10 @@ class TapEffectGate {
 /// Số hiệu ứng một-lần đang sống (mọi nơi gọi [playEffect] dùng chung một trần).
 int _liveEffects = 0;
 
+/// Chỉ cho test: gỡ cây giữa lúc còn hiệu ứng sống làm bộ đếm kẹt, ảnh hưởng test sau.
+@visibleForTesting
+void debugResetLiveEffects() => _liveEffects = 0;
+
 int _maxLiveEffects(EffectsQuality q) => switch (q) {
       EffectsQuality.off => 0,
       EffectsQuality.low => 2,

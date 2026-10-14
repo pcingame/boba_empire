@@ -109,6 +109,7 @@ class Reminders {
   static const int _idDaily = 2;
   static const int _idD3 = 3;
   static const int _idD7 = 4;
+  static const int _idRecipe = 8; // 5-7 là nhắc quà VIP
 
   static final FlutterLocalNotificationsPlugin _plugin =
       FlutterLocalNotificationsPlugin();
@@ -170,6 +171,7 @@ class Reminders {
     required String d7Body,
     VipReminderTexts? vip,
     bool vipUnclaimed = false,
+    ({DateTime at, String title, String body})? recipe,
   }) async {
     if (!await _ensureInit()) return;
     if (!await _authorized()) return;
@@ -189,6 +191,7 @@ class Reminders {
         await _at(slot.id, slot.at, vip.title, body);
       }
     }
+    if (recipe != null) await _at(_idRecipe, recipe.at, recipe.title, recipe.body);
     await _at(_idD3, d3ReminderAt(now), d3Title, d3Body);
     await _at(_idD7, d7ReminderAt(now), d7Title, d7Body);
   }

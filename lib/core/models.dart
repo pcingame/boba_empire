@@ -93,6 +93,9 @@ class GameState {
     List<String>? weeklyClaimed,
     Map<String, List<int>>? recipeProgress,
     List<int>? recipeMilestonesClaimed,
+    this.recipeStreak = 0,
+    this.recipeStreakLastDay = 0,
+    this.recipeStreakBest = 0,
     this.accessoryAdDropDay = 0,
     this.accessoryAdSpinDay = 0,
     this.accessoryAdSpins = 0,
@@ -373,6 +376,11 @@ class GameState {
   /// Các mốc rương phụ kiện công thức đã nhận (số món Thạo), xem `recipeAccessoryMilestones`.
   final List<int> recipeMilestonesClaimed;
 
+  /// Chuỗi ngày ôn công thức (xem recipe_mastery.dart): số ngày, ngày ôn gần nhất (dayIndex), kỷ lục.
+  int recipeStreak;
+  int recipeStreakLastDay;
+  int recipeStreakBest;
+
   /// Kỷ Nguyên (prestige tầng 2, xem Balance.ascension*): số lần đã Kỷ Nguyên
   /// hoá, tổng Điểm đã nhận (đã tiêu = suy ra từ cấp perk, giống Kho Sao), và
   /// [ascensionLifetime] — lifetime kiếm được KỂ TỪ lần Kỷ Nguyên gần nhất.
@@ -596,6 +604,9 @@ class GameState {
         'weeklyClaimed': weeklyClaimed,
         'recipeProgress': recipeProgress,
         'recipeMilestonesClaimed': recipeMilestonesClaimed,
+        'recipeStreak': recipeStreak,
+        'recipeStreakLastDay': recipeStreakLastDay,
+        'recipeStreakBest': recipeStreakBest,
         'ascensionCount': ascensionCount,
         'ascensionPointsEarned': ascensionPointsEarned,
         'ascensionLifetime': ascensionLifetime,
@@ -754,6 +765,10 @@ class GameState {
         recipeMilestonesClaimed: [
           for (final x in (json['recipeMilestonesClaimed'] as List?) ?? const []) if (x is num) x.toInt(),
         ],
+        // Giá trị âm/hỏng được kẹp về hợp lệ (save lạ từ cloud không làm hỏng cả game).
+        recipeStreak: ((json['recipeStreak'] as num?)?.toInt() ?? 0).clamp(0, 100000),
+        recipeStreakLastDay: ((json['recipeStreakLastDay'] as num?)?.toInt() ?? 0).clamp(0, 10000000),
+        recipeStreakBest: ((json['recipeStreakBest'] as num?)?.toInt() ?? 0).clamp(0, 100000),
         ascensionCount: (json['ascensionCount'] as num?)?.toInt() ?? 0,
         ascensionPointsEarned:
             (json['ascensionPointsEarned'] as num?)?.toInt() ?? 0,

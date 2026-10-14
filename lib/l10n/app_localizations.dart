@@ -2472,6 +2472,84 @@ abstract class AppLocalizations {
   /// **'Âm thanh'**
   String get settingsSound;
 
+  /// No description provided for @recipeStreak.
+  ///
+  /// In vi, this message translates to:
+  /// **'🔥 Chuỗi ôn: {n} ngày'**
+  String recipeStreak(int n);
+
+  /// No description provided for @recipeStreakToday.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay đã ôn ✓'**
+  String get recipeStreakToday;
+
+  /// No description provided for @recipeStreakPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay chưa ôn — ôn một buổi để giữ chuỗi'**
+  String get recipeStreakPending;
+
+  /// No description provided for @recipeRescueTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn lỡ một ngày — chuỗi {n} ngày sắp mất!'**
+  String recipeRescueTitle(int n);
+
+  /// No description provided for @recipeRescueGems.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cứu bằng {n} 💎'**
+  String recipeRescueGems(int n);
+
+  /// No description provided for @recipeRescueAd.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem quảng cáo để cứu'**
+  String get recipeRescueAd;
+
+  /// No description provided for @recipeRescued.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã cứu chuỗi!'**
+  String get recipeRescued;
+
+  /// No description provided for @recipeRescueNoGems.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đủ 💎 để cứu chuỗi.'**
+  String get recipeRescueNoGems;
+
+  /// No description provided for @recipeStreakGems.
+  ///
+  /// In vi, this message translates to:
+  /// **'🔥 Chuỗi {n} ngày! +{gems} 💎'**
+  String recipeStreakGems(int n, int gems);
+
+  /// No description provided for @recipeStreakFeedback.
+  ///
+  /// In vi, this message translates to:
+  /// **'🔥 Chuỗi ôn: {n} ngày'**
+  String recipeStreakFeedback(int n);
+
+  /// No description provided for @recipeNotifyTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Công thức pha chế'**
+  String get recipeNotifyTitle;
+
+  /// No description provided for @recipeNotifyStreak.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuỗi ôn {n} ngày sắp mất! Ôn một buổi để giữ lại nhé'**
+  String recipeNotifyStreak(int n);
+
+  /// No description provided for @recipeNotifyDue.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} món công thức đến hạn ôn hôm nay'**
+  String recipeNotifyDue(int n);
+
   /// No description provided for @rlbTitle.
   ///
   /// In vi, this message translates to:

@@ -133,16 +133,29 @@ class _List extends ConsumerWidget {
               itemBuilder: (context, i) {
                 final e = view.entries[i];
                 final isMe = e.userId == view.myUserId;
-                return ClayTile(
+                const medals = ['🥇', '🥈', '🥉'];
+                // Hàng của mình viền màu chủ đạo để nhìn ra ngay.
+                return Container(
+                  margin: const EdgeInsets.symmetric(vertical: 2),
+                  decoration: isMe
+                      ? BoxDecoration(
+                          borderRadius: BorderRadius.circular(18),
+                          border: Border.all(color: theme.colorScheme.primary, width: 2),
+                        )
+                      : null,
+                  child: ClayTile(
                   key: Key('rlb-row-$i'),
+                  margin: EdgeInsets.zero,
                   onTap: () => showPlayerProfile(context, e.nickname),
                   child: Row(
                     children: [
                       SizedBox(
-                        width: 36,
-                        child: Text('${e.rank}',
-                            style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold, color: isMe ? theme.colorScheme.primary : null)),
+                        width: 40,
+                        child: e.rank <= 3
+                            ? Text(medals[e.rank - 1], style: const TextStyle(fontSize: 26))
+                            : Text('${e.rank}',
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold, color: isMe ? theme.colorScheme.primary : null)),
                       ),
                       // Tên có thể rất dài: co lại, không đẩy cột số món ra khỏi hàng.
                       Expanded(
@@ -154,7 +167,7 @@ class _List extends ConsumerWidget {
                               child: Text(e.nickname,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(fontWeight: isMe ? FontWeight.bold : FontWeight.normal)),
+                                  style: TextStyle(fontWeight: isMe || e.rank <= 3 ? FontWeight.w800 : FontWeight.normal)),
                             ),
                           ]),
                         ),
@@ -164,9 +177,10 @@ class _List extends ConsumerWidget {
                         child: Text(l10n.rlbMastered(e.mastered),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(fontWeight: FontWeight.w600)),
+                            style: const TextStyle(fontWeight: FontWeight.w700)),
                       ),
                     ],
+                  ),
                   ),
                 );
               },

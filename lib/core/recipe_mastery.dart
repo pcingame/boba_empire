@@ -95,7 +95,7 @@ RecipeAnswerOutcome applyRecipeAnswer(RecipeProgress p, bool correct, int today)
 /// Kết quả ghi một câu trả lời (do controller trả về cho giao diện).
 class RecipeAnswerResult {
   const RecipeAnswerResult(this.before, this.after, this.outcome, this.cash, this.gems,
-      {this.milestone = 0, this.drop});
+      {this.milestone = 0, this.drop, this.streakDays = 0, this.streakExtended = false, this.streakGems = 0});
 
   final RecipeProgress before;
   final RecipeProgress after;
@@ -108,4 +108,71 @@ class RecipeAnswerResult {
   /// Mốc rương phụ kiện vừa đạt (số món Thạo; 0 = không) và phụ kiện nhận được.
   final int milestone;
   final AccessoryDrop? drop;
+
+  /// Chuỗi ngày ôn sau câu này, hôm nay có phải ngày đầu tiên ôn không, và 💎 mốc chuỗi nhận được.
+  final int streakDays;
+  final bool streakExtended;
+  final int streakGems;
 }
+
+// --- Chuỗi ngày ôn công thức ------------------------------------------------------------------
+
+/// 💎 thưởng khi chuỗi chạm đúng mốc (số ngày → 💎), CHỈ khi vượt kỷ lục cũ [RecipeStreak.best] — nên bỏ
+/// chuỗi rồi gây lại từ đầu không nhận lặp lại các mốc đã nhận.
+const Map<int, int> recipeStreakMilestoneGems = {3: 10, 7: 30, 14: 60, 30: 150};
+
+/// Giá cứu chuỗi bằng 💎 (hoặc xem một quảng cáo thưởng thay thế). Chỉ cứu được khi bỏ lỡ ĐÚNG một ngày.
+const int recipeStreakRestoreGems = 30;
+
+/// Chuỗi ngày liên tiếp có ít nhất một câu ôn THẬT SỰ được tính bậc (món đến hạn, không dùng gợi ý). Ngày
+/// tính theo `dayIndex` (UTC) như điểm danh hằng ngày.
+class RecipeStreak {
+  const RecipeStreak({this.days = 0, this.lastDay = 0, this.best = 0});
+
+  /// Số ngày của chuỗi tính tới [lastDay] (kể cả khi đã đứt — xem [aliveDays]).
+  final int days;
+
+  /// Ngày (dayIndex) của lần ôn được tính gần nhất; 0 = chưa từng.
+  final int lastDay;
+
+  /// Chuỗi dài nhất từng đạt.
+  final int best;
+
+  /// Chuỗi đang sống tại [today]: ôn hôm nay hoặc hôm qua. Đứt rồi thì 0 (trừ khi còn cứu được).
+  int aliveDays(int today) => lastDay != 0 && today - lastDay <= 1 ? days : 0;
+
+  /// Đã ôn hôm nay chưa.
+  bool reviewedToday(int today) => lastDay == today;
+
+  /// Bỏ lỡ ĐÚNG một ngày và chuỗi đáng cứu (≥ 2) → còn cứu được cho tới khi ôn lần kế.
+  bool restorable(int today) => days >= 2 && lastDay != 0 && today == lastDay + 2;
+}
+
+class RecipeStreakUpdate {
+  const RecipeStreakUpdate(this.next, {required this.extended, required this.milestoneGems});
+  final RecipeStreak next;
+
+  /// Hôm nay là lần ôn đầu tiên của ngày (chuỗi tăng hoặc bắt đầu lại).
+  final bool extended;
+
+  /// 💎 mốc nhận được ngay lúc này (0 nếu không).
+  final int milestoneGems;
+}
+
+/// Ghi nhận một câu ôn được tính bậc vào ngày [today].
+RecipeStreakUpdate updateRecipeStreak(RecipeStreak s, int today) {
+  if (s.lastDay == today) return RecipeStreakUpdate(s, extended: false, milestoneGems: 0);
+  final days = today == s.lastDay + 1 ? s.days + 1 : 1; // đứt (hoặc lần đầu) → bắt đầu lại từ 1
+  final gems = days > s.best ? (recipeStreakMilestoneGems[days] ?? 0) : 0;
+  return RecipeStreakUpdate(
+    RecipeStreak(days: days, lastDay: today, best: math.max(s.best, days)),
+    extended: true,
+    milestoneGems: gems,
+  );
+}
+
+/// Cứu chuỗi: coi ngày bỏ lỡ như đã ôn (chuỗi +1, mốc ngày dời về hôm qua) — câu ôn hôm nay sau đó nối tiếp
+/// thành +1 nữa. Không đổi gì nếu không còn cứu được.
+RecipeStreak restoreRecipeStreak(RecipeStreak s, int today) => s.restorable(today)
+    ? RecipeStreak(days: s.days + 1, lastDay: today - 1, best: math.max(s.best, s.days + 1))
+    : s;

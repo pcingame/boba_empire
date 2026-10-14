@@ -843,6 +843,71 @@
   "genUltimateTea": "Trà sữa tối thượng",
   "settingsTitle": "Cài đặt",
   "settingsSound": "Âm thanh",
+  "recipeStreak": "🔥 Chuỗi ôn: {n} ngày",
+  "@recipeStreak": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "recipeStreakToday": "Hôm nay đã ôn ✓",
+  "recipeStreakPending": "Hôm nay chưa ôn — ôn một buổi để giữ chuỗi",
+  "recipeRescueTitle": "Bạn lỡ một ngày — chuỗi {n} ngày sắp mất!",
+  "@recipeRescueTitle": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "recipeRescueGems": "Cứu bằng {n} 💎",
+  "@recipeRescueGems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "recipeRescueAd": "Xem quảng cáo để cứu",
+  "recipeRescued": "Đã cứu chuỗi!",
+  "recipeRescueNoGems": "Không đủ 💎 để cứu chuỗi.",
+  "recipeStreakGems": "🔥 Chuỗi {n} ngày! +{gems} 💎",
+  "@recipeStreakGems": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "gems": {
+        "type": "int"
+      }
+    }
+  },
+  "recipeStreakFeedback": "🔥 Chuỗi ôn: {n} ngày",
+  "@recipeStreakFeedback": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "recipeNotifyTitle": "Công thức pha chế",
+  "recipeNotifyStreak": "Chuỗi ôn {n} ngày sắp mất! Ôn một buổi để giữ lại nhé",
+  "@recipeNotifyStreak": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "recipeNotifyDue": "{n} món công thức đến hạn ôn hôm nay",
+  "@recipeNotifyDue": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
   "rlbTitle": "BXH Thợ pha chế",
   "lbrBoardRecipes": "Thợ pha chế",
   "rlbEmpty": "Chưa có ai trên bảng. Hãy là người đầu tiên đạt Thạo một công thức!",

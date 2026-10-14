@@ -1429,6 +1429,60 @@ class AppLocalizationsTh extends AppLocalizations {
   String get settingsSound => 'เสียง';
 
   @override
+  String recipeStreak(int n) {
+    return '🔥 ทบทวนต่อเนื่อง: $n วัน';
+  }
+
+  @override
+  String get recipeStreakToday => 'ทบทวนวันนี้แล้ว ✓';
+
+  @override
+  String get recipeStreakPending =>
+      'วันนี้ยังไม่ได้ทบทวน — ฝึกสักรอบเพื่อรักษาสถิติ';
+
+  @override
+  String recipeRescueTitle(int n) {
+    return 'คุณพลาดไปหนึ่งวัน — สถิติ $n วันกำลังจะหาย!';
+  }
+
+  @override
+  String recipeRescueGems(int n) {
+    return 'ช่วยไว้ด้วย $n 💎';
+  }
+
+  @override
+  String get recipeRescueAd => 'ดูโฆษณาเพื่อช่วยไว้';
+
+  @override
+  String get recipeRescued => 'ช่วยสถิติไว้แล้ว!';
+
+  @override
+  String get recipeRescueNoGems => '💎 ไม่พอสำหรับช่วยสถิติ';
+
+  @override
+  String recipeStreakGems(int n, int gems) {
+    return '🔥 ต่อเนื่อง $n วัน! +$gems 💎';
+  }
+
+  @override
+  String recipeStreakFeedback(int n) {
+    return '🔥 ทบทวนต่อเนื่อง: $n วัน';
+  }
+
+  @override
+  String get recipeNotifyTitle => 'สูตรเครื่องดื่ม';
+
+  @override
+  String recipeNotifyStreak(int n) {
+    return 'สถิติทบทวน $n วันกำลังจะขาด! ฝึกสักรอบเพื่อรักษาไว้';
+  }
+
+  @override
+  String recipeNotifyDue(int n) {
+    return 'มี $n สูตรต้องทบทวนวันนี้';
+  }
+
+  @override
   String get rlbTitle => 'ผู้เชี่ยวชาญสูตร';
 
   @override

@@ -220,4 +220,79 @@ void main() {
       expect(buildSession(catalog, {}, 0, Random(7), count: 99).length, 20);
     });
   });
+
+  group('chuỗi ngày ôn', () {
+    RecipeStreak go(RecipeStreak s, int day) => updateRecipeStreak(s, day).next;
+
+    test('lần đầu = 1; cùng ngày không đổi; ngày liên tiếp +1; bỏ lỡ ≥ 1 ngày bắt đầu lại từ 1', () {
+      var s = const RecipeStreak();
+      final first = updateRecipeStreak(s, 100);
+      expect((first.next.days, first.extended), (1, true));
+      s = first.next;
+      final same = updateRecipeStreak(s, 100);
+      expect((same.next.days, same.extended, same.milestoneGems), (1, false, 0));
+      s = go(s, 101);
+      s = go(s, 102);
+      expect(s.days, 3);
+      expect(go(s, 104).days, 1); // lỡ ngày 103 → đứt
+      expect(go(s, 110).days, 1);
+    });
+
+    test('mốc 💎 chỉ khi vượt kỷ lục: 3 ngày +10, đứt rồi gây lại tới 3 KHÔNG nhận lại', () {
+      var s = const RecipeStreak();
+      var gems = 0;
+      for (var d = 1; d <= 3; d++) {
+        final u = updateRecipeStreak(s, d);
+        gems += u.milestoneGems;
+        s = u.next;
+      }
+      expect(gems, recipeStreakMilestoneGems[3]);
+      expect(s.best, 3);
+      // Đứt, gây lại 1 → 2 → 3: đã từng đạt 3 nên không thưởng nữa.
+      var again = 0;
+      for (var d = 10; d <= 12; d++) {
+        final u = updateRecipeStreak(s, d);
+        again += u.milestoneGems;
+        s = u.next;
+      }
+      expect((s.days, again), (3, 0));
+      // Vượt kỷ lục tới mốc kế (7) thì nhận.
+      var seven = 0;
+      for (var d = 13; d <= 16; d++) {
+        final u = updateRecipeStreak(s, d);
+        seven += u.milestoneGems;
+        s = u.next;
+      }
+      expect((s.days, seven), (7, recipeStreakMilestoneGems[7]));
+    });
+
+    test('aliveDays: sống nếu ôn hôm nay/hôm qua; đứt thì 0; reviewedToday', () {
+      const s = RecipeStreak(days: 5, lastDay: 100, best: 5);
+      expect(s.aliveDays(100), 5);
+      expect(s.aliveDays(101), 5);
+      expect(s.aliveDays(102), 0);
+      expect(const RecipeStreak().aliveDays(50), 0);
+      expect((s.reviewedToday(100), s.reviewedToday(101)), (true, false));
+    });
+
+    test('cứu chuỗi: chỉ khi bỏ lỡ ĐÚNG một ngày và chuỗi ≥ 2; cứu xong chuỗi +1 và nối tiếp được', () {
+      const s = RecipeStreak(days: 4, lastDay: 100, best: 4);
+      expect((s.restorable(101), s.restorable(102), s.restorable(103)), (false, true, false));
+      expect(const RecipeStreak(days: 1, lastDay: 100).restorable(102), isFalse);
+      expect(const RecipeStreak().restorable(2), isFalse);
+      expect(restoreRecipeStreak(s, 101), s); // không cứu được → giữ nguyên
+      expect(restoreRecipeStreak(s, 103), s);
+      final r = restoreRecipeStreak(s, 102);
+      expect((r.days, r.lastDay, r.best), (5, 101, 5));
+      expect(r.restorable(102), isFalse); // cứu rồi không cứu lại
+      final next = updateRecipeStreak(r, 102);
+      expect((next.next.days, next.extended), (6, true)); // ôn hôm nay nối tiếp
+    });
+
+    test('bảng mốc: tăng dần, không rỗng', () {
+      final keys = recipeStreakMilestoneGems.keys.toList();
+      expect(keys, [...keys]..sort());
+      expect(recipeStreakMilestoneGems.values.every((g) => g > 0), isTrue);
+    });
+  });
 }

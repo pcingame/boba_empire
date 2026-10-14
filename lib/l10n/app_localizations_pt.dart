@@ -1437,6 +1437,60 @@ class AppLocalizationsPt extends AppLocalizations {
   String get settingsSound => 'Som';
 
   @override
+  String recipeStreak(int n) {
+    return '🔥 Sequência de revisão: $n dias';
+  }
+
+  @override
+  String get recipeStreakToday => 'Revisado hoje ✓';
+
+  @override
+  String get recipeStreakPending =>
+      'Hoje ainda não revisou — faça uma sessão para manter a sequência';
+
+  @override
+  String recipeRescueTitle(int n) {
+    return 'Você perdeu um dia — sua sequência de $n dias está prestes a acabar!';
+  }
+
+  @override
+  String recipeRescueGems(int n) {
+    return 'Salvar por $n 💎';
+  }
+
+  @override
+  String get recipeRescueAd => 'Assistir anúncio para salvar';
+
+  @override
+  String get recipeRescued => 'Sequência salva!';
+
+  @override
+  String get recipeRescueNoGems => '💎 insuficientes para salvar a sequência.';
+
+  @override
+  String recipeStreakGems(int n, int gems) {
+    return '🔥 Sequência de $n dias! +$gems 💎';
+  }
+
+  @override
+  String recipeStreakFeedback(int n) {
+    return '🔥 Sequência de revisão: $n dias';
+  }
+
+  @override
+  String get recipeNotifyTitle => 'Receitas de bebidas';
+
+  @override
+  String recipeNotifyStreak(int n) {
+    return 'Sua sequência de revisão de $n dias está acabando! Faça uma sessão para mantê-la';
+  }
+
+  @override
+  String recipeNotifyDue(int n) {
+    return '$n receitas para revisar hoje';
+  }
+
+  @override
   String get rlbTitle => 'Mestres de receitas';
 
   @override

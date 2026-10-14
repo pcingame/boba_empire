@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../ads/ad_service.dart';
 import '../core/daily.dart';
 import '../core/recipe_mastery.dart';
 import '../core/recipes.dart';
@@ -9,7 +10,11 @@ import '../state/game_providers.dart';
 import '../state/recipe_providers.dart';
 import 'recipe_leaderboard_page.dart';
 import 'recipe_quiz_page.dart';
+import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
+import 'widgets/idle_mascot.dart';
+import 'widgets/motion.dart';
+import 'widgets/recipe_motion.dart';
 
 /// Màn "Công thức pha chế": tiến độ, nút luyện tập, danh sách món kèm bậc thuộc.
 Future<void> showRecipeHub(BuildContext context) =>
@@ -70,53 +75,91 @@ class _Body extends ConsumerWidget {
     final today = dayIndex(ref.watch(clockProvider)());
     final recipes = catalog.playable;
     RecipeProgress p(Recipe r) => progress[r.id] ?? const RecipeProgress();
+    final streak = ref.watch(gameControllerProvider.select((s) => s.recipeStreak));
+    final alive = streak.aliveDays(today);
+    final restorable = streak.restorable(today);
     final mastered = recipes.where((r) => p(r).box == recipeMaxBox).length;
     final due = recipes.where((r) => p(r).isDue(today)).length;
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
       children: [
-        ClayTile(
+        ClayCard(
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(l10n.recipeMastered(mastered, recipes.length),
-                  key: const Key('recipe-mastered'),
-                  style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
-              const SizedBox(height: 6),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(6),
-                child: LinearProgressIndicator(
-                    value: recipes.isEmpty ? 0 : mastered / recipes.length, minHeight: 10),
-              ),
-              const SizedBox(height: 8),
-              Text(due > 0 ? l10n.recipeDueToday(due) : l10n.recipeAllDone,
-                  key: const Key('recipe-due'), style: theme.textTheme.bodyMedium),
+              Row(children: [
+                Expanded(
+                  child: Text(l10n.recipeMastered(mastered, recipes.length),
+                      key: const Key('recipe-mastered'),
+                      style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w900)),
+                ),
+                // Cốc trà bốc hơi (Lottie, 30Hz qua nhịp chung; Tắt hiệu ứng thì về emoji tĩnh).
+                IdleMascot(
+                    key: const Key('recipe-steam'),
+                    asset: AnimAssets.steam,
+                    emoji: '☕',
+                    size: 48,
+                    animate: !reduceMotion),
+              ]),
               const SizedBox(height: 10),
+              _MilestoneBar(
+                  mastered: mastered, total: recipes.length, everMastered: progress.values.where((p) => p.best == recipeMaxBox).length),
+              const SizedBox(height: 12),
+              Wrap(spacing: 8, runSpacing: 8, children: [
+                _Pill(
+                  color: due > 0 ? Colors.deepOrange : Colors.green,
+                  icon: due > 0 ? Icons.menu_book_rounded : Icons.check_circle_rounded,
+                  child: Text(due > 0 ? l10n.recipeDueToday(due) : l10n.recipeAllDone,
+                      key: const Key('recipe-due'), style: theme.textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700)),
+                ),
+                if (alive > 0 && !restorable)
+                  PulseOnIncrease(
+                    value: alive,
+                    peak: 1.08,
+                    child: _Pill(
+                      color: Colors.orange,
+                      child: Text(l10n.recipeStreak(alive),
+                          key: const Key('recipe-streak'),
+                          style: theme.textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w800)),
+                    ),
+                  ),
+              ]),
+              if (alive > 0 && !restorable) ...[
+                const SizedBox(height: 4),
+                Text(streak.reviewedToday(today) ? l10n.recipeStreakToday : l10n.recipeStreakPending,
+                    key: const Key('recipe-streak-status'), style: theme.textTheme.bodySmall),
+              ],
+              const SizedBox(height: 14),
               SizedBox(
                 width: double.infinity,
-                child: FilledButton(
+                child: FilledButton.icon(
                   key: const Key('recipe-practice'),
+                  style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(52)),
                   onPressed: () => Navigator.of(context)
                       .push(MaterialPageRoute<void>(builder: (_) => const RecipeQuizPage())),
-                  child: Text(l10n.recipePractice),
+                  icon: const Icon(Icons.play_arrow_rounded, size: 26),
+                  label: Text(l10n.recipePractice),
                 ),
               ),
             ],
           ),
         ),
+        // Thẻ cứu chuỗi nảy hai nhịp khi hiện ra để gây chú ý (hữu hạn, không lặp vô hạn).
+        if (restorable) PulseOnMount(child: _RescueCard(days: streak.days)),
         const SizedBox(height: 6),
         Text(l10n.recipeDisclaimer, style: theme.textTheme.bodySmall),
         const SizedBox(height: 10),
         for (final g in recipePlayableGroups) ...[
           if (catalog.groupNames[g] != null)
             Padding(
-              padding: const EdgeInsets.only(top: 6, bottom: 2),
-              child: Text(catalog.groupNames[g]!,
-                  style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+              padding: const EdgeInsets.only(top: 10, bottom: 4),
+              child: Text('🧋 ${catalog.groupNames[g]!}',
+                  style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
             ),
           for (final r in recipes.where((r) => r.group == g))
-            _RecipeTile(recipe: r, progress: p(r), today: today),
+            AppearIn(child: _RecipeTile(recipe: r, progress: p(r), today: today)),
         ],
       ],
     );
@@ -159,6 +202,13 @@ class _RecipeTile extends StatelessWidget {
       onTap: () => _showCard(context),
       child: Row(
         children: [
+          // Vạch màu theo bậc ở mép trái: nhìn lướt biết món nào thạo/chưa.
+          Container(
+            width: 5,
+            height: 42,
+            decoration: BoxDecoration(color: recipeBoxColor(progress.box), borderRadius: BorderRadius.circular(3)),
+          ),
+          const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,17 +216,20 @@ class _RecipeTile extends StatelessWidget {
                 Text(recipe.name,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
-                const SizedBox(height: 2),
-                Wrap(children: [
-                  for (final i in recipe.ingredients)
-                    Text(ingredientEmoji(i.name), style: const TextStyle(fontSize: 15)),
+                    style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800)),
+                const SizedBox(height: 3),
+                Wrap(spacing: 2, children: [
+                  for (final i in recipe.ingredients) Text(ingredientEmoji(i.name), style: const TextStyle(fontSize: 17)),
                 ]),
               ],
             ),
           ),
           const SizedBox(width: 8),
-          Flexible(child: _BoxChip(progress.box)),
+          // Chip sát mép phải (không dùng Flexible: nó chia đôi chỗ trống với Expanded và nằm lưng chừng).
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 110),
+            child: PulseOnIncrease(value: progress.box, peak: 1.15, child: _BoxChip(progress.box)),
+          ),
         ],
       ),
     );
@@ -216,7 +269,7 @@ class _RecipeCard extends StatelessWidget {
                 child: Text(recipe.name,
                     style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800))),
             const SizedBox(width: 8),
-            Flexible(child: _BoxChip(progress.box)),
+            ConstrainedBox(constraints: const BoxConstraints(maxWidth: 110), child: _BoxChip(progress.box)),
           ]),
           const SizedBox(height: 4),
           Text(wait <= 0 ? l10n.recipeReviewToday : l10n.recipeReviewIn(wait), style: theme.textTheme.bodySmall),
@@ -236,6 +289,148 @@ class _RecipeCard extends StatelessWidget {
             ),
         ],
       ),
+    );
+  }
+}
+
+/// Cứu chuỗi ôn đã đứt đúng một ngày: trả 💎 hoặc xem quảng cáo thưởng (người đã gỡ QC/VIP được cứu thẳng).
+class _RescueCard extends ConsumerStatefulWidget {
+  const _RescueCard({required this.days});
+  final int days;
+
+  @override
+  ConsumerState<_RescueCard> createState() => _RescueCardState();
+}
+
+class _RescueCardState extends ConsumerState<_RescueCard> {
+  bool _busy = false;
+
+  void _say(String text) => ScaffoldMessenger.of(context)
+    ..clearSnackBars()
+    ..showSnackBar(SnackBar(content: Text(text)));
+
+  Future<void> _withGems() async {
+    final l10n = AppLocalizations.of(context)!;
+    final ok = ref.read(gameControllerProvider.notifier).restoreRecipeStreakNow(payGems: true);
+    _say(ok ? l10n.recipeRescued : l10n.recipeRescueNoGems);
+  }
+
+  Future<void> _withAd() async {
+    if (_busy) return;
+    final l10n = AppLocalizations.of(context)!;
+    setState(() => _busy = true);
+    final adFree = ref.read(gameControllerProvider).adFree;
+    final outcome = adFree ? RewardOutcome.earned : await ref.read(adServiceProvider).showRewardedAd();
+    if (!mounted) return;
+    setState(() => _busy = false);
+    if (outcome != RewardOutcome.earned) {
+      _say(l10n.adNotReadySnack);
+      return;
+    }
+    ref.read(gameControllerProvider.notifier).restoreRecipeStreakNow(payGems: false);
+    _say(l10n.recipeRescued);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    return ClayTile(
+      key: const Key('recipe-rescue'),
+      margin: const EdgeInsets.only(top: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l10n.recipeRescueTitle(widget.days),
+              style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800, color: Colors.deepOrange)),
+          const SizedBox(height: 8),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton.tonal(
+              key: const Key('recipe-rescue-gems'),
+              onPressed: _busy ? null : _withGems,
+              child: Text(l10n.recipeRescueGems(recipeStreakRestoreGems)),
+            ),
+          ),
+          const SizedBox(height: 6),
+          SizedBox(
+            width: double.infinity,
+            child: OutlinedButton.icon(
+              key: const Key('recipe-rescue-ad'),
+              onPressed: _busy ? null : _withAd,
+              icon: const Icon(Icons.play_circle_outline),
+              label: Text(l10n.recipeRescueAd),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Viên thuốc nhỏ: nền nhạt + viền màu + (tuỳ chọn) biểu tượng.
+class _Pill extends StatelessWidget {
+  const _Pill({required this.color, required this.child, this.icon});
+  final Color color;
+  final Widget child;
+  final IconData? icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.14),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withValues(alpha: 0.55)),
+      ),
+      child: Row(mainAxisSize: MainAxisSize.min, children: [
+        if (icon != null) ...[Icon(icon, size: 16, color: color), const SizedBox(width: 6)],
+        Flexible(child: child),
+      ]),
+    );
+  }
+}
+
+/// Thanh "Thạo" kèm các hòm quà mốc (5/10/20 món): hòm sáng khi đã đạt, mờ khi chưa.
+class _MilestoneBar extends StatelessWidget {
+  const _MilestoneBar({required this.mastered, required this.total, required this.everMastered});
+  final int mastered;
+  final int total;
+  final int everMastered;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Column(
+      children: [
+        SmoothBar(key: const Key('recipe-mastered-bar'), value: total == 0 ? 0 : mastered / total, minHeight: 14, radius: 8),
+        const SizedBox(height: 4),
+        SizedBox(
+          key: const Key('recipe-milestones'),
+          // Cao đủ cho emoji 🎁 (18) + nhãn số (~14) theo cỡ chữ của máy: cỡ chữ lớn từng cắt mất nhãn ở đáy.
+          height: 6 + MediaQuery.textScalerOf(context).scale(40),
+          child: LayoutBuilder(builder: (context, box) {
+            // Bề rộng ô nhãn cũng theo cỡ chữ, để số 2 chữ số ở chữ lớn không tràn ra ngoài.
+            final w = MediaQuery.textScalerOf(context).scale(36);
+            return Stack(children: [
+              for (final m in recipeAccessoryMilestones.keys.where((m) => m <= total))
+                Positioned(
+                  // Căn hòm theo vị trí mốc trên thanh, kẹp để không tràn mép.
+                  left: (box.maxWidth * m / total - w / 2).clamp(0.0, box.maxWidth - w),
+                  width: w,
+                  child: Opacity(
+                    opacity: everMastered >= m ? 1 : 0.4,
+                    child: Column(children: [
+                      const Text('🎁', style: TextStyle(fontSize: 18)),
+                      Text('$m', style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w800)),
+                    ]),
+                  ),
+                ),
+            ]);
+          }),
+        ),
+      ],
     );
   }
 }

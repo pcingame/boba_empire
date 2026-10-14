@@ -974,3 +974,22 @@ Mở rộng game bằng trò ghi nhớ công thức. Dữ liệu: `scripts/data/
 - ⚠️ **Chống gian lận hạn chế**: số món Thạo do client tự khai như các bảng khác; "đạt Thạo cần ≥ 4 ngày" không kiểm được ở server vì không biết ngày bắt đầu luyện. Ràng buộc kiểm được: 0..100, chỉ tăng, ảnh chụp thưởng chỉ nhận tài khoản liên kết email.
 - **Triển khai**: chạy `recipe_leaderboard_schema.sql` TRƯỚC rồi `leaderboard_rewards_schema.sql` (idempotent, bản mới có CHECK 5 bảng). Kiểm bằng `scripts/test_lb_rewards_sql.sh` (đã gồm kịch bản BXH + thưởng bảng thứ 5).
 - **Chưa làm**: bản web của BXH này, hồ sơ người chơi web hiển thị hạng Thợ pha chế (`player_profile_schema.sql`), tool admin xem bảng mới.
+
+### 34d. Công thức pha chế — đợt 3: chuỗi ngày ôn, cứu chuỗi, nhắc ôn (2026-10-14, chưa playtest)
+- **Chuỗi ngày ôn** (`RecipeStreak`: số ngày, ngày ôn gần nhất, kỷ lục — lưu trong save): +1 mỗi ngày (UTC, như điểm danh) có ít nhất một câu THẬT SỰ được tính bậc (món đến hạn, không dùng gợi ý); lỡ ≥ 1 ngày thì bắt đầu lại từ 1. Hiện ở màn công thức ("🔥 Chuỗi ôn: N ngày" + "hôm nay đã/chưa ôn") và ở phản hồi câu đầu tiên mỗi ngày.
+- **Thưởng mốc** `recipeStreakMilestoneGems`: 3→10💎, 7→30, 14→60, 30→150 — CHỈ khi vượt kỷ lục cũ, nên đứt rồi gây lại không nhận lặp.
+- **Cứu chuỗi**: lỡ ĐÚNG một ngày và chuỗi ≥ 2 → thẻ "Bạn lỡ một ngày…" với hai cách: trả `recipeStreakRestoreGems` = 30💎, hoặc xem quảng cáo thưởng (người gỡ QC/VIP cứu thẳng). Cứu xong chuỗi +1 (coi ngày lỡ như đã ôn), câu ôn hôm nay nối tiếp thành +1 nữa; không cứu lại được. Lỡ ≥ 2 ngày thì mất.
+- **Nhắc ôn** (thông báo cục bộ, id 8, xin quyền như các nhắc khác): một lần lúc 20:00 giờ máy — "chuỗi N ngày sắp mất" (chuỗi ≥ 2 mà hôm đó chưa ôn) ưu tiên hơn "N món đến hạn ôn". Người chưa từng luyện không bị nhắc. Lập kế hoạch ở `lib/notify/recipe_reminder.dart` (thuần, có test).
+- ⚠️ Giá 30💎 và các mốc ước lượng, chưa playtest.
+
+### 34e. Công thức pha chế — animation (2026-10-14, chưa xem trên máy thật)
+Mọi chuyển động theo mức hiệu ứng (`EffectsQuality`/`reduceMotion`, xem PLAN_ANIMATION.md): Tắt = không có gì chuyển động, Thấp bỏ hiệu ứng nặng, và `playEffect` có trần số hiệu ứng cùng lúc.
+- **Buổi luyện**: lựa chọn SAI lắc ngang, đáp án ĐÚNG nảy; đúng → tia sáng nhỏ tại ô vừa chọn; lên bậc → hiệu ứng lên cấp (nặng); mốc chuỗi 💎 → tia 💎; đạt mốc rương phụ kiện → pháo giấy + hiệu ứng nhận phụ kiện; đúng cả buổi → pháo giấy ở tổng kết. Chuyển câu trượt + mờ; thanh tiến độ và thanh "Thạo" chạy mượt; điểm tổng kết đếm lên.
+- **Màn công thức**: cốc trà bốc hơi (Lottie `steam`, qua nhịp chung 30Hz, tắt thì về ☕ tĩnh), thẻ món hiện dần, chip bậc nảy khi tăng, hàng chuỗi nảy khi tăng, thẻ cứu chuỗi nảy hai nhịp khi hiện.
+- **Không ép vẽ khung khi đứng yên** (có test): mọi animation đều hữu hạn; riêng cốc hơi nước lặp nhưng dừng khi bị trang khác phủ lên.
+- Sửa kèm: vùng câu hỏi dùng cuộn thường (không dựng lười) và sau khi trả lời tự cuộn tới đáp án đúng — trước đó ở màn thấp/chữ to đáp án đúng có thể nằm ngoài tầm nhìn sau khi bảng phản hồi ở đáy hiện ra.
+
+### 34f. Công thức pha chế — làm đẹp giao diện (2026-10-15)
+- Màn công thức: thẻ tóm tắt nổi (tiêu đề lớn, thanh "Thạo" dày có 3 hòm quà mốc 5/10/20 sáng/mờ, viên thuốc "N món cần ôn" và "🔥 chuỗi", nút Luyện tập to có biểu tượng); mỗi món có vạch màu theo bậc ở mép trái, emoji nguyên liệu lớn hơn, chip bậc sát mép phải (lỗi cũ: Flexible chia đôi chỗ với Expanded làm chip nằm lưng chừng).
+- Buổi luyện: câu hỏi trong "phiếu gọi món" (🧋), lựa chọn là thẻ nổi có huy hiệu A–D → ✓/✗ sau khi trả lời, công thức đầy đủ vẽ thành các hàng emoji + tên + lượng (thay vì chữ thô), khung phản hồi ngả xanh/đỏ kèm 🎉/💡; tổng kết có 🏆/🎉/💪 và 1–3 sao theo tỉ lệ đúng.
+- BXH: 🥇🥈🥉 cho top 3, hàng của mình có viền màu chủ đạo.

@@ -87,6 +87,24 @@ void main() {
     expect(find.byKey(const Key('rlb-row-2')), findsOneWidget);
   });
 
+  testWidgets('top 3 có huy chương 🥇🥈🥉, hạng 4+ hiện số; hàng của mình có viền nổi bật', (tester) async {
+    final entries = [
+      const RecipeLeaderboardEntry(userId: 'a', nickname: 'A', mastered: 9, rank: 1),
+      const RecipeLeaderboardEntry(userId: 'b', nickname: 'B', mastered: 8, rank: 2),
+      const RecipeLeaderboardEntry(userId: 'c', nickname: 'C', mastered: 7, rank: 3),
+      const RecipeLeaderboardEntry(userId: 'me', nickname: 'Tôi', mastered: 6, rank: 4),
+    ];
+    await _pump(tester, RecipeLeaderboardLoaded(entries: entries, myUserId: 'me', myMastered: 6));
+    expect([find.text('🥇'), find.text('🥈'), find.text('🥉')].map((f) => f.evaluate().length), [1, 1, 1]);
+    expect(find.text('4'), findsOneWidget);
+    // Chỉ hàng của mình có khung viền (Container có border bọc ngoài ô).
+    int framed() => find
+        .byWidgetPredicate((w) => w is Container && w.decoration is BoxDecoration && (w.decoration! as BoxDecoration).border != null)
+        .evaluate()
+        .length;
+    expect(framed(), 1);
+  });
+
   testWidgets('đã có món Thạo: không hiện dòng nhắc', (tester) async {
     await _pump(tester, RecipeLeaderboardLoaded(entries: _entries, myUserId: 'me', myMastered: 5));
     expect(find.byKey(const Key('rlb-none')), findsNothing);

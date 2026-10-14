@@ -1430,6 +1430,60 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsSound => 'Sound';
 
   @override
+  String recipeStreak(int n) {
+    return '🔥 Review streak: $n days';
+  }
+
+  @override
+  String get recipeStreakToday => 'Reviewed today ✓';
+
+  @override
+  String get recipeStreakPending =>
+      'Not reviewed today — do a session to keep your streak';
+
+  @override
+  String recipeRescueTitle(int n) {
+    return 'You missed a day — your $n-day streak is about to be lost!';
+  }
+
+  @override
+  String recipeRescueGems(int n) {
+    return 'Save for $n 💎';
+  }
+
+  @override
+  String get recipeRescueAd => 'Watch an ad to save';
+
+  @override
+  String get recipeRescued => 'Streak saved!';
+
+  @override
+  String get recipeRescueNoGems => 'Not enough 💎 to save the streak.';
+
+  @override
+  String recipeStreakGems(int n, int gems) {
+    return '🔥 $n-day streak! +$gems 💎';
+  }
+
+  @override
+  String recipeStreakFeedback(int n) {
+    return '🔥 Review streak: $n days';
+  }
+
+  @override
+  String get recipeNotifyTitle => 'Drink recipes';
+
+  @override
+  String recipeNotifyStreak(int n) {
+    return 'Your $n-day review streak is about to end! Do one session to keep it';
+  }
+
+  @override
+  String recipeNotifyDue(int n) {
+    return '$n recipes are due for review today';
+  }
+
+  @override
   String get rlbTitle => 'Recipe Masters';
 
   @override

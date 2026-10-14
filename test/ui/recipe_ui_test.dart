@@ -59,6 +59,7 @@ Future<ProviderContainer> _pump(
   Map<String, List<int>>? progress,
   double textScale = 1.0,
   AdService? ads,
+  void Function(GameState)? setup,
 }) async {
   tester.view.physicalSize = size * 2;
   tester.view.devicePixelRatio = 2;
@@ -69,6 +70,7 @@ Future<ProviderContainer> _pump(
   final prefs = await SharedPreferences.getInstance();
   final g = GameState.newGame(nowMillis: 0)..tutorialSeen = true;
   if (progress != null) g.recipeProgress.addAll(progress);
+  setup?.call(g);
   await GameStorage(prefs).save(g, nowMillis: 0);
   final c = ProviderContainer(overrides: [
     sharedPreferencesProvider.overrideWithValue(prefs),
@@ -97,6 +99,8 @@ List<QuizQuestion> _expected(int seed, {Map<int, RecipeProgress> progress = cons
 
 Future<void> _answer(WidgetTester tester, QuizQuestion q, {required bool correct}) async {
   final pick = correct ? q.answer : (q.answer + 1) % 4;
+  // Câu dài (công thức đầy đủ) có thể cao hơn màn nhỏ: cuộn tới lựa chọn trước khi chạm.
+  await tester.ensureVisible(find.byKey(Key('recipe-quiz-option-$pick')));
   await tester.tap(find.byKey(Key('recipe-quiz-option-$pick')));
   await tester.pumpAndSettle();
 }
@@ -226,15 +230,11 @@ void main() {
       expect(tester.takeException(), isNull);
       for (var i = 0; i < 8; i++) {
         // Chữ to: lựa chọn nằm dưới mép — ListView dựng lười nên phải cuộn tới.
-        await tester.dragUntilVisible(
-            find.byKey(const Key('recipe-quiz-option-0')), find.byType(ListView), const Offset(0, -120));
         await tester.ensureVisible(find.byKey(const Key('recipe-quiz-option-0')));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(const Key('recipe-quiz-option-0')));
         await tester.pumpAndSettle();
         expect(tester.takeException(), isNull, reason: 'câu ${i + 1}');
-        await tester.dragUntilVisible(
-            find.byKey(const Key('recipe-quiz-next')), find.byType(ListView), const Offset(0, -120));
         await tester.ensureVisible(find.byKey(const Key('recipe-quiz-next')));
         await tester.pumpAndSettle();
         await tester.tap(find.byKey(const Key('recipe-quiz-next')));
@@ -441,4 +441,213 @@ void main() {
     expect(c.read(gameControllerProvider.notifier).debugGame.recipeMilestonesClaimed, [5]);
     await _teardown(tester);
   });
+
+  group('chuỗi ngày ôn + cứu chuỗi', () {
+    void streak(GameState g, int days, int lastDay, {double gems = 0}) {
+      g
+        ..recipeStreak = days
+        ..recipeStreakBest = days
+        ..recipeStreakLastDay = lastDay
+        ..gems = gems;
+    }
+
+    testWidgets('chuỗi đang sống: hiện số ngày + trạng thái hôm nay; đã đứt thì ẩn; chưa có thì ẩn', (tester) async {
+      await _pump(tester, setup: (g) => streak(g, 4, 100)); // ôn hôm nay
+      expect(find.text('🔥 Chuỗi ôn: 4 ngày'), findsOneWidget);
+      expect(find.text('Hôm nay đã ôn ✓'), findsOneWidget);
+      expect(find.byKey(const Key('recipe-rescue')), findsNothing);
+      await _teardown(tester);
+
+      await _pump(tester, setup: (g) => streak(g, 4, 99)); // ôn hôm qua, hôm nay chưa
+      expect(find.text('🔥 Chuỗi ôn: 4 ngày'), findsOneWidget);
+      expect(find.textContaining('chưa ôn'), findsOneWidget);
+      await _teardown(tester);
+
+      await _pump(tester, setup: (g) => streak(g, 4, 90)); // đứt từ lâu
+      expect(find.byKey(const Key('recipe-streak')), findsNothing);
+      expect(find.byKey(const Key('recipe-rescue')), findsNothing);
+      await _teardown(tester);
+
+      await _pump(tester); // chưa từng
+      expect(find.byKey(const Key('recipe-streak')), findsNothing);
+      await _teardown(tester);
+    });
+
+    testWidgets('lỡ đúng một ngày: hiện thẻ cứu chuỗi (không hiện hàng chuỗi thường)', (tester) async {
+      await _pump(tester, setup: (g) => streak(g, 6, 98, gems: 100));
+      expect(find.byKey(const Key('recipe-rescue')), findsOneWidget);
+      expect(find.text('Bạn lỡ một ngày — chuỗi 6 ngày sắp mất!'), findsOneWidget);
+      expect(find.text('Cứu bằng 30 💎'), findsOneWidget);
+      expect(find.byKey(const Key('recipe-streak')), findsNothing);
+      await _teardown(tester);
+    });
+
+    testWidgets('cứu bằng 💎: trừ đúng, chuỗi +1, thẻ biến mất; thiếu 💎 thì báo và giữ thẻ', (tester) async {
+      final c = await _pump(tester, setup: (g) => streak(g, 6, 98, gems: 100));
+      await tester.tap(find.byKey(const Key('recipe-rescue-gems')));
+      await tester.pumpAndSettle();
+      expect(find.text('Đã cứu chuỗi!'), findsOneWidget);
+      expect(c.read(gameControllerProvider).gems, 70);
+      expect(find.byKey(const Key('recipe-rescue')), findsNothing);
+      expect(find.text('🔥 Chuỗi ôn: 7 ngày'), findsOneWidget);
+      await _teardown(tester);
+
+      final c2 = await _pump(tester, setup: (g) => streak(g, 6, 98, gems: 10));
+      await tester.tap(find.byKey(const Key('recipe-rescue-gems')));
+      await tester.pumpAndSettle();
+      expect(find.text('Không đủ 💎 để cứu chuỗi.'), findsOneWidget);
+      expect(c2.read(gameControllerProvider).gems, 10);
+      expect(find.byKey(const Key('recipe-rescue')), findsOneWidget);
+      await _teardown(tester);
+    });
+
+    testWidgets('cứu bằng quảng cáo: xem xong thì cứu miễn phí; không xem xong thì giữ thẻ', (tester) async {
+      final ads = _Ads(RewardOutcome.dismissed);
+      final c = await _pump(tester, ads: ads, setup: (g) => streak(g, 6, 98, gems: 0));
+      await tester.tap(find.byKey(const Key('recipe-rescue-ad')));
+      await tester.pumpAndSettle();
+      expect(ads.shown, 1);
+      expect(find.byKey(const Key('recipe-rescue')), findsOneWidget);
+      expect(c.read(gameControllerProvider).recipeStreak.days, 6);
+      ads.outcome = RewardOutcome.earned;
+      await tester.tap(find.byKey(const Key('recipe-rescue-ad')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('recipe-rescue')), findsNothing);
+      expect(c.read(gameControllerProvider).recipeStreak.days, 7);
+      expect(c.read(gameControllerProvider).gems, 0);
+      await _teardown(tester);
+    });
+
+    testWidgets('buổi luyện: câu đầu tiên trong ngày báo chuỗi; tới mốc 3 ngày báo +10 💎', (tester) async {
+      final c = await _pump(tester, setup: (g) => streak(g, 2, 99)); // hôm qua ôn: hôm nay thành 3
+      await openPractice(tester);
+      final qs = _expected(1);
+      await _answer(tester, qs[0], correct: true);
+      expect(find.text('🔥 Chuỗi 3 ngày! +10 💎'), findsOneWidget);
+      expect(c.read(gameControllerProvider).recipeStreak.days, 3);
+      await tester.tap(find.byKey(const Key('recipe-quiz-next')));
+      await tester.pumpAndSettle();
+      await _answer(tester, qs[1], correct: true); // câu thứ hai cùng ngày: không báo chuỗi nữa
+      expect(find.textContaining('Chuỗi'), findsNothing);
+      await _teardown(tester);
+
+      final c2 = await _pump(tester); // chưa có chuỗi
+      await openPractice(tester);
+      await _answer(tester, _expected(1)[0], correct: true);
+      expect(find.text('🔥 Chuỗi ôn: 1 ngày'), findsOneWidget);
+      expect(c2.read(gameControllerProvider).recipeStreak.days, 1);
+      await _teardown(tester);
+    });
+
+    for (final lang in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
+      testWidgets('thẻ cứu chuỗi + hàng chuỗi không tràn ở 320px, chữ 1.5× ($lang)', (tester) async {
+        await _pump(tester, locale: lang, textScale: 1.5, size: const Size(320, 640), setup: (g) => streak(g, 12, 98, gems: 100));
+        expect(find.byKey(const Key('recipe-rescue')), findsOneWidget);
+        expect(tester.takeException(), isNull);
+        await _teardown(tester);
+        await _pump(tester, locale: lang, textScale: 1.5, size: const Size(320, 640), setup: (g) => streak(g, 12, 99));
+        expect(find.byKey(const Key('recipe-streak')), findsOneWidget);
+        expect(tester.takeException(), isNull);
+        await _teardown(tester);
+      });
+    }
+  });
+
+  // (Chỉ tiếng Việt: ở 400dp + chữ 1.5× các ngôn ngữ dài hơn có đáp án đa dòng cao hơn cả vùng cuộn nên không có cách nào vừa.
+  // Kích thước 400 được chọn để bài kiểm CÓ KHẢ NĂNG PHÁT HIỆN lỗi: bỏ lệnh cuộn tới đáp án thì bài này đỏ.)
+  for (final lang in ['vi']) {
+    testWidgets('trả lời xong: đáp án đúng luôn nằm trong tầm nhìn (cuộn tới) dù màn thấp + chữ to ($lang)', (tester) async {
+      await _pump(tester, locale: lang, textScale: 1.5, size: const Size(320, 400));
+      await tester.ensureVisible(find.byKey(const Key('recipe-practice'))); // màn thấp + chữ to: thẻ tóm tắt cao hơn màn
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('recipe-practice')));
+      await tester.pumpAndSettle();
+      final qs = _expected(1);
+      for (var i = 0; i < 8; i++) {
+        // Chọn lựa chọn SAI xa đáp án đúng nhất để nó phải cuộn mới thấy.
+        final wrong = qs[i].answer <= 1 ? 3 : 0;
+        await tester.ensureVisible(find.byKey(Key('recipe-quiz-option-$wrong')));
+        await tester.tap(find.byKey(Key('recipe-quiz-option-$wrong')));
+        await tester.pumpAndSettle();
+        final box = tester.getRect(find.byKey(Key('recipe-quiz-option-${qs[i].answer}')));
+        final screen = tester.view.physicalSize / tester.view.devicePixelRatio;
+        // Bảng phản hồi + nút "Câu tiếp" chiếm đáy; đáp án đúng phải nằm trên nó (không bị che / ngoài màn).
+        final next = tester.getRect(find.byKey(const Key('recipe-quiz-next')));
+        expect(box.top, greaterThanOrEqualTo(0), reason: 'câu $i: đáp án đúng trôi lên khỏi màn');
+        expect(box.bottom, lessThanOrEqualTo(next.top + 1), reason: 'câu $i: đáp án đúng bị bảng phản hồi che');
+        expect(box.bottom, lessThanOrEqualTo(screen.height));
+        await tester.tap(find.byKey(const Key('recipe-quiz-next')));
+        await tester.pumpAndSettle();
+      }
+      expect(tester.takeException(), isNull);
+      await _teardown(tester);
+    });
+  }
+
+  group('giao diện (bố cục)', () {
+    testWidgets('màn công thức: 3 hòm quà mốc 5/10/20 mờ-sáng theo số món đã Thạo; chip bậc sát mép phải của thẻ',
+        (tester) async {
+      // 6 món đã Thạo → mốc 5 sáng, 10 và 20 mờ.
+      final c = await _pump(tester, progress: {for (var i = 1; i <= 6; i++) '$i': [3, 9999, 3]});
+      double opacityOf(String m) {
+        final o = find.ancestor(of: find.text(m), matching: find.byType(Opacity));
+        return tester.widget<Opacity>(o.first).opacity;
+      }
+
+      expect(find.text('🎁'), findsNWidgets(3));
+      expect((opacityOf('5'), opacityOf('10'), opacityOf('20')), (1.0, 0.4, 0.4));
+      // Chip "Thạo" nằm sát mép phải thẻ món (không lưng chừng như khi chia đôi chỗ trống với tên).
+      final tile = tester.getRect(find.byKey(const Key('recipe-tile-1')));
+      final chip = tester.getRect(find.descendant(of: find.byKey(const Key('recipe-tile-1')), matching: find.text('Thạo')));
+      expect(tile.right - chip.right, lessThan(40), reason: 'chip phải sát mép phải của thẻ');
+      expect(c.read(gameControllerProvider).recipeProgress.length, 6);
+      await _teardown(tester);
+    });
+
+    testWidgets('lựa chọn có huy hiệu A–D; sau khi trả lời huy hiệu đáp án đúng thành ✓, lựa chọn sai thành ✗', (tester) async {
+      await _pump(tester);
+      await tester.tap(find.byKey(const Key('recipe-practice')));
+      await tester.pumpAndSettle();
+      final q = _expected(1)[0];
+      for (final letter in ['A', 'B', 'C', 'D']) {
+        expect(find.text(letter), findsOneWidget);
+      }
+      await _answer(tester, q, correct: false);
+      expect(find.byIcon(Icons.check_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.close_rounded), findsOneWidget);
+      await _teardown(tester);
+    });
+
+    testWidgets('tổng kết: 🏆 + 3 sao khi đúng hết; 🎉 + 2 sao khi đúng ≥ 60%; 💪 + 1 sao khi dưới', (tester) async {
+      final qs = _expected(1);
+      for (final (wrongCount, emoji, stars) in [(0, '🏆', 3), (1, '🎉', 2), (6, '💪', 1)]) {
+        await _pump(tester);
+        await tester.tap(find.byKey(const Key('recipe-practice')));
+        await tester.pumpAndSettle();
+        for (var i = 0; i < 8; i++) {
+          await _answer(tester, qs[i], correct: i >= wrongCount);
+          await tester.tap(find.byKey(const Key('recipe-quiz-next')));
+          await tester.pumpAndSettle();
+        }
+        expect(find.text(emoji), findsOneWidget, reason: '$wrongCount câu sai');
+        expect(find.byIcon(Icons.star_rounded), findsNWidgets(stars), reason: '$wrongCount câu sai');
+        expect(find.byIcon(Icons.star_outline_rounded), findsNWidgets(3 - stars));
+        await _teardown(tester);
+      }
+    });
+  });
+
+  for (final scale in [1.0, 1.5, 2.0]) {
+    testWidgets('hòm quà mốc: nhãn số không bị cắt ở đáy với chữ $scale× (lỗi thật: height cố định 36)', (tester) async {
+      await _pump(tester, textScale: scale, size: const Size(360, 800));
+      final holder = tester.getRect(find.byKey(const Key('recipe-milestones')));
+      for (final m in ['5', '10', '20']) {
+        final label = tester.getRect(find.text(m));
+        expect(label.bottom, lessThanOrEqualTo(holder.bottom + 0.5), reason: 'nhãn $m bị cắt (chữ $scale×)');
+        expect(label.left, greaterThanOrEqualTo(holder.left - 0.5));
+        expect(label.right, lessThanOrEqualTo(holder.right + 0.5));
+      }
+      await _teardown(tester);
+    });
+  }
 }

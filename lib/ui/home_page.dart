@@ -29,6 +29,7 @@ import '../iap/iap_service.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../market/market_highlight.dart';
+import '../notify/recipe_reminder.dart';
 import '../notify/reminders.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
@@ -360,6 +361,22 @@ class _HomePageState extends ConsumerState<HomePage>
             )
           : null,
       vipUnclaimed: ref.read(gameControllerProvider.notifier).vipUnclaimedNow,
+      // Nhắc ôn công thức (chuỗi sắp mất / món đến hạn); null nếu chưa từng luyện hay không có gì để nhắc.
+      recipe: _recipeReminder(l10n),
+    );
+  }
+
+  ({DateTime at, String title, String body})? _recipeReminder(AppLocalizations l10n) {
+    final game = ref.read(gameControllerProvider);
+    final plan = planRecipeReminder(
+        now: DateTime.now(), streak: game.recipeStreak, progress: game.recipeProgress);
+    if (plan == null) return null;
+    return (
+      at: plan.at,
+      title: l10n.recipeNotifyTitle,
+      body: plan.kind == RecipeReminderKind.streak
+          ? l10n.recipeNotifyStreak(plan.n)
+          : l10n.recipeNotifyDue(plan.n),
     );
   }
 

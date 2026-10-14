@@ -252,4 +252,97 @@ void main() {
       expect(GameState.fromJson(jsonDecode(jsonEncode(old)) as Map<String, dynamic>).recipeMilestonesClaimed, isEmpty);
     });
   });
+
+  group('chuỗi ngày ôn', () {
+    test('câu tính bậc nối chuỗi; cùng ngày không tăng thêm; câu gợi ý/chỉ-luyện không nối', () async {
+      final (c, _, setDay) = await _harness(GameState.newGame(nowMillis: 0));
+      final ctrl = c.read(gameControllerProvider.notifier);
+      setDay(100);
+      final hinted = ctrl.answerRecipe(1, true, hinted: true);
+      expect((hinted.streakDays, hinted.streakExtended), (0, false));
+      expect(c.read(gameControllerProvider).recipeStreak.days, 0);
+      final r = ctrl.answerRecipe(1, true);
+      expect((r.streakDays, r.streakExtended), (1, true));
+      final again = ctrl.answerRecipe(2, true); // cùng ngày, món khác
+      expect((again.streakDays, again.streakExtended), (1, false));
+      ctrl.answerRecipe(1, true); // chưa tới hạn: không tính
+      expect(c.read(gameControllerProvider).recipeStreak.days, 1);
+      setDay(101);
+      expect(ctrl.answerRecipe(1, true).streakDays, 2);
+      setDay(104); // lỡ 102, 103 → đứt, bắt đầu lại
+      expect(ctrl.answerRecipe(3, true).streakDays, 1);
+    });
+
+    test('mốc 3 ngày +10 💎 đúng một lần; gây lại chuỗi không nhận lại', () async {
+      final (c, _, setDay) = await _harness(GameState.newGame(nowMillis: 0));
+      final ctrl = c.read(gameControllerProvider.notifier);
+      var gems = 0;
+      for (var d = 100; d <= 102; d++) {
+        setDay(d);
+        gems += ctrl.answerRecipe(d - 99, true).streakGems;
+      }
+      expect(gems, recipeStreakMilestoneGems[3]);
+      expect(c.read(gameControllerProvider).gems, gems);
+      for (var d = 110; d <= 112; d++) {
+        setDay(d);
+        gems += ctrl.answerRecipe(d - 100, true).streakGems;
+      }
+      expect(c.read(gameControllerProvider).recipeStreak.days, 3);
+      expect(gems, recipeStreakMilestoneGems[3], reason: 'đã đạt 3 ngày trước đó nên không thưởng lại');
+    });
+
+    test('cứu bằng 💎: trừ đúng giá, chuỗi +1; thiếu 💎 hoặc không còn cứu được thì không đổi gì', () async {
+      final (c, _, setDay) = await _harness(GameState.newGame(nowMillis: 0)
+        ..gems = 100
+        ..recipeStreak = 4
+        ..recipeStreakBest = 4
+        ..recipeStreakLastDay = 100);
+      final ctrl = c.read(gameControllerProvider.notifier);
+      setDay(101); // chưa lỡ ngày nào
+      expect(ctrl.restoreRecipeStreakNow(payGems: true), isFalse);
+      setDay(103); // lỡ hai ngày: quá muộn
+      expect(ctrl.restoreRecipeStreakNow(payGems: true), isFalse);
+      expect(c.read(gameControllerProvider).gems, 100);
+      setDay(102); // đúng một ngày
+      expect(ctrl.restoreRecipeStreakNow(payGems: true), isTrue);
+      expect(c.read(gameControllerProvider).gems, 100 - recipeStreakRestoreGems);
+      expect(c.read(gameControllerProvider).recipeStreak.days, 5);
+      expect(ctrl.restoreRecipeStreakNow(payGems: true), isFalse, reason: 'cứu rồi không cứu lại');
+      expect(c.read(gameControllerProvider).gems, 100 - recipeStreakRestoreGems);
+      // Ôn hôm nay nối tiếp thành 6.
+      expect(ctrl.answerRecipe(1, true).streakDays, 6);
+    });
+
+    test('thiếu 💎: không cứu, không trừ; cứu bằng quảng cáo (payGems=false) không tốn 💎', () async {
+      final (c, _, setDay) = await _harness(GameState.newGame(nowMillis: 0)
+        ..gems = recipeStreakRestoreGems - 1.0
+        ..recipeStreak = 3
+        ..recipeStreakBest = 3
+        ..recipeStreakLastDay = 100);
+      final ctrl = c.read(gameControllerProvider.notifier);
+      setDay(102);
+      expect(ctrl.restoreRecipeStreakNow(payGems: true), isFalse);
+      expect(c.read(gameControllerProvider).gems, recipeStreakRestoreGems - 1);
+      expect(c.read(gameControllerProvider).recipeStreak.days, 3);
+      expect(ctrl.restoreRecipeStreakNow(payGems: false), isTrue);
+      expect(c.read(gameControllerProvider).gems, recipeStreakRestoreGems - 1);
+      expect(c.read(gameControllerProvider).recipeStreak.days, 4);
+    });
+
+    test('lưu/đọc: vòng JSON giữ nguyên; save cũ → 0; giá trị âm/hỏng bị kẹp', () {
+      final g = GameState.newGame(nowMillis: 0)
+        ..recipeStreak = 5
+        ..recipeStreakLastDay = 200
+        ..recipeStreakBest = 9;
+      final back = GameState.fromJson(jsonDecode(jsonEncode(g.toJson())) as Map<String, dynamic>);
+      expect((back.recipeStreak, back.recipeStreakLastDay, back.recipeStreakBest), (5, 200, 9));
+      final old = g.toJson()..remove('recipeStreak')..remove('recipeStreakLastDay')..remove('recipeStreakBest');
+      final o = GameState.fromJson(jsonDecode(jsonEncode(old)) as Map<String, dynamic>);
+      expect((o.recipeStreak, o.recipeStreakLastDay, o.recipeStreakBest), (0, 0, 0));
+      final bad = g.toJson()..['recipeStreak'] = -3..['recipeStreakLastDay'] = -1..['recipeStreakBest'] = 1e12;
+      final b = GameState.fromJson(jsonDecode(jsonEncode(bad)) as Map<String, dynamic>);
+      expect((b.recipeStreak, b.recipeStreakLastDay), (0, 0));
+      expect(b.recipeStreakBest, lessThanOrEqualTo(100000));
+    });
+  });
 }

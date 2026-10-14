@@ -1411,6 +1411,59 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsSound => '소리';
 
   @override
+  String recipeStreak(int n) {
+    return '🔥 복습 연속: $n일';
+  }
+
+  @override
+  String get recipeStreakToday => '오늘 복습 완료 ✓';
+
+  @override
+  String get recipeStreakPending => '오늘은 아직 복습 안 했어요 — 한 번 복습해서 연속을 지키세요';
+
+  @override
+  String recipeRescueTitle(int n) {
+    return '하루를 놓쳤어요 — $n일 연속이 곧 사라져요!';
+  }
+
+  @override
+  String recipeRescueGems(int n) {
+    return '$n 💎로 살리기';
+  }
+
+  @override
+  String get recipeRescueAd => '광고 보고 살리기';
+
+  @override
+  String get recipeRescued => '연속 기록을 살렸어요!';
+
+  @override
+  String get recipeRescueNoGems => '연속을 살리기에 💎가 부족해요.';
+
+  @override
+  String recipeStreakGems(int n, int gems) {
+    return '🔥 $n일 연속! +$gems 💎';
+  }
+
+  @override
+  String recipeStreakFeedback(int n) {
+    return '🔥 복습 연속: $n일';
+  }
+
+  @override
+  String get recipeNotifyTitle => '음료 레시피';
+
+  @override
+  String recipeNotifyStreak(int n) {
+    return '$n일 복습 연속이 곧 끊겨요! 한 번 복습해서 지켜 보세요';
+  }
+
+  @override
+  String recipeNotifyDue(int n) {
+    return '오늘 복습할 레시피 $n개';
+  }
+
+  @override
   String get rlbTitle => '레시피 마스터';
 
   @override

@@ -1433,6 +1433,60 @@ class AppLocalizationsId extends AppLocalizations {
   String get settingsSound => 'Suara';
 
   @override
+  String recipeStreak(int n) {
+    return '🔥 Streak ulangan: $n hari';
+  }
+
+  @override
+  String get recipeStreakToday => 'Sudah mengulang hari ini ✓';
+
+  @override
+  String get recipeStreakPending =>
+      'Belum mengulang hari ini — lakukan satu sesi untuk menjaga streak';
+
+  @override
+  String recipeRescueTitle(int n) {
+    return 'Kamu melewatkan sehari — streak $n hari hampir hilang!';
+  }
+
+  @override
+  String recipeRescueGems(int n) {
+    return 'Selamatkan dengan $n 💎';
+  }
+
+  @override
+  String get recipeRescueAd => 'Tonton iklan untuk menyelamatkan';
+
+  @override
+  String get recipeRescued => 'Streak diselamatkan!';
+
+  @override
+  String get recipeRescueNoGems => '💎 tidak cukup untuk menyelamatkan streak.';
+
+  @override
+  String recipeStreakGems(int n, int gems) {
+    return '🔥 Streak $n hari! +$gems 💎';
+  }
+
+  @override
+  String recipeStreakFeedback(int n) {
+    return '🔥 Streak ulangan: $n hari';
+  }
+
+  @override
+  String get recipeNotifyTitle => 'Resep minuman';
+
+  @override
+  String recipeNotifyStreak(int n) {
+    return 'Streak ulangan $n harimu hampir berakhir! Lakukan satu sesi untuk menjaganya';
+  }
+
+  @override
+  String recipeNotifyDue(int n) {
+    return '$n resep waktunya diulang hari ini';
+  }
+
+  @override
   String get rlbTitle => 'Ahli Resep';
 
   @override
