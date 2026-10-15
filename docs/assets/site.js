@@ -136,10 +136,10 @@
     return fetch(API + 'rpc/' + name, { method: 'POST', headers: Object.assign({ 'Content-Type': 'application/json' }, H()), body: JSON.stringify({ p_limit: limit || 20 }) });
   }
   // Bảng Phá đảo gộp 3 hồi: mỗi người chỉ một dòng, ở hồi xa nhất đã xong (hồi cao hơn xếp trên;
-  // cùng hồi thì thời gian ngắn hơn xếp trên). Một hồi lỗi/chưa có bảng thì bỏ qua; cả ba lỗi mới báo lỗi.
+  // cùng hồi thì thời gian ngắn hơn xếp trên). Một hồi lỗi/chưa có bảng thì bỏ qua; cả bốn lỗi mới báo lỗi.
   function speedRows() {
     var fails = 0;
-    return Promise.all(['story_speedrun_top', 'story_speedrun2_top', 'story_speedrun3_top'].map(function (name, i) {
+    return Promise.all(['story_speedrun_top', 'story_speedrun2_top', 'story_speedrun3_top', 'story_speedrun4_top'].map(function (name, i) {
       return rpc(name, 100).then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
         .then(function (rows) { return rows.map(function (r) { r.act = i + 1; return r; }); })
         .catch(function () { fails++; return []; });

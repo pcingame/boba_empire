@@ -4268,4 +4268,26 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get lbrBoardOrders => '주문대로 만들기';
+
+  @override
+  String get storySpeedrunTabExt3 => '4막';
+
+  @override
+  String get storySpeedrunExt3NotCompletedYet =>
+      '아직 4막을 완료하지 않았어요 — 46장을 클리어하면 순위에 올라요.';
+
+  @override
+  String storyCondRecipes(int n, String game) {
+    return '$game에서 레시피 $n개 마스터';
+  }
+
+  @override
+  String storyCondOrders(int n, String game) {
+    return '$game에서 완벽한 음료 $n잔 만들기';
+  }
+
+  @override
+  String storyCondDaily(int n, String game) {
+    return '$game을(를) $n일 완료';
+  }
 }

@@ -1973,5 +1973,13 @@
   "@cupShareText": {"placeholders": {"name": {"type": "String"}}},
   "recipeCounterNext": "Master {count} recipes to unlock 1 more display slot",
   "@recipeCounterNext": {"placeholders": {"count": {"type": "int"}}},
-  "lbrBoardOrders": "Brew by order"
+  "lbrBoardOrders": "Brew by order",
+  "storySpeedrunTabExt3": "Act 4",
+  "storySpeedrunExt3NotCompletedYet": "You haven't finished Act 4 yet — complete Chapter 46 to be ranked.",
+  "storyCondRecipes": "Master {n} recipes in {game}",
+  "@storyCondRecipes": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "storyCondOrders": "Make {n} perfect drinks in {game}",
+  "@storyCondOrders": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "storyCondDaily": "Complete {game} on {n} days",
+  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}}
 }

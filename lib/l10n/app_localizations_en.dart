@@ -4359,4 +4359,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get lbrBoardOrders => 'Brew by order';
+
+  @override
+  String get storySpeedrunTabExt3 => 'Act 4';
+
+  @override
+  String get storySpeedrunExt3NotCompletedYet =>
+      'You haven\'t finished Act 4 yet — complete Chapter 46 to be ranked.';
+
+  @override
+  String storyCondRecipes(int n, String game) {
+    return 'Master $n recipes in $game';
+  }
+
+  @override
+  String storyCondOrders(int n, String game) {
+    return 'Make $n perfect drinks in $game';
+  }
+
+  @override
+  String storyCondDaily(int n, String game) {
+    return 'Complete $game on $n days';
+  }
 }

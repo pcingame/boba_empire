@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/recipe_mastery.dart' show recipeMaxBox;
 import '../core/story.dart';
 import '../core/story_content.dart';
 import '../l10n/app_localizations.dart';
@@ -41,6 +42,12 @@ class _StoryLogDialog extends ConsumerWidget {
         ? <int>[]
         : m3Key.split(',').map(int.parse).toList();
 
+    // Hồi 4: mốc của các trò chơi nhỏ (chỉ lấy con số, không lấy cả bản đồ tiến độ ⇒ ít rebuild).
+    final recipeMastered = ref.watch(gameControllerProvider
+        .select((s) => s.recipeProgress.values.where((p) => p.best == recipeMaxBox).length));
+    final orderPerfect = ref.watch(gameControllerProvider.select((s) => s.recipeOrderPerfect.length));
+    final dailyDone = ref.watch(gameControllerProvider.select((s) => s.recipeDailyCount));
+
     return AlertDialog(
       title: Text(l10n.storyLogTitle),
       content: SizedBox(
@@ -69,6 +76,9 @@ class _StoryLogDialog extends ConsumerWidget {
                           hasPrestiged: hasPrestiged,
                           rivalDefeated: rivalDefeated,
                           m3Stars: m3Stars,
+                          recipeMastered: recipeMastered,
+                          orderPerfect: orderPerfect,
+                          dailyDone: dailyDone,
                         ),
                       ),
             ],
@@ -93,6 +103,9 @@ class _StoryLogDialog extends ConsumerWidget {
         StoryTrigger.ascension =>
           l10n.storyCondAscension(c.value, l10n.ascensionTitle),
         StoryTrigger.m3Level => l10n.storyCondM3(c.value, l10n.m3Title),
+        StoryTrigger.recipeMastered => l10n.storyCondRecipes(c.value, l10n.recipeTitle),
+        StoryTrigger.orderPerfect => l10n.storyCondOrders(c.value, l10n.recipeOrderOrders),
+        StoryTrigger.dailyDone => l10n.storyCondDaily(c.value, l10n.recipeDailyTitle),
         StoryTrigger.gameStart => '',
       };
 
@@ -109,6 +122,9 @@ class _StoryLogDialog extends ConsumerWidget {
     required bool hasPrestiged,
     required bool rivalDefeated,
     required List<int> m3Stars,
+    required int recipeMastered,
+    required int orderPerfect,
+    required int dailyDone,
   }) {
     final blocked = !isNext &&
         storyTriggerMet(
@@ -118,13 +134,21 @@ class _StoryLogDialog extends ConsumerWidget {
           rivalDefeated: rivalDefeated,
           ascensionCount: ascension,
           m3Stars: m3Stars,
+          recipeMastered: recipeMastered,
+          orderPerfect: orderPerfect,
+          dailyDone: dailyDone,
         );
     final text = blocked
         ? l10n.storyUnlockAfter(l10n.storyChapterLabel(chapter.id - 1))
         : l10n.storyUnlockWhen(_condition(l10n, chapter));
     final progress = isNext
         ? storyUnlockProgress(chapter,
-            stage: stage, ascensionCount: ascension, m3Stars: m3Stars)
+            stage: stage,
+            ascensionCount: ascension,
+            m3Stars: m3Stars,
+            recipeMastered: recipeMastered,
+            orderPerfect: orderPerfect,
+            dailyDone: dailyDone)
         : null;
     if (progress == null) return Text(text);
     return Column(

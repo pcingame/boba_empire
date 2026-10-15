@@ -415,7 +415,8 @@ class GameController extends Notifier<GameSnapshot> {
     final s = score.clamp(0, dailyMaxScore);
     _game
       ..recipeDailyDay = today
-      ..recipeDailyScore = s;
+      ..recipeDailyScore = s
+      ..recipeDailyCount += 1;
     final production = effectiveIncomePerSecond(
           _game,
           Balance.generators,
@@ -615,6 +616,10 @@ class GameController extends Notifier<GameSnapshot> {
     if (hit(storyThirdActFinaleChapterId) &&
         _game.storyThirdActCompleteSeconds == null) {
       _game.storyThirdActCompleteSeconds = seconds;
+    }
+    if (hit(storyFourthActFinaleChapterId) &&
+        _game.storyFourthActCompleteSeconds == null) {
+      _game.storyFourthActCompleteSeconds = seconds;
     }
   }
 
@@ -2212,6 +2217,7 @@ class GameController extends Notifier<GameSnapshot> {
       storyCompleteSeconds: _game.storyCompleteSeconds,
       storyExtCompleteSeconds: _game.storyExtCompleteSeconds,
       storyThirdActCompleteSeconds: _game.storyThirdActCompleteSeconds,
+      storyFourthActCompleteSeconds: _game.storyFourthActCompleteSeconds,
       rivalActive: rivalActive(_game),
       rivalDefeated: _game.rivalDefeated,
       rivalStanding: rivalStanding(_game),
@@ -2262,6 +2268,7 @@ class GameController extends Notifier<GameSnapshot> {
       recipeOrderPerfect: List.unmodifiable(_game.recipeOrderPerfect),
       recipeDailyDay: _game.recipeDailyDay,
       recipeDailyScore: _game.recipeDailyScore,
+      recipeDailyCount: _game.recipeDailyCount,
       recipeProgress: {
         for (final e in _game.recipeProgress.entries)
           if (int.tryParse(e.key) != null) int.parse(e.key): RecipeProgress.fromList(e.value),

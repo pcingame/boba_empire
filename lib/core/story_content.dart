@@ -1,4 +1,4 @@
-/// Lời kể cho 36 chương cốt truyện + text sự kiện đối thủ.
+/// Lời kể cho 46 chương cốt truyện + text sự kiện đối thủ.
 ///
 /// KHÔNG dùng ARB: prose dài, và giữ ở đây cho dễ biên tập. `vi` + `en` viết đủ;
 /// các locale khác (es/id/pt/th) tạm fallback sang `en` — dịch sau.
@@ -21,7 +21,7 @@ class StoryText {
   final String title;
   final String body;
 
-  /// Chỉ có ở chương lựa chọn (Chương 6, 8, 13, 18, 23, 28).
+  /// Chỉ có ở chương lựa chọn (Chương 6, 8, 13, 18, 23, 28, 36, 46).
   final String? optionA;
   final String? optionADesc;
   final String? optionB;
@@ -735,6 +735,134 @@ const Map<int, Map<String, StoryText>> _chapters = {
           'value, permanent.',
       optionB: 'Open It to Everyone',
       optionBDesc: 'Anyone may try to begin again. +8% idle income, permanent.',
+    ),
+  },
+  37: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Lời mời Đại Hội',
+      body: 'Thầy Cả đặt lên quầy một tấm thiệp đỏ: "Đại Hội Tay Nghề, mười màn thử thách. Không màn nào qua được bằng Xu hay thời gian — chỉ bằng đôi tay và trí nhớ của con." Màn đầu tiên giản dị: thuộc làu năm công thức trong Sổ Công Thức.',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'The Invitation',
+      body: 'The Grand Teacher lays a red card on the counter. "The Grand Craft Festival: ten trials. None can be passed with coins or time — only with your hands and your memory." The first trial is humble: know five recipes by heart in the Recipe Book.',
+    ),
+  },
+  38: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Mưa trân châu',
+      body: '"Tay thuộc công thức rồi, giờ thử nhịp." Thầy Cả mở cửa sổ, trân châu rơi như mưa xuống phố. "Bắt cho đủ, đừng để rơi: con phải vượt qua màn 65 của Trân Châu Rơi." Mưa không chờ ai — nhưng người bắt giỏi thì không cần chờ.',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'Pearl Rain',
+      body: '"Your hands know the recipes. Now test your rhythm." The Grand Teacher opens the window and pearls fall like rain onto the street. "Catch them all, let none drop: you must clear level 65 of Pearl Drop." The rain waits for no one — but a good catcher never needs it to.',
+    ),
+  },
+  39: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Đơn đầu tiên của Hội',
+      body: 'Khách đầu tiên của Đại Hội không cần giải thích gì — họ chỉ gọi món và nhìn. "Không công thức mẫu, không gợi ý," Thầy Cả nhắc. "Pha hoàn hảo năm món theo đơn. Chỉ khi ly đúng từng lượng, người ta mới gọi con là thợ."',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'The Festival\'s First Order',
+      body: 'The Festival\'s first customers explain nothing — they simply order and watch. "No sample recipe, no hints," the Grand Teacher reminds you. "Brew five drinks to perfection. Only when the cup is right to the last measure will they call you a craftsman."',
+    ),
+  },
+  40: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Mỗi ngày một đề',
+      body: '"Thợ giỏi không phải người thắng một ngày, mà là người quay lại mỗi ngày." Thầy Cả treo lên tường tờ đề của hôm nay: ba đơn khó, giống nhau với mọi thợ trên đời. "Làm Thử Thách Hằng Ngày hai ngày — không cần liền nhau, nhưng cần đủ."',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'One Challenge a Day',
+      body: '"A fine craftsman isn\'t the one who wins a day, but the one who returns every day." The Grand Teacher pins today\'s challenge sheet to the wall: three hard orders, the same for every craftsman in the world. "Complete the Daily Challenge on two days — not necessarily in a row, but enough."',
+    ),
+  },
+  41: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Sổ Công Thức dày lên',
+      body: 'Cuốn sổ của bạn đã dày gấp nhiều lần lúc đầu, mép giấy sờn vì được lật hoài. Thầy Cả lật qua từng trang và khẽ gật. "Hai mươi món thuộc nằm lòng. Đây không còn là học thuộc nữa, mà là phản xạ. Giữ được nó, con sẽ không bao giờ phải nhìn công thức khi khách đang chờ."',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'A Thicker Recipe Book',
+      body: 'Your notebook is many times thicker than when you began, its edges worn from constant turning. The Grand Teacher flips through every page and nods quietly. "Twenty recipes known by heart. This is no longer memorizing — it is reflex. Keep it, and you will never need to glance at a recipe while a customer waits."',
+    ),
+  },
+  42: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Đỉnh núi trân châu',
+      body: 'Những màn cuối của Trân Châu Rơi nhìn như một ngọn núi: trân châu dày, nước ít, sai một nhịp là mất cả cụm. "Ở đây không ai giúp được con," Thầy Cả nói. "Qua màn 75, rồi ta nói chuyện tiếp." Bạn hít một hơi sâu và đặt tay lên khay.',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'The Pearl Summit',
+      body: 'The final levels of Pearl Drop look like a mountain: dense pearls, few moves, one wrong beat and the whole cluster is lost. "No one can help you here," the Grand Teacher says. "Clear level 75, and then we talk." You take a deep breath and place your hands on the tray.',
+    ),
+  },
+  43: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Giờ cao điểm',
+      body: 'Quán đông kín: bảy người xếp hàng, ai cũng gọi một món khác nhau. Thầy Cả khoanh tay đứng nhìn, không nói gì. Mười lăm món pha hoàn hảo — không một ly thừa, không một ly thiếu — là điều ông muốn thấy trước khi nói tiếp.',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'Rush Hour',
+      body: 'The shop is packed: seven in line, each ordering something different. The Grand Teacher stands with arms crossed, saying nothing. Fifteen drinks brewed to perfection — not one cup too much, not one too little — is what he wants to see before he speaks again.',
+    ),
+  },
+  44: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Năm ngày, năm đề',
+      body: 'Tờ đề hôm nay khác hôm qua, nhưng bàn tay con đã khác đi nhiều. Thầy Cả mỉm cười lần đầu tiên kể từ đầu Đại Hội: "Năm ngày thử thách. Con không còn sợ đề lạ nữa, vì con đã biết tin vào tay mình."',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'Five Days, Five Challenges',
+      body: 'Today\'s sheet differs from yesterday\'s, but your hands have changed far more. The Grand Teacher smiles for the first time since the Festival began. "Five days of challenges. You no longer fear a strange order, because you have learned to trust your hands."',
+    ),
+  },
+  45: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Năm mươi bài học',
+      body: 'Năm mươi công thức nằm trong đầu bạn, như năm mươi người bạn cũ. Thầy Cả đặt tay lên vai bạn: "Ta từng nghĩ nghề này chỉ cần thiên phú. Giờ ta biết nó cần thứ khó hơn — sự kiên nhẫn quay lại học từng món một. Màn cuối đang chờ, và nó không dễ."',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'Fifty Lessons',
+      body: 'Fifty recipes live in your head like fifty old friends. The Grand Teacher rests a hand on your shoulder: "I used to think this craft only needed talent. Now I know it needs something harder — the patience to return and learn each drink, one by one. The final trial awaits, and it is not easy."',
+    ),
+  },
+  46: {
+    'vi': StoryText(
+      speaker: 'Thầy Cả',
+      title: 'Cúp Đại Hội',
+      body: 'Mười màn đã qua. Thầy Cả bưng lên chiếc cúp bằng gỗ trà đã đánh bóng, mặt cúp khắc tên bạn. "Con đã chứng minh điều ta chờ từ rất lâu. Nhưng cúp này nên là của ai? Của người pha giỏi nhất — hay của cả những ai cùng con đi hết mười màn?"',
+      optionA: 'Tôn vinh tay nghề',
+      optionADesc: 'Đại Hội trao cúp cho người luyện giỏi nhất. +8% giá trị mỗi lần chạm, vĩnh viễn.',
+      optionB: 'Giữ tinh thần Hội',
+      optionBDesc: 'Đại Hội là nơi mọi người cùng học. +8% thu nhập tự động, vĩnh viễn.',
+    ),
+    'en': StoryText(
+      speaker: 'The Grand Teacher',
+      title: 'The Festival Cup',
+      body: 'Ten trials are behind you. The Grand Teacher carries out a trophy of polished tea-wood, your name carved on its face. "You have proven what I waited so long to see. But whose should this cup be? The finest hand\'s alone — or everyone who walked all ten trials beside you?"',
+      optionA: 'Honor the Craft',
+      optionADesc: 'The Festival crowns the finest practiced hand. +8% tap value, permanent.',
+      optionB: 'Keep the Festival\'s Spirit',
+      optionBDesc: 'The Festival is where everyone learns together. +8% idle income, permanent.',
     ),
   },
 };

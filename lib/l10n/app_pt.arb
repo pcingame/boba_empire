@@ -1973,5 +1973,13 @@
   "@cupShareText": {"placeholders": {"name": {"type": "String"}}},
   "recipeCounterNext": "Domine {count} receitas para liberar mais 1 espaço de exibição",
   "@recipeCounterNext": {"placeholders": {"count": {"type": "int"}}},
-  "lbrBoardOrders": "Preparar pedidos"
+  "lbrBoardOrders": "Preparar pedidos",
+  "storySpeedrunTabExt3": "Ato 4",
+  "storySpeedrunExt3NotCompletedYet": "Você ainda não concluiu o Ato 4 — conclua o Capítulo 46 para entrar no ranking.",
+  "storyCondRecipes": "Domine {n} receitas em {game}",
+  "@storyCondRecipes": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "storyCondOrders": "Faça {n} bebidas perfeitas em {game}",
+  "@storyCondOrders": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "storyCondDaily": "Conclua {game} em {n} dias",
+  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}}
 }

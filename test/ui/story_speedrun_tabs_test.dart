@@ -33,6 +33,13 @@ const _mainEntry = StorySpeedrunEntry(
   rank: 1,
 );
 
+const _fourthEntry = StorySpeedrunEntry(
+  userId: 'c',
+  nickname: 'NguoiHoiBon',
+  completeSeconds: 7200,
+  rank: 1,
+);
+
 const _extEntry = StorySpeedrunEntry(
   userId: 'b',
   nickname: 'NguoiChoiTenRatRatRatDaiHoiHai',
@@ -52,6 +59,18 @@ Widget _app(Locale locale) => ProviderScope(
           () => _Fake(
             const StorySpeedrunLoaded(entries: [_extEntry], myUserId: 'me', hasCompleted: false),
             SpeedrunBoard.ext,
+          ),
+        ),
+        storySpeedrunFourthControllerProvider.overrideWith(
+          () => _Fake(
+            const StorySpeedrunLoaded(entries: [_fourthEntry], myUserId: 'me', hasCompleted: false),
+            SpeedrunBoard.fourth,
+          ),
+        ),
+        storySpeedrunThirdControllerProvider.overrideWith(
+          () => _Fake(
+            const StorySpeedrunLoaded(entries: [], myUserId: 'me', hasCompleted: true),
+            SpeedrunBoard.third,
           ),
         ),
       ],
@@ -92,6 +111,17 @@ void main() {
     expect(find.text('NguoiHoiMot'), findsOneWidget);
   });
 
+  testWidgets('có 4 tab; tab Hồi 4 hiện bảng riêng + banner nhắc hoàn thành Chương 46', (tester) async {
+    await tester.pumpWidget(_app(const Locale('vi')));
+    await tester.pumpAndSettle();
+    expect(find.byType(Tab), findsNWidgets(4));
+    await tester.tap(find.text('Hồi 4'));
+    await tester.pumpAndSettle();
+    expect(find.text('NguoiHoiBon'), findsOneWidget);
+    expect(find.textContaining('Chương 46'), findsOneWidget);
+    expect(find.text('NguoiHoiMot'), findsNothing);
+  });
+
   for (final locale in AppLocalizations.supportedLocales) {
     testWidgets('không tràn ở ${locale.languageCode}, máy nhỏ + chữ to, cả 2 tab', (tester) async {
       tester.view.physicalSize = const Size(320, 640);
@@ -107,6 +137,9 @@ void main() {
       final l10n = AppLocalizations.of(tester.element(find.byType(TabBar)))!;
       await tester.tap(find.text(l10n.storySpeedrunTabExt));
       await tester.pumpAndSettle(); // ném FlutterError nếu RenderFlex tràn
+      await tester.tap(find.text(l10n.storySpeedrunTabExt3));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('46'), findsWidgets);
     });
   }
 }

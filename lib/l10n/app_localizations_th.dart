@@ -4321,4 +4321,26 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get lbrBoardOrders => 'ชงตามออเดอร์';
+
+  @override
+  String get storySpeedrunTabExt3 => 'ภาค 4';
+
+  @override
+  String get storySpeedrunExt3NotCompletedYet =>
+      'คุณยังไม่จบภาค 4 — จบตอนที่ 46 เพื่อติดอันดับ';
+
+  @override
+  String storyCondRecipes(int n, String game) {
+    return 'เชี่ยวชาญ $n สูตรใน $game';
+  }
+
+  @override
+  String storyCondOrders(int n, String game) {
+    return 'ทำเครื่องดื่มสมบูรณ์แบบ $n แก้วใน $game';
+  }
+
+  @override
+  String storyCondDaily(int n, String game) {
+    return 'ทำ $game ให้ครบ $n วัน';
+  }
 }

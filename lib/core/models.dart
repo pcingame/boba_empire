@@ -96,6 +96,7 @@ class GameState {
     List<int>? recipeOrderPerfect,
     this.recipeDailyDay = -1,
     this.recipeDailyScore = 0,
+    this.recipeDailyCount = 0,
     this.recipeStreak = 0,
     this.recipeStreakLastDay = 0,
     this.recipeStreakBest = 0,
@@ -121,6 +122,7 @@ class GameState {
     this.storyChoiceE,
     this.storyChoiceF,
     this.storyChoiceG,
+    this.storyChoiceH,
     this.rivalDefeated = false,
     this.rivalPressureSeconds = 0,
     this.repeatQuestBaseline = 0,
@@ -155,6 +157,7 @@ class GameState {
     this.storyCompleteSeconds,
     this.storyExtCompleteSeconds,
     this.storyThirdActCompleteSeconds,
+    this.storyFourthActCompleteSeconds,
     List<String>? achievementsClaimed,
     List<int>? m3Stars,
     List<String>? redeemedCodes,
@@ -389,6 +392,9 @@ class GameState {
   int recipeDailyDay;
   int recipeDailyScore;
 
+  /// Tổng số NGÀY đã làm Thử thách hằng ngày (mốc cho Chương 40/44 của Hồi 4). Chỉ tăng.
+  int recipeDailyCount;
+
   /// Chuỗi ngày ôn công thức (xem recipe_mastery.dart): số ngày, ngày ôn gần nhất (dayIndex), kỷ lục.
   int recipeStreak;
   int recipeStreakLastDay;
@@ -441,6 +447,9 @@ class GameState {
   /// Trân Châu Rơi làm bài luyện tay nghề). Save cũ thiếu trường này → null.
   String? storyChoiceG;
 
+  /// Lựa chọn nhánh Chương 46 ('mastery' | 'spirit' | null) — Hồi 4 (Đại Hội Tay Nghề). Save cũ → null.
+  String? storyChoiceH;
+
   /// Mốc thời gian (epoch ms) lần đầu tạo save — đặt 1 lần ở [GameState.newGame],
   /// KHÔNG đổi sau đó (kể cả prestige). Dùng làm mốc "bắt đầu" để tính
   /// [storyCompleteSeconds] cho bảng xếp hạng tốc độ hoàn thành cốt truyện.
@@ -472,6 +481,9 @@ class GameState {
   /// Như [storyCompleteSeconds] nhưng tới lúc xem xong Chương 36 (Hồi 3) — cho
   /// bảng "Hồi 3". Tổng thời gian từ [firstPlayedMillis], null nếu chưa xong.
   int? storyThirdActCompleteSeconds;
+
+  /// Như [storyCompleteSeconds] nhưng tới lúc xem xong Chương 46 (Hồi 4) — cho bảng "Hồi 4".
+  int? storyFourthActCompleteSeconds;
 
   /// Đã "hạ" đối thủ (đạt điều kiện ở giai đoạn 6) — chốt lại, mở Chương 8 và
   /// dừng các sự kiện đối thủ.
@@ -620,6 +632,7 @@ class GameState {
         'recipeOrderPerfect': recipeOrderPerfect,
         'recipeDailyDay': recipeDailyDay,
         'recipeDailyScore': recipeDailyScore,
+        'recipeDailyCount': recipeDailyCount,
         'recipeStreak': recipeStreak,
         'recipeStreakLastDay': recipeStreakLastDay,
         'recipeStreakBest': recipeStreakBest,
@@ -638,11 +651,13 @@ class GameState {
         'storyChoiceE': storyChoiceE,
         'storyChoiceF': storyChoiceF,
         'storyChoiceG': storyChoiceG,
+        'storyChoiceH': storyChoiceH,
         'firstPlayedMillis': firstPlayedMillis,
         'firstPlayedIsEstimate': firstPlayedIsEstimate,
         'storyCompleteSeconds': storyCompleteSeconds,
         'storyExtCompleteSeconds': storyExtCompleteSeconds,
         'storyThirdActCompleteSeconds': storyThirdActCompleteSeconds,
+        'storyFourthActCompleteSeconds': storyFourthActCompleteSeconds,
         'rivalDefeated': rivalDefeated,
         'rivalPressureSeconds': rivalPressureSeconds,
         'repeatQuestBaseline': repeatQuestBaseline,
@@ -785,6 +800,7 @@ class GameState {
           for (final x in (json['recipeOrderPerfect'] as List?) ?? const []) if (x is num) x.toInt(),
         }.toList(),
         recipeDailyDay: ((json['recipeDailyDay'] as num?)?.toInt() ?? -1).clamp(-1, 10000000),
+        recipeDailyCount: ((json['recipeDailyCount'] as num?)?.toInt() ?? 0).clamp(0, 100000),
         recipeDailyScore: ((json['recipeDailyScore'] as num?)?.toInt() ?? 0).clamp(0, 300), // = dailyMaxScore (recipe_orders.dart; test so khớp)
         // Giá trị âm/hỏng được kẹp về hợp lệ (save lạ từ cloud không làm hỏng cả game).
         recipeStreak: ((json['recipeStreak'] as num?)?.toInt() ?? 0).clamp(0, 100000),
@@ -810,6 +826,7 @@ class GameState {
         storyChoiceE: json['storyChoiceE'] as String?,
         storyChoiceF: json['storyChoiceF'] as String?,
         storyChoiceG: json['storyChoiceG'] as String?,
+        storyChoiceH: json['storyChoiceH'] as String?,
         // Save cũ (trước khi có trường này) không có firstPlayedMillis — dùng
         // lastSeenMillis của chính save đó làm mốc gần đúng nhất có sẵn (biết
         // là ước tính hụt, không phải lúc thật sự bắt đầu chơi; chấp nhận vì
@@ -831,6 +848,8 @@ class GameState {
             (json['storyExtCompleteSeconds'] as num?)?.toInt(),
         storyThirdActCompleteSeconds:
             (json['storyThirdActCompleteSeconds'] as num?)?.toInt(),
+        storyFourthActCompleteSeconds:
+            (json['storyFourthActCompleteSeconds'] as num?)?.toInt(),
         rivalDefeated: (json['rivalDefeated'] as bool?) ?? false,
         rivalPressureSeconds:
             (json['rivalPressureSeconds'] as num?)?.toDouble() ?? 0,

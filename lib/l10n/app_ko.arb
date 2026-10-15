@@ -1611,5 +1611,13 @@
   "@cupShareText": {"placeholders": {"name": {"type": "String"}}},
   "recipeCounterNext": "레시피 {count}개를 마스터하면 진열 칸이 1개 늘어요",
   "@recipeCounterNext": {"placeholders": {"count": {"type": "int"}}},
-  "lbrBoardOrders": "주문대로 만들기"
+  "lbrBoardOrders": "주문대로 만들기",
+  "storySpeedrunTabExt3": "4막",
+  "storySpeedrunExt3NotCompletedYet": "아직 4막을 완료하지 않았어요 — 46장을 클리어하면 순위에 올라요.",
+  "storyCondRecipes": "{game}에서 레시피 {n}개 마스터",
+  "@storyCondRecipes": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "storyCondOrders": "{game}에서 완벽한 음료 {n}잔 만들기",
+  "@storyCondOrders": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "storyCondDaily": "{game}을(를) {n}일 완료",
+  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}}
 }

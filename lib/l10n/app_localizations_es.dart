@@ -4374,4 +4374,26 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get lbrBoardOrders => 'Preparar pedidos';
+
+  @override
+  String get storySpeedrunTabExt3 => 'Acto 4';
+
+  @override
+  String get storySpeedrunExt3NotCompletedYet =>
+      'Aún no has completado el Acto 4: termina el Capítulo 46 para entrar en la clasificación.';
+
+  @override
+  String storyCondRecipes(int n, String game) {
+    return 'Domina $n recetas en $game';
+  }
+
+  @override
+  String storyCondOrders(int n, String game) {
+    return 'Prepara $n bebidas perfectas en $game';
+  }
+
+  @override
+  String storyCondDaily(int n, String game) {
+    return 'Completa $game durante $n días';
+  }
 }

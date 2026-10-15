@@ -180,6 +180,8 @@ class GameSnapshot {
     this.recipeOrderPerfect = const [],
     this.recipeDailyDay = -1,
     this.recipeDailyScore = 0,
+    this.recipeDailyCount = 0,
+    this.storyFourthActCompleteSeconds,
     this.recipeStreak = const RecipeStreak(),
     required this.weeklyChestAvailable,
     required this.weeklyChestClaimed,
@@ -384,6 +386,9 @@ class GameSnapshot {
   /// Như [storyCompleteSeconds] nhưng tới Chương 36 — cho bảng "Hồi 3".
   final int? storyThirdActCompleteSeconds;
 
+  /// Như [storyCompleteSeconds] nhưng tới Chương 46 — cho bảng "Hồi 4".
+  final int? storyFourthActCompleteSeconds;
+
   /// Đối thủ đang "hoạt động" (Chương 3+ và chưa bị hạ) & đã bị hạ.
   final bool rivalActive;
   final bool rivalDefeated;
@@ -427,6 +432,9 @@ class GameSnapshot {
   /// Thử thách hằng ngày Pha theo đơn: ngày làm gần nhất (dayIndex, -1 = chưa) và điểm hôm đó.
   final int recipeDailyDay;
   final int recipeDailyScore;
+
+  /// Số ngày đã làm Thử thách hằng ngày (mốc Hồi 4).
+  final int recipeDailyCount;
 
   /// Chuỗi ngày ôn công thức (bất biến — an toàn khi chia sẻ với snapshot).
   final RecipeStreak recipeStreak;

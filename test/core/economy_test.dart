@@ -308,6 +308,37 @@ void main() {
     });
   });
 
+  group('perk lựa chọn cốt truyện — trục G (Chương 36) và H (Chương 46)', () {
+    test('"secret"/"mastery" vào trục chạm; "open"/"spirit" vào thu nhập; mỗi lựa chọn +8%', () {
+      final tap = GameState.newGame(nowMillis: 0)
+        ..storyChoiceG = 'secret'
+        ..storyChoiceH = 'mastery';
+      expect(storyChoiceTapMultiplier(tap), closeTo(1 + 2 * Balance.storyPerkBonus, 1e-9));
+      expect(storyChoiceIncomeMultiplier(tap), 1.0);
+      final inc = GameState.newGame(nowMillis: 0)
+        ..storyChoiceG = 'open'
+        ..storyChoiceH = 'spirit';
+      expect(storyChoiceIncomeMultiplier(inc), closeTo(1 + 2 * Balance.storyPerkBonus, 1e-9));
+      expect(storyChoiceTapMultiplier(inc), 1.0);
+      final one = GameState.newGame(nowMillis: 0)..storyChoiceH = 'mastery';
+      expect(storyChoiceTapMultiplier(one), closeTo(1 + Balance.storyPerkBonus, 1e-9));
+    });
+
+    test('cộng dồn cùng A-F, khoá lạ không có perk', () {
+      final s = GameState.newGame(nowMillis: 0)
+        ..storyChoiceA = 'craft'
+        ..storyChoiceF = 'recipe'
+        ..storyChoiceG = 'secret'
+        ..storyChoiceH = 'mastery';
+      expect(storyChoiceTapMultiplier(s), closeTo(1 + 4 * Balance.storyPerkBonus, 1e-9));
+      final bogus = GameState.newGame(nowMillis: 0)
+        ..storyChoiceG = 'x'
+        ..storyChoiceH = 'y';
+      expect(storyChoiceTapMultiplier(bogus), 1.0);
+      expect(storyChoiceIncomeMultiplier(bogus), 1.0);
+    });
+  });
+
   group('perk lựa chọn cốt truyện', () {
     test('mặc định không có perk → hệ số 1.0', () {
       final s = GameState.newGame(nowMillis: 0);

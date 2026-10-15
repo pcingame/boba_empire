@@ -1,4 +1,4 @@
-/// Cốt truyện "Đế Chế Trà Sữa" — 36 chương gắn vào các mốc SẴN CÓ (giai đoạn,
+/// Cốt truyện "Đế Chế Trà Sữa" — 46 chương gắn vào các mốc SẴN CÓ (giai đoạn,
 /// prestige, hạ đối thủ, Kỷ Nguyên, màn Trân Châu Rơi). Hàm thuần + vài hàm
 /// mutate nhỏ (giống [quests.dart]: `claimQuest`). Prose nằm ở
 /// [story_content.dart], không ở ARB.
@@ -18,9 +18,14 @@
 /// việc qua màn Hành trình Trân Châu Rơi (`m3Stars`, §23) — cốt truyện lồng
 /// trò chơi đơn làm "bài luyện tay nghề" thay vì chỉ đọc. 1 chương lựa chọn
 /// mới (Chương 36, trục G).
+///
+/// Chương 37-46 (Hồi 4, "Đại Hội Tay Nghề"): 10 "màn", MỖI MÀN phải vượt qua một mốc của các trò chơi nhỏ —
+/// món Thạo của trò Công thức, món pha hoàn hảo của Pha theo đơn, số ngày làm Thử thách hằng ngày, màn
+/// Trân Châu Rơi. 1 chương lựa chọn mới (Chương 46, trục H).
 library;
 
 import 'models.dart';
+import 'recipe_mastery.dart' show recipeMasteredEver;
 
 /// Chương kết của TUYẾN GỐC (giai đoạn 1-12) — mốc "phá đảo" cho Bảng xếp hạng
 /// tốc độ hoàn thành cốt truyện (`storyCompleteSeconds`). KHÔNG dùng
@@ -37,16 +42,23 @@ const int storyExtendedFinaleChapterId = 28;
 /// Chương kết của hồi 3 (Chương 29-36, "Vòng Lặp Vĩnh Cửu") — mốc cho bảng "Hồi 3".
 const int storyThirdActFinaleChapterId = 36;
 
+/// Chương kết của hồi 4 (Chương 37-46, "Đại Hội Tay Nghề") — mốc cho bảng "Hồi 4".
+const int storyFourthActFinaleChapterId = 46;
+
 /// Điều kiện kích hoạt một chương.
 ///
 /// [ascension]: `GameState.ascensionCount >= value`. [m3Level]: đã qua màn
 /// [StoryChapter.value] của Hành trình Trân Châu Rơi với ít nhất 1★
 /// (`GameState.m3Stars[value - 1] > 0`).
-enum StoryTrigger { gameStart, stage, firstPrestige, rivalDefeated, ascension, m3Level }
+///
+/// Hồi 4 (trò chơi nhỏ): [recipeMastered] (số món đã từng đạt Thạo ở trò Công thức ≥ value), [orderPerfect]
+/// (số món đã pha hoàn hảo không công thức mẫu ở Pha theo đơn ≥ value), [dailyDone] (số ngày đã làm Thử thách
+/// hằng ngày ≥ value).
+enum StoryTrigger { gameStart, stage, firstPrestige, rivalDefeated, ascension, m3Level, recipeMastered, orderPerfect, dailyDone }
 
 /// Trục nào của lựa chọn nhánh (A = Chương 6, B = Chương 8, C = Chương 13,
-/// D = Chương 18, E = Chương 23, F = Chương 28, G = Chương 36).
-enum StoryChoiceAxis { a, b, c, d, e, f, g }
+/// D = Chương 18, E = Chương 23, F = Chương 28, G = Chương 36, H = Chương 46).
+enum StoryChoiceAxis { a, b, c, d, e, f, g, h }
 
 /// Một điểm rẽ nhánh: ghi [optionA] hoặc [optionB] vào [axis]. Mỗi lựa chọn
 /// cộng một perk nhỏ vĩnh viễn (xem [economy.storyChoiceTapMultiplier] /
@@ -170,6 +182,23 @@ const List<StoryChapter> storyChapters = [
     value: 4,
     choice: StoryChoiceSpec(StoryChoiceAxis.g, 'secret', 'open'),
   ),
+  // --- Hồi 4 "Đại Hội Tay Nghề": mỗi màn một mốc của trò chơi nhỏ (xen kẽ 4 loại, leo thang dần). ---
+  StoryChapter(id: 37, emoji: '📖', trigger: StoryTrigger.recipeMastered, value: 5),
+  StoryChapter(id: 38, emoji: '🫳', trigger: StoryTrigger.m3Level, value: 65),
+  StoryChapter(id: 39, emoji: '🧋', trigger: StoryTrigger.orderPerfect, value: 5),
+  StoryChapter(id: 40, emoji: '📅', trigger: StoryTrigger.dailyDone, value: 2),
+  StoryChapter(id: 41, emoji: '📖', trigger: StoryTrigger.recipeMastered, value: 20),
+  StoryChapter(id: 42, emoji: '🫳', trigger: StoryTrigger.m3Level, value: 75),
+  StoryChapter(id: 43, emoji: '🧋', trigger: StoryTrigger.orderPerfect, value: 15),
+  StoryChapter(id: 44, emoji: '📅', trigger: StoryTrigger.dailyDone, value: 5),
+  StoryChapter(id: 45, emoji: '📖', trigger: StoryTrigger.recipeMastered, value: 50),
+  StoryChapter(
+    id: 46,
+    emoji: '🏆',
+    trigger: StoryTrigger.orderPerfect,
+    value: 40,
+    choice: StoryChoiceSpec(StoryChoiceAxis.h, 'mastery', 'spirit'),
+  ),
 ];
 
 /// [id] không khớp chương nào (VD save đồng bộ từ version có nhiều/ít chương
@@ -187,6 +216,10 @@ bool _triggerMet(StoryChapter c, GameState s) => storyTriggerMet(
       rivalDefeated: s.rivalDefeated,
       ascensionCount: s.ascensionCount,
       m3Stars: s.m3Stars,
+      // Chỉ tính khi chương đang xét thật sự cần (hàm này chạy mỗi lần dựng snapshot).
+      recipeMastered: c.trigger == StoryTrigger.recipeMastered ? recipeMasteredEver(s.recipeProgress) : 0,
+      orderPerfect: s.recipeOrderPerfect.length,
+      dailyDone: s.recipeDailyCount,
     );
 
 /// Điều kiện của [c] đã thoả chưa — tách khỏi GameState để UI (snapshot) dùng
@@ -198,6 +231,9 @@ bool storyTriggerMet(
   required bool rivalDefeated,
   required int ascensionCount,
   required List<int> m3Stars,
+  int recipeMastered = 0,
+  int orderPerfect = 0,
+  int dailyDone = 0,
 }) =>
     switch (c.trigger) {
       StoryTrigger.gameStart => true,
@@ -210,6 +246,9 @@ bool storyTriggerMet(
       StoryTrigger.ascension => ascensionCount >= c.value,
       StoryTrigger.m3Level =>
         m3Stars.length >= c.value && m3Stars[c.value - 1] > 0,
+      StoryTrigger.recipeMastered => recipeMastered >= c.value,
+      StoryTrigger.orderPerfect => orderPerfect >= c.value,
+      StoryTrigger.dailyDone => dailyDone >= c.value,
     };
 
 /// Tiến độ tới điều kiện mở [c] (đang có / cần), cho thanh tiến độ ở Nhật ký.
@@ -221,6 +260,9 @@ bool storyTriggerMet(
   required int stage,
   required int ascensionCount,
   required List<int> m3Stars,
+  int recipeMastered = 0,
+  int orderPerfect = 0,
+  int dailyDone = 0,
 }) =>
     switch (c.trigger) {
       StoryTrigger.stage => (current: stage.clamp(0, c.value), target: c.value),
@@ -232,6 +274,9 @@ bool storyTriggerMet(
           current: m3Stars.where((x) => x > 0).length.clamp(0, c.value),
           target: c.value
         ),
+      StoryTrigger.recipeMastered => (current: recipeMastered.clamp(0, c.value), target: c.value),
+      StoryTrigger.orderPerfect => (current: orderPerfect.clamp(0, c.value), target: c.value),
+      StoryTrigger.dailyDone => (current: dailyDone.clamp(0, c.value), target: c.value),
       _ => null,
     };
 
@@ -243,6 +288,7 @@ String? _choiceValue(GameState s, StoryChoiceAxis axis) => switch (axis) {
       StoryChoiceAxis.e => s.storyChoiceE,
       StoryChoiceAxis.f => s.storyChoiceF,
       StoryChoiceAxis.g => s.storyChoiceG,
+      StoryChoiceAxis.h => s.storyChoiceH,
     };
 
 /// Chương cần hiển thị ngay bây giờ, hoặc null nếu không có.
@@ -303,6 +349,9 @@ bool applyStoryChoice(GameState s, int chapterId, String optionKey) {
     case StoryChoiceAxis.g:
       if (s.storyChoiceG != null) return false;
       s.storyChoiceG = optionKey;
+    case StoryChoiceAxis.h:
+      if (s.storyChoiceH != null) return false;
+      s.storyChoiceH = optionKey;
   }
   return true;
 }

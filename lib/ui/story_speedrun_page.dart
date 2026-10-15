@@ -29,10 +29,11 @@ _SpeedrunProvider _providerFor(SpeedrunBoard board) => switch (board) {
   SpeedrunBoard.main => storySpeedrunControllerProvider,
   SpeedrunBoard.ext => storySpeedrunExtControllerProvider,
   SpeedrunBoard.third => storySpeedrunThirdControllerProvider,
+  SpeedrunBoard.fourth => storySpeedrunFourthControllerProvider,
 };
 
-/// 3 tab: "Hồi 1" (tới Chương 18), "Hồi 2" (tới Chương 28) và "Hồi 3" (tới
-/// Chương 34) — mỗi tab có bảng, controller và mốc thời gian riêng.
+/// 4 tab: "Hồi 1" (tới Chương 18), "Hồi 2" (28), "Hồi 3" (36) và "Hồi 4" (tới
+/// Chương 46) — mỗi tab có bảng, controller và mốc thời gian riêng.
 class StorySpeedrunPage extends StatelessWidget {
   const StorySpeedrunPage({super.key});
 
@@ -40,7 +41,7 @@ class StorySpeedrunPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return DefaultTabController(
-      length: 3,
+      length: 4,
       child: Scaffold(
         appBar: AppBar(
           title: Text(l10n.storySpeedrunTitle),
@@ -50,6 +51,7 @@ class StorySpeedrunPage extends StatelessWidget {
               Tab(text: l10n.storySpeedrunTabMain),
               Tab(text: l10n.storySpeedrunTabExt),
               Tab(text: l10n.storySpeedrunTabExt2),
+              Tab(text: l10n.storySpeedrunTabExt3),
             ],
           ),
         ),
@@ -59,6 +61,7 @@ class StorySpeedrunPage extends StatelessWidget {
               _SpeedrunTab(board: SpeedrunBoard.main),
               _SpeedrunTab(board: SpeedrunBoard.ext),
               _SpeedrunTab(board: SpeedrunBoard.third),
+              _SpeedrunTab(board: SpeedrunBoard.fourth),
             ],
           ),
         ),
@@ -101,6 +104,7 @@ class _SpeedrunTabState extends ConsumerState<_SpeedrunTab>
         SpeedrunBoard.main => game.storyCompleteSeconds,
         SpeedrunBoard.ext => game.storyExtCompleteSeconds,
         SpeedrunBoard.third => game.storyThirdActCompleteSeconds,
+        SpeedrunBoard.fourth => game.storyFourthActCompleteSeconds,
       };
     };
 
@@ -203,6 +207,7 @@ class _SpeedrunList extends ConsumerWidget {
                 SpeedrunBoard.main => l10n.storySpeedrunNotCompletedYet,
                 SpeedrunBoard.ext => l10n.storySpeedrunExtNotCompletedYet,
                 SpeedrunBoard.third => l10n.storySpeedrunExt2NotCompletedYet,
+                SpeedrunBoard.fourth => l10n.storySpeedrunExt3NotCompletedYet,
               },
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(

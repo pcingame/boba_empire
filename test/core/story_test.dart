@@ -160,9 +160,9 @@ void main() {
     expect(s.storyChapter, 6);
   });
 
-  test('mọi chương (1..36) có prose vi + en, không thiếu/lệch id', () {
+  test('mọi chương (1..46) có prose vi + en, không thiếu/lệch id', () {
     expect(storyChapters.map((c) => c.id).toList(),
-        List.generate(36, (i) => i + 1));
+        List.generate(46, (i) => i + 1));
     for (final c in storyChapters) {
       for (final locale in ['vi', 'en']) {
         final text = storyText(c.id, locale);
@@ -243,7 +243,7 @@ void main() {
   group('Chương 29-36 (Hồi 3, Kỷ Nguyên + Trân Châu Rơi)', () {
     test('chương kết Hồi 3 là 36', () {
       expect(storyThirdActFinaleChapterId, 36);
-      expect(storyChapters.last.id, 36);
+      expect(storyChapters.where((c) => c.id <= 36).last.id, 36);
     });
 
     test('mở tuần tự theo Kỷ Nguyên/màn Trân Châu Rơi, kẹt tới khi thoả', () {
@@ -328,10 +328,136 @@ void main() {
     });
   });
 
+  group('Chương 37-46 (Hồi 4, "Đại Hội Tay Nghề": mỗi màn một mốc trò chơi nhỏ)', () {
+    GameState at36() => _fresh()
+      ..storyChapter = 36
+      ..storyChoiceG = 'open';
+
+    /// Cho [n] món đạt Thạo (box 3, best 3).
+    void master(GameState s, int n) {
+      for (var i = 1; i <= n; i++) {
+        s.recipeProgress['$i'] = [3, 0, 3];
+      }
+    }
+
+    test('chương kết Hồi 4 là 46, đứng cuối; 10 chương 37..46 mỗi chương một mốc trò chơi nhỏ', () {
+      expect(storyFourthActFinaleChapterId, 46);
+      expect(storyChapters.last.id, 46);
+      final act4 = storyChapters.where((c) => c.id >= 37).toList();
+      expect(act4.length, 10);
+      const miniGame = {StoryTrigger.recipeMastered, StoryTrigger.orderPerfect, StoryTrigger.dailyDone, StoryTrigger.m3Level};
+      expect(act4.every((c) => miniGame.contains(c.trigger)), isTrue, reason: 'không chương Hồi 4 nào gắn mốc kinh tế');
+      expect(act4.map((c) => c.trigger).toSet(), miniGame, reason: 'đủ cả 4 trò');
+    });
+
+    test('mốc của mỗi loại tăng dần (leo thang), không lặp ngưỡng', () {
+      for (final t in [StoryTrigger.recipeMastered, StoryTrigger.orderPerfect, StoryTrigger.dailyDone, StoryTrigger.m3Level]) {
+        final v = [for (final c in storyChapters.where((c) => c.id >= 37 && c.trigger == t)) c.value];
+        expect(v.toSet().length, v.length, reason: '$t');
+        expect([...v]..sort(), v, reason: '$t tăng dần theo thứ tự chương');
+      }
+    });
+
+    test('mở tuần tự, kẹt tới khi đủ mốc từng trò', () {
+      final s = at36();
+      expect(pendingChapterId(s), isNull); // chưa có món Thạo nào
+      master(s, 4);
+      expect(pendingChapterId(s), isNull); // cần 5
+      master(s, 5);
+      expect(pendingChapterId(s), 37);
+      markChapterSeen(s, 37);
+      expect(pendingChapterId(s), isNull); // Ch.38 cần qua màn 65
+      s.m3Stars.addAll(List.filled(64, 1));
+      expect(pendingChapterId(s), isNull); // mới tới 64
+      s.m3Stars.add(1);
+      expect(pendingChapterId(s), 38);
+      markChapterSeen(s, 38);
+      expect(pendingChapterId(s), isNull); // Ch.39 cần 5 món pha hoàn hảo
+      s.recipeOrderPerfect.addAll([1, 2, 3, 4]);
+      expect(pendingChapterId(s), isNull);
+      s.recipeOrderPerfect.add(5);
+      expect(pendingChapterId(s), 39);
+      markChapterSeen(s, 39);
+      expect(pendingChapterId(s), isNull); // Ch.40 cần làm thử thách 2 ngày
+      s.recipeDailyCount = 1;
+      expect(pendingChapterId(s), isNull);
+      s.recipeDailyCount = 2;
+      expect(pendingChapterId(s), 40);
+      markChapterSeen(s, 40);
+      expect(pendingChapterId(s), isNull); // Ch.41 cần 20 món Thạo
+      master(s, 20);
+      expect(pendingChapterId(s), 41);
+      markChapterSeen(s, 41);
+      s.m3Stars.addAll(List.filled(10, 1)); // dài 75
+      expect(pendingChapterId(s), 42);
+      markChapterSeen(s, 42);
+      s.recipeOrderPerfect.addAll(List.generate(10, (i) => 100 + i)); // 15 món
+      expect(pendingChapterId(s), 43);
+      markChapterSeen(s, 43);
+      s.recipeDailyCount = 5;
+      expect(pendingChapterId(s), 44);
+      markChapterSeen(s, 44);
+      master(s, 50);
+      expect(pendingChapterId(s), 45);
+      markChapterSeen(s, 45);
+      expect(pendingChapterId(s), isNull); // Ch.46 cần 40 món pha hoàn hảo
+      s.recipeOrderPerfect.addAll(List.generate(25, (i) => 200 + i));
+      expect(pendingChapterId(s), 46);
+    });
+
+    test('món chỉ "tạm" ở bậc Thạo mà chưa từng best=Thạo không tính; best mới tính (đã từng Thạo)', () {
+      final s = at36();
+      for (var i = 1; i <= 5; i++) {
+        s.recipeProgress['$i'] = [2, 0, 2]; // mới tới bậc Thuộc (best 2)
+      }
+      expect(pendingChapterId(s), isNull);
+      for (var i = 1; i <= 5; i++) {
+        s.recipeProgress['$i'] = [0, 0, 3]; // đã tụt bậc nhưng từng Thạo
+      }
+      expect(pendingChapterId(s), 37);
+    });
+
+    test('Chương 46 re-show tới khi chọn trục H, độc lập các trục khác; chọn xong thì hết truyện', () {
+      final s = _fresh()
+        ..storyChapter = 46
+        ..storyChoiceG = 'secret'
+        ..recipeOrderPerfect.addAll(List.generate(40, (i) => i + 1));
+      expect(pendingChapterId(s), 46);
+      expect(applyStoryChoice(s, 46, 'bogus'), isFalse);
+      expect(applyStoryChoice(s, 46, 'spirit'), isTrue);
+      expect(s.storyChoiceH, 'spirit');
+      expect(s.storyChoiceG, 'secret');
+      expect(applyStoryChoice(s, 46, 'mastery'), isFalse);
+      expect(pendingChapterId(s), isNull);
+    });
+
+    test('storyUnlockProgress cho 3 mốc mới: đang có/cần, kẹp ở đích', () {
+      StoryChapter ch(int id) => chapterById(id);
+      expect(storyUnlockProgress(ch(37), stage: 18, ascensionCount: 4, m3Stars: [], recipeMastered: 3), (current: 3, target: 5));
+      expect(storyUnlockProgress(ch(37), stage: 18, ascensionCount: 4, m3Stars: [], recipeMastered: 99), (current: 5, target: 5));
+      expect(storyUnlockProgress(ch(39), stage: 18, ascensionCount: 4, m3Stars: [], orderPerfect: 2), (current: 2, target: 5));
+      expect(storyUnlockProgress(ch(40), stage: 18, ascensionCount: 4, m3Stars: [], dailyDone: 1), (current: 1, target: 2));
+      expect(storyTriggerMet(ch(40), stage: 18, hasPrestiged: true, rivalDefeated: true, ascensionCount: 4, m3Stars: [], dailyDone: 2), isTrue);
+      expect(storyTriggerMet(ch(40), stage: 18, hasPrestiged: true, rivalDefeated: true, ascensionCount: 4, m3Stars: [], dailyDone: 1), isFalse);
+    });
+
+    test('mọi chương Hồi 4 có prose vi + en; chương lựa chọn có đủ lựa chọn', () {
+      for (final c in storyChapters.where((c) => c.id >= 37)) {
+        for (final l in ['vi', 'en']) {
+          final t = storyText(c.id, l);
+          expect(t.title, isNotEmpty);
+          expect(t.body.length, greaterThan(60), reason: 'Chương ${c.id} [$l]');
+        }
+      }
+      expect(storyText(46, 'vi').optionADesc, contains('+8%'));
+      expect(storyText(46, 'en').optionBDesc, contains('+8%'));
+    });
+  });
+
   group('chapterById: id ngoài phạm vi không crash (VD save từ bản khác)', () {
-    test('id = 0, âm, hoặc vượt chương cuối (37, rất lớn) -> rơi về Chương 1',
+    test('id = 0, âm, hoặc vượt chương cuối (47, rất lớn) -> rơi về Chương 1',
         () {
-      for (final id in [0, -1, -9999, 37, 9999]) {
+      for (final id in [0, -1, -9999, 47, 9999]) {
         expect(chapterById(id).id, 1, reason: 'id=$id');
       }
     });

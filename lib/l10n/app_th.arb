@@ -1973,5 +1973,13 @@
   "@cupShareText": {"placeholders": {"name": {"type": "String"}}},
   "recipeCounterNext": "เชี่ยวชาญ {count} สูตรเพื่อเปิดช่องโชว์เพิ่ม 1 ช่อง",
   "@recipeCounterNext": {"placeholders": {"count": {"type": "int"}}},
-  "lbrBoardOrders": "ชงตามออเดอร์"
+  "lbrBoardOrders": "ชงตามออเดอร์",
+  "storySpeedrunTabExt3": "ภาค 4",
+  "storySpeedrunExt3NotCompletedYet": "คุณยังไม่จบภาค 4 — จบตอนที่ 46 เพื่อติดอันดับ",
+  "storyCondRecipes": "เชี่ยวชาญ {n} สูตรใน {game}",
+  "@storyCondRecipes": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "storyCondOrders": "ทำเครื่องดื่มสมบูรณ์แบบ {n} แก้วใน {game}",
+  "@storyCondOrders": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "storyCondDaily": "ทำ {game} ให้ครบ {n} วัน",
+  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}}
 }

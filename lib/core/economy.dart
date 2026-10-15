@@ -130,7 +130,7 @@ double eventMultiplierAt(
 
 /// Hệ số nhân GIÁ TRỊ CHẠM vĩnh viễn từ lựa chọn cốt truyện (Chương 6 "thủ
 /// công", Chương 8 "giữ bản sắc", Chương 13 "giữ độc lập", Chương 18 "giữ hồn
-/// quán nhỏ", Chương 23 "giữ di sản", Chương 28 "giữ công thức"). Không reset khi prestige.
+/// quán nhỏ", Chương 23 "giữ di sản", Chương 28 "giữ công thức", Chương 36 "giữ bí mật", Chương 46 "tay nghề"). Không reset khi prestige.
 double storyChoiceTapMultiplier(GameState s) =>
     1 +
     (s.storyChoiceA == 'craft' ? Balance.storyPerkBonus : 0) +
@@ -138,7 +138,9 @@ double storyChoiceTapMultiplier(GameState s) =>
     (s.storyChoiceC == 'independent' ? Balance.storyPerkBonus : 0) +
     (s.storyChoiceD == 'soul' ? Balance.storyPerkBonus : 0) +
     (s.storyChoiceE == 'heritage' ? Balance.storyPerkBonus : 0) +
-    (s.storyChoiceF == 'recipe' ? Balance.storyPerkBonus : 0);
+    (s.storyChoiceF == 'recipe' ? Balance.storyPerkBonus : 0) +
+    (s.storyChoiceG == 'secret' ? Balance.storyPerkBonus : 0) +
+    (s.storyChoiceH == 'mastery' ? Balance.storyPerkBonus : 0);
 
 /// Hệ số nhân THU NHẬP TỰ ĐỘNG vĩnh viễn từ lựa chọn cốt truyện (Chương 6
 /// "thần tốc", Chương 8 "thâu tóm", Chương 13 "sáp nhập", Chương 18 "phủ khắp
@@ -150,7 +152,9 @@ double storyChoiceIncomeMultiplier(GameState s) =>
     (s.storyChoiceC == 'merger' ? Balance.storyPerkBonus : 0) +
     (s.storyChoiceD == 'global' ? Balance.storyPerkBonus : 0) +
     (s.storyChoiceE == 'export' ? Balance.storyPerkBonus : 0) +
-    (s.storyChoiceF == 'people' ? Balance.storyPerkBonus : 0);
+    (s.storyChoiceF == 'people' ? Balance.storyPerkBonus : 0) +
+    (s.storyChoiceG == 'open' ? Balance.storyPerkBonus : 0) +
+    (s.storyChoiceH == 'spirit' ? Balance.storyPerkBonus : 0);
 
 /// Hệ số nhân thu nhập vĩnh viễn từ vật phẩm Kim Cương "Tăng thu nhập".
 double permanentMultiplier(int gemBoostLevel) =>

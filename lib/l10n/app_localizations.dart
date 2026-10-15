@@ -7337,6 +7337,36 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Pha theo đơn'**
   String get lbrBoardOrders;
+
+  /// No description provided for @storySpeedrunTabExt3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hồi 4'**
+  String get storySpeedrunTabExt3;
+
+  /// No description provided for @storySpeedrunExt3NotCompletedYet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa hoàn thành Hồi 4 — hoàn thành Chương 46 để được xếp hạng.'**
+  String get storySpeedrunExt3NotCompletedYet;
+
+  /// No description provided for @storyCondRecipes.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thạo {n} món ở {game}'**
+  String storyCondRecipes(int n, String game);
+
+  /// No description provided for @storyCondOrders.
+  ///
+  /// In vi, this message translates to:
+  /// **'Pha hoàn hảo {n} món ở {game}'**
+  String storyCondOrders(int n, String game);
+
+  /// No description provided for @storyCondDaily.
+  ///
+  /// In vi, this message translates to:
+  /// **'Làm {game} trong {n} ngày'**
+  String storyCondDaily(int n, String game);
 }
 
 class _AppLocalizationsDelegate

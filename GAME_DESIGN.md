@@ -1049,3 +1049,22 @@ Mọi chuyển động theo mức hiệu ứng (`EffectsQuality`/`reduceMotion`,
 - **Kệ trưng bày** (`order-shelf`, `lib/core/recipe_counter.dart`): đầu màn đơn hiện phụ kiện đang trưng bày ở màn chính + chỗ phụ mở theo số món Thạo (10 / 30 / 60 ⇒ +1/+2/+3, lấy món hiếm nhất còn lại, cả độc quyền lễ hội). Chỉ để ngắm — không ảnh hưởng chơi. Chưa có phụ kiện thì ẩn; chưa đủ mốc thì có dòng nhắc "Thạo N món để mở thêm 1 chỗ".
 - **Thưởng top tuần cho BXH Pha theo đơn**: thêm `orders` vào `leaderboard_rewards_schema.sql` (CHECK + snapshot từ `recipe_order_leaderboard_entries.perfected`) và `LbBoard.orders` (300/200/100💎). **PHẢI chạy lại `leaderboard_rewards_schema.sql`** (idempotent; sau `recipe_order_leaderboard_schema.sql`). Bảng "Hôm nay" cố ý KHÔNG có thưởng tuần.
 - **Chưa làm**: khách Lottie đứng quầy (cần asset mới); thưởng cho BXH Hôm nay.
+
+## 35. Hồi 4 — "Đại Hội Tay Nghề" (Chương 37-46, 2026-10-16, chưa playtest)
+
+> ⚠️ Ngưỡng là **ước lượng, chưa playtest**. Ý tưởng (góp ý người chơi 2026-10-12: "hết nội dung sau Kỷ Nguyên 4"): 10 "màn",
+> MỖI MÀN phải vượt qua một mốc của các trò chơi nhỏ — không chương nào mở bằng Xu/thời gian chờ.
+
+- **Nhân vật**: vẫn **🌀 Thầy Cả** (mở Đại Hội Tay Nghề, 10 thử thách). Prose vi/en đủ; es/id/pt/th/ko fallback `en` (như mọi hồi trước).
+- **Mốc từng chương** (xen kẽ 4 trò, leo thang): 37 Thạo **5** món (Công thức) · 38 qua màn **65** Trân Châu Rơi · 39 pha hoàn hảo **5** món (Pha theo đơn) · 40 Thử thách hằng ngày **2** ngày · 41 Thạo **20** món · 42 màn **75** · 43 hoàn hảo **15** món · 44 thử thách **5** ngày · 45 Thạo **50** món · 46 hoàn hảo **40** món (chương lựa chọn, **trục H**).
+- **3 trigger mới** trong `StoryTrigger`: `recipeMastered` (`recipeMasteredEver(recipeProgress)` ≥ value, tính món TỪNG Thạo nên tụt bậc không làm mất mốc), `orderPerfect` (`recipeOrderPerfect.length`), `dailyDone` (`GameState.recipeDailyCount`, +1 mỗi NGÀY làm thử thách trong `completeDailyChallenge`). `storyTriggerMet`/`storyUnlockProgress` thêm 3 tham số named mặc định 0 (không vỡ chỗ gọi cũ); Nhật ký hiện điều kiện + thanh tiến độ cho chương kế.
+- **Trục H (Chương 46)**: `mastery` (+8% giá trị chạm) / `spirit` (+8% thu nhập tự động), vĩnh viễn, cộng dồn với A-F.
+- **Sửa kèm (lỗi có sẵn)**: lựa chọn **trục G (Chương 36)** hứa +8% nhưng `economy.dart` KHÔNG áp ⇒ giờ áp (`secret` → chạm, `open` → thu nhập). Người đã chọn G được buff đúng như mô tả.
+- **Mốc "phá đảo" Hồi 4** = `storyFourthActFinaleChapterId` (=46), `GameState.storyFourthActCompleteSeconds`, chốt trong `_stampStoryFinales`; bảng Tốc độ có tab thứ 4; web (`docs/assets/site.js`) và `tools/admin.html` gộp thêm bảng 4.
+- **Server**: `supabase/story_speedrun4_schema.sql` (**PHẢI chạy** thì tab "Hồi 4" mới có dữ liệu; cùng khuôn story_speedrun3: insert-only, 1 mốc/người, CHECK > 0; đã thử trên Postgres tạm: idempotent, trùng/giả danh/0/sửa đều bị chặn, anon đọc được top).
+- GameState +3 field (giữ qua prestige/Kỷ Nguyên, JSON back-compat): `storyChoiceH`, `storyFourthActCompleteSeconds`, `recipeDailyCount`.
+- Chương mở khi người chơi hoàn tất hành động ở trò chơi nhỏ (snapshot được dựng lại ngay) ⇒ cutscene hiện ở lần về màn chính kế tiếp, không cần chờ tick.
+- **Kiểm thử đã làm**: chơi suốt Hồi 4 bằng API thật của controller (đường `answerRecipe` thật cho mốc món Thạo, `recordOrderPerfect`, `completeDailyChallenge` qua nhiều ngày), cutscene tự hiện trên màn chính khi xong mốc, Chương 46 chọn nhánh + chốt mốc + lưu đĩa, Nhật ký/cutscene không tràn 7 ngôn ngữ ở 320px/chữ 1.5×.
+- **Giờ cao điểm đứng khi có popup che màn** (`ModalRoute.isCurrent`): cutscene Hồi 4 có thể bật giữa lúc pha đơn (vừa đủ mốc) — khách không bỏ đi lúc người chơi đang đọc.
+- ⚠️ **Lỗi có sẵn chưa sửa (ngoài phạm vi)**: header giai đoạn ở màn chính (`_StageHeader`) tràn 4.7px ở en/es/id/pt, 320px, chữ 1.5×, khi ở giai đoạn 18.
+

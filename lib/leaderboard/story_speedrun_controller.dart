@@ -93,6 +93,7 @@ class StorySpeedrunController extends Notifier<StorySpeedrunViewState> {
       SpeedrunBoard.main => 'speedrun_viewed',
       SpeedrunBoard.ext => 'speedrun_ext_viewed',
       SpeedrunBoard.third => 'speedrun_third_viewed',
+      SpeedrunBoard.fourth => 'speedrun_fourth_viewed',
     }));
     try {
       final completeSeconds = getMyCompleteSeconds?.call();
@@ -161,3 +162,8 @@ final storySpeedrunExtControllerProvider =
 final storySpeedrunThirdControllerProvider =
     NotifierProvider<StorySpeedrunController, StorySpeedrunViewState>(
         () => StorySpeedrunController(SpeedrunBoard.third));
+
+/// Bảng Hồi 4 (mốc Chương 46).
+final storySpeedrunFourthControllerProvider =
+    NotifierProvider<StorySpeedrunController, StorySpeedrunViewState>(
+        () => StorySpeedrunController(SpeedrunBoard.fourth));

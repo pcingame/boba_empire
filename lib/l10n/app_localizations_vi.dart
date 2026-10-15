@@ -4337,4 +4337,26 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get lbrBoardOrders => 'Pha theo đơn';
+
+  @override
+  String get storySpeedrunTabExt3 => 'Hồi 4';
+
+  @override
+  String get storySpeedrunExt3NotCompletedYet =>
+      'Bạn chưa hoàn thành Hồi 4 — hoàn thành Chương 46 để được xếp hạng.';
+
+  @override
+  String storyCondRecipes(int n, String game) {
+    return 'Thạo $n món ở $game';
+  }
+
+  @override
+  String storyCondOrders(int n, String game) {
+    return 'Pha hoàn hảo $n món ở $game';
+  }
+
+  @override
+  String storyCondDaily(int n, String game) {
+    return 'Làm $game trong $n ngày';
+  }
 }

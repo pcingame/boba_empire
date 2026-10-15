@@ -1973,5 +1973,13 @@
   "@cupShareText": {"placeholders": {"name": {"type": "String"}}},
   "recipeCounterNext": "Kuasai {count} resep untuk membuka 1 slot pajangan lagi",
   "@recipeCounterNext": {"placeholders": {"count": {"type": "int"}}},
-  "lbrBoardOrders": "Racik sesuai pesanan"
+  "lbrBoardOrders": "Racik sesuai pesanan",
+  "storySpeedrunTabExt3": "Babak 4",
+  "storySpeedrunExt3NotCompletedYet": "Kamu belum menyelesaikan Babak 4 — selesaikan Bab 46 untuk masuk peringkat.",
+  "storyCondRecipes": "Kuasai {n} resep di {game}",
+  "@storyCondRecipes": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "storyCondOrders": "Buat {n} minuman sempurna di {game}",
+  "@storyCondOrders": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "storyCondDaily": "Selesaikan {game} selama {n} hari",
+  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}}
 }

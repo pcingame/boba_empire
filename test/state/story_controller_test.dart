@@ -335,6 +335,155 @@ void main() {
     });
   });
 
+  group('Hồi 4 (Chương 37-46, mỗi màn một mốc trò chơi nhỏ)', () {
+    test('làm Thử thách hằng ngày cộng bộ đếm ngày và mở chương gắn mốc đó; làm lại cùng ngày không đếm thêm', () async {
+      final seed = GameState.newGame(nowMillis: 1000)
+        ..storyChapter = 39
+        ..storyChoiceG = 'open'
+        ..recipeDailyCount = 1;
+      final b = await _boot(seed);
+      b.clock.now = 1000 + 5 * 24 * 3600 * 1000;
+      expect(b.snap().pendingStoryChapterId, isNull); // Ch.40 cần 2 ngày
+      b.ctrl.completeDailyChallenge(200);
+      expect(b.snap().recipeDailyCount, 2);
+      expect(b.snap().pendingStoryChapterId, 40);
+      b.ctrl.completeDailyChallenge(300); // cùng ngày
+      expect(b.snap().recipeDailyCount, 2);
+      b.clock.now += 24 * 3600 * 1000;
+      b.ctrl.completeDailyChallenge(100); // ngày mới
+      expect(b.snap().recipeDailyCount, 3);
+    });
+
+    test('pha hoàn hảo đủ số món ở Pha theo đơn mở chương gắn mốc đó', () async {
+      final seed = GameState.newGame(nowMillis: 1000)
+        ..storyChapter = 38
+        ..storyChoiceG = 'open';
+      final b = await _boot(seed);
+      for (var id = 1; id <= 4; id++) {
+        b.ctrl.recordOrderPerfect(id);
+      }
+      expect(b.snap().pendingStoryChapterId, isNull);
+      b.ctrl.recordOrderPerfect(5);
+      expect(b.snap().pendingStoryChapterId, 39);
+    });
+
+    test('Chương 46 (lựa chọn) chốt mốc Hồi 4 một lần; không bù mốc Hồi 3 cho save còn ở Chương 40', () async {
+      final seed = GameState.newGame(nowMillis: 1000)
+        ..storyChapter = 45
+        ..storyChoiceG = 'open'
+        ..storyThirdActCompleteSeconds = 900
+        ..recipeOrderPerfect.addAll(List.generate(40, (i) => i + 1));
+      final b = await _boot(seed);
+      b.clock.now = 1000 + 3000000;
+      expect(b.snap().pendingStoryChapterId, 46);
+      expect(b.snap().storyFourthActCompleteSeconds, isNull);
+      expect(b.ctrl.makeStoryChoice('mastery'), isTrue);
+      expect(b.snap().storyFourthActCompleteSeconds, 3000);
+      expect(b.snap().storyThirdActCompleteSeconds, 900); // không bị đè
+      b.clock.now += 9999000;
+      expect(b.ctrl.makeStoryChoice('spirit'), isFalse);
+      expect(b.snap().storyFourthActCompleteSeconds, 3000);
+    });
+
+    test('CHƠI SUỐT Hồi 4 bằng API thật của controller: 10 chương mở đúng thứ tự, mỗi chương chỉ sau đúng mốc, kết thúc ở Chương 46', () async {
+      final seed = GameState.newGame(nowMillis: 1000)
+        ..storyChapter = 36
+        ..storyChoiceG = 'open';
+      final b = await _boot(seed);
+      const dayMs = 24 * 3600 * 1000;
+      b.clock.now = 1000 + 100 * dayMs;
+      int? pending() => b.snap().pendingStoryChapterId;
+      void see(int id) {
+        expect(pending(), id, reason: 'chương $id phải đang chờ');
+        b.ctrl.acknowledgeStoryBeat();
+        expect(b.snap().storyChapter, id);
+      }
+
+      // Mốc món Thạo: đường thật answerRecipe — 3 lượt đúng cách nhau 40 ngày (mỗi lượt đều đến hạn ôn) đưa món lên Thạo.
+      void masterRecipes(int upTo) {
+        for (var round = 0; round < 3; round++) {
+          b.clock.now += 40 * dayMs;
+          for (var id = 1; id <= upTo; id++) {
+            b.ctrl.answerRecipe(id, true);
+          }
+        }
+      }
+
+      void clearM3(int levels) {
+        final stars = b.ctrl.debugGame.m3Stars;
+        while (stars.length < levels) {
+          stars.add(1);
+        }
+        b.ctrl.debugTick(); // dựng lại snapshot (đường chơi thật gọi qua màn Ghép 3)
+      }
+
+      expect(pending(), isNull);
+      masterRecipes(5);
+      see(37);
+      expect(pending(), isNull); // Ch.38 cần màn 65
+      clearM3(65);
+      see(38);
+      for (var id = 1; id <= 5; id++) {
+        b.ctrl.recordOrderPerfect(id);
+      }
+      see(39);
+      b.ctrl.completeDailyChallenge(100);
+      expect(pending(), isNull); // mới 1 ngày
+      b.clock.now += dayMs;
+      b.ctrl.completeDailyChallenge(100);
+      see(40);
+      masterRecipes(20);
+      see(41);
+      clearM3(75);
+      see(42);
+      for (var id = 6; id <= 15; id++) {
+        b.ctrl.recordOrderPerfect(id);
+      }
+      see(43);
+      for (var d = 0; d < 3; d++) {
+        b.clock.now += dayMs;
+        b.ctrl.completeDailyChallenge(100);
+      }
+      see(44);
+      masterRecipes(50);
+      see(45);
+      expect(pending(), isNull);
+      for (var id = 16; id <= 40; id++) {
+        b.ctrl.recordOrderPerfect(id);
+      }
+      expect(pending(), 46);
+      expect(b.snap().storyFourthActCompleteSeconds, isNull);
+      expect(b.ctrl.makeStoryChoice('mastery'), isTrue);
+      expect(b.snap().storyChapter, 46);
+      expect(b.snap().storyFourthActCompleteSeconds, isNotNull);
+      expect(pending(), isNull, reason: 'hết truyện');
+    });
+
+    test('xong Chương 36 chỉ chốt mốc Hồi 3, KHÔNG chốt Hồi 4', () async {
+      final seed = GameState.newGame(nowMillis: 1000)
+        ..storyChapter = 35
+        ..ascensionCount = 4;
+      final b = await _boot(seed);
+      b.clock.now = 1000 + 700000;
+      expect(b.ctrl.makeStoryChoice('open'), isTrue);
+      expect(b.snap().storyThirdActCompleteSeconds, 700);
+      expect(b.snap().storyFourthActCompleteSeconds, isNull);
+    });
+
+    test('perk Chương 46 vào snapshot: "spirit" tăng thu nhập +8%', () async {
+      final seed = GameState.newGame(nowMillis: 1000)
+        ..storyChapter = 45
+        ..storyChoiceG = 'open'
+        ..levels['tra_den'] = 10
+        ..recipeOrderPerfect.addAll(List.generate(40, (i) => i + 1));
+      final b = await _boot(seed);
+      final before = b.snap().incomePerSecond;
+      expect(b.ctrl.makeStoryChoice('spirit'), isTrue);
+      // Hệ số cộng dồn: trục G ('open') đã +8% ⇒ thêm 'spirit' là 1.08 → 1.16.
+      expect(b.snap().incomePerSecond, closeTo(before * (1 + 2 * Balance.storyPerkBonus) / (1 + Balance.storyPerkBonus), before * 1e-6));
+    });
+  });
+
   test('mở app với save bị đẩy lên vòng nhiệm vụ lặp quá cao -> tự đưa về đúng vòng, nút Nhận tắt', () async {
     final seed = GameState.newGame(nowMillis: 0)
       ..lifetimeEarnings = 1e30

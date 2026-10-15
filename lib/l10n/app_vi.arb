@@ -2932,5 +2932,13 @@
   "@cupShareText": {"placeholders": {"name": {"type": "String"}}},
   "recipeCounterNext": "Thạo {count} món để mở thêm 1 chỗ trưng bày",
   "@recipeCounterNext": {"placeholders": {"count": {"type": "int"}}},
-  "lbrBoardOrders": "Pha theo đơn"
+  "lbrBoardOrders": "Pha theo đơn",
+  "storySpeedrunTabExt3": "Hồi 4",
+  "storySpeedrunExt3NotCompletedYet": "Bạn chưa hoàn thành Hồi 4 — hoàn thành Chương 46 để được xếp hạng.",
+  "storyCondRecipes": "Thạo {n} món ở {game}",
+  "@storyCondRecipes": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "storyCondOrders": "Pha hoàn hảo {n} món ở {game}",
+  "@storyCondOrders": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "storyCondDaily": "Làm {game} trong {n} ngày",
+  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}}
 }

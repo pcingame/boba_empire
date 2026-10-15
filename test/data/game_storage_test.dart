@@ -94,6 +94,32 @@ void main() {
   });
 
   test(
+      'save rồi load giữ nguyên Hồi 4 (storyChoiceH, storyFourthActCompleteSeconds, recipeDailyCount); '
+      'save cũ thiếu -> null/0, giá trị bẩn bị kẹp', () async {
+    final storage = await _storage();
+    final state = GameState.newGame(nowMillis: 1000)
+      ..storyFourthActCompleteSeconds = 54321
+      ..storyChoiceH = 'spirit'
+      ..recipeDailyCount = 7;
+    await storage.save(state, nowMillis: 2000);
+    final loaded = storage.load()!;
+    expect(loaded.storyFourthActCompleteSeconds, 54321);
+    expect(loaded.storyChoiceH, 'spirit');
+    expect(loaded.recipeDailyCount, 7);
+
+    final oldJson = state.toJson()
+      ..remove('storyFourthActCompleteSeconds')
+      ..remove('storyChoiceH')
+      ..remove('recipeDailyCount');
+    final fromOld = GameState.fromJson(oldJson);
+    expect(fromOld.storyFourthActCompleteSeconds, isNull);
+    expect(fromOld.storyChoiceH, isNull);
+    expect(fromOld.recipeDailyCount, 0);
+
+    expect(GameState.fromJson(state.toJson()..['recipeDailyCount'] = -5).recipeDailyCount, 0);
+  });
+
+  test(
       'save rồi load giữ nguyên ownedAccessories; save cũ (trước phụ kiện '
       'sưu tập) thiếu trường -> load rỗng, không ném lỗi', () async {
     final storage = await _storage();
