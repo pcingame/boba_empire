@@ -1066,5 +1066,5 @@ Mọi chuyển động theo mức hiệu ứng (`EffectsQuality`/`reduceMotion`,
 - Chương mở khi người chơi hoàn tất hành động ở trò chơi nhỏ (snapshot được dựng lại ngay) ⇒ cutscene hiện ở lần về màn chính kế tiếp, không cần chờ tick.
 - **Kiểm thử đã làm**: chơi suốt Hồi 4 bằng API thật của controller (đường `answerRecipe` thật cho mốc món Thạo, `recordOrderPerfect`, `completeDailyChallenge` qua nhiều ngày), cutscene tự hiện trên màn chính khi xong mốc, Chương 46 chọn nhánh + chốt mốc + lưu đĩa, Nhật ký/cutscene không tràn 7 ngôn ngữ ở 320px/chữ 1.5×.
 - **Giờ cao điểm đứng khi có popup che màn** (`ModalRoute.isCurrent`): cutscene Hồi 4 có thể bật giữa lúc pha đơn (vừa đủ mốc) — khách không bỏ đi lúc người chơi đang đọc.
-- ⚠️ **Lỗi có sẵn chưa sửa (ngoài phạm vi)**: header giai đoạn ở màn chính (`_StageHeader`) tràn 4.7px ở en/es/id/pt, 320px, chữ 1.5×, khi ở giai đoạn 18.
+- **Đã sửa (2026-10-16)**: header giai đoạn (`_StageHeader`) tràn 4.7px ở en/es/id/pt, 320px, chữ 1.5×, giai đoạn 18 — chỗ chừa cho chip chế độ mua + chip đối thủ là hằng số, giờ nở theo cỡ chữ hệ thống. Cùng ngày sửa tiếp `_MoneyHeader`: ở chữ 2.0×, 320px nhóm chip VIP/💎 nở rộng đẩy nút ⚙ ra ngoài màn ~39px (bấm không tới) — giờ nhóm này giới hạn 40% bề ngang hàng và co chữ khi chữ hệ thống >1.25× (chữ thường giữ nguyên bố cục).
 

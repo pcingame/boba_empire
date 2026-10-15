@@ -801,6 +801,18 @@ class _MarketBannerState extends ConsumerState<_MarketBanner> {
 class _MoneyHeader extends ConsumerWidget {
   const _MoneyHeader();
 
+  /// Nhóm chip VIP/💎. Chữ hệ thống to (>1.25×) làm nhóm này nở rộng, đẩy nút ⚙ ra khỏi màn (tràn ~39px ở 320px,
+  /// chữ 2×) — nên giới hạn ở 40% bề ngang hàng và co chữ (FittedBox) cho vừa. Chữ thường: giữ nguyên bố cục cũ.
+  Widget _capForBigText(BuildContext context, double maxWidth, List<Widget> chips) {
+    final k = MediaQuery.textScalerOf(context).scale(1.0);
+    final row = Row(mainAxisSize: MainAxisSize.min, children: chips);
+    if (k <= 1.25) return row;
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxWidth: maxWidth),
+      child: FittedBox(fit: BoxFit.scaleDown, alignment: Alignment.centerRight, child: row),
+    );
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final money =
@@ -877,7 +889,7 @@ class _MoneyHeader extends ConsumerWidget {
           // số lớn hoặc ngôn ngữ dài (không tràn header).
           // RepaintBoundary: số đếm mượt mỗi frame → không repaint gradient
           // header theo.
-          Row(
+          LayoutBuilder(builder: (context, rowBox) => Row(
             children: [
               IconButton(
                 key: const Key('story-log-button'),
@@ -916,6 +928,7 @@ class _MoneyHeader extends ConsumerWidget {
               ),
               // Chừa khe để số xu lớn (FittedBox co hết cỡ) không dính chip 💎.
               const SizedBox(width: 10),
+              _capForBigText(context, rowBox.maxWidth * 0.4, [
               // 💎 (và VIP) cạnh nút cài đặt: trước đây nằm hàng trên làm chật 3 nút.
               if (vip) ...[
                 ClayChip(
@@ -947,6 +960,7 @@ class _MoneyHeader extends ConsumerWidget {
                   ),
                 ),
               ),
+              ]),
               const SizedBox(width: 4),
               IconButton(
                 key: const Key('settings-button'),
@@ -958,7 +972,7 @@ class _MoneyHeader extends ConsumerWidget {
                 onPressed: () => showSettings(context),
               ),
             ],
-          ),
+          )),
           // Dòng "thu nhập/giây" gộp chip "Mốc vàng" (🌐 +%) và nút "Tiền tức
           // thì" cùng hàng — tiết kiệm chiều cao, trả chỗ cho cảnh quán.
           Padding(
@@ -1892,6 +1906,7 @@ class _StageHeader extends ConsumerWidget {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     final next = Balance.nextStageConfig(stage);
+    final k = MediaQuery.textScalerOf(context).scale(1.0).clamp(1.0, 2.5);
 
     return Container(
       width: double.infinity,
@@ -1911,8 +1926,10 @@ class _StageHeader extends ConsumerWidget {
               constraints: BoxConstraints(
                   // Giai đoạn cuối: chừa chỗ cho chip chế độ mua (~62) + khoảng cách,
                   // và chip đối thủ (~40) nếu có — nếu không hàng tràn ở máy hẹp.
+                  // Cỡ chữ hệ thống to lên thì chữ trong hai chip nở theo (phần cố định: padding + icon);
+                  // dự phòng theo [k], nếu không tên chiếm hết chỗ và hàng tràn vài px (gặp ở 320px, chữ 1.5×).
                   maxWidth: next == null
-                      ? box.maxWidth - 78 - (rivalActive ? 40 : 0)
+                      ? box.maxWidth - (52 + 26 * k) - (rivalActive ? 12 + 28 * k : 0)
                       : box.maxWidth * 0.5),
               child: FittedBox(
                 key: const Key('stage-header-name'),

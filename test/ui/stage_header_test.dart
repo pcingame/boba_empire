@@ -76,4 +76,41 @@ void main() {
     final wanted2 = natural2 < _rowWidth - 78 ? natural2 : _rowWidth - 78;
     expect(given2, greaterThanOrEqualTo(wanted2 - 1));
   });
+
+  // Lỗi thật: giai đoạn 18 (không có nút mở khoá) + chip đối thủ + chip chế độ mua tràn 4.7px ở 320px, chữ 1.5×
+  // (en/es/id/pt) vì chỗ chừa cho hai chip là hằng số, không nở theo cỡ chữ.
+  for (final loc in ['vi', 'en', 'es', 'id', 'ko', 'pt', 'th']) {
+    for (final scale in [1.0, 1.5, 2.0]) {
+      testWidgets('GĐ18 + đối thủ: header giai đoạn và hàng Xu/💎/⚙ không tràn ở 320px, chữ ${scale}x, $loc', (tester) async {
+        tester.view.physicalSize = const Size(320 * 3, 640 * 3);
+        tester.view.devicePixelRatio = 3;
+        tester.platformDispatcher.textScaleFactorTestValue = scale;
+        addTearDown(tester.view.reset);
+        addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+        SharedPreferences.setMockInitialValues({'app_locale': loc});
+        final prefs = await SharedPreferences.getInstance();
+        final seed = GameState.newGame(nowMillis: 0)
+          ..stage = 18
+          ..storyChapter = 3
+          ..tutorialSeen = true
+          ..money = 1e60;
+        await GameStorage(prefs).save(seed, nowMillis: 0);
+        await tester.pumpWidget(ProviderScope(
+          overrides: [
+            sharedPreferencesProvider.overrideWithValue(prefs),
+            clockProvider.overrideWithValue(() => 0),
+          ],
+          child: const BobaEmpireApp(),
+        ));
+        await tester.pumpAndSettle();
+        expect(find.byKey(const Key('stage-header-name')), findsOneWidget);
+        expect(tester.takeException(), isNull);
+        // Nút ⚙ phải còn nằm TRONG màn (bản cũ bị đẩy ra ngoài ~39px ở chữ 2×, bấm không tới).
+        final gear = tester.getRect(find.byKey(const Key('settings-button')));
+        expect(gear.right, lessThanOrEqualTo(320.0 + 0.5), reason: '⚙ bị đẩy ra ngoài màn');
+        expect(gear.left, greaterThanOrEqualTo(0));
+        await tester.pumpWidget(const SizedBox());
+      });
+    }
+  }
 }
