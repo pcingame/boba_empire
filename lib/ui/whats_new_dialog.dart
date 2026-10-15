@@ -4,7 +4,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
-import 'vip_how_to_dialog.dart';
+import 'games_hub_dialog.dart';
 
 Future<void> showWhatsNew(BuildContext context, String version) {
   return showDialog<void>(
@@ -12,11 +12,11 @@ Future<void> showWhatsNew(BuildContext context, String version) {
     builder: (ctx) {
       final l10n = AppLocalizations.of(ctx)!;
       final items = [
-        l10n.whatsNewVip,
-        l10n.whatsNewGuild,
-        l10n.whatsNewQuests,
-        l10n.whatsNewSocial,
-        l10n.whatsNewShop,
+        l10n.whatsNewOrders,
+        l10n.whatsNewRecipes,
+        l10n.whatsNewDaily,
+        l10n.whatsNewAct4,
+        l10n.whatsNewMore,
       ];
       return AlertDialog(
         key: const Key('whats-new'),
@@ -43,7 +43,7 @@ Future<void> showWhatsNew(BuildContext context, String version) {
             key: const Key('whats-new-open'),
             onPressed: () {
               Navigator.of(ctx).pop();
-              showVipHowTo(context);
+              showGamesHub(context);
             },
             child: Text(l10n.whatsNewOpen),
           ),

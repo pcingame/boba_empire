@@ -2814,30 +2814,30 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get whatsNewVip =>
-      '👑 VIP system: 10 levels, daily/weekly/monthly gifts, a VIP leaderboard, a VIP Shop and 2x 💎 on your first top-up';
+  String get whatsNewOrders =>
+      '🧋 Brew by order: drag ingredients into the cup, cute chibi customers, combos, Rush Hour and festival orders';
 
   @override
-  String get whatsNewGuild =>
-      '🛡️ Guilds: weekly Boss, VIP tags and frames, gifting 💎 to each other, and a VIP guild leaderboard';
+  String get whatsNewRecipes =>
+      '📖 Recipe game: spaced review of 100 drinks and a daily review streak; every mini-game now has a how-to-play guide';
 
   @override
-  String get whatsNewQuests =>
-      '📋 Weekly quests with a reward chest, streak milestone bonuses (7/14/30/60/100 days) and Today’s Deal';
+  String get whatsNewDaily =>
+      '📅 Daily Challenge: the same orders for everyone, a Today leaderboard and weekly top rewards';
 
   @override
-  String get whatsNewSocial =>
-      '🏆 Tap a leaderboard row to see a profile; view and share leaderboards on the web; invite friends for 💎';
+  String get whatsNewAct4 =>
+      '📜 Act 4 \"Grand Craft Festival\": 10 chapters, each unlocked by a mini-game milestone';
 
   @override
-  String get whatsNewShop =>
-      '💎 New big Gem packs, a permanent Cold Storage and a No Ads + 2x income combo (an email is needed to top up)';
+  String get whatsNewMore =>
+      '🤝 Auto-tap, accessory swaps in the Market, guild quests; online features (leaderboards, Market, Guilds) need a linked email';
 
   @override
   String get whatsNewLater => 'Later';
 
   @override
-  String get whatsNewOpen => 'Explore VIP';
+  String get whatsNewOpen => 'Try it';
 
   @override
   String marketWallet(int n) {

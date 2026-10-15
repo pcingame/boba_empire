@@ -2804,30 +2804,30 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get whatsNewVip =>
-      '👑 Hệ thống VIP: 10 cấp, quà mỗi ngày/tuần/tháng, bảng xếp hạng VIP, Cửa hàng VIP và nạp lần đầu x2 💎';
+  String get whatsNewOrders =>
+      '🧋 Pha theo đơn: kéo-thả nguyên liệu vào ly, khách chibi dễ thương, combo, Giờ cao điểm và đơn lễ hội';
 
   @override
-  String get whatsNewGuild =>
-      '🛡️ Hội: Boss tuần, nhãn và khung VIP trong Hội, tặng 💎 cho nhau, bảng xếp hạng Hội theo VIP';
+  String get whatsNewRecipes =>
+      '📖 Trò Công thức pha chế: ôn cách quãng 100 món, chuỗi ngày ôn; mỗi trò đều có hướng dẫn cách chơi';
 
   @override
-  String get whatsNewQuests =>
-      '📋 Nhiệm vụ tuần với rương thưởng, thưởng mốc chuỗi điểm danh (7/14/30/60/100 ngày) và Ưu đãi hôm nay';
+  String get whatsNewDaily =>
+      '📅 Thử thách hằng ngày chung một đề cho mọi người, bảng xếp hạng Hôm nay và thưởng top tuần';
 
   @override
-  String get whatsNewSocial =>
-      '🏆 Bấm một dòng ở bảng xếp hạng để xem hồ sơ; xem và chia sẻ bảng xếp hạng trên web; mời bạn bè nhận 💎';
+  String get whatsNewAct4 =>
+      '📜 Hồi 4 \"Đại Hội Tay Nghề\": 10 chương, mỗi chương mở bằng mốc của các trò chơi nhỏ';
 
   @override
-  String get whatsNewShop =>
-      '💎 Thêm gói Kim Cương lớn, Kho lạnh vĩnh viễn và combo Gỡ quảng cáo + x2 thu nhập (cần email để nạp)';
+  String get whatsNewMore =>
+      '🤝 Tự động chạm, trao đổi phụ kiện ở Chợ, nhiệm vụ Hội; tính năng online (bảng xếp hạng, Chợ, Hội) cần liên kết email';
 
   @override
   String get whatsNewLater => 'Để sau';
 
   @override
-  String get whatsNewOpen => 'Khám phá VIP';
+  String get whatsNewOpen => 'Chơi thử';
 
   @override
   String marketWallet(int n) {

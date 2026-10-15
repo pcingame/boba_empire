@@ -2800,30 +2800,30 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
-  String get whatsNewVip =>
-      '👑 ระบบ VIP: 10 ระดับ ของขวัญรายวัน/สัปดาห์/เดือน อันดับ VIP ร้านค้า VIP และเติมครั้งแรกได้ 💎 x2';
+  String get whatsNewOrders =>
+      '🧋 ชงตามออเดอร์: ลากวัตถุดิบลงแก้ว ลูกค้าชิบิน่ารัก คอมโบ ชั่วโมงเร่งด่วน และออเดอร์เทศกาล';
 
   @override
-  String get whatsNewGuild =>
-      '🛡️ กิลด์: บอสประจำสัปดาห์ ป้ายและกรอบ VIP ส่ง 💎 ให้กัน และอันดับกิลด์ตาม VIP';
+  String get whatsNewRecipes =>
+      '📖 เกมสูตร: ทบทวนแบบเว้นระยะ 100 เครื่องดื่มและสตรีครายวัน ทุกมินิเกมมีวิธีเล่น';
 
   @override
-  String get whatsNewQuests =>
-      '📋 ภารกิจประจำสัปดาห์พร้อมหีบรางวัล โบนัสสตรีค (7/14/30/60/100 วัน) และดีลวันนี้';
+  String get whatsNewDaily =>
+      '📅 ภารกิจประจำวัน: ออเดอร์เดียวกันสำหรับทุกคน อันดับวันนี้ และรางวัลท็อปรายสัปดาห์';
 
   @override
-  String get whatsNewSocial =>
-      '🏆 แตะแถวในอันดับเพื่อดูโปรไฟล์ ดูและแชร์อันดับบนเว็บ และชวนเพื่อนรับ 💎';
+  String get whatsNewAct4 =>
+      '📜 ภาค 4 \"เทศกาลฝีมือยิ่งใหญ่\": 10 บท แต่ละบทปลดล็อกด้วยเป้าหมายของมินิเกม';
 
   @override
-  String get whatsNewShop =>
-      '💎 แพ็กเพชรใหญ่ใหม่ ห้องเย็นถาวร และคอมโบไม่มีโฆษณา + รายได้ x2 (ต้องมีอีเมลก่อนเติม)';
+  String get whatsNewMore =>
+      '🤝 แตะอัตโนมัติ แลกของตกแต่งในตลาด ภารกิจกิลด์ ฟีเจอร์ออนไลน์ (อันดับ ตลาด กิลด์) ต้องเชื่อมอีเมล';
 
   @override
   String get whatsNewLater => 'ไว้ทีหลัง';
 
   @override
-  String get whatsNewOpen => 'ดู VIP';
+  String get whatsNewOpen => 'ลองเล่น';
 
   @override
   String marketWallet(int n) {

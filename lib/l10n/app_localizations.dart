@@ -4896,35 +4896,35 @@ abstract class AppLocalizations {
   /// **'Có gì mới ở {version}'**
   String whatsNewTitle(String version);
 
-  /// No description provided for @whatsNewVip.
+  /// No description provided for @whatsNewOrders.
   ///
   /// In vi, this message translates to:
-  /// **'👑 Hệ thống VIP: 10 cấp, quà mỗi ngày/tuần/tháng, bảng xếp hạng VIP, Cửa hàng VIP và nạp lần đầu x2 💎'**
-  String get whatsNewVip;
+  /// **'🧋 Pha theo đơn: kéo-thả nguyên liệu vào ly, khách chibi dễ thương, combo, Giờ cao điểm và đơn lễ hội'**
+  String get whatsNewOrders;
 
-  /// No description provided for @whatsNewGuild.
+  /// No description provided for @whatsNewRecipes.
   ///
   /// In vi, this message translates to:
-  /// **'🛡️ Hội: Boss tuần, nhãn và khung VIP trong Hội, tặng 💎 cho nhau, bảng xếp hạng Hội theo VIP'**
-  String get whatsNewGuild;
+  /// **'📖 Trò Công thức pha chế: ôn cách quãng 100 món, chuỗi ngày ôn; mỗi trò đều có hướng dẫn cách chơi'**
+  String get whatsNewRecipes;
 
-  /// No description provided for @whatsNewQuests.
+  /// No description provided for @whatsNewDaily.
   ///
   /// In vi, this message translates to:
-  /// **'📋 Nhiệm vụ tuần với rương thưởng, thưởng mốc chuỗi điểm danh (7/14/30/60/100 ngày) và Ưu đãi hôm nay'**
-  String get whatsNewQuests;
+  /// **'📅 Thử thách hằng ngày chung một đề cho mọi người, bảng xếp hạng Hôm nay và thưởng top tuần'**
+  String get whatsNewDaily;
 
-  /// No description provided for @whatsNewSocial.
+  /// No description provided for @whatsNewAct4.
   ///
   /// In vi, this message translates to:
-  /// **'🏆 Bấm một dòng ở bảng xếp hạng để xem hồ sơ; xem và chia sẻ bảng xếp hạng trên web; mời bạn bè nhận 💎'**
-  String get whatsNewSocial;
+  /// **'📜 Hồi 4 \"Đại Hội Tay Nghề\": 10 chương, mỗi chương mở bằng mốc của các trò chơi nhỏ'**
+  String get whatsNewAct4;
 
-  /// No description provided for @whatsNewShop.
+  /// No description provided for @whatsNewMore.
   ///
   /// In vi, this message translates to:
-  /// **'💎 Thêm gói Kim Cương lớn, Kho lạnh vĩnh viễn và combo Gỡ quảng cáo + x2 thu nhập (cần email để nạp)'**
-  String get whatsNewShop;
+  /// **'🤝 Tự động chạm, trao đổi phụ kiện ở Chợ, nhiệm vụ Hội; tính năng online (bảng xếp hạng, Chợ, Hội) cần liên kết email'**
+  String get whatsNewMore;
 
   /// No description provided for @whatsNewLater.
   ///
@@ -4935,7 +4935,7 @@ abstract class AppLocalizations {
   /// No description provided for @whatsNewOpen.
   ///
   /// In vi, this message translates to:
-  /// **'Khám phá VIP'**
+  /// **'Chơi thử'**
   String get whatsNewOpen;
 
   /// No description provided for @marketWallet.

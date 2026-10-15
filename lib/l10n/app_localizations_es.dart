@@ -2829,30 +2829,30 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get whatsNewVip =>
-      '👑 Sistema VIP: 10 niveles, regalos diarios/semanales/mensuales, clasificación VIP, Tienda VIP y 2x 💎 en tu primera recarga';
+  String get whatsNewOrders =>
+      '🧋 Preparar pedidos: arrastra ingredientes al vaso, adorables clientes chibi, combos, Hora punta y pedidos de fiesta';
 
   @override
-  String get whatsNewGuild =>
-      '🛡️ Gremios: Jefe semanal, etiquetas y marcos VIP, regalar 💎 y clasificación de gremios por VIP';
+  String get whatsNewRecipes =>
+      '📖 Juego de recetas: repaso espaciado de 100 bebidas y racha diaria; cada minijuego tiene su guía de cómo jugar';
 
   @override
-  String get whatsNewQuests =>
-      '📋 Misiones semanales con cofre, bonos por hitos de racha (7/14/30/60/100 días) y la Oferta de hoy';
+  String get whatsNewDaily =>
+      '📅 Reto diario: los mismos pedidos para todos, clasificación de Hoy y recompensas semanales al top';
 
   @override
-  String get whatsNewSocial =>
-      '🏆 Toca una fila de la clasificación para ver el perfil; mira y comparte clasificaciones en la web; invita amigos y gana 💎';
+  String get whatsNewAct4 =>
+      '📜 Acto 4 «Gran Festival del Oficio»: 10 capítulos, cada uno se abre con un hito de los minijuegos';
 
   @override
-  String get whatsNewShop =>
-      '💎 Nuevos paquetes grandes de gemas, Almacén frío permanente y combo Sin anuncios + ingresos x2 (se requiere correo para recargar)';
+  String get whatsNewMore =>
+      '🤝 Toque automático, intercambio de accesorios en el Mercado, misiones de gremio; las funciones en línea (clasificaciones, Mercado, Gremios) requieren un correo vinculado';
 
   @override
   String get whatsNewLater => 'Después';
 
   @override
-  String get whatsNewOpen => 'Descubrir VIP';
+  String get whatsNewOpen => 'Probar';
 
   @override
   String marketWallet(int n) {

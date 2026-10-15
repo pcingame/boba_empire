@@ -2768,28 +2768,28 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get whatsNewVip =>
-      '👑 VIP 시스템: 10단계, 일/주/월 선물, VIP 순위, VIP 상점, 첫 충전 💎 2배';
+  String get whatsNewOrders =>
+      '🧋 주문대로 만들기: 재료를 컵에 끌어놓기, 귀여운 치비 손님, 콤보, 러시 아워, 축제 주문';
 
   @override
-  String get whatsNewGuild => '🛡️ 길드: 주간 보스, VIP 태그와 프레임, 💎 선물, VIP 길드 순위';
+  String get whatsNewRecipes =>
+      '📖 레시피 게임: 100가지 음료 간격 반복 복습과 매일 연속 기록, 모든 미니게임에 플레이 방법 안내 추가';
 
   @override
-  String get whatsNewQuests =>
-      '📋 보상 상자가 있는 주간 퀘스트, 연속 출석 보너스(7/14/30/60/100일), 오늘의 특가';
+  String get whatsNewDaily => '📅 일일 도전: 모두에게 같은 주문, 오늘 순위, 주간 TOP 보상';
 
   @override
-  String get whatsNewSocial => '🏆 순위 항목을 눌러 프로필 보기, 웹에서 순위 보기·공유, 친구 초대 시 💎';
+  String get whatsNewAct4 => '📜 4막 \"장인 대축제\": 10개 장, 각 장은 미니게임 목표를 달성하면 열려요';
 
   @override
-  String get whatsNewShop =>
-      '💎 새 대용량 보석 팩, 영구 냉장 보관, 광고 제거 + 수입 2배 콤보 (충전에는 이메일 필요)';
+  String get whatsNewMore =>
+      '🤝 자동 터치, 마켓 액세서리 교환, 길드 퀘스트. 온라인 기능(순위, 마켓, 길드)은 이메일 연결이 필요해요';
 
   @override
   String get whatsNewLater => '나중에';
 
   @override
-  String get whatsNewOpen => 'VIP 보기';
+  String get whatsNewOpen => '해보기';
 
   @override
   String marketWallet(int n) {

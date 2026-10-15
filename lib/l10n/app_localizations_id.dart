@@ -2809,30 +2809,30 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get whatsNewVip =>
-      '👑 Sistem VIP: 10 level, hadiah harian/mingguan/bulanan, peringkat VIP, Toko VIP, dan 2x 💎 untuk isi ulang pertama';
+  String get whatsNewOrders =>
+      '🧋 Racik sesuai pesanan: seret bahan ke gelas, pelanggan chibi yang imut, combo, Jam sibuk, dan pesanan festival';
 
   @override
-  String get whatsNewGuild =>
-      '🛡️ Guild: Boss mingguan, label dan bingkai VIP, saling kirim 💎, dan peringkat guild berdasarkan VIP';
+  String get whatsNewRecipes =>
+      '📖 Game resep: ulangan berjeda 100 minuman dan rentetan harian; setiap mini-game punya panduan cara bermain';
 
   @override
-  String get whatsNewQuests =>
-      '📋 Misi mingguan dengan peti hadiah, bonus tonggak streak (7/14/30/60/100 hari), dan Penawaran Hari Ini';
+  String get whatsNewDaily =>
+      '📅 Tantangan harian: pesanan yang sama untuk semua orang, papan peringkat Hari ini, dan hadiah mingguan untuk top';
 
   @override
-  String get whatsNewSocial =>
-      '🏆 Ketuk baris peringkat untuk melihat profil; lihat dan bagikan peringkat di web; undang teman untuk 💎';
+  String get whatsNewAct4 =>
+      '📜 Babak 4 \"Festival Keahlian Agung\": 10 bab, tiap bab dibuka lewat pencapaian mini-game';
 
   @override
-  String get whatsNewShop =>
-      '💎 Paket Permata besar baru, Cold Storage permanen, dan kombo Tanpa Iklan + pendapatan 2x (butuh email untuk isi ulang)';
+  String get whatsNewMore =>
+      '🤝 Ketuk otomatis, tukar aksesori di Pasar, misi Guild; fitur online (papan peringkat, Pasar, Guild) memerlukan email yang tertaut';
 
   @override
   String get whatsNewLater => 'Nanti';
 
   @override
-  String get whatsNewOpen => 'Jelajahi VIP';
+  String get whatsNewOpen => 'Coba';
 
   @override
   String marketWallet(int n) {

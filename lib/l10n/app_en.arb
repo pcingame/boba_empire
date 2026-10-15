@@ -1042,13 +1042,13 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewVip": "👑 VIP system: 10 levels, daily/weekly/monthly gifts, a VIP leaderboard, a VIP Shop and 2x 💎 on your first top-up",
-  "whatsNewGuild": "🛡️ Guilds: weekly Boss, VIP tags and frames, gifting 💎 to each other, and a VIP guild leaderboard",
-  "whatsNewQuests": "📋 Weekly quests with a reward chest, streak milestone bonuses (7/14/30/60/100 days) and Today’s Deal",
-  "whatsNewSocial": "🏆 Tap a leaderboard row to see a profile; view and share leaderboards on the web; invite friends for 💎",
-  "whatsNewShop": "💎 New big Gem packs, a permanent Cold Storage and a No Ads + 2x income combo (an email is needed to top up)",
+  "whatsNewOrders": "🧋 Brew by order: drag ingredients into the cup, cute chibi customers, combos, Rush Hour and festival orders",
+  "whatsNewRecipes": "📖 Recipe game: spaced review of 100 drinks and a daily review streak; every mini-game now has a how-to-play guide",
+  "whatsNewDaily": "📅 Daily Challenge: the same orders for everyone, a Today leaderboard and weekly top rewards",
+  "whatsNewAct4": "📜 Act 4 \"Grand Craft Festival\": 10 chapters, each unlocked by a mini-game milestone",
+  "whatsNewMore": "🤝 Auto-tap, accessory swaps in the Market, guild quests; online features (leaderboards, Market, Guilds) need a linked email",
   "whatsNewLater": "Later",
-  "whatsNewOpen": "Explore VIP",
+  "whatsNewOpen": "Try it",
   "marketWallet": "{n} Market Coins",
   "@marketWallet": {
     "placeholders": {

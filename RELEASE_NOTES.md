@@ -9,6 +9,116 @@ người bản ngữ soát.
 
 ---
 
+## 1.0.10 (+24) — 2026-10-16
+
+**Bản trước:** 1.0.9 (+23), đã lên App Store 2026-10-12. Nộp store bằng **+24**.
+
+**Nội dung (suy từ `git log 89a249e..HEAD`; xin đối chiếu với bản 1.0.9 thực tế đã phát hành — nếu có mục nào đã nằm trong 1.0.9 thì bỏ khỏi ghi chú):**
+- **Trò chơi nhỏ mới:** Công thức pha chế (ôn cách quãng 100 món, bậc Mới→Thạo, chuỗi ngày ôn, rương phụ kiện), **Pha theo đơn** (kéo-thả nguyên liệu, ly nhiều lớp, khách chibi, combo, Giờ cao điểm, đơn lễ hội, khoe ly, kệ trưng bày), **Thử thách hằng ngày** (đề chung, mỗi ngày một lần, bảng Hôm nay), hướng dẫn cách chơi cho từng trò.
+- **Hồi 4 "Đại Hội Tay Nghề"** (Chương 37-46, mốc theo các trò nhỏ), tab Hồi 4 ở bảng Tốc độ; sửa perk Chương 36 (+8% hứa mà trước đây chưa áp).
+- **Thưởng top tuần** cho các bảng (Thu nhập, Trân Châu, Sưu tập, VIP, Thợ pha chế, Pha theo đơn: top 3; Thử thách ngày: top 10 theo tổng điểm tuần trước).
+- **Tự động chạm** (xem QC 10 phút / VIP 3+), trao đổi phụ kiện ở Chợ, nhiệm vụ Hội, nhiệm vụ ngày khó, hiệu ứng theo mức chất lượng máy, khách đi ngang cảnh quán.
+- **Liên kết email BẮT BUỘC cho tính năng online** (bảng xếp hạng, Chợ, Hội, Đấu Trường) — ép cả ở app lẫn server. ⚠️ **Phải nói rõ trong App Review Notes** (đã soạn: `APP_REVIEW_NOTES_1.0.10.md`).
+- Sửa: header màn chính không tràn ở chữ lớn, nhiều chỗ tràn chữ khác.
+
+Soạn sẵn: `assets/store/whatsnew_1.0.10/` (7 ngôn ngữ, đều < 500 ký tự), `assets/store/description_1.0.10/` (đổi "36 chương" → 46, thêm mục "TRÒ CHƠI NHỎ"; thẻ force update `[:mav: 1.0.6]` giữ nguyên), hộp "Có gì mới" trong app (`whatsNewVersion` = `1.0.10`, nút "Chơi thử" mở hộp Trò chơi).
+
+**BẮT BUỘC trước khi nộp:**
+- **Không có sản phẩm IAP mới** (khác 1.0.9) — không cần tạo gì thêm ở mục In-App Purchases.
+- **Supabase — chạy các file này** (idempotent, thứ tự tuỳ ý; hoặc `scripts/deploy_supabase_sql.sh`): `leaderboard_schema`, `m3_leaderboard_schema`, `accessory_leaderboard_schema`, `recipe_leaderboard_schema`, `recipe_order_leaderboard_schema`, `recipe_daily_schema`, `story_speedrun_schema`, `story_speedrun2_schema`, `story_speedrun3_schema`, `story_speedrun4_schema`, `event_leaderboard_schema`, `accessory_market_schema`, `leaderboard_rewards_schema`; và nếu chưa chạy từ các đợt trước: `guild_schema`, `accessory_swap_schema`, `player_profile_schema`, `referral_schema`. Bản app 1.0.10 gọi các RPC/bảng này nên **chạy SQL TRƯỚC khi người chơi cập nhật**. Sau khi chạy SQL, bản app CŨ (≤1.0.9) nộp điểm bằng tài khoản ẩn danh sẽ bị server từ chối (có chủ đích).
+- Review Notes: dán `APP_REVIEW_NOTES_1.0.10.md` (có đoạn email bắt buộc cho tính năng online).
+- Kiểm tra OTP email (Resend) còn hoạt động; reviewer cần nhận được mã.
+
+**Lệnh build:** `flutter build ipa --release --export-options-plist=ios/ExportOptions.plist --dart-define=IAP_VERIFY_ENDPOINT=https://boba-receipt-server-411559711815.asia-southeast1.run.app/verify` → upload bằng Xcode Organizer. Android: `flutter build appbundle --release` (versionCode lấy từ +24).
+
+⚠️ Mọi số cân bằng của Pha theo đơn / combo / Giờ cao điểm / thử thách / Hồi 4 là ước lượng, chưa playtest diện rộng. Bản dịch do máy soạn (es/id/ko/pt/th), chưa có người bản ngữ duyệt. Chưa thử trên Android/máy thật.
+
+### 🇻🇳 Tiếng Việt (vi)
+
+```
+Mới: PHA THEO ĐƠN & HỒI 4!
+
+• Pha theo đơn: kéo-thả nguyên liệu, khách chibi, combo, Giờ cao điểm, đơn lễ hội
+• Trò Công thức pha chế ôn cách quãng 100 món, mỗi trò có hướng dẫn
+• Thử thách hằng ngày + bảng xếp hạng Hôm nay, thưởng top tuần
+• Hồi 4 "Đại Hội Tay Nghề": 10 chương mới
+• Tự động chạm, trao đổi phụ kiện ở Chợ; tính năng online cần liên kết email
+```
+
+### 🇬🇧 English (en)
+
+```
+New: BREW BY ORDER & ACT 4!
+
+• Brew by order: drag ingredients, chibi customers, combos, Rush Hour, festival orders
+• Recipe game with spaced review of 100 drinks; every mini-game has a guide
+• Daily Challenge + Today leaderboard, weekly top rewards
+• Act 4 "Grand Craft Festival": 10 new chapters
+• Auto-tap, accessory swaps in the Market; online features need a linked email
+```
+
+### 🇪🇸 Español (es)
+
+```
+Novedad: PREPARAR PEDIDOS Y ACTO 4
+
+• Preparar pedidos: arrastra ingredientes, clientes chibi, combos, Hora punta, pedidos de fiesta
+• Juego de recetas con repaso espaciado de 100 bebidas; cada minijuego tiene guía
+• Reto diario + clasificación de Hoy, recompensas semanales al top
+• Acto 4 «Gran Festival del Oficio»: 10 capítulos nuevos
+• Toque automático, intercambio de accesorios en el Mercado; las funciones en línea requieren correo vinculado
+```
+
+### 🇮🇩 Bahasa Indonesia (id)
+
+```
+Baru: RACIK SESUAI PESANAN & BABAK 4!
+
+• Racik sesuai pesanan: seret bahan, pelanggan chibi, combo, Jam sibuk, pesanan festival
+• Game resep dengan ulangan berjeda 100 minuman; tiap mini-game punya panduan
+• Tantangan harian + papan peringkat Hari ini, hadiah mingguan untuk top
+• Babak 4 "Festival Keahlian Agung": 10 bab baru
+• Ketuk otomatis, tukar aksesori di Pasar; fitur online memerlukan email tertaut
+```
+
+### 🇰🇷 한국어 (ko)
+
+```
+신규: 주문대로 만들기 & 4막!
+
+• 주문대로 만들기: 재료 끌어놓기, 치비 손님, 콤보, 러시 아워, 축제 주문
+• 100가지 음료 간격 반복 레시피 게임, 모든 미니게임에 안내 추가
+• 일일 도전 + 오늘 순위, 주간 TOP 보상
+• 4막 "장인 대축제": 새 10개 장
+• 자동 터치, 마켓 액세서리 교환. 온라인 기능은 이메일 연결 필요
+```
+
+### 🇧🇷 Português (pt-BR)
+
+```
+Novo: PREPARAR PEDIDOS E ATO 4!
+
+• Preparar pedidos: arraste ingredientes, clientes chibi, combos, Hora de pico, pedidos de festival
+• Jogo de receitas com revisão espaçada de 100 bebidas; todo minijogo tem guia
+• Desafio diário + ranking de Hoje, recompensas semanais ao top
+• Ato 4 "Grande Festival do Ofício": 10 capítulos novos
+• Toque automático, troca de acessórios no Mercado; recursos online exigem e-mail vinculado
+```
+
+### 🇹🇭 ไทย (th)
+
+```
+ใหม่: ชงตามออเดอร์ & ภาค 4!
+
+• ชงตามออเดอร์: ลากวัตถุดิบ ลูกค้าชิบิ คอมโบ ชั่วโมงเร่งด่วน ออเดอร์เทศกาล
+• เกมสูตรทบทวนแบบเว้นระยะ 100 เครื่องดื่ม ทุกมินิเกมมีวิธีเล่น
+• ภารกิจประจำวัน + อันดับวันนี้ รางวัลท็อปรายสัปดาห์
+• ภาค 4 "เทศกาลฝีมือยิ่งใหญ่": 10 บทใหม่
+• แตะอัตโนมัติ แลกของตกแต่งในตลาด ฟีเจอร์ออนไลน์ต้องเชื่อมอีเมล
+```
+
+---
+
 ## 1.0.9 (+23) — 2026-10-11
 
 **Bản trước:** 1.0.8 (+22). Nộp store bằng **+23**. Nội dung: VIP 10 cấp + quà ngày/tuần/tháng + BXH VIP + Cửa hàng VIP + nạp lần đầu x2 (cần email để nạp), Hội (Boss tuần, nhãn/khung VIP, tặng 💎), Nhiệm vụ tuần + rương, thưởng mốc chuỗi điểm danh + bonus VIP, Ưu đãi hôm nay, hồ sơ người chơi (bấm dòng BXH), liên kết app→web (BXH/hồ sơ/hướng dẫn), Mời bạn bè, gói 💎 lớn (huge 14.99$ / mega 19.99$), Kho lạnh 2.99$, combo Gỡ QC + x2 5.99$.

@@ -1042,13 +1042,13 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewVip": "👑 Sistema VIP: 10 níveis, presentes diários/semanais/mensais, ranking VIP, Loja VIP e 2x 💎 na primeira recarga",
-  "whatsNewGuild": "🛡️ Guildas: Chefe semanal, selos e molduras VIP, presentear 💎 e ranking de guildas por VIP",
-  "whatsNewQuests": "📋 Missões semanais com baú, bônus de marcos da sequência (7/14/30/60/100 dias) e Oferta de hoje",
-  "whatsNewSocial": "🏆 Toque numa linha do ranking para ver o perfil; veja e compartilhe rankings na web; convide amigos e ganhe 💎",
-  "whatsNewShop": "💎 Novos pacotes grandes de gemas, Câmara fria permanente e combo Sem anúncios + renda 2x (é preciso e-mail para recarregar)",
+  "whatsNewOrders": "🧋 Preparar pedidos: arraste ingredientes ao copo, clientes chibi fofos, combos, Hora de pico e pedidos de festival",
+  "whatsNewRecipes": "📖 Jogo de receitas: revisão espaçada de 100 bebidas e sequência diária; todo minijogo tem guia de como jogar",
+  "whatsNewDaily": "📅 Desafio diário: os mesmos pedidos para todos, ranking de Hoje e recompensas semanais ao top",
+  "whatsNewAct4": "📜 Ato 4 \"Grande Festival do Ofício\": 10 capítulos, cada um liberado por um marco dos minijogos",
+  "whatsNewMore": "🤝 Toque automático, troca de acessórios no Mercado, missões de guilda; recursos online (rankings, Mercado, Guildas) exigem e-mail vinculado",
   "whatsNewLater": "Depois",
-  "whatsNewOpen": "Conhecer o VIP",
+  "whatsNewOpen": "Experimentar",
   "marketWallet": "{n} Moedas de Mercado",
   "@marketWallet": {
     "placeholders": {

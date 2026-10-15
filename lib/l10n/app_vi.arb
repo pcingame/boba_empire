@@ -1704,13 +1704,13 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewVip": "👑 Hệ thống VIP: 10 cấp, quà mỗi ngày/tuần/tháng, bảng xếp hạng VIP, Cửa hàng VIP và nạp lần đầu x2 💎",
-  "whatsNewGuild": "🛡️ Hội: Boss tuần, nhãn và khung VIP trong Hội, tặng 💎 cho nhau, bảng xếp hạng Hội theo VIP",
-  "whatsNewQuests": "📋 Nhiệm vụ tuần với rương thưởng, thưởng mốc chuỗi điểm danh (7/14/30/60/100 ngày) và Ưu đãi hôm nay",
-  "whatsNewSocial": "🏆 Bấm một dòng ở bảng xếp hạng để xem hồ sơ; xem và chia sẻ bảng xếp hạng trên web; mời bạn bè nhận 💎",
-  "whatsNewShop": "💎 Thêm gói Kim Cương lớn, Kho lạnh vĩnh viễn và combo Gỡ quảng cáo + x2 thu nhập (cần email để nạp)",
+  "whatsNewOrders": "🧋 Pha theo đơn: kéo-thả nguyên liệu vào ly, khách chibi dễ thương, combo, Giờ cao điểm và đơn lễ hội",
+  "whatsNewRecipes": "📖 Trò Công thức pha chế: ôn cách quãng 100 món, chuỗi ngày ôn; mỗi trò đều có hướng dẫn cách chơi",
+  "whatsNewDaily": "📅 Thử thách hằng ngày chung một đề cho mọi người, bảng xếp hạng Hôm nay và thưởng top tuần",
+  "whatsNewAct4": "📜 Hồi 4 \"Đại Hội Tay Nghề\": 10 chương, mỗi chương mở bằng mốc của các trò chơi nhỏ",
+  "whatsNewMore": "🤝 Tự động chạm, trao đổi phụ kiện ở Chợ, nhiệm vụ Hội; tính năng online (bảng xếp hạng, Chợ, Hội) cần liên kết email",
   "whatsNewLater": "Để sau",
-  "whatsNewOpen": "Khám phá VIP",
+  "whatsNewOpen": "Chơi thử",
   "marketWallet": "{n} Xu Chợ",
   "@marketWallet": {
     "placeholders": {
