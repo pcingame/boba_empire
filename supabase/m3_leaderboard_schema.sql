@@ -29,6 +29,16 @@ create table if not exists m3_leaderboard_entries (
 create index if not exists m3_leaderboard_entries_stars_idx
   on m3_leaderboard_entries (stars desc, updated_at asc);
 
+-- Tài khoản hiện tại đã liên kết email (không ẩn danh)? security definer vì vai trò authenticated không
+-- đọc được auth.users. ÉP Ở SERVER (không chỉ ở app): ai ghi vào bảng này phải đã liên kết email. Định nghĩa
+-- giống hệt ở mọi schema cần nó (create or replace) nên chạy file nào trước cũng được.
+create or replace function is_linked_user() returns boolean
+language sql stable security definer set search_path = public as $$
+  select exists (select 1 from auth.users u where u.id = auth.uid() and not u.is_anonymous)
+$$;
+revoke all on function is_linked_user() from public, anon;
+grant execute on function is_linked_user() to authenticated;
+
 alter table m3_leaderboard_entries enable row level security;
 
 -- Đọc: ai cũng được, kể cả chưa đăng nhập — bảng xếp hạng công khai.
@@ -39,12 +49,12 @@ create policy m3_leaderboard_select_all on m3_leaderboard_entries
 -- Ghi: chỉ hàng của chính mình.
 drop policy if exists m3_leaderboard_insert_own on m3_leaderboard_entries;
 create policy m3_leaderboard_insert_own on m3_leaderboard_entries
-  for insert to authenticated with check (auth.uid() = user_id);
+  for insert to authenticated with check (auth.uid() = user_id and is_linked_user());
 
 drop policy if exists m3_leaderboard_update_own on m3_leaderboard_entries;
 create policy m3_leaderboard_update_own on m3_leaderboard_entries
-  for update to authenticated using (auth.uid() = user_id)
-  with check (auth.uid() = user_id);
+  for update to authenticated using (auth.uid() = user_id and is_linked_user())
+  with check (auth.uid() = user_id and is_linked_user());
 
 -- Sao chỉ được TĂNG. Không có trigger này thì ai đó lỡ chơi bằng save cũ (hoặc
 -- xoá app chơi lại) sẽ tự đạp hạng của chính mình xuống.

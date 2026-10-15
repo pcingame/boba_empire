@@ -9,9 +9,8 @@
 -- (bảng xếp hạng công khai). Ghi thì vẫn chỉ được ghi đúng hàng của mình
 -- (giống cloud_save_schema.sql).
 --
--- Danh tính: dùng auth.uid() — bất kỳ phiên nào đang có (ẩn danh từ Đấu
--- Trường, hoặc permanent từ Đồng bộ đám mây) đều nộp được điểm, không bắt
--- buộc phải link email riêng cho bảng xếp hạng.
+-- Danh tính: dùng auth.uid(). TỪ 2026-10-15 chỉ tài khoản đã LIÊN KẾT email (không ẩn danh) mới ghi được
+-- (is_linked_user ở dưới) — trước đó mọi phiên kể cả ẩn danh đều nộp được.
 
 create table if not exists leaderboard_entries (
   user_id          uuid primary key references auth.users(id) on delete cascade,
@@ -42,6 +41,16 @@ alter table leaderboard_entries
 create index if not exists leaderboard_entries_lifetime_idx
   on leaderboard_entries (lifetime_earnings desc);
 
+-- Tài khoản hiện tại đã liên kết email (không ẩn danh)? security definer vì vai trò authenticated không
+-- đọc được auth.users. ÉP Ở SERVER (không chỉ ở app): ai ghi vào bảng này phải đã liên kết email. Định nghĩa
+-- giống hệt ở mọi schema cần nó (create or replace) nên chạy file nào trước cũng được.
+create or replace function is_linked_user() returns boolean
+language sql stable security definer set search_path = public as $$
+  select exists (select 1 from auth.users u where u.id = auth.uid() and not u.is_anonymous)
+$$;
+revoke all on function is_linked_user() from public, anon;
+grant execute on function is_linked_user() to authenticated;
+
 alter table leaderboard_entries enable row level security;
 
 -- Đọc: AI CŨNG được — kể cả chưa đăng nhập (anon) — bảng xếp hạng là công khai.
@@ -56,14 +65,14 @@ drop policy if exists leaderboard_entries_insert_own on leaderboard_entries;
 create policy leaderboard_entries_insert_own on leaderboard_entries
   for insert
   to authenticated
-  with check (auth.uid() = user_id);
+  with check (auth.uid() = user_id and is_linked_user());
 
 drop policy if exists leaderboard_entries_update_own on leaderboard_entries;
 create policy leaderboard_entries_update_own on leaderboard_entries
   for update
   to authenticated
-  using (auth.uid() = user_id)
-  with check (auth.uid() = user_id);
+  using (auth.uid() = user_id and is_linked_user())
+  with check (auth.uid() = user_id and is_linked_user());
 
 -- ─────────────────────────────────────────────────────────────────────────
 -- Chống gian lận (2026-09-12): điểm số vốn do CLIENT tự báo, chỉ có RLS
@@ -252,6 +261,10 @@ begin
 
   if my_rank is null then
     return 0; -- chưa từng nộp điểm lên bảng xếp hạng
+  end if;
+
+  if not is_linked_user() then
+    return 0; -- chưa liên kết email: không nhận thưởng bảng xếp hạng
   end if;
 
   if last_claim is not null and now() - last_claim < interval '24 hours' then

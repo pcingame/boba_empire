@@ -655,6 +655,16 @@ as $$
   where p_exp >= t.m;
 $$;
 
+-- Tài khoản hiện tại đã liên kết email (không ẩn danh)? security definer vì vai trò authenticated không
+-- đọc được auth.users. ÉP Ở SERVER (không chỉ ở app): ai ghi vào bảng này phải đã liên kết email. Định nghĩa
+-- giống hệt ở mọi schema cần nó (create or replace) nên chạy file nào trước cũng được.
+create or replace function is_linked_user() returns boolean
+language sql stable security definer set search_path = public as $$
+  select exists (select 1 from auth.users u where u.id = auth.uid() and not u.is_anonymous)
+$$;
+revoke all on function is_linked_user() from public, anon;
+grant execute on function is_linked_user() to authenticated;
+
 create or replace function submit_vip_exp(p_nickname text, p_exp bigint)
 returns void
 language plpgsql
@@ -665,6 +675,9 @@ declare v_name text := btrim(coalesce(p_nickname, ''));
 begin
   if auth.uid() is null then
     raise exception 'not authenticated';
+  end if;
+  if not is_linked_user() then
+    raise exception 'email link required';
   end if;
   -- Chưa có cấp VIP thì không lên bảng.
   if p_exp is null or vip_level_for_exp(p_exp) < 1 then

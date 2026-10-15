@@ -24,6 +24,16 @@ create table if not exists story_speedrun3_entries (
 create index if not exists story_speedrun3_entries_time_idx
   on story_speedrun3_entries (complete_seconds asc);
 
+-- Tài khoản hiện tại đã liên kết email (không ẩn danh)? security definer vì vai trò authenticated không
+-- đọc được auth.users. ÉP Ở SERVER (không chỉ ở app): ai ghi vào bảng này phải đã liên kết email. Định nghĩa
+-- giống hệt ở mọi schema cần nó (create or replace) nên chạy file nào trước cũng được.
+create or replace function is_linked_user() returns boolean
+language sql stable security definer set search_path = public as $$
+  select exists (select 1 from auth.users u where u.id = auth.uid() and not u.is_anonymous)
+$$;
+revoke all on function is_linked_user() from public, anon;
+grant execute on function is_linked_user() to authenticated;
+
 alter table story_speedrun3_entries enable row level security;
 
 -- Đọc: AI CŨNG được (kể cả anon) — bảng xếp hạng công khai.
@@ -40,7 +50,7 @@ drop policy if exists story_speedrun3_entries_insert_own on story_speedrun3_entr
 create policy story_speedrun3_entries_insert_own on story_speedrun3_entries
   for insert
   to authenticated
-  with check (auth.uid() = user_id);
+  with check (auth.uid() = user_id and is_linked_user());
 
 -- Top người hoàn thành nhanh nhất (top tuyệt đối, không "quanh hạng của bạn").
 create or replace function story_speedrun3_top(p_limit integer default 50)

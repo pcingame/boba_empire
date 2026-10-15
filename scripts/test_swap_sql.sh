@@ -10,7 +10,7 @@ pg_ctl -D "$TMP/pg" -o "-p $PORT -c unix_socket_directories=''" -l "$TMP/pg.log"
 for _ in $(seq 20); do psql -h 127.0.0.1 -p $PORT -U postgres -c 'select 1' >/dev/null 2>&1 && break; sleep 0.5; done
 P() { psql -h 127.0.0.1 -p $PORT -U postgres -v ON_ERROR_STOP=1 -q "$@"; }
 P <<'SQL'
-create schema auth; create table auth.users (id uuid primary key);
+create schema auth; create table auth.users (id uuid primary key, is_anonymous boolean not null default false);
 create function auth.uid() returns uuid language sql stable as
   $$ select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid $$;
 create role anon; create role authenticated; create publication supabase_realtime;
