@@ -4347,4 +4347,26 @@ class AppLocalizationsPt extends AppLocalizations {
   String recipeOrderFestivalTip(String cash) {
     return '🎁 Pedido do festival perfeito! Gorjeta +$cash moedas!';
   }
+
+  @override
+  String get recipeOrderShare => 'Mostrar este copo';
+
+  @override
+  String get cupShareTitle => 'Copo perfeito';
+
+  @override
+  String get cupSharePerfect => 'Preparo perfeito!';
+
+  @override
+  String cupShareText(String name) {
+    return 'Acabei de fazer um $name perfeito no Boba Empire! 🧋';
+  }
+
+  @override
+  String recipeCounterNext(int count) {
+    return 'Domine $count receitas para liberar mais 1 espaço de exibição';
+  }
+
+  @override
+  String get lbrBoardOrders => 'Preparar pedidos';
 }

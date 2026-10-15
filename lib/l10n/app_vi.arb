@@ -2924,5 +2924,13 @@
   "recipeOrderFestival": "Đơn lễ hội: {name}",
   "@recipeOrderFestival": {"placeholders": {"name": {"type": "String"}}},
   "recipeOrderFestivalTip": "🎁 Đơn lễ hội hoàn hảo! Tip +{cash} Xu!",
-  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}}
+  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}},
+  "recipeOrderShare": "Khoe ly này",
+  "cupShareTitle": "Ly hoàn hảo",
+  "cupSharePerfect": "Pha hoàn hảo!",
+  "cupShareText": "Mình vừa pha hoàn hảo {name} trong Boba Empire! 🧋",
+  "@cupShareText": {"placeholders": {"name": {"type": "String"}}},
+  "recipeCounterNext": "Thạo {count} món để mở thêm 1 chỗ trưng bày",
+  "@recipeCounterNext": {"placeholders": {"count": {"type": "int"}}},
+  "lbrBoardOrders": "Pha theo đơn"
 }

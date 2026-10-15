@@ -4337,4 +4337,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String recipeOrderFestivalTip(String cash) {
     return '🎁 Perfect festival order! Tip +$cash coins!';
   }
+
+  @override
+  String get recipeOrderShare => 'Show off this cup';
+
+  @override
+  String get cupShareTitle => 'Perfect cup';
+
+  @override
+  String get cupSharePerfect => 'Perfect pour!';
+
+  @override
+  String cupShareText(String name) {
+    return 'I just made a perfect $name in Boba Empire! 🧋';
+  }
+
+  @override
+  String recipeCounterNext(int count) {
+    return 'Master $count recipes to unlock 1 more display slot';
+  }
+
+  @override
+  String get lbrBoardOrders => 'Brew by order';
 }

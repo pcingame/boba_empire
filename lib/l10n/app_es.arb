@@ -1965,5 +1965,13 @@
   "recipeOrderFestival": "Pedido de fiesta: {name}",
   "@recipeOrderFestival": {"placeholders": {"name": {"type": "String"}}},
   "recipeOrderFestivalTip": "🎁 ¡Pedido de fiesta perfecto! Propina +{cash} monedas.",
-  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}}
+  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}},
+  "recipeOrderShare": "Presumir este vaso",
+  "cupShareTitle": "Vaso perfecto",
+  "cupSharePerfect": "¡Preparación perfecta!",
+  "cupShareText": "¡Acabo de preparar un {name} perfecto en Boba Empire! 🧋",
+  "@cupShareText": {"placeholders": {"name": {"type": "String"}}},
+  "recipeCounterNext": "Domina {count} recetas para desbloquear 1 espacio más",
+  "@recipeCounterNext": {"placeholders": {"count": {"type": "int"}}},
+  "lbrBoardOrders": "Preparar pedidos"
 }

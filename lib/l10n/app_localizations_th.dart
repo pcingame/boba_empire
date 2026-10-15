@@ -4299,4 +4299,26 @@ class AppLocalizationsTh extends AppLocalizations {
   String recipeOrderFestivalTip(String cash) {
     return '🎁 ออเดอร์เทศกาลสมบูรณ์แบบ! ทิป +$cash เหรียญ!';
   }
+
+  @override
+  String get recipeOrderShare => 'อวดแก้วนี้';
+
+  @override
+  String get cupShareTitle => 'แก้วสมบูรณ์แบบ';
+
+  @override
+  String get cupSharePerfect => 'ชงสมบูรณ์แบบ!';
+
+  @override
+  String cupShareText(String name) {
+    return 'ฉันเพิ่งชง $name ได้สมบูรณ์แบบใน Boba Empire! 🧋';
+  }
+
+  @override
+  String recipeCounterNext(int count) {
+    return 'เชี่ยวชาญ $count สูตรเพื่อเปิดช่องโชว์เพิ่ม 1 ช่อง';
+  }
+
+  @override
+  String get lbrBoardOrders => 'ชงตามออเดอร์';
 }

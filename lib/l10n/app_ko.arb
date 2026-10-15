@@ -1603,5 +1603,13 @@
   "recipeOrderFestival": "축제 주문: {name}",
   "@recipeOrderFestival": {"placeholders": {"name": {"type": "String"}}},
   "recipeOrderFestivalTip": "🎁 완벽한 축제 주문! 팁 +{cash} 코인!",
-  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}}
+  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}},
+  "recipeOrderShare": "이 컵 자랑하기",
+  "cupShareTitle": "완벽한 컵",
+  "cupSharePerfect": "완벽한 제조!",
+  "cupShareText": "Boba Empire에서 {name}을(를) 완벽하게 만들었어요! 🧋",
+  "@cupShareText": {"placeholders": {"name": {"type": "String"}}},
+  "recipeCounterNext": "레시피 {count}개를 마스터하면 진열 칸이 1개 늘어요",
+  "@recipeCounterNext": {"placeholders": {"count": {"type": "int"}}},
+  "lbrBoardOrders": "주문대로 만들기"
 }

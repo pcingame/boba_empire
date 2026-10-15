@@ -4246,4 +4246,26 @@ class AppLocalizationsKo extends AppLocalizations {
   String recipeOrderFestivalTip(String cash) {
     return '🎁 완벽한 축제 주문! 팁 +$cash 코인!';
   }
+
+  @override
+  String get recipeOrderShare => '이 컵 자랑하기';
+
+  @override
+  String get cupShareTitle => '완벽한 컵';
+
+  @override
+  String get cupSharePerfect => '완벽한 제조!';
+
+  @override
+  String cupShareText(String name) {
+    return 'Boba Empire에서 $name을(를) 완벽하게 만들었어요! 🧋';
+  }
+
+  @override
+  String recipeCounterNext(int count) {
+    return '레시피 $count개를 마스터하면 진열 칸이 1개 늘어요';
+  }
+
+  @override
+  String get lbrBoardOrders => '주문대로 만들기';
 }

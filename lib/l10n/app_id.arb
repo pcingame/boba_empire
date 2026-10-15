@@ -1965,5 +1965,13 @@
   "recipeOrderFestival": "Pesanan festival: {name}",
   "@recipeOrderFestival": {"placeholders": {"name": {"type": "String"}}},
   "recipeOrderFestivalTip": "🎁 Pesanan festival sempurna! Tip +{cash} koin!",
-  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}}
+  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}},
+  "recipeOrderShare": "Pamerkan gelas ini",
+  "cupShareTitle": "Gelas sempurna",
+  "cupSharePerfect": "Racikan sempurna!",
+  "cupShareText": "Aku baru membuat {name} yang sempurna di Boba Empire! 🧋",
+  "@cupShareText": {"placeholders": {"name": {"type": "String"}}},
+  "recipeCounterNext": "Kuasai {count} resep untuk membuka 1 slot pajangan lagi",
+  "@recipeCounterNext": {"placeholders": {"count": {"type": "int"}}},
+  "lbrBoardOrders": "Racik sesuai pesanan"
 }

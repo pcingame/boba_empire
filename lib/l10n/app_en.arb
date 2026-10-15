@@ -1965,5 +1965,13 @@
   "recipeOrderFestival": "Festival order: {name}",
   "@recipeOrderFestival": {"placeholders": {"name": {"type": "String"}}},
   "recipeOrderFestivalTip": "🎁 Perfect festival order! Tip +{cash} coins!",
-  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}}
+  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}},
+  "recipeOrderShare": "Show off this cup",
+  "cupShareTitle": "Perfect cup",
+  "cupSharePerfect": "Perfect pour!",
+  "cupShareText": "I just made a perfect {name} in Boba Empire! 🧋",
+  "@cupShareText": {"placeholders": {"name": {"type": "String"}}},
+  "recipeCounterNext": "Master {count} recipes to unlock 1 more display slot",
+  "@recipeCounterNext": {"placeholders": {"count": {"type": "int"}}},
+  "lbrBoardOrders": "Brew by order"
 }

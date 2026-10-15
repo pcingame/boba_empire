@@ -4315,4 +4315,26 @@ class AppLocalizationsVi extends AppLocalizations {
   String recipeOrderFestivalTip(String cash) {
     return '🎁 Đơn lễ hội hoàn hảo! Tip +$cash Xu!';
   }
+
+  @override
+  String get recipeOrderShare => 'Khoe ly này';
+
+  @override
+  String get cupShareTitle => 'Ly hoàn hảo';
+
+  @override
+  String get cupSharePerfect => 'Pha hoàn hảo!';
+
+  @override
+  String cupShareText(String name) {
+    return 'Mình vừa pha hoàn hảo $name trong Boba Empire! 🧋';
+  }
+
+  @override
+  String recipeCounterNext(int count) {
+    return 'Thạo $count món để mở thêm 1 chỗ trưng bày';
+  }
+
+  @override
+  String get lbrBoardOrders => 'Pha theo đơn';
 }

@@ -4326,4 +4326,26 @@ class AppLocalizationsId extends AppLocalizations {
   String recipeOrderFestivalTip(String cash) {
     return '🎁 Pesanan festival sempurna! Tip +$cash koin!';
   }
+
+  @override
+  String get recipeOrderShare => 'Pamerkan gelas ini';
+
+  @override
+  String get cupShareTitle => 'Gelas sempurna';
+
+  @override
+  String get cupSharePerfect => 'Racikan sempurna!';
+
+  @override
+  String cupShareText(String name) {
+    return 'Aku baru membuat $name yang sempurna di Boba Empire! 🧋';
+  }
+
+  @override
+  String recipeCounterNext(int count) {
+    return 'Kuasai $count resep untuk membuka 1 slot pajangan lagi';
+  }
+
+  @override
+  String get lbrBoardOrders => 'Racik sesuai pesanan';
 }

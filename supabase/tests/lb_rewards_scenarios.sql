@@ -44,6 +44,14 @@ insert into recipe_leaderboard_entries (user_id, nickname, mastered, updated_at)
   ('00000000-0000-0000-0000-000000000007', 'Anon', 50, now()),
   ('00000000-0000-0000-0000-000000000008', 'Zero', 0, now());
 
+-- Pha theo đơn: C 9; B và D hoà 4 (B nộp sớm hơn → hạng 2); u7 ẩn danh 77; u8 0 món. A không có mặt.
+insert into recipe_order_leaderboard_entries (user_id, nickname, perfected, updated_at) values
+  ('00000000-0000-0000-0000-000000000003', 'C', 9, now()),
+  ('00000000-0000-0000-0000-000000000002', 'B', 4, now() - interval '2 hours'),
+  ('00000000-0000-0000-0000-000000000004', 'D', 4, now() - interval '1 hour'),
+  ('00000000-0000-0000-0000-000000000007', 'Anon', 77, now()),
+  ('00000000-0000-0000-0000-000000000008', 'Zero', 0, now());
+
 select chk('hằng số thưởng 300/200/100, hạng ngoài top = 0',
   lb_reward_gems(1) = 300 and lb_reward_gems(2) = 200 and lb_reward_gems(3) = 100 and lb_reward_gems(4) = 0);
 
@@ -57,6 +65,8 @@ select chk('Ghép 3: D rồi A', (select string_agg(nickname, ',' order by rank)
 select chk('Sưu tập: B rồi C', (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'collection') = 'B,C');
 select chk('Thợ pha chế: B, C, D (hoà → nộp sớm hơn xếp trên; loại ẩn danh, 0 món, và A hạng 4)',
   (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'recipes') = 'B,C,D');
+select chk('Pha theo đơn: C, B, D (hoà → nộp sớm hơn xếp trên; loại ẩn danh và 0 món)',
+  (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'orders') = 'C,B,D');
 select chk('VIP: C rồi A', (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'vip') = 'C,A');
 select count(*) as n0 from lb_reward_snapshots \gset
 select week as w from lb_reward_snapshots limit 1 \gset
@@ -82,6 +92,9 @@ select chk('A (hạng 4 Thợ pha chế) không nhận được', err_of(format(
 select as_u(2); select chk('B Thợ pha chế hạng 1 = 300', lb_reward_claim(:'w', 'recipes') = 300);
 select chk('B nhận Thợ pha chế lần hai bị chặn', err_of(format('select lb_reward_claim(%L, ''recipes'')', :'w')) like '%already claimed%');
 select as_u(4); select chk('D Thợ pha chế hạng 3 = 100', lb_reward_claim(:'w', 'recipes') = 100);
+select as_u(3); select chk('C Pha theo đơn hạng 1 = 300', lb_reward_claim(:'w', 'orders') = 300);
+select chk('C nhận Pha theo đơn lần hai bị chặn', err_of(format('select lb_reward_claim(%L, ''orders'')', :'w')) like '%already claimed%');
+select as_u(1); select chk('A (không có trong bảng Pha theo đơn) không nhận được', err_of(format('select lb_reward_claim(%L, ''orders'')', :'w')) like '%not found%');
 select as_u(2); select chk('B thu nhập hạng 2 = 200', lb_reward_claim(:'w', 'income') = 200);
 select as_u(3); select chk('C thu nhập hạng 3 = 100', lb_reward_claim(:'w', 'income') = 100);
 select as_u(4); select chk('D (hạng 4 thu nhập) không nhận được', err_of(format('select lb_reward_claim(%L, ''income'')', :'w')) like '%not found%');

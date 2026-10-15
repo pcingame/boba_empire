@@ -1035,11 +1035,17 @@ Mọi chuyển động theo mức hiệu ứng (`EffectsQuality`/`reduceMotion`,
 - **Tùy chọn** (công tắc `order-rush-toggle`, chỉ hiện ở đơn đầu khi ly còn trống; KHÔNG có trong thử thách ngày để BXH công bằng). Bật thì mỗi đơn có thanh kiên nhẫn `order-patience` (xanh → cam → đỏ), `orderPatienceSeconds(n) = 20 + 8n` giây (n = số nguyên liệu). Đồng hồ tạm dừng khi bảng đặt lượng mở / đang xem QC / đang đậy nắp.
 - **Hết giờ**: khách bỏ đi, ly bị chấm NGUYÊN TRẠNG (ly trống thì sai) như phục vụ bình thường ⇒ vẫn ảnh hưởng bậc thuộc như đáp sai; đứt combo; không tip. Dòng "⏰ Hết giờ!" trong phản hồi.
 - **Thưởng**: đơn hoàn hảo, không gợi ý, KỊP GIỜ và tính bậc (món đến hạn — chống cày) nhận tip `orderRushBonusFactor` (=1 boa-nền) cộng vào tip combo (`grantOrderTip(combo, rush:)`). ⚠️ hệ số và thời gian là ước lượng, chưa playtest.
-- **Chưa làm (để mai)**: mục 9 chia sẻ ly, mục 10 trang trí quầy; khách Lottie; thưởng top tuần cho BXH Pha theo đơn / Hôm nay.
+- **Chưa làm**: khách Lottie đứng quầy (cần asset mới); thưởng top tuần cho BXH Hôm nay (điểm theo ngày, không cộng dồn — chưa có thiết kế phù hợp).
 
 ### 34m. Pha theo đơn — đơn lễ hội (2026-10-16)
 - Trong dịp lễ (`activeFestival`), buổi Pha theo đơn thường có thêm MỘT "đơn lễ hội" ở cuối (6 đơn thay vì 5): chip `order-festival` + khách mang emoji của dịp. Chỉ ở chế độ thường (không có trong thử thách ngày).
 - Món theo chủ đề dịp: `festivalRecipeIds` (recipe_orders.dart), toàn món nhóm 1–2; xoay theo ngày; bỏ món đã có trong buổi; không có món hợp lệ ⇒ không thêm đơn. **Thêm dịp lễ mới ở `accessories.dart` ⇒ phải thêm dòng ở đây** (test `đơn lễ hội` bắt thiếu).
 - Là đơn bình thường (ghi bậc, gợi ý, Giờ cao điểm, combo). Thưởng: hoàn hảo + không gợi ý + tính bậc ⇒ tip `orderFestivalBonusFactor` (=2 boa-nền) cộng dồn với combo/rush. KHÔNG cộng điểm sự kiện (giữ nguyên bài toán 100 < 115 điểm của `event_quests`). ⚠️ hệ số ước lượng, chưa playtest.
 - Kèm sửa: dòng nguyên liệu trong ly (tên + lượng) giờ co được, tránh tràn 13px ở 320px/chữ 1.5×.
-- **Chưa làm (để mai)**: mục 9 chia sẻ ly, mục 10 trang trí quầy; khách Lottie; thưởng top tuần cho BXH Pha theo đơn / Hôm nay.
+- **Chưa làm**: khách Lottie đứng quầy (cần asset mới); thưởng top tuần cho BXH Hôm nay (điểm theo ngày, không cộng dồn — chưa có thiết kế phù hợp).
+
+### 34n. Pha theo đơn — khoe ly, kệ trưng bày, thưởng top tuần (2026-10-16)
+- **Khoe ly** (`order-share`): đơn 3 sao (cả thử thách ngày) có nút mở `CupCard` (ly đậy nắp đúng màu các lớp + tên món + 3 sao) → chụp bằng RepaintBoundary, chia sẻ qua `shareImageProvider` (cùng khuôn thẻ sưu tập), lời kèm `bobaempiregame.com`. ⚠️ tên file ảnh chia sẻ dùng chung `boba_collection.png`.
+- **Kệ trưng bày** (`order-shelf`, `lib/core/recipe_counter.dart`): đầu màn đơn hiện phụ kiện đang trưng bày ở màn chính + chỗ phụ mở theo số món Thạo (10 / 30 / 60 ⇒ +1/+2/+3, lấy món hiếm nhất còn lại, cả độc quyền lễ hội). Chỉ để ngắm — không ảnh hưởng chơi. Chưa có phụ kiện thì ẩn; chưa đủ mốc thì có dòng nhắc "Thạo N món để mở thêm 1 chỗ".
+- **Thưởng top tuần cho BXH Pha theo đơn**: thêm `orders` vào `leaderboard_rewards_schema.sql` (CHECK + snapshot từ `recipe_order_leaderboard_entries.perfected`) và `LbBoard.orders` (300/200/100💎). **PHẢI chạy lại `leaderboard_rewards_schema.sql`** (idempotent; sau `recipe_order_leaderboard_schema.sql`). Bảng "Hôm nay" cố ý KHÔNG có thưởng tuần.
+- **Chưa làm**: khách Lottie đứng quầy (cần asset mới); thưởng cho BXH Hôm nay.

@@ -1965,5 +1965,13 @@
   "recipeOrderFestival": "Pedido do festival: {name}",
   "@recipeOrderFestival": {"placeholders": {"name": {"type": "String"}}},
   "recipeOrderFestivalTip": "🎁 Pedido do festival perfeito! Gorjeta +{cash} moedas!",
-  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}}
+  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}},
+  "recipeOrderShare": "Mostrar este copo",
+  "cupShareTitle": "Copo perfeito",
+  "cupSharePerfect": "Preparo perfeito!",
+  "cupShareText": "Acabei de fazer um {name} perfeito no Boba Empire! 🧋",
+  "@cupShareText": {"placeholders": {"name": {"type": "String"}}},
+  "recipeCounterNext": "Domine {count} receitas para liberar mais 1 espaço de exibição",
+  "@recipeCounterNext": {"placeholders": {"count": {"type": "int"}}},
+  "lbrBoardOrders": "Preparar pedidos"
 }

@@ -9,6 +9,7 @@ import '../ads/banner_ad_box.dart';
 import '../core/accessories.dart' show activeFestival, festivals;
 import '../core/daily.dart';
 import '../core/format.dart';
+import '../core/recipe_counter.dart';
 import '../core/recipe_mastery.dart';
 import '../core/recipe_names.dart';
 import '../core/recipe_orders.dart';
@@ -18,6 +19,7 @@ import '../l10n/l10n_ext.dart' show festivalName;
 import '../state/game_providers.dart';
 import '../state/recipe_providers.dart';
 import '../leaderboard/recipe_leaderboard_repository.dart' show RecipeBoard;
+import 'cup_share_dialog.dart';
 import 'email_gate.dart';
 import 'recipe_hub_page.dart' show recipeBoxName;
 import 'recipe_leaderboard_page.dart' show showRecipeLeaderboard;
@@ -583,6 +585,30 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     );
   }
 
+  /// Kệ trưng bày: phụ kiện đang trưng bày + chỗ phụ mở theo số món Thạo (xem recipe_counter.dart).
+  Widget _shelf(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final g = ref.watch(gameControllerProvider);
+    final mastered = recipeMasteredEver({for (final e in g.recipeProgress.entries) '${e.key}': e.value.toList()});
+    final items = counterShelf(
+        equipped: g.equippedAccessories, owned: {...g.ownedAccessories, ...g.ownedLimited}, mastered: mastered);
+    if (items.isEmpty) return const SizedBox.shrink();
+    final next = counterNextThreshold(mastered);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Wrap(
+          key: const Key('order-shelf'),
+          spacing: 6,
+          runSpacing: 4,
+          children: [for (final a in items) Text(a.emoji, style: const TextStyle(fontSize: 22))],
+        ),
+        if (next != null) Text(l10n.recipeCounterNext(next), style: theme.textTheme.bodySmall),
+      ]),
+    );
+  }
+
   Widget _order(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
@@ -596,6 +622,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                _shelf(context),
                 if (o.festival != null)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 6),
@@ -705,7 +732,19 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
               children: [
                 if (last != null)
                   Flexible(child: SingleChildScrollView(child: _feedback(context, l10n, last))),
-                if (last != null) const SizedBox(height: 8),
+                if (last != null && last.grade.stars == 3)
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton.icon(
+                      key: const Key('order-share'),
+                      onPressed: () => showCupShare(context,
+                          recipeName: _labels.recipe(last.order.recipe),
+                          layers: [for (final p in _poured) CupLayer(ingredientColor(p.item.name), _cupFraction(p))]),
+                      icon: const Icon(Icons.ios_share, size: 20),
+                      label: Text(l10n.recipeOrderShare),
+                    ),
+                  ),
+                if (last != null) const SizedBox(height: 4),
                 if (last == null)
                   FilledButton(
                     key: const Key('order-serve'),

@@ -1965,5 +1965,13 @@
   "recipeOrderFestival": "ออเดอร์เทศกาล: {name}",
   "@recipeOrderFestival": {"placeholders": {"name": {"type": "String"}}},
   "recipeOrderFestivalTip": "🎁 ออเดอร์เทศกาลสมบูรณ์แบบ! ทิป +{cash} เหรียญ!",
-  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}}
+  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}},
+  "recipeOrderShare": "อวดแก้วนี้",
+  "cupShareTitle": "แก้วสมบูรณ์แบบ",
+  "cupSharePerfect": "ชงสมบูรณ์แบบ!",
+  "cupShareText": "ฉันเพิ่งชง {name} ได้สมบูรณ์แบบใน Boba Empire! 🧋",
+  "@cupShareText": {"placeholders": {"name": {"type": "String"}}},
+  "recipeCounterNext": "เชี่ยวชาญ {count} สูตรเพื่อเปิดช่องโชว์เพิ่ม 1 ช่อง",
+  "@recipeCounterNext": {"placeholders": {"count": {"type": "int"}}},
+  "lbrBoardOrders": "ชงตามออเดอร์"
 }

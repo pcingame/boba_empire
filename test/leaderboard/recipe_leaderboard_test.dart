@@ -43,6 +43,16 @@ void main() {
     ]).map((r) => r.board), [LbBoard.recipes]);
   });
 
+  test('bảng thưởng có Pha theo đơn (cộng dồn) nhưng KHÔNG có bảng "Hôm nay" (điểm theo ngày)', () {
+    final rewards = File('supabase/leaderboard_rewards_schema.sql').readAsStringSync();
+    expect(rewards, contains("'orders'"));
+    expect(rewards, contains('recipe_order_leaderboard_entries'));
+    expect(rewards, contains('e.perfected::numeric as v'));
+    expect(rewards, isNot(contains('recipe_daily_scores')));
+    expect(LbBoard.values.map((b) => b.name), containsAll(['orders']));
+    expect(LbBoard.values.map((b) => b.name), isNot(contains('daily')));
+  });
+
   test('đọc một hàng từ RPC', () {
     final e = RecipeLeaderboardEntry.fromRow(const {'user_id': 'abc', 'nickname': 'Boba', 'mastered': 7, 'rank': 3});
     expect((e.userId, e.nickname, e.mastered, e.rank), ('abc', 'Boba', 7, 3));

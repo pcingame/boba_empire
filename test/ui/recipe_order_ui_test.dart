@@ -5,7 +5,7 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:boba_empire/ads/ad_service.dart';
-import 'package:boba_empire/core/accessories.dart' show festivals;
+import 'package:boba_empire/core/accessories.dart' show accessories, festivals;
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/core/recipe_mastery.dart';
 import 'package:boba_empire/core/recipe_names.dart';
@@ -15,8 +15,10 @@ import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/state/recipe_providers.dart';
+import 'package:boba_empire/ui/collection_share_dialog.dart' show shareImageProvider;
 import 'package:boba_empire/ui/recipe_order_page.dart';
 import 'package:boba_empire/ui/widgets/order_visuals.dart';
+import 'package:flutter/foundation.dart' show Uint8List;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -62,6 +64,7 @@ Future<ProviderContainer> _pump(
   double textScale = 1.0,
   AdService? ads,
   bool daily = false,
+  Future<void> Function(Uint8List, String, Rect?)? share,
   void Function(GameState)? setup,
 }) async {
   tester.view.physicalSize = size * 2;
@@ -82,6 +85,7 @@ Future<ProviderContainer> _pump(
     recipeNamesProvider.overrideWith((ref) async => _names()),
     recipeRandomProvider.overrideWithValue(Random(seed)),
     if (ads != null) adServiceProvider.overrideWithValue(ads),
+    if (share != null) shareImageProvider.overrideWithValue(share),
   ]);
   _live.add(c);
   await tester.pumpWidget(UncontrolledProviderScope(
@@ -675,6 +679,111 @@ void main() {
         await toLast(tester, os);
         expect(find.byKey(const Key('order-festival')), findsOneWidget);
         await _serveExact(tester, os.last);
+        expect(tester.takeException(), isNull);
+        await _teardown(tester);
+      });
+    }
+  });
+
+  group('kệ trưng bày + khoe ly', () {
+    testWidgets('không có phụ kiện → không có kệ', (tester) async {
+      await _pump(tester, size: const Size(400, 1000));
+      expect(find.byKey(const Key('order-shelf')), findsNothing);
+      await _teardown(tester);
+    });
+
+    testWidgets('kệ hiện phụ kiện đang trưng bày; chưa đủ món Thạo thì có dòng nhắc mốc đầu', (tester) async {
+      final a = accessories.first;
+      await _pump(tester, size: const Size(400, 1000), setup: (g) {
+        g.ownedAccessories.add(a.id);
+        g.equippedAccessories.add(a.id);
+      });
+      expect(find.byKey(const Key('order-shelf')), findsOneWidget);
+      expect(find.descendant(of: find.byKey(const Key('order-shelf')), matching: find.text(a.emoji)), findsOneWidget);
+      expect(find.text('Thạo 10 món để mở thêm 1 chỗ trưng bày'), findsOneWidget);
+      await _teardown(tester);
+    });
+
+    testWidgets('đủ 10 món Thạo → mở 1 chỗ phụ cho món hiếm nhất trong kho; dòng nhắc chuyển sang mốc 30', (tester) async {
+      final top = ([...accessories]..sort((a, b) {
+          final r = b.rarity.index.compareTo(a.rarity.index);
+          return r != 0 ? r : a.id.compareTo(b.id);
+        }))
+          .first;
+      final eq = accessories.firstWhere((a) => a.rarity != top.rarity);
+      await _pump(tester, size: const Size(400, 1000), setup: (g) {
+        g.ownedAccessories.addAll([top.id, eq.id]);
+        g.equippedAccessories.add(eq.id);
+        for (final r in _catalog().recipes.take(10)) {
+          g.recipeProgress['${r.id}'] = [3, 9999999, 3];
+        }
+      });
+      final shelf = find.byKey(const Key('order-shelf'));
+      expect(find.descendant(of: shelf, matching: find.text(top.emoji)), findsOneWidget);
+      expect(find.text('Thạo 30 món để mở thêm 1 chỗ trưng bày'), findsOneWidget);
+      await _teardown(tester);
+    });
+
+    testWidgets('chỉ đơn hoàn hảo mới có nút Khoe ly; bấm → thẻ có tên món; chia sẻ ra PNG kèm lời', (tester) async {
+      Uint8List? png;
+      String? caption;
+      await _pump(tester, size: const Size(400, 1000), share: (b, t, o) async {
+        png = b;
+        caption = t;
+      });
+      final o = _expected(1).first;
+      expect(find.byKey(const Key('order-share')), findsNothing);
+      await _serveExact(tester, o);
+      await tester.tap(find.byKey(const Key('order-share')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('cup-card-name')), findsOneWidget);
+      expect(tester.widget<Text>(find.byKey(const Key('cup-card-name'))).data, o.recipe.name);
+      await tester.runAsync(() async {
+        await tester.tap(find.byIcon(Icons.ios_share).last);
+        await Future<void>.delayed(const Duration(milliseconds: 300));
+      });
+      await tester.pump();
+      expect(png!.sublist(0, 4), [0x89, 0x50, 0x4E, 0x47]);
+      expect(caption, contains(o.recipe.name));
+      expect(caption, contains('bobaempiregame.com'));
+      await _teardown(tester);
+    });
+
+    testWidgets('đơn sai → không có nút Khoe ly; chia sẻ lỗi → báo lỗi, không crash', (tester) async {
+      await _pump(tester, size: const Size(400, 1000), share: (_, _, _) async => throw 'boom');
+      final o = _expected(1).first;
+      final i = o.recipe.ingredients.first;
+      await _pour(tester, i.name, i.unit, i.qty);
+      await tester.tap(find.byKey(const Key('order-serve')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('order-share')), findsNothing);
+      await _teardown(tester);
+
+      await _pump(tester, size: const Size(400, 1000), share: (_, _, _) async => throw 'boom');
+      await _serveExact(tester, o);
+      await tester.tap(find.byKey(const Key('order-share')));
+      await tester.pumpAndSettle();
+      await tester.runAsync(() async {
+        await tester.tap(find.byIcon(Icons.ios_share).last);
+        await Future<void>.delayed(const Duration(milliseconds: 300));
+      });
+      await tester.pump();
+      expect(find.textContaining('Không chia sẻ được'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await _teardown(tester);
+    });
+
+    for (final loc in ['vi', 'en', 'es', 'id', 'ko', 'pt', 'th']) {
+      testWidgets('320px, chữ 1.5×, $loc: kệ + nút khoe ly + thẻ không tràn', (tester) async {
+        final a = accessories.first;
+        await _pump(tester, locale: loc, textScale: 1.5, setup: (g) {
+          g.ownedAccessories.add(a.id);
+          g.equippedAccessories.add(a.id);
+        });
+        await _serveExact(tester, _expected(1).first);
+        await tester.tap(find.byKey(const Key('order-share')));
+        await tester.pumpAndSettle();
+        expect(find.byKey(const Key('cup-card-name')), findsOneWidget);
         expect(tester.takeException(), isNull);
         await _teardown(tester);
       });

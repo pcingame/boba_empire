@@ -7301,6 +7301,42 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'🎁 Đơn lễ hội hoàn hảo! Tip +{cash} Xu!'**
   String recipeOrderFestivalTip(String cash);
+
+  /// No description provided for @recipeOrderShare.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khoe ly này'**
+  String get recipeOrderShare;
+
+  /// No description provided for @cupShareTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ly hoàn hảo'**
+  String get cupShareTitle;
+
+  /// No description provided for @cupSharePerfect.
+  ///
+  /// In vi, this message translates to:
+  /// **'Pha hoàn hảo!'**
+  String get cupSharePerfect;
+
+  /// No description provided for @cupShareText.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mình vừa pha hoàn hảo {name} trong Boba Empire! 🧋'**
+  String cupShareText(String name);
+
+  /// No description provided for @recipeCounterNext.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thạo {count} món để mở thêm 1 chỗ trưng bày'**
+  String recipeCounterNext(int count);
+
+  /// No description provided for @lbrBoardOrders.
+  ///
+  /// In vi, this message translates to:
+  /// **'Pha theo đơn'**
+  String get lbrBoardOrders;
 }
 
 class _AppLocalizationsDelegate
