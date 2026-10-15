@@ -117,6 +117,130 @@ void main() {
     await _teardown(tester);
   });
 
+  testWidgets('bật hiệu ứng: bảng phản hồi hiện dần (mờ → rõ), tắt thì rõ ngay', (tester) async {
+    await _pump(tester);
+    final recipe = buildOrders(_catalog(), {}, 100, Random(1), pool: unlockedRecipes(_catalog(), (id) => 0)).first.recipe;
+    await _pourAll(tester, recipe);
+    await tester.tap(find.byKey(const Key('order-serve')));
+    final fb = find.byKey(const Key('order-feedback'));
+    for (var i = 0; i < 200 && fb.evaluate().isEmpty; i++) {
+      await tester.pump(const Duration(milliseconds: 16));
+    }
+    expect(fb, findsOneWidget);
+    double minOpacity() => tester
+        .widgetList<Opacity>(find.ancestor(of: fb, matching: find.byType(Opacity)))
+        .map((o) => o.opacity)
+        .fold(1.0, min);
+    await tester.pump(const Duration(milliseconds: 60));
+    expect(minOpacity(), lessThan(1.0), reason: 'đang hiện dần');
+    await _for(tester, 600);
+    expect(minOpacity(), 1.0);
+    await _teardown(tester);
+  });
+
+  List<Order> sessionOrders() =>
+      buildOrders(_catalog(), {}, 100, Random(1), pool: unlockedRecipes(_catalog(), (id) => 0));
+
+  Future<void> serveAndFinish(WidgetTester tester, Recipe r) async {
+    await _pourAll(tester, r);
+    await tester.tap(find.byKey(const Key('order-serve')));
+    await _for(tester, 1300);
+  }
+
+  double maxScaleAbove(WidgetTester tester, Finder f) => tester
+      .widgetList<ScaleTransition>(find.ancestor(of: f, matching: find.byType(ScaleTransition)))
+      .map((t) => t.scale.value)
+      .fold(1.0, max);
+
+  testWidgets('ly nhấp nhẹ khi phục vụ hoàn hảo rồi về 1.0; đơn sai thì không nhấp', (tester) async {
+    await _pump(tester);
+    final os = sessionOrders();
+    await _pourAll(tester, os[0].recipe);
+    expect(maxScaleAbove(tester, find.byKey(const Key('order-cup'))), 1.0, reason: 'chưa phục vụ');
+    await tester.tap(find.byKey(const Key('order-serve')));
+    final fb = find.byKey(const Key('order-feedback'));
+    for (var i = 0; i < 200 && fb.evaluate().isEmpty; i++) {
+      await tester.pump(const Duration(milliseconds: 16));
+    }
+    await tester.pump(const Duration(milliseconds: 80));
+    expect(maxScaleAbove(tester, find.byKey(const Key('order-cup'))), greaterThan(1.0));
+    await _for(tester, 500);
+    expect(maxScaleAbove(tester, find.byKey(const Key('order-cup'))), 1.0);
+    await tester.tap(find.byKey(const Key('order-next')));
+    await _for(tester, 500);
+    // Đơn 2: chỉ cho nguyên liệu đầu (món ≥ 2 nguyên liệu) → sai → ly không nhấp.
+    final r2 = os[1].recipe;
+    final i0 = r2.ingredients.first;
+    await tester.ensureVisible(find.byKey(Key('order-tray-${i0.name}')));
+    await _for(tester, 100);
+    await tester.tap(find.byKey(Key('order-tray-${i0.name}')));
+    await _for(tester, 400);
+    await tester.tap(find.byKey(const Key('order-pour')));
+    await _for(tester, 500);
+    await tester.tap(find.byKey(const Key('order-serve')));
+    for (var i = 0; i < 200 && fb.evaluate().isEmpty; i++) {
+      await tester.pump(const Duration(milliseconds: 16));
+    }
+    await tester.pump(const Duration(milliseconds: 80));
+    expect(find.text('Chưa đúng món'), findsOneWidget);
+    expect(maxScaleAbove(tester, find.byKey(const Key('order-cup'))), 1.0);
+    await _teardown(tester);
+  });
+
+  testWidgets('tổng kết: ba sao nảy ra lần lượt (sao sau còn nhỏ khi sao đầu đã lớn), cuối cùng đủ cỡ', (tester) async {
+    await _pump(tester);
+    final os = sessionOrders();
+    for (final o in os) {
+      await serveAndFinish(tester, o.recipe);
+      await tester.tap(find.byKey(const Key('order-next')));
+      if (o != os.last) await _for(tester, 500);
+    }
+    await tester.pump(); // màn tổng kết vừa dựng: các sao bắt đầu nảy từ đây
+    expect(find.byKey(const Key('order-result')), findsOneWidget);
+    final stars = find.byIcon(Icons.star_rounded);
+    expect(stars, findsNWidgets(3));
+    double scaleOf(int i) {
+      final t = tester.widget<Transform>(find.ancestor(of: stars.at(i), matching: find.byType(Transform)).first);
+      return t.transform.storage[0]; // hệ số phóng theo trục x
+    }
+    await tester.pump(const Duration(milliseconds: 120));
+    expect(scaleOf(0), greaterThan(scaleOf(2)), reason: 'sao đầu nảy trước sao cuối');
+    expect(scaleOf(2), lessThan(0.5));
+    await _for(tester, 1600);
+    for (var i = 0; i < 3; i++) {
+      expect(scaleOf(i), closeTo(1.0, 1e-6));
+    }
+    await _teardown(tester);
+  });
+
+  testWidgets('Giờ cao điểm: thanh kiên nhẫn trôi mượt giữa hai nhịp đồng hồ (không giật từng 200ms)', (tester) async {
+    await _pump(tester);
+    await tester.tap(find.byKey(const Key('order-rush-toggle')));
+    await tester.pump();
+    double v() => tester.widget<LinearProgressIndicator>(find.byKey(const Key('order-patience'))).value!;
+    expect(v(), 1.0);
+    await tester.pump(const Duration(milliseconds: 200)); // nhịp đầu: đích mới < 1
+    await tester.pump(const Duration(milliseconds: 100)); // giữa chừng
+    final patience = orderPatienceSeconds(sessionOrders().first.recipe.ingredients.length) * 1000;
+    final target = (patience - 200) / patience;
+    expect(v(), lessThan(1.0));
+    expect(v(), greaterThan(target), reason: 'chưa tới đích của nhịp — đang chạy mượt');
+    await _for(tester, 400);
+    expect(v(), lessThan(target + 1e-9));
+    await _teardown(tester);
+  });
+
+  testWidgets('chip khay đổi màu mượt khi bật hiệu ứng (220ms); tắt hiệu ứng thì tức thì', (tester) async {
+    await _pump(tester);
+    final name = sessionOrders().first.recipe.ingredients.first.name;
+    Duration dur() => tester.widget<Material>(find.descendant(of: find.byKey(Key('order-tray-$name')), matching: find.byType(Material)).first).animationDuration;
+    expect(dur(), const Duration(milliseconds: 220));
+    await _teardown(tester);
+    await _pump(tester, quality: EffectsPref.off);
+    expect(dur(), Duration.zero);
+    await _teardown(tester);
+  });
+
   testWidgets('tắt hiệu ứng: chấm ngay, không chờ đậy nắp', (tester) async {
     await _pump(tester, quality: EffectsPref.off);
     final recipe = buildOrders(_catalog(), {}, 100, Random(1), pool: unlockedRecipes(_catalog(), (id) => 0)).first.recipe;

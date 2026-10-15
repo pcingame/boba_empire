@@ -5,7 +5,7 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:boba_empire/ads/ad_service.dart';
-import 'package:boba_empire/core/accessories.dart' show accessories, festivals;
+import 'package:boba_empire/core/accessories.dart' show accessories;
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/core/recipe_mastery.dart';
 import 'package:boba_empire/core/recipe_names.dart';
@@ -20,6 +20,7 @@ import 'package:boba_empire/ui/recipe_order_page.dart';
 import 'package:boba_empire/ui/widgets/order_visuals.dart';
 import 'package:flutter/foundation.dart' show Uint8List;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show SystemChannels;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -585,6 +586,27 @@ void main() {
       await _teardown(tester);
     });
 
+    testWidgets('popup che màn (VD cutscene Hồi 4 mở khoá giữa đơn) ⇒ đồng hồ đứng; đóng popup thì chạy tiếp', (tester) async {
+      await _pump(tester, size: const Size(400, 1000));
+      await rushOn(tester);
+      final o = _expected(1).first;
+      final total = orderPatienceSeconds(o.recipe.ingredients.length);
+      double v() => tester.widget<LinearProgressIndicator>(find.byKey(const Key('order-patience'))).value!;
+      showDialog<void>(context: tester.element(find.byType(RecipeOrderPage)), builder: (_) => const AlertDialog(content: Text('popup')));
+      await tester.pumpAndSettle();
+      await tester.pump(Duration(seconds: total * 3)); // lâu gấp 3 lần kiên nhẫn
+      expect(find.byKey(const Key('order-feedback')), findsNothing);
+      expect(v(), 1.0, reason: 'không trôi một giây nào lúc có popup');
+      Navigator.of(tester.element(find.text('popup'))).pop();
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 5));
+      expect(v(), lessThan(1.0));
+      expect(find.byKey(const Key('order-feedback')), findsNothing);
+      await tester.pump(Duration(seconds: total));
+      expect(find.byKey(const Key('order-feedback')), findsOneWidget);
+      await _teardown(tester);
+    });
+
     testWidgets('đơn sau có đồng hồ mới đầy lại', (tester) async {
       await _pump(tester, size: const Size(400, 1000));
       await rushOn(tester);
@@ -683,6 +705,64 @@ void main() {
         await _teardown(tester);
       });
     }
+  });
+
+  group('rung phản hồi (haptics)', () {
+    final calls = <String>[];
+    setUp(() {
+      calls.clear();
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(SystemChannels.platform, (c) async {
+        if (c.method == 'HapticFeedback.vibrate') calls.add(c.arguments as String);
+        return null;
+      });
+    });
+    tearDown(() => TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(SystemChannels.platform, null));
+
+    testWidgets('rót xong: nhẹ; phục vụ hoàn hảo: vừa; phục vụ sai: mạnh', (tester) async {
+      await _pump(tester, size: const Size(400, 1000));
+      final os = _expected(1);
+      await _serveExact(tester, os[0]);
+      expect(calls.where((x) => x.contains('lightImpact')).length, os[0].recipe.ingredients.length);
+      expect(calls.where((x) => x.contains('mediumImpact')).length, 1);
+      expect(calls.where((x) => x.contains('heavyImpact')), isEmpty);
+      await tester.tap(find.byKey(const Key('order-next')));
+      await tester.pumpAndSettle();
+      calls.clear();
+      final i = os[1].recipe.ingredients.first;
+      await _pour(tester, i.name, i.unit, i.qty);
+      await tester.tap(find.byKey(const Key('order-serve')));
+      await tester.pumpAndSettle();
+      expect(calls.where((x) => x.contains('heavyImpact')).length, 1);
+      expect(calls.where((x) => x.contains('mediumImpact')), isEmpty);
+      await _teardown(tester);
+    });
+
+    testWidgets('thử thách ngày cũng rung khi chấm', (tester) async {
+      await _pump(tester, size: const Size(400, 1000), daily: true);
+      final o = buildDailyOrders(_catalog(), 100).first;
+      await _serveExact(tester, o);
+      expect(calls.where((x) => x.contains('mediumImpact')).length, 1);
+      await _teardown(tester);
+    });
+  });
+
+  group('khay: chip đã rót hiện ✓ + lượng', () {
+    testWidgets('rót xong chip hiện "✓ lượng"; bỏ ra thì mất', (tester) async {
+      await _pump(tester, size: const Size(400, 1000));
+      final i = _expected(1).first.recipe.ingredients.first;
+      expect(find.byKey(Key('order-tray-amount-${i.name}')), findsNothing);
+      await _pour(tester, i.name, i.unit, i.qty);
+      final t = tester.widget<Text>(find.byKey(Key('order-tray-amount-${i.name}')));
+      expect(t.data, startsWith('✓ '));
+      expect(t.data, contains(i.unit));
+      await tester.tap(find.byKey(Key('order-poured-${i.name}')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('order-remove')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(Key('order-tray-amount-${i.name}')), findsNothing);
+      await _teardown(tester);
+    });
   });
 
   group('kệ trưng bày + khoe ly', () {

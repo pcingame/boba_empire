@@ -92,6 +92,29 @@ class _Served {
 /// Emoji đại diện dịp lễ (món sưu tập đầu tiên của dịp).
 String _festivalEmoji(String id) => festivals.firstWhere((f) => f.id == id).items.first.emoji;
 
+/// Ngôi sao tổng kết nảy ra lần lượt (sao rỗng hiện ngay); tắt chuyển động thì hiện luôn.
+class _StarPop extends StatelessWidget {
+  const _StarPop({required this.index, required this.filled});
+  final int index;
+  final bool filled;
+
+  @override
+  Widget build(BuildContext context) {
+    final star = Icon(filled ? Icons.star_rounded : Icons.star_outline_rounded,
+        size: 34, color: Colors.amber.shade600);
+    if (!filled || reduceMotion) return star;
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: Duration(milliseconds: 420 + index * 260),
+      builder: (context, t, child) {
+        final local = Interval(index * 260 / (420 + index * 260), 1, curve: Curves.elasticOut).transform(t);
+        return Transform.scale(scale: local, child: child);
+      },
+      child: star,
+    );
+  }
+}
+
 String _amt(double v, String unit) => '${v == v.roundToDouble() ? v.round() : v} $unit';
 
 /// Phần chiều cao ly mà đồng hồ rót trong bảng đặt lượng dùng (cũng là thang của vạch chia/vạch mốc).
@@ -139,7 +162,9 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
   }
 
   void _tick() {
+    // Đang có popup che màn (VD cutscene Hồi 4 vừa mở khoá) ⇒ đứng đồng hồ, khách không bỏ đi lúc người chơi đang đọc.
     if (!mounted || _finished || _checked || _sealing || _sheetOpen || _watchingAd) return;
+    if (!(ModalRoute.of(context)?.isCurrent ?? true)) return;
     setState(() => _leftMs -= _tickMs);
     if (_leftMs <= 0) _grade(late: true);
   }
@@ -199,6 +224,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     setState(() {
       if (at >= 0) _poured.removeAt(at);
       if (r >= 0) {
+        HapticFeedback.lightImpact();
         _poured.add(Poured(item, r));
         if (isTopping(item.name)) {
           _drops++;
@@ -224,6 +250,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     if (_checked || (_poured.isEmpty && !late)) return;
     final order = _orders[_index];
     final grade = gradeOrder(order, _poured);
+    grade.stars == 3 ? HapticFeedback.mediumImpact() : HapticFeedback.heavyImpact();
     if (widget.daily) {
       // Thử thách ngày: chỉ chấm điểm, KHÔNG ghi bậc / thưởng từng đơn / combo / BXH Pha theo đơn.
       const none = RecipeProgress();
@@ -467,7 +494,10 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     final last = _checked ? _served.last : null;
     return ShakeOnTrigger(
       trigger: last != null && !last.grade.correct ? 1 : 0,
-      child: DragTarget<TrayItem>(
+      child: PulseOnIncrease(
+        value: _served.where((x) => x.grade.stars == 3).length,
+        peak: 1.05,
+        child: DragTarget<TrayItem>(
         onAcceptWithDetails: (d) => _edit(d.data),
         builder: (context, candidate, _) => AnimatedContainer(
           key: const Key('order-cup'),
@@ -536,13 +566,17 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
             ),
           ]),
         ),
+        ),
       ),
     );
   }
 
   Widget _chip(BuildContext context, TrayItem t, {required bool used, bool dragging = false}) {
     final theme = Theme.of(context);
+    final poured = used ? _poured.where((p) => p.item.name == t.name).firstOrNull : null;
     return Material(
+      // Đã rót thì chip đổi màu mượt + hiện dấu ✓ và lượng đã rót ngay trên khay.
+      animationDuration: reduceMotion ? Duration.zero : const Duration(milliseconds: 220),
       color: used ? theme.colorScheme.primaryContainer : theme.colorScheme.surface,
       elevation: dragging ? 6 : 1,
       borderRadius: BorderRadius.circular(14),
@@ -554,8 +588,16 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
             Text(ingredientEmoji(t.name), style: const TextStyle(fontSize: 20)),
             const SizedBox(width: 6),
             Flexible(
-              child: Text(_labels.ingredient(t.name),
-                  maxLines: 2, overflow: TextOverflow.ellipsis, style: theme.textTheme.bodyMedium),
+              child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(_labels.ingredient(t.name),
+                    maxLines: 2, overflow: TextOverflow.ellipsis, style: theme.textTheme.bodyMedium),
+                if (poured != null)
+                  Text('✓ ${_amt(poured.value, poured.item.unit)}',
+                      key: Key('order-tray-amount-${t.name}'),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w800)),
+              ]),
             ),
           ]),
         ),
@@ -664,11 +706,16 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
                     padding: const EdgeInsets.only(top: 8),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(6),
-                      child: LinearProgressIndicator(
-                        key: const Key('order-patience'),
-                        minHeight: 8,
-                        value: (_leftMs / _patienceMs()).clamp(0.0, 1.0),
-                        color: _leftMs * 4 < _patienceMs() ? Colors.red : (_leftMs * 2 < _patienceMs() ? Colors.orange : Colors.green),
+                      child: TweenAnimationBuilder<double>(
+                        // Mượt giữa các nhịp 200ms của đồng hồ (và khi đơn mới đầy lại).
+                        tween: Tween(end: (_leftMs / _patienceMs()).clamp(0.0, 1.0)),
+                        duration: reduceMotion ? Duration.zero : const Duration(milliseconds: _tickMs),
+                        builder: (context, v, _) => LinearProgressIndicator(
+                          key: const Key('order-patience'),
+                          minHeight: 8,
+                          value: v,
+                          color: v < 0.25 ? Colors.red : (v < 0.5 ? Colors.orange : Colors.green),
+                        ),
                       ),
                     ),
                   ),
@@ -731,7 +778,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 if (last != null)
-                  Flexible(child: SingleChildScrollView(child: _feedback(context, l10n, last))),
+                  Flexible(child: SingleChildScrollView(child: AppearIn(child: _feedback(context, l10n, last)))),
                 if (last != null && last.grade.stars == 3)
                   Align(
                     alignment: Alignment.centerLeft,
@@ -846,9 +893,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
             Text(ok == _served.length ? '🏆' : (ok * 2 >= _served.length ? '🎉' : '💪'),
                 style: const TextStyle(fontSize: 56)),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              for (var i = 1; i <= 3; i++)
-                Icon(i <= stars ? Icons.star_rounded : Icons.star_outline_rounded,
-                    size: 34, color: Colors.amber.shade600),
+              for (var i = 1; i <= 3; i++) _StarPop(index: i - 1, filled: i <= stars),
             ]),
             const SizedBox(height: 8),
             CountUp(
