@@ -92,6 +92,7 @@ void main() {
 
   test('hệ số tip combo: 0 dưới combo 2, tăng 0.5 mỗi bậc, kẹp ở combo tối đa', () {
     expect([for (var c = 0; c <= 8; c++) orderComboTipFactor(c)], [0, 0, 0.5, 1, 1.5, 2, 2, 2, 2]);
+    expect([for (var n = 2; n <= 6; n++) orderPatienceSeconds(n)], [36, 44, 52, 60, 68], reason: 'kiên nhẫn tăng theo số nguyên liệu');
     expect(orderComboMax, 5);
   });
 

@@ -4221,4 +4221,19 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get recipeDailyIntro =>
       '모두 같은 주문, 힌트 없음, 양이 정확해야 해요. 하루에 한 번만 도전할 수 있어요.';
+
+  @override
+  String get recipeOrderRush => '러시 아워';
+
+  @override
+  String get recipeOrderRushSub =>
+      '손님은 오래 기다리지 않아요. 제때 완벽하게 서빙하면 팁을 더 받아요. 시간이 다 되면 지금 컵 상태로 채점돼요.';
+
+  @override
+  String get recipeOrderTimeUp => '⏰ 시간 초과! 손님이 떠났고 컵은 현재 상태로 채점돼요.';
+
+  @override
+  String recipeOrderRushTip(String cash) {
+    return '⏱ 제때 서빙! 팁 +$cash 코인!';
+  }
 }

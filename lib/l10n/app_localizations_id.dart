@@ -4300,4 +4300,20 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get recipeDailyIntro =>
       'Pesanan sama untuk semua orang, tanpa petunjuk, takaran harus tepat. Satu kali per hari.';
+
+  @override
+  String get recipeOrderRush => 'Jam sibuk';
+
+  @override
+  String get recipeOrderRushSub =>
+      'Pelanggan tidak sabar menunggu: sajikan minuman sempurna tepat waktu untuk tip tambahan. Jika waktu habis, gelas dinilai apa adanya.';
+
+  @override
+  String get recipeOrderTimeUp =>
+      '⏰ Waktu habis! Pelanggan pergi, gelasmu dinilai apa adanya.';
+
+  @override
+  String recipeOrderRushTip(String cash) {
+    return '⏱ Tepat waktu! Tip +$cash koin!';
+  }
 }

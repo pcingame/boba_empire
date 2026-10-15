@@ -61,6 +61,12 @@ const int orderComboMax = 5;
 /// Bội số của boa-nền (xem `Balance.walkerTipSeconds`) cho combo [combo]: 0 / 0.5 / 1 / 1.5 / 2 (kẹp ở mức tối đa).
 double orderComboTipFactor(int combo) => combo < 2 ? 0 : 0.5 * (math.min(combo, orderComboMax) - 1);
 
+/// "Giờ cao điểm" (tùy chọn): khách chỉ kiên nhẫn chừng này giây cho món có [ingredients] nguyên liệu.
+int orderPatienceSeconds(int ingredients) => 20 + 8 * ingredients;
+
+/// Tip cộng thêm (bội số boa-nền) cho đơn hoàn hảo giao KỊP GIỜ trong Giờ cao điểm.
+const double orderRushBonusFactor = 1.0;
+
 /// Một nguyên liệu trên khay: tên (khoá tiếng Việt) + đơn vị.
 class TrayItem {
   const TrayItem(this.name, this.unit);

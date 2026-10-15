@@ -484,6 +484,115 @@ void main() {
     await _teardown(tester);
   });
 
+  group('Giờ cao điểm (đồng hồ kiên nhẫn)', () {
+    Future<void> rushOn(WidgetTester tester) async {
+      await tester.tap(find.byKey(const Key('order-rush-toggle')));
+      await tester.pump();
+    }
+
+    testWidgets('mặc định tắt (không có thanh); bật ở đơn đầu thì hiện thanh; rót rồi thì công tắc ẩn', (tester) async {
+      await _pump(tester, size: const Size(400, 1000));
+      expect(find.byKey(const Key('order-patience')), findsNothing);
+      expect(find.byKey(const Key('order-rush-toggle')), findsOneWidget);
+      await rushOn(tester);
+      expect(find.byKey(const Key('order-patience')), findsOneWidget);
+      final o = _expected(1).first;
+      final i = o.recipe.ingredients.first;
+      await _pour(tester, i.name, i.unit, i.qty);
+      expect(find.byKey(const Key('order-rush-toggle')), findsNothing);
+      expect(find.byKey(const Key('order-patience')), findsOneWidget);
+      await _teardown(tester);
+    });
+
+    testWidgets('thử thách ngày không có Giờ cao điểm', (tester) async {
+      await _pump(tester, size: const Size(400, 1000), daily: true);
+      expect(find.byKey(const Key('order-rush-toggle')), findsNothing);
+      await _teardown(tester);
+    });
+
+    testWidgets('đơn hoàn hảo kịp giờ (món đến hạn) → tip "Giao kịp giờ" ngay từ đơn đầu, kể cả chưa có combo', (tester) async {
+      final c = await _pump(tester, size: const Size(400, 1000));
+      await rushOn(tester);
+      final m0 = c.read(gameControllerProvider).money;
+      await _serveExact(tester, _expected(1).first);
+      expect(find.textContaining('Giao kịp giờ! Tip +'), findsOneWidget);
+      expect(c.read(gameControllerProvider).money, greaterThan(m0));
+      await _teardown(tester);
+    });
+
+    testWidgets('món chưa tới hạn ôn → không tip Giờ cao điểm (chống cày)', (tester) async {
+      final prog = {for (final r in _catalog().recipes) '${r.id}': [1, 9999, 1]};
+      final c = await _pump(tester, size: const Size(400, 1000), progress: prog);
+      final typed = {for (final e in prog.entries) int.parse(e.key): RecipeProgress.fromList(e.value)};
+      await rushOn(tester);
+      final m0 = c.read(gameControllerProvider).money;
+      await _serveExact(tester, _expected(1, progress: typed).first);
+      expect(find.textContaining('Tip +'), findsNothing);
+      expect(c.read(gameControllerProvider).money, m0);
+      await _teardown(tester);
+    });
+
+    testWidgets('không bật Giờ cao điểm → đơn đầu hoàn hảo không có tip', (tester) async {
+      await _pump(tester, size: const Size(400, 1000));
+      await _serveExact(tester, _expected(1).first);
+      expect(find.textContaining('Tip +'), findsNothing);
+      await _teardown(tester);
+    });
+
+    testWidgets('hết giờ: ly dở bị chấm luôn, báo "Hết giờ", không tip, đứt combo, phục vụ tiếp được', (tester) async {
+      final c = await _pump(tester, size: const Size(400, 1000));
+      await rushOn(tester);
+      final o = _expected(1).first;
+      final i = o.recipe.ingredients.first;
+      await _pour(tester, i.name, i.unit, i.qty);
+      await tester.pump(Duration(seconds: orderPatienceSeconds(o.recipe.ingredients.length) + 1));
+      expect(find.textContaining('Hết giờ'), findsOneWidget);
+      expect(find.byKey(const Key('order-next')), findsOneWidget);
+      expect(find.byKey(const Key('order-serve')), findsNothing);
+      expect(find.textContaining('Tip +'), findsNothing);
+      expect(c.read(gameControllerProvider).recipeProgress[o.recipe.id]?.box ?? 0, 0);
+      await _teardown(tester);
+    });
+
+    testWidgets('hết giờ khi ly còn trống → vẫn chấm (sai), không treo', (tester) async {
+      await _pump(tester, size: const Size(400, 1000));
+      await rushOn(tester);
+      final o = _expected(1).first;
+      await tester.pump(Duration(seconds: orderPatienceSeconds(o.recipe.ingredients.length) + 1));
+      expect(find.textContaining('Hết giờ'), findsOneWidget);
+      expect(find.text('Chưa đúng món'), findsOneWidget);
+      await _teardown(tester);
+    });
+
+    testWidgets('đồng hồ tạm dừng khi bảng đặt lượng đang mở', (tester) async {
+      await _pump(tester, size: const Size(400, 1000));
+      await rushOn(tester);
+      final o = _expected(1).first;
+      await tester.ensureVisible(find.byKey(Key('order-tray-${o.recipe.ingredients.first.name}')));
+      await tester.tap(find.byKey(Key('order-tray-${o.recipe.ingredients.first.name}')));
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 300));
+      expect(find.byKey(const Key('order-amount')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('order-pour')));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Hết giờ'), findsNothing);
+      expect(find.byKey(const Key('order-serve')), findsOneWidget);
+      await _teardown(tester);
+    });
+
+    testWidgets('đơn sau có đồng hồ mới đầy lại', (tester) async {
+      await _pump(tester, size: const Size(400, 1000));
+      await rushOn(tester);
+      final os = _expected(1);
+      await _serveExact(tester, os[0]);
+      await tester.tap(find.byKey(const Key('order-next')));
+      await tester.pump();
+      final bar = tester.widget<LinearProgressIndicator>(find.byKey(const Key('order-patience')));
+      expect(bar.value, 1.0);
+      await _teardown(tester);
+    });
+  });
+
   group('thử thách hằng ngày', () {
     testWidgets('đủ 3 đơn đúng → 300/300; thưởng 💎 + Xu một lần; KHÔNG đụng bậc / BXH Pha theo đơn / combo', (tester) async {
       final c = await _pump(tester, size: const Size(400, 1000), daily: true);
@@ -610,6 +719,18 @@ void main() {
       await _pour(tester, first.name, first.unit, amountSteps(first.unit).last);
       await tester.tap(find.byKey(const Key('order-serve')));
       await tester.pumpAndSettle();
+      expect(find.byKey(const Key('order-feedback')), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await _teardown(tester);
+    });
+
+    testWidgets('320px, chữ 1.5×, $loc: Giờ cao điểm (công tắc, thanh, hết giờ) không tràn', (tester) async {
+      await _pump(tester, locale: loc, textScale: 1.5);
+      await tester.tap(find.byKey(const Key('order-rush-toggle')));
+      await tester.pump();
+      expect(tester.takeException(), isNull);
+      final o = _expected(1).first;
+      await tester.pump(Duration(seconds: orderPatienceSeconds(o.recipe.ingredients.length) + 1));
       expect(find.byKey(const Key('order-feedback')), findsOneWidget);
       expect(tester.takeException(), isNull);
       await _teardown(tester);

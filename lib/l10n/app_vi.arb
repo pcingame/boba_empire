@@ -2915,5 +2915,10 @@
   "recipeDailyTotal": "{n}/300 điểm",
   "recipeDailyAlready": "Bạn đã làm thử thách hôm nay. Mai quay lại nhé — đề mới mỗi ngày!",
   "recipeDailyBoard": "Xem bảng hôm nay",
-  "recipeDailyIntro": "Đề giống nhau cho mọi người, không gợi ý, lượng phải đúng từng mức. Chỉ làm được một lần mỗi ngày."
+  "recipeDailyIntro": "Đề giống nhau cho mọi người, không gợi ý, lượng phải đúng từng mức. Chỉ làm được một lần mỗi ngày.",
+  "recipeOrderRush": "Giờ cao điểm",
+  "recipeOrderRushSub": "Khách chỉ chờ một lúc: giao kịp giờ và hoàn hảo thì có tip thêm. Hết giờ, ly pha dở bị chấm luôn.",
+  "recipeOrderTimeUp": "⏰ Hết giờ! Khách bỏ đi, ly bị chấm như đang có.",
+  "recipeOrderRushTip": "⏱ Giao kịp giờ! Tip +{cash} Xu!",
+  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}}
 }

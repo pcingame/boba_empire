@@ -1956,5 +1956,10 @@
   "recipeDailyTotal": "{n}/300 pts",
   "recipeDailyAlready": "Ya hiciste el reto de hoy. ¡Vuelve mañana, hay pedidos nuevos cada día!",
   "recipeDailyBoard": "Ver la tabla de hoy",
-  "recipeDailyIntro": "Los mismos pedidos para todos, sin pistas y con cantidades exactas. Un intento al día."
+  "recipeDailyIntro": "Los mismos pedidos para todos, sin pistas y con cantidades exactas. Un intento al día.",
+  "recipeOrderRush": "Hora punta",
+  "recipeOrderRushSub": "Los clientes no esperan mucho: sirve una bebida perfecta a tiempo y ganarás propina extra. Si se acaba el tiempo, se evalúa el vaso tal cual.",
+  "recipeOrderTimeUp": "⏰ ¡Se acabó el tiempo! El cliente se fue y se evalúa tu vaso tal cual.",
+  "recipeOrderRushTip": "⏱ ¡A tiempo! Propina +{cash} monedas.",
+  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}}
 }

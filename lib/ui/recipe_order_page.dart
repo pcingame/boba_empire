@@ -65,8 +65,13 @@ class _RecipeOrderGame extends ConsumerStatefulWidget {
 }
 
 class _Served {
-  _Served(this.order, this.grade, this.result, {this.hinted = false, this.combo = 0, this.tip = 0, this.score = 0});
+  _Served(this.order, this.grade, this.result,
+      {this.hinted = false, this.combo = 0, this.tip = 0, this.score = 0, this.late = false, this.rush = false});
   final bool hinted;
+
+  /// Giờ cao điểm: hết giờ mới phục vụ (khách bỏ đi) / nhận tip giao kịp giờ.
+  final bool late;
+  final bool rush;
 
   /// Combo SAU đơn này (số đơn hoàn hảo liên tiếp) và tip combo đã nhận (0 nếu chưa đủ / đơn không tính bậc).
   final int combo;
@@ -107,6 +112,35 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
   int _drops = 0; // số lần thả topping (kích hoạt animation rơi)
   Color _dropColor = const Color(0xFF2B1B14);
   bool _sealing = false; // đang đậy nắp + lắc ly trước khi chấm
+  bool _rush = false; // "Giờ cao điểm": mỗi đơn có đồng hồ kiên nhẫn
+  bool _sheetOpen = false; // bảng đặt lượng mở ⇒ tạm dừng đồng hồ
+  int _leftMs = 0;
+  Timer? _ticker;
+
+  static const _tickMs = 200;
+
+  int _patienceMs() => orderPatienceSeconds(_orders[_index].recipe.ingredients.length) * 1000;
+
+  void _setRush(bool on) {
+    _ticker?.cancel();
+    setState(() {
+      _rush = on;
+      _leftMs = _patienceMs();
+    });
+    if (on) _ticker = Timer.periodic(const Duration(milliseconds: _tickMs), (_) => _tick());
+  }
+
+  void _tick() {
+    if (!mounted || _finished || _checked || _sealing || _sheetOpen || _watchingAd) return;
+    setState(() => _leftMs -= _tickMs);
+    if (_leftMs <= 0) _grade(late: true);
+  }
+
+  @override
+  void dispose() {
+    _ticker?.cancel();
+    super.dispose();
+  }
 
   List<Order> _newSession() {
     final catalog = ref.read(recipeCatalogProvider).requireValue;
@@ -133,6 +167,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     final ticks = full || o.guide == OrderGuide.names;
     final steps = amountSteps(item.unit);
     final right = [for (final i in o.recipe.ingredients) if (i.name == item.name) i];
+    _sheetOpen = true;
     final r = await showModalBottomSheet<double>(
       context: context,
       isScrollControlled: true,
@@ -146,6 +181,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
             : null,
       ),
     );
+    _sheetOpen = false;
     if (r == null || !mounted || _checked) return;
     setState(() {
       if (at >= 0) _poured.removeAt(at);
@@ -171,8 +207,8 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     _grade();
   }
 
-  void _grade() {
-    if (_checked || _poured.isEmpty) return;
+  void _grade({bool late = false}) {
+    if (_checked || (_poured.isEmpty && !late)) return;
     final order = _orders[_index];
     final grade = gradeOrder(order, _poured);
     if (widget.daily) {
@@ -185,6 +221,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
           grade,
           RecipeAnswerResult(none, none, RecipeAnswerOutcome(none, counted: false, leveledUp: false, newBest: false), 0, 0),
           score: scoreOrder(order, grade),
+          late: late,
         ));
       });
       if (grade.stars == 3) playEffect(context, AnimAssets.sparkle, size: 140, heavy: false);
@@ -196,11 +233,13 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     if (grade.stars == 3 && order.guide != OrderGuide.full && !_hinted) game.recordOrderPerfect(order.recipe.id);
     // Combo: đơn hoàn hảo không gợi ý nối tiếp; sai / gợi ý thì đứt. Tip chỉ trả khi đơn thật sự được tính bậc
     // (món đến hạn ôn) — nếu không thì lặp lại món dễ để cày tip.
-    _combo = grade.stars == 3 && !_hinted ? _combo + 1 : 0;
-    final tip = _combo >= 2 && result.outcome.counted ? game.grantOrderTip(_combo) : 0.0;
+    _combo = grade.stars == 3 && !_hinted && !late ? _combo + 1 : 0;
+    final counted = result.outcome.counted;
+    final rush = _rush && !late && grade.stars == 3 && !_hinted && counted;
+    final tip = (_combo >= 2 && counted) || rush ? game.grantOrderTip(_combo, rush: rush) : 0.0;
     setState(() {
       _checked = true;
-      _served.add(_Served(order, grade, result, hinted: _hinted, combo: _combo, tip: tip));
+      _served.add(_Served(order, grade, result, hinted: _hinted, combo: _combo, tip: tip, late: late, rush: rush));
     });
     if (tip > 0) playEffect(context, AnimAssets.coinFly, size: 160, heavy: false);
     final drop = result.drop;
@@ -217,7 +256,9 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
       _checked = false;
       _hinted = false;
       _poured.clear();
+      if (!_finished) _leftMs = _rush ? _patienceMs() : 0;
     });
+    if (_finished) _ticker?.cancel();
     if (_finished && widget.daily) {
       if (_served.every((s) => s.grade.stars == 3)) playEffect(context, AnimAssets.confetti, size: 260);
       final total = _served.fold<int>(0, (a, s) => a + s.score);
@@ -241,6 +282,11 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
         _checked = false;
         _hinted = false;
         _doubled = false;
+        _leftMs = _rush ? _patienceMs() : 0;
+        if (_rush) {
+          _ticker?.cancel();
+          _ticker = Timer.periodic(const Duration(milliseconds: _tickMs), (_) => _tick());
+        }
       });
 
   /// Xem quảng cáo thưởng (người đã gỡ quảng cáo/VIP được cộng thẳng — cùng khuôn trò trắc nghiệm).
@@ -544,6 +590,29 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
                     style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
                   ),
                 ),
+                if (!widget.daily && _index == 0 && !_checked && _poured.isEmpty)
+                  SwitchListTile(
+                    key: const Key('order-rush-toggle'),
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                    value: _rush,
+                    onChanged: _setRush,
+                    title: Text('⏱ ${l10n.recipeOrderRush}'),
+                    subtitle: _rush ? Text(l10n.recipeOrderRushSub) : null,
+                  ),
+                if (_rush)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(6),
+                      child: LinearProgressIndicator(
+                        key: const Key('order-patience'),
+                        minHeight: 8,
+                        value: (_leftMs / _patienceMs()).clamp(0.0, 1.0),
+                        color: _leftMs * 4 < _patienceMs() ? Colors.red : (_leftMs * 2 < _patienceMs() ? Colors.orange : Colors.green),
+                      ),
+                    ),
+                  ),
                 if (widget.daily && _index == 0 && !_checked)
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
@@ -645,8 +714,9 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
       if (!widget.daily && s.hinted) l10n.recipeHintNoCount else if (!r.outcome.counted) l10n.recipePracticeOnly,
       if (r.outcome.leveledUp) l10n.recipeLevelUp(recipeBoxName(l10n, r.after.box), _labels.recipe(s.order.recipe)),
       if (r.milestone > 0) l10n.recipeMilestone(r.milestone),
+      if (s.late) l10n.recipeOrderTimeUp,
       if (s.tip > 0)
-        l10n.recipeOrderComboTip(formatNumber(s.tip), s.combo)
+        s.rush ? l10n.recipeOrderRushTip(formatNumber(s.tip)) : l10n.recipeOrderComboTip(formatNumber(s.tip), s.combo)
       else if (s.combo >= 2)
         l10n.recipeOrderCombo(s.combo),
       if (r.streakGems > 0)

@@ -4326,4 +4326,20 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get recipeDailyIntro =>
       'Los mismos pedidos para todos, sin pistas y con cantidades exactas. Un intento al día.';
+
+  @override
+  String get recipeOrderRush => 'Hora punta';
+
+  @override
+  String get recipeOrderRushSub =>
+      'Los clientes no esperan mucho: sirve una bebida perfecta a tiempo y ganarás propina extra. Si se acaba el tiempo, se evalúa el vaso tal cual.';
+
+  @override
+  String get recipeOrderTimeUp =>
+      '⏰ ¡Se acabó el tiempo! El cliente se fue y se evalúa tu vaso tal cual.';
+
+  @override
+  String recipeOrderRushTip(String cash) {
+    return '⏱ ¡A tiempo! Propina +$cash monedas.';
+  }
 }

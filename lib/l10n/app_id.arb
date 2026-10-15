@@ -1956,5 +1956,10 @@
   "recipeDailyTotal": "{n}/300 poin",
   "recipeDailyAlready": "Kamu sudah mengerjakan tantangan hari ini. Kembali besok — pesanan baru setiap hari!",
   "recipeDailyBoard": "Lihat papan hari ini",
-  "recipeDailyIntro": "Pesanan sama untuk semua orang, tanpa petunjuk, takaran harus tepat. Satu kali per hari."
+  "recipeDailyIntro": "Pesanan sama untuk semua orang, tanpa petunjuk, takaran harus tepat. Satu kali per hari.",
+  "recipeOrderRush": "Jam sibuk",
+  "recipeOrderRushSub": "Pelanggan tidak sabar menunggu: sajikan minuman sempurna tepat waktu untuk tip tambahan. Jika waktu habis, gelas dinilai apa adanya.",
+  "recipeOrderTimeUp": "⏰ Waktu habis! Pelanggan pergi, gelasmu dinilai apa adanya.",
+  "recipeOrderRushTip": "⏱ Tepat waktu! Tip +{cash} koin!",
+  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}}
 }

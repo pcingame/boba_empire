@@ -4273,4 +4273,20 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get recipeDailyIntro =>
       'ออเดอร์เหมือนกันสำหรับทุกคน ไม่มีคำใบ้ ปริมาณต้องตรงทุกระดับ ทำได้วันละครั้ง';
+
+  @override
+  String get recipeOrderRush => 'ชั่วโมงเร่งด่วน';
+
+  @override
+  String get recipeOrderRushSub =>
+      'ลูกค้ารอไม่นาน เสิร์ฟเครื่องดื่มสมบูรณ์แบบให้ทันเวลาเพื่อรับทิปเพิ่ม ถ้าหมดเวลา แก้วจะถูกตัดสินตามที่เป็นอยู่';
+
+  @override
+  String get recipeOrderTimeUp =>
+      '⏰ หมดเวลา! ลูกค้าจากไปแล้ว แก้วถูกตัดสินตามที่เป็นอยู่';
+
+  @override
+  String recipeOrderRushTip(String cash) {
+    return '⏱ เสิร์ฟทันเวลา! ทิป +$cash เหรียญ!';
+  }
 }

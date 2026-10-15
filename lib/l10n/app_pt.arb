@@ -1956,5 +1956,10 @@
   "recipeDailyTotal": "{n}/300 pts",
   "recipeDailyAlready": "Você já fez o desafio de hoje. Volte amanhã — pedidos novos todo dia!",
   "recipeDailyBoard": "Ver o ranking de hoje",
-  "recipeDailyIntro": "Os mesmos pedidos para todos, sem dicas, com quantidades exatas. Uma tentativa por dia."
+  "recipeDailyIntro": "Os mesmos pedidos para todos, sem dicas, com quantidades exatas. Uma tentativa por dia.",
+  "recipeOrderRush": "Hora de pico",
+  "recipeOrderRushSub": "Os clientes não esperam muito: sirva uma bebida perfeita a tempo e ganhe gorjeta extra. Se o tempo acabar, o copo é avaliado como está.",
+  "recipeOrderTimeUp": "⏰ Tempo esgotado! O cliente foi embora e o copo é avaliado como está.",
+  "recipeOrderRushTip": "⏱ Servido a tempo! Gorjeta +{cash} moedas!",
+  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}}
 }

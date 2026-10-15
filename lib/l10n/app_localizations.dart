@@ -7265,6 +7265,30 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đề giống nhau cho mọi người, không gợi ý, lượng phải đúng từng mức. Chỉ làm được một lần mỗi ngày.'**
   String get recipeDailyIntro;
+
+  /// No description provided for @recipeOrderRush.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giờ cao điểm'**
+  String get recipeOrderRush;
+
+  /// No description provided for @recipeOrderRushSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khách chỉ chờ một lúc: giao kịp giờ và hoàn hảo thì có tip thêm. Hết giờ, ly pha dở bị chấm luôn.'**
+  String get recipeOrderRushSub;
+
+  /// No description provided for @recipeOrderTimeUp.
+  ///
+  /// In vi, this message translates to:
+  /// **'⏰ Hết giờ! Khách bỏ đi, ly bị chấm như đang có.'**
+  String get recipeOrderTimeUp;
+
+  /// No description provided for @recipeOrderRushTip.
+  ///
+  /// In vi, this message translates to:
+  /// **'⏱ Giao kịp giờ! Tip +{cash} Xu!'**
+  String recipeOrderRushTip(String cash);
 }
 
 class _AppLocalizationsDelegate

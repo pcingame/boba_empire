@@ -4289,4 +4289,20 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get recipeDailyIntro =>
       'Đề giống nhau cho mọi người, không gợi ý, lượng phải đúng từng mức. Chỉ làm được một lần mỗi ngày.';
+
+  @override
+  String get recipeOrderRush => 'Giờ cao điểm';
+
+  @override
+  String get recipeOrderRushSub =>
+      'Khách chỉ chờ một lúc: giao kịp giờ và hoàn hảo thì có tip thêm. Hết giờ, ly pha dở bị chấm luôn.';
+
+  @override
+  String get recipeOrderTimeUp =>
+      '⏰ Hết giờ! Khách bỏ đi, ly bị chấm như đang có.';
+
+  @override
+  String recipeOrderRushTip(String cash) {
+    return '⏱ Giao kịp giờ! Tip +$cash Xu!';
+  }
 }

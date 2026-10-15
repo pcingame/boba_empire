@@ -381,6 +381,15 @@ void main() {
     expect(ctrl.grantOrderTip(50), closeTo(t2 * 4, 1e-6), reason: 'kẹp ở combo tối đa');
   });
 
+  test('grantOrderTip rush: có tip dù chưa có combo; cộng thêm đúng orderRushBonusFactor vào tip combo', () async {
+    final (c, _, _) = await _harness(GameState.newGame(nowMillis: 0));
+    final ctrl = c.read(gameControllerProvider.notifier);
+    final base = ctrl.grantOrderTip(2); // = boa-nền × 0.5
+    final unit = base / 0.5;
+    expect(ctrl.grantOrderTip(0, rush: true), closeTo(unit * orderRushBonusFactor, 1e-6));
+    expect(ctrl.grantOrderTip(3, rush: true), closeTo(unit * (1 + orderRushBonusFactor), 1e-6));
+  });
+
   test('thử thách ngày: thưởng 💎 + Xu tỉ lệ điểm, MỘT lần mỗi ngày (không ghi đè), sang ngày mới làm lại được', () async {
     final (c, _, setDay) = await _harness(GameState.newGame(nowMillis: 0));
     final ctrl = c.read(gameControllerProvider.notifier);

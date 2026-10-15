@@ -1956,5 +1956,10 @@
   "recipeDailyTotal": "{n}/300 pts",
   "recipeDailyAlready": "You've done today's challenge. Come back tomorrow — new orders every day!",
   "recipeDailyBoard": "See today's board",
-  "recipeDailyIntro": "Same orders for everyone, no hints, every amount must be exact. One try per day."
+  "recipeDailyIntro": "Same orders for everyone, no hints, every amount must be exact. One try per day.",
+  "recipeOrderRush": "Rush hour",
+  "recipeOrderRushSub": "Customers won't wait long: serve a perfect drink in time for an extra tip. When time runs out, the cup is graded as it is.",
+  "recipeOrderTimeUp": "⏰ Time's up! The customer left, your cup is graded as it stands.",
+  "recipeOrderRushTip": "⏱ Served in time! Tip +{cash} coins!",
+  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}}
 }
