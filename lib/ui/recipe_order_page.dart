@@ -21,6 +21,7 @@ import '../state/recipe_providers.dart';
 import '../leaderboard/recipe_leaderboard_repository.dart' show RecipeBoard;
 import 'cup_share_dialog.dart';
 import 'email_gate.dart';
+import 'minigame_how_to_dialogs.dart';
 import 'recipe_hub_page.dart' show recipeBoxName;
 import 'recipe_leaderboard_page.dart' show showRecipeLeaderboard;
 import 'widgets/accessory_reveal.dart';
@@ -368,7 +369,12 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
   Widget build(BuildContext context) {
     _labels = recipeLabelsOf(ref, context);
     final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
+    final guide = widget.daily ? MiniGameGuide.daily : MiniGameGuide.orders;
+    // Lần đầu vào chế độ này thì tự mở hướng dẫn (không tự mở khi chỉ xem lại điểm thử thách đã làm).
+    return HowToOnce(
+      guide: guide,
+      enabled: !_alreadyDone,
+      child: Scaffold(
       appBar: AppBar(
         title: Text(_finished
             ? l10n.recipeResultTitle
@@ -376,6 +382,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
                 ? (_alreadyDone ? l10n.recipeDailyTitle : '${l10n.recipeDailyTitle} ${_index + 1}/${_orders.length}')
                 : '${_index + 1}/${_orders.length}'),
         actions: [
+          HowToButton(guide),
           IconButton(
             key: const Key('order-leaderboard'),
             tooltip: l10n.rlbTitle,
@@ -427,7 +434,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
           ],
         ),
       ),
-    );
+    ));
   }
 
   // --- đơn hàng ----------------------------------------------------------------
@@ -685,6 +692,8 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
                           _ => CustomerMood.upset,
                         },
                   upsetCount: _served.where((x) => !x.grade.correct).length,
+                  // Giờ cao điểm sắp hết giờ (<25% kiên nhẫn) ⇒ khách sốt ruột.
+                  impatient: _rush && !_checked && _leftMs * 4 < _patienceMs(),
                   child: Text(
                     l10n.recipeOrderAsk(_labels.recipe(o.recipe)),
                     key: const Key('order-prompt'),

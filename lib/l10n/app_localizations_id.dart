@@ -4382,4 +4382,96 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get rlbDailyWeeklyHint =>
       'Setiap minggu, top 10 berdasarkan total skor Tantangan harian sepanjang minggu mendapat 💎 (dikunci di awal minggu berikutnya, UTC).';
+
+  @override
+  String get howToTooltip => 'Cara bermain';
+
+  @override
+  String get howToRecipesTitle => 'Cara bermain: Resep';
+
+  @override
+  String get howToRecipes1 =>
+      'Pelajari resep dengan ULANGAN BERJEDA: tiap hari game memilih minuman yang jatuh tempo dan kamu menjawab beberapa soal.';
+
+  @override
+  String howToRecipes2(int a, int b, int c) {
+    return 'Tiap minuman punya 4 tingkat: Baru → Akrab → Hafal → Mahir. Jawaban benar menaikkan tingkat dan jadwal ulang $a / $b / $c hari lagi; salah menurunkan satu tingkat dan muncul lagi segera.';
+  }
+
+  @override
+  String get howToRecipes3 =>
+      'Soal makin sulit seiring tingkat: Baru mengisi bahan yang hilang, Akrab menebak takaran, Hafal/Mahir memilih resep lengkap yang benar.';
+
+  @override
+  String get howToRecipes4 =>
+      'Mengulang minuman yang belum jatuh tempo hanya latihan: tingkat tidak berubah dan tanpa hadiah. Kamu bisa menonton iklan untuk petunjuk (soal itu tidak dihitung).';
+
+  @override
+  String get howToRecipes5 =>
+      'Mencapai tiap tingkat pertama kali memberi koin; Mahir pertama kali juga memberi 💎. Tonggak jumlah minuman Mahir (5, 10, 20…) memberi peti aksesori.';
+
+  @override
+  String howToRecipes6(int n) {
+    return 'Ulang tiap hari untuk menjaga 🔥 rentetan dan dapat 💎 di 3 / 7 / 14 / 30 hari; rentetan putus bisa diselamatkan dengan 💎. Hafalkan $n minuman satu grup untuk membuka grup berikutnya.';
+  }
+
+  @override
+  String get howToOrdersTitle => 'Cara bermain: Racik sesuai pesanan';
+
+  @override
+  String get howToOrders1 =>
+      'Pelanggan memesan satu minuman: seret (atau ketuk) bahan dari nampan ke gelas lalu atur takarannya.';
+
+  @override
+  String get howToOrders2 =>
+      'Di lembar takaran, ketuk penggaris atau TAHAN tombol tuang agar takaran naik; tingkat rendah punya garis petunjuk.';
+
+  @override
+  String get howToOrders3 =>
+      'Ketuk Sajikan: gelas ditutup dan dikocok, lalu tiap bahan dinilai: tepat, meleset 1 tingkat, takaran salah, kurang atau berlebih.';
+
+  @override
+  String get howToOrders4 =>
+      'Makin hafal minuman, makin sedikit petunjuk: Baru menampilkan resep contoh dan garis hijau, Akrab hanya nama bahan, Hafal hanya jumlahnya, Mahir tanpa petunjuk. Baru/Akrab boleh meleset 1 tingkat; Hafal/Mahir harus tepat.';
+
+  @override
+  String get howToOrders5 =>
+      'Hasilnya dihitung ke tingkat minuman seperti jawaban kuis. Tonton iklan untuk menampilkan resep contoh (pesanan itu tidak dihitung).';
+
+  @override
+  String get howToOrders6 =>
+      'Buat beberapa pesanan sempurna berturut-turut tanpa petunjuk untuk combo 🔥 dan tip koin (hanya untuk minuman yang jatuh tempo).';
+
+  @override
+  String get howToOrders7 =>
+      'Aktifkan ⏱ Jam sibuk di pesanan pertama: pelanggan tidak sabar menunggu. Sajikan minuman sempurna tepat waktu untuk tip tambahan; jika waktu habis, gelas dinilai apa adanya.';
+
+  @override
+  String get howToOrders8 =>
+      'Saat festival, pesanan festival ekstra muncul di akhir (tip lebih besar). Setelah minuman sempurna, ketuk “Pamerkan gelas ini” untuk membagikan gambarnya. Minuman sempurna tanpa resep contoh dihitung di papan peringkat.';
+
+  @override
+  String get howToDailyTitle => 'Cara bermain: Tantangan harian';
+
+  @override
+  String get howToDaily1 =>
+      'Setiap hari ada 3 pesanan sulit, SAMA untuk semua pemain di dunia.';
+
+  @override
+  String get howToDaily2 =>
+      'Tanpa petunjuk, banyak bahan pengecoh, dan setiap takaran harus tepat. Tidak mengubah tingkat minuman mana pun.';
+
+  @override
+  String howToDaily3(int max) {
+    return 'Tiap pesanan bernilai hingga 100 poin (tepat 1, meleset 1 tingkat setengah, kurang 0, berlebih mengurangi). Total maksimum: $max poin.';
+  }
+
+  @override
+  String howToDaily4(int gems) {
+    return 'Hanya SATU kali per hari: selesai dapat $gems 💎 dan koin sesuai skor; skor yang sudah dikirim tidak bisa diubah.';
+  }
+
+  @override
+  String get howToDaily5 =>
+      'Tab “Hari ini” di papan peringkat mengurutkan skor hari ini. Setiap minggu, top 10 berdasarkan skor TOTAL seminggu mendapat 💎 (perlu tautan email).';
 }

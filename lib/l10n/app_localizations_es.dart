@@ -4408,4 +4408,96 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get rlbDailyWeeklyHint =>
       'Cada semana el top 10 por puntuación total del Reto diario de toda la semana recibe 💎 (se cierra al inicio de la siguiente, UTC).';
+
+  @override
+  String get howToTooltip => 'Cómo jugar';
+
+  @override
+  String get howToRecipesTitle => 'Cómo jugar: Recetas';
+
+  @override
+  String get howToRecipes1 =>
+      'Aprende recetas con REPASO ESPACIADO: cada día el juego elige las bebidas que toca repasar y respondes unas preguntas.';
+
+  @override
+  String howToRecipes2(int a, int b, int c) {
+    return 'Cada bebida tiene 4 niveles: Nueva → Conocida → Aprendida → Dominada. Si aciertas sube de nivel y se repasa en $a / $b / $c días; si fallas baja un nivel y vuelve enseguida.';
+  }
+
+  @override
+  String get howToRecipes3 =>
+      'Las preguntas se vuelven más difíciles con el nivel: Nueva completa el ingrediente que falta, Conocida adivina la cantidad, Aprendida/Dominada elige la receta completa correcta.';
+
+  @override
+  String get howToRecipes4 =>
+      'Repasar una bebida que aún no toca es solo práctica: no cambia de nivel ni da recompensa. Puedes ver un anuncio para una pista (esa pregunta no cuenta).';
+
+  @override
+  String get howToRecipes5 =>
+      'Alcanzar cada nivel por primera vez da monedas; la primera vez en Dominada da además 💎. Los hitos de bebidas dominadas (5, 10, 20…) dan cofres de accesorios.';
+
+  @override
+  String howToRecipes6(int n) {
+    return 'Repasa cada día para mantener tu racha 🔥 y ganar 💎 a los 3 / 7 / 14 / 30 días; una racha rota se puede rescatar con 💎. Aprende $n bebidas de un grupo para desbloquear el siguiente.';
+  }
+
+  @override
+  String get howToOrdersTitle => 'Cómo jugar: Preparar pedidos';
+
+  @override
+  String get howToOrders1 =>
+      'Un cliente pide una bebida: arrastra (o toca) ingredientes de la bandeja al vaso y elige la cantidad.';
+
+  @override
+  String get howToOrders2 =>
+      'En la hoja de cantidad, toca la regla o MANTÉN el botón de verter para subir la cantidad; los niveles bajos muestran marcas guía.';
+
+  @override
+  String get howToOrders3 =>
+      'Pulsa Servir: el vaso se sella y se agita, y se evalúa cada ingrediente: exacto, a un paso, cantidad errónea, faltante o sobrante.';
+
+  @override
+  String get howToOrders4 =>
+      'Cuanto mejor conoces una bebida, menos pistas: Nueva muestra la receta de muestra y una marca verde, Conocida solo los nombres, Aprendida solo cuántos, Dominada nada. Nueva/Conocida permiten un paso de error; Aprendida/Dominada deben ser exactas.';
+
+  @override
+  String get howToOrders5 =>
+      'El resultado cuenta para el nivel de la bebida como una respuesta de test. Mira un anuncio para ver la receta de muestra (ese pedido no cuenta).';
+
+  @override
+  String get howToOrders6 =>
+      'Prepara varios pedidos perfectos seguidos sin pistas para un combo 🔥 y propinas de monedas (solo bebidas que toca repasar).';
+
+  @override
+  String get howToOrders7 =>
+      'Activa ⏱ Hora punta en el primer pedido: los clientes no esperan mucho. Sirve una bebida perfecta a tiempo para propina extra; si se acaba el tiempo, se evalúa el vaso tal cual.';
+
+  @override
+  String get howToOrders8 =>
+      'Durante una fiesta aparece al final un pedido de fiesta extra (propina mayor). Tras una bebida perfecta, toca «Presumir este vaso» para compartir su imagen. Las bebidas perfectas sin receta de muestra cuentan para la clasificación.';
+
+  @override
+  String get howToDailyTitle => 'Cómo jugar: Reto diario';
+
+  @override
+  String get howToDaily1 =>
+      'Cada día hay 3 pedidos difíciles, IGUALES para todos los jugadores del mundo.';
+
+  @override
+  String get howToDaily2 =>
+      'Sin pistas, con muchos ingredientes de distracción y cada cantidad debe ser exacta. No cambia el nivel de ninguna bebida.';
+
+  @override
+  String howToDaily3(int max) {
+    return 'Cada pedido vale hasta 100 puntos (exacto 1, a un paso la mitad, faltante 0, sobrante resta). Total máximo: $max puntos.';
+  }
+
+  @override
+  String howToDaily4(int gems) {
+    return 'Solo UN intento al día: al terminar ganas $gems 💎 y monedas según tu puntuación; la puntuación enviada no se puede cambiar.';
+  }
+
+  @override
+  String get howToDaily5 =>
+      'La pestaña «Hoy» de la clasificación ordena las puntuaciones de hoy. Cada semana el top 10 por puntuación TOTAL de la semana recibe 💎 (requiere enlazar el correo).';
 }

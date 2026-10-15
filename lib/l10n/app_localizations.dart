@@ -7385,6 +7385,144 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Mỗi tuần, top 10 theo tổng điểm Thử thách ngày của cả tuần nhận 💎 (chốt vào đầu tuần sau, giờ UTC).'**
   String get rlbDailyWeeklyHint;
+
+  /// No description provided for @howToTooltip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cách chơi'**
+  String get howToTooltip;
+
+  /// No description provided for @howToRecipesTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cách chơi: Công thức pha chế'**
+  String get howToRecipesTitle;
+
+  /// No description provided for @howToRecipes1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Học công thức bằng cách ÔN CÁCH QUÃNG: mỗi ngày game gọi những món đến hạn ôn, bạn trả lời vài câu hỏi.'**
+  String get howToRecipes1;
+
+  /// No description provided for @howToRecipes2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi món có 4 bậc: Mới → Quen → Thuộc → Thạo. Đúng thì lên bậc và hẹn ôn lại sau {a} / {b} / {c} ngày; sai thì hạ một bậc và ôn lại ngay.'**
+  String howToRecipes2(int a, int b, int c);
+
+  /// No description provided for @howToRecipes3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Câu hỏi khó dần theo bậc: bậc Mới điền nguyên liệu còn thiếu, bậc Quen đoán lượng, bậc Thuộc/Thạo chọn công thức đầy đủ đúng.'**
+  String get howToRecipes3;
+
+  /// No description provided for @howToRecipes4.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ôn món chưa tới hạn chỉ để luyện tập: không tính bậc và không có thưởng. Có thể xem quảng cáo để nhận gợi ý (câu đó không tính bậc).'**
+  String get howToRecipes4;
+
+  /// No description provided for @howToRecipes5.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lần đầu đạt mỗi bậc nhận Xu; lần đầu đạt Thạo nhận thêm 💎. Đạt các mốc số món Thạo (5, 10, 20…) nhận rương phụ kiện.'**
+  String get howToRecipes5;
+
+  /// No description provided for @howToRecipes6.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ôn mỗi ngày để giữ 🔥 chuỗi ôn và nhận 💎 ở các mốc 3 / 7 / 14 / 30 ngày; lỡ đứt chuỗi có thể cứu bằng 💎. Thuộc {n} món của một nhóm thì mở nhóm công thức kế tiếp.'**
+  String howToRecipes6(int n);
+
+  /// No description provided for @howToOrdersTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cách chơi: Pha theo đơn'**
+  String get howToOrdersTitle;
+
+  /// No description provided for @howToOrders1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khách gọi một món: kéo (hoặc chạm) nguyên liệu từ khay vào ly rồi chọn lượng.'**
+  String get howToOrders1;
+
+  /// No description provided for @howToOrders2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ở bảng chọn lượng, chạm lên thước hoặc GIỮ nút rót để lượng tăng dần; bậc thấp có vạch chia gợi ý.'**
+  String get howToOrders2;
+
+  /// No description provided for @howToOrders3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bấm Phục vụ: ly được đậy nắp, lắc rồi chấm từng nguyên liệu — đúng lượng, lệch 1 mức, sai lượng, thiếu hoặc thừa.'**
+  String get howToOrders3;
+
+  /// No description provided for @howToOrders4.
+  ///
+  /// In vi, this message translates to:
+  /// **'Món càng thuộc càng ít gợi ý: bậc Mới có công thức mẫu và vạch xanh, Quen chỉ hiện tên nguyên liệu, Thuộc chỉ cho biết số lượng, Thạo không gợi ý. Bậc Mới/Quen cho lệch 1 mức, Thuộc/Thạo phải đúng từng mức.'**
+  String get howToOrders4;
+
+  /// No description provided for @howToOrders5.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kết quả ghi vào bậc thuộc của món như câu trắc nghiệm. Xem quảng cáo để hiện công thức mẫu (đơn đó không tính bậc).'**
+  String get howToOrders5;
+
+  /// No description provided for @howToOrders6.
+  ///
+  /// In vi, this message translates to:
+  /// **'Pha hoàn hảo nhiều đơn liên tiếp mà không dùng gợi ý để có 🔥 combo và tip Xu (chỉ với món đến hạn ôn).'**
+  String get howToOrders6;
+
+  /// No description provided for @howToOrders7.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bật ⏱ Giờ cao điểm ở đơn đầu: khách chỉ kiên nhẫn một lúc. Giao kịp giờ và hoàn hảo thì có thêm tip; hết giờ, ly bị chấm như đang có.'**
+  String get howToOrders7;
+
+  /// No description provided for @howToOrders8.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trong dịp lễ, cuối buổi có thêm đơn lễ hội (tip lớn hơn). Pha hoàn hảo thì bấm “Khoe ly này” để chia sẻ ảnh ly. Số món pha hoàn hảo không xem công thức mẫu được xếp hạng.'**
+  String get howToOrders8;
+
+  /// No description provided for @howToDailyTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cách chơi: Thử thách hằng ngày'**
+  String get howToDailyTitle;
+
+  /// No description provided for @howToDaily1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi ngày có 3 đơn khó, GIỐNG NHAU cho mọi người chơi trên thế giới.'**
+  String get howToDaily1;
+
+  /// No description provided for @howToDaily2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có gợi ý, có nhiều nguyên liệu gây nhiễu và phải đúng từng mức. Không ghi bậc thuộc của món.'**
+  String get howToDaily2;
+
+  /// No description provided for @howToDaily3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi đơn tối đa 100 điểm (đúng 1, lệch 1 mức một nửa, thiếu 0, thừa bị trừ). Tổng tối đa {max} điểm.'**
+  String howToDaily3(int max);
+
+  /// No description provided for @howToDaily4.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi ngày chỉ làm MỘT lần: xong nhận {gems} 💎 và Xu theo điểm; điểm đã nộp không sửa được.'**
+  String howToDaily4(int gems);
+
+  /// No description provided for @howToDaily5.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tab “Hôm nay” ở bảng xếp hạng xếp theo điểm hôm nay. Mỗi tuần, top 10 theo TỔNG điểm cả tuần nhận 💎 (cần liên kết email).'**
+  String get howToDaily5;
 }
 
 class _AppLocalizationsDelegate

@@ -6,7 +6,10 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
+import 'chibi_customer.dart';
 import 'motion.dart' show reduceMotion;
+
+export 'chibi_customer.dart' show CustomerMood;
 import 'recipe_motion.dart' show ShakeOnTrigger;
 
 /// Màu một lớp nguyên liệu trong ly (nhận theo từ khoá trong tên, từ khoá cụ thể trước — cùng khuôn
@@ -322,9 +325,6 @@ class _CupPainter extends CustomPainter {
       old.drop != drop;
 }
 
-/// Tâm trạng của khách.
-enum CustomerMood { waiting, delighted, pleased, upset }
-
 const _faces = {
   CustomerMood.waiting: '🙂',
   CustomerMood.delighted: '😍',
@@ -332,12 +332,18 @@ const _faces = {
   CustomerMood.upset: '😕',
 };
 
-const _avatars = ['🧑', '👩', '👨', '👧', '🧒', '👵', '👴', '🧕', '👱‍♀️', '🧔'];
-
-/// Khách đứng quầy: avatar + nét mặt (đổi theo [mood], nảy khi vui / lắc khi buồn) và bong bóng nói đơn.
-/// [seed] chọn avatar ổn định cho từng đơn.
+/// Khách đứng quầy: nhân vật chibi vẽ bằng code ([ChibiCustomer]; diện mạo ổn định theo [seed], nét mặt đổi theo
+/// [mood], nảy khi vui / lắc khi buồn) + huy hiệu mặt cười ở góc + bong bóng nói đơn.
 class OrderCustomer extends StatelessWidget {
-  const OrderCustomer({super.key, required this.seed, required this.mood, required this.child, this.upsetCount = 0, this.avatar});
+  const OrderCustomer({
+    super.key,
+    required this.seed,
+    required this.mood,
+    required this.child,
+    this.upsetCount = 0,
+    this.avatar,
+    this.impatient = false,
+  });
 
   final int seed;
   final CustomerMood mood;
@@ -348,21 +354,31 @@ class OrderCustomer extends StatelessWidget {
   /// Tăng mỗi khi khách buồn — kích hoạt lắc.
   final int upsetCount;
 
-  /// Emoji đại diện cố định (khách theo chủ đề lễ hội); null = chọn theo [seed].
+  /// Emoji phụ kiện đội trên đầu (khách theo chủ đề lễ hội); null = không có.
   final String? avatar;
+
+  /// Khách sốt ruột (Giờ cao điểm sắp hết giờ): toát mồ hôi, nghiêng đầu.
+  final bool impatient;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final avatar = this.avatar ?? _avatars[seed.abs() % _avatars.length];
+    final accessory = avatar;
     final happy = mood == CustomerMood.delighted || mood == CustomerMood.pleased;
     Widget head = Container(
-      width: 54,
-      height: 54,
-      alignment: Alignment.center,
+      width: 64,
+      height: 64,
+      clipBehavior: Clip.antiAlias, // thân chibi tràn xuống đáy bị cắt theo vòng tròn nền
       decoration: BoxDecoration(color: theme.colorScheme.primaryContainer, shape: BoxShape.circle),
-      child: Text(avatar, style: const TextStyle(fontSize: 30)),
+      child: ChibiCustomer(key: ValueKey('chibi-$seed'), seed: seed, mood: mood, impatient: impatient, size: 64),
     );
+    if (accessory != null) {
+      // Phụ kiện lễ hội (mũ, dơi, bí ngô…) đội lệch trên đỉnh đầu.
+      head = Stack(clipBehavior: Clip.none, children: [
+        head,
+        Positioned(top: -10, left: 2, child: Text(accessory, style: const TextStyle(fontSize: 24))),
+      ]);
+    }
     // Nét mặt ở góc, bật lên (scale) mỗi lần đổi.
     head = Stack(clipBehavior: Clip.none, children: [
       head,

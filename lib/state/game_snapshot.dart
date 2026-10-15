@@ -181,6 +181,7 @@ class GameSnapshot {
     this.recipeDailyDay = -1,
     this.recipeDailyScore = 0,
     this.recipeDailyCount = 0,
+    this.howToSeen = '',
     this.storyFourthActCompleteSeconds,
     this.recipeStreak = const RecipeStreak(),
     required this.weeklyChestAvailable,
@@ -435,6 +436,9 @@ class GameSnapshot {
 
   /// Số ngày đã làm Thử thách hằng ngày (mốc Hồi 4).
   final int recipeDailyCount;
+
+  /// Các hướng dẫn trò nhỏ đã xem, nối bằng ',' (chuỗi để so sánh theo giá trị khi `select`).
+  final String howToSeen;
 
   /// Chuỗi ngày ôn công thức (bất biến — an toàn khi chia sẻ với snapshot).
   final RecipeStreak recipeStreak;

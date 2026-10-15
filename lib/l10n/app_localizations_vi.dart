@@ -4371,4 +4371,96 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get rlbDailyWeeklyHint =>
       'Mỗi tuần, top 10 theo tổng điểm Thử thách ngày của cả tuần nhận 💎 (chốt vào đầu tuần sau, giờ UTC).';
+
+  @override
+  String get howToTooltip => 'Cách chơi';
+
+  @override
+  String get howToRecipesTitle => 'Cách chơi: Công thức pha chế';
+
+  @override
+  String get howToRecipes1 =>
+      'Học công thức bằng cách ÔN CÁCH QUÃNG: mỗi ngày game gọi những món đến hạn ôn, bạn trả lời vài câu hỏi.';
+
+  @override
+  String howToRecipes2(int a, int b, int c) {
+    return 'Mỗi món có 4 bậc: Mới → Quen → Thuộc → Thạo. Đúng thì lên bậc và hẹn ôn lại sau $a / $b / $c ngày; sai thì hạ một bậc và ôn lại ngay.';
+  }
+
+  @override
+  String get howToRecipes3 =>
+      'Câu hỏi khó dần theo bậc: bậc Mới điền nguyên liệu còn thiếu, bậc Quen đoán lượng, bậc Thuộc/Thạo chọn công thức đầy đủ đúng.';
+
+  @override
+  String get howToRecipes4 =>
+      'Ôn món chưa tới hạn chỉ để luyện tập: không tính bậc và không có thưởng. Có thể xem quảng cáo để nhận gợi ý (câu đó không tính bậc).';
+
+  @override
+  String get howToRecipes5 =>
+      'Lần đầu đạt mỗi bậc nhận Xu; lần đầu đạt Thạo nhận thêm 💎. Đạt các mốc số món Thạo (5, 10, 20…) nhận rương phụ kiện.';
+
+  @override
+  String howToRecipes6(int n) {
+    return 'Ôn mỗi ngày để giữ 🔥 chuỗi ôn và nhận 💎 ở các mốc 3 / 7 / 14 / 30 ngày; lỡ đứt chuỗi có thể cứu bằng 💎. Thuộc $n món của một nhóm thì mở nhóm công thức kế tiếp.';
+  }
+
+  @override
+  String get howToOrdersTitle => 'Cách chơi: Pha theo đơn';
+
+  @override
+  String get howToOrders1 =>
+      'Khách gọi một món: kéo (hoặc chạm) nguyên liệu từ khay vào ly rồi chọn lượng.';
+
+  @override
+  String get howToOrders2 =>
+      'Ở bảng chọn lượng, chạm lên thước hoặc GIỮ nút rót để lượng tăng dần; bậc thấp có vạch chia gợi ý.';
+
+  @override
+  String get howToOrders3 =>
+      'Bấm Phục vụ: ly được đậy nắp, lắc rồi chấm từng nguyên liệu — đúng lượng, lệch 1 mức, sai lượng, thiếu hoặc thừa.';
+
+  @override
+  String get howToOrders4 =>
+      'Món càng thuộc càng ít gợi ý: bậc Mới có công thức mẫu và vạch xanh, Quen chỉ hiện tên nguyên liệu, Thuộc chỉ cho biết số lượng, Thạo không gợi ý. Bậc Mới/Quen cho lệch 1 mức, Thuộc/Thạo phải đúng từng mức.';
+
+  @override
+  String get howToOrders5 =>
+      'Kết quả ghi vào bậc thuộc của món như câu trắc nghiệm. Xem quảng cáo để hiện công thức mẫu (đơn đó không tính bậc).';
+
+  @override
+  String get howToOrders6 =>
+      'Pha hoàn hảo nhiều đơn liên tiếp mà không dùng gợi ý để có 🔥 combo và tip Xu (chỉ với món đến hạn ôn).';
+
+  @override
+  String get howToOrders7 =>
+      'Bật ⏱ Giờ cao điểm ở đơn đầu: khách chỉ kiên nhẫn một lúc. Giao kịp giờ và hoàn hảo thì có thêm tip; hết giờ, ly bị chấm như đang có.';
+
+  @override
+  String get howToOrders8 =>
+      'Trong dịp lễ, cuối buổi có thêm đơn lễ hội (tip lớn hơn). Pha hoàn hảo thì bấm “Khoe ly này” để chia sẻ ảnh ly. Số món pha hoàn hảo không xem công thức mẫu được xếp hạng.';
+
+  @override
+  String get howToDailyTitle => 'Cách chơi: Thử thách hằng ngày';
+
+  @override
+  String get howToDaily1 =>
+      'Mỗi ngày có 3 đơn khó, GIỐNG NHAU cho mọi người chơi trên thế giới.';
+
+  @override
+  String get howToDaily2 =>
+      'Không có gợi ý, có nhiều nguyên liệu gây nhiễu và phải đúng từng mức. Không ghi bậc thuộc của món.';
+
+  @override
+  String howToDaily3(int max) {
+    return 'Mỗi đơn tối đa 100 điểm (đúng 1, lệch 1 mức một nửa, thiếu 0, thừa bị trừ). Tổng tối đa $max điểm.';
+  }
+
+  @override
+  String howToDaily4(int gems) {
+    return 'Mỗi ngày chỉ làm MỘT lần: xong nhận $gems 💎 và Xu theo điểm; điểm đã nộp không sửa được.';
+  }
+
+  @override
+  String get howToDaily5 =>
+      'Tab “Hôm nay” ở bảng xếp hạng xếp theo điểm hôm nay. Mỗi tuần, top 10 theo TỔNG điểm cả tuần nhận 💎 (cần liên kết email).';
 }

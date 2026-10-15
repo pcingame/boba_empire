@@ -119,6 +119,17 @@ void main() {
     expect(GameState.fromJson(state.toJson()..['recipeDailyCount'] = -5).recipeDailyCount, 0);
   });
 
+  test('howToSeen: round-trip, save cũ thiếu = rỗng, giá trị bẩn/trùng bị lọc', () async {
+    final storage = await _storage();
+    final state = GameState.newGame(nowMillis: 0)..howToSeen.addAll(['recipes', 'daily']);
+    await storage.save(state, nowMillis: 1);
+    expect(storage.load()!.howToSeen, ['recipes', 'daily']);
+    expect(GameState.fromJson(state.toJson()..remove('howToSeen')).howToSeen, isEmpty);
+    final dirty = GameState.fromJson(state.toJson()..['howToSeen'] = ['orders', 7, null, 'orders', 'recipes']);
+    expect(dirty.howToSeen, ['orders', 'recipes']);
+    expect(GameState.fromJson(state.toJson()..['howToSeen'] = 'sai kieu').howToSeen, isEmpty);
+  });
+
   test(
       'save rồi load giữ nguyên ownedAccessories; save cũ (trước phụ kiện '
       'sưu tập) thiếu trường -> load rỗng, không ném lỗi', () async {

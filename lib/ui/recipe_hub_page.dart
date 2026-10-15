@@ -14,6 +14,7 @@ import 'email_gate.dart';
 import 'recipe_quiz_page.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
+import 'minigame_how_to_dialogs.dart';
 import 'widgets/idle_mascot.dart';
 import 'widgets/motion.dart';
 import 'widgets/recipe_motion.dart';
@@ -44,10 +45,14 @@ class RecipeHubPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final catalog = ref.watch(recipeCatalogProvider);
-    return Scaffold(
+    // Lần đầu vào trò công thức thì tự mở hướng dẫn (mở lại bằng nút ? ở thanh tiêu đề).
+    return HowToOnce(
+      guide: MiniGameGuide.recipes,
+      child: Scaffold(
       appBar: AppBar(
         title: Text(l10n.recipeTitle),
         actions: [
+          const HowToButton(MiniGameGuide.recipes),
           IconButton(
             key: const Key('recipe-leaderboard'),
             tooltip: l10n.rlbTitle,
@@ -65,7 +70,7 @@ class RecipeHubPage extends ConsumerWidget {
         error: (_, _) => Center(child: Text(l10n.guildErrNetwork)),
         data: (c) => _Body(catalog: c),
       ),
-    );
+    ));
   }
 }
 

@@ -162,6 +162,7 @@ class GameState {
     List<int>? m3Stars,
     List<String>? redeemedCodes,
     List<String>? ownedAccessories,
+    List<String>? howToSeen,
     List<String>? ownedLimited,
     this.eventId = '',
     this.guildWeek = 0,
@@ -180,6 +181,7 @@ class GameState {
         m3Stars = m3Stars ?? [],
         redeemedCodes = redeemedCodes ?? [],
         ownedAccessories = ownedAccessories ?? [],
+        howToSeen = howToSeen ?? [],
         ownedLimited = ownedLimited ?? [],
         topupClaimed = topupClaimed ?? [],
         firstBuyClaimed = firstBuyClaimed ?? [],
@@ -285,6 +287,10 @@ class GameState {
   /// rớt trùng quy đổi 💎 thay vì thêm vào đây. Không reset khi Nhượng
   /// quyền/Kỷ Nguyên, cùng nhóm với thành tựu, cốt truyện.
   final List<String> ownedAccessories;
+
+  /// Hướng dẫn trò chơi nhỏ đã tự hiện lần đầu: 'recipes' | 'orders' | 'daily' (xem minigame_how_to_dialogs.dart).
+  /// (Trân Châu Rơi có cờ riêng [m3HowToSeen] từ trước.) Save cũ → rỗng.
+  final List<String> howToSeen;
 
   /// Phụ kiện độc quyền theo dịp lễ (xem accessories.dart `festivals`) — tách khỏi
   /// [ownedAccessories] để không dính số đếm bộ sưu tập / BXH / Chợ.
@@ -592,6 +598,7 @@ class GameState {
         'm3Stars': m3Stars,
         'redeemedCodes': redeemedCodes,
         'ownedAccessories': ownedAccessories,
+        'howToSeen': howToSeen,
         'ownedLimited': ownedLimited,
         'eventId': eventId,
         'guildWeek': guildWeek,
@@ -721,6 +728,9 @@ class GameState {
             (json['redeemedCodes'] as List?)?.cast<String>().toList(),
         ownedAccessories:
             (json['ownedAccessories'] as List?)?.cast<String>().toList(),
+        howToSeen: [
+          if (json['howToSeen'] is List) ...{for (final e in json['howToSeen'] as List) if (e is String) e},
+        ],
         ownedLimited: (json['ownedLimited'] as List?)?.cast<String>().toList(),
         eventId: (json['eventId'] as String?) ?? '',
         guildWeek: (json['guildWeek'] as num?)?.toInt() ?? 0,

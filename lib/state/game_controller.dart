@@ -1988,6 +1988,14 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
+  /// Đánh dấu đã tự hiện hướng dẫn trò [id] ('recipes' | 'orders' | 'daily') để lần sau không tự hiện nữa.
+  void markHowToSeen(String id) {
+    if (_game.howToSeen.contains(id)) return;
+    _game.howToSeen.add(id);
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
   /// Đánh dấu đã xem hướng dẫn Trân Châu Rơi (để lần sau không tự hiện nữa).
   void markM3HowToSeen() {
     if (_game.m3HowToSeen) return;
@@ -2269,6 +2277,7 @@ class GameController extends Notifier<GameSnapshot> {
       recipeDailyDay: _game.recipeDailyDay,
       recipeDailyScore: _game.recipeDailyScore,
       recipeDailyCount: _game.recipeDailyCount,
+      howToSeen: _game.howToSeen.join(','),
       recipeProgress: {
         for (final e in _game.recipeProgress.entries)
           if (int.tryParse(e.key) != null) int.parse(e.key): RecipeProgress.fromList(e.value),

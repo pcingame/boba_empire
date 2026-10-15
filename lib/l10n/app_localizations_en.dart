@@ -4393,4 +4393,96 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get rlbDailyWeeklyHint =>
       'Each week the top 10 by total Daily Challenge score for the whole week get 💎 (locked at the start of next week, UTC).';
+
+  @override
+  String get howToTooltip => 'How to play';
+
+  @override
+  String get howToRecipesTitle => 'How to play: Recipes';
+
+  @override
+  String get howToRecipes1 =>
+      'Learn recipes with SPACED REVIEW: each day the game picks the drinks that are due and you answer a few questions.';
+
+  @override
+  String howToRecipes2(int a, int b, int c) {
+    return 'Each drink has 4 levels: New → Familiar → Learned → Mastered. A correct answer levels it up and schedules the next review in $a / $b / $c days; a wrong one drops it one level and brings it back right away.';
+  }
+
+  @override
+  String get howToRecipes3 =>
+      'Questions get harder with the level: New fills in the missing ingredient, Familiar guesses the amount, Learned/Mastered picks the correct full recipe.';
+
+  @override
+  String get howToRecipes4 =>
+      'Reviewing a drink that isn\'t due is practice only: no level change and no reward. You can watch an ad for a hint (that question doesn\'t count).';
+
+  @override
+  String get howToRecipes5 =>
+      'Reaching each level for the first time earns coins; the first Mastered also earns 💎. Milestones of Mastered drinks (5, 10, 20…) give accessory chests.';
+
+  @override
+  String howToRecipes6(int n) {
+    return 'Review every day to keep your 🔥 streak and earn 💎 at 3 / 7 / 14 / 30 days; a broken streak can be rescued with 💎. Learn $n drinks of a group to unlock the next group.';
+  }
+
+  @override
+  String get howToOrdersTitle => 'How to play: Brew by order';
+
+  @override
+  String get howToOrders1 =>
+      'A customer orders a drink: drag (or tap) ingredients from the tray into the cup, then set the amount.';
+
+  @override
+  String get howToOrders2 =>
+      'In the amount sheet, tap the ruler or HOLD the pour button to raise the amount; lower levels show guide marks.';
+
+  @override
+  String get howToOrders3 =>
+      'Tap Serve: the cup is sealed and shaken, then each ingredient is graded — exact, one step off, wrong amount, missing or extra.';
+
+  @override
+  String get howToOrders4 =>
+      'The better you know a drink, the fewer hints: New shows the sample recipe and a green mark, Familiar only the ingredient names, Learned only how many, Mastered nothing. New/Familiar allow one step off; Learned/Mastered must be exact.';
+
+  @override
+  String get howToOrders5 =>
+      'The result counts toward the drink\'s level like a quiz answer. Watch an ad to reveal the sample recipe (that order doesn\'t count).';
+
+  @override
+  String get howToOrders6 =>
+      'Brew several perfect orders in a row without hints for a 🔥 combo and coin tips (only for drinks that are due).';
+
+  @override
+  String get howToOrders7 =>
+      'Turn on ⏱ Rush hour at the first order: customers only wait so long. Serve a perfect drink in time for an extra tip; when time runs out, the cup is graded as it is.';
+
+  @override
+  String get howToOrders8 =>
+      'During a festival an extra festival order appears at the end (bigger tip). After a perfect drink, tap “Show off this cup” to share its picture. Drinks made perfectly without the sample recipe count toward the leaderboard.';
+
+  @override
+  String get howToDailyTitle => 'How to play: Daily Challenge';
+
+  @override
+  String get howToDaily1 =>
+      'Every day has 3 hard orders, the SAME for every player in the world.';
+
+  @override
+  String get howToDaily2 =>
+      'No hints, many distractor ingredients and every amount must be exact. It doesn\'t change any drink\'s level.';
+
+  @override
+  String howToDaily3(int max) {
+    return 'Each order is worth up to 100 points (exact 1, one step off half, missing 0, extra deducts). Maximum total: $max points.';
+  }
+
+  @override
+  String howToDaily4(int gems) {
+    return 'Only ONE attempt per day: finish for $gems 💎 and coins based on your score; a submitted score can\'t be changed.';
+  }
+
+  @override
+  String get howToDaily5 =>
+      'The “Today” tab of the leaderboard ranks today\'s scores. Every week the top 10 by TOTAL score for the week get 💎 (email link required).';
 }

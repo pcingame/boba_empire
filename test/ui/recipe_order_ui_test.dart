@@ -17,6 +17,7 @@ import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/state/recipe_providers.dart';
 import 'package:boba_empire/ui/collection_share_dialog.dart' show shareImageProvider;
 import 'package:boba_empire/ui/recipe_order_page.dart';
+import 'package:boba_empire/ui/widgets/chibi_customer.dart' show ChibiCustomer;
 import 'package:boba_empire/ui/widgets/order_visuals.dart';
 import 'package:flutter/foundation.dart' show Uint8List;
 import 'package:flutter/material.dart';
@@ -604,6 +605,23 @@ void main() {
       expect(find.byKey(const Key('order-feedback')), findsNothing);
       await tester.pump(Duration(seconds: total));
       expect(find.byKey(const Key('order-feedback')), findsOneWidget);
+      await _teardown(tester);
+    });
+
+    testWidgets('khách sốt ruột khi còn dưới 25% kiên nhẫn; không sốt ruột khi mới bật hoặc khi không chơi Giờ cao điểm', (tester) async {
+      await _pump(tester, size: const Size(400, 1000));
+      bool impatient() => tester.widget<ChibiCustomer>(find.byType(ChibiCustomer)).impatient;
+      expect(impatient(), isFalse, reason: 'không bật Giờ cao điểm');
+      await rushOn(tester);
+      expect(impatient(), isFalse, reason: 'mới bật, còn đầy kiên nhẫn');
+      final total = orderPatienceSeconds(_expected(1).first.recipe.ingredients.length);
+      await tester.pump(Duration(milliseconds: (total * 1000 * 0.6).round())); // còn ~40%
+      expect(impatient(), isFalse);
+      await tester.pump(Duration(milliseconds: (total * 1000 * 0.2).round())); // còn ~20%
+      expect(impatient(), isTrue);
+      await tester.pump(Duration(seconds: total)); // hết giờ ⇒ đã chấm, hết sốt ruột
+      expect(find.byKey(const Key('order-feedback')), findsOneWidget);
+      expect(impatient(), isFalse);
       await _teardown(tester);
     });
 
