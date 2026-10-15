@@ -44,7 +44,7 @@ import '../data/game_storage.dart';
 import '../market/accessory_market_repository.dart';
 import '../ui/widgets/effects_quality.dart' show EffectsController;
 import '../core/recipe_mastery.dart';
-import '../core/recipe_orders.dart' show dailyCashTipFactor, dailyChallengeGems, dailyMaxScore, orderComboTipFactor, orderRushBonusFactor;
+import '../core/recipe_orders.dart' show dailyCashTipFactor, dailyChallengeGems, dailyMaxScore, orderComboTipFactor, orderFestivalBonusFactor, orderRushBonusFactor;
 import 'game_providers.dart';
 import 'game_snapshot.dart';
 
@@ -389,9 +389,10 @@ class GameController extends Notifier<GameSnapshot> {
   }
 
   /// Tip combo của trò Pha theo đơn: boa-nền (như boa khách đi ngang) nhân [orderComboTipFactor]. Chỉ Xu.
-  /// [rush]: đơn hoàn hảo kịp giờ trong Giờ cao điểm — cộng thêm [orderRushBonusFactor]. Trả 0 nếu chưa đủ combo và không rush.
-  double grantOrderTip(int combo, {bool rush = false}) {
-    final factor = orderComboTipFactor(combo) + (rush ? orderRushBonusFactor : 0);
+  /// [festival]: đơn lễ hội hoàn hảo — cộng thêm [orderFestivalBonusFactor]. [rush]: đơn hoàn hảo kịp giờ trong Giờ cao điểm — cộng thêm [orderRushBonusFactor]. Trả 0 nếu chưa đủ combo và không rush.
+  double grantOrderTip(int combo, {bool rush = false, bool festival = false}) {
+    final factor =
+        orderComboTipFactor(combo) + (rush ? orderRushBonusFactor : 0) + (festival ? orderFestivalBonusFactor : 0);
     if (factor <= 0) return 0;
     final production = effectiveIncomePerSecond(
           _game,
@@ -401,7 +402,7 @@ class GameController extends Notifier<GameSnapshot> {
         Balance.walkerTipSeconds;
     final cash = max(production, _game.tapValue * Balance.walkerTipFloorTaps) * factor;
     grantBonus(_game, cash);
-    logEvent('order_combo_tip', {'combo': combo, 'rush': rush, 'cash': cash});
+    logEvent('order_combo_tip', {'combo': combo, 'rush': rush, 'festival': festival, 'cash': cash});
     state = _snapshot();
     return cash;
   }

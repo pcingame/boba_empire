@@ -1961,5 +1961,9 @@
   "recipeOrderRushSub": "Los clientes no esperan mucho: sirve una bebida perfecta a tiempo y ganarás propina extra. Si se acaba el tiempo, se evalúa el vaso tal cual.",
   "recipeOrderTimeUp": "⏰ ¡Se acabó el tiempo! El cliente se fue y se evalúa tu vaso tal cual.",
   "recipeOrderRushTip": "⏱ ¡A tiempo! Propina +{cash} monedas.",
-  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}}
+  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}},
+  "recipeOrderFestival": "Pedido de fiesta: {name}",
+  "@recipeOrderFestival": {"placeholders": {"name": {"type": "String"}}},
+  "recipeOrderFestivalTip": "🎁 ¡Pedido de fiesta perfecto! Propina +{cash} monedas.",
+  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}}
 }

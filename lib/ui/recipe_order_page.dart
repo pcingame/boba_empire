@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../ads/ad_service.dart';
 import '../ads/banner_ad_box.dart';
+import '../core/accessories.dart' show activeFestival, festivals;
 import '../core/daily.dart';
 import '../core/format.dart';
 import '../core/recipe_mastery.dart';
@@ -13,6 +14,7 @@ import '../core/recipe_names.dart';
 import '../core/recipe_orders.dart';
 import '../core/recipes.dart';
 import '../l10n/app_localizations.dart';
+import '../l10n/l10n_ext.dart' show festivalName;
 import '../state/game_providers.dart';
 import '../state/recipe_providers.dart';
 import '../leaderboard/recipe_leaderboard_repository.dart' show RecipeBoard;
@@ -66,12 +68,13 @@ class _RecipeOrderGame extends ConsumerStatefulWidget {
 
 class _Served {
   _Served(this.order, this.grade, this.result,
-      {this.hinted = false, this.combo = 0, this.tip = 0, this.score = 0, this.late = false, this.rush = false});
+      {this.hinted = false, this.combo = 0, this.tip = 0, this.score = 0, this.late = false, this.rush = false, this.festival = false});
   final bool hinted;
 
   /// Giờ cao điểm: hết giờ mới phục vụ (khách bỏ đi) / nhận tip giao kịp giờ.
   final bool late;
   final bool rush;
+  final bool festival;
 
   /// Combo SAU đơn này (số đơn hoàn hảo liên tiếp) và tip combo đã nhận (0 nếu chưa đủ / đơn không tính bậc).
   final int combo;
@@ -83,6 +86,9 @@ class _Served {
   final OrderResult grade;
   final RecipeAnswerResult result;
 }
+
+/// Emoji đại diện dịp lễ (món sưu tập đầu tiên của dịp).
+String _festivalEmoji(String id) => festivals.firstWhere((f) => f.id == id).items.first.emoji;
 
 String _amt(double v, String unit) => '${v == v.roundToDouble() ? v.round() : v} $unit';
 
@@ -146,13 +152,18 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     final catalog = ref.read(recipeCatalogProvider).requireValue;
     if (widget.daily) return buildDailyOrders(catalog, dayIndex(ref.read(clockProvider)()));
     final progress = ref.read(gameControllerProvider).recipeProgress;
-    return buildOrders(
-      catalog,
-      progress,
-      dayIndex(ref.read(clockProvider)()),
-      ref.read(recipeRandomProvider),
-      pool: unlockedRecipes(catalog, (id) => progress[id]?.best ?? 0),
-    );
+    final nowMs = ref.read(clockProvider)();
+    final today = dayIndex(nowMs);
+    final rnd = ref.read(recipeRandomProvider);
+    final pool = unlockedRecipes(catalog, (id) => progress[id]?.best ?? 0);
+    final orders = buildOrders(catalog, progress, today, rnd, pool: pool);
+    // Đang trong dịp lễ: thêm "đơn lễ hội" ở cuối buổi.
+    final fest = activeFestival(DateTime.fromMillisecondsSinceEpoch(nowMs, isUtc: true));
+    final special = fest == null
+        ? null
+        : buildFestivalOrder(fest.id, catalog, progress, today, rnd,
+            pool: pool, exclude: {for (final o in orders) o.recipe.id});
+    return [...orders, ?special];
   }
 
   bool get _finished => _index >= _orders.length;
@@ -236,10 +247,12 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     _combo = grade.stars == 3 && !_hinted && !late ? _combo + 1 : 0;
     final counted = result.outcome.counted;
     final rush = _rush && !late && grade.stars == 3 && !_hinted && counted;
-    final tip = (_combo >= 2 && counted) || rush ? game.grantOrderTip(_combo, rush: rush) : 0.0;
+    final fest = order.festival != null && grade.stars == 3 && !_hinted && counted;
+    final tip = (_combo >= 2 && counted) || rush || fest ? game.grantOrderTip(_combo, rush: rush, festival: fest) : 0.0;
     setState(() {
       _checked = true;
-      _served.add(_Served(order, grade, result, hinted: _hinted, combo: _combo, tip: tip, late: late, rush: rush));
+      _served.add(_Served(order, grade, result,
+          hinted: _hinted, combo: _combo, tip: tip, late: late, rush: rush, festival: fest));
     });
     if (tip > 0) playEffect(context, AnimAssets.coinFly, size: 160, heavy: false);
     final drop = result.drop;
@@ -501,9 +514,18 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
                                 const SizedBox(width: 6),
                                 Text(ingredientEmoji(p.item.name), style: const TextStyle(fontSize: 18)),
                                 const SizedBox(width: 6),
-                                Expanded(child: Text(_labels.ingredient(p.item.name), style: theme.textTheme.bodyMedium)),
-                                Text(_amt(p.value, p.item.unit),
-                                    style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w800)),
+                                // Cả tên lẫn lượng co được: cột này hẹp (nằm cạnh ly) và chữ có thể rất to.
+                                Expanded(
+                                    flex: 3,
+                                    child: Text(_labels.ingredient(p.item.name),
+                                        maxLines: 2, overflow: TextOverflow.ellipsis, style: theme.textTheme.bodyMedium)),
+                                Flexible(
+                                  flex: 2,
+                                  child: Text(_amt(p.value, p.item.unit),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w800)),
+                                ),
                               ]),
                             ),
                           ),
@@ -574,7 +596,17 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (o.festival != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 6),
+                    child: Chip(
+                      key: const Key('order-festival'),
+                      visualDensity: VisualDensity.compact,
+                      label: Text('${_festivalEmoji(o.festival!)} ${l10n.recipeOrderFestival(festivalName(l10n, o.festival!))}'),
+                    ),
+                  ),
                 OrderCustomer(
+                  avatar: o.festival == null ? null : _festivalEmoji(o.festival!),
                   seed: o.recipe.id + _index,
                   mood: last == null
                       ? CustomerMood.waiting
@@ -716,7 +748,11 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
       if (r.milestone > 0) l10n.recipeMilestone(r.milestone),
       if (s.late) l10n.recipeOrderTimeUp,
       if (s.tip > 0)
-        s.rush ? l10n.recipeOrderRushTip(formatNumber(s.tip)) : l10n.recipeOrderComboTip(formatNumber(s.tip), s.combo)
+        s.festival
+            ? l10n.recipeOrderFestivalTip(formatNumber(s.tip))
+            : s.rush
+                ? l10n.recipeOrderRushTip(formatNumber(s.tip))
+                : l10n.recipeOrderComboTip(formatNumber(s.tip), s.combo)
       else if (s.combo >= 2)
         l10n.recipeOrderCombo(s.combo),
       if (r.streakGems > 0)

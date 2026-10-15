@@ -4327,4 +4327,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String recipeOrderRushTip(String cash) {
     return '⏱ Served in time! Tip +$cash coins!';
   }
+
+  @override
+  String recipeOrderFestival(String name) {
+    return 'Festival order: $name';
+  }
+
+  @override
+  String recipeOrderFestivalTip(String cash) {
+    return '🎁 Perfect festival order! Tip +$cash coins!';
+  }
 }

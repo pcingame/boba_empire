@@ -388,6 +388,9 @@ void main() {
     final unit = base / 0.5;
     expect(ctrl.grantOrderTip(0, rush: true), closeTo(unit * orderRushBonusFactor, 1e-6));
     expect(ctrl.grantOrderTip(3, rush: true), closeTo(unit * (1 + orderRushBonusFactor), 1e-6));
+    expect(ctrl.grantOrderTip(0, festival: true), closeTo(unit * orderFestivalBonusFactor, 1e-6));
+    expect(ctrl.grantOrderTip(2, rush: true, festival: true),
+        closeTo(unit * (0.5 + orderRushBonusFactor + orderFestivalBonusFactor), 1e-6));
   });
 
   test('thử thách ngày: thưởng 💎 + Xu tỉ lệ điểm, MỘT lần mỗi ngày (không ghi đè), sang ngày mới làm lại được', () async {

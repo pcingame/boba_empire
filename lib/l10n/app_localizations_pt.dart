@@ -4337,4 +4337,14 @@ class AppLocalizationsPt extends AppLocalizations {
   String recipeOrderRushTip(String cash) {
     return '⏱ Servido a tempo! Gorjeta +$cash moedas!';
   }
+
+  @override
+  String recipeOrderFestival(String name) {
+    return 'Pedido do festival: $name';
+  }
+
+  @override
+  String recipeOrderFestivalTip(String cash) {
+    return '🎁 Pedido do festival perfeito! Gorjeta +$cash moedas!';
+  }
 }

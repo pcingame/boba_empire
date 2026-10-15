@@ -1961,5 +1961,9 @@
   "recipeOrderRushSub": "Pelanggan tidak sabar menunggu: sajikan minuman sempurna tepat waktu untuk tip tambahan. Jika waktu habis, gelas dinilai apa adanya.",
   "recipeOrderTimeUp": "⏰ Waktu habis! Pelanggan pergi, gelasmu dinilai apa adanya.",
   "recipeOrderRushTip": "⏱ Tepat waktu! Tip +{cash} koin!",
-  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}}
+  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}},
+  "recipeOrderFestival": "Pesanan festival: {name}",
+  "@recipeOrderFestival": {"placeholders": {"name": {"type": "String"}}},
+  "recipeOrderFestivalTip": "🎁 Pesanan festival sempurna! Tip +{cash} koin!",
+  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}}
 }

@@ -7289,6 +7289,18 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'⏱ Giao kịp giờ! Tip +{cash} Xu!'**
   String recipeOrderRushTip(String cash);
+
+  /// No description provided for @recipeOrderFestival.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đơn lễ hội: {name}'**
+  String recipeOrderFestival(String name);
+
+  /// No description provided for @recipeOrderFestivalTip.
+  ///
+  /// In vi, this message translates to:
+  /// **'🎁 Đơn lễ hội hoàn hảo! Tip +{cash} Xu!'**
+  String recipeOrderFestivalTip(String cash);
 }
 
 class _AppLocalizationsDelegate

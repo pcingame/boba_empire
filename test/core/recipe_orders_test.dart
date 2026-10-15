@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:boba_empire/core/accessories.dart' show festivals;
 import 'package:boba_empire/core/recipe_mastery.dart';
 import 'package:boba_empire/core/recipe_orders.dart';
 import 'package:boba_empire/core/recipes.dart';
@@ -140,6 +141,36 @@ void main() {
       expect(score([...exact(o), Poured(extra, 10)]), (100 * (n - 0.5) / n).round());
       expect(score([Poured(extra, 10)]), 0, reason: 'điểm không âm');
       expect(score(const []), 0);
+    });
+  });
+
+  group('đơn lễ hội', () {
+    final cat = RecipeCatalog.fromJson(
+        jsonDecode(File('assets/recipes/recipes.json').readAsStringSync()) as Map<String, dynamic>);
+
+    test('mọi dịp lễ có danh sách món; món tồn tại và thuộc nhóm 1–2 (ai cũng có sớm)', () {
+      for (final f in festivals) {
+        final ids = festivalRecipeIds[f.id];
+        expect(ids, isNotNull, reason: 'dịp ${f.id} thiếu món chủ đề');
+        for (final id in ids!) {
+          expect(cat.recipes.where((x) => x.id == id && x.group <= 2).length, 1, reason: '${f.id}: món $id');
+        }
+      }
+    });
+
+    test('chọn món theo ngày, gắn nhãn dịp, tôn trọng pool và exclude; không có món hợp lệ ⇒ null', () {
+      final pool = cat.recipes;
+      final a = buildFestivalOrder('halloween', cat, const {}, 0, Random(1), pool: pool)!;
+      final b = buildFestivalOrder('halloween', cat, const {}, 1, Random(1), pool: pool)!;
+      expect(a.festival, 'halloween');
+      expect(a.recipe.id, festivalRecipeIds['halloween']![0]);
+      expect(b.recipe.id, festivalRecipeIds['halloween']![1]);
+      final ex = buildFestivalOrder('halloween', cat, const {}, 0, Random(1), pool: pool, exclude: {a.recipe.id})!;
+      expect(ex.recipe.id, isNot(a.recipe.id));
+      expect(buildFestivalOrder('halloween', cat, const {}, 0, Random(1), pool: const []), isNull);
+      expect(buildFestivalOrder('khong_co', cat, const {}, 0, Random(1), pool: pool), isNull);
+      expect(buildFestivalOrder('halloween', cat, const {}, 0, Random(1),
+          pool: pool, exclude: {...festivalRecipeIds['halloween']!}), isNull);
     });
   });
 }

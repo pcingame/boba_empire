@@ -4236,4 +4236,14 @@ class AppLocalizationsKo extends AppLocalizations {
   String recipeOrderRushTip(String cash) {
     return '⏱ 제때 서빙! 팁 +$cash 코인!';
   }
+
+  @override
+  String recipeOrderFestival(String name) {
+    return '축제 주문: $name';
+  }
+
+  @override
+  String recipeOrderFestivalTip(String cash) {
+    return '🎁 완벽한 축제 주문! 팁 +$cash 코인!';
+  }
 }

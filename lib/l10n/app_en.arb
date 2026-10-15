@@ -1961,5 +1961,9 @@
   "recipeOrderRushSub": "Customers won't wait long: serve a perfect drink in time for an extra tip. When time runs out, the cup is graded as it is.",
   "recipeOrderTimeUp": "⏰ Time's up! The customer left, your cup is graded as it stands.",
   "recipeOrderRushTip": "⏱ Served in time! Tip +{cash} coins!",
-  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}}
+  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}},
+  "recipeOrderFestival": "Festival order: {name}",
+  "@recipeOrderFestival": {"placeholders": {"name": {"type": "String"}}},
+  "recipeOrderFestivalTip": "🎁 Perfect festival order! Tip +{cash} coins!",
+  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}}
 }

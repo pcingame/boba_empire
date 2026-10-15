@@ -2920,5 +2920,9 @@
   "recipeOrderRushSub": "Khách chỉ chờ một lúc: giao kịp giờ và hoàn hảo thì có tip thêm. Hết giờ, ly pha dở bị chấm luôn.",
   "recipeOrderTimeUp": "⏰ Hết giờ! Khách bỏ đi, ly bị chấm như đang có.",
   "recipeOrderRushTip": "⏱ Giao kịp giờ! Tip +{cash} Xu!",
-  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}}
+  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}},
+  "recipeOrderFestival": "Đơn lễ hội: {name}",
+  "@recipeOrderFestival": {"placeholders": {"name": {"type": "String"}}},
+  "recipeOrderFestivalTip": "🎁 Đơn lễ hội hoàn hảo! Tip +{cash} Xu!",
+  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}}
 }

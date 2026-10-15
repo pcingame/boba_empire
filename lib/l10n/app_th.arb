@@ -1961,5 +1961,9 @@
   "recipeOrderRushSub": "ลูกค้ารอไม่นาน เสิร์ฟเครื่องดื่มสมบูรณ์แบบให้ทันเวลาเพื่อรับทิปเพิ่ม ถ้าหมดเวลา แก้วจะถูกตัดสินตามที่เป็นอยู่",
   "recipeOrderTimeUp": "⏰ หมดเวลา! ลูกค้าจากไปแล้ว แก้วถูกตัดสินตามที่เป็นอยู่",
   "recipeOrderRushTip": "⏱ เสิร์ฟทันเวลา! ทิป +{cash} เหรียญ!",
-  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}}
+  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}},
+  "recipeOrderFestival": "ออเดอร์เทศกาล: {name}",
+  "@recipeOrderFestival": {"placeholders": {"name": {"type": "String"}}},
+  "recipeOrderFestivalTip": "🎁 ออเดอร์เทศกาลสมบูรณ์แบบ! ทิป +{cash} เหรียญ!",
+  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}}
 }

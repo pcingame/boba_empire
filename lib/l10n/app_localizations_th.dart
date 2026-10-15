@@ -4289,4 +4289,14 @@ class AppLocalizationsTh extends AppLocalizations {
   String recipeOrderRushTip(String cash) {
     return '⏱ เสิร์ฟทันเวลา! ทิป +$cash เหรียญ!';
   }
+
+  @override
+  String recipeOrderFestival(String name) {
+    return 'ออเดอร์เทศกาล: $name';
+  }
+
+  @override
+  String recipeOrderFestivalTip(String cash) {
+    return '🎁 ออเดอร์เทศกาลสมบูรณ์แบบ! ทิป +$cash เหรียญ!';
+  }
 }

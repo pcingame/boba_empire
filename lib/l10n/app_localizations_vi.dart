@@ -4305,4 +4305,14 @@ class AppLocalizationsVi extends AppLocalizations {
   String recipeOrderRushTip(String cash) {
     return '⏱ Giao kịp giờ! Tip +$cash Xu!';
   }
+
+  @override
+  String recipeOrderFestival(String name) {
+    return 'Đơn lễ hội: $name';
+  }
+
+  @override
+  String recipeOrderFestivalTip(String cash) {
+    return '🎁 Đơn lễ hội hoàn hảo! Tip +$cash Xu!';
+  }
 }

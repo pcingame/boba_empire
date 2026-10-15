@@ -1029,10 +1029,17 @@ Mọi chuyển động theo mức hiệu ứng (`EffectsQuality`/`reduceMotion`,
 - **Combo**: đơn HOÀN HẢO không gợi ý liên tiếp trong buổi; từ combo 2 có tip Xu = boa-nền × 0.5/1/1.5/2 (kẹp ở combo 5) — `orderComboTipFactor`, `grantOrderTip`. Tip chỉ trả khi đơn thật sự được tính bậc (món đến hạn ôn) để không cày bằng món dễ lặp lại; ngoài ra vẫn hiện chip "🔥 Combo ×n". Sai hoặc dùng gợi ý QC thì đứt. ⚠️ hệ số ước lượng.
 - **Thử thách hằng ngày** (mục `games-daily` trong hộp Trò chơi; `RecipeOrderPage(daily: true)`): 3 đơn CỐ ĐỊNH theo ngày UTC cho mọi người (`buildDailyOrders`, gieo `Random(day*7919+17)` trên nhóm 1; ⚠️ đổi cách chọn = đổi đề của mọi người), như bậc Thạo (không gợi ý, 5 nhiễu, đúng từng mức). Điểm đơn 0..100 (`scoreOrder`: đúng 1, lệch 1 mức 0.5, thiếu 0, thừa −0.5), tổng 0..300. MỖI NGÀY MỘT LẦN (`recipeDailyDay/Score`); không ghi bậc, không combo, không vào BXH Pha theo đơn. Thưởng `completeDailyChallenge`: 5💎 + Xu tỉ lệ điểm.
 - **BXH hôm nay** (tab thứ ba, `RecipeBoard.daily`): `supabase/recipe_daily_schema.sql` (**PHẢI chạy**). Mỗi (người, ngày) một hàng bất biến (chỉ policy INSERT; app nộp bằng upsert DO NOTHING), ngày do SERVER đặt, ghi cần liên kết email; top chỉ tính hôm nay (ngày server UTC, cùng cách tính `dayIndex`).
-- **Chưa làm (để mai)**: mục 7 đơn đặc biệt theo mùa/sự kiện, mục 9 chia sẻ ly vừa pha, mục 10 trang trí quầy bằng phụ kiện; khách vẫn là emoji (chưa Lottie đứng quầy); thưởng top tuần cho BXH Pha theo đơn / Hôm nay.
+- **Chưa làm (để mai)**: mục 9 chia sẻ ly vừa pha, mục 10 trang trí quầy bằng phụ kiện; khách vẫn là emoji (chưa Lottie đứng quầy); thưởng top tuần cho BXH Pha theo đơn / Hôm nay.
 
 ### 34l. Pha theo đơn — Giờ cao điểm (2026-10-16)
 - **Tùy chọn** (công tắc `order-rush-toggle`, chỉ hiện ở đơn đầu khi ly còn trống; KHÔNG có trong thử thách ngày để BXH công bằng). Bật thì mỗi đơn có thanh kiên nhẫn `order-patience` (xanh → cam → đỏ), `orderPatienceSeconds(n) = 20 + 8n` giây (n = số nguyên liệu). Đồng hồ tạm dừng khi bảng đặt lượng mở / đang xem QC / đang đậy nắp.
 - **Hết giờ**: khách bỏ đi, ly bị chấm NGUYÊN TRẠNG (ly trống thì sai) như phục vụ bình thường ⇒ vẫn ảnh hưởng bậc thuộc như đáp sai; đứt combo; không tip. Dòng "⏰ Hết giờ!" trong phản hồi.
 - **Thưởng**: đơn hoàn hảo, không gợi ý, KỊP GIỜ và tính bậc (món đến hạn — chống cày) nhận tip `orderRushBonusFactor` (=1 boa-nền) cộng vào tip combo (`grantOrderTip(combo, rush:)`). ⚠️ hệ số và thời gian là ước lượng, chưa playtest.
-- **Chưa làm (để mai)**: mục 7 đơn đặc biệt theo mùa/sự kiện, mục 9 chia sẻ ly, mục 10 trang trí quầy; khách Lottie; thưởng top tuần cho BXH Pha theo đơn / Hôm nay.
+- **Chưa làm (để mai)**: mục 9 chia sẻ ly, mục 10 trang trí quầy; khách Lottie; thưởng top tuần cho BXH Pha theo đơn / Hôm nay.
+
+### 34m. Pha theo đơn — đơn lễ hội (2026-10-16)
+- Trong dịp lễ (`activeFestival`), buổi Pha theo đơn thường có thêm MỘT "đơn lễ hội" ở cuối (6 đơn thay vì 5): chip `order-festival` + khách mang emoji của dịp. Chỉ ở chế độ thường (không có trong thử thách ngày).
+- Món theo chủ đề dịp: `festivalRecipeIds` (recipe_orders.dart), toàn món nhóm 1–2; xoay theo ngày; bỏ món đã có trong buổi; không có món hợp lệ ⇒ không thêm đơn. **Thêm dịp lễ mới ở `accessories.dart` ⇒ phải thêm dòng ở đây** (test `đơn lễ hội` bắt thiếu).
+- Là đơn bình thường (ghi bậc, gợi ý, Giờ cao điểm, combo). Thưởng: hoàn hảo + không gợi ý + tính bậc ⇒ tip `orderFestivalBonusFactor` (=2 boa-nền) cộng dồn với combo/rush. KHÔNG cộng điểm sự kiện (giữ nguyên bài toán 100 < 115 điểm của `event_quests`). ⚠️ hệ số ước lượng, chưa playtest.
+- Kèm sửa: dòng nguyên liệu trong ly (tên + lượng) giờ co được, tránh tràn 13px ở 320px/chữ 1.5×.
+- **Chưa làm (để mai)**: mục 9 chia sẻ ly, mục 10 trang trí quầy; khách Lottie; thưởng top tuần cho BXH Pha theo đơn / Hôm nay.

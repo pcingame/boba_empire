@@ -1599,5 +1599,9 @@
   "recipeOrderRushSub": "손님은 오래 기다리지 않아요. 제때 완벽하게 서빙하면 팁을 더 받아요. 시간이 다 되면 지금 컵 상태로 채점돼요.",
   "recipeOrderTimeUp": "⏰ 시간 초과! 손님이 떠났고 컵은 현재 상태로 채점돼요.",
   "recipeOrderRushTip": "⏱ 제때 서빙! 팁 +{cash} 코인!",
-  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}}
+  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}},
+  "recipeOrderFestival": "축제 주문: {name}",
+  "@recipeOrderFestival": {"placeholders": {"name": {"type": "String"}}},
+  "recipeOrderFestivalTip": "🎁 완벽한 축제 주문! 팁 +{cash} 코인!",
+  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}}
 }

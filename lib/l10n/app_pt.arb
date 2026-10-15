@@ -1961,5 +1961,9 @@
   "recipeOrderRushSub": "Os clientes não esperam muito: sirva uma bebida perfeita a tempo e ganhe gorjeta extra. Se o tempo acabar, o copo é avaliado como está.",
   "recipeOrderTimeUp": "⏰ Tempo esgotado! O cliente foi embora e o copo é avaliado como está.",
   "recipeOrderRushTip": "⏱ Servido a tempo! Gorjeta +{cash} moedas!",
-  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}}
+  "@recipeOrderRushTip": {"placeholders": {"cash": {"type": "String"}}},
+  "recipeOrderFestival": "Pedido do festival: {name}",
+  "@recipeOrderFestival": {"placeholders": {"name": {"type": "String"}}},
+  "recipeOrderFestivalTip": "🎁 Pedido do festival perfeito! Gorjeta +{cash} moedas!",
+  "@recipeOrderFestivalTip": {"placeholders": {"cash": {"type": "String"}}}
 }

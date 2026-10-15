@@ -81,7 +81,10 @@ class TrayItem {
 }
 
 class Order {
-  const Order({required this.recipe, required this.box, required this.tray, required this.guide});
+  const Order({required this.recipe, required this.box, required this.tray, required this.guide, this.festival});
+
+  /// Khoá dịp lễ nếu là "đơn lễ hội" (xem [buildFestivalOrder]); null = đơn thường.
+  final String? festival;
 
   final Recipe recipe;
 
@@ -112,6 +115,40 @@ Order buildOrder(Recipe recipe, int box, RecipeCatalog catalog, math.Random r) {
   others.shuffle(r);
   final tray = [...own, ...others.take(trayDistractorsForBox(box))]..shuffle(r);
   return Order(recipe: recipe, box: box, tray: tray, guide: guideForBox(box));
+}
+
+/// Món theo chủ đề từng dịp lễ (khoá = `Festival.id` ở accessories.dart; id món ở recipes.json). Chọn
+/// toàn món nhóm 1–2 để ai cũng có sớm; dịp mới thêm một dòng ở đây.
+const Map<String, List<int>> festivalRecipeIds = {
+  'halloween': [7, 6, 9], // khoai môn tím, đường đen, chocolate
+  'christmas': [17, 12, 5], // bạc hà chocolate, bạc hà, Thái đỏ (đỏ Giáng sinh)
+  'new_year': [18, 19, 20], // pudding, phô mai, kem muối
+  'tet': [11, 15, 36], // mật ong, dừa, cam quế
+  'valentine': [13, 9, 10], // dâu, chocolate, caramel
+  'womens_day': [40, 28, 13], // vải hoa hồng, trà dâu, dâu
+  'mid_autumn': [6, 11, 3], // đường đen, mật ong, ô long (vị bánh trung thu)
+};
+
+/// Tip cộng thêm (bội số boa-nền) cho "đơn lễ hội" hoàn hảo, không gợi ý, tính bậc.
+const double orderFestivalBonusFactor = 2.0;
+
+/// "Đơn lễ hội": một đơn theo chủ đề dịp [festivalId], đổi món theo ngày. Chỉ chọn món có trong [pool]
+/// và chưa nằm trong [exclude] (đã có trong buổi). Null nếu dịp không có món phù hợp.
+Order? buildFestivalOrder(
+  String festivalId,
+  RecipeCatalog catalog,
+  Map<int, RecipeProgress> progress,
+  int today,
+  math.Random r, {
+  required Iterable<Recipe> pool,
+  Set<int> exclude = const {},
+}) {
+  final ok = {for (final x in pool) x.id};
+  final ids = [for (final id in festivalRecipeIds[festivalId] ?? const <int>[]) if (ok.contains(id) && !exclude.contains(id)) id];
+  if (ids.isEmpty) return null;
+  final recipe = catalog.recipes.firstWhere((x) => x.id == ids[today % ids.length]);
+  final o = buildOrder(recipe, (progress[recipe.id] ?? const RecipeProgress()).box, catalog, r);
+  return Order(recipe: o.recipe, box: o.box, tray: o.tray, guide: o.guide, festival: festivalId);
 }
 
 /// Một buổi [count] đơn: món chọn như buổi trắc nghiệm (đến hạn trước, bậc thấp trước).

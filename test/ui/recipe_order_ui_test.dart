@@ -5,6 +5,7 @@ import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:boba_empire/ads/ad_service.dart';
+import 'package:boba_empire/core/accessories.dart' show festivals;
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/core/recipe_mastery.dart';
 import 'package:boba_empire/core/recipe_names.dart';
@@ -591,6 +592,93 @@ void main() {
       expect(bar.value, 1.0);
       await _teardown(tester);
     });
+  });
+
+  group('đơn lễ hội', () {
+    final halloween = DateTime.utc(2026, 10, 25).millisecondsSinceEpoch ~/ _day;
+
+    /// Đúng cách trang dựng buổi: 5 đơn thường rồi đơn lễ hội, cùng một Random.
+    List<Order> sessionAt(int day, {Map<int, RecipeProgress> progress = const {}}) {
+      final r = Random(1);
+      final pool = unlockedRecipes(_catalog(), (id) => progress[id]?.best ?? 0);
+      final os = buildOrders(_catalog(), progress, day, r, pool: pool);
+      final f = buildFestivalOrder('halloween', _catalog(), progress, day, r,
+          pool: pool, exclude: {for (final o in os) o.recipe.id});
+      return [...os, ?f];
+    }
+
+    Future<void> toLast(WidgetTester tester, List<Order> os) async {
+      for (final o in os.take(os.length - 1)) {
+        await _serveExact(tester, o);
+        await tester.tap(find.byKey(const Key('order-next')));
+        await tester.pumpAndSettle();
+      }
+    }
+
+    testWidgets('trong dịp lễ: đơn cuối là đơn lễ hội (chip + khách emoji lễ hội); ngoài dịp không có', (tester) async {
+      await _pump(tester, size: const Size(400, 1000), day: halloween);
+      final os = sessionAt(halloween);
+      expect(os.length, 6);
+      expect(os.last.festival, 'halloween');
+      expect(find.byKey(const Key('order-festival')), findsNothing, reason: 'đơn đầu là đơn thường');
+      await toLast(tester, os);
+      expect(find.byKey(const Key('order-festival')), findsOneWidget);
+      expect(find.textContaining('Đơn lễ hội'), findsOneWidget);
+      expect(find.text('🦇'), findsWidgets);
+      await _teardown(tester);
+
+      await _pump(tester, size: const Size(400, 1000), day: 100);
+      expect(find.text('1/5'), findsOneWidget, reason: 'ngoài dịp lễ chỉ có 5 đơn');
+      await _teardown(tester);
+    });
+
+    testWidgets('đơn lễ hội hoàn hảo (tính bậc) → tip riêng, cộng Xu', (tester) async {
+      final c = await _pump(tester, size: const Size(400, 1000), day: halloween);
+      final os = sessionAt(halloween);
+      await toLast(tester, os);
+      final m0 = c.read(gameControllerProvider).money;
+      await _serveExact(tester, os.last);
+      expect(find.textContaining('Đơn lễ hội hoàn hảo! Tip +'), findsOneWidget);
+      expect(c.read(gameControllerProvider).money, greaterThan(m0));
+      await _teardown(tester);
+    });
+
+    testWidgets('đơn lễ hội làm sai → không tip', (tester) async {
+      await _pump(tester, size: const Size(400, 1000), day: halloween);
+      final os = sessionAt(halloween);
+      await toLast(tester, os);
+      final i = os.last.recipe.ingredients.first;
+      await _pour(tester, i.name, i.unit, i.qty);
+      await tester.tap(find.byKey(const Key('order-serve')));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Tip +'), findsNothing);
+      await _teardown(tester);
+    });
+
+    testWidgets('món lễ hội chưa tới hạn ôn → không tip (chống cày)', (tester) async {
+      final prog = {for (final r in _catalog().recipes) '${r.id}': [1, 999999, 1]};
+      final typed = {for (final e in prog.entries) int.parse(e.key): RecipeProgress.fromList(e.value)};
+      final c = await _pump(tester, size: const Size(400, 1000), day: halloween, progress: prog);
+      final os = sessionAt(halloween, progress: typed);
+      await toLast(tester, os);
+      final m0 = c.read(gameControllerProvider).money;
+      await _serveExact(tester, os.last);
+      expect(find.textContaining('Tip +'), findsNothing);
+      expect(c.read(gameControllerProvider).money, m0);
+      await _teardown(tester);
+    });
+
+    for (final loc in ['vi', 'en', 'es', 'id', 'ko', 'pt', 'th']) {
+      testWidgets('320px, chữ 1.5×, $loc: đơn lễ hội không tràn', (tester) async {
+        await _pump(tester, locale: loc, textScale: 1.5, day: halloween);
+        final os = sessionAt(halloween);
+        await toLast(tester, os);
+        expect(find.byKey(const Key('order-festival')), findsOneWidget);
+        await _serveExact(tester, os.last);
+        expect(tester.takeException(), isNull);
+        await _teardown(tester);
+      });
+    }
   });
 
   group('thử thách hằng ngày', () {

@@ -337,7 +337,7 @@ const _avatars = ['🧑', '👩', '👨', '👧', '🧒', '👵', '👴', '🧕'
 /// Khách đứng quầy: avatar + nét mặt (đổi theo [mood], nảy khi vui / lắc khi buồn) và bong bóng nói đơn.
 /// [seed] chọn avatar ổn định cho từng đơn.
 class OrderCustomer extends StatelessWidget {
-  const OrderCustomer({super.key, required this.seed, required this.mood, required this.child, this.upsetCount = 0});
+  const OrderCustomer({super.key, required this.seed, required this.mood, required this.child, this.upsetCount = 0, this.avatar});
 
   final int seed;
   final CustomerMood mood;
@@ -348,10 +348,13 @@ class OrderCustomer extends StatelessWidget {
   /// Tăng mỗi khi khách buồn — kích hoạt lắc.
   final int upsetCount;
 
+  /// Emoji đại diện cố định (khách theo chủ đề lễ hội); null = chọn theo [seed].
+  final String? avatar;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final avatar = _avatars[seed.abs() % _avatars.length];
+    final avatar = this.avatar ?? _avatars[seed.abs() % _avatars.length];
     final happy = mood == CustomerMood.delighted || mood == CustomerMood.pleased;
     Widget head = Container(
       width: 54,
