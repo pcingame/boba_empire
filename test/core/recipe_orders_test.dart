@@ -89,4 +89,56 @@ void main() {
       expect(o.box, o.recipe.id == pool.first.id ? 2 : 0);
     }
   });
+
+  test('hệ số tip combo: 0 dưới combo 2, tăng 0.5 mỗi bậc, kẹp ở combo tối đa', () {
+    expect([for (var c = 0; c <= 8; c++) orderComboTipFactor(c)], [0, 0, 0.5, 1, 1.5, 2, 2, 2, 2]);
+    expect(orderComboMax, 5);
+  });
+
+  group('thử thách hằng ngày', () {
+    test('đề cố định theo ngày: gọi lại ra y hệt (cả thứ tự khay); 3 món khác nhau, nhóm 1, như bậc Thạo', () {
+      for (final day in [0, 1, 20000, 20740, 99999]) {
+        final a = buildDailyOrders(catalog, day);
+        final b = buildDailyOrders(catalog, day);
+        expect(a.length, dailyOrderCount);
+        expect([for (final o in a) o.recipe.id], [for (final o in b) o.recipe.id]);
+        expect([for (final o in a) [for (final t in o.tray) t.name]], [for (final o in b) [for (final t in o.tray) t.name]]);
+        expect({for (final o in a) o.recipe.id}.length, dailyOrderCount);
+        for (final o in a) {
+          expect(o.recipe.group, 1);
+          expect(o.box, recipeMaxBox);
+          expect(o.guide, OrderGuide.none);
+          expect(o.tolerance, 0);
+        }
+      }
+    });
+
+    test('ngày khác nhau thì đề khác nhau (không kẹt một đề)', () {
+      final sets = {for (var d = 20000; d < 20030; d++) [for (final o in buildDailyOrders(catalog, d)) o.recipe.id].join(',')};
+      expect(sets.length, greaterThan(20));
+    });
+
+    test('điểm đơn: hoàn hảo 100; lệch 1 mức nửa điểm; lệch xa/thiếu 0; thừa trừ nửa; không âm', () {
+      final x = catalog.playable.firstWhere((r) => r.ingredients.length >= 3);
+      final o = buildOrder(x, 3, catalog, Random(5));
+      int score(List<Poured> p) => scoreOrder(o, gradeOrder(o, p));
+      expect(score(exact(o)), 100);
+
+      final first = x.ingredients.first;
+      final steps = amountSteps(first.unit);
+      final i0 = nearestStep(first.unit, first.qty);
+      Poured shifted(int d) => Poured(TrayItem(first.name, first.unit), steps[(i0 + d).clamp(0, steps.length - 1)]);
+      List<Poured> withFirst(Poured p) => [p, ...exact(o).skip(1)];
+      final n = x.ingredients.length;
+      final d1 = i0 + 1 < steps.length ? 1 : -1;
+      expect(score(withFirst(shifted(d1))), (100 * (n - 1 + 0.5) / n).round());
+      final d2 = i0 + 2 < steps.length ? 2 : -2;
+      expect(score(withFirst(shifted(d2))), (100 * (n - 1) / n).round());
+      expect(score(exact(o).skip(1).toList()), (100 * (n - 1) / n).round()); // thiếu 1
+      final extra = o.tray.firstWhere((t) => !x.ingredients.any((i) => i.name == t.name));
+      expect(score([...exact(o), Poured(extra, 10)]), (100 * (n - 0.5) / n).round());
+      expect(score([Poured(extra, 10)]), 0, reason: 'điểm không âm');
+      expect(score(const []), 0);
+    });
+  });
 }

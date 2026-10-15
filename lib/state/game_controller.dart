@@ -44,6 +44,7 @@ import '../data/game_storage.dart';
 import '../market/accessory_market_repository.dart';
 import '../ui/widgets/effects_quality.dart' show EffectsController;
 import '../core/recipe_mastery.dart';
+import '../core/recipe_orders.dart' show dailyCashTipFactor, dailyChallengeGems, dailyMaxScore, orderComboTipFactor;
 import 'game_providers.dart';
 import 'game_snapshot.dart';
 
@@ -385,6 +386,48 @@ class GameController extends Notifier<GameSnapshot> {
     addWeeklyProgress(_game, WeeklyQuestKind.recipeSessions, 1);
     unawaited(saveNow());
     state = _snapshot();
+  }
+
+  /// Tip combo của trò Pha theo đơn: boa-nền (như boa khách đi ngang) nhân [orderComboTipFactor]. Chỉ Xu.
+  /// Trả 0 nếu combo chưa đủ.
+  double grantOrderTip(int combo) {
+    final factor = orderComboTipFactor(combo);
+    if (factor <= 0) return 0;
+    final production = effectiveIncomePerSecond(
+          _game,
+          Balance.generators,
+          bonusPerStar: Balance.bonusPerStar,
+        ) *
+        Balance.walkerTipSeconds;
+    final cash = max(production, _game.tapValue * Balance.walkerTipFloorTaps) * factor;
+    grantBonus(_game, cash);
+    logEvent('order_combo_tip', {'combo': combo, 'cash': cash});
+    state = _snapshot();
+    return cash;
+  }
+
+  /// Hoàn tất thử thách hằng ngày với tổng [score] (0..[dailyMaxScore]). Mỗi ngày MỘT lần: đã làm hôm nay thì
+  /// không ghi đè điểm, không thưởng lại (trả `counted: false`). Thưởng: 💎 cố định + Xu tỉ lệ điểm.
+  ({bool counted, int gems, double cash}) completeDailyChallenge(int score) {
+    final today = dayIndex(_clock());
+    if (_game.recipeDailyDay == today) return (counted: false, gems: 0, cash: 0);
+    final s = score.clamp(0, dailyMaxScore);
+    _game
+      ..recipeDailyDay = today
+      ..recipeDailyScore = s;
+    final production = effectiveIncomePerSecond(
+          _game,
+          Balance.generators,
+          bonusPerStar: Balance.bonusPerStar,
+        ) *
+        Balance.walkerTipSeconds;
+    final cash = max(production, _game.tapValue * Balance.walkerTipFloorTaps) * dailyCashTipFactor * s / dailyMaxScore;
+    grantBonus(_game, cash);
+    _game.gems += dailyChallengeGems;
+    logEvent('recipe_daily', {'score': s});
+    unawaited(saveNow());
+    state = _snapshot();
+    return (counted: true, gems: dailyChallengeGems, cash: cash);
   }
 
   /// Ghi món vừa pha hoàn hảo không nhìn công thức mẫu (bảng xếp hạng Pha theo đơn). Không trùng.
@@ -2216,6 +2259,8 @@ class GameController extends Notifier<GameSnapshot> {
       ],
       recipeStreak: _recipeStreak,
       recipeOrderPerfect: List.unmodifiable(_game.recipeOrderPerfect),
+      recipeDailyDay: _game.recipeDailyDay,
+      recipeDailyScore: _game.recipeDailyScore,
       recipeProgress: {
         for (final e in _game.recipeProgress.entries)
           if (int.tryParse(e.key) != null) int.parse(e.key): RecipeProgress.fromList(e.value),

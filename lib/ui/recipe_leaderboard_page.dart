@@ -5,6 +5,7 @@ library;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../core/daily.dart';
 import '../core/recipe_mastery.dart';
 import '../l10n/app_localizations.dart';
 import '../leaderboard/flair.dart';
@@ -36,11 +37,13 @@ class RecipeLeaderboardPage extends StatelessWidget {
             bottom: TabBar(tabs: [
               Tab(key: const Key('rlb-tab-quiz'), text: l10n.rlbTabQuiz),
               Tab(key: const Key('rlb-tab-orders'), text: l10n.recipeOrderOrders),
+              Tab(key: const Key('rlb-tab-daily'), text: l10n.rlbTabDaily),
             ]),
           ),
           body: const TabBarView(children: [
             _BoardTab(board: RecipeBoard.quiz),
             _BoardTab(board: RecipeBoard.orders),
+            _BoardTab(board: RecipeBoard.daily),
           ]),
         ),
       ),
@@ -50,10 +53,17 @@ class RecipeLeaderboardPage extends StatelessWidget {
 
 extension on RecipeBoard {
   /// Tiền tố khoá widget: tab trắc nghiệm giữ `rlb-` như cũ, tab Pha theo đơn là `olb-`.
-  String get prefix => this == RecipeBoard.quiz ? 'rlb' : 'olb';
+  String get prefix => switch (this) {
+        RecipeBoard.quiz => 'rlb',
+        RecipeBoard.orders => 'olb',
+        RecipeBoard.daily => 'dlb',
+      };
 
-  NotifierProvider<RecipeLeaderboardController, RecipeLeaderboardViewState> get provider =>
-      this == RecipeBoard.quiz ? recipeLeaderboardControllerProvider : recipeOrderLeaderboardControllerProvider;
+  NotifierProvider<RecipeLeaderboardController, RecipeLeaderboardViewState> get provider => switch (this) {
+        RecipeBoard.quiz => recipeLeaderboardControllerProvider,
+        RecipeBoard.orders => recipeOrderLeaderboardControllerProvider,
+        RecipeBoard.daily => recipeDailyLeaderboardControllerProvider,
+      };
 }
 
 class _BoardTab extends ConsumerStatefulWidget {
@@ -80,11 +90,15 @@ class _BoardTabState extends ConsumerState<_BoardTab> {
     final notifier = ref.read(board.provider.notifier);
 
     // Số liệu của mình lấy thẳng từ bản lưu (chỉ tăng — khớp trigger không-hạ-cấp ở server).
-    notifier.getMyMastered = () => board == RecipeBoard.quiz
-        ? recipeMasteredEver({
-            for (final e in ref.read(gameControllerProvider).recipeProgress.entries) '${e.key}': e.value.toList(),
-          })
-        : ref.read(gameControllerProvider).recipeOrderPerfect.length;
+    notifier.getMyMastered = () {
+      final g = ref.read(gameControllerProvider);
+      return switch (board) {
+        RecipeBoard.quiz => recipeMasteredEver({for (final e in g.recipeProgress.entries) '${e.key}': e.value.toList()}),
+        RecipeBoard.orders => g.recipeOrderPerfect.length,
+        // Điểm hôm nay (0 nếu chưa làm hôm nay ⇒ chưa có tên trên bảng).
+        RecipeBoard.daily => g.recipeDailyDay == dayIndex(ref.read(clockProvider)()) ? g.recipeDailyScore : 0,
+      };
+    };
 
     if (!_loaded) {
       _loaded = true;
@@ -154,7 +168,13 @@ class _List extends ConsumerWidget {
       return Center(
         child: Padding(
             padding: const EdgeInsets.all(24),
-            child: Text(board == RecipeBoard.quiz ? l10n.rlbEmpty : l10n.rlbOrderEmpty, textAlign: TextAlign.center),
+            child: Text(
+                switch (board) {
+                  RecipeBoard.quiz => l10n.rlbEmpty,
+                  RecipeBoard.orders => l10n.rlbOrderEmpty,
+                  RecipeBoard.daily => l10n.rlbDailyEmpty,
+                },
+                textAlign: TextAlign.center),
           ),
       );
     }
@@ -164,7 +184,12 @@ class _List extends ConsumerWidget {
         if (view.myMastered == 0)
           Padding(
             padding: const EdgeInsets.all(12),
-            child: Text(board == RecipeBoard.quiz ? l10n.rlbNoMastered : l10n.rlbNoPerfect,
+            child: Text(
+                switch (board) {
+                  RecipeBoard.quiz => l10n.rlbNoMastered,
+                  RecipeBoard.orders => l10n.rlbNoPerfect,
+                  RecipeBoard.daily => l10n.rlbNoDaily,
+                },
                 key: Key('${board.prefix}-none'), textAlign: TextAlign.center),
           ),
         Expanded(
@@ -217,7 +242,12 @@ class _List extends ConsumerWidget {
                       ),
                       const SizedBox(width: 8),
                       Flexible(
-                        child: Text(board == RecipeBoard.quiz ? l10n.rlbMastered(e.mastered) : l10n.rlbPerfect(e.mastered),
+                        child: Text(
+                            switch (board) {
+                              RecipeBoard.quiz => l10n.rlbMastered(e.mastered),
+                              RecipeBoard.orders => l10n.rlbPerfect(e.mastered),
+                              RecipeBoard.daily => l10n.rlbDailyScore(e.mastered),
+                            },
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(fontWeight: FontWeight.w700)),

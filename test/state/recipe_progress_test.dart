@@ -7,6 +7,7 @@ import 'package:boba_empire/core/daily_quests.dart';
 import 'package:boba_empire/core/weekly_quests.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/core/recipe_mastery.dart';
+import 'package:boba_empire/core/recipe_orders.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -362,5 +363,57 @@ void main() {
     expect(GameState.fromJson(dirty).recipeOrderPerfect, [5, 6]);
     expect(GameState.fromJson(_game(c).toJson()..remove('recipeOrderPerfect')).recipeOrderPerfect, isEmpty);
     expect(prefs, isNotNull);
+  });
+
+  test('grantOrderTip: combo < 2 không có; tăng theo combo, kẹp ở tối đa; cộng đúng Xu', () async {
+    final (c, _, _) = await _harness(GameState.newGame(nowMillis: 0));
+    final ctrl = c.read(gameControllerProvider.notifier);
+    double money() => c.read(gameControllerProvider).money;
+    final m0 = money();
+    expect(ctrl.grantOrderTip(0), 0);
+    expect(ctrl.grantOrderTip(1), 0);
+    expect(money(), m0);
+    final t2 = ctrl.grantOrderTip(2);
+    expect(t2, greaterThan(0));
+    expect(money(), closeTo(m0 + t2, 1e-6));
+    expect(ctrl.grantOrderTip(3), closeTo(t2 * 2, 1e-6));
+    expect(ctrl.grantOrderTip(5), closeTo(t2 * 4, 1e-6));
+    expect(ctrl.grantOrderTip(50), closeTo(t2 * 4, 1e-6), reason: 'kẹp ở combo tối đa');
+  });
+
+  test('thử thách ngày: thưởng 💎 + Xu tỉ lệ điểm, MỘT lần mỗi ngày (không ghi đè), sang ngày mới làm lại được', () async {
+    final (c, _, setDay) = await _harness(GameState.newGame(nowMillis: 0));
+    final ctrl = c.read(gameControllerProvider.notifier);
+    final g0 = c.read(gameControllerProvider).gems;
+    final m0 = c.read(gameControllerProvider).money;
+    final r = ctrl.completeDailyChallenge(250);
+    expect((r.counted, r.gems), (true, dailyChallengeGems));
+    expect(r.cash, greaterThan(0));
+    expect(c.read(gameControllerProvider).gems, g0 + dailyChallengeGems);
+    expect(c.read(gameControllerProvider).money, closeTo(m0 + r.cash, 1e-6));
+    expect((c.read(gameControllerProvider).recipeDailyDay, c.read(gameControllerProvider).recipeDailyScore), (100, 250));
+
+    final again = ctrl.completeDailyChallenge(300);
+    expect((again.counted, again.gems, again.cash), (false, 0, 0));
+    expect(c.read(gameControllerProvider).recipeDailyScore, 250, reason: 'không ghi đè điểm');
+    expect(c.read(gameControllerProvider).gems, g0 + dailyChallengeGems, reason: 'không thưởng lại');
+
+    setDay(101);
+    final next = ctrl.completeDailyChallenge(9999); // điểm bị kẹp ở tối đa
+    expect(next.counted, true);
+    expect(c.read(gameControllerProvider).recipeDailyScore, dailyMaxScore);
+    expect(next.cash, greaterThan(r.cash), reason: 'điểm cao hơn ⇒ Xu nhiều hơn');
+  });
+
+  test('thử thách ngày: điểm 0 vẫn tính là đã làm; lưu/đọc; save hỏng bị kẹp; trần models = dailyMaxScore', () async {
+    final (c, _, _) = await _harness(GameState.newGame(nowMillis: 0));
+    final ctrl = c.read(gameControllerProvider.notifier);
+    expect(ctrl.completeDailyChallenge(-5).counted, true);
+    expect(_game(c).recipeDailyScore, 0);
+    final j = jsonDecode(jsonEncode(_game(c).toJson())) as Map<String, dynamic>;
+    expect(GameState.fromJson(j).recipeDailyDay, 100);
+    expect(GameState.fromJson(j..['recipeDailyScore'] = 99999).recipeDailyScore, dailyMaxScore);
+    expect(GameState.fromJson(j..['recipeDailyScore'] = -4).recipeDailyScore, 0);
+    expect(GameState.fromJson(j..remove('recipeDailyDay')..remove('recipeDailyScore')).recipeDailyDay, -1);
   });
 }

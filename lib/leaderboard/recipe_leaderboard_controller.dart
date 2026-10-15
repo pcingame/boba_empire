@@ -67,7 +67,11 @@ class RecipeLeaderboardController extends Notifier<RecipeLeaderboardViewState> {
 
   Future<void> refresh({bool silent = false}) async {
     if (!silent) state = const RecipeLeaderboardLoading();
-    unawaited(_analytics?.log(board == RecipeBoard.quiz ? 'recipe_leaderboard_viewed' : 'recipe_order_leaderboard_viewed'));
+    unawaited(_analytics?.log(switch (board) {
+      RecipeBoard.quiz => 'recipe_leaderboard_viewed',
+      RecipeBoard.orders => 'recipe_order_leaderboard_viewed',
+      RecipeBoard.daily => 'recipe_daily_leaderboard_viewed',
+    }));
     try {
       final mastered = getMyMastered?.call() ?? 0;
       if (mastered > 0) {
@@ -115,6 +119,14 @@ class RecipeOrderLeaderboardController extends RecipeLeaderboardController {
   @override
   RecipeBoard get board => RecipeBoard.orders;
 }
+
+class RecipeDailyLeaderboardController extends RecipeLeaderboardController {
+  @override
+  RecipeBoard get board => RecipeBoard.daily;
+}
+
+final recipeDailyLeaderboardControllerProvider =
+    NotifierProvider<RecipeDailyLeaderboardController, RecipeLeaderboardViewState>(RecipeDailyLeaderboardController.new);
 
 final recipeOrderLeaderboardControllerProvider =
     NotifierProvider<RecipeOrderLeaderboardController, RecipeLeaderboardViewState>(

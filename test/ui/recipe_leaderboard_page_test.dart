@@ -50,6 +50,16 @@ class _FakeOrders extends RecipeOrderLeaderboardController {
   Future<void> refresh({bool silent = false}) async => refreshes++;
 }
 
+class _FakeDaily extends RecipeDailyLeaderboardController {
+  _FakeDaily(this.initial);
+  final RecipeLeaderboardViewState initial;
+  int refreshes = 0;
+  @override
+  RecipeLeaderboardViewState build() => initial;
+  @override
+  Future<void> refresh({bool silent = false}) async => refreshes++;
+}
+
 class _Cloud extends CloudSaveController {
   _Cloud(this._linked);
   final bool _linked;
@@ -63,7 +73,7 @@ class _Flair extends FlairCache {
 }
 
 Future<_Fake> _pump(WidgetTester tester, RecipeLeaderboardViewState s,
-    {String locale = 'vi', Widget home = const RecipeLeaderboardPage(), double scale = 1.0, bool linked = true, _FakeOrders? orders}) async {
+    {String locale = 'vi', Widget home = const RecipeLeaderboardPage(), double scale = 1.0, bool linked = true, _FakeOrders? orders, _FakeDaily? daily}) async {
   tester.view.physicalSize = const Size(320 * 2, 640 * 2);
   tester.view.devicePixelRatio = 2;
   tester.platformDispatcher.textScaleFactorTestValue = scale;
@@ -80,6 +90,7 @@ Future<_Fake> _pump(WidgetTester tester, RecipeLeaderboardViewState s,
       sharedPreferencesProvider.overrideWithValue(prefs),
       recipeLeaderboardControllerProvider.overrideWith(() => fake),
       recipeOrderLeaderboardControllerProvider.overrideWith(() => orders ?? _FakeOrders(const RecipeLeaderboardLoading())),
+      recipeDailyLeaderboardControllerProvider.overrideWith(() => daily ?? _FakeDaily(const RecipeLeaderboardLoading())),
       flairCacheProvider.overrideWith(_Flair.new),
       cloudSaveControllerProvider.overrideWith(() => _Cloud(linked)),
       recipeCatalogProvider.overrideWith((ref) async => catalog),
@@ -196,6 +207,43 @@ void main() {
     expect(orders.refreshes, 1);
     expect(find.textContaining('pha hoàn hảo một món'), findsOneWidget);
   });
+
+  testWidgets('tab Hôm nay: chỉ tải khi mở tab; hàng hiện "N điểm"; chưa làm hôm nay có dòng nhắc; mở thẳng bằng initialBoard', (tester) async {
+    final daily = _FakeDaily(RecipeLeaderboardLoaded(entries: _entries, myUserId: 'me', myMastered: 0));
+    await _pump(tester, RecipeLeaderboardLoaded(entries: _entries, myUserId: 'me', myMastered: 1), daily: daily);
+    expect(daily.refreshes, 0);
+    await tester.tap(find.byKey(const Key('rlb-tab-daily')));
+    await tester.pumpAndSettle();
+    expect(daily.refreshes, 1);
+    expect(find.text('100 điểm'), findsOneWidget);
+    expect(find.byKey(const Key('dlb-row-2')), findsOneWidget);
+    expect(find.byKey(const Key('dlb-none')), findsOneWidget);
+    expect(find.text('Thạo 100 món'), findsNothing);
+
+    final d2 = _FakeDaily(const RecipeLeaderboardLoaded(entries: [], myUserId: null, myMastered: 0));
+    await _pump(tester, const RecipeLeaderboardLoading(),
+        home: const RecipeLeaderboardPage(initialBoard: RecipeBoard.daily), daily: d2);
+    expect(d2.refreshes, 1);
+    expect(find.textContaining('Chưa ai nộp điểm hôm nay'), findsOneWidget);
+  });
+
+  for (final lang in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
+    testWidgets('tab Hôm nay không tràn ở 320px, chữ 1.5× ($lang)', (tester) async {
+      for (final s in <RecipeLeaderboardViewState>[
+        RecipeLeaderboardLoaded(entries: _entries, myUserId: 'me', myMastered: 0),
+        const RecipeLeaderboardNeedsNickname(),
+        const RecipeLeaderboardError(),
+        const RecipeLeaderboardLoaded(entries: [], myUserId: null, myMastered: 0),
+      ]) {
+        await _pump(tester, const RecipeLeaderboardLoading(),
+            locale: lang,
+            scale: 1.5,
+            home: const RecipeLeaderboardPage(initialBoard: RecipeBoard.daily),
+            daily: _FakeDaily(s));
+        expect(tester.takeException(), isNull, reason: '$lang · $s');
+      }
+    });
+  }
 
   for (final lang in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
     testWidgets('tab Pha theo đơn không tràn ở 320px, chữ 1.5× ($lang)', (tester) async {

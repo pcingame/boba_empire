@@ -14,7 +14,8 @@ import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/state/recipe_providers.dart';
-import 'package:boba_empire/ui/recipe_hub_page.dart';
+import 'package:boba_empire/ui/recipe_order_page.dart';
+import 'package:boba_empire/ui/widgets/order_visuals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -59,6 +60,7 @@ Future<ProviderContainer> _pump(
   Map<String, List<int>>? progress,
   double textScale = 1.0,
   AdService? ads,
+  bool daily = false,
   void Function(GameState)? setup,
 }) async {
   tester.view.physicalSize = size * 2;
@@ -87,7 +89,7 @@ Future<ProviderContainer> _pump(
       locale: ui.Locale(locale),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const RecipeHubPage(),
+      home: RecipeOrderPage(daily: daily),
     ),
   ));
   await tester.pumpAndSettle();
@@ -128,8 +130,7 @@ Future<void> _serveExact(WidgetTester tester, Order o) async {
 }
 
 Future<void> _open(WidgetTester tester) async {
-  await tester.tap(find.byKey(const Key('recipe-orders')));
-  await tester.pumpAndSettle();
+  await tester.pumpAndSettle(); // trò mở thẳng: đã ở màn Pha theo đơn
 }
 
 void main() {
@@ -313,6 +314,291 @@ void main() {
     expect(find.byKey(const Key('order-double')), findsNothing);
     expect(c.read(gameControllerProvider).money, greaterThan(before));
     await _teardown(tester);
+  });
+
+  testWidgets('cúp BXH trên màn đơn hàng: chưa liên kết email thì bị cổng chặn', (tester) async {
+    await _pump(tester, size: const Size(400, 900));
+    await tester.tap(find.byKey(const Key('order-leaderboard')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('online-gate-dialog')), findsOneWidget);
+    await _teardown(tester);
+  });
+
+  testWidgets('giữ để rót: chạm nhẹ = một mức, giữ lâu tăng dần, thả ra thì dừng; "Rót lại" về 0; xác nhận vào ly', (tester) async {
+    await _pump(tester, size: const Size(400, 900));
+    final o = _expected(1).first;
+    final ing = o.recipe.ingredients.first;
+    final steps = amountSteps(ing.unit);
+    String amt(int i) => '${steps[i] == steps[i].roundToDouble() ? steps[i].round() : steps[i]} ${ing.unit}';
+    await _open(tester);
+    await tester.tap(find.byKey(Key('order-tray-${ing.name}')));
+    await tester.pumpAndSettle();
+    expect(find.text(amt(0)), findsOneWidget); // rót từ ly rỗng
+    await tester.tap(find.byKey(const Key('order-hold')));
+    await tester.pump();
+    expect(find.text(amt(1)), findsOneWidget); // chạm nhẹ = đúng một mức
+    await tester.pump(const Duration(milliseconds: 400)); // chạm nhẹ đã thả ⇒ không rót thêm
+    expect(find.text(amt(1)), findsOneWidget);
+
+    final g = await tester.startGesture(tester.getCenter(find.byKey(const Key('order-hold'))));
+    await tester.pump(const Duration(milliseconds: 1000));
+    await g.up();
+    await tester.pump();
+    final text = tester.widget<Text>(find.byKey(const Key('order-amount'))).data!;
+    final idx = [for (var i = 0; i < steps.length; i++) if (amt(i) == text) i].single;
+    expect(idx, greaterThanOrEqualTo(5), reason: 'giữ ~1s phải rót được vài mức');
+    await tester.pump(const Duration(milliseconds: 600));
+    expect(tester.widget<Text>(find.byKey(const Key('order-amount'))).data, text, reason: 'thả tay là dừng');
+
+    await tester.tap(find.byKey(const Key('order-reset')));
+    await tester.pump();
+    expect(find.text(amt(0)), findsOneWidget);
+    await tester.tap(find.byKey(const Key('order-pour')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(Key('order-poured-${ing.name}')), findsOneWidget);
+    expect(find.descendant(of: find.byKey(Key('order-poured-${ing.name}')), matching: find.text(amt(0))), findsOneWidget);
+    await _teardown(tester);
+  });
+
+  testWidgets('khách đứng quầy: nét mặt đổi theo kết quả (🙂 chờ → 😍 hoàn hảo / 😕 sai)', (tester) async {
+    await _pump(tester, size: const Size(400, 900));
+    final os = _expected(1);
+    await _open(tester);
+    Finder face(String f) => find.descendant(of: find.byKey(const Key('order-customer-face')), matching: find.text(f));
+    expect(find.text('🙂'), findsOneWidget);
+    await _serveExact(tester, os[0]);
+    expect(find.text('😍'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('order-next')));
+    await tester.pumpAndSettle();
+    expect(find.text('🙂'), findsOneWidget); // khách mới
+    final first = os[1].recipe.ingredients.first;
+    await _pour(tester, first.name, first.unit, first.qty);
+    await tester.tap(find.byKey(const Key('order-serve'))); // thiếu nguyên liệu (nếu món ≥ 2 nguyên liệu)
+    await tester.pumpAndSettle();
+    expect(find.text(os[1].recipe.ingredients.length == 1 ? '😍' : '😕'), findsOneWidget);
+    expect(face('🙂'), findsNothing);
+    await _teardown(tester);
+  });
+
+  testWidgets('vạch gợi ý theo bậc: Mới có thước + vạch mốc đúng, Quen chỉ thước, Thuộc/Thạo ẩn hết', (tester) async {
+    for (final (box, ticks, target) in [(0, true, true), (1, true, false), (2, false, false), (3, false, false)]) {
+      final prog = {for (final r in _catalog().recipes) '${r.id}': [box, 0, box]};
+      await _pump(tester, size: const Size(400, 900), progress: prog);
+      final o = _expected(1, progress: {for (final e in prog.entries) int.parse(e.key): RecipeProgress.fromList(e.value)}).first;
+      await _open(tester);
+      final ing = o.recipe.ingredients.first;
+      await tester.ensureVisible(find.byKey(Key('order-tray-${ing.name}')));
+      await tester.tap(find.byKey(Key('order-tray-${ing.name}')));
+      await tester.pumpAndSettle();
+      final cup = tester.widget<OrderCup>(find.descendant(of: find.byType(BottomSheet), matching: find.byType(OrderCup)));
+      expect(cup.marks.isNotEmpty, ticks, reason: 'bậc $box: vạch chia');
+      expect(cup.target != null, target, reason: 'bậc $box: vạch mốc');
+      if (target) {
+        // Vạch mốc đúng ở đúng vị trí của lượng công thức.
+        final steps = amountSteps(ing.unit);
+        expect(cup.target, closeTo(nearestStep(ing.unit, ing.qty) / (steps.length - 1) * 0.9, 1e-9));
+      }
+      await _teardown(tester);
+    }
+  });
+
+  testWidgets('nguyên liệu gây nhiễu (không có trong công thức) không có vạch mốc dù bậc Mới', (tester) async {
+    await _pump(tester, size: const Size(400, 900));
+    final o = _expected(1).first;
+    final extra = o.tray.firstWhere((t) => !o.recipe.ingredients.any((i) => i.name == t.name));
+    await _open(tester);
+    await tester.ensureVisible(find.byKey(Key('order-tray-${extra.name}')));
+    await tester.tap(find.byKey(Key('order-tray-${extra.name}')));
+    await tester.pumpAndSettle();
+    final cup = tester.widget<OrderCup>(find.descendant(of: find.byType(BottomSheet), matching: find.byType(OrderCup)));
+    expect(cup.target, isNull);
+    await _teardown(tester);
+  });
+
+  testWidgets('combo: hoàn hảo liên tiếp → từ đơn 2 có tip Xu; sai thì đứt combo; đơn không tính bậc có combo nhưng không tip', (tester) async {
+    final ads = _Ads();
+    final c = await _pump(tester, size: const Size(400, 1000), ads: ads);
+    final os = _expected(1);
+    await _open(tester);
+    double money() => c.read(gameControllerProvider).money;
+    expect(find.byKey(const Key('order-combo')), findsNothing);
+    await _serveExact(tester, os[0]);
+    expect(find.textContaining('tip +'), findsNothing, reason: 'đơn 1: chưa có combo');
+    await tester.tap(find.byKey(const Key('order-next')));
+    await tester.pumpAndSettle();
+    var before = money();
+    await _serveExact(tester, os[1]);
+    expect(find.textContaining('Combo ×2: tip +'), findsOneWidget);
+    expect(money() - before, greaterThan(os.length * 0)); // có cộng Xu (gồm cả thưởng bậc + tip)
+    await tester.tap(find.byKey(const Key('order-next')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('order-combo')), findsOneWidget); // chip combo hiện khi đang ≥ 2
+    // Đơn 3: sai (chỉ cho 1 nguyên liệu, món ≥ 2 nguyên liệu) → đứt combo.
+    final bad = os[2].recipe;
+    if (bad.ingredients.length >= 2) {
+      await _pour(tester, bad.ingredients.first.name, bad.ingredients.first.unit, bad.ingredients.first.qty);
+      await tester.tap(find.byKey(const Key('order-serve')));
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Combo'), findsNothing);
+      await tester.tap(find.byKey(const Key('order-next')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('order-combo')), findsNothing);
+      before = money();
+      await _serveExact(tester, os[3]);
+      expect(find.textContaining('tip +'), findsNothing, reason: 'combo bắt đầu lại từ 1');
+    }
+    await _teardown(tester);
+  });
+
+  testWidgets('combo không tip khi món chưa tới hạn ôn (chống cày): vẫn hiện "Combo ×n" nhưng Xu không đổi', (tester) async {
+    // Mọi món Quen, hạn ôn ở tương lai ⇒ đơn chỉ để luyện (outcome.counted = false).
+    final prog = {for (final r in _catalog().recipes) '${r.id}': [1, 9999, 1]};
+    final c = await _pump(tester, size: const Size(400, 1000), progress: prog);
+    final typed = {for (final e in prog.entries) int.parse(e.key): RecipeProgress.fromList(e.value)};
+    final os = _expected(1, progress: typed);
+    await _open(tester);
+    final m0 = c.read(gameControllerProvider).money;
+    await _serveExact(tester, os[0]);
+    await tester.tap(find.byKey(const Key('order-next')));
+    await tester.pumpAndSettle();
+    await _serveExact(tester, os[1]);
+    expect(find.text('🔥 Combo ×2'), findsWidgets);
+    expect(find.textContaining('tip +'), findsNothing);
+    expect(c.read(gameControllerProvider).money, m0);
+    await _teardown(tester);
+  });
+
+  testWidgets('dùng gợi ý QC làm đứt combo', (tester) async {
+    final ads = _Ads();
+    await _pump(tester, size: const Size(400, 1000), progress: {for (final r in _catalog().recipes) '${r.id}': [3, 0, 3]}, ads: ads);
+    final typed = {for (final r in _catalog().recipes) r.id: const RecipeProgress(box: 3, dueDay: 0, best: 3)};
+    final os = _expected(1, progress: typed);
+    await _open(tester);
+    await _serveExact(tester, os[0]);
+    await tester.tap(find.byKey(const Key('order-next')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('order-hint')));
+    await tester.pumpAndSettle();
+    await _serveExact(tester, os[1]);
+    expect(find.textContaining('Combo'), findsNothing, reason: 'đơn có gợi ý không nối combo');
+    await _teardown(tester);
+  });
+
+  group('thử thách hằng ngày', () {
+    testWidgets('đủ 3 đơn đúng → 300/300; thưởng 💎 + Xu một lần; KHÔNG đụng bậc / BXH Pha theo đơn / combo', (tester) async {
+      final c = await _pump(tester, size: const Size(400, 1000), daily: true);
+      final orders = buildDailyOrders(_catalog(), 100);
+      final g0 = c.read(gameControllerProvider).gems;
+      final m0 = c.read(gameControllerProvider).money;
+      expect(find.byKey(const Key('daily-intro')), findsOneWidget);
+      expect(find.byKey(const Key('order-hint')), findsNothing, reason: 'thử thách không có gợi ý QC');
+      for (var i = 0; i < orders.length; i++) {
+        await _serveExact(tester, orders[i]);
+        expect(find.text('Điểm đơn này: 100/100'), findsOneWidget);
+        expect(find.textContaining('Combo'), findsNothing);
+        await tester.tap(find.byKey(const Key('order-next')));
+        await tester.pumpAndSettle();
+      }
+      expect(find.text('300/300 điểm'), findsOneWidget);
+      expect(find.byKey(const Key('daily-reward')), findsOneWidget);
+      final v = c.read(gameControllerProvider);
+      expect((v.recipeDailyDay, v.recipeDailyScore), (100, 300));
+      expect(v.gems, g0 + dailyChallengeGems);
+      expect(v.money, greaterThan(m0));
+      expect(v.recipeProgress, isEmpty, reason: 'không ghi bậc thuộc');
+      expect(v.recipeOrderPerfect, isEmpty);
+      await _teardown(tester);
+    });
+
+    testWidgets('đơn thiếu nguyên liệu: điểm từng đơn đúng scoreOrder, tổng = tổng ba đơn', (tester) async {
+      await _pump(tester, size: const Size(400, 1000), daily: true);
+      final orders = buildDailyOrders(_catalog(), 100);
+      var total = 0;
+      for (var i = 0; i < orders.length; i++) {
+        final o = orders[i];
+        final partial = o.recipe.ingredients.take(1).toList();
+        for (final ing in partial) {
+          await _pour(tester, ing.name, ing.unit, ing.qty);
+        }
+        await tester.tap(find.byKey(const Key('order-serve')));
+        await tester.pumpAndSettle();
+        final expected = scoreOrder(o, gradeOrder(o, [for (final ing in partial) Poured(TrayItem(ing.name, ing.unit), ing.qty)]));
+        total += expected;
+        expect(find.text('Điểm đơn này: $expected/100'), findsOneWidget);
+        await tester.tap(find.byKey(const Key('order-next')));
+        await tester.pumpAndSettle();
+      }
+      expect(find.text('$total/300 điểm'), findsOneWidget);
+      await _teardown(tester);
+    });
+
+    testWidgets('đề cố định cho mọi người: seed ngẫu nhiên của người chơi khác nhau vẫn ra cùng đơn đầu', (tester) async {
+      final texts = <String>[];
+      for (final seed in [1, 2, 3]) {
+        await _pump(tester, size: const Size(400, 1000), daily: true, seed: seed);
+        texts.add(tester.widget<Text>(find.byKey(const Key('order-prompt'))).data!);
+        await _teardown(tester);
+      }
+      expect(texts.toSet().length, 1);
+    });
+
+    testWidgets('đã làm hôm nay: chỉ xem lại điểm, không chơi lại; hôm qua thì chơi được', (tester) async {
+      final c = await _pump(tester, size: const Size(400, 1000), daily: true, setup: (g) {
+        g.recipeDailyDay = 100;
+        g.recipeDailyScore = 180;
+      });
+      expect(find.byKey(const Key('daily-already')), findsOneWidget);
+      expect(find.text('Hôm nay bạn được 180/300 điểm'), findsOneWidget);
+      expect(find.byKey(const Key('order-prompt')), findsNothing);
+      expect(c.read(gameControllerProvider).recipeDailyScore, 180);
+      await _teardown(tester);
+
+      await _pump(tester, size: const Size(400, 1000), daily: true, setup: (g) {
+        g.recipeDailyDay = 99;
+        g.recipeDailyScore = 300;
+      });
+      expect(find.byKey(const Key('daily-already')), findsNothing);
+      expect(find.byKey(const Key('order-prompt')), findsOneWidget);
+      await _teardown(tester);
+    });
+
+    testWidgets('nút bảng xếp hạng: chưa liên kết email thì bị cổng chặn', (tester) async {
+      await _pump(tester, size: const Size(400, 1000), daily: true, setup: (g) {
+        g.recipeDailyDay = 100;
+        g.recipeDailyScore = 50;
+      });
+      await tester.tap(find.byKey(const Key('daily-board')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('online-gate-dialog')), findsOneWidget);
+      await _teardown(tester);
+    });
+
+    for (final loc in ['vi', 'en', 'es', 'id', 'ko', 'pt', 'th']) {
+      testWidgets('320px, chữ 1.5×, $loc: thử thách (đang chơi, kết quả, đã làm) không tràn', (tester) async {
+        await _pump(tester, locale: loc, textScale: 1.5, daily: true);
+        final orders = buildDailyOrders(_catalog(), 100);
+        expect(tester.takeException(), isNull);
+        for (final o in orders) {
+          final first = o.recipe.ingredients.first;
+          await _pour(tester, first.name, first.unit, first.qty);
+          await tester.tap(find.byKey(const Key('order-serve')));
+          await tester.pumpAndSettle();
+          expect(tester.takeException(), isNull, reason: '$loc feedback');
+          await tester.tap(find.byKey(const Key('order-next')));
+          await tester.pumpAndSettle();
+        }
+        expect(find.byKey(const Key('daily-result')), findsOneWidget);
+        expect(tester.takeException(), isNull, reason: '$loc kết quả');
+        await _teardown(tester);
+        await _pump(tester, locale: loc, textScale: 1.5, daily: true, setup: (g) {
+          g.recipeDailyDay = 100;
+          g.recipeDailyScore = 123;
+        });
+        expect(find.byKey(const Key('daily-already')), findsOneWidget);
+        expect(tester.takeException(), isNull, reason: '$loc đã làm');
+        await _teardown(tester);
+      });
+    }
   });
 
   for (final loc in ['vi', 'en', 'es', 'id', 'ko', 'pt', 'th']) {

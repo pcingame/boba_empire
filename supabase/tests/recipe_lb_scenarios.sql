@@ -116,4 +116,40 @@ select r_chk('p_limit nhỏ cắt đúng', (select count(*) from recipe_order_le
 select r_chk('p_limit lớn bị kẹp 100 (không đọc vô hạn)', (select count(*) from recipe_order_leaderboard_top(100000)) = 4);
 select r_chk('khách không ghi được (RLS)', r_err($$insert into recipe_order_leaderboard_entries (user_id, nickname, perfected) values ('00000000-0000-0000-0000-000000000105', 'Z', 1)$$) like '%row-level security%');
 reset role;
+
+-- ===== Thử thách hằng ngày (recipe_daily_scores) =====
+grant all on recipe_daily_scores to anon, authenticated;
+reset role;
+delete from recipe_daily_scores;
+select r_as(1);
+insert into recipe_daily_scores (user_id, nickname, score) values ('00000000-0000-0000-0000-000000000101', 'D1', 210)
+  on conflict (user_id, day) do nothing;
+select r_chk('nộp điểm hôm nay (ngày do server đặt)', (select score from recipe_daily_scores where user_id = '00000000-0000-0000-0000-000000000101' and day = recipe_daily_today()) = 210);
+insert into recipe_daily_scores (user_id, nickname, score) values ('00000000-0000-0000-0000-000000000101', 'D1', 300)
+  on conflict (user_id, day) do nothing;
+select r_chk('nộp lại không lỗi và KHÔNG đổi điểm (DO NOTHING)', (select score from recipe_daily_scores where user_id = '00000000-0000-0000-0000-000000000101') = 210);
+select r_chk('insert trần lần hai bị chặn bởi khoá chính', r_err($$insert into recipe_daily_scores (user_id, nickname, score) values ('00000000-0000-0000-0000-000000000101', 'D1', 300)$$) like '%duplicate key%');
+update recipe_daily_scores set score = 300 where user_id = '00000000-0000-0000-0000-000000000101';
+select r_chk('không sửa được điểm (không có policy UPDATE)', (select score from recipe_daily_scores where user_id = '00000000-0000-0000-0000-000000000101') = 210);
+select r_chk('không nộp cho ngày khác', r_err($$insert into recipe_daily_scores (user_id, day, nickname, score) values ('00000000-0000-0000-0000-000000000101', recipe_daily_today() - 1, 'D1', 10)$$) like '%row-level security%');
+select r_chk('không nộp cho người khác', r_err($$insert into recipe_daily_scores (user_id, nickname, score) values ('00000000-0000-0000-0000-000000000102', 'X', 10)$$) like '%row-level security%');
+select r_chk('điểm 0..300', r_err($$insert into recipe_daily_scores (user_id, nickname, score) values ('00000000-0000-0000-0000-000000000101', 'D1', 301) on conflict (user_id, day) do update set score = 301$$) is not null
+  and r_err($$insert into recipe_daily_scores (user_id, day, nickname, score) values ('00000000-0000-0000-0000-000000000101', recipe_daily_today() + 5, 'D1', -1)$$) is not null);
+delete from recipe_daily_scores;
+select r_chk('không xoá được', (select count(*) from recipe_daily_scores) = 1);
+reset role;
+select r_as(7);
+select r_chk('ẩn danh không nộp được', r_err($$insert into recipe_daily_scores (user_id, nickname, score) values ('00000000-0000-0000-0000-000000000107', 'Anon', 5)$$) like '%row-level security%');
+select r_as(2);
+insert into recipe_daily_scores (user_id, nickname, score) values ('00000000-0000-0000-0000-000000000102', 'D2', 250);
+reset role;
+insert into recipe_daily_scores (user_id, day, nickname, score, updated_at) values
+  ('00000000-0000-0000-0000-000000000103', recipe_daily_today(), 'D3', 210, now() - interval '3 hours'),
+  ('00000000-0000-0000-0000-000000000104', recipe_daily_today() - 1, 'Hôm qua', 300, now());
+select r_as(0);
+select r_chk('khách đọc top hôm nay; bỏ hàng của hôm qua', (select count(*) from recipe_daily_top(50)) = 3);
+select r_chk('thứ tự: D2(250), hoà 210 → D3 nộp sớm hơn trước D1', (select string_agg(nickname, ',' order by rank) from recipe_daily_top(50)) = 'D2,D3,D1');
+select r_chk('p_limit cắt đúng', (select count(*) from recipe_daily_top(1)) = 1);
+reset role;
 select 'RECIPE ORDER LB OK';
+select 'RECIPE DAILY OK';

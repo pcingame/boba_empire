@@ -13,6 +13,7 @@ import '../state/game_providers.dart';
 import '../state/recipe_providers.dart';
 import 'match3_journey_page.dart';
 import 'recipe_hub_page.dart';
+import 'recipe_order_page.dart';
 
 Future<void> showGamesHub(BuildContext context) =>
     showDialog<void>(context: context, builder: (_) => const _GamesHubDialog());
@@ -27,6 +28,9 @@ class _GamesHubDialog extends ConsumerWidget {
     final catalog = ref.watch(recipeCatalogProvider).asData?.value;
     final progress = ref.watch(gameControllerProvider.select((s) => s.recipeProgress));
     final today = dayIndex(ref.watch(clockProvider)());
+    // Điểm thử thách hôm nay (-1 = chưa làm hôm nay).
+    final dailyScore = ref.watch(
+        gameControllerProvider.select((s) => s.recipeDailyDay == today ? s.recipeDailyScore : -1));
     final due = catalog == null
         ? 0
         : unlockedRecipes(catalog, (id) => progress[id]?.best ?? 0)
@@ -63,6 +67,32 @@ class _GamesHubDialog extends ConsumerWidget {
               onTap: () {
                 Navigator.of(context).pop();
                 showRecipeHub(context);
+              },
+            ),
+            ListTile(
+              key: const Key('games-orders'),
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.local_cafe_rounded),
+              title: Text(l10n.recipeOrderOrders),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.of(context).pop();
+                showRecipeOrders(context);
+              },
+            ),
+            ListTile(
+              key: const Key('games-daily'),
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.calendar_today_rounded),
+              title: Text(l10n.recipeDailyTitle),
+              subtitle: Text(
+                dailyScore >= 0 ? l10n.recipeDailyDone(dailyScore) : l10n.recipeDailyOpen,
+                key: const Key('games-daily-sub'),
+              ),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.of(context).pop();
+                showRecipeDaily(context);
               },
             ),
           ],

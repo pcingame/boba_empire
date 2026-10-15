@@ -4236,4 +4236,68 @@ class AppLocalizationsId extends AppLocalizations {
   String rlbPerfect(int n) {
     return '$n minuman sempurna';
   }
+
+  @override
+  String get recipeOrderHold => 'Tahan untuk menuang';
+
+  @override
+  String get recipeOrderPourAgain => 'Ulangi';
+
+  @override
+  String recipeOrderCombo(int n) {
+    return '🔥 Kombo ×$n';
+  }
+
+  @override
+  String recipeOrderComboTip(String cash, int combo) {
+    return 'Kombo ×$combo: tip +$cash koin!';
+  }
+
+  @override
+  String get rlbTabDaily => 'Hari ini';
+
+  @override
+  String get rlbDailyEmpty =>
+      'Belum ada yang mengirim skor hari ini. Ikuti tantangan untuk jadi yang pertama!';
+
+  @override
+  String get rlbNoDaily => 'Ikuti tantangan hari ini agar namamu masuk papan.';
+
+  @override
+  String rlbDailyScore(Object n) {
+    return '$n poin';
+  }
+
+  @override
+  String get recipeDailyTitle => 'Tantangan hari ini';
+
+  @override
+  String get recipeDailyOpen =>
+      '3 pesanan sulit, tanpa petunjuk — sekali sehari';
+
+  @override
+  String recipeDailyDone(Object score) {
+    return 'Hari ini kamu dapat $score/300';
+  }
+
+  @override
+  String recipeDailyOrderScore(Object n) {
+    return 'Pesanan ini: $n/100';
+  }
+
+  @override
+  String recipeDailyTotal(Object n) {
+    return '$n/300 poin';
+  }
+
+  @override
+  String get recipeDailyAlready =>
+      'Kamu sudah mengerjakan tantangan hari ini. Kembali besok — pesanan baru setiap hari!';
+
+  @override
+  String get recipeDailyBoard => 'Lihat papan hari ini';
+
+  @override
+  String get recipeDailyIntro =>
+      'Pesanan sama untuk semua orang, tanpa petunjuk, takaran harus tepat. Satu kali per hari.';
 }

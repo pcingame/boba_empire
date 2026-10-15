@@ -94,6 +94,8 @@ class GameState {
     Map<String, List<int>>? recipeProgress,
     List<int>? recipeMilestonesClaimed,
     List<int>? recipeOrderPerfect,
+    this.recipeDailyDay = -1,
+    this.recipeDailyScore = 0,
     this.recipeStreak = 0,
     this.recipeStreakLastDay = 0,
     this.recipeStreakBest = 0,
@@ -382,6 +384,11 @@ class GameState {
   /// bậc Mới) — nguồn của bảng xếp hạng Pha theo đơn. Không trùng, chỉ tăng.
   final List<int> recipeOrderPerfect;
 
+  /// Thử thách hằng ngày của Pha theo đơn: ngày (dayIndex) đã làm gần nhất (-1 = chưa bao giờ) và điểm hôm đó.
+  /// Mỗi ngày chỉ làm một lần.
+  int recipeDailyDay;
+  int recipeDailyScore;
+
   /// Chuỗi ngày ôn công thức (xem recipe_mastery.dart): số ngày, ngày ôn gần nhất (dayIndex), kỷ lục.
   int recipeStreak;
   int recipeStreakLastDay;
@@ -611,6 +618,8 @@ class GameState {
         'recipeProgress': recipeProgress,
         'recipeMilestonesClaimed': recipeMilestonesClaimed,
         'recipeOrderPerfect': recipeOrderPerfect,
+        'recipeDailyDay': recipeDailyDay,
+        'recipeDailyScore': recipeDailyScore,
         'recipeStreak': recipeStreak,
         'recipeStreakLastDay': recipeStreakLastDay,
         'recipeStreakBest': recipeStreakBest,
@@ -775,6 +784,8 @@ class GameState {
         recipeOrderPerfect: {
           for (final x in (json['recipeOrderPerfect'] as List?) ?? const []) if (x is num) x.toInt(),
         }.toList(),
+        recipeDailyDay: ((json['recipeDailyDay'] as num?)?.toInt() ?? -1).clamp(-1, 10000000),
+        recipeDailyScore: ((json['recipeDailyScore'] as num?)?.toInt() ?? 0).clamp(0, 300), // = dailyMaxScore (recipe_orders.dart; test so khớp)
         // Giá trị âm/hỏng được kẹp về hợp lệ (save lạ từ cloud không làm hỏng cả game).
         recipeStreak: ((json['recipeStreak'] as num?)?.toInt() ?? 0).clamp(0, 100000),
         recipeStreakLastDay: ((json['recipeStreakLastDay'] as num?)?.toInt() ?? 0).clamp(0, 10000000),

@@ -4257,4 +4257,68 @@ class AppLocalizationsPt extends AppLocalizations {
   String rlbPerfect(int n) {
     return '$n bebidas perfeitas';
   }
+
+  @override
+  String get recipeOrderHold => 'Segure para servir';
+
+  @override
+  String get recipeOrderPourAgain => 'Recomeçar';
+
+  @override
+  String recipeOrderCombo(int n) {
+    return '🔥 Combo ×$n';
+  }
+
+  @override
+  String recipeOrderComboTip(String cash, int combo) {
+    return 'Combo ×$combo: gorjeta +$cash moedas!';
+  }
+
+  @override
+  String get rlbTabDaily => 'Hoje';
+
+  @override
+  String get rlbDailyEmpty =>
+      'Ninguém postou pontos hoje. Faça o desafio para ser o primeiro!';
+
+  @override
+  String get rlbNoDaily => 'Faça o desafio de hoje para aparecer no ranking.';
+
+  @override
+  String rlbDailyScore(Object n) {
+    return '$n pts';
+  }
+
+  @override
+  String get recipeDailyTitle => 'Desafio de hoje';
+
+  @override
+  String get recipeDailyOpen =>
+      '3 pedidos difíceis, sem dicas — uma vez por dia';
+
+  @override
+  String recipeDailyDone(Object score) {
+    return 'Hoje você fez $score/300';
+  }
+
+  @override
+  String recipeDailyOrderScore(Object n) {
+    return 'Este pedido: $n/100';
+  }
+
+  @override
+  String recipeDailyTotal(Object n) {
+    return '$n/300 pts';
+  }
+
+  @override
+  String get recipeDailyAlready =>
+      'Você já fez o desafio de hoje. Volte amanhã — pedidos novos todo dia!';
+
+  @override
+  String get recipeDailyBoard => 'Ver o ranking de hoje';
+
+  @override
+  String get recipeDailyIntro =>
+      'Os mesmos pedidos para todos, sem dicas, com quantidades exatas. Uma tentativa por dia.';
 }

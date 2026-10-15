@@ -54,6 +54,13 @@ int trayDistractorsForBox(int box) => 2 + box.clamp(0, recipeMaxBox);
 /// phải đúng từng mức.
 int toleranceForBox(int box) => box <= 1 ? 1 : 0;
 
+/// Combo: số đơn HOÀN HẢO liên tiếp (không gợi ý). Tip bắt đầu từ combo 2 và tăng dần tới [orderComboMax].
+/// ⚠️ Hệ số ước lượng, chưa playtest.
+const int orderComboMax = 5;
+
+/// Bội số của boa-nền (xem `Balance.walkerTipSeconds`) cho combo [combo]: 0 / 0.5 / 1 / 1.5 / 2 (kẹp ở mức tối đa).
+double orderComboTipFactor(int combo) => combo < 2 ? 0 : 0.5 * (math.min(combo, orderComboMax) - 1);
+
 /// Một nguyên liệu trên khay: tên (khoá tiếng Việt) + đơn vị.
 class TrayItem {
   const TrayItem(this.name, this.unit);
@@ -187,4 +194,49 @@ OrderResult gradeOrder(Order order, List<Poured> poured) {
   final correct = items.every((g) => g.ok);
   final perfect = items.every((g) => g.verdict == ItemVerdict.exact);
   return OrderResult(items, correct: correct, stars: perfect ? 3 : (correct ? 2 : 1));
+}
+
+// --- Thử thách hằng ngày --------------------------------------------------------------------------------------
+
+/// Số đơn của thử thách và điểm tối đa (mỗi đơn 0..100).
+const int dailyOrderCount = 3;
+const int dailyMaxScore = 100 * dailyOrderCount;
+
+/// Thưởng thử thách (một lần mỗi ngày): 💎 cố định + Xu tỉ lệ điểm. ⚠️ ước lượng chưa playtest.
+const int dailyChallengeGems = 5;
+
+/// Hệ số boa-nền (xem `Balance.walkerTipSeconds`) khi đạt điểm tối đa; điểm thấp hơn nhận tỉ lệ.
+const double dailyCashTipFactor = 4;
+
+/// Món của thử thách ngày [day] (dayIndex UTC): CỐ ĐỊNH cho mọi người chơi — chọn từ nhóm 1 (ai cũng có) bằng
+/// Random gieo theo ngày, không dùng random của người chơi. Mỗi đơn như bậc Thạo: không gợi ý, khay nhiều nhiễu,
+/// lượng phải đúng từng mức. ⚠️ Đổi cách chọn/gieo là đổi đề của mọi người trong ngày đó.
+List<Order> buildDailyOrders(RecipeCatalog catalog, int day) {
+  final r = math.Random(day * 7919 + 17);
+  final pool = [...catalog.inGroup(1)]..sort((a, b) => a.id.compareTo(b.id));
+  pool.shuffle(r);
+  return [for (final x in pool.take(dailyOrderCount)) buildOrder(x, recipeMaxBox, catalog, r)];
+}
+
+/// Điểm một đơn 0..100: mỗi nguyên liệu đúng lượng 1, lệch 1 mức 0.5, lệch xa / thiếu 0; nguyên liệu thừa trừ 0.5;
+/// chia cho số nguyên liệu của món. Hoàn hảo = 100.
+int scoreOrder(Order order, OrderResult result) {
+  var pts = 0.0;
+  for (final g in result.items) {
+    switch (g.verdict) {
+      case ItemVerdict.exact:
+        pts += 1;
+      case ItemVerdict.close:
+        pts += 0.5;
+      case ItemVerdict.wrongAmount:
+        final d = (nearestStep(g.unit, g.mine!) - nearestStep(g.unit, g.right!)).abs();
+        pts += d == 1 ? 0.5 : 0;
+      case ItemVerdict.missing:
+        break;
+      case ItemVerdict.extra:
+        pts -= 0.5;
+    }
+  }
+  final need = order.recipe.ingredients.length;
+  return (100 * math.max(0.0, pts) / need).round().clamp(0, 100);
 }

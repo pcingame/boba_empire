@@ -4226,4 +4226,67 @@ class AppLocalizationsVi extends AppLocalizations {
   String rlbPerfect(int n) {
     return 'Hoàn hảo $n món';
   }
+
+  @override
+  String get recipeOrderHold => 'Giữ để rót';
+
+  @override
+  String get recipeOrderPourAgain => 'Rót lại';
+
+  @override
+  String recipeOrderCombo(int n) {
+    return '🔥 Combo ×$n';
+  }
+
+  @override
+  String recipeOrderComboTip(String cash, int combo) {
+    return 'Combo ×$combo: tip +$cash Xu!';
+  }
+
+  @override
+  String get rlbTabDaily => 'Hôm nay';
+
+  @override
+  String get rlbDailyEmpty =>
+      'Chưa ai nộp điểm hôm nay. Làm thử thách để lên bảng đầu tiên!';
+
+  @override
+  String get rlbNoDaily => 'Làm Thử thách hôm nay để có tên trên bảng.';
+
+  @override
+  String rlbDailyScore(Object n) {
+    return '$n điểm';
+  }
+
+  @override
+  String get recipeDailyTitle => 'Thử thách hôm nay';
+
+  @override
+  String get recipeDailyOpen => '3 đơn khó, không gợi ý — mỗi ngày một lần';
+
+  @override
+  String recipeDailyDone(Object score) {
+    return 'Hôm nay bạn được $score/300 điểm';
+  }
+
+  @override
+  String recipeDailyOrderScore(Object n) {
+    return 'Điểm đơn này: $n/100';
+  }
+
+  @override
+  String recipeDailyTotal(Object n) {
+    return '$n/300 điểm';
+  }
+
+  @override
+  String get recipeDailyAlready =>
+      'Bạn đã làm thử thách hôm nay. Mai quay lại nhé — đề mới mỗi ngày!';
+
+  @override
+  String get recipeDailyBoard => 'Xem bảng hôm nay';
+
+  @override
+  String get recipeDailyIntro =>
+      'Đề giống nhau cho mọi người, không gợi ý, lượng phải đúng từng mức. Chỉ làm được một lần mỗi ngày.';
 }

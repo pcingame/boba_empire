@@ -4160,4 +4160,65 @@ class AppLocalizationsKo extends AppLocalizations {
   String rlbPerfect(int n) {
     return '완벽 $n잔';
   }
+
+  @override
+  String get recipeOrderHold => '누르고 있으면 따라요';
+
+  @override
+  String get recipeOrderPourAgain => '다시 따르기';
+
+  @override
+  String recipeOrderCombo(int n) {
+    return '🔥 콤보 ×$n';
+  }
+
+  @override
+  String recipeOrderComboTip(String cash, int combo) {
+    return '콤보 ×$combo: 팁 +$cash 코인!';
+  }
+
+  @override
+  String get rlbTabDaily => '오늘';
+
+  @override
+  String get rlbDailyEmpty => '오늘 점수를 올린 사람이 아직 없어요. 도전해서 첫 번째가 되어 보세요!';
+
+  @override
+  String get rlbNoDaily => '오늘의 도전을 하면 순위에 이름이 올라가요.';
+
+  @override
+  String rlbDailyScore(Object n) {
+    return '$n점';
+  }
+
+  @override
+  String get recipeDailyTitle => '오늘의 도전';
+
+  @override
+  String get recipeDailyOpen => '어려운 주문 3개, 힌트 없음 — 하루 한 번';
+
+  @override
+  String recipeDailyDone(Object score) {
+    return '오늘 점수: $score/300';
+  }
+
+  @override
+  String recipeDailyOrderScore(Object n) {
+    return '이번 주문: $n/100';
+  }
+
+  @override
+  String recipeDailyTotal(Object n) {
+    return '$n/300점';
+  }
+
+  @override
+  String get recipeDailyAlready => '오늘의 도전을 이미 했어요. 내일 새 주문으로 만나요!';
+
+  @override
+  String get recipeDailyBoard => '오늘의 순위 보기';
+
+  @override
+  String get recipeDailyIntro =>
+      '모두 같은 주문, 힌트 없음, 양이 정확해야 해요. 하루에 한 번만 도전할 수 있어요.';
 }

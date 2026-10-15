@@ -13,7 +13,10 @@ import '../data/linked_session.dart';
 /// Hai bảng của trò công thức: số món Thạo (trắc nghiệm) và số món pha hoàn hảo không công thức mẫu (Pha theo đơn).
 enum RecipeBoard {
   quiz('recipe_leaderboard_entries', 'recipe_leaderboard_top', 'mastered'),
-  orders('recipe_order_leaderboard_entries', 'recipe_order_leaderboard_top', 'perfected');
+  orders('recipe_order_leaderboard_entries', 'recipe_order_leaderboard_top', 'perfected'),
+
+  /// Thử thách hằng ngày: điểm hôm nay 0..300, mỗi người một lần mỗi ngày, bất biến (xem recipe_daily_schema.sql).
+  daily('recipe_daily_scores', 'recipe_daily_top', 'score');
 
   const RecipeBoard(this.table, this.topRpc, this.column);
   final String table;
@@ -64,7 +67,14 @@ class RecipeLeaderboardRepository {
   /// rơi vào nhánh UPDATE (bài học từ bảng xếp hạng chính).
   Future<void> submit({required String nickname, required int mastered}) async {
     final uid = await ensureSignedIn();
-    await _client.from(board.table).upsert({'user_id': uid, 'nickname': nickname, board.column: mastered});
+    final row = {'user_id': uid, 'nickname': nickname, board.column: mastered};
+    if (board == RecipeBoard.daily) {
+      // Điểm ngày chỉ nộp MỘT lần và không sửa được (server không có policy UPDATE): bỏ qua nếu đã có hàng hôm nay.
+      // Ngày do server đặt (default), client không gửi.
+      await _client.from(board.table).upsert(row, onConflict: 'user_id,day', ignoreDuplicates: true);
+    } else {
+      await _client.from(board.table).upsert(row);
+    }
     await _prefs.setString(_nicknameKey, nickname);
   }
 

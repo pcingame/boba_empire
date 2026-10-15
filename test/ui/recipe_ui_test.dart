@@ -280,6 +280,61 @@ void main() {
     await _teardown(tester);
   });
 
+  testWidgets('hộp Trò chơi: "Pha theo đơn" là trò riêng, mở thẳng màn đơn hàng; màn công thức không còn nút đó', (tester) async {
+    tester.view.physicalSize = const Size(390 * 3, 844 * 3);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    final g = GameState.newGame(nowMillis: 0)..tutorialSeen = true;
+    await GameStorage(prefs).save(g, nowMillis: 0);
+    final c = ProviderContainer(overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(() => 100 * _day),
+      recipeCatalogProvider.overrideWith((ref) async => _catalog()),
+    ]);
+    _live.add(c);
+    await tester.pumpWidget(UncontrolledProviderScope(container: c, child: const BobaEmpireApp()));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('match3-button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('games-orders')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('order-prompt')), findsOneWidget);
+    await _teardown(tester);
+  });
+
+  testWidgets('hộp Trò chơi: "Thử thách hôm nay" hiện trạng thái (chưa làm / điểm hôm nay) và mở đúng chế độ', (tester) async {
+    tester.view.physicalSize = const Size(390 * 3, 844 * 3);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+    for (final done in [false, true]) {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final g = GameState.newGame(nowMillis: 0)..tutorialSeen = true;
+      if (done) {
+        g.recipeDailyDay = 100;
+        g.recipeDailyScore = 222;
+      }
+      await GameStorage(prefs).save(g, nowMillis: 0);
+      final c = ProviderContainer(overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        clockProvider.overrideWithValue(() => 100 * _day),
+        recipeCatalogProvider.overrideWith((ref) async => _catalog()),
+      ]);
+      _live.add(c);
+      await tester.pumpWidget(UncontrolledProviderScope(container: c, child: const BobaEmpireApp()));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('match3-button')));
+      await tester.pumpAndSettle();
+      expect(find.text(done ? 'Hôm nay bạn được 222/300 điểm' : '3 đơn khó, không gợi ý — mỗi ngày một lần'), findsOneWidget);
+      await tester.tap(find.byKey(const Key('games-daily')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(Key(done ? 'daily-already' : 'daily-intro')), findsOneWidget);
+      await _teardown(tester);
+    }
+  });
+
   testWidgets('hộp Trò chơi: bấm Trân Châu Rơi mở màn hành trình; hết món cần ôn thì không hiện dòng phụ', (tester) async {
     tester.view.physicalSize = const Size(390 * 3, 844 * 3);
     tester.view.devicePixelRatio = 3;

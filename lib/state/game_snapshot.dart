@@ -178,6 +178,8 @@ class GameSnapshot {
     required this.weeklyQuests,
     this.recipeProgress = const {},
     this.recipeOrderPerfect = const [],
+    this.recipeDailyDay = -1,
+    this.recipeDailyScore = 0,
     this.recipeStreak = const RecipeStreak(),
     required this.weeklyChestAvailable,
     required this.weeklyChestClaimed,
@@ -421,6 +423,10 @@ class GameSnapshot {
 
   /// Id món đã pha hoàn hảo không gợi ý ở chế độ Pha theo đơn (bản sao bất biến).
   final List<int> recipeOrderPerfect;
+
+  /// Thử thách hằng ngày Pha theo đơn: ngày làm gần nhất (dayIndex, -1 = chưa) và điểm hôm đó.
+  final int recipeDailyDay;
+  final int recipeDailyScore;
 
   /// Chuỗi ngày ôn công thức (bất biến — an toàn khi chia sẻ với snapshot).
   final RecipeStreak recipeStreak;

@@ -7169,6 +7169,102 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Hoàn hảo {n} món'**
   String rlbPerfect(int n);
+
+  /// No description provided for @recipeOrderHold.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giữ để rót'**
+  String get recipeOrderHold;
+
+  /// No description provided for @recipeOrderPourAgain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rót lại'**
+  String get recipeOrderPourAgain;
+
+  /// No description provided for @recipeOrderCombo.
+  ///
+  /// In vi, this message translates to:
+  /// **'🔥 Combo ×{n}'**
+  String recipeOrderCombo(int n);
+
+  /// No description provided for @recipeOrderComboTip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Combo ×{combo}: tip +{cash} Xu!'**
+  String recipeOrderComboTip(String cash, int combo);
+
+  /// No description provided for @rlbTabDaily.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay'**
+  String get rlbTabDaily;
+
+  /// No description provided for @rlbDailyEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa ai nộp điểm hôm nay. Làm thử thách để lên bảng đầu tiên!'**
+  String get rlbDailyEmpty;
+
+  /// No description provided for @rlbNoDaily.
+  ///
+  /// In vi, this message translates to:
+  /// **'Làm Thử thách hôm nay để có tên trên bảng.'**
+  String get rlbNoDaily;
+
+  /// No description provided for @rlbDailyScore.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} điểm'**
+  String rlbDailyScore(Object n);
+
+  /// No description provided for @recipeDailyTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử thách hôm nay'**
+  String get recipeDailyTitle;
+
+  /// No description provided for @recipeDailyOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'3 đơn khó, không gợi ý — mỗi ngày một lần'**
+  String get recipeDailyOpen;
+
+  /// No description provided for @recipeDailyDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay bạn được {score}/300 điểm'**
+  String recipeDailyDone(Object score);
+
+  /// No description provided for @recipeDailyOrderScore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Điểm đơn này: {n}/100'**
+  String recipeDailyOrderScore(Object n);
+
+  /// No description provided for @recipeDailyTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n}/300 điểm'**
+  String recipeDailyTotal(Object n);
+
+  /// No description provided for @recipeDailyAlready.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã làm thử thách hôm nay. Mai quay lại nhé — đề mới mỗi ngày!'**
+  String get recipeDailyAlready;
+
+  /// No description provided for @recipeDailyBoard.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem bảng hôm nay'**
+  String get recipeDailyBoard;
+
+  /// No description provided for @recipeDailyIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đề giống nhau cho mọi người, không gợi ý, lượng phải đúng từng mức. Chỉ làm được một lần mỗi ngày.'**
+  String get recipeDailyIntro;
 }
 
 class _AppLocalizationsDelegate

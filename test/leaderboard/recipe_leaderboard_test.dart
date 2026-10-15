@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:boba_empire/core/lb_rewards.dart';
 import 'package:boba_empire/core/recipe_mastery.dart';
+import 'package:boba_empire/core/recipe_orders.dart';
 import 'package:boba_empire/core/recipes.dart';
 import 'package:boba_empire/leaderboard/lb_rewards.dart';
 import 'package:boba_empire/leaderboard/recipe_leaderboard_repository.dart';
@@ -89,6 +90,27 @@ void main() {
       final row = {'user_id': 'u', 'nickname': 'n', 'perfected': 7, 'mastered': 1, 'rank': 2};
       expect(RecipeLeaderboardEntry.fromRow(row, RecipeBoard.orders).mastered, 7);
       expect(RecipeLeaderboardEntry.fromRow(row).mastered, 1);
+    });
+  });
+
+  group('bảng thử thách ngày', () {
+    final dsql = File('supabase/recipe_daily_schema.sql').readAsStringSync();
+
+    test('SQL: trần 300 = dailyMaxScore, ngày do server đặt, chỉ INSERT (bất biến), cần email, top theo hôm nay', () {
+      expect(dsql, contains('check (score between 0 and $dailyMaxScore)'));
+      expect(dsql, contains('default recipe_daily_today()'));
+      expect(dsql, contains('with check (auth.uid() = user_id and day = recipe_daily_today() and is_linked_user())'));
+      expect(dsql, isNot(contains('for update')));
+      expect(dsql, isNot(contains('for delete')));
+      expect(dsql, contains('where day = recipe_daily_today()'));
+      expect(dsql, contains('least(coalesce(p_limit, 50), 100)'));
+    });
+
+    test('enum bảng: bảng/RPC/cột khớp SQL', () {
+      expect(dsql, contains('create table if not exists ${RecipeBoard.daily.table}'));
+      expect(dsql, contains('function ${RecipeBoard.daily.topRpc}'));
+      final row = {'user_id': 'u', 'nickname': 'n', 'score': 222, 'rank': 1};
+      expect(RecipeLeaderboardEntry.fromRow(row, RecipeBoard.daily).mastered, 222);
     });
   });
 }

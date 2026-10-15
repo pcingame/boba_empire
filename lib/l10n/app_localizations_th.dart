@@ -4210,4 +4210,67 @@ class AppLocalizationsTh extends AppLocalizations {
   String rlbPerfect(int n) {
     return 'สมบูรณ์แบบ $n เมนู';
   }
+
+  @override
+  String get recipeOrderHold => 'กดค้างเพื่อเท';
+
+  @override
+  String get recipeOrderPourAgain => 'เทใหม่';
+
+  @override
+  String recipeOrderCombo(int n) {
+    return '🔥 คอมโบ ×$n';
+  }
+
+  @override
+  String recipeOrderComboTip(String cash, int combo) {
+    return 'คอมโบ ×$combo: ทิป +$cash เหรียญ!';
+  }
+
+  @override
+  String get rlbTabDaily => 'วันนี้';
+
+  @override
+  String get rlbDailyEmpty =>
+      'วันนี้ยังไม่มีใครส่งคะแนน ลองทำภารกิจเพื่อเป็นคนแรกบนอันดับ!';
+
+  @override
+  String get rlbNoDaily => 'ทำภารกิจวันนี้เพื่อให้มีชื่อบนอันดับ';
+
+  @override
+  String rlbDailyScore(Object n) {
+    return '$n คะแนน';
+  }
+
+  @override
+  String get recipeDailyTitle => 'ภารกิจวันนี้';
+
+  @override
+  String get recipeDailyOpen => 'ออเดอร์ยาก 3 อย่าง ไม่มีคำใบ้ — วันละครั้ง';
+
+  @override
+  String recipeDailyDone(Object score) {
+    return 'วันนี้คุณได้ $score/300';
+  }
+
+  @override
+  String recipeDailyOrderScore(Object n) {
+    return 'ออเดอร์นี้: $n/100';
+  }
+
+  @override
+  String recipeDailyTotal(Object n) {
+    return '$n/300 คะแนน';
+  }
+
+  @override
+  String get recipeDailyAlready =>
+      'คุณทำภารกิจวันนี้แล้ว พรุ่งนี้มาใหม่ มีออเดอร์ใหม่ทุกวัน!';
+
+  @override
+  String get recipeDailyBoard => 'ดูอันดับวันนี้';
+
+  @override
+  String get recipeDailyIntro =>
+      'ออเดอร์เหมือนกันสำหรับทุกคน ไม่มีคำใบ้ ปริมาณต้องตรงทุกระดับ ทำได้วันละครั้ง';
 }
