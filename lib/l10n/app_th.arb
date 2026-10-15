@@ -1244,7 +1244,7 @@
   "chVip": "เสิร์ฟลูกค้า VIP {n} คน",
   "chBonusLabel": "ทำภารกิจท้าทายครบทั้ง 2",
   "lbrTitle": "รางวัลท็อปประจำสัปดาห์",
-  "lbrIntro": "ทุกสัปดาห์ท็อป 3 ของห้ากระดาน (รายได้ ไข่มุกร่วง สะสม VIP ผู้เชี่ยวชาญสูตร) รับ {first} / {second} / {third} 💎 กระดานจะถูกล็อกต้นสัปดาห์ (วันจันทร์ UTC) และรับรางวัลได้อีกหนึ่งสัปดาห์",
+  "lbrIntro": "ทุกสัปดาห์ท็อป 3 ของทุกกระดานสะสม (รายได้ ไข่มุกร่วง สะสม VIP ผู้เชี่ยวชาญสูตร ชงตามออเดอร์) รับ {first} / {second} / {third} 💎 กระดานจะถูกล็อกต้นสัปดาห์ (วันจันทร์ UTC) และรับรางวัลได้อีกหนึ่งสัปดาห์",
   "lbrEmpty": "ยังไม่มีรางวัล — ไต่ขึ้นท็อป 3 ของกระดานอันดับ!",
   "lbrRow": "{board} · สัปดาห์ {week}",
   "lbrClaim": "รับ {n} 💎",
@@ -1981,5 +1981,9 @@
   "storyCondOrders": "ทำเครื่องดื่มสมบูรณ์แบบ {n} แก้วใน {game}",
   "@storyCondOrders": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
   "storyCondDaily": "ทำ {game} ให้ครบ {n} วัน",
-  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}}
+  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "lbrBoardDaily": "ภารกิจประจำวัน",
+  "lbrDailyNote": "ภารกิจประจำวัน: ท็อป 10 ตามคะแนนรวมของสัปดาห์ที่แล้วก็ได้รางวัล อันดับ 1-3 เหมือนด้านบน อันดับ 4-10 รับ {rest} 💎",
+  "@lbrDailyNote": {"placeholders": {"rest": {"type": "int"}}},
+  "rlbDailyWeeklyHint": "ทุกสัปดาห์ท็อป 10 ตามคะแนนรวมภารกิจประจำวันทั้งสัปดาห์รับ 💎 (ล็อกต้นสัปดาห์ถัดไป UTC)"
 }

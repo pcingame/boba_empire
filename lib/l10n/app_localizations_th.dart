@@ -3159,7 +3159,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String lbrIntro(int first, int second, int third) {
-    return 'ทุกสัปดาห์ท็อป 3 ของห้ากระดาน (รายได้ ไข่มุกร่วง สะสม VIP ผู้เชี่ยวชาญสูตร) รับ $first / $second / $third 💎 กระดานจะถูกล็อกต้นสัปดาห์ (วันจันทร์ UTC) และรับรางวัลได้อีกหนึ่งสัปดาห์';
+    return 'ทุกสัปดาห์ท็อป 3 ของทุกกระดานสะสม (รายได้ ไข่มุกร่วง สะสม VIP ผู้เชี่ยวชาญสูตร ชงตามออเดอร์) รับ $first / $second / $third 💎 กระดานจะถูกล็อกต้นสัปดาห์ (วันจันทร์ UTC) และรับรางวัลได้อีกหนึ่งสัปดาห์';
   }
 
   @override
@@ -4343,4 +4343,16 @@ class AppLocalizationsTh extends AppLocalizations {
   String storyCondDaily(int n, String game) {
     return 'ทำ $game ให้ครบ $n วัน';
   }
+
+  @override
+  String get lbrBoardDaily => 'ภารกิจประจำวัน';
+
+  @override
+  String lbrDailyNote(int rest) {
+    return 'ภารกิจประจำวัน: ท็อป 10 ตามคะแนนรวมของสัปดาห์ที่แล้วก็ได้รางวัล อันดับ 1-3 เหมือนด้านบน อันดับ 4-10 รับ $rest 💎';
+  }
+
+  @override
+  String get rlbDailyWeeklyHint =>
+      'ทุกสัปดาห์ท็อป 10 ตามคะแนนรวมภารกิจประจำวันทั้งสัปดาห์รับ 💎 (ล็อกต้นสัปดาห์ถัดไป UTC)';
 }

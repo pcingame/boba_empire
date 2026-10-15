@@ -3177,7 +3177,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String lbrIntro(int first, int second, int third) {
-    return 'Each week the top 3 of five boards (Income, Pearl Drop, Collection, VIP, Recipe Masters) get $first / $second / $third 💎. Boards are locked at the start of the week (Monday, UTC); rewards can be claimed for one more week.';
+    return 'Each week the top 3 of every cumulative board (Income, Pearl Drop, Collection, VIP, Recipe Masters, Drink Orders) get $first / $second / $third 💎. Boards are locked at the start of the week (Monday, UTC); rewards can be claimed for one more week.';
   }
 
   @override
@@ -4381,4 +4381,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String storyCondDaily(int n, String game) {
     return 'Complete $game on $n days';
   }
+
+  @override
+  String get lbrBoardDaily => 'Daily Challenge';
+
+  @override
+  String lbrDailyNote(int rest) {
+    return 'Daily Challenge: the top 10 by TOTAL score over last week also get rewards — ranks 1-3 as above, ranks 4-10 get $rest 💎.';
+  }
+
+  @override
+  String get rlbDailyWeeklyHint =>
+      'Each week the top 10 by total Daily Challenge score for the whole week get 💎 (locked at the start of next week, UTC).';
 }

@@ -65,7 +65,7 @@ Future<ProviderContainer> _pump(
   double textScale = 1.0,
   AdService? ads,
   bool daily = false,
-  Future<void> Function(Uint8List, String, Rect?)? share,
+  Future<void> Function(Uint8List, String, Rect?, String)? share,
   void Function(GameState)? setup,
 }) async {
   tester.view.physicalSize = size * 2;
@@ -807,9 +807,11 @@ void main() {
     testWidgets('chỉ đơn hoàn hảo mới có nút Khoe ly; bấm → thẻ có tên món; chia sẻ ra PNG kèm lời', (tester) async {
       Uint8List? png;
       String? caption;
-      await _pump(tester, size: const Size(400, 1000), share: (b, t, o) async {
+      String? fileName;
+      await _pump(tester, size: const Size(400, 1000), share: (b, t, o, n) async {
         png = b;
         caption = t;
+        fileName = n;
       });
       final o = _expected(1).first;
       expect(find.byKey(const Key('order-share')), findsNothing);
@@ -826,11 +828,12 @@ void main() {
       expect(png!.sublist(0, 4), [0x89, 0x50, 0x4E, 0x47]);
       expect(caption, contains(o.recipe.name));
       expect(caption, contains('bobaempiregame.com'));
+      expect(fileName, 'boba_cup.png', reason: 'thẻ ly không dùng chung tên với thẻ sưu tập');
       await _teardown(tester);
     });
 
     testWidgets('đơn sai → không có nút Khoe ly; chia sẻ lỗi → báo lỗi, không crash', (tester) async {
-      await _pump(tester, size: const Size(400, 1000), share: (_, _, _) async => throw 'boom');
+      await _pump(tester, size: const Size(400, 1000), share: (_, _, _, _) async => throw 'boom');
       final o = _expected(1).first;
       final i = o.recipe.ingredients.first;
       await _pour(tester, i.name, i.unit, i.qty);
@@ -839,7 +842,7 @@ void main() {
       expect(find.byKey(const Key('order-share')), findsNothing);
       await _teardown(tester);
 
-      await _pump(tester, size: const Size(400, 1000), share: (_, _, _) async => throw 'boom');
+      await _pump(tester, size: const Size(400, 1000), share: (_, _, _, _) async => throw 'boom');
       await _serveExact(tester, o);
       await tester.tap(find.byKey(const Key('order-share')));
       await tester.pumpAndSettle();

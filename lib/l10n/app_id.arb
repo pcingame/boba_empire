@@ -1244,7 +1244,7 @@
   "chVip": "Layani {n} pelanggan VIP",
   "chBonusLabel": "Selesaikan kedua tantangan",
   "lbrTitle": "Hadiah top mingguan",
-  "lbrIntro": "Setiap minggu, top 3 dari lima papan (Pendapatan, Mutiara Jatuh, Koleksi, VIP, Ahli Resep) mendapat {first} / {second} / {third} 💎. Papan dikunci di awal minggu (Senin, UTC); hadiah bisa diklaim satu minggu lagi.",
+  "lbrIntro": "Setiap minggu, top 3 dari tiap papan kumulatif (Pendapatan, Mutiara Jatuh, Koleksi, VIP, Ahli Resep, Racik sesuai pesanan) mendapat {first} / {second} / {third} 💎. Papan dikunci di awal minggu (Senin, UTC); hadiah bisa diklaim satu minggu lagi.",
   "lbrEmpty": "Belum ada hadiah — naiklah ke top 3 papan peringkat!",
   "lbrRow": "{board} · minggu {week}",
   "lbrClaim": "Klaim {n} 💎",
@@ -1981,5 +1981,9 @@
   "storyCondOrders": "Buat {n} minuman sempurna di {game}",
   "@storyCondOrders": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
   "storyCondDaily": "Selesaikan {game} selama {n} hari",
-  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}}
+  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "lbrBoardDaily": "Tantangan harian",
+  "lbrDailyNote": "Tantangan harian: top 10 berdasarkan TOTAL skor minggu lalu juga mendapat hadiah — peringkat 1-3 seperti di atas, peringkat 4-10 mendapat {rest} 💎.",
+  "@lbrDailyNote": {"placeholders": {"rest": {"type": "int"}}},
+  "rlbDailyWeeklyHint": "Setiap minggu, top 10 berdasarkan total skor Tantangan harian sepanjang minggu mendapat 💎 (dikunci di awal minggu berikutnya, UTC)."
 }

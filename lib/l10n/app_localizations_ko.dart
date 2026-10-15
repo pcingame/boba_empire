@@ -3123,7 +3123,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String lbrIntro(int first, int second, int third) {
-    return '매주 다섯 개 순위(수입, 진주 낙하, 수집, VIP, 레시피 마스터)의 TOP 3가 $first / $second / $third 💎를 받아요. 순위는 주 초(월요일, UTC)에 확정되고 보상은 한 주 더 받을 수 있어요.';
+    return '매주 누적 순위(수입, 진주 낙하, 수집, VIP, 레시피 마스터, 주문대로 만들기) 각각의 TOP 3가 $first / $second / $third 💎를 받아요. 순위는 주 초(월요일, UTC)에 확정되고 보상은 한 주 더 받을 수 있어요.';
   }
 
   @override
@@ -4290,4 +4290,16 @@ class AppLocalizationsKo extends AppLocalizations {
   String storyCondDaily(int n, String game) {
     return '$game을(를) $n일 완료';
   }
+
+  @override
+  String get lbrBoardDaily => '일일 도전';
+
+  @override
+  String lbrDailyNote(int rest) {
+    return '일일 도전: 지난주 총점 TOP 10도 보상을 받아요. 1~3위는 위와 같고 4~10위는 $rest 💎를 받아요.';
+  }
+
+  @override
+  String get rlbDailyWeeklyHint =>
+      '매주 일일 도전 한 주 총점 TOP 10이 💎를 받아요 (다음 주 초 UTC에 확정).';
 }

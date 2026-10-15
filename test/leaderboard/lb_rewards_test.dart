@@ -69,6 +69,15 @@ void main() {
       expect(lbRewardGemsFor(0), 0);
       expect(lbRewardGemsFor(4), 0);
     });
+    test('Thử thách ngày: top 10, hạng 4-10 nhận 50💎 — Dart khớp SQL', () {
+      final m = RegExp(r"when p_board = 'daily' and p_rank between 4 and (\d+) then (\d+)").firstMatch(sql)!;
+      expect(int.parse(m.group(1)!), lbRewardDailyMaxRank);
+      expect(int.parse(m.group(2)!), lbRewardGemsDailyRest);
+      expect(sql, contains('check (rank between 1 and $lbRewardDailyMaxRank)'));
+      expect([for (var r = 1; r <= 11; r++) lbRewardGemsForBoard(LbBoard.daily, r)], [300, 200, 100, ...List.filled(7, 50), 0]);
+      // Bảng khác vẫn chỉ top 3.
+      expect([for (var r = 1; r <= 5; r++) lbRewardGemsForBoard(LbBoard.income, r)], [300, 200, 100, 0, 0]);
+    });
     test('số tuần còn nhận được', () {
       expect(sql, contains('select $lbRewardValidWeeks \$\$'));
     });

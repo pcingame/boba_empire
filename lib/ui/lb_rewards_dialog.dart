@@ -22,6 +22,7 @@ String _boardName(AppLocalizations l10n, LbBoard b) => switch (b) {
       LbBoard.vip => l10n.lbrBoardVip,
       LbBoard.recipes => l10n.lbrBoardRecipes,
       LbBoard.orders => l10n.lbrBoardOrders,
+      LbBoard.daily => l10n.lbrBoardDaily,
     };
 
 /// 'yyyy-mm-dd' → 'dd/mm' (không đoán múi giờ: tuần chốt đã là ngày UTC).
@@ -84,6 +85,12 @@ class _LbRewardsDialogState extends ConsumerState<_LbRewardsDialog> {
               key: const Key('lbr-intro'),
               style: theme.textTheme.bodySmall,
             ),
+            const SizedBox(height: 4),
+            Text(
+              l10n.lbrDailyNote(lbRewardGemsDailyRest),
+              key: const Key('lbr-daily-note'),
+              style: theme.textTheme.bodySmall,
+            ),
             const SizedBox(height: 8),
             if (!state.loaded)
               const Padding(
@@ -101,7 +108,8 @@ class _LbRewardsDialogState extends ConsumerState<_LbRewardsDialog> {
                   key: Key('lbr-${r.id}'),
                   child: Row(
                     children: [
-                      Text(medals[(r.rank - 1).clamp(0, 2)], style: const TextStyle(fontSize: 26)),
+                      // Hạng 1-3 huy chương; hạng 4-10 (chỉ bảng Thử thách ngày) hiện 🏅.
+                      Text(r.rank >= 1 && r.rank <= 3 ? medals[r.rank - 1] : '🏅', style: const TextStyle(fontSize: 26)),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(

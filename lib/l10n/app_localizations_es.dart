@@ -3192,7 +3192,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String lbrIntro(int first, int second, int third) {
-    return 'Cada semana el top 3 de cinco clasificaciones (Ingresos, Perla Caída, Colección, VIP, Maestros de recetas) recibe $first / $second / $third 💎. Se cierran al inicio de la semana (lunes, UTC); puedes reclamar una semana más.';
+    return 'Cada semana el top 3 de cada clasificación acumulada (Ingresos, Perla Caída, Colección, VIP, Maestros de recetas, Preparar pedidos) recibe $first / $second / $third 💎. Se cierran al inicio de la semana (lunes, UTC); puedes reclamar una semana más.';
   }
 
   @override
@@ -4396,4 +4396,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String storyCondDaily(int n, String game) {
     return 'Completa $game durante $n días';
   }
+
+  @override
+  String get lbrBoardDaily => 'Reto diario';
+
+  @override
+  String lbrDailyNote(int rest) {
+    return 'Reto diario: el top 10 por puntuación TOTAL de la semana pasada también gana: puestos 1-3 como arriba, puestos 4-10 reciben $rest 💎.';
+  }
+
+  @override
+  String get rlbDailyWeeklyHint =>
+      'Cada semana el top 10 por puntuación total del Reto diario de toda la semana recibe 💎 (se cierra al inicio de la siguiente, UTC).';
 }

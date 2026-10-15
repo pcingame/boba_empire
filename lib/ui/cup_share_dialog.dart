@@ -87,7 +87,7 @@ class _CupShareDialogState extends ConsumerState<_CupShareDialog> {
       final image = await _capture();
       final data = await image.toByteData(format: ui.ImageByteFormat.png);
       image.dispose();
-      await share(data!.buffer.asUint8List(), text, origin);
+      await share(data!.buffer.asUint8List(), text, origin, 'boba_cup.png');
     } catch (_) {
       messenger
         ..clearSnackBars()

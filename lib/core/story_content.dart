@@ -1,7 +1,8 @@
 /// Lời kể cho 46 chương cốt truyện + text sự kiện đối thủ.
 ///
 /// KHÔNG dùng ARB: prose dài, và giữ ở đây cho dễ biên tập. `vi` + `en` viết đủ;
-/// các locale khác (es/id/pt/th) tạm fallback sang `en` — dịch sau.
+/// các locale khác tạm fallback sang `en` — dịch sau (RIÊNG Chương 37-46 của Hồi 4 đã có đủ es/id/pt/th/ko, máy dịch
+/// chưa có người bản ngữ duyệt).
 library;
 
 import 'rival.dart';
@@ -748,6 +749,31 @@ const Map<int, Map<String, StoryText>> _chapters = {
       title: 'The Invitation',
       body: 'The Grand Teacher lays a red card on the counter. "The Grand Craft Festival: ten trials. None can be passed with coins or time — only with your hands and your memory." The first trial is humble: know five recipes by heart in the Recipe Book.',
     ),
+    'es': StoryText(
+      speaker: 'El Gran Maestro',
+      title: 'La invitación',
+      body: 'El Gran Maestro deja una tarjeta roja sobre el mostrador. «El Gran Festival del Oficio: diez pruebas. Ninguna se supera con monedas ni con tiempo, solo con tus manos y tu memoria». La primera es sencilla: conocer de memoria cinco recetas del Libro de Recetas.',
+    ),
+    'id': StoryText(
+      speaker: 'Guru Agung',
+      title: 'Undangan',
+      body: 'Guru Agung meletakkan kartu merah di meja. "Festival Keahlian Agung: sepuluh ujian. Tak satu pun bisa dilewati dengan koin atau waktu, hanya dengan tangan dan ingatanmu." Ujian pertama sederhana: hafal lima resep di Buku Resep.',
+    ),
+    'pt': StoryText(
+      speaker: 'O Grande Mestre',
+      title: 'O convite',
+      body: 'O Grande Mestre coloca um cartão vermelho no balcão. "O Grande Festival do Ofício: dez provas. Nenhuma se vence com moedas ou tempo, apenas com suas mãos e sua memória." A primeira é simples: saber de cor cinco receitas do Livro de Receitas.',
+    ),
+    'th': StoryText(
+      speaker: 'ปรมาจารย์',
+      title: 'คำเชิญ',
+      body: 'ปรมาจารย์วางการ์ดสีแดงไว้บนเคาน์เตอร์ "เทศกาลฝีมือยิ่งใหญ่ สิบบททดสอบ ไม่มีข้อไหนผ่านได้ด้วยเหรียญหรือเวลา มีแต่มือกับความจำของเจ้าเท่านั้น" บททดสอบแรกเรียบง่าย: จำสูตรในสมุดสูตรให้ได้ห้าสูตร',
+    ),
+    'ko': StoryText(
+      speaker: '대사부',
+      title: '초대장',
+      body: '대사부가 카운터 위에 붉은 카드를 올려놓습니다. "장인 대축제, 열 가지 시험이다. 어느 것도 코인이나 시간으로는 통과할 수 없다. 오직 네 손과 기억뿐이지." 첫 시험은 소박합니다. 레시피 북의 레시피 다섯 개를 외우는 것.',
+    ),
   },
   38: {
     'vi': StoryText(
@@ -759,6 +785,31 @@ const Map<int, Map<String, StoryText>> _chapters = {
       speaker: 'The Grand Teacher',
       title: 'Pearl Rain',
       body: '"Your hands know the recipes. Now test your rhythm." The Grand Teacher opens the window and pearls fall like rain onto the street. "Catch them all, let none drop: you must clear level 65 of Pearl Drop." The rain waits for no one — but a good catcher never needs it to.',
+    ),
+    'es': StoryText(
+      speaker: 'El Gran Maestro',
+      title: 'Lluvia de perlas',
+      body: '«Tus manos ya conocen las recetas. Ahora prueba tu ritmo». El Gran Maestro abre la ventana y las perlas caen como lluvia sobre la calle. «Atrápalas todas, que ninguna caiga: debes superar el nivel 65 de Perlas Cayendo». La lluvia no espera a nadie, pero quien atrapa bien no necesita que lo haga.',
+    ),
+    'id': StoryText(
+      speaker: 'Guru Agung',
+      title: 'Hujan mutiara',
+      body: '"Tanganmu sudah hafal resepnya. Sekarang uji iramamu." Guru Agung membuka jendela dan mutiara jatuh seperti hujan ke jalanan. "Tangkap semuanya, jangan ada yang jatuh: kamu harus menamatkan level 65 Mutiara Jatuh." Hujan tak menunggu siapa pun, tetapi penangkap yang piawai tak perlu ditunggu.',
+    ),
+    'pt': StoryText(
+      speaker: 'O Grande Mestre',
+      title: 'Chuva de pérolas',
+      body: '"Suas mãos já conhecem as receitas. Agora teste seu ritmo." O Grande Mestre abre a janela e as pérolas caem como chuva sobre a rua. "Pegue todas, não deixe nenhuma cair: você deve passar do nível 65 de Pérolas Caindo." A chuva não espera ninguém, mas quem apanha bem não precisa que ela espere.',
+    ),
+    'th': StoryText(
+      speaker: 'ปรมาจารย์',
+      title: 'ฝนไข่มุก',
+      body: '"มือเจ้าจำสูตรได้แล้ว ทีนี้มาลองจังหวะกัน" ปรมาจารย์เปิดหน้าต่าง ไข่มุกร่วงลงถนนราวสายฝน "จับให้ครบ อย่าให้ตกสักเม็ด ผ่านด่าน 65 ของไข่มุกร่วงให้ได้" ฝนไม่รอใคร แต่คนที่จับเก่งไม่ต้องให้ฝนรอ',
+    ),
+    'ko': StoryText(
+      speaker: '대사부',
+      title: '진주 비',
+      body: '"네 손은 이미 레시피를 안다. 이제 리듬을 시험해 보자." 대사부가 창문을 열자 진주가 비처럼 거리로 쏟아집니다. "전부 잡아라, 하나도 떨어뜨리지 마라. 진주 떨어뜨리기 65단계를 클리어해야 한다." 비는 누구도 기다리지 않지만, 잘 잡는 사람은 비가 기다려 줄 필요가 없습니다.',
     ),
   },
   39: {
@@ -772,6 +823,31 @@ const Map<int, Map<String, StoryText>> _chapters = {
       title: 'The Festival\'s First Order',
       body: 'The Festival\'s first customers explain nothing — they simply order and watch. "No sample recipe, no hints," the Grand Teacher reminds you. "Brew five drinks to perfection. Only when the cup is right to the last measure will they call you a craftsman."',
     ),
+    'es': StoryText(
+      speaker: 'El Gran Maestro',
+      title: 'El primer pedido del Festival',
+      body: 'Los primeros clientes del Festival no explican nada: piden y observan. «Sin receta de muestra ni pistas», recuerda el Gran Maestro. «Prepara cinco bebidas perfectas. Solo cuando la taza es exacta hasta la última medida te llamarán artesano».',
+    ),
+    'id': StoryText(
+      speaker: 'Guru Agung',
+      title: 'Pesanan pertama Festival',
+      body: 'Pelanggan pertama Festival tak menjelaskan apa pun: mereka memesan lalu memperhatikan. "Tanpa resep contoh, tanpa petunjuk," Guru Agung mengingatkan. "Buat lima minuman yang sempurna. Hanya saat gelas tepat sampai takaran terakhir, orang akan menyebutmu pengrajin."',
+    ),
+    'pt': StoryText(
+      speaker: 'O Grande Mestre',
+      title: 'O primeiro pedido do Festival',
+      body: 'Os primeiros clientes do Festival não explicam nada: pedem e observam. "Sem receita de exemplo, sem dicas", lembra o Grande Mestre. "Prepare cinco bebidas perfeitas. Só quando o copo estiver certo até a última medida vão chamá-lo de artesão."',
+    ),
+    'th': StoryText(
+      speaker: 'ปรมาจารย์',
+      title: 'ออเดอร์แรกของเทศกาล',
+      body: 'ลูกค้ากลุ่มแรกของเทศกาลไม่อธิบายอะไร แค่สั่งแล้วเฝ้ามอง "ไม่มีสูตรตัวอย่าง ไม่มีคำใบ้" ปรมาจารย์เตือน "ชงให้สมบูรณ์แบบห้าแก้ว เมื่อแก้วถูกต้องทุกปริมาณเท่านั้น ผู้คนจึงจะเรียกเจ้าว่าช่างฝีมือ"',
+    ),
+    'ko': StoryText(
+      speaker: '대사부',
+      title: '축제의 첫 주문',
+      body: '축제의 첫 손님들은 아무 설명도 하지 않습니다. 주문하고 지켜볼 뿐. "예시 레시피도, 힌트도 없다." 대사부가 일러 줍니다. "완벽한 음료 다섯 잔을 만들어라. 컵이 마지막 계량까지 정확해야 비로소 장인이라 불리지."',
+    ),
   },
   40: {
     'vi': StoryText(
@@ -783,6 +859,31 @@ const Map<int, Map<String, StoryText>> _chapters = {
       speaker: 'The Grand Teacher',
       title: 'One Challenge a Day',
       body: '"A fine craftsman isn\'t the one who wins a day, but the one who returns every day." The Grand Teacher pins today\'s challenge sheet to the wall: three hard orders, the same for every craftsman in the world. "Complete the Daily Challenge on two days — not necessarily in a row, but enough."',
+    ),
+    'es': StoryText(
+      speaker: 'El Gran Maestro',
+      title: 'Un reto al día',
+      body: '«El buen artesano no es el que gana un día, sino el que vuelve cada día». El Gran Maestro cuelga en la pared la hoja del reto de hoy: tres pedidos difíciles, iguales para todos los artesanos del mundo. «Completa el Reto Diario durante dos días; no tienen que ser seguidos, pero sí completos».',
+    ),
+    'id': StoryText(
+      speaker: 'Guru Agung',
+      title: 'Satu tantangan sehari',
+      body: '"Pengrajin hebat bukan yang menang sehari, melainkan yang kembali setiap hari." Guru Agung menempel lembar tantangan hari ini di dinding: tiga pesanan sulit, sama untuk setiap pengrajin di dunia. "Selesaikan Tantangan Harian selama dua hari, tak harus berurutan, tetapi harus genap."',
+    ),
+    'pt': StoryText(
+      speaker: 'O Grande Mestre',
+      title: 'Um desafio por dia',
+      body: '"O bom artesão não é quem vence um dia, mas quem volta todos os dias." O Grande Mestre prega na parede a folha do desafio de hoje: três pedidos difíceis, iguais para todo artesão do mundo. "Complete o Desafio Diário em dois dias, não necessariamente seguidos, mas completos."',
+    ),
+    'th': StoryText(
+      speaker: 'ปรมาจารย์',
+      title: 'หนึ่งโจทย์ต่อวัน',
+      body: '"ช่างฝีมือที่ดีไม่ใช่คนที่ชนะแค่วันเดียว แต่คือคนที่กลับมาทุกวัน" ปรมาจารย์ติดใบโจทย์ของวันนี้ไว้บนผนัง: ออเดอร์ยากสามรายการ เหมือนกันสำหรับช่างทุกคนในโลก "ทำภารกิจประจำวันให้ครบสองวัน ไม่ต้องติดกัน แต่ต้องครบ"',
+    ),
+    'ko': StoryText(
+      speaker: '대사부',
+      title: '하루에 하나씩',
+      body: '"훌륭한 장인은 하루를 이긴 사람이 아니라 매일 돌아오는 사람이다." 대사부가 오늘의 도전 용지를 벽에 붙입니다. 어려운 주문 세 건, 세상 모든 장인에게 똑같습니다. "일일 도전을 이틀 완료해라. 연속일 필요는 없지만 반드시 채워야 한다."',
     ),
   },
   41: {
@@ -796,6 +897,31 @@ const Map<int, Map<String, StoryText>> _chapters = {
       title: 'A Thicker Recipe Book',
       body: 'Your notebook is many times thicker than when you began, its edges worn from constant turning. The Grand Teacher flips through every page and nods quietly. "Twenty recipes known by heart. This is no longer memorizing — it is reflex. Keep it, and you will never need to glance at a recipe while a customer waits."',
     ),
+    'es': StoryText(
+      speaker: 'El Gran Maestro',
+      title: 'Un Libro de Recetas más grueso',
+      body: 'Tu cuaderno es varias veces más grueso que al principio, con los bordes gastados de tanto pasarlo. El Gran Maestro hojea cada página y asiente en silencio. «Veinte recetas sabidas de memoria. Ya no es memorizar: es reflejo. Consérvalo y nunca tendrás que mirar una receta mientras un cliente espera».',
+    ),
+    'id': StoryText(
+      speaker: 'Guru Agung',
+      title: 'Buku Resep yang kian tebal',
+      body: 'Bukumu kini berlipat tebal dibanding awal, tepinya aus karena terus dibolak-balik. Guru Agung membuka tiap halaman dan mengangguk pelan. "Dua puluh resep terhafal di luar kepala. Ini bukan lagi menghafal, melainkan refleks. Jaga itu, dan kamu tak perlu melirik resep saat pelanggan menunggu."',
+    ),
+    'pt': StoryText(
+      speaker: 'O Grande Mestre',
+      title: 'Um Livro de Receitas mais grosso',
+      body: 'Seu caderno está várias vezes mais grosso que no início, com as bordas gastas de tanto virar. O Grande Mestre folheia cada página e assente em silêncio. "Vinte receitas sabidas de cor. Isso já não é decorar, é reflexo. Mantenha-o e nunca precisará olhar uma receita enquanto um cliente espera."',
+    ),
+    'th': StoryText(
+      speaker: 'ปรมาจารย์',
+      title: 'สมุดสูตรหนาขึ้น',
+      body: 'สมุดของเจ้าหนากว่าตอนเริ่มหลายเท่า ขอบกระดาษเปื่อยเพราะพลิกบ่อย ปรมาจารย์เปิดดูทีละหน้าแล้วพยักหน้าเงียบ ๆ "ยี่สิบสูตรขึ้นใจ นี่ไม่ใช่การท่องจำอีกแล้ว แต่คือสัญชาตญาณ รักษาไว้ แล้วเจ้าจะไม่ต้องชำเลืองดูสูตรตอนลูกค้ารออยู่"',
+    ),
+    'ko': StoryText(
+      speaker: '대사부',
+      title: '두꺼워진 레시피 북',
+      body: '네 노트는 처음보다 몇 배나 두꺼워졌고, 자주 넘긴 탓에 가장자리가 닳았습니다. 대사부가 한 장 한 장 넘겨 보며 조용히 고개를 끄덕입니다. "스무 가지 레시피를 외웠구나. 이제는 암기가 아니라 반사다. 이걸 지키면 손님이 기다리는 중에 레시피를 들여다볼 일은 없을 게다."',
+    ),
   },
   42: {
     'vi': StoryText(
@@ -807,6 +933,31 @@ const Map<int, Map<String, StoryText>> _chapters = {
       speaker: 'The Grand Teacher',
       title: 'The Pearl Summit',
       body: 'The final levels of Pearl Drop look like a mountain: dense pearls, few moves, one wrong beat and the whole cluster is lost. "No one can help you here," the Grand Teacher says. "Clear level 75, and then we talk." You take a deep breath and place your hands on the tray.',
+    ),
+    'es': StoryText(
+      speaker: 'El Gran Maestro',
+      title: 'La cumbre de las perlas',
+      body: 'Los últimos niveles de Perlas Cayendo parecen una montaña: perlas densas, pocos movimientos, y un compás en falso arruina todo el racimo. «Aquí nadie puede ayudarte», dice el Gran Maestro. «Supera el nivel 75 y entonces hablamos». Respiras hondo y pones las manos sobre la bandeja.',
+    ),
+    'id': StoryText(
+      speaker: 'Guru Agung',
+      title: 'Puncak mutiara',
+      body: 'Level-level akhir Mutiara Jatuh tampak seperti gunung: mutiara rapat, langkah sedikit, satu ketukan meleset dan seluruh gugusan hilang. "Di sini tak ada yang bisa membantumu," kata Guru Agung. "Tamatkan level 75, baru kita bicara." Kamu menarik napas dalam dan meletakkan tangan di atas nampan.',
+    ),
+    'pt': StoryText(
+      speaker: 'O Grande Mestre',
+      title: 'O cume das pérolas',
+      body: 'Os últimos níveis de Pérolas Caindo parecem uma montanha: pérolas densas, poucas jogadas, e um compasso errado perde o aglomerado inteiro. "Aqui ninguém pode ajudá-lo", diz o Grande Mestre. "Passe do nível 75 e então conversamos." Você respira fundo e coloca as mãos na bandeja.',
+    ),
+    'th': StoryText(
+      speaker: 'ปรมาจารย์',
+      title: 'ยอดเขาไข่มุก',
+      body: 'ด่านท้าย ๆ ของไข่มุกร่วงดูเหมือนภูเขา ไข่มุกหนาแน่น เดินได้น้อย พลาดจังหวะเดียวก็เสียทั้งกลุ่ม "ที่นี่ไม่มีใครช่วยเจ้าได้" ปรมาจารย์กล่าว "ผ่านด่าน 75 ให้ได้ แล้วค่อยคุยกัน" เจ้าหายใจลึกแล้ววางมือบนถาด',
+    ),
+    'ko': StoryText(
+      speaker: '대사부',
+      title: '진주의 정상',
+      body: '진주 떨어뜨리기의 마지막 단계들은 산처럼 보입니다. 빽빽한 진주, 얼마 안 되는 수, 박자 하나만 틀려도 덩어리가 통째로 날아갑니다. "여기선 누구도 도와줄 수 없다." 대사부가 말합니다. "75단계를 클리어하면 그때 이야기하자." 당신은 숨을 깊이 들이쉬고 쟁반 위에 손을 올립니다.',
     ),
   },
   43: {
@@ -820,6 +971,31 @@ const Map<int, Map<String, StoryText>> _chapters = {
       title: 'Rush Hour',
       body: 'The shop is packed: seven in line, each ordering something different. The Grand Teacher stands with arms crossed, saying nothing. Fifteen drinks brewed to perfection — not one cup too much, not one too little — is what he wants to see before he speaks again.',
     ),
+    'es': StoryText(
+      speaker: 'El Gran Maestro',
+      title: 'Hora punta',
+      body: 'El local está lleno: siete en la fila, cada uno pide algo distinto. El Gran Maestro observa con los brazos cruzados y no dice nada. Quince bebidas perfectas, ni una taza de más ni de menos, es lo que quiere ver antes de volver a hablar.',
+    ),
+    'id': StoryText(
+      speaker: 'Guru Agung',
+      title: 'Jam sibuk',
+      body: 'Kedai penuh sesak: tujuh orang mengantre, masing-masing memesan yang berbeda. Guru Agung berdiri bersedekap tanpa berkata apa-apa. Lima belas minuman sempurna, tak ada gelas yang lebih dan tak ada yang kurang, itulah yang ingin dilihatnya sebelum bicara lagi.',
+    ),
+    'pt': StoryText(
+      speaker: 'O Grande Mestre',
+      title: 'Hora de pico',
+      body: 'A loja está lotada: sete na fila, cada um pedindo algo diferente. O Grande Mestre observa de braços cruzados, sem dizer nada. Quinze bebidas perfeitas, nem um copo a mais nem a menos, é o que ele quer ver antes de falar de novo.',
+    ),
+    'th': StoryText(
+      speaker: 'ปรมาจารย์',
+      title: 'ชั่วโมงเร่งด่วน',
+      body: 'ร้านแน่นขนัด คนเข้าแถวเจ็ดคน ต่างสั่งไม่ซ้ำกัน ปรมาจารย์ยืนกอดอกเงียบ ๆ ชงให้สมบูรณ์แบบสิบห้าแก้ว ไม่เกินสักแก้ว ไม่ขาดสักแก้ว คือสิ่งที่เขาอยากเห็นก่อนจะพูดอีกครั้ง',
+    ),
+    'ko': StoryText(
+      speaker: '대사부',
+      title: '러시 아워',
+      body: '가게가 가득 찼습니다. 일곱 명이 줄을 섰고 저마다 다른 음료를 주문합니다. 대사부는 팔짱을 낀 채 말없이 지켜봅니다. 한 잔도 넘치지 않고 모자라지 않게, 완벽한 음료 열다섯 잔. 다시 입을 열기 전에 그가 보고 싶은 것입니다.',
+    ),
   },
   44: {
     'vi': StoryText(
@@ -832,6 +1008,31 @@ const Map<int, Map<String, StoryText>> _chapters = {
       title: 'Five Days, Five Challenges',
       body: 'Today\'s sheet differs from yesterday\'s, but your hands have changed far more. The Grand Teacher smiles for the first time since the Festival began. "Five days of challenges. You no longer fear a strange order, because you have learned to trust your hands."',
     ),
+    'es': StoryText(
+      speaker: 'El Gran Maestro',
+      title: 'Cinco días, cinco retos',
+      body: 'La hoja de hoy es distinta a la de ayer, pero tus manos han cambiado mucho más. El Gran Maestro sonríe por primera vez desde que empezó el Festival. «Cinco días de retos. Ya no temes un pedido extraño, porque has aprendido a confiar en tus manos».',
+    ),
+    'id': StoryText(
+      speaker: 'Guru Agung',
+      title: 'Lima hari, lima tantangan',
+      body: 'Lembar hari ini berbeda dari kemarin, tetapi tanganmu telah berubah jauh lebih banyak. Guru Agung tersenyum untuk pertama kalinya sejak Festival dimulai. "Lima hari tantangan. Kamu tak lagi takut pada pesanan asing, karena kamu telah belajar memercayai tanganmu."',
+    ),
+    'pt': StoryText(
+      speaker: 'O Grande Mestre',
+      title: 'Cinco dias, cinco desafios',
+      body: 'A folha de hoje é diferente da de ontem, mas suas mãos mudaram muito mais. O Grande Mestre sorri pela primeira vez desde o início do Festival. "Cinco dias de desafios. Você já não teme um pedido estranho, porque aprendeu a confiar nas suas mãos."',
+    ),
+    'th': StoryText(
+      speaker: 'ปรมาจารย์',
+      title: 'ห้าวัน ห้าโจทย์',
+      body: 'ใบโจทย์วันนี้ไม่เหมือนเมื่อวาน แต่มือของเจ้าเปลี่ยนไปมากกว่านั้นอีก ปรมาจารย์ยิ้มเป็นครั้งแรกนับตั้งแต่เริ่มเทศกาล "ห้าวันแห่งการท้าทาย เจ้าไม่กลัวออเดอร์แปลกหน้าอีกแล้ว เพราะเจ้าเรียนรู้ที่จะเชื่อมือตัวเอง"',
+    ),
+    'ko': StoryText(
+      speaker: '대사부',
+      title: '닷새, 닷새의 도전',
+      body: '오늘의 용지는 어제와 다르지만, 당신의 손은 그보다 훨씬 많이 달라졌습니다. 대사부가 축제가 시작된 뒤 처음으로 미소 짓습니다. "닷새의 도전이었다. 이제 낯선 주문이 두렵지 않겠지. 네 손을 믿는 법을 배웠으니까."',
+    ),
   },
   45: {
     'vi': StoryText(
@@ -843,6 +1044,31 @@ const Map<int, Map<String, StoryText>> _chapters = {
       speaker: 'The Grand Teacher',
       title: 'Fifty Lessons',
       body: 'Fifty recipes live in your head like fifty old friends. The Grand Teacher rests a hand on your shoulder: "I used to think this craft only needed talent. Now I know it needs something harder — the patience to return and learn each drink, one by one. The final trial awaits, and it is not easy."',
+    ),
+    'es': StoryText(
+      speaker: 'El Gran Maestro',
+      title: 'Cincuenta lecciones',
+      body: 'Cincuenta recetas viven en tu cabeza como cincuenta viejos amigos. El Gran Maestro te pone la mano en el hombro: «Antes creía que este oficio solo necesitaba talento. Ahora sé que necesita algo más difícil: la paciencia de volver y aprender cada bebida, una por una. La prueba final te espera, y no es fácil».',
+    ),
+    'id': StoryText(
+      speaker: 'Guru Agung',
+      title: 'Lima puluh pelajaran',
+      body: 'Lima puluh resep hidup di kepalamu seperti lima puluh sahabat lama. Guru Agung menaruh tangan di bahumu: "Dulu kupikir keahlian ini hanya butuh bakat. Kini aku tahu ia butuh yang lebih sulit: kesabaran untuk kembali dan mempelajari tiap minuman satu per satu. Ujian terakhir menunggu, dan tidak mudah."',
+    ),
+    'pt': StoryText(
+      speaker: 'O Grande Mestre',
+      title: 'Cinquenta lições',
+      body: 'Cinquenta receitas vivem na sua cabeça como cinquenta velhos amigos. O Grande Mestre põe a mão no seu ombro: "Eu achava que este ofício só precisava de talento. Agora sei que exige algo mais difícil: a paciência de voltar e aprender cada bebida, uma a uma. A prova final espera, e não é fácil."',
+    ),
+    'th': StoryText(
+      speaker: 'ปรมาจารย์',
+      title: 'ห้าสิบบทเรียน',
+      body: 'ห้าสิบสูตรอยู่ในหัวเจ้าราวกับเพื่อนเก่าห้าสิบคน ปรมาจารย์วางมือบนไหล่ "ข้าเคยคิดว่างานนี้ต้องการแค่พรสวรรค์ ตอนนี้ข้ารู้แล้วว่าต้องการสิ่งที่ยากกว่า คือความอดทนกลับมาเรียนรู้ทีละเครื่องดื่ม บททดสอบสุดท้ายรออยู่ และมันไม่ง่าย"',
+    ),
+    'ko': StoryText(
+      speaker: '대사부',
+      title: '쉰 번의 가르침',
+      body: '쉰 가지 레시피가 쉰 명의 오랜 친구처럼 머릿속에 살고 있습니다. 대사부가 어깨에 손을 얹습니다. "나는 이 일에 재능만 필요하다고 생각했다. 이제 안다. 더 어려운 것이 필요하다는 걸. 돌아와서 음료를 하나하나 배우는 끈기 말이다. 마지막 시험이 기다린다. 쉽지 않을 게다."',
     ),
   },
   46: {
@@ -863,6 +1089,51 @@ const Map<int, Map<String, StoryText>> _chapters = {
       optionADesc: 'The Festival crowns the finest practiced hand. +8% tap value, permanent.',
       optionB: 'Keep the Festival\'s Spirit',
       optionBDesc: 'The Festival is where everyone learns together. +8% idle income, permanent.',
+    ),
+    'es': StoryText(
+      speaker: 'El Gran Maestro',
+      title: 'La Copa del Festival',
+      body: 'Las diez pruebas han quedado atrás. El Gran Maestro trae una copa de madera de té pulida, con tu nombre grabado. «Has demostrado lo que esperé tanto tiempo ver. Pero ¿de quién debe ser esta copa? ¿De la mejor mano, o de todos los que recorrieron contigo las diez pruebas?»',
+      optionA: 'Honrar el oficio',
+      optionADesc: 'La copa corona la mano mejor entrenada. +8 % de valor por toque, permanente.',
+      optionB: 'Mantener el espíritu del Festival',
+      optionBDesc: 'El Festival es donde todos aprenden juntos. +8 % de ingresos automáticos, permanente.',
+    ),
+    'id': StoryText(
+      speaker: 'Guru Agung',
+      title: 'Piala Festival',
+      body: 'Sepuluh ujian telah terlewati. Guru Agung membawa piala dari kayu teh yang dipoles, bertuliskan namamu. "Kau telah membuktikan apa yang lama kutunggu. Tetapi piala ini milik siapa? Tangan terbaik saja, atau semua yang menempuh sepuluh ujian bersamamu?"',
+      optionA: 'Muliakan keahlian',
+      optionADesc: 'Piala menobatkan tangan yang paling terlatih. +8% nilai tiap ketukan, permanen.',
+      optionB: 'Jaga semangat Festival',
+      optionBDesc: 'Festival adalah tempat semua belajar bersama. +8% pendapatan otomatis, permanen.',
+    ),
+    'pt': StoryText(
+      speaker: 'O Grande Mestre',
+      title: 'A Taça do Festival',
+      body: 'As dez provas ficaram para trás. O Grande Mestre traz uma taça de madeira de chá polida, com o seu nome gravado. "Você provou o que tanto esperei ver. Mas de quem deve ser esta taça? Da melhor mão, ou de todos que percorreram as dez provas ao seu lado?"',
+      optionA: 'Honrar o ofício',
+      optionADesc: 'A taça coroa a mão mais treinada. +8% de valor por toque, permanente.',
+      optionB: 'Manter o espírito do Festival',
+      optionBDesc: 'O Festival é onde todos aprendem juntos. +8% de renda automática, permanente.',
+    ),
+    'th': StoryText(
+      speaker: 'ปรมาจารย์',
+      title: 'ถ้วยเทศกาล',
+      body: 'สิบบททดสอบผ่านพ้นไปแล้ว ปรมาจารย์นำถ้วยไม้ชาขัดเงามาให้ สลักชื่อของเจ้าไว้บนหน้าถ้วย "เจ้าพิสูจน์สิ่งที่ข้ารอดูมานานแล้ว แต่ถ้วยนี้ควรเป็นของใคร มือที่เก่งที่สุดเท่านั้น หรือทุกคนที่เดินผ่านสิบบททดสอบมากับเจ้า"',
+      optionA: 'เชิดชูฝีมือ',
+      optionADesc: 'ถ้วยสวมมงกุฎให้มือที่ฝึกมาดีที่สุด ค่าการแตะ +8% ถาวร',
+      optionB: 'รักษาจิตวิญญาณของเทศกาล',
+      optionBDesc: 'เทศกาลคือที่ที่ทุกคนเรียนรู้ร่วมกัน รายได้อัตโนมัติ +8% ถาวร',
+    ),
+    'ko': StoryText(
+      speaker: '대사부',
+      title: '축제의 컵',
+      body: '열 가지 시험이 모두 끝났습니다. 대사부가 윤이 나게 닦은 찻잎 나무 트로피를 가져옵니다. 겉면에는 당신의 이름이 새겨져 있습니다. "오랫동안 기다려 온 것을 네가 증명했다. 하지만 이 컵은 누구의 것이어야 할까? 가장 뛰어난 손일까, 아니면 열 가지 시험을 함께 걸어온 모두일까?"',
+      optionA: '장인정신을 기리기',
+      optionADesc: '컵은 가장 갈고닦은 손에게 영예를 준다. 터치당 가치 +8%, 영구.',
+      optionB: '축제의 정신을 지키기',
+      optionBDesc: '축제는 모두가 함께 배우는 곳이다. 자동 수입 +8%, 영구.',
     ),
   },
 };

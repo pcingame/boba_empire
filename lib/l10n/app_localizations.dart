@@ -5487,7 +5487,7 @@ abstract class AppLocalizations {
   /// No description provided for @lbrIntro.
   ///
   /// In vi, this message translates to:
-  /// **'Mỗi tuần, top 3 của năm bảng (Thu nhập, Trân Châu Rơi, Sưu tập, VIP, Thợ pha chế) nhận {first} / {second} / {third} 💎. Bảng được chốt vào đầu tuần (thứ Hai, giờ UTC); thưởng còn nhận được thêm một tuần.'**
+  /// **'Mỗi tuần, top 3 của mỗi bảng tích lũy (Thu nhập, Trân Châu Rơi, Sưu tập, VIP, Thợ pha chế, Pha theo đơn) nhận {first} / {second} / {third} 💎. Bảng được chốt vào đầu tuần (thứ Hai, giờ UTC); thưởng còn nhận được thêm một tuần.'**
   String lbrIntro(int first, int second, int third);
 
   /// No description provided for @lbrEmpty.
@@ -7367,6 +7367,24 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Làm {game} trong {n} ngày'**
   String storyCondDaily(int n, String game);
+
+  /// No description provided for @lbrBoardDaily.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử thách ngày'**
+  String get lbrBoardDaily;
+
+  /// No description provided for @lbrDailyNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử thách ngày: top 10 theo TỔNG điểm cả tuần trước cũng có thưởng — hạng 1-3 như trên, hạng 4-10 nhận {rest} 💎.'**
+  String lbrDailyNote(int rest);
+
+  /// No description provided for @rlbDailyWeeklyHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi tuần, top 10 theo tổng điểm Thử thách ngày của cả tuần nhận 💎 (chốt vào đầu tuần sau, giờ UTC).'**
+  String get rlbDailyWeeklyHint;
 }
 
 class _AppLocalizationsDelegate

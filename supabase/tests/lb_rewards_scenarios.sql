@@ -7,6 +7,13 @@ begin
   execute case when n = 0 then 'set role anon' else 'set role authenticated' end;
 end $$;
 grant execute on function as_u(int) to anon, authenticated;
+-- Như as_u nhưng cho id 3 chữ số (người chơi D01..D13 = 401..413).
+create function as_d(n int) returns void language plpgsql as $$
+begin
+  perform set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-000000000' || lpad(n::text, 3, '0'), false);
+  execute 'set role authenticated';
+end $$;
+grant execute on function as_d(int) to anon, authenticated;
 create function err_of(q text) returns text language plpgsql as $$
 begin execute q; return 'NO ERROR'; exception when others then return sqlerrm; end $$;
 grant execute on function err_of(text) to anon, authenticated;
@@ -52,6 +59,22 @@ insert into recipe_order_leaderboard_entries (user_id, nickname, perfected, upda
   ('00000000-0000-0000-0000-000000000007', 'Anon', 77, now()),
   ('00000000-0000-0000-0000-000000000008', 'Zero', 0, now());
 
+-- Thử thách ngày (bảng 'daily', xếp theo TỔNG điểm TUẦN TRƯỚC, top 10). 12 người liên kết D01..D12 + 1 ẩn danh.
+-- D02 cộng 3 ngày = 300 vượt D01 (290 một ngày); D11 = 200 (hạng 11, ngoài top 10); D12 chỉ có điểm ở tuần NÀY (không tính).
+insert into auth.users (id, is_anonymous)
+  select ('00000000-0000-0000-0000-0000000004' || lpad(i::text, 2, '0'))::uuid, i = 13 from generate_series(1, 13) i;
+select (lb_reward_week() - date '1970-01-01') as wk \gset
+insert into recipe_daily_scores (user_id, day, nickname, score) values
+  ('00000000-0000-0000-0000-000000000401', :wk - 7, 'D01', 290),
+  ('00000000-0000-0000-0000-000000000402', :wk - 7, 'D02', 100), ('00000000-0000-0000-0000-000000000402', :wk - 6, 'D02', 100), ('00000000-0000-0000-0000-000000000402', :wk - 1, 'D02', 100),
+  ('00000000-0000-0000-0000-000000000403', :wk - 3, 'D03', 280), ('00000000-0000-0000-0000-000000000404', :wk - 3, 'D04', 270),
+  ('00000000-0000-0000-0000-000000000405', :wk - 3, 'D05', 260), ('00000000-0000-0000-0000-000000000406', :wk - 3, 'D06', 250),
+  ('00000000-0000-0000-0000-000000000407', :wk - 3, 'D07', 240), ('00000000-0000-0000-0000-000000000408', :wk - 3, 'D08', 230),
+  ('00000000-0000-0000-0000-000000000409', :wk - 3, 'D09', 220), ('00000000-0000-0000-0000-000000000410', :wk - 3, 'D10', 210),
+  ('00000000-0000-0000-0000-000000000411', :wk - 3, 'D11', 200),
+  ('00000000-0000-0000-0000-000000000412', :wk - 3, 'D12', 100), ('00000000-0000-0000-0000-000000000412', :wk, 'D12', 300),
+  ('00000000-0000-0000-0000-000000000413', :wk - 3, 'Anon', 300);
+
 select chk('hằng số thưởng 300/200/100, hạng ngoài top = 0',
   lb_reward_gems(1) = 300 and lb_reward_gems(2) = 200 and lb_reward_gems(3) = 100 and lb_reward_gems(4) = 0);
 
@@ -67,6 +90,12 @@ select chk('Thợ pha chế: B, C, D (hoà → nộp sớm hơn xếp trên; lo�
   (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'recipes') = 'B,C,D');
 select chk('Pha theo đơn: C, B, D (hoà → nộp sớm hơn xếp trên; loại ẩn danh và 0 món)',
   (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'orders') = 'C,B,D');
+select chk('Thử thách ngày: top 10 theo TỔNG điểm tuần trước (D02 cộng 3 ngày vượt D01; loại ẩn danh, ngoài top 10 và điểm tuần này)',
+  (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'daily') = 'D02,D01,D03,D04,D05,D06,D07,D08,D09,D10');
+select chk('Thử thách ngày: giá trị = tổng điểm (D02 = 300)', (select value from lb_reward_snapshots where board = 'daily' and rank = 1) = 300);
+select chk('💎 theo hạng: 300/200/100 rồi 50 cho hạng 4-10, các bảng khác không bị ảnh hưởng',
+  lb_reward_gems_for('daily', 1) = 300 and lb_reward_gems_for('daily', 3) = 100 and lb_reward_gems_for('daily', 4) = 50
+  and lb_reward_gems_for('daily', 10) = 50 and lb_reward_gems_for('daily', 11) = 0 and lb_reward_gems_for('income', 4) = 0);
 select chk('VIP: C rồi A', (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'vip') = 'C,A');
 select count(*) as n0 from lb_reward_snapshots \gset
 select week as w from lb_reward_snapshots limit 1 \gset
@@ -95,6 +124,13 @@ select as_u(4); select chk('D Thợ pha chế hạng 3 = 100', lb_reward_claim(:
 select as_u(3); select chk('C Pha theo đơn hạng 1 = 300', lb_reward_claim(:'w', 'orders') = 300);
 select chk('C nhận Pha theo đơn lần hai bị chặn', err_of(format('select lb_reward_claim(%L, ''orders'')', :'w')) like '%already claimed%');
 select as_u(1); select chk('A (không có trong bảng Pha theo đơn) không nhận được', err_of(format('select lb_reward_claim(%L, ''orders'')', :'w')) like '%not found%');
+select as_d(405); select chk('D05 (hạng 5 Thử thách ngày) thấy 50💎 trong trạng thái', (select (e->>'gems')::int from jsonb_array_elements(lb_reward_status()) e where e->>'board' = 'daily') = 50);
+select chk('D05 nhận 50💎', lb_reward_claim(:'w', 'daily') = 50);
+select chk('D05 nhận lần hai bị chặn', err_of(format('select lb_reward_claim(%L, ''daily'')', :'w')) like '%already claimed%');
+select as_d(402); select chk('D02 (hạng 1) nhận 300💎', lb_reward_claim(:'w', 'daily') = 300);
+select as_d(411); select chk('D11 (hạng 11) không nhận được', err_of(format('select lb_reward_claim(%L, ''daily'')', :'w')) like '%not found%');
+select as_d(412); select chk('D12 (chỉ có điểm tuần này) không nhận được', err_of(format('select lb_reward_claim(%L, ''daily'')', :'w')) like '%not found%');
+select as_d(413); select chk('ẩn danh không nhận được thưởng Thử thách ngày', err_of(format('select lb_reward_claim(%L, ''daily'')', :'w')) like '%not found%');
 select as_u(2); select chk('B thu nhập hạng 2 = 200', lb_reward_claim(:'w', 'income') = 200);
 select as_u(3); select chk('C thu nhập hạng 3 = 100', lb_reward_claim(:'w', 'income') = 100);
 select as_u(4); select chk('D (hạng 4 thu nhập) không nhận được', err_of(format('select lb_reward_claim(%L, ''income'')', :'w')) like '%not found%');

@@ -1244,7 +1244,7 @@
   "chVip": "Atiende a {n} clientes VIP",
   "chBonusLabel": "Completa ambos desafíos",
   "lbrTitle": "Recompensas top semanales",
-  "lbrIntro": "Cada semana el top 3 de cinco clasificaciones (Ingresos, Perla Caída, Colección, VIP, Maestros de recetas) recibe {first} / {second} / {third} 💎. Se cierran al inicio de la semana (lunes, UTC); puedes reclamar una semana más.",
+  "lbrIntro": "Cada semana el top 3 de cada clasificación acumulada (Ingresos, Perla Caída, Colección, VIP, Maestros de recetas, Preparar pedidos) recibe {first} / {second} / {third} 💎. Se cierran al inicio de la semana (lunes, UTC); puedes reclamar una semana más.",
   "lbrEmpty": "Aún no hay recompensas: ¡sube al top 3 de las clasificaciones!",
   "lbrRow": "{board} · semana {week}",
   "lbrClaim": "Reclamar {n} 💎",
@@ -1981,5 +1981,9 @@
   "storyCondOrders": "Prepara {n} bebidas perfectas en {game}",
   "@storyCondOrders": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
   "storyCondDaily": "Completa {game} durante {n} días",
-  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}}
+  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "lbrBoardDaily": "Reto diario",
+  "lbrDailyNote": "Reto diario: el top 10 por puntuación TOTAL de la semana pasada también gana: puestos 1-3 como arriba, puestos 4-10 reciben {rest} 💎.",
+  "@lbrDailyNote": {"placeholders": {"rest": {"type": "int"}}},
+  "rlbDailyWeeklyHint": "Cada semana el top 10 por puntuación total del Reto diario de toda la semana recibe 💎 (se cierra al inicio de la siguiente, UTC)."
 }

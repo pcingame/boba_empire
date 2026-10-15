@@ -20,14 +20,15 @@ import '../state/game_providers.dart';
 import 'widgets/accessory_rarity.dart';
 
 /// Chia sẻ ảnh PNG [png] kèm chữ [text]; [origin] là vùng nút bấm (bắt buộc cho
-/// iPad). Công khai để test ghi đè (không mở share sheet thật).
+/// iPad); [fileName] là tên file người nhận thấy (VD `boba_cup.png`). Công khai để test ghi đè (không mở
+/// share sheet thật).
 final shareImageProvider =
-    Provider<Future<void> Function(Uint8List png, String text, Rect? origin)>(
-      (ref) => (png, text, origin) async {
+    Provider<Future<void> Function(Uint8List png, String text, Rect? origin, String fileName)>(
+      (ref) => (png, text, origin, fileName) async {
         await SharePlus.instance.share(
           ShareParams(
             files: [XFile.fromData(png, mimeType: 'image/png')],
-            fileNameOverrides: const ['boba_collection.png'],
+            fileNameOverrides: [fileName],
             text: text,
             sharePositionOrigin: origin,
           ),
@@ -164,7 +165,7 @@ class _CollectionShareDialogState
     final text = collectionShareText(l10n, _owned);
     setState(() => _busy = true);
     try {
-      await share(await _capture(), text, origin);
+      await share(await _capture(), text, origin, 'boba_collection.png');
     } catch (_) {
       messenger..clearSnackBars()..showSnackBar(
         SnackBar(content: Text(l10n.collectionShareFailed)),

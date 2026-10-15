@@ -215,6 +215,8 @@ void main() {
     await tester.tap(find.byKey(const Key('rlb-tab-daily')));
     await tester.pumpAndSettle();
     expect(daily.refreshes, 1);
+    expect(find.byKey(const Key('dlb-weekly-hint')), findsOneWidget);
+    expect(find.textContaining('top 10 theo tổng điểm'), findsOneWidget);
     expect(find.text('100 điểm'), findsOneWidget);
     expect(find.byKey(const Key('dlb-row-2')), findsOneWidget);
     expect(find.byKey(const Key('dlb-none')), findsOneWidget);

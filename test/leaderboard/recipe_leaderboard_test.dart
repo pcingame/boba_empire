@@ -43,14 +43,18 @@ void main() {
     ]).map((r) => r.board), [LbBoard.recipes]);
   });
 
-  test('bảng thưởng có Pha theo đơn (cộng dồn) nhưng KHÔNG có bảng "Hôm nay" (điểm theo ngày)', () {
+  test('bảng thưởng có Pha theo đơn (cộng dồn) và Thử thách ngày (tổng điểm TUẦN TRƯỚC, top 10)', () {
     final rewards = File('supabase/leaderboard_rewards_schema.sql').readAsStringSync();
     expect(rewards, contains("'orders'"));
     expect(rewards, contains('recipe_order_leaderboard_entries'));
     expect(rewards, contains('e.perfected::numeric as v'));
-    expect(rewards, isNot(contains('recipe_daily_scores')));
-    expect(LbBoard.values.map((b) => b.name), containsAll(['orders']));
-    expect(LbBoard.values.map((b) => b.name), isNot(contains('daily')));
+    expect(LbBoard.values.map((b) => b.name), containsAll(['orders', 'daily']));
+    // Thử thách ngày: cộng điểm các ngày của tuần trước (không dính tuần này), loại ẩn danh, top 10.
+    expect(rewards, contains('recipe_daily_scores'));
+    expect(rewards, contains('sum(d.score)'));
+    expect(rewards, contains('d.day >= v_from and d.day < v_to'));
+    expect(rewards, contains('not u.is_anonymous and d.day'));
+    expect(rewards, contains('b.rn <= 10'));
   });
 
   test('đọc một hàng từ RPC', () {

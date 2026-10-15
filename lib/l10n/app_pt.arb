@@ -1244,7 +1244,7 @@
   "chVip": "Atenda {n} clientes VIP",
   "chBonusLabel": "Conclua os dois desafios",
   "lbrTitle": "Recompensas do top semanal",
-  "lbrIntro": "Toda semana o top 3 de cinco rankings (Renda, Pérola Caindo, Coleção, VIP, Mestres de receitas) recebe {first} / {second} / {third} 💎. Os rankings fecham no início da semana (segunda, UTC); dá para resgatar por mais uma semana.",
+  "lbrIntro": "Toda semana o top 3 de cada ranking acumulado (Renda, Pérola Caindo, Coleção, VIP, Mestres de receitas, Preparar pedidos) recebe {first} / {second} / {third} 💎. Os rankings fecham no início da semana (segunda, UTC); dá para resgatar por mais uma semana.",
   "lbrEmpty": "Ainda não há recompensas — suba para o top 3 dos rankings!",
   "lbrRow": "{board} · semana {week}",
   "lbrClaim": "Resgatar {n} 💎",
@@ -1981,5 +1981,9 @@
   "storyCondOrders": "Faça {n} bebidas perfeitas em {game}",
   "@storyCondOrders": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
   "storyCondDaily": "Conclua {game} em {n} dias",
-  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}}
+  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "lbrBoardDaily": "Desafio diário",
+  "lbrDailyNote": "Desafio diário: o top 10 pela pontuação TOTAL da semana passada também ganha: posições 1-3 como acima, posições 4-10 recebem {rest} 💎.",
+  "@lbrDailyNote": {"placeholders": {"rest": {"type": "int"}}},
+  "rlbDailyWeeklyHint": "Toda semana o top 10 pela pontuação total do Desafio diário da semana inteira recebe 💎 (fecha no início da semana seguinte, UTC)."
 }

@@ -896,7 +896,7 @@
   "chVip": "VIP 손님 {n}명 응대",
   "chBonusLabel": "도전 과제 2개 모두 완료",
   "lbrTitle": "주간 TOP 보상",
-  "lbrIntro": "매주 다섯 개 순위(수입, 진주 낙하, 수집, VIP, 레시피 마스터)의 TOP 3가 {first} / {second} / {third} 💎를 받아요. 순위는 주 초(월요일, UTC)에 확정되고 보상은 한 주 더 받을 수 있어요.",
+  "lbrIntro": "매주 누적 순위(수입, 진주 낙하, 수집, VIP, 레시피 마스터, 주문대로 만들기) 각각의 TOP 3가 {first} / {second} / {third} 💎를 받아요. 순위는 주 초(월요일, UTC)에 확정되고 보상은 한 주 더 받을 수 있어요.",
   "lbrEmpty": "아직 보상이 없어요 — 순위 TOP 3에 올라보세요!",
   "lbrRow": "{board} · {week} 주",
   "lbrClaim": "{n} 💎 받기",
@@ -1619,5 +1619,9 @@
   "storyCondOrders": "{game}에서 완벽한 음료 {n}잔 만들기",
   "@storyCondOrders": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
   "storyCondDaily": "{game}을(를) {n}일 완료",
-  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}}
+  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "lbrBoardDaily": "일일 도전",
+  "lbrDailyNote": "일일 도전: 지난주 총점 TOP 10도 보상을 받아요. 1~3위는 위와 같고 4~10위는 {rest} 💎를 받아요.",
+  "@lbrDailyNote": {"placeholders": {"rest": {"type": "int"}}},
+  "rlbDailyWeeklyHint": "매주 일일 도전 한 주 총점 TOP 10이 💎를 받아요 (다음 주 초 UTC에 확정)."
 }

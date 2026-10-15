@@ -127,12 +127,14 @@ void main() {
         nowMillis: 0);
     Uint8List? png;
     String? caption;
+    String? sharedName;
     final c = ProviderContainer(overrides: [
       sharedPreferencesProvider.overrideWithValue(prefs),
       clockProvider.overrideWithValue(() => 0),
-      shareImageProvider.overrideWithValue((bytes, text, origin) async {
+      shareImageProvider.overrideWithValue((bytes, text, origin, fileName) async {
         png = bytes;
         caption = text;
+        sharedName = fileName;
       }),
     ]);
     await tester.pumpWidget(_app(c, const AccessoryInventoryPage()));
@@ -149,6 +151,7 @@ void main() {
     expect(png!.sublist(0, 4), [0x89, 0x50, 0x4E, 0x47]); // chữ ký PNG
     expect(png!.length, greaterThan(1000));
     expect(caption, contains('1/${accessories.length}'));
+    expect(sharedName, 'boba_collection.png');
     c.dispose();
     await tester.pumpWidget(const SizedBox());
   });
@@ -162,7 +165,7 @@ void main() {
     final c = ProviderContainer(overrides: [
       sharedPreferencesProvider.overrideWithValue(prefs),
       clockProvider.overrideWithValue(() => 0),
-      shareImageProvider.overrideWithValue((_, _, _) async => throw 'boom'),
+      shareImageProvider.overrideWithValue((_, _, _, _) async => throw 'boom'),
     ]);
     await tester.pumpWidget(_app(c, const AccessoryInventoryPage()));
     await tester.pumpAndSettle();

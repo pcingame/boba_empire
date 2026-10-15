@@ -1986,7 +1986,7 @@
   },
   "chBonusLabel": "Xong cả 2 thử thách",
   "lbrTitle": "Thưởng top tuần",
-  "lbrIntro": "Mỗi tuần, top 3 của năm bảng (Thu nhập, Trân Châu Rơi, Sưu tập, VIP, Thợ pha chế) nhận {first} / {second} / {third} 💎. Bảng được chốt vào đầu tuần (thứ Hai, giờ UTC); thưởng còn nhận được thêm một tuần.",
+  "lbrIntro": "Mỗi tuần, top 3 của mỗi bảng tích lũy (Thu nhập, Trân Châu Rơi, Sưu tập, VIP, Thợ pha chế, Pha theo đơn) nhận {first} / {second} / {third} 💎. Bảng được chốt vào đầu tuần (thứ Hai, giờ UTC); thưởng còn nhận được thêm một tuần.",
   "@lbrIntro": {
     "placeholders": {
       "first": {
@@ -2940,5 +2940,9 @@
   "storyCondOrders": "Pha hoàn hảo {n} món ở {game}",
   "@storyCondOrders": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
   "storyCondDaily": "Làm {game} trong {n} ngày",
-  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}}
+  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "lbrBoardDaily": "Thử thách ngày",
+  "lbrDailyNote": "Thử thách ngày: top 10 theo TỔNG điểm cả tuần trước cũng có thưởng — hạng 1-3 như trên, hạng 4-10 nhận {rest} 💎.",
+  "@lbrDailyNote": {"placeholders": {"rest": {"type": "int"}}},
+  "rlbDailyWeeklyHint": "Mỗi tuần, top 10 theo tổng điểm Thử thách ngày của cả tuần nhận 💎 (chốt vào đầu tuần sau, giờ UTC)."
 }

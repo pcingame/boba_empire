@@ -3171,7 +3171,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String lbrIntro(int first, int second, int third) {
-    return 'Setiap minggu, top 3 dari lima papan (Pendapatan, Mutiara Jatuh, Koleksi, VIP, Ahli Resep) mendapat $first / $second / $third 💎. Papan dikunci di awal minggu (Senin, UTC); hadiah bisa diklaim satu minggu lagi.';
+    return 'Setiap minggu, top 3 dari tiap papan kumulatif (Pendapatan, Mutiara Jatuh, Koleksi, VIP, Ahli Resep, Racik sesuai pesanan) mendapat $first / $second / $third 💎. Papan dikunci di awal minggu (Senin, UTC); hadiah bisa diklaim satu minggu lagi.';
   }
 
   @override
@@ -4370,4 +4370,16 @@ class AppLocalizationsId extends AppLocalizations {
   String storyCondDaily(int n, String game) {
     return 'Selesaikan $game selama $n hari';
   }
+
+  @override
+  String get lbrBoardDaily => 'Tantangan harian';
+
+  @override
+  String lbrDailyNote(int rest) {
+    return 'Tantangan harian: top 10 berdasarkan TOTAL skor minggu lalu juga mendapat hadiah — peringkat 1-3 seperti di atas, peringkat 4-10 mendapat $rest 💎.';
+  }
+
+  @override
+  String get rlbDailyWeeklyHint =>
+      'Setiap minggu, top 10 berdasarkan total skor Tantangan harian sepanjang minggu mendapat 💎 (dikunci di awal minggu berikutnya, UTC).';
 }

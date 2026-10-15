@@ -106,12 +106,24 @@ class _BoardTabState extends ConsumerState<_BoardTab> {
     }
 
     final view = ref.watch(board.provider);
-    return switch (view) {
+    final body = switch (view) {
       RecipeLeaderboardLoading() => const Center(child: CircularProgressIndicator()),
       RecipeLeaderboardNeedsNickname() => _NicknameForm(board: board, ctrl: _nameCtrl),
       RecipeLeaderboardLoaded() => _List(board: board, view: view),
       RecipeLeaderboardError() => _ErrorView(board: board),
     };
+    if (board != RecipeBoard.daily) return body;
+    // Bảng "Hôm nay" chỉ cho thấy điểm của HÔM NAY; thưởng tuần tính theo TỔNG cả tuần ⇒ nói rõ ở đầu bảng.
+    return Column(children: [
+      Padding(
+        padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
+        child: Text(AppLocalizations.of(context)!.rlbDailyWeeklyHint,
+            key: const Key('dlb-weekly-hint'),
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.bodySmall),
+      ),
+      Expanded(child: body),
+    ]);
   }
 }
 
@@ -272,8 +284,9 @@ class _ErrorView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    // Cuộn được: ở máy hẹp + chữ to, dòng gợi ý phía trên làm chỗ còn lại không đủ cho thông báo + nút thử lại.
     return Center(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,

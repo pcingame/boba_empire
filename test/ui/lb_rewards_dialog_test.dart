@@ -39,7 +39,7 @@ class _Cloud extends CloudSaveController {
 }
 
 LbReward _r(LbBoard b, int rank, {String week = '2026-10-12'}) =>
-    LbReward(week: week, board: b, rank: rank, gems: lbRewardGemsFor(rank), claimed: false);
+    LbReward(week: week, board: b, rank: rank, gems: lbRewardGemsForBoard(b, rank), claimed: false);
 
 Future<(ProviderContainer, _Repo)> _open(WidgetTester tester,
     {List<LbReward> rewards = const [], String locale = 'vi', Size size = const Size(400, 900), bool hub = false}) async {
@@ -89,6 +89,20 @@ void main() {
     expect(find.byKey(const Key('lbr-intro')), findsOneWidget);
     expect(find.textContaining('300 / 200 / 100'), findsOneWidget);
     expect(find.byKey(const Key('lbr-empty')), findsOneWidget);
+    await _end(tester, c);
+  });
+
+  testWidgets('Thử thách ngày: ghi chú top 10; hạng 4-10 hiện 🏅 + 50💎 và nhận được', (tester) async {
+    final (c, repo) = await _open(tester, rewards: [_r(LbBoard.daily, 5), _r(LbBoard.income, 2)]);
+    expect(find.byKey(const Key('lbr-daily-note')), findsOneWidget);
+    expect(find.textContaining('hạng 4-10 nhận 50'), findsOneWidget);
+    expect(find.text('🏅'), findsOneWidget, reason: 'hạng 5 không mượn huy chương đồng');
+    expect(find.text('🥈'), findsOneWidget);
+    expect(find.text('🥉'), findsNothing);
+    expect(find.textContaining('50'), findsWidgets);
+    await tester.tap(find.byKey(const Key('lbr-claim-2026-10-12/daily')));
+    await tester.pumpAndSettle();
+    expect(repo.claimed, isNotEmpty);
     await _end(tester, c);
   });
 

@@ -1244,7 +1244,7 @@
   "chVip": "Serve {n} VIP customers",
   "chBonusLabel": "Finish both challenges",
   "lbrTitle": "Weekly top rewards",
-  "lbrIntro": "Each week the top 3 of five boards (Income, Pearl Drop, Collection, VIP, Recipe Masters) get {first} / {second} / {third} 💎. Boards are locked at the start of the week (Monday, UTC); rewards can be claimed for one more week.",
+  "lbrIntro": "Each week the top 3 of every cumulative board (Income, Pearl Drop, Collection, VIP, Recipe Masters, Drink Orders) get {first} / {second} / {third} 💎. Boards are locked at the start of the week (Monday, UTC); rewards can be claimed for one more week.",
   "lbrEmpty": "No rewards yet — climb into the top 3 of the leaderboards!",
   "lbrRow": "{board} · week {week}",
   "lbrClaim": "Claim {n} 💎",
@@ -1981,5 +1981,9 @@
   "storyCondOrders": "Make {n} perfect drinks in {game}",
   "@storyCondOrders": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
   "storyCondDaily": "Complete {game} on {n} days",
-  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}}
+  "@storyCondDaily": {"placeholders": {"n": {"type": "int"}, "game": {"type": "String"}}},
+  "lbrBoardDaily": "Daily Challenge",
+  "lbrDailyNote": "Daily Challenge: the top 10 by TOTAL score over last week also get rewards — ranks 1-3 as above, ranks 4-10 get {rest} 💎.",
+  "@lbrDailyNote": {"placeholders": {"rest": {"type": "int"}}},
+  "rlbDailyWeeklyHint": "Each week the top 10 by total Daily Challenge score for the whole week get 💎 (locked at the start of next week, UTC)."
 }

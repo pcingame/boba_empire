@@ -441,6 +441,26 @@ void main() {
       expect(storyTriggerMet(ch(40), stage: 18, hasPrestiged: true, rivalDefeated: true, ascensionCount: 4, m3Stars: [], dailyDone: 1), isFalse);
     });
 
+    test('Hồi 4 có bản dịch THẬT (khác tiếng Anh) cho es/id/pt/th/ko; chương lựa chọn dịch cả 2 nhánh', () {
+      for (final c in storyChapters.where((c) => c.id >= 37)) {
+        final en = storyText(c.id, 'en');
+        for (final l in ['es', 'id', 'pt', 'th', 'ko']) {
+          final t = storyText(c.id, l);
+          expect(t.title, isNotEmpty, reason: 'Chương ${c.id} [$l]');
+          expect(t.title, isNot(en.title), reason: 'Chương ${c.id} [$l] còn là tiếng Anh');
+          expect(t.body, isNot(en.body), reason: 'Chương ${c.id} [$l] còn là tiếng Anh');
+          expect(t.body.length, greaterThan(60), reason: 'Chương ${c.id} [$l]');
+          expect(t.speaker, isNot(en.speaker), reason: 'Chương ${c.id} [$l] người kể chưa dịch');
+          if (c.choice != null) {
+            expect(t.optionA, isNot(en.optionA), reason: '[$l]');
+            expect(t.optionB, isNot(en.optionB), reason: '[$l]');
+            expect(t.optionADesc, contains('8'), reason: '[$l] mô tả perk phải nêu +8%');
+            expect(t.optionBDesc, contains('8'), reason: '[$l] mô tả perk phải nêu +8%');
+          }
+        }
+      }
+    });
+
     test('mọi chương Hồi 4 có prose vi + en; chương lựa chọn có đủ lựa chọn', () {
       for (final c in storyChapters.where((c) => c.id >= 37)) {
         for (final l in ['vi', 'en']) {

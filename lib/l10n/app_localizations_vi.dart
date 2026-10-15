@@ -3166,7 +3166,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String lbrIntro(int first, int second, int third) {
-    return 'Mỗi tuần, top 3 của năm bảng (Thu nhập, Trân Châu Rơi, Sưu tập, VIP, Thợ pha chế) nhận $first / $second / $third 💎. Bảng được chốt vào đầu tuần (thứ Hai, giờ UTC); thưởng còn nhận được thêm một tuần.';
+    return 'Mỗi tuần, top 3 của mỗi bảng tích lũy (Thu nhập, Trân Châu Rơi, Sưu tập, VIP, Thợ pha chế, Pha theo đơn) nhận $first / $second / $third 💎. Bảng được chốt vào đầu tuần (thứ Hai, giờ UTC); thưởng còn nhận được thêm một tuần.';
   }
 
   @override
@@ -4359,4 +4359,16 @@ class AppLocalizationsVi extends AppLocalizations {
   String storyCondDaily(int n, String game) {
     return 'Làm $game trong $n ngày';
   }
+
+  @override
+  String get lbrBoardDaily => 'Thử thách ngày';
+
+  @override
+  String lbrDailyNote(int rest) {
+    return 'Thử thách ngày: top 10 theo TỔNG điểm cả tuần trước cũng có thưởng — hạng 1-3 như trên, hạng 4-10 nhận $rest 💎.';
+  }
+
+  @override
+  String get rlbDailyWeeklyHint =>
+      'Mỗi tuần, top 10 theo tổng điểm Thử thách ngày của cả tuần nhận 💎 (chốt vào đầu tuần sau, giờ UTC).';
 }
