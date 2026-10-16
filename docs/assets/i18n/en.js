@@ -123,6 +123,7 @@
  "ctaTitle": "Brew your first cup today",
  "ctaLead": "Free on iPhone and iPad.",
  "by": "made by",
+ "follow": "Follow Boba Empire",
  "privacy": "Privacy policy",
  "navPlay": "Try it",
  "playTitle": "Give it a tap",

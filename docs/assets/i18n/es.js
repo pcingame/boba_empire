@@ -123,6 +123,7 @@
  "ctaTitle": "Prepara tu primer vaso hoy",
  "ctaLead": "Gratis en iPhone y iPad.",
  "by": "creado por",
+ "follow": "Sigue a Boba Empire",
  "privacy": "Política de privacidad",
  "navPlay": "Pruébalo",
  "playTitle": "Dale un toque",

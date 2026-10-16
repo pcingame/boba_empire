@@ -50,3 +50,6 @@ Dùng `videos/4_tong_hop_30s_co_nhac.mp4`. Video này dài dưới 1 phút nên 
 ## Ảnh bìa kênh (banner)
 `banner_2560x1440.png` (2560×1440, đúng chuẩn YouTube). Chữ và icon nằm gọn trong vùng an toàn 1546×423 ở giữa nên điện thoại, máy tính bảng hay TV đều thấy đủ. Hai bên là ảnh game, chỉ hiện trên màn hình lớn.
 Tạo lại: `python3 make_banner.py` trong thư mục này.
+
+## Video đã đăng
+- Video 4 (tổng hợp 30s): https://youtube.com/shorts/GBii0Zmpgok
