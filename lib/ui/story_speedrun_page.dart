@@ -15,6 +15,7 @@ import '../state/game_providers.dart';
 import 'web_links.dart';
 import 'player_profile_dialog.dart';
 import 'widgets/clay.dart';
+import 'widgets/phone_width.dart';
 
 Future<void> showStorySpeedrunPage(BuildContext context) {
   return Navigator.of(
@@ -55,7 +56,8 @@ class StorySpeedrunPage extends StatelessWidget {
             ],
           ),
         ),
-        body: const SafeArea(
+        body: const PhoneWidth(
+          child: SafeArea(
           child: TabBarView(
             children: [
               _SpeedrunTab(board: SpeedrunBoard.main),
@@ -64,6 +66,7 @@ class StorySpeedrunPage extends StatelessWidget {
               _SpeedrunTab(board: SpeedrunBoard.fourth),
             ],
           ),
+        ),
         ),
       ),
     );

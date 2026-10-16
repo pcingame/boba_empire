@@ -19,6 +19,7 @@ import 'widgets/motion.dart';
 import 'widgets/one_shot_lottie.dart';
 import 'widgets/recipe_motion.dart';
 import 'widgets/clay.dart';
+import 'widgets/phone_width.dart';
 
 /// Một buổi luyện công thức: lần lượt các câu hỏi trắc nghiệm 4 lựa chọn, ghi bậc ngay sau mỗi câu
 /// (thoát giữa chừng không mất kết quả đã trả lời), cuối buổi hiện tổng kết.
@@ -245,7 +246,7 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
                 ),
               ),
       ),
-      body: SafeArea(
+      body: PhoneWidth(child: SafeArea(
         child: Column(
           children: [
             Expanded(
@@ -278,7 +279,7 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
             const BannerAdBox(),
           ],
         ),
-      ),
+      )),
     );
   }
 

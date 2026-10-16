@@ -27,6 +27,7 @@ import 'recipe_leaderboard_page.dart' show showRecipeLeaderboard;
 import 'widgets/accessory_reveal.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
+import 'widgets/phone_width.dart';
 import 'widgets/motion.dart';
 import 'widgets/order_visuals.dart';
 import 'widgets/one_shot_lottie.dart';
@@ -406,7 +407,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
                 ),
               ),
       ),
-      body: SafeArea(
+      body: PhoneWidth(child: SafeArea(
         child: Column(
           children: [
             Expanded(
@@ -433,7 +434,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
             const BannerAdBox(),
           ],
         ),
-      ),
+      )),
     ));
   }
 

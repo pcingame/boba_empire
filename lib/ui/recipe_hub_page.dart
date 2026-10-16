@@ -14,6 +14,7 @@ import 'email_gate.dart';
 import 'recipe_quiz_page.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
+import 'widgets/phone_width.dart';
 import 'minigame_how_to_dialogs.dart';
 import 'widgets/idle_mascot.dart';
 import 'widgets/motion.dart';
@@ -65,10 +66,12 @@ class RecipeHubPage extends ConsumerWidget {
           ),
         ],
       ),
-      body: catalog.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (_, _) => Center(child: Text(l10n.guildErrNetwork)),
-        data: (c) => _Body(catalog: c),
+      body: PhoneWidth(
+        child: catalog.when(
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (_, _) => Center(child: Text(l10n.guildErrNetwork)),
+          data: (c) => _Body(catalog: c),
+        ),
       ),
     ));
   }
