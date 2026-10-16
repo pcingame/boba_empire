@@ -124,6 +124,7 @@
  "ctaLead": "Gratis di iPhone dan iPad.",
  "by": "dibuat oleh",
  "follow": "Ikuti Boba Empire",
+ "guideLink": "Cara bermain",
  "privacy": "Kebijakan privasi",
  "navPlay": "Coba main",
  "playTitle": "Coba ketuk dulu",

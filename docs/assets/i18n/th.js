@@ -124,6 +124,7 @@
  "ctaLead": "ฟรีบน iPhone และ iPad",
  "by": "พัฒนาโดย",
  "follow": "ติดตาม Boba Empire",
+ "guideLink": "วิธีเล่น",
  "privacy": "นโยบายความเป็นส่วนตัว",
  "navPlay": "ลองเล่น",
  "playTitle": "ลองแตะดูสิ",

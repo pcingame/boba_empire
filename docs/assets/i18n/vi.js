@@ -124,6 +124,7 @@
  "ctaLead": "Miễn phí trên iPhone và iPad.",
  "by": "phát triển bởi",
  "follow": "Theo dõi Boba Empire",
+ "guideLink": "Hướng dẫn chơi",
  "privacy": "Chính sách quyền riêng tư",
  "navPlay": "Chơi thử",
  "playTitle": "Thử chạm một cái đi",
