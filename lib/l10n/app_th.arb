@@ -537,6 +537,11 @@
       }
     }
   },
+  "arenaModeRecipe": "ดวลสูตรเครื่องดื่ม",
+  "arenaRecipeIntro": "ชงออเดอร์ชุดเดียวกัน 5 ออเดอร์ — คะแนนรวมสูงกว่าเป็นผู้ชนะ ถ้าทั้งสองคนเสร็จก่อนเวลา การดวลจะจบทันที!",
+  "arenaRecipeStart": "เริ่มชง",
+  "arenaRecipeProgress": "คุณ: {done}/5 ออเดอร์ · คู่ต่อสู้: {theirs}/5",
+  "arenaRecipeWaiting": "เสร็จแล้ว! กำลังรอคู่ต่อสู้…",
   "arenaTimeLeft": "เหลือ {seconds} วิ",
   "@arenaTimeLeft": {
     "placeholders": {

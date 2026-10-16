@@ -1199,6 +1199,21 @@
       }
     }
   },
+  "arenaModeRecipe": "PK Công thức",
+  "arenaRecipeIntro": "Cùng pha 5 đơn giống nhau — tổng điểm cao hơn đối thủ thì thắng. Xong sớm cả hai sẽ chốt luôn!",
+  "arenaRecipeStart": "Vào pha",
+  "arenaRecipeProgress": "Bạn xong {done}/5 đơn · Đối thủ {theirs}/5",
+  "@arenaRecipeProgress": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "theirs": {
+        "type": "int"
+      }
+    }
+  },
+  "arenaRecipeWaiting": "Bạn đã pha xong! Đang chờ đối thủ…",
   "arenaTimeLeft": "Còn {seconds}s",
   "@arenaTimeLeft": {
     "placeholders": {

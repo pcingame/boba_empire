@@ -22,7 +22,7 @@ DEFAULT_FILES=(
   leaderboard_schema m3_leaderboard_schema accessory_leaderboard_schema recipe_leaderboard_schema
   recipe_order_leaderboard_schema recipe_daily_schema
   story_speedrun_schema story_speedrun2_schema story_speedrun3_schema story_speedrun4_schema
-  event_leaderboard_schema accessory_market_schema leaderboard_rewards_schema
+  event_leaderboard_schema accessory_market_schema leaderboard_rewards_schema arena_schema
 )
 
 YES=0; DRY=0; FILES=()

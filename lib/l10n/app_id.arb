@@ -537,6 +537,11 @@
       }
     }
   },
+  "arenaModeRecipe": "Duel Resep",
+  "arenaRecipeIntro": "Buat 5 pesanan yang sama — total skor tertinggi menang. Kalau keduanya selesai lebih cepat, duel langsung berakhir!",
+  "arenaRecipeStart": "Mulai meracik",
+  "arenaRecipeProgress": "Kamu: {done}/5 pesanan · Lawan: {theirs}/5",
+  "arenaRecipeWaiting": "Selesai! Menunggu lawan…",
   "arenaTimeLeft": "Sisa {seconds}s",
   "@arenaTimeLeft": {
     "placeholders": {

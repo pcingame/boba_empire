@@ -18,6 +18,9 @@ import 'arena_repository.dart';
 import 'arena_rules.dart';
 import 'match3_rules.dart';
 
+/// Số đơn của một trận PK công thức (khớp SQL: `arena_submit_order` nhận idx 0..4).
+const int recipeOrdersPerMatch = 5;
+
 sealed class ArenaViewState {
   const ArenaViewState();
 }
@@ -41,7 +44,15 @@ class ArenaInMatch extends ArenaViewState {
     this.frames = const [],
     this.moveId = 0,
     this.stuck = false,
+    this.orderIds = const [],
+    this.myServed = const {},
+    this.theirServed = 0,
   });
+
+  /// Dạng recipe: id món của 5 đơn (giống nhau cho cả hai người), các đơn MÌNH đã nộp (chỉ số 0..4) và số đơn đối thủ đã nộp.
+  final List<int> orderIds;
+  final Set<int> myServed;
+  final int theirServed;
 
   final ArenaMode mode;
 
@@ -92,6 +103,9 @@ class ArenaController extends Notifier<ArenaViewState> {
   bool _stuck = false;
   bool _swapInFlight = false;
   bool _boardSynced = false;
+
+  /// Dạng recipe: điểm server trả về cho các đơn mình vừa nộp (hiện ngay, không đợi log realtime).
+  final Map<int, int> _myOrderScores = {};
 
   /// Gọi khi trận kết thúc để trao thưởng vào ván chính — set từ UI (nối tới
   /// `grantGems` của [GameController]) để module này không phải import
@@ -167,6 +181,7 @@ class ArenaController extends Notifier<ArenaViewState> {
     _stuck = false;
     _swapInFlight = false;
     _boardSynced = false;
+    _myOrderScores.clear();
     state = _buildState(0, 0);
     _actionsSub = _repository.watchActions(match.id).listen(
       (log) {
@@ -208,6 +223,19 @@ class ArenaController extends Notifier<ArenaViewState> {
     for (final entry in _log) {
       (entry.playerId == me ? mine : theirs).add(entry.action);
     }
+    if (_mode == ArenaMode.recipe) {
+      final my = _recipeScores(mine, mine: true);
+      final their = _recipeScores(theirs);
+      state = _buildState(
+        my.values.fold<int>(0, (a, b) => a + b).toDouble(),
+        their.values.fold<int>(0, (a, b) => a + b).toDouble(),
+        myServed: my.keys.toSet(),
+        theirServed: their.length,
+      );
+      // Cả hai đã nộp đủ: chốt sớm, khỏi chờ hết giờ.
+      if (my.length >= recipeOrdersPerMatch && their.length >= recipeOrdersPerMatch) unawaited(_finishMatch());
+      return;
+    }
     if (_mode == ArenaMode.match3) {
       state = _buildState(
         _myMatchScore.toDouble(),
@@ -218,7 +246,15 @@ class ArenaController extends Notifier<ArenaViewState> {
     state = _buildState(arenaComputeScore(mine), arenaComputeScore(theirs));
   }
 
-  ArenaInMatch _buildState(double myScore, double opponentScore) {
+  /// Điểm từng đơn đã nộp (chỉ số → điểm) từ log; của mình thì gộp thêm điểm server vừa trả về.
+  Map<int, int> _recipeScores(List<ArenaAction> actions, {bool mine = false}) => {
+        if (mine) ..._myOrderScores,
+        for (final a in actions)
+          if (a.kind == ArenaActionKind.serve && a.orderIndex != null) a.orderIndex!: a.score ?? 0,
+      };
+
+  ArenaInMatch _buildState(double myScore, double opponentScore,
+      {Set<int> myServed = const {}, int theirServed = 0}) {
     final match3 = _mode == ArenaMode.match3;
     return ArenaInMatch(
       myScore: myScore,
@@ -230,6 +266,9 @@ class ArenaController extends Notifier<ArenaViewState> {
       frames: _lastFrames,
       moveId: _moveId,
       stuck: match3 && _stuck,
+      orderIds: _mode == ArenaMode.recipe ? List<int>.unmodifiable(_seq) : const [],
+      myServed: Set.unmodifiable(myServed),
+      theirServed: theirServed,
     );
   }
 
@@ -286,6 +325,24 @@ class ArenaController extends Notifier<ArenaViewState> {
     } finally {
       _swapInFlight = false;
       _recompute();
+    }
+  }
+
+  /// PK công thức: nộp đơn thứ [idx] với các nguyên liệu đã cho vào ly; server chấm và trả điểm (null nếu bị chối,
+  /// VD hết giờ). Mỗi đơn một lần.
+  Future<int?> submitOrder(int idx, List<String> names, List<double> values) async {
+    final matchId = _matchId;
+    final current = state;
+    if (matchId == null || current is! ArenaInMatch || _mode != ArenaMode.recipe) return null;
+    if (current.myServed.contains(idx) || _myOrderScores.containsKey(idx)) return null;
+    try {
+      final s = await _repository.submitOrder(matchId, idx, names, values);
+      _myOrderScores[idx] = s;
+      _recompute();
+      return s;
+    } catch (e) {
+      developer.log('đơn bị chặn: $e', name: 'Arena');
+      return null;
     }
   }
 
@@ -406,6 +463,7 @@ class ArenaController extends Notifier<ArenaViewState> {
     _stuck = false;
     _swapInFlight = false;
     _boardSynced = false;
+    _myOrderScores.clear();
   }
 }
 

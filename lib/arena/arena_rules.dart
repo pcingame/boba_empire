@@ -8,7 +8,7 @@ library;
 import 'arena_config.dart';
 
 /// Loại hành động trong một trận — khớp cột `kind` (check constraint) ở SQL.
-enum ArenaActionKind { tap, buyTier1, buyTier2, buyTier3, swap }
+enum ArenaActionKind { tap, buyTier1, buyTier2, buyTier3, swap, serve }
 
 extension ArenaActionKindJson on ArenaActionKind {
   String get wireValue => switch (this) {
@@ -17,6 +17,7 @@ extension ArenaActionKindJson on ArenaActionKind {
         ArenaActionKind.buyTier2 => 'buy_tier_2',
         ArenaActionKind.buyTier3 => 'buy_tier_3',
         ArenaActionKind.swap => 'swap',
+        ArenaActionKind.serve => 'serve',
       };
 
   static ArenaActionKind fromWire(String value) => switch (value) {
@@ -25,6 +26,7 @@ extension ArenaActionKindJson on ArenaActionKind {
         'buy_tier_2' => ArenaActionKind.buyTier2,
         'buy_tier_3' => ArenaActionKind.buyTier3,
         'swap' => ArenaActionKind.swap,
+        'serve' => ArenaActionKind.serve,
         _ => throw ArgumentError('unknown arena action kind: $value'),
       };
 
@@ -33,7 +35,7 @@ extension ArenaActionKindJson on ArenaActionKind {
         ArenaActionKind.buyTier1 => 0,
         ArenaActionKind.buyTier2 => 1,
         ArenaActionKind.buyTier3 => 2,
-        ArenaActionKind.tap || ArenaActionKind.swap => null,
+        ArenaActionKind.tap || ArenaActionKind.swap || ArenaActionKind.serve => null,
       };
 }
 
@@ -46,6 +48,8 @@ class ArenaAction {
     this.id = 0,
     this.cell,
     this.dir,
+    this.orderIndex,
+    this.score,
   });
 
   final ArenaActionKind kind;
@@ -54,6 +58,10 @@ class ArenaAction {
   /// Chỉ dùng cho [ArenaActionKind.swap]: ô (0..63) và hướng đổi (0 = phải, 1 = dưới).
   final int? cell;
   final int? dir;
+
+  /// Chỉ dùng cho [ArenaActionKind.serve] (PK công thức): đơn thứ mấy (0..4) và điểm server đã chấm (0..100).
+  final int? orderIndex;
+  final int? score;
 
   /// id tăng dần dùng phá thế bằng khi 2 hành động có cùng `at` (hiếm khi so
   /// sánh cục bộ, chủ yếu quan trọng ở server). Client tạo hành động local

@@ -67,6 +67,7 @@ Future<ProviderContainer> _pump(
   AdService? ads,
   bool daily = false,
   int? recipeId,
+  PkOrderSession? pk,
   Future<void> Function(Uint8List, String, Rect?, String)? share,
   void Function(GameState)? setup,
 }) async {
@@ -97,7 +98,19 @@ Future<ProviderContainer> _pump(
       locale: ui.Locale(locale),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: RecipeOrderPage(daily: daily, recipeId: recipeId),
+      home: pk == null
+          ? RecipeOrderPage(daily: daily, recipeId: recipeId)
+          : Builder(
+              builder: (context) => Scaffold(
+                body: Center(
+                  child: FilledButton(
+                    key: const Key('open-pk'),
+                    onPressed: () => showRecipePk(context, pk),
+                    child: const Text('open'),
+                  ),
+                ),
+              ),
+            ),
     ),
   ));
   await tester.pumpAndSettle();
@@ -167,6 +180,62 @@ void main() {
     await _serveExact(tester, o);
     expect(find.text('Hoàn hảo! Đúng từng lượng'), findsOneWidget);
     expect(c.read(gameControllerProvider).recipeProgress[8]!.box, 1);
+    await _teardown(tester);
+  });
+
+  testWidgets('PK Đấu Trường: đơn do server chọn, mỗi đơn nộp một lần qua onServe, xong đơn cuối tự đóng màn', (tester) async {
+    final sent = <(int, List<String>, List<double>)>[];
+    final catalog = _catalog();
+    final pk = PkOrderSession(
+      recipeIds: const [1, 2],
+      deadline: DateTime.now().add(const Duration(hours: 1)),
+      onServe: (idx, poured) => sent.add((idx, [for (final p in poured) p.item.name], [for (final p in poured) p.value])),
+    );
+    await _pump(tester, size: const Size(400, 900), pk: pk);
+    await tester.tap(find.byKey(const Key('open-pk')));
+    await tester.pumpAndSettle();
+    // Không có thành phần ngoài PK: hướng dẫn mở sẵn, gợi ý quảng cáo, công tắc Giờ cao điểm, cúp BXH.
+    expect(find.byKey(const Key('order-hint')), findsNothing);
+    expect(find.byKey(const Key('order-rush-toggle')), findsNothing);
+    expect(find.byKey(const Key('order-leaderboard')), findsNothing);
+    // Bậc Thạo: không có công thức mẫu.
+    expect(find.text('Công thức mẫu'), findsNothing);
+    for (var i = 0; i < 2; i++) {
+      final r = catalog.recipes.firstWhere((x) => x.id == pk.recipeIds[i]);
+      expect(find.textContaining(r.name), findsWidgets);
+      for (final ing in r.ingredients) {
+        await _pour(tester, ing.name, ing.unit, ing.qty);
+      }
+      await tester.tap(find.byKey(const Key('order-serve')));
+      await tester.pumpAndSettle();
+      expect(sent, hasLength(i + 1));
+      expect(sent.last.$1, i);
+      expect(sent.last.$2.toSet(), {for (final ing in r.ingredients) ing.name});
+      await tester.tap(find.byKey(const Key('order-next')));
+      await tester.pumpAndSettle();
+    }
+    expect(find.byType(RecipeOrderPage), findsNothing); // đã đóng về màn Đấu Trường
+    await _teardown(tester);
+  });
+
+  testWidgets('PK Đấu Trường: bỏ qua đơn đã nộp; hết giờ thì tự đóng', (tester) async {
+    final sent = <int>[];
+    final pk = PkOrderSession(
+      recipeIds: const [1, 2, 3],
+      deadline: DateTime.now().add(const Duration(milliseconds: 600)),
+      served: const {0, 1},
+      onServe: (idx, _) => sent.add(idx),
+    );
+    await _pump(tester, size: const Size(400, 900), pk: pk);
+    await tester.tap(find.byKey(const Key('open-pk')));
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 100));
+    expect(find.textContaining(_catalog().recipes.firstWhere((x) => x.id == 3).name), findsWidgets);
+    expect(find.byType(RecipeOrderPage), findsOneWidget);
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+    expect(find.byType(RecipeOrderPage), findsNothing);
+    expect(sent, isEmpty);
     await _teardown(tester);
   });
 

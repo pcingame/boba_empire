@@ -1830,6 +1830,24 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get arenaModeRecipe => 'PK Công thức';
+
+  @override
+  String get arenaRecipeIntro =>
+      'Cùng pha 5 đơn giống nhau — tổng điểm cao hơn đối thủ thì thắng. Xong sớm cả hai sẽ chốt luôn!';
+
+  @override
+  String get arenaRecipeStart => 'Vào pha';
+
+  @override
+  String arenaRecipeProgress(int done, int theirs) {
+    return 'Bạn xong $done/5 đơn · Đối thủ $theirs/5';
+  }
+
+  @override
+  String get arenaRecipeWaiting => 'Bạn đã pha xong! Đang chờ đối thủ…';
+
+  @override
   String arenaTimeLeft(int seconds) {
     return 'Còn ${seconds}s';
   }

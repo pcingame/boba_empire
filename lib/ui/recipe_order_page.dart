@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -46,8 +47,33 @@ Future<void> showRecipeOrderFor(BuildContext context, int recipeId) => Navigator
 
 /// "Pha theo đơn": khách gọi một món, người chơi kéo (hoặc chạm) nguyên liệu từ khay vào ly rồi đặt lượng.
 /// Kết quả ghi vào bậc thuộc như câu trắc nghiệm (`answerRecipe`); gợi ý giảm dần theo bậc của món.
+/// PK công thức (Đấu Trường): 5 món do server chọn, mỗi đơn nộp qua [onServe] (server chấm lại), hết [deadline] thì đóng.
+class PkOrderSession {
+  const PkOrderSession({
+    required this.recipeIds,
+    required this.deadline,
+    required this.onServe,
+    this.served = const {},
+  });
+
+  final List<int> recipeIds;
+  final DateTime deadline;
+
+  /// Nộp đơn [idx] kèm các nguyên liệu đã cho vào ly.
+  final void Function(int idx, List<Poured> poured) onServe;
+
+  /// Các đơn đã nộp từ trước (vào lại giữa trận): bỏ qua, bắt đầu từ đơn chưa nộp đầu tiên.
+  final Set<int> served;
+}
+
+Future<void> showRecipePk(BuildContext context, PkOrderSession pk) =>
+    Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => RecipeOrderPage(pk: pk)));
+
 class RecipeOrderPage extends ConsumerWidget {
-  const RecipeOrderPage({super.key, this.daily = false, this.recipeId});
+  const RecipeOrderPage({super.key, this.daily = false, this.recipeId, this.pk});
+
+  /// Chế độ PK Đấu Trường (xem [PkOrderSession]).
+  final PkOrderSession? pk;
 
   /// Chế độ thử thách hằng ngày (xem [showRecipeDaily]).
   final bool daily;
@@ -59,7 +85,7 @@ class RecipeOrderPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // Trò mở thẳng từ hộp Trò chơi nên danh mục có thể chưa nạp xong: chờ rồi mới dựng buổi chơi.
     return ref.watch(recipeCatalogProvider).when(
-          data: (_) => _RecipeOrderGame(daily: daily, recipeId: recipeId),
+          data: (_) => _RecipeOrderGame(daily: daily, recipeId: recipeId, pk: pk),
           loading: () => Scaffold(
             appBar: AppBar(),
             body: const Center(child: CircularProgressIndicator()),
@@ -70,9 +96,10 @@ class RecipeOrderPage extends ConsumerWidget {
 }
 
 class _RecipeOrderGame extends ConsumerStatefulWidget {
-  const _RecipeOrderGame({required this.daily, this.recipeId});
+  const _RecipeOrderGame({required this.daily, this.recipeId, this.pk});
   final bool daily;
   final int? recipeId;
+  final PkOrderSession? pk;
 
   @override
   ConsumerState<_RecipeOrderGame> createState() => _RecipeOrderPageState();
@@ -138,13 +165,18 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
 
   late List<Order> _orders = _newSession();
 
+  /// Chấm điểm thuần (không ghi bậc/thưởng/combo): Thử thách ngày và PK Đấu Trường.
+  bool get _scored => widget.daily || widget.pk != null;
+
+  Timer? _pkTimer;
+
   /// Đã làm thử thách hôm nay từ trước khi mở màn (mỗi ngày một lần) ⇒ chỉ xem lại điểm.
   late final bool _alreadyDone = widget.daily &&
       ref.read(gameControllerProvider).recipeDailyDay == dayIndex(ref.read(clockProvider)());
   ({bool counted, int gems, double cash})? _dailyReward;
   final _served = <_Served>[];
   final _poured = <Poured>[];
-  int _index = 0;
+  late int _index = _firstPkIndex();
   bool _checked = false; // đơn hiện tại đã phục vụ
   bool _hinted = false; // đơn hiện tại đã xem công thức mẫu (xem quảng cáo) ⇒ không tính bậc
   bool _doubled = false; // đã nhân đôi thưởng buổi này
@@ -179,14 +211,44 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     if (_leftMs <= 0) _grade(late: true);
   }
 
+  int _firstPkIndex() {
+    final pk = widget.pk;
+    if (pk == null) return 0;
+    final i = List.generate(_orders.length, (i) => i).indexWhere((i) => !pk.served.contains(i));
+    return i < 0 ? _orders.length : i;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    final pk = widget.pk;
+    if (pk != null) {
+      // Hết giờ trận ⇒ đóng màn (đang mở bảng đặt lượng thì đóng luôn cả bảng).
+      _pkTimer = Timer(Duration(milliseconds: math.max(0, pk.deadline.difference(DateTime.now()).inMilliseconds)), () {
+        if (!mounted) return;
+        final route = ModalRoute.of(context);
+        if (route != null) Navigator.of(context).removeRoute(route);
+      });
+    }
+  }
+
   @override
   void dispose() {
+    _pkTimer?.cancel();
     _ticker?.cancel();
     super.dispose();
   }
 
   List<Order> _newSession() {
     final catalog = ref.read(recipeCatalogProvider).requireValue;
+    final pk = widget.pk;
+    if (pk != null) {
+      // Bậc Thạo: không gợi ý, khay nhiều nhiễu, lượng phải đúng — công bằng cho cả hai bên.
+      final rnd = ref.read(recipeRandomProvider);
+      return [
+        for (final id in pk.recipeIds) buildOrder(catalog.recipes.firstWhere((x) => x.id == id), recipeMaxBox, catalog, rnd),
+      ];
+    }
     if (widget.daily) return buildDailyOrders(catalog, dayIndex(ref.read(clockProvider)()));
     final progress = ref.read(gameControllerProvider).recipeProgress;
     final nowMs = ref.read(clockProvider)();
@@ -266,8 +328,8 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     final order = _orders[_index];
     final grade = gradeOrder(order, _poured);
     grade.stars == 3 ? HapticFeedback.mediumImpact() : HapticFeedback.heavyImpact();
-    if (widget.daily) {
-      // Thử thách ngày: chỉ chấm điểm, KHÔNG ghi bậc / thưởng từng đơn / combo / BXH Pha theo đơn.
+    if (_scored) {
+      // Thử thách ngày / PK: chỉ chấm điểm, KHÔNG ghi bậc / thưởng từng đơn / combo / BXH Pha theo đơn.
       const none = RecipeProgress();
       setState(() {
         _checked = true;
@@ -280,6 +342,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
         ));
       });
       if (grade.stars == 3) playEffect(context, AnimAssets.sparkle, size: 140, heavy: false);
+      widget.pk?.onServe(_index, List.of(_poured));
       return;
     }
     final game = ref.read(gameControllerProvider.notifier);
@@ -316,6 +379,10 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
       if (!_finished) _leftMs = _rush ? _patienceMs() : 0;
     });
     if (_finished) _ticker?.cancel();
+    if (_finished && widget.pk != null) {
+      Navigator.of(context).pop(); // màn Đấu Trường tự hiện tiến độ / chờ đối thủ
+      return;
+    }
     if (_finished && widget.daily) {
       if (_served.every((s) => s.grade.stars == 3)) playEffect(context, AnimAssets.confetti, size: 260);
       final total = _served.fold<int>(0, (a, s) => a + s.score);
@@ -387,7 +454,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     // Lần đầu vào chế độ này thì tự mở hướng dẫn (không tự mở khi chỉ xem lại điểm thử thách đã làm).
     return HowToOnce(
       guide: guide,
-      enabled: !_alreadyDone,
+      enabled: !_alreadyDone && widget.pk == null,
       child: Scaffold(
       appBar: AppBar(
         title: Text(_finished
@@ -396,6 +463,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
                 ? (_alreadyDone ? l10n.recipeDailyTitle : '${l10n.recipeDailyTitle} ${_index + 1}/${_orders.length}')
                 : '${_index + 1}/${_orders.length}'),
         actions: [
+          if (widget.pk == null) ...[
           HowToButton(guide),
           IconButton(
             key: const Key('order-leaderboard'),
@@ -407,6 +475,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
               showRecipeLeaderboard(context, board: RecipeBoard.orders);
             },
           ),
+          ],
         ],
         bottom: _finished || _alreadyDone
             ? null
@@ -443,8 +512,10 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
                 ),
               ),
             ),
-            const SizedBox(height: 8),
-            const BannerAdBox(),
+            if (widget.pk == null) ...[
+              const SizedBox(height: 8),
+              const BannerAdBox(),
+            ],
           ],
         ),
       )),
@@ -714,7 +785,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
                     style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
                   ),
                 ),
-                if (!widget.daily && _index == 0 && !_checked && _poured.isEmpty)
+                if (!_scored && _index == 0 && !_checked && _poured.isEmpty)
                   SwitchListTile(
                     key: const Key('order-rush-toggle'),
                     contentPadding: EdgeInsets.zero,
@@ -761,7 +832,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
                     ),
                   ),
                 _guide(context, o),
-                if (!widget.daily && o.guide != OrderGuide.full && !_hinted && !_checked)
+                if (!_scored && o.guide != OrderGuide.full && !_hinted && !_checked)
                   Align(
                     alignment: Alignment.centerLeft,
                     child: TextButton.icon(
@@ -841,7 +912,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     final r = s.result;
     final g = s.grade;
     final lines = <String>[
-      if (widget.daily) l10n.recipeDailyOrderScore(s.score),
+      if (_scored) l10n.recipeDailyOrderScore(s.score),
       for (final it in g.items)
         switch (it.verdict) {
           ItemVerdict.missing => l10n.recipeOrderMissing(_amt(it.right!, it.unit), _labels.ingredient(it.name)),
@@ -852,7 +923,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
         },
     ].where((x) => x.isNotEmpty).toList();
     final tail = <String>[
-      if (!widget.daily && s.hinted) l10n.recipeHintNoCount else if (!r.outcome.counted) l10n.recipePracticeOnly,
+      if (!_scored && s.hinted) l10n.recipeHintNoCount else if (!r.outcome.counted) l10n.recipePracticeOnly,
       if (r.outcome.leveledUp) l10n.recipeLevelUp(recipeBoxName(l10n, r.after.box), _labels.recipe(s.order.recipe)),
       if (r.milestone > 0) l10n.recipeMilestone(r.milestone),
       if (s.late) l10n.recipeOrderTimeUp,
@@ -891,7 +962,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
                     fontWeight: FontWeight.w800, color: g.correct ? Colors.green.shade700 : Colors.red.shade700)),
           ),
         ]),
-        for (final t in [...lines, if (!widget.daily) ...tail])
+        for (final t in [...lines, if (!_scored) ...tail])
           Padding(padding: const EdgeInsets.symmetric(vertical: 2), child: Text(t, style: theme.textTheme.bodyMedium)),
       ],
     );

@@ -14,6 +14,7 @@ import '../core/format.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import 'match3_board.dart';
+import 'recipe_order_page.dart' show PkOrderSession, showRecipePk;
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -138,6 +139,16 @@ class _IdleView extends ConsumerWidget {
         ),
         const SizedBox(height: 6),
         Text(l10n.arenaMatch3Intro, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodySmall),
+        const SizedBox(height: 20),
+        FilledButton.tonal(
+          key: const Key('arena-start-recipe'),
+          onPressed: () => ref
+              .read(arenaControllerProvider.notifier)
+              .startMatchmaking(ArenaMode.recipe),
+          child: Text(l10n.arenaModeRecipe),
+        ),
+        const SizedBox(height: 6),
+        Text(l10n.arenaRecipeIntro, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodySmall),
       ],
     );
   }
@@ -186,8 +197,12 @@ class _MatchView extends ConsumerWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (view.mode == ArenaMode.match3) ...[
-          _DuelHeader(l10n: l10n, view: view),
+        if (view.mode == ArenaMode.match3 || view.mode == ArenaMode.recipe) ...[
+          _DuelHeader(
+            l10n: l10n,
+            view: view,
+            totalSeconds: view.mode == ArenaMode.recipe ? ArenaConfig.recipeMatchSeconds : ArenaConfig.matchSeconds,
+          ),
           const SizedBox(height: 12),
         ] else ...[
           Chip(label: Text(l10n.arenaTimeLeft(seconds.ceil()))),
@@ -205,7 +220,9 @@ class _MatchView extends ConsumerWidget {
           const CircularProgressIndicator(),
           const SizedBox(height: 8),
           Text(l10n.arenaResolving),
-        ] else if (view.mode == ArenaMode.match3)
+        ] else if (view.mode == ArenaMode.recipe)
+          _RecipePanel(l10n: l10n, view: view)
+        else if (view.mode == ArenaMode.match3)
           Match3Panel(
             view: Match3View(
               cells: view.boardCells,
@@ -259,18 +276,65 @@ class _MatchView extends ConsumerWidget {
   }
 }
 
+/// Thân màn trận PK công thức: tiến độ hai bên + nút vào pha (mở lại được nếu thoát giữa chừng), xong cả 5 đơn thì chờ đối thủ.
+class _RecipePanel extends ConsumerWidget {
+  const _RecipePanel({required this.l10n, required this.view});
+  final AppLocalizations l10n;
+  final ArenaInMatch view;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final done = view.myServed.length;
+    final allDone = done >= recipeOrdersPerMatch;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(l10n.arenaRecipeProgress(done, view.theirServed),
+            key: const Key('arena-recipe-progress'), textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium),
+        const SizedBox(height: 24),
+        if (allDone) ...[
+          const CircularProgressIndicator(),
+          const SizedBox(height: 8),
+          Text(l10n.arenaRecipeWaiting, key: const Key('arena-recipe-waiting'), textAlign: TextAlign.center),
+        ] else
+          FilledButton(
+            key: const Key('arena-recipe-start-brewing'),
+            onPressed: () {
+              final controller = ref.read(arenaControllerProvider.notifier);
+              showRecipePk(
+                context,
+                PkOrderSession(
+                  recipeIds: view.orderIds,
+                  deadline: DateTime.now().add(view.remaining),
+                  served: view.myServed,
+                  onServe: (idx, poured) => controller.submitOrder(
+                    idx,
+                    [for (final p in poured) p.item.name],
+                    [for (final p in poured) p.value],
+                  ),
+                ),
+              );
+            },
+            child: Text(l10n.arenaRecipeStart),
+          ),
+      ],
+    );
+  }
+}
+
 /// Đầu màn trận Ghép 3: thanh thời gian (đỏ khi còn <= 10s), điểm hai bên đếm
 /// chạy, và thanh so điểm mình–đối thủ.
 class _DuelHeader extends StatelessWidget {
-  const _DuelHeader({required this.l10n, required this.view});
+  const _DuelHeader({required this.l10n, required this.view, this.totalSeconds = ArenaConfig.matchSeconds});
   final AppLocalizations l10n;
   final ArenaInMatch view;
+  final int totalSeconds;
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final seconds = (view.remaining.inMilliseconds / 1000).ceil();
-    final frac = (view.remaining.inMilliseconds / (ArenaConfig.matchSeconds * 1000)).clamp(0.0, 1.0);
+    final frac = (view.remaining.inMilliseconds / (totalSeconds * 1000)).clamp(0.0, 1.0);
     final urgent = seconds <= 10;
     final total = view.myScore + view.opponentScore;
     final share = total <= 0 ? 0.5 : (view.myScore / total).clamp(0.08, 0.92);

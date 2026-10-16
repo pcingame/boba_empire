@@ -16,6 +16,9 @@ class ArenaConfig {
   /// '60 seconds')` trong `supabase/arena_schema.sql`.
   static const int matchSeconds = 60;
 
+  /// Thời lượng trận PK công thức (giây). Khớp `now() + interval '180 seconds'` ở `arena_join_queue`.
+  static const int recipeMatchSeconds = 180;
+
   /// Giá 3 mốc nâng cấp trong trận — PHẢI khớp `arena_compute_score` trong
   /// `supabase/arena_schema.sql`. Đổi một bên thì đổi cả hai.
   static const List<double> tierCosts = [20, 80, 200];

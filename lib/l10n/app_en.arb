@@ -537,6 +537,11 @@
       }
     }
   },
+  "arenaModeRecipe": "Recipe Duel",
+  "arenaRecipeIntro": "Make the same 5 orders — the higher total score wins. If both finish early, the match ends right away!",
+  "arenaRecipeStart": "Start brewing",
+  "arenaRecipeProgress": "You: {done}/5 orders · Opponent: {theirs}/5",
+  "arenaRecipeWaiting": "All done! Waiting for your opponent…",
   "arenaTimeLeft": "{seconds}s left",
   "@arenaTimeLeft": {
     "placeholders": {

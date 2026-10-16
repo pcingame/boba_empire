@@ -1829,6 +1829,24 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get arenaModeRecipe => 'ดวลสูตรเครื่องดื่ม';
+
+  @override
+  String get arenaRecipeIntro =>
+      'ชงออเดอร์ชุดเดียวกัน 5 ออเดอร์ — คะแนนรวมสูงกว่าเป็นผู้ชนะ ถ้าทั้งสองคนเสร็จก่อนเวลา การดวลจะจบทันที!';
+
+  @override
+  String get arenaRecipeStart => 'เริ่มชง';
+
+  @override
+  String arenaRecipeProgress(int done, int theirs) {
+    return 'คุณ: $done/5 ออเดอร์ · คู่ต่อสู้: $theirs/5';
+  }
+
+  @override
+  String get arenaRecipeWaiting => 'เสร็จแล้ว! กำลังรอคู่ต่อสู้…';
+
+  @override
   String arenaTimeLeft(int seconds) {
     return 'เหลือ $seconds วิ';
   }

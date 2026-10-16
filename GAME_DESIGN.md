@@ -1054,6 +1054,15 @@ Mọi chuyển động theo mức hiệu ứng (`EffectsQuality`/`reduceMotion`,
 - Khách đi ngang cảnh quán (GĐ1–12) không mang boa thì 40% có **bong bóng 🧋** (`walker-order`). Chạm → `showRecipeOrderFor`: Pha theo đơn buổi **MỘT đơn**, món chọn bằng `pickRecipes` (đến hạn trước, bậc thấp trước) trong các nhóm đã mở. Đơn tính bậc/nhiệm vụ như đơn thường — chỉ khi món ĐẾN HẠN ôn (`counted`), nên không cày được bằng cách bấm liên tục. Không cần SQL, không có thưởng riêng.
 - Không có art mới. Chưa làm: hiện tên món trên bong bóng, thực đơn quán tăng thu nhập thụ động (đã bỏ khỏi phạm vi).
 
+### 34p. PK Công thức — lộ trình D (2026-10-16, chưa playtest)
+- Dạng thứ 3 của Đấu Trường (`ArenaMode.recipe`, hàng đợi riêng): ghép 2 người, server chọn **5 món KHÁC nhau của nhóm 1** (ai cũng đã mở; lưu ở `arena_matches.seq`), cả hai pha CÙNG 5 đơn, trận **180 giây**. Mỗi đơn là một đơn Pha theo đơn bậc Thạo (không gợi ý, lượng phải đúng); khay/thứ tự khay mỗi người một khác.
+- **Chấm ở server**: `arena_submit_order(match, idx, tên[], lượng[])` chấm bằng `arena_recipe_order_score` (khớp `scoreOrder`: đúng +1, lệch 1 mức +0.5, thừa −0.5, chia số nguyên liệu, 0..100/đơn), ghi `arena_actions.score`. Mỗi đơn nộp MỘT lần, chỉ trong giờ. Điểm trận = tổng 5 đơn (tối đa 500). Hòa ⇒ `winner` null.
+- Xong cả hai đủ 5 đơn thì chốt sớm (`arena_resolve_match` cho phép trước `ends_at` riêng dạng này); không thì chờ hết giờ — đơn chưa làm tính 0.
+- Màn Đấu Trường dạng này: đầu trận (đồng hồ + điểm hai bên, như Trân Châu Rơi) + dòng tiến độ + nút **Vào pha** (mở `RecipeOrderPage(pk:)`; tự đóng khi hết giờ hoặc xong đơn 5; thoát giữa chừng thì vào lại, đơn đã nộp được bỏ qua). Thưởng 💎 và BXH dùng chung với 2 dạng kia.
+- ⚠️ **Giới hạn chống gian lận**: công thức là dữ liệu công khai nên script có thể nộp đáp án hoàn hảo. Server chỉ chặn nộp tức thì (mỗi đơn phải cách mốc trước ≥ 1 giây × số nguyên liệu, `too fast`) — script biết chờ vẫn thắng được. Muốn chặt hơn: thưởng 💎 theo hạng thay vì theo trận, hoặc đổi sang đề có yếu tố người chơi (không công khai).
+- **PHẢI chạy lại `supabase/arena_schema.sql`** (idempotent; thêm bảng `arena_recipes`, 3 cột `arena_actions`, hàm chấm/nộp, sửa ghép trận + chốt trận). Test: `scripts/test_arena_recipe_sql.sh` (Postgres tạm) + `test/arena/arena_recipe_score_test.dart` (vector Dart⇔SQL và đối chiếu dữ liệu món/bước lượng trong SQL với assets).
+- Đổi danh sách món nhóm 1 ở `recipes.json` ⇒ phải cập nhật INSERT `arena_recipes` (test sẽ đỏ nhắc).
+
 ## 35. Hồi 4 — "Đại Hội Tay Nghề" (Chương 37-46, 2026-10-16, chưa playtest)
 
 > ⚠️ Ngưỡng là **ước lượng, chưa playtest**. Ý tưởng (góp ý người chơi 2026-10-12: "hết nội dung sau Kỷ Nguyên 4"): 10 "màn",

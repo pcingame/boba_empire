@@ -1804,6 +1804,24 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get arenaModeRecipe => '레시피 대결';
+
+  @override
+  String get arenaRecipeIntro =>
+      '같은 주문 5개를 만들어요 — 총점이 높은 쪽이 승리! 둘 다 일찍 끝나면 바로 종료돼요.';
+
+  @override
+  String get arenaRecipeStart => '만들기 시작';
+
+  @override
+  String arenaRecipeProgress(int done, int theirs) {
+    return '나: $done/5개 · 상대: $theirs/5개';
+  }
+
+  @override
+  String get arenaRecipeWaiting => '다 만들었어요! 상대를 기다리는 중…';
+
+  @override
   String arenaTimeLeft(int seconds) {
     return '$seconds초 남음';
   }

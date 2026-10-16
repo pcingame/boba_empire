@@ -1846,6 +1846,24 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get arenaModeRecipe => 'Duelo de recetas';
+
+  @override
+  String get arenaRecipeIntro =>
+      'Preparad los mismos 5 pedidos: gana quien sume más puntos. ¡Si ambos terminan antes, el duelo acaba al instante!';
+
+  @override
+  String get arenaRecipeStart => 'Empezar a preparar';
+
+  @override
+  String arenaRecipeProgress(int done, int theirs) {
+    return 'Tú: $done/5 pedidos · Rival: $theirs/5';
+  }
+
+  @override
+  String get arenaRecipeWaiting => '¡Listo! Esperando al rival…';
+
+  @override
   String arenaTimeLeft(int seconds) {
     return 'Quedan ${seconds}s';
   }

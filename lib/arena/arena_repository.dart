@@ -59,6 +59,17 @@ class ArenaRepository {
         },
       );
 
+  /// PK công thức: nộp đơn thứ [idx] (0..4) với các nguyên liệu đã cho vào ly. Trả điểm server chấm (0..100).
+  Future<int> submitOrder(String matchId, int idx, List<String> names, List<double> values) async {
+    final s = await _client.rpc('arena_submit_order', params: {
+      'p_match_id': matchId,
+      'p_idx': idx,
+      'p_names': names,
+      'p_vals': values,
+    });
+    return (s as num).toInt();
+  }
+
   /// Số người đang mở màn Đấu Trường (gồm cả chính mình), qua Realtime Presence
   /// trên kênh công khai chung. Mỗi lần nghe mở 1 kết nối và tự rời kênh khi
   /// huỷ nghe. Khoá presence là chuỗi ngẫu nhiên theo phiên nghe (không cần đăng

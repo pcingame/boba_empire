@@ -65,7 +65,7 @@ alter table arena_actions add column if not exists dir  smallint;
 -- check của `kind` là ràng buộc không tên khi tạo bảng → tên tự sinh mặc định.
 alter table arena_actions drop constraint if exists arena_actions_kind_check;
 alter table arena_actions add constraint arena_actions_kind_check
-  check (kind in ('tap', 'buy_tier_1', 'buy_tier_2', 'buy_tier_3', 'drop', 'swap'));
+  check (kind in ('tap', 'buy_tier_1', 'buy_tier_2', 'buy_tier_3', 'drop', 'swap', 'serve'));
 
 -- ─────────────────────────────────────────────────────────────────────────
 -- RLS — chỉ đọc, đúng phạm vi của mình / trận của mình. Không có policy ghi
@@ -383,6 +383,195 @@ begin
 end;
 $$;
 
+
+-- ─────────────────────────────────────────────────────────────────────────
+-- Dạng 'recipe' (PK công thức, 2026-10-16): cả hai người pha CÙNG 5 đơn Pha theo đơn (server chọn
+-- 5 món nhóm 1, lưu ở `arena_matches.seq`), mỗi đơn nộp MỘT lần qua `arena_submit_order`; server tự
+-- chấm bằng `arena_recipe_order_score` (khớp `scoreOrder` ở lib/core/recipe_orders.dart: đúng lượng +1,
+-- lệch 1 mức +0.5, thừa −0.5, chia số nguyên liệu, 0..100/đơn) rồi ghi vào `arena_actions.score`.
+-- Điểm trận = tổng điểm 5 đơn (tối đa 500). Xong cả hai thì chốt sớm, không thì chờ hết 180 giây.
+--
+-- ⚠️ Danh sách món (nhóm 1 của assets/recipes/recipes.json) và hai bảng bước lượng
+-- (`recipeGramSteps`/`recipeMlSteps` ở recipe_orders.dart) phải khớp bên dưới — có test Dart đối chiếu.
+-- ─────────────────────────────────────────────────────────────────────────
+
+create table if not exists arena_recipes (
+  id          int primary key,
+  ingredients jsonb not null
+);
+alter table arena_recipes enable row level security; -- không policy: client không đọc/ghi trực tiếp
+
+insert into arena_recipes (id, ingredients) values
+  (1, '[{"name": "Hồng trà khô", "qty": 10, "unit": "g"}, {"name": "Nước nóng", "qty": 200, "unit": "ml"}, {"name": "Bột kem béo", "qty": 30, "unit": "g"}, {"name": "Sữa đặc", "qty": 15, "unit": "ml"}, {"name": "Đường nước", "qty": 20, "unit": "ml"}]'::jsonb),
+  (2, '[{"name": "Lục trà khô", "qty": 8, "unit": "g"}, {"name": "Nước nóng", "qty": 200, "unit": "ml"}, {"name": "Bột kem béo", "qty": 30, "unit": "g"}, {"name": "Sữa đặc", "qty": 15, "unit": "ml"}, {"name": "Đường nước", "qty": 20, "unit": "ml"}]'::jsonb),
+  (3, '[{"name": "Ô long khô", "qty": 10, "unit": "g"}, {"name": "Nước nóng", "qty": 200, "unit": "ml"}, {"name": "Bột kem béo", "qty": 25, "unit": "g"}, {"name": "Sữa đặc", "qty": 15, "unit": "ml"}, {"name": "Đường nước", "qty": 20, "unit": "ml"}]'::jsonb),
+  (4, '[{"name": "Trà Thái xanh", "qty": 12, "unit": "g"}, {"name": "Nước nóng", "qty": 200, "unit": "ml"}, {"name": "Sữa đặc", "qty": 25, "unit": "ml"}, {"name": "Sữa tươi", "qty": 50, "unit": "ml"}, {"name": "Đường nước", "qty": 10, "unit": "ml"}]'::jsonb),
+  (5, '[{"name": "Trà Thái đỏ", "qty": 12, "unit": "g"}, {"name": "Nước nóng", "qty": 200, "unit": "ml"}, {"name": "Sữa đặc", "qty": 25, "unit": "ml"}, {"name": "Sữa tươi", "qty": 50, "unit": "ml"}, {"name": "Đường nước", "qty": 10, "unit": "ml"}]'::jsonb),
+  (6, '[{"name": "Hồng trà khô", "qty": 10, "unit": "g"}, {"name": "Nước nóng", "qty": 200, "unit": "ml"}, {"name": "Sữa tươi", "qty": 100, "unit": "ml"}, {"name": "Đường đen", "qty": 25, "unit": "g"}, {"name": "Bột kem béo", "qty": 15, "unit": "g"}]'::jsonb),
+  (7, '[{"name": "Hồng trà khô", "qty": 8, "unit": "g"}, {"name": "Nước nóng", "qty": 180, "unit": "ml"}, {"name": "Bột khoai môn", "qty": 25, "unit": "g"}, {"name": "Bột kem béo", "qty": 25, "unit": "g"}, {"name": "Đường nước", "qty": 15, "unit": "ml"}]'::jsonb),
+  (8, '[{"name": "Matcha", "qty": 5, "unit": "g"}, {"name": "Hồng trà khô", "qty": 5, "unit": "g"}, {"name": "Nước nóng", "qty": 200, "unit": "ml"}, {"name": "Sữa tươi", "qty": 100, "unit": "ml"}, {"name": "Đường nước", "qty": 20, "unit": "ml"}]'::jsonb),
+  (9, '[{"name": "Hồng trà khô", "qty": 8, "unit": "g"}, {"name": "Nước nóng", "qty": 180, "unit": "ml"}, {"name": "Bột cacao", "qty": 12, "unit": "g"}, {"name": "Bột kem béo", "qty": 25, "unit": "g"}, {"name": "Đường nước", "qty": 25, "unit": "ml"}]'::jsonb),
+  (10, '[{"name": "Hồng trà khô", "qty": 10, "unit": "g"}, {"name": "Nước nóng", "qty": 200, "unit": "ml"}, {"name": "Sữa tươi", "qty": 80, "unit": "ml"}, {"name": "Syrup caramel", "qty": 25, "unit": "ml"}, {"name": "Bột kem béo", "qty": 20, "unit": "g"}]'::jsonb),
+  (11, '[{"name": "Hồng trà khô", "qty": 10, "unit": "g"}, {"name": "Nước nóng", "qty": 200, "unit": "ml"}, {"name": "Sữa tươi", "qty": 80, "unit": "ml"}, {"name": "Mật ong", "qty": 20, "unit": "ml"}, {"name": "Bột kem béo", "qty": 20, "unit": "g"}]'::jsonb),
+  (12, '[{"name": "Hồng trà khô", "qty": 8, "unit": "g"}, {"name": "Nước nóng", "qty": 180, "unit": "ml"}, {"name": "Sữa tươi", "qty": 100, "unit": "ml"}, {"name": "Syrup bạc hà", "qty": 15, "unit": "ml"}, {"name": "Bột kem béo", "qty": 20, "unit": "g"}]'::jsonb),
+  (13, '[{"name": "Hồng trà khô", "qty": 8, "unit": "g"}, {"name": "Nước nóng", "qty": 180, "unit": "ml"}, {"name": "Sữa tươi", "qty": 100, "unit": "ml"}, {"name": "Syrup dâu", "qty": 25, "unit": "ml"}, {"name": "Bột kem béo", "qty": 20, "unit": "g"}]'::jsonb),
+  (14, '[{"name": "Hồng trà khô", "qty": 8, "unit": "g"}, {"name": "Nước nóng", "qty": 180, "unit": "ml"}, {"name": "Sữa tươi", "qty": 100, "unit": "ml"}, {"name": "Syrup chuối", "qty": 20, "unit": "ml"}, {"name": "Bột kem béo", "qty": 20, "unit": "g"}]'::jsonb),
+  (15, '[{"name": "Ô long khô", "qty": 8, "unit": "g"}, {"name": "Nước nóng", "qty": 180, "unit": "ml"}, {"name": "Nước cốt dừa", "qty": 50, "unit": "ml"}, {"name": "Sữa tươi", "qty": 60, "unit": "ml"}, {"name": "Đường nước", "qty": 20, "unit": "ml"}]'::jsonb),
+  (16, '[{"name": "Hồng trà khô", "qty": 10, "unit": "g"}, {"name": "Nước nóng", "qty": 200, "unit": "ml"}, {"name": "Sữa hạnh nhân", "qty": 100, "unit": "ml"}, {"name": "Bột kem béo", "qty": 20, "unit": "g"}, {"name": "Đường nước", "qty": 15, "unit": "ml"}]'::jsonb),
+  (17, '[{"name": "Hồng trà khô", "qty": 8, "unit": "g"}, {"name": "Nước nóng", "qty": 180, "unit": "ml"}, {"name": "Sữa tươi", "qty": 80, "unit": "ml"}, {"name": "Bột cacao", "qty": 10, "unit": "g"}, {"name": "Syrup bạc hà", "qty": 10, "unit": "ml"}]'::jsonb),
+  (18, '[{"name": "Hồng trà khô", "qty": 10, "unit": "g"}, {"name": "Nước nóng", "qty": 200, "unit": "ml"}, {"name": "Bột kem béo", "qty": 25, "unit": "g"}, {"name": "Đường nước", "qty": 20, "unit": "ml"}, {"name": "Pudding trứng", "qty": 60, "unit": "g"}]'::jsonb),
+  (19, '[{"name": "Hồng trà khô", "qty": 10, "unit": "g"}, {"name": "Nước nóng", "qty": 200, "unit": "ml"}, {"name": "Bột kem béo", "qty": 20, "unit": "g"}, {"name": "Đường nước", "qty": 15, "unit": "ml"}, {"name": "Kem cheese", "qty": 40, "unit": "g"}]'::jsonb),
+  (20, '[{"name": "Hồng trà khô", "qty": 10, "unit": "g"}, {"name": "Nước nóng", "qty": 200, "unit": "ml"}, {"name": "Sữa tươi", "qty": 60, "unit": "ml"}, {"name": "Đường nước", "qty": 15, "unit": "ml"}, {"name": "Kem muối", "qty": 40, "unit": "g"}]'::jsonb)
+on conflict (id) do update set ingredients = excluded.ingredients;
+
+alter table arena_actions add column if not exists item_names text[];
+alter table arena_actions add column if not exists item_vals  real[];
+alter table arena_actions add column if not exists score      smallint;
+
+
+-- Chỉ số mức lượng gần nhất (khớp `nearestStep`: hòa thì lấy mức THẤP hơn).
+create or replace function arena_recipe_nearest(p_unit text, p_value numeric)
+returns int
+language sql
+immutable
+as $$
+  select (t.i - 1)::int
+  from unnest(
+    case when p_unit = 'g'
+      then array[1,2,3,4,5,6,7,8,9,10,12,15,20,25,30,35,40,45,50,60,70,80,90,100,120]::numeric[]
+      else array[2,5,10,15,20,25,30,35,40,50,60,70,80,100,120,150,180,200,220,230,250,300]::numeric[]
+    end
+  ) with ordinality as t(s, i)
+  order by abs(t.s - p_value), t.i
+  limit 1
+$$;
+
+-- Điểm một đơn 0..100 (khớp `scoreOrder`; bậc Thạo ⇒ lệch 1 mức vẫn được 0.5, lệch xa 0).
+create or replace function arena_recipe_order_score(p_recipe int, p_names text[], p_vals real[])
+returns int
+language plpgsql
+stable
+as $$
+declare
+  ings jsonb;
+  ing jsonb;
+  need int;
+  pts numeric := 0;
+  v numeric;
+  d int;
+  nm text;
+begin
+  select ingredients into ings from arena_recipes where id = p_recipe;
+  if ings is null then
+    return 0;
+  end if;
+  need := jsonb_array_length(ings);
+  for ing in select * from jsonb_array_elements(ings) loop
+    -- cùng một nguyên liệu nộp nhiều lần thì lấy lần CUỐI (khớp gradeOrder).
+    select t.val into v
+      from unnest(p_names, p_vals) with ordinality as t(n, val, o)
+      where t.n = ing->>'name'
+      order by t.o desc
+      limit 1;
+    if v is null then
+      continue; -- thiếu
+    end if;
+    d := abs(arena_recipe_nearest(ing->>'unit', v) - arena_recipe_nearest(ing->>'unit', (ing->>'qty')::numeric));
+    pts := pts + case when d = 0 then 1 when d = 1 then 0.5 else 0 end;
+  end loop;
+  -- nguyên liệu thừa (mỗi tên tính một lần)
+  for nm in select distinct n from unnest(p_names) as n loop
+    if not exists (select 1 from jsonb_array_elements(ings) e where e->>'name' = nm) then
+      pts := pts - 0.5;
+    end if;
+  end loop;
+  return least(100, greatest(0, round(100 * greatest(0, pts) / need)))::int;
+end;
+$$;
+
+-- Hàm nội bộ: KHÔNG cấp execute cho client (chỉ các hàm security definer bên dưới gọi).
+revoke all on function arena_recipe_order_score(int, text[], real[]) from public;
+
+-- Nộp đơn thứ p_idx (0..4) của trận: MỖI đơn một lần, trong giờ. Trả điểm đơn vừa chấm.
+create or replace function arena_submit_order(
+  p_match_id uuid,
+  p_idx int,
+  p_names text[],
+  p_vals real[]
+)
+returns int
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  me uuid := auth.uid();
+  m arena_matches;
+  s int;
+  last_at timestamptz;
+begin
+  if me is null then
+    raise exception 'not authenticated';
+  end if;
+  select * into m from arena_matches where id = p_match_id for update;
+  if not found then
+    raise exception 'match not found';
+  end if;
+  if me not in (m.player_a, m.player_b) then
+    raise exception 'not a participant';
+  end if;
+  if m.mode <> 'recipe' then
+    raise exception 'orders are only valid in recipe mode';
+  end if;
+  if m.status <> 'active' then
+    raise exception 'match not active';
+  end if;
+  if now() >= m.ends_at then
+    raise exception 'match time is up';
+  end if;
+  if p_idx is null or p_idx not between 0 and 4 then
+    raise exception 'invalid order index';
+  end if;
+  if p_names is null or p_vals is null
+     or coalesce(array_length(p_names, 1), 0) <> coalesce(array_length(p_vals, 1), 0)
+     or coalesce(array_length(p_names, 1), 0) > 16 then
+    raise exception 'invalid order items';
+  end if;
+  if exists (select 1 from arena_actions
+             where match_id = p_match_id and player_id = me and kind = 'serve' and cell = p_idx) then
+    raise exception 'order already served';
+  end if;
+
+  -- Chống script: công thức là dữ liệu công khai nên nộp đáp án hoàn hảo tức thì là dễ. Người thật cần ít nhất
+  -- ~1 giây cho mỗi nguyên liệu (chọn, đặt lượng, đổ) kể từ lúc bắt đầu trận hoặc đơn nộp trước đó.
+  select greatest(m.started_at, coalesce(max(at), m.started_at)) into last_at
+    from arena_actions where match_id = p_match_id and player_id = me and kind = 'serve';
+  if now() - coalesce(last_at, m.started_at) < interval '1 second' * coalesce(array_length(p_names, 1), 0) then
+    raise exception 'too fast';
+  end if;
+
+  s := arena_recipe_order_score(m.seq[p_idx + 1]::int, p_names, p_vals);
+  insert into arena_actions (match_id, player_id, kind, cell, item_names, item_vals, score)
+    values (p_match_id, me, 'serve', p_idx, p_names, p_vals, s);
+  return s;
+end;
+$$;
+
+grant execute on function arena_submit_order(uuid, int, text[], real[]) to authenticated;
+
+create or replace function arena_compute_score_recipe(p_match_id uuid, p_player uuid)
+returns numeric
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select coalesce(sum(arena_recipe_order_score(m.seq[a.cell + 1]::int, a.item_names, a.item_vals)), 0)
+  from arena_actions a
+  join arena_matches m on m.id = a.match_id
+  where a.match_id = p_match_id and a.player_id = p_player and a.kind = 'serve'
+$$;
+
 create or replace function arena_compute_score(p_match_id uuid, p_player uuid)
 returns numeric
 language plpgsql
@@ -398,6 +587,9 @@ begin
   select mode into m_mode from arena_matches where id = p_match_id;
   if m_mode = 'match3' then
     return arena_compute_score_match3(p_match_id, p_player);
+  end if;
+  if m_mode = 'recipe' then
+    return arena_compute_score_recipe(p_match_id, p_player);
   end if;
 
   for a in
@@ -449,7 +641,7 @@ begin
   if me is null then
     raise exception 'not authenticated';
   end if;
-  if p_mode not in ('tap', 'match3') then
+  if p_mode not in ('tap', 'match3', 'recipe') then
     raise exception 'unknown mode: %', p_mode;
   end if;
 
@@ -498,6 +690,13 @@ begin
     insert into arena_matches (player_a, player_b, mode, seq)
       values (me, opponent, 'match3',
               array(select floor(random() * 5)::smallint from generate_series(1, 2000)))
+      returning * into m;
+  elsif p_mode = 'recipe' then
+    -- 5 món khác nhau của nhóm 1 (ai cũng đã mở), thời gian 180 giây cho cả 5 đơn.
+    insert into arena_matches (player_a, player_b, mode, seq, ends_at)
+      values (me, opponent, 'recipe',
+              array(select id::smallint from arena_recipes order by random() limit 5),
+              now() + interval '180 seconds')
       returning * into m;
   else
     insert into arena_matches (player_a, player_b) values (me, opponent)
@@ -671,7 +870,12 @@ begin
   if m.status = 'finished' then
     return m; -- đã chốt rồi, trả lại kết quả cũ thay vì lỗi
   end if;
-  if now() < m.ends_at then
+  -- Dạng recipe: cả hai đã nộp đủ 5 đơn thì chốt sớm, khỏi chờ hết giờ.
+  if now() < m.ends_at and not (
+       m.mode = 'recipe'
+       and (select count(*) from arena_actions where match_id = p_match_id and player_id = m.player_a and kind = 'serve') >= 5
+       and (select count(*) from arena_actions where match_id = p_match_id and player_id = m.player_b and kind = 'serve') >= 5
+     ) then
     raise exception 'match not finished yet';
   end if;
 

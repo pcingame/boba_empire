@@ -9,13 +9,18 @@ enum ArenaMatchStatus { active, finished }
 /// Dạng PK — khớp cột `mode` ở `arena_matches`/`arena_queue`.
 enum ArenaMode {
   tap('tap'),
-  match3('match3');
+  match3('match3'),
+  recipe('recipe');
 
   const ArenaMode(this.wire);
   final String wire;
 
   static ArenaMode fromWire(String? v) =>
-      v == 'match3' ? ArenaMode.match3 : ArenaMode.tap;
+      switch (v) {
+        'match3' => ArenaMode.match3,
+        'recipe' => ArenaMode.recipe,
+        _ => ArenaMode.tap,
+      };
 }
 
 class ArenaMatch {
@@ -59,7 +64,7 @@ class ArenaMatch {
   final String? winner;
   final ArenaMode mode;
 
-  /// Chuỗi ngẫu nhiên chung của trận (chỉ dạng match3).
+  /// Chuỗi ngẫu nhiên chung của trận: dạng match3 = loại ô; dạng recipe = id 5 món của 5 đơn.
   final List<int> seq;
 }
 
@@ -92,5 +97,7 @@ ArenaLogEntry arenaLogEntryFromRow(Map<String, dynamic> row) => ArenaLogEntry(
         id: row['id'] as int,
         cell: (row['cell'] as num?)?.toInt(),
         dir: (row['dir'] as num?)?.toInt(),
+        orderIndex: row['kind'] == 'serve' ? (row['cell'] as num?)?.toInt() : null,
+        score: (row['score'] as num?)?.toInt(),
       ),
     );

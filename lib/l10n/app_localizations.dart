@@ -3126,6 +3126,36 @@ abstract class AppLocalizations {
   /// **'Nâng ×2 ({cost} Xu)'**
   String arenaTierButton(String cost);
 
+  /// No description provided for @arenaModeRecipe.
+  ///
+  /// In vi, this message translates to:
+  /// **'PK Công thức'**
+  String get arenaModeRecipe;
+
+  /// No description provided for @arenaRecipeIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cùng pha 5 đơn giống nhau — tổng điểm cao hơn đối thủ thì thắng. Xong sớm cả hai sẽ chốt luôn!'**
+  String get arenaRecipeIntro;
+
+  /// No description provided for @arenaRecipeStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vào pha'**
+  String get arenaRecipeStart;
+
+  /// No description provided for @arenaRecipeProgress.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn xong {done}/5 đơn · Đối thủ {theirs}/5'**
+  String arenaRecipeProgress(int done, int theirs);
+
+  /// No description provided for @arenaRecipeWaiting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã pha xong! Đang chờ đối thủ…'**
+  String get arenaRecipeWaiting;
+
   /// No description provided for @arenaTimeLeft.
   ///
   /// In vi, this message translates to:

@@ -537,6 +537,11 @@
       }
     }
   },
+  "arenaModeRecipe": "Duelo de recetas",
+  "arenaRecipeIntro": "Preparad los mismos 5 pedidos: gana quien sume más puntos. ¡Si ambos terminan antes, el duelo acaba al instante!",
+  "arenaRecipeStart": "Empezar a preparar",
+  "arenaRecipeProgress": "Tú: {done}/5 pedidos · Rival: {theirs}/5",
+  "arenaRecipeWaiting": "¡Listo! Esperando al rival…",
   "arenaTimeLeft": "Quedan {seconds}s",
   "@arenaTimeLeft": {
     "placeholders": {
