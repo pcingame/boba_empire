@@ -1050,6 +1050,10 @@ Mọi chuyển động theo mức hiệu ứng (`EffectsQuality`/`reduceMotion`,
 - **Thưởng top tuần cho BXH Pha theo đơn**: thêm `orders` vào `leaderboard_rewards_schema.sql` (CHECK + snapshot từ `recipe_order_leaderboard_entries.perfected`) và `LbBoard.orders` (300/200/100💎). **PHẢI chạy lại `leaderboard_rewards_schema.sql`** (idempotent; sau `recipe_order_leaderboard_schema.sql`). Bảng "Hôm nay" cố ý KHÔNG có thưởng tuần.
 - **Chưa làm**: khách Lottie đứng quầy (cần asset mới); thưởng cho BXH Hôm nay.
 
+### 34o. Khách đi ngang gọi món — lộ trình C (2026-10-16, chưa playtest)
+- Khách đi ngang cảnh quán (GĐ1–12) không mang boa thì 40% có **bong bóng 🧋** (`walker-order`). Chạm → `showRecipeOrderFor`: Pha theo đơn buổi **MỘT đơn**, món chọn bằng `pickRecipes` (đến hạn trước, bậc thấp trước) trong các nhóm đã mở. Đơn tính bậc/nhiệm vụ như đơn thường — chỉ khi món ĐẾN HẠN ôn (`counted`), nên không cày được bằng cách bấm liên tục. Không cần SQL, không có thưởng riêng.
+- Không có art mới. Chưa làm: hiện tên món trên bong bóng, thực đơn quán tăng thu nhập thụ động (đã bỏ khỏi phạm vi).
+
 ## 35. Hồi 4 — "Đại Hội Tay Nghề" (Chương 37-46, 2026-10-16, chưa playtest)
 
 > ⚠️ Ngưỡng là **ước lượng, chưa playtest**. Ý tưởng (góp ý người chơi 2026-10-12: "hết nội dung sau Kỷ Nguyên 4"): 10 "màn",

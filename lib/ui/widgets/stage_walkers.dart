@@ -184,6 +184,8 @@ class StageWalkers extends StatefulWidget {
     this.sceneZoom = 1.5,
     this.canTip,
     this.onTip,
+    this.canOrder,
+    this.onOrder,
     this.random,
   });
 
@@ -197,6 +199,12 @@ class StageWalkers extends StatefulWidget {
 
   /// Người chơi bấm bong bóng boa; [center] là toạ độ toàn cục của bong bóng (để phát hiệu ứng).
   final void Function(Offset center)? onTip;
+
+  /// Khách lượt này có gọi món không (bong bóng ly trà; chỉ khi không mang boa). Null = không bao giờ.
+  final bool Function()? canOrder;
+
+  /// Người chơi bấm bong bóng gọi món → vào Pha theo đơn.
+  final VoidCallback? onOrder;
 
   /// Chỉ cho test.
   final math.Random? random;
@@ -213,6 +221,7 @@ class _StageWalkersState extends State<StageWalkers> with SingleTickerProviderSt
   VoidCallback? _unsub;
   bool _covered = false;
   bool _tipOffered = false; // lượt hiện tại có bong bóng boa chưa bị bấm
+  bool _orderOffered = false; // lượt hiện tại có bong bóng gọi món
   double _cycle = 0; // giây trong chu kỳ bước chân
   double _loopSeconds = 1.0;
 
@@ -264,8 +273,13 @@ class _StageWalkersState extends State<StageWalkers> with SingleTickerProviderSt
       // 70% khách có boa (khi hết thời gian hồi) — không phải khách nào cũng boa, nên bong bóng là
       // thứ đáng để mắt tìm chứ không phải việc phải làm mỗi lượt.
       _tipOffered = (widget.canTip?.call() ?? false) && _script.random.nextDouble() < 0.7;
+      // Khách không boa thì có lúc gọi món (chạm để pha đúng món đó ở trò Công thức).
+      _orderOffered = !_tipOffered && (widget.canOrder?.call() ?? false) && _script.random.nextDouble() < 0.4;
     }
-    if (finished) _tipOffered = false;
+    if (finished) {
+      _tipOffered = false;
+      _orderOffered = false;
+    }
     if (was != _script.walking || finished) {
       if (mounted) setState(() {}); // bắt đầu/kết thúc lượt: dựng/gỡ Lottie
     }
@@ -332,6 +346,15 @@ class _StageWalkersState extends State<StageWalkers> with SingleTickerProviderSt
                   bottom: bottom,
                   child: IgnorePointer(child: RepaintBoundary(child: child!)),
                 ),
+                if (_orderOffered)
+                  Positioned(
+                    left: cx - _tipBubbleSize / 2,
+                    bottom: bottom + canvas * 0.93 + 3 * math.sin(_cycle * 5),
+                    child: _OrderBubble(onTap: () {
+                      setState(() => _orderOffered = false);
+                      widget.onOrder?.call();
+                    }),
+                  ),
                 if (_tipOffered)
                   Positioned(
                     left: cx - _tipBubbleSize / 2,
@@ -348,6 +371,34 @@ class _StageWalkersState extends State<StageWalkers> with SingleTickerProviderSt
 }
 
 const _tipBubbleSize = 44.0; // vùng chạm tối thiểu cho ngón tay
+
+/// Bong bóng gọi món trên đầu khách: ly trà trong khung trắng.
+class _OrderBubble extends StatelessWidget {
+  const _OrderBubble({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      key: const Key('walker-order'),
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Container(
+        width: _tipBubbleSize,
+        height: _tipBubbleSize,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white,
+          border: Border.all(color: const Color(0xFFA06A45), width: 3),
+          boxShadow: const [BoxShadow(color: Color(0x55000000), blurRadius: 6, offset: Offset(0, 2))],
+        ),
+        child: const Text('🧋', style: TextStyle(fontSize: 22)),
+      ),
+    );
+  }
+}
 
 /// Bong bóng boa trên đầu khách: đồng xu vàng viền trắng.
 class _TipBubble extends StatelessWidget {

@@ -218,6 +218,46 @@ void main() {
       await tester.pumpWidget(const SizedBox());
     });
 
+    group('gọi món', () {
+      testWidgets('canOrder=true: có khách gọi món (khi không boa); bấm → onOrder một lần, bong bóng biến mất', (tester) async {
+        var orders = 0;
+        for (var seed = 1; seed < 40; seed++) {
+          await tester.pumpWidget(app(Stack(children: [
+            Positioned.fill(
+                child: StageWalkers(stage: 1, random: Random(seed), canOrder: () => true, onOrder: () => orders++)),
+          ])));
+          await run(tester, 6);
+          final bubble = find.byKey(const Key('walker-order'));
+          if (bubble.evaluate().isNotEmpty) {
+            expect(tester.getSize(bubble).shortestSide, greaterThanOrEqualTo(44));
+            await tester.tap(bubble);
+            await tester.pump();
+            expect(orders, 1);
+            expect(bubble, findsNothing);
+            await run(tester, 10);
+            await tester.pumpWidget(const SizedBox());
+            return;
+          }
+          await tester.pumpWidget(const SizedBox());
+        }
+        fail('trong 40 lượt phải có ít nhất một khách gọi món');
+      });
+
+      testWidgets('không truyền canOrder / canOrder=false: không bao giờ có bong bóng gọi món', (tester) async {
+        for (final canOrder in <bool Function()?>[() => false, null]) {
+          for (var seed = 1; seed < 8; seed++) {
+            await tester.pumpWidget(app(Stack(children: [
+              Positioned.fill(child: StageWalkers(stage: 1, random: Random(seed), canOrder: canOrder)),
+            ])));
+            await run(tester, 6);
+            expect(find.byKey(const Key('walker-order')), findsNothing, reason: 'seed $seed');
+            await run(tester, 10);
+          }
+        }
+        await tester.pumpWidget(const SizedBox());
+      });
+    });
+
     group('boa', () {
       Widget host({bool Function()? canTip, void Function(Offset)? onTip, int seed = 3}) => app(
           Stack(children: [

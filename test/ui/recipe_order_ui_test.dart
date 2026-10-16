@@ -66,6 +66,7 @@ Future<ProviderContainer> _pump(
   double textScale = 1.0,
   AdService? ads,
   bool daily = false,
+  int? recipeId,
   Future<void> Function(Uint8List, String, Rect?, String)? share,
   void Function(GameState)? setup,
 }) async {
@@ -96,7 +97,7 @@ Future<ProviderContainer> _pump(
       locale: ui.Locale(locale),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: RecipeOrderPage(daily: daily),
+      home: RecipeOrderPage(daily: daily, recipeId: recipeId),
     ),
   ));
   await tester.pumpAndSettle();
@@ -155,6 +156,17 @@ void main() {
     final saved = c.read(gameControllerProvider).recipeProgress[o.recipe.id];
     expect(saved, isNotNull);
     expect(saved!.box, 1);
+    await _teardown(tester);
+  });
+
+  testWidgets('khách đi ngang gọi món: buổi chỉ có MỘT đơn đúng món đó, pha xong là tổng kết', (tester) async {
+    final c = await _pump(tester, size: const Size(400, 900), recipeId: 8);
+    final o = buildOrder(_catalog().recipes.firstWhere((r) => r.id == 8), 0, _catalog(), Random(1));
+    expect(find.textContaining(o.recipe.name), findsWidgets);
+    expect(find.textContaining('1/1'), findsOneWidget);
+    await _serveExact(tester, o);
+    expect(find.text('Hoàn hảo! Đúng từng lượng'), findsOneWidget);
+    expect(c.read(gameControllerProvider).recipeProgress[8]!.box, 1);
     await _teardown(tester);
   });
 

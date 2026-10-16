@@ -13,10 +13,13 @@ import '../core/accessories.dart';
 import '../core/balance.dart';
 import '../core/cloud_remind.dart';
 import '../core/collection_milestones.dart';
+import '../core/daily.dart' show dayIndex;
 import '../core/economy.dart';
 import '../core/format.dart';
 import '../ads/ad_service.dart';
 import '../core/models.dart';
+import '../core/recipe_quiz.dart' show pickRecipes;
+import '../core/recipes.dart' show unlockedRecipes;
 import '../core/whats_new.dart';
 import '../data/cloud_save_controller.dart' show cloudLinkedProvider;
 import '../data/game_storage.dart';
@@ -33,6 +36,7 @@ import '../notify/recipe_reminder.dart';
 import '../notify/reminders.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
+import '../state/recipe_providers.dart';
 import '../leaderboard/flair.dart';
 import '../leaderboard/vip_presence.dart';
 import '../referral/referral_controller.dart';
@@ -50,6 +54,7 @@ import 'event_dialog.dart';
 import 'gem_shop.dart';
 import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
+import 'recipe_order_page.dart' show showRecipeOrderFor;
 import 'rewards_dialog.dart';
 import 'rival_event_dialog.dart';
 import 'settings_dialog.dart';
@@ -1078,6 +1083,18 @@ class _MoneyHeader extends ConsumerWidget {
   }
 }
 
+/// Bấm bong bóng gọi món của khách: chọn một món (đến hạn ôn trước) trong các nhóm đã mở rồi vào Pha theo đơn.
+void _openWalkerOrder(BuildContext context, WidgetRef ref) {
+  final catalog = ref.read(recipeCatalogProvider).asData?.value;
+  if (catalog == null) return;
+  final progress = ref.read(gameControllerProvider).recipeProgress;
+  final pool = unlockedRecipes(catalog, (id) => progress[id]?.best ?? 0);
+  final today = dayIndex(ref.read(clockProvider)());
+  final picked = pickRecipes(catalog, progress, today, ref.read(recipeRandomProvider), count: 1, pool: pool);
+  if (picked.isEmpty) return;
+  showRecipeOrderFor(context, picked.first.id);
+}
+
 /// Bấm bong bóng boa của khách: nhận Xu rồi báo (xu bay + âm thanh + thông báo ngắn).
 void _collectWalkerTip(BuildContext context, WidgetRef ref, Offset at) {
   final cash = ref.read(gameControllerProvider.notifier).collectWalkerTip();
@@ -1165,6 +1182,8 @@ class _StageScene extends ConsumerWidget {
           sceneZoom: _sceneZoom,
           canTip: () => ref.read(gameControllerProvider.notifier).walkerTipReady,
           onTip: (at) => _collectWalkerTip(context, ref, at),
+          canOrder: () => ref.read(recipeCatalogProvider).asData != null,
+          onOrder: () => _openWalkerOrder(context, ref),
         ),
         // Chip "tự động chạm" nằm TRONG cảnh quán (góc trên phải), không đè thanh tiêu đề.
         const _AutoTapIndicator(),

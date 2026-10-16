@@ -40,19 +40,26 @@ Future<void> showRecipeOrders(BuildContext context) =>
 Future<void> showRecipeDaily(BuildContext context) =>
     Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const RecipeOrderPage(daily: true)));
 
+/// Khách đi ngang cảnh quán gọi món [recipeId]: buổi một đơn.
+Future<void> showRecipeOrderFor(BuildContext context, int recipeId) => Navigator.of(context)
+    .push(MaterialPageRoute<void>(builder: (_) => RecipeOrderPage(recipeId: recipeId)));
+
 /// "Pha theo đơn": khách gọi một món, người chơi kéo (hoặc chạm) nguyên liệu từ khay vào ly rồi đặt lượng.
 /// Kết quả ghi vào bậc thuộc như câu trắc nghiệm (`answerRecipe`); gợi ý giảm dần theo bậc của món.
 class RecipeOrderPage extends ConsumerWidget {
-  const RecipeOrderPage({super.key, this.daily = false});
+  const RecipeOrderPage({super.key, this.daily = false, this.recipeId});
 
   /// Chế độ thử thách hằng ngày (xem [showRecipeDaily]).
   final bool daily;
+
+  /// Khách đi ngang gọi đúng món này: buổi chỉ có MỘT đơn.
+  final int? recipeId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Trò mở thẳng từ hộp Trò chơi nên danh mục có thể chưa nạp xong: chờ rồi mới dựng buổi chơi.
     return ref.watch(recipeCatalogProvider).when(
-          data: (_) => _RecipeOrderGame(daily: daily),
+          data: (_) => _RecipeOrderGame(daily: daily, recipeId: recipeId),
           loading: () => Scaffold(
             appBar: AppBar(),
             body: const Center(child: CircularProgressIndicator()),
@@ -63,8 +70,9 @@ class RecipeOrderPage extends ConsumerWidget {
 }
 
 class _RecipeOrderGame extends ConsumerStatefulWidget {
-  const _RecipeOrderGame({required this.daily});
+  const _RecipeOrderGame({required this.daily, this.recipeId});
   final bool daily;
+  final int? recipeId;
 
   @override
   ConsumerState<_RecipeOrderGame> createState() => _RecipeOrderPageState();
@@ -184,6 +192,11 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     final nowMs = ref.read(clockProvider)();
     final today = dayIndex(nowMs);
     final rnd = ref.read(recipeRandomProvider);
+    final wanted = widget.recipeId;
+    if (wanted != null) {
+      final r = catalog.recipes.firstWhere((x) => x.id == wanted);
+      return [buildOrder(r, (progress[r.id] ?? const RecipeProgress()).box, catalog, rnd)];
+    }
     final pool = unlockedRecipes(catalog, (id) => progress[id]?.best ?? 0);
     final orders = buildOrders(catalog, progress, today, rnd, pool: pool);
     // Đang trong dịp lễ: thêm "đơn lễ hội" ở cuối buổi.
