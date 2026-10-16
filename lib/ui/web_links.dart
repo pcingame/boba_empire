@@ -14,6 +14,10 @@ import 'invite_dialog.dart' show shareTextProvider;
 /// Tên miền của trang web (khớp docs/CNAME; test so khớp).
 const webHomeUrl = 'https://bobaempiregame.com';
 
+/// Kênh cộng đồng (khớp footer docs/index.html).
+const facebookUrl = 'https://www.facebook.com/dechetrasua';
+const tiktokUrl = 'https://www.tiktok.com/@ng.d.th84';
+
 /// Trang hướng dẫn; [anchor] là id mục trong docs/guide.html (test so khớp).
 String webGuideUrl([String? anchor]) =>
     '$webHomeUrl/guide.html${anchor == null ? '' : '#$anchor'}';

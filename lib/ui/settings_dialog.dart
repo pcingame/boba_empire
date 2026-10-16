@@ -118,6 +118,22 @@ class _SettingsDialog extends ConsumerWidget {
             onTap: () => openWebLink(context, ref, webGuideUrl()),
           ),
           ListTile(
+            key: const Key('settings-facebook'),
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.groups_outlined),
+            title: const Text('Facebook'),
+            trailing: const Icon(Icons.open_in_new, size: 18),
+            onTap: () => openWebLink(context, ref, facebookUrl),
+          ),
+          ListTile(
+            key: const Key('settings-tiktok'),
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.play_circle_outline),
+            title: const Text('TikTok'),
+            trailing: const Icon(Icons.open_in_new, size: 18),
+            onTap: () => openWebLink(context, ref, tiktokUrl),
+          ),
+          ListTile(
             contentPadding: EdgeInsets.zero,
             leading: const Icon(Icons.language),
             title: Text(l10n.language),
