@@ -2,7 +2,7 @@
 
 ## Tên kênh và handle
 - **Tên kênh:** Boba Empire – Game Quán Trà Sữa
-- **Handle gợi ý:** @BobaEmpire (nếu bị trùng thì thử @BobaEmpireGame hoặc @BobaEmpireVN)
+- **Link kênh:** https://www.youtube.com/@bobaempire-dechetrasua (handle `@bobaempire-dechetrasua`)
 - **Ảnh đại diện:** `avatar_1024.png` (YouTube cắt tròn, đã để icon ở giữa nên không bị mất)
 
 ## Mô tả kênh (dán vào mục "Giới thiệu", dưới 1000 ký tự)
@@ -29,8 +29,8 @@ Kênh đăng video ngắn: mẹo chơi, công thức pha chế, cảnh chơi vui
 
 ## Liên kết trên kênh (mục "Liên kết")
 1. Tải trên App Store — https://apps.apple.com/app/id6808940339
-2. Facebook page — (điền link page sau khi tạo)
-3. TikTok — (điền link kênh)
+2. Facebook page — https://www.facebook.com/dechetrasua
+3. TikTok — https://www.tiktok.com/@ng.d.th84
 
 ## Email liên hệ kinh doanh
 (Điền email của bạn. Đây là email hiện cho người xem, nên dùng email riêng cho game nếu có.)
@@ -48,4 +48,5 @@ Kênh đăng video ngắn: mẹo chơi, công thức pha chế, cảnh chơi vui
 Dùng `videos/4_tong_hop_30s_co_nhac.mp4`. Video này dài dưới 1 phút nên YouTube coi là Short. Nếu muốn video giới thiệu kênh dạng ngang thì cần quay thêm.
 
 ## Ảnh bìa kênh (banner)
-YouTube cần 2560×1440 và chữ phải nằm trong vùng giữa 1546×423. Bạn chưa có ảnh này, tôi làm được nếu bạn cần.
+`banner_2560x1440.png` (2560×1440, đúng chuẩn YouTube). Chữ và icon nằm gọn trong vùng an toàn 1546×423 ở giữa nên điện thoại, máy tính bảng hay TV đều thấy đủ. Hai bên là ảnh game, chỉ hiện trên màn hình lớn.
+Tạo lại: `python3 make_banner.py` trong thư mục này.

@@ -134,6 +134,14 @@ class _SettingsDialog extends ConsumerWidget {
             onTap: () => openWebLink(context, ref, tiktokUrl),
           ),
           ListTile(
+            key: const Key('settings-youtube'),
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.smart_display_outlined),
+            title: const Text('YouTube'),
+            trailing: const Icon(Icons.open_in_new, size: 18),
+            onTap: () => openWebLink(context, ref, youtubeUrl),
+          ),
+          ListTile(
             contentPadding: EdgeInsets.zero,
             leading: const Icon(Icons.language),
             title: Text(l10n.language),

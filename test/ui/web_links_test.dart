@@ -35,6 +35,15 @@ void main() {
     expect(File('docs/sitemap.xml').readAsStringSync(), contains('$webHomeUrl/guide.html'));
   });
 
+  test('liên kết mạng xã hội trong app khớp footer của cả 2 trang web', () {
+    for (final page in ['docs/index.html', 'docs/guide.html']) {
+      final html = File(page).readAsStringSync();
+      for (final url in [facebookUrl, tiktokUrl, youtubeUrl]) {
+        expect(html, contains('href="$url"'), reason: '$page thiếu $url');
+      }
+    }
+  });
+
   testWidgets('Cài đặt có 2 dòng web; bấm mở đúng địa chỉ; không mở được → báo lỗi',
       (tester) async {
     final opened = <Uri>[];
