@@ -116,6 +116,7 @@ class GameSnapshot {
     required this.equipLockUntilMillis,
     required this.essence,
     required this.masteryTiers,
+    required this.refineLevels,
     required this.collectionMilestonesClaimed,
     required this.wishlist,
     required this.m3HowToSeen,
@@ -303,6 +304,10 @@ class GameSnapshot {
   /// 🧪 Tinh chất và bậc Bí quyết theo giai đoạn (xem GameState.essence / masteryTiers).
   final int essence;
   final Map<int, int> masteryTiers;
+
+  /// Cấp tinh luyện từng phụ kiện (xem accessory_refine.dart). Widget phải `select` giá trị suy ra
+  /// (vd. `refineSignature`), KHÔNG select cả Map — mỗi snapshot là một Map mới.
+  final Map<String, int> refineLevels;
 
   /// Mốc sưu tập đã nhận (xem GameState.collectionMilestonesClaimed).
   final List<int> collectionMilestonesClaimed;

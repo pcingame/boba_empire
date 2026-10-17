@@ -5436,6 +5436,84 @@ abstract class AppLocalizations {
   /// **'Bạn đã đổi vai một lần trong tuần này rồi.'**
   String get guildDungeonErrRoleLocked;
 
+  /// No description provided for @guildDungeonNudgeTooltip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhắc trong chat'**
+  String get guildDungeonNudgeTooltip;
+
+  /// No description provided for @guildDungeonNudge.
+  ///
+  /// In vi, this message translates to:
+  /// **'thanh {bar} còn thiếu, giúp một tay nhé!'**
+  String guildDungeonNudge(String bar);
+
+  /// No description provided for @refineTooltip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tinh luyện'**
+  String get refineTooltip;
+
+  /// No description provided for @refineButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tinh luyện'**
+  String get refineButton;
+
+  /// No description provided for @refineLevelLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cấp {level}/{max}'**
+  String refineLevelLabel(int level, int max);
+
+  /// No description provided for @refinePoints.
+  ///
+  /// In vi, this message translates to:
+  /// **'Điểm trong bộ trang bị: {from} → {to}'**
+  String refinePoints(String from, String to);
+
+  /// No description provided for @refineCostSpares.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bản dư của món này: {have}/{need}'**
+  String refineCostSpares(int have, int need);
+
+  /// No description provided for @refineCostEssence.
+  ///
+  /// In vi, this message translates to:
+  /// **'🧪 Tinh chất: {have}/{need}'**
+  String refineCostEssence(int have, int need);
+
+  /// No description provided for @refineMaxed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đạt cấp tối đa'**
+  String get refineMaxed;
+
+  /// No description provided for @refineDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã tinh luyện lên cấp {level}'**
+  String refineDone(int level);
+
+  /// No description provided for @refineNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi cấp +25% điểm của món trong bộ trang bị, không nâng trần buff của họ. Cấp không chuyển theo khi bán hay đổi món.'**
+  String get refineNote;
+
+  /// No description provided for @refineErrSpares.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đủ bản dư của món này.'**
+  String get refineErrSpares;
+
+  /// No description provided for @refineErrEssence.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đủ Tinh chất.'**
+  String get refineErrEssence;
+
   /// No description provided for @loadoutTitle.
   ///
   /// In vi, this message translates to:

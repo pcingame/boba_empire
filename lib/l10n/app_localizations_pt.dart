@@ -3158,6 +3158,58 @@ class AppLocalizationsPt extends AppLocalizations {
       'Você já trocou de papel uma vez nesta semana.';
 
   @override
+  String get guildDungeonNudgeTooltip => 'Avisar no chat';
+
+  @override
+  String guildDungeonNudge(String bar) {
+    return 'a barra de $bar está curta, pode ajudar?';
+  }
+
+  @override
+  String get refineTooltip => 'Refinar';
+
+  @override
+  String get refineButton => 'Refinar';
+
+  @override
+  String refineLevelLabel(int level, int max) {
+    return 'Nível $level/$max';
+  }
+
+  @override
+  String refinePoints(String from, String to) {
+    return 'Pontos do conjunto: $from → $to';
+  }
+
+  @override
+  String refineCostSpares(int have, int need) {
+    return 'Cópias extras deste item: $have/$need';
+  }
+
+  @override
+  String refineCostEssence(int have, int need) {
+    return '🧪 Essência: $have/$need';
+  }
+
+  @override
+  String get refineMaxed => 'Nível máximo atingido';
+
+  @override
+  String refineDone(int level) {
+    return 'Refinado para o nível $level';
+  }
+
+  @override
+  String get refineNote =>
+      'Cada nível soma 25% aos pontos do item no conjunto; não eleva o teto da família. O nível não se transfere ao vender ou trocar.';
+
+  @override
+  String get refineErrSpares => 'Cópias extras insuficientes deste item.';
+
+  @override
+  String get refineErrEssence => 'Essência insuficiente.';
+
+  @override
   String get loadoutTitle => 'Equipamento';
 
   @override

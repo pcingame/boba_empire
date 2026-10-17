@@ -13,6 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../ads/ad_service.dart';
 import '../core/accessories.dart';
 import '../core/accessory_loadout.dart';
+import '../core/accessory_refine.dart';
 import '../core/balance.dart';
 import '../core/collection_milestones.dart';
 import '../core/guild_shop.dart' show guildAccessories;
@@ -32,6 +33,8 @@ import 'accessory_market_page.dart';
 import 'widgets/accessory_rarity.dart';
 import 'widgets/clay.dart';
 import 'widgets/motion.dart';
+import 'widgets/anim_assets.dart';
+import 'widgets/one_shot_lottie.dart';
 import 'widgets/phone_width.dart';
 import 'widgets/weekend_banner.dart';
 
@@ -312,6 +315,9 @@ class _AccessoryCell extends ConsumerWidget {
         (s) => s.equippedAccessories.contains(accessory.id),
       ),
     );
+    final level = ref.watch(
+      gameControllerProvider.select((s) => refineLevel(s.refineLevels, accessory.id)),
+    );
     final color = rarityColor(accessory.rarity);
 
     void onTap() {
@@ -444,6 +450,28 @@ class _AccessoryCell extends ConsumerWidget {
                       accessoryFamilyOf(accessory.id)!.emoji,
                       key: Key('accessory-family-${accessory.id}'),
                       style: const TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ),
+              // Cấp tinh luyện ✦ + nút mở hộp Tinh luyện (món độc quyền không có bản dư nên không tinh luyện).
+              if (unlocked && !limited)
+                Positioned(
+                  bottom: 2,
+                  right: 6,
+                  child: GestureDetector(
+                    key: Key('refine-open-${accessory.id}'),
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => showRefineSheet(context, accessory),
+                    child: Padding(
+                      padding: const EdgeInsets.all(6),
+                      child: Text(
+                        level > 0 ? '✦$level' : '✦',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
+                          color: level > 0 ? theme.colorScheme.primary : theme.disabledColor,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -828,7 +856,10 @@ class _LoadoutCard extends ConsumerWidget {
     final slots = maxEquippedFor(
       vip: ref.watch(gameControllerProvider.select((s) => s.vipActive)),
     );
-    final buffs = loadoutBuffs(equipped);
+    final refine = refineFromSignature(ref.watch(
+      gameControllerProvider.select((s) => refineSignature(s.refineLevels)),
+    ));
+    final buffs = loadoutBuffs(equipped, refine: refine);
     final active = [for (final f in AccessoryFamily.values) if (buffs.of(f) > 0) f];
 
     return ClayCard(
@@ -1021,4 +1052,115 @@ Future<void> _confirmRemove(BuildContext context, WidgetRef ref, Accessory acces
   if (ok != true) return;
   final result = ctrl.tryToggleEquippedAccessory(accessory.id);
   if (result == EquipResult.removed) HapticFeedback.selectionClick();
+}
+
+/// Hộp "Tinh luyện" của một phụ kiện: cấp hiện tại, điểm trước/sau, giá (bản dư + 🧪) và nút nâng.
+Future<void> showRefineSheet(BuildContext context, Accessory accessory) => showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (_) => _RefineSheet(accessory: accessory),
+    );
+
+class _RefineSheet extends ConsumerWidget {
+  const _RefineSheet({required this.accessory});
+  final Accessory accessory;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final id = accessory.id;
+    final level = ref.watch(gameControllerProvider.select((s) => refineLevel(s.refineLevels, id)));
+    final spares = ref.watch(gameControllerProvider.select((s) => s.accessorySpares[id] ?? 0));
+    final essence = ref.watch(gameControllerProvider.select((s) => s.essence));
+    final cost = refineNextCost(level);
+    final base = accessoryPoints(accessory.rarity);
+    String pts(double mult) => (base * mult).toStringAsFixed(base * mult % 1 == 0 ? 0 : 2);
+    final nowMult = 1 + level * Balance.refinePerLevel;
+    final nextMult = 1 + (level + 1) * Balance.refinePerLevel;
+    final canRefine = cost != null && spares >= cost.spares && essence >= cost.essence;
+    final family = accessoryFamilyOf(id);
+
+    void onRefine() {
+      final r = ref.read(gameControllerProvider.notifier).refineAccessory(id);
+      final msg = switch (r) {
+        RefineResult.ok => l10n.refineDone(refineLevel(ref.read(gameControllerProvider).refineLevels, id)),
+        RefineResult.notEnoughSpares => l10n.refineErrSpares,
+        RefineResult.notEnoughEssence => l10n.refineErrEssence,
+        _ => null,
+      };
+      if (r == RefineResult.ok) {
+        HapticFeedback.mediumImpact();
+        playEffect(context, AnimAssets.sparkle, heavy: false);
+      }
+      if (msg != null) {
+        ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(SnackBar(content: Text(msg)));
+      }
+    }
+
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(children: [
+              Text(accessory.emoji, style: const TextStyle(fontSize: 36)),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  '${family?.emoji ?? ''} ${accessoryName(l10n, id)}',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
+                ),
+              ),
+            ]),
+            const SizedBox(height: 12),
+            PulseOnIncrease(
+              value: level,
+              peak: 1.12,
+              child: Text(
+                '${'✦' * level}${'✧' * (Balance.refineMaxLevel - level)}  ${l10n.refineLevelLabel(level, Balance.refineMaxLevel)}',
+                key: const Key('refine-level'),
+                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              l10n.refinePoints(pts(nowMult), cost == null ? pts(nowMult) : pts(nextMult)),
+              key: const Key('refine-points'),
+              style: theme.textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 8),
+            if (cost == null)
+              Text(l10n.refineMaxed, key: const Key('refine-maxed'), style: theme.textTheme.bodyMedium)
+            else ...[
+              Text(l10n.refineCostSpares(spares, cost.spares),
+                  key: const Key('refine-cost-spares'),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                      color: spares >= cost.spares ? null : theme.colorScheme.error)),
+              Text(l10n.refineCostEssence(essence, cost.essence),
+                  key: const Key('refine-cost-essence'),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                      color: essence >= cost.essence ? null : theme.colorScheme.error)),
+            ],
+            const SizedBox(height: 10),
+            Text(l10n.refineNote, style: theme.textTheme.bodySmall),
+            const SizedBox(height: 12),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                key: const Key('refine-button'),
+                onPressed: canRefine ? onRefine : null,
+                child: FittedBox(fit: BoxFit.scaleDown, child: Text(l10n.refineButton)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

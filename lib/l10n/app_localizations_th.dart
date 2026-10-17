@@ -3134,6 +3134,58 @@ class AppLocalizationsTh extends AppLocalizations {
       'สัปดาห์นี้คุณเปลี่ยนบทบาทไปแล้วหนึ่งครั้ง';
 
   @override
+  String get guildDungeonNudgeTooltip => 'เตือนในแชต';
+
+  @override
+  String guildDungeonNudge(String bar) {
+    return 'แถบ$barยังขาดอยู่ ช่วยหน่อยนะ!';
+  }
+
+  @override
+  String get refineTooltip => 'ตีบวก';
+
+  @override
+  String get refineButton => 'ตีบวก';
+
+  @override
+  String refineLevelLabel(int level, int max) {
+    return 'เลเวล $level/$max';
+  }
+
+  @override
+  String refinePoints(String from, String to) {
+    return 'แต้มชุดสวมใส่: $from → $to';
+  }
+
+  @override
+  String refineCostSpares(int have, int need) {
+    return 'ไอเทมซ้ำของชิ้นนี้: $have/$need';
+  }
+
+  @override
+  String refineCostEssence(int have, int need) {
+    return '🧪 แก่นแท้: $have/$need';
+  }
+
+  @override
+  String get refineMaxed => 'ถึงเลเวลสูงสุดแล้ว';
+
+  @override
+  String refineDone(int level) {
+    return 'ตีบวกเป็นเลเวล $level แล้ว';
+  }
+
+  @override
+  String get refineNote =>
+      'แต่ละเลเวลเพิ่มแต้มของชิ้นนี้ 25% แต่ไม่เพิ่มเพดานของสาย เลเวลไม่ติดไปเมื่อขายหรือแลกเปลี่ยน';
+
+  @override
+  String get refineErrSpares => 'ไอเทมซ้ำของชิ้นนี้ไม่พอ';
+
+  @override
+  String get refineErrEssence => 'แก่นแท้ไม่พอ';
+
+  @override
   String get loadoutTitle => 'ชุดสวมใส่';
 
   @override

@@ -4,6 +4,7 @@
 library;
 
 import 'accessories.dart';
+import 'accessory_refine.dart';
 import 'balance.dart';
 
 /// Bốn họ phụ kiện. Chia luân phiên TRONG từng độ hiếm để họ nào cũng có đủ mọi độ hiếm (gán theo
@@ -129,15 +130,16 @@ class LoadoutBuffs {
   bool get isEmpty => tap == 0 && income == 0 && offline == 0 && discount == 0;
 }
 
-/// Tính buff từ danh sách id đang mang. Món trùng id chỉ tính một lần; id lạ bị bỏ qua.
-LoadoutBuffs loadoutBuffs(Iterable<String> equipped) {
+/// Tính buff từ danh sách id đang mang. Món trùng id chỉ tính một lần; id lạ bị bỏ qua. [refine] = cấp tinh luyện
+/// (nhân điểm từng món; trần họ vẫn giữ nguyên).
+LoadoutBuffs loadoutBuffs(Iterable<String> equipped, {Map<String, int> refine = const {}}) {
   final points = <AccessoryFamily, double>{};
   final counts = <AccessoryFamily, int>{};
   for (final id in equipped.toSet()) {
     final a = accessoryOrNull(id);
     final f = accessoryFamilyOf(id);
     if (a == null || f == null) continue;
-    points[f] = (points[f] ?? 0) + accessoryPoints(a.rarity);
+    points[f] = (points[f] ?? 0) + accessoryPoints(a.rarity) * refineMultiplier(refine, id);
     counts[f] = (counts[f] ?? 0) + 1;
   }
   if (points.isEmpty) return LoadoutBuffs.none;

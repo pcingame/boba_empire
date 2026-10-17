@@ -3150,6 +3150,58 @@ class AppLocalizationsEn extends AppLocalizations {
       'You\'ve already switched roles once this week.';
 
   @override
+  String get guildDungeonNudgeTooltip => 'Nudge in chat';
+
+  @override
+  String guildDungeonNudge(String bar) {
+    return 'the $bar bar is short, could you help out?';
+  }
+
+  @override
+  String get refineTooltip => 'Refine';
+
+  @override
+  String get refineButton => 'Refine';
+
+  @override
+  String refineLevelLabel(int level, int max) {
+    return 'Level $level/$max';
+  }
+
+  @override
+  String refinePoints(String from, String to) {
+    return 'Loadout points: $from → $to';
+  }
+
+  @override
+  String refineCostSpares(int have, int need) {
+    return 'Spares of this item: $have/$need';
+  }
+
+  @override
+  String refineCostEssence(int have, int need) {
+    return '🧪 Essence: $have/$need';
+  }
+
+  @override
+  String get refineMaxed => 'Max level reached';
+
+  @override
+  String refineDone(int level) {
+    return 'Refined to level $level';
+  }
+
+  @override
+  String get refineNote =>
+      'Each level adds 25% to the item\'s loadout points; it doesn\'t raise the family cap. The level doesn\'t transfer when you sell or swap the item.';
+
+  @override
+  String get refineErrSpares => 'Not enough spares of this item.';
+
+  @override
+  String get refineErrEssence => 'Not enough Essence.';
+
+  @override
   String get loadoutTitle => 'Loadout';
 
   @override

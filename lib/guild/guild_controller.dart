@@ -12,6 +12,7 @@ import '../core/guild.dart';
 import '../core/topup.dart';
 import '../core/guild_shop.dart';
 import '../state/game_providers.dart';
+import 'guild_dungeon_controller.dart';
 import 'guild_repository.dart';
 
 sealed class GuildViewState {
@@ -241,6 +242,12 @@ class GuildController extends Notifier<GuildViewState> {
     if (_lastAlertSyncMs != 0 && now - _lastAlertSyncMs < 10 * 60 * 1000) return;
     _lastAlertSyncMs = now;
     await refresh(silent: true);
+    // Phó bản: để chấm đỏ có ải chờ nhận. Mọi lỗi bị nuốt (không được làm hỏng chấm đỏ chính).
+    try {
+      await ref.read(guildDungeonControllerProvider.notifier).refresh(silent: true);
+    } catch (e) {
+      developer.log('syncAlerts dungeon: $e', name: 'Guild');
+    }
   }
 
   /// Nạp [gems] 💎 lấy Xu Hội: kiểm đủ 💎 và còn hạn mức ngày TRƯỚC, trừ 💎 SAU khi

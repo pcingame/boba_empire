@@ -3095,6 +3095,58 @@ class AppLocalizationsKo extends AppLocalizations {
   String get guildDungeonErrRoleLocked => '이번 주에는 이미 역할을 한 번 바꿨어요.';
 
   @override
+  String get guildDungeonNudgeTooltip => '채팅으로 알리기';
+
+  @override
+  String guildDungeonNudge(String bar) {
+    return '$bar 게이지가 부족해요, 도와주세요!';
+  }
+
+  @override
+  String get refineTooltip => '정련';
+
+  @override
+  String get refineButton => '정련';
+
+  @override
+  String refineLevelLabel(int level, int max) {
+    return '$level/$max레벨';
+  }
+
+  @override
+  String refinePoints(String from, String to) {
+    return '장착 점수: $from → $to';
+  }
+
+  @override
+  String refineCostSpares(int have, int need) {
+    return '이 아이템의 여분: $have/$need';
+  }
+
+  @override
+  String refineCostEssence(int have, int need) {
+    return '🧪 정수: $have/$need';
+  }
+
+  @override
+  String get refineMaxed => '최대 레벨 달성';
+
+  @override
+  String refineDone(int level) {
+    return '$level레벨로 정련 완료';
+  }
+
+  @override
+  String get refineNote =>
+      '레벨마다 장착 점수가 25% 늘어나지만 계열 상한은 오르지 않아요. 판매·교환 시 레벨은 넘어가지 않아요.';
+
+  @override
+  String get refineErrSpares => '이 아이템의 여분이 부족해요.';
+
+  @override
+  String get refineErrEssence => '정수가 부족해요.';
+
+  @override
   String get loadoutTitle => '장비 세트';
 
   @override

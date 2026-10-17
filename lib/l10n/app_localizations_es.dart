@@ -3166,6 +3166,59 @@ class AppLocalizationsEs extends AppLocalizations {
       'Ya cambiaste de rol una vez esta semana.';
 
   @override
+  String get guildDungeonNudgeTooltip => 'Avisar en el chat';
+
+  @override
+  String guildDungeonNudge(String bar) {
+    return 'la barra de $bar va corta, ¿nos echas una mano?';
+  }
+
+  @override
+  String get refineTooltip => 'Refinar';
+
+  @override
+  String get refineButton => 'Refinar';
+
+  @override
+  String refineLevelLabel(int level, int max) {
+    return 'Nivel $level/$max';
+  }
+
+  @override
+  String refinePoints(String from, String to) {
+    return 'Puntos del equipo: $from → $to';
+  }
+
+  @override
+  String refineCostSpares(int have, int need) {
+    return 'Copias extra de este objeto: $have/$need';
+  }
+
+  @override
+  String refineCostEssence(int have, int need) {
+    return '🧪 Esencia: $have/$need';
+  }
+
+  @override
+  String get refineMaxed => 'Nivel máximo alcanzado';
+
+  @override
+  String refineDone(int level) {
+    return 'Refinado al nivel $level';
+  }
+
+  @override
+  String get refineNote =>
+      'Cada nivel suma un 25% a los puntos del objeto en el equipo; no sube el tope de la familia. El nivel no se transfiere al vender o intercambiar.';
+
+  @override
+  String get refineErrSpares =>
+      'No tienes suficientes copias extra de este objeto.';
+
+  @override
+  String get refineErrEssence => 'Esencia insuficiente.';
+
+  @override
   String get loadoutTitle => 'Equipo';
 
   @override

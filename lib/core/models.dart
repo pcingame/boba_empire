@@ -184,6 +184,7 @@ class GameState {
     List<String>? eventClaimed,
     Map<String, int>? accessorySpares,
     Map<int, int>? masteryTiers,
+    Map<String, int>? refineLevels,
     List<String>? equippedAccessories,
     List<int>? collectionMilestonesClaimed,
     List<String>? wishlist,
@@ -199,6 +200,7 @@ class GameState {
         eventClaimed = eventClaimed ?? [],
         accessorySpares = accessorySpares ?? {},
         masteryTiers = masteryTiers ?? {},
+        refineLevels = refineLevels ?? {},
         equippedAccessories = equippedAccessories ?? [],
         collectionMilestonesClaimed = collectionMilestonesClaimed ?? [],
         wishlist = wishlist ?? [],
@@ -343,6 +345,9 @@ class GameState {
 
   /// Bậc Bí quyết đã mua theo giai đoạn (giai đoạn → 1..[Balance.masteryMaxTier]). Giữ qua Nhượng quyền/Kỷ Nguyên.
   final Map<int, int> masteryTiers;
+
+  /// Cấp tinh luyện từng phụ kiện (0–3, xem accessory_refine.dart). Chỉ lưu món > 0. Giữ qua Nhượng quyền/Kỷ Nguyên.
+  final Map<String, int> refineLevels;
 
   /// Bộ đếm Tinh chất nguồn lặp lại trong ngày [essenceDay] (dayIndex UTC): riêng đơn Pha theo đơn, và chung.
   int essenceDay;
@@ -649,6 +654,7 @@ class GameState {
         'accessorySpares': accessorySpares,
         'essence': essence,
         'masteryTiers': {for (final e in masteryTiers.entries) '${e.key}': e.value},
+        'refineLevels': refineLevels,
         'essenceDay': essenceDay,
         'essenceOrdersToday': essenceOrdersToday,
         'essenceRepeatableToday': essenceRepeatableToday,
@@ -821,6 +827,12 @@ class GameState {
             for (final e in (json['masteryTiers'] as Map).entries)
               if (int.tryParse('${e.key}') != null && e.value is num && (e.value as num).isFinite)
                 int.parse('${e.key}'): (e.value as num).clamp(0, 99).toInt(), // trần thật kẹp ở masteryTier()
+        },
+        refineLevels: {
+          if (json['refineLevels'] is Map)
+            for (final e in (json['refineLevels'] as Map).entries)
+              if (e.key is String && e.value is num && (e.value as num) > 0)
+                e.key as String: (e.value as num).toInt().clamp(1, 3),
         },
         essenceDay: (json['essenceDay'] as num?)?.toInt() ?? 0,
         essenceOrdersToday: (json['essenceOrdersToday'] as num?)?.toInt() ?? 0,

@@ -8,9 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/format.dart';
 import '../core/guild_dungeon.dart';
 import '../guild/guild_dungeon_controller.dart';
+import '../guild/guild_controller.dart';
 import '../guild/guild_dungeon_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
+import 'guild_chat_page.dart' show showGuildChat;
 import 'guild_page.dart' show guildFailureText;
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
@@ -202,6 +204,15 @@ class _GuildDungeonPageState extends ConsumerState<GuildDungeonPage> {
     final theme = Theme.of(context);
     final view = ref.watch(guildDungeonControllerProvider);
     final d = view.data;
+    // Hiệu ứng khi đang xem mà một ải xong / một thanh đầy (chỉ khi tiến lên).
+    ref.listen(guildDungeonControllerProvider.select((v) => v.data), (prev, next) {
+      if (prev == null || next == null) return;
+      if (next.cleared > prev.cleared) {
+        playEffect(context, AnimAssets.confetti);
+      } else if (DungeonBar.values.any((b) => next.barDone(b) && !prev.barDone(b))) {
+        playEffect(context, AnimAssets.sparkle, heavy: false);
+      }
+    });
     return PhoneWidth(
       child: Scaffold(
         appBar: AppBar(title: Text(l10n.guildDungeonTitle)),
@@ -244,7 +255,7 @@ class _GuildDungeonPageState extends ConsumerState<GuildDungeonPage> {
                     const SizedBox(height: 8),
                     Text(l10n.guildDungeonBoard,
                         style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
-                    for (final m in d.board) _BoardRow(member: m),
+                    for (final m in d.board) _BoardRow(member: m, state: d),
                   ],
                 ),
               ),
@@ -403,17 +414,28 @@ class _StageRow extends StatelessWidget {
   }
 }
 
-class _BoardRow extends StatelessWidget {
-  const _BoardRow({required this.member});
+class _BoardRow extends ConsumerWidget {
+  const _BoardRow({required this.member, required this.state});
   final DungeonMember member;
+  final DungeonState state;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final stats = [
       for (final b in DungeonBar.values) '${_barEmoji[b]} ${_barValue(l10n, b, member.of(b))}',
     ].join('  ');
+    // Nhắc người khác trong chat về thanh còn thiếu đầu tiên của ải đang đánh (không nhắc chính mình).
+    final view = ref.watch(guildControllerProvider);
+    final isMe = view is GuildMine && view.myUserId == member.userId;
+    DungeonBar? missing;
+    for (final b in DungeonBar.values) {
+      if (!state.barDone(b)) {
+        missing = b;
+        break;
+      }
+    }
     return ClayTile(
       key: Key('guild-dungeon-member-${member.userId}'),
       child: Row(children: [
@@ -431,6 +453,15 @@ class _BoardRow extends StatelessWidget {
             ],
           ),
         ),
+        if (!isMe && missing != null)
+          IconButton(
+            key: Key('guild-dungeon-nudge-${member.userId}'),
+            tooltip: l10n.guildDungeonNudgeTooltip,
+            visualDensity: VisualDensity.compact,
+            icon: const Icon(Icons.alternate_email, size: 20),
+            onPressed: () => showGuildChat(context,
+                prefill: '@${member.nickname} ${l10n.guildDungeonNudge(_barLabel(l10n, missing!))} '),
+          ),
       ]),
     );
   }

@@ -3138,6 +3138,58 @@ class AppLocalizationsVi extends AppLocalizations {
       'Bạn đã đổi vai một lần trong tuần này rồi.';
 
   @override
+  String get guildDungeonNudgeTooltip => 'Nhắc trong chat';
+
+  @override
+  String guildDungeonNudge(String bar) {
+    return 'thanh $bar còn thiếu, giúp một tay nhé!';
+  }
+
+  @override
+  String get refineTooltip => 'Tinh luyện';
+
+  @override
+  String get refineButton => 'Tinh luyện';
+
+  @override
+  String refineLevelLabel(int level, int max) {
+    return 'Cấp $level/$max';
+  }
+
+  @override
+  String refinePoints(String from, String to) {
+    return 'Điểm trong bộ trang bị: $from → $to';
+  }
+
+  @override
+  String refineCostSpares(int have, int need) {
+    return 'Bản dư của món này: $have/$need';
+  }
+
+  @override
+  String refineCostEssence(int have, int need) {
+    return '🧪 Tinh chất: $have/$need';
+  }
+
+  @override
+  String get refineMaxed => 'Đã đạt cấp tối đa';
+
+  @override
+  String refineDone(int level) {
+    return 'Đã tinh luyện lên cấp $level';
+  }
+
+  @override
+  String get refineNote =>
+      'Mỗi cấp +25% điểm của món trong bộ trang bị, không nâng trần buff của họ. Cấp không chuyển theo khi bán hay đổi món.';
+
+  @override
+  String get refineErrSpares => 'Chưa đủ bản dư của món này.';
+
+  @override
+  String get refineErrEssence => 'Chưa đủ Tinh chất.';
+
+  @override
   String get loadoutTitle => 'Bộ trang bị';
 
   @override

@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/guild.dart';
 import '../core/guild_shop.dart';
 import 'guild_chat_unread.dart';
+import 'guild_dungeon_controller.dart';
 import 'guild_controller.dart';
 
 /// Có thưởng nào (mốc tuần, Boss, nhiệm vụ cá nhân, quỹ) đang chờ nhận không. Cùng điều
@@ -35,5 +36,7 @@ final guildAlertProvider = Provider<bool>((ref) {
   if (view is! GuildMine) return false;
   if (ref.watch(guildChatUnreadProvider)) return true;
   if (view.canModerate && view.guild.requests.isNotEmpty) return true;
+  // Ải Phó bản đã qua mà bạn chưa nhận (dữ liệu do syncAlerts / thẻ trên màn Hội tải).
+  if (ref.watch(guildDungeonControllerProvider.select((v) => v.data?.claimableCount ?? 0)) > 0) return true;
   return guildHasClaimable(view);
 });

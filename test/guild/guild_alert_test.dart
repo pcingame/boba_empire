@@ -1,5 +1,11 @@
 import 'package:boba_empire/guild/guild_alert.dart';
+import 'package:boba_empire/core/guild_dungeon.dart';
 import 'package:boba_empire/guild/guild_controller.dart';
+import 'package:boba_empire/guild/guild_dungeon_controller.dart';
+import 'package:boba_empire/guild/guild_dungeon_repository.dart';
+import 'package:boba_empire/state/game_providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:boba_empire/guild/guild_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -35,7 +41,57 @@ GuildMine _view({
       ),
     );
 
+class _FakeGuild extends GuildController {
+  _FakeGuild(this.v);
+  final GuildViewState v;
+  @override
+  GuildViewState build() => v;
+}
+
+class _FakeDungeon extends GuildDungeonController {
+  _FakeDungeon(this.v);
+  final DungeonView v;
+  @override
+  DungeonView build() => v;
+}
+
+DungeonState _dungeon({int cleared = 0, Set<int> claimed = const {}, int tap = 0}) => DungeonState(
+      tier: 0,
+      role: null,
+      roleChanges: 0,
+      bars: {for (final b in DungeonBar.values) b: 0},
+      targets: [
+        for (var s = 1; s <= 3; s++) {for (final b in DungeonBar.values) b: dungeonTarget(b, s, 4, 0)},
+      ],
+      cleared: cleared,
+      claimed: claimed,
+      mine: {DungeonBar.tap: tap, DungeonBar.off: 0, DungeonBar.rec: 0},
+      board: const [],
+    );
+
+bool _alert(DungeonState? d, SharedPreferences prefs) {
+  final c = ProviderContainer(overrides: [
+    sharedPreferencesProvider.overrideWithValue(prefs),
+    guildControllerProvider.overrideWith(() => _FakeGuild(_view())),
+    guildDungeonControllerProvider.overrideWith(() => _FakeDungeon(DungeonView(data: d, loading: false))),
+  ]);
+  addTearDown(c.dispose);
+  return c.read(guildAlertProvider);
+}
+
 void main() {
+  test('ải Phó bản đã qua mà chưa nhận (và đủ đóng góp) → chấm đỏ; nhận rồi / chưa đóng góp → không', () async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+    bool alert(DungeonState? d) => _alert(d, prefs);
+    expect(alert(null), isFalse);
+    expect(alert(_dungeon()), isFalse);
+    expect(alert(_dungeon(cleared: 1, tap: 500)), isTrue);
+    expect(alert(_dungeon(cleared: 1, tap: 500, claimed: {1})), isFalse);
+    expect(alert(_dungeon(cleared: 1, tap: 10)), isFalse, reason: 'chưa đủ đóng góp tối thiểu nên chưa nhận được');
+    expect(alert(_dungeon(cleared: 2, tap: 500, claimed: {1})), isTrue, reason: 'còn ải 2');
+  });
+
   test('không có gì để nhận thì không chấm đỏ', () {
     expect(guildHasClaimable(_view()), isFalse);
     expect(guildHasClaimable(_view(total: 50000, myPoints: 100)), isFalse,

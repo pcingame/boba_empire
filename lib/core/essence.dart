@@ -2,6 +2,7 @@
 /// Hàm thuần trên [GameState] — lý do thiết kế và con số: PROPOSAL_ESSENCE_MASTERY.md.
 library;
 
+import 'accessory_refine.dart' show refineEssenceSpent;
 import 'balance.dart';
 import 'models.dart';
 
@@ -39,11 +40,17 @@ int essenceProgress({required int essence, required Map<int, int> tiers}) {
   return essence + spent;
 }
 
-/// Cùng thước đo, đọc từ JSON save (cloud) — thiếu/sai kiểu thì tính là 0.
+/// Cùng thước đo, đọc từ JSON save (cloud), cộng cả 🧪 đã đổ vào tinh luyện phụ kiện — thiếu/sai kiểu thì tính là 0.
 int essenceProgressFromJson(Map<String, dynamic> json) {
   final e = json['essence'];
   final m = json['masteryTiers'];
-  return essenceProgress(
+  final r = json['refineLevels'];
+  return refineEssenceSpent({
+        if (r is Map)
+          for (final entry in r.entries)
+            if (entry.key is String && entry.value is num) entry.key as String: (entry.value as num).toInt(),
+      }) +
+      essenceProgress(
     essence: e is num ? e.toInt() : 0,
     tiers: {
       if (m is Map)

@@ -1558,7 +1558,7 @@ double _globalIncomeMult(GameSnapshot s) =>
     ascensionIncomeMultiplier(s.ascensionIncomeLevel) *
     permanentMultiplier(s.gemBoostLevel) *
     prestigeIncomeMultiplier(s.prestigeIncomeLevel) *
-    loadoutBuffs(s.equippedAccessories).incomeMultiplier *
+    loadoutBuffs(s.equippedAccessories, refine: s.refineLevels).incomeMultiplier *
     (s.doubleIncomeOwned ? 2.0 : 1.0);
 
 /// Id nguồn thu ĐÁNG MUA nhất (thu nhập thêm / chi phí cao nhất) trong các mục đã

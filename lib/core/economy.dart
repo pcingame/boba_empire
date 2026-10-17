@@ -284,7 +284,7 @@ double upgradeCostMultiplier(int discountLevel, {double extraDiscount = 0}) {
 /// Hệ số nhân giá nâng cấp của [state]: perk "Mua sỉ" + món họ 💎 đang mang.
 double upgradeCostMultiplierFor(GameState state) => upgradeCostMultiplier(
       state.prestigeDiscountLevel,
-      extraDiscount: loadoutBuffs(state.equippedAccessories).discount,
+      extraDiscount: loadoutBuffs(state.equippedAccessories, refine: state.refineLevels).discount,
     );
 
 /// Giá (Kim Cương) để nâng vật phẩm "Tăng thu nhập" lên cấp kế tiếp.
@@ -387,7 +387,7 @@ double effectiveIncomePerSecond(
     (state.doubleIncomeOwned ? 2.0 : 1.0) *
     vipIncomeMultiplier(state.vipExp) *
     guildVipBonusMultiplier(joined: state.guildJoined, pct: state.guildVipBonusPct) *
-    loadoutBuffs(state.equippedAccessories).incomeMultiplier *
+    loadoutBuffs(state.equippedAccessories, refine: state.refineLevels).incomeMultiplier *
     boostMultiplier;
 
 /// Số Sao nhượng quyền tương ứng với tổng thu nhập cả đời.

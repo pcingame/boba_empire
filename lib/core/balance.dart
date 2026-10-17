@@ -456,6 +456,13 @@ class Balance {
   static const double loadoutDiscountPerPoint = 0.004;
   static const double loadoutDiscountCap = 0.10;
 
+  // --- Tinh luyện phụ kiện (PROPOSAL_ACCESSORY_REFINE.md). Mỗi cấp +[refinePerLevel] điểm của món, giá =
+  // bản dư của chính món + Tinh chất. KHÔNG nâng trần họ nào. Số ước lượng chưa playtest.
+  static const int refineMaxLevel = 3;
+  static const double refinePerLevel = 0.25;
+  static const List<int> refineSpares = [1, 2, 3];
+  static const List<int> refineEssence = [15, 40, 100];
+
   /// Combo: số món CÙNG HỌ đang mang (2 / 3 / 4+) nhân buff của họ đó.
   static const double loadoutCombo2 = 1.10;
   static const double loadoutCombo3 = 1.25;

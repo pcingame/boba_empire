@@ -22,6 +22,7 @@ import '../core/daily_deal.dart';
 import '../core/challenges.dart';
 import '../core/daily_quests.dart';
 import '../core/economy.dart';
+import '../core/accessory_refine.dart';
 import '../core/essence.dart';
 import '../core/guild_dungeon.dart';
 import '../core/event_quests.dart';
@@ -2116,6 +2117,17 @@ class GameController extends Notifier<GameSnapshot> {
     return reward;
   }
 
+  /// Tinh luyện một cấp cho phụ kiện [id] (tiêu bản dư + 🧪). Lưu ngay. Xem accessory_refine.dart.
+  RefineResult refineAccessory(String id) {
+    final r = tryRefine(_game, id);
+    if (r == RefineResult.ok) {
+      logEvent('accessory_refine', {'id': id, 'level': refineLevel(_game.refineLevels, id)});
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return r;
+  }
+
   /// Mua một bậc Bí quyết ở [stage] bằng 🧪. False nếu thiếu 🧪 / đã đầy / giai đoạn không có.
   bool buyMasteryTier(int stage) {
     if (!buyMastery(_game, stage)) return false;
@@ -2262,6 +2274,7 @@ class GameController extends Notifier<GameSnapshot> {
       essence: _game.essence,
       // Bản sao — không chia sẻ instance với GameState (xem snapshot-list-aliasing-select).
       masteryTiers: Map.unmodifiable(_game.masteryTiers),
+      refineLevels: Map.unmodifiable(_game.refineLevels),
       collectionMilestonesClaimed:
           List.unmodifiable(_game.collectionMilestonesClaimed),
       wishlist: List.unmodifiable(_game.wishlist),

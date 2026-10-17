@@ -232,6 +232,17 @@ void main() {
     await _end(tester, c);
   });
 
+  testWidgets('bảng đóng góp: có nút nhắc chat cho hội viên khi còn thanh thiếu; hết thanh thiếu thì ẩn', (tester) async {
+    final (c, _) = await _pump(tester, _state());
+    expect(find.byKey(const Key('guild-dungeon-nudge-a')), findsOneWidget);
+    expect(find.byKey(const Key('guild-dungeon-nudge-b')), findsOneWidget);
+    await _end(tester, c);
+    final full = {for (final b in DungeonBar.values) b: 999999999};
+    final (c2, _) = await _pump(tester, _state(bars: full));
+    expect(find.byKey(const Key('guild-dungeon-nudge-a')), findsNothing);
+    await _end(tester, c2);
+  });
+
   testWidgets('thẻ trên màn Hội: chấm đỏ khi có ải chờ nhận', (tester) async {
     final (c, _) = await _pump(
         tester,

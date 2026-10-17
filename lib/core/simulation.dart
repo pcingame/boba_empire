@@ -24,7 +24,7 @@ double tapGain(GameState state, {double boostMultiplier = 1.0}) =>
     permanentMultiplier(state.gemBoostLevel) *
     prestigeTapMultiplier(state.prestigeTapLevel) *
     storyChoiceTapMultiplier(state) *
-    loadoutBuffs(state.equippedAccessories).tapMultiplier *
+    loadoutBuffs(state.equippedAccessories, refine: state.refineLevels).tapMultiplier *
     boostMultiplier;
 
 /// Kết quả một lần chạm ly. [boostMultiplier] là hệ số Mưa vàng đang có.
@@ -337,7 +337,7 @@ double applyOfflineEarnings(
         bonusPerStar: Balance.bonusPerStar,
       ) *
       prestigeOfflineMultiplier(state.prestigeOfflineLevel) *
-      loadoutBuffs(state.equippedAccessories).offlineMultiplier *
+      loadoutBuffs(state.equippedAccessories, refine: state.refineLevels).offlineMultiplier *
       vipMult *
       elapsedSec;
   _credit(state, earned);

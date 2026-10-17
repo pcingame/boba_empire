@@ -3144,6 +3144,58 @@ class AppLocalizationsId extends AppLocalizations {
       'Kamu sudah mengganti peran sekali minggu ini.';
 
   @override
+  String get guildDungeonNudgeTooltip => 'Colek di chat';
+
+  @override
+  String guildDungeonNudge(String bar) {
+    return 'bar $bar masih kurang, bantu ya!';
+  }
+
+  @override
+  String get refineTooltip => 'Asah';
+
+  @override
+  String get refineButton => 'Asah';
+
+  @override
+  String refineLevelLabel(int level, int max) {
+    return 'Level $level/$max';
+  }
+
+  @override
+  String refinePoints(String from, String to) {
+    return 'Poin set: $from → $to';
+  }
+
+  @override
+  String refineCostSpares(int have, int need) {
+    return 'Duplikat item ini: $have/$need';
+  }
+
+  @override
+  String refineCostEssence(int have, int need) {
+    return '🧪 Esensi: $have/$need';
+  }
+
+  @override
+  String get refineMaxed => 'Level maksimum tercapai';
+
+  @override
+  String refineDone(int level) {
+    return 'Diasah ke level $level';
+  }
+
+  @override
+  String get refineNote =>
+      'Tiap level menambah 25% poin item di set, tanpa menaikkan batas keluarga. Level tidak ikut berpindah saat item dijual atau ditukar.';
+
+  @override
+  String get refineErrSpares => 'Duplikat item ini belum cukup.';
+
+  @override
+  String get refineErrEssence => 'Esensi belum cukup.';
+
+  @override
   String get loadoutTitle => 'Perlengkapan';
 
   @override
