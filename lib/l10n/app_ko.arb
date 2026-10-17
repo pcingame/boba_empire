@@ -854,6 +854,15 @@
   "swapErrNetwork": "연결할 수 없어요. 잠시 후 다시 시도해 주세요.",
   "marketCancelButton": "등록 취소",
   "marketCancelledToast": "등록을 취소했어요.",
+  "marketExtendButton": "{days}일 연장 (광고 시청)",
+  "@marketExtendButton": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "marketExtendedToast": "등록 기간을 연장했어요.",
   "marketSellableHeader": "판매 가능한 액세서리",
   "marketEmptySellable": "아직 판매할 액세서리가 없어요.",
   "marketListedToast": "등록 완료!",

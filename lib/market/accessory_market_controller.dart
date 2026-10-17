@@ -353,6 +353,18 @@ class AccessoryMarketController extends Notifier<AccessoryMarketViewState> {
     }
   }
 
+  /// Gia hạn tin (sau khi người bán xem quảng cáo). Null = thành công.
+  Future<String?> extendItem(MarketListing listing) async {
+    try {
+      await _repository.extendListing(listing.id);
+      await refresh(silent: true);
+      return null;
+    } catch (e) {
+      unawaited(refresh(silent: true));
+      return 'Gia hạn thất bại, thử lại sau nhé.';
+    }
+  }
+
   /// Tạo đề nghị: ký quỹ [giveId] muốn [wantId]. Null = thành công; món rời kho cục bộ ngay.
   Future<SwapError?> createSwap(String giveId, String wantId) async {
     try {

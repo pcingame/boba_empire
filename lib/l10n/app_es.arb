@@ -1113,6 +1113,15 @@
   "swapErrNetwork": "No se pudo conectar, inténtalo más tarde.",
   "marketCancelButton": "Cancelar publicación",
   "marketCancelledToast": "Publicación cancelada.",
+  "marketExtendButton": "Ampliar {days} días más (ver anuncio)",
+  "@marketExtendButton": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "marketExtendedToast": "Publicación ampliada.",
   "marketSellableHeader": "Accesorios que puedes vender",
   "marketEmptySellable": "Todavía no tienes accesorios para vender.",
   "marketListedToast": "¡Publicado!",

@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../ads/ad_service.dart';
 import '../analytics/analytics.dart';
 import '../core/accessories.dart';
 import '../core/balance.dart';
@@ -27,6 +28,7 @@ import 'widgets/accessory_rarity.dart';
 import 'widgets/motion.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/trailing_box.dart';
 import 'widgets/weekend_banner.dart';
 
 /// Id có trong danh mục của bản app này. Listing/kho có thể chứa món do bản app
@@ -869,12 +871,16 @@ class _ListingTile extends StatelessWidget {
       {required this.listing,
       required this.trailing,
       this.isNew = false,
-      this.showExpiry = false});
+      this.showExpiry = false,
+      this.onExtend});
   final MarketListing listing;
   final Widget trailing;
 
   /// Tin của chính mình: hiện còn bao lâu nữa hết hạn (món sẽ tự về kho).
   final bool showExpiry;
+
+  /// Gia hạn tin bằng quảng cáo (null = ẩn nút: đã dùng lượt hoặc không phải tin của mình).
+  final VoidCallback? onExtend;
 
   /// Món người chơi CHƯA có trong bộ sưu tập — gắn nhãn "MỚI" để dễ nhận ra.
   final bool isNew;
@@ -961,11 +967,27 @@ class _ListingTile extends StatelessWidget {
                           style: theme.textTheme.bodySmall
                               ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                         ),
+                      if (showExpiry && onExtend != null)
+                        TextButton(
+                          key: Key('listing-extend-${listing.id}'),
+                          onPressed: onExtend,
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: const Size(0, 32),
+                            alignment: Alignment.centerLeft,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          child: Text(
+                            '🎬 ${l10n.marketExtendButton(marketListingDays)}',
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                     ],
                   ),
                 ),
                 const SizedBox(width: 4),
-                trailing,
+                TrailingBox(child: FittedBox(fit: BoxFit.scaleDown, child: trailing)),
               ],
             ),
           ),
@@ -1003,6 +1025,22 @@ class _SectionHeader extends StatelessWidget {
           ],
         ),
       );
+}
+
+/// Xem quảng cáo thưởng rồi gia hạn tin (người gỡ QC/VIP được gia hạn thẳng — cùng khuôn mọi chỗ dùng rewarded).
+Future<void> _extendWithAd(BuildContext context, WidgetRef ref, MarketListing listing,
+    void Function(String?) onAction) async {
+  final l10n = AppLocalizations.of(context)!;
+  final market = ref.read(accessoryMarketControllerProvider.notifier);
+  final adFree = ref.read(gameControllerProvider).adFree;
+  final outcome = adFree ? RewardOutcome.earned : await ref.read(adServiceProvider).showRewardedAd();
+  if (!context.mounted) return;
+  if (outcome != RewardOutcome.earned) {
+    onAction(l10n.adNotReadySnack);
+    return;
+  }
+  final msg = await market.extendItem(listing);
+  onAction(msg ?? l10n.marketExtendedToast);
 }
 
 class _MineTab extends ConsumerWidget {
@@ -1043,6 +1081,9 @@ class _MineTab extends ConsumerWidget {
               _ListingTile(
                 listing: listing,
                 showExpiry: true,
+                onExtend: listing.extended
+                    ? null
+                    : () => _extendWithAd(context, ref, listing, onAction),
                 trailing: OutlinedButton(
                   onPressed: () async {
                     final msg = await ref
@@ -1104,7 +1145,10 @@ class _SellableTile extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                OutlinedButton(
+                TrailingBox(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: OutlinedButton(
                   onPressed: () async {
                     // Chụp notifier TRƯỚC khi chờ hộp thoại: trong lúc hộp thoại mở, danh sách
                     // "có thể bán" có thể đổi (đối chiếu/làm mới) và gỡ ô này → `ref` của nó
@@ -1118,6 +1162,8 @@ class _SellableTile extends ConsumerWidget {
                     onAction(msg ?? l10n.marketListedToast);
                   },
                   child: Text(l10n.marketListButton),
+                    ),
+                  ),
                 ),
               ],
             ),

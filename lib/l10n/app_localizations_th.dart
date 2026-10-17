@@ -3001,6 +3001,14 @@ class AppLocalizationsTh extends AppLocalizations {
   String get marketCancelledToast => 'ยกเลิกการขายแล้ว';
 
   @override
+  String marketExtendButton(int days) {
+    return 'ต่ออายุอีก $days วัน (ดูโฆษณา)';
+  }
+
+  @override
+  String get marketExtendedToast => 'ต่ออายุการขายแล้ว';
+
+  @override
   String get marketSellableHeader => 'ของสะสมที่ขายได้';
 
   @override

@@ -1113,6 +1113,15 @@
   "swapErrNetwork": "เชื่อมต่อไม่ได้ ลองใหม่ภายหลัง",
   "marketCancelButton": "ยกเลิกการขาย",
   "marketCancelledToast": "ยกเลิกการขายแล้ว",
+  "marketExtendButton": "ต่ออายุอีก {days} วัน (ดูโฆษณา)",
+  "@marketExtendButton": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "marketExtendedToast": "ต่ออายุการขายแล้ว",
   "marketSellableHeader": "ของสะสมที่ขายได้",
   "marketEmptySellable": "คุณยังไม่มีของสะสมให้ขาย",
   "marketListedToast": "ลงขายสำเร็จ!",

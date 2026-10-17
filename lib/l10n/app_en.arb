@@ -1113,6 +1113,15 @@
   "swapErrNetwork": "Couldn't connect, try again later.",
   "marketCancelButton": "Cancel listing",
   "marketCancelledToast": "Listing cancelled.",
+  "marketExtendButton": "Extend {days} more days (watch ad)",
+  "@marketExtendButton": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "marketExtendedToast": "Listing extended.",
   "marketSellableHeader": "Accessories you can sell",
   "marketEmptySellable": "You don't have any accessories to sell yet.",
   "marketListedToast": "Listed!",

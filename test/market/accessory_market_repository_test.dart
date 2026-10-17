@@ -29,6 +29,16 @@ void main() {
       expect(listing.price, 1);
       expect(listing.price, isA<int>());
     });
+
+    test('cột extended: có -> đọc đúng; thiếu (server chưa chạy lại schema) -> false', () {
+      final row = {
+        'id': 'l', 'seller_id': 's', 'accessory_id': 'cookie', 'price': 1,
+        'created_at': '2026-10-01T00:00:00Z',
+      };
+      expect(MarketListing.fromRow(row).extended, isFalse);
+      expect(MarketListing.fromRow({...row, 'extended': true}).extended, isTrue);
+      expect(MarketListing.fromRow({...row, 'extended': false}).extended, isFalse);
+    });
   });
 
   group('MarketTrade.fromRow', () {

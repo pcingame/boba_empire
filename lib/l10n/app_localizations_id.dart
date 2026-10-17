@@ -3012,6 +3012,14 @@ class AppLocalizationsId extends AppLocalizations {
   String get marketCancelledToast => 'Penjualan dibatalkan.';
 
   @override
+  String marketExtendButton(int days) {
+    return 'Perpanjang $days hari lagi (tonton iklan)';
+  }
+
+  @override
+  String get marketExtendedToast => 'Penjualan diperpanjang.';
+
+  @override
   String get marketSellableHeader => 'Aksesori yang bisa dijual';
 
   @override

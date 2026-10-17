@@ -2966,6 +2966,14 @@ class AppLocalizationsKo extends AppLocalizations {
   String get marketCancelledToast => '등록을 취소했어요.';
 
   @override
+  String marketExtendButton(int days) {
+    return '$days일 연장 (광고 시청)';
+  }
+
+  @override
+  String get marketExtendedToast => '등록 기간을 연장했어요.';
+
+  @override
   String get marketSellableHeader => '판매 가능한 액세서리';
 
   @override

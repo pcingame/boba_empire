@@ -3007,6 +3007,14 @@ class AppLocalizationsVi extends AppLocalizations {
   String get marketCancelledToast => 'Đã huỷ đăng.';
 
   @override
+  String marketExtendButton(int days) {
+    return 'Gia hạn thêm $days ngày (xem QC)';
+  }
+
+  @override
+  String get marketExtendedToast => 'Đã gia hạn tin đăng.';
+
+  @override
   String get marketSellableHeader => 'Phụ kiện có thể đăng bán';
 
   @override

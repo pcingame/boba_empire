@@ -1851,6 +1851,15 @@
   "swapErrNetwork": "Không kết nối được, thử lại sau nhé.",
   "marketCancelButton": "Huỷ đăng",
   "marketCancelledToast": "Đã huỷ đăng.",
+  "marketExtendButton": "Gia hạn thêm {days} ngày (xem QC)",
+  "@marketExtendButton": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "marketExtendedToast": "Đã gia hạn tin đăng.",
   "marketSellableHeader": "Phụ kiện có thể đăng bán",
   "marketEmptySellable": "Bạn chưa có phụ kiện nào để đăng bán.",
   "marketListedToast": "Đã đăng bán!",

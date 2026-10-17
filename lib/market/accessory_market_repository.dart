@@ -22,6 +22,7 @@ class MarketListing {
     required this.accessoryId,
     required this.price,
     required this.createdAt,
+    this.extended = false,
   });
 
   factory MarketListing.fromRow(Map<String, dynamic> row) => MarketListing(
@@ -30,6 +31,7 @@ class MarketListing {
         accessoryId: row['accessory_id'] as String,
         price: (row['price'] as num).toInt(),
         createdAt: DateTime.parse(row['created_at'] as String),
+        extended: row['extended'] as bool? ?? false,
       );
 
   final String id;
@@ -37,6 +39,9 @@ class MarketListing {
   final String accessoryId;
   final int price;
   final DateTime createdAt;
+
+  /// Đã dùng lượt gia hạn bằng quảng cáo (mỗi tin một lần).
+  final bool extended;
 
   /// Thời điểm tin hết hạn; còn lại bao lâu so với [now] (không âm).
   DateTime get expiresAt => createdAt.add(const Duration(days: marketListingDays));
@@ -326,6 +331,12 @@ class AccessoryMarketRepository {
     await ensureSignedIn();
     await _client
         .rpc('cancel_listing', params: {'p_listing_id': listingId});
+  }
+
+  /// Gia hạn tin của mình thêm [marketListingDays] ngày (mỗi tin một lần; server ném `listing_not_extendable`).
+  Future<void> extendListing(String listingId) async {
+    await ensureSignedIn();
+    await _client.rpc('extend_listing', params: {'p_listing_id': listingId});
   }
 
   /// Ném `insufficient_balance`/`listing_not_active`/`cannot_buy_own_listing`

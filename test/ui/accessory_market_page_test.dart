@@ -3,9 +3,11 @@
 /// Supabase.instance) — cùng khuôn `story_speedrun_tabs_test.dart`.
 library;
 
+import 'package:boba_empire/ads/ad_service.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
+import 'package:boba_empire/l10n/app_localizations_vi.dart';
 import 'package:boba_empire/market/accessory_market_controller.dart';
 import 'package:boba_empire/market/accessory_market_repository.dart';
 import 'package:boba_empire/state/game_providers.dart';
@@ -17,13 +19,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final _myListing = MarketListing(
+final _baseMyListing = MarketListing(
   id: 'listing-mine',
   sellerId: 'me',
   accessoryId: 'cupcake',
   price: 10,
   createdAt: DateTime.utc(2026, 10, 1),
 );
+
+var _myListing = _baseMyListing;
 
 final _otherListing = MarketListing(
   id: 'listing-other',
@@ -40,6 +44,7 @@ int _wallet = 42;
 class _FakeMarketController extends AccessoryMarketController {
   int buyCalls = 0;
   int cancelCalls = 0;
+  int extendCalls = 0;
 
   @override
   AccessoryMarketViewState build() => AccessoryMarketLoaded(
@@ -68,6 +73,12 @@ class _FakeMarketController extends AccessoryMarketController {
     return null;
   }
 
+  @override
+  Future<String?> extendItem(MarketListing listing) async {
+    extendCalls++;
+    return null;
+  }
+
   int listCalls = 0;
 
   @override
@@ -82,11 +93,24 @@ Future<(ProviderContainer, _FakeMarketController)> _pump(
     {List<String> extraOwned = const [],
     bool starter = false,
     bool introSeen = true,
-    int clockMs = 0}) async {
+    int clockMs = 0,
+    AdService ads = const StubAdService(),
+    bool adsRemoved = false,
+    String locale = 'vi',
+    double textScale = 1.0,
+    Size? size}) async {
+  if (size != null) {
+    tester.view.physicalSize = size * 2;
+    tester.view.devicePixelRatio = 2;
+    addTearDown(tester.view.reset);
+  }
+  tester.platformDispatcher.textScaleFactorTestValue = textScale;
+  addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
   SharedPreferences.setMockInitialValues({'market_intro_seen': introSeen});
   final prefs = await SharedPreferences.getInstance();
   final seed = GameState.newGame(nowMillis: 0)
     ..ownedAccessories.addAll(['mint_leaf', ...extraOwned]); // món có thể đăng bán
+  seed.adsRemoved = adsRemoved;
   if (starter) {
     seed.stage = 3;
     seed.dailyQuestEverClaimed = true;
@@ -97,6 +121,7 @@ Future<(ProviderContainer, _FakeMarketController)> _pump(
     sharedPreferencesProvider.overrideWithValue(prefs),
     clockProvider.overrideWithValue(() => clockMs),
     accessoryMarketControllerProvider.overrideWith(() => fake),
+    adServiceProvider.overrideWithValue(ads),
     priceStatsProvider.overrideWith((ref, id) async => id == 'dragon'
         ? const PriceStats(lastPrice: 700, lowestActive: 650, avg7d: 720)
         : const PriceStats()),
@@ -107,8 +132,8 @@ Future<(ProviderContainer, _FakeMarketController)> _pump(
   await tester.pumpWidget(
     UncontrolledProviderScope(
       container: container,
-      child: const MaterialApp(
-        locale: Locale('vi'),
+      child: MaterialApp(
+        locale: Locale(locale),
         localizationsDelegates: [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -116,7 +141,7 @@ Future<(ProviderContainer, _FakeMarketController)> _pump(
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: AppLocalizations.supportedLocales,
-        home: AccessoryMarketPage(),
+        home: const AccessoryMarketPage(),
       ),
     ),
   );
@@ -201,6 +226,92 @@ void main() {
     expect(fake.cancelCalls, 1);
     container.dispose();
   });
+
+  testWidgets('tab Của tôi: bấm Gia hạn -> xem QC rồi gọi extendItem đúng 1 lần',
+      (tester) async {
+    final (container, fake) = await _pump(tester);
+    await tester.tap(find.text('Của tôi'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('listing-extend-listing-mine')));
+    await tester.pumpAndSettle();
+
+    expect(fake.extendCalls, 1);
+    container.dispose();
+  });
+
+  testWidgets('Gia hạn: quảng cáo bị đóng sớm -> KHÔNG gọi extendItem', (tester) async {
+    final (container, fake) = await _pump(tester, ads: const _DismissAds());
+    await tester.tap(find.text('Của tôi'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('listing-extend-listing-mine')));
+    await tester.pumpAndSettle();
+
+    expect(fake.extendCalls, 0);
+    expect(find.text(AppLocalizationsVi().adNotReadySnack), findsOneWidget);
+    container.dispose();
+  });
+
+  testWidgets('Gia hạn: người đã gỡ quảng cáo -> gia hạn thẳng, không gọi quảng cáo', (tester) async {
+    final ads = _CountingAds();
+    final (container, fake) = await _pump(tester, ads: ads, adsRemoved: true);
+    await tester.tap(find.text('Của tôi'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('listing-extend-listing-mine')));
+    await tester.pumpAndSettle();
+
+    expect(ads.shown, 0);
+    expect(fake.extendCalls, 1);
+    container.dispose();
+  });
+
+  testWidgets('Gia hạn: tin đã gia hạn rồi -> ẩn nút', (tester) async {
+    _myListing = _myListing.copyWithExtended();
+    addTearDown(() => _myListing = _baseMyListing);
+    final (container, _) = await _pump(tester);
+    await tester.tap(find.text('Của tôi'));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('listing-extend-listing-mine')), findsNothing);
+    container.dispose();
+  });
+
+  testWidgets('Gia hạn: tab Chợ (tin người khác) không có nút', (tester) async {
+    final (container, _) = await _pump(tester);
+    expect(find.byKey(const Key('listing-extend-listing-other')), findsNothing);
+    expect(find.byKey(const Key('listing-extend-listing-mine')), findsNothing);
+    container.dispose();
+  });
+
+  // Tab "Của tôi" ở 320px: ô tin đăng (nút Huỷ đăng + Gia hạn) và ô món có thể bán không được tràn.
+  for (final loc in ['vi', 'en', 'es', 'id', 'ko', 'pt', 'th']) {
+    for (final scale in [1.0, 1.5]) {
+      testWidgets('Của tôi: 320px, chữ x$scale không tràn, nút Gia hạn gọn trong màn ($loc)',
+          (tester) async {
+        final (container, _) = await _pump(tester,
+            locale: loc, textScale: scale, size: const Size(320, 640));
+        await tester.tap(find.byType(Tab).last);
+        await tester.pumpAndSettle();
+
+        expect(tester.takeException(), isNull);
+        final rect = tester.getRect(find.byKey(const Key('listing-extend-listing-mine')));
+        expect(rect.left, greaterThanOrEqualTo(0));
+        expect(rect.right, lessThanOrEqualTo(320));
+        container.dispose();
+      });
+    }
+  }
+
+  for (final loc in ['vi', 'en', 'es', 'id', 'ko', 'pt', 'th']) {
+    testWidgets('Chợ: 320px, chữ x1.5 không tràn ô tin đăng ($loc)', (tester) async {
+      final (container, _) =
+          await _pump(tester, locale: loc, textScale: 1.5, size: const Size(320, 640));
+      expect(tester.takeException(), isNull);
+      container.dispose();
+    });
+  }
 
   testWidgets('id phụ kiện lạ (từ bản app mới hơn) KHÔNG làm sập Chợ',
       (tester) async {
@@ -463,4 +574,24 @@ void main() {
     expect(tester.widget<Text>(note).data, contains('3 ngày'));
     container.dispose();
   });
+}
+
+extension on MarketListing {
+  MarketListing copyWithExtended() => MarketListing(
+      id: id, sellerId: sellerId, accessoryId: accessoryId, price: price, createdAt: createdAt, extended: true);
+}
+
+class _DismissAds implements AdService {
+  const _DismissAds();
+  @override
+  Future<RewardOutcome> showRewardedAd() async => RewardOutcome.dismissed;
+}
+
+class _CountingAds implements AdService {
+  int shown = 0;
+  @override
+  Future<RewardOutcome> showRewardedAd() async {
+    shown++;
+    return RewardOutcome.earned;
+  }
 }

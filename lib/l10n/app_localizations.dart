@@ -5232,6 +5232,18 @@ abstract class AppLocalizations {
   /// **'Đã huỷ đăng.'**
   String get marketCancelledToast;
 
+  /// No description provided for @marketExtendButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gia hạn thêm {days} ngày (xem QC)'**
+  String marketExtendButton(int days);
+
+  /// No description provided for @marketExtendedToast.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gia hạn tin đăng.'**
+  String get marketExtendedToast;
+
   /// No description provided for @marketSellableHeader.
   ///
   /// In vi, this message translates to:

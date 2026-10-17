@@ -1113,6 +1113,15 @@
   "swapErrNetwork": "Tidak bisa terhubung, coba lagi nanti.",
   "marketCancelButton": "Batalkan penjualan",
   "marketCancelledToast": "Penjualan dibatalkan.",
+  "marketExtendButton": "Perpanjang {days} hari lagi (tonton iklan)",
+  "@marketExtendButton": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "marketExtendedToast": "Penjualan diperpanjang.",
   "marketSellableHeader": "Aksesori yang bisa dijual",
   "marketEmptySellable": "Kamu belum punya aksesori untuk dijual.",
   "marketListedToast": "Berhasil dijual!",

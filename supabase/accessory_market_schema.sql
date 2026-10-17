@@ -273,6 +273,30 @@ grant execute on function expire_my_listings() to authenticated;
 grant execute on function ack_expired_listings(uuid[]) to authenticated;
 revoke all on function market_sweep(uuid) from public, anon, authenticated;
 
+-- Gia hạn tin đăng: người bán xem quảng cáo (client) để tin sống thêm market_listing_days() ngày.
+-- Mỗi tin chỉ một lần; tin đã hết hạn thì không gia hạn được (món đã về kho qua quét).
+-- Server không xác minh được quảng cáo — chấp nhận, vì lợi ích chỉ là thêm 3 ngày cho CHÍNH tin của mình.
+alter table accessory_listings add column if not exists extended boolean not null default false;
+create or replace function extend_listing(p_listing_id uuid)
+returns void
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare v_n integer;
+begin
+  if auth.uid() is null then raise exception 'not authenticated'; end if;
+  update accessory_listings
+     set created_at = now(), extended = true
+   where id = p_listing_id and seller_id = auth.uid() and status = 'active' and not extended
+     and created_at > now() - make_interval(days => market_listing_days());
+  get diagnostics v_n = row_count;
+  if v_n = 0 then raise exception 'listing_not_extendable'; end if;
+end;
+$$;
+revoke all on function extend_listing(uuid) from public, anon;
+grant execute on function extend_listing(uuid) to authenticated;
+
 -- Huỷ đăng — trả món lại accessory_server_ownership cho người bán.
 create or replace function cancel_listing(p_listing_id uuid)
 returns void
