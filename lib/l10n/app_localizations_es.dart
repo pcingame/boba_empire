@@ -691,6 +691,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get topupAccessory => '+ accesorio';
 
   @override
+  String vipTierPerks(int buff, String daily, String monthly, String weekly) {
+    return 'Diario +$daily 💎 · semanal +$weekly 💎 · mensual +$monthly 💎 (con accesorio) · +$buff% ingresos';
+  }
+
+  @override
   String get topupClaim => 'Reclamar';
 
   @override
@@ -2771,6 +2776,14 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get collectionMilestoneErrNet =>
       'No se pudo reclamar: revisa tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get collectionSetsTitle => 'Colecciones';
+
+  @override
+  String collectionSetDone(int coins) {
+    return '¡Recibiste $coins monedas del Mercado por la colección!';
+  }
 
   @override
   String marketPriceLast(int n) {

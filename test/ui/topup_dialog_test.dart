@@ -50,6 +50,11 @@ void main() {
     // VIP 3: mỗi cấp +2%, hiện +6% (không bị đảo chỗ hai con số).
     expect(find.text('Each VIP level: +2% income (now +6%)'), findsOneWidget);
 
+    // Dòng quyền lợi theo cấp (VIP 1: ngày 10, tuần 70, tháng 300, +2%) — không đảo tham số.
+    final perks = find.byKey(const Key('topup-tier-perks-0'), skipOffstage: false);
+    expect(tester.widget<Text>(perks).data,
+        'Daily +10 💎 · weekly +70 💎 · monthly +300 💎 (with accessory) · +2% income');
+
     // Hộp Hướng dẫn VIP: 1.00K 💎 đổi 100 EXP, tối đa 20.0K EXP (không đảo cap/gems).
     await tester.tap(find.byKey(const Key('vip-how-to-button')));
     await tester.pump();

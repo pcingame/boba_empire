@@ -685,6 +685,11 @@ class AppLocalizationsVi extends AppLocalizations {
   String get topupAccessory => '+ phụ kiện';
 
   @override
+  String vipTierPerks(int buff, String daily, String monthly, String weekly) {
+    return 'Mỗi ngày +$daily 💎 · tuần +$weekly 💎 · tháng +$monthly 💎 (kèm phụ kiện) · +$buff% thu nhập';
+  }
+
+  @override
   String get topupClaim => 'Nhận';
 
   @override
@@ -2747,6 +2752,14 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get collectionMilestoneErrNet =>
       'Không nhận được — kiểm tra mạng rồi thử lại.';
+
+  @override
+  String get collectionSetsTitle => 'Bộ sưu tập';
+
+  @override
+  String collectionSetDone(int coins) {
+    return 'Nhận $coins Xu Chợ cho bộ sưu tập!';
+  }
 
   @override
   String marketPriceLast(int n) {

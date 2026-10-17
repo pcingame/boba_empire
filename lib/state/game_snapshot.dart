@@ -118,6 +118,7 @@ class GameSnapshot {
     required this.masteryTiers,
     required this.refineLevels,
     required this.collectionMilestonesClaimed,
+    required this.collectionSetsClaimed,
     required this.wishlist,
     required this.m3HowToSeen,
     required this.prestigeStarsSpendable,
@@ -311,6 +312,7 @@ class GameSnapshot {
 
   /// Mốc sưu tập đã nhận (xem GameState.collectionMilestonesClaimed).
   final List<int> collectionMilestonesClaimed;
+  final List<String> collectionSetsClaimed;
 
   /// Danh sách muốn có (xem GameState.wishlist).
   final List<String> wishlist;

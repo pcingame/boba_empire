@@ -18,3 +18,4 @@ grant usage on schema public, auth to anon, authenticated;
 SQL
 P -f supabase/accessory_market_schema.sql >/dev/null 2>&1 || { P -f supabase/accessory_market_schema.sql; exit 1; }
 P -f supabase/tests/market_expiry_scenarios.sql 2>&1 | grep -E "FAIL|ERROR|MARKET EXPIRY OK" || { echo "NO RESULT"; exit 1; }
+P -f supabase/tests/collection_set_scenarios.sql 2>&1 | grep -E "FAIL|ERROR|COLLECTION SET OK" || { echo "NO RESULT (sets)"; exit 1; }

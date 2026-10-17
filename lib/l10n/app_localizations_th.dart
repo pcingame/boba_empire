@@ -683,6 +683,11 @@ class AppLocalizationsTh extends AppLocalizations {
   String get topupAccessory => '+ เครื่องประดับ';
 
   @override
+  String vipTierPerks(int buff, String daily, String monthly, String weekly) {
+    return 'รายวัน +$daily 💎 · รายสัปดาห์ +$weekly 💎 · รายเดือน +$monthly 💎 (พร้อมเครื่องประดับ) · รายได้ +$buff%';
+  }
+
+  @override
   String get topupClaim => 'รับ';
 
   @override
@@ -2745,6 +2750,14 @@ class AppLocalizationsTh extends AppLocalizations {
   @override
   String get collectionMilestoneErrNet =>
       'รับไม่ได้ — ตรวจสอบเครือข่ายแล้วลองอีกครั้ง';
+
+  @override
+  String get collectionSetsTitle => 'ชุดสะสม';
+
+  @override
+  String collectionSetDone(int coins) {
+    return 'ได้รับ $coins เหรียญตลาดจากชุดสะสม!';
+  }
 
   @override
   String marketPriceLast(int n) {

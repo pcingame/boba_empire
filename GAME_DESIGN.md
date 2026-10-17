@@ -1160,3 +1160,18 @@ Mọi chuyển động theo mức hiệu ứng (`EffectsQuality`/`reduceMotion`,
 - Mỗi món có cấp tinh luyện 0–3 (`GameState.refineLevels`, `lib/core/accessory_refine.dart`). Mỗi cấp +25% điểm của món trong bộ trang bị (cấp 3 = ×1.75). Giá mỗi cấp = bản dư CỦA CHÍNH MÓN (1/2/3) + 15/40/100 🧪; không hoàn tác. **Không nâng trần họ nào** — chỉ chạm trần bằng ít món/độ hiếm thấp hơn. Chỉ tiêu bản dư còn trong kho (bản đang rao ở Chợ đã bị trừ khỏi đó).
 - Cấp giữ qua Nhượng quyền/Kỷ Nguyên; KHÔNG chuyển theo giao dịch (người nhận bắt đầu từ cấp 0). Món độc quyền (kho riêng, không có bản dư) không tinh luyện được. Không tinh luyện bằng 💎 (tránh pay-to-win ngầm).
 - Điểm nối: `loadoutBuffs(equipped, refine:)` ở simulation/economy/home_page/thẻ Bộ trang bị. UI: nút ✦ trên ô món mở `showRefineSheet`. So sánh cloud: 🧪 đã đổ vào tinh luyện cộng vào tiến độ Tinh chất. Mọi số ước lượng chưa playtest.
+
+## 44. Mốc sưu tập theo bộ (2026-10-18)
+
+Bổ sung cho mốc theo SỐ món (§ Chợ phụ kiện): gom đủ **mọi món của một bộ** thì nhận Xu Chợ MỘT LẦN mỗi bộ.
+8 bộ, chỉ tính 160 món chính (món lễ hội/Hội/VIP không tính): 4 độ hiếm (Huyền thoại 9 món → 150,
+Sử thi 30 → 300, Hiếm 46 → 400, Thường 75 → 400) và 4 họ buff (Chạm 42 / Thu nhập 41 / Offline 39 /
+Giảm giá 38 món → 400 mỗi bộ). Tổng đời tối đa **2 850 Xu Chợ** (một chiều như mốc cũ). Chip tiến độ
+`đã có/tổng` ngay dưới dải mốc trong Kho; đủ bộ thì chip sáng, bấm nhận (pháo giấy).
+
+- Server: `accessory_set_members` (SINH từ `lib/core/collection_sets.dart`), `accessory_set_claims`, RPC
+  `claim_collection_set(p_set)` (tính cả món đang rao). Lỗi `invalid_set | not_reached | already_claimed`.
+  **PHẢI chạy lại `supabase/accessory_market_schema.sql`** (idempotent) trước khi ship client.
+- Thêm món chính mới ⇒ chạy lại sinh danh sách bộ (test `collection_sets_test` bắt lệch Dart⇔SQL).
+- Test SQL: `scripts/test_market_sql.sh` (thêm `supabase/tests/collection_set_scenarios.sql`).
+- Thưởng là ước lượng chưa playtest; theo dõi giá Chợ (đây là nguồn Xu Chợ mới).

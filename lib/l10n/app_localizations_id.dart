@@ -686,6 +686,11 @@ class AppLocalizationsId extends AppLocalizations {
   String get topupAccessory => '+ aksesori';
 
   @override
+  String vipTierPerks(int buff, String daily, String monthly, String weekly) {
+    return 'Harian +$daily 💎 · mingguan +$weekly 💎 · bulanan +$monthly 💎 (plus aksesori) · +$buff% pendapatan';
+  }
+
+  @override
   String get topupClaim => 'Klaim';
 
   @override
@@ -2754,6 +2759,14 @@ class AppLocalizationsId extends AppLocalizations {
   @override
   String get collectionMilestoneErrNet =>
       'Gagal klaim — periksa koneksi lalu coba lagi.';
+
+  @override
+  String get collectionSetsTitle => 'Set koleksi';
+
+  @override
+  String collectionSetDone(int coins) {
+    return 'Dapat $coins Koin Pasar untuk set ini!';
+  }
 
   @override
   String marketPriceLast(int n) {

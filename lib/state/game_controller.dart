@@ -17,6 +17,7 @@ import '../core/accessories.dart';
 import '../core/achievements.dart';
 import '../core/balance.dart';
 import '../core/collection_milestones.dart';
+import '../core/collection_sets.dart';
 import '../core/daily.dart';
 import '../core/daily_deal.dart';
 import '../core/challenges.dart';
@@ -1603,6 +1604,43 @@ class GameController extends Notifier<GameSnapshot> {
     }
   }
 
+  void _markSetClaimed(String id) {
+    if (!_game.collectionSetsClaimed.contains(id)) _game.collectionSetsClaimed.add(id);
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Nhận thưởng bộ sưu tập [setId] (server trước, đánh dấu cục bộ sau) — cùng khuôn
+  /// [claimCollectionMilestone]. Mã lỗi: `not_reached`, `already_claimed`, `network`.
+  Future<({int? coins, String? error})> claimCollectionSet(String setId) async {
+    final market = _market;
+    final set = collectionSets.where((x) => x.id == setId).firstOrNull;
+    if (market == null || set == null || !setComplete(_game, set) || setClaimed(_game, set)) {
+      return (coins: null, error: 'not_reached');
+    }
+    try {
+      // Bù những món local có mà server chưa biết (như mốc theo số món).
+      final server = await market.fetchServerCopies();
+      for (final id in _game.ownedAccessories.toList()) {
+        if (!server.containsKey(id)) {
+          await market.registerDrop(id, copies: 1 + (_game.accessorySpares[id] ?? 0));
+        }
+      }
+      final coins = await market.claimCollectionSet(setId);
+      logEvent('collection_set', {'set': setId, 'coins': coins});
+      _markSetClaimed(setId);
+      return (coins: coins, error: null);
+    } catch (e) {
+      final msg = '$e';
+      if (msg.contains('already_claimed')) {
+        _markSetClaimed(setId);
+        return (coins: null, error: 'already_claimed');
+      }
+      developer.log('nhận bộ sưu tập lỗi: $e', name: 'Market');
+      return (coins: null, error: msg.contains('not_reached') ? 'not_reached' : 'network');
+    }
+  }
+
   /// Nhận Gói Khởi Nghiệp Chợ: server trước, cấp cục bộ sau (cùng nguyên tắc
   /// [convertGemsToMarketCoins]). Trả null nếu xong, hoặc mã lỗi server
   /// (`already_claimed`, `not_eligible`, `daily_cap`, `network`).
@@ -2277,6 +2315,7 @@ class GameController extends Notifier<GameSnapshot> {
       refineLevels: Map.unmodifiable(_game.refineLevels),
       collectionMilestonesClaimed:
           List.unmodifiable(_game.collectionMilestonesClaimed),
+      collectionSetsClaimed: List.unmodifiable(_game.collectionSetsClaimed),
       wishlist: List.unmodifiable(_game.wishlist),
       m3HowToSeen: _game.m3HowToSeen,
       starterPackOwned: _game.starterPackOwned,

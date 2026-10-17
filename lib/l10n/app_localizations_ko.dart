@@ -675,6 +675,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get topupAccessory => '+ 액세서리';
 
   @override
+  String vipTierPerks(int buff, String daily, String monthly, String weekly) {
+    return '매일 +$daily 💎 · 매주 +$weekly 💎 · 매월 +$monthly 💎 (액세서리 포함) · 수입 +$buff%';
+  }
+
+  @override
   String get topupClaim => '받기';
 
   @override
@@ -2714,6 +2719,14 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get collectionMilestoneErrNet => '받지 못했어요 — 연결을 확인하고 다시 시도해 주세요.';
+
+  @override
+  String get collectionSetsTitle => '컬렉션 세트';
+
+  @override
+  String collectionSetDone(int coins) {
+    return '세트 완성! 마켓 코인 $coins개를 받았어요!';
+  }
 
   @override
   String marketPriceLast(int n) {

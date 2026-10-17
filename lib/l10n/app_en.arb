@@ -183,6 +183,8 @@
   "topupNote": "Store purchases: ~100 EXP per USD (big packs give more). Buying EXP with 💎 costs far more and is capped. Each reward is claimed once.",
   "topupTier": "{points} EXP",
   "topupAccessory": "+ accessory",
+  "vipTierPerks": "Daily +{daily} 💎 · weekly +{weekly} 💎 · monthly +{monthly} 💎 (with accessory) · +{buff}% income",
+  "@vipTierPerks": {"placeholders": {"buff": {"type": "int"}, "daily": {"type": "String"}, "monthly": {"type": "String"}, "weekly": {"type": "String"}}},
   "topupClaim": "Claim",
   "topupClaimed": "Claimed",
   "topupClaimSnack": "Claimed +{gems} 💎",
@@ -987,6 +989,9 @@
     }
   },
   "collectionMilestoneErrNet": "Couldn't claim — check your connection and try again.",
+  "collectionSetsTitle": "Collection sets",
+  "collectionSetDone": "Got {coins} Market Coins for the set!",
+  "@collectionSetDone": {"placeholders": {"coins": {"type": "int"}}},
   "marketPriceLast": "Last sold: {n}",
   "@marketPriceLast": {
     "placeholders": {

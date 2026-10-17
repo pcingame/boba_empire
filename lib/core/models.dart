@@ -187,6 +187,7 @@ class GameState {
     Map<String, int>? refineLevels,
     List<String>? equippedAccessories,
     List<int>? collectionMilestonesClaimed,
+    List<String>? collectionSetsClaimed,
     List<String>? wishlist,
   })  : achievementsClaimed = achievementsClaimed ?? [],
         m3Stars = m3Stars ?? [],
@@ -203,6 +204,7 @@ class GameState {
         refineLevels = refineLevels ?? {},
         equippedAccessories = equippedAccessories ?? [],
         collectionMilestonesClaimed = collectionMilestonesClaimed ?? [],
+        collectionSetsClaimed = collectionSetsClaimed ?? [],
         wishlist = wishlist ?? [],
         dailyProgress = dailyProgress ?? {},
         dailyClaimed = dailyClaimed ?? [],
@@ -361,6 +363,9 @@ class GameState {
   /// Mốc sưu tập đã nhận thưởng (xem collection_milestones.dart). Server mới là
   /// nguồn sự thật — đây chỉ để ẩn nút nhận.
   final List<int> collectionMilestonesClaimed;
+
+  /// Bộ sưu tập đã nhận thưởng (id của CollectionSet).
+  final List<String> collectionSetsClaimed;
 
   /// Món muốn có (≤ Balance.maxWishlist) — đồng bộ lên server để đẩy thông báo
   /// khi có người đăng bán.
@@ -660,6 +665,7 @@ class GameState {
         'essenceRepeatableToday': essenceRepeatableToday,
         'equippedAccessories': equippedAccessories,
         'collectionMilestonesClaimed': collectionMilestonesClaimed,
+        'collectionSetsClaimed': collectionSetsClaimed,
         'wishlist': wishlist,
         'prestigeIncomeLevel': prestigeIncomeLevel,
         'prestigeTapLevel': prestigeTapLevel,
@@ -806,6 +812,11 @@ class GameState {
           if (json['collectionMilestonesClaimed'] is List)
             for (final e in json['collectionMilestonesClaimed'] as List)
               if (e is num) e.toInt(),
+        ],
+        collectionSetsClaimed: [
+          if (json['collectionSetsClaimed'] is List)
+            for (final e in json['collectionSetsClaimed'] as List)
+              if (e is String) e,
         ],
         equippedAccessories: [
           if (json['equippedAccessories'] is List)

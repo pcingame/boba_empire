@@ -183,6 +183,8 @@
   "topupNote": "Pembelian di toko: ~100 EXP per USD (paket besar lebih banyak). Membeli EXP dengan 💎 jauh lebih mahal dan dibatasi. Tiap hadiah diklaim sekali.",
   "topupTier": "{points} EXP",
   "topupAccessory": "+ aksesori",
+  "vipTierPerks": "Harian +{daily} 💎 · mingguan +{weekly} 💎 · bulanan +{monthly} 💎 (plus aksesori) · +{buff}% pendapatan",
+  "@vipTierPerks": {"placeholders": {"buff": {"type": "int"}, "daily": {"type": "String"}, "monthly": {"type": "String"}, "weekly": {"type": "String"}}},
   "topupClaim": "Klaim",
   "topupClaimed": "Diklaim",
   "topupClaimSnack": "Diklaim +{gems} 💎",
@@ -987,6 +989,9 @@
     }
   },
   "collectionMilestoneErrNet": "Gagal klaim — periksa koneksi lalu coba lagi.",
+  "collectionSetsTitle": "Set koleksi",
+  "collectionSetDone": "Dapat {coins} Koin Pasar untuk set ini!",
+  "@collectionSetDone": {"placeholders": {"coins": {"type": "int"}}},
   "marketPriceLast": "Terjual terakhir: {n}",
   "@marketPriceLast": {
     "placeholders": {

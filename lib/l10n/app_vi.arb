@@ -559,6 +559,8 @@
   "topupNote": "Nạp tiền ở cửa hàng: ~100 EXP mỗi USD (gói lớn nhiều hơn). Mua EXP bằng 💎 đắt hơn nhiều và có giới hạn. Mỗi mốc nhận một lần.",
   "topupTier": "{points} EXP",
   "topupAccessory": "+ phụ kiện",
+  "vipTierPerks": "Mỗi ngày +{daily} 💎 · tuần +{weekly} 💎 · tháng +{monthly} 💎 (kèm phụ kiện) · +{buff}% thu nhập",
+  "@vipTierPerks": {"placeholders": {"buff": {"type": "int"}, "daily": {"type": "String"}, "monthly": {"type": "String"}, "weekly": {"type": "String"}}},
   "topupClaim": "Nhận",
   "topupClaimed": "Đã nhận",
   "topupClaimSnack": "Đã nhận +{gems} 💎",
@@ -1659,6 +1661,9 @@
     }
   },
   "collectionMilestoneErrNet": "Không nhận được — kiểm tra mạng rồi thử lại.",
+  "collectionSetsTitle": "Bộ sưu tập",
+  "collectionSetDone": "Nhận {coins} Xu Chợ cho bộ sưu tập!",
+  "@collectionSetDone": {"placeholders": {"coins": {"type": "int"}}},
   "marketPriceLast": "Bán gần nhất: {n}",
   "@marketPriceLast": {
     "placeholders": {

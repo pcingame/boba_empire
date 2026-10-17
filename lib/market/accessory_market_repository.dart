@@ -366,6 +366,13 @@ class AccessoryMarketRepository {
     return (coins as num).toInt();
   }
 
+  /// Nhận thưởng bộ sưu tập; trả số Xu Chợ. Lỗi: `invalid_set` / `not_reached` / `already_claimed`.
+  Future<int> claimCollectionSet(String setId) async {
+    await ensureSignedIn();
+    final coins = await _client.rpc('claim_collection_set', params: {'p_set': setId});
+    return (coins as num).toInt();
+  }
+
   /// Nạp [amount] Xu Chợ — MỘT CHIỀU, không có hàm ngược (xem PROPOSAL §0).
   /// Gọi SAU KHI đã chắc chắn sẽ trừ Xu/💎 cục bộ (GameController tự trừ
   /// nếu lệnh này thành công, xem convertGemsToMarketCoins/

@@ -300,8 +300,22 @@ class _TopupDialogState extends ConsumerState<_TopupDialog> {
       contentPadding: EdgeInsets.zero,
       leading: VipTag(level: i + 1),
       title: Text('${vipName(l10n, i + 1)} · ${l10n.topupTier(t.exp)}'),
-      subtitle: Text(
-        '+${formatNumber(t.gems)} 💎${t.accessory == null ? '' : '  ${l10n.topupAccessory}'}',
+      subtitle: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('+${formatNumber(t.gems)} 💎${t.accessory == null ? '' : '  ${l10n.topupAccessory}'}'),
+          Text(
+            // gen-l10n sắp tham số theo chữ cái: buff, daily, monthly, weekly.
+            l10n.vipTierPerks(
+              (vipIncomeBonusPerLevel * (i + 1) * 100).round(),
+              formatNumber(vipBenefit(VipPeriod.daily, i + 1)!.gems),
+              formatNumber(vipBenefit(VipPeriod.monthly, i + 1)!.gems),
+              formatNumber(vipBenefit(VipPeriod.weekly, i + 1)!.gems),
+            ),
+            key: Key('topup-tier-perks-$i'),
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ],
       ),
       trailing: claimed
           ? Text(l10n.topupClaimed)

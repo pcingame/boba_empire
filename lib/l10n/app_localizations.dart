@@ -1206,6 +1206,12 @@ abstract class AppLocalizations {
   /// **'+ phụ kiện'**
   String get topupAccessory;
 
+  /// No description provided for @vipTierPerks.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi ngày +{daily} 💎 · tuần +{weekly} 💎 · tháng +{monthly} 💎 (kèm phụ kiện) · +{buff}% thu nhập'**
+  String vipTierPerks(int buff, String daily, String monthly, String weekly);
+
   /// No description provided for @topupClaim.
   ///
   /// In vi, this message translates to:
@@ -4817,6 +4823,18 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Không nhận được — kiểm tra mạng rồi thử lại.'**
   String get collectionMilestoneErrNet;
+
+  /// No description provided for @collectionSetsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ sưu tập'**
+  String get collectionSetsTitle;
+
+  /// No description provided for @collectionSetDone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {coins} Xu Chợ cho bộ sưu tập!'**
+  String collectionSetDone(int coins);
 
   /// No description provided for @marketPriceLast.
   ///

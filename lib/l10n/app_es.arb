@@ -183,6 +183,8 @@
   "topupNote": "Compras en la tienda: ~100 EXP por USD (los paquetes grandes dan más). Comprar EXP con 💎 cuesta mucho más y tiene límite. Cada recompensa se reclama una vez.",
   "topupTier": "{points} EXP",
   "topupAccessory": "+ accesorio",
+  "vipTierPerks": "Diario +{daily} 💎 · semanal +{weekly} 💎 · mensual +{monthly} 💎 (con accesorio) · +{buff}% ingresos",
+  "@vipTierPerks": {"placeholders": {"buff": {"type": "int"}, "daily": {"type": "String"}, "monthly": {"type": "String"}, "weekly": {"type": "String"}}},
   "topupClaim": "Reclamar",
   "topupClaimed": "Reclamado",
   "topupClaimSnack": "¡Reclamado +{gems} 💎!",
@@ -987,6 +989,9 @@
     }
   },
   "collectionMilestoneErrNet": "No se pudo reclamar: revisa tu conexión e inténtalo de nuevo.",
+  "collectionSetsTitle": "Colecciones",
+  "collectionSetDone": "¡Recibiste {coins} monedas del Mercado por la colección!",
+  "@collectionSetDone": {"placeholders": {"coins": {"type": "int"}}},
   "marketPriceLast": "Última venta: {n}",
   "@marketPriceLast": {
     "placeholders": {

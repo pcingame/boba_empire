@@ -183,6 +183,8 @@
   "topupNote": "ซื้อในร้าน: ประมาณ 100 EXP ต่อ 1 ดอลลาร์ (แพ็กใหญ่ได้มากกว่า) การซื้อ EXP ด้วย 💎 แพงกว่ามากและมีเพดาน รับรางวัลแต่ละขั้นได้ครั้งเดียว",
   "topupTier": "{points} EXP",
   "topupAccessory": "+ เครื่องประดับ",
+  "vipTierPerks": "รายวัน +{daily} 💎 · รายสัปดาห์ +{weekly} 💎 · รายเดือน +{monthly} 💎 (พร้อมเครื่องประดับ) · รายได้ +{buff}%",
+  "@vipTierPerks": {"placeholders": {"buff": {"type": "int"}, "daily": {"type": "String"}, "monthly": {"type": "String"}, "weekly": {"type": "String"}}},
   "topupClaim": "รับ",
   "topupClaimed": "รับแล้ว",
   "topupClaimSnack": "รับ +{gems} 💎 แล้ว",
@@ -987,6 +989,9 @@
     }
   },
   "collectionMilestoneErrNet": "รับไม่ได้ — ตรวจสอบเครือข่ายแล้วลองอีกครั้ง",
+  "collectionSetsTitle": "ชุดสะสม",
+  "collectionSetDone": "ได้รับ {coins} เหรียญตลาดจากชุดสะสม!",
+  "@collectionSetDone": {"placeholders": {"coins": {"type": "int"}}},
   "marketPriceLast": "ขายล่าสุด: {n}",
   "@marketPriceLast": {
     "placeholders": {

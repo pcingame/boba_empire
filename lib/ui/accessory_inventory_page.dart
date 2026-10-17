@@ -16,6 +16,7 @@ import '../core/accessory_loadout.dart';
 import '../core/accessory_refine.dart';
 import '../core/balance.dart';
 import '../core/collection_milestones.dart';
+import '../core/collection_sets.dart';
 import '../core/guild_shop.dart' show guildAccessories;
 import '../core/vip_shop.dart' show vipAccessories;
 import '../l10n/app_localizations.dart';
@@ -170,6 +171,7 @@ class AccessoryInventoryPage extends ConsumerWidget {
                         ),
                       ),
                       const _MilestoneStrip(),
+                      const _SetStrip(),
                     ],
                   ),
                 ),
@@ -720,6 +722,97 @@ class _MilestoneStripState extends ConsumerState<_MilestoneStrip> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// Mốc theo BỘ: 4 độ hiếm + 4 họ buff, mỗi bộ một chip tiến độ; đủ bộ thì bấm nhận Xu Chợ.
+class _SetStrip extends ConsumerStatefulWidget {
+  const _SetStrip();
+
+  @override
+  ConsumerState<_SetStrip> createState() => _SetStripState();
+}
+
+class _SetStripState extends ConsumerState<_SetStrip> {
+  bool _busy = false;
+
+  Future<void> _claim(CollectionSet set) async {
+    final l10n = AppLocalizations.of(context)!;
+    final messenger = ScaffoldMessenger.of(context);
+    setState(() => _busy = true);
+    final r = await ref.read(gameControllerProvider.notifier).claimCollectionSet(set.id);
+    if (!mounted) return;
+    setState(() => _busy = false);
+    if (r.coins != null) {
+      HapticFeedback.mediumImpact();
+      playEffect(context, AnimAssets.confetti);
+      messenger..clearSnackBars()..showSnackBar(SnackBar(content: Text(l10n.collectionSetDone(r.coins!))));
+    } else if (r.error == 'network') {
+      messenger..clearSnackBars()..showSnackBar(SnackBar(content: Text(l10n.collectionMilestoneErrNet)));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    // select theo CHUỖI để so sánh theo giá trị.
+    ref.watch(gameControllerProvider.select(
+        (s) => '${s.ownedAccessories.length}|${s.collectionSetsClaimed.join(",")}'));
+    final game = ref.read(gameControllerProvider);
+    final owned = game.ownedAccessories.toSet();
+    final claimedIds = game.collectionSetsClaimed.toSet();
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l10n.collectionSetsTitle,
+              style: theme.textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700)),
+          const SizedBox(height: 4),
+          Wrap(spacing: 6, runSpacing: 6, children: [
+            for (final set in collectionSets)
+              _setChip(context, l10n, set, owned, claimedIds.contains(set.id)),
+          ]),
+        ],
+      ),
+    );
+  }
+
+  Widget _setChip(BuildContext context, AppLocalizations l10n, CollectionSet set,
+      Set<String> owned, bool claimed) {
+    final scheme = Theme.of(context).colorScheme;
+    final members = set.members;
+    final have = members.where(owned.contains).length;
+    final claimable = !claimed && have == members.length;
+    final name = set.rarity != null
+        ? accessoryRarityLabel(l10n, set.rarity!)
+        : set.family!.emoji;
+    final sub = claimed ? '✓' : (claimable ? '+${set.coins} 🪙' : '$have/${members.length}');
+    return InkWell(
+      key: Key(claimable ? 'set-claim-${set.id}' : 'set-${set.id}'),
+      borderRadius: BorderRadius.circular(12),
+      onTap: claimable && !_busy ? () => _claim(set) : null,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+        decoration: BoxDecoration(
+          color: claimable
+              ? scheme.primaryContainer
+              : scheme.surfaceContainerHighest.withValues(alpha: 0.6),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: claimable ? scheme.primary : Colors.transparent, width: 2),
+        ),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          Flexible(
+            child: Text(name,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w700)),
+          ),
+          const SizedBox(width: 6),
+          Text(sub, style: Theme.of(context).textTheme.labelMedium),
+        ]),
       ),
     );
   }
