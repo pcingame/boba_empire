@@ -72,7 +72,7 @@ void main() {
       expect(seasonClaimable(s), 3 + 3 - 1);
     });
 
-    test('bảng thưởng: Cao cấp trả 💎 ÍT HƠN giá mua; bậc cuối Cao cấp = huyền thoại; không số âm', () {
+    test('bảng thưởng: Cao cấp trả 💎 ÍT HƠN giá mua; bậc cuối Cao cấp = món độc quyền; không số âm', () {
       var premium = 0, free = 0;
       for (var t = 1; t <= seasonTiers; t++) {
         final p = seasonPremiumReward(t), f = seasonFreeReward(t);
@@ -83,7 +83,8 @@ void main() {
       }
       expect(premium, lessThan(seasonPremiumGems));
       expect(free, 50 + 29 * 5);
-      expect(seasonPremiumReward(seasonTiers).accessory, AccessoryRarity.legendary);
+      expect(seasonPremiumReward(seasonTiers).exclusive, isTrue);
+      expect(seasonFreeReward(20).exclusive, isTrue);
       expect(seasonFreeReward(seasonTiers).accessory, AccessoryRarity.epic);
     });
 

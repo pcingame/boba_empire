@@ -1208,3 +1208,11 @@ Giảm giá 38 món → 400 mỗi bộ). Tổng đời tối đa **2 850 Xu Ch�
   nhận đều reset (`seasonSync`, gọi ở `_snapshot`). Chấm đỏ ở thẻ lối vào khi còn bậc chưa nhận.
 - Chưa làm: phụ kiện độc quyền theo mùa (cần thêm món + tên 7 ngôn ngữ), đồng bộ cloud so sánh XP mùa (hiện nằm trong save nên
   đi theo save, nhưng xung đột cloud vẫn chỉ so `lifetimeEarnings`), thưởng top mùa.
+
+### 46b. Phụ kiện độc quyền theo mùa + đồng bộ XP mùa
+- Mỗi mùa có 1 cặp món độc quyền (xoay vòng 4 cặp, `seasonItemsFor`): bậc 20 miễn phí = Sử thi, bậc 30 Cao cấp = Huyền thoại. Lưu ở `ownedLimited` (không tính bộ sưu tập chính, không lên Chợ), hiện ở mục riêng trong Kho.
+- Tiến độ mùa (XP/Cao cấp/bậc đã nhận) tham gia so sánh xung đột lưu đám mây khi cùng mùa.
+
+### 46c. Giải đấu Đấu Trường theo tuần
+- Thêm bảng `arena` vào thưởng top BXH tuần (`leaderboard_rewards_schema.sql`): xếp theo số TRẬN THẮNG THẬT của tuần trước (bỏ bóng ma, ẩn danh), mỗi đối thủ tối đa 3 trận/tuần (chống đổi thắng). Top 10: 300/200/100 rồi 50💎. Nhận trong hộp thưởng BXH có sẵn.
+- SQL phải chạy lại `leaderboard_rewards_schema.sql` (đổi CHECK + hàm); cần `arena_schema.sql` đã có. Test: `scripts/test_lb_rewards_sql.sh`.

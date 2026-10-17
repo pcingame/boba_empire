@@ -4902,6 +4902,60 @@ abstract class AppLocalizations {
   /// **'Chưa đủ 💎'**
   String get seasonNotEnoughGems;
 
+  /// No description provided for @seasonItemsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Độc quyền Thẻ Mùa (bậc 20 miễn phí · bậc 30 Cao cấp)'**
+  String get seasonItemsTitle;
+
+  /// No description provided for @accessorySeasonSakura.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoa Anh Đào Mùa'**
+  String get accessorySeasonSakura;
+
+  /// No description provided for @accessorySeasonPaperLantern.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đèn Giấy Mùa'**
+  String get accessorySeasonPaperLantern;
+
+  /// No description provided for @accessorySeasonSunflower.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hướng Dương Mùa'**
+  String get accessorySeasonSunflower;
+
+  /// No description provided for @accessorySeasonIsland.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đảo Nhiệt Đới Mùa'**
+  String get accessorySeasonIsland;
+
+  /// No description provided for @accessorySeasonAutumnLeaf.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lá Thu Mùa'**
+  String get accessorySeasonAutumnLeaf;
+
+  /// No description provided for @accessorySeasonMoonView.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngắm Trăng Mùa'**
+  String get accessorySeasonMoonView;
+
+  /// No description provided for @accessorySeasonSnowflake.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bông Tuyết Mùa'**
+  String get accessorySeasonSnowflake;
+
+  /// No description provided for @accessorySeasonMountain.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đỉnh Núi Mùa'**
+  String get accessorySeasonMountain;
+
   /// No description provided for @seasonGot.
   ///
   /// In vi, this message translates to:
@@ -7925,6 +7979,12 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Thử thách ngày'**
   String get lbrBoardDaily;
+
+  /// No description provided for @lbrBoardArena.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giải đấu Đấu Trường'**
+  String get lbrBoardArena;
 
   /// No description provided for @lbrDailyNote.
   ///

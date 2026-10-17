@@ -75,6 +75,32 @@ insert into recipe_daily_scores (user_id, day, nickname, score) values
   ('00000000-0000-0000-0000-000000000412', :wk - 3, 'D12', 100), ('00000000-0000-0000-0000-000000000412', :wk, 'D12', 300),
   ('00000000-0000-0000-0000-000000000413', :wk - 3, 'Anon', 300);
 
+-- Giải đấu Đấu Trường (bảng 'arena', số trận THẮNG THẬT tuần trước, mỗi đối thủ tối đa 3, bỏ bóng ma/ẩn danh/tuần này).
+-- u3 thắng u2 ×4 (tính 3) + u4 ×1 = 4; u1 thắng u2 ×5 (tính 3) = 3 (+ 5 trận bóng ma không tính); u7 ẩn danh thắng ×6; u4 chỉ thắng tuần NÀY.
+insert into arena_nicknames (user_id, nickname) values
+  ('00000000-0000-0000-0000-000000000001', 'A1'), ('00000000-0000-0000-0000-000000000003', 'C1');
+insert into arena_matches (player_a, player_b, status, winner, ghost, started_at)
+  select w, l, 'finished', w, g, now() from (values
+    ('00000000-0000-0000-0000-000000000003'::uuid, '00000000-0000-0000-0000-000000000002'::uuid, false, 1),
+    ('00000000-0000-0000-0000-000000000003', '00000000-0000-0000-0000-000000000002', false, 2),
+    ('00000000-0000-0000-0000-000000000003', '00000000-0000-0000-0000-000000000002', false, 3),
+    ('00000000-0000-0000-0000-000000000003', '00000000-0000-0000-0000-000000000002', false, 4),
+    ('00000000-0000-0000-0000-000000000003', '00000000-0000-0000-0000-000000000004', false, 5),
+    ('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000002', false, 1),
+    ('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000002', false, 2),
+    ('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000002', false, 3),
+    ('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000002', false, 4),
+    ('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000002', false, 5),
+    ('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000005', true, 1),
+    ('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000005', true, 2),
+    ('00000000-0000-0000-0000-000000000007', '00000000-0000-0000-0000-000000000002', false, 1),
+    ('00000000-0000-0000-0000-000000000007', '00000000-0000-0000-0000-000000000002', false, 2)
+  ) t(w, l, g, i);
+-- Dời các trận trên về giữa TUẦN TRƯỚC (trận cuối bên dưới ở tuần này).
+update arena_matches set started_at = lb_reward_week()::timestamptz - interval '3 days' + random() * interval '1 hour';
+insert into arena_matches (player_a, player_b, status, winner, ghost, started_at) values
+  ('00000000-0000-0000-0000-000000000004', '00000000-0000-0000-0000-000000000002', 'finished', '00000000-0000-0000-0000-000000000004', false, now());
+
 select chk('hằng số thưởng 300/200/100, hạng ngoài top = 0',
   lb_reward_gems(1) = 300 and lb_reward_gems(2) = 200 and lb_reward_gems(3) = 100 and lb_reward_gems(4) = 0);
 
@@ -96,6 +122,10 @@ select chk('Thử thách ngày: giá trị = tổng điểm (D02 = 300)', (selec
 select chk('💎 theo hạng: 300/200/100 rồi 50 cho hạng 4-10, các bảng khác không bị ảnh hưởng',
   lb_reward_gems_for('daily', 1) = 300 and lb_reward_gems_for('daily', 3) = 100 and lb_reward_gems_for('daily', 4) = 50
   and lb_reward_gems_for('daily', 10) = 50 and lb_reward_gems_for('daily', 11) = 0 and lb_reward_gems_for('income', 4) = 0);
+select chk('Giải Đấu Trường: C1 rồi A1 (trần 3/đối thủ, bỏ bóng ma/ẩn danh/tuần này)',
+  (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'arena') = 'C1,A1'
+  and (select value from lb_reward_snapshots where board = 'arena' and rank = 1) = 4
+  and lb_reward_gems_for('arena', 4) = 50 and lb_reward_gems_for('arena', 11) = 0);
 select chk('VIP: C rồi A', (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'vip') = 'C,A');
 select count(*) as n0 from lb_reward_snapshots \gset
 select week as w from lb_reward_snapshots limit 1 \gset
@@ -107,9 +137,9 @@ reset role;
 select chk('chụp idempotent, không bị điểm đổi sau đó làm lệch', (select count(*) from lb_reward_snapshots) = :n0
   and (select string_agg(nickname, ',' order by rank) from lb_reward_snapshots where board = 'income') = 'A,B,C');
 
--- Trạng thái của A: top 1 thu nhập (300), Ghép 3 hạng 2 (200), VIP hạng 2 (200).
+-- Trạng thái của A: top 1 thu nhập (300), Ghép 3 hạng 2 (200), VIP hạng 2 (200), Đấu Trường hạng 2 (200).
 select as_u(1);
-select chk('A thấy 3 phần thưởng chưa nhận', jsonb_array_length(lb_reward_status()) = 3
+select chk('A thấy 4 phần thưởng chưa nhận', jsonb_array_length(lb_reward_status()) = 4
   and not exists (select 1 from jsonb_array_elements(lb_reward_status()) e where (e->>'claimed')::boolean));
 select chk('A: thu nhập hạng 1 = 300💎', (select (e->>'gems')::int from jsonb_array_elements(lb_reward_status()) e where e->>'board' = 'income') = 300);
 select chk('nhận thu nhập trả đúng 300', lb_reward_claim(:'w', 'income') = 300);

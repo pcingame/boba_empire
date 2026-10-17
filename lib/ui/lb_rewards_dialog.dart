@@ -23,6 +23,7 @@ String _boardName(AppLocalizations l10n, LbBoard b) => switch (b) {
       LbBoard.recipes => l10n.lbrBoardRecipes,
       LbBoard.orders => l10n.lbrBoardOrders,
       LbBoard.daily => l10n.lbrBoardDaily,
+      LbBoard.arena => l10n.lbrBoardArena,
     };
 
 /// 'yyyy-mm-dd' → 'dd/mm' (không đoán múi giờ: tuần chốt đã là ngày UTC).

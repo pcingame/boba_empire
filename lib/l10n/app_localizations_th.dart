@@ -2802,6 +2802,34 @@ class AppLocalizationsTh extends AppLocalizations {
   String get seasonNotEnoughGems => '💎 ไม่พอ';
 
   @override
+  String get seasonItemsTitle =>
+      'ไอเทมเฉพาะบัตรซีซัน (ขั้น 20 ฟรี · ขั้น 30 พรีเมียม)';
+
+  @override
+  String get accessorySeasonSakura => 'ซากุระซีซัน';
+
+  @override
+  String get accessorySeasonPaperLantern => 'โคมกระดาษซีซัน';
+
+  @override
+  String get accessorySeasonSunflower => 'ทานตะวันซีซัน';
+
+  @override
+  String get accessorySeasonIsland => 'เกาะเขตร้อนซีซัน';
+
+  @override
+  String get accessorySeasonAutumnLeaf => 'ใบไม้ร่วงซีซัน';
+
+  @override
+  String get accessorySeasonMoonView => 'ชมจันทร์ซีซัน';
+
+  @override
+  String get accessorySeasonSnowflake => 'เกล็ดหิมะซีซัน';
+
+  @override
+  String get accessorySeasonMountain => 'ยอดเขาซีซัน';
+
+  @override
   String seasonGot(String text) {
     return 'ได้รับ $text';
   }
@@ -4705,6 +4733,9 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get lbrBoardDaily => 'ภารกิจประจำวัน';
+
+  @override
+  String get lbrBoardArena => 'ทัวร์นาเมนต์อารีนา';
 
   @override
   String lbrDailyNote(int rest) {

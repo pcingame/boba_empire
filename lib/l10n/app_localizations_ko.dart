@@ -2771,6 +2771,33 @@ class AppLocalizationsKo extends AppLocalizations {
   String get seasonNotEnoughGems => '💎가 부족해요';
 
   @override
+  String get seasonItemsTitle => '시즌 패스 한정 (20단계 무료 · 30단계 프리미엄)';
+
+  @override
+  String get accessorySeasonSakura => '시즌 벚꽃';
+
+  @override
+  String get accessorySeasonPaperLantern => '시즌 종이등';
+
+  @override
+  String get accessorySeasonSunflower => '시즌 해바라기';
+
+  @override
+  String get accessorySeasonIsland => '시즌 열대섬';
+
+  @override
+  String get accessorySeasonAutumnLeaf => '시즌 가을 낙엽';
+
+  @override
+  String get accessorySeasonMoonView => '시즌 달맞이';
+
+  @override
+  String get accessorySeasonSnowflake => '시즌 눈송이';
+
+  @override
+  String get accessorySeasonMountain => '시즌 정상';
+
+  @override
   String seasonGot(String text) {
     return '$text 획득';
   }
@@ -4648,6 +4675,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get lbrBoardDaily => '일일 도전';
+
+  @override
+  String get lbrBoardArena => '아레나 토너먼트';
 
   @override
   String lbrDailyNote(int rest) {

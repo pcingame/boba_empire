@@ -2804,6 +2804,34 @@ class AppLocalizationsVi extends AppLocalizations {
   String get seasonNotEnoughGems => 'Chưa đủ 💎';
 
   @override
+  String get seasonItemsTitle =>
+      'Độc quyền Thẻ Mùa (bậc 20 miễn phí · bậc 30 Cao cấp)';
+
+  @override
+  String get accessorySeasonSakura => 'Hoa Anh Đào Mùa';
+
+  @override
+  String get accessorySeasonPaperLantern => 'Đèn Giấy Mùa';
+
+  @override
+  String get accessorySeasonSunflower => 'Hướng Dương Mùa';
+
+  @override
+  String get accessorySeasonIsland => 'Đảo Nhiệt Đới Mùa';
+
+  @override
+  String get accessorySeasonAutumnLeaf => 'Lá Thu Mùa';
+
+  @override
+  String get accessorySeasonMoonView => 'Ngắm Trăng Mùa';
+
+  @override
+  String get accessorySeasonSnowflake => 'Bông Tuyết Mùa';
+
+  @override
+  String get accessorySeasonMountain => 'Đỉnh Núi Mùa';
+
+  @override
   String seasonGot(String text) {
     return 'Nhận $text';
   }
@@ -4720,6 +4748,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get lbrBoardDaily => 'Thử thách ngày';
+
+  @override
+  String get lbrBoardArena => 'Giải đấu Đấu Trường';
 
   @override
   String lbrDailyNote(int rest) {

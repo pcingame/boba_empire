@@ -14,6 +14,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../core/essence.dart' show essenceProgressFromJson;
+import '../core/season.dart' show seasonIdFromJson, seasonProgressFromJson;
 import 'cloud_save_repository.dart';
 
 /// Thời gian chờ giữa 2 lần gửi mã (giây).
@@ -99,6 +100,10 @@ bool cloudSaveLooksDifferent({
   required double localGems,
   double cloudEssence = 0,
   double localEssence = 0,
+  int cloudSeasonId = 0,
+  int localSeasonId = 0,
+  double cloudSeason = 0,
+  double localSeason = 0,
 }) {
   bool differs(double a, double b, {double minDiff = 0}) {
     if (a == 0 && b == 0) return false;
@@ -110,7 +115,9 @@ bool cloudSaveLooksDifferent({
   return differs(cloudLifetime, localLifetime) ||
       differs(cloudGems, localGems, minDiff: 10) ||
       // Tinh chất/Bí quyết cũng chỉ nằm trong save: cộng tay trên cloud mà bỏ qua thì bị đè (như 💎).
-      differs(cloudEssence, localEssence, minDiff: 5);
+      differs(cloudEssence, localEssence, minDiff: 5) ||
+      // Thẻ Mùa: chỉ so khi CÙNG mùa (khác mùa thì tiến độ mùa cũ đã reset, không đáng hỏi).
+      (cloudSeasonId == localSeasonId && differs(cloudSeason, localSeason, minDiff: 20));
 }
 
 class CloudSaveController extends Notifier<CloudSaveViewState> {
@@ -216,6 +223,10 @@ class CloudSaveController extends Notifier<CloudSaveViewState> {
         cloudEssence: essenceProgressFromJson(cloud.data).toDouble(),
         localEssence:
             essenceProgressFromJson(getLocalSave?.call() ?? const {}).toDouble(),
+        cloudSeasonId: seasonIdFromJson(cloud.data),
+        localSeasonId: seasonIdFromJson(getLocalSave?.call() ?? const {}),
+        cloudSeason: seasonProgressFromJson(cloud.data).toDouble(),
+        localSeason: seasonProgressFromJson(getLocalSave?.call() ?? const {}).toDouble(),
       );
 
   /// Người chơi chọn "Khôi phục từ cloud" ở hộp thoại xung đột.

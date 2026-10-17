@@ -16,7 +16,7 @@ create function auth.uid() returns uuid language sql stable as
 create role anon; create role authenticated; create publication supabase_realtime;
 grant usage on schema public, auth to anon, authenticated;
 SQL
-for f in leaderboard_schema m3_leaderboard_schema accessory_leaderboard_schema recipe_leaderboard_schema accessory_market_schema leaderboard_rewards_schema recipe_order_leaderboard_schema recipe_daily_schema story_speedrun_schema story_speedrun2_schema story_speedrun3_schema story_speedrun4_schema event_leaderboard_schema; do
+for f in leaderboard_schema m3_leaderboard_schema accessory_leaderboard_schema recipe_leaderboard_schema accessory_market_schema arena_schema arena_leaderboard_schema leaderboard_rewards_schema recipe_order_leaderboard_schema recipe_daily_schema story_speedrun_schema story_speedrun2_schema story_speedrun3_schema story_speedrun4_schema event_leaderboard_schema; do
   P -f supabase/$f.sql >/dev/null 2>&1 || { echo "nạp $f lỗi"; P -f supabase/$f.sql; exit 1; }
 done
 # chạy lại lần 2 phải idempotent

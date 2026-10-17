@@ -1,7 +1,6 @@
 /// Thẻ Mùa + Món của ngày qua GameController: XP từ hoạt động có trần, mua Cao cấp, nhận bậc, mua món.
 library;
 
-import 'package:boba_empire/core/accessories.dart';
 import 'package:boba_empire/core/daily_item.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/core/season.dart';
@@ -82,7 +81,10 @@ void main() {
     expect(r3.essence, 20);
     expect(c.read(gameControllerProvider).essence, e0 + 20);
     final r30 = ctrl.claimSeasonTier(30, premium: true)!;
-    expect(r30.drop!.accessory.rarity, AccessoryRarity.legendary);
+    final items = seasonItemsFor(ctrl.debugGame.seasonId);
+    expect(r30.drop!.accessory.id, items.premium.id);
+    expect(ctrl.debugGame.ownedLimited, contains(items.premium.id));
+    expect(ctrl.claimSeasonTier(20, premium: false)!.drop!.accessory.id, items.free.id);
     expect(r30.gems, 48);
     expect(c.read(gameControllerProvider).seasonPremiumClaimed, containsAll([3, 30]));
   });

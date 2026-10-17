@@ -2814,6 +2814,34 @@ class AppLocalizationsEn extends AppLocalizations {
   String get seasonNotEnoughGems => 'Not enough 💎';
 
   @override
+  String get seasonItemsTitle =>
+      'Season Pass exclusives (tier 20 free · tier 30 Premium)';
+
+  @override
+  String get accessorySeasonSakura => 'Season Sakura';
+
+  @override
+  String get accessorySeasonPaperLantern => 'Season Paper Lantern';
+
+  @override
+  String get accessorySeasonSunflower => 'Season Sunflower';
+
+  @override
+  String get accessorySeasonIsland => 'Season Tropical Island';
+
+  @override
+  String get accessorySeasonAutumnLeaf => 'Season Autumn Leaf';
+
+  @override
+  String get accessorySeasonMoonView => 'Season Moon Viewing';
+
+  @override
+  String get accessorySeasonSnowflake => 'Season Snowflake';
+
+  @override
+  String get accessorySeasonMountain => 'Season Summit';
+
+  @override
   String seasonGot(String text) {
     return 'Got $text';
   }
@@ -4744,6 +4772,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get lbrBoardDaily => 'Daily Challenge';
+
+  @override
+  String get lbrBoardArena => 'Arena Tournament';
 
   @override
   String lbrDailyNote(int rest) {

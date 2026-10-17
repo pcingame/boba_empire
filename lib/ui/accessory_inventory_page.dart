@@ -18,6 +18,7 @@ import '../core/balance.dart';
 import '../core/collection_milestones.dart';
 import '../core/collection_sets.dart';
 import '../core/guild_shop.dart' show guildAccessories;
+import '../core/season.dart' show seasonAccessories;
 import '../core/vip_shop.dart' show vipAccessories;
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
@@ -262,6 +263,26 @@ class AccessoryInventoryPage extends ConsumerWidget {
                   itemCount: guildAccessories.length,
                   itemBuilder: (context, i) => _AccessoryCell(
                       accessory: guildAccessories[i], limited: true),
+                ),
+              ),
+              // Phụ kiện độc quyền theo mùa: nhận ở Thẻ Mùa (bậc 20 miễn phí, bậc 30 Cao cấp).
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 6),
+                  child: Text(
+                    l10n.seasonItemsTitle,
+                    key: const Key('inventory-season-section'),
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+                sliver: SliverGrid.builder(
+                  gridDelegate: _limitedGridDelegate,
+                  itemCount: seasonAccessories.length,
+                  itemBuilder: (context, i) =>
+                      _AccessoryCell(accessory: seasonAccessories[i], limited: true),
                 ),
               ),
             ],

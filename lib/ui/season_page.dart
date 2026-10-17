@@ -19,10 +19,11 @@ String _signature(dynamic s) =>
     '${s.seasonXp}|${s.seasonPremium}|${s.seasonFreeClaimed.join(",")}|${s.seasonPremiumClaimed.join(",")}';
 
 /// Mô tả ngắn một phần thưởng (ngôn ngữ trung tính: emoji + số; độ hiếm dùng chuỗi có sẵn).
-String seasonRewardText(AppLocalizations l10n, SeasonReward r, {required bool exact}) => [
+String seasonRewardText(AppLocalizations l10n, SeasonReward r, {required bool exact, int seasonId = 0, bool premium = false}) => [
       if (r.gems > 0) '${r.gems} 💎',
       if (r.essence > 0) '${r.essence} 🧪',
       if (r.accessory != null) '🎁 ${accessoryRarityLabel(l10n, r.accessory!)}${exact ? '' : '+'}',
+      if (r.exclusive) '⭐${(premium ? seasonItemsFor(seasonId).premium : seasonItemsFor(seasonId).free).emoji}',
     ].join(' · ');
 
 class SeasonEntryCard extends ConsumerWidget {
@@ -104,7 +105,8 @@ class SeasonPage extends ConsumerWidget {
       final r = ctrl.claimSeasonTier(t, premium: premium);
       if (r == null) return;
       playEffect(context, r.drop != null ? AnimAssets.confetti : AnimAssets.sparkle, heavy: r.drop != null);
-      final shown = seasonRewardText(l10n, premium ? seasonPremiumReward(t) : seasonFreeReward(t), exact: true);
+      final shown = seasonRewardText(l10n, premium ? seasonPremiumReward(t) : seasonFreeReward(t),
+          exact: true, seasonId: ctrl.gameStateForSeason.seasonId, premium: premium);
       _snack(
           context,
           r.drop == null
@@ -191,7 +193,7 @@ class SeasonPage extends ConsumerWidget {
                   Expanded(
                     child: _RewardCell(
                       cellKey: Key('season-free-$t'),
-                      text: seasonRewardText(l10n, seasonFreeReward(t), exact: false),
+                      text: seasonRewardText(l10n, seasonFreeReward(t), exact: false, seasonId: s.seasonId),
                       claimed: s.seasonFreeClaimed.contains(t),
                       canClaim: seasonCanClaim(s, t, premium: false),
                       locked: t > tier,
@@ -203,7 +205,7 @@ class SeasonPage extends ConsumerWidget {
                     child: _RewardCell(
                       cellKey: Key('season-premium-$t'),
                       text: seasonRewardText(l10n, seasonPremiumReward(t),
-                          exact: t == seasonTiers),
+                          exact: t == seasonTiers, seasonId: s.seasonId, premium: true),
                       claimed: s.seasonPremiumClaimed.contains(t),
                       canClaim: seasonCanClaim(s, t, premium: true),
                       locked: t > tier || !s.seasonPremium,

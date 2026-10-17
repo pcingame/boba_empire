@@ -1,6 +1,7 @@
 // Phát hiện save cloud "khác": phải xét cả 💎, không chỉ tiền kiếm được. Lỗi
 // gốc: sửa `gems` trên cloud (quà tặng thủ công) không đổi lifetimeEarnings →
 // máy lặng lẽ ghi nhận version mới rồi ĐÈ mất quà ở lần lưu kế tiếp.
+import 'package:boba_empire/core/season.dart';
 import 'package:boba_empire/data/cloud_save_controller.dart';
 import 'package:boba_empire/data/cloud_save_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -71,6 +72,33 @@ void main() {
     expect(d(0, 300), isTrue);
     expect(d(0, 0), isFalse);
     expect(d(300, 298), isFalse);
+  });
+
+  test('Thẻ Mùa: cùng mùa mà tiến độ lệch → xung đột; khác mùa hoặc lệch nhỏ → bỏ qua', () {
+    bool d({int ci = 3, int li = 3, double c = 0, double l = 0}) => cloudSaveLooksDifferent(
+        cloudLifetime: 1e6,
+        localLifetime: 1e6,
+        cloudGems: 100,
+        localGems: 100,
+        cloudSeasonId: ci,
+        localSeasonId: li,
+        cloudSeason: c,
+        localSeason: l);
+    expect(d(c: 1500, l: 100), isTrue);
+    expect(d(c: 100, l: 1500), isTrue);
+    expect(d(c: 1500, l: 1500), isFalse);
+    expect(d(c: 1500, l: 100, li: 2), isFalse, reason: 'khác mùa: tiến độ mùa cũ đã reset');
+    expect(d(c: 110, l: 100), isFalse, reason: 'lệch dưới 20 điểm');
+    expect(d(), isFalse);
+  });
+
+  test('seasonProgressFromJson: XP + Cao cấp + bậc đã nhận; dữ liệu hỏng = 0', () {
+    expect(seasonProgressFromJson({'seasonXp': 250, 'seasonPremium': true, 'seasonFreeClaimed': [1, 2], 'seasonPremiumClaimed': [1]}),
+        250 + 1000 + 30);
+    expect(seasonProgressFromJson({'seasonXp': 'x', 'seasonPremium': 'yes', 'seasonFreeClaimed': 'no'}), 0);
+    expect(seasonProgressFromJson({'seasonXp': -5}), 0);
+    expect(seasonIdFromJson({'seasonId': 4}), 4);
+    expect(seasonIdFromJson({}), 0);
   });
 
   group('cloudSaveLooksDifferent', () {

@@ -1321,14 +1321,15 @@ class GameController extends Notifier<GameSnapshot> {
     (premium ? _game.seasonPremiumClaimed : _game.seasonFreeClaimed).add(tier);
     if (r.gems > 0) grantGems(_game, r.gems.toDouble());
     if (r.essence > 0) _game.essence += r.essence;
-    final drop = r.accessory == null
-        ? null
-        : _dropAccessory(
-            source: premium ? 'season_premium' : 'season_free',
-            // Bậc cuối Cao cấp: ĐÚNG huyền thoại; còn lại là "từ độ hiếm này trở lên".
-            rarity: premium && tier == seasonTiers ? AccessoryRarity.legendary : null,
-            minRarity: r.accessory!,
-          );
+    AccessoryDrop? drop;
+    if (r.exclusive) {
+      // Món độc quyền của mùa (nhóm độc quyền: không tính bộ sưu tập chính, không lên Chợ).
+      final items = seasonItemsFor(_game.seasonId);
+      final item = premium ? items.premium : items.free;
+      drop = lastAccessoryDrop = AccessoryDrop(item, isNew: grantFestivalItem(_game, item));
+    } else if (r.accessory != null) {
+      drop = _dropAccessory(source: premium ? 'season_premium' : 'season_free', minRarity: r.accessory!);
+    }
     logEvent('season_tier_claimed', {'season': _game.seasonId, 'tier': tier, 'premium': premium});
     unawaited(saveNow());
     state = _snapshot();

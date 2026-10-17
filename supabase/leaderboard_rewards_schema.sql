@@ -7,7 +7,7 @@
 --
 -- Cách deploy: dán TOÀN BỘ file này vào Supabase SQL Editor → Run. Idempotent. Chạy SAU
 -- leaderboard_schema, m3_leaderboard_schema, accessory_leaderboard_schema, recipe_leaderboard_schema,
--- recipe_order_leaderboard_schema và accessory_market_schema (bảng vip_leaderboard_entries nằm ở đó). KHÔNG đụng bảng/hàm cũ.
+-- recipe_order_leaderboard_schema, arena_schema (+ arena_leaderboard_schema) và accessory_market_schema (bảng vip_leaderboard_entries nằm ở đó). KHÔNG đụng bảng/hàm cũ.
 --
 -- Cách tính: KHÔNG cần cron. Lần đầu có người gọi lb_reward_status() trong tuần mới thì server chụp top 3
 -- hiện tại của từng bảng và gắn nhãn tuần đó ("bảng xếp hạng chốt đầu tuần"); ai nằm trong ảnh chụp thì
@@ -41,7 +41,7 @@ create table if not exists lb_reward_claims (
 -- Bảng đã tạo từ khi còn 4 bảng có CHECK cũ: bỏ rồi tạo lại với bảng 'recipes', 'orders' (idempotent).
 alter table lb_reward_snapshots drop constraint if exists lb_reward_snapshots_board_check;
 alter table lb_reward_snapshots add constraint lb_reward_snapshots_board_check
-  check (board in ('income', 'pearls', 'collection', 'vip', 'recipes', 'orders', 'daily'));
+  check (board in ('income', 'pearls', 'collection', 'vip', 'recipes', 'orders', 'daily', 'arena'));
 -- Bảng đã tạo khi hạng chỉ 1..3: nới lên 1..10 cho bảng 'daily' (idempotent).
 alter table lb_reward_snapshots drop constraint if exists lb_reward_snapshots_rank_check;
 alter table lb_reward_snapshots add constraint lb_reward_snapshots_rank_check check (rank between 1 and 10);
@@ -62,7 +62,9 @@ $$;
 -- 💎 theo (bảng, hạng): như lb_reward_gems, riêng bảng 'daily' hạng 4-10 nhận 50. Khớp lbRewardGemsForBoard (Dart).
 create or replace function lb_reward_gems_for(p_board text, p_rank integer) returns integer
 language sql immutable as $$
-  select case when p_board = 'daily' and p_rank between 4 and 10 then 50 else lb_reward_gems(p_rank) end
+  select case when p_board = 'daily' and p_rank between 4 and 10 then 50
+              when p_board = 'arena' and p_rank between 4 and 10 then 50
+              else lb_reward_gems(p_rank) end
 $$;
 
 -- Thưởng còn nhận được trong bao nhiêu tuần kể từ tuần chụp (tuần chụp + tuần kế).
@@ -138,6 +140,27 @@ begin
               from recipe_daily_scores d join auth.users u on u.id = d.user_id
              where not u.is_anonymous and d.day >= v_from and d.day < v_to
              group by d.user_id having sum(d.score) > 0) r
+  ) b where b.rn <= 10
+  union all
+  -- Giải đấu Đấu Trường tuần: số TRẬN THẮNG THẬT (không tính trận bóng ma) của tuần trước, top 10. Chống đổi thắng:
+  -- mỗi đối thủ chỉ tính tối đa 3 trận thắng/tuần.
+  select v_week, b.board, b.rn, b.user_id, b.nickname, b.v from (
+    select 'arena'::text as board, r.user_id, r.nickname, r.v,
+           row_number() over (order by r.v desc, r.last_at asc)::integer as rn
+      from (select w.winner as user_id, coalesce(n.nickname, '???') as nickname,
+                   count(*)::numeric as v, max(w.started_at) as last_at
+              from (select m.winner, m.started_at,
+                           row_number() over (partition by m.winner,
+                             case when m.winner = m.player_a then m.player_b else m.player_a end
+                             order by m.started_at) as k
+                      from arena_matches m
+                     where m.status = 'finished' and not m.ghost and m.winner is not null
+                       and m.started_at >= v_week::timestamptz - interval '7 days'
+                       and m.started_at < v_week::timestamptz) w
+              join auth.users u on u.id = w.winner
+              left join arena_nicknames n on n.user_id = w.winner
+             where w.k <= 3 and not u.is_anonymous
+             group by w.winner, n.nickname) r
   ) b where b.rn <= 10;
 end;
 $$;

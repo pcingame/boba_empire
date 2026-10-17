@@ -26,7 +26,7 @@ enum AccessoryFamily {
   final String emoji;
 }
 
-// 208 món = 160 bộ chính + 28 lễ hội + 12 cửa hàng Hội + 8 cửa hàng VIP. Thêm món MỚI thì PHẢI
+// 216 món = 160 bộ chính + 28 lễ hội + 12 cửa hàng Hội + 8 cửa hàng VIP + 8 Thẻ Mùa. Thêm món MỚI thì PHẢI
 // thêm vào một danh sách dưới đây — test `accessory_loadout_test` khoá việc mỗi món có đúng một họ.
 const List<String> _tapIds = [
     'mint_leaf', 'candle', 'balloon', 'teapot', 'wind_chime', 'yarn', 'ladybug', 'ice_cream',
@@ -37,6 +37,7 @@ const List<String> _tapIds = [
     'dragon', 'thunderbolt', 'eagle', 'bat', 'santa', 'fireworks', 'red_envelope',
     'love_letter', 'princess', 'full_moon', 'guild_flag', 'guild_fox', 'guild_boar',
     'vip_watch', 'vip_racecar',
+    'season_sakura', 'season_autumn_leaf',
 ];
 
 const List<String> _incomeIds = [
@@ -48,6 +49,7 @@ const List<String> _incomeIds = [
     'genie', 'jack_o_lantern', 'snowman', 'golden_sparkler', 'apricot_blossom', 'rose',
     'tulip', 'lion_dance', 'guild_castle', 'guild_tiger', 'guild_bear', 'vip_luggage',
     'vip_heli',
+    'season_paper_lantern', 'season_moon_view',
 ];
 
 const List<String> _offlineIds = [
@@ -58,6 +60,7 @@ const List<String> _offlineIds = [
     'rainbow', 'swan', 'crown', 'leopard', 'turtle', 'galaxy', 'volcano', 'ghost',
     'christmas_tree', 'champagne', 'golden_goat', 'chocolate', 'bouquet', 'mooncake',
     'guild_wolf', 'guild_shark', 'guild_scorpion', 'vip_briefcase', 'vip_yacht',
+    'season_sunflower', 'season_snowflake',
 ];
 
 const List<String> _discountIds = [
@@ -68,6 +71,7 @@ const List<String> _discountIds = [
     'circus_tent', 'elephant', 'koala', 'kraken', 'mermaid', 'witch', 'reindeer',
     'party_popper', 'firecracker', 'cupid_arrow', 'lipstick', 'rabbit', 'guild_dragon',
     'guild_trex', 'guild_moai', 'vip_tophat', 'vip_jet',
+    'season_island', 'season_mountain',
 ];
 
 final Map<String, AccessoryFamily> _familyById = {

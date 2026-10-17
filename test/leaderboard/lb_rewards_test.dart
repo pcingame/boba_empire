@@ -75,6 +75,8 @@ void main() {
       expect(int.parse(m.group(2)!), lbRewardGemsDailyRest);
       expect(sql, contains('check (rank between 1 and $lbRewardDailyMaxRank)'));
       expect([for (var r = 1; r <= 11; r++) lbRewardGemsForBoard(LbBoard.daily, r)], [300, 200, 100, ...List.filled(7, 50), 0]);
+      expect([for (var r = 1; r <= 11; r++) lbRewardGemsForBoard(LbBoard.arena, r)], [300, 200, 100, ...List.filled(7, 50), 0]);
+      expect(sql, contains("p_board = 'arena' and p_rank between 4 and $lbRewardDailyMaxRank then $lbRewardGemsDailyRest"));
       // Bảng khác vẫn chỉ top 3.
       expect([for (var r = 1; r <= 5; r++) lbRewardGemsForBoard(LbBoard.income, r)], [300, 200, 100, 0, 0]);
     });

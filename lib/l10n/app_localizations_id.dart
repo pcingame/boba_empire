@@ -2811,6 +2811,34 @@ class AppLocalizationsId extends AppLocalizations {
   String get seasonNotEnoughGems => '💎 tidak cukup';
 
   @override
+  String get seasonItemsTitle =>
+      'Eksklusif Pass Musim (tingkat 20 gratis · tingkat 30 Premium)';
+
+  @override
+  String get accessorySeasonSakura => 'Sakura Musim';
+
+  @override
+  String get accessorySeasonPaperLantern => 'Lampion Musim';
+
+  @override
+  String get accessorySeasonSunflower => 'Bunga Matahari Musim';
+
+  @override
+  String get accessorySeasonIsland => 'Pulau Tropis Musim';
+
+  @override
+  String get accessorySeasonAutumnLeaf => 'Daun Musim Gugur';
+
+  @override
+  String get accessorySeasonMoonView => 'Melihat Bulan Musim';
+
+  @override
+  String get accessorySeasonSnowflake => 'Kepingan Salju Musim';
+
+  @override
+  String get accessorySeasonMountain => 'Puncak Musim';
+
+  @override
   String seasonGot(String text) {
     return 'Dapat $text';
   }
@@ -4733,6 +4761,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get lbrBoardDaily => 'Tantangan harian';
+
+  @override
+  String get lbrBoardArena => 'Turnamen Arena';
 
   @override
   String lbrDailyNote(int rest) {

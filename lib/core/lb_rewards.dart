@@ -5,7 +5,7 @@ library;
 
 /// Bảng có thưởng tuần; `name` khớp cột `board` của server. `daily` (Thử thách ngày) khác các bảng còn lại: xếp theo
 /// TỔNG điểm cả TUẦN TRƯỚC và thưởng top 10 (xem [lbRewardGemsForBoard]).
-enum LbBoard { income, pearls, collection, vip, recipes, orders, daily }
+enum LbBoard { income, pearls, collection, vip, recipes, orders, daily, arena }
 
 /// 💎 theo hạng (1-based); hạng ngoài top 3 = 0.
 const List<int> lbRewardGemsByRank = [300, 200, 100];
@@ -18,7 +18,7 @@ const int lbRewardGemsDailyRest = 50;
 
 /// 💎 theo (bảng, hạng) — khớp `lb_reward_gems_for` ở SQL (test so khớp). Server là nguồn thật; hàm này để hiển thị/test.
 int lbRewardGemsForBoard(LbBoard board, int rank) =>
-    board == LbBoard.daily && rank > lbRewardGemsByRank.length && rank <= lbRewardDailyMaxRank
+    (board == LbBoard.daily || board == LbBoard.arena) && rank > lbRewardGemsByRank.length && rank <= lbRewardDailyMaxRank
         ? lbRewardGemsDailyRest
         : lbRewardGemsFor(rank);
 
