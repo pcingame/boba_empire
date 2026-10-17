@@ -142,6 +142,29 @@ String achievementDesc(AppLocalizations l10n, Achievement a) =>
       AchievementMetric.ascension => l10n.achAscend,
     };
 
+/// Tên / điều kiện mở khoá của danh hiệu hồ sơ (xem core/titles.dart).
+String playerTitleName(AppLocalizations l10n, String id) => switch (id) {
+      'tycoon' => l10n.playerTitleTycoon,
+      'mogul' => l10n.playerTitleMogul,
+      'legend' => l10n.playerTitleLegend,
+      'timewalker' => l10n.playerTitleTimewalker,
+      'stargazer' => l10n.playerTitleStargazer,
+      'collector' => l10n.playerTitleCollector,
+      'vip' => l10n.playerTitleVip,
+      _ => id,
+    };
+
+String playerTitleHint(AppLocalizations l10n, String id) => switch (id) {
+      'tycoon' => l10n.playerTitleTycoonHint,
+      'mogul' => l10n.playerTitleMogulHint,
+      'legend' => l10n.playerTitleLegendHint,
+      'timewalker' => l10n.playerTitleTimewalkerHint,
+      'stargazer' => l10n.playerTitleStargazerHint,
+      'collector' => l10n.playerTitleCollectorHint,
+      'vip' => l10n.playerTitleVipHint,
+      _ => '',
+    };
+
 /// Tên hiển thị của một phụ kiện sưu tập (xem core/accessories.dart).
 String accessoryName(AppLocalizations l10n, String id) => switch (id) {
       'mint_leaf' => l10n.accessoryMintLeaf,

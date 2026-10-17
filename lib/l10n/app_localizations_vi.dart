@@ -1127,6 +1127,58 @@ class AppLocalizationsVi extends AppLocalizations {
   String get profileNoRanks => 'Chưa có hạng nào trên bảng xếp hạng.';
 
   @override
+  String get titlePickerTitle => 'Danh hiệu';
+
+  @override
+  String get titlePickerNone => 'Không dùng danh hiệu';
+
+  @override
+  String get titlePickerHint =>
+      'Mở khoá bằng tiến độ. Danh hiệu chọn sẽ hiện trên hồ sơ công khai (cần tài khoản liên kết email).';
+
+  @override
+  String get playerTitleTycoon => 'Ông Chủ Chuỗi';
+
+  @override
+  String get playerTitleTycoonHint => 'Đạt giai đoạn 5';
+
+  @override
+  String get playerTitleMogul => 'Đại Gia';
+
+  @override
+  String get playerTitleMogulHint => 'Đạt giai đoạn 10';
+
+  @override
+  String get playerTitleLegend => 'Huyền Thoại';
+
+  @override
+  String get playerTitleLegendHint => 'Đạt giai đoạn 18';
+
+  @override
+  String get playerTitleTimewalker => 'Lữ Khách Thời Gian';
+
+  @override
+  String get playerTitleTimewalkerHint => 'Thăng Thiên ít nhất 1 lần';
+
+  @override
+  String get playerTitleStargazer => 'Người Hái Sao';
+
+  @override
+  String get playerTitleStargazerHint => 'Có 50 Sao';
+
+  @override
+  String get playerTitleCollector => 'Nhà Sưu Tập';
+
+  @override
+  String get playerTitleCollectorHint => 'Sở hữu 100 phụ kiện';
+
+  @override
+  String get playerTitleVip => 'Quý Tộc VIP';
+
+  @override
+  String get playerTitleVipHint => 'Đạt VIP 5';
+
+  @override
   String get profileViewButton => 'Hồ sơ';
 
   @override

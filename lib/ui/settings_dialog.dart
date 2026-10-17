@@ -9,6 +9,7 @@ import 'how_to_play_dialog.dart';
 import 'language_dialog.dart';
 import 'redeem_dialog.dart';
 import 'invite_dialog.dart' show shareTextProvider;
+import 'title_picker_dialog.dart';
 import 'web_links.dart';
 import 'widgets/effects_quality.dart';
 
@@ -109,6 +110,14 @@ class _SettingsDialog extends ConsumerWidget {
                 },
               ),
             ),
+          ListTile(
+            key: const Key('settings-title'),
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.military_tech_outlined),
+            title: Text(l10n.titlePickerTitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => showTitlePicker(context),
+          ),
           ListTile(
             key: const Key('settings-web-guide'),
             contentPadding: EdgeInsets.zero,

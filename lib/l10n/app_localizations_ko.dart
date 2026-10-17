@@ -1110,6 +1110,58 @@ class AppLocalizationsKo extends AppLocalizations {
   String get profileNoRanks => '아직 어떤 순위에도 없어요.';
 
   @override
+  String get titlePickerTitle => '칭호';
+
+  @override
+  String get titlePickerNone => '칭호 없음';
+
+  @override
+  String get titlePickerHint =>
+      '진행도로 해금됩니다. 선택한 칭호는 공개 프로필에 표시됩니다(이메일 연동 계정 필요).';
+
+  @override
+  String get playerTitleTycoon => '체인 사업가';
+
+  @override
+  String get playerTitleTycoonHint => '5단계 도달';
+
+  @override
+  String get playerTitleMogul => '거물';
+
+  @override
+  String get playerTitleMogulHint => '10단계 도달';
+
+  @override
+  String get playerTitleLegend => '전설';
+
+  @override
+  String get playerTitleLegendHint => '18단계 도달';
+
+  @override
+  String get playerTitleTimewalker => '시간 여행자';
+
+  @override
+  String get playerTitleTimewalkerHint => '한 번 이상 승천';
+
+  @override
+  String get playerTitleStargazer => '별 수집가';
+
+  @override
+  String get playerTitleStargazerHint => '별 50개 보유';
+
+  @override
+  String get playerTitleCollector => '수집가';
+
+  @override
+  String get playerTitleCollectorHint => '액세서리 100개 보유';
+
+  @override
+  String get playerTitleVip => 'VIP 귀족';
+
+  @override
+  String get playerTitleVipHint => 'VIP 5 달성';
+
+  @override
   String get profileViewButton => '프로필';
 
   @override

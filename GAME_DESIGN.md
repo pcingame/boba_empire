@@ -1216,3 +1216,7 @@ Giảm giá 38 món → 400 mỗi bộ). Tổng đời tối đa **2 850 Xu Ch�
 ### 46c. Giải đấu Đấu Trường theo tuần
 - Thêm bảng `arena` vào thưởng top BXH tuần (`leaderboard_rewards_schema.sql`): xếp theo số TRẬN THẮNG THẬT của tuần trước (bỏ bóng ma, ẩn danh), mỗi đối thủ tối đa 3 trận/tuần (chống đổi thắng). Top 10: 300/200/100 rồi 50💎. Nhận trong hộp thưởng BXH có sẵn.
 - SQL phải chạy lại `leaderboard_rewards_schema.sql` (đổi CHECK + hàm); cần `arena_schema.sql` đã có. Test: `scripts/test_lb_rewards_sql.sh`.
+
+## 47. Danh hiệu hồ sơ (2026-10-18, chưa playtest)
+- 7 danh hiệu (`lib/core/titles.dart`) mở khoá từ tiến độ sẵn có (giai đoạn 5/10/18, Thăng Thiên, 50 Sao, 100 phụ kiện, VIP 5). Chọn ở Cài đặt → Danh hiệu; hiện trên hồ sơ công khai của mình khi người khác bấm vào tên ở BXH.
+- Thuần trang trí: mở khoá do client tự xét, server chỉ kiểm whitelist + tài khoản liên kết email (`supabase/player_title_schema.sql`, test trong `scripts/test_lb_rewards_sql.sh`).

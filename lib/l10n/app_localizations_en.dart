@@ -1128,6 +1128,58 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileNoRanks => 'Not on any leaderboard yet.';
 
   @override
+  String get titlePickerTitle => 'Title';
+
+  @override
+  String get titlePickerNone => 'No title';
+
+  @override
+  String get titlePickerHint =>
+      'Unlock them through progress. The chosen title shows on your public profile (needs an email-linked account).';
+
+  @override
+  String get playerTitleTycoon => 'Chain Tycoon';
+
+  @override
+  String get playerTitleTycoonHint => 'Reach stage 5';
+
+  @override
+  String get playerTitleMogul => 'Mogul';
+
+  @override
+  String get playerTitleMogulHint => 'Reach stage 10';
+
+  @override
+  String get playerTitleLegend => 'Legend';
+
+  @override
+  String get playerTitleLegendHint => 'Reach stage 18';
+
+  @override
+  String get playerTitleTimewalker => 'Time Walker';
+
+  @override
+  String get playerTitleTimewalkerHint => 'Ascend at least once';
+
+  @override
+  String get playerTitleStargazer => 'Stargazer';
+
+  @override
+  String get playerTitleStargazerHint => 'Hold 50 stars';
+
+  @override
+  String get playerTitleCollector => 'Collector';
+
+  @override
+  String get playerTitleCollectorHint => 'Own 100 accessories';
+
+  @override
+  String get playerTitleVip => 'VIP Noble';
+
+  @override
+  String get playerTitleVipHint => 'Reach VIP 5';
+
+  @override
   String get profileViewButton => 'Profile';
 
   @override

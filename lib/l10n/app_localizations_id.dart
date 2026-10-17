@@ -1130,6 +1130,58 @@ class AppLocalizationsId extends AppLocalizations {
   String get profileNoRanks => 'Belum ada di peringkat mana pun.';
 
   @override
+  String get titlePickerTitle => 'Gelar';
+
+  @override
+  String get titlePickerNone => 'Tanpa gelar';
+
+  @override
+  String get titlePickerHint =>
+      'Buka lewat progres. Gelar yang dipilih tampil di profil publik (perlu akun yang terhubung email).';
+
+  @override
+  String get playerTitleTycoon => 'Bos Jaringan';
+
+  @override
+  String get playerTitleTycoonHint => 'Capai tahap 5';
+
+  @override
+  String get playerTitleMogul => 'Konglomerat';
+
+  @override
+  String get playerTitleMogulHint => 'Capai tahap 10';
+
+  @override
+  String get playerTitleLegend => 'Legenda';
+
+  @override
+  String get playerTitleLegendHint => 'Capai tahap 18';
+
+  @override
+  String get playerTitleTimewalker => 'Pengembara Waktu';
+
+  @override
+  String get playerTitleTimewalkerHint => 'Ascend minimal sekali';
+
+  @override
+  String get playerTitleStargazer => 'Pemburu Bintang';
+
+  @override
+  String get playerTitleStargazerHint => 'Miliki 50 bintang';
+
+  @override
+  String get playerTitleCollector => 'Kolektor';
+
+  @override
+  String get playerTitleCollectorHint => 'Miliki 100 aksesori';
+
+  @override
+  String get playerTitleVip => 'Bangsawan VIP';
+
+  @override
+  String get playerTitleVipHint => 'Capai VIP 5';
+
+  @override
   String get profileViewButton => 'Profil';
 
   @override

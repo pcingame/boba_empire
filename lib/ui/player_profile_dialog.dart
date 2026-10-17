@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/format.dart';
+import '../core/titles.dart';
+import '../l10n/l10n_ext.dart';
+import '../leaderboard/player_title.dart';
 import '../l10n/app_localizations.dart';
 import '../leaderboard/player_profile.dart';
 import 'web_links.dart';
@@ -41,6 +44,7 @@ class PlayerProfileDialog extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final async = ref.watch(playerProfileProvider(nickname));
+    final title = playerTitleById(ref.watch(playerTitleProvider(nickname)).value ?? '');
     return AlertDialog(
       title: Text(l10n.profileTitle(nickname), maxLines: 2, overflow: TextOverflow.ellipsis),
       content: SingleChildScrollView(
@@ -51,6 +55,13 @@ class PlayerProfileDialog extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (title != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 6),
+                    child: Text('${title.emoji} ${playerTitleName(l10n, title.id)}',
+                        key: const Key('profile-title'),
+                        style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+                  ),
                 for (final r in value)
                   Padding(
                     key: Key('profile-row-${r.board.name}'),

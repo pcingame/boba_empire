@@ -1926,6 +1926,108 @@ abstract class AppLocalizations {
   /// **'Chưa có hạng nào trên bảng xếp hạng.'**
   String get profileNoRanks;
 
+  /// No description provided for @titlePickerTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh hiệu'**
+  String get titlePickerTitle;
+
+  /// No description provided for @titlePickerNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không dùng danh hiệu'**
+  String get titlePickerNone;
+
+  /// No description provided for @titlePickerHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở khoá bằng tiến độ. Danh hiệu chọn sẽ hiện trên hồ sơ công khai (cần tài khoản liên kết email).'**
+  String get titlePickerHint;
+
+  /// No description provided for @playerTitleTycoon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ông Chủ Chuỗi'**
+  String get playerTitleTycoon;
+
+  /// No description provided for @playerTitleTycoonHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đạt giai đoạn 5'**
+  String get playerTitleTycoonHint;
+
+  /// No description provided for @playerTitleMogul.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đại Gia'**
+  String get playerTitleMogul;
+
+  /// No description provided for @playerTitleMogulHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đạt giai đoạn 10'**
+  String get playerTitleMogulHint;
+
+  /// No description provided for @playerTitleLegend.
+  ///
+  /// In vi, this message translates to:
+  /// **'Huyền Thoại'**
+  String get playerTitleLegend;
+
+  /// No description provided for @playerTitleLegendHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đạt giai đoạn 18'**
+  String get playerTitleLegendHint;
+
+  /// No description provided for @playerTitleTimewalker.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lữ Khách Thời Gian'**
+  String get playerTitleTimewalker;
+
+  /// No description provided for @playerTitleTimewalkerHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thăng Thiên ít nhất 1 lần'**
+  String get playerTitleTimewalkerHint;
+
+  /// No description provided for @playerTitleStargazer.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người Hái Sao'**
+  String get playerTitleStargazer;
+
+  /// No description provided for @playerTitleStargazerHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Có 50 Sao'**
+  String get playerTitleStargazerHint;
+
+  /// No description provided for @playerTitleCollector.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhà Sưu Tập'**
+  String get playerTitleCollector;
+
+  /// No description provided for @playerTitleCollectorHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sở hữu 100 phụ kiện'**
+  String get playerTitleCollectorHint;
+
+  /// No description provided for @playerTitleVip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quý Tộc VIP'**
+  String get playerTitleVip;
+
+  /// No description provided for @playerTitleVipHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đạt VIP 5'**
+  String get playerTitleVipHint;
+
   /// No description provided for @profileViewButton.
   ///
   /// In vi, this message translates to:

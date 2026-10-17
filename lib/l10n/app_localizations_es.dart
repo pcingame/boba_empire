@@ -1137,6 +1137,58 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profileNoRanks => 'Aún no está en ninguna clasificación.';
 
   @override
+  String get titlePickerTitle => 'Título';
+
+  @override
+  String get titlePickerNone => 'Sin título';
+
+  @override
+  String get titlePickerHint =>
+      'Se desbloquean con el progreso. El título elegido aparece en tu perfil público (requiere cuenta vinculada por email).';
+
+  @override
+  String get playerTitleTycoon => 'Magnate de la Cadena';
+
+  @override
+  String get playerTitleTycoonHint => 'Llega a la etapa 5';
+
+  @override
+  String get playerTitleMogul => 'Magnate';
+
+  @override
+  String get playerTitleMogulHint => 'Llega a la etapa 10';
+
+  @override
+  String get playerTitleLegend => 'Leyenda';
+
+  @override
+  String get playerTitleLegendHint => 'Llega a la etapa 18';
+
+  @override
+  String get playerTitleTimewalker => 'Viajero del Tiempo';
+
+  @override
+  String get playerTitleTimewalkerHint => 'Asciende al menos una vez';
+
+  @override
+  String get playerTitleStargazer => 'Cazaestrellas';
+
+  @override
+  String get playerTitleStargazerHint => 'Reúne 50 estrellas';
+
+  @override
+  String get playerTitleCollector => 'Coleccionista';
+
+  @override
+  String get playerTitleCollectorHint => 'Posee 100 accesorios';
+
+  @override
+  String get playerTitleVip => 'Noble VIP';
+
+  @override
+  String get playerTitleVipHint => 'Llega a VIP 5';
+
+  @override
   String get profileViewButton => 'Perfil';
 
   @override

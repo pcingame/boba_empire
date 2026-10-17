@@ -1127,6 +1127,58 @@ class AppLocalizationsTh extends AppLocalizations {
   String get profileNoRanks => 'ยังไม่อยู่ในอันดับใด ๆ';
 
   @override
+  String get titlePickerTitle => 'ฉายา';
+
+  @override
+  String get titlePickerNone => 'ไม่ใช้ฉายา';
+
+  @override
+  String get titlePickerHint =>
+      'ปลดล็อกด้วยความคืบหน้า ฉายาที่เลือกจะแสดงในโปรไฟล์สาธารณะ (ต้องมีบัญชีที่ผูกอีเมล)';
+
+  @override
+  String get playerTitleTycoon => 'เจ้าของเชน';
+
+  @override
+  String get playerTitleTycoonHint => 'ถึงช่วง 5';
+
+  @override
+  String get playerTitleMogul => 'เศรษฐี';
+
+  @override
+  String get playerTitleMogulHint => 'ถึงช่วง 10';
+
+  @override
+  String get playerTitleLegend => 'ตำนาน';
+
+  @override
+  String get playerTitleLegendHint => 'ถึงช่วง 18';
+
+  @override
+  String get playerTitleTimewalker => 'นักเดินทางข้ามเวลา';
+
+  @override
+  String get playerTitleTimewalkerHint => 'เลื่อนขั้นอย่างน้อย 1 ครั้ง';
+
+  @override
+  String get playerTitleStargazer => 'นักเก็บดาว';
+
+  @override
+  String get playerTitleStargazerHint => 'มี 50 ดาว';
+
+  @override
+  String get playerTitleCollector => 'นักสะสม';
+
+  @override
+  String get playerTitleCollectorHint => 'มีอุปกรณ์ 100 ชิ้น';
+
+  @override
+  String get playerTitleVip => 'ขุนนาง VIP';
+
+  @override
+  String get playerTitleVipHint => 'ถึง VIP 5';
+
+  @override
   String get profileViewButton => 'โปรไฟล์';
 
   @override
