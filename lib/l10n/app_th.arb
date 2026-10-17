@@ -1122,6 +1122,90 @@
     }
   },
   "marketExtendedToast": "ต่ออายุการขายแล้ว",
+  "loadoutTitle": "ชุดสวมใส่",
+  "loadoutHint": "แต่ละตระกูลให้บัฟหนึ่งอย่าง: 🔥 แตะ · ✨ รายได้ · 🌿 ออฟไลน์ · 💎 ค่าอัปเกรด ใส่หลายชิ้นจากตระกูลเดียวกันเพื่อรับคอมโบ",
+  "loadoutEmpty": "ยังไม่มีบัฟ แตะไอเทมในคอลเลกชันเพื่อสวมใส่",
+  "loadoutBuffTap": "🔥 แตะ +{pct}%",
+  "@loadoutBuffTap": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffIncome": "✨ รายได้ +{pct}%",
+  "@loadoutBuffIncome": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffOffline": "🌿 ออฟไลน์ +{pct}%",
+  "@loadoutBuffOffline": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffDiscount": "💎 ค่าอัปเกรด −{pct}%",
+  "@loadoutBuffDiscount": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutComboSuffix": " · คอมโบ ×{mult}",
+  "@loadoutComboSuffix": {
+    "placeholders": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutLockNote": "🔒 ล็อกการเปลี่ยน: เหลือ {minutes} นาที",
+  "@loadoutLockNote": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutLockedTitle": "ชุดสวมใส่ถูกล็อก",
+  "loadoutLockedBody": "คุณเพิ่งเปลี่ยนชุดสวมใส่ อีก {minutes} นาทีจึงจะถอดหรือเปลี่ยนได้อีก (เติมช่องว่างได้เสมอ) ปลดล็อกเลยไหม?",
+  "@loadoutLockedBody": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutUnlockAd": "ดูโฆษณาเพื่อปลดล็อก",
+  "loadoutUnlockFree": "ปลดล็อก",
+  "loadoutUnlockedToast": "ปลดล็อกแล้ว เปลี่ยนได้เต็มที่!",
+  "loadoutRemoveTitle": "ถอด {name} ไหม?",
+  "@loadoutRemoveTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutRemoveBody": "หลังถอดแล้ว จะถอดหรือเปลี่ยนไอเทมอื่นไม่ได้เป็นเวลา {minutes} นาที (เติมช่องว่างได้)",
+  "@loadoutRemoveBody": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutRemoveConfirm": "ถอด",
+  "loadoutFamilyTap": "ความร้อนแรง · เพิ่มค่าการแตะ",
+  "loadoutFamilyIncome": "ประกาย · เพิ่มรายได้อัตโนมัติ",
+  "loadoutFamilyOffline": "สงบ · เพิ่มรายได้ตอนออฟไลน์",
+  "loadoutFamilyDiscount": "ความประณีต · อัปเกรดถูกลง",
   "marketSellableHeader": "ของสะสมที่ขายได้",
   "marketEmptySellable": "คุณยังไม่มีของสะสมให้ขาย",
   "marketListedToast": "ลงขายสำเร็จ!",
@@ -1329,7 +1413,7 @@
   "m3LeaveConfirm": "ออก",
   "accessoryHowToTitle": "คู่มือการสะสม",
   "accessoryHowToButton": "คู่มือ",
-  "accessoryHtp1": "🎯 เป้าหมาย: สะสมให้ครบทุกชิ้น ของแต่งเป็นแค่ของตกแต่ง (ไม่เพิ่มรายได้) แต่นำไปตั้งรอบแก้ว อวดเพื่อน และไต่อันดับสะสมได้",
+  "accessoryHtp1": "🎯 เป้าหมาย: สะสมให้ครบทุกชิ้น ไอเทมที่สวมรอบแก้วให้บัฟเล็กน้อยตามตระกูล (🔥 แตะ · ✨ รายได้ · 🌿 ออฟไลน์ · 💎 ค่าอัปเกรด) ใส่หลายชิ้นจากตระกูลเดียวกันเพื่อรับคอมโบ การถอด/เปลี่ยนมีเวลารอ ดูโฆษณาเพื่อปลดล็อกทันที อวดเพื่อนและไต่อันดับสะสม",
   "accessoryHtp2": "🎁 วิธีได้รับ: ทำเควสต์รายวันครบ 3 ข้อ · ผ่านด่านหมุดหมายไข่มุกร่วง (10/30/60) · ช่องหีบของวงล้อหลัก · ทุกครั้งที่เลื่อนขั้น · ซื้อแพ็กของแต่งด้วย 💎",
   "accessoryHtp3": "🎰 วงล้อของแต่ง: หมุนแต่ละครั้งต้องดูโฆษณา 1 ครั้งหรือใช้ 💎 การหมุนด้วยโฆษณามีจำกัดต่อวัน",
   "accessoryHtp4": "✨ ความหายาก: ธรรมดา → หายาก → มหากาพย์ → ตำนาน วันหยุดสุดสัปดาห์และเทศกาลเพิ่มโอกาสมหากาพย์/ตำนาน แพ็กหายาก/มหากาพย์รับประกันความหายากขั้นต่ำ และเทศกาลมีแพ็กเทศกาลที่มีของเฉพาะ",

@@ -7,6 +7,7 @@ library;
 
 import 'dart:math';
 
+import 'accessory_loadout.dart';
 import 'balance.dart';
 import 'guild.dart' show guildVipBonusMultiplier;
 import 'models.dart';
@@ -269,11 +270,18 @@ double startCashAfterPrestige(int level) => level <= 0
 int keptStageAfterPrestige(int currentStage, int keepStageLevel) =>
     (1 + keepStageLevel).clamp(1, currentStage);
 
-/// Hệ số nhân giá nâng cấp nguồn thu từ perk "Mua sỉ" (≤ 1, sàn floor).
-double upgradeCostMultiplier(int discountLevel) {
-  final m = 1 - discountLevel * Balance.prestigeDiscountPerLevel;
+/// Hệ số nhân giá nâng cấp nguồn thu từ perk "Mua sỉ" (≤ 1, sàn floor). [extraDiscount] là phần giảm
+/// thêm (bộ trang bị phụ kiện) — cộng CHUNG với perk rồi mới kẹp sàn, nên sàn không bao giờ bị vượt.
+double upgradeCostMultiplier(int discountLevel, {double extraDiscount = 0}) {
+  final m = 1 - discountLevel * Balance.prestigeDiscountPerLevel - extraDiscount;
   return m < Balance.prestigeDiscountFloor ? Balance.prestigeDiscountFloor : m;
 }
+
+/// Hệ số nhân giá nâng cấp của [state]: perk "Mua sỉ" + món họ 💎 đang mang.
+double upgradeCostMultiplierFor(GameState state) => upgradeCostMultiplier(
+      state.prestigeDiscountLevel,
+      extraDiscount: loadoutBuffs(state.equippedAccessories).discount,
+    );
 
 /// Giá (Kim Cương) để nâng vật phẩm "Tăng thu nhập" lên cấp kế tiếp.
 int gemBoostCost(int currentLevel) =>
@@ -374,6 +382,7 @@ double effectiveIncomePerSecond(
     (state.doubleIncomeOwned ? 2.0 : 1.0) *
     vipIncomeMultiplier(state.vipExp) *
     guildVipBonusMultiplier(joined: state.guildJoined, pct: state.guildVipBonusPct) *
+    loadoutBuffs(state.equippedAccessories).incomeMultiplier *
     boostMultiplier;
 
 /// Số Sao nhượng quyền tương ứng với tổng thu nhập cả đời.

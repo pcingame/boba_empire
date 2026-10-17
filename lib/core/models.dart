@@ -148,6 +148,7 @@ class GameState {
     this.boostUntilMillis = 0,
     this.piggyGems = 0,
     this.vipUntilMillis = 0,
+    this.equipLockUntilMillis = 0,
     this.vipLastGemDay = 0,
     this.lastFreeSpinDay = 0,
     this.gemTimeSkipDay = 0,
@@ -321,7 +322,7 @@ class GameState {
   final Map<String, int> accessorySpares;
 
   /// Id phụ kiện đang TRƯNG BÀY quanh cốc ở màn chính (≤ Balance.maxEquippedAccessories,
-  /// đều phải đang sở hữu). Thuần trang trí — động lực khoe/sưu tập, không buff gì.
+  /// đều phải đang sở hữu). Vừa trưng bày vừa cho buff theo họ (accessory_loadout.dart).
   final List<String> equippedAccessories;
 
   /// Mốc sưu tập đã nhận thưởng (xem collection_milestones.dart). Server mới là
@@ -562,6 +563,10 @@ class GameState {
   /// Mốc (epoch ms) hết hạn VIP Pass; VIP còn hiệu lực khi now < mốc này.
   int vipUntilMillis;
 
+  /// Mốc (epoch ms) trước đó KHÔNG được tháo/thay phụ kiện đang mang (lấp ô trống thì luôn được).
+  /// Đặt = now + [Balance.equipSwapLockMinutes] mỗi lần tháo/thay; xem QC để về 0. 0 = không khoá.
+  int equipLockUntilMillis;
+
   /// Chỉ số ngày (UTC) lần cuối nhận Kim Cương VIP hằng ngày.
   int vipLastGemDay;
 
@@ -690,6 +695,7 @@ class GameState {
         'boostUntilMillis': boostUntilMillis,
         'piggyGems': piggyGems,
         'vipUntilMillis': vipUntilMillis,
+        'equipLockUntilMillis': equipLockUntilMillis,
         'vipLastGemDay': vipLastGemDay,
         'lastFreeSpinDay': lastFreeSpinDay,
         'gemTimeSkipDay': gemTimeSkipDay,
@@ -888,6 +894,7 @@ class GameState {
         boostUntilMillis: (json['boostUntilMillis'] as num?)?.toInt() ?? 0,
         piggyGems: (json['piggyGems'] as num?)?.toDouble() ?? 0,
         vipUntilMillis: (json['vipUntilMillis'] as num?)?.toInt() ?? 0,
+        equipLockUntilMillis: (json['equipLockUntilMillis'] as num?)?.toInt() ?? 0,
         vipLastGemDay: (json['vipLastGemDay'] as num?)?.toInt() ?? 0,
         lastFreeSpinDay: (json['lastFreeSpinDay'] as num?)?.toInt() ?? 0,
         gemTimeSkipDay: (json['gemTimeSkipDay'] as num?)?.toInt() ?? 0,

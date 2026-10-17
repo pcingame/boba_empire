@@ -1122,6 +1122,90 @@
     }
   },
   "marketExtendedToast": "Penjualan diperpanjang.",
+  "loadoutTitle": "Perlengkapan",
+  "loadoutHint": "Tiap keluarga memberi satu buff: 🔥 ketukan · ✨ pendapatan · 🌿 offline · 💎 biaya upgrade. Pakai beberapa dari satu keluarga untuk combo.",
+  "loadoutEmpty": "Belum ada buff. Ketuk item di koleksimu untuk memakainya.",
+  "loadoutBuffTap": "🔥 Ketukan +{pct}%",
+  "@loadoutBuffTap": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffIncome": "✨ Pendapatan +{pct}%",
+  "@loadoutBuffIncome": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffOffline": "🌿 Offline +{pct}%",
+  "@loadoutBuffOffline": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffDiscount": "💎 Biaya upgrade −{pct}%",
+  "@loadoutBuffDiscount": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutComboSuffix": " · combo ×{mult}",
+  "@loadoutComboSuffix": {
+    "placeholders": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutLockNote": "🔒 Pergantian terkunci: {minutes} mnt lagi",
+  "@loadoutLockNote": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutLockedTitle": "Perlengkapan terkunci",
+  "loadoutLockedBody": "Kamu baru saja mengganti perlengkapan. {minutes} menit lagi baru bisa melepas atau menukar lagi (mengisi slot kosong selalu boleh). Buka kunci sekarang?",
+  "@loadoutLockedBody": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutUnlockAd": "Tonton iklan untuk membuka",
+  "loadoutUnlockFree": "Buka kunci",
+  "loadoutUnlockedToast": "Terbuka — silakan ganti!",
+  "loadoutRemoveTitle": "Lepas {name}?",
+  "@loadoutRemoveTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutRemoveBody": "Setelah dilepas, kamu tidak bisa melepas atau menukar item lain selama {minutes} menit (mengisi slot kosong tetap boleh).",
+  "@loadoutRemoveBody": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutRemoveConfirm": "Lepas",
+  "loadoutFamilyTap": "Semangat · menaikkan nilai ketukan",
+  "loadoutFamilyIncome": "Kilau · menaikkan pendapatan otomatis",
+  "loadoutFamilyOffline": "Ketenangan · menaikkan pendapatan offline",
+  "loadoutFamilyDiscount": "Keanggunan · upgrade lebih murah",
   "marketSellableHeader": "Aksesori yang bisa dijual",
   "marketEmptySellable": "Kamu belum punya aksesori untuk dijual.",
   "marketListedToast": "Berhasil dijual!",
@@ -1329,7 +1413,7 @@
   "m3LeaveConfirm": "Keluar",
   "accessoryHowToTitle": "Panduan koleksi",
   "accessoryHowToButton": "Panduan",
-  "accessoryHtp1": "🎯 Tujuan: kumpulkan semua item. Aksesori hanya hiasan (tidak menambah pendapatan), tetapi bisa dipajang di sekitar gelas, dipamerkan, dan menaikkan peringkat Koleksi.",
+  "accessoryHtp1": "🎯 Tujuan: kumpulkan semua item. Item yang dipakai di sekitar gelas memberi buff kecil menurut keluarganya (🔥 ketukan · ✨ pendapatan · 🌿 offline · 💎 biaya upgrade); pakai beberapa dari satu keluarga untuk combo. Melepas atau menukar ada waktu tunggu — tonton iklan untuk membukanya langsung. Pamerkan dan naikkan peringkat Koleksi.",
   "accessoryHtp2": "🎁 Cara mendapatkan: selesaikan 3 misi harian · lewati level tonggak Mutiara Jatuh (10/30/60) · slot peti di roda utama · setiap Ascension · beli Paket Aksesori dengan 💎.",
   "accessoryHtp3": "🎰 Roda Aksesori: tiap putaran butuh menonton 1 iklan atau 💎. Putaran iklan dibatasi per hari.",
   "accessoryHtp4": "✨ Kelangkaan: Biasa → Langka → Epik → Legendaris. Akhir pekan dan hari raya menaikkan peluang Epik/Legendaris; Paket Langka/Epik menjamin kelangkaan minimum; hari raya menghadirkan Paket Festival berisi item eksklusif.",

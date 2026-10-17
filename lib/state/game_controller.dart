@@ -48,6 +48,9 @@ import '../core/recipe_orders.dart' show dailyCashTipFactor, dailyChallengeGems,
 import 'game_providers.dart';
 import 'game_snapshot.dart';
 
+/// Kết quả [GameController.tryToggleEquippedAccessory].
+enum EquipResult { equipped, removed, full, locked, notOwned }
+
 class GameController extends Notifier<GameSnapshot> {
   /// Nhịp cộng tiền khi app đang mở.
   static const Duration tickInterval = Duration(seconds: 1);
@@ -126,6 +129,9 @@ class GameController extends Notifier<GameSnapshot> {
           _game.equippedAccessories.length.clamp(
               0, maxEquippedFor(vip: vipActive(_game, _clock()))),
           _game.equippedAccessories.length);
+    // Khoá đổi trang bị không bao giờ dài hơn mức cấu hình (save lỗi/đồng hồ chỉnh tay không khoá vĩnh viễn).
+    _game.equipLockUntilMillis = _game.equipLockUntilMillis.clamp(
+        0, _clock() + Balance.equipSwapLockMinutes * 60000);
     _rollDaily();
     // Tính tiền kiếm được lúc app tắt (có cap + chống lùi giờ ở tầng core).
     _offlineAwayMs = _clock() - _game.lastSeenMillis;
@@ -1050,23 +1056,44 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
-  /// Bật/tắt trưng bày [accessoryId] quanh cốc. Chỉ trưng bày món ĐANG CÓ, tối đa
-  /// [Balance.maxEquippedAccessories]. Trả về false nếu không đổi được (chưa có món,
-  /// hoặc đã đủ chỗ khi định thêm).
-  bool toggleEquippedAccessory(String accessoryId) {
+  /// Bật/tắt trang bị [accessoryId] (vừa trưng bày quanh cốc, vừa cho buff — xem accessory_loadout.dart).
+  /// Chỉ trang bị món ĐANG CÓ, tối đa [maxEquippedFor] chỗ. Lấp ô trống luôn được; THÁO/thay thì cần
+  /// hết khoá ([GameState.equipLockUntilMillis]) rồi khoá tiếp [Balance.equipSwapLockMinutes] phút.
+  EquipResult tryToggleEquippedAccessory(String accessoryId) {
     final equipped = _game.equippedAccessories;
-    if (equipped.remove(accessoryId)) {
-      // đã bỏ
-    } else if (ownsAccessory(_game, accessoryId) &&
-        equipped.length <
-            maxEquippedFor(vip: vipActive(_game, _clock()))) {
-      equipped.add(accessoryId);
-    } else {
-      return false;
+    final now = _clock();
+    if (equipped.contains(accessoryId)) {
+      if (now < _game.equipLockUntilMillis) return EquipResult.locked;
+      equipped.remove(accessoryId);
+      _game.equipLockUntilMillis = now + Balance.equipSwapLockMinutes * 60000;
+      _afterEquipChange();
+      return EquipResult.removed;
     }
+    if (!ownsAccessory(_game, accessoryId)) return EquipResult.notOwned;
+    if (equipped.length >= maxEquippedFor(vip: vipActive(_game, now))) {
+      return EquipResult.full;
+    }
+    equipped.add(accessoryId);
+    _afterEquipChange();
+    return EquipResult.equipped;
+  }
+
+  /// Giữ API cũ: true nếu trạng thái trang bị đã đổi (thêm hoặc bớt).
+  bool toggleEquippedAccessory(String accessoryId) {
+    final r = tryToggleEquippedAccessory(accessoryId);
+    return r == EquipResult.equipped || r == EquipResult.removed;
+  }
+
+  /// Mở khoá đổi trang bị ngay (sau khi xem quảng cáo thưởng, hoặc người gỡ QC/VIP bấm thẳng).
+  void unlockEquipSwap() {
+    if (_game.equipLockUntilMillis == 0) return;
+    _game.equipLockUntilMillis = 0;
+    _afterEquipChange();
+  }
+
+  void _afterEquipChange() {
     unawaited(saveNow());
     state = _snapshot();
-    return true;
   }
 
   /// Chợ Phụ kiện: thêm 1 món vào kho local sau khi mua hoặc huỷ đăng thành
@@ -1123,7 +1150,7 @@ class GameController extends Notifier<GameSnapshot> {
       config,
       _game.levels[generatorId] ?? 0,
       _game.money,
-      upgradeCostMultiplier(_game.prestigeDiscountLevel),
+      upgradeCostMultiplierFor(_game),
     );
     return buyBulk(generatorId, count);
   }
@@ -2166,6 +2193,7 @@ class GameController extends Notifier<GameSnapshot> {
       eventClaimableCount: eventClaimableCount(_game),
       accessorySpares: Map.unmodifiable(_game.accessorySpares),
       equippedAccessories: List.unmodifiable(_game.equippedAccessories),
+      equipLockUntilMillis: _game.equipLockUntilMillis,
       collectionMilestonesClaimed:
           List.unmodifiable(_game.collectionMilestonesClaimed),
       wishlist: List.unmodifiable(_game.wishlist),
@@ -2187,7 +2215,7 @@ class GameController extends Notifier<GameSnapshot> {
       prestigeStartCashLevel: _game.prestigeStartCashLevel,
       prestigeKeepStageLevel: _game.prestigeKeepStageLevel,
       prestigeDiscountLevel: _game.prestigeDiscountLevel,
-      upgradeCostMult: upgradeCostMultiplier(_game.prestigeDiscountLevel),
+      upgradeCostMult: upgradeCostMultiplierFor(_game),
       globalMilestoneMult: globalMilestoneMultiplier(_game),
       currentQuest: currentQuest(_game),
       questProgress: qp,

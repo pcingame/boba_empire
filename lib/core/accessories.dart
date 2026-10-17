@@ -1,4 +1,5 @@
-/// Phụ kiện sưu tập (2026-10-01) — cosmetic thuần, không ảnh hưởng số liệu.
+/// Phụ kiện sưu tập (2026-10-01). Từ 2026-10-17 món đang MANG còn cho buff nhỏ theo họ — xem
+/// accessory_loadout.dart. BXH/mốc Sưu tập vẫn tính theo số món KHÁC NHAU, không đổi.
 /// Rớt ngẫu nhiên khi nhận thưởng "xong cả 3 nhiệm vụ ngày" (xem
 /// claimDailyQuestBonus trong game_controller.dart). Tên hiển thị ở l10n_ext
 /// (cùng khuôn achievements.dart) — file này chỉ giữ id + emoji + độ hiếm.
@@ -192,6 +193,14 @@ const List<Accessory> accessories = [
 Accessory accessoryById(String id) => accessories
     .followedBy(limitedAccessories)
     .firstWhere((a) => a.id == id);
+
+final Map<String, Accessory> _accessoryIndex = {
+  for (final a in accessories.followedBy(limitedAccessories)) a.id: a,
+};
+
+/// Tra món theo id; null nếu id lạ (VD món của bản app MỚI hơn trong save đồng bộ) — khác
+/// [accessoryById] sẽ ném lỗi. Tra bảng băm nên rẻ để gọi mỗi tick.
+Accessory? accessoryOrNull(String id) => _accessoryIndex[id];
 
 int _rarityWeight(AccessoryRarity r, {bool weekend = false}) {
   final boost = weekend ? Balance.weekendHighRarityMultiplier : 1;

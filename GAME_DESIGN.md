@@ -748,6 +748,9 @@ vẫn có thể rộng hơn cao.
 > Mục đích: sink cosmetic thuần cho Xu/thời gian chơi cuối game, không đụng
 > cân bằng kinh tế (khác gem shop/redeem — không có tác dụng lên số liệu).
 
+> **Cập nhật 2026-10-17:** phụ kiện KHÔNG còn cosmetic thuần — món đang *mang* cho buff nhỏ theo
+> họ, xem §40. Bộ sưu tập, BXH Sưu tập và Chợ không đổi.
+
 > **Cập nhật 2026-10-06:** danh mục lên **160 món** (75 thường · 46 hiếm · 30 sử thi · 9 huyền thoại); mốc sưu tập thêm 80/100/120/140/160 (thưởng 300/500/800/1100/1500 Xu Chợ, tổng 4570) — SQL `claim_collection_milestone` PHẢI chạy lại. Các con số 50/80 món bên dưới là lịch sử.
 
 - **50 món** (`lib/core/accessories.dart`), chia 4 độ hiếm: 25 thường · 13
@@ -1114,3 +1117,29 @@ Mọi chuyển động theo mức hiệu ứng (`EffectsQuality`/`reduceMotion`,
 - Đủ 7 ngôn ngữ (vi/en viết tay; es/id/ko/pt/th do máy dịch, **chưa có người bản ngữ duyệt**): 23 khoá ARB `howTo*`.
 - Test: `test/ui/minigame_how_to_test.dart` (mở/đóng, số bước, số liệu thật, tự hiện một lần + cờ riêng + lưu đĩa, xem lại điểm không tự hiện, không tràn 3 trò × 7 ngôn ngữ ở 320px/chữ 1.5×; đột biến 5 chỗ đều đỏ) và `game_storage_test` (lưu/đọc/lọc `howToSeen`). `debugAutoShowHowTo` mặc định tắt trong test (`flutter_test_config.dart`).
 
+## 40. Bộ trang bị phụ kiện — loadout (2026-10-17, chưa playtest)
+
+> ⚠️ Mọi số là **ước lượng, chưa playtest** (nằm hết trong `Balance.loadout*`). Lý do thiết kế, bảng
+> sức mạnh mẫu và rủi ro: [`PROPOSAL_ACCESSORY_LOADOUT.md`](PROPOSAL_ACCESSORY_LOADOUT.md).
+
+- Hệ thống **trưng bày quanh cốc** có sẵn (`equippedAccessories`, 3 ô + 1 ô VIP) nay còn cho buff. Không
+  thêm bảng/SQL; không đổi BXH.
+- **4 họ** (`lib/core/accessory_loadout.dart`, mỗi món thuộc đúng một họ — test khoá cả **208 món**:
+  160 chính + 28 lễ hội + 12 cửa hàng Hội + 8 VIP): 🔥 Nhiệt huyết = giá trị chạm (cả Tự động chạm) ·
+  ✨ Lấp lánh = thu nhập tự động · 🌿 Yên bình = thu nhập offline · 💎 Tinh tế = giảm giá nâng cấp.
+  Gán **luân phiên trong từng độ hiếm** để họ nào cũng đủ 4 độ hiếm — nên tên họ trung tính, KHÔNG theo
+  hình (gán theo chủ đề thì họ "ngọt" gần như không có Sử thi/Huyền thoại). Thêm món MỚI phải thêm vào một
+  danh sách họ, test sẽ đỏ nếu quên.
+- **Điểm** theo độ hiếm 1 / 2.5 / 5 / 10; buff = tổng điểm trong họ × %/điểm × combo, rồi kẹp trần:
+  chạm 2%/điểm (trần +80%) · thu nhập 1% (+40%) · offline 2% (+80%) · giảm giá 0.4% (−10%).
+- **Combo** cùng họ: 2 món ×1.10 · 3 ×1.25 · 4 ×1.50. Mỗi món tính một lần; id lạ bị bỏ qua.
+- **Điểm nối** (mỗi buff đúng MỘT chỗ): `tapGain` (simulation) · `effectiveIncomePerSecond` (economy) ·
+  `applyOfflineEarnings` (simulation) · `upgradeCostMultiplierFor` (economy; giảm giá cộng chung với "Mua
+  sỉ" rồi mới kẹp sàn ×0.4). Offline tính theo bộ ĐANG mang lúc mở app (người chơi chưa kịp đổi).
+- **Khoá đổi**: lấp ô trống luôn được; tháo/thay chỉ khi hết khoá, rồi khoá `equipSwapLockMinutes`
+  (30) phút. Xem QC mở khoá ngay; gỡ QC/VIP mở thẳng. `GameState.equipLockUntilMillis` (kẹp ≤ now+30′ khi
+  nạp). Bán nốt bản cuối tự gỡ KHÔNG bị tính là tháo. API: `tryToggleEquippedAccessory` → `EquipResult`.
+- **UI**: thẻ "Bộ trang bị" đầu Kho (ô đang mang, dòng buff + combo, đếm ngược khoá), biểu tượng họ trên
+  mỗi ô, hộp xác nhận tháo, hộp mở khoá. Chuỗi hướng dẫn `accessoryHtp1` đã sửa (từng nói "không tăng thu nhập").
+- **Cố ý chưa làm**: họ "Vận may", ô thứ 4 mở theo mốc sưu tập, Tinh luyện bằng bản sao dư. Cần theo dõi
+  **giá Chợ** sau khi ra (món có tác dụng → cầu tăng; người chơi đã than giá luôn max).

@@ -380,7 +380,7 @@ class Balance {
   /// (12→24, 3→6: Huyền thoại 3% → ~5,2%, Sử thi 12% → ~20,9%).
   static const int weekendHighRarityMultiplier = 2;
 
-  /// Số phụ kiện tối đa trưng bày quanh cốc ở màn chính (thuần trang trí).
+  /// Số phụ kiện tối đa mang (trưng bày quanh cốc ở màn chính + cho buff, xem accessory_loadout.dart).
   static const int maxEquippedAccessories = 3;
 
   /// Mốc Trân Châu Rơi tặng phụ kiện lần ĐẦU qua màn (id màn → độ hiếm tối thiểu
@@ -431,6 +431,38 @@ class Balance {
 
   /// Chỗ trưng bày thêm cho VIP.
   static const int vipExtraEquipSlots = 1;
+
+  // --- Bộ trang bị phụ kiện (loadout, PROPOSAL_ACCESSORY_LOADOUT.md). Mọi số là ước lượng
+  // chưa playtest. Mỗi món cho "điểm" theo độ hiếm; điểm cộng dồn trong từng họ, nhân combo
+  // cùng họ, rồi kẹp trần. Trần luôn hữu hạn → không thể tràn số (xem negative-money-overflow-bug).
+  static const double loadoutPointCommon = 1;
+  static const double loadoutPointRare = 2.5;
+  static const double loadoutPointEpic = 5;
+  static const double loadoutPointLegendary = 10;
+
+  /// Họ 🔥 Nhiệt huyết: giá trị chạm (cả Tự động chạm).
+  static const double loadoutTapPerPoint = 0.02;
+  static const double loadoutTapCap = 0.80;
+
+  /// Họ ✨ Lấp lánh: thu nhập tự động.
+  static const double loadoutIncomePerPoint = 0.01;
+  static const double loadoutIncomeCap = 0.40;
+
+  /// Họ 🌿 Yên bình: thu nhập khi vắng mặt.
+  static const double loadoutOfflinePerPoint = 0.02;
+  static const double loadoutOfflineCap = 0.80;
+
+  /// Họ 💎 Tinh tế: giảm giá nâng cấp nguồn thu (cộng cùng "Mua sỉ", rồi mới kẹp sàn).
+  static const double loadoutDiscountPerPoint = 0.004;
+  static const double loadoutDiscountCap = 0.10;
+
+  /// Combo: số món CÙNG HỌ đang mang (2 / 3 / 4+) nhân buff của họ đó.
+  static const double loadoutCombo2 = 1.10;
+  static const double loadoutCombo3 = 1.25;
+  static const double loadoutCombo4 = 1.50;
+
+  /// Tháo/thay món → khoá đổi từng ấy phút (lấp ô trống luôn được). Xem QC mở khoá ngay.
+  static const int equipSwapLockMinutes = 30;
 
   // --- Chợ Phụ kiện: đổi Xu/💎 lấy Xu Chợ (2026-10-01) — MỘT CHIỀU, xem
   // credit_market_coins() trong accessory_market_schema.sql. Phí sàn 1%

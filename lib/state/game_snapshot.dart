@@ -113,6 +113,7 @@ class GameSnapshot {
     this.eventClaimableCount = 0,
     required this.accessorySpares,
     required this.equippedAccessories,
+    required this.equipLockUntilMillis,
     required this.collectionMilestonesClaimed,
     required this.wishlist,
     required this.m3HowToSeen,
@@ -293,6 +294,9 @@ class GameSnapshot {
 
   /// Phụ kiện đang trưng bày quanh cốc (xem GameState.equippedAccessories).
   final List<String> equippedAccessories;
+
+  /// Mốc (epoch ms) hết khoá tháo/thay phụ kiện đang mang (xem GameState.equipLockUntilMillis).
+  final int equipLockUntilMillis;
 
   /// Mốc sưu tập đã nhận (xem GameState.collectionMilestonesClaimed).
   final List<int> collectionMilestonesClaimed;

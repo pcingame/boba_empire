@@ -863,6 +863,90 @@
     }
   },
   "marketExtendedToast": "등록 기간을 연장했어요.",
+  "loadoutTitle": "장비 세트",
+  "loadoutHint": "계열마다 효과가 하나씩 있어요: 🔥 탭 · ✨ 수입 · 🌿 오프라인 · 💎 업그레이드 비용. 같은 계열을 여러 개 착용하면 콤보!",
+  "loadoutEmpty": "아직 효과가 없어요. 컬렉션에서 아이템을 눌러 착용해 보세요.",
+  "loadoutBuffTap": "🔥 탭 +{pct}%",
+  "@loadoutBuffTap": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffIncome": "✨ 수입 +{pct}%",
+  "@loadoutBuffIncome": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffOffline": "🌿 오프라인 +{pct}%",
+  "@loadoutBuffOffline": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffDiscount": "💎 업그레이드 비용 −{pct}%",
+  "@loadoutBuffDiscount": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutComboSuffix": " · 콤보 ×{mult}",
+  "@loadoutComboSuffix": {
+    "placeholders": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutLockNote": "🔒 교체 잠금: {minutes}분 남음",
+  "@loadoutLockNote": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutLockedTitle": "장비가 잠겨 있어요",
+  "loadoutLockedBody": "방금 장비를 바꿨어요. 해제/교체까지 {minutes}분 남았어요(빈 칸 채우기는 언제나 가능). 지금 잠금을 풀까요?",
+  "@loadoutLockedBody": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutUnlockAd": "광고 보고 잠금 해제",
+  "loadoutUnlockFree": "잠금 해제",
+  "loadoutUnlockedToast": "잠금 해제! 마음껏 바꾸세요.",
+  "loadoutRemoveTitle": "{name}을(를) 해제할까요?",
+  "@loadoutRemoveTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutRemoveBody": "해제하면 {minutes}분 동안 다른 아이템을 해제/교체할 수 없어요(빈 칸 채우기는 가능).",
+  "@loadoutRemoveBody": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutRemoveConfirm": "해제",
+  "loadoutFamilyTap": "열정 · 탭 가치 증가",
+  "loadoutFamilyIncome": "반짝임 · 자동 수입 증가",
+  "loadoutFamilyOffline": "평온 · 오프라인 수입 증가",
+  "loadoutFamilyDiscount": "세련 · 업그레이드 할인",
   "marketSellableHeader": "판매 가능한 액세서리",
   "marketEmptySellable": "아직 판매할 액세서리가 없어요.",
   "marketListedToast": "등록 완료!",
@@ -967,7 +1051,7 @@
   "m3LeaveConfirm": "나가기",
   "accessoryHowToTitle": "수집 가이드",
   "accessoryHowToButton": "가이드",
-  "accessoryHtp1": "🎯 목표: 모든 아이템을 모으세요. 액세서리는 장식 전용(수입 증가 없음)이지만 컵 주위에 장식하고, 자랑하고, 컬렉션 순위를 올릴 수 있어요.",
+  "accessoryHtp1": "🎯 목표: 모든 아이템을 모으세요. 컵 주위에 착용한 아이템은 계열에 따라 작은 효과를 줘요(🔥 탭 · ✨ 수입 · 🌿 오프라인 · 💎 업그레이드 비용). 같은 계열을 여러 개 착용하면 콤보! 해제/교체에는 대기 시간이 있고, 광고를 보면 바로 풀 수 있어요. 자랑하고 컬렉션 순위를 올려 보세요.",
   "accessoryHtp2": "🎁 얻는 방법: 일일 퀘스트 3개 완료 · 떨어지는 진주 이정표 레벨(10/30/60) 클리어 · 기본 룰렛의 상자 칸 · 승천할 때마다 · 💎로 액세서리 팩 구매.",
   "accessoryHtp3": "🎰 액세서리 룰렛: 1회마다 광고 1번 시청 또는 💎가 필요해요. 광고 회전은 하루 횟수 제한이 있어요.",
   "accessoryHtp4": "✨ 희귀도: 일반 → 희귀 → 영웅 → 전설. 주말과 기념일에는 영웅/전설 확률이 올라가고, 희귀/영웅 팩은 최소 희귀도를 보장하며, 기념일에는 한정 아이템이 든 축제 팩이 열려요.",

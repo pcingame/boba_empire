@@ -1122,6 +1122,90 @@
     }
   },
   "marketExtendedToast": "Publicación ampliada.",
+  "loadoutTitle": "Equipo",
+  "loadoutHint": "Cada familia da un bonus: 🔥 toque · ✨ ingresos · 🌿 sin conexión · 💎 coste de mejora. Lleva varias de una familia para un combo.",
+  "loadoutEmpty": "Aún sin bonus. Toca un objeto de tu colección para equiparlo.",
+  "loadoutBuffTap": "🔥 Toque +{pct}%",
+  "@loadoutBuffTap": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffIncome": "✨ Ingresos +{pct}%",
+  "@loadoutBuffIncome": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffOffline": "🌿 Sin conexión +{pct}%",
+  "@loadoutBuffOffline": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffDiscount": "💎 Coste de mejora −{pct}%",
+  "@loadoutBuffDiscount": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutComboSuffix": " · combo ×{mult}",
+  "@loadoutComboSuffix": {
+    "placeholders": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutLockNote": "🔒 Cambio bloqueado: {minutes} min",
+  "@loadoutLockNote": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutLockedTitle": "Equipo bloqueado",
+  "loadoutLockedBody": "Acabas de cambiar tu equipo. Faltan {minutes} min para quitar o cambiar de nuevo (llenar un hueco vacío siempre se puede). ¿Desbloquear ahora?",
+  "@loadoutLockedBody": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutUnlockAd": "Ver anuncio para desbloquear",
+  "loadoutUnlockFree": "Desbloquear",
+  "loadoutUnlockedToast": "¡Desbloqueado! Cambia lo que quieras.",
+  "loadoutRemoveTitle": "¿Quitar {name}?",
+  "@loadoutRemoveTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutRemoveBody": "Tras quitarlo, no podrás quitar ni cambiar otro objeto durante {minutes} min (llenar un hueco vacío sí se puede).",
+  "@loadoutRemoveBody": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutRemoveConfirm": "Quitar",
+  "loadoutFamilyTap": "Fervor · aumenta el valor del toque",
+  "loadoutFamilyIncome": "Destello · aumenta los ingresos automáticos",
+  "loadoutFamilyOffline": "Serenidad · aumenta los ingresos sin conexión",
+  "loadoutFamilyDiscount": "Finura · mejoras más baratas",
   "marketSellableHeader": "Accesorios que puedes vender",
   "marketEmptySellable": "Todavía no tienes accesorios para vender.",
   "marketListedToast": "¡Publicado!",
@@ -1329,7 +1413,7 @@
   "m3LeaveConfirm": "Salir",
   "accessoryHowToTitle": "Guía de colección",
   "accessoryHowToButton": "Guía",
-  "accessoryHtp1": "🎯 Objetivo: reunir todos los objetos. Los accesorios son solo decorativos (no dan ingresos), pero puedes lucirlos junto a tu vaso, compartirlos y subir en el ranking de Colección.",
+  "accessoryHtp1": "🎯 Objetivo: reunir todos los objetos. Los que llevas junto al vaso dan pequeños bonus según su familia (🔥 toque · ✨ ingresos · 🌿 sin conexión · 💎 coste de mejora); lleva varios de una familia para un combo. Quitar o cambiar tiene tiempo de espera: mira un anuncio para desbloquearlo al instante. Lúcelos y sube en el ranking de Colección.",
   "accessoryHtp2": "🎁 Cómo conseguirlos: completar las 3 misiones diarias · superar los niveles hito de Perlas que Caen (10/30/60) · la casilla de cofre de la ruleta principal · cada Ascensión · comprar Paquetes de accesorios con 💎.",
   "accessoryHtp3": "🎰 Ruleta de accesorios: cada giro cuesta ver un anuncio o 💎. Los giros con anuncio tienen límite diario.",
   "accessoryHtp4": "✨ Rareza: Común → Raro → Épico → Legendario. Los fines de semana y festivos suben la probabilidad de Épico/Legendario; los Paquetes Raro/Épico garantizan una rareza mínima; en festivos hay un Paquete Festivo con objetos exclusivos.",

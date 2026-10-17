@@ -1122,6 +1122,90 @@
     }
   },
   "marketExtendedToast": "Listing extended.",
+  "loadoutTitle": "Loadout",
+  "loadoutHint": "Each family gives one buff: 🔥 tap · ✨ income · 🌿 offline · 💎 upgrade cost. Wear several of one family for a combo.",
+  "loadoutEmpty": "No buffs yet. Tap an item in your collection to wear it.",
+  "loadoutBuffTap": "🔥 Tap +{pct}%",
+  "@loadoutBuffTap": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffIncome": "✨ Income +{pct}%",
+  "@loadoutBuffIncome": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffOffline": "🌿 Offline +{pct}%",
+  "@loadoutBuffOffline": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffDiscount": "💎 Upgrade cost −{pct}%",
+  "@loadoutBuffDiscount": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutComboSuffix": " · combo ×{mult}",
+  "@loadoutComboSuffix": {
+    "placeholders": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutLockNote": "🔒 Swap locked: {minutes} min left",
+  "@loadoutLockNote": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutLockedTitle": "Loadout is locked",
+  "loadoutLockedBody": "You just changed your loadout. {minutes} more minutes before you can remove or swap again (filling an empty slot is always OK). Unlock now?",
+  "@loadoutLockedBody": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutUnlockAd": "Watch ad to unlock",
+  "loadoutUnlockFree": "Unlock",
+  "loadoutUnlockedToast": "Unlocked — swap away!",
+  "loadoutRemoveTitle": "Remove {name}?",
+  "@loadoutRemoveTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutRemoveBody": "After removing, you can't remove or swap another item for {minutes} minutes (filling an empty slot is still OK).",
+  "@loadoutRemoveBody": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutRemoveConfirm": "Remove",
+  "loadoutFamilyTap": "Fervor · boosts tap value",
+  "loadoutFamilyIncome": "Sparkle · boosts auto income",
+  "loadoutFamilyOffline": "Serenity · boosts offline income",
+  "loadoutFamilyDiscount": "Finesse · cheaper upgrades",
   "marketSellableHeader": "Accessories you can sell",
   "marketEmptySellable": "You don't have any accessories to sell yet.",
   "marketListedToast": "Listed!",
@@ -1329,7 +1413,7 @@
   "m3LeaveConfirm": "Leave",
   "accessoryHowToTitle": "Collecting guide",
   "accessoryHowToButton": "Guide",
-  "accessoryHtp1": "🎯 Goal: collect every item. Accessories are cosmetic only — no income boost — but you can show them off around your cup, share them and climb the Collection leaderboard.",
+  "accessoryHtp1": "🎯 Goal: collect every item. Items worn around your cup give small buffs by family (🔥 tap · ✨ income · 🌿 offline · 💎 upgrade cost); wear several of one family for a combo. Removing or swapping has a cooldown — watch an ad to unlock it right away. Show them off and climb the Collection leaderboard.",
   "accessoryHtp2": "🎁 How to get them: finish all 3 daily quests · clear the Falling Pearls milestone levels (10/30/60) · the chest slot on the main wheel · every Ascension · buy Accessory Packs with 💎.",
   "accessoryHtp3": "🎰 Accessory Wheel: each spin costs one ad view or 💎. Ad spins are limited per day.",
   "accessoryHtp4": "✨ Rarity: Common → Rare → Epic → Legendary. Weekends and festivals raise Epic/Legendary odds; Rare/Epic Packs guarantee a minimum rarity; festivals bring a Festival Pack with exclusive items.",

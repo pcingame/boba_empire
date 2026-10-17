@@ -3033,6 +3033,89 @@ class AppLocalizationsPt extends AppLocalizations {
   String get marketExtendedToast => 'Anúncio prorrogado.';
 
   @override
+  String get loadoutTitle => 'Equipamento';
+
+  @override
+  String get loadoutHint =>
+      'Cada família dá um bônus: 🔥 toque · ✨ renda · 🌿 offline · 💎 custo de melhoria. Use várias da mesma família para um combo.';
+
+  @override
+  String get loadoutEmpty =>
+      'Nenhum bônus ainda. Toque em um item da coleção para equipá-lo.';
+
+  @override
+  String loadoutBuffTap(String pct) {
+    return '🔥 Toque +$pct%';
+  }
+
+  @override
+  String loadoutBuffIncome(String pct) {
+    return '✨ Renda +$pct%';
+  }
+
+  @override
+  String loadoutBuffOffline(String pct) {
+    return '🌿 Offline +$pct%';
+  }
+
+  @override
+  String loadoutBuffDiscount(String pct) {
+    return '💎 Custo de melhoria −$pct%';
+  }
+
+  @override
+  String loadoutComboSuffix(String mult) {
+    return ' · combo ×$mult';
+  }
+
+  @override
+  String loadoutLockNote(int minutes) {
+    return '🔒 Troca bloqueada: $minutes min';
+  }
+
+  @override
+  String get loadoutLockedTitle => 'Equipamento bloqueado';
+
+  @override
+  String loadoutLockedBody(int minutes) {
+    return 'Você acabou de mudar o equipamento. Faltam $minutes min para remover ou trocar de novo (preencher um espaço vazio sempre pode). Desbloquear agora?';
+  }
+
+  @override
+  String get loadoutUnlockAd => 'Ver anúncio para desbloquear';
+
+  @override
+  String get loadoutUnlockFree => 'Desbloquear';
+
+  @override
+  String get loadoutUnlockedToast => 'Desbloqueado! Troque à vontade.';
+
+  @override
+  String loadoutRemoveTitle(String name) {
+    return 'Remover $name?';
+  }
+
+  @override
+  String loadoutRemoveBody(int minutes) {
+    return 'Depois de remover, você não poderá remover ou trocar outro item por $minutes min (preencher um espaço vazio ainda pode).';
+  }
+
+  @override
+  String get loadoutRemoveConfirm => 'Remover';
+
+  @override
+  String get loadoutFamilyTap => 'Fervor · aumenta o valor do toque';
+
+  @override
+  String get loadoutFamilyIncome => 'Brilho · aumenta a renda automática';
+
+  @override
+  String get loadoutFamilyOffline => 'Serenidade · aumenta a renda offline';
+
+  @override
+  String get loadoutFamilyDiscount => 'Requinte · melhorias mais baratas';
+
+  @override
   String get marketSellableHeader => 'Acessórios que você pode vender';
 
   @override
@@ -3425,7 +3508,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get accessoryHtp1 =>
-      '🎯 Objetivo: juntar todos os itens. Acessórios são só decorativos (não aumentam a renda), mas dá para exibi-los ao redor do copo, compartilhar e subir no ranking de Coleção.';
+      '🎯 Objetivo: juntar todos os itens. Os que você usa ao redor do copo dão pequenos bônus por família (🔥 toque · ✨ renda · 🌿 offline · 💎 custo de melhoria); use vários da mesma família para um combo. Remover ou trocar tem tempo de espera — veja um anúncio para liberar na hora. Exiba e suba no ranking de Coleção.';
 
   @override
   String get accessoryHtp2 =>

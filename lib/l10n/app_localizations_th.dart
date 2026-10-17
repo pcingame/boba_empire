@@ -3009,6 +3009,88 @@ class AppLocalizationsTh extends AppLocalizations {
   String get marketExtendedToast => 'ต่ออายุการขายแล้ว';
 
   @override
+  String get loadoutTitle => 'ชุดสวมใส่';
+
+  @override
+  String get loadoutHint =>
+      'แต่ละตระกูลให้บัฟหนึ่งอย่าง: 🔥 แตะ · ✨ รายได้ · 🌿 ออฟไลน์ · 💎 ค่าอัปเกรด ใส่หลายชิ้นจากตระกูลเดียวกันเพื่อรับคอมโบ';
+
+  @override
+  String get loadoutEmpty => 'ยังไม่มีบัฟ แตะไอเทมในคอลเลกชันเพื่อสวมใส่';
+
+  @override
+  String loadoutBuffTap(String pct) {
+    return '🔥 แตะ +$pct%';
+  }
+
+  @override
+  String loadoutBuffIncome(String pct) {
+    return '✨ รายได้ +$pct%';
+  }
+
+  @override
+  String loadoutBuffOffline(String pct) {
+    return '🌿 ออฟไลน์ +$pct%';
+  }
+
+  @override
+  String loadoutBuffDiscount(String pct) {
+    return '💎 ค่าอัปเกรด −$pct%';
+  }
+
+  @override
+  String loadoutComboSuffix(String mult) {
+    return ' · คอมโบ ×$mult';
+  }
+
+  @override
+  String loadoutLockNote(int minutes) {
+    return '🔒 ล็อกการเปลี่ยน: เหลือ $minutes นาที';
+  }
+
+  @override
+  String get loadoutLockedTitle => 'ชุดสวมใส่ถูกล็อก';
+
+  @override
+  String loadoutLockedBody(int minutes) {
+    return 'คุณเพิ่งเปลี่ยนชุดสวมใส่ อีก $minutes นาทีจึงจะถอดหรือเปลี่ยนได้อีก (เติมช่องว่างได้เสมอ) ปลดล็อกเลยไหม?';
+  }
+
+  @override
+  String get loadoutUnlockAd => 'ดูโฆษณาเพื่อปลดล็อก';
+
+  @override
+  String get loadoutUnlockFree => 'ปลดล็อก';
+
+  @override
+  String get loadoutUnlockedToast => 'ปลดล็อกแล้ว เปลี่ยนได้เต็มที่!';
+
+  @override
+  String loadoutRemoveTitle(String name) {
+    return 'ถอด $name ไหม?';
+  }
+
+  @override
+  String loadoutRemoveBody(int minutes) {
+    return 'หลังถอดแล้ว จะถอดหรือเปลี่ยนไอเทมอื่นไม่ได้เป็นเวลา $minutes นาที (เติมช่องว่างได้)';
+  }
+
+  @override
+  String get loadoutRemoveConfirm => 'ถอด';
+
+  @override
+  String get loadoutFamilyTap => 'ความร้อนแรง · เพิ่มค่าการแตะ';
+
+  @override
+  String get loadoutFamilyIncome => 'ประกาย · เพิ่มรายได้อัตโนมัติ';
+
+  @override
+  String get loadoutFamilyOffline => 'สงบ · เพิ่มรายได้ตอนออฟไลน์';
+
+  @override
+  String get loadoutFamilyDiscount => 'ความประณีต · อัปเกรดถูกลง';
+
+  @override
   String get marketSellableHeader => 'ของสะสมที่ขายได้';
 
   @override
@@ -3395,7 +3477,7 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get accessoryHtp1 =>
-      '🎯 เป้าหมาย: สะสมให้ครบทุกชิ้น ของแต่งเป็นแค่ของตกแต่ง (ไม่เพิ่มรายได้) แต่นำไปตั้งรอบแก้ว อวดเพื่อน และไต่อันดับสะสมได้';
+      '🎯 เป้าหมาย: สะสมให้ครบทุกชิ้น ไอเทมที่สวมรอบแก้วให้บัฟเล็กน้อยตามตระกูล (🔥 แตะ · ✨ รายได้ · 🌿 ออฟไลน์ · 💎 ค่าอัปเกรด) ใส่หลายชิ้นจากตระกูลเดียวกันเพื่อรับคอมโบ การถอด/เปลี่ยนมีเวลารอ ดูโฆษณาเพื่อปลดล็อกทันที อวดเพื่อนและไต่อันดับสะสม';
 
   @override
   String get accessoryHtp2 =>

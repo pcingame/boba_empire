@@ -1,5 +1,5 @@
 /// Trưng bày phụ kiện quanh cốc: lưu/đọc save, bật-tắt có giới hạn, tự gỡ khi bán nốt,
-/// chạm trong Kho, và hiện ở màn chính (thuần trang trí, không buff gì).
+/// chạm trong Kho, và hiện ở màn chính (buff của bộ trang bị: xem accessory_loadout_test.dart).
 library;
 
 import 'package:boba_empire/core/accessories.dart';
@@ -254,7 +254,10 @@ void main() {
     expect(eq().length, 3);
     expect(find.textContaining('Đã đủ 3 món trưng bày'), findsOneWidget);
 
-    await tester.tap(find.byKey(const Key('accessory-cell-cupcake'))); // bỏ
+    await tester.tap(find.byKey(const Key('accessory-cell-cupcake'))); // bỏ: tháo = khoá đổi → hỏi xác nhận
+    await tester.pumpAndSettle();
+    expect(eq(), ['mint_leaf', 'cupcake', 'cookie'], reason: 'chưa xác nhận thì chưa tháo');
+    await tester.tap(find.byKey(const Key('loadout-remove-confirm')));
     await tester.pumpAndSettle();
     expect(eq(), ['mint_leaf', 'cookie']);
     expect(find.text('📌'), findsNWidgets(2));

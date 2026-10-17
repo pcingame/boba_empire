@@ -3020,6 +3020,90 @@ class AppLocalizationsId extends AppLocalizations {
   String get marketExtendedToast => 'Penjualan diperpanjang.';
 
   @override
+  String get loadoutTitle => 'Perlengkapan';
+
+  @override
+  String get loadoutHint =>
+      'Tiap keluarga memberi satu buff: 🔥 ketukan · ✨ pendapatan · 🌿 offline · 💎 biaya upgrade. Pakai beberapa dari satu keluarga untuk combo.';
+
+  @override
+  String get loadoutEmpty =>
+      'Belum ada buff. Ketuk item di koleksimu untuk memakainya.';
+
+  @override
+  String loadoutBuffTap(String pct) {
+    return '🔥 Ketukan +$pct%';
+  }
+
+  @override
+  String loadoutBuffIncome(String pct) {
+    return '✨ Pendapatan +$pct%';
+  }
+
+  @override
+  String loadoutBuffOffline(String pct) {
+    return '🌿 Offline +$pct%';
+  }
+
+  @override
+  String loadoutBuffDiscount(String pct) {
+    return '💎 Biaya upgrade −$pct%';
+  }
+
+  @override
+  String loadoutComboSuffix(String mult) {
+    return ' · combo ×$mult';
+  }
+
+  @override
+  String loadoutLockNote(int minutes) {
+    return '🔒 Pergantian terkunci: $minutes mnt lagi';
+  }
+
+  @override
+  String get loadoutLockedTitle => 'Perlengkapan terkunci';
+
+  @override
+  String loadoutLockedBody(int minutes) {
+    return 'Kamu baru saja mengganti perlengkapan. $minutes menit lagi baru bisa melepas atau menukar lagi (mengisi slot kosong selalu boleh). Buka kunci sekarang?';
+  }
+
+  @override
+  String get loadoutUnlockAd => 'Tonton iklan untuk membuka';
+
+  @override
+  String get loadoutUnlockFree => 'Buka kunci';
+
+  @override
+  String get loadoutUnlockedToast => 'Terbuka — silakan ganti!';
+
+  @override
+  String loadoutRemoveTitle(String name) {
+    return 'Lepas $name?';
+  }
+
+  @override
+  String loadoutRemoveBody(int minutes) {
+    return 'Setelah dilepas, kamu tidak bisa melepas atau menukar item lain selama $minutes menit (mengisi slot kosong tetap boleh).';
+  }
+
+  @override
+  String get loadoutRemoveConfirm => 'Lepas';
+
+  @override
+  String get loadoutFamilyTap => 'Semangat · menaikkan nilai ketukan';
+
+  @override
+  String get loadoutFamilyIncome => 'Kilau · menaikkan pendapatan otomatis';
+
+  @override
+  String get loadoutFamilyOffline =>
+      'Ketenangan · menaikkan pendapatan offline';
+
+  @override
+  String get loadoutFamilyDiscount => 'Keanggunan · upgrade lebih murah';
+
+  @override
   String get marketSellableHeader => 'Aksesori yang bisa dijual';
 
   @override
@@ -3410,7 +3494,7 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get accessoryHtp1 =>
-      '🎯 Tujuan: kumpulkan semua item. Aksesori hanya hiasan (tidak menambah pendapatan), tetapi bisa dipajang di sekitar gelas, dipamerkan, dan menaikkan peringkat Koleksi.';
+      '🎯 Tujuan: kumpulkan semua item. Item yang dipakai di sekitar gelas memberi buff kecil menurut keluarganya (🔥 ketukan · ✨ pendapatan · 🌿 offline · 💎 biaya upgrade); pakai beberapa dari satu keluarga untuk combo. Melepas atau menukar ada waktu tunggu — tonton iklan untuk membukanya langsung. Pamerkan dan naikkan peringkat Koleksi.';
 
   @override
   String get accessoryHtp2 =>

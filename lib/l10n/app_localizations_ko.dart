@@ -2974,6 +2974,88 @@ class AppLocalizationsKo extends AppLocalizations {
   String get marketExtendedToast => '등록 기간을 연장했어요.';
 
   @override
+  String get loadoutTitle => '장비 세트';
+
+  @override
+  String get loadoutHint =>
+      '계열마다 효과가 하나씩 있어요: 🔥 탭 · ✨ 수입 · 🌿 오프라인 · 💎 업그레이드 비용. 같은 계열을 여러 개 착용하면 콤보!';
+
+  @override
+  String get loadoutEmpty => '아직 효과가 없어요. 컬렉션에서 아이템을 눌러 착용해 보세요.';
+
+  @override
+  String loadoutBuffTap(String pct) {
+    return '🔥 탭 +$pct%';
+  }
+
+  @override
+  String loadoutBuffIncome(String pct) {
+    return '✨ 수입 +$pct%';
+  }
+
+  @override
+  String loadoutBuffOffline(String pct) {
+    return '🌿 오프라인 +$pct%';
+  }
+
+  @override
+  String loadoutBuffDiscount(String pct) {
+    return '💎 업그레이드 비용 −$pct%';
+  }
+
+  @override
+  String loadoutComboSuffix(String mult) {
+    return ' · 콤보 ×$mult';
+  }
+
+  @override
+  String loadoutLockNote(int minutes) {
+    return '🔒 교체 잠금: $minutes분 남음';
+  }
+
+  @override
+  String get loadoutLockedTitle => '장비가 잠겨 있어요';
+
+  @override
+  String loadoutLockedBody(int minutes) {
+    return '방금 장비를 바꿨어요. 해제/교체까지 $minutes분 남았어요(빈 칸 채우기는 언제나 가능). 지금 잠금을 풀까요?';
+  }
+
+  @override
+  String get loadoutUnlockAd => '광고 보고 잠금 해제';
+
+  @override
+  String get loadoutUnlockFree => '잠금 해제';
+
+  @override
+  String get loadoutUnlockedToast => '잠금 해제! 마음껏 바꾸세요.';
+
+  @override
+  String loadoutRemoveTitle(String name) {
+    return '$name을(를) 해제할까요?';
+  }
+
+  @override
+  String loadoutRemoveBody(int minutes) {
+    return '해제하면 $minutes분 동안 다른 아이템을 해제/교체할 수 없어요(빈 칸 채우기는 가능).';
+  }
+
+  @override
+  String get loadoutRemoveConfirm => '해제';
+
+  @override
+  String get loadoutFamilyTap => '열정 · 탭 가치 증가';
+
+  @override
+  String get loadoutFamilyIncome => '반짝임 · 자동 수입 증가';
+
+  @override
+  String get loadoutFamilyOffline => '평온 · 오프라인 수입 증가';
+
+  @override
+  String get loadoutFamilyDiscount => '세련 · 업그레이드 할인';
+
+  @override
   String get marketSellableHeader => '판매 가능한 액세서리';
 
   @override
@@ -3356,7 +3438,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get accessoryHtp1 =>
-      '🎯 목표: 모든 아이템을 모으세요. 액세서리는 장식 전용(수입 증가 없음)이지만 컵 주위에 장식하고, 자랑하고, 컬렉션 순위를 올릴 수 있어요.';
+      '🎯 목표: 모든 아이템을 모으세요. 컵 주위에 착용한 아이템은 계열에 따라 작은 효과를 줘요(🔥 탭 · ✨ 수입 · 🌿 오프라인 · 💎 업그레이드 비용). 같은 계열을 여러 개 착용하면 콤보! 해제/교체에는 대기 시간이 있고, 광고를 보면 바로 풀 수 있어요. 자랑하고 컬렉션 순위를 올려 보세요.';
 
   @override
   String get accessoryHtp2 =>

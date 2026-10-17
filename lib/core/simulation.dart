@@ -7,6 +7,7 @@ library;
 
 import 'dart:math';
 
+import 'accessory_loadout.dart';
 import 'balance.dart';
 import 'daily.dart';
 import 'daily_quests.dart';
@@ -23,6 +24,7 @@ double tapGain(GameState state, {double boostMultiplier = 1.0}) =>
     permanentMultiplier(state.gemBoostLevel) *
     prestigeTapMultiplier(state.prestigeTapLevel) *
     storyChoiceTapMultiplier(state) *
+    loadoutBuffs(state.equippedAccessories).tapMultiplier *
     boostMultiplier;
 
 /// Kết quả một lần chạm ly. [boostMultiplier] là hệ số Mưa vàng đang có.
@@ -75,7 +77,7 @@ bool buyUpgrade(
   final level = state.levels[generatorId] ?? 0;
   if (level >= Balance.maxGeneratorLevel) return false; // trần cứng an toàn
   final cost = nextLevelCost(config, level) *
-      upgradeCostMultiplier(state.prestigeDiscountLevel);
+      upgradeCostMultiplierFor(state);
   if (!cost.isFinite || state.money < cost) return false;
   state.money -= cost;
   state.levels[generatorId] = level + 1;
@@ -102,7 +104,7 @@ int buyUpgradeBulk(
     return 0;
   }
   final cost = bulkCost(config, level, count) *
-      upgradeCostMultiplier(state.prestigeDiscountLevel);
+      upgradeCostMultiplierFor(state);
   if (!cost.isFinite || state.money < cost) return 0;
   state.money -= cost;
   state.levels[generatorId] = level + count;
@@ -335,6 +337,7 @@ double applyOfflineEarnings(
         bonusPerStar: Balance.bonusPerStar,
       ) *
       prestigeOfflineMultiplier(state.prestigeOfflineLevel) *
+      loadoutBuffs(state.equippedAccessories).offlineMultiplier *
       vipMult *
       elapsedSec;
   _credit(state, earned);

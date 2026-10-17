@@ -1860,6 +1860,90 @@
     }
   },
   "marketExtendedToast": "Đã gia hạn tin đăng.",
+  "loadoutTitle": "Bộ trang bị",
+  "loadoutHint": "Mỗi họ cho một buff: 🔥 chạm · ✨ thu nhập · 🌿 offline · 💎 giá nâng cấp. Mang nhiều món cùng họ để có combo.",
+  "loadoutEmpty": "Chưa có buff nào. Chạm một món trong bộ sưu tập để trang bị.",
+  "loadoutBuffTap": "🔥 Chạm +{pct}%",
+  "@loadoutBuffTap": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffIncome": "✨ Thu nhập +{pct}%",
+  "@loadoutBuffIncome": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffOffline": "🌿 Offline +{pct}%",
+  "@loadoutBuffOffline": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutBuffDiscount": "💎 Giá nâng cấp −{pct}%",
+  "@loadoutBuffDiscount": {
+    "placeholders": {
+      "pct": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutComboSuffix": " · combo ×{mult}",
+  "@loadoutComboSuffix": {
+    "placeholders": {
+      "mult": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutLockNote": "🔒 Đang khoá đổi: còn {minutes} phút",
+  "@loadoutLockNote": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutLockedTitle": "Trang bị đang khoá",
+  "loadoutLockedBody": "Bạn vừa đổi trang bị. Còn {minutes} phút nữa mới tháo/thay tiếp được (lấp ô trống thì được ngay). Mở khoá ngay?",
+  "@loadoutLockedBody": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutUnlockAd": "Xem QC để mở khoá",
+  "loadoutUnlockFree": "Mở khoá",
+  "loadoutUnlockedToast": "Đã mở khoá — đổi trang bị thoải mái!",
+  "loadoutRemoveTitle": "Tháo {name}?",
+  "@loadoutRemoveTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "loadoutRemoveBody": "Sau khi tháo, bạn không tháo/thay món khác được trong {minutes} phút (lấp ô trống vẫn được).",
+  "@loadoutRemoveBody": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "loadoutRemoveConfirm": "Tháo",
+  "loadoutFamilyTap": "Nhiệt huyết · tăng giá trị chạm",
+  "loadoutFamilyIncome": "Lấp lánh · tăng thu nhập tự động",
+  "loadoutFamilyOffline": "Yên bình · tăng thu nhập khi vắng mặt",
+  "loadoutFamilyDiscount": "Tinh tế · giảm giá nâng cấp",
   "marketSellableHeader": "Phụ kiện có thể đăng bán",
   "marketEmptySellable": "Bạn chưa có phụ kiện nào để đăng bán.",
   "marketListedToast": "Đã đăng bán!",
@@ -2182,7 +2266,7 @@
   "m3LeaveConfirm": "Thoát",
   "accessoryHowToTitle": "Hướng dẫn sưu tầm",
   "accessoryHowToButton": "Hướng dẫn",
-  "accessoryHtp1": "🎯 Mục tiêu: sưu tập đủ các món. Phụ kiện thuần trang trí, không tăng thu nhập — nhưng trưng được quanh cốc, khoe với bạn bè và lên bảng xếp hạng Sưu tập.",
+  "accessoryHtp1": "🎯 Mục tiêu: sưu tập đủ các món. Món đang mang quanh cốc cho buff nhỏ theo họ (🔥 chạm · ✨ thu nhập · 🌿 offline · 💎 giá nâng cấp); mang nhiều món cùng họ để có combo. Tháo/thay có thời gian chờ — xem quảng cáo để mở khoá ngay. Khoe với bạn bè và lên bảng xếp hạng Sưu tập.",
   "accessoryHtp2": "🎁 Cách nhận: xong cả 3 nhiệm vụ ngày · qua màn mốc Trân Châu Rơi (10/30/60) · ô rương của vòng quay thường · mỗi lần Kỷ Nguyên hoá · mua Gói phụ kiện bằng 💎.",
   "accessoryHtp3": "🎰 Vòng quay phụ kiện: mỗi lượt xem 1 quảng cáo hoặc dùng 💎. Lượt xem quảng cáo có giới hạn mỗi ngày.",
   "accessoryHtp4": "✨ Độ hiếm: Thường → Hiếm → Sử thi → Huyền thoại. Cuối tuần và dịp lễ tăng tỉ lệ Sử thi/Huyền thoại; Gói Hiếm/Sử thi bảo đảm độ hiếm tối thiểu; dịp lễ có Gói Lễ Hội với món độc quyền.",

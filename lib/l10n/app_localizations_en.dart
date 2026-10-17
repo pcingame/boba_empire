@@ -3025,6 +3025,89 @@ class AppLocalizationsEn extends AppLocalizations {
   String get marketExtendedToast => 'Listing extended.';
 
   @override
+  String get loadoutTitle => 'Loadout';
+
+  @override
+  String get loadoutHint =>
+      'Each family gives one buff: 🔥 tap · ✨ income · 🌿 offline · 💎 upgrade cost. Wear several of one family for a combo.';
+
+  @override
+  String get loadoutEmpty =>
+      'No buffs yet. Tap an item in your collection to wear it.';
+
+  @override
+  String loadoutBuffTap(String pct) {
+    return '🔥 Tap +$pct%';
+  }
+
+  @override
+  String loadoutBuffIncome(String pct) {
+    return '✨ Income +$pct%';
+  }
+
+  @override
+  String loadoutBuffOffline(String pct) {
+    return '🌿 Offline +$pct%';
+  }
+
+  @override
+  String loadoutBuffDiscount(String pct) {
+    return '💎 Upgrade cost −$pct%';
+  }
+
+  @override
+  String loadoutComboSuffix(String mult) {
+    return ' · combo ×$mult';
+  }
+
+  @override
+  String loadoutLockNote(int minutes) {
+    return '🔒 Swap locked: $minutes min left';
+  }
+
+  @override
+  String get loadoutLockedTitle => 'Loadout is locked';
+
+  @override
+  String loadoutLockedBody(int minutes) {
+    return 'You just changed your loadout. $minutes more minutes before you can remove or swap again (filling an empty slot is always OK). Unlock now?';
+  }
+
+  @override
+  String get loadoutUnlockAd => 'Watch ad to unlock';
+
+  @override
+  String get loadoutUnlockFree => 'Unlock';
+
+  @override
+  String get loadoutUnlockedToast => 'Unlocked — swap away!';
+
+  @override
+  String loadoutRemoveTitle(String name) {
+    return 'Remove $name?';
+  }
+
+  @override
+  String loadoutRemoveBody(int minutes) {
+    return 'After removing, you can\'t remove or swap another item for $minutes minutes (filling an empty slot is still OK).';
+  }
+
+  @override
+  String get loadoutRemoveConfirm => 'Remove';
+
+  @override
+  String get loadoutFamilyTap => 'Fervor · boosts tap value';
+
+  @override
+  String get loadoutFamilyIncome => 'Sparkle · boosts auto income';
+
+  @override
+  String get loadoutFamilyOffline => 'Serenity · boosts offline income';
+
+  @override
+  String get loadoutFamilyDiscount => 'Finesse · cheaper upgrades';
+
+  @override
   String get marketSellableHeader => 'Accessories you can sell';
 
   @override
@@ -3416,7 +3499,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accessoryHtp1 =>
-      '🎯 Goal: collect every item. Accessories are cosmetic only — no income boost — but you can show them off around your cup, share them and climb the Collection leaderboard.';
+      '🎯 Goal: collect every item. Items worn around your cup give small buffs by family (🔥 tap · ✨ income · 🌿 offline · 💎 upgrade cost); wear several of one family for a combo. Removing or swapping has a cooldown — watch an ad to unlock it right away. Show them off and climb the Collection leaderboard.';
 
   @override
   String get accessoryHtp2 =>

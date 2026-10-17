@@ -1,21 +1,26 @@
-/// "Kho phụ kiện" — sưu tập cosmetic thuần (không ảnh hưởng số liệu). Rớt từ
+/// "Kho phụ kiện" — sưu tập + bộ trang bị (món đang mang cho buff, xem accessory_loadout.dart). Rớt từ
 /// nhiệm vụ ngày (xem GameController.claimDailyBonus). Mở từ nút ✨ ở màn chính
 /// (home_page.dart `_CollectionChip`); từ đây vào Chợ (icon cửa hàng) và BXH Sưu tập (🏆).
 library;
 
+import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../ads/ad_service.dart';
 import '../core/accessories.dart';
+import '../core/accessory_loadout.dart';
+import '../core/balance.dart';
 import '../core/collection_milestones.dart';
 import '../core/guild_shop.dart' show guildAccessories;
 import '../core/vip_shop.dart' show vipAccessories;
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../leaderboard/flair.dart';
+import '../state/game_controller.dart' show EquipResult;
 import '../state/game_providers.dart';
 import 'accessory_how_to_dialog.dart';
 import 'email_gate.dart';
@@ -142,6 +147,8 @@ class AccessoryInventoryPage extends ConsumerWidget {
                         l10n.accessoryFlairHint,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
+                      const SizedBox(height: 8),
+                      const _LoadoutCard(),
                       SizedBox(
                         width: double.infinity,
                         child: FilledButton.tonalIcon(
@@ -309,13 +316,18 @@ class _AccessoryCell extends ConsumerWidget {
 
     void onTap() {
       if (!unlocked) return;
-      final changed = ref
+      if (equipped) {
+        // Tháo = khoá đổi 30 phút → hỏi lại cho khỏi lỡ tay (xem accessory_loadout.dart).
+        unawaited(_confirmRemove(context, ref, accessory));
+        return;
+      }
+      final result = ref
           .read(gameControllerProvider.notifier)
-          .toggleEquippedAccessory(accessory.id);
-      if (changed) {
+          .tryToggleEquippedAccessory(accessory.id);
+      if (result == EquipResult.equipped) {
         HapticFeedback.selectionClick();
-      } else {
-        // Đã đủ chỗ trưng bày: báo thay vì im lặng.
+      } else if (result == EquipResult.full) {
+        // Đã đủ chỗ: báo thay vì im lặng.
         ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(
           SnackBar(
             content: Text(
@@ -421,6 +433,20 @@ class _AccessoryCell extends ConsumerWidget {
                   ),
                 ),
               ),
+              // Họ của món (🔥✨🌿💎) — cho biết món này cho buff gì khi mang.
+              if (unlocked && accessoryFamilyOf(accessory.id) != null)
+                Positioned(
+                  top: 6,
+                  left: 10,
+                  child: Semantics(
+                    label: _familyLabel(l10n, accessoryFamilyOf(accessory.id)!),
+                    child: Text(
+                      accessoryFamilyOf(accessory.id)!.emoji,
+                      key: Key('accessory-family-${accessory.id}'),
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ),
               // Ghim 📌 trên món đang trưng bày (không chỉ dựa vào màu viền).
               if (equipped)
                 const Positioned(
@@ -754,4 +780,245 @@ class _MilestoneCell extends StatelessWidget {
           : cell,
     );
   }
+}
+
+/// "5.0" → "5", "12.5" → "12.5": phần trăm gọn cho dòng buff.
+String _pct(double fraction) {
+  final v = fraction * 100;
+  final t = v.toStringAsFixed(1);
+  return t.endsWith('.0') ? t.substring(0, t.length - 2) : t;
+}
+
+/// 1.25 → "1.25", 1.5 → "1.5", 1.1 → "1.1": hệ số combo bỏ số 0 thừa.
+String _mult(double m) => m.toStringAsFixed(2).replaceFirst(RegExp(r'\.?0+$'), '');
+
+String _familyLabel(AppLocalizations l10n, AccessoryFamily f) => switch (f) {
+      AccessoryFamily.tap => l10n.loadoutFamilyTap,
+      AccessoryFamily.income => l10n.loadoutFamilyIncome,
+      AccessoryFamily.offline => l10n.loadoutFamilyOffline,
+      AccessoryFamily.discount => l10n.loadoutFamilyDiscount,
+    };
+
+String _buffLine(AppLocalizations l10n, AccessoryFamily f, LoadoutBuffs b) {
+  final pct = _pct(b.of(f));
+  final line = switch (f) {
+    AccessoryFamily.tap => l10n.loadoutBuffTap(pct),
+    AccessoryFamily.income => l10n.loadoutBuffIncome(pct),
+    AccessoryFamily.offline => l10n.loadoutBuffOffline(pct),
+    AccessoryFamily.discount => l10n.loadoutBuffDiscount(pct),
+  };
+  final combo = b.combo[f];
+  return combo == null ? line : '$line${l10n.loadoutComboSuffix(_mult(combo))}';
+}
+
+/// Thẻ "Bộ trang bị": các ô đang mang, buff tổng hợp theo họ (kèm combo), và đếm ngược khoá đổi.
+class _LoadoutCard extends ConsumerWidget {
+  const _LoadoutCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final equipped = ref.watch(
+      gameControllerProvider.select((s) => s.equippedAccessories.join(',')),
+    ).split(',').where((e) => e.isNotEmpty).toList();
+    final lockUntil = ref.watch(
+      gameControllerProvider.select((s) => s.equipLockUntilMillis),
+    );
+    final slots = maxEquippedFor(
+      vip: ref.watch(gameControllerProvider.select((s) => s.vipActive)),
+    );
+    final buffs = loadoutBuffs(equipped);
+    final active = [for (final f in AccessoryFamily.values) if (buffs.of(f) > 0) f];
+
+    return ClayCard(
+      key: const Key('loadout-card'),
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '🎒 ${l10n.loadoutTitle}',
+            style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (var i = 0; i < slots; i++)
+                _LoadoutSlot(id: i < equipped.length ? equipped[i] : null, index: i),
+            ],
+          ),
+          const SizedBox(height: 8),
+          if (active.isEmpty)
+            Text(l10n.loadoutEmpty, style: theme.textTheme.bodySmall)
+          else
+            for (final f in active)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 2),
+                child: Text(
+                  _buffLine(l10n, f, buffs),
+                  key: Key('loadout-buff-${f.name}'),
+                  style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+                ),
+              ),
+          const SizedBox(height: 4),
+          Text(l10n.loadoutHint, style: theme.textTheme.bodySmall),
+          if (lockUntil > 0) _LockCountdown(untilMillis: lockUntil),
+        ],
+      ),
+    );
+  }
+}
+
+class _LoadoutSlot extends StatelessWidget {
+  const _LoadoutSlot({required this.id, required this.index});
+
+  final String? id;
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final a = id == null ? null : accessoryOrNull(id!);
+    final family = id == null ? null : accessoryFamilyOf(id!);
+    return Container(
+      key: Key('loadout-slot-$index'),
+      width: 52,
+      height: 52,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: a == null
+              ? theme.colorScheme.outlineVariant
+              : rarityColor(a.rarity),
+          width: a == null ? 1.5 : 2.5,
+        ),
+        color: a == null
+            ? null
+            : rarityColor(a.rarity).withValues(alpha: 0.14),
+      ),
+      child: a == null
+          ? Text('＋', style: TextStyle(fontSize: 20, color: theme.colorScheme.outline))
+          : Stack(
+              alignment: Alignment.center,
+              children: [
+                Text(a.emoji, style: const TextStyle(fontSize: 26)),
+                if (family != null)
+                  Positioned(
+                    right: 2,
+                    bottom: 0,
+                    child: Text(family.emoji, style: const TextStyle(fontSize: 12)),
+                  ),
+              ],
+            ),
+    );
+  }
+}
+
+/// Dòng "🔒 còn N phút" — tự tắt khi hết khoá. Chỉ được dựng khi đang có mốc khoá, nên bộ đếm
+/// (mỗi 15 giây, đủ cho đơn vị phút) chỉ tồn tại lúc cần và huỷ ở dispose.
+class _LockCountdown extends ConsumerStatefulWidget {
+  const _LockCountdown({required this.untilMillis});
+
+  final int untilMillis;
+
+  @override
+  ConsumerState<_LockCountdown> createState() => _LockCountdownState();
+}
+
+class _LockCountdownState extends ConsumerState<_LockCountdown> {
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(const Duration(seconds: 15), (_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final remainingMs = widget.untilMillis - ref.read(clockProvider)();
+    if (remainingMs <= 0) return const SizedBox.shrink();
+    final minutes = (remainingMs / 60000).ceil();
+    return Padding(
+      padding: const EdgeInsets.only(top: 6),
+      child: Text(
+        AppLocalizations.of(context)!.loadoutLockNote(minutes),
+        key: const Key('loadout-lock-note'),
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.tertiary,
+              fontWeight: FontWeight.w700,
+            ),
+      ),
+    );
+  }
+}
+
+/// Chạm món đang mang: nếu đang khoá thì mời mở khoá (QC), không thì xác nhận tháo.
+Future<void> _confirmRemove(BuildContext context, WidgetRef ref, Accessory accessory) async {
+  final l10n = AppLocalizations.of(context)!;
+  final ctrl = ref.read(gameControllerProvider.notifier);
+  final messenger = ScaffoldMessenger.of(context);
+  final lockUntil = ref.read(gameControllerProvider).equipLockUntilMillis;
+  final remainingMs = lockUntil - ref.read(clockProvider)();
+
+  if (remainingMs > 0) {
+    final adFree = ref.read(gameControllerProvider).adFree;
+    final minutes = (remainingMs / 60000).ceil();
+    final unlock = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.loadoutLockedTitle),
+        content: Text(l10n.loadoutLockedBody(minutes)),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l10n.close)),
+          FilledButton(
+            key: const Key('loadout-unlock-button'),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(adFree ? l10n.loadoutUnlockFree : l10n.loadoutUnlockAd),
+          ),
+        ],
+      ),
+    );
+    if (unlock != true) return;
+    // Cùng khuôn mọi chỗ dùng rewarded: gỡ QC/VIP thì cộng thẳng.
+    final outcome = adFree ? RewardOutcome.earned : await ref.read(adServiceProvider).showRewardedAd();
+    if (outcome != RewardOutcome.earned) {
+      messenger..clearSnackBars()..showSnackBar(SnackBar(content: Text(l10n.adNotReadySnack)));
+      return;
+    }
+    ctrl.unlockEquipSwap();
+    messenger..clearSnackBars()..showSnackBar(SnackBar(content: Text(l10n.loadoutUnlockedToast)));
+    return;
+  }
+
+  final ok = await showDialog<bool>(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: Text(l10n.loadoutRemoveTitle(accessoryName(l10n, accessory.id))),
+      content: Text(l10n.loadoutRemoveBody(Balance.equipSwapLockMinutes)),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(ctx, false), child: Text(l10n.cancel)),
+        FilledButton(
+          key: const Key('loadout-remove-confirm'),
+          onPressed: () => Navigator.pop(ctx, true),
+          child: Text(l10n.loadoutRemoveConfirm),
+        ),
+      ],
+    ),
+  );
+  if (ok != true) return;
+  final result = ctrl.tryToggleEquippedAccessory(accessory.id);
+  if (result == EquipResult.removed) HapticFeedback.selectionClick();
 }

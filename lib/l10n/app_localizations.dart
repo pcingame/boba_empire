@@ -5244,6 +5244,132 @@ abstract class AppLocalizations {
   /// **'Đã gia hạn tin đăng.'**
   String get marketExtendedToast;
 
+  /// No description provided for @loadoutTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ trang bị'**
+  String get loadoutTitle;
+
+  /// No description provided for @loadoutHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi họ cho một buff: 🔥 chạm · ✨ thu nhập · 🌿 offline · 💎 giá nâng cấp. Mang nhiều món cùng họ để có combo.'**
+  String get loadoutHint;
+
+  /// No description provided for @loadoutEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có buff nào. Chạm một món trong bộ sưu tập để trang bị.'**
+  String get loadoutEmpty;
+
+  /// No description provided for @loadoutBuffTap.
+  ///
+  /// In vi, this message translates to:
+  /// **'🔥 Chạm +{pct}%'**
+  String loadoutBuffTap(String pct);
+
+  /// No description provided for @loadoutBuffIncome.
+  ///
+  /// In vi, this message translates to:
+  /// **'✨ Thu nhập +{pct}%'**
+  String loadoutBuffIncome(String pct);
+
+  /// No description provided for @loadoutBuffOffline.
+  ///
+  /// In vi, this message translates to:
+  /// **'🌿 Offline +{pct}%'**
+  String loadoutBuffOffline(String pct);
+
+  /// No description provided for @loadoutBuffDiscount.
+  ///
+  /// In vi, this message translates to:
+  /// **'💎 Giá nâng cấp −{pct}%'**
+  String loadoutBuffDiscount(String pct);
+
+  /// No description provided for @loadoutComboSuffix.
+  ///
+  /// In vi, this message translates to:
+  /// **' · combo ×{mult}'**
+  String loadoutComboSuffix(String mult);
+
+  /// No description provided for @loadoutLockNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'🔒 Đang khoá đổi: còn {minutes} phút'**
+  String loadoutLockNote(int minutes);
+
+  /// No description provided for @loadoutLockedTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trang bị đang khoá'**
+  String get loadoutLockedTitle;
+
+  /// No description provided for @loadoutLockedBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn vừa đổi trang bị. Còn {minutes} phút nữa mới tháo/thay tiếp được (lấp ô trống thì được ngay). Mở khoá ngay?'**
+  String loadoutLockedBody(int minutes);
+
+  /// No description provided for @loadoutUnlockAd.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem QC để mở khoá'**
+  String get loadoutUnlockAd;
+
+  /// No description provided for @loadoutUnlockFree.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở khoá'**
+  String get loadoutUnlockFree;
+
+  /// No description provided for @loadoutUnlockedToast.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã mở khoá — đổi trang bị thoải mái!'**
+  String get loadoutUnlockedToast;
+
+  /// No description provided for @loadoutRemoveTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháo {name}?'**
+  String loadoutRemoveTitle(String name);
+
+  /// No description provided for @loadoutRemoveBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sau khi tháo, bạn không tháo/thay món khác được trong {minutes} phút (lấp ô trống vẫn được).'**
+  String loadoutRemoveBody(int minutes);
+
+  /// No description provided for @loadoutRemoveConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháo'**
+  String get loadoutRemoveConfirm;
+
+  /// No description provided for @loadoutFamilyTap.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiệt huyết · tăng giá trị chạm'**
+  String get loadoutFamilyTap;
+
+  /// No description provided for @loadoutFamilyIncome.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lấp lánh · tăng thu nhập tự động'**
+  String get loadoutFamilyIncome;
+
+  /// No description provided for @loadoutFamilyOffline.
+  ///
+  /// In vi, this message translates to:
+  /// **'Yên bình · tăng thu nhập khi vắng mặt'**
+  String get loadoutFamilyOffline;
+
+  /// No description provided for @loadoutFamilyDiscount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tinh tế · giảm giá nâng cấp'**
+  String get loadoutFamilyDiscount;
+
   /// No description provided for @marketSellableHeader.
   ///
   /// In vi, this message translates to:
@@ -5871,7 +5997,7 @@ abstract class AppLocalizations {
   /// No description provided for @accessoryHtp1.
   ///
   /// In vi, this message translates to:
-  /// **'🎯 Mục tiêu: sưu tập đủ các món. Phụ kiện thuần trang trí, không tăng thu nhập — nhưng trưng được quanh cốc, khoe với bạn bè và lên bảng xếp hạng Sưu tập.'**
+  /// **'🎯 Mục tiêu: sưu tập đủ các món. Món đang mang quanh cốc cho buff nhỏ theo họ (🔥 chạm · ✨ thu nhập · 🌿 offline · 💎 giá nâng cấp); mang nhiều món cùng họ để có combo. Tháo/thay có thời gian chờ — xem quảng cáo để mở khoá ngay. Khoe với bạn bè và lên bảng xếp hạng Sưu tập.'**
   String get accessoryHtp1;
 
   /// No description provided for @accessoryHtp2.

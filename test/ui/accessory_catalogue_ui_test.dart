@@ -200,6 +200,9 @@ void main() {
         reason: 'mọi animation của lưới phải hữu hạn',
       );
       final first = find.byKey(Key('accessory-cell-${accessories.first.id}'));
+      // Thẻ "Bộ trang bị" đẩy lưới xuống nên ô đầu có thể chưa được dựng (lưới dựng lười): cuộn tới.
+      await tester.scrollUntilVisible(first, 200, scrollable: find.byType(Scrollable).first);
+      await tester.pumpAndSettle();
       expect(first, findsOneWidget);
       final op = tester.widget<Opacity>(
         find.descendant(of: first, matching: find.byType(Opacity)).first,

@@ -3015,6 +3015,89 @@ class AppLocalizationsVi extends AppLocalizations {
   String get marketExtendedToast => 'Đã gia hạn tin đăng.';
 
   @override
+  String get loadoutTitle => 'Bộ trang bị';
+
+  @override
+  String get loadoutHint =>
+      'Mỗi họ cho một buff: 🔥 chạm · ✨ thu nhập · 🌿 offline · 💎 giá nâng cấp. Mang nhiều món cùng họ để có combo.';
+
+  @override
+  String get loadoutEmpty =>
+      'Chưa có buff nào. Chạm một món trong bộ sưu tập để trang bị.';
+
+  @override
+  String loadoutBuffTap(String pct) {
+    return '🔥 Chạm +$pct%';
+  }
+
+  @override
+  String loadoutBuffIncome(String pct) {
+    return '✨ Thu nhập +$pct%';
+  }
+
+  @override
+  String loadoutBuffOffline(String pct) {
+    return '🌿 Offline +$pct%';
+  }
+
+  @override
+  String loadoutBuffDiscount(String pct) {
+    return '💎 Giá nâng cấp −$pct%';
+  }
+
+  @override
+  String loadoutComboSuffix(String mult) {
+    return ' · combo ×$mult';
+  }
+
+  @override
+  String loadoutLockNote(int minutes) {
+    return '🔒 Đang khoá đổi: còn $minutes phút';
+  }
+
+  @override
+  String get loadoutLockedTitle => 'Trang bị đang khoá';
+
+  @override
+  String loadoutLockedBody(int minutes) {
+    return 'Bạn vừa đổi trang bị. Còn $minutes phút nữa mới tháo/thay tiếp được (lấp ô trống thì được ngay). Mở khoá ngay?';
+  }
+
+  @override
+  String get loadoutUnlockAd => 'Xem QC để mở khoá';
+
+  @override
+  String get loadoutUnlockFree => 'Mở khoá';
+
+  @override
+  String get loadoutUnlockedToast => 'Đã mở khoá — đổi trang bị thoải mái!';
+
+  @override
+  String loadoutRemoveTitle(String name) {
+    return 'Tháo $name?';
+  }
+
+  @override
+  String loadoutRemoveBody(int minutes) {
+    return 'Sau khi tháo, bạn không tháo/thay món khác được trong $minutes phút (lấp ô trống vẫn được).';
+  }
+
+  @override
+  String get loadoutRemoveConfirm => 'Tháo';
+
+  @override
+  String get loadoutFamilyTap => 'Nhiệt huyết · tăng giá trị chạm';
+
+  @override
+  String get loadoutFamilyIncome => 'Lấp lánh · tăng thu nhập tự động';
+
+  @override
+  String get loadoutFamilyOffline => 'Yên bình · tăng thu nhập khi vắng mặt';
+
+  @override
+  String get loadoutFamilyDiscount => 'Tinh tế · giảm giá nâng cấp';
+
+  @override
   String get marketSellableHeader => 'Phụ kiện có thể đăng bán';
 
   @override
@@ -3405,7 +3488,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get accessoryHtp1 =>
-      '🎯 Mục tiêu: sưu tập đủ các món. Phụ kiện thuần trang trí, không tăng thu nhập — nhưng trưng được quanh cốc, khoe với bạn bè và lên bảng xếp hạng Sưu tập.';
+      '🎯 Mục tiêu: sưu tập đủ các món. Món đang mang quanh cốc cho buff nhỏ theo họ (🔥 chạm · ✨ thu nhập · 🌿 offline · 💎 giá nâng cấp); mang nhiều món cùng họ để có combo. Tháo/thay có thời gian chờ — xem quảng cáo để mở khoá ngay. Khoe với bạn bè và lên bảng xếp hạng Sưu tập.';
 
   @override
   String get accessoryHtp2 =>
