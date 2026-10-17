@@ -3063,6 +3063,101 @@ class AppLocalizationsPt extends AppLocalizations {
   String get masteryMaxed => 'Máx.';
 
   @override
+  String get guildDungeonTitle => 'Masmorra da guilda';
+
+  @override
+  String guildDungeonCardSub(int cleared) {
+    return '$cleared/3 fases concluídas';
+  }
+
+  @override
+  String guildDungeonStage(int n) {
+    return 'Fase $n/3';
+  }
+
+  @override
+  String get guildDungeonBarTap => 'Toques';
+
+  @override
+  String get guildDungeonBarOff => 'Vigília noturna';
+
+  @override
+  String get guildDungeonBarRec => 'Receitas';
+
+  @override
+  String get guildDungeonRoleTap => 'Tocador';
+
+  @override
+  String get guildDungeonRoleOff => 'Vigia Noturno';
+
+  @override
+  String get guildDungeonRoleRec => 'Chef';
+
+  @override
+  String get guildDungeonRoleHeader => 'Seu papel nesta semana';
+
+  @override
+  String get guildDungeonRoleHint =>
+      'Contribuições no seu próprio papel contam ×1,5. Você pode trocar de papel uma vez por semana.';
+
+  @override
+  String get guildDungeonRoleLockedNote =>
+      'Você já usou a troca de papel desta semana.';
+
+  @override
+  String get guildDungeonNoRole => 'Sem papel ainda — escolha um para ×1,5.';
+
+  @override
+  String get guildDungeonHint =>
+      'As três barras precisam estar cheias para concluir a fase; o excedente de uma não cobre outra.';
+
+  @override
+  String guildDungeonHours(String n) {
+    return '$n h';
+  }
+
+  @override
+  String get guildDungeonCleared => 'Concluída';
+
+  @override
+  String guildDungeonClaim(int coins) {
+    return 'Resgatar · $coins moedas da guilda';
+  }
+
+  @override
+  String guildDungeonClaimFinal(int coins, int gems) {
+    return 'Resgatar · $coins moedas da guilda + $gems 💎 + baú';
+  }
+
+  @override
+  String get guildDungeonClaimed => 'Resgatado';
+
+  @override
+  String get guildDungeonNeedMin =>
+      'Contribua um pouco (toques, tempo offline ou receitas) para resgatar a recompensa.';
+
+  @override
+  String guildDungeonClaimedSnack(int coins, int gems) {
+    return 'Recompensa da fase: +$coins moedas da guilda, +$gems 💎';
+  }
+
+  @override
+  String guildDungeonClaimedSnackChest(int coins, int gems, String item) {
+    return 'Recompensa da fase: +$coins moedas da guilda, +$gems 💎, $item';
+  }
+
+  @override
+  String get guildDungeonBoard => 'Contribuições dos membros';
+
+  @override
+  String get guildDungeonErrLocked =>
+      'Sua guilda ainda não concluiu esta fase.';
+
+  @override
+  String get guildDungeonErrRoleLocked =>
+      'Você já trocou de papel uma vez nesta semana.';
+
+  @override
   String get loadoutTitle => 'Equipamento';
 
   @override

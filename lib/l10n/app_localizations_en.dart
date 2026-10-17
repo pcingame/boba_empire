@@ -3055,6 +3055,101 @@ class AppLocalizationsEn extends AppLocalizations {
   String get masteryMaxed => 'Max';
 
   @override
+  String get guildDungeonTitle => 'Guild Dungeon';
+
+  @override
+  String guildDungeonCardSub(int cleared) {
+    return '$cleared/3 stages cleared';
+  }
+
+  @override
+  String guildDungeonStage(int n) {
+    return 'Stage $n/3';
+  }
+
+  @override
+  String get guildDungeonBarTap => 'Taps';
+
+  @override
+  String get guildDungeonBarOff => 'Night watch';
+
+  @override
+  String get guildDungeonBarRec => 'Recipes';
+
+  @override
+  String get guildDungeonRoleTap => 'Tapper';
+
+  @override
+  String get guildDungeonRoleOff => 'Night Watcher';
+
+  @override
+  String get guildDungeonRoleRec => 'Chef';
+
+  @override
+  String get guildDungeonRoleHeader => 'Your role this week';
+
+  @override
+  String get guildDungeonRoleHint =>
+      'Contributions in your own role count ×1.5. You can switch roles once a week.';
+
+  @override
+  String get guildDungeonRoleLockedNote =>
+      'You\'ve used your role switch this week.';
+
+  @override
+  String get guildDungeonNoRole => 'No role yet — pick one for ×1.5.';
+
+  @override
+  String get guildDungeonHint =>
+      'All three bars must be full to clear a stage; a surplus in one doesn\'t cover another.';
+
+  @override
+  String guildDungeonHours(String n) {
+    return '$n h';
+  }
+
+  @override
+  String get guildDungeonCleared => 'Cleared';
+
+  @override
+  String guildDungeonClaim(int coins) {
+    return 'Claim · $coins Guild Coins';
+  }
+
+  @override
+  String guildDungeonClaimFinal(int coins, int gems) {
+    return 'Claim · $coins Guild Coins + $gems 💎 + chest';
+  }
+
+  @override
+  String get guildDungeonClaimed => 'Claimed';
+
+  @override
+  String get guildDungeonNeedMin =>
+      'Contribute a little (taps, offline time or recipes) to claim the reward.';
+
+  @override
+  String guildDungeonClaimedSnack(int coins, int gems) {
+    return 'Stage reward: +$coins Guild Coins, +$gems 💎';
+  }
+
+  @override
+  String guildDungeonClaimedSnackChest(int coins, int gems, String item) {
+    return 'Stage reward: +$coins Guild Coins, +$gems 💎, $item';
+  }
+
+  @override
+  String get guildDungeonBoard => 'Member contributions';
+
+  @override
+  String get guildDungeonErrLocked =>
+      'Your guild hasn\'t cleared this stage yet.';
+
+  @override
+  String get guildDungeonErrRoleLocked =>
+      'You\'ve already switched roles once this week.';
+
+  @override
   String get loadoutTitle => 'Loadout';
 
   @override

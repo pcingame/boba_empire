@@ -5286,6 +5286,156 @@ abstract class AppLocalizations {
   /// **'Tối đa'**
   String get masteryMaxed;
 
+  /// No description provided for @guildDungeonTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phó bản Hội'**
+  String get guildDungeonTitle;
+
+  /// No description provided for @guildDungeonCardSub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã qua {cleared}/3 ải'**
+  String guildDungeonCardSub(int cleared);
+
+  /// No description provided for @guildDungeonStage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ải {n}/3'**
+  String guildDungeonStage(int n);
+
+  /// No description provided for @guildDungeonBarTap.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chạm ly'**
+  String get guildDungeonBarTap;
+
+  /// No description provided for @guildDungeonBarOff.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gác đêm'**
+  String get guildDungeonBarOff;
+
+  /// No description provided for @guildDungeonBarRec.
+  ///
+  /// In vi, this message translates to:
+  /// **'Công thức'**
+  String get guildDungeonBarRec;
+
+  /// No description provided for @guildDungeonRoleTap.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thợ chạm'**
+  String get guildDungeonRoleTap;
+
+  /// No description provided for @guildDungeonRoleOff.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người gác đêm'**
+  String get guildDungeonRoleOff;
+
+  /// No description provided for @guildDungeonRoleRec.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đầu bếp'**
+  String get guildDungeonRoleRec;
+
+  /// No description provided for @guildDungeonRoleHeader.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vai trò tuần này'**
+  String get guildDungeonRoleHeader;
+
+  /// No description provided for @guildDungeonRoleHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng góp đúng vai được ×1.5. Đổi vai được 1 lần trong tuần.'**
+  String get guildDungeonRoleHint;
+
+  /// No description provided for @guildDungeonRoleLockedNote.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã dùng lượt đổi vai tuần này.'**
+  String get guildDungeonRoleLockedNote;
+
+  /// No description provided for @guildDungeonNoRole.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa chọn vai — chọn một vai để được ×1.5.'**
+  String get guildDungeonNoRole;
+
+  /// No description provided for @guildDungeonHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cả ba thanh phải đầy mới qua ải; thanh nào dư không bù cho thanh khác.'**
+  String get guildDungeonHint;
+
+  /// No description provided for @guildDungeonHours.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} giờ'**
+  String guildDungeonHours(String n);
+
+  /// No description provided for @guildDungeonCleared.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã qua'**
+  String get guildDungeonCleared;
+
+  /// No description provided for @guildDungeonClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận · {coins} Xu Hội'**
+  String guildDungeonClaim(int coins);
+
+  /// No description provided for @guildDungeonClaimFinal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận · {coins} Xu Hội + {gems} 💎 + rương'**
+  String guildDungeonClaimFinal(int coins, int gems);
+
+  /// No description provided for @guildDungeonClaimed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận'**
+  String get guildDungeonClaimed;
+
+  /// No description provided for @guildDungeonNeedMin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hãy đóng góp một ít (chạm, offline hoặc Công thức) để nhận thưởng.'**
+  String get guildDungeonNeedMin;
+
+  /// No description provided for @guildDungeonClaimedSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thưởng ải: +{coins} Xu Hội, +{gems} 💎'**
+  String guildDungeonClaimedSnack(int coins, int gems);
+
+  /// No description provided for @guildDungeonClaimedSnackChest.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thưởng ải: +{coins} Xu Hội, +{gems} 💎, {item}'**
+  String guildDungeonClaimedSnackChest(int coins, int gems, String item);
+
+  /// No description provided for @guildDungeonBoard.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng góp của hội viên'**
+  String get guildDungeonBoard;
+
+  /// No description provided for @guildDungeonErrLocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hội chưa qua ải này.'**
+  String get guildDungeonErrLocked;
+
+  /// No description provided for @guildDungeonErrRoleLocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã đổi vai một lần trong tuần này rồi.'**
+  String get guildDungeonErrRoleLocked;
+
   /// No description provided for @loadoutTitle.
   ///
   /// In vi, this message translates to:

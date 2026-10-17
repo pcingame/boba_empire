@@ -3004,6 +3004,97 @@ class AppLocalizationsKo extends AppLocalizations {
   String get masteryMaxed => '최대';
 
   @override
+  String get guildDungeonTitle => '길드 던전';
+
+  @override
+  String guildDungeonCardSub(int cleared) {
+    return '$cleared/3 단계 클리어';
+  }
+
+  @override
+  String guildDungeonStage(int n) {
+    return '$n/3 단계';
+  }
+
+  @override
+  String get guildDungeonBarTap => '터치';
+
+  @override
+  String get guildDungeonBarOff => '야간 경비';
+
+  @override
+  String get guildDungeonBarRec => '레시피';
+
+  @override
+  String get guildDungeonRoleTap => '터치 담당';
+
+  @override
+  String get guildDungeonRoleOff => '야간 경비병';
+
+  @override
+  String get guildDungeonRoleRec => '요리사';
+
+  @override
+  String get guildDungeonRoleHeader => '이번 주 역할';
+
+  @override
+  String get guildDungeonRoleHint =>
+      '자기 역할의 기여는 ×1.5로 계산돼요. 역할은 주 1회 바꿀 수 있어요.';
+
+  @override
+  String get guildDungeonRoleLockedNote => '이번 주 역할 변경을 이미 사용했어요.';
+
+  @override
+  String get guildDungeonNoRole => '아직 역할이 없어요 — 고르면 ×1.5!';
+
+  @override
+  String get guildDungeonHint =>
+      '세 게이지가 모두 차야 단계를 클리어해요. 한 게이지가 넘쳐도 다른 게이지를 채우지 않아요.';
+
+  @override
+  String guildDungeonHours(String n) {
+    return '$n시간';
+  }
+
+  @override
+  String get guildDungeonCleared => '클리어';
+
+  @override
+  String guildDungeonClaim(int coins) {
+    return '수령 · 길드 코인 $coins';
+  }
+
+  @override
+  String guildDungeonClaimFinal(int coins, int gems) {
+    return '수령 · 길드 코인 $coins + 💎 $gems + 상자';
+  }
+
+  @override
+  String get guildDungeonClaimed => '수령 완료';
+
+  @override
+  String get guildDungeonNeedMin => '보상을 받으려면 조금이라도 기여하세요 (터치, 오프라인, 레시피).';
+
+  @override
+  String guildDungeonClaimedSnack(int coins, int gems) {
+    return '단계 보상: 길드 코인 +$coins, 💎 +$gems';
+  }
+
+  @override
+  String guildDungeonClaimedSnackChest(int coins, int gems, String item) {
+    return '단계 보상: 길드 코인 +$coins, 💎 +$gems, $item';
+  }
+
+  @override
+  String get guildDungeonBoard => '길드원 기여도';
+
+  @override
+  String get guildDungeonErrLocked => '길드가 아직 이 단계를 클리어하지 못했어요.';
+
+  @override
+  String get guildDungeonErrRoleLocked => '이번 주에는 이미 역할을 한 번 바꿨어요.';
+
+  @override
   String get loadoutTitle => '장비 세트';
 
   @override

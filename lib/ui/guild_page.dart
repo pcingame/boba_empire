@@ -22,10 +22,15 @@ import '../state/game_providers.dart';
 import 'guild_activity_page.dart';
 import 'widgets/dispose_with_widget.dart';
 import 'guild_chat_page.dart';
+import 'guild_dungeon_page.dart';
 import 'guild_members.dart';
 import 'guild_quests_section.dart';
 import 'guild_shop_page.dart';
+import 'widgets/anim_assets.dart';
+import 'widgets/boss_avatar.dart';
 import 'widgets/clay.dart';
+import 'widgets/motion.dart' show reduceMotion;
+import 'widgets/one_shot_lottie.dart';
 import 'web_links.dart';
 import 'widgets/phone_width.dart';
 
@@ -69,6 +74,8 @@ String guildFailureText(AppLocalizations l10n, GuildFailure f,
       GuildFailure.officersFull => l10n.guildErrOfficersFull(guildMaxOfficers),
       GuildFailure.chatRateLimited => l10n.guildErrChatRate,
       GuildFailure.textBlocked => l10n.guildErrTextBlocked,
+      GuildFailure.dungeonLocked => l10n.guildDungeonErrLocked,
+      GuildFailure.dungeonRoleLocked => l10n.guildDungeonErrRoleLocked,
       GuildFailure.network => l10n.guildErrNetwork,
     };
 
@@ -516,6 +523,7 @@ class _MyGuildView extends ConsumerWidget {
           for (var i = 0; i < guildMilestones.length; i++)
             _MilestoneRow(index: i, view: view),
           if (g.bossHp > 0) _BossCard(view: view),
+          const GuildDungeonCard(),
           const SizedBox(height: 8),
           if (view.canModerate && g.requests.isNotEmpty) ...[
             Text(l10n.guildRequestsTitle(g.requests.length),
@@ -847,12 +855,32 @@ class _GiftInboxState extends ConsumerState<_GiftInbox> {
 
 /// Thẻ Boss Hội hàng tuần: thanh HP (sát thương = tổng điểm tuần cả hội), bậc theo chuỗi tuần, và
 /// nút nhận rương khi boss bị hạ (cần đủ điểm đóng góp tối thiểu như nhận thưởng mốc).
-class _BossCard extends ConsumerWidget {
+class _BossCard extends ConsumerStatefulWidget {
   const _BossCard({required this.view});
   final GuildMine view;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_BossCard> createState() => _BossCardState();
+}
+
+class _BossCardState extends ConsumerState<_BossCard> {
+  GuildMine get view => widget.view;
+
+  @override
+  void didUpdateWidget(_BossCard old) {
+    super.didUpdateWidget(old);
+    // Boss vừa bị hạ ngay lúc đang xem → pháo giấy một lần.
+    final was = old.view.guild.total >= old.view.guild.bossHp;
+    final now = view.guild.total >= view.guild.bossHp;
+    if (!was && now && view.guild.bossHp > 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) playEffect(context, AnimAssets.confetti);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final g = view.guild;
@@ -888,16 +916,14 @@ class _BossCard extends ConsumerWidget {
           children: [
             Row(
               children: [
-                Container(
-                  width: 52,
-                  height: 52,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: theme.colorScheme.errorContainer,
-                  ),
-                  child: Text(guildBossEmojis[idx],
-                      style: const TextStyle(fontSize: 30)),
+                BossAvatar(
+                  key: const Key('guild-boss-avatar'),
+                  emoji: guildBossEmojis[idx],
+                  damage: g.total,
+                  hpFraction: g.bossHp == 0
+                      ? 1
+                      : (1 - g.total / g.bossHp).clamp(0.0, 1.0).toDouble(),
+                  defeated: defeated,
                 ),
                 const SizedBox(width: 10),
                 Expanded(
@@ -920,15 +946,42 @@ class _BossCard extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 6),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: LinearProgressIndicator(
-                key: const Key('guild-boss-hp'),
-                value: g.bossHp == 0 ? 0 : (g.total / g.bossHp).clamp(0.0, 1.0).toDouble(),
-                minHeight: 10,
-                color: defeated ? Colors.green : theme.colorScheme.error,
-              ),
-            ),
+            // Thanh trượt mượt tới giá trị mới; vệt sáng phía sau co chậm hơn để thấy "mất máu".
+            Builder(builder: (context) {
+              final v = g.bossHp == 0 ? 0.0 : (g.total / g.bossHp).clamp(0.0, 1.0).toDouble();
+              final fast = reduceMotion ? Duration.zero : const Duration(milliseconds: 500);
+              final slow = reduceMotion ? Duration.zero : const Duration(milliseconds: 1400);
+              return ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: Stack(
+                  children: [
+                    TweenAnimationBuilder<double>(
+                      tween: Tween(end: v),
+                      duration: slow,
+                      curve: Curves.easeInQuad,
+                      builder: (_, ghost, _) => LinearProgressIndicator(
+                        value: ghost,
+                        minHeight: 10,
+                        color: Colors.orangeAccent.withValues(alpha: 0.6),
+                        backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                      ),
+                    ),
+                    TweenAnimationBuilder<double>(
+                      tween: Tween(end: v),
+                      duration: fast,
+                      curve: Curves.easeOutCubic,
+                      builder: (_, value, _) => LinearProgressIndicator(
+                        key: const Key('guild-boss-hp'),
+                        value: value,
+                        minHeight: 10,
+                        color: defeated ? Colors.green : theme.colorScheme.error,
+                        backgroundColor: Colors.transparent,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }),
             const SizedBox(height: 2),
             Text(
               l10n.guildBossProgress(formatNumber(g.total.clamp(0, g.bossHp).toDouble()),
@@ -966,6 +1019,7 @@ class _BossCard extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final out = await ref.read(guildControllerProvider.notifier).claimBoss();
     if (!context.mounted) return;
+    if (out.ok) playEffect(context, AnimAssets.gemBurst, heavy: false);
     _toast(
         context,
         out.ok

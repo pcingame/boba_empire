@@ -3071,6 +3071,101 @@ class AppLocalizationsEs extends AppLocalizations {
   String get masteryMaxed => 'Máx.';
 
   @override
+  String get guildDungeonTitle => 'Mazmorra del gremio';
+
+  @override
+  String guildDungeonCardSub(int cleared) {
+    return '$cleared/3 niveles superados';
+  }
+
+  @override
+  String guildDungeonStage(int n) {
+    return 'Nivel $n/3';
+  }
+
+  @override
+  String get guildDungeonBarTap => 'Toques';
+
+  @override
+  String get guildDungeonBarOff => 'Guardia nocturna';
+
+  @override
+  String get guildDungeonBarRec => 'Recetas';
+
+  @override
+  String get guildDungeonRoleTap => 'Tocador';
+
+  @override
+  String get guildDungeonRoleOff => 'Vigía nocturno';
+
+  @override
+  String get guildDungeonRoleRec => 'Chef';
+
+  @override
+  String get guildDungeonRoleHeader => 'Tu rol esta semana';
+
+  @override
+  String get guildDungeonRoleHint =>
+      'Las aportaciones en tu propio rol cuentan ×1,5. Puedes cambiar de rol una vez por semana.';
+
+  @override
+  String get guildDungeonRoleLockedNote =>
+      'Ya usaste tu cambio de rol esta semana.';
+
+  @override
+  String get guildDungeonNoRole => 'Aún sin rol: elige uno para ×1,5.';
+
+  @override
+  String get guildDungeonHint =>
+      'Las tres barras deben llenarse para superar un nivel; el excedente de una no cubre a otra.';
+
+  @override
+  String guildDungeonHours(String n) {
+    return '$n h';
+  }
+
+  @override
+  String get guildDungeonCleared => 'Superado';
+
+  @override
+  String guildDungeonClaim(int coins) {
+    return 'Reclamar · $coins monedas del gremio';
+  }
+
+  @override
+  String guildDungeonClaimFinal(int coins, int gems) {
+    return 'Reclamar · $coins monedas del gremio + $gems 💎 + cofre';
+  }
+
+  @override
+  String get guildDungeonClaimed => 'Reclamado';
+
+  @override
+  String get guildDungeonNeedMin =>
+      'Aporta un poco (toques, tiempo sin conexión o recetas) para reclamar la recompensa.';
+
+  @override
+  String guildDungeonClaimedSnack(int coins, int gems) {
+    return 'Recompensa del nivel: +$coins monedas del gremio, +$gems 💎';
+  }
+
+  @override
+  String guildDungeonClaimedSnackChest(int coins, int gems, String item) {
+    return 'Recompensa del nivel: +$coins monedas del gremio, +$gems 💎, $item';
+  }
+
+  @override
+  String get guildDungeonBoard => 'Aportes de los miembros';
+
+  @override
+  String get guildDungeonErrLocked =>
+      'Tu gremio aún no ha superado este nivel.';
+
+  @override
+  String get guildDungeonErrRoleLocked =>
+      'Ya cambiaste de rol una vez esta semana.';
+
+  @override
   String get loadoutTitle => 'Equipo';
 
   @override

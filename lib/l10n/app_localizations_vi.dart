@@ -3045,6 +3045,99 @@ class AppLocalizationsVi extends AppLocalizations {
   String get masteryMaxed => 'Tối đa';
 
   @override
+  String get guildDungeonTitle => 'Phó bản Hội';
+
+  @override
+  String guildDungeonCardSub(int cleared) {
+    return 'Đã qua $cleared/3 ải';
+  }
+
+  @override
+  String guildDungeonStage(int n) {
+    return 'Ải $n/3';
+  }
+
+  @override
+  String get guildDungeonBarTap => 'Chạm ly';
+
+  @override
+  String get guildDungeonBarOff => 'Gác đêm';
+
+  @override
+  String get guildDungeonBarRec => 'Công thức';
+
+  @override
+  String get guildDungeonRoleTap => 'Thợ chạm';
+
+  @override
+  String get guildDungeonRoleOff => 'Người gác đêm';
+
+  @override
+  String get guildDungeonRoleRec => 'Đầu bếp';
+
+  @override
+  String get guildDungeonRoleHeader => 'Vai trò tuần này';
+
+  @override
+  String get guildDungeonRoleHint =>
+      'Đóng góp đúng vai được ×1.5. Đổi vai được 1 lần trong tuần.';
+
+  @override
+  String get guildDungeonRoleLockedNote => 'Bạn đã dùng lượt đổi vai tuần này.';
+
+  @override
+  String get guildDungeonNoRole => 'Chưa chọn vai — chọn một vai để được ×1.5.';
+
+  @override
+  String get guildDungeonHint =>
+      'Cả ba thanh phải đầy mới qua ải; thanh nào dư không bù cho thanh khác.';
+
+  @override
+  String guildDungeonHours(String n) {
+    return '$n giờ';
+  }
+
+  @override
+  String get guildDungeonCleared => 'Đã qua';
+
+  @override
+  String guildDungeonClaim(int coins) {
+    return 'Nhận · $coins Xu Hội';
+  }
+
+  @override
+  String guildDungeonClaimFinal(int coins, int gems) {
+    return 'Nhận · $coins Xu Hội + $gems 💎 + rương';
+  }
+
+  @override
+  String get guildDungeonClaimed => 'Đã nhận';
+
+  @override
+  String get guildDungeonNeedMin =>
+      'Hãy đóng góp một ít (chạm, offline hoặc Công thức) để nhận thưởng.';
+
+  @override
+  String guildDungeonClaimedSnack(int coins, int gems) {
+    return 'Thưởng ải: +$coins Xu Hội, +$gems 💎';
+  }
+
+  @override
+  String guildDungeonClaimedSnackChest(int coins, int gems, String item) {
+    return 'Thưởng ải: +$coins Xu Hội, +$gems 💎, $item';
+  }
+
+  @override
+  String get guildDungeonBoard => 'Đóng góp của hội viên';
+
+  @override
+  String get guildDungeonErrLocked => 'Hội chưa qua ải này.';
+
+  @override
+  String get guildDungeonErrRoleLocked =>
+      'Bạn đã đổi vai một lần trong tuần này rồi.';
+
+  @override
   String get loadoutTitle => 'Bộ trang bị';
 
   @override

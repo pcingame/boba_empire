@@ -433,6 +433,10 @@ enum GuildFailure {
   /// Chat: gửi quá nhanh / nội dung bị lọc.
   chatRateLimited,
   textBlocked,
+
+  /// Phó bản: ải chưa qua / đã đổi vai trò một lần trong tuần.
+  dungeonLocked,
+  dungeonRoleLocked,
   network,
 }
 
@@ -473,6 +477,8 @@ GuildFailure guildFailureFromMessage(String message) {
   if (m.contains('fund donation too low')) return GuildFailure.fundDonationLow;
   if (m.contains('too many officers')) return GuildFailure.officersFull;
   if (m.contains('boss alive')) return GuildFailure.bossAlive;
+  if (m.contains('stage not cleared')) return GuildFailure.dungeonLocked;
+  if (m.contains('role locked')) return GuildFailure.dungeonRoleLocked;
   if (m.contains('chat rate limited')) return GuildFailure.chatRateLimited;
   if (m.contains('text blocked')) return GuildFailure.textBlocked;
   if (m.contains('not found')) return GuildFailure.notFound;

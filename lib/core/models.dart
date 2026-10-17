@@ -172,6 +172,10 @@ class GameState {
     this.eventId = '',
     this.guildWeek = 0,
     this.guildWeekScore = 0,
+    this.dungeonWeek = 0,
+    this.dungeonTap = 0,
+    this.dungeonOffline = 0,
+    this.dungeonRecipe = 0,
     this.guildJoined = false,
     this.guildVipBonusPct = 0,
     this.guildBuffUntilMillis = 0,
@@ -310,6 +314,13 @@ class GameState {
   /// Hội (guild.dart): chỉ số tuần (thứ Hai UTC) và điểm hoạt động tuần này.
   int guildWeek;
   double guildWeekScore;
+
+  /// Phó bản Hội (guild_dungeon.dart): tuần đang đếm và ba bộ đếm LUỸ KẾ trong tuần (chạm / giây offline /
+  /// điểm Công thức) — báo lên server dạng tổng luỹ kế, nên chỉ reset khi sang tuần mới.
+  int dungeonWeek;
+  int dungeonTap;
+  double dungeonOffline;
+  int dungeonRecipe;
 
   /// Đang ở một hội (cập nhật khi mở màn Hội) — quyết định có hỏi server về buff hội
   /// lúc mở app hay không — và mốc (đồng hồ máy, ms) hết buff thu nhập cả hội.
@@ -625,6 +636,10 @@ class GameState {
         'eventId': eventId,
         'guildWeek': guildWeek,
         'guildWeekScore': guildWeekScore,
+        'dungeonWeek': dungeonWeek,
+        'dungeonTap': dungeonTap,
+        'dungeonOffline': dungeonOffline,
+        'dungeonRecipe': dungeonRecipe,
         'guildJoined': guildJoined,
         'guildVipBonusPct': guildVipBonusPct,
         'guildBuffUntilMillis': guildBuffUntilMillis,
@@ -763,6 +778,10 @@ class GameState {
         eventId: (json['eventId'] as String?) ?? '',
         guildWeek: (json['guildWeek'] as num?)?.toInt() ?? 0,
         guildWeekScore: (json['guildWeekScore'] as num?)?.toDouble() ?? 0,
+        dungeonWeek: (json['dungeonWeek'] as num?)?.toInt() ?? 0,
+        dungeonTap: ((json['dungeonTap'] as num?)?.toInt() ?? 0).clamp(0, 1 << 40),
+        dungeonOffline: ((json['dungeonOffline'] as num?)?.toDouble() ?? 0).clamp(0.0, 1e12),
+        dungeonRecipe: ((json['dungeonRecipe'] as num?)?.toInt() ?? 0).clamp(0, 1 << 40),
         guildJoined: json['guildJoined'] == true,
         guildVipBonusPct: (json['guildVipBonusPct'] as num?)?.toInt() ?? 0,
         guildBuffUntilMillis: (json['guildBuffUntilMillis'] as num?)?.toInt() ?? 0,

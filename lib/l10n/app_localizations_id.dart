@@ -3050,6 +3050,100 @@ class AppLocalizationsId extends AppLocalizations {
   String get masteryMaxed => 'Maks';
 
   @override
+  String get guildDungeonTitle => 'Dungeon Guild';
+
+  @override
+  String guildDungeonCardSub(int cleared) {
+    return '$cleared/3 tahap selesai';
+  }
+
+  @override
+  String guildDungeonStage(int n) {
+    return 'Tahap $n/3';
+  }
+
+  @override
+  String get guildDungeonBarTap => 'Ketukan';
+
+  @override
+  String get guildDungeonBarOff => 'Jaga malam';
+
+  @override
+  String get guildDungeonBarRec => 'Resep';
+
+  @override
+  String get guildDungeonRoleTap => 'Pengetuk';
+
+  @override
+  String get guildDungeonRoleOff => 'Penjaga Malam';
+
+  @override
+  String get guildDungeonRoleRec => 'Koki';
+
+  @override
+  String get guildDungeonRoleHeader => 'Peranmu minggu ini';
+
+  @override
+  String get guildDungeonRoleHint =>
+      'Kontribusi sesuai perannya dihitung ×1,5. Peran bisa diganti sekali seminggu.';
+
+  @override
+  String get guildDungeonRoleLockedNote =>
+      'Kamu sudah memakai ganti peran minggu ini.';
+
+  @override
+  String get guildDungeonNoRole => 'Belum ada peran — pilih satu untuk ×1,5.';
+
+  @override
+  String get guildDungeonHint =>
+      'Ketiga bar harus penuh untuk menyelesaikan tahap; kelebihan satu bar tidak menutup yang lain.';
+
+  @override
+  String guildDungeonHours(String n) {
+    return '$n jam';
+  }
+
+  @override
+  String get guildDungeonCleared => 'Selesai';
+
+  @override
+  String guildDungeonClaim(int coins) {
+    return 'Klaim · $coins Koin Guild';
+  }
+
+  @override
+  String guildDungeonClaimFinal(int coins, int gems) {
+    return 'Klaim · $coins Koin Guild + $gems 💎 + peti';
+  }
+
+  @override
+  String get guildDungeonClaimed => 'Diklaim';
+
+  @override
+  String get guildDungeonNeedMin =>
+      'Berkontribusilah sedikit (ketukan, waktu offline, atau resep) untuk klaim hadiah.';
+
+  @override
+  String guildDungeonClaimedSnack(int coins, int gems) {
+    return 'Hadiah tahap: +$coins Koin Guild, +$gems 💎';
+  }
+
+  @override
+  String guildDungeonClaimedSnackChest(int coins, int gems, String item) {
+    return 'Hadiah tahap: +$coins Koin Guild, +$gems 💎, $item';
+  }
+
+  @override
+  String get guildDungeonBoard => 'Kontribusi anggota';
+
+  @override
+  String get guildDungeonErrLocked => 'Guild belum menyelesaikan tahap ini.';
+
+  @override
+  String get guildDungeonErrRoleLocked =>
+      'Kamu sudah mengganti peran sekali minggu ini.';
+
+  @override
   String get loadoutTitle => 'Perlengkapan';
 
   @override

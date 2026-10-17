@@ -23,6 +23,7 @@ import '../core/challenges.dart';
 import '../core/daily_quests.dart';
 import '../core/economy.dart';
 import '../core/essence.dart';
+import '../core/guild_dungeon.dart';
 import '../core/event_quests.dart';
 import '../core/guild.dart';
 import '../core/guild_shop.dart';
@@ -141,6 +142,7 @@ class GameController extends Notifier<GameSnapshot> {
       _clock(),
       maxOfflineSeconds: _offlineCap(),
     );
+    _countOfflineDungeon();
     claimVipDailyGems(_game, _clock()); // Kim Cương VIP nếu sang ngày mới
     _scheduleNextCat(_clock());
     _scheduleNextVip(_clock());
@@ -231,6 +233,27 @@ class GameController extends Notifier<GameSnapshot> {
       (vipActive(_game, _clock()) ? Balance.vipOfflineBonusSeconds : 0) +
       (_game.coldStorageOwned ? Balance.coldStorageBonusSeconds : 0);
 
+  /// Giây vắng mặt (đã kẹp theo trần offline) tính cho thanh 🌙 của Phó bản Hội.
+  void _countOfflineDungeon() {
+    final secs = _offlineAwayMs / 1000.0;
+    if (secs > 0) {
+      addDungeon(_game, DungeonBar.off, secs < _offlineCap() ? secs : _offlineCap(), _clock());
+    }
+  }
+
+  /// Tổng luỹ kế Phó bản tuần này (chạm / giây offline / điểm Công thức) để báo server.
+  ({int tap, int off, int rec}) dungeonProgress() => dungeonTotals(_game, _clock());
+
+  /// Cấp 💎 + rương phụ kiện của ải Phó bản SAU KHI server đã xác nhận (Xu Hội server tự cộng).
+  AccessoryDrop? grantDungeonReward({required int gems, required bool chest}) {
+    if (gems > 0) grantGems(_game, gems.toDouble());
+    final drop = chest ? _dropAccessory(source: 'guild') : null;
+    logEvent('guild_dungeon_claimed', {'gems': gems, 'chest': chest});
+    unawaited(saveNow());
+    state = _snapshot();
+    return drop;
+  }
+
   /// Người chơi chạm con mèo → kích hoạt Mưa vàng ×3 trong 2 phút.
   void activateGoldenRush() {
     if (!_catVisible) return;
@@ -308,6 +331,7 @@ class GameController extends Notifier<GameSnapshot> {
           before, before, RecipeAnswerOutcome(before, counted: false, leveledUp: false, newBest: false), 0, 0);
     }
     _game.recipeProgress[key] = out.next.toList();
+    if (correct) addDungeon(_game, DungeonBar.rec, 1, _clock()); // chỉ câu được tính bậc: không cày món chưa đến hạn
     // Chuỗi ngày ôn: chỉ câu thật sự được tính bậc mới nối chuỗi (không phải câu gợi ý / chỉ luyện).
     final streakUp = updateRecipeStreak(_recipeStreak, today);
     _game
@@ -421,6 +445,7 @@ class GameController extends Notifier<GameSnapshot> {
   /// 🧪 cho một đơn Pha theo đơn đạt 3★ (UI chỉ gọi khi không gợi ý, không trễ, món đến hạn ôn — chống cày
   /// bằng cách lặp món dễ). Kẹp theo trần ngày. Trả số thực cộng (0 nếu hết trần).
   int grantOrderEssence() {
+    addDungeon(_game, DungeonBar.rec, 1, _clock()); // đơn 3★ hợp lệ (cùng điều kiện chống cày) cũng là điểm Phó bản
     final n = grantEssenceOrder(_game, dayIndex(_clock()), Balance.essencePerPerfectOrder);
     if (n > 0) {
       unawaited(saveNow());
@@ -1139,6 +1164,7 @@ class GameController extends Notifier<GameSnapshot> {
   double tapCup() {
     _game.tapCount++;
     addDailyProgress(_game, DailyQuestKind.tap, 1);
+    addDungeon(_game, DungeonBar.tap, 1, _clock());
     final gained =
         tap(_game,
             boostMultiplier: _timedMultiplier());
@@ -1692,6 +1718,7 @@ class GameController extends Notifier<GameSnapshot> {
       _clock(),
       maxOfflineSeconds: _offlineCap(),
     );
+    _countOfflineDungeon();
     claimVipDailyGems(_game, _clock());
     state = _snapshot();
   }
@@ -2080,6 +2107,7 @@ class GameController extends Notifier<GameSnapshot> {
     // màn sau. Chỉ lưu khi có thưởng thì người chơi mới (thu nhập/giây = 0) qua
     // màn 1 mà màn 2 vẫn khoá, mở lại app là mất sạch tiến độ.
     if (stars > 0) {
+      addDungeon(_game, DungeonBar.rec, 1, _clock());
       addWeeklyProgress(_game, WeeklyQuestKind.m3Win, 1);
       addChallengeM3Win(_game);
       unawaited(saveNow());

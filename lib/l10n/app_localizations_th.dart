@@ -3039,6 +3039,101 @@ class AppLocalizationsTh extends AppLocalizations {
   String get masteryMaxed => 'สูงสุด';
 
   @override
+  String get guildDungeonTitle => 'ดันเจี้ยนกิลด์';
+
+  @override
+  String guildDungeonCardSub(int cleared) {
+    return 'ผ่านแล้ว $cleared/3 ด่าน';
+  }
+
+  @override
+  String guildDungeonStage(int n) {
+    return 'ด่าน $n/3';
+  }
+
+  @override
+  String get guildDungeonBarTap => 'แตะ';
+
+  @override
+  String get guildDungeonBarOff => 'เฝ้ายามกลางคืน';
+
+  @override
+  String get guildDungeonBarRec => 'สูตร';
+
+  @override
+  String get guildDungeonRoleTap => 'สายแตะ';
+
+  @override
+  String get guildDungeonRoleOff => 'ผู้เฝ้ายาม';
+
+  @override
+  String get guildDungeonRoleRec => 'เชฟ';
+
+  @override
+  String get guildDungeonRoleHeader => 'บทบาทสัปดาห์นี้';
+
+  @override
+  String get guildDungeonRoleHint =>
+      'การช่วยตามบทบาทของตัวเองนับ ×1.5 เปลี่ยนบทบาทได้สัปดาห์ละ 1 ครั้ง';
+
+  @override
+  String get guildDungeonRoleLockedNote =>
+      'คุณใช้สิทธิ์เปลี่ยนบทบาทของสัปดาห์นี้แล้ว';
+
+  @override
+  String get guildDungeonNoRole =>
+      'ยังไม่มีบทบาท — เลือกหนึ่งอย่างเพื่อรับ ×1.5';
+
+  @override
+  String get guildDungeonHint =>
+      'ต้องเต็มทั้งสามแถบจึงจะผ่านด่าน แถบที่เกินไม่ช่วยแถบอื่น';
+
+  @override
+  String guildDungeonHours(String n) {
+    return '$n ชม.';
+  }
+
+  @override
+  String get guildDungeonCleared => 'ผ่านแล้ว';
+
+  @override
+  String guildDungeonClaim(int coins) {
+    return 'รับ · เหรียญกิลด์ $coins';
+  }
+
+  @override
+  String guildDungeonClaimFinal(int coins, int gems) {
+    return 'รับ · เหรียญกิลด์ $coins + 💎 $gems + หีบ';
+  }
+
+  @override
+  String get guildDungeonClaimed => 'รับแล้ว';
+
+  @override
+  String get guildDungeonNeedMin =>
+      'ช่วยสักเล็กน้อย (แตะ ออฟไลน์ หรือสูตร) เพื่อรับรางวัล';
+
+  @override
+  String guildDungeonClaimedSnack(int coins, int gems) {
+    return 'รางวัลด่าน: เหรียญกิลด์ +$coins, 💎 +$gems';
+  }
+
+  @override
+  String guildDungeonClaimedSnackChest(int coins, int gems, String item) {
+    return 'รางวัลด่าน: เหรียญกิลด์ +$coins, 💎 +$gems, $item';
+  }
+
+  @override
+  String get guildDungeonBoard => 'ผลงานของสมาชิก';
+
+  @override
+  String get guildDungeonErrLocked => 'กิลด์ยังไม่ผ่านด่านนี้';
+
+  @override
+  String get guildDungeonErrRoleLocked =>
+      'สัปดาห์นี้คุณเปลี่ยนบทบาทไปแล้วหนึ่งครั้ง';
+
+  @override
   String get loadoutTitle => 'ชุดสวมใส่';
 
   @override
