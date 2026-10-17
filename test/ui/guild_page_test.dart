@@ -386,6 +386,9 @@ void main() {
       const reqs = [GuildJoinRequest(userId: 'r1', nickname: 'Rin')];
       await _pump(tester,
           FakeGuildRepository(mine: fakeGuild(requiresApproval: true, requests: reqs)));
+      await _scrollTo(tester, const Key('guild-accept-r1'));
+      await tester.ensureVisible(find.text('Yêu cầu vào hội (1)', skipOffstage: false));
+      await tester.pumpAndSettle();
       expect(find.text('Yêu cầu vào hội (1)'), findsOneWidget);
       expect(find.byKey(const Key('guild-accept-r1')), findsOneWidget);
       await _teardown(tester);
@@ -753,6 +756,7 @@ void main() {
           mine: fakeGuild(
               requests: const [GuildJoinRequest(userId: 'r1', nickname: 'Người Xin')]));
       await _pump(tester, repo, locale: 'en', extra: vip);
+      await _scrollTo(tester, const Key('guild-accept-r1'));
       expect(find.text('Người Xin'), findsOneWidget);
       expect(find.text('VIP 6'), findsOneWidget);
       expect(find.byKey(const Key('guild-accept-r1')), findsOneWidget);

@@ -490,38 +490,52 @@ class _MyGuildView extends ConsumerWidget {
               ),
             ],
           ),
-          const SizedBox(height: 8),
-          Row(children: [
-            Expanded(
-              child: Text('🎯 ${l10n.guildGoalTitle}',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.titleMedium
-                      ?.copyWith(fontWeight: FontWeight.w800)),
-            ),
-            Text(
-                '${formatNumber(g.total.toDouble(), decimals: 0)} / '
-                '${formatNumber(guildMilestones.firstWhere((m) => m.threshold > g.total, orElse: () => guildMilestones.last).threshold.toDouble(), decimals: 0)}',
-                key: const Key('guild-goal-target'),
-                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
-          ]),
-          const SizedBox(height: 6),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: LinearProgressIndicator(
-              key: const Key('guild-progress'),
-              value: (g.total / top).clamp(0.0, 1.0).toDouble(),
-              minHeight: 14,
+          const SizedBox(height: 10),
+          // Mục tiêu tuần gom vào MỘT thẻ: tiêu đề + thanh tiến độ + các mốc (trước đây trôi tự do giữa trang).
+          ClayCard(
+            padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(children: [
+                  Expanded(
+                    child: Text('🎯 ${l10n.guildGoalTitle}',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+                  ),
+                  Text(
+                      '${formatNumber(g.total.toDouble(), decimals: 0)} / '
+                      '${formatNumber(guildMilestones.firstWhere((m) => m.threshold > g.total, orElse: () => guildMilestones.last).threshold.toDouble(), decimals: 0)}',
+                      key: const Key('guild-goal-target'),
+                      style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+                ]),
+                const SizedBox(height: 8),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: TweenAnimationBuilder<double>(
+                    tween: Tween(end: (g.total / top).clamp(0.0, 1.0).toDouble()),
+                    duration: reduceMotion ? Duration.zero : const Duration(milliseconds: 600),
+                    curve: Curves.easeOutCubic,
+                    builder: (_, v, _) => LinearProgressIndicator(
+                      key: const Key('guild-progress'),
+                      value: v,
+                      minHeight: 14,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                    '${l10n.guildWeekTotal(g.total)} · '
+                    '${l10n.guildYourPoints(view.myPoints)}',
+                    style: theme.textTheme.bodySmall),
+                const SizedBox(height: 6),
+                for (var i = 0; i < guildMilestones.length; i++)
+                  _MilestoneRow(index: i, view: view),
+              ],
             ),
           ),
-          const SizedBox(height: 2),
-          Text(
-              '${l10n.guildWeekTotal(g.total)} · '
-              '${l10n.guildYourPoints(view.myPoints)}',
-              style: theme.textTheme.bodySmall),
           const SizedBox(height: 6),
-          for (var i = 0; i < guildMilestones.length; i++)
-            _MilestoneRow(index: i, view: view),
           if (g.bossHp > 0) _BossCard(view: view),
           const GuildDungeonCard(),
           const SizedBox(height: 8),

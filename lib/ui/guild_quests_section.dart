@@ -78,7 +78,7 @@ class GuildQuestsSection extends ConsumerWidget {
           _QuestTile(
             tileKey: const Key('gq-fund-tile'),
             title: l10n.guildFundTitle,
-            progressText: l10n.guildFundProgress(fund.progress, fund.target),
+            progressText: l10n.guildFundProgress(fund.progress > fund.target ? fund.target : fund.progress, fund.target),
             progress: fund.target == 0 ? 0 : fund.progress / fund.target,
             buttonKey: const Key('gq-fund'),
             label: fund.claimed
@@ -125,38 +125,46 @@ class _QuestTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final details = [
+      if (progressText != null) Text(progressText!, style: theme.textTheme.bodySmall),
+      if (note != null)
+        Text(note!, style: theme.textTheme.bodySmall?.copyWith(color: scheme.onSurfaceVariant)),
+    ];
+    // Tiêu đề + thanh tiến độ chiếm TRỌN bề ngang (trước đây bị nút ép hẹp nên tiêu đề rớt 3 dòng);
+    // nút nhỏ gọn nằm hàng dưới, cạnh phần ghi chú.
     return ClayTile(
       key: tileKey,
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(title, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
-                const SizedBox(height: 5),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: LinearProgressIndicator(value: progress.clamp(0.0, 1.0).toDouble(), minHeight: 6),
-                ),
-                if (progressText != null)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 2),
-                    child: Text(progressText!, style: theme.textTheme.bodySmall),
-                  ),
-                if (note != null)
-                  Text(note!, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
-              ],
-            ),
+          Text(title, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: LinearProgressIndicator(value: progress.clamp(0.0, 1.0).toDouble(), minHeight: 8),
           ),
-          const SizedBox(width: 10),
-          Flexible(
-            child: FilledButton(
-              key: buttonKey,
-              onPressed: enabled ? onPressed : null,
-              child: FittedBox(fit: BoxFit.scaleDown, child: Text(label, textAlign: TextAlign.center)),
-            ),
+          const SizedBox(height: 6),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: details),
+              ),
+              const SizedBox(width: 10),
+              Flexible(
+                child: FilledButton(
+                  key: buttonKey,
+                  style: FilledButton.styleFrom(
+                    visualDensity: VisualDensity.compact,
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                  ),
+                  onPressed: enabled ? onPressed : null,
+                  child: FittedBox(fit: BoxFit.scaleDown, child: Text(label, textAlign: TextAlign.center)),
+                ),
+              ),
+            ],
           ),
         ],
       ),

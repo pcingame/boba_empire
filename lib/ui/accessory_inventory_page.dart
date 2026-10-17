@@ -153,6 +153,7 @@ class AccessoryInventoryPage extends ConsumerWidget {
                       ),
                       const SizedBox(height: 8),
                       const _LoadoutCard(),
+                      const SizedBox(height: 8),
                       SizedBox(
                         width: double.infinity,
                         child: FilledButton.tonalIcon(
