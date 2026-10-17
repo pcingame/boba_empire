@@ -9,6 +9,7 @@ import '../core/recipes.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import '../state/recipe_providers.dart';
+import 'mastery_page.dart' show EssenceAppBarButton;
 import 'recipe_leaderboard_page.dart';
 import 'email_gate.dart';
 import 'recipe_quiz_page.dart';
@@ -54,6 +55,7 @@ class RecipeHubPage extends ConsumerWidget {
         title: Text(l10n.recipeTitle),
         actions: [
           const HowToButton(MiniGameGuide.recipes),
+          const EssenceAppBarButton(),
           IconButton(
             key: const Key('recipe-leaderboard'),
             tooltip: l10n.rlbTitle,

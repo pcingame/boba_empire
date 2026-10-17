@@ -22,6 +22,7 @@ import '../core/daily_deal.dart';
 import '../core/challenges.dart';
 import '../core/daily_quests.dart';
 import '../core/economy.dart';
+import '../core/essence.dart';
 import '../core/event_quests.dart';
 import '../core/guild.dart';
 import '../core/guild_shop.dart';
@@ -320,6 +321,7 @@ class GameController extends Notifier<GameSnapshot> {
     if (out.leveledUp) addWeeklyProgress(_game, WeeklyQuestKind.recipeLevels, 1);
     var cash = 0.0;
     var gems = 0;
+    var essence = 0;
     if (out.newBest) {
       final box = out.next.box;
       final production = effectiveIncomePerSecond(
@@ -334,6 +336,8 @@ class GameController extends Notifier<GameSnapshot> {
         gems = recipeMaxBoxGems;
         _game.gems += gems;
       }
+      // 🧪 theo số bậc: tự giới hạn tổng đời (mỗi món mỗi bậc một lần) nên không cần trần ngày.
+      essence = grantEssenceOnce(_game, box);
       logEvent('recipe_level', {'recipe': recipeId, 'box': box});
     }
     // Rương phụ kiện theo mốc số món đã từng Thạo (nhận tự động, một lần mỗi mốc).
@@ -356,7 +360,8 @@ class GameController extends Notifier<GameSnapshot> {
         drop: drop,
         streakDays: streakUp.next.days,
         streakExtended: streakUp.extended,
-        streakGems: streakUp.milestoneGems);
+        streakGems: streakUp.milestoneGems,
+        essence: essence);
   }
 
   RecipeStreak get _recipeStreak => RecipeStreak(
@@ -413,11 +418,22 @@ class GameController extends Notifier<GameSnapshot> {
     return cash;
   }
 
+  /// 🧪 cho một đơn Pha theo đơn đạt 3★ (UI chỉ gọi khi không gợi ý, không trễ, món đến hạn ôn — chống cày
+  /// bằng cách lặp món dễ). Kẹp theo trần ngày. Trả số thực cộng (0 nếu hết trần).
+  int grantOrderEssence() {
+    final n = grantEssenceOrder(_game, dayIndex(_clock()), Balance.essencePerPerfectOrder);
+    if (n > 0) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return n;
+  }
+
   /// Hoàn tất thử thách hằng ngày với tổng [score] (0..[dailyMaxScore]). Mỗi ngày MỘT lần: đã làm hôm nay thì
   /// không ghi đè điểm, không thưởng lại (trả `counted: false`). Thưởng: 💎 cố định + Xu tỉ lệ điểm.
-  ({bool counted, int gems, double cash}) completeDailyChallenge(int score) {
+  ({bool counted, int gems, double cash, int essence}) completeDailyChallenge(int score) {
     final today = dayIndex(_clock());
-    if (_game.recipeDailyDay == today) return (counted: false, gems: 0, cash: 0);
+    if (_game.recipeDailyDay == today) return (counted: false, gems: 0, cash: 0, essence: 0);
     final s = score.clamp(0, dailyMaxScore);
     _game
       ..recipeDailyDay = today
@@ -432,10 +448,11 @@ class GameController extends Notifier<GameSnapshot> {
     final cash = max(production, _game.tapValue * Balance.walkerTipFloorTaps) * dailyCashTipFactor * s / dailyMaxScore;
     grantBonus(_game, cash);
     _game.gems += dailyChallengeGems;
+    final essence = grantEssenceRepeatable(_game, today, Balance.essenceDailyChallenge);
     logEvent('recipe_daily', {'score': s});
     unawaited(saveNow());
     state = _snapshot();
-    return (counted: true, gems: dailyChallengeGems, cash: cash);
+    return (counted: true, gems: dailyChallengeGems, cash: cash, essence: essence);
   }
 
   /// Ghi món vừa pha hoàn hảo không nhìn công thức mẫu (bảng xếp hạng Pha theo đơn). Không trùng.
@@ -446,12 +463,17 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
-  /// Nhân đôi phần Xu thưởng của một buổi sau khi người chơi xem quảng cáo (chỉ Xu, không 💎).
-  void doubleRecipeReward(double cash) {
-    if (!cash.isFinite || cash <= 0) return;
-    grantBonus(_game, cash);
-    logEvent('recipe_double', {'cash': cash});
-    state = _snapshot();
+  /// Nhân đôi phần Xu thưởng của một buổi sau khi người chơi xem quảng cáo (không 💎). [essence] là số 🧪
+  /// buổi đó đã kiếm: cộng thêm đúng chừng đó nhưng vẫn kẹp trần chung mỗi ngày. Trả số 🧪 thực cộng thêm.
+  int doubleRecipeReward(double cash, {int essence = 0}) {
+    final extra = grantEssenceRepeatable(_game, dayIndex(_clock()), essence);
+    if (cash.isFinite && cash > 0) grantBonus(_game, cash);
+    if (extra > 0 || (cash.isFinite && cash > 0)) {
+      logEvent('recipe_double', {'cash': cash, 'essence': extra});
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return extra;
   }
 
   // Chỉ trong bộ nhớ: mở lại app là hết thời gian hồi, nhưng muốn có boa vẫn phải bấm trúng một khách
@@ -923,6 +945,9 @@ class GameController extends Notifier<GameSnapshot> {
   /// Lần rớt phụ kiện gần nhất (nhiệm vụ ngày hoặc rương vòng quay) — KHÔNG lưu, chỉ để UI
   /// đọc ngay sau khi nhận và hiện "khoảnh khắc nhận".
   AccessoryDrop? lastAccessoryDrop;
+
+  /// 🧪 Tinh chất của ván Ghép 3 vừa ghi ([grantMatch3Result]); 0 nếu không phá kỷ lục sao.
+  int lastMatch3Essence = 0;
 
   /// Rớt 1 phụ kiện ngẫu nhiên: cấp cho ván, ghi nhận lên server NGAY (không đợi lúc đăng
   /// bán — xem _registerAccessoryDropServerSide và PROPOSAL_ACCESSORY_MARKET.md §0 cho lý do:
@@ -2034,15 +2059,18 @@ class GameController extends Notifier<GameSnapshot> {
   /// Ghi kết quả một màn Ghép 3 (chơi đơn) và trao thưởng. Trả về (Xu, 💎) vừa
   /// nhận — 0 nếu không phá được kỷ lục sao cũ của màn đó.
   (double, int) grantMatch3Result(int levelId, int stars) {
-    final firstClear = stars > 0 &&
-        (levelId > _game.m3Stars.length || _game.m3Stars[levelId - 1] == 0);
+    final oldStars = levelId > _game.m3Stars.length ? 0 : _game.m3Stars[levelId - 1];
+    final firstClear = stars > 0 && oldStars == 0;
     lastAccessoryDrop = null;
+    lastMatch3Essence = 0;
     final reward = applyMatch3Result(
       _game,
       levelId,
       stars,
       incomePerSecond: state.incomePerSecond,
     );
+    // 🧪 = số sao TĂNG THÊM so với kỷ lục cũ của màn (tối đa 3 mỗi màn, cả đời).
+    if (stars > oldStars) lastMatch3Essence = grantEssenceOnce(_game, stars - oldStars);
     final milestone = Balance.m3AccessoryMilestones[levelId];
     if (firstClear && milestone != null) {
       _dropAccessory(source: 'match3', rarity: milestone);
@@ -2058,6 +2086,15 @@ class GameController extends Notifier<GameSnapshot> {
       state = _snapshot();
     }
     return reward;
+  }
+
+  /// Mua một bậc Bí quyết ở [stage] bằng 🧪. False nếu thiếu 🧪 / đã đầy / giai đoạn không có.
+  bool buyMasteryTier(int stage) {
+    if (!buyMastery(_game, stage)) return false;
+    logEvent('mastery_buy', {'stage': stage, 'tier': masteryTier(_game.masteryTiers, stage)});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
   }
 
   /// Trao Kim Cương thưởng giữ hạng cao trên Bảng xếp hạng — xem
@@ -2194,6 +2231,9 @@ class GameController extends Notifier<GameSnapshot> {
       accessorySpares: Map.unmodifiable(_game.accessorySpares),
       equippedAccessories: List.unmodifiable(_game.equippedAccessories),
       equipLockUntilMillis: _game.equipLockUntilMillis,
+      essence: _game.essence,
+      // Bản sao — không chia sẻ instance với GameState (xem snapshot-list-aliasing-select).
+      masteryTiers: Map.unmodifiable(_game.masteryTiers),
       collectionMilestonesClaimed:
           List.unmodifiable(_game.collectionMilestonesClaimed),
       wishlist: List.unmodifiable(_game.wishlist),

@@ -1143,3 +1143,9 @@ Mọi chuyển động theo mức hiệu ứng (`EffectsQuality`/`reduceMotion`,
   mỗi ô, hộp xác nhận tháo, hộp mở khoá. Chuỗi hướng dẫn `accessoryHtp1` đã sửa (từng nói "không tăng thu nhập").
 - **Cố ý chưa làm**: họ "Vận may", ô thứ 4 mở theo mốc sưu tập, Tinh luyện bằng bản sao dư. Cần theo dõi
   **giá Chợ** sau khi ra (món có tác dụng → cầu tăng; người chơi đã than giá luôn max).
+
+## 41. Tinh chất 🧪 & Bí quyết
+
+- **Tinh chất**: một loại tiền, chỉ kiếm từ trò nhỏ: bậc Công thức mới (= số bậc, một lần), đơn Pha theo đơn 3★ không gợi ý (+1, ≤10/ngày), Thử thách ngày (+5), nhân đôi bằng QC (cùng trần), sao Ghép 3 tăng thêm (+1/sao). Trần chung nguồn lặp lại 20/ngày (`Balance.essence*`).
+- **Bí quyết**: 18 giai đoạn × 5 bậc, +8%/bậc thu nhập giai đoạn đó, giá 10/20/40/80/160 🧪. Giữ qua Nhượng quyền và Kỷ Nguyên. Màn `MasteryPage`, mở từ nút 🧪 ở hub Công thức và hành trình Ghép 3.
+- Nối vào `baseIncomePerSecond` (theo `config.stage`), gợi ý "đáng mua nhất" và chỉ báo ô cửa hàng. Đồng bộ cloud: tiến độ Tinh chất tham gia phát hiện xung đột. Mọi số chưa playtest. Logic: `lib/core/essence.dart`.

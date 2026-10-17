@@ -3041,6 +3041,36 @@ class AppLocalizationsEs extends AppLocalizations {
   String get marketExtendedToast => 'Publicación ampliada.';
 
   @override
+  String essenceEarned(int n) {
+    return '+$n 🧪 Esencia';
+  }
+
+  @override
+  String get masteryTitle => 'Maestría';
+
+  @override
+  String masteryEssence(int n) {
+    return '🧪 $n Esencia';
+  }
+
+  @override
+  String get masteryHint =>
+      'Gana Esencia en los minijuegos y mejora la Maestría para aumentar los ingresos de cada etapa. Se conserva al franquiciar.';
+
+  @override
+  String masteryBonus(String pct) {
+    return '+$pct% ingresos';
+  }
+
+  @override
+  String masteryBuy(int cost) {
+    return 'Mejorar · $cost 🧪';
+  }
+
+  @override
+  String get masteryMaxed => 'Máx.';
+
+  @override
   String get loadoutTitle => 'Equipo';
 
   @override

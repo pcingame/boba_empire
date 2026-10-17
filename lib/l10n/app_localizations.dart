@@ -5244,6 +5244,48 @@ abstract class AppLocalizations {
   /// **'Đã gia hạn tin đăng.'**
   String get marketExtendedToast;
 
+  /// No description provided for @essenceEarned.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{n} 🧪 Tinh chất'**
+  String essenceEarned(int n);
+
+  /// No description provided for @masteryTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bí quyết'**
+  String get masteryTitle;
+
+  /// No description provided for @masteryEssence.
+  ///
+  /// In vi, this message translates to:
+  /// **'🧪 {n} Tinh chất'**
+  String masteryEssence(int n);
+
+  /// No description provided for @masteryHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiếm Tinh chất từ trò nhỏ, rồi nâng Bí quyết để tăng thu nhập của từng giai đoạn. Giữ nguyên khi Nhượng quyền.'**
+  String get masteryHint;
+
+  /// No description provided for @masteryBonus.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{pct}% thu nhập'**
+  String masteryBonus(String pct);
+
+  /// No description provided for @masteryBuy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nâng · {cost} 🧪'**
+  String masteryBuy(int cost);
+
+  /// No description provided for @masteryMaxed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối đa'**
+  String get masteryMaxed;
+
   /// No description provided for @loadoutTitle.
   ///
   /// In vi, this message translates to:

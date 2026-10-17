@@ -3015,6 +3015,36 @@ class AppLocalizationsVi extends AppLocalizations {
   String get marketExtendedToast => 'Đã gia hạn tin đăng.';
 
   @override
+  String essenceEarned(int n) {
+    return '+$n 🧪 Tinh chất';
+  }
+
+  @override
+  String get masteryTitle => 'Bí quyết';
+
+  @override
+  String masteryEssence(int n) {
+    return '🧪 $n Tinh chất';
+  }
+
+  @override
+  String get masteryHint =>
+      'Kiếm Tinh chất từ trò nhỏ, rồi nâng Bí quyết để tăng thu nhập của từng giai đoạn. Giữ nguyên khi Nhượng quyền.';
+
+  @override
+  String masteryBonus(String pct) {
+    return '+$pct% thu nhập';
+  }
+
+  @override
+  String masteryBuy(int cost) {
+    return 'Nâng · $cost 🧪';
+  }
+
+  @override
+  String get masteryMaxed => 'Tối đa';
+
+  @override
   String get loadoutTitle => 'Bộ trang bị';
 
   @override

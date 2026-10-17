@@ -2974,6 +2974,36 @@ class AppLocalizationsKo extends AppLocalizations {
   String get marketExtendedToast => '등록 기간을 연장했어요.';
 
   @override
+  String essenceEarned(int n) {
+    return '+$n 🧪 정수';
+  }
+
+  @override
+  String get masteryTitle => '숙련';
+
+  @override
+  String masteryEssence(int n) {
+    return '🧪 정수 $n';
+  }
+
+  @override
+  String get masteryHint =>
+      '미니게임에서 정수를 모아 숙련을 올리면 단계별 수입이 늘어납니다. 프랜차이즈 후에도 유지됩니다.';
+
+  @override
+  String masteryBonus(String pct) {
+    return '수입 +$pct%';
+  }
+
+  @override
+  String masteryBuy(int cost) {
+    return '강화 · $cost 🧪';
+  }
+
+  @override
+  String get masteryMaxed => '최대';
+
+  @override
   String get loadoutTitle => '장비 세트';
 
   @override

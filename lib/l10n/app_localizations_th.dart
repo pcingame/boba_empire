@@ -3009,6 +3009,36 @@ class AppLocalizationsTh extends AppLocalizations {
   String get marketExtendedToast => 'ต่ออายุการขายแล้ว';
 
   @override
+  String essenceEarned(int n) {
+    return '+$n 🧪 แก่นแท้';
+  }
+
+  @override
+  String get masteryTitle => 'ความเชี่ยวชาญ';
+
+  @override
+  String masteryEssence(int n) {
+    return '🧪 แก่นแท้ $n';
+  }
+
+  @override
+  String get masteryHint =>
+      'สะสมแก่นแท้จากมินิเกม แล้วอัปเกรดความเชี่ยวชาญเพื่อเพิ่มรายได้ของแต่ละด่าน คงอยู่หลังแฟรนไชส์';
+
+  @override
+  String masteryBonus(String pct) {
+    return 'รายได้ +$pct%';
+  }
+
+  @override
+  String masteryBuy(int cost) {
+    return 'อัปเกรด · $cost 🧪';
+  }
+
+  @override
+  String get masteryMaxed => 'สูงสุด';
+
+  @override
   String get loadoutTitle => 'ชุดสวมใส่';
 
   @override

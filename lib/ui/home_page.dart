@@ -15,6 +15,8 @@ import '../core/cloud_remind.dart';
 import '../core/collection_milestones.dart';
 import '../core/daily.dart' show dayIndex;
 import '../core/economy.dart';
+import '../core/essence.dart' show masteryMultiplier;
+import '../core/accessory_loadout.dart' show loadoutBuffs;
 import '../core/format.dart';
 import '../ads/ad_service.dart';
 import '../core/models.dart';
@@ -1556,6 +1558,7 @@ double _globalIncomeMult(GameSnapshot s) =>
     ascensionIncomeMultiplier(s.ascensionIncomeLevel) *
     permanentMultiplier(s.gemBoostLevel) *
     prestigeIncomeMultiplier(s.prestigeIncomeLevel) *
+    loadoutBuffs(s.equippedAccessories).incomeMultiplier *
     (s.doubleIncomeOwned ? 2.0 : 1.0);
 
 /// Id nguồn thu ĐÁNG MUA nhất (thu nhập thêm / chi phí cao nhất) trong các mục đã
@@ -1567,7 +1570,9 @@ String? _bestBuyId(GameSnapshot s) {
   for (final c in Balance.generators) {
     if (c.stage > s.stage) continue;
     final level = s.levelOf(c.id);
-    final eff = marginalIncomePerSecond(c, level) / nextLevelCost(c, level);
+    final eff = marginalIncomePerSecond(c, level) *
+        masteryMultiplier(s.masteryTiers, c.stage) /
+        nextLevelCost(c, level);
     if (eff > bestEff) {
       bestEff = eff;
       best = c.id;
@@ -2288,7 +2293,10 @@ class _ShopTile extends ConsumerWidget {
       return (n, s.money >= bulkCost(config, lv, n) * cm);
     }));
     final cost = bulkCost(config, level, count) * costMult;
-    final gain = bulkIncomeGain(config, level, count) * globalMult;
+    // Bí quyết của giai đoạn nguồn này (double → select so sánh theo giá trị, không dựng lại thừa).
+    final mastery = ref.watch(gameControllerProvider
+        .select((s) => masteryMultiplier(s.masteryTiers, config.stage)));
+    final gain = bulkIncomeGain(config, level, count) * globalMult * mastery;
     final countLabel = count > 1 ? ' ×$count' : '';
 
     final card = ClayCard(

@@ -461,6 +461,25 @@ class Balance {
   static const double loadoutCombo3 = 1.25;
   static const double loadoutCombo4 = 1.50;
 
+  // --- Tinh chất & Bí quyết (PROPOSAL_ESSENCE_MASTERY.md). Mọi số là ước lượng chưa playtest.
+
+  /// 🧪 Tinh chất chỉ kiếm từ trò nhỏ. Pha theo đơn: mỗi đơn 3★ (không gợi ý, món đến hạn ôn).
+  static const int essencePerPerfectOrder = 1;
+
+  /// Trần Tinh chất/ngày riêng cho Pha theo đơn, và trần CHUNG cho mọi nguồn lặp lại (đơn + thử
+  /// thách + nhân đôi bằng QC). Nguồn một-lần (bậc Công thức, sao Ghép 3) tự giới hạn tổng đời.
+  static const int essenceOrdersDailyCap = 10;
+  static const int essenceRepeatableDailyCap = 20;
+
+  /// Hoàn thành Thử thách hằng ngày.
+  static const int essenceDailyChallenge = 5;
+
+  /// Bí quyết: mỗi giai đoạn tối đa [masteryMaxTier] bậc, mỗi bậc +[masteryPerTier] thu nhập của giai
+  /// đoạn đó (tối đa +40%). Giá từng bậc bằng Tinh chất. Giữ qua Nhượng quyền và Kỷ Nguyên.
+  static const int masteryMaxTier = 5;
+  static const double masteryPerTier = 0.08;
+  static const List<int> masteryTierCosts = [10, 20, 40, 80, 160];
+
   /// Tháo/thay món → khoá đổi từng ấy phút (lấp ô trống luôn được). Xem QC mở khoá ngay.
   static const int equipSwapLockMinutes = 30;
 

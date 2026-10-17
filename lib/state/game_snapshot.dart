@@ -114,6 +114,8 @@ class GameSnapshot {
     required this.accessorySpares,
     required this.equippedAccessories,
     required this.equipLockUntilMillis,
+    required this.essence,
+    required this.masteryTiers,
     required this.collectionMilestonesClaimed,
     required this.wishlist,
     required this.m3HowToSeen,
@@ -297,6 +299,10 @@ class GameSnapshot {
 
   /// Mốc (epoch ms) hết khoá tháo/thay phụ kiện đang mang (xem GameState.equipLockUntilMillis).
   final int equipLockUntilMillis;
+
+  /// 🧪 Tinh chất và bậc Bí quyết theo giai đoạn (xem GameState.essence / masteryTiers).
+  final int essence;
+  final Map<int, int> masteryTiers;
 
   /// Mốc sưu tập đã nhận (xem GameState.collectionMilestonesClaimed).
   final List<int> collectionMilestonesClaimed;

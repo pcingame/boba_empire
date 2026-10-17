@@ -13,6 +13,7 @@ import 'package:flutter/foundation.dart' show visibleForTesting;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../core/essence.dart' show essenceProgressFromJson;
 import 'cloud_save_repository.dart';
 
 /// Thời gian chờ giữa 2 lần gửi mã (giây).
@@ -96,6 +97,8 @@ bool cloudSaveLooksDifferent({
   required double localLifetime,
   required double cloudGems,
   required double localGems,
+  double cloudEssence = 0,
+  double localEssence = 0,
 }) {
   bool differs(double a, double b, {double minDiff = 0}) {
     if (a == 0 && b == 0) return false;
@@ -105,7 +108,9 @@ bool cloudSaveLooksDifferent({
   }
 
   return differs(cloudLifetime, localLifetime) ||
-      differs(cloudGems, localGems, minDiff: 10);
+      differs(cloudGems, localGems, minDiff: 10) ||
+      // Tinh chất/Bí quyết cũng chỉ nằm trong save: cộng tay trên cloud mà bỏ qua thì bị đè (như 💎).
+      differs(cloudEssence, localEssence, minDiff: 5);
 }
 
 class CloudSaveController extends Notifier<CloudSaveViewState> {
@@ -208,6 +213,9 @@ class CloudSaveController extends Notifier<CloudSaveViewState> {
         localLifetime: localLifetime,
         cloudGems: (cloud.data['gems'] as num?)?.toDouble() ?? 0,
         localGems: localGems,
+        cloudEssence: essenceProgressFromJson(cloud.data).toDouble(),
+        localEssence:
+            essenceProgressFromJson(getLocalSave?.call() ?? const {}).toDouble(),
       );
 
   /// Người chơi chọn "Khôi phục từ cloud" ở hộp thoại xung đột.

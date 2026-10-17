@@ -59,6 +59,20 @@ ProviderContainer _container(_FakeRepo repo,
 }
 
 void main() {
+  test('Tinh chất/Bí quyết khác nhau cũng là xung đột (nhưng chênh vài đơn vị thì bỏ qua)', () {
+    bool d(double c, double l) => cloudSaveLooksDifferent(
+        cloudLifetime: 1e6,
+        localLifetime: 1e6,
+        cloudGems: 100,
+        localGems: 100,
+        cloudEssence: c,
+        localEssence: l);
+    expect(d(300, 0), isTrue);
+    expect(d(0, 300), isTrue);
+    expect(d(0, 0), isFalse);
+    expect(d(300, 298), isFalse);
+  });
+
   group('cloudSaveLooksDifferent', () {
     test('LỖI GỐC: tiền kiếm được giống hệt nhưng cloud được cộng 100.000 💎 → khác',
         () {

@@ -99,7 +99,12 @@ RecipeAnswerOutcome applyRecipeAnswer(RecipeProgress p, bool correct, int today)
 /// Kết quả ghi một câu trả lời (do controller trả về cho giao diện).
 class RecipeAnswerResult {
   const RecipeAnswerResult(this.before, this.after, this.outcome, this.cash, this.gems,
-      {this.milestone = 0, this.drop, this.streakDays = 0, this.streakExtended = false, this.streakGems = 0});
+      {this.milestone = 0,
+      this.drop,
+      this.streakDays = 0,
+      this.streakExtended = false,
+      this.streakGems = 0,
+      this.essence = 0});
 
   final RecipeProgress before;
   final RecipeProgress after;
@@ -108,6 +113,9 @@ class RecipeAnswerResult {
   /// Thưởng vừa trao (0 nếu không phải kỷ lục mới).
   final double cash;
   final int gems;
+
+  /// 🧪 Tinh chất vừa nhận (= số bậc vừa đạt khi phá kỷ lục bậc của món; 0 nếu không).
+  final int essence;
 
   /// Mốc rương phụ kiện vừa đạt (số món Thạo; 0 = không) và phụ kiện nhận được.
   final int milestone;

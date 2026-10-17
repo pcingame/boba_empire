@@ -107,8 +107,18 @@ class _RecipeOrderGame extends ConsumerStatefulWidget {
 
 class _Served {
   _Served(this.order, this.grade, this.result,
-      {this.hinted = false, this.combo = 0, this.tip = 0, this.score = 0, this.late = false, this.rush = false, this.festival = false});
+      {this.hinted = false,
+      this.combo = 0,
+      this.tip = 0,
+      this.score = 0,
+      this.late = false,
+      this.rush = false,
+      this.festival = false,
+      this.essence = 0});
   final bool hinted;
+
+  /// 🧪 nhận được vì đơn này đạt 3★ (chưa kể phần của bậc Công thức: nằm ở [result]).
+  final int essence;
 
   /// Giờ cao điểm: hết giờ mới phục vụ (khách bỏ đi) / nhận tip giao kịp giờ.
   final bool late;
@@ -173,7 +183,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
   /// Đã làm thử thách hôm nay từ trước khi mở màn (mỗi ngày một lần) ⇒ chỉ xem lại điểm.
   late final bool _alreadyDone = widget.daily &&
       ref.read(gameControllerProvider).recipeDailyDay == dayIndex(ref.read(clockProvider)());
-  ({bool counted, int gems, double cash})? _dailyReward;
+  ({bool counted, int gems, double cash, int essence})? _dailyReward;
   final _served = <_Served>[];
   final _poured = <Poured>[];
   late int _index = _firstPkIndex();
@@ -356,10 +366,12 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     final rush = _rush && !late && grade.stars == 3 && !_hinted && counted;
     final fest = order.festival != null && grade.stars == 3 && !_hinted && counted;
     final tip = (_combo >= 2 && counted) || rush || fest ? game.grantOrderTip(_combo, rush: rush, festival: fest) : 0.0;
+    // 🧪: chỉ đơn 3★ không gợi ý, không trễ, và món thật sự đến hạn ôn (cùng điều kiện chống cày của tip).
+    final essence = grade.stars == 3 && !_hinted && !late && counted ? game.grantOrderEssence() : 0;
     setState(() {
       _checked = true;
       _served.add(_Served(order, grade, result,
-          hinted: _hinted, combo: _combo, tip: tip, late: late, rush: rush, festival: fest));
+          hinted: _hinted, combo: _combo, tip: tip, late: late, rush: rush, festival: fest, essence: essence));
     });
     if (tip > 0) playEffect(context, AnimAssets.coinFly, size: 160, heavy: false);
     final drop = result.drop;
@@ -439,10 +451,10 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     setState(() => _hinted = true);
   }
 
-  Future<void> _doubleReward(double cash) async {
+  Future<void> _doubleReward(double cash, int essence) async {
     if (_doubled || _watchingAd) return;
     if (!await _watchAd() || !mounted) return;
-    ref.read(gameControllerProvider.notifier).doubleRecipeReward(cash);
+    ref.read(gameControllerProvider.notifier).doubleRecipeReward(cash, essence: essence);
     setState(() => _doubled = true);
   }
 
@@ -977,6 +989,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
     final stars = _served.isEmpty ? 1 : (ok == _served.length ? 3 : (ok * 5 >= _served.length * 3 ? 2 : 1));
     final cash = _served.fold<double>(0, (a, s) => a + s.result.cash + s.tip);
     final gems = _served.fold<int>(0, (a, s) => a + s.result.gems);
+    final essence = _served.fold<int>(0, (a, s) => a + s.essence + s.result.essence);
     return ListView(
       key: const Key('order-result'),
       padding: const EdgeInsets.all(16),
@@ -1005,9 +1018,14 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
                 style: theme.textTheme.titleMedium,
               ),
             ],
+            if (essence > 0) ...[
+              const SizedBox(height: 6),
+              Text(l10n.essenceEarned(essence),
+                  key: const Key('order-essence'), style: theme.textTheme.titleMedium),
+            ],
           ]),
         ),
-        if (cash > 0) ...[
+        if (cash > 0 || essence > 0) ...[
           const SizedBox(height: 12),
           if (_doubled)
             Center(
@@ -1019,7 +1037,7 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
           else
             OutlinedButton.icon(
               key: const Key('order-double'),
-              onPressed: _watchingAd ? null : () => _doubleReward(cash),
+              onPressed: _watchingAd ? null : () => _doubleReward(cash, essence),
               icon: const Icon(Icons.play_circle_outline),
               label: Text(l10n.recipeDouble),
             ),
@@ -1123,6 +1141,9 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
                 key: const Key('daily-reward'),
                 style: theme.textTheme.titleMedium,
               ),
+              if (reward.essence > 0)
+                Text(l10n.essenceEarned(reward.essence),
+                    key: const Key('daily-essence'), style: theme.textTheme.titleMedium),
             ],
           ]),
         ),

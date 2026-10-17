@@ -3020,6 +3020,36 @@ class AppLocalizationsId extends AppLocalizations {
   String get marketExtendedToast => 'Penjualan diperpanjang.';
 
   @override
+  String essenceEarned(int n) {
+    return '+$n 🧪 Esensi';
+  }
+
+  @override
+  String get masteryTitle => 'Penguasaan';
+
+  @override
+  String masteryEssence(int n) {
+    return '🧪 $n Esensi';
+  }
+
+  @override
+  String get masteryHint =>
+      'Dapatkan Esensi dari mini-game, lalu tingkatkan Penguasaan untuk menambah pendapatan tiap tahap. Tetap ada setelah Waralaba.';
+
+  @override
+  String masteryBonus(String pct) {
+    return '+$pct% pendapatan';
+  }
+
+  @override
+  String masteryBuy(int cost) {
+    return 'Tingkatkan · $cost 🧪';
+  }
+
+  @override
+  String get masteryMaxed => 'Maks';
+
+  @override
   String get loadoutTitle => 'Perlengkapan';
 
   @override

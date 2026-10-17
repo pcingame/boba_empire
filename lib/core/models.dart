@@ -149,6 +149,10 @@ class GameState {
     this.piggyGems = 0,
     this.vipUntilMillis = 0,
     this.equipLockUntilMillis = 0,
+    this.essence = 0,
+    this.essenceDay = 0,
+    this.essenceOrdersToday = 0,
+    this.essenceRepeatableToday = 0,
     this.vipLastGemDay = 0,
     this.lastFreeSpinDay = 0,
     this.gemTimeSkipDay = 0,
@@ -175,6 +179,7 @@ class GameState {
     Map<String, double>? eventProgress,
     List<String>? eventClaimed,
     Map<String, int>? accessorySpares,
+    Map<int, int>? masteryTiers,
     List<String>? equippedAccessories,
     List<int>? collectionMilestonesClaimed,
     List<String>? wishlist,
@@ -189,6 +194,7 @@ class GameState {
         eventProgress = eventProgress ?? {},
         eventClaimed = eventClaimed ?? [],
         accessorySpares = accessorySpares ?? {},
+        masteryTiers = masteryTiers ?? {},
         equippedAccessories = equippedAccessories ?? [],
         collectionMilestonesClaimed = collectionMilestonesClaimed ?? [],
         wishlist = wishlist ?? [],
@@ -320,6 +326,17 @@ class GameState {
   /// dư). Rớt trùng cộng vào đây (xem grantAccessory) — bản dư bán được ở Chợ
   /// mà không mất món đang sưu tập.
   final Map<String, int> accessorySpares;
+
+  /// 🧪 Tinh chất đang có (kiếm từ trò nhỏ, xem essence.dart). Giữ qua Nhượng quyền và Kỷ Nguyên.
+  int essence;
+
+  /// Bậc Bí quyết đã mua theo giai đoạn (giai đoạn → 1..[Balance.masteryMaxTier]). Giữ qua Nhượng quyền/Kỷ Nguyên.
+  final Map<int, int> masteryTiers;
+
+  /// Bộ đếm Tinh chất nguồn lặp lại trong ngày [essenceDay] (dayIndex UTC): riêng đơn Pha theo đơn, và chung.
+  int essenceDay;
+  int essenceOrdersToday;
+  int essenceRepeatableToday;
 
   /// Id phụ kiện đang TRƯNG BÀY quanh cốc ở màn chính (≤ Balance.maxEquippedAccessories,
   /// đều phải đang sở hữu). Vừa trưng bày vừa cho buff theo họ (accessory_loadout.dart).
@@ -615,6 +632,11 @@ class GameState {
         'eventProgress': eventProgress,
         'eventClaimed': eventClaimed,
         'accessorySpares': accessorySpares,
+        'essence': essence,
+        'masteryTiers': {for (final e in masteryTiers.entries) '${e.key}': e.value},
+        'essenceDay': essenceDay,
+        'essenceOrdersToday': essenceOrdersToday,
+        'essenceRepeatableToday': essenceRepeatableToday,
         'equippedAccessories': equippedAccessories,
         'collectionMilestonesClaimed': collectionMilestonesClaimed,
         'wishlist': wishlist,
@@ -774,6 +796,16 @@ class GameState {
                   (e.value as num) >= 1)
                 e.key as String: (e.value as num).clamp(1, 999).toInt(),
         },
+        essence: ((json['essence'] as num?)?.toInt() ?? 0).clamp(0, 1 << 30),
+        masteryTiers: {
+          if (json['masteryTiers'] is Map)
+            for (final e in (json['masteryTiers'] as Map).entries)
+              if (int.tryParse('${e.key}') != null && e.value is num && (e.value as num).isFinite)
+                int.parse('${e.key}'): (e.value as num).clamp(0, 99).toInt(), // trần thật kẹp ở masteryTier()
+        },
+        essenceDay: (json['essenceDay'] as num?)?.toInt() ?? 0,
+        essenceOrdersToday: (json['essenceOrdersToday'] as num?)?.toInt() ?? 0,
+        essenceRepeatableToday: (json['essenceRepeatableToday'] as num?)?.toInt() ?? 0,
         prestigeIncomeLevel:
             (json['prestigeIncomeLevel'] as num?)?.toInt() ?? 0,
         prestigeTapLevel: (json['prestigeTapLevel'] as num?)?.toInt() ?? 0,

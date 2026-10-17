@@ -170,6 +170,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
         .read(gameControllerProvider.notifier)
         .grantMatch3Result(widget.level.id, stars);
     final drop = ref.read(gameControllerProvider.notifier).lastAccessoryDrop;
+    final essence = ref.read(gameControllerProvider.notifier).lastMatch3Essence;
 
     final hasNext = stars >= 1 && widget.level.id < Balance.m3LevelCount;
     // Còn nước = vừa đạt mục tiêu giữa chừng → mời chơi nốt để săn thêm sao
@@ -226,8 +227,14 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
                 '${gems > 0 ? ' + $gems 💎' : ''}',
                 textAlign: TextAlign.center,
               )
-            else if (stars > 0)
+            else if (stars > 0 && essence == 0)
               Text(l10n.m3NoReward, textAlign: TextAlign.center),
+            if (essence > 0)
+              Text(
+                l10n.essenceEarned(essence),
+                key: const Key('m3-essence'),
+                textAlign: TextAlign.center,
+              ),
             if (drop != null) ...[
               const SizedBox(height: 8),
               Text(

@@ -8,6 +8,7 @@ library;
 import 'dart:math';
 
 import 'accessory_loadout.dart';
+import 'essence.dart';
 import 'balance.dart';
 import 'guild.dart' show guildVipBonusMultiplier;
 import 'models.dart';
@@ -83,7 +84,10 @@ String? bestBuyGeneratorId(
   for (final c in configs) {
     if (c.stage > state.stage) continue;
     final level = state.levels[c.id] ?? 0;
-    final eff = marginalIncomePerSecond(c, level) / nextLevelCost(c, level);
+    // Bí quyết của giai đoạn nhân cả phần thu nhập thêm → ảnh hưởng thứ tự "đáng mua".
+    final eff = marginalIncomePerSecond(c, level) *
+        masteryMultiplier(state.masteryTiers, c.stage) /
+        nextLevelCost(c, level);
     if (eff > bestEff) {
       bestEff = eff;
       best = c.id;
@@ -358,7 +362,8 @@ double baseIncomePerSecond(GameState state, List<GeneratorConfig> configs) {
     final level = state.levels[config.id] ?? 0;
     total += config.incomePerLevelPerSecond *
         level *
-        generatorMilestoneMultiplier(level);
+        generatorMilestoneMultiplier(level) *
+        masteryMultiplier(state.masteryTiers, config.stage);
   }
   return total;
 }

@@ -552,6 +552,7 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
         l10n.recipeRewardBoth(formatNumber(r.cash), r.gems)
       else if (r.cash > 0)
         l10n.recipeRewardCash(formatNumber(r.cash)),
+      if (r.essence > 0) l10n.essenceEarned(r.essence),
     ];
     return Column(
       key: const Key('recipe-quiz-feedback'),
@@ -592,6 +593,7 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
     final ups = _answers.where((a) => a.result.outcome.leveledUp).length;
     final cash = _answers.fold<double>(0, (s, a) => s + a.result.cash);
     final gems = _answers.fold<int>(0, (s, a) => s + a.result.gems);
+    final essence = _answers.fold<int>(0, (s, a) => s + a.result.essence);
     return ListView(
       key: const Key('recipe-result'),
       padding: const EdgeInsets.all(16),
@@ -644,6 +646,14 @@ class _RecipeQuizPageState extends ConsumerState<RecipeQuizPage> {
                       ? l10n.recipeRewardBoth(formatNumber(cash), gems)
                       : l10n.recipeRewardCash(formatNumber(cash)),
                   key: const Key('recipe-reward'),
+                  style: theme.textTheme.titleMedium,
+                ),
+              ],
+              if (essence > 0) ...[
+                const SizedBox(height: 6),
+                Text(
+                  l10n.essenceEarned(essence),
+                  key: const Key('recipe-essence'),
                   style: theme.textTheme.titleMedium,
                 ),
               ],

@@ -14,6 +14,7 @@ import 'match3_board.dart';
 import 'email_gate.dart';
 import 'm3_leaderboard_page.dart';
 import 'match3_how_to_dialog.dart';
+import 'mastery_page.dart' show EssenceAppBarButton;
 import 'match3_play_page.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
@@ -81,6 +82,7 @@ class _Match3JourneyPageState extends ConsumerState<Match3JourneyPage> {
         appBar: AppBar(
           title: Text(l10n.m3Title),
           actions: [
+            const EssenceAppBarButton(),
             IconButton(
               key: const Key('m3-leaderboard-button'),
               icon: const Icon(Icons.emoji_events_outlined),
