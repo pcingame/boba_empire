@@ -18,6 +18,8 @@ import '../core/achievements.dart';
 import '../core/balance.dart';
 import '../core/collection_milestones.dart';
 import '../core/collection_sets.dart';
+import '../core/daily_item.dart';
+import '../core/season.dart';
 import '../core/daily.dart';
 import '../core/daily_deal.dart';
 import '../core/challenges.dart';
@@ -250,6 +252,7 @@ class GameController extends Notifier<GameSnapshot> {
   AccessoryDrop? grantDungeonReward({required int gems, required bool chest}) {
     if (gems > 0) grantGems(_game, gems.toDouble());
     final drop = chest ? _dropAccessory(source: 'guild') : null;
+    seasonEarn(_game, SeasonSource.dungeon, _clock());
     logEvent('guild_dungeon_claimed', {'gems': gems, 'chest': chest});
     unawaited(saveNow());
     state = _snapshot();
@@ -421,6 +424,7 @@ class GameController extends Notifier<GameSnapshot> {
     if (!anyCounted) return;
     addDailyProgress(_game, DailyQuestKind.recipe, 1);
     addWeeklyProgress(_game, WeeklyQuestKind.recipeSessions, 1);
+    seasonEarn(_game, SeasonSource.recipe, _clock());
     unawaited(saveNow());
     state = _snapshot();
   }
@@ -718,6 +722,9 @@ class GameController extends Notifier<GameSnapshot> {
   @visibleForTesting
   GameState get debugGame => _game;
 
+  /// Trạng thái gốc CHỈ ĐỌC cho màn Thẻ Mùa (hàm thuần `seasonCanClaim`/`seasonClaimable` cần GameState). Không ghi qua đây.
+  GameState get gameStateForSeason => _game;
+
   /// Chạy một nhịp tick (chỉ dùng cho test, thay cho việc chờ timer thật).
   @visibleForTesting
   void debugTick() => _onTick();
@@ -910,6 +917,7 @@ class GameController extends Notifier<GameSnapshot> {
   int claimDailyQuestReward(int index) {
     final gems = claimDailyQuest(_game, index);
     if (gems > 0) {
+      seasonEarn(_game, SeasonSource.dailyQuest, _clock());
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -930,6 +938,7 @@ class GameController extends Notifier<GameSnapshot> {
   int claimChallengeBonusReward() {
     final gems = claimChallengeBonus(_game);
     if (gems > 0) {
+      seasonEarn(_game, SeasonSource.challengeBonus, _clock());
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -940,6 +949,7 @@ class GameController extends Notifier<GameSnapshot> {
   int claimWeeklyQuestReward(int index) {
     final gems = claimWeeklyQuest(_game, index);
     if (gems > 0) {
+      seasonEarn(_game, SeasonSource.weeklyQuest, _clock());
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -952,6 +962,7 @@ class GameController extends Notifier<GameSnapshot> {
     final gems = claimWeeklyChest(_game);
     if (gems > 0) {
       _dropAccessory(source: 'weekly_quest', minRarity: AccessoryRarity.rare);
+      seasonEarn(_game, SeasonSource.weeklyChest, _clock());
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -1082,6 +1093,7 @@ class GameController extends Notifier<GameSnapshot> {
     final gems = claimDailyQuestBonus(_game);
     if (gems > 0) {
       _dropAccessory(source: 'daily_quest');
+      seasonEarn(_game, SeasonSource.dailyBonus, _clock());
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -1272,6 +1284,57 @@ class GameController extends Notifier<GameSnapshot> {
     return reward;
   }
 
+  /// Mua "Món của ngày" (mỗi ngày UTC một lần): phụ kiện đích danh bằng 💎. Null nếu hôm nay đã mua hoặc thiếu 💎.
+  AccessoryDrop? buyDailyItem() {
+    final today = dayIndex(_clock());
+    if (_game.dailyItemDay == today) return null;
+    final item = dailyItemFor(today, _game.ownedAccessories.toSet());
+    final price = dailyItemPrice(item.rarity);
+    if (_game.gems < price) return null;
+    _game.gems -= price;
+    final isNew = grantAccessory(_game, item);
+    unawaited(_registerAccessoryDropServerSide(item.id, 1 + (_game.accessorySpares[item.id] ?? 0)));
+    _game.dailyItemDay = today;
+    logEvent('daily_item_bought', {'accessory': item.id, 'rarity': item.rarity.name, 'gems': price, 'isNew': isNew});
+    unawaited(saveNow());
+    state = _snapshot();
+    return lastAccessoryDrop = AccessoryDrop(item, isNew: isNew);
+  }
+
+  /// Mua đường Cao cấp của Thẻ Mùa bằng 💎. False nếu đã mua hoặc thiếu 💎.
+  bool buySeasonPremium() {
+    seasonSync(_game, _clock());
+    if (_game.seasonPremium || _game.gems < seasonPremiumGems) return false;
+    _game.gems -= seasonPremiumGems;
+    _game.seasonPremium = true;
+    logEvent('season_premium_bought', {'season': _game.seasonId, 'gems': seasonPremiumGems});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
+  /// Nhận thưởng bậc [tier] của Thẻ Mùa (đường [premium] hoặc miễn phí). Null nếu chưa đủ điều kiện/đã nhận.
+  ({int gems, int essence, AccessoryDrop? drop})? claimSeasonTier(int tier, {required bool premium}) {
+    seasonSync(_game, _clock());
+    if (!seasonCanClaim(_game, tier, premium: premium)) return null;
+    final r = premium ? seasonPremiumReward(tier) : seasonFreeReward(tier);
+    (premium ? _game.seasonPremiumClaimed : _game.seasonFreeClaimed).add(tier);
+    if (r.gems > 0) grantGems(_game, r.gems.toDouble());
+    if (r.essence > 0) _game.essence += r.essence;
+    final drop = r.accessory == null
+        ? null
+        : _dropAccessory(
+            source: premium ? 'season_premium' : 'season_free',
+            // Bậc cuối Cao cấp: ĐÚNG huyền thoại; còn lại là "từ độ hiếm này trở lên".
+            rarity: premium && tier == seasonTiers ? AccessoryRarity.legendary : null,
+            minRarity: r.accessory!,
+          );
+    logEvent('season_tier_claimed', {'season': _game.seasonId, 'tier': tier, 'premium': premium});
+    unawaited(saveNow());
+    state = _snapshot();
+    return (gems: r.gems, essence: r.essence, drop: drop);
+  }
+
   /// Mua "Ưu đãi hôm nay" (mỗi ngày UTC một lần): gói phụ kiện hoặc tua nhanh với giá đã giảm.
   /// Null nếu hôm nay đã mua, thiếu 💎 hoặc (tua nhanh) chưa có thu nhập — không đổi gì. Lưu ngay.
   ({double cash, AccessoryDrop? drop})? buyDailyDeal() {
@@ -1313,6 +1376,7 @@ class GameController extends Notifier<GameSnapshot> {
     final gems = claimDaily(_game, _clock(),
         restore: restore, vipLevel: topupVipLevel(_game.vipExp));
     if (gems > 0) {
+      seasonEarn(_game, SeasonSource.login, _clock());
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -2102,6 +2166,7 @@ class GameController extends Notifier<GameSnapshot> {
   /// tiếp vào `GameState`, chỉ gọi qua đây, giống đường quest/IAP/ads.
   void grantArenaReward(int gems) {
     grantGems(_game, gems.toDouble());
+    seasonEarn(_game, SeasonSource.arena, _clock());
     unawaited(saveNow());
     state = _snapshot();
   }
@@ -2146,6 +2211,7 @@ class GameController extends Notifier<GameSnapshot> {
     // màn sau. Chỉ lưu khi có thưởng thì người chơi mới (thu nhập/giây = 0) qua
     // màn 1 mà màn 2 vẫn khoá, mở lại app là mất sạch tiến độ.
     if (stars > 0) {
+      seasonEarn(_game, SeasonSource.match3, _clock());
       addDungeon(_game, DungeonBar.rec, 1, _clock());
       addWeeklyProgress(_game, WeeklyQuestKind.m3Win, 1);
       addChallengeM3Win(_game);
@@ -2263,6 +2329,7 @@ class GameController extends Notifier<GameSnapshot> {
   GameSnapshot _snapshot() {
     // Tính một lần các giá trị dùng nhiều lần trong snapshot (chạy mỗi giây).
     final now = _clock();
+    seasonSync(_game, now); // sang mùa mới thì xoá tiến độ trước khi đọc
     final qp = currentQuestProgress(_game);
     final vip = vipActive(_game, now);
     final remainingMs = _game.boostUntilMillis - now;
@@ -2348,6 +2415,11 @@ class GameController extends Notifier<GameSnapshot> {
       vipExpFromGems: _game.vipExpFromGems,
       vipCoins: _game.vipCoins,
       dealClaimedDay: _game.dealClaimedDay,
+      dailyItemDay: _game.dailyItemDay,
+      seasonXp: _game.seasonXp,
+      seasonPremium: _game.seasonPremium,
+      seasonFreeClaimed: List.unmodifiable(_game.seasonFreeClaimed),
+      seasonPremiumClaimed: List.unmodifiable(_game.seasonPremiumClaimed),
       referralRedeemed: _game.referralRedeemed,
       referralStageSent: _game.referralStageSent,
       vipTitleChoice: _game.vipTitleChoice,

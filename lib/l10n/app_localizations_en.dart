@@ -2771,6 +2771,63 @@ class AppLocalizationsEn extends AppLocalizations {
   String get collectionSetsTitle => 'Collection sets';
 
   @override
+  String get seasonTitle => 'Season Pass';
+
+  @override
+  String seasonEntrySub(int days, int tier) {
+    return '$days days left · tier $tier/30';
+  }
+
+  @override
+  String seasonTierLine(int max, int tier) {
+    return 'Tier $tier/$max';
+  }
+
+  @override
+  String seasonDaysLeft(int days) {
+    return '$days days left';
+  }
+
+  @override
+  String seasonHint(int cap) {
+    return 'Earn XP from quests, minigames, the Guild Dungeon and the Arena (up to $cap XP/day). Progress resets each season — claim your rewards!';
+  }
+
+  @override
+  String get seasonFreeTrack => 'Free';
+
+  @override
+  String get seasonPremiumTrack => 'Premium';
+
+  @override
+  String seasonBuyPremium(int gems) {
+    return 'Unlock Premium · $gems 💎';
+  }
+
+  @override
+  String get seasonPremiumOwned => '✓ Premium unlocked';
+
+  @override
+  String get seasonPremiumBought => 'Premium unlocked!';
+
+  @override
+  String get seasonNotEnoughGems => 'Not enough 💎';
+
+  @override
+  String seasonGot(String text) {
+    return 'Got $text';
+  }
+
+  @override
+  String get dailyItemTitle => 'Item of the day';
+
+  @override
+  String get dailyItemNew => 'A new one for your collection';
+
+  @override
+  String get dailyItemOwned => 'Owned — you\'d get a spare';
+
+  @override
   String collectionSetDone(int coins) {
     return 'Got $coins Market Coins for the set!';
   }

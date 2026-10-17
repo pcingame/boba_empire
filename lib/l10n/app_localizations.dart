@@ -4836,6 +4836,96 @@ abstract class AppLocalizations {
   /// **'Bộ sưu tập'**
   String get collectionSetsTitle;
 
+  /// No description provided for @seasonTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thẻ Mùa'**
+  String get seasonTitle;
+
+  /// No description provided for @seasonEntrySub.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn {days} ngày · bậc {tier}/30'**
+  String seasonEntrySub(int days, int tier);
+
+  /// No description provided for @seasonTierLine.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bậc {tier}/{max}'**
+  String seasonTierLine(int max, int tier);
+
+  /// No description provided for @seasonDaysLeft.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn {days} ngày'**
+  String seasonDaysLeft(int days);
+
+  /// No description provided for @seasonHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kiếm XP từ nhiệm vụ, trò nhỏ, Phó bản, Đấu Trường (tối đa {cap} XP/ngày). Sang mùa mới tiến độ được làm lại — nhớ nhận thưởng!'**
+  String seasonHint(int cap);
+
+  /// No description provided for @seasonFreeTrack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Miễn phí'**
+  String get seasonFreeTrack;
+
+  /// No description provided for @seasonPremiumTrack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cao cấp'**
+  String get seasonPremiumTrack;
+
+  /// No description provided for @seasonBuyPremium.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở đường Cao cấp · {gems} 💎'**
+  String seasonBuyPremium(int gems);
+
+  /// No description provided for @seasonPremiumOwned.
+  ///
+  /// In vi, this message translates to:
+  /// **'✓ Đã mở đường Cao cấp'**
+  String get seasonPremiumOwned;
+
+  /// No description provided for @seasonPremiumBought.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã mở đường Cao cấp!'**
+  String get seasonPremiumBought;
+
+  /// No description provided for @seasonNotEnoughGems.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đủ 💎'**
+  String get seasonNotEnoughGems;
+
+  /// No description provided for @seasonGot.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {text}'**
+  String seasonGot(String text);
+
+  /// No description provided for @dailyItemTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Món của ngày'**
+  String get dailyItemTitle;
+
+  /// No description provided for @dailyItemNew.
+  ///
+  /// In vi, this message translates to:
+  /// **'Món còn thiếu trong bộ sưu tập'**
+  String get dailyItemNew;
+
+  /// No description provided for @dailyItemOwned.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã có — mua sẽ được bản dư'**
+  String get dailyItemOwned;
+
   /// No description provided for @collectionSetDone.
   ///
   /// In vi, this message translates to:

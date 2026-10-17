@@ -2778,6 +2778,63 @@ class AppLocalizationsPt extends AppLocalizations {
   String get collectionSetsTitle => 'Conjuntos';
 
   @override
+  String get seasonTitle => 'Passe de Temporada';
+
+  @override
+  String seasonEntrySub(int days, int tier) {
+    return 'Faltam $days dias · nível $tier/30';
+  }
+
+  @override
+  String seasonTierLine(int max, int tier) {
+    return 'Nível $tier/$max';
+  }
+
+  @override
+  String seasonDaysLeft(int days) {
+    return 'Faltam $days dias';
+  }
+
+  @override
+  String seasonHint(int cap) {
+    return 'Ganhe XP com missões, minijogos, a Masmorra da Guilda e a Arena (até $cap XP/dia). O progresso reinicia a cada temporada — resgate suas recompensas!';
+  }
+
+  @override
+  String get seasonFreeTrack => 'Grátis';
+
+  @override
+  String get seasonPremiumTrack => 'Premium';
+
+  @override
+  String seasonBuyPremium(int gems) {
+    return 'Liberar Premium · $gems 💎';
+  }
+
+  @override
+  String get seasonPremiumOwned => '✓ Premium liberado';
+
+  @override
+  String get seasonPremiumBought => 'Premium liberado!';
+
+  @override
+  String get seasonNotEnoughGems => '💎 insuficientes';
+
+  @override
+  String seasonGot(String text) {
+    return 'Recebeu $text';
+  }
+
+  @override
+  String get dailyItemTitle => 'Item do dia';
+
+  @override
+  String get dailyItemNew => 'Novo para sua coleção';
+
+  @override
+  String get dailyItemOwned => 'Já tem — receberá uma reserva';
+
+  @override
   String collectionSetDone(int coins) {
     return 'Você ganhou $coins Moedas do Mercado pelo conjunto!';
   }

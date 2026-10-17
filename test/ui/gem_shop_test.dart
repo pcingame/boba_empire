@@ -36,6 +36,8 @@ void main() {
     expect(find.textContaining('Cửa Hàng'), findsOneWidget);
     expect(find.text('5 💎'), findsOneWidget); // giá cấp 0 của Tăng thu nhập
 
+    await tester.ensureVisible(find.byKey(const Key('gem-buy-Tăng thu nhập'))); // thẻ Thẻ Mùa/Món của ngày đẩy nó xuống dưới
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('gem-buy-Tăng thu nhập')));
     await tester.pumpAndSettle();
 

@@ -2768,6 +2768,63 @@ class AppLocalizationsId extends AppLocalizations {
   String get collectionSetsTitle => 'Set koleksi';
 
   @override
+  String get seasonTitle => 'Pass Musim';
+
+  @override
+  String seasonEntrySub(int days, int tier) {
+    return 'Sisa $days hari · tingkat $tier/30';
+  }
+
+  @override
+  String seasonTierLine(int max, int tier) {
+    return 'Tingkat $tier/$max';
+  }
+
+  @override
+  String seasonDaysLeft(int days) {
+    return 'Sisa $days hari';
+  }
+
+  @override
+  String seasonHint(int cap) {
+    return 'Dapatkan XP dari misi, minigame, Dungeon Guild, dan Arena (maks $cap XP/hari). Progres diatur ulang tiap musim — klaim hadiahmu!';
+  }
+
+  @override
+  String get seasonFreeTrack => 'Gratis';
+
+  @override
+  String get seasonPremiumTrack => 'Premium';
+
+  @override
+  String seasonBuyPremium(int gems) {
+    return 'Buka Premium · $gems 💎';
+  }
+
+  @override
+  String get seasonPremiumOwned => '✓ Premium terbuka';
+
+  @override
+  String get seasonPremiumBought => 'Premium terbuka!';
+
+  @override
+  String get seasonNotEnoughGems => '💎 tidak cukup';
+
+  @override
+  String seasonGot(String text) {
+    return 'Dapat $text';
+  }
+
+  @override
+  String get dailyItemTitle => 'Item hari ini';
+
+  @override
+  String get dailyItemNew => 'Baru untuk koleksimu';
+
+  @override
+  String get dailyItemOwned => 'Sudah punya — dapat cadangan';
+
+  @override
   String collectionSetDone(int coins) {
     return 'Dapat $coins Koin Pasar untuk set ini!';
   }

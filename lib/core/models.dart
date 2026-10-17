@@ -134,6 +134,14 @@ class GameState {
     this.vipExp = 0,
     this.vipCoins = 0,
     this.dealClaimedDay = 0,
+    this.dailyItemDay = 0,
+    this.seasonId = 0,
+    this.seasonXp = 0,
+    this.seasonPremium = false,
+    List<int>? seasonFreeClaimed,
+    List<int>? seasonPremiumClaimed,
+    this.seasonXpDay = 0,
+    this.seasonXpToday = 0,
     this.referralRedeemed = false,
     this.referralStageSent = false,
     this.vipTitleChoice = -1,
@@ -205,6 +213,8 @@ class GameState {
         equippedAccessories = equippedAccessories ?? [],
         collectionMilestonesClaimed = collectionMilestonesClaimed ?? [],
         collectionSetsClaimed = collectionSetsClaimed ?? [],
+        seasonFreeClaimed = seasonFreeClaimed ?? [],
+        seasonPremiumClaimed = seasonPremiumClaimed ?? [],
         wishlist = wishlist ?? [],
         dailyProgress = dailyProgress ?? {},
         dailyClaimed = dailyClaimed ?? [],
@@ -568,6 +578,18 @@ class GameState {
   /// Chỉ số ngày (UTC) đã mua "Ưu đãi hôm nay" gần nhất; 0 = chưa từng.
   int dealClaimedDay;
 
+  /// Ngày (UTC) đã mua "Món của ngày".
+  int dailyItemDay;
+
+  /// Thẻ Mùa (xem core/season.dart).
+  int seasonId;
+  int seasonXp;
+  bool seasonPremium;
+  final List<int> seasonFreeClaimed;
+  final List<int> seasonPremiumClaimed;
+  int seasonXpDay;
+  int seasonXpToday;
+
   /// Đã nhập mã mời của người khác / đã báo giai đoạn cho server (xem referral_controller).
   bool referralRedeemed;
   bool referralStageSent;
@@ -731,6 +753,14 @@ class GameState {
         'vipExpFromGems': vipExpFromGems,
         'vipCoins': vipCoins,
         'dealClaimedDay': dealClaimedDay,
+        'dailyItemDay': dailyItemDay,
+        'seasonId': seasonId,
+        'seasonXp': seasonXp,
+        'seasonPremium': seasonPremium,
+        'seasonFreeClaimed': seasonFreeClaimed,
+        'seasonPremiumClaimed': seasonPremiumClaimed,
+        'seasonXpDay': seasonXpDay,
+        'seasonXpToday': seasonXpToday,
         'referralRedeemed': referralRedeemed,
         'referralStageSent': referralStageSent,
         'vipTitleChoice': vipTitleChoice,
@@ -954,6 +984,14 @@ class GameState {
         vipExpFromGems: (json['vipExpFromGems'] as num?)?.toInt() ?? 0,
         vipCoins: (json['vipCoins'] as num?)?.toInt() ?? 0,
         dealClaimedDay: (json['dealClaimedDay'] as num?)?.toInt() ?? 0,
+        dailyItemDay: (json['dailyItemDay'] as num?)?.toInt() ?? 0,
+        seasonId: (json['seasonId'] as num?)?.toInt() ?? 0,
+        seasonXp: ((json['seasonXp'] as num?)?.toInt() ?? 0).clamp(0, 1 << 30),
+        seasonPremium: json['seasonPremium'] == true,
+        seasonFreeClaimed: _tierList(json['seasonFreeClaimed']),
+        seasonPremiumClaimed: _tierList(json['seasonPremiumClaimed']),
+        seasonXpDay: (json['seasonXpDay'] as num?)?.toInt() ?? 0,
+        seasonXpToday: ((json['seasonXpToday'] as num?)?.toInt() ?? 0).clamp(0, 1 << 30),
         referralRedeemed: (json['referralRedeemed'] as bool?) ?? false,
         referralStageSent: (json['referralStageSent'] as bool?) ?? false,
         vipTitleChoice: (json['vipTitleChoice'] as num?)?.toInt() ?? -1,
@@ -983,3 +1021,8 @@ double _sanitizeMoney(num raw) {
   final v = raw.toDouble();
   return v.isFinite && v >= 0 ? v : 0;
 }
+
+/// Danh sách số bậc Thẻ Mùa hợp lệ (1..30, không trùng) từ JSON; phần tử lạ bị bỏ.
+List<int> _tierList(Object? v) => v is List
+    ? ({for (final e in v) if (e is num && e >= 1 && e <= 30) e.toInt()}.toList()..sort())
+    : [];

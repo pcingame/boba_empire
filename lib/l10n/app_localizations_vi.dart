@@ -2761,6 +2761,63 @@ class AppLocalizationsVi extends AppLocalizations {
   String get collectionSetsTitle => 'Bộ sưu tập';
 
   @override
+  String get seasonTitle => 'Thẻ Mùa';
+
+  @override
+  String seasonEntrySub(int days, int tier) {
+    return 'Còn $days ngày · bậc $tier/30';
+  }
+
+  @override
+  String seasonTierLine(int max, int tier) {
+    return 'Bậc $tier/$max';
+  }
+
+  @override
+  String seasonDaysLeft(int days) {
+    return 'Còn $days ngày';
+  }
+
+  @override
+  String seasonHint(int cap) {
+    return 'Kiếm XP từ nhiệm vụ, trò nhỏ, Phó bản, Đấu Trường (tối đa $cap XP/ngày). Sang mùa mới tiến độ được làm lại — nhớ nhận thưởng!';
+  }
+
+  @override
+  String get seasonFreeTrack => 'Miễn phí';
+
+  @override
+  String get seasonPremiumTrack => 'Cao cấp';
+
+  @override
+  String seasonBuyPremium(int gems) {
+    return 'Mở đường Cao cấp · $gems 💎';
+  }
+
+  @override
+  String get seasonPremiumOwned => '✓ Đã mở đường Cao cấp';
+
+  @override
+  String get seasonPremiumBought => 'Đã mở đường Cao cấp!';
+
+  @override
+  String get seasonNotEnoughGems => 'Chưa đủ 💎';
+
+  @override
+  String seasonGot(String text) {
+    return 'Nhận $text';
+  }
+
+  @override
+  String get dailyItemTitle => 'Món của ngày';
+
+  @override
+  String get dailyItemNew => 'Món còn thiếu trong bộ sưu tập';
+
+  @override
+  String get dailyItemOwned => 'Đã có — mua sẽ được bản dư';
+
+  @override
   String collectionSetDone(int coins) {
     return 'Nhận $coins Xu Chợ cho bộ sưu tập!';
   }

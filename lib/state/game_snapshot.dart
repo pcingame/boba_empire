@@ -141,6 +141,11 @@ class GameSnapshot {
     required this.vipExpFromGems,
     required this.vipCoins,
     required this.dealClaimedDay,
+    required this.dailyItemDay,
+    required this.seasonXp,
+    required this.seasonPremium,
+    required this.seasonFreeClaimed,
+    required this.seasonPremiumClaimed,
     required this.referralRedeemed,
     required this.referralStageSent,
     required this.vipTitleChoice,
@@ -355,6 +360,15 @@ class GameSnapshot {
   final int vipExpFromGems;
   final int vipCoins;
   final int dealClaimedDay;
+
+  /// Ngày đã mua "Món của ngày".
+  final int dailyItemDay;
+
+  /// Thẻ Mùa (đã đồng bộ sang mùa hiện tại).
+  final int seasonXp;
+  final bool seasonPremium;
+  final List<int> seasonFreeClaimed;
+  final List<int> seasonPremiumClaimed;
   final bool referralRedeemed;
   final bool referralStageSent;
   final int vipTitleChoice;

@@ -2759,6 +2759,63 @@ class AppLocalizationsTh extends AppLocalizations {
   String get collectionSetsTitle => 'ชุดสะสม';
 
   @override
+  String get seasonTitle => 'บัตรซีซัน';
+
+  @override
+  String seasonEntrySub(int days, int tier) {
+    return 'เหลือ $days วัน · ขั้น $tier/30';
+  }
+
+  @override
+  String seasonTierLine(int max, int tier) {
+    return 'ขั้น $tier/$max';
+  }
+
+  @override
+  String seasonDaysLeft(int days) {
+    return 'เหลือ $days วัน';
+  }
+
+  @override
+  String seasonHint(int cap) {
+    return 'รับ XP จากภารกิจ มินิเกม ดันเจี้ยนกิลด์ และอารีนา (สูงสุด $cap XP/วัน) ความคืบหน้าจะรีเซ็ตทุกซีซัน — อย่าลืมรับรางวัล!';
+  }
+
+  @override
+  String get seasonFreeTrack => 'ฟรี';
+
+  @override
+  String get seasonPremiumTrack => 'พรีเมียม';
+
+  @override
+  String seasonBuyPremium(int gems) {
+    return 'ปลดล็อกพรีเมียม · $gems 💎';
+  }
+
+  @override
+  String get seasonPremiumOwned => '✓ ปลดล็อกพรีเมียมแล้ว';
+
+  @override
+  String get seasonPremiumBought => 'ปลดล็อกพรีเมียมแล้ว!';
+
+  @override
+  String get seasonNotEnoughGems => '💎 ไม่พอ';
+
+  @override
+  String seasonGot(String text) {
+    return 'ได้รับ $text';
+  }
+
+  @override
+  String get dailyItemTitle => 'ไอเทมประจำวัน';
+
+  @override
+  String get dailyItemNew => 'ชิ้นใหม่สำหรับคอลเลกชัน';
+
+  @override
+  String get dailyItemOwned => 'มีแล้ว — จะได้ชิ้นสำรอง';
+
+  @override
   String collectionSetDone(int coins) {
     return 'ได้รับ $coins เหรียญตลาดจากชุดสะสม!';
   }

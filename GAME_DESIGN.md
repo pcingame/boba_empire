@@ -1190,3 +1190,21 @@ Giảm giá 38 món → 400 mỗi bộ). Tổng đời tối đa **2 850 Xu Ch�
   đọc thiếu = false (không vỡ). Ceiling: ít trận ghi sẵn thì hay gặp lại cùng một bóng ma.
 - **Hào quang món hiếm**: Kho — món Sử thi nhấp nháy quầng sáng, Huyền thoại thêm nhún nhẹ (`RarityGlint`), dùng
   chung `AmbientTicker`, chỉ ở mức hiệu ứng Vừa/Cao, tắt khi giảm chuyển động.
+
+## 46. Thẻ Mùa + Món của ngày (2026-10-18, chưa playtest)
+
+> ⚠️ Mọi số là **ước lượng chưa playtest**. Cả hai nằm trong Cửa hàng 💎 (thẻ ngay dưới "Ưu đãi hôm nay"). Không cần SQL.
+
+- **Món của ngày** (`lib/core/daily_item.dart`): mỗi ngày UTC MỘT phụ kiện đích danh mua bằng 💎, một lần/ngày
+  (`dailyItemDay`). Độ hiếm theo `dayIndex % 7` = Hiếm/Thường/Sử thi/Thường/Hiếm/Sử thi/Huyền thoại; giá 40/120/350/900 💎
+  (cố ý đắt hơn gói ngẫu nhiên 30/80/200 vì là mua đích danh). Món = món CHƯA CÓ đầu tiên theo thứ tự băm FNV-1a của ngày
+  (không dùng `Random`/`hashCode` để ổn định giữa các bản Dart); có hết cả độ hiếm đó thì ra bản dư.
+- **Thẻ Mùa** (`lib/core/season.dart`, `lib/ui/season_page.dart`): mùa 28 ngày UTC (`dayIndex ~/ 28`), 30 bậc × 100 XP.
+  XP từ hoạt động có sẵn (đăng nhập 10, nhiệm vụ ngày 10, xong bộ ngày 30, thử thách ngày 20, nhiệm vụ tuần 40, rương tuần 60,
+  Công thức 15, Ghép 3 15, Đấu Trường 15, Phó bản 40), **trần 150 XP/ngày**. Đường MIỄN PHÍ: 5 💎/bậc (bậc 30: 50 💎), phụ kiện ở bậc
+  5/15/25 (thường+), 10/20 (hiếm+), 30 (sử thi+), 🧪 20 mỗi bậc chia hết 6. Đường CAO CẤP mua bằng **600 💎**: 8 💎/bậc (+40 ở bậc
+  10/20/30), phụ kiện ở 5/10 (hiếm+), 15/20/25 (sử thi+), **30 = huyền thoại đảm bảo**, 🧪 20 mỗi bậc chia hết 3. Tổng 💎 Cao cấp
+  (360) cố ý NHỎ HƠN giá — trả 💎 để lấy phụ kiện/Tinh chất, không phải để lãi. Sang mùa mới: XP, quyền Cao cấp, thưởng chưa
+  nhận đều reset (`seasonSync`, gọi ở `_snapshot`). Chấm đỏ ở thẻ lối vào khi còn bậc chưa nhận.
+- Chưa làm: phụ kiện độc quyền theo mùa (cần thêm món + tên 7 ngôn ngữ), đồng bộ cloud so sánh XP mùa (hiện nằm trong save nên
+  đi theo save, nhưng xung đột cloud vẫn chỉ so `lifetimeEarnings`), thưởng top mùa.

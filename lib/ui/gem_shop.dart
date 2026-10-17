@@ -16,6 +16,8 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import 'email_gate.dart';
+import 'daily_item_card.dart';
+import 'season_page.dart';
 import 'topup_dialog.dart';
 import '../analytics/analytics.dart';
 import 'widgets/clay.dart';
@@ -138,6 +140,8 @@ class _GemShopState extends ConsumerState<_GemShop> {
           children: [
             const _VipEntryCard(),
             const _DailyDealCard(),
+            const DailyItemCard(),
+            const SeasonEntryCard(),
             _GemItem(
               name: l10n.gemBoostName,
               level: boostLevel,

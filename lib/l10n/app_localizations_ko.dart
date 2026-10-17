@@ -2728,6 +2728,63 @@ class AppLocalizationsKo extends AppLocalizations {
   String get collectionSetsTitle => '컬렉션 세트';
 
   @override
+  String get seasonTitle => '시즌 패스';
+
+  @override
+  String seasonEntrySub(int days, int tier) {
+    return '$days일 남음 · $tier/30단계';
+  }
+
+  @override
+  String seasonTierLine(int max, int tier) {
+    return '$tier/$max단계';
+  }
+
+  @override
+  String seasonDaysLeft(int days) {
+    return '$days일 남음';
+  }
+
+  @override
+  String seasonHint(int cap) {
+    return '퀘스트, 미니게임, 길드 던전, 아레나에서 XP를 얻어요(하루 최대 $cap XP). 시즌이 바뀌면 진행이 초기화되니 보상을 꼭 받으세요!';
+  }
+
+  @override
+  String get seasonFreeTrack => '무료';
+
+  @override
+  String get seasonPremiumTrack => '프리미엄';
+
+  @override
+  String seasonBuyPremium(int gems) {
+    return '프리미엄 해제 · $gems 💎';
+  }
+
+  @override
+  String get seasonPremiumOwned => '✓ 프리미엄 해제됨';
+
+  @override
+  String get seasonPremiumBought => '프리미엄이 해제됐어요!';
+
+  @override
+  String get seasonNotEnoughGems => '💎가 부족해요';
+
+  @override
+  String seasonGot(String text) {
+    return '$text 획득';
+  }
+
+  @override
+  String get dailyItemTitle => '오늘의 아이템';
+
+  @override
+  String get dailyItemNew => '컬렉션에 없는 아이템';
+
+  @override
+  String get dailyItemOwned => '이미 보유 — 여분을 받아요';
+
+  @override
   String collectionSetDone(int coins) {
     return '세트 완성! 마켓 코인 $coins개를 받았어요!';
   }
