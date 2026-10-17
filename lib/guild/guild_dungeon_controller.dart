@@ -36,8 +36,16 @@ class GuildDungeonController extends Notifier<DungeonView> {
     await _repo.submit(tap: t.tap, off: t.off, rec: t.rec);
   }
 
+  /// Lần tải thành công gần nhất (epoch ms). Thẻ trên màn Hội và màn chi tiết cùng tự tải khi mở: cửa sổ
+  /// ngắn này gộp hai lần thành một (hai RPC thay vì bốn) mà vẫn đủ tươi cho người đang xem.
+  int _loadedAtMillis = 0;
+  static const _freshMillis = 15000;
+
   /// Báo luỹ kế (nếu có) rồi tải trạng thái. [silent] giữ dữ liệu cũ trên màn trong lúc tải.
-  Future<void> refresh({bool silent = false}) async {
+  /// [force] bỏ qua cửa sổ tươi (kéo để làm mới, sau khi đổi vai / nhận thưởng).
+  Future<void> refresh({bool silent = false, bool force = false}) async {
+    final now = ref.read(clockProvider)();
+    if (!force && state.data != null && !state.failed && now - _loadedAtMillis < _freshMillis) return;
     if (!silent) state = DungeonView(data: state.data);
     try {
       try {
@@ -47,6 +55,7 @@ class GuildDungeonController extends Notifier<DungeonView> {
         developer.log('dungeon submit: ${e.failure}', name: 'GuildDungeon');
       }
       state = DungeonView(data: await _repo.state(), loading: false);
+      _loadedAtMillis = now;
     } catch (e) {
       developer.log('$e', name: 'GuildDungeon');
       state = DungeonView(data: state.data, loading: false, failed: true);
@@ -61,7 +70,7 @@ class GuildDungeonController extends Notifier<DungeonView> {
     } catch (_) {
       return const GuildOutcome(failure: GuildFailure.network);
     }
-    await refresh(silent: true);
+    await refresh(silent: true, force: true);
     return const GuildOutcome();
   }
 
@@ -73,7 +82,7 @@ class GuildDungeonController extends Notifier<DungeonView> {
       final drop = ref
           .read(gameControllerProvider.notifier)
           .grantDungeonReward(gems: r.gems, chest: r.chest);
-      await refresh(silent: true);
+      await refresh(silent: true, force: true);
       return GuildOutcome(gems: r.gems, coins: r.coins, drop: drop);
     } on GuildException catch (e) {
       return GuildOutcome(failure: e.failure);

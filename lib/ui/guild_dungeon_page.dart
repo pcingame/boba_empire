@@ -211,7 +211,8 @@ class _GuildDungeonPageState extends ConsumerState<GuildDungeonPage> {
                     ? const CircularProgressIndicator()
                     : Text(l10n.guildErrNetwork, textAlign: TextAlign.center))
             : RefreshIndicator(
-                onRefresh: () => ref.read(guildDungeonControllerProvider.notifier).refresh(silent: true),
+                onRefresh: () =>
+                    ref.read(guildDungeonControllerProvider.notifier).refresh(silent: true, force: true),
                 child: ListView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),

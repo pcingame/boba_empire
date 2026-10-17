@@ -1,15 +1,21 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart' show Ticker;
 
 import '../../core/format.dart';
 import 'ambient_ticker.dart';
+import 'effects_quality.dart';
 import 'motion.dart' show reduceMotion;
 
 /// Boss Hội "sống": thở/nhún nhẹ khi chờ, rung + loé đỏ + số sát thương bay lên mỗi khi tổng điểm hội
 /// TĂNG lúc đang xem, nổi giận (quầng đỏ nhấp nháy, nhún nhanh) khi máu < [rageBelow], và ngã gục khi
 /// bị hạ. Thuần Flutter (không cần file Lottie); nhịp idle dùng [AmbientTicker] chung nên tôn trọng mức
 /// hiệu ứng và dừng hẳn khi app ra nền / bị trang khác che; hit/ngã là animation hữu hạn.
+///
+/// Mượt: ở mức hiệu ứng Cao/Vừa nhịp idle chạy bằng [Ticker] theo vsync (60Hz) thay vì 30Hz — boss nhỏ và
+/// nằm trong [RepaintBoundary] riêng nên chi phí không đáng kể (khác con mascot ở màn chính phải vẽ lại cả màn);
+/// mức Thấp mới dùng nhịp chung 15Hz. Chuyển động nhún dùng sin liên tục (không có điểm gãy như tam giác easing).
 class BossAvatar extends StatefulWidget {
   const BossAvatar({
     super.key,
@@ -44,6 +50,7 @@ class _BossAvatarState extends State<BossAvatar> with TickerProviderStateMixin {
   late final AnimationController _down =
       AnimationController(vsync: this, duration: const Duration(milliseconds: 900));
   VoidCallback? _unsub;
+  Ticker? _ticker;
   bool _covered = false;
   double _t = 0;
   int _lastDelta = 0;
@@ -59,23 +66,40 @@ class _BossAvatarState extends State<BossAvatar> with TickerProviderStateMixin {
   }
 
   void _start() {
+    final q = EffectsController.instance.quality.value;
+    if (q == EffectsQuality.high || q == EffectsQuality.medium) {
+      _ticker ??= createTicker((elapsed) {
+        _t = elapsed.inMicroseconds / 1e6;
+        _idle.value = (_t % 100) / 100; // chỉ để báo "đã đổi" cho AnimatedBuilder
+      })
+        ..muted = _idleMuted
+        ..start();
+      return;
+    }
     _unsub ??= AmbientTicker.instance.subscribe((dt) {
-      if (_covered || widget.defeated) return;
+      if (_idleMuted) return;
       _t += dt;
-      _idle.value = (_t % 100) / 100; // chỉ để báo "đã đổi" cho AnimatedBuilder
+      _idle.value = (_t % 100) / 100;
     });
   }
+
+  /// Bị trang khác che hoặc đã gục: không còn gì để nhún → dừng hẳn (ticker muted không lên lịch khung).
+  bool get _idleMuted => _covered || widget.defeated;
+
+  void _syncMute() => _ticker?.muted = _idleMuted;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final route = ModalRoute.of(context);
     _covered = route != null && !route.isCurrent;
+    _syncMute();
   }
 
   @override
   void didUpdateWidget(BossAvatar old) {
     super.didUpdateWidget(old);
+    _syncMute();
     if (reduceMotion) return;
     if (!old.defeated && widget.defeated) {
       _hit.value = 0;
@@ -89,6 +113,7 @@ class _BossAvatarState extends State<BossAvatar> with TickerProviderStateMixin {
   @override
   void dispose() {
     _unsub?.call();
+    _ticker?.dispose();
     _idle.dispose();
     _hit.dispose();
     _down.dispose();
@@ -109,10 +134,10 @@ class _BossAvatarState extends State<BossAvatar> with TickerProviderStateMixin {
             final h = _hit.value; // 0→1 trong lúc trúng đòn
             final d = Curves.easeIn.transform(_down.value);
             final period = _enraged ? 0.5 : 1.6;
-            final u = (_t / period) % 2;
+            // sin liên tục 0..1: mượt ở hai đầu (đạo hàm liên tục), không gãy như sóng tam giác.
             final bob = widget.defeated || reduceMotion
                 ? 0.0
-                : Curves.easeInOut.transform(u <= 1 ? u : 2 - u);
+                : 0.5 - 0.5 * math.cos(2 * math.pi * _t / (period * 2));
             // Rung tắt dần theo thời gian trúng đòn.
             final shake = h == 0 ? 0.0 : math.sin(h * math.pi * 7) * (1 - h) * s * 0.12;
             final flash = h == 0 ? 0.0 : (1 - h);

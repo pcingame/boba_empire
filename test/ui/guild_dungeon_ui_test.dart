@@ -48,10 +48,14 @@ class _FakeRepo implements GuildDungeonRepository {
   DungeonState s;
   final submits = <({int tap, int off, int rec})>[];
   final claims = <int>[];
+  int stateCalls = 0;
   GuildFailure? claimFails;
 
   @override
-  Future<DungeonState?> state() async => s;
+  Future<DungeonState?> state() async {
+    stateCalls++;
+    return s;
+  }
 
   @override
   Future<void> submit({required int tap, required int off, required int rec}) async =>
@@ -210,8 +214,21 @@ void main() {
     final (c, repo) = await _pump(tester, _state());
     expect(repo.submits.every((t) => t.tap == 0), isTrue, reason: 'mới mở: chưa chạm lần nào');
     c.read(gameControllerProvider.notifier).tapCup();
-    await c.read(guildDungeonControllerProvider.notifier).refresh(silent: true);
+    await c.read(guildDungeonControllerProvider.notifier).refresh(silent: true, force: true);
     expect(repo.submits.last.tap, 1);
+    await _end(tester, c);
+  });
+
+  testWidgets('mở màn chi tiết ngay sau thẻ: không tải lại trong 15s, kéo làm mới (force) thì có', (tester) async {
+    final (c, repo) = await _pump(tester, _state());
+    final n = repo.stateCalls;
+    expect(n, 1, reason: 'màn tự tải một lần khi mở');
+    final ctrl = c.read(guildDungeonControllerProvider.notifier);
+    await ctrl.refresh(silent: true);
+    await ctrl.refresh(silent: true);
+    expect(repo.stateCalls, n, reason: 'còn tươi → bỏ qua');
+    await ctrl.refresh(silent: true, force: true);
+    expect(repo.stateCalls, n + 1);
     await _end(tester, c);
   });
 
