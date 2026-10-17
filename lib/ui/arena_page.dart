@@ -197,6 +197,19 @@ class _MatchView extends ConsumerWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        if (view.ghost) ...[
+          Container(
+            key: const Key('arena-ghost-badge'),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondaryContainer,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Text(l10n.arenaGhostBadge,
+                textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodySmall),
+          ),
+          const SizedBox(height: 10),
+        ],
         if (view.mode == ArenaMode.match3 || view.mode == ArenaMode.recipe) ...[
           _DuelHeader(
             l10n: l10n,
@@ -478,10 +491,18 @@ class _ResultView extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 12),
-        Text(
-          l10n.arenaResultReward(result.won ? ArenaConfig.winGems : ArenaConfig.loseGems),
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
+        if (arenaRewardGems(result) > 0)
+          Text(
+            l10n.arenaResultReward(arenaRewardGems(result)),
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+        if (result.ghost)
+          Padding(
+            padding: const EdgeInsets.only(top: 6),
+            child: Text(l10n.arenaGhostBadge,
+                key: const Key('arena-ghost-result'),
+                textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodySmall),
+          ),
         const SizedBox(height: 24),
         FilledButton(
           onPressed: () {

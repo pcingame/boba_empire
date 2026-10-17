@@ -1868,6 +1868,10 @@ class AppLocalizationsTh extends AppLocalizations {
   String get arenaOpponentScore => 'คู่แข่ง';
 
   @override
+  String get arenaGhostBadge =>
+      '👻 แมตช์ผี: คุณกำลังแข่งกับบันทึกของผู้เล่นคนอื่น รางวัลลดลงและไม่นับในอันดับ';
+
+  @override
   String get arenaResultWin => 'คุณชนะ! 🎉';
 
   @override

@@ -37,6 +37,7 @@ import 'widgets/motion.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/one_shot_lottie.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/rarity_glint.dart';
 import 'widgets/weekend_banner.dart';
 
 Future<void> showAccessoryInventory(BuildContext context) {
@@ -416,10 +417,13 @@ class _AccessoryCell extends ConsumerWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            unlocked ? accessory.emoji : '❔',
-                            style: const TextStyle(fontSize: 32),
-                          ),
+                          unlocked
+                              ? RarityGlint(
+                                  rarity: accessory.rarity,
+                                  phase: (accessory.id.hashCode % 628) / 100,
+                                  child: Text(accessory.emoji, style: const TextStyle(fontSize: 32)),
+                                )
+                              : const Text('❔', style: TextStyle(fontSize: 32)),
                           const SizedBox(height: 6),
                           Text(
                             unlocked

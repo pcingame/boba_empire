@@ -1874,6 +1874,10 @@ class AppLocalizationsId extends AppLocalizations {
   String get arenaOpponentScore => 'Lawan';
 
   @override
+  String get arenaGhostBadge =>
+      '👻 Pertandingan hantu: kamu melawan rekaman pemain lain. Hadiah berkurang dan tidak dihitung di peringkat.';
+
+  @override
   String get arenaResultWin => 'Kamu menang! 🎉';
 
   @override

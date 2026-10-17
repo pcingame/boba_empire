@@ -3186,6 +3186,12 @@ abstract class AppLocalizations {
   /// **'Đối thủ'**
   String get arenaOpponentScore;
 
+  /// No description provided for @arenaGhostBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'👻 Bóng ma: bạn đang đấu lại bản ghi của một người chơi. Thưởng giảm, không tính vào BXH.'**
+  String get arenaGhostBadge;
+
   /// No description provided for @arenaResultWin.
   ///
   /// In vi, this message translates to:

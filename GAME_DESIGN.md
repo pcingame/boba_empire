@@ -1175,3 +1175,18 @@ Giảm giá 38 món → 400 mỗi bộ). Tổng đời tối đa **2 850 Xu Ch�
 - Thêm món chính mới ⇒ chạy lại sinh danh sách bộ (test `collection_sets_test` bắt lệch Dart⇔SQL).
 - Test SQL: `scripts/test_market_sql.sh` (thêm `supabase/tests/collection_set_scenarios.sql`).
 - Thưởng là ước lượng chưa playtest; theo dõi giá Chợ (đây là nguồn Xu Chợ mới).
+
+## 45. Trận "bóng ma" Đấu Trường + hào quang món hiếm (2026-10-18)
+
+- **Bóng ma** (góp ý "Đấu Trường tìm đối lâu"): chờ ghép quá **12 giây** (dòng chờ < 5 phút) thì `arena_join_queue`
+  chọn ngẫu nhiên một trận đã kết thúc (cùng dạng, ≤ 30 ngày, người khác mình, chủ bản ghi có ≥ 5 hành động) rồi
+  **sao chép hành động của họ với mốc thời gian dịch sang trận mới** (+ chép `seq`). Chấm điểm dùng nguyên hàm cũ nên
+  điểm bóng ma = điểm bản gốc. `arena_matches.ghost = true`; chủ bản ghi (player_b) KHÔNG bị kẹt trận, không ghi
+  được vào trận, và trận này **không vào BXH Đấu Trường** (`not ghost` ở `arena_leaderboard_around_me`).
+  Client chỉ hiện hành động bóng ma đã "xảy ra" (`arenaVisibleLog`). Thưởng: thắng 1💎, thua 0 (trận thật 3/1) —
+  chống cày bằng cách tự chờ. Có biểu ngữ 👻 trong trận + ở kết quả.
+  **PHẢI chạy lại `supabase/arena_schema.sql` và `supabase/arena_leaderboard_schema.sql`.** Test SQL:
+  `scripts/test_arena_recipe_sql.sh` (thêm `arena_ghost_scenarios.sql`). Server cũ không có cột `ghost` → client
+  đọc thiếu = false (không vỡ). Ceiling: ít trận ghi sẵn thì hay gặp lại cùng một bóng ma.
+- **Hào quang món hiếm**: Kho — món Sử thi nhấp nháy quầng sáng, Huyền thoại thêm nhún nhẹ (`RarityGlint`), dùng
+  chung `AmbientTicker`, chỉ ở mức hiệu ứng Vừa/Cao, tắt khi giảm chuyển động.

@@ -562,6 +562,7 @@
   },
   "arenaYourScore": "Skor kamu",
   "arenaOpponentScore": "Lawan",
+  "arenaGhostBadge": "👻 Pertandingan hantu: kamu melawan rekaman pemain lain. Hadiah berkurang dan tidak dihitung di peringkat.",
   "arenaResultWin": "Kamu menang! 🎉",
   "arenaResultLose": "Kamu kalah",
   "arenaResultDraw": "Seri",

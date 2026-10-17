@@ -19,3 +19,4 @@ SQL
 P -f supabase/arena_schema.sql >/dev/null 2>&1 || { echo "nạp arena_schema lỗi"; P -f supabase/arena_schema.sql; exit 1; }
 P -f supabase/arena_schema.sql >/dev/null 2>&1 || { echo "không idempotent"; P -f supabase/arena_schema.sql; exit 1; }
 P -f supabase/tests/arena_recipe_scenarios.sql 2>&1 | grep -E "FAIL|ERROR|ARENA RECIPE OK" || { echo "NO RESULT"; exit 1; }
+P -f supabase/tests/arena_ghost_scenarios.sql 2>&1 | grep -E "FAIL|ERROR|ARENA GHOST OK" || { echo "NO RESULT (ghost)"; exit 1; }

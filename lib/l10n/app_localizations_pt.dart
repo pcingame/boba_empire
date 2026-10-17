@@ -1885,6 +1885,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get arenaOpponentScore => 'Rival';
 
   @override
+  String get arenaGhostBadge =>
+      '👻 Partida fantasma: você enfrenta a gravação de outro jogador. Recompensa menor e não conta para o ranking.';
+
+  @override
   String get arenaResultWin => 'Você venceu! 🎉';
 
   @override

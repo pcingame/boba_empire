@@ -20,6 +20,9 @@
 -- 'leaderboard_nickname' phía Flutter) — không hỏi lại người chơi đã đặt tên
 -- rồi.
 
+-- Cột do arena_schema.sql thêm; khai lại ở đây để file này chạy độc lập thứ tự nào cũng được.
+alter table arena_matches add column if not exists ghost boolean not null default false;
+
 create table if not exists arena_nicknames (
   user_id    uuid primary key references auth.users(id) on delete cascade,
   nickname   text not null check (char_length(nickname) between 1 and 20),
@@ -91,10 +94,10 @@ as $$
            count(*) as matches
     from (
       select player_a as player_id, (winner = player_a) as won
-        from arena_matches where status = 'finished'
+        from arena_matches where status = 'finished' and not ghost
       union all
       select player_b as player_id, (winner = player_b) as won
-        from arena_matches where status = 'finished'
+        from arena_matches where status = 'finished' and not ghost
     ) per_player
     group by player_id
   ),

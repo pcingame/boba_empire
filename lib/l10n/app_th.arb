@@ -562,6 +562,7 @@
   },
   "arenaYourScore": "คะแนนคุณ",
   "arenaOpponentScore": "คู่แข่ง",
+  "arenaGhostBadge": "👻 แมตช์ผี: คุณกำลังแข่งกับบันทึกของผู้เล่นคนอื่น รางวัลลดลงและไม่นับในอันดับ",
   "arenaResultWin": "คุณชนะ! 🎉",
   "arenaResultLose": "คุณแพ้",
   "arenaResultDraw": "เสมอ",

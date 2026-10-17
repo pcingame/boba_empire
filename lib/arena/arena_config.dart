@@ -30,4 +30,8 @@ class ArenaConfig {
   /// không đụng tới `GameState`/kinh tế chính.
   static const int winGems = 3;
   static const int loseGems = 1;
+
+  /// Trận bóng ma (chờ ghép quá 12 giây): thưởng giảm để không cày được bằng cách tự chờ.
+  static const int ghostWinGems = 1;
+  static const int ghostLoseGems = 0;
 }

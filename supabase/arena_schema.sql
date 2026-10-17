@@ -57,6 +57,10 @@ create index if not exists arena_actions_match_idx on arena_actions (match_id);
 alter table arena_queue   add column if not exists mode text not null default 'tap';
 alter table arena_matches add column if not exists mode text not null default 'tap';
 alter table arena_matches add column if not exists seq  smallint[];
+-- Trận "bóng ma" (2026-10-18): chờ ghép quá 12 giây thì đấu lại bản ghi của một trận cũ. player_b là
+-- chủ bản ghi (người thật, KHÔNG biết và không bị tính thắng/thua), hành động của họ được sao chép với
+-- mốc thời gian dịch sang trận mới. Không vào bảng xếp hạng, không chiếm chỗ trận của chủ bản ghi.
+alter table arena_matches add column if not exists ghost boolean not null default false;
 alter table arena_actions add column if not exists rot  smallint;
 alter table arena_actions add column if not exists col  smallint;
 alter table arena_actions add column if not exists cell smallint;
@@ -517,7 +521,7 @@ begin
   if not found then
     raise exception 'match not found';
   end if;
-  if me not in (m.player_a, m.player_b) then
+  if me not in (m.player_a, m.player_b) or (m.ghost and me = m.player_b) then
     raise exception 'not a participant';
   end if;
   if m.mode <> 'recipe' then
@@ -637,6 +641,8 @@ declare
   m arena_matches;
   sa numeric;
   sb numeric;
+  my_joined timestamptz;
+  src record;
 begin
   if me is null then
     raise exception 'not authenticated';
@@ -652,6 +658,7 @@ begin
   -- — tránh kẹt người chơi trong 1 trận ma mỗi lần họ mở lại Đấu Trường.
   select * into m from arena_matches
     where status = 'active' and me in (player_a, player_b)
+      and (not ghost or player_a = me) -- chủ bản ghi không bị kẹt trong trận bóng ma của người khác
     order by created_at desc limit 1;
   if found then
     if m.ends_at > now() then
@@ -681,6 +688,31 @@ begin
     limit 1;
 
   if opponent is null then
+    -- Chờ quá 12 giây (nhưng dòng chờ chưa cũ tới mức là dòng mồ côi) → đấu bóng ma nếu có bản ghi.
+    select joined_at into my_joined from arena_queue where player_id = me;
+    if my_joined <= now() - interval '12 seconds' and my_joined > now() - interval '5 minutes' then
+      select s.id, g.pid, s.seq, s.ends_at - s.started_at as dur into src
+      from arena_matches s
+      cross join lateral (values (s.player_a), (s.player_b)) g(pid)
+      where s.status = 'finished' and not s.ghost and s.mode = p_mode
+        and s.created_at > now() - interval '30 days'
+        and g.pid <> me
+        and (select count(*) from arena_actions x where x.match_id = s.id and x.player_id = g.pid) >= 5
+      order by random() limit 1;
+      if found then
+        delete from arena_queue where player_id = me;
+        insert into arena_matches (player_a, player_b, mode, seq, ends_at, ghost)
+          values (me, src.pid, p_mode, src.seq, now() + src.dur, true)
+          returning * into m;
+        -- Dịch mốc thời gian: hành động thứ n của bản gốc xảy ra sau (at - started_at gốc) giây kể từ khi trận mới bắt đầu.
+        insert into arena_actions (match_id, player_id, kind, at, rot, col, cell, dir, item_names, item_vals, score)
+          select m.id, x.player_id, x.kind, m.started_at + (x.at - o.started_at),
+                 x.rot, x.col, x.cell, x.dir, x.item_names, x.item_vals, x.score
+          from arena_actions x join arena_matches o on o.id = x.match_id
+          where x.match_id = src.id and x.player_id = src.pid;
+        return m;
+      end if;
+    end if;
     return null; -- vẫn đang chờ, client tự gọi lại sau
   end if;
 
@@ -761,7 +793,7 @@ begin
   if not found then
     raise exception 'match not found';
   end if;
-  if me not in (m.player_a, m.player_b) then
+  if me not in (m.player_a, m.player_b) or (m.ghost and me = m.player_b) then
     raise exception 'not a participant';
   end if;
   if m.status <> 'active' then

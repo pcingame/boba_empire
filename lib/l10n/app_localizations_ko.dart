@@ -1848,6 +1848,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get arenaOpponentScore => '상대';
 
   @override
+  String get arenaGhostBadge =>
+      '👻 고스트 매치: 다른 플레이어의 기록과 대결 중이에요. 보상이 줄고 랭킹에는 반영되지 않아요.';
+
+  @override
   String get arenaResultWin => '승리! 🎉';
 
   @override

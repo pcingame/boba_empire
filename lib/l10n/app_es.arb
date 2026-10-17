@@ -562,6 +562,7 @@
   },
   "arenaYourScore": "Tu puntuación",
   "arenaOpponentScore": "Rival",
+  "arenaGhostBadge": "👻 Partida fantasma: compites contra la grabación de otro jugador. Menos recompensa y no cuenta para el ranking.",
   "arenaResultWin": "¡Ganaste! 🎉",
   "arenaResultLose": "Perdiste",
   "arenaResultDraw": "Empate",

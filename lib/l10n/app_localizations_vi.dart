@@ -1869,6 +1869,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get arenaOpponentScore => 'Đối thủ';
 
   @override
+  String get arenaGhostBadge =>
+      '👻 Bóng ma: bạn đang đấu lại bản ghi của một người chơi. Thưởng giảm, không tính vào BXH.';
+
+  @override
   String get arenaResultWin => 'Bạn thắng! 🎉';
 
   @override

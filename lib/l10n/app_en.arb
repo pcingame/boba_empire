@@ -562,6 +562,7 @@
   },
   "arenaYourScore": "Your score",
   "arenaOpponentScore": "Opponent",
+  "arenaGhostBadge": "👻 Ghost match: you're racing a recording of another player. Reduced reward, doesn't count for the ranking.",
   "arenaResultWin": "You win! 🎉",
   "arenaResultLose": "You lost",
   "arenaResultDraw": "Draw",

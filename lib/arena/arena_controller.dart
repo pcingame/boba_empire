@@ -18,6 +18,11 @@ import 'arena_repository.dart';
 import 'arena_rules.dart';
 import 'match3_rules.dart';
 
+/// Kim Cương thưởng cho một trận đã kết thúc (bóng ma thưởng ít hơn — xem [ArenaConfig.ghostWinGems]).
+int arenaRewardGems(ArenaResult r) => r.ghost
+    ? (r.won ? ArenaConfig.ghostWinGems : ArenaConfig.ghostLoseGems)
+    : (r.won ? ArenaConfig.winGems : ArenaConfig.loseGems);
+
 /// Số đơn của một trận PK công thức (khớp SQL: `arena_submit_order` nhận idx 0..4).
 const int recipeOrdersPerMatch = 5;
 
@@ -47,7 +52,11 @@ class ArenaInMatch extends ArenaViewState {
     this.orderIds = const [],
     this.myServed = const {},
     this.theirServed = 0,
+    this.ghost = false,
   });
+
+  /// Đối thủ là bóng ma (bản ghi trận cũ).
+  final bool ghost;
 
   /// Dạng recipe: id món của 5 đơn (giống nhau cho cả hai người), các đơn MÌNH đã nộp (chỉ số 0..4) và số đơn đối thủ đã nộp.
   final List<int> orderIds;
@@ -93,6 +102,7 @@ class ArenaController extends Notifier<ArenaViewState> {
   List<ArenaLogEntry> _log = const [];
   final Set<int> _tiersBought = {};
   bool _resolving = false;
+  bool _ghost = false;
 
   ArenaMode _mode = ArenaMode.tap;
   List<int> _seq = const [];
@@ -173,6 +183,7 @@ class ArenaController extends Notifier<ArenaViewState> {
     _log = const [];
     _resolving = false;
     _mode = match.mode;
+    _ghost = match.ghost;
     _seq = match.seq;
     _board = Match3Board.initial(_seq);
     _myMatchScore = 0;
@@ -220,7 +231,7 @@ class ArenaController extends Notifier<ArenaViewState> {
     if (me == null) return;
     final mine = <ArenaAction>[];
     final theirs = <ArenaAction>[];
-    for (final entry in _log) {
+    for (final entry in arenaVisibleLog(_log, me: me, ghost: _ghost, now: DateTime.now())) {
       (entry.playerId == me ? mine : theirs).add(entry.action);
     }
     if (_mode == ArenaMode.recipe) {
@@ -269,6 +280,7 @@ class ArenaController extends Notifier<ArenaViewState> {
       orderIds: _mode == ArenaMode.recipe ? List<int>.unmodifiable(_seq) : const [],
       myServed: Set.unmodifiable(myServed),
       theirServed: theirServed,
+      ghost: _ghost,
     );
   }
 
@@ -422,9 +434,10 @@ class ArenaController extends Notifier<ArenaViewState> {
         myScore: myScore,
         opponentScore: opponentScore,
         won: resolved.winner == me,
+        ghost: resolved.ghost,
       );
       state = ArenaFinished(result);
-      onRewardGems?.call(result.won ? ArenaConfig.winGems : ArenaConfig.loseGems);
+      onRewardGems?.call(arenaRewardGems(result));
     } catch (e) {
       _fail(e);
     }
@@ -455,6 +468,7 @@ class ArenaController extends Notifier<ArenaViewState> {
     _log = const [];
     _tiersBought.clear();
     _resolving = false;
+    _ghost = false;
     _seq = const [];
     _board = Match3Board.initial(const []);
     _myMatchScore = 0;

@@ -514,6 +514,7 @@
   "arenaOnlineCount": "{count, plural, other{{count}명 접속 중}}",
   "arenaYourScore": "내 점수",
   "arenaOpponentScore": "상대",
+  "arenaGhostBadge": "👻 고스트 매치: 다른 플레이어의 기록과 대결 중이에요. 보상이 줄고 랭킹에는 반영되지 않아요.",
   "arenaResultWin": "승리! 🎉",
   "arenaResultLose": "패배",
   "arenaResultDraw": "무승부",

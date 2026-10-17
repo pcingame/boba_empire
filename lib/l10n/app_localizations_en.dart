@@ -1877,6 +1877,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get arenaOpponentScore => 'Opponent';
 
   @override
+  String get arenaGhostBadge =>
+      '👻 Ghost match: you\'re racing a recording of another player. Reduced reward, doesn\'t count for the ranking.';
+
+  @override
   String get arenaResultWin => 'You win! 🎉';
 
   @override
