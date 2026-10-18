@@ -1,5 +1,5 @@
 /// Trưng bày phụ kiện quanh cốc: lưu/đọc save, bật-tắt có giới hạn, tự gỡ khi bán nốt,
-/// chạm trong Kho, và hiện ở màn chính (buff của bộ trang bị: xem accessory_loadout_test.dart).
+/// chạm trong Kho (không còn hiện trên màn chính; buff của bộ trang bị: xem accessory_loadout_test.dart).
 library;
 
 import 'package:boba_empire/core/accessories.dart';
@@ -104,37 +104,6 @@ void main() {
       final eq = c.read(gameControllerProvider).equippedAccessories;
       expect(eq, ['mint_leaf', 'cupcake', 'cookie']); // galaxy bỏ; dragon vượt 3
     });
-  });
-
-  testWidgets('màn chính: phụ kiện đang trưng bày hiện quanh cốc; bỏ thì biến mất',
-      (tester) async {
-    await tester.binding.setSurfaceSize(const Size(400, 800));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
-    final c = await _container(
-      seed: GameState.newGame(nowMillis: 0)
-        ..ownedAccessories.addAll(['dragon', 'galaxy']),
-    );
-    await tester.pumpWidget(UncontrolledProviderScope(
-        container: c, child: const BobaEmpireApp()));
-    await tester.pumpAndSettle();
-    final floaters = find.byKey(const Key('equipped-floaters'));
-    Finder emoji(String e) =>
-        find.descendant(of: floaters, matching: find.text(e));
-    expect(emoji('🐉'), findsNothing);
-
-    final ctrl = c.read(gameControllerProvider.notifier);
-    ctrl.toggleEquippedAccessory('dragon');
-    ctrl.toggleEquippedAccessory('galaxy');
-    await tester.pump();
-    expect(emoji('🐉'), findsOneWidget);
-    expect(emoji('🌌'), findsOneWidget);
-
-    ctrl.toggleEquippedAccessory('dragon');
-    await tester.pump();
-    expect(emoji('🐉'), findsNothing);
-    expect(emoji('🌌'), findsOneWidget);
-    await tester.pumpWidget(const SizedBox());
-    c.dispose();
   });
 
   testWidgets('màn chính: nút Sưu tập ngang hàng Ưu đãi/Nhiệm vụ, mở Kho, chấm đỏ khi có mốc',
