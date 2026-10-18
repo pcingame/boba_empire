@@ -30,6 +30,8 @@
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Chọn ảnh đại diện cho hồ sơ của bạn.</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Dùng để hiển thị quảng cáo phù hợp hơn với bạn.</string>
 	<key>SKAdNetworkItems</key>

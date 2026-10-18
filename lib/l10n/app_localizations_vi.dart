@@ -1127,6 +1127,67 @@ class AppLocalizationsVi extends AppLocalizations {
   String get profileNoRanks => 'Chưa có hạng nào trên bảng xếp hạng.';
 
   @override
+  String get myProfileTitle => 'Hồ sơ của tôi';
+
+  @override
+  String get myProfileChangeAvatar => 'Đổi ảnh đại diện';
+
+  @override
+  String get myProfileRemoveAvatar => 'Gỡ ảnh';
+
+  @override
+  String get myProfileAvatarFail =>
+      'Không tải được ảnh. Cần mạng và tài khoản đã liên kết email.';
+
+  @override
+  String get myProfileAvatarTooBig => 'Ảnh quá lớn, hãy chọn ảnh khác.';
+
+  @override
+  String get myProfileNoNickname =>
+      'Chưa đặt biệt danh. Vào một bảng xếp hạng để đặt tên.';
+
+  @override
+  String get myProfileStatStage => 'Giai đoạn';
+
+  @override
+  String get myProfileStatEarned => 'Tổng thu';
+
+  @override
+  String get myProfileStatStars => 'Sao';
+
+  @override
+  String get myProfileStatAscend => 'Thăng Thiên';
+
+  @override
+  String get myProfileStatVip => 'VIP';
+
+  @override
+  String get myProfileStatCollection => 'Sưu tập';
+
+  @override
+  String get myProfileStatAchievements => 'Thành tựu';
+
+  @override
+  String get myProfileRanks => 'Xem hạng của tôi';
+
+  @override
+  String get myProfileShare => 'Chia sẻ hồ sơ';
+
+  @override
+  String get avatarReport => 'Báo cáo ảnh';
+
+  @override
+  String get avatarReportConfirm =>
+      'Báo cáo ảnh đại diện này là vi phạm (hình ảnh không phù hợp)?';
+
+  @override
+  String get avatarReportSent => 'Đã gửi báo cáo. Cảm ơn bạn!';
+
+  @override
+  String get avatarReportFail =>
+      'Không gửi được báo cáo. Cần mạng và tài khoản đã liên kết email.';
+
+  @override
   String get titlePickerTitle => 'Danh hiệu';
 
   @override

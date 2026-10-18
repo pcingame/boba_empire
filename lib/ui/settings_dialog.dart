@@ -9,7 +9,9 @@ import 'how_to_play_dialog.dart';
 import 'language_dialog.dart';
 import 'redeem_dialog.dart';
 import 'invite_dialog.dart' show shareTextProvider;
-import 'title_picker_dialog.dart';
+import '../leaderboard/player_avatar.dart';
+import 'my_profile_page.dart';
+import 'widgets/avatar_circle.dart';
 import 'web_links.dart';
 import 'widgets/effects_quality.dart';
 
@@ -71,6 +73,17 @@ class _SettingsDialog extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           ListTile(
+            key: const Key('settings-my-profile'),
+            contentPadding: EdgeInsets.zero,
+            leading: AvatarCircle(avatarKey: ref.watch(myAvatarProvider), size: 40),
+            title: Text(l10n.myProfileTitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              Navigator.of(context).pop();
+              showMyProfile(context);
+            },
+          ),
+          ListTile(
             key: const Key('how-to-play-button'),
             contentPadding: EdgeInsets.zero,
             leading: const Icon(Icons.help_outline),
@@ -110,14 +123,6 @@ class _SettingsDialog extends ConsumerWidget {
                 },
               ),
             ),
-          ListTile(
-            key: const Key('settings-title'),
-            contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.military_tech_outlined),
-            title: Text(l10n.titlePickerTitle),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => showTitlePicker(context),
-          ),
           ListTile(
             key: const Key('settings-web-guide'),
             contentPadding: EdgeInsets.zero,

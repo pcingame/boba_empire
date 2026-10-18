@@ -1223,3 +1223,9 @@ Giảm giá 38 món → 400 mỗi bộ). Tổng đời tối đa **2 850 Xu Ch�
 
 ### 46d. BXH Thẻ Mùa
 - Nút 🏆 trên trang Thẻ Mùa mở bảng xếp hạng XP của mùa hiện tại (top 50). Mỗi mùa một tập hàng riêng nên tự reset. Chỉ tài khoản liên kết email, XP client tự khai (chỉ tăng, trần 4200). Chưa có thưởng cuối mùa theo hạng. SQL: `supabase/season_leaderboard_schema.sql`.
+
+## 48. Trang hồ sơ của tôi + avatar ảnh (2026-10-18, chưa playtest)
+- Cài đặt → "Hồ sơ của tôi" (`lib/ui/my_profile_page.dart`): avatar ảnh tự tải lên, biệt danh, danh hiệu (chọn tại đây), 7 thống kê tiến độ, nút xem hạng + chia sẻ. Mục chọn danh hiệu cũ ở Cài đặt đã chuyển vào trang này.
+- Avatar: `image_picker` chọn ảnh → thu 256px/JPEG q80 → tải lên bucket công khai `avatars` (≤100KB, chỉ JPEG) qua khoá ngẫu nhiên do `new_avatar_key()` cấp (không lộ user_id). Người khác thấy ở hồ sơ công khai. Chỉ tài khoản liên kết email. SQL: `supabase/player_avatar_schema.sql`.
+- Kiểm duyệt: nút "Báo cáo ảnh" trên hồ sơ công khai của người khác (cần liên kết email, xác nhận trước khi gửi). Server (`report_avatar`) tự tra ảnh theo tên; mỗi người báo cáo mỗi ảnh một lần; đủ 3 người khác nhau → ảnh tự ẩn chờ duyệt (`avatar_reports` để xem). Người bị ẩn đổi ảnh mới thì hết ẩn. Gỡ tay: `update player_avatars set hidden = true where user_id = ...`. Chưa có cơ chế cấm hẳn người tái phạm. Ảnh cũ bị xoá khi đổi; lỗi xoá để lại file mồ côi vài KB.
+- Nút ở màn chính đã thử rồi bỏ: header chật, test khoảng cách số xu–💎 ở 360/393dp (VIP) vỡ.

@@ -9,9 +9,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/format.dart';
 import '../core/titles.dart';
 import '../l10n/l10n_ext.dart';
+import '../leaderboard/player_avatar.dart';
 import '../leaderboard/player_title.dart';
+import 'widgets/avatar_circle.dart';
 import '../l10n/app_localizations.dart';
 import '../leaderboard/player_profile.dart';
+import '../state/game_providers.dart';
+import 'email_gate.dart';
 import 'web_links.dart';
 
 Future<void> showPlayerProfile(BuildContext context, String nickname) =>
@@ -39,11 +43,43 @@ class PlayerProfileDialog extends ConsumerWidget {
         _ => formatNumber(r.value),
       };
 
+  Future<void> _report(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context)!;
+    final messenger = ScaffoldMessenger.of(context);
+    final sure = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        key: const Key('avatar-report-confirm'),
+        content: Text(l10n.avatarReportConfirm),
+        actions: [
+          TextButton(onPressed: () => Navigator.of(ctx).pop(false), child: Text(l10n.cancel)),
+          FilledButton(
+              key: const Key('avatar-report-send'),
+              onPressed: () => Navigator.of(ctx).pop(true),
+              child: Text(l10n.avatarReport)),
+        ],
+      ),
+    );
+    if (sure != true || !context.mounted) return;
+    if (!await ensureOnlineLinked(context)) return;
+    String msg;
+    try {
+      await ref.read(avatarRepositoryProvider).report(nickname);
+      msg = l10n.avatarReportSent;
+    } catch (_) {
+      msg = l10n.avatarReportFail;
+    }
+    messenger
+      ..clearSnackBars()
+      ..showSnackBar(SnackBar(content: Text(msg)));
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final async = ref.watch(playerProfileProvider(nickname));
+    final avatarKey = ref.watch(playerAvatarProvider(nickname)).value ?? '';
     final title = playerTitleById(ref.watch(playerTitleProvider(nickname)).value ?? '');
     return AlertDialog(
       title: Text(l10n.profileTitle(nickname), maxLines: 2, overflow: TextOverflow.ellipsis),
@@ -55,6 +91,20 @@ class PlayerProfileDialog extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (avatarKey.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: Column(children: [
+                      AvatarCircle(avatarKey: avatarKey, size: 72),
+                      // Không báo cáo ảnh của chính mình.
+                      if (nickname != (ref.read(sharedPreferencesProvider).getString('leaderboard_nickname') ?? ''))
+                        TextButton(
+                          key: const Key('avatar-report'),
+                          onPressed: () => _report(context, ref),
+                          child: Text(l10n.avatarReport),
+                        ),
+                    ]),
+                  ),
                 if (title != null)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 6),

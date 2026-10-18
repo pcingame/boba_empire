@@ -1926,6 +1926,120 @@ abstract class AppLocalizations {
   /// **'Chưa có hạng nào trên bảng xếp hạng.'**
   String get profileNoRanks;
 
+  /// No description provided for @myProfileTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hồ sơ của tôi'**
+  String get myProfileTitle;
+
+  /// No description provided for @myProfileChangeAvatar.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi ảnh đại diện'**
+  String get myProfileChangeAvatar;
+
+  /// No description provided for @myProfileRemoveAvatar.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gỡ ảnh'**
+  String get myProfileRemoveAvatar;
+
+  /// No description provided for @myProfileAvatarFail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tải được ảnh. Cần mạng và tài khoản đã liên kết email.'**
+  String get myProfileAvatarFail;
+
+  /// No description provided for @myProfileAvatarTooBig.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh quá lớn, hãy chọn ảnh khác.'**
+  String get myProfileAvatarTooBig;
+
+  /// No description provided for @myProfileNoNickname.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đặt biệt danh. Vào một bảng xếp hạng để đặt tên.'**
+  String get myProfileNoNickname;
+
+  /// No description provided for @myProfileStatStage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giai đoạn'**
+  String get myProfileStatStage;
+
+  /// No description provided for @myProfileStatEarned.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng thu'**
+  String get myProfileStatEarned;
+
+  /// No description provided for @myProfileStatStars.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao'**
+  String get myProfileStatStars;
+
+  /// No description provided for @myProfileStatAscend.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thăng Thiên'**
+  String get myProfileStatAscend;
+
+  /// No description provided for @myProfileStatVip.
+  ///
+  /// In vi, this message translates to:
+  /// **'VIP'**
+  String get myProfileStatVip;
+
+  /// No description provided for @myProfileStatCollection.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sưu tập'**
+  String get myProfileStatCollection;
+
+  /// No description provided for @myProfileStatAchievements.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thành tựu'**
+  String get myProfileStatAchievements;
+
+  /// No description provided for @myProfileRanks.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem hạng của tôi'**
+  String get myProfileRanks;
+
+  /// No description provided for @myProfileShare.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia sẻ hồ sơ'**
+  String get myProfileShare;
+
+  /// No description provided for @avatarReport.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo cáo ảnh'**
+  String get avatarReport;
+
+  /// No description provided for @avatarReportConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo cáo ảnh đại diện này là vi phạm (hình ảnh không phù hợp)?'**
+  String get avatarReportConfirm;
+
+  /// No description provided for @avatarReportSent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gửi báo cáo. Cảm ơn bạn!'**
+  String get avatarReportSent;
+
+  /// No description provided for @avatarReportFail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không gửi được báo cáo. Cần mạng và tài khoản đã liên kết email.'**
+  String get avatarReportFail;
+
   /// No description provided for @titlePickerTitle.
   ///
   /// In vi, this message translates to:

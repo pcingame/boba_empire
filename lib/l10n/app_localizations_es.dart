@@ -1137,6 +1137,67 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profileNoRanks => 'Aún no está en ninguna clasificación.';
 
   @override
+  String get myProfileTitle => 'Mi perfil';
+
+  @override
+  String get myProfileChangeAvatar => 'Cambiar avatar';
+
+  @override
+  String get myProfileRemoveAvatar => 'Quitar foto';
+
+  @override
+  String get myProfileAvatarFail =>
+      'No se pudo subir la foto. Necesitas conexión y una cuenta vinculada por email.';
+
+  @override
+  String get myProfileAvatarTooBig =>
+      'La foto es demasiado grande, elige otra.';
+
+  @override
+  String get myProfileNoNickname =>
+      'Aún sin apodo. Abre un ranking para ponerlo.';
+
+  @override
+  String get myProfileStatStage => 'Etapa';
+
+  @override
+  String get myProfileStatEarned => 'Total ganado';
+
+  @override
+  String get myProfileStatStars => 'Estrellas';
+
+  @override
+  String get myProfileStatAscend => 'Ascensiones';
+
+  @override
+  String get myProfileStatVip => 'VIP';
+
+  @override
+  String get myProfileStatCollection => 'Colección';
+
+  @override
+  String get myProfileStatAchievements => 'Logros';
+
+  @override
+  String get myProfileRanks => 'Ver mis rangos';
+
+  @override
+  String get myProfileShare => 'Compartir perfil';
+
+  @override
+  String get avatarReport => 'Denunciar foto';
+
+  @override
+  String get avatarReportConfirm => '¿Denunciar este avatar como inapropiado?';
+
+  @override
+  String get avatarReportSent => 'Denuncia enviada. ¡Gracias!';
+
+  @override
+  String get avatarReportFail =>
+      'No se pudo enviar la denuncia. Necesitas conexión y una cuenta vinculada por email.';
+
+  @override
   String get titlePickerTitle => 'Título';
 
   @override

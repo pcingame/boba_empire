@@ -1110,6 +1110,63 @@ class AppLocalizationsKo extends AppLocalizations {
   String get profileNoRanks => '아직 어떤 순위에도 없어요.';
 
   @override
+  String get myProfileTitle => '내 프로필';
+
+  @override
+  String get myProfileChangeAvatar => '아바타 변경';
+
+  @override
+  String get myProfileRemoveAvatar => '사진 삭제';
+
+  @override
+  String get myProfileAvatarFail => '사진을 올리지 못했습니다. 네트워크와 이메일 연동 계정이 필요합니다.';
+
+  @override
+  String get myProfileAvatarTooBig => '사진이 너무 큽니다. 다른 사진을 선택하세요.';
+
+  @override
+  String get myProfileNoNickname => '닉네임이 없습니다. 순위표를 열어 설정하세요.';
+
+  @override
+  String get myProfileStatStage => '단계';
+
+  @override
+  String get myProfileStatEarned => '누적 수입';
+
+  @override
+  String get myProfileStatStars => '별';
+
+  @override
+  String get myProfileStatAscend => '승천';
+
+  @override
+  String get myProfileStatVip => 'VIP';
+
+  @override
+  String get myProfileStatCollection => '수집';
+
+  @override
+  String get myProfileStatAchievements => '업적';
+
+  @override
+  String get myProfileRanks => '내 순위 보기';
+
+  @override
+  String get myProfileShare => '프로필 공유';
+
+  @override
+  String get avatarReport => '사진 신고';
+
+  @override
+  String get avatarReportConfirm => '이 아바타를 부적절한 이미지로 신고할까요?';
+
+  @override
+  String get avatarReportSent => '신고가 접수되었습니다. 감사합니다!';
+
+  @override
+  String get avatarReportFail => '신고를 보내지 못했습니다. 네트워크와 이메일 연동 계정이 필요합니다.';
+
+  @override
   String get titlePickerTitle => '칭호';
 
   @override

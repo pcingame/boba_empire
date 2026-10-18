@@ -1130,6 +1130,66 @@ class AppLocalizationsId extends AppLocalizations {
   String get profileNoRanks => 'Belum ada di peringkat mana pun.';
 
   @override
+  String get myProfileTitle => 'Profil saya';
+
+  @override
+  String get myProfileChangeAvatar => 'Ganti avatar';
+
+  @override
+  String get myProfileRemoveAvatar => 'Hapus foto';
+
+  @override
+  String get myProfileAvatarFail =>
+      'Gagal mengunggah foto. Perlu koneksi dan akun yang terhubung email.';
+
+  @override
+  String get myProfileAvatarTooBig => 'Foto terlalu besar, pilih yang lain.';
+
+  @override
+  String get myProfileNoNickname =>
+      'Belum ada nama panggilan. Buka papan peringkat untuk mengisinya.';
+
+  @override
+  String get myProfileStatStage => 'Tahap';
+
+  @override
+  String get myProfileStatEarned => 'Total pendapatan';
+
+  @override
+  String get myProfileStatStars => 'Bintang';
+
+  @override
+  String get myProfileStatAscend => 'Ascension';
+
+  @override
+  String get myProfileStatVip => 'VIP';
+
+  @override
+  String get myProfileStatCollection => 'Koleksi';
+
+  @override
+  String get myProfileStatAchievements => 'Pencapaian';
+
+  @override
+  String get myProfileRanks => 'Lihat peringkat saya';
+
+  @override
+  String get myProfileShare => 'Bagikan profil';
+
+  @override
+  String get avatarReport => 'Laporkan foto';
+
+  @override
+  String get avatarReportConfirm => 'Laporkan avatar ini sebagai tidak pantas?';
+
+  @override
+  String get avatarReportSent => 'Laporan terkirim. Terima kasih!';
+
+  @override
+  String get avatarReportFail =>
+      'Gagal mengirim laporan. Perlu koneksi dan akun yang terhubung email.';
+
+  @override
   String get titlePickerTitle => 'Gelar';
 
   @override

@@ -1128,6 +1128,66 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileNoRanks => 'Not on any leaderboard yet.';
 
   @override
+  String get myProfileTitle => 'My profile';
+
+  @override
+  String get myProfileChangeAvatar => 'Change avatar';
+
+  @override
+  String get myProfileRemoveAvatar => 'Remove photo';
+
+  @override
+  String get myProfileAvatarFail =>
+      'Couldn\'t upload the photo. You need a connection and an email-linked account.';
+
+  @override
+  String get myProfileAvatarTooBig => 'That photo is too large, pick another.';
+
+  @override
+  String get myProfileNoNickname =>
+      'No nickname yet. Open any leaderboard to set one.';
+
+  @override
+  String get myProfileStatStage => 'Stage';
+
+  @override
+  String get myProfileStatEarned => 'Total earned';
+
+  @override
+  String get myProfileStatStars => 'Stars';
+
+  @override
+  String get myProfileStatAscend => 'Ascensions';
+
+  @override
+  String get myProfileStatVip => 'VIP';
+
+  @override
+  String get myProfileStatCollection => 'Collection';
+
+  @override
+  String get myProfileStatAchievements => 'Achievements';
+
+  @override
+  String get myProfileRanks => 'See my ranks';
+
+  @override
+  String get myProfileShare => 'Share profile';
+
+  @override
+  String get avatarReport => 'Report photo';
+
+  @override
+  String get avatarReportConfirm => 'Report this avatar as inappropriate?';
+
+  @override
+  String get avatarReportSent => 'Report sent. Thank you!';
+
+  @override
+  String get avatarReportFail =>
+      'Couldn\'t send the report. You need a connection and an email-linked account.';
+
+  @override
   String get titlePickerTitle => 'Title';
 
   @override

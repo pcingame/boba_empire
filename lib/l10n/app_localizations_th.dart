@@ -1127,6 +1127,66 @@ class AppLocalizationsTh extends AppLocalizations {
   String get profileNoRanks => 'ยังไม่อยู่ในอันดับใด ๆ';
 
   @override
+  String get myProfileTitle => 'โปรไฟล์ของฉัน';
+
+  @override
+  String get myProfileChangeAvatar => 'เปลี่ยนรูปประจำตัว';
+
+  @override
+  String get myProfileRemoveAvatar => 'ลบรูป';
+
+  @override
+  String get myProfileAvatarFail =>
+      'อัปโหลดรูปไม่สำเร็จ ต้องมีอินเทอร์เน็ตและบัญชีที่ผูกอีเมล';
+
+  @override
+  String get myProfileAvatarTooBig => 'รูปใหญ่เกินไป เลือกรูปอื่น';
+
+  @override
+  String get myProfileNoNickname =>
+      'ยังไม่มีชื่อเล่น เปิดอันดับใดก็ได้เพื่อตั้งชื่อ';
+
+  @override
+  String get myProfileStatStage => 'ช่วง';
+
+  @override
+  String get myProfileStatEarned => 'รายได้รวม';
+
+  @override
+  String get myProfileStatStars => 'ดาว';
+
+  @override
+  String get myProfileStatAscend => 'เลื่อนขั้น';
+
+  @override
+  String get myProfileStatVip => 'VIP';
+
+  @override
+  String get myProfileStatCollection => 'สะสม';
+
+  @override
+  String get myProfileStatAchievements => 'ความสำเร็จ';
+
+  @override
+  String get myProfileRanks => 'ดูอันดับของฉัน';
+
+  @override
+  String get myProfileShare => 'แชร์โปรไฟล์';
+
+  @override
+  String get avatarReport => 'รายงานรูป';
+
+  @override
+  String get avatarReportConfirm => 'รายงานรูปประจำตัวนี้ว่าไม่เหมาะสมหรือไม่?';
+
+  @override
+  String get avatarReportSent => 'ส่งรายงานแล้ว ขอบคุณ!';
+
+  @override
+  String get avatarReportFail =>
+      'ส่งรายงานไม่สำเร็จ ต้องมีอินเทอร์เน็ตและบัญชีที่ผูกอีเมล';
+
+  @override
   String get titlePickerTitle => 'ฉายา';
 
   @override
