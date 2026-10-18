@@ -15,12 +15,10 @@ import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
 import 'daily_quests_dialog.dart' show AccessoryReveal;
 import 'widgets/accessory_reveal.dart';
+import 'daily_hub_dialog.dart';
 import 'widgets/clay.dart';
 
-Future<void> showWeeklyQuests(BuildContext context) => showDialog<void>(
-      context: context,
-      builder: (_) => const _WeeklyQuestsDialog(),
-    );
+Future<void> showWeeklyQuests(BuildContext context) => showDailyHub(context, DailyHubTab.weekly);
 
 String _title(AppLocalizations l10n, WeeklyQuestView q) => switch (q.kind) {
       WeeklyQuestKind.prestige => l10n.wqPrestige(q.target),
@@ -33,14 +31,17 @@ String _title(AppLocalizations l10n, WeeklyQuestView q) => switch (q.kind) {
       WeeklyQuestKind.recipeLevels => l10n.wqRecipeLevels(q.target),
     };
 
-class _WeeklyQuestsDialog extends ConsumerStatefulWidget {
-  const _WeeklyQuestsDialog();
+class WeeklyQuestsPanel extends ConsumerStatefulWidget {
+  const WeeklyQuestsPanel({super.key, this.embedded = false});
+
+  /// true: chỉ phần nội dung (không khung hộp thoại) — dùng trong hộp thoại gộp có tab (daily_hub_dialog.dart).
+  final bool embedded;
 
   @override
-  ConsumerState<_WeeklyQuestsDialog> createState() => _WeeklyQuestsDialogState();
+  ConsumerState<WeeklyQuestsPanel> createState() => _WeeklyQuestsDialogState();
 }
 
-class _WeeklyQuestsDialogState extends ConsumerState<_WeeklyQuestsDialog> {
+class _WeeklyQuestsDialogState extends ConsumerState<WeeklyQuestsPanel> {
   /// Phụ kiện vừa rớt từ rương — chỉ hiện trong phiên hộp thoại này (đã có trong Kho).
   AccessoryDrop? _revealed;
 
@@ -71,9 +72,7 @@ class _WeeklyQuestsDialogState extends ConsumerState<_WeeklyQuestsDialog> {
     final now = ref.read(clockProvider)();
     final controller = ref.read(gameControllerProvider.notifier);
 
-    return AlertDialog(
-      title: Text(l10n.weeklyQuestsTitle),
-      content: SingleChildScrollView(
+    final body = SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -124,7 +123,11 @@ class _WeeklyQuestsDialogState extends ConsumerState<_WeeklyQuestsDialog> {
             ),
           ],
         ),
-      ),
+      );
+    if (widget.embedded) return body;
+    return AlertDialog(
+      title: Text(l10n.weeklyQuestsTitle),
+      content: body,
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),

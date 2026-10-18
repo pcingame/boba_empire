@@ -32,7 +32,6 @@ Future<Set<String>> _sweep(WidgetTester tester, String locale, double scale) asy
     'prestige-button',
     'achievements-button',
     'compete-button',
-    'rewards-chip',
     'daily-quests-chip',
     'collection-chip',
   ];

@@ -204,7 +204,9 @@ void main() {
     await _pump(tester, iap,
         linked: false,
         seed: GameState.newGame(nowMillis: 0)..piggyGems = Balance.piggyMinBreak + 1);
-    await tester.tap(find.byKey(const Key('rewards-chip')));
+    await tester.tap(find.byKey(const Key('daily-quests-chip')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('hub-tab-rewards')));
     await tester.pumpAndSettle();
     await tester.tap(find.widgetWithText(FilledButton, r'Đập $0.99'));
     await tester.pumpAndSettle();
@@ -218,7 +220,9 @@ void main() {
     final iap = _ControlledIap();
     await _pump(tester, iap,
         seed: GameState.newGame(nowMillis: 0)..piggyGems = Balance.piggyMinBreak + 1);
-    await tester.tap(find.byKey(const Key('rewards-chip')));
+    await tester.tap(find.byKey(const Key('daily-quests-chip')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('hub-tab-rewards')));
     await tester.pumpAndSettle();
     await tester.tap(find.widgetWithText(FilledButton, r'Đập $0.99'));
     await tester.pumpAndSettle();
@@ -231,7 +235,9 @@ void main() {
   testWidgets('Mời bạn (hộp Kiếm thêm): chưa liên kết email → hộp yêu cầu, chưa mở hộp mời',
       (tester) async {
     await _pump(tester, _ControlledIap(), linked: false);
-    await tester.tap(find.byKey(const Key('rewards-chip')));
+    await tester.tap(find.byKey(const Key('daily-quests-chip')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('hub-tab-rewards')));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('rewards-invite')));
     await tester.pumpAndSettle();
@@ -244,7 +250,9 @@ void main() {
 
   testWidgets('Mời bạn: đã liên kết email → mở thẳng hộp mời', (tester) async {
     await _pump(tester, _ControlledIap(), linked: true);
-    await tester.tap(find.byKey(const Key('rewards-chip')));
+    await tester.tap(find.byKey(const Key('daily-quests-chip')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('hub-tab-rewards')));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('rewards-invite')));
     await tester.pumpAndSettle();

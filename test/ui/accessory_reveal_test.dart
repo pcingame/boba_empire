@@ -39,6 +39,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('accessory-reveal')), findsNothing); // chưa nhận
 
+    await tester.ensureVisible(find.byKey(const Key('daily-quest-bonus')));
     await tester.tap(find.byKey(const Key('daily-quest-bonus')));
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('accessory-reveal')), findsOneWidget);

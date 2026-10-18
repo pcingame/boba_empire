@@ -240,6 +240,7 @@ void main() {
       final c = await _pump(tester, seed(now, bonusClaimed: true), ads, now: now);
       await tester.tap(find.byKey(const Key('daily-quests-chip')));
       await tester.pumpAndSettle();
+      await tester.ensureVisible(find.byKey(const Key('accessory-ad-drop')));
       await tester.tap(find.byKey(const Key('accessory-ad-drop')));
       await tester.pumpAndSettle();
       expect(ads.shown, 1);
@@ -254,6 +255,7 @@ void main() {
       final c = await _pump(tester, seed(now, bonusClaimed: true), ads, now: now);
       await tester.tap(find.byKey(const Key('daily-quests-chip')));
       await tester.pumpAndSettle();
+      await tester.ensureVisible(find.byKey(const Key('accessory-ad-drop')));
       await tester.tap(find.byKey(const Key('accessory-ad-drop')));
       await tester.pumpAndSettle();
       expect(c.read(gameControllerProvider).ownedAccessories, isEmpty);
@@ -317,6 +319,7 @@ void main() {
       await tester.tap(find.byKey(const Key('daily-quests-chip')));
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('accessory-ad-drop')), findsOneWidget);
+      await tester.ensureVisible(find.byKey(const Key('accessory-ad-drop')));
       await tester.tap(find.byKey(const Key('accessory-ad-drop'))); // + reveal
       await tester.pumpAndSettle();
       expect(c.read(gameControllerProvider).ownedAccessories.length, 1);

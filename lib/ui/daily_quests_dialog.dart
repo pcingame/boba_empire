@@ -17,7 +17,7 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
-import 'weekly_quests_dialog.dart';
+import 'daily_hub_dialog.dart';
 import 'widgets/accessory_reveal.dart';
 import 'widgets/accessory_rarity.dart';
 import 'widgets/anim_assets.dart';
@@ -25,12 +25,7 @@ import 'widgets/clay.dart';
 import 'widgets/motion.dart';
 import 'widgets/one_shot_lottie.dart';
 
-Future<void> showDailyQuests(BuildContext context) {
-  return showDialog<void>(
-    context: context,
-    builder: (_) => const _DailyQuestsDialog(),
-  );
-}
+Future<void> showDailyQuests(BuildContext context) => showDailyHub(context, DailyHubTab.daily);
 
 String _title(AppLocalizations l10n, DailyQuestView q) => switch (q.kind) {
       DailyQuestKind.tap => l10n.dqTap(q.target.toInt()),
@@ -42,14 +37,17 @@ String _title(AppLocalizations l10n, DailyQuestView q) => switch (q.kind) {
       DailyQuestKind.recipe => l10n.dqRecipe,
     };
 
-class _DailyQuestsDialog extends ConsumerStatefulWidget {
-  const _DailyQuestsDialog();
+class DailyQuestsPanel extends ConsumerStatefulWidget {
+  const DailyQuestsPanel({super.key, this.embedded = false});
+
+  /// true: chỉ phần nội dung (không khung hộp thoại) — dùng trong hộp thoại gộp có tab (daily_hub_dialog.dart).
+  final bool embedded;
 
   @override
-  ConsumerState<_DailyQuestsDialog> createState() => _DailyQuestsDialogState();
+  ConsumerState<DailyQuestsPanel> createState() => _DailyQuestsDialogState();
 }
 
-class _DailyQuestsDialogState extends ConsumerState<_DailyQuestsDialog> {
+class _DailyQuestsDialogState extends ConsumerState<DailyQuestsPanel> {
   /// Phụ kiện vừa rớt khi nhận thưởng "xong cả bộ" — hiện NỘI TUYẾN ngay trong hộp
   /// thoại (không thêm popup mới; chuỗi popup mở app đã dài). Chỉ trong phiên hộp
   /// thoại này: mở lại sau đó thì không còn (đã có trong Kho).
@@ -122,9 +120,7 @@ class _DailyQuestsDialogState extends ConsumerState<_DailyQuestsDialog> {
       }
     }
 
-    return AlertDialog(
-      title: Text(l10n.dailyQuestsTitle),
-      content: SingleChildScrollView(
+    final body = SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -224,13 +220,12 @@ class _DailyQuestsDialogState extends ConsumerState<_DailyQuestsDialog> {
             ),
           ],
         ),
-      ),
+      );
+    if (widget.embedded) return body;
+    return AlertDialog(
+      title: Text(l10n.dailyQuestsTitle),
+      content: body,
       actions: [
-        TextButton(
-          key: const Key('weekly-quests-open'),
-          onPressed: () => showWeeklyQuests(context),
-          child: Text(l10n.weeklyQuestsOpen),
-        ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: Text(l10n.close),

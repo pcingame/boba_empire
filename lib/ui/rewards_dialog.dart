@@ -9,6 +9,7 @@ import '../iap/iap_products.dart';
 import '../iap/iap_service.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
+import 'daily_hub_dialog.dart';
 import 'wheel_dialog.dart';
 import 'widgets/clay.dart';
 import 'email_gate.dart';
@@ -17,21 +18,19 @@ import '../referral/referral_repository.dart';
 
 /// "Kiếm thêm 🎁" — các ưu đãi xem quảng cáo thưởng: x2 thu nhập 24h, nhận Kim
 /// Cương, tua nhanh. Người đã mua "Gỡ QC" nhận thẳng, không phải xem.
-Future<void> showRewards(BuildContext context) {
-  return showDialog<void>(
-    context: context,
-    builder: (_) => const _RewardsDialog(),
-  );
-}
+Future<void> showRewards(BuildContext context) => showDailyHub(context, DailyHubTab.rewards);
 
-class _RewardsDialog extends ConsumerStatefulWidget {
-  const _RewardsDialog();
+class RewardsPanel extends ConsumerStatefulWidget {
+  const RewardsPanel({super.key, this.embedded = false});
+
+  /// true: chỉ phần nội dung (không khung hộp thoại) — dùng trong hộp thoại gộp có tab (daily_hub_dialog.dart).
+  final bool embedded;
 
   @override
-  ConsumerState<_RewardsDialog> createState() => _RewardsDialogState();
+  ConsumerState<RewardsPanel> createState() => _RewardsDialogState();
 }
 
-class _RewardsDialogState extends ConsumerState<_RewardsDialog> {
+class _RewardsDialogState extends ConsumerState<RewardsPanel> {
   bool _busy = false;
   late final Future<Map<IapProduct, String>> _prices = ref
       .read(iapServiceProvider)
@@ -76,9 +75,7 @@ class _RewardsDialogState extends ConsumerState<_RewardsDialog> {
       gameControllerProvider.select((s) => s.freeSpinAvailable),
     );
 
-    return AlertDialog(
-      title: Text(l10n.rewardsTitle),
-      content: SingleChildScrollView(
+    final body = SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -167,7 +164,11 @@ class _RewardsDialogState extends ConsumerState<_RewardsDialog> {
             ),
           ],
         ),
-      ),
+      );
+    if (widget.embedded) return body;
+    return AlertDialog(
+      title: Text(l10n.rewardsTitle),
+      content: body,
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),

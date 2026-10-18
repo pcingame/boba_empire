@@ -760,6 +760,10 @@
   "refErrNetwork": "Lỗi mạng, thử lại nhé.",
   "vipLbOpen": "Bảng xếp hạng VIP",
   "rewardsTitle": "Kiếm thêm 🎁",
+  "dailyHubTitle": "Nhiệm vụ & Quà",
+  "dailyHubTabDaily": "Ngày",
+  "dailyHubTabWeekly": "Tuần",
+  "dailyHubTabRewards": "Quà 🎁",
   "rewardsChip": "Kiếm thêm",
   "rewardAutoTapName": "Tự động chạm {m} phút",
   "@rewardAutoTapName": {

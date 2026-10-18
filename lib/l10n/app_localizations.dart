@@ -2304,6 +2304,30 @@ abstract class AppLocalizations {
   /// **'Kiếm thêm 🎁'**
   String get rewardsTitle;
 
+  /// No description provided for @dailyHubTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiệm vụ & Quà'**
+  String get dailyHubTitle;
+
+  /// No description provided for @dailyHubTabDaily.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngày'**
+  String get dailyHubTabDaily;
+
+  /// No description provided for @dailyHubTabWeekly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tuần'**
+  String get dailyHubTabWeekly;
+
+  /// No description provided for @dailyHubTabRewards.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quà 🎁'**
+  String get dailyHubTabRewards;
+
   /// No description provided for @rewardsChip.
   ///
   /// In vi, this message translates to:

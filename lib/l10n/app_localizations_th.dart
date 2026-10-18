@@ -1334,6 +1334,18 @@ class AppLocalizationsTh extends AppLocalizations {
   String get rewardsTitle => 'หาเพิ่ม 🎁';
 
   @override
+  String get dailyHubTitle => 'ภารกิจและของรางวัล';
+
+  @override
+  String get dailyHubTabDaily => 'รายวัน';
+
+  @override
+  String get dailyHubTabWeekly => 'รายสัปดาห์';
+
+  @override
+  String get dailyHubTabRewards => 'รางวัล 🎁';
+
+  @override
   String get rewardsChip => 'หาเพิ่ม';
 
   @override

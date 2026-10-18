@@ -1341,6 +1341,18 @@ class AppLocalizationsPt extends AppLocalizations {
   String get rewardsTitle => 'Ganhe mais 🎁';
 
   @override
+  String get dailyHubTitle => 'Missões e Prêmios';
+
+  @override
+  String get dailyHubTabDaily => 'Diárias';
+
+  @override
+  String get dailyHubTabWeekly => 'Semanais';
+
+  @override
+  String get dailyHubTabRewards => 'Prêmios 🎁';
+
+  @override
   String get rewardsChip => 'Ganhe mais';
 
   @override

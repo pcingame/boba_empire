@@ -50,14 +50,13 @@ import 'achievements_dialog.dart';
 import 'cloud_remind_dialog.dart';
 import 'compete_hub_dialog.dart';
 import 'games_hub_dialog.dart';
-import 'daily_quests_dialog.dart';
+import 'daily_hub_dialog.dart';
 import 'daily_dialog.dart';
 import 'event_dialog.dart';
 import 'gem_shop.dart';
 import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
 import 'recipe_order_page.dart' show showRecipeOrderFor;
-import 'rewards_dialog.dart';
 import 'rival_event_dialog.dart';
 import 'settings_dialog.dart';
 import 'story_dialog.dart';
@@ -856,35 +855,11 @@ class _MoneyHeader extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          // Hàng trên: 3 nút (Ưu đãi · Nhiệm vụ · Sưu tập) rộng đều nhau chiếm
+          // Hàng trên: 2 nút (Nhiệm vụ & Quà · Sưu tập) rộng đều nhau chiếm
           // TRỌN hàng — chip 💎/VIP đã chuyển xuống hàng tiền để chữ không bị
           // cắt/co nhỏ. Chữ trong mỗi nút co vừa (FittedBox), không "…".
           Row(
             children: [
-              Expanded(
-                child: InkWell(
-                  key: const Key('rewards-chip'),
-                  borderRadius: BorderRadius.circular(24),
-                  onTap: () => showRewards(context),
-                  child: ClayChip(
-                    child: Center(
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          '🎁 ${AppLocalizations.of(context)!.rewardsChip}',
-                          maxLines: 1,
-                          softWrap: false,
-                          style: theme.textTheme.labelLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: onContainer,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
               const Expanded(child: _DailyQuestsChip()),
               const SizedBox(width: 8),
               const Expanded(child: _CollectionChip()),
@@ -2089,7 +2064,7 @@ class _DailyQuestsChip extends ConsumerWidget {
     return InkWell(
       key: const Key('daily-quests-chip'),
       borderRadius: BorderRadius.circular(24),
-      onTap: () => showDailyQuests(context),
+      onTap: () => showDailyHub(context),
       child: Stack(
         clipBehavior: Clip.none,
         fit: StackFit.passthrough,
@@ -2099,7 +2074,7 @@ class _DailyQuestsChip extends ConsumerWidget {
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  '🎯 ${AppLocalizations.of(context)!.dailyQuestsChip}',
+                  '🎯 ${AppLocalizations.of(context)!.dailyHubTitle}',
                   maxLines: 1,
                   softWrap: false,
                   style: theme.textTheme.labelLarge?.copyWith(

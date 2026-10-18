@@ -1241,3 +1241,6 @@ Giảm giá 38 món → 400 mỗi bộ). Tổng đời tối đa **2 850 Xu Ch�
 - **Một màn "Bảng xếp hạng"** (`lib/ui/leaderboards_hub_page.dart`): liệt kê 8 bảng (Thu nhập, Ghép 3, Sưu tập, Công thức, VIP, Tốc độ hoàn thành, PK, Thẻ Mùa). Hub Thi đấu giảm từ 7 mục xuống 4 (Đấu Trường, Hội, Thưởng top tuần, Bảng xếp hạng). Lối vào trong từng tính năng (Kho, Ghép 3, Công thức, Thẻ Mùa, Sự kiện, Hội) giữ nguyên.
 - **Cài đặt**: Facebook/TikTok/YouTube gom một hàng 3 icon thay vì 3 dòng.
 - Còn đề xuất chưa làm: gộp "hằng ngày" (điểm danh/nhiệm vụ ngày-tuần/thử thách/ưu đãi/món của ngày) vào một màn có tab; màn chính vẫn dày.
+
+### 49b. Hub "Nhiệm vụ & Quà" (2026-10-18)
+Nhiệm vụ ngày (+thử thách), nhiệm vụ tuần và "Kiếm thêm 🎁" gộp thành một dialog 3 tab (`lib/ui/daily_hub_dialog.dart`); màn chính còn một chip `daily-quests-chip` thay cho hai chip. `showDailyQuests/showWeeklyQuests/showRewards` vẫn dùng được, chỉ mở hub ở tab tương ứng. Các panel (`DailyQuestsPanel`…) có cờ `embedded`.

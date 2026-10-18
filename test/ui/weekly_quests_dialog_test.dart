@@ -64,7 +64,7 @@ Future<ProviderContainer> _open(
   );
   await tester.tap(find.text('open'));
   await tester.pumpAndSettle();
-  await tester.tap(find.byKey(const Key('weekly-quests-open')));
+  await tester.tap(find.byKey(const Key('hub-tab-weekly')));
   await tester.pumpAndSettle();
   return c;
 }
@@ -80,7 +80,7 @@ void main() {
     (tester) async {
       const week = 2950;
       final c = await _open(tester, week: week);
-      expect(find.text('Weekly quests'), findsOneWidget);
+      expect(find.byKey(const Key('hub-tab-weekly')), findsOneWidget);
       for (var i = 0; i < 3; i++) {
         final q = weeklyQuestsFor(week)[i];
         expect(find.text('0 / ${q.target}'), findsWidgets);
@@ -107,6 +107,7 @@ void main() {
     (tester) async {
       final c = await _open(tester, week: 2951, allDone: true);
       for (var i = 0; i < 3; i++) {
+        await tester.ensureVisible(find.byKey(Key('weekly-quest-claim-$i')));
         await tester.tap(find.byKey(Key('weekly-quest-claim-$i')));
         await tester.pumpAndSettle();
       }
@@ -114,6 +115,7 @@ void main() {
         c.read(gameControllerProvider).gems,
         3 * weeklyQuestRewardGems.toDouble(),
       );
+      await tester.ensureVisible(find.byKey(const Key('weekly-chest')));
       await tester.tap(find.byKey(const Key('weekly-chest')));
       await tester.pumpAndSettle();
       expect(

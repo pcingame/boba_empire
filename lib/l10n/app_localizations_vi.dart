@@ -1335,6 +1335,18 @@ class AppLocalizationsVi extends AppLocalizations {
   String get rewardsTitle => 'Kiếm thêm 🎁';
 
   @override
+  String get dailyHubTitle => 'Nhiệm vụ & Quà';
+
+  @override
+  String get dailyHubTabDaily => 'Ngày';
+
+  @override
+  String get dailyHubTabWeekly => 'Tuần';
+
+  @override
+  String get dailyHubTabRewards => 'Quà 🎁';
+
+  @override
   String get rewardsChip => 'Kiếm thêm';
 
   @override
