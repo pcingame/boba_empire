@@ -2924,6 +2924,33 @@ class AppLocalizationsVi extends AppLocalizations {
       'Chưa ai trên bảng mùa này. Kiếm XP Thẻ Mùa rồi mở lại để lên bảng (cần tài khoản liên kết email).';
 
   @override
+  String get playerTitleChampion => 'Quán Quân Mùa';
+
+  @override
+  String get playerTitleChampionHint => 'Nhận thưởng top 3 BXH Thẻ Mùa';
+
+  @override
+  String get seasonRewardTitle => 'Thưởng mùa trước';
+
+  @override
+  String seasonRewardLine(int rank) {
+    return 'Bạn đạt hạng #$rank BXH Thẻ Mùa mùa trước!';
+  }
+
+  @override
+  String seasonRewardClaim(int gems) {
+    return 'Nhận $gems 💎';
+  }
+
+  @override
+  String seasonRewardGot(int gems) {
+    return 'Đã nhận $gems 💎 thưởng mùa!';
+  }
+
+  @override
+  String get seasonRewardFail => 'Không nhận được thưởng. Thử lại sau nhé.';
+
+  @override
   String get seasonItemsTitle =>
       'Độc quyền Thẻ Mùa (bậc 20 miễn phí · bậc 30 Cao cấp)';
 

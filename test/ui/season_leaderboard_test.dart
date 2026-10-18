@@ -22,6 +22,10 @@ class _Repo implements SeasonLbRepository {
   Future<List<SeasonLbEntry>> top() async => rows;
   @override
   String? get myUserId => 'me';
+  @override
+  Future<List<SeasonEndReward>> rewardStatus() async => const [];
+  @override
+  Future<int> claimReward(int season) async => 0;
 }
 
 const _day = 86400000;

@@ -28,6 +28,7 @@ P -f supabase/tests/lb_rewards_scenarios.sql 2>&1 | grep -E "FAIL|ERROR|LB REWAR
 P -f supabase/tests/player_title_scenarios.sql 2>&1 | grep -E "FAIL|ERROR|PLAYER TITLE OK" || { echo "NO RESULT (title)"; exit 1; }
 P -f supabase/tests/player_avatar_scenarios.sql 2>&1 | grep -E "FAIL|ERROR|PLAYER AVATAR OK" || { echo "NO RESULT (avatar)"; exit 1; }
 P -f supabase/tests/season_leaderboard_scenarios.sql 2>&1 | grep -E "FAIL|ERROR|SEASON LB OK" || { echo "NO RESULT (season lb)"; exit 1; }
+P -f supabase/tests/season_reward_scenarios.sql 2>&1 | grep -E "FAIL|ERROR|SEASON REWARD OK" || { echo "NO RESULT (season reward)"; exit 1; }
 P -f supabase/tests/recipe_lb_scenarios.sql 2>&1 | grep -E "FAIL|ERROR|RECIPE LB OK|RECIPE ORDER LB OK|RECIPE DAILY OK" || { echo "NO RESULT (recipe lb)"; exit 1; }
 # lại lần 2 phải idempotent với các schema vừa thêm cổng email
 for f in leaderboard_schema m3_leaderboard_schema accessory_leaderboard_schema story_speedrun_schema story_speedrun2_schema story_speedrun3_schema story_speedrun4_schema event_leaderboard_schema; do

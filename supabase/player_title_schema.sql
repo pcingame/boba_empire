@@ -21,7 +21,7 @@ begin
     delete from player_titles where user_id = v_uid;
     return;
   end if;
-  if p_id not in ('tycoon', 'mogul', 'legend', 'timewalker', 'stargazer', 'collector', 'vip') then
+  if p_id not in ('tycoon', 'mogul', 'legend', 'timewalker', 'stargazer', 'collector', 'vip', 'champion') then
     raise exception 'invalid title';
   end if;
   insert into player_titles (user_id, title_id) values (v_uid, p_id)

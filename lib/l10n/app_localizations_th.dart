@@ -2921,6 +2921,33 @@ class AppLocalizationsTh extends AppLocalizations {
       'ยังไม่มีใครในอันดับซีซันนี้ รับ XP บัตรซีซันแล้วเปิดใหม่เพื่อขึ้นอันดับ (ต้องมีบัญชีที่ผูกอีเมล)';
 
   @override
+  String get playerTitleChampion => 'แชมป์ซีซัน';
+
+  @override
+  String get playerTitleChampionHint => 'รับรางวัลท็อป 3 ของบัตรซีซัน';
+
+  @override
+  String get seasonRewardTitle => 'รางวัลซีซันที่แล้ว';
+
+  @override
+  String seasonRewardLine(int rank) {
+    return 'คุณได้อันดับ #$rank ของบัตรซีซันครั้งก่อน!';
+  }
+
+  @override
+  String seasonRewardClaim(int gems) {
+    return 'รับ $gems 💎';
+  }
+
+  @override
+  String seasonRewardGot(int gems) {
+    return 'ได้รับ $gems 💎 รางวัลซีซัน!';
+  }
+
+  @override
+  String get seasonRewardFail => 'รับรางวัลไม่สำเร็จ ลองใหม่ภายหลัง';
+
+  @override
   String get seasonItemsTitle =>
       'ไอเทมเฉพาะบัตรซีซัน (ขั้น 20 ฟรี · ขั้น 30 พรีเมียม)';
 

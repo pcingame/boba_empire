@@ -9,6 +9,7 @@ import '../core/topup.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../leaderboard/player_title.dart';
+import '../leaderboard/season_leaderboard.dart';
 import '../state/game_providers.dart';
 
 Future<void> showTitlePicker(BuildContext context) =>
@@ -28,6 +29,7 @@ class TitlePickerDialog extends ConsumerWidget {
       prestigeStars: g.prestigeStars,
       vipLevel: topupVipLevel(g.vipExp),
       owned: g.ownedAccessories.length,
+      champion: ref.watch(seasonChampionProvider),
     );
     final notifier = ref.read(selectedTitleProvider.notifier);
     return AlertDialog(

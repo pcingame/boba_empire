@@ -5130,6 +5130,48 @@ abstract class AppLocalizations {
   /// **'Chưa ai trên bảng mùa này. Kiếm XP Thẻ Mùa rồi mở lại để lên bảng (cần tài khoản liên kết email).'**
   String get seasonLbEmpty;
 
+  /// No description provided for @playerTitleChampion.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quán Quân Mùa'**
+  String get playerTitleChampion;
+
+  /// No description provided for @playerTitleChampionHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận thưởng top 3 BXH Thẻ Mùa'**
+  String get playerTitleChampionHint;
+
+  /// No description provided for @seasonRewardTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thưởng mùa trước'**
+  String get seasonRewardTitle;
+
+  /// No description provided for @seasonRewardLine.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đạt hạng #{rank} BXH Thẻ Mùa mùa trước!'**
+  String seasonRewardLine(int rank);
+
+  /// No description provided for @seasonRewardClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {gems} 💎'**
+  String seasonRewardClaim(int gems);
+
+  /// No description provided for @seasonRewardGot.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận {gems} 💎 thưởng mùa!'**
+  String seasonRewardGot(int gems);
+
+  /// No description provided for @seasonRewardFail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không nhận được thưởng. Thử lại sau nhé.'**
+  String get seasonRewardFail;
+
   /// No description provided for @seasonItemsTitle.
   ///
   /// In vi, this message translates to:

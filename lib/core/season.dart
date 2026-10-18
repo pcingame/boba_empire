@@ -15,6 +15,14 @@ const int seasonXpPerTier = 100;
 const int seasonXpDailyCap = 150;
 const int seasonPremiumGems = 600;
 
+/// Thưởng cuối mùa cho top 10 XP (💎 theo hạng 1..10). PHẢI khớp `season_reward_gems` ở
+/// supabase/season_leaderboard_schema.sql (test so khớp). ⚠️ ước lượng chưa playtest.
+const List<int> seasonRewardGemsByRank = [1000, 600, 400, 200, 200, 200, 200, 200, 200, 200];
+const int seasonChampionMaxRank = 3; // top 3 mở danh hiệu "Quán quân mùa"
+
+int seasonRewardGemsFor(int rank) =>
+    rank >= 1 && rank <= seasonRewardGemsByRank.length ? seasonRewardGemsByRank[rank - 1] : 0;
+
 /// Nguồn XP và lượng mỗi lần.
 enum SeasonSource {
   login(10),

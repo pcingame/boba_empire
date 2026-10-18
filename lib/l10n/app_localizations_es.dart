@@ -2948,6 +2948,34 @@ class AppLocalizationsEs extends AppLocalizations {
       'Nadie en el ranking de esta temporada. Gana XP del Pase y vuelve a abrir para aparecer (requiere cuenta vinculada por email).';
 
   @override
+  String get playerTitleChampion => 'Campeón de Temporada';
+
+  @override
+  String get playerTitleChampionHint => 'Reclama un premio top 3 del Pase';
+
+  @override
+  String get seasonRewardTitle => 'Premio de la temporada pasada';
+
+  @override
+  String seasonRewardLine(int rank) {
+    return '¡Terminaste #$rank en el ranking del Pase de la temporada pasada!';
+  }
+
+  @override
+  String seasonRewardClaim(int gems) {
+    return 'Reclamar $gems 💎';
+  }
+
+  @override
+  String seasonRewardGot(int gems) {
+    return '¡Recibiste $gems 💎 de premio de temporada!';
+  }
+
+  @override
+  String get seasonRewardFail =>
+      'No se pudo reclamar el premio. Inténtalo luego.';
+
+  @override
   String get seasonItemsTitle =>
       'Exclusivos del Pase (nivel 20 gratis · nivel 30 Premium)';
 

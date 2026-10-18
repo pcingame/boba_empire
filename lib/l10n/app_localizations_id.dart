@@ -2930,6 +2930,33 @@ class AppLocalizationsId extends AppLocalizations {
       'Belum ada siapa pun di papan musim ini. Kumpulkan XP Pass lalu buka lagi untuk masuk (perlu akun terhubung email).';
 
   @override
+  String get playerTitleChampion => 'Juara Musim';
+
+  @override
+  String get playerTitleChampionHint => 'Klaim hadiah top 3 Pass Musim';
+
+  @override
+  String get seasonRewardTitle => 'Hadiah musim lalu';
+
+  @override
+  String seasonRewardLine(int rank) {
+    return 'Kamu finis #$rank di peringkat Pass Musim lalu!';
+  }
+
+  @override
+  String seasonRewardClaim(int gems) {
+    return 'Klaim $gems 💎';
+  }
+
+  @override
+  String seasonRewardGot(int gems) {
+    return 'Dapat $gems 💎 hadiah musim!';
+  }
+
+  @override
+  String get seasonRewardFail => 'Gagal klaim hadiah. Coba lagi nanti.';
+
+  @override
   String get seasonItemsTitle =>
       'Eksklusif Pass Musim (tingkat 20 gratis · tingkat 30 Premium)';
 

@@ -151,6 +151,7 @@ String playerTitleName(AppLocalizations l10n, String id) => switch (id) {
       'stargazer' => l10n.playerTitleStargazer,
       'collector' => l10n.playerTitleCollector,
       'vip' => l10n.playerTitleVip,
+      'champion' => l10n.playerTitleChampion,
       _ => id,
     };
 
@@ -162,6 +163,7 @@ String playerTitleHint(AppLocalizations l10n, String id) => switch (id) {
       'stargazer' => l10n.playerTitleStargazerHint,
       'collector' => l10n.playerTitleCollectorHint,
       'vip' => l10n.playerTitleVipHint,
+      'champion' => l10n.playerTitleChampionHint,
       _ => '',
     };
 

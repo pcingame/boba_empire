@@ -1222,10 +1222,17 @@ Giảm giá 38 món → 400 mỗi bộ). Tổng đời tối đa **2 850 Xu Ch�
 - Thuần trang trí: mở khoá do client tự xét, server chỉ kiểm whitelist + tài khoản liên kết email (`supabase/player_title_schema.sql`, test trong `scripts/test_lb_rewards_sql.sh`).
 
 ### 46d. BXH Thẻ Mùa
-- Nút 🏆 trên trang Thẻ Mùa mở bảng xếp hạng XP của mùa hiện tại (top 50). Mỗi mùa một tập hàng riêng nên tự reset. Chỉ tài khoản liên kết email, XP client tự khai (chỉ tăng, trần 4200). Chưa có thưởng cuối mùa theo hạng. SQL: `supabase/season_leaderboard_schema.sql`.
+- Nút 🏆 trên trang Thẻ Mùa mở bảng xếp hạng XP của mùa hiện tại (top 50). Mỗi mùa một tập hàng riêng nên tự reset. Chỉ tài khoản liên kết email, XP client tự khai (chỉ tăng, trần 4200). SQL: `supabase/season_leaderboard_schema.sql`.
 
 ## 48. Trang hồ sơ của tôi + avatar ảnh (2026-10-18, chưa playtest)
 - Cài đặt → "Hồ sơ của tôi" (`lib/ui/my_profile_page.dart`): avatar ảnh tự tải lên, biệt danh, danh hiệu (chọn tại đây), 7 thống kê tiến độ, nút xem hạng + chia sẻ. Mục chọn danh hiệu cũ ở Cài đặt đã chuyển vào trang này.
 - Avatar: `image_picker` chọn ảnh → thu 256px/JPEG q80 → tải lên bucket công khai `avatars` (≤100KB, chỉ JPEG) qua khoá ngẫu nhiên do `new_avatar_key()` cấp (không lộ user_id). Người khác thấy ở hồ sơ công khai. Chỉ tài khoản liên kết email. SQL: `supabase/player_avatar_schema.sql`.
 - Kiểm duyệt: nút "Báo cáo ảnh" trên hồ sơ công khai của người khác (cần liên kết email, xác nhận trước khi gửi). Server (`report_avatar`) tự tra ảnh theo tên; mỗi người báo cáo mỗi ảnh một lần; đủ 3 người khác nhau → ảnh tự ẩn chờ duyệt (`avatar_reports` để xem). Người bị ẩn đổi ảnh mới thì hết ẩn. Gỡ tay: `update player_avatars set hidden = true where user_id = ...`. Chưa có cơ chế cấm hẳn người tái phạm. Ảnh cũ bị xoá khi đổi; lỗi xoá để lại file mồ côi vài KB.
 - Nút ở màn chính đã thử rồi bỏ: header chật, test khoảng cách số xu–💎 ở 360/393dp (VIP) vỡ.
+
+### 46e. Thưởng cuối mùa BXH Thẻ Mùa
+- Top 10 XP của mùa vừa kết thúc nhận 💎: hạng 1/2/3 = 1000/600/400, hạng 4-10 = 200 (đã gấp đôi so với bản đầu 500/300/200/100; ước lượng chưa playtest). Chụp lười ở server như thưởng BXH tuần (`season_reward_status` chụp mùa trước lần đầu có người gọi), loại ẩn danh/0 XP; nhận MỘT lần trong suốt mùa kế tiếp (28 ngày); server xác nhận trước rồi client mới cộng 💎.
+- Hiện thành thẻ "Thưởng mùa trước" ở đầu trang Thẻ Mùa. Top 3 nhận xong mở danh hiệu 🥇 "Quán Quân Mùa" (lưu máy, tự xét — cosmetic). SQL: thêm vào `season_leaderboard_schema.sql` (chạy lại cả file) + `player_title_schema.sql` (whitelist mới 'champion').
+
+### 48b. Bỏ hiển thị phụ kiện quanh nút pha trà (2026-10-18)
+- Emoji phụ kiện đang trang bị (`_EquippedFloaters`) lơ lửng trên mép nút/dây đèn trông rối nên đã GỠ khỏi màn chính. Việc trang bị (`equippedAccessories`, 3 ô + 1 ô VIP), buff của bộ trang bị và kệ trong màn Pha theo đơn (`order-shelf`) giữ nguyên; chỉ mất phần vẽ quanh nút.

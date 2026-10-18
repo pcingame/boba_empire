@@ -9,12 +9,16 @@ class TitleStats {
     required this.prestigeStars,
     required this.vipLevel,
     required this.owned,
+    this.champion = false,
   });
   final int stage;
   final int ascension;
   final double prestigeStars;
   final int vipLevel;
   final int owned;
+
+  /// Từng nhận thưởng top 3 BXH Thẻ Mùa.
+  final bool champion;
 }
 
 class PlayerTitle {
@@ -32,6 +36,7 @@ final List<PlayerTitle> playerTitles = [
   PlayerTitle('stargazer', '⭐', (s) => s.prestigeStars >= 50),
   PlayerTitle('collector', '🎀', (s) => s.owned >= 100),
   PlayerTitle('vip', '👑', (s) => s.vipLevel >= 5),
+  PlayerTitle('champion', '🥇', (s) => s.champion),
 ];
 
 PlayerTitle? playerTitleById(String id) => playerTitles.where((t) => t.id == id).firstOrNull;

@@ -10,6 +10,7 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import 'widgets/anim_assets.dart';
+import '../leaderboard/season_leaderboard.dart';
 import 'email_gate.dart';
 import 'season_leaderboard_page.dart';
 import 'widgets/clay.dart';
@@ -136,6 +137,40 @@ class SeasonPage extends ConsumerWidget {
         body: ListView(
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
           children: [
+            for (final r in ref.watch(seasonRewardsControllerProvider))
+              ClayCard(
+                key: Key('season-reward-${r.season}'),
+                padding: const EdgeInsets.all(14),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text('🥇 ${l10n.seasonRewardTitle}',
+                      style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800)),
+                  const SizedBox(height: 4),
+                  Text(l10n.seasonRewardLine(r.rank)),
+                  const SizedBox(height: 8),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton(
+                      key: const Key('season-reward-claim'),
+                      onPressed: r.claimed
+                          ? null
+                          : () async {
+                              try {
+                                final gems = await ref.read(seasonRewardsControllerProvider.notifier).claim(r);
+                                if (!context.mounted || gems <= 0) return;
+                                playEffect(context, AnimAssets.confetti, heavy: true);
+                                _snack(context, l10n.seasonRewardGot(gems));
+                              } catch (_) {
+                                if (context.mounted) _snack(context, l10n.seasonRewardFail);
+                              }
+                            },
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(r.claimed ? l10n.dailyQuestClaimed : l10n.seasonRewardClaim(r.gems)),
+                      ),
+                    ),
+                  ),
+                ]),
+              ),
             ClayCard(
               padding: const EdgeInsets.all(14),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

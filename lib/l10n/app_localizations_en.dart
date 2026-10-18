@@ -2933,6 +2933,33 @@ class AppLocalizationsEn extends AppLocalizations {
       'Nobody is on this season\'s board yet. Earn Season Pass XP and reopen to appear (needs an email-linked account).';
 
   @override
+  String get playerTitleChampion => 'Season Champion';
+
+  @override
+  String get playerTitleChampionHint => 'Claim a top-3 Season Pass reward';
+
+  @override
+  String get seasonRewardTitle => 'Last season\'s reward';
+
+  @override
+  String seasonRewardLine(int rank) {
+    return 'You finished #$rank on last season\'s Season Pass ranking!';
+  }
+
+  @override
+  String seasonRewardClaim(int gems) {
+    return 'Claim $gems 💎';
+  }
+
+  @override
+  String seasonRewardGot(int gems) {
+    return 'Got $gems 💎 season reward!';
+  }
+
+  @override
+  String get seasonRewardFail => 'Couldn\'t claim the reward. Try again later.';
+
+  @override
   String get seasonItemsTitle =>
       'Season Pass exclusives (tier 20 free · tier 30 Premium)';
 

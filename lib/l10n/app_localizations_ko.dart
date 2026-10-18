@@ -2887,6 +2887,33 @@ class AppLocalizationsKo extends AppLocalizations {
       '이번 시즌 순위에 아직 아무도 없습니다. 시즌 패스 XP를 얻고 다시 열면 등록됩니다(이메일 연동 계정 필요).';
 
   @override
+  String get playerTitleChampion => '시즌 챔피언';
+
+  @override
+  String get playerTitleChampionHint => '시즌 패스 순위 3위 이내 보상 수령';
+
+  @override
+  String get seasonRewardTitle => '지난 시즌 보상';
+
+  @override
+  String seasonRewardLine(int rank) {
+    return '지난 시즌 패스 순위 #$rank위를 달성했습니다!';
+  }
+
+  @override
+  String seasonRewardClaim(int gems) {
+    return '$gems 💎 받기';
+  }
+
+  @override
+  String seasonRewardGot(int gems) {
+    return '시즌 보상 $gems 💎 획득!';
+  }
+
+  @override
+  String get seasonRewardFail => '보상을 받지 못했습니다. 나중에 다시 시도하세요.';
+
+  @override
   String get seasonItemsTitle => '시즌 패스 한정 (20단계 무료 · 30단계 프리미엄)';
 
   @override
