@@ -9,14 +9,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../guild/guild_alert.dart';
 import '../leaderboard/lb_rewards.dart';
 import '../l10n/app_localizations.dart';
-import 'arena_leaderboard_page.dart';
 import 'email_gate.dart';
 import 'arena_page.dart';
 import 'guild_page.dart';
 import 'lb_rewards_dialog.dart';
-import 'leaderboard_page.dart';
-import 'story_speedrun_page.dart';
-import 'vip_leaderboard_page.dart';
+import 'leaderboards_hub_page.dart';
 import 'widgets/phone_width.dart';
 
 Future<void> showCompeteHub(BuildContext context) {
@@ -121,6 +118,7 @@ class _CompeteHubDialog extends ConsumerWidget {
             contentPadding: EdgeInsets.zero,
             horizontalTitleGap: 12,
             minLeadingWidth: 28,
+            key: const Key('compete-leaderboards'),
             leading: const Icon(Icons.leaderboard),
             title: Text(l10n.leaderboardMenuTitle),
             trailing: const Icon(Icons.chevron_right),
@@ -128,50 +126,7 @@ class _CompeteHubDialog extends ConsumerWidget {
               // Tính năng online: cần đã liên kết email (xem email_gate.dart).
               if (!await ensureOnlineLinked(context) || !context.mounted) return;
               Navigator.of(context).pop();
-              showLeaderboardPage(context);
-            },
-          ),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            horizontalTitleGap: 12,
-            minLeadingWidth: 28,
-            leading: const Icon(Icons.timer),
-            title: Text(l10n.storySpeedrunMenuTitle),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () async {
-              // Tính năng online: cần đã liên kết email (xem email_gate.dart).
-              if (!await ensureOnlineLinked(context) || !context.mounted) return;
-              Navigator.of(context).pop();
-              showStorySpeedrunPage(context);
-            },
-          ),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            horizontalTitleGap: 12,
-            minLeadingWidth: 28,
-            leading: const Icon(Icons.military_tech),
-            title: Text(l10n.arenaLeaderboardMenuTitle),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () async {
-              // Tính năng online: cần đã liên kết email (xem email_gate.dart).
-              if (!await ensureOnlineLinked(context) || !context.mounted) return;
-              Navigator.of(context).pop();
-              showArenaLeaderboardPage(context);
-            },
-          ),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            horizontalTitleGap: 12,
-            minLeadingWidth: 28,
-            key: const Key('compete-vip'),
-            leading: const Icon(Icons.workspace_premium),
-            title: Text(l10n.vipLbTitle),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () async {
-              // Tính năng online: cần đã liên kết email (xem email_gate.dart).
-              if (!await ensureOnlineLinked(context) || !context.mounted) return;
-              Navigator.of(context).pop();
-              showVipLeaderboard(context);
+              showLeaderboardsHub(context);
             },
           ),
           ],

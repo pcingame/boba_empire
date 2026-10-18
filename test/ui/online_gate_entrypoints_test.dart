@@ -67,7 +67,10 @@ void main() {
           if (!line.contains('$name(context')) continue;
           if (line.contains('Future<void> $name')) continue; // định nghĩa hàm
           found++;
-          final window = lines.sublist(i < 6 ? 0 : i - 6, i + 1).join('\n');
+          // Trang gom mọi bảng: cổng nằm ở hàm dựng dòng `tile` dùng chung (cả file phải có cổng), không cạnh từng lời gọi.
+          final window = f.path.endsWith('leaderboards_hub_page.dart')
+              ? lines.join('\n')
+              : lines.sublist(i < 6 ? 0 : i - 6, i + 1).join('\n');
           if (!window.contains('ensureOnlineLinked')) bad.add('${f.path}:${i + 1} $name');
         }
       }
@@ -99,7 +102,10 @@ void main() {
         for (var i = 0; i < lines.length; i++) {
           if (!lines[i].contains('$name(context') || RegExp('Future<void> $name').hasMatch(lines[i])) continue;
           calls++;
-          final window = lines.sublist(i < 6 ? 0 : i - 6, i + 1).join('\n');
+          // Trang gom mọi bảng: cổng nằm ở hàm dựng dòng `tile` dùng chung (cả file phải có cổng), không cạnh từng lời gọi.
+          final window = f.path.endsWith('leaderboards_hub_page.dart')
+              ? lines.join('\n')
+              : lines.sublist(i < 6 ? 0 : i - 6, i + 1).join('\n');
           if (!window.contains('ensureOnlineLinked')) bad.add('${f.path}:${i + 1} $name');
         }
       }
@@ -116,11 +122,11 @@ void main() {
     expect(find.byType(GuildPage), findsNothing);
   });
 
-  testWidgets('hub Thi đấu: cả 7 mục đều bị chặn khi chưa liên kết', (tester) async {
+  testWidgets('hub Thi đấu: cả 4 mục đều bị chặn khi chưa liên kết', (tester) async {
     await _openHub(tester, linked: false);
     final tiles = find.descendant(of: find.byType(AlertDialog), matching: find.byType(ListTile));
     final n = tester.widgetList(tiles).length;
-    expect(n, 7);
+    expect(n, 4);
     for (var i = 0; i < n; i++) {
       await tester.tap(tiles.at(i));
       await tester.pumpAndSettle();

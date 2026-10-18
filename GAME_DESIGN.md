@@ -1236,3 +1236,8 @@ Giảm giá 38 món → 400 mỗi bộ). Tổng đời tối đa **2 850 Xu Ch�
 
 ### 48b. Bỏ hiển thị phụ kiện quanh nút pha trà (2026-10-18)
 - Emoji phụ kiện đang trang bị (`_EquippedFloaters`) lơ lửng trên mép nút/dây đèn trông rối nên đã GỠ khỏi màn chính. Việc trang bị (`equippedAccessories`, 3 ô + 1 ô VIP), buff của bộ trang bị và kệ trong màn Pha theo đơn (`order-shelf`) giữ nguyên; chỉ mất phần vẽ quanh nút.
+
+## 49. Rà soát đơn giản hóa (2026-10-18)
+- **Một màn "Bảng xếp hạng"** (`lib/ui/leaderboards_hub_page.dart`): liệt kê 8 bảng (Thu nhập, Ghép 3, Sưu tập, Công thức, VIP, Tốc độ hoàn thành, PK, Thẻ Mùa). Hub Thi đấu giảm từ 7 mục xuống 4 (Đấu Trường, Hội, Thưởng top tuần, Bảng xếp hạng). Lối vào trong từng tính năng (Kho, Ghép 3, Công thức, Thẻ Mùa, Sự kiện, Hội) giữ nguyên.
+- **Cài đặt**: Facebook/TikTok/YouTube gom một hàng 3 icon thay vì 3 dòng.
+- Còn đề xuất chưa làm: gộp "hằng ngày" (điểm danh/nhiệm vụ ngày-tuần/thử thách/ưu đãi/món của ngày) vào một màn có tab; màn chính vẫn dày.

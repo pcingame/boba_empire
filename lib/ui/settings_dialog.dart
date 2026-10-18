@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/cloud_save_controller.dart';
@@ -131,29 +132,29 @@ class _SettingsDialog extends ConsumerWidget {
             trailing: const Icon(Icons.open_in_new, size: 18),
             onTap: () => openWebLink(context, ref, webGuideUrl()),
           ),
-          ListTile(
-            key: const Key('settings-facebook'),
-            contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.groups_outlined),
-            title: const Text('Facebook'),
-            trailing: const Icon(Icons.open_in_new, size: 18),
-            onTap: () => openWebLink(context, ref, facebookUrl),
-          ),
-          ListTile(
-            key: const Key('settings-tiktok'),
-            contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.play_circle_outline),
-            title: const Text('TikTok'),
-            trailing: const Icon(Icons.open_in_new, size: 18),
-            onTap: () => openWebLink(context, ref, tiktokUrl),
-          ),
-          ListTile(
-            key: const Key('settings-youtube'),
-            contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.smart_display_outlined),
-            title: const Text('YouTube'),
-            trailing: const Icon(Icons.open_in_new, size: 18),
-            onTap: () => openWebLink(context, ref, youtubeUrl),
+          // Mạng xã hội gom một hàng icon (trước là 3 dòng riêng). Tooltip = tên mạng.
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              IconButton(
+                key: const Key('settings-facebook'),
+                tooltip: 'Facebook',
+                icon: const FaIcon(FontAwesomeIcons.facebook, color: Color(0xFF1877F2)),
+                onPressed: () => openWebLink(context, ref, facebookUrl),
+              ),
+              IconButton(
+                key: const Key('settings-tiktok'),
+                tooltip: 'TikTok',
+                icon: const FaIcon(FontAwesomeIcons.tiktok),
+                onPressed: () => openWebLink(context, ref, tiktokUrl),
+              ),
+              IconButton(
+                key: const Key('settings-youtube'),
+                tooltip: 'YouTube',
+                icon: const FaIcon(FontAwesomeIcons.youtube, color: Color(0xFFFF0000)),
+                onPressed: () => openWebLink(context, ref, youtubeUrl),
+              ),
+            ],
           ),
           ListTile(
             contentPadding: EdgeInsets.zero,

@@ -89,6 +89,14 @@ void main() {
     expect(opened, [Uri.parse(webHomeUrl), Uri.parse('$webHomeUrl/guide.html')]);
     expect(find.textContaining("Couldn't open the website"), findsNothing);
 
+    // Mạng xã hội gom một hàng icon: bấm từng nút mở đúng liên kết.
+    opened.clear();
+    for (final k in ['settings-facebook', 'settings-tiktok', 'settings-youtube']) {
+      await tester.tap(find.byKey(Key(k)));
+      await tester.pump();
+    }
+    expect(opened, [Uri.parse(facebookUrl), Uri.parse(tiktokUrl), Uri.parse(youtubeUrl)]);
+
     fail = true;
     await tester.tap(find.byKey(const Key('settings-website')));
     await tester.pumpAndSettle();
