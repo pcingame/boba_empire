@@ -9,6 +9,7 @@ import '../arena/arena_leaderboard_controller.dart';
 import '../l10n/app_localizations.dart';
 import '../leaderboard/flair.dart';
 import 'widgets/clay.dart';
+import 'web_links.dart';
 import 'widgets/phone_width.dart';
 
 Future<void> showArenaLeaderboardPage(BuildContext context) {
@@ -49,7 +50,7 @@ class _ArenaLeaderboardPageState extends ConsumerState<ArenaLeaderboardPage> {
 
     return PhoneWidth(
       child: Scaffold(
-        appBar: AppBar(title: Text(l10n.arenaLeaderboardTitle)),
+        appBar: AppBar(title: Text(l10n.arenaLeaderboardTitle), actions: const [WebBoardActions(WebBoard.arena)]),
         body: SafeArea(
           child: switch (viewState) {
             ArenaLeaderboardLoading() => const Center(

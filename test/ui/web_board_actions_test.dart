@@ -39,13 +39,16 @@ void main() {
       'lib/ui/story_speedrun_page.dart': 'speed',
       'lib/ui/guild_leaderboard_page.dart': 'guild',
       'lib/ui/vip_leaderboard_page.dart': 'vip',
+      'lib/ui/season_leaderboard_page.dart': 'season',
+      'lib/ui/recipe_leaderboard_page.dart': 'recipes',
+      'lib/ui/arena_leaderboard_page.dart': 'arena',
     };
     pages.forEach((file, board) {
       expect(File(file).readAsStringSync(), contains('WebBoardActions(WebBoard.$board)'),
           reason: file);
     });
-    // Bảng không có trên web (Đấu Trường, sự kiện) KHÔNG có nút này.
-    for (final f in ['lib/ui/arena_leaderboard_page.dart', 'lib/ui/event_leaderboard_page.dart']) {
+    // Bảng không có trên web (sự kiện) KHÔNG có nút này.
+    for (final f in ['lib/ui/event_leaderboard_page.dart']) {
       expect(File(f).readAsStringSync().contains('WebBoardActions'), isFalse, reason: f);
     }
   });

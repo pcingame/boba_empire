@@ -8,6 +8,7 @@ import '../l10n/app_localizations.dart';
 import '../leaderboard/season_leaderboard.dart';
 import 'player_profile_dialog.dart';
 import 'widgets/clay.dart';
+import 'web_links.dart';
 import 'widgets/phone_width.dart';
 
 Future<void> showSeasonLeaderboard(BuildContext context) =>
@@ -44,7 +45,7 @@ class _State extends ConsumerState<SeasonLeaderboardPage> {
     final view = ref.watch(seasonLbControllerProvider);
     return PhoneWidth(
       child: Scaffold(
-        appBar: AppBar(title: Text(l10n.seasonLbTitle)),
+        appBar: AppBar(title: Text(l10n.seasonLbTitle), actions: const [WebBoardActions(WebBoard.season)]),
         body: switch (view) {
           SeasonLbLoading() => const Center(child: CircularProgressIndicator()),
           SeasonLbNeedsNickname() => Center(

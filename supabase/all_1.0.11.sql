@@ -5925,6 +5925,44 @@ $$;
 
 grant execute on function arena_leaderboard_around_me(integer) to authenticated;
 
+-- Bảng top công khai cho trang web (anon đọc được): cùng cách xếp hạng như trên, KHÔNG trả user_id.
+create or replace function arena_leaderboard_top(p_limit integer default 20)
+returns table (
+  nickname text,
+  wins     bigint,
+  losses   bigint,
+  matches  bigint,
+  rank     bigint
+)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  with stats as (
+    select player_id,
+           count(*) filter (where won) as wins,
+           count(*) filter (where not won) as losses,
+           count(*) as matches
+    from (
+      select player_a as player_id, (winner = player_a) as won
+        from arena_matches where status = 'finished' and not ghost
+      union all
+      select player_b as player_id, (winner = player_b) as won
+        from arena_matches where status = 'finished' and not ghost
+    ) per_player
+    group by player_id
+  )
+  select coalesce(n.nickname, '???') as nickname, s.wins, s.losses, s.matches,
+         row_number() over (order by s.wins desc, s.matches asc, s.player_id) as rank
+  from stats s
+  left join arena_nicknames n on n.user_id = s.player_id
+  order by rank
+  limit least(greatest(coalesce(p_limit, 20), 1), 100);
+$$;
+
+grant execute on function arena_leaderboard_top(integer) to anon, authenticated;
+
 -- ===== season_leaderboard_schema.sql =====
 -- Bảng xếp hạng Thẻ Mùa: xếp theo XP mùa của MÙA HIỆN TẠI (client tự khai, chỉ tăng, trần = 28 ngày × 150 XP).
 -- Id mùa = số ngày UTC từ epoch / 28, khớp seasonIdFor ở lib/core/season.dart (test so khớp). Bảng tự "reset" mỗi mùa

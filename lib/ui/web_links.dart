@@ -47,7 +47,7 @@ Future<void> openWebLink(BuildContext context, WidgetRef ref, String url) async 
 }
 
 /// Các tab bảng xếp hạng trên web (id khớp `BOARDS` trong docs/assets/site.js; test so khớp).
-enum WebBoard { income, pearls, collection, speed, guild, vip }
+enum WebBoard { income, pearls, collection, speed, guild, vip, season, recipes, arena }
 
 /// Địa chỉ bảng xếp hạng web, mở sẵn tab [board] (site.js đọc tham số `board`, cuộn tới #board).
 String webBoardUrl(WebBoard board) => '$webHomeUrl/?board=${board.name}#board';

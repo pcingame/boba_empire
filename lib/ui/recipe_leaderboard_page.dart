@@ -13,6 +13,7 @@ import '../leaderboard/recipe_leaderboard_controller.dart';
 import '../leaderboard/recipe_leaderboard_repository.dart' show RecipeBoard;
 import '../state/game_providers.dart';
 import 'player_profile_dialog.dart';
+import 'web_links.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 
@@ -34,6 +35,7 @@ class RecipeLeaderboardPage extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: Text(l10n.rlbTitle),
+            actions: const [WebBoardActions(WebBoard.recipes)],
             bottom: TabBar(tabs: [
               Tab(key: const Key('rlb-tab-quiz'), text: l10n.rlbTabQuiz),
               Tab(key: const Key('rlb-tab-orders'), text: l10n.recipeOrderOrders),
