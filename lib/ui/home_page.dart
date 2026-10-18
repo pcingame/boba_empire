@@ -1923,6 +1923,11 @@ class _StageHeader extends ConsumerWidget {
       final n = Balance.nextStageConfig(s.stage);
       return n != null && s.money >= n.unlockCost;
     }));
+    // Tiến độ tiền/giá mở khoá, làm tròn 1% để hàng này không dựng lại mỗi lần chạm cốc.
+    final unlockPercent = ref.watch(gameControllerProvider.select((s) {
+      final n = Balance.nextStageConfig(s.stage);
+      return n == null || n.unlockCost <= 0 ? 0 : (s.money / n.unlockCost * 100).clamp(0, 100).floor();
+    }));
     final rivalActive =
         ref.watch(gameControllerProvider.select((s) => s.rivalActive));
     final standing = ref
@@ -1930,99 +1935,81 @@ class _StageHeader extends ConsumerWidget {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
     final next = Balance.nextStageConfig(stage);
-    final k = MediaQuery.textScalerOf(context).scale(1.0).clamp(1.0, 2.5);
 
+    // Hàng 1: tên giai đoạn (thu nhỏ nếu dài) + chip đối thủ + chip chế độ mua.
+    // Hàng 2: nút mở khoá giai đoạn kế rộng hết hàng (giá luôn đủ cỡ chữ) + thanh tiến độ tiền/giá.
     return Container(
       width: double.infinity,
       color: theme.colorScheme.surfaceContainerHighest,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: LayoutBuilder(
-        builder: (context, box) => Row(
-          children: [
-            // Tên giai đoạn KHÔNG dùng Flexible: nó lấy chiều rộng tự nhiên (chỉ
-            // chặn ở 62% hàng) rồi THU NHỎ CHỮ nếu dài hơn, thay vì cắt "…". Trước
-            // đây Flexible ngang hàng với Expanded của nút nên tên chỉ được một
-            // nửa chỗ trống dù nút cần ít hơn — "Quỹ đầu tư toàn cầu" thành
-            // "Quỹ đầu tư toàn…" (gặp thật trên máy). Nút mở khoá (có FittedBox ở
-            // nhãn) lấy phần còn lại.
-            ConstrainedBox(
-              // Giai đoạn cuối không có nút mở khoá → tên được dùng cả hàng.
-              constraints: BoxConstraints(
-                  // Giai đoạn cuối: chừa chỗ cho chip chế độ mua (~62) + khoảng cách,
-                  // và chip đối thủ (~40) nếu có — nếu không hàng tràn ở máy hẹp.
-                  // Cỡ chữ hệ thống to lên thì chữ trong hai chip nở theo (phần cố định: padding + icon);
-                  // dự phòng theo [k], nếu không tên chiếm hết chỗ và hàng tràn vài px (gặp ở 320px, chữ 1.5×).
-                  maxWidth: next == null
-                      ? box.maxWidth - (52 + 26 * k) - (rivalActive ? 12 + 28 * k : 0)
-                      : box.maxWidth * 0.5),
-              child: FittedBox(
-                key: const Key('stage-header-name'),
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  l10n.stageHeader(stageName(l10n, stage)),
-                  style: theme.textTheme.titleMedium,
-                  maxLines: 1,
-                ),
-              ),
-            ),
-            if (rivalActive) ...[
-              const SizedBox(width: 6),
-              _RivalChip(standing),
-            ],
-            const SizedBox(width: 8),
-            // Chip chế độ mua + nút mở khoá dồn phải; nút co chữ (FittedBox) khi
-            // hẹp thay vì tràn.
-            Expanded(
-              child: Align(
-                alignment: Alignment.centerRight,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              // Tên (+ chip đối thủ) lấy chỗ còn lại sau chip chế độ mua; tên thu nhỏ nếu dài.
+              Expanded(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const _BuyModeChip(),
-                    if (next != null) ...[
-                      const SizedBox(width: 8),
-                      Flexible(
-                        child: FilledButton(
-                          key: const Key('unlock-stage'),
-                          // Padding gọn để nhãn (có giá tiền) đủ chỗ trên máy hẹp.
-                          style: FilledButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            visualDensity: VisualDensity.compact,
-                          ),
-                          onPressed: canUnlock
-                              ? () {
-                                  if (ref
-                                      .read(gameControllerProvider.notifier)
-                                      .unlockStage()) {
-                                    HapticFeedback.mediumImpact();
-                                    ref
-                                        .read(audioServiceProvider)
-                                        .play(Sfx.unlock);
-                                    playEffect(context, AnimAssets.celebration,
-                                        size: 280);
-                                  }
-                                }
-                              : null,
-                          // FittedBox thay ellipsis: giá mở khoá là thông tin
-                          // quan trọng, không được cắt.
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            child: Text(
-                              l10n.unlockStageButton(
-                                  formatNumber(next.unlockCost)),
-                              maxLines: 1,
-                            ),
-                          ),
+                    Flexible(
+                      child: FittedBox(
+                        key: const Key('stage-header-name'),
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          l10n.stageHeader(stageName(l10n, stage)),
+                          style: theme.textTheme.titleMedium,
+                          maxLines: 1,
                         ),
                       ),
+                    ),
+                    if (rivalActive) ...[
+                      const SizedBox(width: 6),
+                      _RivalChip(standing),
                     ],
                   ],
                 ),
               ),
+              const SizedBox(width: 8),
+              const _BuyModeChip(),
+            ],
+          ),
+          if (next != null) ...[
+            const SizedBox(height: 6),
+            FilledButton(
+              key: const Key('unlock-stage'),
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                visualDensity: VisualDensity.compact,
+              ),
+              onPressed: canUnlock
+                  ? () {
+                      if (ref.read(gameControllerProvider.notifier).unlockStage()) {
+                        HapticFeedback.mediumImpact();
+                        ref.read(audioServiceProvider).play(Sfx.unlock);
+                        playEffect(context, AnimAssets.celebration, size: 280);
+                      }
+                    }
+                  : null,
+              // FittedBox thay ellipsis: giá mở khoá là thông tin quan trọng, không được cắt.
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(l10n.unlockStageButton(formatNumber(next.unlockCost)), maxLines: 1),
+              ),
+            ),
+            const SizedBox(height: 4),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(3),
+              child: LinearProgressIndicator(
+                key: const Key('unlock-progress'),
+                value: unlockPercent / 100,
+                minHeight: 4,
+              ),
             ),
           ],
-        ),
+        ],
       ),
     );
   }

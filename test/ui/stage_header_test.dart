@@ -44,6 +44,30 @@ Future<(double, double)> _measure(WidgetTester tester, String locale, int stage,
 const _rowWidth = 368.0;
 
 void main() {
+  // Thanh tiến độ dưới nút mở khoá = tiền / giá (kẹp 0..1); đủ tiền → đầy.
+  for (final (money, expected) in [(0.0, 0.0), (1e60, 1.0)]) {
+    testWidgets('thanh tiến độ mở khoá: money=$money → $expected', (tester) async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      await GameStorage(prefs).save(GameState.newGame(nowMillis: 0)..stage = 1..money = money, nowMillis: 0);
+      await tester.binding.setSurfaceSize(const Size(400, 800));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await tester.pumpWidget(ProviderScope(
+        overrides: [
+          sharedPreferencesProvider.overrideWithValue(prefs),
+          clockProvider.overrideWithValue(() => 0),
+        ],
+        child: const BobaEmpireApp(),
+      ));
+      await tester.pumpAndSettle();
+      final bar = tester.widget<LinearProgressIndicator>(find.byKey(const Key('unlock-progress')));
+      expect(bar.value, expected);
+      await tester.pumpWidget(const SizedBox());
+    });
+  }
+
+  // Bố cục hiện tại: hàng 1 = tên + chip đối thủ + chip chế độ mua; nút mở khoá ở hàng 2 (rộng hết hàng) nên
+  // tên chỉ nhường chỗ cho hai chip, KHÔNG còn nhường cho nút. (Ghi chú lịch sử bên dưới.)
   // Tên giai đoạn từng bị cắt "…" (vd "Quỹ đầu tư toàn…") vì Flexible ngang hàng
   // với Expanded của nút mở khoá chia đều chỗ trống → tên chỉ được ~một nửa chỗ
   // trống dù nút cần ít hơn. Giờ tên lấy chiều rộng tự nhiên, chỉ chặn ở 50% hàng
@@ -53,11 +77,12 @@ void main() {
   // KHÔNG so tỉ lệ thu nhỏ với ngưỡng tuyệt đối; kiểm tra thứ thật sự cần đảm bảo:
   // tên được cấp ĐỦ chỗ = min(nhu cầu, 50% hàng), không bị nút giành mất.
   for (final locale in ['vi', 'en']) {
-    testWidgets('[$locale] tên giai đoạn 1-17 được cấp đủ min(nhu cầu, 50% hàng)',
+    testWidgets('[$locale] tên giai đoạn 1-17 được cấp đủ min(nhu cầu, hàng trừ hai chip)',
         (tester) async {
       for (var stage = 1; stage <= 17; stage++) {
         final (given, natural) = await _measure(tester, locale, stage);
-        final wanted = natural < _rowWidth * 0.5 ? natural : _rowWidth * 0.5;
+        const cap = _rowWidth - 78 - 40; // có chip đối thủ (chương 3+)
+        final wanted = natural < cap ? natural : cap;
         expect(given, greaterThanOrEqualTo(wanted - 1),
             reason: '[$locale] GĐ$stage: cấp $given, cần $wanted');
       }
