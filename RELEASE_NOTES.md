@@ -9,6 +9,118 @@ người bản ngữ soát.
 
 ---
 
+## 1.0.11 (+25) — 2026-10-18
+
+**Bản trước:** 1.0.10 (+24) trên iOS (nộp 2026-10-16). Android chưa có bản nào của 1.0.10 (Play production chờ duyệt) → người dùng Android nhận gộp cả 1.0.10 + 1.0.11; ghi chú cửa hàng đã viết theo phần MỚI so với 1.0.10, nếu muốn gộp cho Android thì thêm dòng "Pha theo đơn & Hồi 4" từ `whatsnew_1.0.10`.
+
+**Nội dung (suy từ `git log d08735f..HEAD`):**
+- **Thẻ Mùa** 28 ngày/30 bậc (XP có trần 150/ngày, đường Cao cấp 600💎), **Món của ngày**, phụ kiện độc quyền theo mùa (bậc 20/30), **BXH Thẻ Mùa** + thưởng cuối mùa (top 10: 1000/600/400/200💎, danh hiệu Quán Quân Mùa).
+- **Phó bản Hội** (3 ải/tuần theo vai trò) + Boss Hội hoạt hình; **bộ trang bị**, **Tinh luyện phụ kiện**, **Tinh chất & Bí quyết**; **mốc sưu tập theo bộ**.
+- **Đấu Trường:** PK Công thức, trận bóng ma, giải đấu tuần (top 10 thưởng 💎).
+- **Hồ sơ của tôi:** avatar ảnh tải lên (Supabase Storage) + báo cáo ảnh vi phạm (3 báo cáo → tự ẩn chờ duyệt), danh hiệu hồ sơ. ⚠️ **Nội dung người dùng tạo → nêu trong App Review Notes** (đã soạn: `APP_REVIEW_NOTES_1.0.11.md`).
+- Gia hạn tin đăng ở Chợ bằng QC; khách đi ngang gọi món; liên kết Facebook/TikTok/YouTube.
+- **Gọn UI:** Nhiệm vụ ngày/tuần/Quà gộp một màn 3 tab; 8 bảng xếp hạng gom một màn; bỏ phụ kiện lơ lửng quanh nút pha trà; header giai đoạn 2 hàng có thanh tiến độ.
+
+Soạn sẵn: `assets/store/whatsnew_1.0.11/` (7 ngôn ngữ, đều < 500 ký tự), hộp "Có gì mới" trong app (`whatsNewVersion` = `1.0.11`). Mô tả store chưa đổi (vẫn `description_1.0.10`; thêm dòng Thẻ Mùa/Phó bản nếu muốn).
+
+**BẮT BUỘC trước khi nộp:**
+- **Không có sản phẩm IAP mới.**
+- **Supabase — chạy các file SQL** (idempotent; `scripts/deploy_supabase_sql.sh`): ngoài danh sách của 1.0.10, bản này cần `guild_schema`, `guild_dungeon_schema`, `arena_schema`, `arena_leaderboard_schema`, `season_leaderboard_schema`, `player_title_schema`, `player_avatar_schema`, `player_profile_schema`, `accessory_market_schema`, `leaderboard_rewards_schema`. **Chạy SQL TRƯỚC khi người chơi cập nhật.** `player_avatar_schema` tạo bucket Storage + policy — **chưa thử tay**, thử upload ảnh trên bản thật trước khi ship.
+- Review Notes: dán `APP_REVIEW_NOTES_1.0.11.md`.
+- Kiểm tra OTP email (Resend) còn hoạt động.
+
+**Lệnh build:** iOS `flutter build ipa --release --export-options-plist=ios/ExportOptions.plist --dart-define=IAP_VERIFY_ENDPOINT=https://boba-receipt-server-411559711815.asia-southeast1.run.app/verify` → Xcode Organizer. Android `flutter build appbundle --release` (versionCode +25; đổi +26 nếu Play đã nhận +25).
+
+⚠️ Số cân bằng Thẻ Mùa / Phó bản / Tinh luyện / thưởng mùa là ước lượng, chưa playtest. Bản dịch máy (es/id/ko/pt/th) chưa có người bản ngữ duyệt.
+
+### Có gì mới (dán vào console)
+
+#### 🇻🇳 Tiếng Việt (vi)
+
+```
+Mới: THẺ MÙA & PHÓ BẢN HỘI!
+
+• Thẻ Mùa 28 ngày/30 bậc, Món của ngày và bảng xếp hạng mùa có thưởng cuối mùa
+• Phó bản Hội 3 ải mỗi tuần, Boss hoạt hình; bộ trang bị và tinh luyện phụ kiện
+• Trang Hồ sơ của tôi: avatar ảnh, danh hiệu; mốc sưu tập theo bộ
+• Đấu Trường: PK Công thức, trận bóng ma, giải đấu tuần; Nhiệm vụ & Quà gộp một màn
+• Gia hạn tin đăng ở Chợ bằng quảng cáo; tính năng online cần liên kết email
+```
+
+#### 🇬🇧 English (en)
+
+```
+New: SEASON PASS & GUILD DUNGEON!
+
+• 28-day Season Pass (30 tiers), Daily Item and a season leaderboard with end-of-season rewards
+• Guild Dungeon (3 stages a week), animated Boss; loadouts and accessory refining
+• My Profile page: photo avatar and titles; collection set rewards
+• Arena: Recipe PK, ghost matches, weekly tournament; Quests & Gifts merged into one screen
+• Extend Market listings with an ad; online features need a linked email
+```
+
+#### 🇪🇸 Español (es)
+
+```
+Nuevo: ¡PASE DE TEMPORADA Y MAZMORRA!
+
+• Pase de Temporada 28 días (30 niveles), Objeto del día y ranking de temporada con premios
+• Mazmorra del Gremio (3 etapas por semana), Jefe animado; equipamiento y refinado de accesorios
+• Página Mi perfil: avatar con foto y títulos; premios por colecciones
+• Arena: PK de recetas, partidas fantasma, torneo semanal; Misiones y Regalos en una sola pantalla
+• Prolonga anuncios del Mercado con un anuncio; las funciones online requieren un correo vinculado
+```
+
+#### 🇮🇩 Bahasa Indonesia (id)
+
+```
+Baru: PASS MUSIM & DUNGEON GUILD!
+
+• Pass Musim 28 hari (30 tingkat), Item Harian, dan papan peringkat musim dengan hadiah akhir musim
+• Dungeon Guild (3 tahap per minggu), Boss beranimasi; perlengkapan dan penyempurnaan aksesori
+• Halaman Profilku: avatar foto dan gelar; hadiah set koleksi
+• Arena: PK Resep, pertandingan hantu, turnamen mingguan; Misi & Hadiah digabung jadi satu layar
+• Perpanjang iklan Pasar dengan iklan video; fitur online perlu email tertaut
+```
+
+#### 🇰🇷 한국어 (ko)
+
+```
+신규: 시즌 패스 & 길드 던전!
+
+• 28일 시즌 패스(30단계), 오늘의 아이템, 시즌 종료 보상이 있는 시즌 순위표
+• 길드 던전(주 3단계), 움직이는 보스; 장비 세트와 액세서리 정제
+• 내 프로필 페이지: 사진 아바타와 칭호; 세트 수집 보상
+• 아레나: 레시피 PK, 고스트 매치, 주간 토너먼트; 퀘스트와 선물을 한 화면으로 통합
+• 광고로 마켓 등록 기간 연장; 온라인 기능은 이메일 연동이 필요해요
+```
+
+#### 🇧🇷 Português (pt)
+
+```
+Novo: PASSE DE TEMPORADA E MASMORRA!
+
+• Passe de Temporada de 28 dias (30 níveis), Item do dia e ranking da temporada com prêmios de fim de temporada
+• Masmorra da Guilda (3 etapas por semana), Chefe animado; equipamentos e refino de acessórios
+• Página Meu perfil: avatar com foto e títulos; prêmios por coleções
+• Arena: PK de receitas, partidas fantasma, torneio semanal; Missões e Presentes numa só tela
+• Prorrogue anúncios do Mercado com um anúncio; recursos online exigem e-mail vinculado
+```
+
+#### 🇹🇭 ไทย (th)
+
+```
+ใหม่: บัตรซีซัน & ดันเจี้ยนกิลด์!
+
+• บัตรซีซัน 28 วัน (30 ขั้น), ไอเทมประจำวัน และอันดับซีซันพร้อมรางวัลปิดซีซัน
+• ดันเจี้ยนกิลด์ (3 ด่านต่อสัปดาห์) บอสเคลื่อนไหว; ชุดสวมใส่และการเสริมพลังเครื่องประดับ
+• หน้าโปรไฟล์ของฉัน: อวาตาร์รูปถ่ายและฉายา; รางวัลสะสมครบชุด
+• สนามประลอง: PK สูตร, แมตช์ผี, ทัวร์นาเมนต์รายสัปดาห์; ภารกิจและของขวัญรวมเป็นหน้าเดียว
+• ต่ออายุประกาศในตลาดด้วยโฆษณา; ฟีเจอร์ออนไลน์ต้องผูกอีเมล
+```
+
+---
+
 ## 1.0.10 (+24) — 2026-10-16
 
 **Bản trước:** 1.0.9 (+23), đã lên App Store 2026-10-12. Nộp store bằng **+24**.

@@ -1135,11 +1135,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewOrders": "🧋 Racik sesuai pesanan: seret bahan ke gelas, pelanggan chibi yang imut, combo, Jam sibuk, dan pesanan festival",
-  "whatsNewRecipes": "📖 Game resep: ulangan berjeda 100 minuman dan rentetan harian; setiap mini-game punya panduan cara bermain",
-  "whatsNewDaily": "📅 Tantangan harian: pesanan yang sama untuk semua orang, papan peringkat Hari ini, dan hadiah mingguan untuk top",
-  "whatsNewAct4": "📜 Babak 4 \"Festival Keahlian Agung\": 10 bab, tiap bab dibuka lewat pencapaian mini-game",
-  "whatsNewMore": "🤝 Ketuk otomatis, tukar aksesori di Pasar, misi Guild; fitur online (papan peringkat, Pasar, Guild) memerlukan email yang tertaut",
+  "whatsNewSeason": "🎫 Pass Musim 28 hari (30 tingkat), Item Harian, dan papan peringkat musim dengan hadiah akhir musim",
+  "whatsNewGuild": "🐉 Dungeon Guild (3 tahap per minggu), Boss beranimasi; perlengkapan dan penyempurnaan aksesori",
+  "whatsNewProfile": "👤 Halaman Profilku: avatar foto dan gelar; hadiah set koleksi",
+  "whatsNewArena": "⚔️ Arena: PK Resep, pertandingan hantu, turnamen mingguan; Misi & Hadiah digabung jadi satu layar",
+  "whatsNewMore": "🤝 Perpanjang iklan Pasar dengan iklan video; fitur online perlu email tertaut",
   "whatsNewLater": "Nanti",
   "whatsNewOpen": "Coba",
   "marketWallet": "{n} Koin Pasar",

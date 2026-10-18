@@ -3083,24 +3083,24 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get whatsNewOrders =>
-      '🧋 Pha theo đơn: kéo-thả nguyên liệu vào ly, khách chibi dễ thương, combo, Giờ cao điểm và đơn lễ hội';
+  String get whatsNewSeason =>
+      '🎫 Thẻ Mùa 28 ngày/30 bậc, Món của ngày và bảng xếp hạng mùa có thưởng cuối mùa';
 
   @override
-  String get whatsNewRecipes =>
-      '📖 Trò Công thức pha chế: ôn cách quãng 100 món, chuỗi ngày ôn; mỗi trò đều có hướng dẫn cách chơi';
+  String get whatsNewGuild =>
+      '🐉 Phó bản Hội 3 ải mỗi tuần, Boss hoạt hình; bộ trang bị và tinh luyện phụ kiện';
 
   @override
-  String get whatsNewDaily =>
-      '📅 Thử thách hằng ngày chung một đề cho mọi người, bảng xếp hạng Hôm nay và thưởng top tuần';
+  String get whatsNewProfile =>
+      '👤 Trang Hồ sơ của tôi: avatar ảnh, danh hiệu; mốc sưu tập theo bộ';
 
   @override
-  String get whatsNewAct4 =>
-      '📜 Hồi 4 \"Đại Hội Tay Nghề\": 10 chương, mỗi chương mở bằng mốc của các trò chơi nhỏ';
+  String get whatsNewArena =>
+      '⚔️ Đấu Trường: PK Công thức, trận bóng ma, giải đấu tuần; Nhiệm vụ & Quà gộp một màn';
 
   @override
   String get whatsNewMore =>
-      '🤝 Tự động chạm, trao đổi phụ kiện ở Chợ, nhiệm vụ Hội; tính năng online (bảng xếp hạng, Chợ, Hội) cần liên kết email';
+      '🤝 Gia hạn tin đăng ở Chợ bằng quảng cáo; tính năng online cần liên kết email';
 
   @override
   String get whatsNewLater => 'Để sau';

@@ -1135,11 +1135,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewOrders": "🧋 Brew by order: drag ingredients into the cup, cute chibi customers, combos, Rush Hour and festival orders",
-  "whatsNewRecipes": "📖 Recipe game: spaced review of 100 drinks and a daily review streak; every mini-game now has a how-to-play guide",
-  "whatsNewDaily": "📅 Daily Challenge: the same orders for everyone, a Today leaderboard and weekly top rewards",
-  "whatsNewAct4": "📜 Act 4 \"Grand Craft Festival\": 10 chapters, each unlocked by a mini-game milestone",
-  "whatsNewMore": "🤝 Auto-tap, accessory swaps in the Market, guild quests; online features (leaderboards, Market, Guilds) need a linked email",
+  "whatsNewSeason": "🎫 28-day Season Pass (30 tiers), Daily Item and a season leaderboard with end-of-season rewards",
+  "whatsNewGuild": "🐉 Guild Dungeon (3 stages a week), animated Boss; loadouts and accessory refining",
+  "whatsNewProfile": "👤 My Profile page: photo avatar and titles; collection set rewards",
+  "whatsNewArena": "⚔️ Arena: Recipe PK, ghost matches, weekly tournament; Quests & Gifts merged into one screen",
+  "whatsNewMore": "🤝 Extend Market listings with an ad; online features need a linked email",
   "whatsNewLater": "Later",
   "whatsNewOpen": "Try it",
   "marketWallet": "{n} Market Coins",

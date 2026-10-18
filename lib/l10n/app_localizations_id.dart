@@ -3087,24 +3087,24 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get whatsNewOrders =>
-      '🧋 Racik sesuai pesanan: seret bahan ke gelas, pelanggan chibi yang imut, combo, Jam sibuk, dan pesanan festival';
+  String get whatsNewSeason =>
+      '🎫 Pass Musim 28 hari (30 tingkat), Item Harian, dan papan peringkat musim dengan hadiah akhir musim';
 
   @override
-  String get whatsNewRecipes =>
-      '📖 Game resep: ulangan berjeda 100 minuman dan rentetan harian; setiap mini-game punya panduan cara bermain';
+  String get whatsNewGuild =>
+      '🐉 Dungeon Guild (3 tahap per minggu), Boss beranimasi; perlengkapan dan penyempurnaan aksesori';
 
   @override
-  String get whatsNewDaily =>
-      '📅 Tantangan harian: pesanan yang sama untuk semua orang, papan peringkat Hari ini, dan hadiah mingguan untuk top';
+  String get whatsNewProfile =>
+      '👤 Halaman Profilku: avatar foto dan gelar; hadiah set koleksi';
 
   @override
-  String get whatsNewAct4 =>
-      '📜 Babak 4 \"Festival Keahlian Agung\": 10 bab, tiap bab dibuka lewat pencapaian mini-game';
+  String get whatsNewArena =>
+      '⚔️ Arena: PK Resep, pertandingan hantu, turnamen mingguan; Misi & Hadiah digabung jadi satu layar';
 
   @override
   String get whatsNewMore =>
-      '🤝 Ketuk otomatis, tukar aksesori di Pasar, misi Guild; fitur online (papan peringkat, Pasar, Guild) memerlukan email yang tertaut';
+      '🤝 Perpanjang iklan Pasar dengan iklan video; fitur online perlu email tertaut';
 
   @override
   String get whatsNewLater => 'Nanti';

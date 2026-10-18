@@ -12,10 +12,10 @@ Future<void> showWhatsNew(BuildContext context, String version) {
     builder: (ctx) {
       final l10n = AppLocalizations.of(ctx)!;
       final items = [
-        l10n.whatsNewOrders,
-        l10n.whatsNewRecipes,
-        l10n.whatsNewDaily,
-        l10n.whatsNewAct4,
+        l10n.whatsNewSeason,
+        l10n.whatsNewGuild,
+        l10n.whatsNewProfile,
+        l10n.whatsNewArena,
         l10n.whatsNewMore,
       ];
       return AlertDialog(

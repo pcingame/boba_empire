@@ -23,6 +23,8 @@ DEFAULT_FILES=(
   recipe_order_leaderboard_schema recipe_daily_schema
   story_speedrun_schema story_speedrun2_schema story_speedrun3_schema story_speedrun4_schema
   event_leaderboard_schema accessory_market_schema leaderboard_rewards_schema arena_schema
+  guild_schema guild_dungeon_schema arena_leaderboard_schema season_leaderboard_schema
+  player_title_schema player_avatar_schema player_profile_schema
 )
 
 YES=0; DRY=0; FILES=()

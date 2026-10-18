@@ -1807,11 +1807,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewOrders": "🧋 Pha theo đơn: kéo-thả nguyên liệu vào ly, khách chibi dễ thương, combo, Giờ cao điểm và đơn lễ hội",
-  "whatsNewRecipes": "📖 Trò Công thức pha chế: ôn cách quãng 100 món, chuỗi ngày ôn; mỗi trò đều có hướng dẫn cách chơi",
-  "whatsNewDaily": "📅 Thử thách hằng ngày chung một đề cho mọi người, bảng xếp hạng Hôm nay và thưởng top tuần",
-  "whatsNewAct4": "📜 Hồi 4 \"Đại Hội Tay Nghề\": 10 chương, mỗi chương mở bằng mốc của các trò chơi nhỏ",
-  "whatsNewMore": "🤝 Tự động chạm, trao đổi phụ kiện ở Chợ, nhiệm vụ Hội; tính năng online (bảng xếp hạng, Chợ, Hội) cần liên kết email",
+  "whatsNewSeason": "🎫 Thẻ Mùa 28 ngày/30 bậc, Món của ngày và bảng xếp hạng mùa có thưởng cuối mùa",
+  "whatsNewGuild": "🐉 Phó bản Hội 3 ải mỗi tuần, Boss hoạt hình; bộ trang bị và tinh luyện phụ kiện",
+  "whatsNewProfile": "👤 Trang Hồ sơ của tôi: avatar ảnh, danh hiệu; mốc sưu tập theo bộ",
+  "whatsNewArena": "⚔️ Đấu Trường: PK Công thức, trận bóng ma, giải đấu tuần; Nhiệm vụ & Quà gộp một màn",
+  "whatsNewMore": "🤝 Gia hạn tin đăng ở Chợ bằng quảng cáo; tính năng online cần liên kết email",
   "whatsNewLater": "Để sau",
   "whatsNewOpen": "Chơi thử",
   "marketWallet": "{n} Xu Chợ",

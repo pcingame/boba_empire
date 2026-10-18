@@ -5388,34 +5388,34 @@ abstract class AppLocalizations {
   /// **'Có gì mới ở {version}'**
   String whatsNewTitle(String version);
 
-  /// No description provided for @whatsNewOrders.
+  /// No description provided for @whatsNewSeason.
   ///
   /// In vi, this message translates to:
-  /// **'🧋 Pha theo đơn: kéo-thả nguyên liệu vào ly, khách chibi dễ thương, combo, Giờ cao điểm và đơn lễ hội'**
-  String get whatsNewOrders;
+  /// **'🎫 Thẻ Mùa 28 ngày/30 bậc, Món của ngày và bảng xếp hạng mùa có thưởng cuối mùa'**
+  String get whatsNewSeason;
 
-  /// No description provided for @whatsNewRecipes.
+  /// No description provided for @whatsNewGuild.
   ///
   /// In vi, this message translates to:
-  /// **'📖 Trò Công thức pha chế: ôn cách quãng 100 món, chuỗi ngày ôn; mỗi trò đều có hướng dẫn cách chơi'**
-  String get whatsNewRecipes;
+  /// **'🐉 Phó bản Hội 3 ải mỗi tuần, Boss hoạt hình; bộ trang bị và tinh luyện phụ kiện'**
+  String get whatsNewGuild;
 
-  /// No description provided for @whatsNewDaily.
+  /// No description provided for @whatsNewProfile.
   ///
   /// In vi, this message translates to:
-  /// **'📅 Thử thách hằng ngày chung một đề cho mọi người, bảng xếp hạng Hôm nay và thưởng top tuần'**
-  String get whatsNewDaily;
+  /// **'👤 Trang Hồ sơ của tôi: avatar ảnh, danh hiệu; mốc sưu tập theo bộ'**
+  String get whatsNewProfile;
 
-  /// No description provided for @whatsNewAct4.
+  /// No description provided for @whatsNewArena.
   ///
   /// In vi, this message translates to:
-  /// **'📜 Hồi 4 \"Đại Hội Tay Nghề\": 10 chương, mỗi chương mở bằng mốc của các trò chơi nhỏ'**
-  String get whatsNewAct4;
+  /// **'⚔️ Đấu Trường: PK Công thức, trận bóng ma, giải đấu tuần; Nhiệm vụ & Quà gộp một màn'**
+  String get whatsNewArena;
 
   /// No description provided for @whatsNewMore.
   ///
   /// In vi, this message translates to:
-  /// **'🤝 Tự động chạm, trao đổi phụ kiện ở Chợ, nhiệm vụ Hội; tính năng online (bảng xếp hạng, Chợ, Hội) cần liên kết email'**
+  /// **'🤝 Gia hạn tin đăng ở Chợ bằng quảng cáo; tính năng online cần liên kết email'**
   String get whatsNewMore;
 
   /// No description provided for @whatsNewLater.

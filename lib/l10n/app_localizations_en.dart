@@ -3092,24 +3092,24 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get whatsNewOrders =>
-      '🧋 Brew by order: drag ingredients into the cup, cute chibi customers, combos, Rush Hour and festival orders';
+  String get whatsNewSeason =>
+      '🎫 28-day Season Pass (30 tiers), Daily Item and a season leaderboard with end-of-season rewards';
 
   @override
-  String get whatsNewRecipes =>
-      '📖 Recipe game: spaced review of 100 drinks and a daily review streak; every mini-game now has a how-to-play guide';
+  String get whatsNewGuild =>
+      '🐉 Guild Dungeon (3 stages a week), animated Boss; loadouts and accessory refining';
 
   @override
-  String get whatsNewDaily =>
-      '📅 Daily Challenge: the same orders for everyone, a Today leaderboard and weekly top rewards';
+  String get whatsNewProfile =>
+      '👤 My Profile page: photo avatar and titles; collection set rewards';
 
   @override
-  String get whatsNewAct4 =>
-      '📜 Act 4 \"Grand Craft Festival\": 10 chapters, each unlocked by a mini-game milestone';
+  String get whatsNewArena =>
+      '⚔️ Arena: Recipe PK, ghost matches, weekly tournament; Quests & Gifts merged into one screen';
 
   @override
   String get whatsNewMore =>
-      '🤝 Auto-tap, accessory swaps in the Market, guild quests; online features (leaderboards, Market, Guilds) need a linked email';
+      '🤝 Extend Market listings with an ad; online features need a linked email';
 
   @override
   String get whatsNewLater => 'Later';

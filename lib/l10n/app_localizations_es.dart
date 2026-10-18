@@ -3109,24 +3109,24 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get whatsNewOrders =>
-      '🧋 Preparar pedidos: arrastra ingredientes al vaso, adorables clientes chibi, combos, Hora punta y pedidos de fiesta';
+  String get whatsNewSeason =>
+      '🎫 Pase de Temporada de 28 días (30 niveles), Objeto del día y ranking de temporada con premios finales';
 
   @override
-  String get whatsNewRecipes =>
-      '📖 Juego de recetas: repaso espaciado de 100 bebidas y racha diaria; cada minijuego tiene su guía de cómo jugar';
+  String get whatsNewGuild =>
+      '🐉 Mazmorra del Gremio (3 etapas por semana), Jefe animado; equipamiento y refinado de accesorios';
 
   @override
-  String get whatsNewDaily =>
-      '📅 Reto diario: los mismos pedidos para todos, clasificación de Hoy y recompensas semanales al top';
+  String get whatsNewProfile =>
+      '👤 Página Mi perfil: avatar con foto y títulos; premios por colecciones';
 
   @override
-  String get whatsNewAct4 =>
-      '📜 Acto 4 «Gran Festival del Oficio»: 10 capítulos, cada uno se abre con un hito de los minijuegos';
+  String get whatsNewArena =>
+      '⚔️ Arena: PK de recetas, partidas fantasma, torneo semanal; Misiones y Regalos en una sola pantalla';
 
   @override
   String get whatsNewMore =>
-      '🤝 Toque automático, intercambio de accesorios en el Mercado, misiones de gremio; las funciones en línea (clasificaciones, Mercado, Gremios) requieren un correo vinculado';
+      '🤝 Prolonga anuncios del Mercado con un anuncio; las funciones online requieren un correo vinculado';
 
   @override
   String get whatsNewLater => 'Después';
