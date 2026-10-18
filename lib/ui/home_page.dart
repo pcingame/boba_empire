@@ -719,6 +719,14 @@ class _BottomBar extends ConsumerWidget {
 /// Banner mời vào Chợ khi có listing mới (món hiếm nhất) kể từ lần mở Chợ
 /// trước — biến mất ngay khi người chơi mở Chợ.
 /// Chỉ MỘT banner mỗi lúc: sự kiện (có hạn, quan trọng hơn) che banner Chợ.
+/// Festival đang diễn ra mà người chơi đã vào sự kiện (eventId khớp), hoặc null.
+Festival? _activeFestivalFor(WidgetRef ref, String eventId) {
+  final festival = activeFestival(
+      DateTime.fromMillisecondsSinceEpoch(ref.read(clockProvider)(), isUtc: true));
+  return festival != null && festival.id == eventId ? festival : null;
+}
+
+/// MỘT dải duy nhất trên đầu: dịp lễ (gộp luôn buff doanh thu) > buff sự kiện thường > tin Chợ.
 class _TopBanner extends ConsumerWidget {
   const _TopBanner();
 
@@ -726,6 +734,8 @@ class _TopBanner extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final eventActive =
         ref.watch(gameControllerProvider.select((s) => s.eventActive));
+    final eventId = ref.watch(gameControllerProvider.select((s) => s.eventId));
+    if (_activeFestivalFor(ref, eventId) != null) return const _FestivalBanner();
     return eventActive ? const _EventBanner() : const _MarketBanner();
   }
 }
@@ -865,7 +875,6 @@ class _MoneyHeader extends ConsumerWidget {
               const Expanded(child: _CollectionChip()),
             ],
           ),
-          const _FestivalBanner(),
           // Icon xu là widget riêng (không nhét vào chuỗi số) để text tiền vẫn
           // đúng "X Xu" cho test và đọc màn hình. FittedBox co vừa bề ngang khi
           // số lớn hoặc ngôn ngữ dài (không tràn header).
@@ -2010,43 +2019,58 @@ class _FestivalBanner extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final s = ref.watch(gameControllerProvider
-        .select((s) => (s.eventId, s.eventClaimableCount)));
-    final festival = activeFestival(DateTime.fromMillisecondsSinceEpoch(
-        ref.read(clockProvider)(),
-        isUtc: true));
-    if (festival == null || festival.id != s.$1) return const SizedBox.shrink();
+    final s = ref.watch(gameControllerProvider.select((s) => (
+          s.eventId,
+          s.eventClaimableCount,
+          s.eventActive,
+          s.eventRemainingSeconds,
+          s.eventMultiplier,
+        )));
+    final festival = _activeFestivalFor(ref, s.$1);
+    if (festival == null) return const SizedBox.shrink();
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.only(top: 6),
+    final style = theme.textTheme.labelLarge?.copyWith(
+      fontWeight: FontWeight.bold,
+      color: theme.colorScheme.onTertiary,
+    );
+    // "2" thay vì "2.0" cho hệ số tròn; giữ 1 số lẻ khi không tròn.
+    final multText =
+        s.$5 == s.$5.roundToDouble() ? s.$5.round().toString() : s.$5.toStringAsFixed(1);
+    return Material(
+      color: theme.colorScheme.tertiary,
       child: InkWell(
         key: const Key('event-banner'),
-        borderRadius: BorderRadius.circular(24),
         onTap: () => showEventDialog(context),
-        child: Stack(
-          clipBehavior: Clip.none,
-          fit: StackFit.passthrough,
-          children: [
-            ClayChip(
-              child: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Flexible(
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
-                  child: Text(
-                    l10n.eventBanner(festivalName(l10n, festival.id)),
-                    maxLines: 1,
-                    softWrap: false,
-                    style: theme.textTheme.labelLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: theme.colorScheme.onPrimaryContainer,
-                    ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(l10n.eventBanner(festivalName(l10n, festival.id)),
+                          maxLines: 1, softWrap: false, style: style),
+                      if (s.$3) ...[
+                        const SizedBox(width: 8),
+                        Text(
+                          key: const Key('event-banner-text'),
+                          l10n.eventBannerLabel(multText, formatDuration(s.$4)),
+                          maxLines: 1,
+                          style: style,
+                        ),
+                      ],
+                    ],
                   ),
                 ),
               ),
-            ),
-            if (s.$2 > 0)
-              Positioned(right: -6, top: -6, child: _CountBadge(s.$2)),
-          ],
+              if (s.$2 > 0) ...[const SizedBox(width: 8), _CountBadge(s.$2)],
+            ],
+          ),
         ),
       ),
     );

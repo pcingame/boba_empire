@@ -1,6 +1,7 @@
 // Banner dịp lễ ở màn chính: chỉ hiện TRONG dịp, bấm mở hộp thoại sự kiện, có
 // chấm đỏ khi có nhiệm vụ chờ nhận, và không làm tràn màn hẹp/thấp.
 import 'package:boba_empire/core/accessories.dart';
+import 'package:boba_empire/core/balance.dart';
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/main.dart';
@@ -45,9 +46,25 @@ void main() {
 
   testWidgets('trong dịp: có banner, bấm mở hộp thoại, chấm đỏ khi có thưởng',
       (tester) async {
+    final orig = (Balance.eventIncomeMult, Balance.eventStartMillis, Balance.eventEndMillis);
+    addTearDown(() {
+      Balance.eventIncomeMult = orig.$1;
+      Balance.eventStartMillis = orig.$2;
+      Balance.eventEndMillis = orig.$3;
+    });
+    Balance.eventIncomeMult = 1.25;
+    Balance.eventStartMillis = 0;
+    Balance.eventEndMillis = _inFestival + 3600000.0;
     final c = await _pump(tester, now: _inFestival, seed: _seed(tap: 1500));
     expect(find.byKey(const Key('event-banner')), findsOneWidget);
     expect(find.textContaining('Halloween'), findsWidgets);
+    // Buff doanh thu nằm CHUNG dải với tên dịp lễ (không còn dải riêng) và Chợ nhường chỗ.
+    expect(
+        find.descendant(
+            of: find.byKey(const Key('event-banner')),
+            matching: find.byKey(const Key('event-banner-text'))),
+        findsOneWidget);
+    expect(find.byKey(const Key('market-banner')), findsNothing);
     // Nhiệm vụ "chạm 1500" đã xong chưa nhận -> chấm đỏ "1".
     expect(
         find.descendant(
@@ -90,6 +107,16 @@ void main() {
           '${size.height.toInt()}', (tester) async {
         await tester.binding.setSurfaceSize(size);
         addTearDown(() => tester.binding.setSurfaceSize(null));
+        // Trường hợp chật nhất: dải dịp lễ + buff ×hệ số + đếm ngược dài + chấm đỏ.
+        final orig = (Balance.eventIncomeMult, Balance.eventStartMillis, Balance.eventEndMillis);
+        addTearDown(() {
+          Balance.eventIncomeMult = orig.$1;
+          Balance.eventStartMillis = orig.$2;
+          Balance.eventEndMillis = orig.$3;
+        });
+        Balance.eventIncomeMult = 1.25;
+        Balance.eventStartMillis = 0;
+        Balance.eventEndMillis = _inFestival + 999999000.0;
         final c = await _pump(tester,
             now: _inFestival, seed: _seed(tap: 1500), locale: locale);
         expect(find.byKey(const Key('event-banner')), findsOneWidget);

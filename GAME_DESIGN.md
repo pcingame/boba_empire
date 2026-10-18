@@ -1244,3 +1244,6 @@ Giảm giá 38 món → 400 mỗi bộ). Tổng đời tối đa **2 850 Xu Ch�
 
 ### 49b. Hub "Nhiệm vụ & Quà" (2026-10-18)
 Nhiệm vụ ngày (+thử thách), nhiệm vụ tuần và "Kiếm thêm 🎁" gộp thành một dialog 3 tab (`lib/ui/daily_hub_dialog.dart`); màn chính còn một chip `daily-quests-chip` thay cho hai chip. `showDailyQuests/showWeeklyQuests/showRewards` vẫn dùng được, chỉ mở hub ở tab tương ứng. Các panel (`DailyQuestsPanel`…) có cờ `embedded`.
+
+### 49c. Một dải tin trên màn chính (2026-10-18)
+Chip dịp lễ trong header và banner buff sự kiện gộp thành MỘT dải đầu màn (`_TopBanner`): dịp lễ (kèm buff ×hệ số + đếm ngược + chấm đỏ nhiệm vụ) > buff sự kiện thường > tin Chợ. Header còn: hàng Nhiệm vụ/Sưu tập, hàng tiền, hàng thu nhập.
