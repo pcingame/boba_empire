@@ -822,6 +822,8 @@
   "seasonPremiumOwned": "✓ 프리미엄 해제됨",
   "seasonPremiumBought": "프리미엄이 해제됐어요!",
   "seasonNotEnoughGems": "💎가 부족해요",
+  "seasonLbTitle": "시즌 패스 순위",
+  "seasonLbEmpty": "이번 시즌 순위에 아직 아무도 없습니다. 시즌 패스 XP를 얻고 다시 열면 등록됩니다(이메일 연동 계정 필요).",
   "seasonItemsTitle": "시즌 패스 한정 (20단계 무료 · 30단계 프리미엄)",
   "accessorySeasonSakura": "시즌 벚꽃",
   "accessorySeasonPaperLantern": "시즌 종이등",

@@ -1024,6 +1024,8 @@
   "seasonPremiumOwned": "✓ Premium unlocked",
   "seasonPremiumBought": "Premium unlocked!",
   "seasonNotEnoughGems": "Not enough 💎",
+  "seasonLbTitle": "Season Pass Ranking",
+  "seasonLbEmpty": "Nobody is on this season's board yet. Earn Season Pass XP and reopen to appear (needs an email-linked account).",
   "seasonItemsTitle": "Season Pass exclusives (tier 20 free · tier 30 Premium)",
   "accessorySeasonSakura": "Season Sakura",
   "accessorySeasonPaperLantern": "Season Paper Lantern",

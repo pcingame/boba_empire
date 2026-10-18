@@ -2823,6 +2823,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get seasonNotEnoughGems => '💎가 부족해요';
 
   @override
+  String get seasonLbTitle => '시즌 패스 순위';
+
+  @override
+  String get seasonLbEmpty =>
+      '이번 시즌 순위에 아직 아무도 없습니다. 시즌 패스 XP를 얻고 다시 열면 등록됩니다(이메일 연동 계정 필요).';
+
+  @override
   String get seasonItemsTitle => '시즌 패스 한정 (20단계 무료 · 30단계 프리미엄)';
 
   @override

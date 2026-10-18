@@ -1220,3 +1220,6 @@ Giảm giá 38 món → 400 mỗi bộ). Tổng đời tối đa **2 850 Xu Ch�
 ## 47. Danh hiệu hồ sơ (2026-10-18, chưa playtest)
 - 7 danh hiệu (`lib/core/titles.dart`) mở khoá từ tiến độ sẵn có (giai đoạn 5/10/18, Thăng Thiên, 50 Sao, 100 phụ kiện, VIP 5). Chọn ở Cài đặt → Danh hiệu; hiện trên hồ sơ công khai của mình khi người khác bấm vào tên ở BXH.
 - Thuần trang trí: mở khoá do client tự xét, server chỉ kiểm whitelist + tài khoản liên kết email (`supabase/player_title_schema.sql`, test trong `scripts/test_lb_rewards_sql.sh`).
+
+### 46d. BXH Thẻ Mùa
+- Nút 🏆 trên trang Thẻ Mùa mở bảng xếp hạng XP của mùa hiện tại (top 50). Mỗi mùa một tập hàng riêng nên tự reset. Chỉ tài khoản liên kết email, XP client tự khai (chỉ tăng, trần 4200). Chưa có thưởng cuối mùa theo hạng. SQL: `supabase/season_leaderboard_schema.sql`.

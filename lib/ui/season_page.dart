@@ -10,6 +10,8 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import 'widgets/anim_assets.dart';
+import 'email_gate.dart';
+import 'season_leaderboard_page.dart';
 import 'widgets/clay.dart';
 import 'widgets/one_shot_lottie.dart';
 import 'widgets/phone_width.dart';
@@ -116,7 +118,21 @@ class SeasonPage extends ConsumerWidget {
 
     return PhoneWidth(
       child: Scaffold(
-        appBar: AppBar(title: Text(l10n.seasonTitle)),
+        appBar: AppBar(
+          title: Text(l10n.seasonTitle),
+          actions: [
+            IconButton(
+              key: const Key('season-open-lb'),
+              tooltip: l10n.seasonLbTitle,
+              icon: const Icon(Icons.leaderboard_outlined),
+              onPressed: () async {
+                // Tính năng online: cần đã liên kết email (xem email_gate.dart).
+                if (!await ensureOnlineLinked(context) || !context.mounted) return;
+                showSeasonLeaderboard(context);
+              },
+            ),
+          ],
+        ),
         body: ListView(
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
           children: [

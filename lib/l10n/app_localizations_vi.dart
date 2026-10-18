@@ -2856,6 +2856,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get seasonNotEnoughGems => 'Chưa đủ 💎';
 
   @override
+  String get seasonLbTitle => 'BXH Thẻ Mùa';
+
+  @override
+  String get seasonLbEmpty =>
+      'Chưa ai trên bảng mùa này. Kiếm XP Thẻ Mùa rồi mở lại để lên bảng (cần tài khoản liên kết email).';
+
+  @override
   String get seasonItemsTitle =>
       'Độc quyền Thẻ Mùa (bậc 20 miễn phí · bậc 30 Cao cấp)';
 

@@ -2866,6 +2866,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get seasonNotEnoughGems => 'Not enough 💎';
 
   @override
+  String get seasonLbTitle => 'Season Pass Ranking';
+
+  @override
+  String get seasonLbEmpty =>
+      'Nobody is on this season\'s board yet. Earn Season Pass XP and reopen to appear (needs an email-linked account).';
+
+  @override
   String get seasonItemsTitle =>
       'Season Pass exclusives (tier 20 free · tier 30 Premium)';
 

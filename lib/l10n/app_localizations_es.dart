@@ -2880,6 +2880,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get seasonNotEnoughGems => 'No tienes suficientes 💎';
 
   @override
+  String get seasonLbTitle => 'Ranking del Pase';
+
+  @override
+  String get seasonLbEmpty =>
+      'Nadie en el ranking de esta temporada. Gana XP del Pase y vuelve a abrir para aparecer (requiere cuenta vinculada por email).';
+
+  @override
   String get seasonItemsTitle =>
       'Exclusivos del Pase (nivel 20 gratis · nivel 30 Premium)';
 

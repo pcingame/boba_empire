@@ -1024,6 +1024,8 @@
   "seasonPremiumOwned": "✓ ปลดล็อกพรีเมียมแล้ว",
   "seasonPremiumBought": "ปลดล็อกพรีเมียมแล้ว!",
   "seasonNotEnoughGems": "💎 ไม่พอ",
+  "seasonLbTitle": "อันดับบัตรซีซัน",
+  "seasonLbEmpty": "ยังไม่มีใครในอันดับซีซันนี้ รับ XP บัตรซีซันแล้วเปิดใหม่เพื่อขึ้นอันดับ (ต้องมีบัญชีที่ผูกอีเมล)",
   "seasonItemsTitle": "ไอเทมเฉพาะบัตรซีซัน (ขั้น 20 ฟรี · ขั้น 30 พรีเมียม)",
   "accessorySeasonSakura": "ซากุระซีซัน",
   "accessorySeasonPaperLantern": "โคมกระดาษซีซัน",

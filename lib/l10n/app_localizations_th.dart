@@ -2854,6 +2854,13 @@ class AppLocalizationsTh extends AppLocalizations {
   String get seasonNotEnoughGems => '💎 ไม่พอ';
 
   @override
+  String get seasonLbTitle => 'อันดับบัตรซีซัน';
+
+  @override
+  String get seasonLbEmpty =>
+      'ยังไม่มีใครในอันดับซีซันนี้ รับ XP บัตรซีซันแล้วเปิดใหม่เพื่อขึ้นอันดับ (ต้องมีบัญชีที่ผูกอีเมล)';
+
+  @override
   String get seasonItemsTitle =>
       'ไอเทมเฉพาะบัตรซีซัน (ขั้น 20 ฟรี · ขั้น 30 พรีเมียม)';
 

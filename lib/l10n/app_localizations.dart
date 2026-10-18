@@ -5004,6 +5004,18 @@ abstract class AppLocalizations {
   /// **'Chưa đủ 💎'**
   String get seasonNotEnoughGems;
 
+  /// No description provided for @seasonLbTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'BXH Thẻ Mùa'**
+  String get seasonLbTitle;
+
+  /// No description provided for @seasonLbEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa ai trên bảng mùa này. Kiếm XP Thẻ Mùa rồi mở lại để lên bảng (cần tài khoản liên kết email).'**
+  String get seasonLbEmpty;
+
   /// No description provided for @seasonItemsTitle.
   ///
   /// In vi, this message translates to:

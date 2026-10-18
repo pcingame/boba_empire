@@ -2863,6 +2863,13 @@ class AppLocalizationsId extends AppLocalizations {
   String get seasonNotEnoughGems => '💎 tidak cukup';
 
   @override
+  String get seasonLbTitle => 'Peringkat Pass Musim';
+
+  @override
+  String get seasonLbEmpty =>
+      'Belum ada siapa pun di papan musim ini. Kumpulkan XP Pass lalu buka lagi untuk masuk (perlu akun terhubung email).';
+
+  @override
   String get seasonItemsTitle =>
       'Eksklusif Pass Musim (tingkat 20 gratis · tingkat 30 Premium)';
 

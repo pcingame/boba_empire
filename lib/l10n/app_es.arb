@@ -1024,6 +1024,8 @@
   "seasonPremiumOwned": "✓ Premium desbloqueado",
   "seasonPremiumBought": "¡Premium desbloqueado!",
   "seasonNotEnoughGems": "No tienes suficientes 💎",
+  "seasonLbTitle": "Ranking del Pase",
+  "seasonLbEmpty": "Nadie en el ranking de esta temporada. Gana XP del Pase y vuelve a abrir para aparecer (requiere cuenta vinculada por email).",
   "seasonItemsTitle": "Exclusivos del Pase (nivel 20 gratis · nivel 30 Premium)",
   "accessorySeasonSakura": "Sakura de Temporada",
   "accessorySeasonPaperLantern": "Farol de Papel de Temporada",
