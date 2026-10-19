@@ -11,7 +11,7 @@ import '../l10n/app_localizations.dart';
 import '../leaderboard/player_avatar.dart';
 import '../state/game_providers.dart';
 import 'email_gate.dart';
-import 'player_profile_dialog.dart';
+import 'friend_shop_page.dart';
 import 'widgets/avatar_circle.dart';
 import 'widgets/phone_width.dart';
 
@@ -207,7 +207,7 @@ class _ListTab extends ConsumerWidget {
                     key: Key('friend-${f.userId}'),
                     nickname: f.nickname,
                     subtitle: l10n.friendsStage(f.stage),
-                    onTap: () => showPlayerProfile(context, f.nickname),
+                    onTap: () => showFriendShop(context, f),
                     trailing: Row(mainAxisSize: MainAxisSize.min, children: [
                       FilledButton.tonal(
                         key: Key('friend-gift-${f.userId}'),

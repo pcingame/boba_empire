@@ -2,6 +2,7 @@
 /// (RPC `friend_*`, supabase/friends_schema.sql). Chỉ tài khoản liên kết email.
 library;
 
+import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -125,7 +126,37 @@ FriendError friendErrorOf(Object e) {
 }
 
 /// Tách để test thay bằng bản giả.
+/// Quán của một người bạn (RPC `friend_shop`): cảnh theo giai đoạn + món đang trưng bày + số liệu.
+class FriendShop {
+  const FriendShop({
+    required this.nickname,
+    this.stage = 1,
+    this.income = 0,
+    this.seasonXp = 0,
+    this.orders = 0,
+    this.equipped = const [],
+  });
+  factory FriendShop.fromJson(Map<String, dynamic> j) => FriendShop(
+        nickname: j['nickname'] as String,
+        stage: ((j['stage'] ?? 1) as num).toInt(),
+        income: ((j['income'] ?? 0) as num).toDouble(),
+        seasonXp: ((j['season_xp'] ?? 0) as num).toInt(),
+        orders: ((j['orders'] ?? 0) as num).toInt(),
+        equipped: [for (final e in (j['equipped'] as List?) ?? const []) e as String],
+      );
+  final String nickname;
+  final int stage;
+  final double income;
+  final int seasonXp;
+  final int orders;
+  final List<String> equipped;
+}
+
 abstract class FriendsRepository {
+  Future<FriendShop> shop(String userId);
+
+  /// Đẩy món đang trưng bày của mình lên để bạn bè thấy.
+  Future<void> setDisplay(List<String> ids);
   Future<FriendsOverview> overview();
   Future<List<FriendCandidate>> search(String nickname);
 
@@ -178,14 +209,35 @@ class SupabaseFriendsRepository implements FriendsRepository {
 
   @override
   Future<int> claimGifts() => _guard(() async => ((await _c.rpc('friend_gift_claim')) as num).toInt());
+
+  @override
+  Future<FriendShop> shop(String userId) => _guard(() async =>
+      FriendShop.fromJson(Map<String, dynamic>.from(await _c.rpc('friend_shop', params: {'p_friend': userId}) as Map)));
+
+  @override
+  Future<void> setDisplay(List<String> ids) => _guard(() => _c.rpc('set_shop_display', params: {'p_equipped': ids}));
 }
+
+/// Đẩy trưng bày lên server; là phần thêm nên mọi lỗi (mạng, chưa liên kết, chưa chạy SQL) bị nuốt.
+Future<void> pushShopDisplay(FriendsRepository repo, List<String> ids) async {
+  try {
+    await repo.setDisplay(ids);
+  } catch (_) {}
+}
+
+final friendShopProvider = FutureProvider.autoDispose.family<FriendShop, String>(
+    (ref, userId) => ref.read(friendsRepositoryProvider).shop(userId));
 
 final friendsRepositoryProvider = Provider<FriendsRepository>((_) => SupabaseFriendsRepository());
 
 /// Trạng thái trang Bạn bè. Lỗi tải → AsyncError (UI hiện nút thử lại).
 class FriendsController extends AsyncNotifier<FriendsOverview> {
   @override
-  Future<FriendsOverview> build() => ref.read(friendsRepositoryProvider).overview();
+  Future<FriendsOverview> build() {
+    unawaited(pushShopDisplay(
+        ref.read(friendsRepositoryProvider), ref.read(gameControllerProvider).equippedAccessories));
+    return ref.read(friendsRepositoryProvider).overview();
+  }
 
   Future<void> refresh() async {
     state = await AsyncValue.guard(() => ref.read(friendsRepositoryProvider).overview());

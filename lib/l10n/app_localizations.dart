@@ -2046,6 +2046,36 @@ abstract class AppLocalizations {
   /// **'Danh hiệu'**
   String get titlePickerTitle;
 
+  /// No description provided for @profileGender.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giới tính'**
+  String get profileGender;
+
+  /// No description provided for @profileGenderMale.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nam'**
+  String get profileGenderMale;
+
+  /// No description provided for @profileGenderFemale.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nữ'**
+  String get profileGenderFemale;
+
+  /// No description provided for @profileGenderOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khác'**
+  String get profileGenderOther;
+
+  /// No description provided for @profileGenderHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tuỳ chọn, hiện trên hồ sơ công khai. Bấm lại để ẩn.'**
+  String get profileGenderHint;
+
   /// No description provided for @titlePickerNone.
   ///
   /// In vi, this message translates to:
@@ -5357,6 +5387,36 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Kết bạn để so tài với nhau nhé.'**
   String get friendsRankEmpty;
+
+  /// No description provided for @friendShopTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quán của {name}'**
+  String friendShopTitle(String name);
+
+  /// No description provided for @friendShopDisplay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang trưng bày'**
+  String get friendShopDisplay;
+
+  /// No description provided for @friendShopDisplayEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa trưng bày món nào.'**
+  String get friendShopDisplayEmpty;
+
+  /// No description provided for @friendShopCollection.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ sưu tập'**
+  String get friendShopCollection;
+
+  /// No description provided for @friendShopProfile.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hồ sơ'**
+  String get friendShopProfile;
 
   /// No description provided for @seasonLbEmpty.
   ///

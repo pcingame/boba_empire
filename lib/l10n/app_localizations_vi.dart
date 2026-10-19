@@ -1191,6 +1191,22 @@ class AppLocalizationsVi extends AppLocalizations {
   String get titlePickerTitle => 'Danh hiệu';
 
   @override
+  String get profileGender => 'Giới tính';
+
+  @override
+  String get profileGenderMale => 'Nam';
+
+  @override
+  String get profileGenderFemale => 'Nữ';
+
+  @override
+  String get profileGenderOther => 'Khác';
+
+  @override
+  String get profileGenderHint =>
+      'Tuỳ chọn, hiện trên hồ sơ công khai. Bấm lại để ẩn.';
+
+  @override
   String get titlePickerNone => 'Không dùng danh hiệu';
 
   @override
@@ -3051,6 +3067,23 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get friendsRankEmpty => 'Kết bạn để so tài với nhau nhé.';
+
+  @override
+  String friendShopTitle(String name) {
+    return 'Quán của $name';
+  }
+
+  @override
+  String get friendShopDisplay => 'Đang trưng bày';
+
+  @override
+  String get friendShopDisplayEmpty => 'Chưa trưng bày món nào.';
+
+  @override
+  String get friendShopCollection => 'Bộ sưu tập';
+
+  @override
+  String get friendShopProfile => 'Hồ sơ';
 
   @override
   String get seasonLbEmpty =>

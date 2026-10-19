@@ -1254,4 +1254,10 @@ Chip dịp lễ trong header và banner buff sự kiện gộp thành MỘT dả
 - **Quà mỗi ngày:** tặng mỗi bạn một quà/ngày (UTC); người tặng và người nhận mỗi quà được 180 giây thu nhập (sàn 100 Xu). Quà chờ nhận trong 7 ngày; huỷ bạn thì quà chưa nhận mất. Xu chỉ cộng SAU khi server xác nhận. Không có 💎 để tránh nuôi nick.
 - **BXH bạn bè:** bạn + mình theo Thu nhập / XP Thẻ Mùa / Pha theo đơn (số liệu lấy từ các bảng xếp hạng hiện có, nên người chưa lên bảng đó hiện 0).
 - Kỹ thuật: `lib/friends/friends.dart`, `lib/ui/friends_page.dart`, `supabase/friends_schema.sql` (PHẢI chạy), test `scripts/test_friends_sql.sh`.
+- **Ghé thăm quán:** bấm một dòng bạn → trang quán (chỉ đọc): cảnh theo giai đoạn của bạn, phụ kiện đang trưng bày, thu nhập/XP mùa/đơn hoàn hảo, nút Bộ sưu tập (RPC `accessory_collection_of`) và Hồ sơ. Món trưng bày được đẩy lên bảng `shop_displays` (RPC `set_shop_display`) mỗi khi đổi trưng bày (đã liên kết email) và khi mở trang Bạn bè; `friend_shop(uuid)` chỉ trả cho bạn bè. Server chỉ kiểm dạng id + tối đa 6 món (thuần trang trí). id món lạ từ bản mới hơn bị bỏ qua. PHẢI chạy lại `friends_schema.sql`.
 - **Chấm đỏ:** nút ⚙ ở màn chính có chấm đỏ, dòng "Bạn bè" trong Cài đặt có số, khi có lời mời kết bạn hoặc quà chờ nhận (`friendsAlertProvider`; làm mới khi mở lại app / đóng trang Bạn bè; chưa liên kết email = không chấm).
+
+## 51. Giới tính hồ sơ (2026-10-19)
+- Tuỳ chọn, không bắt buộc: Hồ sơ của tôi → chọn ♂ Nam / ♀ Nữ / ⚧ Khác; bấm lại món đang chọn để ẩn. Mặc định không hiện gì.
+- Lưu máy (`profile_gender`) rồi đẩy lên server (`set_player_gender`, chỉ tài khoản liên kết email); người khác thấy ở hồ sơ công khai qua `player_gender(nickname)` (cách tra giống danh hiệu).
+- Kỹ thuật: `lib/leaderboard/player_gender.dart`, `supabase/player_gender_schema.sql` (PHẢI chạy; đã thêm vào deploy script), test SQL trong `scripts/test_lb_rewards_sql.sh`.

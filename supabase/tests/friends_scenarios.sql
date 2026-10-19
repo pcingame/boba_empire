@@ -102,4 +102,27 @@ select chk('khách không gọi được', err_of('select friend_overview()') li
 select as_u(9);
 select chk('ẩn danh bị chặn', err_of('select friend_overview()') like '%email link required%');
 select chk('không đọc thẳng bảng', err_of('select * from friendships') like '%permission denied%');
+
+-- ghé thăm quán: chỉ bạn bè, trưng bày được lưu, id/số lượng sai bị chặn
+reset role;
+delete from friendships; delete from friend_requests;
+insert into friendships (user_a, user_b) values (uid_of(1), uid_of(2));
+select as_u(2); select set_shop_display(array['boba_a', 'cup_2']);
+select as_u(1);
+select chk('bạn xem quán: stage, thu nhập, trưng bày',
+  friend_shop(uid_of(2))->>'nickname' = 'Binh' and (friend_shop(uid_of(2))->>'stage')::int = 7
+  and (friend_shop(uid_of(2))->>'income')::numeric = 5000
+  and friend_shop(uid_of(2))->'equipped' = '["boba_a","cup_2"]'::jsonb);
+select chk('người lạ không xem được quán', err_of(format('select friend_shop(%L)', uid_of(4))) like '%not friends%');
+select chk('trưng bày đủ 2 món', (select count(*) from jsonb_array_elements(friend_shop(uid_of(2))->'equipped')) = 2);
+select as_u(2);
+select chk('id sai dạng bị chặn', err_of($$select set_shop_display(array['Bad Id'])$$) like '%bad display%');
+select chk('quá 6 món bị chặn', err_of($$select set_shop_display(array['a','b','c','d','e','f','g'])$$) like '%bad display%');
+select set_shop_display('{}');
+select as_u(1);
+select chk('gỡ hết trưng bày → rỗng', jsonb_array_length(friend_shop(uid_of(2))->'equipped') = 0);
+select as_u(0);
+select chk('khách không đặt trưng bày', err_of($$select set_shop_display('{}')$$) like '%permission denied%');
+select as_u(2);
+select chk('không đọc thẳng shop_displays', err_of('select * from shop_displays') like '%permission denied%');
 \echo FRIENDS OK

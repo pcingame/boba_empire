@@ -25,6 +25,11 @@ class _UnlinkedCloud extends CloudSaveController {
   CloudSaveViewState build() => const CloudSaveUnlinked();
 }
 
+class _ThrowRepo extends _Repo {
+  @override
+  Future<void> setDisplay(List<String> ids) async => throw const FriendException(FriendError.network);
+}
+
 class _Repo implements FriendsRepository {
   FriendsOverview data = const FriendsOverview();
   List<FriendCandidate> found = const [];
@@ -64,6 +69,17 @@ class _Repo implements FriendsRepository {
     if (giftError != null) throw giftError!;
     log.add('gift:$userId');
   }
+
+  FriendShop shopData = const FriendShop(nickname: 'Mai', stage: 7, income: 5000, seasonXp: 40, orders: 3, equipped: ['kraken', 'unknown_x']);
+  List<String>? pushed;
+  @override
+  Future<FriendShop> shop(String userId) async {
+    log.add('shop:$userId');
+    return shopData;
+  }
+
+  @override
+  Future<void> setDisplay(List<String> ids) async => pushed = ids;
 
   @override
   Future<int> claimGifts() async {
@@ -107,6 +123,59 @@ Future<void> _done(WidgetTester tester, ProviderContainer c) async {
 }
 
 void main() {
+  testWidgets('bấm dòng bạn → quán: cảnh, món trưng bày (id lạ bị bỏ), số liệu, nút bộ sưu tập/hồ sơ', (tester) async {
+    final repo = _Repo()..data = FriendsOverview(friends: [_f('u1', 'Mai')]);
+    final (c, _) = await _open(tester, repo);
+    expect(repo.pushed, isNotNull, reason: 'mở trang Bạn bè đẩy trưng bày của mình');
+    await tester.tap(find.byKey(const Key('friend-u1')));
+    await tester.pumpAndSettle();
+    expect(repo.log, contains('shop:u1'));
+    expect(find.byKey(const Key('friend-shop')), findsOneWidget);
+    expect(find.byKey(const Key('friend-shop-item-kraken')), findsOneWidget);
+    expect(find.textContaining('unknown_x'), findsNothing);
+    expect(find.byKey(const Key('friend-shop-collection')), findsOneWidget);
+    await tester.tap(find.byKey(const Key('friend-shop-collection')));
+    await tester.pumpAndSettle();
+    expect(find.byType(AlertDialog), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
+  testWidgets('quán chưa trưng bày gì → báo trống', (tester) async {
+    final repo = _Repo()
+      ..data = FriendsOverview(friends: [_f('u1', 'Mai')])
+      ..shopData = const FriendShop(nickname: 'Mai');
+    final (c, _) = await _open(tester, repo);
+    await tester.tap(find.byKey(const Key('friend-u1')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('friend-shop-empty')), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
+  for (final lang in ['vi', 'en', 'es', 'id', 'ko', 'pt', 'th']) {
+    testWidgets('quán bạn không tràn ở 320px, chữ 1.5× ($lang)', (tester) async {
+      final repo = _Repo()
+        ..data = FriendsOverview(friends: [_f('u1', 'Mai')])
+        ..shopData = const FriendShop(
+            nickname: 'Mai', stage: 18, income: 1e30, seasonXp: 99999, orders: 12345,
+            equipped: ['kraken', 'thunderbolt', 'genie', 'volcano']);
+      final (c, _) = await _open(tester, repo, locale: lang, size: const Size(320, 640));
+      await tester.tap(find.byKey(const Key('friend-u1')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('friend-shop-stage')), findsOneWidget);
+      expect(tester.takeException(), isNull, reason: lang);
+      expect(find.textContaining(RegExp(r'\{[a-z]+\}')), findsNothing, reason: lang);
+      await tester.pumpWidget(const SizedBox());
+      c.dispose();
+    });
+  }
+
+  test('pushShopDisplay nuốt lỗi', () async {
+    final repo = _ThrowRepo();
+    await pushShopDisplay(repo, ['kraken']);
+  });
+
   test('chấm đỏ: lời mời + quà chờ, 0 khi chưa liên kết', () async {
     final repo = _Repo()
       ..data = const FriendsOverview(incoming: [FriendRequestIn('u1', 'A')], giftsWaiting: 2);

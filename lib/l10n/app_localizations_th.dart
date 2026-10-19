@@ -1190,6 +1190,22 @@ class AppLocalizationsTh extends AppLocalizations {
   String get titlePickerTitle => 'ฉายา';
 
   @override
+  String get profileGender => 'เพศ';
+
+  @override
+  String get profileGenderMale => 'ชาย';
+
+  @override
+  String get profileGenderFemale => 'หญิง';
+
+  @override
+  String get profileGenderOther => 'อื่น ๆ';
+
+  @override
+  String get profileGenderHint =>
+      'ไม่บังคับ แสดงในโปรไฟล์สาธารณะ แตะอีกครั้งเพื่อซ่อน';
+
+  @override
   String get titlePickerNone => 'ไม่ใช้ฉายา';
 
   @override
@@ -3047,6 +3063,23 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get friendsRankEmpty => 'เพิ่มเพื่อนเพื่อแข่งกัน';
+
+  @override
+  String friendShopTitle(String name) {
+    return 'ร้านของ $name';
+  }
+
+  @override
+  String get friendShopDisplay => 'กำลังจัดแสดง';
+
+  @override
+  String get friendShopDisplayEmpty => 'ยังไม่มีไอเทมจัดแสดง';
+
+  @override
+  String get friendShopCollection => 'คอลเลกชัน';
+
+  @override
+  String get friendShopProfile => 'โปรไฟล์';
 
   @override
   String get seasonLbEmpty =>

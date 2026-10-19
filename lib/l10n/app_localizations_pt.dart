@@ -1197,6 +1197,22 @@ class AppLocalizationsPt extends AppLocalizations {
   String get titlePickerTitle => 'Título';
 
   @override
+  String get profileGender => 'Gênero';
+
+  @override
+  String get profileGenderMale => 'Masculino';
+
+  @override
+  String get profileGenderFemale => 'Feminino';
+
+  @override
+  String get profileGenderOther => 'Outro';
+
+  @override
+  String get profileGenderHint =>
+      'Opcional, aparece no seu perfil público. Toque de novo para ocultar.';
+
+  @override
   String get titlePickerNone => 'Sem título';
 
   @override
@@ -3068,6 +3084,23 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get friendsRankEmpty => 'Adicione amigos para competir com eles.';
+
+  @override
+  String friendShopTitle(String name) {
+    return 'Loja de $name';
+  }
+
+  @override
+  String get friendShopDisplay => 'Em exibição';
+
+  @override
+  String get friendShopDisplayEmpty => 'Nada em exibição ainda.';
+
+  @override
+  String get friendShopCollection => 'Coleção';
+
+  @override
+  String get friendShopProfile => 'Perfil';
 
   @override
   String get seasonLbEmpty =>

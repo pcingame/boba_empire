@@ -1170,6 +1170,21 @@ class AppLocalizationsKo extends AppLocalizations {
   String get titlePickerTitle => '칭호';
 
   @override
+  String get profileGender => '성별';
+
+  @override
+  String get profileGenderMale => '남성';
+
+  @override
+  String get profileGenderFemale => '여성';
+
+  @override
+  String get profileGenderOther => '기타';
+
+  @override
+  String get profileGenderHint => '선택 사항이며 공개 프로필에 표시돼요. 다시 누르면 숨겨져요.';
+
+  @override
   String get titlePickerNone => '칭호 없음';
 
   @override
@@ -3011,6 +3026,23 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get friendsRankEmpty => '친구를 추가해 겨뤄 보세요.';
+
+  @override
+  String friendShopTitle(String name) {
+    return '$name의 가게';
+  }
+
+  @override
+  String get friendShopDisplay => '전시 중';
+
+  @override
+  String get friendShopDisplayEmpty => '아직 전시한 아이템이 없어요.';
+
+  @override
+  String get friendShopCollection => '컬렉션';
+
+  @override
+  String get friendShopProfile => '프로필';
 
   @override
   String get seasonLbEmpty =>

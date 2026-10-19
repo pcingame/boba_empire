@@ -1193,6 +1193,22 @@ class AppLocalizationsId extends AppLocalizations {
   String get titlePickerTitle => 'Gelar';
 
   @override
+  String get profileGender => 'Jenis kelamin';
+
+  @override
+  String get profileGenderMale => 'Pria';
+
+  @override
+  String get profileGenderFemale => 'Wanita';
+
+  @override
+  String get profileGenderOther => 'Lainnya';
+
+  @override
+  String get profileGenderHint =>
+      'Opsional, tampil di profil publik. Ketuk lagi untuk menyembunyikan.';
+
+  @override
   String get titlePickerNone => 'Tanpa gelar';
 
   @override
@@ -3057,6 +3073,23 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get friendsRankEmpty => 'Tambah teman untuk bersaing.';
+
+  @override
+  String friendShopTitle(String name) {
+    return 'Kedai $name';
+  }
+
+  @override
+  String get friendShopDisplay => 'Sedang dipajang';
+
+  @override
+  String get friendShopDisplayEmpty => 'Belum ada yang dipajang.';
+
+  @override
+  String get friendShopCollection => 'Koleksi';
+
+  @override
+  String get friendShopProfile => 'Profil';
 
   @override
   String get seasonLbEmpty =>

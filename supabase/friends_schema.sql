@@ -194,8 +194,47 @@ begin
 end;
 $$;
 
+-- Quán của tôi: phụ kiện đang trưng bày (thuần trang trí). Client đẩy lên khi đổi trưng bày; server chỉ kiểm dạng id và số lượng
+-- (danh mục nằm ở app; id lạ từ bản mới hơn bị app cũ bỏ qua). Chỉ bạn bè xem được qua friend_shop.
+create table if not exists shop_displays (
+  user_id    uuid primary key references auth.users(id) on delete cascade,
+  equipped   text[] not null default '{}',
+  updated_at timestamptz not null default now()
+);
+alter table shop_displays enable row level security;
+-- Không policy: chỉ RPC security definer.
+
+create or replace function set_shop_display(p_equipped text[]) returns void
+language plpgsql security definer set search_path = public as $$
+declare me uuid := friend_require_linked(); e text;
+begin
+  if p_equipped is null or coalesce(array_length(p_equipped, 1), 0) > 6 then raise exception 'bad display'; end if;
+  foreach e in array p_equipped loop
+    if e is null or e !~ '^[a-z0-9_]{1,40}$' then raise exception 'bad display'; end if;
+  end loop;
+  insert into shop_displays (user_id, equipped) values (me, p_equipped)
+  on conflict (user_id) do update set equipped = excluded.equipped, updated_at = now();
+end;
+$$;
+
+-- Ghé thăm quán một người bạn: giai đoạn (cảnh quán), phụ kiện đang trưng bày và số liệu. Chỉ với bạn bè.
+create or replace function friend_shop(p_friend uuid) returns jsonb
+language plpgsql security definer set search_path = public as $$
+declare me uuid := friend_require_linked(); v_season integer := season_current_id();
+begin
+  if not friend_are(me, p_friend) then raise exception 'not friends'; end if;
+  return jsonb_build_object(
+    'nickname', coalesce(friend_nick(p_friend), '???'),
+    'stage', coalesce((select e.stage from leaderboard_entries e where e.user_id = p_friend), 1),
+    'income', coalesce((select e.lifetime_earnings from leaderboard_entries e where e.user_id = p_friend), 0),
+    'season_xp', coalesce((select s.xp from season_leaderboard_entries s where s.user_id = p_friend and s.season_id = v_season), 0),
+    'orders', coalesce((select r.perfected from recipe_order_leaderboard_entries r where r.user_id = p_friend), 0),
+    'equipped', to_jsonb(coalesce((select d.equipped from shop_displays d where d.user_id = p_friend), '{}'::text[])));
+end;
+$$;
+
 revoke all on function friend_require_linked(), friend_count(uuid), friend_are(uuid, uuid), friend_nick(uuid) from public, anon, authenticated;
 revoke all on function friend_search(text), friend_request(uuid), friend_respond(uuid, boolean), friend_remove(uuid),
-  friend_overview(), friend_gift_send(uuid), friend_gift_claim() from public, anon;
+  friend_overview(), friend_gift_send(uuid), friend_gift_claim(), set_shop_display(text[]), friend_shop(uuid) from public, anon;
 grant execute on function friend_search(text), friend_request(uuid), friend_respond(uuid, boolean), friend_remove(uuid),
-  friend_overview(), friend_gift_send(uuid), friend_gift_claim() to authenticated;
+  friend_overview(), friend_gift_send(uuid), friend_gift_claim(), set_shop_display(text[]), friend_shop(uuid) to authenticated;

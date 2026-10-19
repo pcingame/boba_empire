@@ -58,7 +58,7 @@ import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
 import 'recipe_order_page.dart' show showRecipeOrderFor;
 import 'rival_event_dialog.dart';
-import '../friends/friends.dart' show friendsAlertProvider;
+import '../friends/friends.dart' show friendsAlertProvider, friendsRepositoryProvider, pushShopDisplay;
 import 'settings_dialog.dart';
 import 'story_dialog.dart';
 import 'tutorial_overlay.dart';
@@ -476,6 +476,16 @@ class _HomePageState extends ConsumerState<HomePage>
         if (next > (previous ?? 0)) {
           ref.read(audioServiceProvider).play(Sfx.reward);
         }
+      },
+    );
+
+    // Đổi món trưng bày → cập nhật quán của mình cho bạn bè xem (chỉ khi đã liên kết email).
+    ref.listen(
+      gameControllerProvider.select((s) => s.equippedAccessories.join(',')),
+      (previous, next) {
+        if (!ref.read(cloudLinkedProvider)) return;
+        unawaited(pushShopDisplay(ref.read(friendsRepositoryProvider),
+            ref.read(gameControllerProvider).equippedAccessories));
       },
     );
 
