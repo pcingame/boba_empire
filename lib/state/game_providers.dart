@@ -61,5 +61,7 @@ final appVersionProvider = Provider<Future<String> Function()>(
 /// Có chi nhánh đang chờ thu ≥ 5 phút thu nhập (chấm đỏ ở nút Trò chơi + mục Chi nhánh). Chỉ đổi khi bool đổi.
 final branchReadyProvider = Provider<bool>((ref) {
   final now = ref.watch(clockProvider);
-  return ref.watch(gameControllerProvider.select((s) => branchesReady(s.branchLevels, s.branchSince, now())));
+  return ref.watch(gameControllerProvider.select((s) =>
+      branchesReady(s.branchLevels, s.branchSince, now(), manager: s.branchManagerUntilMillis > now()) ||
+      branchSetsClaimable(s.branchLevels, s.branchSetClaims).isNotEmpty));
 });

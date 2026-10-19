@@ -5737,6 +5737,90 @@ abstract class AppLocalizations {
   /// **'Giờ cao điểm ×3 ở {n} chi nhánh! 🔥'**
   String branchRush(int n);
 
+  /// No description provided for @branchSetsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ sưu tập chi nhánh'**
+  String get branchSetsTitle;
+
+  /// No description provided for @branchSetsHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở đủ chi nhánh của một châu lục, rồi nâng tất cả lên cấp tối đa (thưởng gấp đôi). Mỗi mốc nhận một lần.'**
+  String get branchSetsHint;
+
+  /// No description provided for @branchSetAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Toàn cầu'**
+  String get branchSetAll;
+
+  /// No description provided for @branchSetTier1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở đủ'**
+  String get branchSetTier1;
+
+  /// No description provided for @branchSetTier2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cấp tối đa'**
+  String get branchSetTier2;
+
+  /// No description provided for @branchSetReward.
+  ///
+  /// In vi, this message translates to:
+  /// **'{gems} 💎 + {hours}h thu nhập'**
+  String branchSetReward(int gems, int hours);
+
+  /// No description provided for @branchSetClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận'**
+  String get branchSetClaim;
+
+  /// No description provided for @branchSetClaimed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận {gems} 💎!'**
+  String branchSetClaimed(int gems);
+
+  /// No description provided for @branchManagerTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quản lý chi nhánh'**
+  String get branchManagerTitle;
+
+  /// No description provided for @branchManagerDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự thu mọi chi nhánh mỗi {mins} phút khi bạn đang chơi và giữ kho tới {hours} giờ khi bạn vắng.'**
+  String branchManagerDesc(int mins, int hours);
+
+  /// No description provided for @branchManagerActive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn khoảng {days} ngày hợp đồng.'**
+  String branchManagerActive(int days);
+
+  /// No description provided for @branchManagerNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa thuê quản lý.'**
+  String get branchManagerNone;
+
+  /// No description provided for @branchManagerHire.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thuê {days} ngày · {gems} 💎'**
+  String branchManagerHire(int days, int gems);
+
+  /// No description provided for @branchManagerFail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đủ 💎 hoặc hợp đồng đã tối đa 30 ngày.'**
+  String get branchManagerFail;
+
   /// No description provided for @branchNothing.
   ///
   /// In vi, this message translates to:
@@ -5910,6 +5994,96 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Đã mở {n}/{total} chi nhánh'**
   String branchCount(int n, int total);
+
+  /// No description provided for @branchPerkCap.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kho chứa +{v} giờ'**
+  String branchPerkCap(String v);
+
+  /// No description provided for @branchPerkRush.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cơ hội giờ cao điểm +{v}%'**
+  String branchPerkRush(String v);
+
+  /// No description provided for @branchPerkCollect.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu về thêm +{v}% Xu'**
+  String branchPerkCollect(String v);
+
+  /// No description provided for @branchPerkDiscount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giảm {v}% giá chi nhánh'**
+  String branchPerkDiscount(String v);
+
+  /// No description provided for @branchPerkRate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Doanh thu mọi chi nhánh +{v}%'**
+  String branchPerkRate(String v);
+
+  /// No description provided for @branchPerkMax.
+  ///
+  /// In vi, this message translates to:
+  /// **'khi đạt tối đa'**
+  String get branchPerkMax;
+
+  /// No description provided for @branchPerkHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi chi nhánh có hiệu ứng signature riêng, mạnh dần theo cấp (đủ ở cấp 10) và cộng dồn giữa các thành phố.'**
+  String get branchPerkHint;
+
+  /// No description provided for @branchViewMap.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bản đồ'**
+  String get branchViewMap;
+
+  /// No description provided for @branchViewList.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh sách'**
+  String get branchViewList;
+
+  /// No description provided for @branchContAsia.
+  ///
+  /// In vi, this message translates to:
+  /// **'Châu Á'**
+  String get branchContAsia;
+
+  /// No description provided for @branchContEurope.
+  ///
+  /// In vi, this message translates to:
+  /// **'Châu Âu'**
+  String get branchContEurope;
+
+  /// No description provided for @branchContAfrica.
+  ///
+  /// In vi, this message translates to:
+  /// **'Châu Phi'**
+  String get branchContAfrica;
+
+  /// No description provided for @branchContNorthAmerica.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bắc Mỹ'**
+  String get branchContNorthAmerica;
+
+  /// No description provided for @branchContSouthAmerica.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nam Mỹ'**
+  String get branchContSouthAmerica;
+
+  /// No description provided for @branchContOceania.
+  ///
+  /// In vi, this message translates to:
+  /// **'Châu Đại Dương'**
+  String get branchContOceania;
 
   /// No description provided for @raidTab.
   ///

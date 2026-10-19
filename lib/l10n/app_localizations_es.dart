@@ -3315,6 +3315,60 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String get branchSetsTitle => 'Colecciones de sucursales';
+
+  @override
+  String get branchSetsHint =>
+      'Abre todas las sucursales de un continente y luego súbelas al máximo (doble premio). Cada nivel se reclama una vez.';
+
+  @override
+  String get branchSetAll => 'Mundial';
+
+  @override
+  String get branchSetTier1 => 'Todas abiertas';
+
+  @override
+  String get branchSetTier2 => 'Nivel máx.';
+
+  @override
+  String branchSetReward(int gems, int hours) {
+    return '$gems 💎 + ${hours}h de ingresos';
+  }
+
+  @override
+  String get branchSetClaim => 'Reclamar';
+
+  @override
+  String branchSetClaimed(int gems) {
+    return '¡Reclamaste $gems 💎!';
+  }
+
+  @override
+  String get branchManagerTitle => 'Gerente de sucursales';
+
+  @override
+  String branchManagerDesc(int mins, int hours) {
+    return 'Recoge automáticamente todas las sucursales cada $mins min mientras juegas y guarda hasta $hours h cuando no estás.';
+  }
+
+  @override
+  String branchManagerActive(int days) {
+    return 'Quedan unos $days día(s) de contrato.';
+  }
+
+  @override
+  String get branchManagerNone => 'Sin gerente contratado.';
+
+  @override
+  String branchManagerHire(int days, int gems) {
+    return 'Contratar $days días · $gems 💎';
+  }
+
+  @override
+  String get branchManagerFail =>
+      'No hay 💎 suficientes o el contrato ya está en el máximo de 30 días.';
+
+  @override
   String get branchNothing => 'Aún no hay nada que cobrar.';
 
   @override
@@ -3416,6 +3470,62 @@ class AppLocalizationsEs extends AppLocalizations {
   String branchCount(int n, int total) {
     return '$n/$total sucursales abiertas';
   }
+
+  @override
+  String branchPerkCap(String v) {
+    return 'Almacén +$v h';
+  }
+
+  @override
+  String branchPerkRush(String v) {
+    return 'Prob. de hora punta +$v%';
+  }
+
+  @override
+  String branchPerkCollect(String v) {
+    return 'Cobro +$v% monedas';
+  }
+
+  @override
+  String branchPerkDiscount(String v) {
+    return 'Precios de sucursal −$v%';
+  }
+
+  @override
+  String branchPerkRate(String v) {
+    return 'Ingresos de todas las sucursales +$v%';
+  }
+
+  @override
+  String get branchPerkMax => 'al nivel máximo';
+
+  @override
+  String get branchPerkHint =>
+      'Cada sucursal tiene un efecto distintivo que crece con su nivel (completo en el 10) y se acumula entre ciudades.';
+
+  @override
+  String get branchViewMap => 'Mapa';
+
+  @override
+  String get branchViewList => 'Lista';
+
+  @override
+  String get branchContAsia => 'Asia';
+
+  @override
+  String get branchContEurope => 'Europa';
+
+  @override
+  String get branchContAfrica => 'África';
+
+  @override
+  String get branchContNorthAmerica => 'Norteamérica';
+
+  @override
+  String get branchContSouthAmerica => 'Sudamérica';
+
+  @override
+  String get branchContOceania => 'Oceanía';
 
   @override
   String get raidTab => 'Asaltos';

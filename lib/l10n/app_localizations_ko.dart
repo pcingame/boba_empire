@@ -3251,6 +3251,59 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get branchSetsTitle => '지점 컬렉션';
+
+  @override
+  String get branchSetsHint =>
+      '한 대륙의 모든 지점을 열고 전부 최대 레벨로 올리세요(보상 2배). 단계별로 한 번씩 받을 수 있어요.';
+
+  @override
+  String get branchSetAll => '전 세계';
+
+  @override
+  String get branchSetTier1 => '모두 오픈';
+
+  @override
+  String get branchSetTier2 => '최대 레벨';
+
+  @override
+  String branchSetReward(int gems, int hours) {
+    return '$gems 💎 + $hours시간 수익';
+  }
+
+  @override
+  String get branchSetClaim => '받기';
+
+  @override
+  String branchSetClaimed(int gems) {
+    return '$gems 💎 수령!';
+  }
+
+  @override
+  String get branchManagerTitle => '지점 매니저';
+
+  @override
+  String branchManagerDesc(int mins, int hours) {
+    return '플레이 중 $mins분마다 모든 지점을 자동 수거하고, 자리를 비우면 최대 $hours시간까지 보관해요.';
+  }
+
+  @override
+  String branchManagerActive(int days) {
+    return '계약이 약 $days일 남았어요.';
+  }
+
+  @override
+  String get branchManagerNone => '고용한 매니저가 없어요.';
+
+  @override
+  String branchManagerHire(int days, int gems) {
+    return '$days일 고용 · $gems 💎';
+  }
+
+  @override
+  String get branchManagerFail => '💎가 부족하거나 계약이 이미 최대 30일이에요.';
+
+  @override
   String get branchNothing => '아직 수령할 게 없어요.';
 
   @override
@@ -3352,6 +3405,62 @@ class AppLocalizationsKo extends AppLocalizations {
   String branchCount(int n, int total) {
     return '지점 $n/$total개 오픈';
   }
+
+  @override
+  String branchPerkCap(String v) {
+    return '보관함 +$v시간';
+  }
+
+  @override
+  String branchPerkRush(String v) {
+    return '피크 타임 확률 +$v%';
+  }
+
+  @override
+  String branchPerkCollect(String v) {
+    return '수령 코인 +$v%';
+  }
+
+  @override
+  String branchPerkDiscount(String v) {
+    return '지점 가격 −$v%';
+  }
+
+  @override
+  String branchPerkRate(String v) {
+    return '모든 지점 수익 +$v%';
+  }
+
+  @override
+  String get branchPerkMax => '최대 레벨 시';
+
+  @override
+  String get branchPerkHint =>
+      '지점마다 고유한 시그니처 효과가 있고 레벨에 따라 강해지며(10레벨에서 최대) 도시끼리 합산돼요.';
+
+  @override
+  String get branchViewMap => '지도';
+
+  @override
+  String get branchViewList => '목록';
+
+  @override
+  String get branchContAsia => '아시아';
+
+  @override
+  String get branchContEurope => '유럽';
+
+  @override
+  String get branchContAfrica => '아프리카';
+
+  @override
+  String get branchContNorthAmerica => '북아메리카';
+
+  @override
+  String get branchContSouthAmerica => '남아메리카';
+
+  @override
+  String get branchContOceania => '오세아니아';
 
   @override
   String get raidTab => '습격';

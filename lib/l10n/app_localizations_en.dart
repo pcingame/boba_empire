@@ -3301,6 +3301,60 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get branchSetsTitle => 'Branch collections';
+
+  @override
+  String get branchSetsHint =>
+      'Open every branch on a continent, then max them all out (double reward). Each tier is claimed once.';
+
+  @override
+  String get branchSetAll => 'Worldwide';
+
+  @override
+  String get branchSetTier1 => 'All open';
+
+  @override
+  String get branchSetTier2 => 'Max level';
+
+  @override
+  String branchSetReward(int gems, int hours) {
+    return '$gems 💎 + ${hours}h income';
+  }
+
+  @override
+  String get branchSetClaim => 'Claim';
+
+  @override
+  String branchSetClaimed(int gems) {
+    return 'Claimed $gems 💎!';
+  }
+
+  @override
+  String get branchManagerTitle => 'Branch manager';
+
+  @override
+  String branchManagerDesc(int mins, int hours) {
+    return 'Auto-collects every branch every $mins min while you play and holds up to ${hours}h while you\'re away.';
+  }
+
+  @override
+  String branchManagerActive(int days) {
+    return 'About $days day(s) left on the contract.';
+  }
+
+  @override
+  String get branchManagerNone => 'No manager hired.';
+
+  @override
+  String branchManagerHire(int days, int gems) {
+    return 'Hire $days days · $gems 💎';
+  }
+
+  @override
+  String get branchManagerFail =>
+      'Not enough 💎 or contract already at the 30-day max.';
+
+  @override
   String get branchNothing => 'Nothing to collect yet.';
 
   @override
@@ -3402,6 +3456,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String branchCount(int n, int total) {
     return '$n/$total branches open';
   }
+
+  @override
+  String branchPerkCap(String v) {
+    return 'Storage +$v h';
+  }
+
+  @override
+  String branchPerkRush(String v) {
+    return 'Rush chance +$v%';
+  }
+
+  @override
+  String branchPerkCollect(String v) {
+    return 'Collect +$v% coins';
+  }
+
+  @override
+  String branchPerkDiscount(String v) {
+    return 'Branch prices −$v%';
+  }
+
+  @override
+  String branchPerkRate(String v) {
+    return 'All branch revenue +$v%';
+  }
+
+  @override
+  String get branchPerkMax => 'at max level';
+
+  @override
+  String get branchPerkHint =>
+      'Every branch has its own signature perk that grows with its level (full at level 10) and stacks across cities.';
+
+  @override
+  String get branchViewMap => 'Map';
+
+  @override
+  String get branchViewList => 'List';
+
+  @override
+  String get branchContAsia => 'Asia';
+
+  @override
+  String get branchContEurope => 'Europe';
+
+  @override
+  String get branchContAfrica => 'Africa';
+
+  @override
+  String get branchContNorthAmerica => 'North America';
+
+  @override
+  String get branchContSouthAmerica => 'South America';
+
+  @override
+  String get branchContOceania => 'Oceania';
 
   @override
   String get raidTab => 'Raids';

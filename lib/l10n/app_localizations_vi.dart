@@ -3292,6 +3292,60 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get branchSetsTitle => 'Bộ sưu tập chi nhánh';
+
+  @override
+  String get branchSetsHint =>
+      'Mở đủ chi nhánh của một châu lục, rồi nâng tất cả lên cấp tối đa (thưởng gấp đôi). Mỗi mốc nhận một lần.';
+
+  @override
+  String get branchSetAll => 'Toàn cầu';
+
+  @override
+  String get branchSetTier1 => 'Mở đủ';
+
+  @override
+  String get branchSetTier2 => 'Cấp tối đa';
+
+  @override
+  String branchSetReward(int gems, int hours) {
+    return '$gems 💎 + ${hours}h thu nhập';
+  }
+
+  @override
+  String get branchSetClaim => 'Nhận';
+
+  @override
+  String branchSetClaimed(int gems) {
+    return 'Đã nhận $gems 💎!';
+  }
+
+  @override
+  String get branchManagerTitle => 'Quản lý chi nhánh';
+
+  @override
+  String branchManagerDesc(int mins, int hours) {
+    return 'Tự thu mọi chi nhánh mỗi $mins phút khi bạn đang chơi và giữ kho tới $hours giờ khi bạn vắng.';
+  }
+
+  @override
+  String branchManagerActive(int days) {
+    return 'Còn khoảng $days ngày hợp đồng.';
+  }
+
+  @override
+  String get branchManagerNone => 'Chưa thuê quản lý.';
+
+  @override
+  String branchManagerHire(int days, int gems) {
+    return 'Thuê $days ngày · $gems 💎';
+  }
+
+  @override
+  String get branchManagerFail =>
+      'Không đủ 💎 hoặc hợp đồng đã tối đa 30 ngày.';
+
+  @override
   String get branchNothing => 'Chưa có gì để thu.';
 
   @override
@@ -3393,6 +3447,62 @@ class AppLocalizationsVi extends AppLocalizations {
   String branchCount(int n, int total) {
     return 'Đã mở $n/$total chi nhánh';
   }
+
+  @override
+  String branchPerkCap(String v) {
+    return 'Kho chứa +$v giờ';
+  }
+
+  @override
+  String branchPerkRush(String v) {
+    return 'Cơ hội giờ cao điểm +$v%';
+  }
+
+  @override
+  String branchPerkCollect(String v) {
+    return 'Thu về thêm +$v% Xu';
+  }
+
+  @override
+  String branchPerkDiscount(String v) {
+    return 'Giảm $v% giá chi nhánh';
+  }
+
+  @override
+  String branchPerkRate(String v) {
+    return 'Doanh thu mọi chi nhánh +$v%';
+  }
+
+  @override
+  String get branchPerkMax => 'khi đạt tối đa';
+
+  @override
+  String get branchPerkHint =>
+      'Mỗi chi nhánh có hiệu ứng signature riêng, mạnh dần theo cấp (đủ ở cấp 10) và cộng dồn giữa các thành phố.';
+
+  @override
+  String get branchViewMap => 'Bản đồ';
+
+  @override
+  String get branchViewList => 'Danh sách';
+
+  @override
+  String get branchContAsia => 'Châu Á';
+
+  @override
+  String get branchContEurope => 'Châu Âu';
+
+  @override
+  String get branchContAfrica => 'Châu Phi';
+
+  @override
+  String get branchContNorthAmerica => 'Bắc Mỹ';
+
+  @override
+  String get branchContSouthAmerica => 'Nam Mỹ';
+
+  @override
+  String get branchContOceania => 'Châu Đại Dương';
 
   @override
   String get raidTab => 'Đột kích';

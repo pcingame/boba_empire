@@ -4,6 +4,8 @@
 /// chạy được và test được mà không cần UI.
 library;
 
+import 'branches.dart' show isBranchSetKey;
+
 /// Cấu hình bất biến của một nguồn thu tự động (một món / quầy pha chế).
 ///
 /// Đây là DATA, không phải logic: mọi con số balance nằm ở [balance.dart].
@@ -195,6 +197,8 @@ class GameState {
     Map<String, int>? refineLevels,
     Map<String, int>? branchLevels,
     Map<String, int>? branchSince,
+    List<String>? branchSetClaims,
+    this.branchManagerUntilMillis = 0,
     List<String>? equippedAccessories,
     List<int>? collectionMilestonesClaimed,
     List<String>? collectionSetsClaimed,
@@ -214,6 +218,7 @@ class GameState {
         refineLevels = refineLevels ?? {},
         branchLevels = branchLevels ?? {},
         branchSince = branchSince ?? {},
+        branchSetClaims = branchSetClaims ?? [],
         equippedAccessories = equippedAccessories ?? [],
         collectionMilestonesClaimed = collectionMilestonesClaimed ?? [],
         collectionSetsClaimed = collectionSetsClaimed ?? [],
@@ -368,6 +373,10 @@ class GameState {
   /// Chi nhánh thành phố (core/branches.dart): cấp (0 = chưa mở) và mốc (epoch ms) lần thu gần nhất.
   final Map<String, int> branchLevels;
   final Map<String, int> branchSince;
+
+  /// Mốc bộ sưu tập chi nhánh đã nhận ('asia:1'…) và hạn hợp đồng Quản lý chi nhánh (epoch ms, 0 = chưa thuê).
+  final List<String> branchSetClaims;
+  int branchManagerUntilMillis;
 
   /// Bộ đếm Tinh chất nguồn lặp lại trong ngày [essenceDay] (dayIndex UTC): riêng đơn Pha theo đơn, và chung.
   int essenceDay;
@@ -692,6 +701,8 @@ class GameState {
         'refineLevels': refineLevels,
         'branchLevels': branchLevels,
         'branchSince': branchSince,
+        'branchSetClaims': branchSetClaims,
+        'branchManagerUntilMillis': branchManagerUntilMillis,
         'essenceDay': essenceDay,
         'essenceOrdersToday': essenceOrdersToday,
         'essenceRepeatableToday': essenceRepeatableToday,
@@ -897,6 +908,12 @@ class GameState {
               if (e.key is String && e.value is num && (e.value as num).isFinite && (e.value as num) >= 0)
                 e.key as String: (e.value as num).toInt(),
         },
+        branchSetClaims: {
+          if (json['branchSetClaims'] is List)
+            for (final e in json['branchSetClaims'] as List)
+              if (e is String && isBranchSetKey(e)) e,
+        }.toList(),
+        branchManagerUntilMillis: ((json['branchManagerUntilMillis'] as num?)?.toInt() ?? 0).clamp(0, 1 << 52),
         essenceDay: (json['essenceDay'] as num?)?.toInt() ?? 0,
         essenceOrdersToday: (json['essenceOrdersToday'] as num?)?.toInt() ?? 0,
         essenceRepeatableToday: (json['essenceRepeatableToday'] as num?)?.toInt() ?? 0,

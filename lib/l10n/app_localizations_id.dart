@@ -3299,6 +3299,60 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get branchSetsTitle => 'Koleksi cabang';
+
+  @override
+  String get branchSetsHint =>
+      'Buka semua cabang di satu benua, lalu maksimalkan semuanya (hadiah dua kali lipat). Tiap tingkat diklaim sekali.';
+
+  @override
+  String get branchSetAll => 'Seluruh dunia';
+
+  @override
+  String get branchSetTier1 => 'Semua dibuka';
+
+  @override
+  String get branchSetTier2 => 'Level maks.';
+
+  @override
+  String branchSetReward(int gems, int hours) {
+    return '$gems 💎 + ${hours}j pendapatan';
+  }
+
+  @override
+  String get branchSetClaim => 'Klaim';
+
+  @override
+  String branchSetClaimed(int gems) {
+    return 'Klaim $gems 💎!';
+  }
+
+  @override
+  String get branchManagerTitle => 'Manajer cabang';
+
+  @override
+  String branchManagerDesc(int mins, int hours) {
+    return 'Otomatis mengumpulkan semua cabang tiap $mins menit saat bermain dan menyimpan hingga $hours jam saat Anda pergi.';
+  }
+
+  @override
+  String branchManagerActive(int days) {
+    return 'Sisa sekitar $days hari kontrak.';
+  }
+
+  @override
+  String get branchManagerNone => 'Belum menyewa manajer.';
+
+  @override
+  String branchManagerHire(int days, int gems) {
+    return 'Sewa $days hari · $gems 💎';
+  }
+
+  @override
+  String get branchManagerFail =>
+      '💎 tidak cukup atau kontrak sudah maksimal 30 hari.';
+
+  @override
   String get branchNothing => 'Belum ada yang bisa diambil.';
 
   @override
@@ -3400,6 +3454,62 @@ class AppLocalizationsId extends AppLocalizations {
   String branchCount(int n, int total) {
     return '$n/$total cabang dibuka';
   }
+
+  @override
+  String branchPerkCap(String v) {
+    return 'Gudang +$v jam';
+  }
+
+  @override
+  String branchPerkRush(String v) {
+    return 'Peluang jam sibuk +$v%';
+  }
+
+  @override
+  String branchPerkCollect(String v) {
+    return 'Koleksi +$v% koin';
+  }
+
+  @override
+  String branchPerkDiscount(String v) {
+    return 'Harga cabang −$v%';
+  }
+
+  @override
+  String branchPerkRate(String v) {
+    return 'Pendapatan semua cabang +$v%';
+  }
+
+  @override
+  String get branchPerkMax => 'di level maks';
+
+  @override
+  String get branchPerkHint =>
+      'Setiap cabang punya efek khas yang naik seiring level (penuh di level 10) dan menumpuk antar kota.';
+
+  @override
+  String get branchViewMap => 'Peta';
+
+  @override
+  String get branchViewList => 'Daftar';
+
+  @override
+  String get branchContAsia => 'Asia';
+
+  @override
+  String get branchContEurope => 'Eropa';
+
+  @override
+  String get branchContAfrica => 'Afrika';
+
+  @override
+  String get branchContNorthAmerica => 'Amerika Utara';
+
+  @override
+  String get branchContSouthAmerica => 'Amerika Selatan';
+
+  @override
+  String get branchContOceania => 'Oseania';
 
   @override
   String get raidTab => 'Serbuan';

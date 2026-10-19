@@ -3288,6 +3288,59 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get branchSetsTitle => 'คอลเลกชันสาขา';
+
+  @override
+  String get branchSetsHint =>
+      'เปิดทุกสาขาในทวีปหนึ่ง แล้วอัปให้สูงสุดทั้งหมด (รางวัลสองเท่า) รับได้ระดับละหนึ่งครั้ง';
+
+  @override
+  String get branchSetAll => 'ทั่วโลก';
+
+  @override
+  String get branchSetTier1 => 'เปิดครบ';
+
+  @override
+  String get branchSetTier2 => 'เลเวลสูงสุด';
+
+  @override
+  String branchSetReward(int gems, int hours) {
+    return '$gems 💎 + รายได้ $hours ชม.';
+  }
+
+  @override
+  String get branchSetClaim => 'รับ';
+
+  @override
+  String branchSetClaimed(int gems) {
+    return 'รับ $gems 💎 แล้ว!';
+  }
+
+  @override
+  String get branchManagerTitle => 'ผู้จัดการสาขา';
+
+  @override
+  String branchManagerDesc(int mins, int hours) {
+    return 'เก็บทุกสาขาอัตโนมัติทุก $mins นาทีขณะเล่น และเก็บสะสมได้ถึง $hours ชม. ตอนคุณไม่อยู่';
+  }
+
+  @override
+  String branchManagerActive(int days) {
+    return 'เหลือสัญญาอีกประมาณ $days วัน';
+  }
+
+  @override
+  String get branchManagerNone => 'ยังไม่ได้จ้างผู้จัดการ';
+
+  @override
+  String branchManagerHire(int days, int gems) {
+    return 'จ้าง $days วัน · $gems 💎';
+  }
+
+  @override
+  String get branchManagerFail => '💎 ไม่พอหรือสัญญาครบสูงสุด 30 วันแล้ว';
+
+  @override
   String get branchNothing => 'ยังไม่มีอะไรให้เก็บ';
 
   @override
@@ -3389,6 +3442,62 @@ class AppLocalizationsTh extends AppLocalizations {
   String branchCount(int n, int total) {
     return 'เปิดแล้ว $n/$total สาขา';
   }
+
+  @override
+  String branchPerkCap(String v) {
+    return 'คลังเก็บ +$v ชม.';
+  }
+
+  @override
+  String branchPerkRush(String v) {
+    return 'โอกาสชั่วโมงเร่งด่วน +$v%';
+  }
+
+  @override
+  String branchPerkCollect(String v) {
+    return 'เก็บเหรียญเพิ่ม +$v%';
+  }
+
+  @override
+  String branchPerkDiscount(String v) {
+    return 'ราคาสาขา −$v%';
+  }
+
+  @override
+  String branchPerkRate(String v) {
+    return 'รายได้ทุกสาขา +$v%';
+  }
+
+  @override
+  String get branchPerkMax => 'เมื่อถึงเลเวลสูงสุด';
+
+  @override
+  String get branchPerkHint =>
+      'แต่ละสาขามีความสามารถเฉพาะที่แรงขึ้นตามเลเวล (เต็มที่เลเวล 10) และสะสมรวมกันได้ทุกเมือง';
+
+  @override
+  String get branchViewMap => 'แผนที่';
+
+  @override
+  String get branchViewList => 'รายการ';
+
+  @override
+  String get branchContAsia => 'เอเชีย';
+
+  @override
+  String get branchContEurope => 'ยุโรป';
+
+  @override
+  String get branchContAfrica => 'แอฟริกา';
+
+  @override
+  String get branchContNorthAmerica => 'อเมริกาเหนือ';
+
+  @override
+  String get branchContSouthAmerica => 'อเมริกาใต้';
+
+  @override
+  String get branchContOceania => 'โอเชียเนีย';
 
   @override
   String get raidTab => 'บุกร้าน';

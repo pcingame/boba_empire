@@ -24,10 +24,12 @@ Future<(ProviderContainer, GameStorage, SharedPreferences)> _container(
   final prefs = await SharedPreferences.getInstance();
   final storage = GameStorage(prefs);
   await storage.save(seed, nowMillis: _t0);
-  final c = ProviderContainer(overrides: [
-    sharedPreferencesProvider.overrideWithValue(prefs),
-    clockProvider.overrideWithValue(clock),
-  ]);
+  final c = ProviderContainer(
+    overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      clockProvider.overrideWithValue(clock),
+    ],
+  );
   return (c, storage, prefs);
 }
 
@@ -49,30 +51,133 @@ void main() {
       expect(branchRate(c, 10), closeTo(10 * branchRate(c, 1), 1e-12));
     });
 
-    test('giá: theo giờ thu nhập, ×1.4 mỗi cấp, có sàn, không NaN/Infinity', () {
-      final c = branchCities[0];
-      expect(branchCost(c, 1, 1000), closeTo(1000 * 3600 * 0.5, 1e-6));
-      expect(branchCost(c, 2, 1000), closeTo(branchCost(c, 1, 1000) * 1.4, 1e-3));
-      expect(branchCost(c, 1, 0), branchCostFloor);
-      expect(branchCost(c, 1, double.nan), branchCostFloor);
-      expect(branchCost(c, 10, double.infinity).isFinite, isTrue);
-      expect(branchCost(branchCityById('moon')!, 1, 1e70).isFinite, isTrue);
-    });
+    test(
+      'giá: theo giờ thu nhập, ×1.4 mỗi cấp, có sàn, không NaN/Infinity',
+      () {
+        final c = branchCities[0];
+        expect(branchCost(c, 1, 1000), closeTo(1000 * 3600 * 0.5, 1e-6));
+        expect(
+          branchCost(c, 2, 1000),
+          closeTo(branchCost(c, 1, 1000) * 1.4, 1e-3),
+        );
+        expect(branchCost(c, 1, 0), branchCostFloor);
+        expect(branchCost(c, 1, double.nan), branchCostFloor);
+        expect(branchCost(c, 10, double.infinity).isFinite, isTrue);
+        expect(branchCost(branchCityById('moon')!, 1, 1e70).isFinite, isTrue);
+      },
+    );
 
-    test('17 chi nhánh: id duy nhất, mỗi nơi có landmark + signature + màu riêng, mở từ GĐ2 tới GĐ18', () {
-      expect(branchCities.length, 17);
-      expect(branchCities.first.minStage, 2);
-      expect(branchCities.last.minStage, 18);
-      expect(branchCities.map((c) => c.emoji).toSet().length, 17, reason: 'landmark không trùng');
-      expect(branchCities.map((c) => c.signature).toSet().length, 17, reason: 'signature không trùng');
-      expect(branchCities.map((c) => c.color).toSet().length, 17, reason: 'màu không trùng');
-    });
+    test(
+      '17 chi nhánh: id duy nhất, mỗi nơi có landmark + signature + màu riêng, mở từ GĐ2 tới GĐ18',
+      () {
+        expect(branchCities.length, 17);
+        expect(branchCities.first.minStage, 2);
+        expect(branchCities.last.minStage, 18);
+        expect(
+          branchCities.map((c) => c.emoji).toSet().length,
+          17,
+          reason: 'landmark không trùng',
+        );
+        expect(
+          branchCities.map((c) => c.signature).toSet().length,
+          17,
+          reason: 'signature không trùng',
+        );
+        expect(
+          branchCities.map((c) => c.color).toSet().length,
+          17,
+          reason: 'màu không trùng',
+        );
+      },
+    );
+
+    test(
+      'hiệu ứng signature: tỉ lệ theo cấp, cộng dồn cùng loại, mỗi loại đủ 3-5 thành phố',
+      () {
+        for (final k in BranchPerk.values) {
+          expect(
+            branchCities.where((c) => c.perk == k).length,
+            inInclusiveRange(3, 5),
+            reason: '$k',
+          );
+        }
+        final tokyo = branchCityById('tokyo')!; // collect
+        expect(branchPerkValue(tokyo, 0), 0);
+        expect(
+          branchPerkValue(tokyo, 5),
+          closeTo(branchPerkMax[BranchPerk.collect]! / 2, 1e-12),
+        );
+        expect(
+          branchPerkValue(tokyo, 99),
+          branchPerkMax[BranchPerk.collect]!,
+          reason: 'kẹp ở cấp tối đa',
+        );
+        expect(branchPerk({}, BranchPerk.collect), 0);
+        expect(
+          branchPerk({'tokyo': 10, 'paris': 10}, BranchPerk.collect),
+          closeTo(0.08, 1e-12),
+        );
+        final all = {for (final c in branchCities) c.id: 10};
+        expect(branchPerk(all, BranchPerk.cap), closeTo(4.0, 1e-12));
+        expect(branchCapFor(all), branchCapSeconds + 4 * 3600);
+      },
+    );
+
+    test(
+      'Kho chứa kéo dài trần tích; Doanh thu mọi chi nhánh nhân thêm; Giảm giá trừ vào giá',
+      () {
+        final saigon = branchCityById('saigon')!;
+        final lv = {'saigon': 1, 'danang': 10, 'sydney': 10}; // cap +2h
+        final since = {'saigon': 0};
+        expect(
+          branchFull(lv, since, saigon, 9 * 3600 * 1000),
+          isFalse,
+          reason: 'trần 10h',
+        );
+        expect(branchFull(lv, since, saigon, 10 * 3600 * 1000), isTrue);
+        expect(
+          branchFill(lv, since, saigon, 5 * 3600 * 1000),
+          closeTo(0.5, 1e-9),
+        );
+        final plain = branchPendingIncomeSeconds(
+          {'saigon': 1},
+          since,
+          saigon,
+          3600 * 1000,
+        );
+        final boosted = branchPendingIncomeSeconds(
+          {'saigon': 1, 'seoul': 10},
+          since,
+          saigon,
+          3600 * 1000,
+        ); // rate +2%
+        expect(boosted, closeTo(plain * 1.02, 1e-9));
+        expect(
+          branchCost(saigon, 1, 1000, discount: 0.1),
+          closeTo(branchCost(saigon, 1, 1000) * 0.9, 1e-6),
+        );
+        expect(
+          branchCost(saigon, 1, 1000, discount: 5),
+          closeTo(branchCost(saigon, 1, 1000) * 0.1, 1e-6),
+          reason: 'giảm tối đa 90%',
+        );
+      },
+    );
 
     test('thành phố sau mở khoá muộn hơn, đắt hơn, lời hơn', () {
       for (var i = 1; i < branchCities.length; i++) {
-        expect(branchCities[i].minStage, greaterThan(branchCities[i - 1].minStage));
-        expect(branchCities[i].costMult, greaterThan(branchCities[i - 1].costMult));
-        expect(branchCities[i].rateMult, greaterThan(branchCities[i - 1].rateMult));
+        expect(
+          branchCities[i].minStage,
+          greaterThan(branchCities[i - 1].minStage),
+        );
+        expect(
+          branchCities[i].costMult,
+          greaterThan(branchCities[i - 1].costMult),
+        );
+        expect(
+          branchCities[i].rateMult,
+          greaterThan(branchCities[i - 1].rateMult),
+        );
       }
       expect(branchCities.map((c) => c.id).toSet().length, branchCities.length);
     });
@@ -82,13 +187,29 @@ void main() {
       final levels = {c.id: 5};
       final since = {c.id: 0};
       final rate = branchRate(c, 5);
-      expect(branchPendingIncomeSeconds(levels, since, c, 3600 * 1000), closeTo(3600 * rate, 1e-6));
-      final capped = branchPendingIncomeSeconds(levels, since, c, 100 * 3600 * 1000);
+      expect(
+        branchPendingIncomeSeconds(levels, since, c, 3600 * 1000),
+        closeTo(3600 * rate, 1e-6),
+      );
+      final capped = branchPendingIncomeSeconds(
+        levels,
+        since,
+        c,
+        100 * 3600 * 1000,
+      );
       expect(capped, closeTo(branchCapSeconds * rate, 1e-6));
       expect(branchFull(levels, since, c, 9 * 3600 * 1000), isTrue);
       expect(branchFull(levels, since, c, 3600 * 1000), isFalse);
-      expect(branchPendingIncomeSeconds({}, {}, c, 99999999), 0, reason: 'chưa mở');
-      expect(branchPendingIncomeSeconds(levels, since, c, -5000), 0, reason: 'đồng hồ lùi không âm');
+      expect(
+        branchPendingIncomeSeconds({}, {}, c, 99999999),
+        0,
+        reason: 'chưa mở',
+      );
+      expect(
+        branchPendingIncomeSeconds(levels, since, c, -5000),
+        0,
+        reason: 'đồng hồ lùi không âm',
+      );
     });
 
     test('chấm đỏ chỉ khi tích đủ 5 phút thu nhập quán chính', () {
@@ -116,7 +237,13 @@ void main() {
       expect(back.branchLevels['tokyo'], 7);
       expect(back.branchSince['tokyo'], 123456);
       final j = g.toJson();
-      j['branchLevels'] = {'a': -3, 'b': double.nan, 'c': 99, 'd': 'x', 'tokyo': 4};
+      j['branchLevels'] = {
+        'a': -3,
+        'b': double.nan,
+        'c': 99,
+        'd': 'x',
+        'tokyo': 4,
+      };
       j['branchSince'] = {'a': -1, 'b': 'x', 'tokyo': 5};
       final dirty = GameState.fromJson(j);
       expect(dirty.branchLevels, {'c': 10, 'tokyo': 4});
@@ -132,24 +259,68 @@ void main() {
   });
 
   group('controller', () {
-    test('mở chi nhánh: trừ Xu, tặng lễ khai trương, đặt mốc; chưa đủ giai đoạn/Xu thì không', () async {
-      var now = _t0;
-      final (c, _, _) = await _container(_rich(stage: 6), clock: () => now);
-      addTearDown(c.dispose);
-      final ctl = c.read(gameControllerProvider.notifier);
-      final income = ctl.branchIncome;
-      expect(income, greaterThan(0));
-      expect(ctl.upgradeBranch('paris'), isNull, reason: 'stage 6 < 12');
-      expect(ctl.upgradeBranch('unknown'), isNull);
-      final before = c.read(gameControllerProvider).money;
-      final cost = branchCost(branchCities[0], 1, income);
-      final gala = ctl.upgradeBranch('saigon');
-      expect(gala, closeTo(income * branchGalaSeconds, income * 0.01));
-      final s = c.read(gameControllerProvider);
-      expect(s.branchLevels['saigon'], 1);
-      expect(s.branchSince['saigon'], now);
-      expect(s.money, closeTo(before - cost + gala!, before * 1e-9 + 1));
-    });
+    test(
+      'mở chi nhánh: trừ Xu, tặng lễ khai trương, đặt mốc; chưa đủ giai đoạn/Xu thì không',
+      () async {
+        var now = _t0;
+        final (c, _, _) = await _container(_rich(stage: 6), clock: () => now);
+        addTearDown(c.dispose);
+        final ctl = c.read(gameControllerProvider.notifier);
+        final income = ctl.branchIncome;
+        expect(income, greaterThan(0));
+        expect(ctl.upgradeBranch('paris'), isNull, reason: 'stage 6 < 12');
+        expect(ctl.upgradeBranch('unknown'), isNull);
+        final before = c.read(gameControllerProvider).money;
+        final cost = branchCost(branchCities[0], 1, income);
+        final gala = ctl.upgradeBranch('saigon');
+        expect(gala, closeTo(income * branchGalaSeconds, income * 0.01));
+        final s = c.read(gameControllerProvider);
+        expect(s.branchLevels['saigon'], 1);
+        expect(s.branchSince['saigon'], now);
+        expect(s.money, closeTo(before - cost + gala!, before * 1e-9 + 1));
+      },
+    );
+
+    test(
+      'giảm giá signature áp vào giá nâng cấp thật; thu về cộng thêm % Xu',
+      () async {
+        var now = _t0;
+        final seed = _rich(stage: 6)
+          ..branchLevels['hanoi'] =
+              10 // discount 3%
+          ..branchLevels['tokyo'] =
+              10 // collect +4%
+          ..branchSince['tokyo'] = _t0;
+        final (c, _, _) = await _container(seed, clock: () => now);
+        addTearDown(c.dispose);
+        final ctl = c.read(gameControllerProvider.notifier);
+        final income = ctl.branchIncome;
+        now += 2 * 3600 * 1000;
+        final base =
+            branchPendingIncomeSeconds(
+              {'hanoi': 10, 'tokyo': 10},
+              {'tokyo': _t0},
+              branchCityById('tokyo')!,
+              now,
+            ) *
+            income;
+        final r = ctl.collectBranches();
+        expect(
+          r.xu,
+          anyOf(
+            closeTo(base * 1.04, base * 1e-9),
+            closeTo(base * 1.04 * branchRushMult, base * 1e-9),
+          ),
+        );
+        final m0 = c.read(gameControllerProvider).money;
+        final gala = ctl.upgradeBranch('saigon')!;
+        final cost = branchCost(branchCities[0], 1, income, discount: 0.03);
+        expect(
+          c.read(gameControllerProvider).money,
+          closeTo(m0 - cost + gala, m0 * 1e-9 + 1),
+        );
+      },
+    );
 
     test('thiếu Xu: không đổi gì', () async {
       final (c, _, _) = await _container(_rich(money: 0), clock: () => _t0);
@@ -168,35 +339,74 @@ void main() {
       now += 2 * 3600 * 1000;
       final m0 = c.read(gameControllerProvider).money;
       final cost = branchCost(branchCities[0], 2, ctl.branchIncome);
-      final pending = branchPendingIncomeSeconds({'saigon': 1}, {'saigon': 0}, branchCities[0], 2 * 3600 * 1000) * ctl.branchIncome;
+      final pending =
+          branchPendingIncomeSeconds(
+            {'saigon': 1},
+            {'saigon': 0},
+            branchCities[0],
+            2 * 3600 * 1000,
+          ) *
+          ctl.branchIncome;
       expect(ctl.upgradeBranch('saigon'), 0);
-      expect(c.read(gameControllerProvider).money, closeTo(m0 - cost + pending, m0 * 1e-9 + 1));
-      expect(c.read(gameControllerProvider).branchSince['saigon'], now, reason: 'mốc đặt lại sau khi gom');
+      expect(
+        c.read(gameControllerProvider).money,
+        closeTo(m0 - cost + pending, m0 * 1e-9 + 1),
+      );
+      expect(
+        c.read(gameControllerProvider).branchSince['saigon'],
+        now,
+        reason: 'mốc đặt lại sau khi gom',
+      );
       for (var i = 0; i < 20; i++) {
         ctl.upgradeBranch('saigon');
       }
-      expect(c.read(gameControllerProvider).branchLevels['saigon'], branchMaxLevel);
+      expect(
+        c.read(gameControllerProvider).branchLevels['saigon'],
+        branchMaxLevel,
+      );
       expect(ctl.upgradeBranch('saigon'), isNull);
     });
 
-    test('thu về: Xu = giây tích × thu nhập (×3 nếu cao điểm), đặt lại mốc, thu lần hai = 0', () async {
-      var now = _t0;
-      final (c, _, _) = await _container(_rich(money: 1e30), clock: () => now);
-      addTearDown(c.dispose);
-      final ctl = c.read(gameControllerProvider.notifier);
-      ctl.upgradeBranch('saigon');
-      for (var i = 0; i < 4; i++) {
+    test(
+      'thu về: Xu = giây tích × thu nhập (×3 nếu cao điểm), đặt lại mốc, thu lần hai = 0',
+      () async {
+        var now = _t0;
+        final (c, _, _) = await _container(
+          _rich(money: 1e30),
+          clock: () => now,
+        );
+        addTearDown(c.dispose);
+        final ctl = c.read(gameControllerProvider.notifier);
         ctl.upgradeBranch('saigon');
-      }
-      now += 4 * 3600 * 1000;
-      final base = branchPendingIncomeSeconds({'saigon': 5}, {'saigon': 0}, branchCities[0], 4 * 3600 * 1000) * ctl.branchIncome;
-      final m0 = c.read(gameControllerProvider).money;
-      final r = ctl.collectBranches();
-      expect(r.xu, anyOf(closeTo(base, base * 1e-9), closeTo(base * branchRushMult, base * 1e-9)));
-      expect(r.rushes, r.xu > base * 1.5 ? 1 : 0);
-      expect(c.read(gameControllerProvider).money, closeTo(m0 + r.xu, m0 * 1e-9 + 1));
-      expect(ctl.collectBranches().xu, 0);
-    });
+        for (var i = 0; i < 4; i++) {
+          ctl.upgradeBranch('saigon');
+        }
+        now += 4 * 3600 * 1000;
+        final base =
+            branchPendingIncomeSeconds(
+              {'saigon': 5},
+              {'saigon': 0},
+              branchCities[0],
+              4 * 3600 * 1000,
+            ) *
+            ctl.branchIncome;
+        final m0 = c.read(gameControllerProvider).money;
+        final r = ctl.collectBranches();
+        expect(
+          r.xu,
+          anyOf(
+            closeTo(base, base * 1e-9),
+            closeTo(base * branchRushMult, base * 1e-9),
+          ),
+        );
+        expect(r.rushes, r.xu > base * 1.5 ? 1 : 0);
+        expect(
+          c.read(gameControllerProvider).money,
+          closeTo(m0 + r.xu, m0 * 1e-9 + 1),
+        );
+        expect(ctl.collectBranches().xu, 0);
+      },
+    );
 
     test('đồng hồ máy chỉnh lùi không tạo Xu âm/NaN', () async {
       var now = _t0;
@@ -212,24 +422,44 @@ void main() {
   });
 
   group('trang', () {
-    Future<ProviderContainer> open(WidgetTester tester, GameState seed,
-        {String locale = 'vi', Size size = const Size(400, 900), double scale = 1}) async {
-      final (c, _, _) = await _container(seed, clock: () => _t0 + 5 * 3600 * 1000);
+    Future<ProviderContainer> open(
+      WidgetTester tester,
+      GameState seed, {
+      String locale = 'vi',
+      Size size = const Size(400, 900),
+      double scale = 1,
+      bool list = true,
+      int hours = 5,
+    }) async {
+      final (c, _, _) = await _container(
+        seed,
+        clock: () => _t0 + hours * 3600 * 1000,
+      );
       await tester.binding.setSurfaceSize(size);
       addTearDown(() => tester.binding.setSurfaceSize(null));
-      await tester.pumpWidget(UncontrolledProviderScope(
-        container: c,
-        child: MediaQuery(
-          data: MediaQueryData(size: size, textScaler: TextScaler.linear(scale)),
-          child: MaterialApp(
-            locale: Locale(locale),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            home: const BranchesPage(),
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: c,
+          child: MediaQuery(
+            data: MediaQueryData(
+              size: size,
+              textScaler: TextScaler.linear(scale),
+            ),
+            child: MaterialApp(
+              locale: Locale(locale),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              home: const BranchesPage(),
+            ),
           ),
         ),
-      ));
+      );
       await tester.pumpAndSettle();
+      if (list) {
+        // Mặc định trang mở ở chế độ bản đồ; các kiểm thử thẻ làm việc trên Danh sách.
+        await tester.tap(find.byKey(const Key('branch-view-list')));
+        await tester.pumpAndSettle();
+      }
       return c;
     }
 
@@ -238,51 +468,94 @@ void main() {
       c.dispose();
     }
 
-    testWidgets('mở khoá theo giai đoạn: stage 2 chỉ Sài Gòn có nút Mở; mở được thì thành cấp 1', (tester) async {
-      final c = await open(tester, _rich(stage: 2));
-      expect(find.byKey(const Key('branch-act-saigon')), findsOneWidget);
-      expect(find.byKey(const Key('branch-act-hanoi')), findsNothing, reason: 'bị khoá');
-      expect(find.textContaining('4'), findsWidgets);
+    testWidgets(
+      'mở khoá theo giai đoạn: stage 2 chỉ Sài Gòn có nút Mở; mở được thì thành cấp 1',
+      (tester) async {
+        final c = await open(tester, _rich(stage: 2));
+        expect(find.byKey(const Key('branch-act-saigon')), findsOneWidget);
+        expect(
+          find.byKey(const Key('branch-act-hanoi')),
+          findsNothing,
+          reason: 'bị khoá',
+        );
+        expect(find.textContaining('4'), findsWidgets);
+        await tester.tap(find.byKey(const Key('branch-act-saigon')));
+        await tester.pumpAndSettle();
+        expect(c.read(gameControllerProvider).branchLevels['saigon'], 1);
+        expect(
+          find.byType(SnackBar),
+          findsOneWidget,
+          reason: 'thông báo khai trương',
+        );
+        await end(tester, c);
+      },
+    );
+
+    testWidgets(
+      'thẻ có huy hiệu signature + chấm cấp; đầu trang đếm số chi nhánh đã mở',
+      (tester) async {
+        final seed = _rich(stage: 6)
+          ..branchLevels['saigon'] = 3
+          ..branchSince['saigon'] = _t0;
+        final c = await open(tester, seed);
+        expect(find.byKey(const Key('branch-sig-saigon')), findsOneWidget);
+        expect(
+          find.descendant(
+            of: find.byKey(const Key('branch-sig-saigon')),
+            matching: find.text('☕'),
+          ),
+          findsOneWidget,
+        );
+        expect(find.byKey(const Key('branch-pips-saigon')), findsOneWidget);
+        expect(find.byKey(const Key('branch-perk-hint')), findsOneWidget);
+        expect(
+          find.textContaining('cao điểm'),
+          findsWidgets,
+          reason: 'dòng hiệu ứng signature của Sài Gòn',
+        );
+        expect(find.text('Đã mở 1/17 chi nhánh'), findsOneWidget);
+        await end(tester, c);
+      },
+    );
+
+    testWidgets('mặc định là bản đồ: có ghim từng chi nhánh; bấm ghim mở thẻ, mở chi nhánh được ngay trong bảng', (tester) async {
+      final c = await open(tester, _rich(stage: 2), list: false);
+      expect(find.byKey(const Key('branch-map-viewer')), findsOneWidget);
+      expect(find.byKey(const Key('branch-card-saigon')), findsNothing, reason: 'chưa mở bảng');
+      expect(find.byKey(const Key('branch-pin-saigon')), findsOneWidget);
+      expect(find.byKey(const Key('branch-pin-moon')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('branch-pin-saigon')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('branch-sheet')), findsOneWidget);
       await tester.tap(find.byKey(const Key('branch-act-saigon')));
       await tester.pumpAndSettle();
       expect(c.read(gameControllerProvider).branchLevels['saigon'], 1);
-      expect(find.byType(SnackBar), findsOneWidget, reason: 'thông báo khai trương');
       await end(tester, c);
     });
 
-    testWidgets('thẻ có huy hiệu signature + chấm cấp; đầu trang đếm số chi nhánh đã mở', (tester) async {
-      final seed = _rich(stage: 6)
+    testWidgets('ghim bị khoá vẫn bấm được và hiện thẻ khoá; chi nhánh đầy kho có chấm đỏ; chuyển Danh sách/Bản đồ', (tester) async {
+      final seed = _rich(stage: 2)
         ..branchLevels['saigon'] = 3
-        ..branchSince['saigon'] = _t0;
-      final c = await open(tester, seed);
-      expect(find.byKey(const Key('branch-sig-saigon')), findsOneWidget);
-      expect(find.descendant(of: find.byKey(const Key('branch-sig-saigon')), matching: find.text('☕')), findsOneWidget);
-      expect(find.byKey(const Key('branch-pips-saigon')), findsOneWidget);
-      expect(find.text('Đã mở 1/17 chi nhánh'), findsOneWidget);
-      await end(tester, c);
-    });
-
-    testWidgets('nút Thu về mờ khi chưa có gì; có doanh thu thì bấm được', (tester) async {
-      final seed = _rich(stage: 6)
-        ..branchLevels['saigon'] = 5
-        ..branchSince['saigon'] = _t0;
-      final c = await open(tester, seed);
-      expect(tester.widget<FilledButton>(find.byKey(const Key('branch-collect'))).onPressed, isNotNull);
-      await tester.tap(find.byKey(const Key('branch-collect')));
+        ..branchSince['saigon'] = _t0; // sau 20 giờ là quá trần 8 giờ
+      final c = await open(tester, seed, list: false, hours: 20);
+      expect(find.byKey(const Key('branch-pin-full-saigon')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('branch-pin-hanoi')));
       await tester.pumpAndSettle();
-      expect(find.byType(SnackBar), findsOneWidget);
-      expect(tester.widget<FilledButton>(find.byKey(const Key('branch-collect'))).onPressed, isNull);
-      await end(tester, c);
-    });
-
-    testWidgets('chưa mở chi nhánh nào: nút Thu về mờ', (tester) async {
-      final c = await open(tester, _rich(stage: 2));
-      expect(tester.widget<FilledButton>(find.byKey(const Key('branch-collect'))).onPressed, isNull);
+      expect(find.byKey(const Key('branch-act-hanoi')), findsNothing, reason: 'khoá giai đoạn 4');
+      expect(find.byKey(const Key('branch-card-hanoi')), findsOneWidget);
+      await tester.tapAt(const Offset(10, 10)); // đóng bảng
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('branch-view-list')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('branch-card-saigon')), findsOneWidget);
+      await tester.tap(find.byKey(const Key('branch-view-map')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('branch-map-viewer')), findsOneWidget);
       await end(tester, c);
     });
 
     for (final lang in ['vi', 'en', 'es', 'id', 'ko', 'pt', 'th']) {
-      testWidgets('không tràn ở 320px, chữ 1.5×, số khổng lồ ($lang)', (tester) async {
+      testWidgets('bản đồ không tràn ở 320px, chữ 1.5× ($lang)', (tester) async {
         final id = Balance.generators.first.id;
         final seed = GameState.newGame(nowMillis: _t0)
           ..tutorialSeen = true
@@ -293,10 +566,77 @@ void main() {
           seed.branchLevels[c.id] = 1 + math.Random(c.id.length).nextInt(10);
           seed.branchSince[c.id] = _t0;
         }
-        final c = await open(tester, seed, locale: lang, size: const Size(320, 640), scale: 1.5);
+        final c = await open(tester, seed, locale: lang, size: const Size(320, 640), scale: 1.5, list: false);
+        expect(find.byKey(const Key('branch-map-viewer')), findsOneWidget);
+        expect(tester.takeException(), isNull, reason: lang);
+        await end(tester, c);
+      });
+    }
+
+    testWidgets('nút Thu về mờ khi chưa có gì; có doanh thu thì bấm được', (
+      tester,
+    ) async {
+      final seed = _rich(stage: 6)
+        ..branchLevels['saigon'] = 5
+        ..branchSince['saigon'] = _t0;
+      final c = await open(tester, seed);
+      expect(
+        tester
+            .widget<FilledButton>(find.byKey(const Key('branch-collect')))
+            .onPressed,
+        isNotNull,
+      );
+      await tester.tap(find.byKey(const Key('branch-collect')));
+      await tester.pumpAndSettle();
+      expect(find.byType(SnackBar), findsOneWidget);
+      expect(
+        tester
+            .widget<FilledButton>(find.byKey(const Key('branch-collect')))
+            .onPressed,
+        isNull,
+      );
+      await end(tester, c);
+    });
+
+    testWidgets('chưa mở chi nhánh nào: nút Thu về mờ', (tester) async {
+      final c = await open(tester, _rich(stage: 2));
+      expect(
+        tester
+            .widget<FilledButton>(find.byKey(const Key('branch-collect')))
+            .onPressed,
+        isNull,
+      );
+      await end(tester, c);
+    });
+
+    for (final lang in ['vi', 'en', 'es', 'id', 'ko', 'pt', 'th']) {
+      testWidgets('không tràn ở 320px, chữ 1.5×, số khổng lồ ($lang)', (
+        tester,
+      ) async {
+        final id = Balance.generators.first.id;
+        final seed = GameState.newGame(nowMillis: _t0)
+          ..tutorialSeen = true
+          ..stage = 18
+          ..money = 1e70
+          ..levels[id] = 5000;
+        for (final c in branchCities) {
+          seed.branchLevels[c.id] = 1 + math.Random(c.id.length).nextInt(10);
+          seed.branchSince[c.id] = _t0;
+        }
+        final c = await open(
+          tester,
+          seed,
+          locale: lang,
+          size: const Size(320, 640),
+          scale: 1.5,
+        );
         expect(find.byKey(const Key('branch-collect')), findsOneWidget);
         expect(tester.takeException(), isNull, reason: lang);
-        expect(find.textContaining(RegExp(r'\{[a-z]+\}')), findsNothing, reason: lang);
+        expect(
+          find.textContaining(RegExp(r'\{[a-z]+\}')),
+          findsNothing,
+          reason: lang,
+        );
         // Cuộn hết danh sách để dựng cả 17 thẻ, không thẻ nào tràn.
         for (var i = 0; i < 14; i++) {
           await tester.drag(find.byType(ListView), const Offset(0, -400));

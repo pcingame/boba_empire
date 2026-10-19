@@ -299,7 +299,7 @@ class GameController extends Notifier<GameSnapshot> {
     if (lvl >= branchMaxLevel) return null;
     if (lvl == 0 && _game.stage < c.minStage) return null;
     final income = _branchBaseIncome();
-    final cost = branchCost(c, lvl + 1, income);
+    final cost = branchCost(c, lvl + 1, income, discount: branchPerk(_game.branchLevels, BranchPerk.discount));
     if (!cost.isFinite || !(_game.money >= cost)) return null;
     _game.money -= cost;
     var gala = 0.0;
@@ -309,7 +309,8 @@ class GameController extends Notifier<GameSnapshot> {
       grantBonus(_game, gala);
     } else {
       // Thu phần đã tích theo cấp CŨ trước khi đổi tỉ lệ (không mất, không được hời).
-      final pending = branchPendingIncomeSeconds(_game.branchLevels, _game.branchSince, c, _clock());
+      final pending = branchPendingIncomeSeconds(_game.branchLevels, _game.branchSince, c, _clock(),
+          manager: branchManagerActive());
       _game.branchSince[id] = _clock();
       if (pending > 0 && income.isFinite) grantBonus(_game, pending * income);
     }
@@ -320,6 +321,36 @@ class GameController extends Notifier<GameSnapshot> {
     return gala;
   }
 
+  bool branchManagerActive() => _game.branchManagerUntilMillis > _clock();
+
+  int _lastBranchAutoMillis = 0;
+
+  /// Thuê/gia hạn Quản lý chi nhánh: +[branchManagerDays] ngày (tối đa [branchManagerMaxDays] ngày kể từ nay), trừ 💎.
+  bool hireBranchManager() {
+    final now = _clock();
+    final base = max(_game.branchManagerUntilMillis, now);
+    const day = 86400000;
+    if (base - now + branchManagerDays * day > branchManagerMaxDays * day) return false;
+    if (!spendGems(branchManagerGems)) return false;
+    _game.branchManagerUntilMillis = base + branchManagerDays * day;
+    logEvent('branch_manager_hire', {'days': branchManagerDays});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
+  /// Nhận thưởng mốc bộ sưu tập chi nhánh ([key] dạng 'asia:1'). false nếu chưa đạt/đã nhận.
+  bool claimBranchSet(String key) {
+    if (_game.branchSetClaims.contains(key)) return false;
+    if (!branchSetsClaimable(_game.branchLevels, _game.branchSetClaims).contains(key)) return false;
+    final set = branchSets.firstWhere((s) => s.id == key.split(':').first);
+    final r = branchSetReward(set, int.parse(key.split(':').last));
+    _game.branchSetClaims.add(key);
+    grantBossDayReward(gems: r.gems, seconds: r.seconds);
+    logEvent('branch_set_claim', {'key': key});
+    return true;
+  }
+
   /// Thu doanh thu mọi chi nhánh: Xu = giây tích × thu nhập quán chính hiện tại; mỗi chi nhánh [branchRushChance] gặp
   /// giờ cao điểm ×[branchRushMult]. Trả (Xu, số lần cao điểm).
   ({double xu, int rushes}) collectBranches() {
@@ -327,11 +358,14 @@ class GameController extends Notifier<GameSnapshot> {
     final income = _branchBaseIncome();
     var xu = 0.0;
     var rushes = 0;
+    final rushChance = branchRushChance + branchPerk(_game.branchLevels, BranchPerk.rush);
+    final collectBonus = 1 + branchPerk(_game.branchLevels, BranchPerk.collect);
     for (final c in branchCities) {
-      final sec = branchPendingIncomeSeconds(_game.branchLevels, _game.branchSince, c, now);
+      final sec = branchPendingIncomeSeconds(_game.branchLevels, _game.branchSince, c, now,
+          manager: branchManagerActive());
       if (sec <= 0) continue;
-      var gain = income.isFinite ? sec * income : 0.0;
-      if (_random.nextDouble() < branchRushChance) {
+      var gain = income.isFinite ? sec * income * collectBonus : 0.0;
+      if (_random.nextDouble() < rushChance) {
         gain *= branchRushMult;
         rushes++;
       }
@@ -2426,6 +2460,10 @@ class GameController extends Notifier<GameSnapshot> {
       // tính offline kế tiếp không đếm trùng thời gian online.
       _game.lastSeenMillis = now;
     }
+    if (branchManagerActive() && now - _lastBranchAutoMillis >= branchManagerCollectEverySeconds * 1000) {
+      _lastBranchAutoMillis = now;
+      collectBranches();
+    }
     _addBuys(autoBuyBest(_game)); // perk "Tự động mua" (no-op nếu tắt)
     _updateCat(now);
     _updateVip(now);
@@ -2502,6 +2540,8 @@ class GameController extends Notifier<GameSnapshot> {
       refineLevels: Map.unmodifiable(_game.refineLevels),
       branchLevels: Map.unmodifiable(Map.of(_game.branchLevels)),
       branchSince: Map.unmodifiable(Map.of(_game.branchSince)),
+      branchSetClaims: List.unmodifiable(_game.branchSetClaims),
+      branchManagerUntilMillis: _game.branchManagerUntilMillis,
       collectionMilestonesClaimed:
           List.unmodifiable(_game.collectionMilestonesClaimed),
       collectionSetsClaimed: List.unmodifiable(_game.collectionSetsClaimed),

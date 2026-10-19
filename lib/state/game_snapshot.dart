@@ -119,6 +119,8 @@ class GameSnapshot {
     required this.refineLevels,
     required this.branchLevels,
     required this.branchSince,
+    required this.branchSetClaims,
+    required this.branchManagerUntilMillis,
     required this.collectionMilestonesClaimed,
     required this.collectionSetsClaimed,
     required this.wishlist,
@@ -320,6 +322,8 @@ class GameSnapshot {
   /// Chi nhánh thành phố (core/branches.dart): cấp và mốc thu gần nhất (epoch ms).
   final Map<String, int> branchLevels;
   final Map<String, int> branchSince;
+  final List<String> branchSetClaims;
+  final int branchManagerUntilMillis;
 
   /// Mốc sưu tập đã nhận (xem GameState.collectionMilestonesClaimed).
   final List<int> collectionMilestonesClaimed;
