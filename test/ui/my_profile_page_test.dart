@@ -1,4 +1,5 @@
 // Trang hồ sơ của tôi: thống kê, đổi/gỡ avatar (picker + server giả), lỗi, huỷ, quá lớn, chưa liên kết bị chặn.
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:boba_empire/core/models.dart';
@@ -6,6 +7,7 @@ import 'package:boba_empire/data/cloud_save_controller.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
 import 'package:boba_empire/leaderboard/player_avatar.dart';
+import 'package:boba_empire/leaderboard/player_gender.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/ui/my_profile_page.dart';
 import 'package:flutter/material.dart';
@@ -83,6 +85,28 @@ Future<void> _end(WidgetTester tester, ProviderContainer c) async {
 }
 
 void main() {
+  _gender320();
+  test('giá trị giới tính khớp whitelist trong SQL', () {
+    final sql = File('supabase/player_gender_schema.sql').readAsStringSync();
+    final m = RegExp(r"gender in \(([^)]*)\)").firstMatch(sql)!.group(1)!;
+    final ids = RegExp(r"'(\w+)'").allMatches(m).map((x) => x.group(1)).toSet();
+    expect(ids, {for (final g in PlayerGender.values) g.name});
+  });
+
+  testWidgets('chọn giới tính lưu máy; bấm lại để bỏ', (tester) async {
+    final (c, _, prefs) = await _open(tester);
+    await tester.ensureVisible(find.byKey(const Key('my-gender-female')));
+    await tester.tap(find.byKey(const Key('my-gender-female')));
+    await tester.pumpAndSettle();
+    expect(c.read(selectedGenderProvider), PlayerGender.female);
+    expect(prefs.getString('profile_gender'), 'female');
+    await tester.tap(find.byKey(const Key('my-gender-female')));
+    await tester.pumpAndSettle();
+    expect(c.read(selectedGenderProvider), isNull);
+    expect(prefs.getString('profile_gender'), '');
+    await _end(tester, c);
+  });
+
   testWidgets('hiện biệt danh, thống kê, nút hạng/chia sẻ', (tester) async {
     final (c, _, _) = await _open(tester);
     expect(find.text('Tôi'), findsOneWidget);
@@ -144,4 +168,38 @@ void main() {
     expect(repo.uploads, isEmpty);
     await _end(tester, c);
   });
+}
+
+void _gender320() {
+  for (final lang in ['vi', 'en', 'es', 'id', 'ko', 'pt', 'th']) {
+    testWidgets('chọn giới tính không tràn ở 320px ($lang)', (tester) async {
+      SharedPreferences.setMockInitialValues({'leaderboard_nickname': 'Tôi', 'profile_gender': 'other'});
+      final prefs = await SharedPreferences.getInstance();
+      await GameStorage(prefs).save(GameState.newGame(nowMillis: 0), nowMillis: 0);
+      final c = ProviderContainer(overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        clockProvider.overrideWithValue(() => 1000),
+        avatarRepositoryProvider.overrideWithValue(_Repo()),
+        cloudSaveControllerProvider.overrideWith(_Linked.new),
+      ]);
+      await tester.binding.setSurfaceSize(const Size(320, 640));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      await tester.pumpWidget(UncontrolledProviderScope(
+        container: c,
+        child: MediaQuery(
+          data: const MediaQueryData(size: Size(320, 640), textScaler: TextScaler.linear(1.5)),
+          child: MaterialApp(
+            locale: Locale(lang),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: const MyProfilePage(),
+          ),
+        ),
+      ));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('my-gender-other')), findsOneWidget);
+      expect(tester.takeException(), isNull, reason: lang);
+      await _end(tester, c);
+    });
+  }
 }

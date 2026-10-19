@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:boba_empire/l10n/app_localizations.dart';
+import 'package:boba_empire/leaderboard/player_gender.dart';
 import 'package:boba_empire/leaderboard/player_profile.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/ui/player_profile_dialog.dart';
@@ -76,6 +77,7 @@ void main() {
     String locale = 'en',
     Size size = const Size(400, 800),
     String name = 'Alice',
+    PlayerGender? gender,
   }) async {
     await tester.binding.setSurfaceSize(size);
     addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -85,6 +87,7 @@ void main() {
       ProviderScope(
         overrides: [
           sharedPreferencesProvider.overrideWithValue(prefs),
+          playerGenderProvider.overrideWith((ref, n) async => gender),
           playerProfileProvider.overrideWith((ref, n) async {
             if (result is AsyncError) throw StateError('x');
             return result.value ?? [];
@@ -115,6 +118,17 @@ void main() {
   }
 
   setUp(() => SharedPreferences.setMockInitialValues({}));
+
+  testWidgets('hồ sơ công khai hiện giới tính khi người đó chọn; không chọn thì ẩn', (tester) async {
+    await pump(tester, AsyncData([const ProfileRank(ProfileBoard.income, 1, 10)]), locale: 'vi', gender: PlayerGender.female);
+    expect(find.byKey(const Key('profile-gender')), findsOneWidget);
+    expect(find.textContaining('Nữ'), findsOneWidget);
+  });
+
+  testWidgets('không chọn giới tính → không hiện dòng giới tính', (tester) async {
+    await pump(tester, AsyncData([const ProfileRank(ProfileBoard.income, 1, 10)]));
+    expect(find.byKey(const Key('profile-gender')), findsNothing);
+  });
 
   final full = AsyncData([
     const ProfileRank(ProfileBoard.income, 1, 4.5e74),

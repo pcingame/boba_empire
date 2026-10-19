@@ -13,6 +13,7 @@ import '../core/topup.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../leaderboard/player_avatar.dart';
+import '../leaderboard/player_gender.dart';
 import '../leaderboard/player_title.dart';
 import '../state/game_providers.dart';
 import 'email_gate.dart';
@@ -62,6 +63,7 @@ class _State extends ConsumerState<MyProfilePage> {
     final avatar = ref.watch(myAvatarProvider);
     final titleId = ref.watch(selectedTitleProvider);
     final title = playerTitleById(titleId);
+    final gender = ref.watch(selectedGenderProvider);
     final nickname = ref.read(sharedPreferencesProvider).getString('leaderboard_nickname') ?? '';
     final stats = <(String, String)>[
       (l10n.myProfileStatStage, stageName(l10n, g.stage)),
@@ -120,6 +122,25 @@ class _State extends ConsumerState<MyProfilePage> {
                     ]),
                   ),
                 ),
+                const SizedBox(height: 6),
+                Text(l10n.profileGender, style: theme.textTheme.labelMedium),
+                const SizedBox(height: 4),
+                Wrap(alignment: WrapAlignment.center, spacing: 8, children: [
+                  for (final g in PlayerGender.values)
+                    ChoiceChip(
+                      key: Key('my-gender-${g.name}'),
+                      label: Text('${g.symbol} ${switch (g) {
+                        PlayerGender.male => l10n.profileGenderMale,
+                        PlayerGender.female => l10n.profileGenderFemale,
+                        PlayerGender.other => l10n.profileGenderOther,
+                      }}'),
+                      selected: gender == g,
+                      // Bấm lại món đang chọn = bỏ chọn (ẩn).
+                      onSelected: (_) => ref.read(selectedGenderProvider.notifier).select(gender == g ? null : g),
+                    ),
+                ]),
+                const SizedBox(height: 4),
+                Text(l10n.profileGenderHint, textAlign: TextAlign.center, style: theme.textTheme.bodySmall),
               ]),
             ),
             const SizedBox(height: 8),

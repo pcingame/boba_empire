@@ -10,6 +10,7 @@ import '../core/format.dart';
 import '../core/titles.dart';
 import '../l10n/l10n_ext.dart';
 import '../leaderboard/player_avatar.dart';
+import '../leaderboard/player_gender.dart';
 import '../leaderboard/player_title.dart';
 import 'widgets/avatar_circle.dart';
 import '../l10n/app_localizations.dart';
@@ -112,6 +113,7 @@ class PlayerProfileDialog extends ConsumerWidget {
     final async = ref.watch(playerProfileProvider(nickname));
     final avatarKey = ref.watch(playerAvatarProvider(nickname)).value ?? '';
     final title = playerTitleById(ref.watch(playerTitleProvider(nickname)).value ?? '');
+    final gender = ref.watch(playerGenderProvider(nickname)).value;
     return AlertDialog(
       title: Text(l10n.profileTitle(nickname), maxLines: 2, overflow: TextOverflow.ellipsis),
       content: SingleChildScrollView(
@@ -142,6 +144,17 @@ class PlayerProfileDialog extends ConsumerWidget {
                     child: Text('${title.emoji} ${playerTitleName(l10n, title.id)}',
                         key: const Key('profile-title'),
                         style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+                  ),
+                if (gender != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 6),
+                    child: Text(
+                        '${gender.symbol} ${switch (gender) {
+                          PlayerGender.male => l10n.profileGenderMale,
+                          PlayerGender.female => l10n.profileGenderFemale,
+                          PlayerGender.other => l10n.profileGenderOther,
+                        }}',
+                        key: const Key('profile-gender')),
                   ),
                 for (final r in value)
                   Padding(
