@@ -1323,3 +1323,10 @@ Xếp theo TỔNG CẤP mọi chi nhánh (tối đa 170; hoà: ai đạt trướ
 
 ### 53h. Animation bảng xếp hạng (2026-10-20)
 `StaggerIn` (lib/ui/widgets/stagger_in.dart): dòng BXH/menu hiện lần lượt (mờ→rõ + trượt 18px, trễ 45ms/dòng, 12 dòng đầu; `pop` = nảy cho bục top 3). Áp cho 8 BXH có danh sách + màn gom BXH (icon tròn đổi màu theo bảng) (BXH Chi nhánh đã bỏ bục top 3, top 3 dùng huy hiệu 🥇🥈🥉 ở dòng). Tôn trọng giảm chuyển động/test.
+
+### 53i. Bottom sheet Chi nhánh đẹp hơn + animation (2026-10-20)
+Khung chung `_sheet` (thanh kéo, góc bo 28, tiêu đề huy hiệu emoji tô màu `_sheetHead`): Nhiệm vụ (thẻ màu theo nhiệm vụ, thẻ sáng viền khi sẵn sàng nhận), Skin (4 thẻ xem trước gradient, ✅ nảy khi chọn), Bộ (thẻ theo châu lục có emoji/màu), Quản lý (thanh còn bao nhiêu/30 ngày). Animation: thanh tiến độ chạy mượt (`_AnimBar`), ✅ nảy khi nhận (`_ClaimSlot`), mục sheet + thẻ danh sách hiện lần lượt (`StaggerIn`), ghim bản đồ bật ra lần lượt (`_PinIn`), nút Thu về nảy khi có thêm chi nhánh đầy kho. Tất cả tắt khi giảm chuyển động. AppBar `centerTitle: false` để 5 nút không bị cắt.
+
+### 53j. Hiệu ứng thưởng + sửa rung boss (2026-10-20)
+- `CountUpText` (số chạy mượt), `showRewardBurst` (hạt emoji bung + nhãn "+X" nổi lên, overlay hữu hạn ~0.9s, tối đa 8 đợt, tắt khi giảm chuyển động). Dùng cho: Thu về chi nhánh (🪙, 🔥 khi cao điểm), nhận nhiệm vụ/bộ sưu tập (💎), sự kiện chi nhánh, nhận thưởng mốc Boss, mỗi cú chạm boss (💥 +1).
+- Boss: BỎ rung ngang (sin ×7, ±10px mỗi cú chạm gây đau mắt khi chạm liên tục) → nhún nhẹ một nhịp (co 4%, 180ms). Thanh máu tụt mượt 350ms.

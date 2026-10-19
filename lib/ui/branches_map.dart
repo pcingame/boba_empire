@@ -801,7 +801,13 @@ class _BranchesMapState extends State<BranchesMap>
     final lvl = branchLevel(widget.levels, c.id);
     final locked = lvl == 0 && widget.stage < c.minStage;
     final tint = Color(c.color);
-    final fill = branchFill(widget.levels, widget.since, c, widget.now, manager: widget.manager);
+    final fill = branchFill(
+      widget.levels,
+      widget.since,
+      c,
+      widget.now,
+      manager: widget.manager,
+    );
     return GestureDetector(
       key: Key('branch-pin-${c.id}'),
       behavior: HitTestBehavior.opaque,
@@ -887,8 +893,14 @@ class _BranchesMapState extends State<BranchesMap>
                         top: -6,
                         child: Container(
                           padding: const EdgeInsets.all(2),
-                          decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-                          child: Text(branchEventEmoji[widget.eventType], style: const TextStyle(fontSize: 13)),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            branchEventEmoji[widget.eventType],
+                            style: const TextStyle(fontSize: 13),
+                          ),
                         ),
                       ),
                     if (fill >= 1)
@@ -1069,24 +1081,27 @@ class _BranchesMapState extends State<BranchesMap>
                             Positioned(
                               left: branchMapPos[c.id]!.dx - 32,
                               top: branchMapPos[c.id]!.dy - _pin / 2,
-                              child: _bursts[c.id] == null
-                                  ? _pinWidget(c)
-                                  : AnimatedBuilder(
-                                      animation: _bursts[c.id]!,
-                                      builder: (_, child) => Transform.scale(
-                                        scale:
-                                            1 +
-                                            0.35 *
-                                                math.sin(
-                                                  _bursts[c.id]!.value *
-                                                      math.pi *
-                                                      3,
-                                                ) *
-                                                (1 - _bursts[c.id]!.value),
-                                        child: child,
+                              child: _PinIn(
+                                index: branchCities.indexOf(c),
+                                child: _bursts[c.id] == null
+                                    ? _pinWidget(c)
+                                    : AnimatedBuilder(
+                                        animation: _bursts[c.id]!,
+                                        builder: (_, child) => Transform.scale(
+                                          scale:
+                                              1 +
+                                              0.35 *
+                                                  math.sin(
+                                                    _bursts[c.id]!.value *
+                                                        math.pi *
+                                                        3,
+                                                  ) *
+                                                  (1 - _bursts[c.id]!.value),
+                                          child: child,
+                                        ),
+                                        child: _pinWidget(c),
                                       ),
-                                      child: _pinWidget(c),
-                                    ),
+                              ),
                             ),
                         // Khai trương: vòng sóng + tia lấp lánh + 🎉 bung ra quanh ghim.
                         for (final e in _bursts.entries)
@@ -1368,23 +1383,52 @@ class BranchesMapPainter extends CustomPainter {
     }
     // Skin theo dịp: màu phủ + hạt trang trí xác định (tuyết / lồng đèn-bao lì xì / cánh hoa).
     if (skin > 0) {
-      const wash = [Colors.transparent, Color(0xFFE3F2FD), Color(0xFFE53935), Color(0xFFF8BBD0)];
-      canvas.drawRect(rect, Paint()..color = wash[skin].withValues(alpha: skin == 1 ? 0.22 : 0.10));
+      const wash = [
+        Colors.transparent,
+        Color(0xFFE3F2FD),
+        Color(0xFFE53935),
+        Color(0xFFF8BBD0),
+      ];
+      canvas.drawRect(
+        rect,
+        Paint()..color = wash[skin].withValues(alpha: skin == 1 ? 0.22 : 0.10),
+      );
       final r = math.Random(skin * 97);
       final n = skin == 2 ? 60 : 140;
       for (var i = 0; i < n; i++) {
-        final p = Offset(r.nextDouble() * size.width, r.nextDouble() * size.height);
+        final p = Offset(
+          r.nextDouble() * size.width,
+          r.nextDouble() * size.height,
+        );
         final rad = 1.2 + r.nextDouble() * 2.6;
         if (skin == 1) {
-          canvas.drawCircle(p, rad, Paint()..color = Colors.white.withValues(alpha: 0.8));
+          canvas.drawCircle(
+            p,
+            rad,
+            Paint()..color = Colors.white.withValues(alpha: 0.8),
+          );
         } else if (skin == 2) {
           final gold = i.isEven;
-          canvas.drawCircle(p, rad + 1.5, Paint()..color = (gold ? const Color(0xFFFFD54F) : const Color(0xFFE53935)).withValues(alpha: 0.7));
+          canvas.drawCircle(
+            p,
+            rad + 1.5,
+            Paint()
+              ..color =
+                  (gold ? const Color(0xFFFFD54F) : const Color(0xFFE53935))
+                      .withValues(alpha: 0.7),
+          );
         } else {
           canvas.save();
           canvas.translate(p.dx, p.dy);
           canvas.rotate(r.nextDouble() * math.pi);
-          canvas.drawOval(Rect.fromCenter(center: Offset.zero, width: rad * 3, height: rad * 1.6), Paint()..color = const Color(0xFFF48FB1).withValues(alpha: 0.75));
+          canvas.drawOval(
+            Rect.fromCenter(
+              center: Offset.zero,
+              width: rad * 3,
+              height: rad * 1.6,
+            ),
+            Paint()..color = const Color(0xFFF48FB1).withValues(alpha: 0.75),
+          );
           canvas.restore();
         }
       }
@@ -1534,4 +1578,30 @@ class _BurstPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_BurstPainter old) => old.t != t || old.color != color;
+}
+
+/// Ghim bật ra (phóng 0 → 1 có nảy) lần lượt khi mở bản đồ; tắt khi giảm chuyển động.
+class _PinIn extends StatelessWidget {
+  const _PinIn({required this.index, required this.child});
+  final int index;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (reduceMotion) return child;
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: 0, end: 1),
+      duration: Duration(milliseconds: 350 + index * 45),
+      curve: Curves.easeOutBack,
+      child: child,
+      builder: (_, v, child) => Opacity(
+        opacity: v.clamp(0.0, 1.0),
+        child: Transform.scale(
+          scale: v,
+          alignment: Alignment.bottomCenter,
+          child: child,
+        ),
+      ),
+    );
+  }
 }

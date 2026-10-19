@@ -610,6 +610,36 @@ void main() {
     });
 
     for (final lang in ['vi', 'en', 'es', 'id', 'ko', 'pt', 'th']) {
+      testWidgets('mọi bottom sheet (nhiệm vụ/skin/bộ/quản lý) mở được, không tràn ở 320px, chữ 1.5× ($lang)', (
+        tester,
+      ) async {
+        final seed = _rich(stage: 18)
+          ..branchLevels.addAll({'saigon': 10, 'tokyo': 4})
+          ..branchSince.addAll({'saigon': _t0, 'tokyo': _t0});
+        final c = await open(tester, seed, locale: lang, size: const Size(320, 640), scale: 1.5);
+        for (final k in ['branch-quest', 'branch-skin', 'branch-sets', 'branch-manager']) {
+          await tester.tap(find.byKey(Key('$k-btn')));
+          await tester.pumpAndSettle();
+          expect(find.byKey(Key('$k-sheet')), findsOneWidget, reason: '$lang $k');
+          expect(tester.takeException(), isNull, reason: '$lang $k');
+          Navigator.of(tester.element(find.byKey(Key('$k-sheet')))).pop();
+          await tester.pumpAndSettle();
+        }
+        await end(tester, c);
+      });
+    }
+
+    testWidgets('sheet skin: chọn skin đổi dữ liệu', (tester) async {
+      final c = await open(tester, _rich(stage: 6));
+      await tester.tap(find.byKey(const Key('branch-skin-btn')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const Key('branch-skin-2')));
+      await tester.pumpAndSettle();
+      expect(c.read(gameControllerProvider).branchMapSkin, 2);
+      await end(tester, c);
+    });
+
+    for (final lang in ['vi', 'en', 'es', 'id', 'ko', 'pt', 'th']) {
       testWidgets('không tràn ở 320px, chữ 1.5×, số khổng lồ ($lang)', (
         tester,
       ) async {

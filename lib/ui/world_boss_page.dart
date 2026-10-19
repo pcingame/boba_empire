@@ -18,6 +18,7 @@ import 'widgets/clay.dart';
 import 'widgets/mascot.dart';
 import 'widgets/motion.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/reward_burst.dart';
 
 Future<void> showWorldBoss(BuildContext context) async {
   if (!await ensureOnlineLinked(context) || !context.mounted) return;
@@ -49,7 +50,7 @@ class _State extends ConsumerState<WorldBossPage>
     with SingleTickerProviderStateMixin {
   late final AnimationController _shake = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 450),
+    duration: const Duration(milliseconds: 180),
   );
   Timer? _poll;
 
@@ -82,7 +83,10 @@ class _State extends ConsumerState<WorldBossPage>
       final gems = await ref
           .read(worldBossControllerProvider.notifier)
           .claim(phase);
-      if (mounted) _snack(l10n.worldBossClaimedSnack(gems));
+      if (mounted) {
+        showRewardBurst(context, emojis: const ['💎', '✨'], label: '+$gems 💎', count: 14);
+        _snack(l10n.worldBossClaimedSnack(gems));
+      }
     } catch (_) {
       if (mounted) _snack(l10n.friendsErrNetwork);
     }
@@ -94,7 +98,10 @@ class _State extends ConsumerState<WorldBossPage>
       final (_, xu) = await ref
           .read(worldBossControllerProvider.notifier)
           .claimDay(phase);
-      if (mounted) _snack(l10n.worldBossDayClaimedSnack(formatNumber(xu)));
+      if (mounted) {
+        showRewardBurst(context, emojis: const ['🪙', '✨'], label: '+${formatNumber(xu)}', count: 14);
+        _snack(l10n.worldBossDayClaimedSnack(formatNumber(xu)));
+      }
     } catch (_) {
       if (mounted) _snack(l10n.friendsErrNetwork);
     }
@@ -359,10 +366,15 @@ class _Body extends ConsumerWidget {
               ),
               const SizedBox(height: 4),
               // Chạm vào boss = ra đòn. Quầng sáng sau boss cho nổi khỏi nền.
-              GestureDetector(
+              Builder(builder: (hitCtx) => GestureDetector(
                 key: const Key('wb-boss-tap'),
                 behavior: HitTestBehavior.opaque,
-                onTap: closed ? null : onHit,
+                onTap: closed
+                    ? null
+                    : () {
+                        onHit();
+                        showRewardBurst(hitCtx, emojis: const ['💥'], label: '+1', count: 3);
+                      },
                 child: Stack(
                   alignment: Alignment.topCenter,
                   children: [
@@ -378,13 +390,9 @@ class _Body extends ConsumerWidget {
                       ),
                       child: AnimatedBuilder(
                         animation: shake,
-                        builder: (_, child) => Transform.translate(
-                          offset: Offset(
-                            math.sin(shake.value * math.pi * 7) *
-                                10 *
-                                (1 - shake.value),
-                            0,
-                          ),
+                        // Trúng đòn: nhún nhẹ một nhịp (co 4% rồi về), KHÔNG rung ngang — chạm liên tục vẫn êm mắt.
+                        builder: (_, child) => Transform.scale(
+                          scale: 1 - 0.04 * math.sin(shake.value * math.pi),
                           child: child,
                         ),
                         // Hạ gục → xám + mờ.
@@ -433,7 +441,7 @@ class _Body extends ConsumerWidget {
                       ),
                   ],
                 ),
-              ),
+              )),
               const SizedBox(height: 8),
               // Thanh máu: nền tối, phần còn lại tô gradient đỏ→cam, vạch ở 4 mốc, chữ máu nằm giữa thanh.
               LayoutBuilder(
@@ -455,9 +463,11 @@ class _Body extends ConsumerWidget {
                       children: [
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: FractionallySizedBox(
-                            widthFactor: frac.clamp(0.0, 1.0),
-                            heightFactor: 1,
+                          child: TweenAnimationBuilder<double>(
+                            tween: Tween<double>(end: frac.clamp(0.0, 1.0)),
+                            duration: reduceMotion ? Duration.zero : const Duration(milliseconds: 350),
+                            curve: Curves.easeOutCubic,
+                            builder: (_, w, child) => FractionallySizedBox(widthFactor: w, heightFactor: 1, child: child),
                             child: const DecoratedBox(
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
