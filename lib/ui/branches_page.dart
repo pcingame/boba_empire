@@ -191,6 +191,47 @@ class _BranchesPageState extends ConsumerState<BranchesPage> {
     );
   }
 
+  void _showSkins(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      useSafeArea: true,
+      builder: (sheet) => Consumer(
+        builder: (ctx, ref, _) {
+          final l10n = AppLocalizations.of(ctx)!;
+          final cur = ref.watch(gameControllerProvider.select((s) => s.branchMapSkin));
+          final names = [l10n.branchSkin0, l10n.branchSkin1, l10n.branchSkin2, l10n.branchSkin3];
+          const icons = ['🗺️', '❄️', '🧧', '🌸'];
+          return Padding(
+            key: const Key('branch-skin-sheet'),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('🎨 ${l10n.branchSkinTitle}', style: Theme.of(ctx).textTheme.titleMedium),
+                const SizedBox(height: 8),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: [
+                    for (var i = 0; i < branchMapSkinCount; i++)
+                      ChoiceChip(
+                        key: Key('branch-skin-$i'),
+                        label: Text('${icons[i]} ${names[i]}'),
+                        selected: cur == i,
+                        onSelected: (_) => ref.read(gameControllerProvider.notifier).setBranchMapSkin(i),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   void _showManager(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
@@ -255,6 +296,8 @@ class _BranchesPageState extends ConsumerState<BranchesPage> {
     final now = ref.read(clockProvider)();
     final income = ref.read(gameControllerProvider.notifier).branchIncome;
     final manager = s.branchManagerUntilMillis > now;
+    final evSlot = branchEventSlot(now);
+    final ev = s.branchEventClaimedSlot == evSlot ? null : branchEventFor(s.branchLevels, evSlot);
     var pendingSec = 0.0;
     for (final c in branchCities) {
       pendingSec += branchPendingIncomeSeconds(
@@ -276,7 +319,15 @@ class _BranchesPageState extends ConsumerState<BranchesPage> {
           title: Text(l10n.branchTitle),
           actions: [
             IconButton(
+              key: const Key('branch-skin-btn'),
+              visualDensity: VisualDensity.compact,
+              tooltip: l10n.branchSkinTitle,
+              icon: const Text('🎨', style: TextStyle(fontSize: 22)),
+              onPressed: () => _showSkins(context),
+            ),
+            IconButton(
               key: const Key('branch-sets-btn'),
+              visualDensity: VisualDensity.compact,
               tooltip: l10n.branchSetsTitle,
               icon: Badge(
                 isLabelVisible:
@@ -288,6 +339,7 @@ class _BranchesPageState extends ConsumerState<BranchesPage> {
             ),
             IconButton(
               key: const Key('branch-manager-btn'),
+              visualDensity: VisualDensity.compact,
               tooltip: l10n.branchManagerTitle,
               icon: const Text('🧑‍💼', style: TextStyle(fontSize: 22)),
               onPressed: () => _showManager(context),
@@ -374,6 +426,9 @@ class _BranchesPageState extends ConsumerState<BranchesPage> {
                               stage: s.stage,
                               now: now,
                               manager: manager,
+                              skin: s.branchMapSkin,
+                              eventCityId: ev?.cityId,
+                              eventType: ev?.type ?? 0,
                               nameOf: (id) => branchCityName(l10n, id),
                               onPin: (c) => _showCity(context, c),
                               continentNames: [
@@ -501,6 +556,112 @@ class _BranchesPageState extends ConsumerState<BranchesPage> {
           );
         },
       ),
+    );
+  }
+}
+
+/// Sự kiện đang diễn ra ở chi nhánh này (nhận 1 lần/ô 3h) + chuyên ngành khi đạt cấp tối đa.
+class _CityExtras extends ConsumerWidget {
+  const _CityExtras({required this.c, required this.s, required this.now});
+  final BranchCity c;
+  final GameSnapshot s;
+  final int now;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    final ctl = ref.read(gameControllerProvider.notifier);
+    final lvl = branchLevel(s.branchLevels, c.id);
+    final slot = branchEventSlot(now);
+    final e = s.branchEventClaimedSlot == slot ? null : branchEventFor(s.branchLevels, slot);
+    final spec = s.branchSpecs[c.id];
+    void snack(String t) => ScaffoldMessenger.of(context)
+      ..clearSnackBars()
+      ..showSnackBar(SnackBar(content: Text(t)));
+    String evHours(int type) {
+      final h = branchEventRewardSeconds(type, lvl) / 3600;
+      return h == h.roundToDouble() ? '${h.round()}' : h.toStringAsFixed(1);
+    }
+
+    final evNames = [l10n.branchEvent0, l10n.branchEvent1, l10n.branchEvent2];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (e != null && e.cityId == c.id)
+          Container(
+            key: Key('branch-event-card-${c.id}'),
+            margin: const EdgeInsets.only(top: 8),
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Color(c.color).withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Row(
+                  children: [
+                    Text(branchEventEmoji[e.type], style: const TextStyle(fontSize: 24)),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        l10n.branchEventBody(evNames[e.type], evHours(e.type)),
+                        style: theme.textTheme.bodySmall,
+                      ),
+                    ),
+                  ],
+                ),
+                FilledButton(
+                  key: Key('branch-event-claim-${c.id}'),
+                  onPressed: () {
+                    final xu = ctl.claimBranchEvent();
+                    if (xu != null) snack(l10n.branchEventClaimed(formatNumber(xu)));
+                  },
+                  child: Text(l10n.branchEventClaim),
+                ),
+              ],
+            ),
+          ),
+        if (lvl >= branchMaxLevel) ...[
+          const SizedBox(height: 8),
+          Text(l10n.branchSpecTitle, style: theme.textTheme.labelLarge),
+          const SizedBox(height: 4),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              for (final i in const [1, 2]) ...[
+                if (i == 2) const SizedBox(width: 8),
+                Expanded(
+                  child: Material(
+                    color: spec == i ? Color(c.color).withValues(alpha: 0.35) : Color(c.color).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    child: InkWell(
+                      key: Key('branch-spec-${c.id}-$i'),
+                      borderRadius: BorderRadius.circular(12),
+                      onTap: () {
+                        if (!ctl.setBranchSpec(c.id, i) && spec != null && spec != i) snack(l10n.branchSpecFail);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          i == 1 ? l10n.branchSpecExport : l10n.branchSpecTourism,
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontWeight: spec == i ? FontWeight.w800 : FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+          if (spec != null)
+            Text(l10n.branchSpecRespec(branchSpecRespecGems), style: theme.textTheme.bodySmall),
+        ],
+      ],
     );
   }
 }
@@ -707,6 +868,7 @@ class _Card extends StatelessWidget {
                 style: theme.textTheme.bodySmall,
               ),
             ],
+            if (!locked && lvl > 0) _CityExtras(c: c, s: s, now: now),
             if (!locked && !maxed) ...[
               const SizedBox(height: 6),
               Align(

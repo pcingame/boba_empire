@@ -3304,6 +3304,60 @@ class AppLocalizationsKo extends AppLocalizations {
   String get branchManagerFail => '💎가 부족하거나 계약이 이미 최대 30일이에요.';
 
   @override
+  String get branchEvent0 => '축제';
+
+  @override
+  String get branchEvent1 => '단체 관광객';
+
+  @override
+  String get branchEvent2 => '스타 방문';
+
+  @override
+  String branchEventBody(String type, String hours) {
+    return '$type! 수익 $hours시간분을 받으세요 (몇 시간 뒤 종료).';
+  }
+
+  @override
+  String get branchEventClaim => '받기';
+
+  @override
+  String branchEventClaimed(String xu) {
+    return '이벤트로 $xu 코인 획득!';
+  }
+
+  @override
+  String get branchSpecTitle => '전문 분야 (최대 레벨)';
+
+  @override
+  String get branchSpecExport => '🚢 수출: 수거 +25%';
+
+  @override
+  String get branchSpecTourism => '🧳 관광: 피크 확률 +20%';
+
+  @override
+  String branchSpecRespec(int gems) {
+    return '첫 선택은 무료, 변경에는 $gems 💎가 들어요.';
+  }
+
+  @override
+  String get branchSpecFail => '전문 분야를 바꾸기에 💎가 부족해요.';
+
+  @override
+  String get branchSkinTitle => '지도 테마';
+
+  @override
+  String get branchSkin0 => '클래식';
+
+  @override
+  String get branchSkin1 => '겨울';
+
+  @override
+  String get branchSkin2 => '설날';
+
+  @override
+  String get branchSkin3 => '벚꽃';
+
+  @override
   String get branchNothing => '아직 수령할 게 없어요.';
 
   @override

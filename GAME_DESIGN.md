@@ -1301,3 +1301,8 @@ Chip dịp lễ trong header và banner buff sự kiện gộp thành MỘT dả
 ### 53b. Bộ sưu tập châu lục + Quản lý chi nhánh (2026-10-19, chưa playtest)
 - **Bộ**: 8 bộ (Châu Á 9 nơi, Âu 3, Phi/Bắc Mỹ/Nam Mỹ/Châu Đại Dương 1, Không gian 1, Toàn cầu 17). Mốc 1 = mở đủ, mốc 2 = tất cả cấp tối đa (thưởng ×2). Mỗi mốc nhận một lần: 💎 + giờ thu nhập quán chính. Khoá lưu `branchSetClaims` ('asia:1'). Nút 🏅 ở AppBar Chi nhánh + chấm đỏ (cũng vào `branchReadyProvider`).
 - **Quản lý** (🧑‍💼): thuê 7 ngày = 120💎, cộng dồn tối đa 30 ngày. Còn hạn: trần kho 24h (thay vì 8h), tự thu mọi chi nhánh mỗi 10 phút khi app mở (có cao điểm như thu tay). Hết hạn lúc vắng → trần về 8h. `branchManagerUntilMillis`.
+
+### 53c. Sự kiện chi nhánh + chuyên ngành + skin bản đồ (2026-10-19, chưa playtest)
+- **Sự kiện**: mỗi ô 3 giờ (theo giờ epoch, xác định, không server) có 1 sự kiện ở 1 chi nhánh ĐÃ MỞ — 🎉 lễ hội (1h thu nhập), 🧳 đoàn khách (1.5h), 🎤 ngôi sao (2h), nhân (1 + cấp/10). Huy hiệu trên pin; thẻ nhận trong thẻ chi nhánh. Nhận 1 lần/ô (`branchEventClaimedSlot`), qua ô là mất. Có chấm đỏ (cùng `branchReadyProvider`).
+- **Chuyên ngành** (cấp 10): 🚢 Xuất khẩu (+25% Xu thu về của chi nhánh đó) hoặc 🧳 Du lịch (+20% cơ hội cao điểm riêng). Chọn lần đầu miễn phí, đổi tốn 30💎. `branchSpecs`.
+- **Skin bản đồ** (🎨): Cổ điển/Mùa đông/Tết/Hoa anh đào = màu phủ + hạt trang trí; miễn phí, `branchMapSkin`.

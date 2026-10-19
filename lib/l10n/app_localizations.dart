@@ -5821,6 +5821,102 @@ abstract class AppLocalizations {
   /// **'Không đủ 💎 hoặc hợp đồng đã tối đa 30 ngày.'**
   String get branchManagerFail;
 
+  /// No description provided for @branchEvent0.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lễ hội'**
+  String get branchEvent0;
+
+  /// No description provided for @branchEvent1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đoàn khách'**
+  String get branchEvent1;
+
+  /// No description provided for @branchEvent2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngôi sao ghé thăm'**
+  String get branchEvent2;
+
+  /// No description provided for @branchEventBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'{type}! Nhận ngay {hours} giờ thu nhập (hết sau vài giờ).'**
+  String branchEventBody(String type, String hours);
+
+  /// No description provided for @branchEventClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận'**
+  String get branchEventClaim;
+
+  /// No description provided for @branchEventClaimed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {xu} Xu từ sự kiện!'**
+  String branchEventClaimed(String xu);
+
+  /// No description provided for @branchSpecTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuyên ngành (cấp tối đa)'**
+  String get branchSpecTitle;
+
+  /// No description provided for @branchSpecExport.
+  ///
+  /// In vi, this message translates to:
+  /// **'🚢 Xuất khẩu: thu về +25%'**
+  String get branchSpecExport;
+
+  /// No description provided for @branchSpecTourism.
+  ///
+  /// In vi, this message translates to:
+  /// **'🧳 Du lịch: +20% cơ hội cao điểm'**
+  String get branchSpecTourism;
+
+  /// No description provided for @branchSpecRespec.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn lần đầu miễn phí, đổi lại tốn {gems} 💎.'**
+  String branchSpecRespec(int gems);
+
+  /// No description provided for @branchSpecFail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đủ 💎 để đổi chuyên ngành.'**
+  String get branchSpecFail;
+
+  /// No description provided for @branchSkinTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao diện bản đồ'**
+  String get branchSkinTitle;
+
+  /// No description provided for @branchSkin0.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cổ điển'**
+  String get branchSkin0;
+
+  /// No description provided for @branchSkin1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mùa đông'**
+  String get branchSkin1;
+
+  /// No description provided for @branchSkin2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tết'**
+  String get branchSkin2;
+
+  /// No description provided for @branchSkin3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoa anh đào'**
+  String get branchSkin3;
+
   /// No description provided for @branchNothing.
   ///
   /// In vi, this message translates to:

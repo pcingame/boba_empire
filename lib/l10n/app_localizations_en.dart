@@ -3355,6 +3355,60 @@ class AppLocalizationsEn extends AppLocalizations {
       'Not enough 💎 or contract already at the 30-day max.';
 
   @override
+  String get branchEvent0 => 'Festival';
+
+  @override
+  String get branchEvent1 => 'Tour group';
+
+  @override
+  String get branchEvent2 => 'Star visit';
+
+  @override
+  String branchEventBody(String type, String hours) {
+    return '$type! Grab ${hours}h of income (ends in a few hours).';
+  }
+
+  @override
+  String get branchEventClaim => 'Claim';
+
+  @override
+  String branchEventClaimed(String xu) {
+    return 'Got $xu coins from the event!';
+  }
+
+  @override
+  String get branchSpecTitle => 'Specialty (max level)';
+
+  @override
+  String get branchSpecExport => '🚢 Export: +25% collected';
+
+  @override
+  String get branchSpecTourism => '🧳 Tourism: +20% rush chance';
+
+  @override
+  String branchSpecRespec(int gems) {
+    return 'First pick is free, switching costs $gems 💎.';
+  }
+
+  @override
+  String get branchSpecFail => 'Not enough 💎 to switch specialty.';
+
+  @override
+  String get branchSkinTitle => 'Map theme';
+
+  @override
+  String get branchSkin0 => 'Classic';
+
+  @override
+  String get branchSkin1 => 'Winter';
+
+  @override
+  String get branchSkin2 => 'Lunar New Year';
+
+  @override
+  String get branchSkin3 => 'Cherry blossom';
+
+  @override
   String get branchNothing => 'Nothing to collect yet.';
 
   @override

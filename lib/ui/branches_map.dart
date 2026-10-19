@@ -673,6 +673,9 @@ class BranchesMap extends StatefulWidget {
     required this.stage,
     required this.now,
     this.manager = false,
+    this.skin = 0,
+    this.eventCityId,
+    this.eventType = 0,
     required this.nameOf,
     required this.onPin,
     this.continentNames = const [],
@@ -683,6 +686,11 @@ class BranchesMap extends StatefulWidget {
   final int stage;
   final int now;
   final bool manager;
+
+  /// Skin bản đồ (0 cổ điển, 1 mùa đông, 2 Tết, 3 hoa anh đào) và sự kiện đang chờ nhận (huy hiệu trên pin).
+  final int skin;
+  final String? eventCityId;
+  final int eventType;
   final String Function(String id) nameOf;
   final void Function(BranchCity c) onPin;
 
@@ -872,6 +880,17 @@ class _BranchesMapState extends State<BranchesMap>
                           ),
                         ),
                       ),
+                    if (widget.eventCityId == c.id)
+                      Positioned(
+                        key: Key('branch-event-${c.id}'),
+                        left: -6,
+                        top: -6,
+                        child: Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                          child: Text(branchEventEmoji[widget.eventType], style: const TextStyle(fontSize: 13)),
+                        ),
+                      ),
                     if (fill >= 1)
                       Positioned(
                         right: 0,
@@ -985,6 +1004,7 @@ class _BranchesMapState extends State<BranchesMap>
                               night: night,
                               warmth: warmth,
                               lights: _route(),
+                              skin: widget.skin,
                             ),
                           ),
                         ),
@@ -1164,7 +1184,9 @@ class BranchesMapPainter extends CustomPainter {
     this.night = 0,
     this.warmth = 0,
     this.lights = const [],
+    this.skin = 0,
   });
+  final int skin;
   final List<Offset> route;
   final bool dark;
   final double night;
@@ -1344,6 +1366,29 @@ class BranchesMapPainter extends CustomPainter {
           ).createShader(rect),
       );
     }
+    // Skin theo dịp: màu phủ + hạt trang trí xác định (tuyết / lồng đèn-bao lì xì / cánh hoa).
+    if (skin > 0) {
+      const wash = [Colors.transparent, Color(0xFFE3F2FD), Color(0xFFE53935), Color(0xFFF8BBD0)];
+      canvas.drawRect(rect, Paint()..color = wash[skin].withValues(alpha: skin == 1 ? 0.22 : 0.10));
+      final r = math.Random(skin * 97);
+      final n = skin == 2 ? 60 : 140;
+      for (var i = 0; i < n; i++) {
+        final p = Offset(r.nextDouble() * size.width, r.nextDouble() * size.height);
+        final rad = 1.2 + r.nextDouble() * 2.6;
+        if (skin == 1) {
+          canvas.drawCircle(p, rad, Paint()..color = Colors.white.withValues(alpha: 0.8));
+        } else if (skin == 2) {
+          final gold = i.isEven;
+          canvas.drawCircle(p, rad + 1.5, Paint()..color = (gold ? const Color(0xFFFFD54F) : const Color(0xFFE53935)).withValues(alpha: 0.7));
+        } else {
+          canvas.save();
+          canvas.translate(p.dx, p.dy);
+          canvas.rotate(r.nextDouble() * math.pi);
+          canvas.drawOval(Rect.fromCenter(center: Offset.zero, width: rad * 3, height: rad * 1.6), Paint()..color = const Color(0xFFF48FB1).withValues(alpha: 0.75));
+          canvas.restore();
+        }
+      }
+    }
     // Đèn thành phố đã mở: đêm sáng rực (vầng vàng + vài chấm đèn), ngày không hiện.
     if (k > 0.15) {
       final a = ((k - 0.15) / 0.85).clamp(0.0, 1.0);
@@ -1379,6 +1424,7 @@ class BranchesMapPainter extends CustomPainter {
   @override
   bool shouldRepaint(BranchesMapPainter old) =>
       old.dark != dark ||
+      old.skin != skin ||
       (old.night - night).abs() > 0.02 ||
       (old.warmth - warmth).abs() > 0.02 ||
       !_sameList(old.route, route) ||

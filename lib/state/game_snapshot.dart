@@ -121,6 +121,9 @@ class GameSnapshot {
     required this.branchSince,
     required this.branchSetClaims,
     required this.branchManagerUntilMillis,
+    required this.branchSpecs,
+    required this.branchEventClaimedSlot,
+    required this.branchMapSkin,
     required this.collectionMilestonesClaimed,
     required this.collectionSetsClaimed,
     required this.wishlist,
@@ -324,6 +327,9 @@ class GameSnapshot {
   final Map<String, int> branchSince;
   final List<String> branchSetClaims;
   final int branchManagerUntilMillis;
+  final Map<String, int> branchSpecs;
+  final int branchEventClaimedSlot;
+  final int branchMapSkin;
 
   /// Mốc sưu tập đã nhận (xem GameState.collectionMilestonesClaimed).
   final List<int> collectionMilestonesClaimed;

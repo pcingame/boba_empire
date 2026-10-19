@@ -3341,6 +3341,60 @@ class AppLocalizationsTh extends AppLocalizations {
   String get branchManagerFail => '💎 ไม่พอหรือสัญญาครบสูงสุด 30 วันแล้ว';
 
   @override
+  String get branchEvent0 => 'เทศกาล';
+
+  @override
+  String get branchEvent1 => 'คณะทัวร์';
+
+  @override
+  String get branchEvent2 => 'ดาราเยือน';
+
+  @override
+  String branchEventBody(String type, String hours) {
+    return '$type! รับรายได้ $hours ชม. (หมดใน 3 ชม.)';
+  }
+
+  @override
+  String get branchEventClaim => 'รับ';
+
+  @override
+  String branchEventClaimed(String xu) {
+    return 'ได้ $xu เหรียญจากอีเวนต์!';
+  }
+
+  @override
+  String get branchSpecTitle => 'สาขาเฉพาะ (เลเวลสูงสุด)';
+
+  @override
+  String get branchSpecExport => '🚢 ส่งออก: เก็บได้ +25%';
+
+  @override
+  String get branchSpecTourism => '🧳 ท่องเที่ยว: โอกาสชั่วโมงเร่งด่วน +20%';
+
+  @override
+  String branchSpecRespec(int gems) {
+    return 'เลือกครั้งแรกฟรี เปลี่ยนใหม่ใช้ $gems 💎';
+  }
+
+  @override
+  String get branchSpecFail => '💎 ไม่พอสำหรับเปลี่ยน';
+
+  @override
+  String get branchSkinTitle => 'ธีมแผนที่';
+
+  @override
+  String get branchSkin0 => 'คลาสสิก';
+
+  @override
+  String get branchSkin1 => 'ฤดูหนาว';
+
+  @override
+  String get branchSkin2 => 'ตรุษจีน';
+
+  @override
+  String get branchSkin3 => 'ซากุระ';
+
+  @override
   String get branchNothing => 'ยังไม่มีอะไรให้เก็บ';
 
   @override

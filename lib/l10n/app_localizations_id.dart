@@ -3353,6 +3353,60 @@ class AppLocalizationsId extends AppLocalizations {
       '💎 tidak cukup atau kontrak sudah maksimal 30 hari.';
 
   @override
+  String get branchEvent0 => 'Festival';
+
+  @override
+  String get branchEvent1 => 'Rombongan turis';
+
+  @override
+  String get branchEvent2 => 'Kunjungan bintang';
+
+  @override
+  String branchEventBody(String type, String hours) {
+    return '$type! Ambil pendapatan $hours jam (berakhir dalam beberapa jam).';
+  }
+
+  @override
+  String get branchEventClaim => 'Klaim';
+
+  @override
+  String branchEventClaimed(String xu) {
+    return 'Dapat $xu koin dari acara!';
+  }
+
+  @override
+  String get branchSpecTitle => 'Spesialisasi (level maks.)';
+
+  @override
+  String get branchSpecExport => '🚢 Ekspor: +25% saat dikumpulkan';
+
+  @override
+  String get branchSpecTourism => '🧳 Wisata: +20% peluang jam sibuk';
+
+  @override
+  String branchSpecRespec(int gems) {
+    return 'Pilihan pertama gratis, mengganti butuh $gems 💎.';
+  }
+
+  @override
+  String get branchSpecFail => '💎 tidak cukup untuk mengganti.';
+
+  @override
+  String get branchSkinTitle => 'Tema peta';
+
+  @override
+  String get branchSkin0 => 'Klasik';
+
+  @override
+  String get branchSkin1 => 'Musim dingin';
+
+  @override
+  String get branchSkin2 => 'Tahun Baru Imlek';
+
+  @override
+  String get branchSkin3 => 'Sakura';
+
+  @override
   String get branchNothing => 'Belum ada yang bisa diambil.';
 
   @override

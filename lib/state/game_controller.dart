@@ -339,6 +339,43 @@ class GameController extends Notifier<GameSnapshot> {
     return true;
   }
 
+  /// Chọn/đổi chuyên ngành (1 xuất khẩu, 2 du lịch) khi chi nhánh đạt cấp tối đa. Lần đầu miễn phí, đổi tốn 💎.
+  bool setBranchSpec(String id, int spec) {
+    if (spec != 1 && spec != 2) return false;
+    if (branchLevel(_game.branchLevels, id) < branchMaxLevel) return false;
+    final cur = _game.branchSpecs[id];
+    if (cur == spec) return false;
+    if (cur != null && !spendGems(branchSpecRespecGems)) return false;
+    _game.branchSpecs[id] = spec;
+    logEvent('branch_spec', {'id': id, 'spec': spec});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
+  /// Nhận sự kiện chi nhánh của ô thời gian hiện tại. Trả Xu nhận được, null nếu không có/đã nhận.
+  double? claimBranchEvent() {
+    final slot = branchEventSlot(_clock());
+    final e = branchEventFor(_game.branchLevels, slot);
+    if (e == null || _game.branchEventClaimedSlot == slot) return null;
+    final income = _branchBaseIncome();
+    final secs = branchEventRewardSeconds(e.type, branchLevel(_game.branchLevels, e.cityId));
+    final cash = max((income.isFinite ? income : 0.0) * secs, raidRewardFloor);
+    _game.branchEventClaimedSlot = slot;
+    grantBonus(_game, cash);
+    logEvent('branch_event_claim', {'id': e.cityId, 'type': e.type});
+    unawaited(saveNow());
+    state = _snapshot();
+    return cash;
+  }
+
+  void setBranchMapSkin(int skin) {
+    if (skin < 0 || skin >= branchMapSkinCount || skin == _game.branchMapSkin) return;
+    _game.branchMapSkin = skin;
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
   /// Nhận thưởng mốc bộ sưu tập chi nhánh ([key] dạng 'asia:1'). false nếu chưa đạt/đã nhận.
   bool claimBranchSet(String key) {
     if (_game.branchSetClaims.contains(key)) return false;
@@ -364,8 +401,9 @@ class GameController extends Notifier<GameSnapshot> {
       final sec = branchPendingIncomeSeconds(_game.branchLevels, _game.branchSince, c, now,
           manager: branchManagerActive());
       if (sec <= 0) continue;
-      var gain = income.isFinite ? sec * income * collectBonus : 0.0;
-      if (_random.nextDouble() < rushChance) {
+      final spec = _game.branchSpecs[c.id] ?? 0;
+      var gain = income.isFinite ? sec * income * (collectBonus + (spec == 1 ? branchSpecCollectBonus : 0)) : 0.0;
+      if (_random.nextDouble() < rushChance + (spec == 2 ? branchSpecRushBonus : 0)) {
         gain *= branchRushMult;
         rushes++;
       }
@@ -2542,6 +2580,9 @@ class GameController extends Notifier<GameSnapshot> {
       branchSince: Map.unmodifiable(Map.of(_game.branchSince)),
       branchSetClaims: List.unmodifiable(_game.branchSetClaims),
       branchManagerUntilMillis: _game.branchManagerUntilMillis,
+      branchSpecs: Map.unmodifiable(Map.of(_game.branchSpecs)),
+      branchEventClaimedSlot: _game.branchEventClaimedSlot,
+      branchMapSkin: _game.branchMapSkin,
       collectionMilestonesClaimed:
           List.unmodifiable(_game.collectionMilestonesClaimed),
       collectionSetsClaimed: List.unmodifiable(_game.collectionSetsClaimed),

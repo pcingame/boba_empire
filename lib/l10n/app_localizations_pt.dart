@@ -3363,6 +3363,60 @@ class AppLocalizationsPt extends AppLocalizations {
       '💎 insuficientes ou o contrato já está no máximo de 30 dias.';
 
   @override
+  String get branchEvent0 => 'Festival';
+
+  @override
+  String get branchEvent1 => 'Grupo de turistas';
+
+  @override
+  String get branchEvent2 => 'Visita de uma estrela';
+
+  @override
+  String branchEventBody(String type, String hours) {
+    return '$type! Pegue $hours h de renda (termina em algumas horas).';
+  }
+
+  @override
+  String get branchEventClaim => 'Resgatar';
+
+  @override
+  String branchEventClaimed(String xu) {
+    return '$xu moedas do evento!';
+  }
+
+  @override
+  String get branchSpecTitle => 'Especialidade (nível máx.)';
+
+  @override
+  String get branchSpecExport => '🚢 Exportação: +25% ao coletar';
+
+  @override
+  String get branchSpecTourism => '🧳 Turismo: +20% de chance de pico';
+
+  @override
+  String branchSpecRespec(int gems) {
+    return 'A primeira escolha é grátis; trocar custa $gems 💎.';
+  }
+
+  @override
+  String get branchSpecFail => '💎 insuficientes para trocar.';
+
+  @override
+  String get branchSkinTitle => 'Tema do mapa';
+
+  @override
+  String get branchSkin0 => 'Clássico';
+
+  @override
+  String get branchSkin1 => 'Inverno';
+
+  @override
+  String get branchSkin2 => 'Ano Novo Lunar';
+
+  @override
+  String get branchSkin3 => 'Flor de cerejeira';
+
+  @override
   String get branchNothing => 'Nada para coletar ainda.';
 
   @override

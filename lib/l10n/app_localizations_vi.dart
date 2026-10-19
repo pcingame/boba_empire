@@ -3346,6 +3346,60 @@ class AppLocalizationsVi extends AppLocalizations {
       'Không đủ 💎 hoặc hợp đồng đã tối đa 30 ngày.';
 
   @override
+  String get branchEvent0 => 'Lễ hội';
+
+  @override
+  String get branchEvent1 => 'Đoàn khách';
+
+  @override
+  String get branchEvent2 => 'Ngôi sao ghé thăm';
+
+  @override
+  String branchEventBody(String type, String hours) {
+    return '$type! Nhận ngay $hours giờ thu nhập (hết sau vài giờ).';
+  }
+
+  @override
+  String get branchEventClaim => 'Nhận';
+
+  @override
+  String branchEventClaimed(String xu) {
+    return 'Nhận $xu Xu từ sự kiện!';
+  }
+
+  @override
+  String get branchSpecTitle => 'Chuyên ngành (cấp tối đa)';
+
+  @override
+  String get branchSpecExport => '🚢 Xuất khẩu: thu về +25%';
+
+  @override
+  String get branchSpecTourism => '🧳 Du lịch: +20% cơ hội cao điểm';
+
+  @override
+  String branchSpecRespec(int gems) {
+    return 'Chọn lần đầu miễn phí, đổi lại tốn $gems 💎.';
+  }
+
+  @override
+  String get branchSpecFail => 'Không đủ 💎 để đổi chuyên ngành.';
+
+  @override
+  String get branchSkinTitle => 'Giao diện bản đồ';
+
+  @override
+  String get branchSkin0 => 'Cổ điển';
+
+  @override
+  String get branchSkin1 => 'Mùa đông';
+
+  @override
+  String get branchSkin2 => 'Tết';
+
+  @override
+  String get branchSkin3 => 'Hoa anh đào';
+
+  @override
   String get branchNothing => 'Chưa có gì để thu.';
 
   @override

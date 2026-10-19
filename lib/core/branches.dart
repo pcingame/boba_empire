@@ -297,3 +297,34 @@ List<String> branchSetsClaimable(Map<String, int> levels, Iterable<String> claim
         for (final tier in const [1, 2])
           if (branchSetComplete(levels, set, tier) && !claimed.contains(branchSetKey(set, tier))) branchSetKey(set, tier),
     ];
+
+// ---- Chuyên ngành (cấp 10) ----
+/// Ở cấp tối đa chọn 1 trong 2 chuyên ngành: 1 = Xuất khẩu (thu về +25% riêng chi nhánh đó),
+/// 2 = Du lịch (+20% cơ hội giờ cao điểm riêng chi nhánh đó). Lần đầu miễn phí, đổi lại tốn 💎. Ước lượng chưa playtest.
+const double branchSpecCollectBonus = 0.25;
+const double branchSpecRushBonus = 0.20;
+const int branchSpecRespecGems = 30;
+
+// ---- Sự kiện chi nhánh ----
+/// Mỗi [branchEventSlotSeconds] giây có 1 sự kiện ở 1 chi nhánh ĐÃ MỞ (chọn xác định theo ô thời gian, không cần server).
+/// Loại sự kiện = thưởng giờ thu nhập (nhân (1 + cấp/10)). Nhận 1 lần/ô, qua ô là mất.
+const int branchEventSlotSeconds = 3 * 3600;
+const List<int> branchEventSeconds = [3600, 5400, 7200]; // 0 lễ hội, 1 đoàn khách, 2 ngôi sao
+const List<String> branchEventEmoji = ['🎉', '🧳', '🎤'];
+
+int branchEventSlot(int nowMillis) => nowMillis ~/ (branchEventSlotSeconds * 1000);
+
+/// Sự kiện của ô [slot]: (cityId, type) hoặc null nếu chưa mở chi nhánh nào.
+({String cityId, int type})? branchEventFor(Map<String, int> levels, int slot) {
+  final open = [for (final c in branchCities) if (branchLevel(levels, c.id) > 0) c.id];
+  if (open.isEmpty) return null;
+  final h = ((slot * 2654435761) & 0x7fffffff) ^ (slot >> 3);
+  return (cityId: open[h % open.length], type: (h ~/ 7) % 3);
+}
+
+/// Giây thu nhập thưởng của sự kiện loại [type] ở chi nhánh cấp [level].
+double branchEventRewardSeconds(int type, int level) => branchEventSeconds[type] * (1 + level / 10);
+
+// ---- Skin bản đồ ----
+/// 0 cổ điển, 1 mùa đông, 2 Tết, 3 hoa anh đào. Chỉ đổi màu phủ + hạt trang trí.
+const int branchMapSkinCount = 4;

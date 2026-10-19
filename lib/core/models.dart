@@ -199,6 +199,9 @@ class GameState {
     Map<String, int>? branchSince,
     List<String>? branchSetClaims,
     this.branchManagerUntilMillis = 0,
+    Map<String, int>? branchSpecs,
+    this.branchEventClaimedSlot = -1,
+    this.branchMapSkin = 0,
     List<String>? equippedAccessories,
     List<int>? collectionMilestonesClaimed,
     List<String>? collectionSetsClaimed,
@@ -219,6 +222,7 @@ class GameState {
         branchLevels = branchLevels ?? {},
         branchSince = branchSince ?? {},
         branchSetClaims = branchSetClaims ?? [],
+        branchSpecs = branchSpecs ?? {},
         equippedAccessories = equippedAccessories ?? [],
         collectionMilestonesClaimed = collectionMilestonesClaimed ?? [],
         collectionSetsClaimed = collectionSetsClaimed ?? [],
@@ -377,6 +381,11 @@ class GameState {
   /// Mốc bộ sưu tập chi nhánh đã nhận ('asia:1'…) và hạn hợp đồng Quản lý chi nhánh (epoch ms, 0 = chưa thuê).
   final List<String> branchSetClaims;
   int branchManagerUntilMillis;
+
+  /// Chuyên ngành đã chọn (id → 1/2), ô sự kiện chi nhánh đã nhận gần nhất, skin bản đồ (0..3).
+  final Map<String, int> branchSpecs;
+  int branchEventClaimedSlot;
+  int branchMapSkin;
 
   /// Bộ đếm Tinh chất nguồn lặp lại trong ngày [essenceDay] (dayIndex UTC): riêng đơn Pha theo đơn, và chung.
   int essenceDay;
@@ -703,6 +712,9 @@ class GameState {
         'branchSince': branchSince,
         'branchSetClaims': branchSetClaims,
         'branchManagerUntilMillis': branchManagerUntilMillis,
+        'branchSpecs': branchSpecs,
+        'branchEventClaimedSlot': branchEventClaimedSlot,
+        'branchMapSkin': branchMapSkin,
         'essenceDay': essenceDay,
         'essenceOrdersToday': essenceOrdersToday,
         'essenceRepeatableToday': essenceRepeatableToday,
@@ -913,6 +925,13 @@ class GameState {
             for (final e in json['branchSetClaims'] as List)
               if (e is String && isBranchSetKey(e)) e,
         }.toList(),
+        branchSpecs: {
+          if (json['branchSpecs'] is Map)
+            for (final e in (json['branchSpecs'] as Map).entries)
+              if (e.value is num && (e.value == 1 || e.value == 2)) '${e.key}': (e.value as num).toInt(),
+        },
+        branchEventClaimedSlot: (json['branchEventClaimedSlot'] as num?)?.toInt() ?? -1,
+        branchMapSkin: ((json['branchMapSkin'] as num?)?.toInt() ?? 0).clamp(0, 3),
         branchManagerUntilMillis: ((json['branchManagerUntilMillis'] as num?)?.toInt() ?? 0).clamp(0, 1 << 52),
         essenceDay: (json['essenceDay'] as num?)?.toInt() ?? 0,
         essenceOrdersToday: (json['essenceOrdersToday'] as num?)?.toInt() ?? 0,

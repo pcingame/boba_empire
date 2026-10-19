@@ -3369,6 +3369,60 @@ class AppLocalizationsEs extends AppLocalizations {
       'No hay 💎 suficientes o el contrato ya está en el máximo de 30 días.';
 
   @override
+  String get branchEvent0 => 'Festival';
+
+  @override
+  String get branchEvent1 => 'Grupo de turistas';
+
+  @override
+  String get branchEvent2 => 'Visita de una estrella';
+
+  @override
+  String branchEventBody(String type, String hours) {
+    return '¡$type! Llévate $hours h de ingresos (termina en unas horas).';
+  }
+
+  @override
+  String get branchEventClaim => 'Reclamar';
+
+  @override
+  String branchEventClaimed(String xu) {
+    return '¡$xu monedas del evento!';
+  }
+
+  @override
+  String get branchSpecTitle => 'Especialidad (nivel máx.)';
+
+  @override
+  String get branchSpecExport => '🚢 Exportación: +25% al recoger';
+
+  @override
+  String get branchSpecTourism => '🧳 Turismo: +20% de hora punta';
+
+  @override
+  String branchSpecRespec(int gems) {
+    return 'La primera elección es gratis; cambiar cuesta $gems 💎.';
+  }
+
+  @override
+  String get branchSpecFail => 'No hay 💎 suficientes para cambiar.';
+
+  @override
+  String get branchSkinTitle => 'Tema del mapa';
+
+  @override
+  String get branchSkin0 => 'Clásico';
+
+  @override
+  String get branchSkin1 => 'Invierno';
+
+  @override
+  String get branchSkin2 => 'Año Nuevo Lunar';
+
+  @override
+  String get branchSkin3 => 'Cerezo en flor';
+
+  @override
   String get branchNothing => 'Aún no hay nada que cobrar.';
 
   @override
