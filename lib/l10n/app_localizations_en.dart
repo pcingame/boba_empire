@@ -3449,6 +3449,37 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String branchStallsTitle(int pct) {
+    return 'Stalls (+$pct% revenue per level)';
+  }
+
+  @override
+  String get branchStall0 => 'Tea stall';
+
+  @override
+  String get branchStall1 => 'Topping stall';
+
+  @override
+  String get branchStall2 => 'Delivery';
+
+  @override
+  String branchStallLocked(int lvl) {
+    return 'needs branch level $lvl';
+  }
+
+  @override
+  String get branchLbTitle => 'Branch ranking';
+
+  @override
+  String get branchLbEmpty =>
+      'Nobody is on the Branch board yet. Open your first branch and reopen this board to appear (needs an email-linked account).';
+
+  @override
+  String branchLbRow(int lvl, int open, int total) {
+    return '$lvl lvls · $open/$total cities';
+  }
+
+  @override
   String get branchNothing => 'Nothing to collect yet.';
 
   @override

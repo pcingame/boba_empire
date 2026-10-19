@@ -3463,6 +3463,37 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String branchStallsTitle(int pct) {
+    return 'Puestos (+$pct% de ingresos por nivel)';
+  }
+
+  @override
+  String get branchStall0 => 'Puesto de té';
+
+  @override
+  String get branchStall1 => 'Puesto de toppings';
+
+  @override
+  String get branchStall2 => 'Reparto';
+
+  @override
+  String branchStallLocked(int lvl) {
+    return 'requiere sucursal nivel $lvl';
+  }
+
+  @override
+  String get branchLbTitle => 'Ranking de sucursales';
+
+  @override
+  String get branchLbEmpty =>
+      'Nadie en el ranking de sucursales aún. Abre tu primera sucursal y vuelve a abrir el ranking (requiere cuenta con email vinculado).';
+
+  @override
+  String branchLbRow(int lvl, int open, int total) {
+    return '$lvl niv. · $open/$total ciudades';
+  }
+
+  @override
   String get branchNothing => 'Aún no hay nada que cobrar.';
 
   @override

@@ -3440,6 +3440,37 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String branchStallsTitle(int pct) {
+    return 'Quầy riêng (+$pct% doanh thu mỗi cấp)';
+  }
+
+  @override
+  String get branchStall0 => 'Quầy trà';
+
+  @override
+  String get branchStall1 => 'Quầy topping';
+
+  @override
+  String get branchStall2 => 'Giao hàng';
+
+  @override
+  String branchStallLocked(int lvl) {
+    return 'cần chi nhánh cấp $lvl';
+  }
+
+  @override
+  String get branchLbTitle => 'Bảng xếp hạng Chi nhánh';
+
+  @override
+  String get branchLbEmpty =>
+      'Chưa ai trên bảng Chi nhánh. Mở chi nhánh đầu tiên rồi mở lại bảng để lên top (cần tài khoản đã liên kết email).';
+
+  @override
+  String branchLbRow(int lvl, int open, int total) {
+    return '$lvl cấp · $open/$total nơi';
+  }
+
+  @override
   String get branchNothing => 'Chưa có gì để thu.';
 
   @override

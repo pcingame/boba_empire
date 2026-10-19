@@ -30,6 +30,7 @@ GameState _rich() => GameState.newGame(nowMillis: _t0)
   ..levels[Balance.generators.first.id] = 50;
 
 void main() {
+  _stallTests();
   test('claimable: nhiệm vụ xong + thưởng cả bộ chỉ khi đủ 4', () {
     expect(branchQuestClaimable([0, 0, 0, 0], 0), isEmpty);
     expect(branchQuestClaimable([3, 0, 0, 0], 0), [0]);
@@ -74,5 +75,36 @@ void main() {
     });
     expect(back.branchQuestProgress, [1, 0, 0, 0]);
     expect(back.branchQuestClaimed, 999 & 31);
+  });
+}
+
+void _stallTests() {
+  test('quầy: khoá theo cấp chi nhánh, trừ Xu, tối đa 5, tăng doanh thu thu về', () async {
+    var now = _t0;
+    final seed = _rich()
+      ..branchLevels['tokyo'] = 4
+      ..branchSince['tokyo'] = _t0;
+    final c = await _c(seed, () => now);
+    final ctl = c.read(gameControllerProvider.notifier);
+    expect(ctl.upgradeBranchStall('tokyo', 2), isFalse, reason: 'quầy 3 cần cấp 7');
+    expect(ctl.upgradeBranchStall('xx', 0), isFalse);
+    final m0 = c.read(gameControllerProvider).money;
+    expect(ctl.upgradeBranchStall('tokyo', 1), isTrue);
+    expect(c.read(gameControllerProvider).money, lessThan(m0));
+    for (var k = 0; k < 4; k++) {
+      expect(ctl.upgradeBranchStall('tokyo', 1), isTrue);
+    }
+    expect(ctl.upgradeBranchStall('tokyo', 1), isFalse, reason: 'tối đa');
+    expect(branchStallMultiplier(c.read(gameControllerProvider).branchStalls, 'tokyo'), closeTo(1.3, 1e-12));
+    // Tiến độ nhiệm vụ "nâng cấp" cũng tăng (5 lần nâng quầy).
+    expect(c.read(gameControllerProvider).branchQuestProgress[2], 5);
+  });
+
+  test('save loại khoá quầy lạ và kẹp cấp', () {
+    final back = GameState.fromJson({
+      ..._rich().toJson(),
+      'branchStalls': {'tokyo:0': 99, 'tokyo:7': 1, 'zzz:0': 1, 'tokyo:1': 2},
+    });
+    expect(back.branchStalls, {'tokyo:0': branchStallMaxLevel, 'tokyo:1': 2});
   });
 }

@@ -745,6 +745,46 @@ class _CityExtras extends ConsumerWidget {
               ],
             ),
           ),
+        const SizedBox(height: 8),
+        Text(
+          l10n.branchStallsTitle((branchStallBonusPerLevel * 100).round()),
+          style: theme.textTheme.labelLarge,
+        ),
+        for (var i = 0; i < branchStallCount; i++)
+          Builder(builder: (_) {
+            final sl = branchStallLevel(s.branchStalls, c.id, i);
+            final unlocked = lvl >= branchStallUnlock[i];
+            final cost = sl >= branchStallMaxLevel
+                ? 0.0
+                : branchStallCost(c, sl, i, ctl.branchIncome,
+                    discount: branchPerk(s.branchLevels, BranchPerk.discount));
+            final names = [l10n.branchStall0, l10n.branchStall1, l10n.branchStall2];
+            return Padding(
+              key: Key('branch-stall-${c.id}-$i'),
+              padding: const EdgeInsets.only(top: 4),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      unlocked
+                          ? '${const ['🧋', '🍡', '🛵'][i]} ${names[i]} · $sl/$branchStallMaxLevel'
+                          : '🔒 ${names[i]} · ${l10n.branchStallLocked(branchStallUnlock[i])}',
+                      style: theme.textTheme.bodySmall,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  if (unlocked && sl < branchStallMaxLevel)
+                    FilledButton.tonal(
+                      key: Key('branch-stall-act-${c.id}-$i'),
+                      style: FilledButton.styleFrom(visualDensity: VisualDensity.compact),
+                      onPressed: s.money >= cost ? () => ctl.upgradeBranchStall(c.id, i) : null,
+                      child: Text(formatNumber(cost)),
+                    ),
+                  if (unlocked && sl >= branchStallMaxLevel) const Text('✅'),
+                ],
+              ),
+            );
+          }),
         if (lvl >= branchMaxLevel) ...[
           const SizedBox(height: 8),
           Text(l10n.branchSpecTitle, style: theme.textTheme.labelLarge),

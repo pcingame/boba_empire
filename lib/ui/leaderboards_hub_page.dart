@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../l10n/app_localizations.dart';
 import 'accessory_leaderboard_page.dart';
 import 'arena_leaderboard_page.dart';
+import 'branch_leaderboard_page.dart';
 import 'email_gate.dart';
 import 'leaderboard_page.dart';
 import 'm3_leaderboard_page.dart';
@@ -54,6 +55,7 @@ class LeaderboardsHubPage extends StatelessWidget {
             tile('speedrun', Icons.timer, l10n.storySpeedrunMenuTitle, () => showStorySpeedrunPage(context)),
             tile('arena', Icons.military_tech, l10n.arenaLeaderboardMenuTitle, () => showArenaLeaderboardPage(context)),
             tile('season', Icons.card_giftcard, l10n.seasonLbTitle, () => showSeasonLeaderboard(context)),
+            tile('branches', Icons.public, l10n.branchLbTitle, () => showBranchLeaderboard(context)),
           ],
         ),
       ),

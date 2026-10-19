@@ -1,4 +1,4 @@
-// Màn gom mọi bảng xếp hạng: đủ 8 dòng, chưa liên kết → bị cổng chặn, đã liên kết → mở đúng trang; Cài đặt gom mạng xã hội.
+// Màn gom mọi bảng xếp hạng: đủ 9 dòng, chưa liên kết → bị cổng chặn, đã liên kết → mở đúng trang; Cài đặt gom mạng xã hội.
 import 'package:boba_empire/data/cloud_save_controller.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
 import 'package:boba_empire/state/game_providers.dart';
@@ -45,9 +45,9 @@ Future<ProviderContainer> _open(WidgetTester tester, {required bool linked, Stri
 }
 
 void main() {
-  testWidgets('liệt kê đủ 8 bảng', (tester) async {
+  testWidgets('liệt kê đủ 9 bảng', (tester) async {
     final c = await _open(tester, linked: true);
-    for (final id in ['income', 'pearls', 'collection', 'recipes', 'vip', 'speedrun', 'arena', 'season']) {
+    for (final id in ['income', 'pearls', 'collection', 'recipes', 'vip', 'speedrun', 'arena', 'season', 'branches']) {
       expect(find.byKey(Key('lbh-$id')), findsOneWidget, reason: id);
     }
     await tester.pumpWidget(const SizedBox());

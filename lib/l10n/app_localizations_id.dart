@@ -3447,6 +3447,37 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String branchStallsTitle(int pct) {
+    return 'Kios (+$pct% pendapatan per level)';
+  }
+
+  @override
+  String get branchStall0 => 'Kios teh';
+
+  @override
+  String get branchStall1 => 'Kios topping';
+
+  @override
+  String get branchStall2 => 'Pengantaran';
+
+  @override
+  String branchStallLocked(int lvl) {
+    return 'butuh cabang level $lvl';
+  }
+
+  @override
+  String get branchLbTitle => 'Peringkat cabang';
+
+  @override
+  String get branchLbEmpty =>
+      'Belum ada yang di peringkat cabang. Buka cabang pertama lalu buka lagi peringkat ini (perlu akun yang terhubung email).';
+
+  @override
+  String branchLbRow(int lvl, int open, int total) {
+    return '$lvl level · $open/$total kota';
+  }
+
+  @override
   String get branchNothing => 'Belum ada yang bisa diambil.';
 
   @override

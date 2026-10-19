@@ -5971,6 +5971,54 @@ abstract class AppLocalizations {
   /// **'✅ Chi nhánh được GIỮ NGUYÊN (tổng cấp {lvl} → +{pct}% thu nhập quán chính).'**
   String prestigeBranchKept(int lvl, String pct);
 
+  /// No description provided for @branchStallsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quầy riêng (+{pct}% doanh thu mỗi cấp)'**
+  String branchStallsTitle(int pct);
+
+  /// No description provided for @branchStall0.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quầy trà'**
+  String get branchStall0;
+
+  /// No description provided for @branchStall1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quầy topping'**
+  String get branchStall1;
+
+  /// No description provided for @branchStall2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao hàng'**
+  String get branchStall2;
+
+  /// No description provided for @branchStallLocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'cần chi nhánh cấp {lvl}'**
+  String branchStallLocked(int lvl);
+
+  /// No description provided for @branchLbTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảng xếp hạng Chi nhánh'**
+  String get branchLbTitle;
+
+  /// No description provided for @branchLbEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa ai trên bảng Chi nhánh. Mở chi nhánh đầu tiên rồi mở lại bảng để lên top (cần tài khoản đã liên kết email).'**
+  String get branchLbEmpty;
+
+  /// No description provided for @branchLbRow.
+  ///
+  /// In vi, this message translates to:
+  /// **'{lvl} cấp · {open}/{total} nơi'**
+  String branchLbRow(int lvl, int open, int total);
+
   /// No description provided for @branchNothing.
   ///
   /// In vi, this message translates to:

@@ -357,3 +357,34 @@ int branchTotalLevels(Map<String, int> levels) =>
 
 double branchIncomeMultiplier(Map<String, int> levels) =>
     1 + branchTotalLevels(levels) * branchIncomeBonusPerLevel;
+
+// ---- Quầy riêng của chi nhánh ----
+/// Mỗi chi nhánh có 3 quầy (trà / topping / giao hàng) mở khi chi nhánh đạt cấp [branchStallUnlock]; mỗi quầy lên tối đa
+/// [branchStallMaxLevel] cấp bằng Xu, mỗi cấp +6% doanh thu thu về của CHÍNH chi nhánh đó (tối đa 15 cấp = +90%).
+/// Lưu 'id:i' → cấp. Giá = nửa giá nâng chi nhánh ở cấp tương đương. Mọi con số là ước lượng chưa playtest.
+const int branchStallCount = 3;
+const int branchStallMaxLevel = 5;
+const List<int> branchStallUnlock = [1, 4, 7];
+const double branchStallBonusPerLevel = 0.06;
+
+String branchStallKey(String cityId, int i) => '$cityId:$i';
+
+int branchStallLevel(Map<String, int> stalls, String cityId, int i) => stalls[branchStallKey(cityId, i)] ?? 0;
+
+bool isBranchStallKey(String k) {
+  final p = k.split(':');
+  return p.length == 2 && branchCityById(p[0]) != null && ['0', '1', '2'].contains(p[1]);
+}
+
+/// Hệ số doanh thu thu về của chi nhánh [cityId] nhờ các quầy.
+double branchStallMultiplier(Map<String, int> stalls, String cityId) {
+  var sum = 0;
+  for (var i = 0; i < branchStallCount; i++) {
+    sum += branchStallLevel(stalls, cityId, i);
+  }
+  return 1 + sum * branchStallBonusPerLevel;
+}
+
+/// Giá nâng quầy [i] từ cấp [stallLevel] lên +1.
+double branchStallCost(BranchCity c, int stallLevel, int i, double incomePerSecond, {double discount = 0}) =>
+    branchCost(c, stallLevel + 1 + 2 * i, incomePerSecond, discount: discount) * 0.5;

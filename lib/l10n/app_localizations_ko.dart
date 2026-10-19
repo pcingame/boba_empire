@@ -3397,6 +3397,37 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String branchStallsTitle(int pct) {
+    return '가판대 (레벨당 수익 +$pct%)';
+  }
+
+  @override
+  String get branchStall0 => '차 가판대';
+
+  @override
+  String get branchStall1 => '토핑 가판대';
+
+  @override
+  String get branchStall2 => '배달';
+
+  @override
+  String branchStallLocked(int lvl) {
+    return '지점 레벨 $lvl 필요';
+  }
+
+  @override
+  String get branchLbTitle => '지점 랭킹';
+
+  @override
+  String get branchLbEmpty =>
+      '아직 지점 랭킹에 아무도 없어요. 첫 지점을 열고 다시 열면 등록돼요 (이메일 연동 계정 필요).';
+
+  @override
+  String branchLbRow(int lvl, int open, int total) {
+    return '$lvl레벨 · $open/$total곳';
+  }
+
+  @override
   String get branchNothing => '아직 수령할 게 없어요.';
 
   @override

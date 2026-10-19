@@ -3435,6 +3435,37 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String branchStallsTitle(int pct) {
+    return 'แผงย่อย (+$pct% รายได้ต่อเลเวล)';
+  }
+
+  @override
+  String get branchStall0 => 'แผงชา';
+
+  @override
+  String get branchStall1 => 'แผงท็อปปิ้ง';
+
+  @override
+  String get branchStall2 => 'เดลิเวอรี';
+
+  @override
+  String branchStallLocked(int lvl) {
+    return 'ต้องสาขาเลเวล $lvl';
+  }
+
+  @override
+  String get branchLbTitle => 'อันดับสาขา';
+
+  @override
+  String get branchLbEmpty =>
+      'ยังไม่มีใครในอันดับสาขา เปิดสาขาแรกแล้วเปิดหน้านี้ใหม่ (ต้องมีบัญชีที่ผูกอีเมล)';
+
+  @override
+  String branchLbRow(int lvl, int open, int total) {
+    return '$lvl เลเวล · $open/$total เมือง';
+  }
+
+  @override
   String get branchNothing => 'ยังไม่มีอะไรให้เก็บ';
 
   @override

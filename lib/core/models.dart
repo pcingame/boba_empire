@@ -4,7 +4,7 @@
 /// chạy được và test được mà không cần UI.
 library;
 
-import 'branches.dart' show isBranchSetKey;
+import 'branches.dart' show branchStallMaxLevel, isBranchSetKey, isBranchStallKey;
 
 /// Cấu hình bất biến của một nguồn thu tự động (một món / quầy pha chế).
 ///
@@ -205,6 +205,7 @@ class GameState {
     this.branchQuestDayKey = -1,
     List<int>? branchQuestProgress,
     this.branchQuestClaimed = 0,
+    Map<String, int>? branchStalls,
     List<String>? equippedAccessories,
     List<int>? collectionMilestonesClaimed,
     List<String>? collectionSetsClaimed,
@@ -226,6 +227,7 @@ class GameState {
         branchSince = branchSince ?? {},
         branchSetClaims = branchSetClaims ?? [],
         branchSpecs = branchSpecs ?? {},
+        branchStalls = branchStalls ?? {},
         branchQuestProgress = branchQuestProgress ?? [0, 0, 0, 0],
         equippedAccessories = equippedAccessories ?? [],
         collectionMilestonesClaimed = collectionMilestonesClaimed ?? [],
@@ -395,6 +397,9 @@ class GameState {
   int branchQuestDayKey;
   List<int> branchQuestProgress;
   int branchQuestClaimed;
+
+  /// Cấp các quầy riêng của chi nhánh ('saigon:0' → cấp).
+  final Map<String, int> branchStalls;
 
   /// Bộ đếm Tinh chất nguồn lặp lại trong ngày [essenceDay] (dayIndex UTC): riêng đơn Pha theo đơn, và chung.
   int essenceDay;
@@ -727,6 +732,7 @@ class GameState {
         'branchQuestDayKey': branchQuestDayKey,
         'branchQuestProgress': branchQuestProgress,
         'branchQuestClaimed': branchQuestClaimed,
+        'branchStalls': branchStalls,
         'essenceDay': essenceDay,
         'essenceOrdersToday': essenceOrdersToday,
         'essenceRepeatableToday': essenceRepeatableToday,
@@ -943,6 +949,12 @@ class GameState {
               if (e.value is num && (e.value == 1 || e.value == 2)) '${e.key}': (e.value as num).toInt(),
         },
         branchEventClaimedSlot: (json['branchEventClaimedSlot'] as num?)?.toInt() ?? -1,
+        branchStalls: {
+          if (json['branchStalls'] is Map)
+            for (final e in (json['branchStalls'] as Map).entries)
+              if (e.value is num && isBranchStallKey('${e.key}'))
+                '${e.key}': (e.value as num).toInt().clamp(0, branchStallMaxLevel),
+        },
         branchQuestDayKey: (json['branchQuestDayKey'] as num?)?.toInt() ?? -1,
         branchQuestProgress: [
           for (var i = 0; i < 4; i++)

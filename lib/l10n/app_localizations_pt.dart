@@ -3457,6 +3457,37 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String branchStallsTitle(int pct) {
+    return 'Barracas (+$pct% de receita por nível)';
+  }
+
+  @override
+  String get branchStall0 => 'Barraca de chá';
+
+  @override
+  String get branchStall1 => 'Barraca de toppings';
+
+  @override
+  String get branchStall2 => 'Entrega';
+
+  @override
+  String branchStallLocked(int lvl) {
+    return 'requer filial nível $lvl';
+  }
+
+  @override
+  String get branchLbTitle => 'Ranking de filiais';
+
+  @override
+  String get branchLbEmpty =>
+      'Ninguém no ranking de filiais ainda. Abra sua primeira filial e reabra o ranking (requer conta com e-mail vinculado).';
+
+  @override
+  String branchLbRow(int lvl, int open, int total) {
+    return '$lvl níveis · $open/$total cidades';
+  }
+
+  @override
   String get branchNothing => 'Nada para coletar ainda.';
 
   @override

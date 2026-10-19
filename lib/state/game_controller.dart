@@ -394,6 +394,25 @@ class GameController extends Notifier<GameSnapshot> {
     return cash;
   }
 
+  /// Nâng quầy [i] (0..2) của chi nhánh [id] bằng Xu. false nếu chưa mở khoá/đã tối đa/thiếu Xu.
+  bool upgradeBranchStall(String id, int i) {
+    final c = branchCityById(id);
+    if (c == null || i < 0 || i >= branchStallCount) return false;
+    if (branchLevel(_game.branchLevels, id) < branchStallUnlock[i]) return false;
+    final lvl = branchStallLevel(_game.branchStalls, id, i);
+    if (lvl >= branchStallMaxLevel) return false;
+    final cost = branchStallCost(c, lvl, i, _branchBaseIncome(),
+        discount: branchPerk(_game.branchLevels, BranchPerk.discount));
+    if (!cost.isFinite || !(_game.money >= cost)) return false;
+    _game.money -= cost;
+    _game.branchStalls[branchStallKey(id, i)] = lvl + 1;
+    _bumpBranchQuest(2, 1);
+    logEvent('branch_stall', {'id': id, 'i': i, 'level': lvl + 1});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
   void setBranchMapSkin(int skin) {
     if (skin < 0 || skin >= branchMapSkinCount || skin == _game.branchMapSkin) return;
     _game.branchMapSkin = skin;
@@ -427,7 +446,9 @@ class GameController extends Notifier<GameSnapshot> {
           manager: branchManagerActive());
       if (sec <= 0) continue;
       final spec = _game.branchSpecs[c.id] ?? 0;
-      var gain = income.isFinite ? sec * income * (collectBonus + (spec == 1 ? branchSpecCollectBonus : 0)) : 0.0;
+      var gain = income.isFinite
+          ? sec * income * (collectBonus + (spec == 1 ? branchSpecCollectBonus : 0)) * branchStallMultiplier(_game.branchStalls, c.id)
+          : 0.0;
       if (_random.nextDouble() < rushChance + (spec == 2 ? branchSpecRushBonus : 0)) {
         gain *= branchRushMult;
         rushes++;
@@ -2613,6 +2634,7 @@ class GameController extends Notifier<GameSnapshot> {
       branchQuestDayKey: _game.branchQuestDayKey,
       branchQuestProgress: List.unmodifiable(_game.branchQuestProgress),
       branchQuestClaimed: _game.branchQuestClaimed,
+      branchStalls: Map.unmodifiable(Map.of(_game.branchStalls)),
       collectionMilestonesClaimed:
           List.unmodifiable(_game.collectionMilestonesClaimed),
       collectionSetsClaimed: List.unmodifiable(_game.collectionSetsClaimed),

@@ -1314,3 +1314,9 @@ Chip dịp lễ trong header và banner buff sự kiện gộp thành MỘT dả
 - Tổng cấp mọi chi nhánh → +0.5%/cấp thu nhập quán chính (tối đa 17×10 = +85%), nhân trong `effectiveIncomePerSecond` (một chỗ duy nhất nên mọi đường tính thu nhập đều ăn). Doanh thu chi nhánh tính theo thu nhập quán chính nên có vòng phản hồi nhẹ (tối đa ×1.85 chồng).
 - Nhượng quyền KHÔNG reset chi nhánh (vốn đã vậy: `prestige()` không đụng `branchLevels/branchSince`) — dialog Nhượng quyền nay nói rõ điều này; trang Chi nhánh hiện dòng bonus.
 - Chưa làm: gắn FTUE/nhiệm vụ chính với mở thành phố đầu; mức 2 (mỗi chi nhánh có máy riêng) chờ playtest.
+
+### 53f. Quầy riêng của chi nhánh (2026-10-20, chưa playtest) — bản gọn của "mức 2"
+Mỗi chi nhánh có 3 quầy (🧋 trà mở cấp 1, 🍡 topping cấp 4, 🛵 giao hàng cấp 7), mỗi quầy tối đa 5 cấp bằng Xu (giá = ½ giá nâng chi nhánh ở cấp tương đương, chịu giảm giá signature). Mỗi cấp +6% doanh thu thu về của chính chi nhánh đó (tối đa 15 cấp = +90%). Nâng quầy tính vào nhiệm vụ "nâng cấp". Lưu `branchStalls` ('id:i' → cấp), sanitize khoá/cấp. KHÔNG làm "đóng góp theo vùng" — cấp thành phố vẫn giữ nguyên, quầy là lớp thêm chứ không thay.
+
+### 53g. Bảng xếp hạng Chi nhánh (2026-10-20)
+Xếp theo TỔNG CẤP mọi chi nhánh (tối đa 170; hoà: ai đạt trước xếp trên), hiện kèm số thành phố đã mở. Top 50, chỉ tài khoản liên kết email, nộp khi mở bảng (chỉ tăng, trần 500). Lối vào: màn gom BXH (dòng "Bảng xếp hạng Chi nhánh"). SQL `supabase/branch_leaderboard_schema.sql` (PHẢI chạy), test `supabase/tests/branch_leaderboard_scenarios.sql` trong scripts/test_lb_rewards_sql.sh. Chưa có thưởng top.
