@@ -1430,11 +1430,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewSeason": "🎫 Pass Musim 28 hari (30 tingkat), Item Harian, dan papan peringkat musim dengan hadiah akhir musim",
-  "whatsNewGuild": "🐉 Dungeon Guild (3 tahap per minggu), Boss beranimasi; perlengkapan dan penyempurnaan aksesori",
-  "whatsNewProfile": "👤 Halaman Profilku: avatar foto dan gelar; hadiah set koleksi",
-  "whatsNewArena": "⚔️ Arena: PK Resep, pertandingan hantu, turnamen mingguan; Misi & Hadiah digabung jadi satu layar",
-  "whatsNewMore": "🤝 Perpanjang iklan Pasar dengan iklan video; fitur online perlu email tertaut",
+  "whatsNewFriends": "👥 Teman: cari lewat nama panggilan, hadiah harian, kunjungi dan serbu toko teman",
+  "whatsNewBoss": "🐺 Boss Dunia tiap Minggu plus boss harian: ketuk untuk memberi damage, 5 tingkat hadiah",
+  "whatsNewBranch": "🌏 Cabang Kota: 17 kota di peta dunia dengan acara, misi, kios, dan papan peringkat",
+  "whatsNewIncome": "📈 Level cabang menambah pendapatan toko utama dan tetap ada saat Waralaba",
+  "whatsNewPolish": "✨ Visual lebih mulus: popup memantul dan efek hadiah; pukulan boss lebih lembut",
   "whatsNewLater": "Nanti",
   "whatsNewOpen": "Coba",
   "marketWallet": "{n} Koin Pasar",

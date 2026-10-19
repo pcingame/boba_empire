@@ -3855,24 +3855,24 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get whatsNewSeason =>
-      '🎫 28-day Season Pass (30 tiers), Daily Item and a season leaderboard with end-of-season rewards';
+  String get whatsNewFriends =>
+      '👥 Friends: find by nickname, daily gifts, visit and raid your friends\' shops';
 
   @override
-  String get whatsNewGuild =>
-      '🐉 Guild Dungeon (3 stages a week), animated Boss; loadouts and accessory refining';
+  String get whatsNewBoss =>
+      '🐺 World Boss every Sunday plus a daily boss: tap to deal damage, 5 reward tiers';
 
   @override
-  String get whatsNewProfile =>
-      '👤 My Profile page: photo avatar and titles; collection set rewards';
+  String get whatsNewBranch =>
+      '🌏 City Branches: 17 cities on a world map with events, quests, stalls and a leaderboard';
 
   @override
-  String get whatsNewArena =>
-      '⚔️ Arena: Recipe PK, ghost matches, weekly tournament; Quests & Gifts merged into one screen';
+  String get whatsNewIncome =>
+      '📈 Branch levels boost your main shop income and are kept through Franchise';
 
   @override
-  String get whatsNewMore =>
-      '🤝 Extend Market listings with an ad; online features need a linked email';
+  String get whatsNewPolish =>
+      '✨ Smoother visuals: bouncy popups and reward effects; gentler boss hits';
 
   @override
   String get whatsNewLater => 'Later';

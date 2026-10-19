@@ -3851,24 +3851,24 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get whatsNewSeason =>
-      '🎫 Pass Musim 28 hari (30 tingkat), Item Harian, dan papan peringkat musim dengan hadiah akhir musim';
+  String get whatsNewFriends =>
+      '👥 Teman: cari lewat nama panggilan, hadiah harian, kunjungi dan serbu toko teman';
 
   @override
-  String get whatsNewGuild =>
-      '🐉 Dungeon Guild (3 tahap per minggu), Boss beranimasi; perlengkapan dan penyempurnaan aksesori';
+  String get whatsNewBoss =>
+      '🐺 Boss Dunia tiap Minggu plus boss harian: ketuk untuk memberi damage, 5 tingkat hadiah';
 
   @override
-  String get whatsNewProfile =>
-      '👤 Halaman Profilku: avatar foto dan gelar; hadiah set koleksi';
+  String get whatsNewBranch =>
+      '🌏 Cabang Kota: 17 kota di peta dunia dengan acara, misi, kios, dan papan peringkat';
 
   @override
-  String get whatsNewArena =>
-      '⚔️ Arena: PK Resep, pertandingan hantu, turnamen mingguan; Misi & Hadiah digabung jadi satu layar';
+  String get whatsNewIncome =>
+      '📈 Level cabang menambah pendapatan toko utama dan tetap ada saat Waralaba';
 
   @override
-  String get whatsNewMore =>
-      '🤝 Perpanjang iklan Pasar dengan iklan video; fitur online perlu email tertaut';
+  String get whatsNewPolish =>
+      '✨ Visual lebih mulus: popup memantul dan efek hadiah; pukulan boss lebih lembut';
 
   @override
   String get whatsNewLater => 'Nanti';

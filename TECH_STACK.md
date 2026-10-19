@@ -2,7 +2,7 @@
 
 Liệt kê những gì THẬT SỰ đang chạy — không phải danh sách mong muốn. Cập nhật
 tại chỗ khi thêm/bỏ một thành phần, đừng để lệch với `pubspec.yaml`.
-(Rà soát lần cuối: 2026-10-20, app `1.0.11+25`.)
+(Rà soát lần cuối: 2026-10-20, app `1.0.12+26`.)
 
 ## Client — Flutter/Dart
 
@@ -103,9 +103,8 @@ Package Dart server-side riêng, deploy tách biệt (3 file test, mock HTTP).
 
 ## Phân phối
 
-- Phiên bản `pubspec.yaml`: `1.0.11+25`. **App Store**: bản 1.0.9 đã live
-  (2026-10-12), 1.0.10 đã nộp (2026-10-16); bản 1.0.11 chưa nộp iOS.
-  **Google Play**: 1.0.11 đang duyệt production (2026-10-18). Tình trạng chi
+- Phiên bản `pubspec.yaml`: `1.0.12+26` (chuẩn bị nộp). **App Store**: 1.0.11 đã live
+  (2026-10-20). **Google Play**: 1.0.11 duyệt production (2026-10-18). Tình trạng chi
   tiết: `RELEASE_NOTES.md`, `RELEASE_CHECKLIST.md`, `APP_REVIEW_NOTES_*.md`.
 - Không có CI tự động; build/nộp thủ công (`flutter build`, Xcode Organizer /
   Transporter, Play Console).

@@ -3846,24 +3846,24 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get whatsNewSeason =>
-      '🎫 Thẻ Mùa 28 ngày/30 bậc, Món của ngày và bảng xếp hạng mùa có thưởng cuối mùa';
+  String get whatsNewFriends =>
+      '👥 Bạn bè: tìm theo biệt danh, tặng quà mỗi ngày, ghé thăm và đột kích quán bạn';
 
   @override
-  String get whatsNewGuild =>
-      '🐉 Phó bản Hội 3 ải mỗi tuần, Boss hoạt hình; bộ trang bị và tinh luyện phụ kiện';
+  String get whatsNewBoss =>
+      '🐺 Boss Thế Giới mỗi Chủ Nhật cùng boss ngày: chạm để gây sát thương, 5 mốc thưởng';
 
   @override
-  String get whatsNewProfile =>
-      '👤 Trang Hồ sơ của tôi: avatar ảnh, danh hiệu; mốc sưu tập theo bộ';
+  String get whatsNewBranch =>
+      '🌏 Chi nhánh 17 thành phố trên bản đồ thế giới: sự kiện, nhiệm vụ, quầy riêng, bảng xếp hạng';
 
   @override
-  String get whatsNewArena =>
-      '⚔️ Đấu Trường: PK Công thức, trận bóng ma, giải đấu tuần; Nhiệm vụ & Quà gộp một màn';
+  String get whatsNewIncome =>
+      '📈 Cấp chi nhánh cộng thu nhập quán chính và được giữ khi Nhượng quyền';
 
   @override
-  String get whatsNewMore =>
-      '🤝 Gia hạn tin đăng ở Chợ bằng quảng cáo; tính năng online cần liên kết email';
+  String get whatsNewPolish =>
+      '✨ Hiệu ứng mượt hơn: popup nảy, thưởng bung đẹp mắt; boss nhún nhẹ, đỡ rung mắt';
 
   @override
   String get whatsNewLater => 'Để sau';

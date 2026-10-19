@@ -1,0 +1,7 @@
+Baru: TEMAN, BOSS DUNIA & CABANG KOTA!
+
+• Teman: cari lewat nama panggilan, hadiah harian, kunjungi dan serbu toko teman
+• Boss Dunia tiap Minggu plus boss harian: ketuk untuk memberi damage, 5 tingkat hadiah
+• Cabang Kota: 17 kota di peta dunia dengan acara, misi, kios, dan papan peringkat
+• Level cabang menambah pendapatan toko utama dan tetap ada saat Waralaba
+• Visual lebih mulus: popup memantul dan efek hadiah; pukulan boss lebih lembut

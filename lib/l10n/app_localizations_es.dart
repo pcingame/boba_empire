@@ -3871,24 +3871,24 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get whatsNewSeason =>
-      '🎫 Pase de Temporada de 28 días (30 niveles), Objeto del día y ranking de temporada con premios finales';
+  String get whatsNewFriends =>
+      '👥 Amigos: busca por apodo, regalos diarios, visita y asalta las tiendas de tus amigos';
 
   @override
-  String get whatsNewGuild =>
-      '🐉 Mazmorra del Gremio (3 etapas por semana), Jefe animado; equipamiento y refinado de accesorios';
+  String get whatsNewBoss =>
+      '🐺 Jefe Mundial cada domingo y jefe diario: toca para hacer daño, 5 niveles de premios';
 
   @override
-  String get whatsNewProfile =>
-      '👤 Página Mi perfil: avatar con foto y títulos; premios por colecciones';
+  String get whatsNewBranch =>
+      '🌏 Sucursales: 17 ciudades en un mapa mundial con eventos, misiones, puestos y ranking';
 
   @override
-  String get whatsNewArena =>
-      '⚔️ Arena: PK de recetas, partidas fantasma, torneo semanal; Misiones y Regalos en una sola pantalla';
+  String get whatsNewIncome =>
+      '📈 Los niveles de sucursal aumentan los ingresos de la tienda principal y se conservan al franquiciar';
 
   @override
-  String get whatsNewMore =>
-      '🤝 Prolonga anuncios del Mercado con un anuncio; las funciones online requieren un correo vinculado';
+  String get whatsNewPolish =>
+      '✨ Efectos más fluidos: popups con rebote y premios animados; golpes al jefe más suaves';
 
   @override
   String get whatsNewLater => 'Después';

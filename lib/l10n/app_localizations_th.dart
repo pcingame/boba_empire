@@ -3839,24 +3839,24 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
-  String get whatsNewSeason =>
-      '🎫 บัตรซีซัน 28 วัน (30 ขั้น), ไอเทมประจำวัน และอันดับซีซันพร้อมรางวัลปิดซีซัน';
+  String get whatsNewFriends =>
+      '👥 เพื่อน: ค้นหาด้วยชื่อเล่น ของขวัญรายวัน เยี่ยมและบุกร้านเพื่อน';
 
   @override
-  String get whatsNewGuild =>
-      '🐉 ดันเจี้ยนกิลด์ (3 ด่านต่อสัปดาห์) บอสเคลื่อนไหว; ชุดสวมใส่และการเสริมพลังเครื่องประดับ';
+  String get whatsNewBoss =>
+      '🐺 บอสโลกทุกวันอาทิตย์และบอสรายวัน: แตะเพื่อสร้างความเสียหาย รางวัล 5 ขั้น';
 
   @override
-  String get whatsNewProfile =>
-      '👤 หน้าโปรไฟล์ของฉัน: อวาตาร์รูปถ่ายและฉายา; รางวัลสะสมครบชุด';
+  String get whatsNewBranch =>
+      '🌏 สาขาเมือง: 17 เมืองบนแผนที่โลก มีอีเวนต์ ภารกิจ แผงย่อย และอันดับ';
 
   @override
-  String get whatsNewArena =>
-      '⚔️ สนามประลอง: PK สูตร, แมตช์ผี, ทัวร์นาเมนต์รายสัปดาห์; ภารกิจและของขวัญรวมเป็นหน้าเดียว';
+  String get whatsNewIncome =>
+      '📈 เลเวลสาขาเพิ่มรายได้ร้านหลักและคงอยู่หลังแฟรนไชส์';
 
   @override
-  String get whatsNewMore =>
-      '🤝 ต่ออายุประกาศในตลาดด้วยโฆษณา; ฟีเจอร์ออนไลน์ต้องผูกอีเมล';
+  String get whatsNewPolish =>
+      '✨ ภาพลื่นขึ้น: ป๊อปอัปเด้ง เอฟเฟกต์รางวัล และบอสโดนตีนุ่มนวลขึ้น';
 
   @override
   String get whatsNewLater => 'ไว้ทีหลัง';

@@ -3799,21 +3799,19 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get whatsNewSeason =>
-      '🎫 28일 시즌 패스(30단계), 오늘의 아이템, 시즌 종료 보상이 있는 시즌 순위표';
+  String get whatsNewFriends => '👥 친구: 닉네임으로 찾기, 매일 선물, 친구 가게 방문과 습격';
 
   @override
-  String get whatsNewGuild => '🐉 길드 던전(주 3단계), 움직이는 보스; 장비 세트와 액세서리 정제';
+  String get whatsNewBoss => '🐺 매주 일요일 월드 보스와 일일 보스: 탭으로 데미지, 보상 5단계';
 
   @override
-  String get whatsNewProfile => '👤 내 프로필 페이지: 사진 아바타와 칭호; 세트 수집 보상';
+  String get whatsNewBranch => '🌏 도시 지점: 세계 지도의 17개 도시, 이벤트·퀘스트·가판대·순위표';
 
   @override
-  String get whatsNewArena =>
-      '⚔️ 아레나: 레시피 PK, 고스트 매치, 주간 토너먼트; 퀘스트와 선물을 한 화면으로 통합';
+  String get whatsNewIncome => '📈 지점 레벨은 본점 수익을 올려 주고 프랜차이즈 후에도 유지돼요';
 
   @override
-  String get whatsNewMore => '🤝 광고로 마켓 등록 기간 연장; 온라인 기능은 이메일 연동이 필요해요';
+  String get whatsNewPolish => '✨ 더 부드러운 연출: 튀어오르는 팝업과 보상 효과, 보스 타격 효과 완화';
 
   @override
   String get whatsNewLater => '나중에';

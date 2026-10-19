@@ -9,6 +9,115 @@ người bản ngữ soát.
 
 ---
 
+## 1.0.12 (+26) — 2026-10-20
+
+**Bản trước:** 1.0.11 (+25) đã live trên iOS (2026-10-20); Play 1.0.11 đang/đã duyệt.
+
+**Nội dung:**
+- **Bạn bè:** tìm theo biệt danh, lời mời, quà ngày, BXH bạn bè, ghé thăm quán, đột kích quán bạn (PvP idle, không ai mất Xu); giới tính hồ sơ.
+- **Boss Thế Giới:** boss tuần (Chủ Nhật) + boss ngày cả server, 5 mốc thưởng.
+- **Chi nhánh thành phố:** 17 thành phố trên bản đồ, đặc sản, bộ sưu tập, quản lý, sự kiện, chuyên môn, quầy riêng, nhiệm vụ ngày, giao diện bản đồ, BXH Chi nhánh; cấp chi nhánh cộng thu nhập quán chính (+0.5%/cấp).
+- **UI:** popup nảy vào, hiệu ứng thưởng/số chạy, BXH xuất hiện lần lượt, boss đỡ rung (tránh mỏi mắt).
+- **Không có sản phẩm IAP mới.**
+
+Soạn sẵn: `assets/store/whatsnew_1.0.12/`, `assets/store/description_1.0.12/` (thêm mục Bạn bè & Chi nhánh), hộp "Có gì mới" (`whatsNewVersion` = `1.0.12`), `APP_REVIEW_NOTES_1.0.12.md`, `supabase/all_1.0.12.sql`.
+
+**BẮT BUỘC trước khi nộp:**
+- **Supabase — chạy `supabase/all_1.0.12.sql`** (idempotent) TRƯỚC khi người chơi cập nhật: friends, player_gender, world_boss, branch_leaderboard (đã chạy), arena_leaderboard (có đổi). Nếu đổi hằng số boss, cần UPDATE HP hàng boss hiện có.
+- Review Notes: dán `APP_REVIEW_NOTES_1.0.12.md`.
+
+**Lệnh build:** iOS `flutter build ipa --release --export-options-plist=ios/ExportOptions.plist --dart-define=IAP_VERIFY_ENDPOINT=https://boba-receipt-server-411559711815.asia-southeast1.run.app/verify` → Xcode Organizer. Android `flutter build appbundle --release` (versionCode +26).
+
+⚠️ Mọi số cân bằng (thưởng chi nhánh, +0.5%/cấp, quầy +6%, quản lý 120💎, boss) là ước lượng, chưa playtest. Bản dịch máy chưa có người bản ngữ duyệt.
+
+### Có gì mới (dán vào console)
+
+#### 🇻🇳 Tiếng Việt (vi)
+
+```
+Mới: BẠN BÈ, BOSS THẾ GIỚI & CHI NHÁNH!
+
+• Bạn bè: tìm theo biệt danh, tặng quà mỗi ngày, ghé thăm và đột kích quán bạn
+• Boss Thế Giới mỗi Chủ Nhật cùng boss ngày: chạm để gây sát thương, 5 mốc thưởng
+• Chi nhánh 17 thành phố trên bản đồ thế giới: sự kiện, nhiệm vụ, quầy riêng, bảng xếp hạng
+• Cấp chi nhánh cộng thu nhập quán chính và được giữ khi Nhượng quyền
+• Hiệu ứng mượt hơn: popup nảy, thưởng bung đẹp mắt; boss nhún nhẹ, đỡ rung mắt
+```
+
+#### 🇬🇧 English (en)
+
+```
+New: FRIENDS, WORLD BOSS & CITY BRANCHES!
+
+• Friends: find by nickname, daily gifts, visit and raid your friends' shops
+• World Boss every Sunday plus a daily boss: tap to deal damage, 5 reward tiers
+• City Branches: 17 cities on a world map with events, quests, stalls and a leaderboard
+• Branch levels boost your main shop income and are kept through Franchise
+• Smoother visuals: bouncy popups and reward effects; gentler boss hits
+```
+
+#### 🇪🇸 Español (es)
+
+```
+Novedad: AMIGOS, JEFE MUNDIAL Y SUCURSALES
+
+• Amigos: busca por apodo, regalos diarios, visita y asalta las tiendas de tus amigos
+• Jefe Mundial cada domingo y jefe diario: toca para hacer daño, 5 niveles de premios
+• Sucursales: 17 ciudades en un mapa mundial con eventos, misiones, puestos y ranking
+• Los niveles de sucursal aumentan los ingresos de la tienda principal y se conservan al franquiciar
+• Efectos más fluidos: popups con rebote y premios animados; golpes al jefe más suaves
+```
+
+#### 🇮🇩 Indonesia (id)
+
+```
+Baru: TEMAN, BOSS DUNIA & CABANG KOTA!
+
+• Teman: cari lewat nama panggilan, hadiah harian, kunjungi dan serbu toko teman
+• Boss Dunia tiap Minggu plus boss harian: ketuk untuk memberi damage, 5 tingkat hadiah
+• Cabang Kota: 17 kota di peta dunia dengan acara, misi, kios, dan papan peringkat
+• Level cabang menambah pendapatan toko utama dan tetap ada saat Waralaba
+• Visual lebih mulus: popup memantul dan efek hadiah; pukulan boss lebih lembut
+```
+
+#### 🇰🇷 한국어 (ko)
+
+```
+신규: 친구, 월드 보스 & 도시 지점!
+
+• 친구: 닉네임으로 찾기, 매일 선물, 친구 가게 방문과 습격
+• 매주 일요일 월드 보스와 일일 보스: 탭으로 데미지, 보상 5단계
+• 도시 지점: 세계 지도의 17개 도시, 이벤트·퀘스트·가판대·순위표
+• 지점 레벨은 본점 수익을 올려 주고 프랜차이즈 후에도 유지돼요
+• 더 부드러운 연출: 튀어오르는 팝업과 보상 효과, 보스 타격 효과 완화
+```
+
+#### 🇧🇷 Português (pt)
+
+```
+Novo: AMIGOS, CHEFE MUNDIAL E FILIAIS!
+
+• Amigos: busque por apelido, presentes diários, visite e invada as lojas dos amigos
+• Chefe Mundial todo domingo e chefe diário: toque para causar dano, 5 níveis de prêmios
+• Filiais: 17 cidades num mapa-múndi com eventos, missões, barracas e ranking
+• Os níveis das filiais aumentam a renda da loja principal e são mantidos ao franquear
+• Visuais mais suaves: popups com salto e efeitos de prêmio; golpes no chefe mais leves
+```
+
+#### 🇹🇭 ไทย (th)
+
+```
+ใหม่: เพื่อน, บอสโลก & สาขาเมืองต่างๆ!
+
+• เพื่อน: ค้นหาด้วยชื่อเล่น ของขวัญรายวัน เยี่ยมและบุกร้านเพื่อน
+• บอสโลกทุกวันอาทิตย์และบอสรายวัน: แตะเพื่อสร้างความเสียหาย รางวัล 5 ขั้น
+• สาขาเมือง: 17 เมืองบนแผนที่โลก มีอีเวนต์ ภารกิจ แผงย่อย และอันดับ
+• เลเวลสาขาเพิ่มรายได้ร้านหลักและคงอยู่หลังแฟรนไชส์
+• ภาพลื่นขึ้น: ป๊อปอัปเด้ง เอฟเฟกต์รางวัล และบอสโดนตีนุ่มนวลขึ้น
+```
+
+---
+
 ## 1.0.11 (+25) — 2026-10-18
 
 **Bản trước:** 1.0.10 (+24) trên iOS (nộp 2026-10-16). Android chưa có bản nào của 1.0.10 (Play production chờ duyệt) → người dùng Android nhận gộp cả 1.0.10 + 1.0.11; ghi chú cửa hàng đã viết theo phần MỚI so với 1.0.10, nếu muốn gộp cho Android thì thêm dòng "Pha theo đơn & Hồi 4" từ `whatsnew_1.0.10`.
