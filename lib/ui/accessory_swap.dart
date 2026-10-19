@@ -14,6 +14,7 @@ import '../market/accessory_market_repository.dart';
 import '../state/game_providers.dart';
 import 'widgets/accessory_rarity.dart';
 import 'widgets/clay.dart';
+import 'widgets/app_dialog.dart';
 
 /// Số đề nghị mở tối đa mỗi người (khớp `swap_max_open()` trong SQL; test so khớp).
 const int swapMaxOpen = 5;
@@ -96,7 +97,7 @@ class SwapTab extends ConsumerWidget {
   Future<void> _accept(BuildContext context, WidgetRef ref, AccessorySwap s) async {
     final l10n = AppLocalizations.of(context)!;
     final market = ref.read(accessoryMarketControllerProvider.notifier);
-    final ok = await showDialog<bool>(
+    final ok = await showAppDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         key: const Key('swap-confirm'),
@@ -246,7 +247,7 @@ Future<void> showCreateSwapDialog(
   // Chụp trước khi chờ hộp thoại (xem ghi chú ở _SellableTile: ref có thể dispose trong lúc chờ).
   final market = ref.read(accessoryMarketControllerProvider.notifier);
   final owned = [for (final id in ref.read(gameControllerProvider).ownedAccessories) if (_known(id)) id];
-  final picked = await showDialog<(String, String)>(
+  final picked = await showAppDialog<(String, String)>(
     context: context,
     builder: (_) => _CreateSwapDialog(owned: owned),
   );
@@ -272,7 +273,7 @@ class _CreateSwapDialogState extends State<_CreateSwapDialog> {
     final candidates = give
         ? [for (final a in accessories) if (widget.owned.contains(a.id)) a]
         : [for (final a in accessories) if (a.id != _give) a];
-    final id = await showDialog<String>(
+    final id = await showAppDialog<String>(
       context: context,
       builder: (_) => _PickDialog(
         title: give ? l10n.swapPickGive : l10n.swapPickWant,

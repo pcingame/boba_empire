@@ -11,9 +11,10 @@ import '../core/format.dart';
 import '../data/cloud_save_controller.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showCloudSaveDialog(BuildContext context) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => const _CloudSaveDialog(),
   );

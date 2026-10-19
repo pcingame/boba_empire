@@ -15,9 +15,10 @@ import 'widgets/accessory_reveal.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
 import 'widgets/one_shot_lottie.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showAscensionDialog(BuildContext context) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => const _AscensionDialog(),
   );
@@ -86,7 +87,7 @@ class _AscensionDialog extends ConsumerWidget {
 
   Future<void> _askConfirm(BuildContext context, WidgetRef ref, int available) async {
     final l10n = AppLocalizations.of(context)!;
-    final ok = await showDialog<bool>(
+    final ok = await showAppDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(l10n.ascensionTitle),

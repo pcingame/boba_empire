@@ -11,6 +11,7 @@ import '../core/recipe_orders.dart' show dailyChallengeGems, dailyMaxScore;
 import '../core/recipes.dart' show recipeGroupUnlockLearned;
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
+import 'widgets/app_dialog.dart';
 
 enum MiniGameGuide { recipes, orders, daily }
 
@@ -18,7 +19,7 @@ enum MiniGameGuide { recipes, orders, daily }
 bool debugAutoShowHowTo = true;
 
 Future<void> showMiniGameHowTo(BuildContext context, MiniGameGuide guide) =>
-    showDialog<void>(context: context, builder: (_) => _HowToDialog(guide));
+    showAppDialog<void>(context: context, builder: (_) => _HowToDialog(guide));
 
 /// Tự mở hướng dẫn [guide] nếu người chơi CHƯA từng thấy; ghi nhớ ngay để lần sau không tự hiện (vẫn mở lại được
 /// bằng nút ?). Gọi sau khung đầu tiên của màn (xem [HowToOnce]).

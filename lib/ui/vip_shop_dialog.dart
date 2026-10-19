@@ -12,13 +12,14 @@ import '../core/vip_shop.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showVipShop(BuildContext context) {
   trackEvent(context, 'open_vip_shop');
   return _showVipShop(context);
 }
 
-Future<void> _showVipShop(BuildContext context) => showDialog<void>(
+Future<void> _showVipShop(BuildContext context) => showAppDialog<void>(
       context: context,
       builder: (_) => const _VipShopDialog(),
     );

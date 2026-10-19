@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
 import 'cloud_save_dialog.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showCloudRemindDialog(BuildContext context) async {
   final l10n = AppLocalizations.of(context)!;
-  final link = await showDialog<bool>(
+  final link = await showAppDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
       title: Text(l10n.cloudRemindTitle),

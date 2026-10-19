@@ -20,9 +20,10 @@ import '../friends/friends.dart';
 import 'email_gate.dart';
 import 'friends_page.dart';
 import 'web_links.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showPlayerProfile(BuildContext context, String nickname) =>
-    showDialog<void>(
+    showAppDialog<void>(
       context: context,
       builder: (_) => PlayerProfileDialog(nickname: nickname),
     );
@@ -49,7 +50,7 @@ class PlayerProfileDialog extends ConsumerWidget {
   Future<void> _report(BuildContext context, WidgetRef ref) async {
     final l10n = AppLocalizations.of(context)!;
     final messenger = ScaffoldMessenger.of(context);
-    final sure = await showDialog<bool>(
+    final sure = await showAppDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         key: const Key('avatar-report-confirm'),

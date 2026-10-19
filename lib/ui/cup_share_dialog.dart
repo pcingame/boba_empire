@@ -12,9 +12,10 @@ import '../l10n/app_localizations.dart';
 import 'collection_share_dialog.dart' show shareImageProvider;
 import 'web_links.dart';
 import 'widgets/order_visuals.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showCupShare(BuildContext context, {required String recipeName, required List<CupLayer> layers}) =>
-    showDialog<void>(context: context, builder: (_) => _CupShareDialog(recipeName: recipeName, layers: layers));
+    showAppDialog<void>(context: context, builder: (_) => _CupShareDialog(recipeName: recipeName, layers: layers));
 
 /// Tấm thẻ: rộng cố định để ảnh xuất ra giống nhau trên mọi máy.
 class CupCard extends StatelessWidget {

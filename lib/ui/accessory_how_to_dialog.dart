@@ -8,9 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/balance.dart';
 import '../l10n/app_localizations.dart';
 import 'web_links.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showAccessoryHowTo(BuildContext context) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => const _AccessoryHowToDialog(),
   );

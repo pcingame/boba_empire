@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../data/cloud_save_controller.dart';
 import '../l10n/app_localizations.dart';
 import 'cloud_save_dialog.dart';
+import 'widgets/app_dialog.dart';
 
 bool _linked(WidgetRef ref) {
   try {
@@ -24,7 +25,7 @@ bool _linked(WidgetRef ref) {
 Future<bool> ensureEmailLinked(BuildContext context, WidgetRef ref) async {
   if (_linked(ref)) return true;
   final l10n = AppLocalizations.of(context)!;
-  final go = await showDialog<bool>(
+  final go = await showAppDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
       key: const Key('email-gate-dialog'),
@@ -64,7 +65,7 @@ Future<bool> ensureOnlineLinked(BuildContext context) async {
 
   if (linked()) return true;
   final l10n = AppLocalizations.of(context)!;
-  final go = await showDialog<bool>(
+  final go = await showAppDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
       key: const Key('online-gate-dialog'),

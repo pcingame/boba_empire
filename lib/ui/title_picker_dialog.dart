@@ -11,9 +11,10 @@ import '../l10n/l10n_ext.dart';
 import '../leaderboard/player_title.dart';
 import '../leaderboard/season_leaderboard.dart';
 import '../state/game_providers.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showTitlePicker(BuildContext context) =>
-    showDialog<void>(context: context, builder: (_) => const TitlePickerDialog());
+    showAppDialog<void>(context: context, builder: (_) => const TitlePickerDialog());
 
 class TitlePickerDialog extends ConsumerWidget {
   const TitlePickerDialog({super.key});

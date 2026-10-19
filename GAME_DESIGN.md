@@ -1330,3 +1330,6 @@ Khung chung `_sheet` (thanh kéo, góc bo 28, tiêu đề huy hiệu emoji tô m
 ### 53j. Hiệu ứng thưởng + sửa rung boss (2026-10-20)
 - `CountUpText` (số chạy mượt), `showRewardBurst` (hạt emoji bung + nhãn "+X" nổi lên, overlay hữu hạn ~0.9s, tối đa 8 đợt, tắt khi giảm chuyển động). Dùng cho: Thu về chi nhánh (🪙, 🔥 khi cao điểm), nhận nhiệm vụ/bộ sưu tập (💎), sự kiện chi nhánh, nhận thưởng mốc Boss, mỗi cú chạm boss (💥 +1).
 - Boss: BỎ rung ngang (sin ×7, ±10px mỗi cú chạm gây đau mắt khi chạm liên tục) → nhún nhẹ một nhịp (co 4%, 180ms). Thanh máu tụt mượt 350ms.
+
+### 53k. Popup nảy vào (2026-10-20)
+`showAppDialog` (lib/ui/widgets/app_dialog.dart) thay MỌI `showDialog` (44 file): phóng 0.88→1 + trượt lên 6% + mờ dần 280ms thay vì chỉ mờ. `celebrate: true` (nảy mạnh từ 0.6, 420ms) cho tin vui: "chào mừng trở lại" (Xu offline), thưởng BXH. Giảm chuyển động/test: chỉ mờ 150ms như cũ. Dùng `showAppDialog` cho popup mới, đừng quay lại `showDialog`. Chuyển trang giữ nguyên (iOS đã trượt kiểu Cupertino). Chưa có popup "lên giai đoạn" riêng nên chưa gắn; Nhượng quyền đã có pháo hoa.

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
+import 'widgets/app_dialog.dart';
 
 /// Bảng "Cách chơi": tra cứu ngắn gọn các cơ chế, mở từ Cài đặt. Người mới được
 /// hướng dẫn bằng lớp phủ tương tác (xem tutorial_overlay.dart), không phải hộp này.
 Future<void> showHowToPlay(BuildContext context) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => const _HowToPlayDialog(),
   );

@@ -6,9 +6,10 @@ library;
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showMatch3HowTo(BuildContext context) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => const _Match3HowToDialog(),
   );

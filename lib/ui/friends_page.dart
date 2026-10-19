@@ -15,6 +15,7 @@ import 'email_gate.dart';
 import 'friend_shop_page.dart';
 import 'widgets/avatar_circle.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showFriends(BuildContext context, {String initialQuery = ''}) async {
   if (!await ensureOnlineLinked(context) || !context.mounted) return;
@@ -162,7 +163,7 @@ class _ListTab extends ConsumerWidget {
 
   Future<void> _remove(BuildContext context, WidgetRef ref, Friend f) async {
     final l10n = AppLocalizations.of(context)!;
-    final ok = await showDialog<bool>(
+    final ok = await showAppDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         content: Text(l10n.friendsRemoveConfirm(f.nickname)),

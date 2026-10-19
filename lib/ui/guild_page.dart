@@ -33,6 +33,7 @@ import 'widgets/motion.dart' show reduceMotion;
 import 'widgets/one_shot_lottie.dart';
 import 'web_links.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showGuildPage(BuildContext context) => Navigator.of(context)
     .push(MaterialPageRoute(builder: (_) => const GuildPage()));
@@ -112,7 +113,7 @@ class _GuildPageState extends ConsumerState<GuildPage> {
               key: const Key('guild-how-to-button'),
               icon: const Icon(Icons.help_outline),
               tooltip: l10n.guildHowToTitle,
-              onPressed: () => showDialog<void>(
+              onPressed: () => showAppDialog<void>(
                 context: context,
                 builder: (_) => AlertDialog(
                   title: Text(l10n.guildHowToTitle),
@@ -297,7 +298,7 @@ Future<String?> _askNickname(BuildContext context, WidgetRef ref) {
   final l10n = AppLocalizations.of(context)!;
   final ctrl = TextEditingController(
       text: ref.read(guildRepositoryProvider).cachedNickname ?? '');
-  return showDialog<String>(
+  return showAppDialog<String>(
     context: context,
     builder: (ctx) => DisposeWithWidget(
       controllers: [ctrl],
@@ -337,7 +338,7 @@ Future<void> _showCreateDialog(BuildContext context, WidgetRef ref) async {
   final discount = guildCreateDiscountPercent(vipLevel);
   var emoji = guildEmojis.first;
   var requiresApproval = false;
-  final ok = await showDialog<bool>(
+  final ok = await showAppDialog<bool>(
     context: context,
     builder: (ctx) => DisposeWithWidget(
       controllers: [name, tag, nick],
@@ -650,7 +651,7 @@ class _MyGuildView extends ConsumerWidget {
   Future<void> _gift(
       BuildContext context, WidgetRef ref, GuildMemberInfo m) async {
     final l10n = AppLocalizations.of(context)!;
-    final amount = await showDialog<int>(
+    final amount = await showAppDialog<int>(
       context: context,
       builder: (ctx) => AlertDialog(
         key: const Key('guild-gift-dialog'),
@@ -711,7 +712,7 @@ class _MyGuildView extends ConsumerWidget {
 
 Future<bool> _confirm(BuildContext context, String text, String action) async {
   final l10n = AppLocalizations.of(context)!;
-  return await showDialog<bool>(
+  return await showAppDialog<bool>(
         context: context,
         builder: (ctx) => AlertDialog(
           content: Text(text),

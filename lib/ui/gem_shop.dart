@@ -21,11 +21,12 @@ import 'season_page.dart';
 import 'topup_dialog.dart';
 import '../analytics/analytics.dart';
 import 'widgets/clay.dart';
+import 'widgets/app_dialog.dart';
 
 /// Mở Cửa hàng Kim Cương — chỗ tiêu gems kiếm từ VIP, và nạp bằng tiền thật.
 Future<void> showGemShop(BuildContext context) {
   trackEvent(context, 'open_gem_shop');
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => const _GemShop(),
   );

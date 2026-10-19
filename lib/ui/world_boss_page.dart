@@ -19,6 +19,7 @@ import 'widgets/mascot.dart';
 import 'widgets/motion.dart';
 import 'widgets/phone_width.dart';
 import 'widgets/reward_burst.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showWorldBoss(BuildContext context) async {
   if (!await ensureOnlineLinked(context) || !context.mounted) return;
@@ -727,7 +728,7 @@ class _Body extends ConsumerWidget {
     AppLocalizations l10n,
     ThemeData theme,
   ) {
-    showDialog<void>(
+    showAppDialog<void>(
       context: context,
       builder: (dialogContext) => AlertDialog(
         key: const Key('wb-guide-dialog'),

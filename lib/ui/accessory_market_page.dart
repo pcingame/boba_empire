@@ -30,6 +30,7 @@ import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 import 'widgets/trailing_box.dart';
 import 'widgets/weekend_banner.dart';
+import 'widgets/app_dialog.dart';
 
 /// Id có trong danh mục của bản app này. Listing/kho có thể chứa món do bản app
 /// MỚI HƠN tạo ra — accessoryById ném StateError với id lạ, nên phải lọc trước.
@@ -72,7 +73,7 @@ class _AccessoryMarketPageState extends ConsumerState<AccessoryMarketPage> {
     if (prefs.getBool(marketIntroSeenKey) ?? false) return;
     prefs.setBool(marketIntroSeenKey, true);
     final l10n = AppLocalizations.of(context)!;
-    showDialog<void>(
+    showAppDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
         key: const Key('market-intro'),
@@ -442,7 +443,7 @@ class _ConvertCoinsDialogState extends ConsumerState<_ConvertCoinsDialog> {
 }
 
 void _showConvertDialog(BuildContext context, void Function(String?) onAction) {
-  showDialog<void>(
+  showAppDialog<void>(
     context: context,
     builder: (_) => _ConvertCoinsDialog(onAction: onAction),
   );
@@ -779,7 +780,7 @@ Future<bool?> _confirmBuy(
 }) {
   final accessory = accessoryById(listing.accessoryId);
   final short = listing.price - balance;
-  return showDialog<bool>(
+  return showAppDialog<bool>(
     context: context,
     builder: (dialogContext) => AlertDialog(
       title: Row(
@@ -1188,7 +1189,7 @@ DateTime _nowUtc(WidgetRef ref) => DateTime.fromMillisecondsSinceEpoch(
 Future<int?> _askPrice(BuildContext context, AppLocalizations l10n,
     Accessory accessory, DateTime nowUtc) {
   final ctrl = TextEditingController();
-  return showDialog<int>(
+  return showAppDialog<int>(
     context: context,
     builder: (_) => DisposeWithWidget(
       controllers: [ctrl],

@@ -10,10 +10,11 @@ import 'daily_quests_dialog.dart';
 import 'rewards_dialog.dart';
 import 'weekly_quests_dialog.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/app_dialog.dart';
 
 enum DailyHubTab { daily, weekly, rewards }
 
-Future<void> showDailyHub(BuildContext context, [DailyHubTab tab = DailyHubTab.daily]) => showDialog<void>(
+Future<void> showDailyHub(BuildContext context, [DailyHubTab tab = DailyHubTab.daily]) => showAppDialog<void>(
       context: context,
       builder: (_) => DailyHubDialog(initialTab: tab),
     );

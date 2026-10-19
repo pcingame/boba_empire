@@ -40,6 +40,7 @@ import 'widgets/one_shot_lottie.dart';
 import 'widgets/phone_width.dart';
 import 'widgets/rarity_glint.dart';
 import 'widgets/weekend_banner.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showAccessoryInventory(BuildContext context) {
   return Navigator.of(
@@ -1126,7 +1127,7 @@ Future<void> _confirmRemove(BuildContext context, WidgetRef ref, Accessory acces
   if (remainingMs > 0) {
     final adFree = ref.read(gameControllerProvider).adFree;
     final minutes = (remainingMs / 60000).ceil();
-    final unlock = await showDialog<bool>(
+    final unlock = await showAppDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(l10n.loadoutLockedTitle),
@@ -1153,7 +1154,7 @@ Future<void> _confirmRemove(BuildContext context, WidgetRef ref, Accessory acces
     return;
   }
 
-  final ok = await showDialog<bool>(
+  final ok = await showAppDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
       title: Text(l10n.loadoutRemoveTitle(accessoryName(l10n, accessory.id))),

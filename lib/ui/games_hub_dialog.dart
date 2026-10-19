@@ -15,9 +15,10 @@ import 'branches_page.dart';
 import 'match3_journey_page.dart';
 import 'recipe_hub_page.dart';
 import 'recipe_order_page.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showGamesHub(BuildContext context) =>
-    showDialog<void>(context: context, builder: (_) => const _GamesHubDialog());
+    showAppDialog<void>(context: context, builder: (_) => const _GamesHubDialog());
 
 class _GamesHubDialog extends ConsumerWidget {
   const _GamesHubDialog();

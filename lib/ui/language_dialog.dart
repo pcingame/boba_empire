@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../l10n/app_localizations.dart';
 import '../l10n/locale_provider.dart';
+import 'widgets/app_dialog.dart';
 
 /// Tên bản địa của từng ngôn ngữ — hiện đúng tiếng của nó nên không cần dịch.
 const _nativeNames = <String, String>{
@@ -17,7 +18,7 @@ const _nativeNames = <String, String>{
 
 /// Bảng chọn ngôn ngữ: "Theo hệ thống" + danh sách ngôn ngữ hỗ trợ.
 Future<void> showLanguageDialog(BuildContext context) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => const _LanguageDialog(),
   );

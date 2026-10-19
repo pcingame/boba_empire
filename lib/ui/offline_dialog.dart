@@ -7,12 +7,14 @@ import '../l10n/app_localizations.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/one_shot_lottie.dart';
 import '../state/game_providers.dart';
+import 'widgets/app_dialog.dart';
 
 /// Popup "chào mừng trở lại": nhận tiền offline, hoặc xem quảng cáo để nhân đôi.
 Future<void> showOfflineDialog(BuildContext context, double earned) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     barrierDismissible: false,
+    celebrate: true,
     builder: (_) => _OfflineDialog(earned: earned),
   );
 }

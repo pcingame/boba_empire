@@ -11,10 +11,11 @@ import '../l10n/app_localizations.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/one_shot_lottie.dart';
 import '../state/game_providers.dart';
+import 'widgets/app_dialog.dart';
 
 /// Popup điểm danh hằng ngày: bấm nhận → cộng Kim Cương theo chuỗi ngày.
 Future<void> showDailyReward(BuildContext context) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     barrierDismissible: false,
     builder: (_) => const _DailyDialog(),

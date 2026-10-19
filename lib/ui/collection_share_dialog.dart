@@ -18,6 +18,7 @@ import 'web_links.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import 'widgets/accessory_rarity.dart';
+import 'widgets/app_dialog.dart';
 
 /// Chia sẻ ảnh PNG [png] kèm chữ [text]; [origin] là vùng nút bấm (bắt buộc cho
 /// iPad); [fileName] là tên file người nhận thấy (VD `boba_cup.png`). Công khai để test ghi đè (không mở
@@ -36,7 +37,7 @@ final shareImageProvider =
       },
     );
 
-Future<void> showCollectionShare(BuildContext context) => showDialog<void>(
+Future<void> showCollectionShare(BuildContext context) => showAppDialog<void>(
   context: context,
   builder: (_) => const _CollectionShareDialog(),
 );

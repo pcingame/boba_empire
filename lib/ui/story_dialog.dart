@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../core/story.dart';
 import '../core/story_content.dart';
 import '../l10n/app_localizations.dart';
+import 'widgets/app_dialog.dart';
 
 /// Cutscene một chương cốt truyện. Nhân vật = emoji lớn trong vòng tròn (không
 /// cần asset). Chương thường có nút "Tiếp tục"; chương lựa chọn (6 & 8) hiện 2
@@ -14,7 +15,7 @@ Future<void> showStoryBeat(
   required void Function(String optionKey) onChoose,
 }) {
   final chapter = chapterById(chapterId);
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     barrierDismissible: chapter.choice == null,
     builder: (_) => _StoryDialog(
@@ -28,7 +29,7 @@ Future<void> showStoryBeat(
 /// Xem lại một chương đã mở (chỉ đọc — không nút lựa chọn/tiếp tục).
 Future<void> showChapterRecap(BuildContext context, int chapterId) {
   final chapter = chapterById(chapterId);
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => _StoryDialog(chapter: chapter, recap: true),
   );

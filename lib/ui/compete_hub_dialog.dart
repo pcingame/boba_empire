@@ -17,9 +17,10 @@ import 'lb_rewards_dialog.dart';
 import 'leaderboards_hub_page.dart';
 import 'world_boss_page.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showCompeteHub(BuildContext context) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => const _CompeteHubDialog(),
   );

@@ -17,10 +17,11 @@ import 'my_profile_page.dart';
 import 'widgets/avatar_circle.dart';
 import 'web_links.dart';
 import 'widgets/effects_quality.dart';
+import 'widgets/app_dialog.dart';
 
 /// Cài đặt: đổi ngôn ngữ, bật/tắt âm thanh, chơi lại từ đầu.
 Future<void> showSettings(BuildContext context) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => const _SettingsDialog(),
   );
@@ -36,7 +37,7 @@ String _effectsLabel(AppLocalizations l10n, EffectsPref p) => switch (p) {
 
 Future<void> _pickEffects(BuildContext context) async {
   final l10n = AppLocalizations.of(context)!;
-  final picked = await showDialog<EffectsPref>(
+  final picked = await showAppDialog<EffectsPref>(
     context: context,
     builder: (ctx) => SimpleDialog(
       title: Text(l10n.settingsEffects),
@@ -243,7 +244,7 @@ class _SettingsDialog extends ConsumerWidget {
   Future<void> _confirmReset(BuildContext context, WidgetRef ref) async {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    final ok = await showDialog<bool>(
+    final ok = await showAppDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(l10n.settingsReset),

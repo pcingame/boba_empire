@@ -14,10 +14,11 @@ import 'ascension_dialog.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
 import 'widgets/one_shot_lottie.dart';
+import 'widgets/app_dialog.dart';
 
 /// Mở dialog Nhượng quyền (prestige).
 Future<void> showPrestigeDialog(BuildContext context) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => const _PrestigeDialog(),
   );

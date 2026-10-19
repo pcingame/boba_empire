@@ -15,10 +15,11 @@ import '../state/game_providers.dart';
 import 'widgets/accessory_reveal.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/one_shot_lottie.dart';
+import 'widgets/app_dialog.dart';
 
 /// Vòng quay may mắn: 1 lượt miễn phí/ngày, hết thì xem QC để quay.
 Future<void> showWheel(BuildContext context) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => const _WheelDialog(),
   );

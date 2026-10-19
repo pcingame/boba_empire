@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
 import 'games_hub_dialog.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showWhatsNew(BuildContext context, String version) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (ctx) {
       final l10n = AppLocalizations.of(ctx)!;

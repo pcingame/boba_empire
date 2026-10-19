@@ -22,6 +22,7 @@ import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
 import 'widgets/one_shot_lottie.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/app_dialog.dart';
 
 class Match3PlayPage extends ConsumerStatefulWidget {
   const Match3PlayPage({super.key, required this.level});
@@ -99,7 +100,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
       onPopInvokedWithResult: (didPop, _) async {
         if (didPop) return;
         final nav = Navigator.of(context);
-        final leave = await showDialog<bool>(
+        final leave = await showAppDialog<bool>(
           context: context,
           builder: (ctx) => AlertDialog(
             title: Text(l10n.m3LeaveTitle),
@@ -187,7 +188,7 @@ class _Match3PlayPageState extends ConsumerState<Match3PlayPage> {
         stars >= 3 ? AnimAssets.fireworks : AnimAssets.confetti,
       );
     }
-    await showDialog<void>(
+    await showAppDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (dialogContext) => AlertDialog(

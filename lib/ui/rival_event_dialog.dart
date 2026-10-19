@@ -4,6 +4,7 @@ import '../core/format.dart';
 import '../core/rival.dart';
 import '../core/story_content.dart';
 import '../l10n/app_localizations.dart';
+import 'widgets/app_dialog.dart';
 
 /// Dialog một sự kiện đối thủ. Trả về chỉ số lựa chọn (0/1), hoặc `null` khi
 /// phớt lờ / thoát. KHÔNG đóng được bằng chạm nền — chỉ nút "Phớt lờ" trả `null`.
@@ -13,7 +14,7 @@ Future<int?> showRivalEvent(
   required List<RivalOutcome> options,
   required List<bool> affordable,
 }) {
-  return showDialog<int?>(
+  return showAppDialog<int?>(
     context: context,
     barrierDismissible: false,
     builder: (_) => _RivalEventDialog(

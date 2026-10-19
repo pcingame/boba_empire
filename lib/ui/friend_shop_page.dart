@@ -16,6 +16,7 @@ import 'friends_page.dart' show friendErrorText;
 import 'player_profile_dialog.dart';
 import 'widgets/accessory_rarity.dart';
 import 'widgets/clay.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showFriendShop(BuildContext context, Friend f) => Navigator.of(context)
     .push(MaterialPageRoute<void>(builder: (_) => FriendShopPage(friend: f)));
@@ -62,7 +63,7 @@ class _Body extends ConsumerWidget {
     try {
       final (r, xu) = await ref.read(friendsControllerProvider.notifier).raid(friend.userId);
       if (!context.mounted) return;
-      await showDialog<void>(
+      await showAppDialog<void>(
         context: context,
         builder: (ctx) => AlertDialog(
           key: const Key('raid-result'),

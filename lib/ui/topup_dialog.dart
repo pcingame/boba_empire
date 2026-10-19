@@ -13,10 +13,11 @@ import 'vip_how_to_dialog.dart';
 import 'vip_shop_dialog.dart';
 import 'email_gate.dart';
 import 'vip_leaderboard_page.dart';
+import 'widgets/app_dialog.dart';
 
 /// Mốc nạp & cấp VIP theo tổng nạp tích lũy (xem core/topup.dart).
 Future<void> showTopupDialog(BuildContext context) =>
-    showDialog<void>(context: context, builder: (_) => const _TopupDialog());
+    showAppDialog<void>(context: context, builder: (_) => const _TopupDialog());
 
 class _TopupDialog extends ConsumerStatefulWidget {
   const _TopupDialog();

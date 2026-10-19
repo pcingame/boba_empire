@@ -8,9 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../core/redeem.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showRedeemDialog(BuildContext context) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => const _RedeemDialog(),
   );

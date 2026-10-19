@@ -9,10 +9,11 @@ import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
 import 'widgets/clay.dart';
+import 'widgets/app_dialog.dart';
 
 /// Bảng Thành tựu: liệt kê mốc, tô đã đạt (✓) hoặc khoá kèm tiến độ + thưởng.
 Future<void> showAchievements(BuildContext context) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => const _AchievementsDialog(),
   );

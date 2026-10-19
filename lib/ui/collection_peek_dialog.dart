@@ -12,6 +12,7 @@ import '../core/accessories.dart';
 import '../l10n/app_localizations.dart';
 import '../market/accessory_market_repository.dart';
 import 'widgets/accessory_rarity.dart';
+import 'widgets/app_dialog.dart';
 
 /// Công khai để test ghi đè. null = lỗi mạng/server.
 final collectionOfProvider = FutureProvider.autoDispose
@@ -37,7 +38,7 @@ Future<void> showCollectionPeek(
   required String userId,
   required String nickname,
 }) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => _CollectionPeekDialog(userId: userId, nickname: nickname),
   );

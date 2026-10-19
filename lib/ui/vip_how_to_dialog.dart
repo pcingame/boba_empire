@@ -10,8 +10,9 @@ import '../core/format.dart';
 import '../core/topup.dart';
 import '../l10n/app_localizations.dart';
 import 'web_links.dart';
+import 'widgets/app_dialog.dart';
 
-Future<void> showVipHowTo(BuildContext context) => showDialog<void>(
+Future<void> showVipHowTo(BuildContext context) => showAppDialog<void>(
       context: context,
       builder: (_) => const _VipHowToDialog(),
     );

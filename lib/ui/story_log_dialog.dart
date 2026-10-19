@@ -8,10 +8,11 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import 'story_dialog.dart';
+import 'widgets/app_dialog.dart';
 
 /// Bảng "Cốt truyện": liệt kê 8 chương, chạm để đọc lại chương đã mở.
 Future<void> showStoryLog(BuildContext context) {
-  return showDialog<void>(
+  return showAppDialog<void>(
     context: context,
     builder: (_) => const _StoryLogDialog(),
   );

@@ -16,9 +16,10 @@ import 'widgets/accessory_reveal.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
 import 'widgets/one_shot_lottie.dart';
+import 'widgets/app_dialog.dart';
 
 /// Gói phụ kiện mua bằng 💎. Công bố tỉ lệ rớt từng độ hiếm (yêu cầu của store).
-Future<void> showAccessoryPacks(BuildContext context) => showDialog<void>(
+Future<void> showAccessoryPacks(BuildContext context) => showAppDialog<void>(
       context: context,
       builder: (_) => const _AccessoryPackDialog(),
     );

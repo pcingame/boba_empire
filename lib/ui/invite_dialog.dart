@@ -10,6 +10,7 @@ import 'package:share_plus/share_plus.dart';
 import '../l10n/app_localizations.dart';
 import '../referral/referral_controller.dart';
 import '../referral/referral_repository.dart';
+import 'widgets/app_dialog.dart';
 
 /// Mở share sheet với [text]; công khai để test ghi đè (không mở share sheet thật).
 final shareTextProvider = Provider<Future<void> Function(String text, Rect? origin)>(
@@ -30,7 +31,7 @@ String referralErrorText(AppLocalizations l10n, ReferralFailure f) => switch (f)
       ReferralFailure.network => l10n.refErrNetwork,
     };
 
-Future<void> showInviteDialog(BuildContext context) => showDialog<void>(
+Future<void> showInviteDialog(BuildContext context) => showAppDialog<void>(
       context: context,
       builder: (_) => const _InviteDialog(),
     );

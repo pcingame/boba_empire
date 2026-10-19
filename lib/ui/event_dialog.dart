@@ -16,9 +16,10 @@ import '../state/game_providers.dart';
 import 'email_gate.dart';
 import 'event_leaderboard_page.dart';
 import 'widgets/clay.dart';
+import 'widgets/app_dialog.dart';
 
 Future<void> showEventDialog(BuildContext context) =>
-    showDialog<void>(context: context, builder: (_) => const _EventDialog());
+    showAppDialog<void>(context: context, builder: (_) => const _EventDialog());
 
 String _title(AppLocalizations l10n, EventQuest q) => switch (q.kind) {
       DailyQuestKind.tap => l10n.dqTap(q.target.toInt()),

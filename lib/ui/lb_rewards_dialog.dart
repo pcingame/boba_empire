@@ -9,9 +9,11 @@ import '../core/lb_rewards.dart';
 import '../l10n/app_localizations.dart';
 import '../leaderboard/lb_rewards.dart';
 import 'widgets/clay.dart';
+import 'widgets/app_dialog.dart';
 
-Future<void> showLbRewards(BuildContext context) => showDialog<void>(
+Future<void> showLbRewards(BuildContext context) => showAppDialog<void>(
       context: context,
+      celebrate: true,
       builder: (_) => const _LbRewardsDialog(),
     );
 
