@@ -3095,6 +3095,322 @@ class AppLocalizationsEn extends AppLocalizations {
   String get friendShopProfile => 'Profile';
 
   @override
+  String get worldBossTitle => 'World Boss';
+
+  @override
+  String get worldBossHow =>
+      'The weekly boss only appears on SUNDAY (UTC) but pays big. That day, every tap, offline second and Recipe point becomes damage. Each 20% of its HP broken unlocks rewards for everyone (💎 + coins); defeat it for an accessory chest!';
+
+  @override
+  String worldBossHp(String cur, String max) {
+    return '$cur / $max HP';
+  }
+
+  @override
+  String worldBossMine(String dmg) {
+    return 'Your damage: $dmg';
+  }
+
+  @override
+  String worldBossRank(int rank) {
+    return 'Rank #$rank';
+  }
+
+  @override
+  String worldBossPlayers(int n) {
+    return '$n fighters';
+  }
+
+  @override
+  String worldBossEndsIn(String time) {
+    return 'Boss leaves in $time';
+  }
+
+  @override
+  String worldBossOpensIn(String time) {
+    return 'Boss appears in $time (Sunday)';
+  }
+
+  @override
+  String worldBossPhase(int pct) {
+    return '$pct% HP milestone';
+  }
+
+  @override
+  String get worldBossClaim => 'Claim';
+
+  @override
+  String get worldBossClaimed => 'Claimed';
+
+  @override
+  String get worldBossLocked => 'Not yet';
+
+  @override
+  String worldBossNeedDamage(int dmg) {
+    return 'Deal at least $dmg damage to claim rewards';
+  }
+
+  @override
+  String get worldBossBoard => 'Top damage';
+
+  @override
+  String get worldBossBoardEmpty => 'Nobody has struck yet — be the first!';
+
+  @override
+  String worldBossClaimedSnack(int gems) {
+    return 'Got $gems 💎 from the World Boss!';
+  }
+
+  @override
+  String get worldBossHit => 'Strike!';
+
+  @override
+  String get worldBossDefeated => 'The boss is down! 🎉';
+
+  @override
+  String get worldBossAutoTitle => '🤖 Auto-strike';
+
+  @override
+  String worldBossAutoDesc(int n) {
+    return 'Strikes automatically every hour (+$n damage/hour) until the week ends, even when the app is closed.';
+  }
+
+  @override
+  String worldBossAutoBuy(int gems) {
+    return 'Turn on this week · 💎 $gems';
+  }
+
+  @override
+  String get worldBossAutoOn => 'On until the week ends ✓';
+
+  @override
+  String get worldBossAutoSnack => 'Auto-strike is on for this week!';
+
+  @override
+  String get worldBossNotEnoughGems => 'Not enough 💎.';
+
+  @override
+  String worldBossAdButton(int dmg, int left, int max) {
+    return '📺 Watch an ad +$dmg damage ($left/$max)';
+  }
+
+  @override
+  String worldBossAdSnack(int dmg) {
+    return '+$dmg damage to the boss! 💥';
+  }
+
+  @override
+  String get worldBossAdNone => 'No more ads to watch today.';
+
+  @override
+  String get worldBossDailyName => '🧟 Frankenstein\'s Monster';
+
+  @override
+  String get worldBossTabDay => 'Daily boss';
+
+  @override
+  String get worldBossTabWeek => 'Weekly boss';
+
+  @override
+  String worldBossDayXu(int min) {
+    return '$min min of income';
+  }
+
+  @override
+  String get worldBossDayHow =>
+      'The daily boss is smaller and changes every day (0:00 UTC). Every point of damage counts toward BOTH the daily and the weekly boss. Break milestones for income, defeat it for 💎.';
+
+  @override
+  String worldBossDayClaimedSnack(String xu) {
+    return 'Got $xu coins from the daily boss!';
+  }
+
+  @override
+  String get worldBossName0 => '🐺 Pearl Wolf';
+
+  @override
+  String get worldBossName1 => '🐺 Brown Sugar Wolf';
+
+  @override
+  String get worldBossName2 => '🐺 Matcha Wolf';
+
+  @override
+  String get worldBossName3 => '🐺 Bitter Tea Wolf';
+
+  @override
+  String get worldBossName4 => '🐺 Milk Wolf';
+
+  @override
+  String get worldBossName5 => '🐺 Coconut Jelly Wolf';
+
+  @override
+  String get worldBossName6 => '🐺 Chili Fire Wolf';
+
+  @override
+  String get worldBossName7 => '🐺 Boba King Wolf';
+
+  @override
+  String get branchTitle => 'Branches';
+
+  @override
+  String get branchIntro =>
+      'Open branches in cities around the world: each one earns revenue by itself (up to 8 hours, even offline) as a share of your main shop\'s income. Tap Collect to cash in — sometimes it\'s rush hour ×3!';
+
+  @override
+  String get branchCollectAll => 'Collect';
+
+  @override
+  String branchPendingTotal(String xu) {
+    return 'Waiting: $xu coins';
+  }
+
+  @override
+  String branchCollected(String xu) {
+    return 'Collected $xu coins from your branches!';
+  }
+
+  @override
+  String branchRush(int n) {
+    return 'Rush hour ×3 at $n branch(es)! 🔥';
+  }
+
+  @override
+  String get branchNothing => 'Nothing to collect yet.';
+
+  @override
+  String branchLevel(int lvl, int max) {
+    return 'Level $lvl/$max';
+  }
+
+  @override
+  String branchRate(String pct) {
+    return '+$pct% income/sec';
+  }
+
+  @override
+  String branchPending(String xu) {
+    return 'Waiting: $xu coins';
+  }
+
+  @override
+  String get branchFull => 'Full — collect before you waste it!';
+
+  @override
+  String branchOpen(String cost) {
+    return 'Open · $cost';
+  }
+
+  @override
+  String branchUpgrade(String cost) {
+    return 'Upgrade · $cost';
+  }
+
+  @override
+  String get branchMaxed => 'Maxed';
+
+  @override
+  String branchNeedStage(int stage) {
+    return 'Reach stage $stage to open';
+  }
+
+  @override
+  String branchGala(String xu) {
+    return 'Grand opening! Here\'s $xu coins 🎉';
+  }
+
+  @override
+  String get branchNotEnough => 'Not enough coins.';
+
+  @override
+  String get branchCitySaigon => 'Saigon';
+
+  @override
+  String get branchCityHanoi => 'Hanoi';
+
+  @override
+  String get branchCityTokyo => 'Tokyo';
+
+  @override
+  String get branchCitySeoul => 'Seoul';
+
+  @override
+  String get branchCityBangkok => 'Bangkok';
+
+  @override
+  String get branchCityParis => 'Paris';
+
+  @override
+  String get branchCityNewyork => 'New York';
+
+  @override
+  String get branchCityDubai => 'Dubai';
+
+  @override
+  String get raidTab => 'Raids';
+
+  @override
+  String raidIntro(int n) {
+    return 'Send a raid party to a friend\'s shop! Results depend on shop power (displayed items + stage) and luck. Nobody loses coins: win and you get a big reward, get blocked and the defender gets one. $n raids a day, one per friend.';
+  }
+
+  @override
+  String raidLeft(int n) {
+    return '$n raids left today';
+  }
+
+  @override
+  String get raidButton => 'Raid';
+
+  @override
+  String raidPower(int n) {
+    return 'Shop power: $n';
+  }
+
+  @override
+  String raidChance(int pct) {
+    return 'Win chance ~$pct%';
+  }
+
+  @override
+  String raidWin(String xu) {
+    return 'Raid successful! 🎉 +$xu coins';
+  }
+
+  @override
+  String raidBlocked(String xu) {
+    return 'Blocked! 🛡️ Consolation +$xu coins';
+  }
+
+  @override
+  String raidLogWin(String name) {
+    return '$name raided your shop successfully';
+  }
+
+  @override
+  String raidLogBlocked(String name) {
+    return 'You blocked $name! 🛡️';
+  }
+
+  @override
+  String get raidLogEmpty => 'Nobody has raided your shop yet.';
+
+  @override
+  String raidClaimDefense(int n) {
+    return 'Claim defense rewards ($n)';
+  }
+
+  @override
+  String raidDefenseSnack(String xu) {
+    return 'Got $xu coins for defending!';
+  }
+
+  @override
+  String get friendsErrRaidLimit => 'No raids left today.';
+
+  @override
+  String get friendsErrRaidAlready => 'You already raided this shop today.';
+
+  @override
   String get seasonLbEmpty =>
       'Nobody is on this season\'s board yet. Earn Season Pass XP and reopen to appear (needs an email-linked account).';
 

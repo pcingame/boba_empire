@@ -5418,6 +5418,492 @@ abstract class AppLocalizations {
   /// **'Hồ sơ'**
   String get friendShopProfile;
 
+  /// No description provided for @worldBossTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Boss Thế Giới'**
+  String get worldBossTitle;
+
+  /// No description provided for @worldBossHow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Boss tuần chỉ xuất hiện vào CHỦ NHẬT (giờ UTC) nhưng thưởng rất hậu. Trong ngày đó, mỗi lần chạm, giây offline và điểm Công thức của bạn đều thành sát thương. Phá mỗi mốc 20% máu là cả server mở quà (💎 + Xu); hạ boss có rương phụ kiện!'**
+  String get worldBossHow;
+
+  /// No description provided for @worldBossHp.
+  ///
+  /// In vi, this message translates to:
+  /// **'{cur} / {max} máu'**
+  String worldBossHp(String cur, String max);
+
+  /// No description provided for @worldBossMine.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sát thương của bạn: {dmg}'**
+  String worldBossMine(String dmg);
+
+  /// No description provided for @worldBossRank.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạng #{rank}'**
+  String worldBossRank(int rank);
+
+  /// No description provided for @worldBossPlayers.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} người đang đánh'**
+  String worldBossPlayers(int n);
+
+  /// No description provided for @worldBossEndsIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Boss rút lui sau {time}'**
+  String worldBossEndsIn(String time);
+
+  /// No description provided for @worldBossOpensIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Boss xuất hiện sau {time} (Chủ Nhật)'**
+  String worldBossOpensIn(String time);
+
+  /// No description provided for @worldBossPhase.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mốc {pct}% máu'**
+  String worldBossPhase(int pct);
+
+  /// No description provided for @worldBossClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận'**
+  String get worldBossClaim;
+
+  /// No description provided for @worldBossClaimed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nhận'**
+  String get worldBossClaimed;
+
+  /// No description provided for @worldBossLocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa phá'**
+  String get worldBossLocked;
+
+  /// No description provided for @worldBossNeedDamage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần ít nhất {dmg} sát thương để nhận quà'**
+  String worldBossNeedDamage(int dmg);
+
+  /// No description provided for @worldBossBoard.
+  ///
+  /// In vi, this message translates to:
+  /// **'Top sát thương'**
+  String get worldBossBoard;
+
+  /// No description provided for @worldBossBoardEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa ai ra đòn — hãy là người đầu tiên!'**
+  String get worldBossBoardEmpty;
+
+  /// No description provided for @worldBossClaimedSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {gems} 💎 từ Boss Thế Giới!'**
+  String worldBossClaimedSnack(int gems);
+
+  /// No description provided for @worldBossHit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi sát thương'**
+  String get worldBossHit;
+
+  /// No description provided for @worldBossDefeated.
+  ///
+  /// In vi, this message translates to:
+  /// **'Boss đã bị hạ! 🎉'**
+  String get worldBossDefeated;
+
+  /// No description provided for @worldBossAutoTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'🤖 Tự động đánh'**
+  String get worldBossAutoTitle;
+
+  /// No description provided for @worldBossAutoDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tự động ra đòn mỗi giờ (+{n} sát thương/giờ) tới hết tuần, kể cả khi bạn không mở app.'**
+  String worldBossAutoDesc(int n);
+
+  /// No description provided for @worldBossAutoBuy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bật tuần này · 💎 {gems}'**
+  String worldBossAutoBuy(int gems);
+
+  /// No description provided for @worldBossAutoOn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang bật đến hết tuần ✓'**
+  String get worldBossAutoOn;
+
+  /// No description provided for @worldBossAutoSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã bật tự động đánh boss tuần này!'**
+  String get worldBossAutoSnack;
+
+  /// No description provided for @worldBossNotEnoughGems.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đủ 💎.'**
+  String get worldBossNotEnoughGems;
+
+  /// No description provided for @worldBossAdButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'📺 Xem quảng cáo +{dmg} sát thương ({left}/{max})'**
+  String worldBossAdButton(int dmg, int left, int max);
+
+  /// No description provided for @worldBossAdSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{dmg} sát thương lên boss! 💥'**
+  String worldBossAdSnack(int dmg);
+
+  /// No description provided for @worldBossAdNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay đã hết lượt xem quảng cáo.'**
+  String get worldBossAdNone;
+
+  /// No description provided for @worldBossDailyName.
+  ///
+  /// In vi, this message translates to:
+  /// **'🧟 Quái Vật Frankenstein'**
+  String get worldBossDailyName;
+
+  /// No description provided for @worldBossTabDay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Boss ngày'**
+  String get worldBossTabDay;
+
+  /// No description provided for @worldBossTabWeek.
+  ///
+  /// In vi, this message translates to:
+  /// **'Boss tuần'**
+  String get worldBossTabWeek;
+
+  /// No description provided for @worldBossDayXu.
+  ///
+  /// In vi, this message translates to:
+  /// **'{min} phút thu nhập'**
+  String worldBossDayXu(int min);
+
+  /// No description provided for @worldBossDayHow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Boss ngày nhỏ hơn và đổi mỗi ngày (0h UTC). Mỗi sát thương bạn gây ra tính cho CẢ boss ngày lẫn boss tuần. Phá mốc để nhận thu nhập, hạ boss thêm 💎.'**
+  String get worldBossDayHow;
+
+  /// No description provided for @worldBossDayClaimedSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {xu} Xu từ boss ngày!'**
+  String worldBossDayClaimedSnack(String xu);
+
+  /// No description provided for @worldBossName0.
+  ///
+  /// In vi, this message translates to:
+  /// **'🐺 Sói Trân Châu'**
+  String get worldBossName0;
+
+  /// No description provided for @worldBossName1.
+  ///
+  /// In vi, this message translates to:
+  /// **'🐺 Sói Đường Đen'**
+  String get worldBossName1;
+
+  /// No description provided for @worldBossName2.
+  ///
+  /// In vi, this message translates to:
+  /// **'🐺 Sói Matcha'**
+  String get worldBossName2;
+
+  /// No description provided for @worldBossName3.
+  ///
+  /// In vi, this message translates to:
+  /// **'🐺 Sói Trà Đắng'**
+  String get worldBossName3;
+
+  /// No description provided for @worldBossName4.
+  ///
+  /// In vi, this message translates to:
+  /// **'🐺 Sói Sữa'**
+  String get worldBossName4;
+
+  /// No description provided for @worldBossName5.
+  ///
+  /// In vi, this message translates to:
+  /// **'🐺 Sói Thạch Dừa'**
+  String get worldBossName5;
+
+  /// No description provided for @worldBossName6.
+  ///
+  /// In vi, this message translates to:
+  /// **'🐺 Sói Ớt Lửa'**
+  String get worldBossName6;
+
+  /// No description provided for @worldBossName7.
+  ///
+  /// In vi, this message translates to:
+  /// **'🐺 Sói Chúa Trà Sữa'**
+  String get worldBossName7;
+
+  /// No description provided for @branchTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi nhánh'**
+  String get branchTitle;
+
+  /// No description provided for @branchIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở chi nhánh ở các thành phố: mỗi chi nhánh tự tích doanh thu (tối đa 8 giờ, cả lúc offline) bằng một phần thu nhập quán chính. Bấm Thu về để nhận — thi thoảng gặp giờ cao điểm ×3!'**
+  String get branchIntro;
+
+  /// No description provided for @branchCollectAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu về'**
+  String get branchCollectAll;
+
+  /// No description provided for @branchPendingTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang chờ: {xu} Xu'**
+  String branchPendingTotal(String xu);
+
+  /// No description provided for @branchCollected.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu được {xu} Xu từ chi nhánh!'**
+  String branchCollected(String xu);
+
+  /// No description provided for @branchRush.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giờ cao điểm ×3 ở {n} chi nhánh! 🔥'**
+  String branchRush(int n);
+
+  /// No description provided for @branchNothing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có gì để thu.'**
+  String get branchNothing;
+
+  /// No description provided for @branchLevel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cấp {lvl}/{max}'**
+  String branchLevel(int lvl, int max);
+
+  /// No description provided for @branchRate.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{pct}% thu nhập/giây'**
+  String branchRate(String pct);
+
+  /// No description provided for @branchPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ thu: {xu} Xu'**
+  String branchPending(String xu);
+
+  /// No description provided for @branchFull.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đầy rồi — thu về kẻo phí!'**
+  String get branchFull;
+
+  /// No description provided for @branchOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở · {cost}'**
+  String branchOpen(String cost);
+
+  /// No description provided for @branchUpgrade.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nâng cấp · {cost}'**
+  String branchUpgrade(String cost);
+
+  /// No description provided for @branchMaxed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối đa'**
+  String get branchMaxed;
+
+  /// No description provided for @branchNeedStage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần đạt giai đoạn {stage}'**
+  String branchNeedStage(int stage);
+
+  /// No description provided for @branchGala.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khai trương! Tặng {xu} Xu 🎉'**
+  String branchGala(String xu);
+
+  /// No description provided for @branchNotEnough.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa đủ Xu.'**
+  String get branchNotEnough;
+
+  /// No description provided for @branchCitySaigon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sài Gòn'**
+  String get branchCitySaigon;
+
+  /// No description provided for @branchCityHanoi.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hà Nội'**
+  String get branchCityHanoi;
+
+  /// No description provided for @branchCityTokyo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tokyo'**
+  String get branchCityTokyo;
+
+  /// No description provided for @branchCitySeoul.
+  ///
+  /// In vi, this message translates to:
+  /// **'Seoul'**
+  String get branchCitySeoul;
+
+  /// No description provided for @branchCityBangkok.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bangkok'**
+  String get branchCityBangkok;
+
+  /// No description provided for @branchCityParis.
+  ///
+  /// In vi, this message translates to:
+  /// **'Paris'**
+  String get branchCityParis;
+
+  /// No description provided for @branchCityNewyork.
+  ///
+  /// In vi, this message translates to:
+  /// **'New York'**
+  String get branchCityNewyork;
+
+  /// No description provided for @branchCityDubai.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dubai'**
+  String get branchCityDubai;
+
+  /// No description provided for @raidTab.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đột kích'**
+  String get raidTab;
+
+  /// No description provided for @raidIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi đội đột kích sang quán bạn bè! Thắng thua do sức mạnh quán (món trưng bày + giai đoạn) và may rủi. Không ai mất Xu: thắng thì bạn có thưởng lớn, bị chặn thì người phòng thủ có thưởng. Mỗi ngày {n} lượt, mỗi bạn 1 lượt.'**
+  String raidIntro(int n);
+
+  /// No description provided for @raidLeft.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn {n} lượt hôm nay'**
+  String raidLeft(int n);
+
+  /// No description provided for @raidButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đột kích'**
+  String get raidButton;
+
+  /// No description provided for @raidPower.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sức mạnh quán: {n}'**
+  String raidPower(int n);
+
+  /// No description provided for @raidChance.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tỉ lệ thắng ~{pct}%'**
+  String raidChance(int pct);
+
+  /// No description provided for @raidWin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đột kích thành công! 🎉 +{xu} Xu'**
+  String raidWin(String xu);
+
+  /// No description provided for @raidBlocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bị chặn rồi! 🛡️ Tiền an ủi +{xu} Xu'**
+  String raidBlocked(String xu);
+
+  /// No description provided for @raidLogWin.
+  ///
+  /// In vi, this message translates to:
+  /// **'{name} đột kích quán bạn thành công'**
+  String raidLogWin(String name);
+
+  /// No description provided for @raidLogBlocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã chặn được {name}! 🛡️'**
+  String raidLogBlocked(String name);
+
+  /// No description provided for @raidLogEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa ai đột kích quán bạn.'**
+  String get raidLogEmpty;
+
+  /// No description provided for @raidClaimDefense.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận thưởng phòng thủ ({n})'**
+  String raidClaimDefense(int n);
+
+  /// No description provided for @raidDefenseSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {xu} Xu thưởng phòng thủ!'**
+  String raidDefenseSnack(String xu);
+
+  /// No description provided for @friendsErrRaidLimit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hết lượt đột kích hôm nay.'**
+  String get friendsErrRaidLimit;
+
+  /// No description provided for @friendsErrRaidAlready.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay bạn đã đột kích quán này rồi.'**
+  String get friendsErrRaidAlready;
+
   /// No description provided for @seasonLbEmpty.
   ///
   /// In vi, this message translates to:

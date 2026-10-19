@@ -3109,6 +3109,322 @@ class AppLocalizationsEs extends AppLocalizations {
   String get friendShopProfile => 'Perfil';
 
   @override
+  String get worldBossTitle => 'Jefe Mundial';
+
+  @override
+  String get worldBossHow =>
+      'El jefe semanal solo aparece el DOMINGO (UTC), pero paga muy bien. Ese día, cada toque, segundo sin conexión y punto de Receta se convierte en daño. Cada 20% de vida roto desbloquea premios para todos (💎 + monedas). ¡Derrótalo y gana un cofre de accesorios!';
+
+  @override
+  String worldBossHp(String cur, String max) {
+    return '$cur / $max de vida';
+  }
+
+  @override
+  String worldBossMine(String dmg) {
+    return 'Tu daño: $dmg';
+  }
+
+  @override
+  String worldBossRank(int rank) {
+    return 'Puesto #$rank';
+  }
+
+  @override
+  String worldBossPlayers(int n) {
+    return '$n luchadores';
+  }
+
+  @override
+  String worldBossEndsIn(String time) {
+    return 'El jefe se va en $time';
+  }
+
+  @override
+  String worldBossOpensIn(String time) {
+    return 'El jefe aparece en $time (domingo)';
+  }
+
+  @override
+  String worldBossPhase(int pct) {
+    return 'Hito del $pct% de vida';
+  }
+
+  @override
+  String get worldBossClaim => 'Reclamar';
+
+  @override
+  String get worldBossClaimed => 'Reclamado';
+
+  @override
+  String get worldBossLocked => 'Aún no';
+
+  @override
+  String worldBossNeedDamage(int dmg) {
+    return 'Haz al menos $dmg de daño para reclamar';
+  }
+
+  @override
+  String get worldBossBoard => 'Mayor daño';
+
+  @override
+  String get worldBossBoardEmpty => 'Nadie ha atacado aún. ¡Sé el primero!';
+
+  @override
+  String worldBossClaimedSnack(int gems) {
+    return '¡$gems 💎 del Jefe Mundial!';
+  }
+
+  @override
+  String get worldBossHit => '¡Atacar!';
+
+  @override
+  String get worldBossDefeated => '¡El jefe cayó! 🎉';
+
+  @override
+  String get worldBossAutoTitle => '🤖 Ataque automático';
+
+  @override
+  String worldBossAutoDesc(int n) {
+    return 'Ataca solo cada hora (+$n de daño/hora) hasta que termine la semana, incluso con la app cerrada.';
+  }
+
+  @override
+  String worldBossAutoBuy(int gems) {
+    return 'Activar esta semana · 💎 $gems';
+  }
+
+  @override
+  String get worldBossAutoOn => 'Activo hasta que termine la semana ✓';
+
+  @override
+  String get worldBossAutoSnack => '¡Ataque automático activado esta semana!';
+
+  @override
+  String get worldBossNotEnoughGems => 'No tienes suficientes 💎.';
+
+  @override
+  String worldBossAdButton(int dmg, int left, int max) {
+    return '📺 Ver un anuncio +$dmg de daño ($left/$max)';
+  }
+
+  @override
+  String worldBossAdSnack(int dmg) {
+    return '¡+$dmg de daño al jefe! 💥';
+  }
+
+  @override
+  String get worldBossAdNone => 'Hoy ya no quedan anuncios.';
+
+  @override
+  String get worldBossDailyName => '🧟 El Monstruo de Frankenstein';
+
+  @override
+  String get worldBossTabDay => 'Jefe diario';
+
+  @override
+  String get worldBossTabWeek => 'Jefe semanal';
+
+  @override
+  String worldBossDayXu(int min) {
+    return '$min min de ingresos';
+  }
+
+  @override
+  String get worldBossDayHow =>
+      'El jefe diario es más pequeño y cambia cada día (0:00 UTC). Todo el daño cuenta para el jefe diario Y el semanal. Rompe hitos para ganar ingresos; derrótalo para 💎.';
+
+  @override
+  String worldBossDayClaimedSnack(String xu) {
+    return '¡$xu monedas del jefe diario!';
+  }
+
+  @override
+  String get worldBossName0 => '🐺 Lobo de Perlas';
+
+  @override
+  String get worldBossName1 => '🐺 Lobo de Azúcar Moreno';
+
+  @override
+  String get worldBossName2 => '🐺 Lobo de Matcha';
+
+  @override
+  String get worldBossName3 => '🐺 Lobo del Té Amargo';
+
+  @override
+  String get worldBossName4 => '🐺 Lobo Lechero';
+
+  @override
+  String get worldBossName5 => '🐺 Lobo de Gelatina de Coco';
+
+  @override
+  String get worldBossName6 => '🐺 Lobo de Fuego y Chile';
+
+  @override
+  String get worldBossName7 => '🐺 Lobo Rey del Boba';
+
+  @override
+  String get branchTitle => 'Sucursales';
+
+  @override
+  String get branchIntro =>
+      'Abre sucursales en ciudades del mundo: cada una genera ingresos sola (hasta 8 horas, incluso sin conexión) como parte de los ingresos de tu tienda. Toca Cobrar: ¡a veces hay hora punta ×3!';
+
+  @override
+  String get branchCollectAll => 'Cobrar';
+
+  @override
+  String branchPendingTotal(String xu) {
+    return 'En espera: $xu monedas';
+  }
+
+  @override
+  String branchCollected(String xu) {
+    return '¡Cobraste $xu monedas de tus sucursales!';
+  }
+
+  @override
+  String branchRush(int n) {
+    return '¡Hora punta ×3 en $n sucursal(es)! 🔥';
+  }
+
+  @override
+  String get branchNothing => 'Aún no hay nada que cobrar.';
+
+  @override
+  String branchLevel(int lvl, int max) {
+    return 'Nivel $lvl/$max';
+  }
+
+  @override
+  String branchRate(String pct) {
+    return '+$pct% de ingresos/s';
+  }
+
+  @override
+  String branchPending(String xu) {
+    return 'Pendiente: $xu monedas';
+  }
+
+  @override
+  String get branchFull => '¡Lleno! Cobra antes de perderlo.';
+
+  @override
+  String branchOpen(String cost) {
+    return 'Abrir · $cost';
+  }
+
+  @override
+  String branchUpgrade(String cost) {
+    return 'Mejorar · $cost';
+  }
+
+  @override
+  String get branchMaxed => 'Máximo';
+
+  @override
+  String branchNeedStage(int stage) {
+    return 'Llega a la etapa $stage para abrir';
+  }
+
+  @override
+  String branchGala(String xu) {
+    return '¡Gran inauguración! $xu monedas 🎉';
+  }
+
+  @override
+  String get branchNotEnough => 'No tienes monedas suficientes.';
+
+  @override
+  String get branchCitySaigon => 'Saigón';
+
+  @override
+  String get branchCityHanoi => 'Hanói';
+
+  @override
+  String get branchCityTokyo => 'Tokio';
+
+  @override
+  String get branchCitySeoul => 'Seúl';
+
+  @override
+  String get branchCityBangkok => 'Bangkok';
+
+  @override
+  String get branchCityParis => 'París';
+
+  @override
+  String get branchCityNewyork => 'Nueva York';
+
+  @override
+  String get branchCityDubai => 'Dubái';
+
+  @override
+  String get raidTab => 'Asaltos';
+
+  @override
+  String raidIntro(int n) {
+    return '¡Envía un asalto a la tienda de un amigo! El resultado depende del poder de la tienda (objetos expuestos + etapa) y la suerte. Nadie pierde monedas: si ganas, premio grande; si te bloquean, el defensor gana. $n asaltos al día, uno por amigo.';
+  }
+
+  @override
+  String raidLeft(int n) {
+    return 'Quedan $n asaltos hoy';
+  }
+
+  @override
+  String get raidButton => 'Asaltar';
+
+  @override
+  String raidPower(int n) {
+    return 'Poder de la tienda: $n';
+  }
+
+  @override
+  String raidChance(int pct) {
+    return 'Probabilidad de ganar ~$pct%';
+  }
+
+  @override
+  String raidWin(String xu) {
+    return '¡Asalto exitoso! 🎉 +$xu monedas';
+  }
+
+  @override
+  String raidBlocked(String xu) {
+    return '¡Bloqueado! 🛡️ Consuelo +$xu monedas';
+  }
+
+  @override
+  String raidLogWin(String name) {
+    return '$name asaltó tu tienda con éxito';
+  }
+
+  @override
+  String raidLogBlocked(String name) {
+    return '¡Bloqueaste a $name! 🛡️';
+  }
+
+  @override
+  String get raidLogEmpty => 'Nadie ha asaltado tu tienda aún.';
+
+  @override
+  String raidClaimDefense(int n) {
+    return 'Reclamar premios de defensa ($n)';
+  }
+
+  @override
+  String raidDefenseSnack(String xu) {
+    return '¡$xu monedas por defender!';
+  }
+
+  @override
+  String get friendsErrRaidLimit => 'No quedan asaltos hoy.';
+
+  @override
+  String get friendsErrRaidAlready => 'Ya asaltaste esta tienda hoy.';
+
+  @override
   String get seasonLbEmpty =>
       'Nadie en el ranking de esta temporada. Gana XP del Pase y vuelve a abrir para aparecer (requiere cuenta vinculada por email).';
 

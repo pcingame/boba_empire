@@ -6,13 +6,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/accessories.dart';
 import '../core/format.dart';
+import '../core/raid.dart';
 import '../friends/friends.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
+import '../state/game_providers.dart';
 import 'collection_peek_dialog.dart';
 import 'friends_page.dart' show friendErrorText;
 import 'player_profile_dialog.dart';
 import 'widgets/accessory_rarity.dart';
+import 'widgets/clay.dart';
 
 Future<void> showFriendShop(BuildContext context, Friend f) => Navigator.of(context)
     .push(MaterialPageRoute<void>(builder: (_) => FriendShopPage(friend: f)));
@@ -49,13 +52,36 @@ class FriendShopPage extends ConsumerWidget {
   }
 }
 
-class _Body extends StatelessWidget {
+class _Body extends ConsumerWidget {
   const _Body({required this.friend, required this.shop});
   final Friend friend;
   final FriendShop shop;
 
+  Future<void> _raid(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context)!;
+    try {
+      final (r, xu) = await ref.read(friendsControllerProvider.notifier).raid(friend.userId);
+      if (!context.mounted) return;
+      await showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          key: const Key('raid-result'),
+          title: Text(r.win ? '⚔️ 🎉' : '🛡️', textAlign: TextAlign.center, style: const TextStyle(fontSize: 40)),
+          content: Text(r.win ? l10n.raidWin(formatNumber(xu)) : l10n.raidBlocked(formatNumber(xu)), textAlign: TextAlign.center),
+          actions: [TextButton(onPressed: () => Navigator.of(ctx).pop(), child: Text(l10n.close))],
+        ),
+      );
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context)
+          ..clearSnackBars()
+          ..showSnackBar(SnackBar(content: Text(friendErrorText(l10n, e))));
+      }
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final items = [for (final id in shop.equipped) ?accessoryOrNull(id)];
@@ -112,6 +138,25 @@ class _Body extends StatelessWidget {
             ),
         ]),
       const SizedBox(height: 16),
+      Builder(builder: (context) {
+        final g = ref.watch(gameControllerProvider);
+        final mine = raidPower(equipped: g.equippedAccessories, refineLevels: g.refineLevels, stage: g.stage);
+        final left = ref.watch(friendsControllerProvider).value?.raidsLeft ?? raidsPerDay;
+        return ClayTile(
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text('⚔️ ${l10n.raidPower(shop.power)}', key: const Key('friend-shop-power')),
+            Text(l10n.raidChance((raidWinChance(mine, shop.power) * 100).round()), key: const Key('friend-shop-chance')),
+            Text(l10n.raidLeft(left), style: theme.textTheme.bodySmall),
+            const SizedBox(height: 6),
+            FilledButton(
+              key: const Key('friend-shop-raid'),
+              onPressed: left > 0 ? () => _raid(context, ref) : null,
+              child: Text('⚔️ ${l10n.raidButton}'),
+            ),
+          ]),
+        );
+      }),
+      const SizedBox(height: 8),
       stat('💰 ${l10n.friendsRankIncome}', formatNumber(shop.income)),
       stat('🎫 ${l10n.friendsRankSeason}', '${shop.seasonXp}'),
       stat('🧋 ${l10n.friendsRankOrders}', '${shop.orders}'),

@@ -10,10 +10,12 @@ import '../guild/guild_alert.dart';
 import '../leaderboard/lb_rewards.dart';
 import '../l10n/app_localizations.dart';
 import 'email_gate.dart';
+import '../world_boss/world_boss.dart' show worldBossAlertProvider;
 import 'arena_page.dart';
 import 'guild_page.dart';
 import 'lb_rewards_dialog.dart';
 import 'leaderboards_hub_page.dart';
+import 'world_boss_page.dart';
 import 'widgets/phone_width.dart';
 
 Future<void> showCompeteHub(BuildContext context) {
@@ -55,6 +57,35 @@ class _CompeteHubDialog extends ConsumerWidget {
               if (!await ensureOnlineLinked(context) || !context.mounted) return;
               Navigator.of(context).pop();
               showArenaPage(context);
+            },
+          ),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            horizontalTitleGap: 12,
+            minLeadingWidth: 28,
+            key: const Key('compete-world-boss'),
+            leading: const Icon(Icons.whatshot),
+            title: Row(children: [
+              Flexible(child: Text(l10n.worldBossTitle, maxLines: 2, overflow: TextOverflow.ellipsis)),
+              if ((ref.watch(worldBossAlertProvider).value ?? 0) > 0) ...[
+                const SizedBox(width: 8),
+                Container(
+                  key: const Key('compete-world-boss-dot'),
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.error,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ],
+            ]),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () async {
+              // Tính năng online: cần đã liên kết email (xem email_gate.dart).
+              if (!await ensureOnlineLinked(context) || !context.mounted) return;
+              Navigator.of(context).pop();
+              showWorldBoss(context);
             },
           ),
           ListTile(

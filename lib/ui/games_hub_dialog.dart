@@ -11,6 +11,7 @@ import '../core/recipes.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
 import '../state/recipe_providers.dart';
+import 'branches_page.dart';
 import 'match3_journey_page.dart';
 import 'recipe_hub_page.dart';
 import 'recipe_order_page.dart';
@@ -37,6 +38,7 @@ class _GamesHubDialog extends ConsumerWidget {
             .where((r) => (progress[r.id] ?? const RecipeProgress()).isDue(today))
             .length;
 
+    final branchReady = ref.watch(branchReadyProvider);
     return AlertDialog(
       title: Text(l10n.navMatch3),
       // Rộng hết cỡ (AlertDialog co theo nội dung): tên trò/dòng phụ dài không bị cắt "…".
@@ -46,6 +48,28 @@ class _GamesHubDialog extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            ListTile(
+              key: const Key('games-branches'),
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.location_city_rounded),
+              title: Row(children: [
+                Flexible(child: Text(l10n.branchTitle, maxLines: 1, overflow: TextOverflow.ellipsis)),
+                if (branchReady) ...[
+                  const SizedBox(width: 8),
+                  Container(
+                    key: const Key('games-branches-dot'),
+                    width: 8,
+                    height: 8,
+                    decoration: BoxDecoration(color: Theme.of(context).colorScheme.error, shape: BoxShape.circle),
+                  ),
+                ],
+              ]),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.of(context).pop();
+                showBranches(context);
+              },
+            ),
             ListTile(
               key: const Key('games-match3'),
               contentPadding: EdgeInsets.zero,

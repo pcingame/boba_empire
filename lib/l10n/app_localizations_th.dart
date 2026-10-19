@@ -3082,6 +3082,322 @@ class AppLocalizationsTh extends AppLocalizations {
   String get friendShopProfile => 'โปรไฟล์';
 
   @override
+  String get worldBossTitle => 'บอสโลก';
+
+  @override
+  String get worldBossHow =>
+      'บอสประจำสัปดาห์จะปรากฏเฉพาะวันอาทิตย์ (UTC) แต่รางวัลคุ้มมาก ในวันนั้นทุกการแตะ วินาทีออฟไลน์ และแต้มสูตรจะกลายเป็นความเสียหาย ทุก 20% ของเลือดที่ทำลายได้จะปลดล็อกรางวัลให้ทุกคน (💎 + เหรียญ) ฆ่าบอสได้รับหีบเครื่องประดับ!';
+
+  @override
+  String worldBossHp(String cur, String max) {
+    return '$cur / $max HP';
+  }
+
+  @override
+  String worldBossMine(String dmg) {
+    return 'ความเสียหายของคุณ: $dmg';
+  }
+
+  @override
+  String worldBossRank(int rank) {
+    return 'อันดับ #$rank';
+  }
+
+  @override
+  String worldBossPlayers(int n) {
+    return '$n คนกำลังสู้';
+  }
+
+  @override
+  String worldBossEndsIn(String time) {
+    return 'บอสจะหนีใน $time';
+  }
+
+  @override
+  String worldBossOpensIn(String time) {
+    return 'บอสจะปรากฏใน $time (วันอาทิตย์)';
+  }
+
+  @override
+  String worldBossPhase(int pct) {
+    return 'เป้า $pct% ของเลือด';
+  }
+
+  @override
+  String get worldBossClaim => 'รับ';
+
+  @override
+  String get worldBossClaimed => 'รับแล้ว';
+
+  @override
+  String get worldBossLocked => 'ยังไม่ถึง';
+
+  @override
+  String worldBossNeedDamage(int dmg) {
+    return 'ต้องสร้างความเสียหายอย่างน้อย $dmg เพื่อรับรางวัล';
+  }
+
+  @override
+  String get worldBossBoard => 'ความเสียหายสูงสุด';
+
+  @override
+  String get worldBossBoardEmpty => 'ยังไม่มีใครโจมตี — เป็นคนแรกเลย!';
+
+  @override
+  String worldBossClaimedSnack(int gems) {
+    return 'ได้ $gems 💎 จากบอสโลก!';
+  }
+
+  @override
+  String get worldBossHit => 'โจมตี!';
+
+  @override
+  String get worldBossDefeated => 'บอสล้มแล้ว! 🎉';
+
+  @override
+  String get worldBossAutoTitle => '🤖 โจมตีอัตโนมัติ';
+
+  @override
+  String worldBossAutoDesc(int n) {
+    return 'โจมตีเองทุกชั่วโมง (+$n ความเสียหาย/ชั่วโมง) จนจบสัปดาห์ แม้ปิดแอป';
+  }
+
+  @override
+  String worldBossAutoBuy(int gems) {
+    return 'เปิดสัปดาห์นี้ · 💎 $gems';
+  }
+
+  @override
+  String get worldBossAutoOn => 'เปิดอยู่จนจบสัปดาห์ ✓';
+
+  @override
+  String get worldBossAutoSnack => 'เปิดโจมตีอัตโนมัติสัปดาห์นี้แล้ว!';
+
+  @override
+  String get worldBossNotEnoughGems => '💎 ไม่พอ';
+
+  @override
+  String worldBossAdButton(int dmg, int left, int max) {
+    return '📺 ดูโฆษณา +$dmg ความเสียหาย ($left/$max)';
+  }
+
+  @override
+  String worldBossAdSnack(int dmg) {
+    return '+$dmg ความเสียหายใส่บอส! 💥';
+  }
+
+  @override
+  String get worldBossAdNone => 'วันนี้หมดสิทธิ์ดูโฆษณาแล้ว';
+
+  @override
+  String get worldBossDailyName => '🧟 มอนสเตอร์แฟรงเกนสไตน์';
+
+  @override
+  String get worldBossTabDay => 'บอสรายวัน';
+
+  @override
+  String get worldBossTabWeek => 'บอสรายสัปดาห์';
+
+  @override
+  String worldBossDayXu(int min) {
+    return 'รายได้ $min นาที';
+  }
+
+  @override
+  String get worldBossDayHow =>
+      'บอสรายวันเล็กกว่าและเปลี่ยนทุกวัน (0:00 UTC) ความเสียหายทุกแต้มนับทั้งบอสรายวันและรายสัปดาห์ ทำลายเป้าได้รายได้ ฆ่าบอสได้ 💎';
+
+  @override
+  String worldBossDayClaimedSnack(String xu) {
+    return 'ได้ $xu เหรียญจากบอสรายวัน!';
+  }
+
+  @override
+  String get worldBossName0 => '🐺 หมาป่าไข่มุก';
+
+  @override
+  String get worldBossName1 => '🐺 หมาป่าน้ำตาลทรายแดง';
+
+  @override
+  String get worldBossName2 => '🐺 หมาป่ามัทฉะ';
+
+  @override
+  String get worldBossName3 => '🐺 หมาป่าชาขม';
+
+  @override
+  String get worldBossName4 => '🐺 หมาป่านม';
+
+  @override
+  String get worldBossName5 => '🐺 หมาป่าเยลลี่มะพร้าว';
+
+  @override
+  String get worldBossName6 => '🐺 หมาป่าไฟพริก';
+
+  @override
+  String get worldBossName7 => '🐺 หมาป่าราชาโบบา';
+
+  @override
+  String get branchTitle => 'สาขา';
+
+  @override
+  String get branchIntro =>
+      'เปิดสาขาในเมืองต่าง ๆ แต่ละสาขาสะสมรายได้เองเป็นส่วนหนึ่งของรายได้ร้านหลัก (สูงสุด 8 ชั่วโมง รวมตอนออฟไลน์) แตะเก็บเงินเพื่อรับ บางครั้งจะเจอชั่วโมงเร่งด่วน ×3!';
+
+  @override
+  String get branchCollectAll => 'เก็บเงิน';
+
+  @override
+  String branchPendingTotal(String xu) {
+    return 'รอเก็บ: $xu เหรียญ';
+  }
+
+  @override
+  String branchCollected(String xu) {
+    return 'เก็บได้ $xu เหรียญจากสาขา!';
+  }
+
+  @override
+  String branchRush(int n) {
+    return 'ชั่วโมงเร่งด่วน ×3 ที่ $n สาขา! 🔥';
+  }
+
+  @override
+  String get branchNothing => 'ยังไม่มีอะไรให้เก็บ';
+
+  @override
+  String branchLevel(int lvl, int max) {
+    return 'เลเวล $lvl/$max';
+  }
+
+  @override
+  String branchRate(String pct) {
+    return '+$pct% รายได้/วินาที';
+  }
+
+  @override
+  String branchPending(String xu) {
+    return 'รอเก็บ: $xu เหรียญ';
+  }
+
+  @override
+  String get branchFull => 'เต็มแล้ว — รีบเก็บก่อนเสียเปล่า!';
+
+  @override
+  String branchOpen(String cost) {
+    return 'เปิด · $cost';
+  }
+
+  @override
+  String branchUpgrade(String cost) {
+    return 'อัปเกรด · $cost';
+  }
+
+  @override
+  String get branchMaxed => 'สูงสุด';
+
+  @override
+  String branchNeedStage(int stage) {
+    return 'ต้องถึงด่านที่ $stage';
+  }
+
+  @override
+  String branchGala(String xu) {
+    return 'เปิดสาขาใหม่! แถม $xu เหรียญ 🎉';
+  }
+
+  @override
+  String get branchNotEnough => 'เหรียญไม่พอ';
+
+  @override
+  String get branchCitySaigon => 'ไซง่อน';
+
+  @override
+  String get branchCityHanoi => 'ฮานอย';
+
+  @override
+  String get branchCityTokyo => 'โตเกียว';
+
+  @override
+  String get branchCitySeoul => 'โซล';
+
+  @override
+  String get branchCityBangkok => 'กรุงเทพฯ';
+
+  @override
+  String get branchCityParis => 'ปารีส';
+
+  @override
+  String get branchCityNewyork => 'นิวยอร์ก';
+
+  @override
+  String get branchCityDubai => 'ดูไบ';
+
+  @override
+  String get raidTab => 'บุกร้าน';
+
+  @override
+  String raidIntro(int n) {
+    return 'ส่งทีมบุกไปร้านเพื่อน! ผลขึ้นอยู่กับพลังร้าน (ไอเทมที่จัดแสดง + ด่าน) และโชค ไม่มีใครเสียเหรียญ: ชนะได้รางวัลใหญ่ ถูกกันไว้ ฝ่ายป้องกันได้รางวัล วันละ $n ครั้ง ต่อเพื่อน 1 ครั้ง';
+  }
+
+  @override
+  String raidLeft(int n) {
+    return 'วันนี้เหลือ $n ครั้ง';
+  }
+
+  @override
+  String get raidButton => 'บุก';
+
+  @override
+  String raidPower(int n) {
+    return 'พลังร้าน: $n';
+  }
+
+  @override
+  String raidChance(int pct) {
+    return 'โอกาสชนะ ~$pct%';
+  }
+
+  @override
+  String raidWin(String xu) {
+    return 'บุกสำเร็จ! 🎉 +$xu เหรียญ';
+  }
+
+  @override
+  String raidBlocked(String xu) {
+    return 'ถูกกัน! 🛡️ ปลอบใจ +$xu เหรียญ';
+  }
+
+  @override
+  String raidLogWin(String name) {
+    return '$name บุกร้านคุณสำเร็จ';
+  }
+
+  @override
+  String raidLogBlocked(String name) {
+    return 'คุณกัน $name ได้! 🛡️';
+  }
+
+  @override
+  String get raidLogEmpty => 'ยังไม่มีใครบุกร้านคุณ';
+
+  @override
+  String raidClaimDefense(int n) {
+    return 'รับรางวัลป้องกัน ($n)';
+  }
+
+  @override
+  String raidDefenseSnack(String xu) {
+    return 'ได้ $xu เหรียญจากการป้องกัน!';
+  }
+
+  @override
+  String get friendsErrRaidLimit => 'วันนี้หมดสิทธิ์บุกแล้ว';
+
+  @override
+  String get friendsErrRaidAlready => 'วันนี้คุณบุกร้านนี้ไปแล้ว';
+
+  @override
   String get seasonLbEmpty =>
       'ยังไม่มีใครในอันดับซีซันนี้ รับ XP บัตรซีซันแล้วเปิดใหม่เพื่อขึ้นอันดับ (ต้องมีบัญชีที่ผูกอีเมล)';
 

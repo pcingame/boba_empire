@@ -11,3 +11,5 @@ và bổ sung vào bảng.
 | bubbletea, cat, car, coins, confetti, celebration, fireworks | Nhân vật & hiệu ứng ban đầu | chưa ghi | free (LottieFiles) |
 | coin_fly, sparkle, level_up, gem_burst, gift_open, crown, steam | Hiệu ứng phản hồi (GĐ3) | chưa ghi | free (LottieFiles) |
 | customer_walking, customer_walking_2, customer_walking_3 | Khách đi ngang cảnh (GĐ4) | chưa ghi | free (LottieFiles) |
+| boss_wolfie | Boss Thế Giới (`world_boss_page.dart`; chung cho 8 boss) | "Big Bad Wolfie" — chưa ghi tác giả/link (tải 2026-10-19) | free (LottieFiles) — kiểm lại giấy phép trên trang gốc |
+| boss_frankenstein | Boss ngày (`world_boss_page.dart`) | "Frankenstein's Monster" — chưa ghi tác giả/link (tải 2026-10-19) | free (LottieFiles) — kiểm lại giấy phép trên trang gốc |

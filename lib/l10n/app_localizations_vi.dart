@@ -3086,6 +3086,322 @@ class AppLocalizationsVi extends AppLocalizations {
   String get friendShopProfile => 'Hồ sơ';
 
   @override
+  String get worldBossTitle => 'Boss Thế Giới';
+
+  @override
+  String get worldBossHow =>
+      'Boss tuần chỉ xuất hiện vào CHỦ NHẬT (giờ UTC) nhưng thưởng rất hậu. Trong ngày đó, mỗi lần chạm, giây offline và điểm Công thức của bạn đều thành sát thương. Phá mỗi mốc 20% máu là cả server mở quà (💎 + Xu); hạ boss có rương phụ kiện!';
+
+  @override
+  String worldBossHp(String cur, String max) {
+    return '$cur / $max máu';
+  }
+
+  @override
+  String worldBossMine(String dmg) {
+    return 'Sát thương của bạn: $dmg';
+  }
+
+  @override
+  String worldBossRank(int rank) {
+    return 'Hạng #$rank';
+  }
+
+  @override
+  String worldBossPlayers(int n) {
+    return '$n người đang đánh';
+  }
+
+  @override
+  String worldBossEndsIn(String time) {
+    return 'Boss rút lui sau $time';
+  }
+
+  @override
+  String worldBossOpensIn(String time) {
+    return 'Boss xuất hiện sau $time (Chủ Nhật)';
+  }
+
+  @override
+  String worldBossPhase(int pct) {
+    return 'Mốc $pct% máu';
+  }
+
+  @override
+  String get worldBossClaim => 'Nhận';
+
+  @override
+  String get worldBossClaimed => 'Đã nhận';
+
+  @override
+  String get worldBossLocked => 'Chưa phá';
+
+  @override
+  String worldBossNeedDamage(int dmg) {
+    return 'Cần ít nhất $dmg sát thương để nhận quà';
+  }
+
+  @override
+  String get worldBossBoard => 'Top sát thương';
+
+  @override
+  String get worldBossBoardEmpty => 'Chưa ai ra đòn — hãy là người đầu tiên!';
+
+  @override
+  String worldBossClaimedSnack(int gems) {
+    return 'Nhận $gems 💎 từ Boss Thế Giới!';
+  }
+
+  @override
+  String get worldBossHit => 'Gửi sát thương';
+
+  @override
+  String get worldBossDefeated => 'Boss đã bị hạ! 🎉';
+
+  @override
+  String get worldBossAutoTitle => '🤖 Tự động đánh';
+
+  @override
+  String worldBossAutoDesc(int n) {
+    return 'Tự động ra đòn mỗi giờ (+$n sát thương/giờ) tới hết tuần, kể cả khi bạn không mở app.';
+  }
+
+  @override
+  String worldBossAutoBuy(int gems) {
+    return 'Bật tuần này · 💎 $gems';
+  }
+
+  @override
+  String get worldBossAutoOn => 'Đang bật đến hết tuần ✓';
+
+  @override
+  String get worldBossAutoSnack => 'Đã bật tự động đánh boss tuần này!';
+
+  @override
+  String get worldBossNotEnoughGems => 'Chưa đủ 💎.';
+
+  @override
+  String worldBossAdButton(int dmg, int left, int max) {
+    return '📺 Xem quảng cáo +$dmg sát thương ($left/$max)';
+  }
+
+  @override
+  String worldBossAdSnack(int dmg) {
+    return '+$dmg sát thương lên boss! 💥';
+  }
+
+  @override
+  String get worldBossAdNone => 'Hôm nay đã hết lượt xem quảng cáo.';
+
+  @override
+  String get worldBossDailyName => '🧟 Quái Vật Frankenstein';
+
+  @override
+  String get worldBossTabDay => 'Boss ngày';
+
+  @override
+  String get worldBossTabWeek => 'Boss tuần';
+
+  @override
+  String worldBossDayXu(int min) {
+    return '$min phút thu nhập';
+  }
+
+  @override
+  String get worldBossDayHow =>
+      'Boss ngày nhỏ hơn và đổi mỗi ngày (0h UTC). Mỗi sát thương bạn gây ra tính cho CẢ boss ngày lẫn boss tuần. Phá mốc để nhận thu nhập, hạ boss thêm 💎.';
+
+  @override
+  String worldBossDayClaimedSnack(String xu) {
+    return 'Nhận $xu Xu từ boss ngày!';
+  }
+
+  @override
+  String get worldBossName0 => '🐺 Sói Trân Châu';
+
+  @override
+  String get worldBossName1 => '🐺 Sói Đường Đen';
+
+  @override
+  String get worldBossName2 => '🐺 Sói Matcha';
+
+  @override
+  String get worldBossName3 => '🐺 Sói Trà Đắng';
+
+  @override
+  String get worldBossName4 => '🐺 Sói Sữa';
+
+  @override
+  String get worldBossName5 => '🐺 Sói Thạch Dừa';
+
+  @override
+  String get worldBossName6 => '🐺 Sói Ớt Lửa';
+
+  @override
+  String get worldBossName7 => '🐺 Sói Chúa Trà Sữa';
+
+  @override
+  String get branchTitle => 'Chi nhánh';
+
+  @override
+  String get branchIntro =>
+      'Mở chi nhánh ở các thành phố: mỗi chi nhánh tự tích doanh thu (tối đa 8 giờ, cả lúc offline) bằng một phần thu nhập quán chính. Bấm Thu về để nhận — thi thoảng gặp giờ cao điểm ×3!';
+
+  @override
+  String get branchCollectAll => 'Thu về';
+
+  @override
+  String branchPendingTotal(String xu) {
+    return 'Đang chờ: $xu Xu';
+  }
+
+  @override
+  String branchCollected(String xu) {
+    return 'Thu được $xu Xu từ chi nhánh!';
+  }
+
+  @override
+  String branchRush(int n) {
+    return 'Giờ cao điểm ×3 ở $n chi nhánh! 🔥';
+  }
+
+  @override
+  String get branchNothing => 'Chưa có gì để thu.';
+
+  @override
+  String branchLevel(int lvl, int max) {
+    return 'Cấp $lvl/$max';
+  }
+
+  @override
+  String branchRate(String pct) {
+    return '+$pct% thu nhập/giây';
+  }
+
+  @override
+  String branchPending(String xu) {
+    return 'Chờ thu: $xu Xu';
+  }
+
+  @override
+  String get branchFull => 'Đầy rồi — thu về kẻo phí!';
+
+  @override
+  String branchOpen(String cost) {
+    return 'Mở · $cost';
+  }
+
+  @override
+  String branchUpgrade(String cost) {
+    return 'Nâng cấp · $cost';
+  }
+
+  @override
+  String get branchMaxed => 'Tối đa';
+
+  @override
+  String branchNeedStage(int stage) {
+    return 'Cần đạt giai đoạn $stage';
+  }
+
+  @override
+  String branchGala(String xu) {
+    return 'Khai trương! Tặng $xu Xu 🎉';
+  }
+
+  @override
+  String get branchNotEnough => 'Chưa đủ Xu.';
+
+  @override
+  String get branchCitySaigon => 'Sài Gòn';
+
+  @override
+  String get branchCityHanoi => 'Hà Nội';
+
+  @override
+  String get branchCityTokyo => 'Tokyo';
+
+  @override
+  String get branchCitySeoul => 'Seoul';
+
+  @override
+  String get branchCityBangkok => 'Bangkok';
+
+  @override
+  String get branchCityParis => 'Paris';
+
+  @override
+  String get branchCityNewyork => 'New York';
+
+  @override
+  String get branchCityDubai => 'Dubai';
+
+  @override
+  String get raidTab => 'Đột kích';
+
+  @override
+  String raidIntro(int n) {
+    return 'Gửi đội đột kích sang quán bạn bè! Thắng thua do sức mạnh quán (món trưng bày + giai đoạn) và may rủi. Không ai mất Xu: thắng thì bạn có thưởng lớn, bị chặn thì người phòng thủ có thưởng. Mỗi ngày $n lượt, mỗi bạn 1 lượt.';
+  }
+
+  @override
+  String raidLeft(int n) {
+    return 'Còn $n lượt hôm nay';
+  }
+
+  @override
+  String get raidButton => 'Đột kích';
+
+  @override
+  String raidPower(int n) {
+    return 'Sức mạnh quán: $n';
+  }
+
+  @override
+  String raidChance(int pct) {
+    return 'Tỉ lệ thắng ~$pct%';
+  }
+
+  @override
+  String raidWin(String xu) {
+    return 'Đột kích thành công! 🎉 +$xu Xu';
+  }
+
+  @override
+  String raidBlocked(String xu) {
+    return 'Bị chặn rồi! 🛡️ Tiền an ủi +$xu Xu';
+  }
+
+  @override
+  String raidLogWin(String name) {
+    return '$name đột kích quán bạn thành công';
+  }
+
+  @override
+  String raidLogBlocked(String name) {
+    return 'Bạn đã chặn được $name! 🛡️';
+  }
+
+  @override
+  String get raidLogEmpty => 'Chưa ai đột kích quán bạn.';
+
+  @override
+  String raidClaimDefense(int n) {
+    return 'Nhận thưởng phòng thủ ($n)';
+  }
+
+  @override
+  String raidDefenseSnack(String xu) {
+    return 'Nhận $xu Xu thưởng phòng thủ!';
+  }
+
+  @override
+  String get friendsErrRaidLimit => 'Hết lượt đột kích hôm nay.';
+
+  @override
+  String get friendsErrRaidAlready => 'Hôm nay bạn đã đột kích quán này rồi.';
+
+  @override
   String get seasonLbEmpty =>
       'Chưa ai trên bảng mùa này. Kiếm XP Thẻ Mùa rồi mở lại để lên bảng (cần tài khoản liên kết email).';
 

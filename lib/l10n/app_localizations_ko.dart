@@ -3045,6 +3045,322 @@ class AppLocalizationsKo extends AppLocalizations {
   String get friendShopProfile => '프로필';
 
   @override
+  String get worldBossTitle => '월드 보스';
+
+  @override
+  String get worldBossHow =>
+      '주간 보스는 일요일(UTC)에만 나타나지만 보상이 아주 커요. 그날의 터치, 오프라인 시간, 레시피 점수가 모두 피해가 돼요. 체력 20%를 깰 때마다 모두에게 보상(💎 + 코인)이 열리고, 처치하면 액세서리 상자를 받아요!';
+
+  @override
+  String worldBossHp(String cur, String max) {
+    return '$cur / $max 체력';
+  }
+
+  @override
+  String worldBossMine(String dmg) {
+    return '내 피해: $dmg';
+  }
+
+  @override
+  String worldBossRank(int rank) {
+    return '#$rank위';
+  }
+
+  @override
+  String worldBossPlayers(int n) {
+    return '$n명 참전 중';
+  }
+
+  @override
+  String worldBossEndsIn(String time) {
+    return '보스는 $time 후 떠나요';
+  }
+
+  @override
+  String worldBossOpensIn(String time) {
+    return '보스는 $time 후 나타나요(일요일)';
+  }
+
+  @override
+  String worldBossPhase(int pct) {
+    return '체력 $pct% 달성';
+  }
+
+  @override
+  String get worldBossClaim => '받기';
+
+  @override
+  String get worldBossClaimed => '받음';
+
+  @override
+  String get worldBossLocked => '미달성';
+
+  @override
+  String worldBossNeedDamage(int dmg) {
+    return '보상을 받으려면 최소 $dmg 피해가 필요해요';
+  }
+
+  @override
+  String get worldBossBoard => '최고 피해';
+
+  @override
+  String get worldBossBoardEmpty => '아직 공격한 사람이 없어요. 첫 번째가 되어 보세요!';
+
+  @override
+  String worldBossClaimedSnack(int gems) {
+    return '월드 보스에서 $gems 💎 획득!';
+  }
+
+  @override
+  String get worldBossHit => '공격!';
+
+  @override
+  String get worldBossDefeated => '보스를 처치했어요! 🎉';
+
+  @override
+  String get worldBossAutoTitle => '🤖 자동 공격';
+
+  @override
+  String worldBossAutoDesc(int n) {
+    return '주가 끝날 때까지 매시간 자동으로 공격해요(시간당 +$n 피해). 앱을 닫아도 동작해요.';
+  }
+
+  @override
+  String worldBossAutoBuy(int gems) {
+    return '이번 주 켜기 · 💎 $gems';
+  }
+
+  @override
+  String get worldBossAutoOn => '주가 끝날 때까지 켜짐 ✓';
+
+  @override
+  String get worldBossAutoSnack => '이번 주 자동 공격을 켰어요!';
+
+  @override
+  String get worldBossNotEnoughGems => '💎가 부족해요.';
+
+  @override
+  String worldBossAdButton(int dmg, int left, int max) {
+    return '📺 광고 보고 피해 +$dmg ($left/$max)';
+  }
+
+  @override
+  String worldBossAdSnack(int dmg) {
+    return '보스에게 피해 +$dmg! 💥';
+  }
+
+  @override
+  String get worldBossAdNone => '오늘은 광고 시청 횟수를 모두 썼어요.';
+
+  @override
+  String get worldBossDailyName => '🧟 프랑켄슈타인의 괴물';
+
+  @override
+  String get worldBossTabDay => '일일 보스';
+
+  @override
+  String get worldBossTabWeek => '주간 보스';
+
+  @override
+  String worldBossDayXu(int min) {
+    return '수입 $min분';
+  }
+
+  @override
+  String get worldBossDayHow =>
+      '일일 보스는 더 작고 매일(UTC 0시) 바뀌어요. 가한 피해는 일일·주간 보스 모두에 적용돼요. 단계를 깨면 수입, 처치하면 💎를 받아요.';
+
+  @override
+  String worldBossDayClaimedSnack(String xu) {
+    return '일일 보스에서 $xu 코인 획득!';
+  }
+
+  @override
+  String get worldBossName0 => '🐺 진주 늑대';
+
+  @override
+  String get worldBossName1 => '🐺 흑당 늑대';
+
+  @override
+  String get worldBossName2 => '🐺 말차 늑대';
+
+  @override
+  String get worldBossName3 => '🐺 쓴 차 늑대';
+
+  @override
+  String get worldBossName4 => '🐺 우유 늑대';
+
+  @override
+  String get worldBossName5 => '🐺 코코넛 젤리 늑대';
+
+  @override
+  String get worldBossName6 => '🐺 고추 불 늑대';
+
+  @override
+  String get worldBossName7 => '🐺 보바 왕 늑대';
+
+  @override
+  String get branchTitle => '지점';
+
+  @override
+  String get branchIntro =>
+      '세계 여러 도시에 지점을 열어 보세요. 지점은 본점 수입의 일부를 스스로 모아요(오프라인 포함 최대 8시간). 수령을 누르면 받고, 가끔 피크 타임 ×3이 터져요!';
+
+  @override
+  String get branchCollectAll => '수령';
+
+  @override
+  String branchPendingTotal(String xu) {
+    return '대기 중: $xu 코인';
+  }
+
+  @override
+  String branchCollected(String xu) {
+    return '지점에서 $xu 코인을 수령했어요!';
+  }
+
+  @override
+  String branchRush(int n) {
+    return '$n개 지점에서 피크 타임 ×3! 🔥';
+  }
+
+  @override
+  String get branchNothing => '아직 수령할 게 없어요.';
+
+  @override
+  String branchLevel(int lvl, int max) {
+    return '$lvl/$max레벨';
+  }
+
+  @override
+  String branchRate(String pct) {
+    return '초당 수입 +$pct%';
+  }
+
+  @override
+  String branchPending(String xu) {
+    return '대기: $xu 코인';
+  }
+
+  @override
+  String get branchFull => '가득 찼어요. 낭비 전에 수령하세요!';
+
+  @override
+  String branchOpen(String cost) {
+    return '개점 · $cost';
+  }
+
+  @override
+  String branchUpgrade(String cost) {
+    return '업그레이드 · $cost';
+  }
+
+  @override
+  String get branchMaxed => '최대';
+
+  @override
+  String branchNeedStage(int stage) {
+    return '$stage단계 달성 시 개점';
+  }
+
+  @override
+  String branchGala(String xu) {
+    return '그랜드 오픈! $xu 코인 선물 🎉';
+  }
+
+  @override
+  String get branchNotEnough => '코인이 부족해요.';
+
+  @override
+  String get branchCitySaigon => '사이공';
+
+  @override
+  String get branchCityHanoi => '하노이';
+
+  @override
+  String get branchCityTokyo => '도쿄';
+
+  @override
+  String get branchCitySeoul => '서울';
+
+  @override
+  String get branchCityBangkok => '방콕';
+
+  @override
+  String get branchCityParis => '파리';
+
+  @override
+  String get branchCityNewyork => '뉴욕';
+
+  @override
+  String get branchCityDubai => '두바이';
+
+  @override
+  String get raidTab => '습격';
+
+  @override
+  String raidIntro(int n) {
+    return '친구 가게에 습격대를 보내세요! 결과는 가게 전투력(전시 아이템 + 단계)과 운으로 정해져요. 코인을 잃는 사람은 없어요. 이기면 큰 보상, 막히면 방어자가 보상을 받아요. 하루 $n회, 친구당 1회.';
+  }
+
+  @override
+  String raidLeft(int n) {
+    return '오늘 $n회 남음';
+  }
+
+  @override
+  String get raidButton => '습격';
+
+  @override
+  String raidPower(int n) {
+    return '가게 전투력: $n';
+  }
+
+  @override
+  String raidChance(int pct) {
+    return '승률 ~$pct%';
+  }
+
+  @override
+  String raidWin(String xu) {
+    return '습격 성공! 🎉 +$xu 코인';
+  }
+
+  @override
+  String raidBlocked(String xu) {
+    return '막혔어요! 🛡️ 위로 보상 +$xu 코인';
+  }
+
+  @override
+  String raidLogWin(String name) {
+    return '$name님이 가게 습격에 성공했어요';
+  }
+
+  @override
+  String raidLogBlocked(String name) {
+    return '$name님을 막아 냈어요! 🛡️';
+  }
+
+  @override
+  String get raidLogEmpty => '아직 가게를 습격한 사람이 없어요.';
+
+  @override
+  String raidClaimDefense(int n) {
+    return '방어 보상 받기 ($n)';
+  }
+
+  @override
+  String raidDefenseSnack(String xu) {
+    return '방어 보상 $xu 코인 획득!';
+  }
+
+  @override
+  String get friendsErrRaidLimit => '오늘 습격 횟수를 모두 썼어요.';
+
+  @override
+  String get friendsErrRaidAlready => '오늘 이미 이 가게를 습격했어요.';
+
+  @override
   String get seasonLbEmpty =>
       '이번 시즌 순위에 아직 아무도 없습니다. 시즌 패스 XP를 얻고 다시 열면 등록됩니다(이메일 연동 계정 필요).';
 

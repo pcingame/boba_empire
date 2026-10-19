@@ -6,6 +6,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../audio/audio_service.dart';
+import '../core/branches.dart';
 import '../data/game_storage.dart';
 import 'game_controller.dart';
 import 'game_snapshot.dart';
@@ -56,3 +57,9 @@ class SoundNotifier extends Notifier<bool> {
 final appVersionProvider = Provider<Future<String> Function()>(
   (ref) => () async => (await PackageInfo.fromPlatform()).version,
 );
+
+/// Có chi nhánh đang chờ thu ≥ 5 phút thu nhập (chấm đỏ ở nút Trò chơi + mục Chi nhánh). Chỉ đổi khi bool đổi.
+final branchReadyProvider = Provider<bool>((ref) {
+  final now = ref.watch(clockProvider);
+  return ref.watch(gameControllerProvider.select((s) => branchesReady(s.branchLevels, s.branchSince, now())));
+});

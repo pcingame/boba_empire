@@ -193,6 +193,8 @@ class GameState {
     Map<String, int>? accessorySpares,
     Map<int, int>? masteryTiers,
     Map<String, int>? refineLevels,
+    Map<String, int>? branchLevels,
+    Map<String, int>? branchSince,
     List<String>? equippedAccessories,
     List<int>? collectionMilestonesClaimed,
     List<String>? collectionSetsClaimed,
@@ -210,6 +212,8 @@ class GameState {
         accessorySpares = accessorySpares ?? {},
         masteryTiers = masteryTiers ?? {},
         refineLevels = refineLevels ?? {},
+        branchLevels = branchLevels ?? {},
+        branchSince = branchSince ?? {},
         equippedAccessories = equippedAccessories ?? [],
         collectionMilestonesClaimed = collectionMilestonesClaimed ?? [],
         collectionSetsClaimed = collectionSetsClaimed ?? [],
@@ -360,6 +364,10 @@ class GameState {
 
   /// Cấp tinh luyện từng phụ kiện (0–3, xem accessory_refine.dart). Chỉ lưu món > 0. Giữ qua Nhượng quyền/Kỷ Nguyên.
   final Map<String, int> refineLevels;
+
+  /// Chi nhánh thành phố (core/branches.dart): cấp (0 = chưa mở) và mốc (epoch ms) lần thu gần nhất.
+  final Map<String, int> branchLevels;
+  final Map<String, int> branchSince;
 
   /// Bộ đếm Tinh chất nguồn lặp lại trong ngày [essenceDay] (dayIndex UTC): riêng đơn Pha theo đơn, và chung.
   int essenceDay;
@@ -682,6 +690,8 @@ class GameState {
         'essence': essence,
         'masteryTiers': {for (final e in masteryTiers.entries) '${e.key}': e.value},
         'refineLevels': refineLevels,
+        'branchLevels': branchLevels,
+        'branchSince': branchSince,
         'essenceDay': essenceDay,
         'essenceOrdersToday': essenceOrdersToday,
         'essenceRepeatableToday': essenceRepeatableToday,
@@ -874,6 +884,18 @@ class GameState {
             for (final e in (json['refineLevels'] as Map).entries)
               if (e.key is String && e.value is num && (e.value as num) > 0)
                 e.key as String: (e.value as num).toInt().clamp(1, 3),
+        },
+        branchLevels: {
+          if (json['branchLevels'] is Map)
+            for (final e in (json['branchLevels'] as Map).entries)
+              if (e.key is String && e.value is num && (e.value as num).isFinite && (e.value as num) > 0)
+                e.key as String: (e.value as num).toInt().clamp(1, 10),
+        },
+        branchSince: {
+          if (json['branchSince'] is Map)
+            for (final e in (json['branchSince'] as Map).entries)
+              if (e.key is String && e.value is num && (e.value as num).isFinite && (e.value as num) >= 0)
+                e.key as String: (e.value as num).toInt(),
         },
         essenceDay: (json['essenceDay'] as num?)?.toInt() ?? 0,
         essenceOrdersToday: (json['essenceOrdersToday'] as num?)?.toInt() ?? 0,

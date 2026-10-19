@@ -58,6 +58,7 @@ import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
 import 'recipe_order_page.dart' show showRecipeOrderFor;
 import 'rival_event_dialog.dart';
+import '../core/raid.dart' show raidPower;
 import '../friends/friends.dart' show friendsAlertProvider, friendsRepositoryProvider, pushShopDisplay;
 import 'settings_dialog.dart';
 import 'story_dialog.dart';
@@ -484,8 +485,9 @@ class _HomePageState extends ConsumerState<HomePage>
       gameControllerProvider.select((s) => s.equippedAccessories.join(',')),
       (previous, next) {
         if (!ref.read(cloudLinkedProvider)) return;
-        unawaited(pushShopDisplay(ref.read(friendsRepositoryProvider),
-            ref.read(gameControllerProvider).equippedAccessories));
+        final g = ref.read(gameControllerProvider);
+        unawaited(pushShopDisplay(ref.read(friendsRepositoryProvider), g.equippedAccessories,
+            raidPower(equipped: g.equippedAccessories, refineLevels: g.refineLevels, stage: g.stage)));
       },
     );
 
@@ -642,6 +644,7 @@ class _BottomBar extends ConsumerWidget {
                   buttonKey: const Key('match3-button'),
                   icon: Icons.sports_esports_rounded,
                   label: l10n.navMatch3,
+                  badge: ref.watch(branchReadyProvider),
                   onTap: () => showGamesHub(context)),
             ],
           ),

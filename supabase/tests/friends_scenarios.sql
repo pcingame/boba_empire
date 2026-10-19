@@ -125,4 +125,43 @@ select as_u(0);
 select chk('khách không đặt trưng bày', err_of($$select set_shop_display('{}')$$) like '%permission denied%');
 select as_u(2);
 select chk('không đọc thẳng shop_displays', err_of('select * from shop_displays') like '%permission denied%');
+
+-- đột kích: chỉ bạn bè, giới hạn ngày, xác suất theo sức mạnh, thưởng phòng thủ
+reset role;
+delete from friend_raids; delete from friendships; delete from shop_displays;
+insert into friendships (user_a, user_b) values (uid_of(1), uid_of(2)), (uid_of(1), uid_of(3)), (uid_of(1), uid_of(4)), (uid_of(1), uid_of(5));
+select chk('xác suất ngang sức 50%', raid_win_chance(100, 100) = 0.5 and raid_win_chance(0, 0) = 0.5);
+select chk('mạnh gấp đôi 75%, yếu hơn một nửa 25%', raid_win_chance(200, 100) = 0.75 and raid_win_chance(50, 100) = 0.25);
+select chk('kẹp 15%..85%', raid_win_chance(1000, 0) = 0.85 and raid_win_chance(0, 1000) = 0.15);
+select as_u(1); select set_shop_display(array['kraken'], 200);
+select as_u(2); select set_shop_display('{}', 100);
+select as_u(1);
+select chk('đầu ngày còn đủ 3 lượt', (friend_overview()->>'raids_left')::int = 3);
+reset role;
+select chk('thua khi roll cao hơn xác suất', (friend_raid_do(uid_of(1), uid_of(2), 0.9)->>'win')::boolean = false);
+select chk('lượt thứ 2 cùng ngày cùng bạn bị chặn', err_of(format('select friend_raid_do(%L, %L, 0.1)', uid_of(1), uid_of(2))) like '%already raided%');
+select chk('thắng khi roll thấp', (friend_raid_do(uid_of(1), uid_of(3), 0.1)->>'win')::boolean = true);
+select chk('người lạ không đột kích được', err_of(format('select friend_raid_do(%L, %L, 0.1)', uid_of(1), uid_of(9))) like '%not friends%');
+select chk('tự đột kích mình bị chặn', err_of(format('select friend_raid_do(%L, %L, 0.1)', uid_of(1), uid_of(1))) like '%bad target%');
+select friend_raid_do(uid_of(1), uid_of(4), 0.1);
+select chk('hết 3 lượt/ngày', err_of(format('select friend_raid_do(%L, %L, 0.1)', uid_of(1), uid_of(5))) like '%raid limit%');
+select as_u(1);
+select chk('raids_left = 0', (friend_overview()->>'raids_left')::int = 0);
+select as_u(2);
+select chk('người bị chặn thấy 1 lượt chờ thưởng phòng thủ + nhật ký', (friend_overview()->>'defense_waiting')::int = 1
+  and friend_overview()->'raid_log'->0->>'nickname' = 'An' and (friend_overview()->'raid_log'->0->>'win')::boolean = false);
+select chk('nhận thưởng phòng thủ = 1', friend_raid_claim() = 1);
+select chk('nhận lại = 0', friend_raid_claim() = 0);
+select as_u(3);
+select chk('bị đột kích thắng → không có thưởng phòng thủ', friend_raid_claim() = 0 and (friend_overview()->>'defense_waiting')::int = 0);
+select chk('nhật ký ghi kẻ thắng', (friend_overview()->'raid_log'->0->>'win')::boolean = true);
+select as_u(1);
+select chk('friend_shop có power', (friend_shop(uid_of(2))->>'power')::int = 100);
+select chk('client không gọi được lõi quyết định', err_of(format('select friend_raid_do(%L, %L, 0)', uid_of(1), uid_of(2))) like '%permission denied%');
+select set_shop_display(array['a'], 99999);
+select as_u(2);
+select chk('power kẹp 1000', (friend_shop(uid_of(1))->>'power')::int = 1000);
+select as_u(1);
+select as_u(0);
+select chk('khách không đột kích', err_of(format('select friend_raid(%L)', uid_of(2))) like '%permission denied%');
 \echo FRIENDS OK

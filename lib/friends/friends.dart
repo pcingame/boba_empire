@@ -8,6 +8,7 @@ import 'dart:developer' as developer;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../core/raid.dart';
 import '../data/cloud_save_controller.dart';
 import '../state/game_providers.dart';
 
@@ -65,6 +66,20 @@ class FriendCandidate {
   final int stage;
 }
 
+/// Một lượt đột kích vào quán mình (nhật ký): ai, thắng hay bị chặn.
+class RaidLogEntry {
+  const RaidLogEntry(this.nickname, this.win);
+  final String nickname;
+  final bool win;
+}
+
+/// Kết quả một lượt mình đột kích bạn.
+class RaidResult {
+  const RaidResult({required this.win, required this.chance});
+  final bool win;
+  final double chance;
+}
+
 class FriendsOverview {
   const FriendsOverview({
     this.myIncome = 0,
@@ -73,6 +88,9 @@ class FriendsOverview {
     this.friends = const [],
     this.incoming = const [],
     this.giftsWaiting = 0,
+    this.raidsLeft = raidsPerDay,
+    this.defenseWaiting = 0,
+    this.raidLog = const [],
   });
   factory FriendsOverview.fromJson(Map<String, dynamic> j) {
     final me = (j['me'] as Map?) ?? const {};
@@ -86,6 +104,12 @@ class FriendsOverview {
           FriendRequestIn((r as Map)['user_id'] as String, r['nickname'] as String)
       ],
       giftsWaiting: ((j['gifts_waiting'] ?? 0) as num).toInt(),
+      raidsLeft: ((j['raids_left'] ?? raidsPerDay) as num).toInt(),
+      defenseWaiting: ((j['defense_waiting'] ?? 0) as num).toInt(),
+      raidLog: [
+        for (final r in (j['raid_log'] as List? ?? const []))
+          RaidLogEntry((r as Map)['nickname'] as String? ?? '???', r['win'] == true)
+      ],
     );
   }
   final double myIncome;
@@ -94,8 +118,12 @@ class FriendsOverview {
   final List<Friend> friends;
   final List<FriendRequestIn> incoming;
   final int giftsWaiting;
+  final int raidsLeft;
+  final int defenseWaiting;
+  final List<RaidLogEntry> raidLog;
 
-  FriendsOverview copyWith({List<Friend>? friends, List<FriendRequestIn>? incoming, int? giftsWaiting}) =>
+  FriendsOverview copyWith(
+          {List<Friend>? friends, List<FriendRequestIn>? incoming, int? giftsWaiting, int? raidsLeft, int? defenseWaiting}) =>
       FriendsOverview(
         myIncome: myIncome,
         mySeasonXp: mySeasonXp,
@@ -103,11 +131,14 @@ class FriendsOverview {
         friends: friends ?? this.friends,
         incoming: incoming ?? this.incoming,
         giftsWaiting: giftsWaiting ?? this.giftsWaiting,
+        raidsLeft: raidsLeft ?? this.raidsLeft,
+        defenseWaiting: defenseWaiting ?? this.defenseWaiting,
+        raidLog: raidLog,
       );
 }
 
 /// Lỗi nghiệp vụ từ server, đã gom về vài loại để UI báo đúng câu.
-enum FriendError { limit, notFound, alreadySent, linkRequired, network }
+enum FriendError { limit, notFound, alreadySent, linkRequired, raidLimit, raidAlready, network }
 
 class FriendException implements Exception {
   const FriendException(this.error);
@@ -120,12 +151,13 @@ FriendError friendErrorOf(Object e) {
   final m = e is PostgrestException ? e.message : '$e';
   if (m.contains('too many requests') || m.contains('friend limit')) return FriendError.limit;
   if (m.contains('already sent')) return FriendError.alreadySent;
+  if (m.contains('raid limit')) return FriendError.raidLimit;
+  if (m.contains('already raided')) return FriendError.raidAlready;
   if (m.contains('email link required')) return FriendError.linkRequired;
   if (m.contains('not found') || m.contains('not friends') || m.contains('bad target')) return FriendError.notFound;
   return FriendError.network;
 }
 
-/// Tách để test thay bằng bản giả.
 /// Quán của một người bạn (RPC `friend_shop`): cảnh theo giai đoạn + món đang trưng bày + số liệu.
 class FriendShop {
   const FriendShop({
@@ -135,6 +167,7 @@ class FriendShop {
     this.seasonXp = 0,
     this.orders = 0,
     this.equipped = const [],
+    this.power = 0,
   });
   factory FriendShop.fromJson(Map<String, dynamic> j) => FriendShop(
         nickname: j['nickname'] as String,
@@ -143,6 +176,7 @@ class FriendShop {
         seasonXp: ((j['season_xp'] ?? 0) as num).toInt(),
         orders: ((j['orders'] ?? 0) as num).toInt(),
         equipped: [for (final e in (j['equipped'] as List?) ?? const []) e as String],
+        power: ((j['power'] ?? 0) as num).toInt(),
       );
   final String nickname;
   final int stage;
@@ -150,13 +184,23 @@ class FriendShop {
   final int seasonXp;
   final int orders;
   final List<String> equipped;
+
+  /// Sức mạnh quán (core/raid.dart) — dùng tính xác suất đột kích.
+  final int power;
 }
 
+/// Tách để test thay bằng bản giả.
 abstract class FriendsRepository {
   Future<FriendShop> shop(String userId);
 
   /// Đẩy món đang trưng bày của mình lên để bạn bè thấy.
-  Future<void> setDisplay(List<String> ids);
+  Future<void> setDisplay(List<String> ids, int power);
+
+  /// Đột kích quán bạn (server quyết định thắng/thua).
+  Future<RaidResult> raid(String userId);
+
+  /// Gom thưởng phòng thủ; trả số lượt.
+  Future<int> claimDefense();
   Future<FriendsOverview> overview();
   Future<List<FriendCandidate>> search(String nickname);
 
@@ -215,13 +259,23 @@ class SupabaseFriendsRepository implements FriendsRepository {
       FriendShop.fromJson(Map<String, dynamic>.from(await _c.rpc('friend_shop', params: {'p_friend': userId}) as Map)));
 
   @override
-  Future<void> setDisplay(List<String> ids) => _guard(() => _c.rpc('set_shop_display', params: {'p_equipped': ids}));
+  Future<void> setDisplay(List<String> ids, int power) =>
+      _guard(() => _c.rpc('set_shop_display', params: {'p_equipped': ids, 'p_power': power}));
+
+  @override
+  Future<RaidResult> raid(String userId) => _guard(() async {
+        final r = await _c.rpc('friend_raid', params: {'p_target': userId}) as Map;
+        return RaidResult(win: r['win'] == true, chance: ((r['chance'] ?? 0.5) as num).toDouble());
+      });
+
+  @override
+  Future<int> claimDefense() => _guard(() async => ((await _c.rpc('friend_raid_claim')) as num).toInt());
 }
 
 /// Đẩy trưng bày lên server; là phần thêm nên mọi lỗi (mạng, chưa liên kết, chưa chạy SQL) bị nuốt.
-Future<void> pushShopDisplay(FriendsRepository repo, List<String> ids) async {
+Future<void> pushShopDisplay(FriendsRepository repo, List<String> ids, int power) async {
   try {
-    await repo.setDisplay(ids);
+    await repo.setDisplay(ids, power);
   } catch (_) {}
 }
 
@@ -234,8 +288,9 @@ final friendsRepositoryProvider = Provider<FriendsRepository>((_) => SupabaseFri
 class FriendsController extends AsyncNotifier<FriendsOverview> {
   @override
   Future<FriendsOverview> build() {
-    unawaited(pushShopDisplay(
-        ref.read(friendsRepositoryProvider), ref.read(gameControllerProvider).equippedAccessories));
+    final g = ref.read(gameControllerProvider);
+    unawaited(pushShopDisplay(ref.read(friendsRepositoryProvider), g.equippedAccessories,
+        raidPower(equipped: g.equippedAccessories, refineLevels: g.refineLevels, stage: g.stage)));
     return ref.read(friendsRepositoryProvider).overview();
   }
 
@@ -272,6 +327,26 @@ class FriendsController extends AsyncNotifier<FriendsOverview> {
     return ref.read(gameControllerProvider.notifier).grantFriendGift(1);
   }
 
+  /// Đột kích bạn [f]: server quyết định; thưởng cộng SAU khi server trả kết quả. Trả (kết quả, Xu nhận).
+  Future<(RaidResult, double)> raid(String userId) async {
+    final r = await _repo.raid(userId);
+    final cur = state.value;
+    if (cur != null) state = AsyncData(cur.copyWith(raidsLeft: (cur.raidsLeft - 1).clamp(0, raidsPerDay)));
+    final xu = ref
+        .read(gameControllerProvider.notifier)
+        .grantRaidReward(r.win ? raidWinSeconds : raidBlockedSeconds);
+    return (r, xu);
+  }
+
+  /// Nhận thưởng phòng thủ (các lượt đột kích vào quán mình bị chặn). Trả (số lượt, Xu).
+  Future<(int, double)> claimDefense() async {
+    final n = await _repo.claimDefense();
+    if (n <= 0) return (0, 0.0);
+    final cur = state.value;
+    if (cur != null) state = AsyncData(cur.copyWith(defenseWaiting: 0));
+    return (n, ref.read(gameControllerProvider.notifier).grantRaidReward(raidDefenseSeconds * n));
+  }
+
   /// Nhận mọi quà đang chờ. Trả (số quà, Xu).
   Future<(int, double)> claimGifts() async {
     final n = await _repo.claimGifts();
@@ -291,7 +366,7 @@ final friendsAlertProvider = FutureProvider<int>((ref) async {
   if (ref.watch(cloudSaveControllerProvider) is! CloudSaveLinked) return 0;
   try {
     final o = await ref.read(friendsRepositoryProvider).overview();
-    return o.incoming.length + o.giftsWaiting;
+    return o.incoming.length + o.giftsWaiting + o.defenseWaiting;
   } catch (_) {
     return 0;
   }

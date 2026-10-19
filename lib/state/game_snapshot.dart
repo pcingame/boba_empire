@@ -117,6 +117,8 @@ class GameSnapshot {
     required this.essence,
     required this.masteryTiers,
     required this.refineLevels,
+    required this.branchLevels,
+    required this.branchSince,
     required this.collectionMilestonesClaimed,
     required this.collectionSetsClaimed,
     required this.wishlist,
@@ -314,6 +316,10 @@ class GameSnapshot {
   /// Cấp tinh luyện từng phụ kiện (xem accessory_refine.dart). Widget phải `select` giá trị suy ra
   /// (vd. `refineSignature`), KHÔNG select cả Map — mỗi snapshot là một Map mới.
   final Map<String, int> refineLevels;
+
+  /// Chi nhánh thành phố (core/branches.dart): cấp và mốc thu gần nhất (epoch ms).
+  final Map<String, int> branchLevels;
+  final Map<String, int> branchSince;
 
   /// Mốc sưu tập đã nhận (xem GameState.collectionMilestonesClaimed).
   final List<int> collectionMilestonesClaimed;

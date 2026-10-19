@@ -13,6 +13,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../core/branches.dart';
+import '../core/raid.dart';
 import '../core/accessories.dart';
 import '../core/achievements.dart';
 import '../core/balance.dart';
@@ -244,6 +246,105 @@ class GameController extends Notifier<GameSnapshot> {
     if (secs > 0) {
       addDungeon(_game, DungeonBar.off, secs < _offlineCap() ? secs : _offlineCap(), _clock());
     }
+  }
+
+  /// Thu nhập/giây của quán chính KHÔNG tính buff tạm (Mưa vàng…) — nền để tính giá và doanh thu chi nhánh.
+  double _branchBaseIncome() => effectiveIncomePerSecond(
+        _game,
+        Balance.generators,
+        bonusPerStar: Balance.bonusPerStar,
+      );
+
+  /// Thưởng mốc boss ngày: [gems] 💎 + [seconds] giây thu nhập quán chính (sàn [raidRewardFloor]). Sau khi server xác nhận.
+  double grantBossDayReward({required int gems, required int seconds}) {
+    if (gems > 0) grantGems(_game, gems.toDouble());
+    final income = _branchBaseIncome();
+    final cash = max((income.isFinite ? income : 0.0) * seconds, raidRewardFloor);
+    grantBonus(_game, cash);
+    logEvent('world_boss_day_claim', {'gems': gems});
+    unawaited(saveNow());
+    state = _snapshot();
+    return cash;
+  }
+
+  /// Trừ [amount] 💎 (đã kiểm đủ). false nếu không đủ — không trừ gì.
+  bool spendGems(int amount) {
+    if (amount <= 0 || !(_game.gems >= amount)) return false;
+    _game.gems -= amount;
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
+  /// Thưởng đột kích/phòng thủ: [seconds] giây thu nhập (sàn [raidRewardFloor]). Chỉ gọi SAU khi server xác nhận.
+  double grantRaidReward(int seconds) {
+    final income = _branchBaseIncome();
+    final cash = max((income.isFinite ? income : 0.0) * seconds, raidRewardFloor);
+    grantBonus(_game, cash);
+    logEvent('friend_raid_reward', {'seconds': seconds});
+    unawaited(saveNow());
+    state = _snapshot();
+    return cash;
+  }
+
+  /// Nền tính giá/doanh thu chi nhánh (để màn hình hiện đúng con số sẽ bị trừ/nhận).
+  double get branchIncome => _branchBaseIncome();
+
+  /// Mở (cấp 0 → 1) hoặc nâng cấp chi nhánh [id] bằng Xu. Trả null nếu không làm được (thiếu Xu, chưa đủ giai đoạn,
+  /// đã tối đa, id lạ); ngược lại trả số Xu lễ khai trương đã tặng (>0 chỉ lần mở đầu tiên).
+  double? upgradeBranch(String id) {
+    final c = branchCityById(id);
+    if (c == null) return null;
+    final lvl = branchLevel(_game.branchLevels, id);
+    if (lvl >= branchMaxLevel) return null;
+    if (lvl == 0 && _game.stage < c.minStage) return null;
+    final income = _branchBaseIncome();
+    final cost = branchCost(c, lvl + 1, income);
+    if (!cost.isFinite || !(_game.money >= cost)) return null;
+    _game.money -= cost;
+    var gala = 0.0;
+    if (lvl == 0) {
+      _game.branchSince[id] = _clock();
+      gala = income.isFinite && income > 0 ? income * branchGalaSeconds : 0;
+      grantBonus(_game, gala);
+    } else {
+      // Thu phần đã tích theo cấp CŨ trước khi đổi tỉ lệ (không mất, không được hời).
+      final pending = branchPendingIncomeSeconds(_game.branchLevels, _game.branchSince, c, _clock());
+      _game.branchSince[id] = _clock();
+      if (pending > 0 && income.isFinite) grantBonus(_game, pending * income);
+    }
+    _game.branchLevels[id] = lvl + 1;
+    logEvent('branch_upgrade', {'id': id, 'level': lvl + 1});
+    unawaited(saveNow());
+    state = _snapshot();
+    return gala;
+  }
+
+  /// Thu doanh thu mọi chi nhánh: Xu = giây tích × thu nhập quán chính hiện tại; mỗi chi nhánh [branchRushChance] gặp
+  /// giờ cao điểm ×[branchRushMult]. Trả (Xu, số lần cao điểm).
+  ({double xu, int rushes}) collectBranches() {
+    final now = _clock();
+    final income = _branchBaseIncome();
+    var xu = 0.0;
+    var rushes = 0;
+    for (final c in branchCities) {
+      final sec = branchPendingIncomeSeconds(_game.branchLevels, _game.branchSince, c, now);
+      if (sec <= 0) continue;
+      var gain = income.isFinite ? sec * income : 0.0;
+      if (_random.nextDouble() < branchRushChance) {
+        gain *= branchRushMult;
+        rushes++;
+      }
+      xu += gain;
+      _game.branchSince[c.id] = now;
+    }
+    if (xu > 0) {
+      grantBonus(_game, xu);
+      logEvent('branch_collect', {'rushes': rushes});
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return (xu: xu, rushes: rushes);
   }
 
   /// Tổng luỹ kế Phó bản tuần này (chạm / giây offline / điểm Công thức) để báo server.
@@ -2396,6 +2497,8 @@ class GameController extends Notifier<GameSnapshot> {
       // Bản sao — không chia sẻ instance với GameState (xem snapshot-list-aliasing-select).
       masteryTiers: Map.unmodifiable(_game.masteryTiers),
       refineLevels: Map.unmodifiable(_game.refineLevels),
+      branchLevels: Map.unmodifiable(Map.of(_game.branchLevels)),
+      branchSince: Map.unmodifiable(Map.of(_game.branchSince)),
       collectionMilestonesClaimed:
           List.unmodifiable(_game.collectionMilestonesClaimed),
       collectionSetsClaimed: List.unmodifiable(_game.collectionSetsClaimed),

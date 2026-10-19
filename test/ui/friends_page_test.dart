@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:boba_empire/core/models.dart';
+import 'package:boba_empire/core/raid.dart';
 import 'package:boba_empire/data/cloud_save_controller.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/friends/friends.dart';
@@ -27,7 +28,7 @@ class _UnlinkedCloud extends CloudSaveController {
 
 class _ThrowRepo extends _Repo {
   @override
-  Future<void> setDisplay(List<String> ids) async => throw const FriendException(FriendError.network);
+  Future<void> setDisplay(List<String> ids, int power) async => throw const FriendException(FriendError.network);
 }
 
 class _Repo implements FriendsRepository {
@@ -72,6 +73,10 @@ class _Repo implements FriendsRepository {
 
   FriendShop shopData = const FriendShop(nickname: 'Mai', stage: 7, income: 5000, seasonXp: 40, orders: 3, equipped: ['kraken', 'unknown_x']);
   List<String>? pushed;
+  int? pushedPower;
+  RaidResult raidResult = const RaidResult(win: true, chance: 0.5);
+  FriendException? raidError;
+  int defense = 0;
   @override
   Future<FriendShop> shop(String userId) async {
     log.add('shop:$userId');
@@ -79,7 +84,23 @@ class _Repo implements FriendsRepository {
   }
 
   @override
-  Future<void> setDisplay(List<String> ids) async => pushed = ids;
+  Future<void> setDisplay(List<String> ids, int power) async {
+    pushed = ids;
+    pushedPower = power;
+  }
+
+  @override
+  Future<RaidResult> raid(String userId) async {
+    if (raidError != null) throw raidError!;
+    log.add('raid:$userId');
+    return raidResult;
+  }
+
+  @override
+  Future<int> claimDefense() async {
+    log.add('claimDefense');
+    return defense;
+  }
 
   @override
   Future<int> claimGifts() async {
@@ -123,6 +144,103 @@ Future<void> _done(WidgetTester tester, ProviderContainer c) async {
 }
 
 void main() {
+  test('đột kích: hằng số + công thức xác suất khớp SQL', () {
+    final sql = File('supabase/friends_schema.sql').readAsStringSync();
+    expect(RegExp(r'function raid_per_day\(\)[^;]*select (\d+)').firstMatch(sql)!.group(1), '$raidsPerDay');
+    expect(sql, contains('least(0.85, greatest(0.15'));
+    expect(raidWinChance(100, 100), 0.5);
+    expect(raidWinChance(0, 0), 0.5);
+    expect(raidWinChance(200, 100), 0.75);
+    expect(raidWinChance(50, 100), 0.25);
+    expect(raidWinChance(1000, 0), 0.85);
+    expect(raidWinChance(0, 1000), 0.15);
+  });
+
+  test('sức mạnh quán: độ hiếm × tinh luyện + 3×giai đoạn, kẹp 0..1000, bỏ id lạ', () {
+    expect(raidPower(equipped: const [], refineLevels: const {}, stage: 5), 15);
+    expect(raidPower(equipped: const ['kraken'], refineLevels: const {}, stage: 0), 20);
+    expect(raidPower(equipped: const ['kraken'], refineLevels: const {'kraken': 2}, stage: 0), 30);
+    expect(raidPower(equipped: const ['unknown_x'], refineLevels: const {}, stage: 0), 0);
+    expect(raidPower(equipped: const ['kraken'], refineLevels: const {'kraken': 99}, stage: 99999), 300 + 35);
+  });
+
+  testWidgets('đột kích: server quyết định, thưởng chỉ cộng sau khi có kết quả; thắng/thua khác thưởng', (tester) async {
+    final repo = _Repo()..data = FriendsOverview(friends: [_f('u1', 'Mai')]);
+    final (c, _) = await _open(tester, repo);
+    await tester.tap(find.byKey(const Key('friend-u1')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('friend-shop-chance')), findsOneWidget);
+    final before = c.read(gameControllerProvider).money;
+    await tester.ensureVisible(find.byKey(const Key('friend-shop-raid')));
+    await tester.tap(find.byKey(const Key('friend-shop-raid')));
+    await tester.pumpAndSettle();
+    expect(repo.log, contains('raid:u1'));
+    expect(find.byKey(const Key('raid-result')), findsOneWidget);
+    expect(c.read(gameControllerProvider).money, greaterThanOrEqualTo(before + raidRewardFloor));
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
+  testWidgets('đột kích bị server từ chối (hết lượt): KHÔNG cộng Xu, báo lỗi', (tester) async {
+    final repo = _Repo()
+      ..data = FriendsOverview(friends: [_f('u1', 'Mai')])
+      ..raidError = const FriendException(FriendError.raidLimit);
+    final (c, _) = await _open(tester, repo);
+    await tester.tap(find.byKey(const Key('friend-u1')));
+    await tester.pumpAndSettle();
+    final before = c.read(gameControllerProvider).money;
+    await tester.ensureVisible(find.byKey(const Key('friend-shop-raid')));
+    await tester.tap(find.byKey(const Key('friend-shop-raid')));
+    await tester.pumpAndSettle();
+    expect(c.read(gameControllerProvider).money, before);
+    expect(find.byType(SnackBar), findsOneWidget);
+    expect(find.byKey(const Key('raid-result')), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
+  testWidgets('hết lượt trong ngày: nút Đột kích mờ', (tester) async {
+    final repo = _Repo()..data = FriendsOverview(friends: [_f('u1', 'Mai')], raidsLeft: 0);
+    final (c, _) = await _open(tester, repo);
+    await tester.tap(find.byKey(const Key('friend-u1')));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const Key('friend-shop-raid')));
+    expect(tester.widget<FilledButton>(find.byKey(const Key('friend-shop-raid'))).onPressed, isNull);
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
+  testWidgets('tab Đột kích: nhật ký, nhận thưởng phòng thủ rồi nút biến mất', (tester) async {
+    final repo = _Repo()
+      ..data = const FriendsOverview(
+          defenseWaiting: 2, raidsLeft: 2, raidLog: [RaidLogEntry('An', true), RaidLogEntry('Binh', false)])
+      ..defense = 2;
+    final (c, _) = await _open(tester, repo);
+    await tester.ensureVisible(find.byKey(const Key('friends-tab-raids')));
+    await tester.tap(find.byKey(const Key('friends-tab-raids')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('raid-log-0')), findsOneWidget);
+    expect(find.byKey(const Key('raid-log-1')), findsOneWidget);
+    final before = c.read(gameControllerProvider).money;
+    await tester.tap(find.byKey(const Key('raid-claim')));
+    await tester.pumpAndSettle();
+    expect(repo.log, contains('claimDefense'));
+    expect(c.read(gameControllerProvider).money, greaterThanOrEqualTo(before + raidRewardFloor));
+    expect(find.byKey(const Key('raid-claim')), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
+  test('chấm đỏ tính cả thưởng phòng thủ', () async {
+    final repo = _Repo()..data = const FriendsOverview(defenseWaiting: 2, giftsWaiting: 1);
+    final linked = ProviderContainer(overrides: [
+      cloudSaveControllerProvider.overrideWith(_LinkedCloud.new),
+      friendsRepositoryProvider.overrideWithValue(repo),
+    ]);
+    addTearDown(linked.dispose);
+    expect(await linked.read(friendsAlertProvider.future), 3);
+  });
+
   testWidgets('bấm dòng bạn → quán: cảnh, món trưng bày (id lạ bị bỏ), số liệu, nút bộ sưu tập/hồ sơ', (tester) async {
     final repo = _Repo()..data = FriendsOverview(friends: [_f('u1', 'Mai')]);
     final (c, _) = await _open(tester, repo);
@@ -173,7 +291,7 @@ void main() {
 
   test('pushShopDisplay nuốt lỗi', () async {
     final repo = _ThrowRepo();
-    await pushShopDisplay(repo, ['kraken']);
+    await pushShopDisplay(repo, ['kraken'], 10);
   });
 
   test('chấm đỏ: lời mời + quà chờ, 0 khi chưa liên kết', () async {

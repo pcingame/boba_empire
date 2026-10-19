@@ -3092,6 +3092,323 @@ class AppLocalizationsId extends AppLocalizations {
   String get friendShopProfile => 'Profil';
 
   @override
+  String get worldBossTitle => 'Bos Dunia';
+
+  @override
+  String get worldBossHow =>
+      'Bos mingguan hanya muncul pada hari MINGGU (UTC) tapi hadiahnya besar. Hari itu, setiap ketukan, detik offline, dan poin Resep menjadi damage. Setiap 20% HP yang hancur membuka hadiah untuk semua (💎 + koin); kalahkan untuk peti aksesori!';
+
+  @override
+  String worldBossHp(String cur, String max) {
+    return '$cur / $max HP';
+  }
+
+  @override
+  String worldBossMine(String dmg) {
+    return 'Damage kamu: $dmg';
+  }
+
+  @override
+  String worldBossRank(int rank) {
+    return 'Peringkat #$rank';
+  }
+
+  @override
+  String worldBossPlayers(int n) {
+    return '$n petarung';
+  }
+
+  @override
+  String worldBossEndsIn(String time) {
+    return 'Bos pergi dalam $time';
+  }
+
+  @override
+  String worldBossOpensIn(String time) {
+    return 'Bos muncul dalam $time (Minggu)';
+  }
+
+  @override
+  String worldBossPhase(int pct) {
+    return 'Target $pct% HP';
+  }
+
+  @override
+  String get worldBossClaim => 'Klaim';
+
+  @override
+  String get worldBossClaimed => 'Diklaim';
+
+  @override
+  String get worldBossLocked => 'Belum';
+
+  @override
+  String worldBossNeedDamage(int dmg) {
+    return 'Berikan minimal $dmg damage untuk klaim';
+  }
+
+  @override
+  String get worldBossBoard => 'Damage tertinggi';
+
+  @override
+  String get worldBossBoardEmpty =>
+      'Belum ada yang menyerang — jadilah yang pertama!';
+
+  @override
+  String worldBossClaimedSnack(int gems) {
+    return 'Dapat $gems 💎 dari Bos Dunia!';
+  }
+
+  @override
+  String get worldBossHit => 'Serang!';
+
+  @override
+  String get worldBossDefeated => 'Bos tumbang! 🎉';
+
+  @override
+  String get worldBossAutoTitle => '🤖 Serangan otomatis';
+
+  @override
+  String worldBossAutoDesc(int n) {
+    return 'Menyerang otomatis tiap jam (+$n damage/jam) hingga minggu berakhir, bahkan saat app ditutup.';
+  }
+
+  @override
+  String worldBossAutoBuy(int gems) {
+    return 'Aktifkan minggu ini · 💎 $gems';
+  }
+
+  @override
+  String get worldBossAutoOn => 'Aktif hingga minggu berakhir ✓';
+
+  @override
+  String get worldBossAutoSnack => 'Serangan otomatis aktif minggu ini!';
+
+  @override
+  String get worldBossNotEnoughGems => '💎 belum cukup.';
+
+  @override
+  String worldBossAdButton(int dmg, int left, int max) {
+    return '📺 Tonton iklan +$dmg damage ($left/$max)';
+  }
+
+  @override
+  String worldBossAdSnack(int dmg) {
+    return '+$dmg damage ke bos! 💥';
+  }
+
+  @override
+  String get worldBossAdNone => 'Iklan hari ini sudah habis.';
+
+  @override
+  String get worldBossDailyName => '🧟 Monster Frankenstein';
+
+  @override
+  String get worldBossTabDay => 'Bos harian';
+
+  @override
+  String get worldBossTabWeek => 'Bos mingguan';
+
+  @override
+  String worldBossDayXu(int min) {
+    return '$min mnt pendapatan';
+  }
+
+  @override
+  String get worldBossDayHow =>
+      'Bos harian lebih kecil dan berganti tiap hari (00:00 UTC). Setiap damage dihitung untuk bos harian DAN mingguan. Capai target untuk pendapatan, kalahkan untuk 💎.';
+
+  @override
+  String worldBossDayClaimedSnack(String xu) {
+    return 'Dapat $xu koin dari bos harian!';
+  }
+
+  @override
+  String get worldBossName0 => '🐺 Serigala Mutiara';
+
+  @override
+  String get worldBossName1 => '🐺 Serigala Gula Aren';
+
+  @override
+  String get worldBossName2 => '🐺 Serigala Matcha';
+
+  @override
+  String get worldBossName3 => '🐺 Serigala Teh Pahit';
+
+  @override
+  String get worldBossName4 => '🐺 Serigala Susu';
+
+  @override
+  String get worldBossName5 => '🐺 Serigala Jeli Kelapa';
+
+  @override
+  String get worldBossName6 => '🐺 Serigala Api Cabai';
+
+  @override
+  String get worldBossName7 => '🐺 Serigala Raja Boba';
+
+  @override
+  String get branchTitle => 'Cabang';
+
+  @override
+  String get branchIntro =>
+      'Buka cabang di berbagai kota: tiap cabang menghasilkan pendapatan sendiri (hingga 8 jam, termasuk offline) sebagai porsi dari pendapatan kedai utama. Ketuk Ambil — kadang ada jam sibuk ×3!';
+
+  @override
+  String get branchCollectAll => 'Ambil';
+
+  @override
+  String branchPendingTotal(String xu) {
+    return 'Menunggu: $xu koin';
+  }
+
+  @override
+  String branchCollected(String xu) {
+    return 'Dapat $xu koin dari cabang!';
+  }
+
+  @override
+  String branchRush(int n) {
+    return 'Jam sibuk ×3 di $n cabang! 🔥';
+  }
+
+  @override
+  String get branchNothing => 'Belum ada yang bisa diambil.';
+
+  @override
+  String branchLevel(int lvl, int max) {
+    return 'Level $lvl/$max';
+  }
+
+  @override
+  String branchRate(String pct) {
+    return '+$pct% pendapatan/detik';
+  }
+
+  @override
+  String branchPending(String xu) {
+    return 'Menunggu: $xu koin';
+  }
+
+  @override
+  String get branchFull => 'Penuh — ambil sebelum terbuang!';
+
+  @override
+  String branchOpen(String cost) {
+    return 'Buka · $cost';
+  }
+
+  @override
+  String branchUpgrade(String cost) {
+    return 'Tingkatkan · $cost';
+  }
+
+  @override
+  String get branchMaxed => 'Maksimum';
+
+  @override
+  String branchNeedStage(int stage) {
+    return 'Capai tahap $stage untuk membuka';
+  }
+
+  @override
+  String branchGala(String xu) {
+    return 'Pembukaan! Bonus $xu koin 🎉';
+  }
+
+  @override
+  String get branchNotEnough => 'Koin belum cukup.';
+
+  @override
+  String get branchCitySaigon => 'Saigon';
+
+  @override
+  String get branchCityHanoi => 'Hanoi';
+
+  @override
+  String get branchCityTokyo => 'Tokyo';
+
+  @override
+  String get branchCitySeoul => 'Seoul';
+
+  @override
+  String get branchCityBangkok => 'Bangkok';
+
+  @override
+  String get branchCityParis => 'Paris';
+
+  @override
+  String get branchCityNewyork => 'New York';
+
+  @override
+  String get branchCityDubai => 'Dubai';
+
+  @override
+  String get raidTab => 'Serbuan';
+
+  @override
+  String raidIntro(int n) {
+    return 'Kirim pasukan ke kedai teman! Hasil ditentukan kekuatan kedai (item pajangan + tahap) dan keberuntungan. Tidak ada yang kehilangan koin: menang dapat hadiah besar, diblokir pembela yang dapat. $n serbuan per hari, satu per teman.';
+  }
+
+  @override
+  String raidLeft(int n) {
+    return 'Sisa $n serbuan hari ini';
+  }
+
+  @override
+  String get raidButton => 'Serbu';
+
+  @override
+  String raidPower(int n) {
+    return 'Kekuatan kedai: $n';
+  }
+
+  @override
+  String raidChance(int pct) {
+    return 'Peluang menang ~$pct%';
+  }
+
+  @override
+  String raidWin(String xu) {
+    return 'Serbuan berhasil! 🎉 +$xu koin';
+  }
+
+  @override
+  String raidBlocked(String xu) {
+    return 'Terblokir! 🛡️ Hiburan +$xu koin';
+  }
+
+  @override
+  String raidLogWin(String name) {
+    return '$name berhasil menyerbu kedaimu';
+  }
+
+  @override
+  String raidLogBlocked(String name) {
+    return 'Kamu memblokir $name! 🛡️';
+  }
+
+  @override
+  String get raidLogEmpty => 'Belum ada yang menyerbu kedaimu.';
+
+  @override
+  String raidClaimDefense(int n) {
+    return 'Klaim hadiah pertahanan ($n)';
+  }
+
+  @override
+  String raidDefenseSnack(String xu) {
+    return 'Dapat $xu koin dari pertahanan!';
+  }
+
+  @override
+  String get friendsErrRaidLimit => 'Serbuan hari ini habis.';
+
+  @override
+  String get friendsErrRaidAlready => 'Kamu sudah menyerbu kedai ini hari ini.';
+
+  @override
   String get seasonLbEmpty =>
       'Belum ada siapa pun di papan musim ini. Kumpulkan XP Pass lalu buka lagi untuk masuk (perlu akun terhubung email).';
 

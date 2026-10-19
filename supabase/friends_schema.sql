@@ -160,7 +160,14 @@ begin
       select jsonb_agg(jsonb_build_object('user_id', r.from_user, 'nickname', coalesce(friend_nick(r.from_user), '???'))
                        order by r.created_at desc)
         from friend_requests r where r.to_user = me), '[]'::jsonb),
-    'gifts_waiting', (select count(*) from friend_gifts g where g.to_user = me and not g.claimed and g.day >= v_today - 7)
+    'gifts_waiting', (select count(*) from friend_gifts g where g.to_user = me and not g.claimed and g.day >= v_today - 7),
+    'raids_left', greatest(raid_per_day() - (select count(*) from friend_raids r where r.attacker = me and r.day = v_today), 0),
+    'defense_waiting', (select count(*) from friend_raids r where r.defender = me and not r.win and not r.defense_claimed and r.day >= v_today - 7),
+    'raid_log', coalesce((
+      select jsonb_agg(jsonb_build_object('nickname', coalesce(friend_nick(t.attacker), '???'), 'win', t.win, 'day', t.day)
+                       order by t.created_at desc)
+        from (select attacker, win, day, created_at from friend_raids where defender = me
+               order by created_at desc limit 10) t), '[]'::jsonb)
   );
 end;
 $$;
@@ -201,10 +208,13 @@ create table if not exists shop_displays (
   equipped   text[] not null default '{}',
   updated_at timestamptz not null default now()
 );
+alter table shop_displays add column if not exists power integer not null default 0 check (power between 0 and 1000);
 alter table shop_displays enable row level security;
 -- Không policy: chỉ RPC security definer.
 
-create or replace function set_shop_display(p_equipped text[]) returns void
+-- p_power: "sức mạnh quán" do app tính từ món trưng bày + giai đoạn (dùng cho Đột kích); server chỉ kẹp 0..1000.
+drop function if exists set_shop_display(text[]);
+create or replace function set_shop_display(p_equipped text[], p_power integer default 0) returns void
 language plpgsql security definer set search_path = public as $$
 declare me uuid := friend_require_linked(); e text;
 begin
@@ -212,8 +222,8 @@ begin
   foreach e in array p_equipped loop
     if e is null or e !~ '^[a-z0-9_]{1,40}$' then raise exception 'bad display'; end if;
   end loop;
-  insert into shop_displays (user_id, equipped) values (me, p_equipped)
-  on conflict (user_id) do update set equipped = excluded.equipped, updated_at = now();
+  insert into shop_displays (user_id, equipped, power) values (me, p_equipped, least(greatest(coalesce(p_power, 0), 0), 1000))
+  on conflict (user_id) do update set equipped = excluded.equipped, power = excluded.power, updated_at = now();
 end;
 $$;
 
@@ -229,12 +239,84 @@ begin
     'income', coalesce((select e.lifetime_earnings from leaderboard_entries e where e.user_id = p_friend), 0),
     'season_xp', coalesce((select s.xp from season_leaderboard_entries s where s.user_id = p_friend and s.season_id = v_season), 0),
     'orders', coalesce((select r.perfected from recipe_order_leaderboard_entries r where r.user_id = p_friend), 0),
-    'equipped', to_jsonb(coalesce((select d.equipped from shop_displays d where d.user_id = p_friend), '{}'::text[])));
+    'equipped', to_jsonb(coalesce((select d.equipped from shop_displays d where d.user_id = p_friend), '{}'::text[])),
+    'power', coalesce((select d.power from shop_displays d where d.user_id = p_friend), 0));
 end;
 $$;
 
-revoke all on function friend_require_linked(), friend_count(uuid), friend_are(uuid, uuid), friend_nick(uuid) from public, anon, authenticated;
+-- Đột kích quán bạn: gửi "đội đột kích" sang quán một người bạn. Kết quả quyết định ở server theo sức mạnh quán hai bên
+-- (+ may rủi); KHÔNG ai mất Xu — thắng thì kẻ đột kích nhận thưởng, bị chặn thì người phòng thủ nhận thưởng phòng thủ.
+-- Giới hạn: 3 lượt/ngày (UTC), mỗi bạn 1 lượt/ngày. Thưởng (số giây thu nhập) do app cấp SAU khi server xác nhận.
+create table if not exists friend_raids (
+  id              bigserial primary key,
+  attacker        uuid not null references auth.users(id) on delete cascade,
+  defender        uuid not null references auth.users(id) on delete cascade,
+  day             date not null,
+  win             boolean not null,
+  defense_claimed boolean not null default false,
+  created_at      timestamptz not null default now(),
+  unique (attacker, defender, day)
+);
+create index if not exists friend_raids_defender_idx on friend_raids (defender, created_at desc);
+alter table friend_raids enable row level security;
+
+create or replace function raid_per_day() returns integer language sql immutable as $$ select 3 $$;
+-- Xác suất kẻ đột kích thắng: 50% khi ngang sức; chênh lệch cả hai chiều, kẹp 15%..85%.
+create or replace function raid_win_chance(p_attack integer, p_defense integer) returns numeric
+language sql immutable as $$
+  select least(0.85, greatest(0.15,
+    0.5 + (p_attack - p_defense)::numeric / (2 * greatest(p_attack, p_defense, 1))))
+$$;
+
+-- Lõi quyết định: tách khỏi friend_raid để test truyền p_roll cố định (client KHÔNG gọi được).
+create or replace function friend_raid_do(p_attacker uuid, p_target uuid, p_roll double precision) returns jsonb
+language plpgsql security definer set search_path = public as $$
+declare v_day date := (now() at time zone 'utc')::date; v_ap integer; v_dp integer; v_chance numeric; v_win boolean;
+begin
+  if p_attacker = p_target then raise exception 'bad target'; end if;
+  if not friend_are(p_attacker, p_target) then raise exception 'not friends'; end if;
+  if (select count(*) from friend_raids where attacker = p_attacker and day = v_day) >= raid_per_day() then
+    raise exception 'raid limit';
+  end if;
+  v_ap := coalesce((select power from shop_displays where user_id = p_attacker), 0);
+  v_dp := coalesce((select power from shop_displays where user_id = p_target), 0);
+  v_chance := raid_win_chance(v_ap, v_dp);
+  v_win := p_roll < v_chance;
+  begin
+    insert into friend_raids (attacker, defender, day, win) values (p_attacker, p_target, v_day, v_win);
+  exception when unique_violation then
+    raise exception 'already raided';
+  end;
+  return jsonb_build_object('win', v_win, 'chance', v_chance, 'attack', v_ap, 'defense', v_dp);
+end;
+$$;
+
+create or replace function friend_raid(p_target uuid) returns jsonb
+language plpgsql security definer set search_path = public as $$
+declare me uuid := friend_require_linked();
+begin
+  return friend_raid_do(me, p_target, random());
+end;
+$$;
+
+-- Gom thưởng phòng thủ (các lượt đột kích vào quán mình mà BỊ CHẶN, trong 7 ngày); trả số lượt.
+create or replace function friend_raid_claim() returns integer
+language plpgsql security definer set search_path = public as $$
+declare me uuid := friend_require_linked(); n integer;
+begin
+  with c as (
+    update friend_raids r set defense_claimed = true
+     where r.defender = me and not r.win and not r.defense_claimed
+       and r.day >= (now() at time zone 'utc')::date - 7
+    returning 1)
+  select count(*)::integer into n from c;
+  return n;
+end;
+$$;
+
+revoke all on function friend_require_linked(), friend_count(uuid), friend_are(uuid, uuid), friend_nick(uuid),
+  friend_raid_do(uuid, uuid, double precision) from public, anon, authenticated;
 revoke all on function friend_search(text), friend_request(uuid), friend_respond(uuid, boolean), friend_remove(uuid),
-  friend_overview(), friend_gift_send(uuid), friend_gift_claim(), set_shop_display(text[]), friend_shop(uuid) from public, anon;
+  friend_overview(), friend_gift_send(uuid), friend_gift_claim(), set_shop_display(text[], integer), friend_shop(uuid), friend_raid(uuid), friend_raid_claim() from public, anon;
 grant execute on function friend_search(text), friend_request(uuid), friend_respond(uuid, boolean), friend_remove(uuid),
-  friend_overview(), friend_gift_send(uuid), friend_gift_claim(), set_shop_display(text[]), friend_shop(uuid) to authenticated;
+  friend_overview(), friend_gift_send(uuid), friend_gift_claim(), set_shop_display(text[], integer), friend_shop(uuid), friend_raid(uuid), friend_raid_claim() to authenticated;

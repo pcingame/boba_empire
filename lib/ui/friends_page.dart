@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/format.dart';
+import '../core/raid.dart';
 import '../friends/friends.dart';
 import '../l10n/app_localizations.dart';
 import '../leaderboard/player_avatar.dart';
@@ -29,6 +30,8 @@ String friendErrorText(AppLocalizations l10n, Object e) {
     FriendError.limit => l10n.friendsErrLimit,
     FriendError.notFound => l10n.friendsErrNotFound,
     FriendError.alreadySent => l10n.friendsErrAlreadySent,
+    FriendError.raidLimit => l10n.friendsErrRaidLimit,
+    FriendError.raidAlready => l10n.friendsErrRaidAlready,
     FriendError.linkRequired || FriendError.network => l10n.friendsErrNetwork,
   };
 }
@@ -44,7 +47,7 @@ class FriendsPage extends ConsumerWidget {
     final requests = async.value?.incoming.length ?? 0;
     return PhoneWidth(
       child: DefaultTabController(
-        length: 4,
+        length: 5,
         initialIndex: initialQuery.isEmpty ? 0 : 2,
         child: Scaffold(
           appBar: AppBar(
@@ -59,6 +62,9 @@ class FriendsPage extends ConsumerWidget {
                     text: requests > 0 ? '${l10n.friendsTabRequests} ($requests)' : l10n.friendsTabRequests),
                 Tab(key: const Key('friends-tab-add'), text: l10n.friendsTabAdd),
                 Tab(key: const Key('friends-tab-rank'), text: l10n.friendsTabRank),
+                Tab(
+                    key: const Key('friends-tab-raids'),
+                    text: (async.value?.defenseWaiting ?? 0) > 0 ? '${l10n.raidTab} ●' : l10n.raidTab),
               ],
             ),
           ),
@@ -78,6 +84,7 @@ class FriendsPage extends ConsumerWidget {
                 _RequestsTab(value),
                 _AddTab(initialQuery: initialQuery),
                 _RankTab(value),
+                _RaidsTab(value),
               ]),
             _ => const Center(child: CircularProgressIndicator()),
           },
@@ -414,6 +421,54 @@ class _RankTabState extends ConsumerState<_RankTab> {
                   ),
               ]),
       ),
+    ]);
+  }
+}
+
+
+/// Nhật ký đột kích vào quán mình + thưởng phòng thủ. Đột kích bạn thì bấm vào quán bạn (trang quán).
+class _RaidsTab extends ConsumerWidget {
+  const _RaidsTab(this.data);
+  final FriendsOverview data;
+
+  Future<void> _claim(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context)!;
+    try {
+      final (n, xu) = await ref.read(friendsControllerProvider.notifier).claimDefense();
+      if (context.mounted && n > 0) _snack(context, l10n.raidDefenseSnack(formatNumber(xu)));
+    } catch (e) {
+      if (context.mounted) _snack(context, friendErrorText(l10n, e));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+    return ListView(padding: const EdgeInsets.all(16), children: [
+      Text(l10n.raidIntro(raidsPerDay), key: const Key('raid-intro'), style: theme.textTheme.bodySmall),
+      const SizedBox(height: 8),
+      Text(l10n.raidLeft(data.raidsLeft), key: const Key('raid-left'), style: theme.textTheme.titleSmall),
+      if (data.defenseWaiting > 0) ...[
+        const SizedBox(height: 8),
+        FilledButton(
+          key: const Key('raid-claim'),
+          onPressed: () => _claim(context, ref),
+          child: Text('🛡️ ${l10n.raidClaimDefense(data.defenseWaiting)}'),
+        ),
+      ],
+      const SizedBox(height: 12),
+      if (data.raidLog.isEmpty)
+        Text(l10n.raidLogEmpty, key: const Key('raid-log-empty'))
+      else
+        for (var i = 0; i < data.raidLog.length; i++)
+          Padding(
+            key: Key('raid-log-$i'),
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Text(data.raidLog[i].win
+                ? '⚔️ ${l10n.raidLogWin(data.raidLog[i].nickname)}'
+                : l10n.raidLogBlocked(data.raidLog[i].nickname)),
+          ),
     ]);
   }
 }
