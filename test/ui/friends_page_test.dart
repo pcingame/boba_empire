@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:boba_empire/core/models.dart';
+import 'package:boba_empire/data/cloud_save_controller.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/friends/friends.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
@@ -13,6 +14,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+class _LinkedCloud extends CloudSaveController {
+  @override
+  CloudSaveViewState build() => const CloudSaveLinked('a@b.c');
+}
+
+class _UnlinkedCloud extends CloudSaveController {
+  @override
+  CloudSaveViewState build() => const CloudSaveUnlinked();
+}
 
 class _Repo implements FriendsRepository {
   FriendsOverview data = const FriendsOverview();
@@ -96,6 +107,23 @@ Future<void> _done(WidgetTester tester, ProviderContainer c) async {
 }
 
 void main() {
+  test('chấm đỏ: lời mời + quà chờ, 0 khi chưa liên kết', () async {
+    final repo = _Repo()
+      ..data = const FriendsOverview(incoming: [FriendRequestIn('u1', 'A')], giftsWaiting: 2);
+    final linked = ProviderContainer(overrides: [
+      cloudSaveControllerProvider.overrideWith(_LinkedCloud.new),
+      friendsRepositoryProvider.overrideWithValue(repo),
+    ]);
+    addTearDown(linked.dispose);
+    expect(await linked.read(friendsAlertProvider.future), 3);
+    final unlinked = ProviderContainer(overrides: [
+      cloudSaveControllerProvider.overrideWith(_UnlinkedCloud.new),
+      friendsRepositoryProvider.overrideWithValue(repo),
+    ]);
+    addTearDown(unlinked.dispose);
+    expect(await unlinked.read(friendsAlertProvider.future), 0);
+  });
+
   test('hằng số quà và giới hạn khớp SQL', () {
     final sql = File('supabase/friends_schema.sql').readAsStringSync();
     expect(sql, contains('>= 50')); // trần bạn

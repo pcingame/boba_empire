@@ -1254,3 +1254,4 @@ Chip dịp lễ trong header và banner buff sự kiện gộp thành MỘT dả
 - **Quà mỗi ngày:** tặng mỗi bạn một quà/ngày (UTC); người tặng và người nhận mỗi quà được 180 giây thu nhập (sàn 100 Xu). Quà chờ nhận trong 7 ngày; huỷ bạn thì quà chưa nhận mất. Xu chỉ cộng SAU khi server xác nhận. Không có 💎 để tránh nuôi nick.
 - **BXH bạn bè:** bạn + mình theo Thu nhập / XP Thẻ Mùa / Pha theo đơn (số liệu lấy từ các bảng xếp hạng hiện có, nên người chưa lên bảng đó hiện 0).
 - Kỹ thuật: `lib/friends/friends.dart`, `lib/ui/friends_page.dart`, `supabase/friends_schema.sql` (PHẢI chạy), test `scripts/test_friends_sql.sh`.
+- **Chấm đỏ:** nút ⚙ ở màn chính có chấm đỏ, dòng "Bạn bè" trong Cài đặt có số, khi có lời mời kết bạn hoặc quà chờ nhận (`friendsAlertProvider`; làm mới khi mở lại app / đóng trang Bạn bè; chưa liên kết email = không chấm).

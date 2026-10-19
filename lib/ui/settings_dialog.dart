@@ -11,6 +11,7 @@ import 'language_dialog.dart';
 import 'redeem_dialog.dart';
 import 'invite_dialog.dart' show shareTextProvider;
 import '../leaderboard/player_avatar.dart';
+import '../friends/friends.dart' show friendsAlertProvider;
 import 'friends_page.dart';
 import 'my_profile_page.dart';
 import 'widgets/avatar_circle.dart';
@@ -90,7 +91,9 @@ class _SettingsDialog extends ConsumerWidget {
             contentPadding: EdgeInsets.zero,
             leading: const Icon(Icons.group_outlined),
             title: Text(l10n.friendsTitle),
-            trailing: const Icon(Icons.chevron_right),
+            trailing: (ref.watch(friendsAlertProvider).value ?? 0) > 0
+                ? Badge(key: const Key('settings-friends-badge'), label: Text('${ref.watch(friendsAlertProvider).value}'))
+                : const Icon(Icons.chevron_right),
             onTap: () {
               Navigator.of(context).pop();
               showFriends(context);

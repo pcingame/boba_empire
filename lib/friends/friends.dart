@@ -7,6 +7,7 @@ import 'dart:developer' as developer;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../data/cloud_save_controller.dart';
 import '../state/game_providers.dart';
 
 /// Quà mỗi ngày = ngần này giây thu nhập (sàn [friendGiftFloor] Xu) — cả người tặng lẫn người nhận.
@@ -231,6 +232,18 @@ class FriendsController extends AsyncNotifier<FriendsOverview> {
 
 final friendsControllerProvider =
     AsyncNotifierProvider.autoDispose<FriendsController, FriendsOverview>(FriendsController.new);
+
+/// Số việc đang chờ (lời mời + quà) cho chấm đỏ ở màn chính; 0 nếu chưa liên kết
+/// email hoặc lỗi mạng. Gọi `ref.invalidate` khi mở lại app / đóng trang Bạn bè.
+final friendsAlertProvider = FutureProvider<int>((ref) async {
+  if (ref.watch(cloudSaveControllerProvider) is! CloudSaveLinked) return 0;
+  try {
+    final o = await ref.read(friendsRepositoryProvider).overview();
+    return o.incoming.length + o.giftsWaiting;
+  } catch (_) {
+    return 0;
+  }
+});
 
 /// Tìm theo biệt danh (autoDispose theo từng từ khoá).
 final friendSearchProvider = FutureProvider.autoDispose.family<List<FriendCandidate>, String>(

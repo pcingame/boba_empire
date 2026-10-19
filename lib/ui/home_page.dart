@@ -58,6 +58,7 @@ import 'offline_dialog.dart';
 import 'prestige_dialog.dart';
 import 'recipe_order_page.dart' show showRecipeOrderFor;
 import 'rival_event_dialog.dart';
+import '../friends/friends.dart' show friendsAlertProvider;
 import 'settings_dialog.dart';
 import 'story_dialog.dart';
 import 'tutorial_overlay.dart';
@@ -322,6 +323,7 @@ class _HomePageState extends ConsumerState<HomePage>
         unawaited(ref.read(guildControllerProvider.notifier).syncBuff());
         unawaited(ref.read(guildControllerProvider.notifier).syncAlerts());
         unawaited(ref.read(lbRewardsControllerProvider.notifier).refresh());
+        ref.invalidate(friendsAlertProvider);
         unawaited(ref.read(vipPresenceProvider).ping());
         unawaited(ref.read(referralControllerProvider.notifier).reportStageIfNeeded());
         Reminders.cancelAll(); // đã mở app rồi thì nhắc nữa là phiền
@@ -955,7 +957,12 @@ class _MoneyHeader extends ConsumerWidget {
               const SizedBox(width: 4),
               IconButton(
                 key: const Key('settings-button'),
-                icon: const Icon(Icons.settings_outlined),
+                icon: Badge(
+                  key: const Key('settings-friends-dot'),
+                  isLabelVisible:
+                      (ref.watch(friendsAlertProvider).value ?? 0) > 0,
+                  child: const Icon(Icons.settings_outlined),
+                ),
                 tooltip: l10n.settingsTitle,
                 color: onContainer,
                 padding: EdgeInsets.zero,

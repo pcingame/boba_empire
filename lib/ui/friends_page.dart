@@ -17,8 +17,10 @@ import 'widgets/phone_width.dart';
 
 Future<void> showFriends(BuildContext context, {String initialQuery = ''}) async {
   if (!await ensureOnlineLinked(context) || !context.mounted) return;
+  final container = ProviderScope.containerOf(context);
   await Navigator.of(context)
       .push(MaterialPageRoute(builder: (_) => FriendsPage(initialQuery: initialQuery)));
+  container.invalidate(friendsAlertProvider);
 }
 
 String friendErrorText(AppLocalizations l10n, Object e) {
