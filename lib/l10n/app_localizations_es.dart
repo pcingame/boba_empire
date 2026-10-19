@@ -3423,6 +3423,46 @@ class AppLocalizationsEs extends AppLocalizations {
   String get branchSkin3 => 'Cerezo en flor';
 
   @override
+  String get branchQuestTitle => 'Misiones de sucursales';
+
+  @override
+  String get branchQuestHint =>
+      'Se reinicia a diario (0:00 UTC). La recogida automática del gerente no cuenta.';
+
+  @override
+  String branchQuest0(int n) {
+    return 'Recoge ingresos $n veces';
+  }
+
+  @override
+  String branchQuest1(int n) {
+    return 'Consigue hora punta $n veces';
+  }
+
+  @override
+  String branchQuest2(int n) {
+    return 'Mejora sucursales $n veces';
+  }
+
+  @override
+  String branchQuest3(int n) {
+    return 'Reclama $n evento de sucursal';
+  }
+
+  @override
+  String get branchQuestAll => 'Completa las 4 misiones';
+
+  @override
+  String branchEmpireBonus(int lvl, String pct) {
+    return 'Niveles de sucursales $lvl → +$pct% de ingresos de la tienda principal (se conservan al franquiciar)';
+  }
+
+  @override
+  String prestigeBranchKept(int lvl, String pct) {
+    return '✅ Las sucursales se CONSERVAN (niveles $lvl → +$pct% de ingresos).';
+  }
+
+  @override
   String get branchNothing => 'Aún no hay nada que cobrar.';
 
   @override

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../ads/ad_service.dart';
 import '../audio/audio_service.dart';
 import '../core/balance.dart';
+import '../core/branches.dart';
 import '../core/economy.dart';
 import '../core/format.dart';
 import '../l10n/app_localizations.dart';
@@ -42,6 +43,9 @@ class _PrestigeDialog extends ConsumerWidget {
     final starBonusLv = ref.watch(
       gameControllerProvider.select((s) => s.ascensionStarBonusLevel),
     );
+    final branchLv = ref.watch(
+      gameControllerProvider.select((s) => branchTotalLevels(s.branchLevels)),
+    );
     final canPrestige = available > 0;
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context)!;
@@ -73,6 +77,18 @@ class _PrestigeDialog extends ConsumerWidget {
                 color: theme.colorScheme.error,
               ),
             ),
+            if (branchLv > 0)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(
+                  l10n.prestigeBranchKept(
+                    branchLv,
+                    (branchLv * branchIncomeBonusPerLevel * 100).toStringAsFixed(1),
+                  ),
+                  key: const Key('prestige-branch-kept'),
+                  style: theme.textTheme.bodySmall,
+                ),
+              ),
             const _StarShop(),
             const _AscensionEntry(),
           ],

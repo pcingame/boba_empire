@@ -202,6 +202,9 @@ class GameState {
     Map<String, int>? branchSpecs,
     this.branchEventClaimedSlot = -1,
     this.branchMapSkin = 0,
+    this.branchQuestDayKey = -1,
+    List<int>? branchQuestProgress,
+    this.branchQuestClaimed = 0,
     List<String>? equippedAccessories,
     List<int>? collectionMilestonesClaimed,
     List<String>? collectionSetsClaimed,
@@ -223,6 +226,7 @@ class GameState {
         branchSince = branchSince ?? {},
         branchSetClaims = branchSetClaims ?? [],
         branchSpecs = branchSpecs ?? {},
+        branchQuestProgress = branchQuestProgress ?? [0, 0, 0, 0],
         equippedAccessories = equippedAccessories ?? [],
         collectionMilestonesClaimed = collectionMilestonesClaimed ?? [],
         collectionSetsClaimed = collectionSetsClaimed ?? [],
@@ -386,6 +390,11 @@ class GameState {
   final Map<String, int> branchSpecs;
   int branchEventClaimedSlot;
   int branchMapSkin;
+
+  /// Nhiệm vụ chi nhánh trong ngày: khoá ngày (UTC), tiến độ 4 nhiệm vụ, mặt nạ bit đã nhận.
+  int branchQuestDayKey;
+  List<int> branchQuestProgress;
+  int branchQuestClaimed;
 
   /// Bộ đếm Tinh chất nguồn lặp lại trong ngày [essenceDay] (dayIndex UTC): riêng đơn Pha theo đơn, và chung.
   int essenceDay;
@@ -715,6 +724,9 @@ class GameState {
         'branchSpecs': branchSpecs,
         'branchEventClaimedSlot': branchEventClaimedSlot,
         'branchMapSkin': branchMapSkin,
+        'branchQuestDayKey': branchQuestDayKey,
+        'branchQuestProgress': branchQuestProgress,
+        'branchQuestClaimed': branchQuestClaimed,
         'essenceDay': essenceDay,
         'essenceOrdersToday': essenceOrdersToday,
         'essenceRepeatableToday': essenceRepeatableToday,
@@ -931,6 +943,14 @@ class GameState {
               if (e.value is num && (e.value == 1 || e.value == 2)) '${e.key}': (e.value as num).toInt(),
         },
         branchEventClaimedSlot: (json['branchEventClaimedSlot'] as num?)?.toInt() ?? -1,
+        branchQuestDayKey: (json['branchQuestDayKey'] as num?)?.toInt() ?? -1,
+        branchQuestProgress: [
+          for (var i = 0; i < 4; i++)
+            json['branchQuestProgress'] is List && (json['branchQuestProgress'] as List).length > i && (json['branchQuestProgress'] as List)[i] is num
+                ? ((json['branchQuestProgress'] as List)[i] as num).toInt().clamp(0, 1 << 30)
+                : 0,
+        ],
+        branchQuestClaimed: ((json['branchQuestClaimed'] as num?)?.toInt() ?? 0) & 31,
         branchMapSkin: ((json['branchMapSkin'] as num?)?.toInt() ?? 0).clamp(0, 3),
         branchManagerUntilMillis: ((json['branchManagerUntilMillis'] as num?)?.toInt() ?? 0).clamp(0, 1 << 52),
         essenceDay: (json['essenceDay'] as num?)?.toInt() ?? 0,

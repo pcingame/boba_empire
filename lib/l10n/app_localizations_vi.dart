@@ -3400,6 +3400,46 @@ class AppLocalizationsVi extends AppLocalizations {
   String get branchSkin3 => 'Hoa anh đào';
 
   @override
+  String get branchQuestTitle => 'Nhiệm vụ chi nhánh';
+
+  @override
+  String get branchQuestHint =>
+      'Làm mới mỗi ngày (0h UTC). Tự thu của Quản lý không tính nhiệm vụ thu tay.';
+
+  @override
+  String branchQuest0(int n) {
+    return 'Thu doanh thu $n lần';
+  }
+
+  @override
+  String branchQuest1(int n) {
+    return 'Gặp giờ cao điểm $n lần';
+  }
+
+  @override
+  String branchQuest2(int n) {
+    return 'Nâng cấp chi nhánh $n lần';
+  }
+
+  @override
+  String branchQuest3(int n) {
+    return 'Nhận $n sự kiện chi nhánh';
+  }
+
+  @override
+  String get branchQuestAll => 'Xong cả 4 nhiệm vụ';
+
+  @override
+  String branchEmpireBonus(int lvl, String pct) {
+    return 'Tổng cấp chi nhánh $lvl → +$pct% thu nhập quán chính (giữ nguyên khi Nhượng quyền)';
+  }
+
+  @override
+  String prestigeBranchKept(int lvl, String pct) {
+    return '✅ Chi nhánh được GIỮ NGUYÊN (tổng cấp $lvl → +$pct% thu nhập quán chính).';
+  }
+
+  @override
   String get branchNothing => 'Chưa có gì để thu.';
 
   @override

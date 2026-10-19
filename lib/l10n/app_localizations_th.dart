@@ -3395,6 +3395,46 @@ class AppLocalizationsTh extends AppLocalizations {
   String get branchSkin3 => 'ซากุระ';
 
   @override
+  String get branchQuestTitle => 'ภารกิจสาขา';
+
+  @override
+  String get branchQuestHint =>
+      'รีเซ็ตทุกวัน (00:00 UTC) การเก็บอัตโนมัติของผู้จัดการไม่นับ';
+
+  @override
+  String branchQuest0(int n) {
+    return 'เก็บรายได้ $n ครั้ง';
+  }
+
+  @override
+  String branchQuest1(int n) {
+    return 'เจอชั่วโมงเร่งด่วน $n ครั้ง';
+  }
+
+  @override
+  String branchQuest2(int n) {
+    return 'อัปเกรดสาขา $n ครั้ง';
+  }
+
+  @override
+  String branchQuest3(int n) {
+    return 'รับอีเวนต์สาขา $n ครั้ง';
+  }
+
+  @override
+  String get branchQuestAll => 'ทำครบทั้ง 4 ภารกิจ';
+
+  @override
+  String branchEmpireBonus(int lvl, String pct) {
+    return 'เลเวลสาขารวม $lvl → รายได้ร้านหลัก +$pct% (คงอยู่หลังแฟรนไชส์)';
+  }
+
+  @override
+  String prestigeBranchKept(int lvl, String pct) {
+    return '✅ สาขาคงอยู่ (เลเวล $lvl → รายได้ร้านหลัก +$pct%)';
+  }
+
+  @override
   String get branchNothing => 'ยังไม่มีอะไรให้เก็บ';
 
   @override

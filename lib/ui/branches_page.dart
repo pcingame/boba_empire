@@ -191,6 +191,95 @@ class _BranchesPageState extends ConsumerState<BranchesPage> {
     );
   }
 
+  void _showQuests(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      useSafeArea: true,
+      builder: (sheet) => Consumer(
+        builder: (ctx, ref, _) {
+          final l10n = AppLocalizations.of(ctx)!;
+          final theme = Theme.of(ctx);
+          final s = ref.watch(gameControllerProvider);
+          final today = s.branchQuestDayKey == branchQuestDay(ref.read(clockProvider)());
+          final prog = today ? s.branchQuestProgress : const [0, 0, 0, 0];
+          final mask = today ? s.branchQuestClaimed : 0;
+          final names = [
+            l10n.branchQuest0(branchQuestTargets[0]),
+            l10n.branchQuest1(branchQuestTargets[1]),
+            l10n.branchQuest2(branchQuestTargets[2]),
+            l10n.branchQuest3(branchQuestTargets[3]),
+            l10n.branchQuestAll,
+          ];
+          final claimable = branchQuestClaimable(prog, mask);
+          Widget row(int i) {
+            final done = i == 4
+                ? [for (var k = 0; k < 4; k++) prog[k] >= branchQuestTargets[k]].every((b) => b)
+                : prog[i] >= branchQuestTargets[i];
+            final claimed = mask & (1 << i) != 0;
+            final gems = i == 4 ? branchQuestAllGems : branchQuestGems;
+            return Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Row(
+                key: Key('branch-quest-$i'),
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(names[i], style: theme.textTheme.labelLarge),
+                        if (i < 4) ...[
+                          const SizedBox(height: 4),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: LinearProgressIndicator(
+                              value: (prog[i] / branchQuestTargets[i]).clamp(0.0, 1.0),
+                              minHeight: 6,
+                            ),
+                          ),
+                          Text('${prog[i].clamp(0, branchQuestTargets[i])}/${branchQuestTargets[i]}', style: theme.textTheme.bodySmall),
+                        ],
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  if (claimed)
+                    const Text('✅', style: TextStyle(fontSize: 22))
+                  else
+                    FilledButton(
+                      key: Key('branch-quest-claim-$i'),
+                      onPressed: done && claimable.contains(i)
+                          ? () {
+                              if (ref.read(gameControllerProvider.notifier).claimBranchQuest(i)) {
+                                _snack(ctx, l10n.branchSetClaimed(gems));
+                              }
+                            }
+                          : null,
+                      child: Text('$gems 💎'),
+                    ),
+                ],
+              ),
+            );
+          }
+
+          return Padding(
+            key: const Key('branch-quest-sheet'),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('📜 ${l10n.branchQuestTitle}', style: theme.textTheme.titleMedium),
+                Text(l10n.branchQuestHint, style: theme.textTheme.bodySmall),
+                for (var i = 0; i < 5; i++) row(i),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   void _showSkins(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
@@ -319,6 +408,18 @@ class _BranchesPageState extends ConsumerState<BranchesPage> {
           title: Text(l10n.branchTitle),
           actions: [
             IconButton(
+              key: const Key('branch-quest-btn'),
+              visualDensity: VisualDensity.compact,
+              tooltip: l10n.branchQuestTitle,
+              icon: Badge(
+                isLabelVisible: s.branchQuestDayKey == branchQuestDay(now) &&
+                    branchQuestClaimable(s.branchQuestProgress, s.branchQuestClaimed).isNotEmpty,
+                smallSize: 8,
+                child: const Text('📜', style: TextStyle(fontSize: 22)),
+              ),
+              onPressed: () => _showQuests(context),
+            ),
+            IconButton(
               key: const Key('branch-skin-btn'),
               visualDensity: VisualDensity.compact,
               tooltip: l10n.branchSkinTitle,
@@ -418,6 +519,17 @@ class _BranchesPageState extends ConsumerState<BranchesPage> {
                               style: theme.textTheme.labelMedium,
                             ),
                           ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              l10n.branchEmpireBonus(
+                                branchTotalLevels(s.branchLevels),
+                                (branchTotalLevels(s.branchLevels) * branchIncomeBonusPerLevel * 100).toStringAsFixed(1),
+                              ),
+                              key: const Key('branch-empire-bonus'),
+                              style: theme.textTheme.bodySmall,
+                            ),
+                          ),
                           const SizedBox(height: 4),
                           Expanded(
                             child: BranchesMap(
@@ -482,6 +594,16 @@ class _BranchesPageState extends ConsumerState<BranchesPage> {
                                 l10n.branchCount(opened, branchCities.length),
                                 key: const Key('branch-count'),
                                 style: theme.textTheme.labelMedium,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                l10n.branchEmpireBonus(
+                                  branchTotalLevels(s.branchLevels),
+                                  (branchTotalLevels(s.branchLevels) * branchIncomeBonusPerLevel * 100).toStringAsFixed(1),
+                                ),
+                                key: const Key('branch-empire-bonus-list'),
+                                style: theme.textTheme.bodySmall,
+                                textAlign: TextAlign.center,
                               ),
                               const SizedBox(height: 4),
                               Text(

@@ -1306,3 +1306,11 @@ Chip dịp lễ trong header và banner buff sự kiện gộp thành MỘT dả
 - **Sự kiện**: mỗi ô 3 giờ (theo giờ epoch, xác định, không server) có 1 sự kiện ở 1 chi nhánh ĐÃ MỞ — 🎉 lễ hội (1h thu nhập), 🧳 đoàn khách (1.5h), 🎤 ngôi sao (2h), nhân (1 + cấp/10). Huy hiệu trên pin; thẻ nhận trong thẻ chi nhánh. Nhận 1 lần/ô (`branchEventClaimedSlot`), qua ô là mất. Có chấm đỏ (cùng `branchReadyProvider`).
 - **Chuyên ngành** (cấp 10): 🚢 Xuất khẩu (+25% Xu thu về của chi nhánh đó) hoặc 🧳 Du lịch (+20% cơ hội cao điểm riêng). Chọn lần đầu miễn phí, đổi tốn 30💎. `branchSpecs`.
 - **Skin bản đồ** (🎨): Cổ điển/Mùa đông/Tết/Hoa anh đào = màu phủ + hạt trang trí; miễn phí, `branchMapSkin`.
+
+### 53d. Nhiệm vụ chi nhánh (2026-10-19, chưa playtest)
+4 nhiệm vụ/ngày (làm mới 0h UTC): thu tay 3 lần, gặp cao điểm 2 lần, nâng cấp 2 lần, nhận 1 sự kiện — mỗi cái 5💎, đủ cả 4 thêm 10💎 (tổng 30💎/ngày). Tự thu của Quản lý KHÔNG tính vào "thu tay" (nhưng cao điểm vẫn tính). Nút 📜 ở AppBar + chấm đỏ. Client-only.
+
+### 53e. Chi nhánh làm trục vòng chơi (2026-10-20, chưa playtest)
+- Tổng cấp mọi chi nhánh → +0.5%/cấp thu nhập quán chính (tối đa 17×10 = +85%), nhân trong `effectiveIncomePerSecond` (một chỗ duy nhất nên mọi đường tính thu nhập đều ăn). Doanh thu chi nhánh tính theo thu nhập quán chính nên có vòng phản hồi nhẹ (tối đa ×1.85 chồng).
+- Nhượng quyền KHÔNG reset chi nhánh (vốn đã vậy: `prestige()` không đụng `branchLevels/branchSince`) — dialog Nhượng quyền nay nói rõ điều này; trang Chi nhánh hiện dòng bonus.
+- Chưa làm: gắn FTUE/nhiệm vụ chính với mở thành phố đầu; mức 2 (mỗi chi nhánh có máy riêng) chờ playtest.

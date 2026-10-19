@@ -10,6 +10,7 @@ import 'dart:math';
 import 'accessory_loadout.dart';
 import 'essence.dart';
 import 'balance.dart';
+import 'branches.dart' show branchIncomeMultiplier;
 import 'guild.dart' show guildVipBonusMultiplier;
 import 'models.dart';
 import 'topup.dart';
@@ -385,6 +386,7 @@ double effectiveIncomePerSecond(
     prestigeIncomeMultiplier(state.prestigeIncomeLevel) *
     storyChoiceIncomeMultiplier(state) *
     (state.doubleIncomeOwned ? 2.0 : 1.0) *
+    branchIncomeMultiplier(state.branchLevels) *
     vipIncomeMultiplier(state.vipExp) *
     guildVipBonusMultiplier(joined: state.guildJoined, pct: state.guildVipBonusPct) *
     loadoutBuffs(state.equippedAccessories, refine: state.refineLevels).incomeMultiplier *

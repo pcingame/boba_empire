@@ -5917,6 +5917,60 @@ abstract class AppLocalizations {
   /// **'Hoa anh đào'**
   String get branchSkin3;
 
+  /// No description provided for @branchQuestTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiệm vụ chi nhánh'**
+  String get branchQuestTitle;
+
+  /// No description provided for @branchQuestHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Làm mới mỗi ngày (0h UTC). Tự thu của Quản lý không tính nhiệm vụ thu tay.'**
+  String get branchQuestHint;
+
+  /// No description provided for @branchQuest0.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu doanh thu {n} lần'**
+  String branchQuest0(int n);
+
+  /// No description provided for @branchQuest1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gặp giờ cao điểm {n} lần'**
+  String branchQuest1(int n);
+
+  /// No description provided for @branchQuest2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nâng cấp chi nhánh {n} lần'**
+  String branchQuest2(int n);
+
+  /// No description provided for @branchQuest3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {n} sự kiện chi nhánh'**
+  String branchQuest3(int n);
+
+  /// No description provided for @branchQuestAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xong cả 4 nhiệm vụ'**
+  String get branchQuestAll;
+
+  /// No description provided for @branchEmpireBonus.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng cấp chi nhánh {lvl} → +{pct}% thu nhập quán chính (giữ nguyên khi Nhượng quyền)'**
+  String branchEmpireBonus(int lvl, String pct);
+
+  /// No description provided for @prestigeBranchKept.
+  ///
+  /// In vi, this message translates to:
+  /// **'✅ Chi nhánh được GIỮ NGUYÊN (tổng cấp {lvl} → +{pct}% thu nhập quán chính).'**
+  String prestigeBranchKept(int lvl, String pct);
+
   /// No description provided for @branchNothing.
   ///
   /// In vi, this message translates to:

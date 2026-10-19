@@ -64,6 +64,8 @@ final branchReadyProvider = Provider<bool>((ref) {
   return ref.watch(gameControllerProvider.select((s) =>
       branchesReady(s.branchLevels, s.branchSince, now(), manager: s.branchManagerUntilMillis > now()) ||
       branchSetsClaimable(s.branchLevels, s.branchSetClaims).isNotEmpty ||
+      (s.branchQuestDayKey == branchQuestDay(now()) &&
+          branchQuestClaimable(s.branchQuestProgress, s.branchQuestClaimed).isNotEmpty) ||
       (branchEventFor(s.branchLevels, branchEventSlot(now())) != null &&
           s.branchEventClaimedSlot != branchEventSlot(now()))));
 });

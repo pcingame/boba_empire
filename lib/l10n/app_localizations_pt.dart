@@ -3417,6 +3417,46 @@ class AppLocalizationsPt extends AppLocalizations {
   String get branchSkin3 => 'Flor de cerejeira';
 
   @override
+  String get branchQuestTitle => 'Missões das filiais';
+
+  @override
+  String get branchQuestHint =>
+      'Reinicia todo dia (0:00 UTC). A coleta automática do gerente não conta.';
+
+  @override
+  String branchQuest0(int n) {
+    return 'Colete renda $n vezes';
+  }
+
+  @override
+  String branchQuest1(int n) {
+    return 'Pegue horário de pico $n vezes';
+  }
+
+  @override
+  String branchQuest2(int n) {
+    return 'Melhore filiais $n vezes';
+  }
+
+  @override
+  String branchQuest3(int n) {
+    return 'Resgate $n evento de filial';
+  }
+
+  @override
+  String get branchQuestAll => 'Conclua as 4 missões';
+
+  @override
+  String branchEmpireBonus(int lvl, String pct) {
+    return 'Níveis das filiais $lvl → +$pct% de renda da loja principal (mantido ao franquear)';
+  }
+
+  @override
+  String prestigeBranchKept(int lvl, String pct) {
+    return '✅ As filiais são MANTIDAS (níveis $lvl → +$pct% de renda).';
+  }
+
+  @override
   String get branchNothing => 'Nada para coletar ainda.';
 
   @override

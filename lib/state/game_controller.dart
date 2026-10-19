@@ -315,10 +315,34 @@ class GameController extends Notifier<GameSnapshot> {
       if (pending > 0 && income.isFinite) grantBonus(_game, pending * income);
     }
     _game.branchLevels[id] = lvl + 1;
+    _bumpBranchQuest(2, 1);
     logEvent('branch_upgrade', {'id': id, 'level': lvl + 1});
     unawaited(saveNow());
     state = _snapshot();
     return gala;
+  }
+
+  /// Cộng tiến độ nhiệm vụ chi nhánh [i] (sang ngày mới thì làm mới trước). Chỉ sửa state, caller tự lưu.
+  void _bumpBranchQuest(int i, int n) {
+    final day = branchQuestDay(_clock());
+    if (_game.branchQuestDayKey != day) {
+      _game.branchQuestDayKey = day;
+      _game.branchQuestProgress = [0, 0, 0, 0];
+      _game.branchQuestClaimed = 0;
+    }
+    _game.branchQuestProgress[i] += n;
+  }
+
+  /// Nhận thưởng nhiệm vụ chi nhánh: [i] 0..3 từng nhiệm vụ, 4 = thưởng đủ bộ. false nếu chưa đủ/đã nhận.
+  bool claimBranchQuest(int i) {
+    if (_game.branchQuestDayKey != branchQuestDay(_clock())) return false;
+    if (!branchQuestClaimable(_game.branchQuestProgress, _game.branchQuestClaimed).contains(i)) return false;
+    _game.branchQuestClaimed |= 1 << i;
+    grantGems(_game, (i == 4 ? branchQuestAllGems : branchQuestGems).toDouble());
+    logEvent('branch_quest_claim', {'i': i});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
   }
 
   bool branchManagerActive() => _game.branchManagerUntilMillis > _clock();
@@ -362,6 +386,7 @@ class GameController extends Notifier<GameSnapshot> {
     final secs = branchEventRewardSeconds(e.type, branchLevel(_game.branchLevels, e.cityId));
     final cash = max((income.isFinite ? income : 0.0) * secs, raidRewardFloor);
     _game.branchEventClaimedSlot = slot;
+    _bumpBranchQuest(3, 1);
     grantBonus(_game, cash);
     logEvent('branch_event_claim', {'id': e.cityId, 'type': e.type});
     unawaited(saveNow());
@@ -390,7 +415,7 @@ class GameController extends Notifier<GameSnapshot> {
 
   /// Thu doanh thu mọi chi nhánh: Xu = giây tích × thu nhập quán chính hiện tại; mỗi chi nhánh [branchRushChance] gặp
   /// giờ cao điểm ×[branchRushMult]. Trả (Xu, số lần cao điểm).
-  ({double xu, int rushes}) collectBranches() {
+  ({double xu, int rushes}) collectBranches({bool auto = false}) {
     final now = _clock();
     final income = _branchBaseIncome();
     var xu = 0.0;
@@ -412,6 +437,8 @@ class GameController extends Notifier<GameSnapshot> {
     }
     if (xu > 0) {
       grantBonus(_game, xu);
+      if (!auto) _bumpBranchQuest(0, 1);
+      if (rushes > 0) _bumpBranchQuest(1, rushes);
       logEvent('branch_collect', {'rushes': rushes});
       unawaited(saveNow());
       state = _snapshot();
@@ -2500,7 +2527,7 @@ class GameController extends Notifier<GameSnapshot> {
     }
     if (branchManagerActive() && now - _lastBranchAutoMillis >= branchManagerCollectEverySeconds * 1000) {
       _lastBranchAutoMillis = now;
-      collectBranches();
+      collectBranches(auto: true);
     }
     _addBuys(autoBuyBest(_game)); // perk "Tự động mua" (no-op nếu tắt)
     _updateCat(now);
@@ -2583,6 +2610,9 @@ class GameController extends Notifier<GameSnapshot> {
       branchSpecs: Map.unmodifiable(Map.of(_game.branchSpecs)),
       branchEventClaimedSlot: _game.branchEventClaimedSlot,
       branchMapSkin: _game.branchMapSkin,
+      branchQuestDayKey: _game.branchQuestDayKey,
+      branchQuestProgress: List.unmodifiable(_game.branchQuestProgress),
+      branchQuestClaimed: _game.branchQuestClaimed,
       collectionMilestonesClaimed:
           List.unmodifiable(_game.collectionMilestonesClaimed),
       collectionSetsClaimed: List.unmodifiable(_game.collectionSetsClaimed),

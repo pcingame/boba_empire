@@ -124,6 +124,9 @@ class GameSnapshot {
     required this.branchSpecs,
     required this.branchEventClaimedSlot,
     required this.branchMapSkin,
+    required this.branchQuestDayKey,
+    required this.branchQuestProgress,
+    required this.branchQuestClaimed,
     required this.collectionMilestonesClaimed,
     required this.collectionSetsClaimed,
     required this.wishlist,
@@ -330,6 +333,9 @@ class GameSnapshot {
   final Map<String, int> branchSpecs;
   final int branchEventClaimedSlot;
   final int branchMapSkin;
+  final int branchQuestDayKey;
+  final List<int> branchQuestProgress;
+  final int branchQuestClaimed;
 
   /// Mốc sưu tập đã nhận (xem GameState.collectionMilestonesClaimed).
   final List<int> collectionMilestonesClaimed;

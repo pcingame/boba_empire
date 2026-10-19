@@ -3407,6 +3407,46 @@ class AppLocalizationsId extends AppLocalizations {
   String get branchSkin3 => 'Sakura';
 
   @override
+  String get branchQuestTitle => 'Misi cabang';
+
+  @override
+  String get branchQuestHint =>
+      'Reset harian (00.00 UTC). Pengumpulan otomatis manajer tidak dihitung.';
+
+  @override
+  String branchQuest0(int n) {
+    return 'Kumpulkan pendapatan $n kali';
+  }
+
+  @override
+  String branchQuest1(int n) {
+    return 'Alami jam sibuk $n kali';
+  }
+
+  @override
+  String branchQuest2(int n) {
+    return 'Upgrade cabang $n kali';
+  }
+
+  @override
+  String branchQuest3(int n) {
+    return 'Klaim $n acara cabang';
+  }
+
+  @override
+  String get branchQuestAll => 'Selesaikan keempat misi';
+
+  @override
+  String branchEmpireBonus(int lvl, String pct) {
+    return 'Total level cabang $lvl → +$pct% pendapatan toko utama (tetap saat Waralaba)';
+  }
+
+  @override
+  String prestigeBranchKept(int lvl, String pct) {
+    return '✅ Cabang TETAP ADA (level $lvl → +$pct% pendapatan toko utama).';
+  }
+
+  @override
   String get branchNothing => 'Belum ada yang bisa diambil.';
 
   @override

@@ -328,3 +328,32 @@ double branchEventRewardSeconds(int type, int level) => branchEventSeconds[type]
 // ---- Skin bản đồ ----
 /// 0 cổ điển, 1 mùa đông, 2 Tết, 3 hoa anh đào. Chỉ đổi màu phủ + hạt trang trí.
 const int branchMapSkinCount = 4;
+
+// ---- Nhiệm vụ chi nhánh (làm mới mỗi ngày UTC) ----
+/// 0 thu doanh thu (tay), 1 gặp giờ cao điểm, 2 nâng cấp chi nhánh, 3 nhận sự kiện. Mỗi nhiệm vụ thưởng 💎,
+/// làm cả 4 thêm [branchQuestAllGems]. Mọi con số là ước lượng chưa playtest.
+const List<int> branchQuestTargets = [3, 2, 2, 1];
+const int branchQuestGems = 5;
+const int branchQuestAllGems = 10;
+const int branchQuestAllBit = 4; // bit trong mặt nạ đã nhận: 0..3 nhiệm vụ, 4 thưởng cả bộ
+
+int branchQuestDay(int nowMillis) => nowMillis ~/ 86400000;
+
+/// Các mục có thể nhận (0..3 nhiệm vụ xong chưa nhận, 4 = đủ 4 nhiệm vụ đã xong mà chưa nhận thưởng cả bộ).
+List<int> branchQuestClaimable(List<int> progress, int claimedMask) => [
+      for (var i = 0; i < 4; i++)
+        if (progress[i] >= branchQuestTargets[i] && claimedMask & (1 << i) == 0) i,
+      if (claimedMask & (1 << 4) == 0 && [for (var i = 0; i < 4; i++) progress[i] >= branchQuestTargets[i]].every((b) => b)) 4,
+    ];
+
+// ---- Chi nhánh làm trục của vòng chơi chính ----
+/// Tổng cấp mọi chi nhánh cộng thẳng vào THU NHẬP QUÁN CHÍNH (+0.5%/cấp, tối đa 17×10 cấp = +85%).
+/// Chi nhánh KHÔNG bị reset khi Nhượng quyền nên đây là tài sản dài hạn. Ước lượng chưa playtest.
+/// Lưu ý vòng phản hồi: doanh thu chi nhánh tính theo thu nhập quán chính nên cũng được nhân theo.
+const double branchIncomeBonusPerLevel = 0.005;
+
+int branchTotalLevels(Map<String, int> levels) =>
+    branchCities.fold(0, (a, c) => a + branchLevel(levels, c.id));
+
+double branchIncomeMultiplier(Map<String, int> levels) =>
+    1 + branchTotalLevels(levels) * branchIncomeBonusPerLevel;

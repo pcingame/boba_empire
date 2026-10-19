@@ -3358,6 +3358,45 @@ class AppLocalizationsKo extends AppLocalizations {
   String get branchSkin3 => '벚꽃';
 
   @override
+  String get branchQuestTitle => '지점 퀘스트';
+
+  @override
+  String get branchQuestHint => '매일 초기화(UTC 0시). 매니저 자동 수거는 수거 퀘스트에 포함되지 않아요.';
+
+  @override
+  String branchQuest0(int n) {
+    return '수익 $n회 수거';
+  }
+
+  @override
+  String branchQuest1(int n) {
+    return '피크 타임 $n회 달성';
+  }
+
+  @override
+  String branchQuest2(int n) {
+    return '지점 $n회 업그레이드';
+  }
+
+  @override
+  String branchQuest3(int n) {
+    return '지점 이벤트 $n회 수령';
+  }
+
+  @override
+  String get branchQuestAll => '퀘스트 4개 모두 완료';
+
+  @override
+  String branchEmpireBonus(int lvl, String pct) {
+    return '지점 총 레벨 $lvl → 본점 수익 +$pct% (프랜차이즈 후에도 유지)';
+  }
+
+  @override
+  String prestigeBranchKept(int lvl, String pct) {
+    return '✅ 지점은 그대로 유지돼요 (레벨 $lvl → 본점 수익 +$pct%).';
+  }
+
+  @override
   String get branchNothing => '아직 수령할 게 없어요.';
 
   @override

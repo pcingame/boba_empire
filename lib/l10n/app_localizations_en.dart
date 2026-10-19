@@ -3409,6 +3409,46 @@ class AppLocalizationsEn extends AppLocalizations {
   String get branchSkin3 => 'Cherry blossom';
 
   @override
+  String get branchQuestTitle => 'Branch quests';
+
+  @override
+  String get branchQuestHint =>
+      'Resets daily (0:00 UTC). Manager auto-collects don\'t count for the collect quest.';
+
+  @override
+  String branchQuest0(int n) {
+    return 'Collect income $n times';
+  }
+
+  @override
+  String branchQuest1(int n) {
+    return 'Hit rush hour $n times';
+  }
+
+  @override
+  String branchQuest2(int n) {
+    return 'Upgrade branches $n times';
+  }
+
+  @override
+  String branchQuest3(int n) {
+    return 'Claim $n branch event';
+  }
+
+  @override
+  String get branchQuestAll => 'Finish all 4 quests';
+
+  @override
+  String branchEmpireBonus(int lvl, String pct) {
+    return 'Branch levels $lvl → +$pct% main-shop income (kept through Franchise)';
+  }
+
+  @override
+  String prestigeBranchKept(int lvl, String pct) {
+    return '✅ Branches are KEPT (levels $lvl → +$pct% main-shop income).';
+  }
+
+  @override
   String get branchNothing => 'Nothing to collect yet.';
 
   @override
