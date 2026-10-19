@@ -10,6 +10,7 @@ import 'player_profile_dialog.dart';
 import 'widgets/clay.dart';
 import 'web_links.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/stagger_in.dart';
 
 Future<void> showSeasonLeaderboard(BuildContext context) =>
     Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SeasonLeaderboardPage()));
@@ -90,7 +91,7 @@ class _State extends ConsumerState<SeasonLeaderboardPage> {
                   child: ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     itemCount: entries.length,
-                    itemBuilder: (context, i) {
+                    itemBuilder: (context, i) => StaggerIn(index: i, child: Builder(builder: (context) {
                       final e = entries[i];
                       final me = e.userId == myUserId;
                       return ClayTile(
@@ -122,7 +123,7 @@ class _State extends ConsumerState<SeasonLeaderboardPage> {
                           ),
                         ]),
                       );
-                    },
+                    })),
                   ),
                 ),
         },

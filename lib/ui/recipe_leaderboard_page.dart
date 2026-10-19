@@ -16,6 +16,7 @@ import 'player_profile_dialog.dart';
 import 'web_links.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/stagger_in.dart';
 
 Future<void> showRecipeLeaderboard(BuildContext context, {RecipeBoard board = RecipeBoard.quiz}) =>
     Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => RecipeLeaderboardPage(initialBoard: board)));
@@ -212,7 +213,7 @@ class _List extends ConsumerWidget {
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               itemCount: view.entries.length,
-              itemBuilder: (context, i) {
+              itemBuilder: (context, i) => StaggerIn(index: i, child: Builder(builder: (context) {
                 final e = view.entries[i];
                 final isMe = e.userId == view.myUserId;
                 const medals = ['🥇', '🥈', '🥉'];
@@ -270,7 +271,7 @@ class _List extends ConsumerWidget {
                   ),
                   ),
                 );
-              },
+              })),
             ),
           ),
         ),

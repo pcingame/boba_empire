@@ -16,6 +16,7 @@ import 'web_links.dart';
 import 'player_profile_dialog.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/stagger_in.dart';
 
 Future<void> showStorySpeedrunPage(BuildContext context) {
   return Navigator.of(
@@ -234,7 +235,7 @@ class _SpeedrunList extends ConsumerWidget {
                 : ListView.builder(
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: view.entries.length,
-                    itemBuilder: (context, i) {
+                    itemBuilder: (context, i) => StaggerIn(index: i, child: Builder(builder: (context) {
                       final entry = view.entries[i];
                       final isMe = entry.userId == view.myUserId;
                       final tile = ClayTile(
@@ -292,7 +293,7 @@ class _SpeedrunList extends ConsumerWidget {
                         ),
                         child: tile,
                       );
-                    },
+                    })),
                   ),
           ),
         ),

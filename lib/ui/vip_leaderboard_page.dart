@@ -15,6 +15,7 @@ import 'web_links.dart';
 import 'player_profile_dialog.dart';
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/stagger_in.dart';
 
 Future<void> showVipLeaderboard(BuildContext context) => Navigator.of(context)
     .push(MaterialPageRoute(builder: (_) => const VipLeaderboardPage()));
@@ -140,7 +141,7 @@ class _List extends ConsumerWidget {
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               itemCount: view.entries.length,
-              itemBuilder: (context, i) {
+              itemBuilder: (context, i) => StaggerIn(index: i, child: Builder(builder: (context) {
                 final e = view.entries[i];
                 final isMe = e.userId == view.myUserId;
                 return ClayTile(
@@ -227,7 +228,7 @@ class _List extends ConsumerWidget {
                     ],
                   ),
                 );
-              },
+              })),
             ),
           ),
         ),

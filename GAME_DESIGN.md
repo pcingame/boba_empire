@@ -1320,3 +1320,6 @@ Mỗi chi nhánh có 3 quầy (🧋 trà mở cấp 1, 🍡 topping cấp 4, �
 
 ### 53g. Bảng xếp hạng Chi nhánh (2026-10-20)
 Xếp theo TỔNG CẤP mọi chi nhánh (tối đa 170; hoà: ai đạt trước xếp trên), hiện kèm số thành phố đã mở. Top 50, chỉ tài khoản liên kết email, nộp khi mở bảng (chỉ tăng, trần 500). Lối vào: màn gom BXH (dòng "Bảng xếp hạng Chi nhánh"). SQL `supabase/branch_leaderboard_schema.sql` (PHẢI chạy), test `supabase/tests/branch_leaderboard_scenarios.sql` trong scripts/test_lb_rewards_sql.sh. Chưa có thưởng top.
+
+### 53h. Animation bảng xếp hạng (2026-10-20)
+`StaggerIn` (lib/ui/widgets/stagger_in.dart): dòng BXH/menu hiện lần lượt (mờ→rõ + trượt 18px, trễ 45ms/dòng, 12 dòng đầu; `pop` = nảy cho bục top 3). Áp cho 8 BXH có danh sách + màn gom BXH (icon tròn đổi màu theo bảng) (BXH Chi nhánh đã bỏ bục top 3, top 3 dùng huy hiệu 🥇🥈🥉 ở dòng). Tôn trọng giảm chuyển động/test.

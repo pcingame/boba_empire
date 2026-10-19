@@ -11,6 +11,7 @@ import '../leaderboard/flair.dart';
 import 'widgets/clay.dart';
 import 'web_links.dart';
 import 'widgets/phone_width.dart';
+import 'widgets/stagger_in.dart';
 
 Future<void> showArenaLeaderboardPage(BuildContext context) {
   return Navigator.of(
@@ -166,7 +167,7 @@ class _ArenaLeaderboardList extends ConsumerWidget {
                 : ListView.builder(
                     physics: const AlwaysScrollableScrollPhysics(),
                     itemCount: view.entries.length,
-                    itemBuilder: (context, i) {
+                    itemBuilder: (context, i) => StaggerIn(index: i, child: Builder(builder: (context) {
                       final entry = view.entries[i];
                       final isMe = entry.userId == view.myUserId;
                       final tile = ClayTile(
@@ -233,7 +234,7 @@ class _ArenaLeaderboardList extends ConsumerWidget {
                         ),
                         child: tile,
                       );
-                    },
+                    })),
                   ),
           ),
         ),
