@@ -11,6 +11,7 @@ import 'language_dialog.dart';
 import 'redeem_dialog.dart';
 import 'invite_dialog.dart' show shareTextProvider;
 import '../leaderboard/player_avatar.dart';
+import 'friends_page.dart';
 import 'my_profile_page.dart';
 import 'widgets/avatar_circle.dart';
 import 'web_links.dart';
@@ -82,6 +83,17 @@ class _SettingsDialog extends ConsumerWidget {
             onTap: () {
               Navigator.of(context).pop();
               showMyProfile(context);
+            },
+          ),
+          ListTile(
+            key: const Key('settings-friends'),
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.group_outlined),
+            title: Text(l10n.friendsTitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              Navigator.of(context).pop();
+              showFriends(context);
             },
           ),
           ListTile(

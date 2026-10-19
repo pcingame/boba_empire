@@ -1048,6 +1048,72 @@
   "seasonPremiumBought": "Premium terbuka!",
   "seasonNotEnoughGems": "💎 tidak cukup",
   "seasonLbTitle": "Peringkat Pass Musim",
+  "friendsTitle": "Teman",
+  "friendsTabList": "Teman",
+  "friendsTabRequests": "Permintaan",
+  "friendsTabAdd": "Tambah teman",
+  "friendsTabRank": "Peringkat",
+  "friendsEmpty": "Belum ada teman. Gunakan tab Tambah teman untuk mencari lewat nama panggilan.",
+  "friendsGiftSend": "🎁 Kirim hadiah",
+  "friendsGiftSentToday": "Sudah dikirim hari ini",
+  "friendsGiftSentSnack": "Hadiah terkirim! Kamu dapat +{xu} Koin",
+  "@friendsGiftSentSnack": {
+    "placeholders": {
+      "xu": {"type": "String"}
+    }
+  },
+  "friendsGiftWaiting": "{n} hadiah dari teman menunggu",
+  "@friendsGiftWaiting": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "friendsGiftClaim": "Ambil",
+  "friendsGiftClaimedSnack": "Menerima {n} hadiah: +{xu} Koin",
+  "@friendsGiftClaimedSnack": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "xu": {"type": "String"}
+    }
+  },
+  "friendsRemove": "Hapus teman",
+  "friendsRemoveConfirm": "Hapus {name} dari daftar teman?",
+  "@friendsRemoveConfirm": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "friendsRequestsEmpty": "Tidak ada permintaan.",
+  "friendsAccept": "Terima",
+  "friendsDecline": "Tolak",
+  "friendsAccepted": "Kamu kini berteman dengan {name}",
+  "@friendsAccepted": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "friendsSearchHint": "Masukkan nama panggilan yang tepat",
+  "friendsSearchButton": "Cari",
+  "friendsSearchEmpty": "Tidak ada yang ditemukan. Nama panggilan harus sama persis (tidak peka huruf besar/kecil) dan pemain harus sudah menautkan email.",
+  "friendsAddButton": "Tambah teman",
+  "friendsRequestSent": "Permintaan terkirim",
+  "friendsAlready": "Kalian sudah berteman",
+  "friendsStage": "Tahap {n}",
+  "@friendsStage": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "friendsErrLimit": "Daftar teman atau permintaan penuh (maks. 50 teman, 30 permintaan tertunda).",
+  "friendsErrNotFound": "Pemain tidak ditemukan.",
+  "friendsErrAlreadySent": "Hari ini kamu sudah mengirim hadiah ke teman ini.",
+  "friendsErrNetwork": "Tidak bisa terhubung, coba lagi nanti.",
+  "friendsRetry": "Coba lagi",
+  "friendsRankIncome": "Pendapatan",
+  "friendsRankSeason": "Pass Musim",
+  "friendsRankOrders": "Seduh sesuai Pesanan",
+  "friendsRankMe": "(kamu)",
+  "friendsRankEmpty": "Tambah teman untuk bersaing.",
   "seasonLbEmpty": "Belum ada siapa pun di papan musim ini. Kumpulkan XP Pass lalu buka lagi untuk masuk (perlu akun terhubung email).",
   "playerTitleChampion": "Juara Musim",
   "playerTitleChampionHint": "Klaim hadiah top 3 Pass Musim",

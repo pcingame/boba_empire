@@ -2932,6 +2932,127 @@ class AppLocalizationsVi extends AppLocalizations {
   String get seasonLbTitle => 'BXH Thẻ Mùa';
 
   @override
+  String get friendsTitle => 'Bạn bè';
+
+  @override
+  String get friendsTabList => 'Bạn bè';
+
+  @override
+  String get friendsTabRequests => 'Lời mời';
+
+  @override
+  String get friendsTabAdd => 'Thêm bạn';
+
+  @override
+  String get friendsTabRank => 'BXH';
+
+  @override
+  String get friendsEmpty =>
+      'Chưa có bạn nào. Qua tab Thêm bạn để tìm theo biệt danh nhé.';
+
+  @override
+  String get friendsGiftSend => '🎁 Tặng quà';
+
+  @override
+  String get friendsGiftSentToday => 'Đã tặng hôm nay';
+
+  @override
+  String friendsGiftSentSnack(String xu) {
+    return 'Đã tặng quà! Bạn nhận +$xu Xu';
+  }
+
+  @override
+  String friendsGiftWaiting(int n) {
+    return '$n quà từ bạn bè đang chờ';
+  }
+
+  @override
+  String get friendsGiftClaim => 'Nhận';
+
+  @override
+  String friendsGiftClaimedSnack(int n, String xu) {
+    return 'Nhận $n quà: +$xu Xu';
+  }
+
+  @override
+  String get friendsRemove => 'Xoá bạn';
+
+  @override
+  String friendsRemoveConfirm(String name) {
+    return 'Xoá $name khỏi danh sách bạn?';
+  }
+
+  @override
+  String get friendsRequestsEmpty => 'Không có lời mời nào.';
+
+  @override
+  String get friendsAccept => 'Chấp nhận';
+
+  @override
+  String get friendsDecline => 'Từ chối';
+
+  @override
+  String friendsAccepted(String name) {
+    return 'Đã kết bạn với $name';
+  }
+
+  @override
+  String get friendsSearchHint => 'Nhập biệt danh chính xác';
+
+  @override
+  String get friendsSearchButton => 'Tìm';
+
+  @override
+  String get friendsSearchEmpty =>
+      'Không thấy ai tên này. Biệt danh phải khớp chính xác (không phân biệt hoa thường) và người đó cần đã liên kết email.';
+
+  @override
+  String get friendsAddButton => 'Kết bạn';
+
+  @override
+  String get friendsRequestSent => 'Đã gửi lời mời';
+
+  @override
+  String get friendsAlready => 'Hai bạn đã là bạn bè rồi';
+
+  @override
+  String friendsStage(int n) {
+    return 'Giai đoạn $n';
+  }
+
+  @override
+  String get friendsErrLimit =>
+      'Danh sách bạn hoặc lời mời đã đầy (tối đa 50 bạn, 30 lời mời đang chờ).';
+
+  @override
+  String get friendsErrNotFound => 'Không tìm thấy người này.';
+
+  @override
+  String get friendsErrAlreadySent =>
+      'Hôm nay bạn đã tặng quà cho người này rồi.';
+
+  @override
+  String get friendsErrNetwork => 'Không kết nối được, thử lại sau nhé.';
+
+  @override
+  String get friendsRetry => 'Thử lại';
+
+  @override
+  String get friendsRankIncome => 'Thu nhập';
+
+  @override
+  String get friendsRankSeason => 'Thẻ Mùa';
+
+  @override
+  String get friendsRankOrders => 'Pha theo đơn';
+
+  @override
+  String get friendsRankMe => '(bạn)';
+
+  @override
+  String get friendsRankEmpty => 'Kết bạn để so tài với nhau nhé.';
+
+  @override
   String get seasonLbEmpty =>
       'Chưa ai trên bảng mùa này. Kiếm XP Thẻ Mùa rồi mở lại để lên bảng (cần tài khoản liên kết email).';
 

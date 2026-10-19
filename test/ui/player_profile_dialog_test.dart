@@ -3,11 +3,13 @@ import 'dart:ui' as ui;
 
 import 'package:boba_empire/l10n/app_localizations.dart';
 import 'package:boba_empire/leaderboard/player_profile.dart';
+import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/ui/player_profile_dialog.dart';
 import 'package:boba_empire/ui/web_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   group('parseProfileRows', () {
@@ -78,9 +80,11 @@ void main() {
     await tester.binding.setSurfaceSize(size);
     addTearDown(() => tester.binding.setSurfaceSize(null));
     final opened = <Uri>[];
+    final prefs = await SharedPreferences.getInstance();
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
+          sharedPreferencesProvider.overrideWithValue(prefs),
           playerProfileProvider.overrideWith((ref, n) async {
             if (result is AsyncError) throw StateError('x');
             return result.value ?? [];
@@ -110,6 +114,8 @@ void main() {
     return opened;
   }
 
+  setUp(() => SharedPreferences.setMockInitialValues({}));
+
   final full = AsyncData([
     const ProfileRank(ProfileBoard.income, 1, 4.5e74),
     const ProfileRank(ProfileBoard.pearls, 5, 62),
@@ -117,6 +123,17 @@ void main() {
     const ProfileRank(ProfileBoard.speed, 7, 93784),
     const ProfileRank(ProfileBoard.vip, 12, 123456),
   ]);
+
+  testWidgets('có nút Kết bạn ở hồ sơ người khác', (tester) async {
+    await pump(tester, full);
+    expect(find.byKey(const Key('profile-add-friend')), findsOneWidget);
+  });
+
+  testWidgets('hồ sơ CỦA MÌNH: không có nút Kết bạn', (tester) async {
+    SharedPreferences.setMockInitialValues({'leaderboard_nickname': 'Alice'});
+    await pump(tester, full);
+    expect(find.byKey(const Key('profile-add-friend')), findsNothing);
+  });
 
   testWidgets('hiện tên + hạng + điểm từng bảng', (tester) async {
     await pump(tester, full);

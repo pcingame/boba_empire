@@ -1048,6 +1048,72 @@
   "seasonPremiumBought": "¡Premium desbloqueado!",
   "seasonNotEnoughGems": "No tienes suficientes 💎",
   "seasonLbTitle": "Ranking del Pase",
+  "friendsTitle": "Amigos",
+  "friendsTabList": "Amigos",
+  "friendsTabRequests": "Solicitudes",
+  "friendsTabAdd": "Añadir",
+  "friendsTabRank": "Ranking",
+  "friendsEmpty": "Aún no tienes amigos. Usa la pestaña Añadir para buscar por apodo.",
+  "friendsGiftSend": "🎁 Enviar regalo",
+  "friendsGiftSentToday": "Enviado hoy",
+  "friendsGiftSentSnack": "¡Regalo enviado! Recibes +{xu} monedas",
+  "@friendsGiftSentSnack": {
+    "placeholders": {
+      "xu": {"type": "String"}
+    }
+  },
+  "friendsGiftWaiting": "{n} regalos de amigos te esperan",
+  "@friendsGiftWaiting": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "friendsGiftClaim": "Recibir",
+  "friendsGiftClaimedSnack": "Recibidos {n} regalos: +{xu} monedas",
+  "@friendsGiftClaimedSnack": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "xu": {"type": "String"}
+    }
+  },
+  "friendsRemove": "Eliminar amigo",
+  "friendsRemoveConfirm": "¿Eliminar a {name} de tus amigos?",
+  "@friendsRemoveConfirm": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "friendsRequestsEmpty": "No hay solicitudes.",
+  "friendsAccept": "Aceptar",
+  "friendsDecline": "Rechazar",
+  "friendsAccepted": "Ahora eres amigo de {name}",
+  "@friendsAccepted": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "friendsSearchHint": "Escribe el apodo exacto",
+  "friendsSearchButton": "Buscar",
+  "friendsSearchEmpty": "No se encontró a nadie. El apodo debe coincidir exactamente (sin distinguir mayúsculas) y el jugador debe haber vinculado un correo.",
+  "friendsAddButton": "Añadir amigo",
+  "friendsRequestSent": "Solicitud enviada",
+  "friendsAlready": "Ya sois amigos",
+  "friendsStage": "Etapa {n}",
+  "@friendsStage": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "friendsErrLimit": "Tu lista de amigos o solicitudes está llena (máx. 50 amigos, 30 solicitudes pendientes).",
+  "friendsErrNotFound": "Jugador no encontrado.",
+  "friendsErrAlreadySent": "Hoy ya enviaste un regalo a este amigo.",
+  "friendsErrNetwork": "No se pudo conectar, inténtalo más tarde.",
+  "friendsRetry": "Reintentar",
+  "friendsRankIncome": "Ingresos",
+  "friendsRankSeason": "Pase de Temporada",
+  "friendsRankOrders": "Preparar por pedido",
+  "friendsRankMe": "(tú)",
+  "friendsRankEmpty": "Añade amigos para competir con ellos.",
   "seasonLbEmpty": "Nadie en el ranking de esta temporada. Gana XP del Pase y vuelve a abrir para aparecer (requiere cuenta vinculada por email).",
   "playerTitleChampion": "Campeón de Temporada",
   "playerTitleChampionHint": "Reclama un premio top 3 del Pase",

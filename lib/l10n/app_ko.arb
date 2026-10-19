@@ -846,6 +846,72 @@
   "seasonPremiumBought": "프리미엄이 해제됐어요!",
   "seasonNotEnoughGems": "💎가 부족해요",
   "seasonLbTitle": "시즌 패스 순위",
+  "friendsTitle": "친구",
+  "friendsTabList": "친구",
+  "friendsTabRequests": "요청",
+  "friendsTabAdd": "친구 추가",
+  "friendsTabRank": "순위",
+  "friendsEmpty": "아직 친구가 없어요. 친구 추가 탭에서 닉네임으로 찾아보세요.",
+  "friendsGiftSend": "🎁 선물 보내기",
+  "friendsGiftSentToday": "오늘 보냄",
+  "friendsGiftSentSnack": "선물 전송! +{xu} 코인을 받았어요",
+  "@friendsGiftSentSnack": {
+    "placeholders": {
+      "xu": {"type": "String"}
+    }
+  },
+  "friendsGiftWaiting": "친구가 보낸 선물 {n}개가 기다려요",
+  "@friendsGiftWaiting": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "friendsGiftClaim": "받기",
+  "friendsGiftClaimedSnack": "선물 {n}개 수령: +{xu} 코인",
+  "@friendsGiftClaimedSnack": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "xu": {"type": "String"}
+    }
+  },
+  "friendsRemove": "친구 삭제",
+  "friendsRemoveConfirm": "{name}님을 친구에서 삭제할까요?",
+  "@friendsRemoveConfirm": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "friendsRequestsEmpty": "요청이 없어요.",
+  "friendsAccept": "수락",
+  "friendsDecline": "거절",
+  "friendsAccepted": "{name}님과 친구가 되었어요",
+  "@friendsAccepted": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "friendsSearchHint": "정확한 닉네임을 입력하세요",
+  "friendsSearchButton": "검색",
+  "friendsSearchEmpty": "해당 닉네임을 찾을 수 없어요. 닉네임이 정확히 같아야 하고(대소문자 구분 없음) 이메일을 연동한 플레이어여야 해요.",
+  "friendsAddButton": "친구 추가",
+  "friendsRequestSent": "요청을 보냈어요",
+  "friendsAlready": "이미 친구예요",
+  "friendsStage": "{n}단계",
+  "@friendsStage": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "friendsErrLimit": "친구 목록 또는 요청이 가득 찼어요 (친구 최대 50명, 대기 요청 30개).",
+  "friendsErrNotFound": "플레이어를 찾을 수 없어요.",
+  "friendsErrAlreadySent": "오늘은 이미 이 친구에게 선물을 보냈어요.",
+  "friendsErrNetwork": "연결할 수 없어요. 잠시 후 다시 시도하세요.",
+  "friendsRetry": "다시 시도",
+  "friendsRankIncome": "수입",
+  "friendsRankSeason": "시즌 패스",
+  "friendsRankOrders": "주문 제조",
+  "friendsRankMe": "(나)",
+  "friendsRankEmpty": "친구를 추가해 겨뤄 보세요.",
   "seasonLbEmpty": "이번 시즌 순위에 아직 아무도 없습니다. 시즌 패스 XP를 얻고 다시 열면 등록됩니다(이메일 연동 계정 필요).",
   "playerTitleChampion": "시즌 챔피언",
   "playerTitleChampionHint": "시즌 패스 순위 3위 이내 보상 수령",

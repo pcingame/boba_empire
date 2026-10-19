@@ -16,6 +16,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../core/accessories.dart';
 import '../core/achievements.dart';
 import '../core/balance.dart';
+import '../friends/friends.dart' show friendGiftFloor, friendGiftSeconds;
 import '../core/collection_milestones.dart';
 import '../core/collection_sets.dart';
 import '../core/daily_item.dart';
@@ -880,6 +881,20 @@ class GameController extends Notifier<GameSnapshot> {
     logEvent('guild_boss_claimed', {'gems': gems});
     unawaited(saveNow());
     state = _snapshot();
+  }
+
+  /// Quà bạn bè (SAU KHI server xác nhận): mỗi quà = [friendGiftSeconds] giây thu nhập, sàn [friendGiftFloor] Xu.
+  /// Trả số Xu cộng vào.
+  double grantFriendGift(int count) {
+    if (count <= 0) return 0;
+    final perGift = max(
+        effectiveIncomePerSecond(_game, Balance.generators, bonusPerStar: Balance.bonusPerStar) * friendGiftSeconds,
+        friendGiftFloor);
+    final reward = perGift * count;
+    grantBonus(_game, reward);
+    unawaited(saveNow());
+    state = _snapshot();
+    return reward;
   }
 
   /// Cộng 💎 thưởng top bảng xếp hạng tuần SAU KHI server xác nhận.

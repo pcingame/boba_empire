@@ -1247,3 +1247,10 @@ Nhiệm vụ ngày (+thử thách), nhiệm vụ tuần và "Kiếm thêm 🎁" 
 
 ### 49c. Một dải tin trên màn chính (2026-10-18)
 Chip dịp lễ trong header và banner buff sự kiện gộp thành MỘT dải đầu màn (`_TopBanner`): dịp lễ (kèm buff ×hệ số + đếm ngược + chấm đỏ nhiệm vụ) > buff sự kiện thường > tin Chợ. Header còn: hàng Nhiệm vụ/Sưu tập, hàng tiền, hàng thu nhập.
+
+## 50. Bạn bè (2026-10-18)
+- **Thêm bạn:** Cài đặt → Bạn bè → tab "Thêm bạn": gõ biệt danh CHÍNH XÁC (không phân biệt hoa thường; trùng tên thì hiện kèm giai đoạn để chọn đúng người), hoặc nút "Kết bạn" ở hồ sơ người khác. Người kia phải chấp nhận ở tab "Lời mời"; hai người mời chéo nhau thì thành bạn luôn. Cả hai cần tài khoản liên kết email.
+- **Giới hạn:** 50 bạn, 30 lời mời đang chờ.
+- **Quà mỗi ngày:** tặng mỗi bạn một quà/ngày (UTC); người tặng và người nhận mỗi quà được 180 giây thu nhập (sàn 100 Xu). Quà chờ nhận trong 7 ngày; huỷ bạn thì quà chưa nhận mất. Xu chỉ cộng SAU khi server xác nhận. Không có 💎 để tránh nuôi nick.
+- **BXH bạn bè:** bạn + mình theo Thu nhập / XP Thẻ Mùa / Pha theo đơn (số liệu lấy từ các bảng xếp hạng hiện có, nên người chưa lên bảng đó hiện 0).
+- Kỹ thuật: `lib/friends/friends.dart`, `lib/ui/friends_page.dart`, `supabase/friends_schema.sql` (PHẢI chạy), test `scripts/test_friends_sql.sh`.

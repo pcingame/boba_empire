@@ -1720,6 +1720,72 @@
   "seasonPremiumBought": "Đã mở đường Cao cấp!",
   "seasonNotEnoughGems": "Chưa đủ 💎",
   "seasonLbTitle": "BXH Thẻ Mùa",
+  "friendsTitle": "Bạn bè",
+  "friendsTabList": "Bạn bè",
+  "friendsTabRequests": "Lời mời",
+  "friendsTabAdd": "Thêm bạn",
+  "friendsTabRank": "BXH",
+  "friendsEmpty": "Chưa có bạn nào. Qua tab Thêm bạn để tìm theo biệt danh nhé.",
+  "friendsGiftSend": "🎁 Tặng quà",
+  "friendsGiftSentToday": "Đã tặng hôm nay",
+  "friendsGiftSentSnack": "Đã tặng quà! Bạn nhận +{xu} Xu",
+  "@friendsGiftSentSnack": {
+    "placeholders": {
+      "xu": {"type": "String"}
+    }
+  },
+  "friendsGiftWaiting": "{n} quà từ bạn bè đang chờ",
+  "@friendsGiftWaiting": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "friendsGiftClaim": "Nhận",
+  "friendsGiftClaimedSnack": "Nhận {n} quà: +{xu} Xu",
+  "@friendsGiftClaimedSnack": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "xu": {"type": "String"}
+    }
+  },
+  "friendsRemove": "Xoá bạn",
+  "friendsRemoveConfirm": "Xoá {name} khỏi danh sách bạn?",
+  "@friendsRemoveConfirm": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "friendsRequestsEmpty": "Không có lời mời nào.",
+  "friendsAccept": "Chấp nhận",
+  "friendsDecline": "Từ chối",
+  "friendsAccepted": "Đã kết bạn với {name}",
+  "@friendsAccepted": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "friendsSearchHint": "Nhập biệt danh chính xác",
+  "friendsSearchButton": "Tìm",
+  "friendsSearchEmpty": "Không thấy ai tên này. Biệt danh phải khớp chính xác (không phân biệt hoa thường) và người đó cần đã liên kết email.",
+  "friendsAddButton": "Kết bạn",
+  "friendsRequestSent": "Đã gửi lời mời",
+  "friendsAlready": "Hai bạn đã là bạn bè rồi",
+  "friendsStage": "Giai đoạn {n}",
+  "@friendsStage": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "friendsErrLimit": "Danh sách bạn hoặc lời mời đã đầy (tối đa 50 bạn, 30 lời mời đang chờ).",
+  "friendsErrNotFound": "Không tìm thấy người này.",
+  "friendsErrAlreadySent": "Hôm nay bạn đã tặng quà cho người này rồi.",
+  "friendsErrNetwork": "Không kết nối được, thử lại sau nhé.",
+  "friendsRetry": "Thử lại",
+  "friendsRankIncome": "Thu nhập",
+  "friendsRankSeason": "Thẻ Mùa",
+  "friendsRankOrders": "Pha theo đơn",
+  "friendsRankMe": "(bạn)",
+  "friendsRankEmpty": "Kết bạn để so tài với nhau nhé.",
   "seasonLbEmpty": "Chưa ai trên bảng mùa này. Kiếm XP Thẻ Mùa rồi mở lại để lên bảng (cần tài khoản liên kết email).",
   "playerTitleChampion": "Quán Quân Mùa",
   "playerTitleChampionHint": "Nhận thưởng top 3 BXH Thẻ Mùa",

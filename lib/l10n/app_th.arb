@@ -1048,6 +1048,72 @@
   "seasonPremiumBought": "ปลดล็อกพรีเมียมแล้ว!",
   "seasonNotEnoughGems": "💎 ไม่พอ",
   "seasonLbTitle": "อันดับบัตรซีซัน",
+  "friendsTitle": "เพื่อน",
+  "friendsTabList": "เพื่อน",
+  "friendsTabRequests": "คำขอ",
+  "friendsTabAdd": "เพิ่มเพื่อน",
+  "friendsTabRank": "อันดับ",
+  "friendsEmpty": "ยังไม่มีเพื่อน ไปแท็บเพิ่มเพื่อนเพื่อค้นหาด้วยชื่อเล่น",
+  "friendsGiftSend": "🎁 ส่งของขวัญ",
+  "friendsGiftSentToday": "ส่งแล้ววันนี้",
+  "friendsGiftSentSnack": "ส่งของขวัญแล้ว! ได้ +{xu} เหรียญ",
+  "@friendsGiftSentSnack": {
+    "placeholders": {
+      "xu": {"type": "String"}
+    }
+  },
+  "friendsGiftWaiting": "มีของขวัญจากเพื่อน {n} ชิ้นรออยู่",
+  "@friendsGiftWaiting": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "friendsGiftClaim": "รับ",
+  "friendsGiftClaimedSnack": "รับของขวัญ {n} ชิ้น: +{xu} เหรียญ",
+  "@friendsGiftClaimedSnack": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "xu": {"type": "String"}
+    }
+  },
+  "friendsRemove": "ลบเพื่อน",
+  "friendsRemoveConfirm": "ลบ {name} ออกจากเพื่อนไหม?",
+  "@friendsRemoveConfirm": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "friendsRequestsEmpty": "ไม่มีคำขอ",
+  "friendsAccept": "ยอมรับ",
+  "friendsDecline": "ปฏิเสธ",
+  "friendsAccepted": "ตอนนี้คุณเป็นเพื่อนกับ {name} แล้ว",
+  "@friendsAccepted": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "friendsSearchHint": "พิมพ์ชื่อเล่นให้ตรงเป๊ะ",
+  "friendsSearchButton": "ค้นหา",
+  "friendsSearchEmpty": "ไม่พบใคร ชื่อเล่นต้องตรงกันทุกตัวอักษร (ไม่สนตัวพิมพ์เล็ก/ใหญ่) และผู้เล่นต้องผูกอีเมลแล้ว",
+  "friendsAddButton": "เพิ่มเพื่อน",
+  "friendsRequestSent": "ส่งคำขอแล้ว",
+  "friendsAlready": "เป็นเพื่อนกันอยู่แล้ว",
+  "friendsStage": "ด่าน {n}",
+  "@friendsStage": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "friendsErrLimit": "รายชื่อเพื่อนหรือคำขอเต็มแล้ว (เพื่อนสูงสุด 50 คน, คำขอค้าง 30)",
+  "friendsErrNotFound": "ไม่พบผู้เล่น",
+  "friendsErrAlreadySent": "วันนี้คุณส่งของขวัญให้เพื่อนคนนี้แล้ว",
+  "friendsErrNetwork": "เชื่อมต่อไม่ได้ ลองใหม่ภายหลัง",
+  "friendsRetry": "ลองอีกครั้ง",
+  "friendsRankIncome": "รายได้",
+  "friendsRankSeason": "บัตรซีซัน",
+  "friendsRankOrders": "ชงตามออเดอร์",
+  "friendsRankMe": "(คุณ)",
+  "friendsRankEmpty": "เพิ่มเพื่อนเพื่อแข่งกัน",
   "seasonLbEmpty": "ยังไม่มีใครในอันดับซีซันนี้ รับ XP บัตรซีซันแล้วเปิดใหม่เพื่อขึ้นอันดับ (ต้องมีบัญชีที่ผูกอีเมล)",
   "playerTitleChampion": "แชมป์ซีซัน",
   "playerTitleChampionHint": "รับรางวัลท็อป 3 ของบัตรซีซัน",

@@ -5148,6 +5148,216 @@ abstract class AppLocalizations {
   /// **'BXH Thẻ Mùa'**
   String get seasonLbTitle;
 
+  /// No description provided for @friendsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn bè'**
+  String get friendsTitle;
+
+  /// No description provided for @friendsTabList.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn bè'**
+  String get friendsTabList;
+
+  /// No description provided for @friendsTabRequests.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lời mời'**
+  String get friendsTabRequests;
+
+  /// No description provided for @friendsTabAdd.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm bạn'**
+  String get friendsTabAdd;
+
+  /// No description provided for @friendsTabRank.
+  ///
+  /// In vi, this message translates to:
+  /// **'BXH'**
+  String get friendsTabRank;
+
+  /// No description provided for @friendsEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có bạn nào. Qua tab Thêm bạn để tìm theo biệt danh nhé.'**
+  String get friendsEmpty;
+
+  /// No description provided for @friendsGiftSend.
+  ///
+  /// In vi, this message translates to:
+  /// **'🎁 Tặng quà'**
+  String get friendsGiftSend;
+
+  /// No description provided for @friendsGiftSentToday.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã tặng hôm nay'**
+  String get friendsGiftSentToday;
+
+  /// No description provided for @friendsGiftSentSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã tặng quà! Bạn nhận +{xu} Xu'**
+  String friendsGiftSentSnack(String xu);
+
+  /// No description provided for @friendsGiftWaiting.
+  ///
+  /// In vi, this message translates to:
+  /// **'{n} quà từ bạn bè đang chờ'**
+  String friendsGiftWaiting(int n);
+
+  /// No description provided for @friendsGiftClaim.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận'**
+  String get friendsGiftClaim;
+
+  /// No description provided for @friendsGiftClaimedSnack.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận {n} quà: +{xu} Xu'**
+  String friendsGiftClaimedSnack(int n, String xu);
+
+  /// No description provided for @friendsRemove.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xoá bạn'**
+  String get friendsRemove;
+
+  /// No description provided for @friendsRemoveConfirm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xoá {name} khỏi danh sách bạn?'**
+  String friendsRemoveConfirm(String name);
+
+  /// No description provided for @friendsRequestsEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có lời mời nào.'**
+  String get friendsRequestsEmpty;
+
+  /// No description provided for @friendsAccept.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chấp nhận'**
+  String get friendsAccept;
+
+  /// No description provided for @friendsDecline.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ chối'**
+  String get friendsDecline;
+
+  /// No description provided for @friendsAccepted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã kết bạn với {name}'**
+  String friendsAccepted(String name);
+
+  /// No description provided for @friendsSearchHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập biệt danh chính xác'**
+  String get friendsSearchHint;
+
+  /// No description provided for @friendsSearchButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm'**
+  String get friendsSearchButton;
+
+  /// No description provided for @friendsSearchEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thấy ai tên này. Biệt danh phải khớp chính xác (không phân biệt hoa thường) và người đó cần đã liên kết email.'**
+  String get friendsSearchEmpty;
+
+  /// No description provided for @friendsAddButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kết bạn'**
+  String get friendsAddButton;
+
+  /// No description provided for @friendsRequestSent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã gửi lời mời'**
+  String get friendsRequestSent;
+
+  /// No description provided for @friendsAlready.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hai bạn đã là bạn bè rồi'**
+  String get friendsAlready;
+
+  /// No description provided for @friendsStage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giai đoạn {n}'**
+  String friendsStage(int n);
+
+  /// No description provided for @friendsErrLimit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh sách bạn hoặc lời mời đã đầy (tối đa 50 bạn, 30 lời mời đang chờ).'**
+  String get friendsErrLimit;
+
+  /// No description provided for @friendsErrNotFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy người này.'**
+  String get friendsErrNotFound;
+
+  /// No description provided for @friendsErrAlreadySent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay bạn đã tặng quà cho người này rồi.'**
+  String get friendsErrAlreadySent;
+
+  /// No description provided for @friendsErrNetwork.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không kết nối được, thử lại sau nhé.'**
+  String get friendsErrNetwork;
+
+  /// No description provided for @friendsRetry.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử lại'**
+  String get friendsRetry;
+
+  /// No description provided for @friendsRankIncome.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu nhập'**
+  String get friendsRankIncome;
+
+  /// No description provided for @friendsRankSeason.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thẻ Mùa'**
+  String get friendsRankSeason;
+
+  /// No description provided for @friendsRankOrders.
+  ///
+  /// In vi, this message translates to:
+  /// **'Pha theo đơn'**
+  String get friendsRankOrders;
+
+  /// No description provided for @friendsRankMe.
+  ///
+  /// In vi, this message translates to:
+  /// **'(bạn)'**
+  String get friendsRankMe;
+
+  /// No description provided for @friendsRankEmpty.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kết bạn để so tài với nhau nhé.'**
+  String get friendsRankEmpty;
+
   /// No description provided for @seasonLbEmpty.
   ///
   /// In vi, this message translates to:

@@ -2895,6 +2895,124 @@ class AppLocalizationsKo extends AppLocalizations {
   String get seasonLbTitle => '시즌 패스 순위';
 
   @override
+  String get friendsTitle => '친구';
+
+  @override
+  String get friendsTabList => '친구';
+
+  @override
+  String get friendsTabRequests => '요청';
+
+  @override
+  String get friendsTabAdd => '친구 추가';
+
+  @override
+  String get friendsTabRank => '순위';
+
+  @override
+  String get friendsEmpty => '아직 친구가 없어요. 친구 추가 탭에서 닉네임으로 찾아보세요.';
+
+  @override
+  String get friendsGiftSend => '🎁 선물 보내기';
+
+  @override
+  String get friendsGiftSentToday => '오늘 보냄';
+
+  @override
+  String friendsGiftSentSnack(String xu) {
+    return '선물 전송! +$xu 코인을 받았어요';
+  }
+
+  @override
+  String friendsGiftWaiting(int n) {
+    return '친구가 보낸 선물 $n개가 기다려요';
+  }
+
+  @override
+  String get friendsGiftClaim => '받기';
+
+  @override
+  String friendsGiftClaimedSnack(int n, String xu) {
+    return '선물 $n개 수령: +$xu 코인';
+  }
+
+  @override
+  String get friendsRemove => '친구 삭제';
+
+  @override
+  String friendsRemoveConfirm(String name) {
+    return '$name님을 친구에서 삭제할까요?';
+  }
+
+  @override
+  String get friendsRequestsEmpty => '요청이 없어요.';
+
+  @override
+  String get friendsAccept => '수락';
+
+  @override
+  String get friendsDecline => '거절';
+
+  @override
+  String friendsAccepted(String name) {
+    return '$name님과 친구가 되었어요';
+  }
+
+  @override
+  String get friendsSearchHint => '정확한 닉네임을 입력하세요';
+
+  @override
+  String get friendsSearchButton => '검색';
+
+  @override
+  String get friendsSearchEmpty =>
+      '해당 닉네임을 찾을 수 없어요. 닉네임이 정확히 같아야 하고(대소문자 구분 없음) 이메일을 연동한 플레이어여야 해요.';
+
+  @override
+  String get friendsAddButton => '친구 추가';
+
+  @override
+  String get friendsRequestSent => '요청을 보냈어요';
+
+  @override
+  String get friendsAlready => '이미 친구예요';
+
+  @override
+  String friendsStage(int n) {
+    return '$n단계';
+  }
+
+  @override
+  String get friendsErrLimit => '친구 목록 또는 요청이 가득 찼어요 (친구 최대 50명, 대기 요청 30개).';
+
+  @override
+  String get friendsErrNotFound => '플레이어를 찾을 수 없어요.';
+
+  @override
+  String get friendsErrAlreadySent => '오늘은 이미 이 친구에게 선물을 보냈어요.';
+
+  @override
+  String get friendsErrNetwork => '연결할 수 없어요. 잠시 후 다시 시도하세요.';
+
+  @override
+  String get friendsRetry => '다시 시도';
+
+  @override
+  String get friendsRankIncome => '수입';
+
+  @override
+  String get friendsRankSeason => '시즌 패스';
+
+  @override
+  String get friendsRankOrders => '주문 제조';
+
+  @override
+  String get friendsRankMe => '(나)';
+
+  @override
+  String get friendsRankEmpty => '친구를 추가해 겨뤄 보세요.';
+
+  @override
   String get seasonLbEmpty =>
       '이번 시즌 순위에 아직 아무도 없습니다. 시즌 패스 XP를 얻고 다시 열면 등록됩니다(이메일 연동 계정 필요).';
 

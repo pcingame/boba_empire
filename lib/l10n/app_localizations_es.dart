@@ -2956,6 +2956,126 @@ class AppLocalizationsEs extends AppLocalizations {
   String get seasonLbTitle => 'Ranking del Pase';
 
   @override
+  String get friendsTitle => 'Amigos';
+
+  @override
+  String get friendsTabList => 'Amigos';
+
+  @override
+  String get friendsTabRequests => 'Solicitudes';
+
+  @override
+  String get friendsTabAdd => 'Añadir';
+
+  @override
+  String get friendsTabRank => 'Ranking';
+
+  @override
+  String get friendsEmpty =>
+      'Aún no tienes amigos. Usa la pestaña Añadir para buscar por apodo.';
+
+  @override
+  String get friendsGiftSend => '🎁 Enviar regalo';
+
+  @override
+  String get friendsGiftSentToday => 'Enviado hoy';
+
+  @override
+  String friendsGiftSentSnack(String xu) {
+    return '¡Regalo enviado! Recibes +$xu monedas';
+  }
+
+  @override
+  String friendsGiftWaiting(int n) {
+    return '$n regalos de amigos te esperan';
+  }
+
+  @override
+  String get friendsGiftClaim => 'Recibir';
+
+  @override
+  String friendsGiftClaimedSnack(int n, String xu) {
+    return 'Recibidos $n regalos: +$xu monedas';
+  }
+
+  @override
+  String get friendsRemove => 'Eliminar amigo';
+
+  @override
+  String friendsRemoveConfirm(String name) {
+    return '¿Eliminar a $name de tus amigos?';
+  }
+
+  @override
+  String get friendsRequestsEmpty => 'No hay solicitudes.';
+
+  @override
+  String get friendsAccept => 'Aceptar';
+
+  @override
+  String get friendsDecline => 'Rechazar';
+
+  @override
+  String friendsAccepted(String name) {
+    return 'Ahora eres amigo de $name';
+  }
+
+  @override
+  String get friendsSearchHint => 'Escribe el apodo exacto';
+
+  @override
+  String get friendsSearchButton => 'Buscar';
+
+  @override
+  String get friendsSearchEmpty =>
+      'No se encontró a nadie. El apodo debe coincidir exactamente (sin distinguir mayúsculas) y el jugador debe haber vinculado un correo.';
+
+  @override
+  String get friendsAddButton => 'Añadir amigo';
+
+  @override
+  String get friendsRequestSent => 'Solicitud enviada';
+
+  @override
+  String get friendsAlready => 'Ya sois amigos';
+
+  @override
+  String friendsStage(int n) {
+    return 'Etapa $n';
+  }
+
+  @override
+  String get friendsErrLimit =>
+      'Tu lista de amigos o solicitudes está llena (máx. 50 amigos, 30 solicitudes pendientes).';
+
+  @override
+  String get friendsErrNotFound => 'Jugador no encontrado.';
+
+  @override
+  String get friendsErrAlreadySent => 'Hoy ya enviaste un regalo a este amigo.';
+
+  @override
+  String get friendsErrNetwork => 'No se pudo conectar, inténtalo más tarde.';
+
+  @override
+  String get friendsRetry => 'Reintentar';
+
+  @override
+  String get friendsRankIncome => 'Ingresos';
+
+  @override
+  String get friendsRankSeason => 'Pase de Temporada';
+
+  @override
+  String get friendsRankOrders => 'Preparar por pedido';
+
+  @override
+  String get friendsRankMe => '(tú)';
+
+  @override
+  String get friendsRankEmpty => 'Añade amigos para competir con ellos.';
+
+  @override
   String get seasonLbEmpty =>
       'Nadie en el ranking de esta temporada. Gana XP del Pase y vuelve a abrir para aparecer (requiere cuenta vinculada por email).';
 

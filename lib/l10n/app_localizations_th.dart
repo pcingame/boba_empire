@@ -2929,6 +2929,126 @@ class AppLocalizationsTh extends AppLocalizations {
   String get seasonLbTitle => 'อันดับบัตรซีซัน';
 
   @override
+  String get friendsTitle => 'เพื่อน';
+
+  @override
+  String get friendsTabList => 'เพื่อน';
+
+  @override
+  String get friendsTabRequests => 'คำขอ';
+
+  @override
+  String get friendsTabAdd => 'เพิ่มเพื่อน';
+
+  @override
+  String get friendsTabRank => 'อันดับ';
+
+  @override
+  String get friendsEmpty =>
+      'ยังไม่มีเพื่อน ไปแท็บเพิ่มเพื่อนเพื่อค้นหาด้วยชื่อเล่น';
+
+  @override
+  String get friendsGiftSend => '🎁 ส่งของขวัญ';
+
+  @override
+  String get friendsGiftSentToday => 'ส่งแล้ววันนี้';
+
+  @override
+  String friendsGiftSentSnack(String xu) {
+    return 'ส่งของขวัญแล้ว! ได้ +$xu เหรียญ';
+  }
+
+  @override
+  String friendsGiftWaiting(int n) {
+    return 'มีของขวัญจากเพื่อน $n ชิ้นรออยู่';
+  }
+
+  @override
+  String get friendsGiftClaim => 'รับ';
+
+  @override
+  String friendsGiftClaimedSnack(int n, String xu) {
+    return 'รับของขวัญ $n ชิ้น: +$xu เหรียญ';
+  }
+
+  @override
+  String get friendsRemove => 'ลบเพื่อน';
+
+  @override
+  String friendsRemoveConfirm(String name) {
+    return 'ลบ $name ออกจากเพื่อนไหม?';
+  }
+
+  @override
+  String get friendsRequestsEmpty => 'ไม่มีคำขอ';
+
+  @override
+  String get friendsAccept => 'ยอมรับ';
+
+  @override
+  String get friendsDecline => 'ปฏิเสธ';
+
+  @override
+  String friendsAccepted(String name) {
+    return 'ตอนนี้คุณเป็นเพื่อนกับ $name แล้ว';
+  }
+
+  @override
+  String get friendsSearchHint => 'พิมพ์ชื่อเล่นให้ตรงเป๊ะ';
+
+  @override
+  String get friendsSearchButton => 'ค้นหา';
+
+  @override
+  String get friendsSearchEmpty =>
+      'ไม่พบใคร ชื่อเล่นต้องตรงกันทุกตัวอักษร (ไม่สนตัวพิมพ์เล็ก/ใหญ่) และผู้เล่นต้องผูกอีเมลแล้ว';
+
+  @override
+  String get friendsAddButton => 'เพิ่มเพื่อน';
+
+  @override
+  String get friendsRequestSent => 'ส่งคำขอแล้ว';
+
+  @override
+  String get friendsAlready => 'เป็นเพื่อนกันอยู่แล้ว';
+
+  @override
+  String friendsStage(int n) {
+    return 'ด่าน $n';
+  }
+
+  @override
+  String get friendsErrLimit =>
+      'รายชื่อเพื่อนหรือคำขอเต็มแล้ว (เพื่อนสูงสุด 50 คน, คำขอค้าง 30)';
+
+  @override
+  String get friendsErrNotFound => 'ไม่พบผู้เล่น';
+
+  @override
+  String get friendsErrAlreadySent => 'วันนี้คุณส่งของขวัญให้เพื่อนคนนี้แล้ว';
+
+  @override
+  String get friendsErrNetwork => 'เชื่อมต่อไม่ได้ ลองใหม่ภายหลัง';
+
+  @override
+  String get friendsRetry => 'ลองอีกครั้ง';
+
+  @override
+  String get friendsRankIncome => 'รายได้';
+
+  @override
+  String get friendsRankSeason => 'บัตรซีซัน';
+
+  @override
+  String get friendsRankOrders => 'ชงตามออเดอร์';
+
+  @override
+  String get friendsRankMe => '(คุณ)';
+
+  @override
+  String get friendsRankEmpty => 'เพิ่มเพื่อนเพื่อแข่งกัน';
+
+  @override
   String get seasonLbEmpty =>
       'ยังไม่มีใครในอันดับซีซันนี้ รับ XP บัตรซีซันแล้วเปิดใหม่เพื่อขึ้นอันดับ (ต้องมีบัญชีที่ผูกอีเมล)';
 

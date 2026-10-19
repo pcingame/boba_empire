@@ -15,7 +15,9 @@ import 'widgets/avatar_circle.dart';
 import '../l10n/app_localizations.dart';
 import '../leaderboard/player_profile.dart';
 import '../state/game_providers.dart';
+import '../friends/friends.dart';
 import 'email_gate.dart';
+import 'friends_page.dart';
 import 'web_links.dart';
 
 Future<void> showPlayerProfile(BuildContext context, String nickname) =>
@@ -68,6 +70,35 @@ class PlayerProfileDialog extends ConsumerWidget {
       msg = l10n.avatarReportSent;
     } catch (_) {
       msg = l10n.avatarReportFail;
+    }
+    messenger
+      ..clearSnackBars()
+      ..showSnackBar(SnackBar(content: Text(msg)));
+  }
+
+  Future<void> _addFriend(BuildContext context, WidgetRef ref) async {
+    final l10n = AppLocalizations.of(context)!;
+    final messenger = ScaffoldMessenger.of(context);
+    final nav = Navigator.of(context);
+    if (!await ensureOnlineLinked(context)) return;
+    String msg;
+    try {
+      final found = await ref.read(friendsRepositoryProvider).search(nickname);
+      if (found.length > 1) {
+        // Trùng tên: để người chơi chọn đúng người (kèm giai đoạn) ở tab Thêm bạn.
+        if (!nav.mounted) return;
+        nav.pop();
+        await showFriends(nav.context, initialQuery: nickname);
+        return;
+      }
+      if (found.isEmpty) {
+        msg = l10n.friendsErrNotFound;
+      } else {
+        final r = await ref.read(friendsRepositoryProvider).request(found.first.userId);
+        msg = r == 'already' ? l10n.friendsAlready : r == 'accepted' ? l10n.friendsAccepted(nickname) : l10n.friendsRequestSent;
+      }
+    } catch (e) {
+      msg = friendErrorText(l10n, e);
     }
     messenger
       ..clearSnackBars()
@@ -151,6 +182,13 @@ class PlayerProfileDialog extends ConsumerWidget {
         },
       ),
       actions: [
+        // Không kết bạn với chính mình.
+        if (nickname != (ref.read(sharedPreferencesProvider).getString('leaderboard_nickname') ?? ''))
+          TextButton(
+            key: const Key('profile-add-friend'),
+            onPressed: () => _addFriend(context, ref),
+            child: Text(l10n.friendsAddButton),
+          ),
         TextButton(
           key: const Key('profile-open-web'),
           onPressed: () => openWebLink(context, ref, webProfileUrl(nickname)),

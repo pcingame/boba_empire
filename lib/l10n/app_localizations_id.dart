@@ -2938,6 +2938,127 @@ class AppLocalizationsId extends AppLocalizations {
   String get seasonLbTitle => 'Peringkat Pass Musim';
 
   @override
+  String get friendsTitle => 'Teman';
+
+  @override
+  String get friendsTabList => 'Teman';
+
+  @override
+  String get friendsTabRequests => 'Permintaan';
+
+  @override
+  String get friendsTabAdd => 'Tambah teman';
+
+  @override
+  String get friendsTabRank => 'Peringkat';
+
+  @override
+  String get friendsEmpty =>
+      'Belum ada teman. Gunakan tab Tambah teman untuk mencari lewat nama panggilan.';
+
+  @override
+  String get friendsGiftSend => '🎁 Kirim hadiah';
+
+  @override
+  String get friendsGiftSentToday => 'Sudah dikirim hari ini';
+
+  @override
+  String friendsGiftSentSnack(String xu) {
+    return 'Hadiah terkirim! Kamu dapat +$xu Koin';
+  }
+
+  @override
+  String friendsGiftWaiting(int n) {
+    return '$n hadiah dari teman menunggu';
+  }
+
+  @override
+  String get friendsGiftClaim => 'Ambil';
+
+  @override
+  String friendsGiftClaimedSnack(int n, String xu) {
+    return 'Menerima $n hadiah: +$xu Koin';
+  }
+
+  @override
+  String get friendsRemove => 'Hapus teman';
+
+  @override
+  String friendsRemoveConfirm(String name) {
+    return 'Hapus $name dari daftar teman?';
+  }
+
+  @override
+  String get friendsRequestsEmpty => 'Tidak ada permintaan.';
+
+  @override
+  String get friendsAccept => 'Terima';
+
+  @override
+  String get friendsDecline => 'Tolak';
+
+  @override
+  String friendsAccepted(String name) {
+    return 'Kamu kini berteman dengan $name';
+  }
+
+  @override
+  String get friendsSearchHint => 'Masukkan nama panggilan yang tepat';
+
+  @override
+  String get friendsSearchButton => 'Cari';
+
+  @override
+  String get friendsSearchEmpty =>
+      'Tidak ada yang ditemukan. Nama panggilan harus sama persis (tidak peka huruf besar/kecil) dan pemain harus sudah menautkan email.';
+
+  @override
+  String get friendsAddButton => 'Tambah teman';
+
+  @override
+  String get friendsRequestSent => 'Permintaan terkirim';
+
+  @override
+  String get friendsAlready => 'Kalian sudah berteman';
+
+  @override
+  String friendsStage(int n) {
+    return 'Tahap $n';
+  }
+
+  @override
+  String get friendsErrLimit =>
+      'Daftar teman atau permintaan penuh (maks. 50 teman, 30 permintaan tertunda).';
+
+  @override
+  String get friendsErrNotFound => 'Pemain tidak ditemukan.';
+
+  @override
+  String get friendsErrAlreadySent =>
+      'Hari ini kamu sudah mengirim hadiah ke teman ini.';
+
+  @override
+  String get friendsErrNetwork => 'Tidak bisa terhubung, coba lagi nanti.';
+
+  @override
+  String get friendsRetry => 'Coba lagi';
+
+  @override
+  String get friendsRankIncome => 'Pendapatan';
+
+  @override
+  String get friendsRankSeason => 'Pass Musim';
+
+  @override
+  String get friendsRankOrders => 'Seduh sesuai Pesanan';
+
+  @override
+  String get friendsRankMe => '(kamu)';
+
+  @override
+  String get friendsRankEmpty => 'Tambah teman untuk bersaing.';
+
+  @override
   String get seasonLbEmpty =>
       'Belum ada siapa pun di papan musim ini. Kumpulkan XP Pass lalu buka lagi untuk masuk (perlu akun terhubung email).';
 

@@ -1048,6 +1048,72 @@
   "seasonPremiumBought": "Premium unlocked!",
   "seasonNotEnoughGems": "Not enough 💎",
   "seasonLbTitle": "Season Pass Ranking",
+  "friendsTitle": "Friends",
+  "friendsTabList": "Friends",
+  "friendsTabRequests": "Requests",
+  "friendsTabAdd": "Add friend",
+  "friendsTabRank": "Ranking",
+  "friendsEmpty": "No friends yet. Use the Add friend tab to search by nickname.",
+  "friendsGiftSend": "🎁 Send gift",
+  "friendsGiftSentToday": "Sent today",
+  "friendsGiftSentSnack": "Gift sent! You got +{xu} Coins",
+  "@friendsGiftSentSnack": {
+    "placeholders": {
+      "xu": {"type": "String"}
+    }
+  },
+  "friendsGiftWaiting": "{n} gifts from friends are waiting",
+  "@friendsGiftWaiting": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "friendsGiftClaim": "Claim",
+  "friendsGiftClaimedSnack": "Claimed {n} gifts: +{xu} Coins",
+  "@friendsGiftClaimedSnack": {
+    "placeholders": {
+      "n": {"type": "int"},
+      "xu": {"type": "String"}
+    }
+  },
+  "friendsRemove": "Remove friend",
+  "friendsRemoveConfirm": "Remove {name} from your friends?",
+  "@friendsRemoveConfirm": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "friendsRequestsEmpty": "No requests.",
+  "friendsAccept": "Accept",
+  "friendsDecline": "Decline",
+  "friendsAccepted": "You are now friends with {name}",
+  "@friendsAccepted": {
+    "placeholders": {
+      "name": {"type": "String"}
+    }
+  },
+  "friendsSearchHint": "Enter the exact nickname",
+  "friendsSearchButton": "Search",
+  "friendsSearchEmpty": "Nobody found with that name. The nickname must match exactly (not case-sensitive) and the player must have linked an email.",
+  "friendsAddButton": "Add friend",
+  "friendsRequestSent": "Request sent",
+  "friendsAlready": "You are already friends",
+  "friendsStage": "Stage {n}",
+  "@friendsStage": {
+    "placeholders": {
+      "n": {"type": "int"}
+    }
+  },
+  "friendsErrLimit": "Your friend list or requests are full (max 50 friends, 30 pending requests).",
+  "friendsErrNotFound": "Player not found.",
+  "friendsErrAlreadySent": "You already sent this friend a gift today.",
+  "friendsErrNetwork": "Couldn't connect, try again later.",
+  "friendsRetry": "Retry",
+  "friendsRankIncome": "Earnings",
+  "friendsRankSeason": "Season Pass",
+  "friendsRankOrders": "Brew by Order",
+  "friendsRankMe": "(you)",
+  "friendsRankEmpty": "Add friends to compete with them.",
   "seasonLbEmpty": "Nobody is on this season's board yet. Earn Season Pass XP and reopen to appear (needs an email-linked account).",
   "playerTitleChampion": "Season Champion",
   "playerTitleChampionHint": "Claim a top-3 Season Pass reward",
