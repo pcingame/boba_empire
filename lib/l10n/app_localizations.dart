@@ -5466,6 +5466,43 @@ abstract class AppLocalizations {
   /// **'Boss xuất hiện sau {time} (Chủ Nhật)'**
   String worldBossOpensIn(String time);
 
+  /// No description provided for @worldBossGuideTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hướng dẫn'**
+  String get worldBossGuideTitle;
+
+  /// No description provided for @worldBossGuideClose.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng'**
+  String get worldBossGuideClose;
+
+  /// No description provided for @worldBossTabRewards.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phần thưởng'**
+  String get worldBossTabRewards;
+
+  /// No description provided for @worldBossGuideSources.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nguồn sát thương:\n👆 Chạm boss hoặc chạm cốc: {tap} / lần\n💤 Thời gian offline: 1 sát thương mỗi {off} giây\n📖 Điểm Công thức: {rec} / điểm\n📺 Xem quảng cáo: +{ad} (tối đa {adMax} lần/ngày)\n⚡ Tự động đánh: +{auto} / giờ'**
+  String worldBossGuideSources(
+    int tap,
+    int off,
+    int rec,
+    int ad,
+    int adMax,
+    int auto,
+  );
+
+  /// No description provided for @worldBossGuideRules.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần ít nhất {n} sát thương của bạn để nhận quà. Mỗi đòn đánh tính cho cả boss ngày lẫn boss tuần; boss tuần chỉ mở Chủ Nhật (giờ UTC), boss ngày đổi lúc 0h UTC.'**
+  String worldBossGuideRules(int n);
+
   /// No description provided for @worldBossPhase.
   ///
   /// In vi, this message translates to:
@@ -5813,6 +5850,66 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Dubai'**
   String get branchCityDubai;
+
+  /// No description provided for @branchCityDanang.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đà Nẵng'**
+  String get branchCityDanang;
+
+  /// No description provided for @branchCitySingapore.
+  ///
+  /// In vi, this message translates to:
+  /// **'Singapore'**
+  String get branchCitySingapore;
+
+  /// No description provided for @branchCityHongkong.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hồng Kông'**
+  String get branchCityHongkong;
+
+  /// No description provided for @branchCitySydney.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sydney'**
+  String get branchCitySydney;
+
+  /// No description provided for @branchCityIstanbul.
+  ///
+  /// In vi, this message translates to:
+  /// **'Istanbul'**
+  String get branchCityIstanbul;
+
+  /// No description provided for @branchCityLondon.
+  ///
+  /// In vi, this message translates to:
+  /// **'London'**
+  String get branchCityLondon;
+
+  /// No description provided for @branchCityRio.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rio de Janeiro'**
+  String get branchCityRio;
+
+  /// No description provided for @branchCityCairo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cairo'**
+  String get branchCityCairo;
+
+  /// No description provided for @branchCityMoon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mặt Trăng'**
+  String get branchCityMoon;
+
+  /// No description provided for @branchCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã mở {n}/{total} chi nhánh'**
+  String branchCount(int n, int total);
 
   /// No description provided for @raidTab.
   ///

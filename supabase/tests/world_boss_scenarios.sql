@@ -30,7 +30,7 @@ select world_boss_submit(100, 0, 0);
 select chk('báo số nhỏ hơn không trừ', (world_boss_state()->>'mine')::bigint = 2000);
 select chk('báo số ảo bị chặn', err_of('select world_boss_submit(999999999, 0, 0)') like '%score too high%');
 select chk('số âm bị chặn', err_of('select world_boss_submit(-1, 0, 0)') like '%invalid input%');
-select chk('máu tuần đầu = 150000', (world_boss_state()->>'hp')::bigint = 150000);
+select chk('máu tuần đầu = 225000', (world_boss_state()->>'hp')::bigint = 225000);
 select chk('boss index trong 0..7', (world_boss_state()->>'boss')::int between 0 and 7);
 
 select as_u(2); select world_boss_submit(500, 0, 0);
@@ -41,23 +41,23 @@ select chk('hạng của Binh = 2', (world_boss_state()->>'rank')::int = 2);
 -- mốc thưởng
 select chk('chưa phá mốc 1 → chưa nhận', err_of('select world_boss_claim(1)') like '%phase not reached%');
 reset role;
-insert into world_boss_hits (user_id, week, damage) values (uid_of(3), guild_current_week(), 30000);
+insert into world_boss_hits (user_id, week, damage) values (uid_of(3), guild_current_week(), 45000);
 select as_u(2);
-select chk('tổng 32500 ≥ 20% (30000) → nhận mốc 1', world_boss_claim(1)->>'gems' = '50');
+select chk('tổng 47500 ≥ 20% (45000) → nhận mốc 1', world_boss_claim(1)->>'gems' = '50');
 select chk('nhận lại bị chặn', err_of('select world_boss_claim(1)') like '%already claimed%');
-select chk('mốc 2 chưa tới (40% = 60000)', err_of('select world_boss_claim(2)') like '%phase not reached%');
+select chk('mốc 2 chưa tới (40% = 90000)', err_of('select world_boss_claim(2)') like '%phase not reached%');
 select chk('mốc lạ bị chặn', err_of('select world_boss_claim(6)') like '%invalid phase%');
 select as_u(4);
 select chk('chưa đánh gì không nhận được (dưới 100 sát thương)', err_of('select world_boss_claim(1)') like '%not enough damage%');
 reset role;
-update world_boss_hits set damage = 150000 where user_id = uid_of(3);
+update world_boss_hits set damage = 225000 where user_id = uid_of(3);
 select as_u(2);
 select chk('hạ boss: mốc 5 có rương', world_boss_claim(5)->>'chest' = 'true' and world_boss_claim(4)->>'gems' = '180');
 
 -- máu tuần sau tự cân theo tuần trước (chạy bằng quyền cao nhất vì hàm nội bộ bị thu hồi)
 reset role;
-select chk('máu tuần sau = 1.1 × tổng tuần này (152500 → 167750)', wb_hp(guild_current_week() + 7) = 167750);
-select chk('tuần không ai đánh → máu tuần kế về mức sàn 150000', wb_hp(guild_current_week() + 14) = 150000);
+select chk('máu tuần sau = 1.1 × tổng tuần này (227500 → 250250)', wb_hp(guild_current_week() + 7) = 250250);
+select chk('tuần không ai đánh → máu tuần kế về mức sàn 225000', wb_hp(guild_current_week() + 14) = 225000);
 insert into world_boss_weeks (week, hp) values (guild_current_week() - 21, 200000);
 insert into world_boss_hits (user_id, week, damage) values (uid_of(1), guild_current_week() - 21, 10000000);
 select chk('trần tăng: tổng ảo 10M chỉ nâng tối đa 3× máu cũ ×1.1 = 660000', wb_hp(guild_current_week() - 14) = 660000);
@@ -97,14 +97,14 @@ select chk('ẩn danh không mua được', err_of('select world_boss_buy_auto()
 reset role;
 insert into auth.users (id, is_anonymous) values (uid_of(6), false);
 select as_u(6);
-select chk('đầu ngày còn 5 lượt quảng cáo', (world_boss_state()->>'ad_left')::int = 5);
-select chk('xem 1 quảng cáo → còn 4 lượt, +120 sát thương', world_boss_ad_strike() = 4 and (world_boss_state()->>'mine')::bigint = 120);
+select chk('đầu ngày còn 10 lượt quảng cáo', (world_boss_state()->>'ad_left')::int = 10);
+select chk('xem 1 quảng cáo → còn 9 lượt, +120 sát thương', world_boss_ad_strike() = 9 and (world_boss_state()->>'mine')::bigint = 120);
 select world_boss_submit(100, 0, 0);
 select chk('cộng dồn với đánh tay (120 + 100)', (world_boss_state()->>'mine')::bigint = 220);
-select world_boss_ad_strike(); select world_boss_ad_strike(); select world_boss_ad_strike();
-select chk('lượt thứ 5 → còn 0', world_boss_ad_strike() = 0 and (world_boss_state()->>'ad_left')::int = 0);
-select chk('lượt thứ 6 bị chặn', err_of('select world_boss_ad_strike()') like '%ad limit%');
-select chk('5 quảng cáo = 600 + 100 sát thương', (world_boss_state()->>'mine')::bigint = 700);
+select world_boss_ad_strike() from generate_series(1, 8);
+select chk('lượt thứ 10 → còn 0', world_boss_ad_strike() = 0 and (world_boss_state()->>'ad_left')::int = 0);
+select chk('lượt thứ 11 bị chặn', err_of('select world_boss_ad_strike()') like '%ad limit%');
+select chk('10 quảng cáo = 1200 + 100 sát thương', (world_boss_state()->>'mine')::bigint = 1300);
 select as_u(0);
 select chk('khách không xem được', err_of('select world_boss_ad_strike()') like '%permission denied%');
 select as_u(9);
@@ -114,7 +114,7 @@ select chk('ẩn danh bị chặn', err_of('select world_boss_ad_strike()') like
 reset role;
 insert into auth.users (id, is_anonymous) values (uid_of(7), false);
 select as_u(7);
-select chk('boss ngày có máu tối thiểu 20000', (world_boss_state()->'daily'->>'hp')::bigint = 20000);
+select chk('boss ngày có máu tối thiểu 30000', (world_boss_state()->'daily'->>'hp')::bigint = 30000);
 select world_boss_submit(300, 0, 0);
 select chk('đánh tay cộng cả boss tuần và boss ngày', (world_boss_state()->>'mine')::bigint = 300 and (world_boss_state()->'daily'->>'mine')::bigint = 300);
 select world_boss_ad_strike();
@@ -122,8 +122,8 @@ select chk('quảng cáo cộng cả hai (+120)', (world_boss_state()->'daily'->
 select chk('bảng boss ngày có tên', world_boss_state()->'daily'->'board'->0->>'nickname' is not null);
 select chk('chưa phá mốc ngày → chưa nhận', err_of('select world_boss_day_claim(1)') like '%phase not reached%');
 reset role;
-insert into world_boss_day_hits (user_id, day, damage) values (uid_of(1), (now() at time zone 'utc')::date, 5000)
-  on conflict (user_id, day) do update set damage = 5000;
+insert into world_boss_day_hits (user_id, day, damage) values (uid_of(1), (now() at time zone 'utc')::date, 6000)
+  on conflict (user_id, day) do update set damage = 6000;
 select as_u(7);
 select chk('tổng ngày ≥ 20% → nhận mốc 1 (0 💎)', world_boss_day_claim(1)->>'gems' = '0');
 select chk('nhận lại bị chặn', err_of('select world_boss_day_claim(1)') like '%already claimed%');
@@ -137,7 +137,7 @@ select chk('chưa có sát thương ngày (<30) thì không nhận được dù 
 reset role;
 select chk('tự động đánh chỉ tính phần rơi vào hôm nay (≤ 24 giờ × 25 = 600)',
   (select dmg from wb_day_damages((now() at time zone 'utc')::date) where user_id = uid_of(5)) <= 600);
-select chk('máu boss ngày hôm sau theo hôm nay (1.1×)', wb_day_hp((now() at time zone 'utc')::date + 1) >= 20000);
+select chk('máu boss ngày hôm sau theo hôm nay (1.1×)', wb_day_hp((now() at time zone 'utc')::date + 1) >= 30000);
 select as_u(0);
 select chk('khách không nhận boss ngày', err_of('select world_boss_day_claim(1)') like '%permission denied%');
 -- Boss tuần ĐÓNG (không phải Chủ Nhật): đánh ngày thường chỉ đẩy mốc + tính cho boss ngày, không vào boss tuần.

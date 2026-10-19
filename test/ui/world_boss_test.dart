@@ -205,15 +205,20 @@ void main() {
     expect(tester.widget<FilledButton>(find.byKey(const Key('wb-claim-1'))).onPressed, isNotNull);
     expect(tester.widget<FilledButton>(find.byKey(const Key('wb-claim-2'))).onPressed, isNotNull);
     expect(tester.widget<FilledButton>(find.byKey(const Key('wb-claim-3'))).onPressed, isNull);
+    await tester.ensureVisible(find.byKey(const Key('wb-seg-board')));
+    await tester.tap(find.byKey(const Key('wb-seg-board')));
+    await tester.pumpAndSettle();
     await tester.scrollUntilVisible(find.byKey(const Key('wb-row-1')), 300, scrollable: find.byType(Scrollable).first);
     expect(find.byKey(const Key('wb-row-1')), findsOneWidget);
+    expect(find.byKey(const Key('wb-claim-1')), findsNothing, reason: 'tab bảng ẩn danh sách mốc');
     await _end(tester, c);
   });
 
   testWidgets('nhận mốc: gọi server rồi mới cộng 💎; nút chuyển thành Đã nhận', (tester) async {
     final (c, repo) = await _open(tester, _Repo());
     final before = c.read(gameControllerProvider).gems;
-    await tester.ensureVisible(find.byKey(const Key('wb-claim-1')));
+    await tester.drag(find.byType(ListView).first, const Offset(0, -700));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('wb-claim-1')));
     await tester.pumpAndSettle();
     expect(repo.log, contains('claim:1'));
@@ -230,6 +235,7 @@ void main() {
         claimed: const {}, board: const [], open: false, startsAtSeconds: 1000 + 86400);
     final (c, _) = await _open(tester, repo);
     expect(tester.widget<FilledButton>(find.byKey(const Key('wb-hit'))).onPressed, isNull);
+    expect(tester.widget<GestureDetector>(find.byKey(const Key('wb-boss-tap'))).onTap, isNull);
     expect(tester.widget<OutlinedButton>(find.byKey(const Key('wb-ad'))).onPressed, isNull);
     expect(find.textContaining('Chủ Nhật'), findsWidgets);
     await _end(tester, c);
@@ -244,7 +250,8 @@ void main() {
     final repo = _Repo()..claimError = StateError('already claimed');
     final (c, _) = await _open(tester, repo);
     final before = c.read(gameControllerProvider).gems;
-    await tester.ensureVisible(find.byKey(const Key('wb-claim-1')));
+    await tester.drag(find.byType(ListView).first, const Offset(0, -700));
+    await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('wb-claim-1')));
     await tester.pumpAndSettle();
     expect(c.read(gameControllerProvider).gems, before);
@@ -252,13 +259,35 @@ void main() {
     await _end(tester, c);
   });
 
-  testWidgets('nút Gửi sát thương tải lại trạng thái mới', (tester) async {
+  testWidgets('chạm boss / nút ⚔️: +1 chạm vào bộ đếm, máu giảm ngay, gom lại rồi báo server', (tester) async {
     final (c, repo) = await _open(tester, _Repo());
+    final before = c.read(gameControllerProvider.notifier).dungeonProgress().tap;
+    repo.log.clear();
     repo.data = _state(damage: 70000);
-    await tester.ensureVisible(find.byKey(const Key('wb-hit')));
+    await tester.ensureVisible(find.byKey(const Key('wb-boss-tap')));
+    await tester.tap(find.byKey(const Key('wb-boss-tap')));
+    await tester.tap(find.byKey(const Key('wb-boss-tap')));
     await tester.tap(find.byKey(const Key('wb-hit')));
+    await tester.pump();
+    expect(c.read(gameControllerProvider.notifier).dungeonProgress().tap, before + 3);
+    expect(find.text('+3 💥'), findsOneWidget);
+    expect(repo.log.where((e) => e.startsWith('submit')), isEmpty, reason: 'chưa tới 700ms thì chưa báo');
+    await tester.pump(const Duration(milliseconds: 800));
     await tester.pumpAndSettle();
+    expect(repo.log.where((e) => e.startsWith('submit')).length, 1, reason: 'ba lần chạm gom thành một lần báo');
+    expect(find.byKey(const Key('wb-pending')), findsNothing);
+    await tester.scrollUntilVisible(find.byKey(const Key('wb-claim-3')), 200, scrollable: find.byType(Scrollable).first);
     expect(tester.widget<FilledButton>(find.byKey(const Key('wb-claim-3'))).onPressed, isNotNull);
+    await _end(tester, c);
+  });
+
+  testWidgets('Hướng dẫn: hộp thoại có nguồn sát thương + điều kiện nhận quà (boss tuần và ngày khác nhau)', (tester) async {
+    final (c, _) = await _open(tester, _Repo());
+    await tester.tap(find.byKey(const Key('wb-guide')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('wb-guide-dialog')), findsOneWidget);
+    expect(find.textContaining('120'), findsWidgets); // +120 mỗi quảng cáo
+    expect(find.textContaining('$worldBossMinDamageToClaim'), findsWidgets);
     await _end(tester, c);
   });
 

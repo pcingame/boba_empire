@@ -3123,6 +3123,32 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get worldBossGuideTitle => 'Hướng dẫn';
+
+  @override
+  String get worldBossGuideClose => 'Đóng';
+
+  @override
+  String get worldBossTabRewards => 'Phần thưởng';
+
+  @override
+  String worldBossGuideSources(
+    int tap,
+    int off,
+    int rec,
+    int ad,
+    int adMax,
+    int auto,
+  ) {
+    return 'Nguồn sát thương:\n👆 Chạm boss hoặc chạm cốc: $tap / lần\n💤 Thời gian offline: 1 sát thương mỗi $off giây\n📖 Điểm Công thức: $rec / điểm\n📺 Xem quảng cáo: +$ad (tối đa $adMax lần/ngày)\n⚡ Tự động đánh: +$auto / giờ';
+  }
+
+  @override
+  String worldBossGuideRules(int n) {
+    return 'Cần ít nhất $n sát thương của bạn để nhận quà. Mỗi đòn đánh tính cho cả boss ngày lẫn boss tuần; boss tuần chỉ mở Chủ Nhật (giờ UTC), boss ngày đổi lúc 0h UTC.';
+  }
+
+  @override
   String worldBossPhase(int pct) {
     return 'Mốc $pct% máu';
   }
@@ -3335,6 +3361,38 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get branchCityDubai => 'Dubai';
+
+  @override
+  String get branchCityDanang => 'Đà Nẵng';
+
+  @override
+  String get branchCitySingapore => 'Singapore';
+
+  @override
+  String get branchCityHongkong => 'Hồng Kông';
+
+  @override
+  String get branchCitySydney => 'Sydney';
+
+  @override
+  String get branchCityIstanbul => 'Istanbul';
+
+  @override
+  String get branchCityLondon => 'London';
+
+  @override
+  String get branchCityRio => 'Rio de Janeiro';
+
+  @override
+  String get branchCityCairo => 'Cairo';
+
+  @override
+  String get branchCityMoon => 'Mặt Trăng';
+
+  @override
+  String branchCount(int n, int total) {
+    return 'Đã mở $n/$total chi nhánh';
+  }
 
   @override
   String get raidTab => 'Đột kích';

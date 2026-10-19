@@ -23,6 +23,15 @@ String branchCityName(AppLocalizations l, String id) => switch (id) {
       'bangkok' => l.branchCityBangkok,
       'paris' => l.branchCityParis,
       'newyork' => l.branchCityNewyork,
+      'danang' => l.branchCityDanang,
+      'singapore' => l.branchCitySingapore,
+      'hongkong' => l.branchCityHongkong,
+      'sydney' => l.branchCitySydney,
+      'istanbul' => l.branchCityIstanbul,
+      'london' => l.branchCityLondon,
+      'rio' => l.branchCityRio,
+      'cairo' => l.branchCityCairo,
+      'moon' => l.branchCityMoon,
       _ => l.branchCityDubai,
     };
 
@@ -61,6 +70,7 @@ class BranchesPage extends ConsumerWidget {
       pendingSec += branchPendingIncomeSeconds(s.branchLevels, s.branchSince, c, now);
     }
     final pendingXu = income.isFinite ? pendingSec * income : 0.0;
+    final opened = branchCities.where((c) => branchLevel(s.branchLevels, c.id) > 0).length;
     return PhoneWidth(
       child: Scaffold(
         key: const Key('branches'),
@@ -70,7 +80,19 @@ class BranchesPage extends ConsumerWidget {
             padding: const EdgeInsets.all(14),
             child: Column(children: [
               Text(l10n.branchIntro, key: const Key('branch-intro'), style: theme.textTheme.bodySmall, textAlign: TextAlign.center),
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
+              // Dải biểu tượng: mỗi thành phố một chấm (sáng = đã mở) để thấy tiến độ sưu tập.
+              Wrap(alignment: WrapAlignment.center, spacing: 4, runSpacing: 2, children: [
+                for (final c in branchCities)
+                  Opacity(
+                    opacity: branchLevel(s.branchLevels, c.id) > 0 ? 1 : 0.25,
+                    child: Text(c.emoji, style: const TextStyle(fontSize: 18)),
+                  ),
+              ]),
+              const SizedBox(height: 4),
+              Text(l10n.branchCount(opened, branchCities.length),
+                  key: const Key('branch-count'), style: theme.textTheme.labelMedium),
+              const SizedBox(height: 8),
               FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(l10n.branchPendingTotal(formatNumber(pendingXu)),
@@ -114,17 +136,63 @@ class _Card extends StatelessWidget {
     final cost = maxed ? 0.0 : branchCost(c, lvl + 1, income);
     final pendingSec = branchPendingIncomeSeconds(levels, since, c, now);
     final frac = lvl == 0 ? 0.0 : (pendingSec / branchRate(c, lvl) / branchCapSeconds).clamp(0.0, 1.0);
-    return ClayTile(
+    final tint = Color(c.color);
+    return Container(
       key: Key('branch-card-${c.id}'),
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [tint.withValues(alpha: locked ? 0.08 : 0.26), tint.withValues(alpha: 0.05)],
+        ),
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: tint.withValues(alpha: locked ? 0.2 : 0.55), width: maxed ? 2.5 : 1.2),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 6, offset: const Offset(0, 2))],
+      ),
       child: Opacity(
-        opacity: locked ? 0.55 : 1,
+        opacity: locked ? 0.6 : 1,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(children: [
-            Text(c.emoji, style: const TextStyle(fontSize: 28)),
+            // Landmark trong vòng màu + huy hiệu signature (món đặc trưng) ở góc dưới.
+            SizedBox(
+              width: 60,
+              height: 56,
+              child: Stack(clipBehavior: Clip.none, children: [
+                Container(
+                  width: 52,
+                  height: 52,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: RadialGradient(colors: [Colors.white.withValues(alpha: 0.9), tint.withValues(alpha: 0.55)]),
+                    border: Border.all(color: tint, width: 2),
+                  ),
+                  child: Text(locked ? '🔒' : c.emoji, style: const TextStyle(fontSize: 28)),
+                ),
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    key: Key('branch-sig-${c.id}'),
+                    width: 24,
+                    height: 24,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: tint, width: 1.5),
+                    ),
+                    child: Text(c.signature, style: const TextStyle(fontSize: 13)),
+                  ),
+                ),
+              ]),
+            ),
             const SizedBox(width: 10),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(branchCityName(l10n, c.id), maxLines: 1, overflow: TextOverflow.ellipsis, style: theme.textTheme.titleMedium),
+                Text(branchCityName(l10n, c.id), maxLines: 1, overflow: TextOverflow.ellipsis, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
                 Text(
                   locked
                       ? l10n.branchNeedStage(c.minStage)
@@ -136,14 +204,29 @@ class _Card extends StatelessWidget {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
+                if (!locked) ...[
+                  const SizedBox(height: 4),
+                  Row(key: Key('branch-pips-${c.id}'), children: [
+                    for (var i = 1; i <= branchMaxLevel; i++)
+                      Container(
+                        width: 8,
+                        height: 8,
+                        margin: const EdgeInsets.only(right: 2),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: i <= lvl ? tint : tint.withValues(alpha: 0.2),
+                        ),
+                      ),
+                  ]),
+                ],
               ]),
             ),
           ]),
           if (lvl > 0) ...[
-            const SizedBox(height: 6),
+            const SizedBox(height: 8),
             ClipRRect(
               borderRadius: BorderRadius.circular(6),
-              child: LinearProgressIndicator(value: frac, minHeight: 8),
+              child: LinearProgressIndicator(value: frac, minHeight: 8, color: tint, backgroundColor: tint.withValues(alpha: 0.18)),
             ),
             const SizedBox(height: 2),
             Text(

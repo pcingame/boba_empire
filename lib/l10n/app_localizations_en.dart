@@ -3132,6 +3132,32 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get worldBossGuideTitle => 'Guide';
+
+  @override
+  String get worldBossGuideClose => 'Close';
+
+  @override
+  String get worldBossTabRewards => 'Rewards';
+
+  @override
+  String worldBossGuideSources(
+    int tap,
+    int off,
+    int rec,
+    int ad,
+    int adMax,
+    int auto,
+  ) {
+    return 'Damage sources:\n👆 Tap the boss or the cup: $tap per tap\n💤 Offline time: 1 damage per $off seconds\n📖 Recipe points: $rec each\n📺 Watch an ad: +$ad (max $adMax/day)\n⚡ Auto strike: +$auto per hour';
+  }
+
+  @override
+  String worldBossGuideRules(int n) {
+    return 'You need at least $n damage to claim rewards. Every hit counts for both the daily and weekly boss; the weekly boss only opens on Sunday (UTC), the daily boss resets at 0:00 UTC.';
+  }
+
+  @override
   String worldBossPhase(int pct) {
     return '$pct% HP milestone';
   }
@@ -3344,6 +3370,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get branchCityDubai => 'Dubai';
+
+  @override
+  String get branchCityDanang => 'Da Nang';
+
+  @override
+  String get branchCitySingapore => 'Singapore';
+
+  @override
+  String get branchCityHongkong => 'Hong Kong';
+
+  @override
+  String get branchCitySydney => 'Sydney';
+
+  @override
+  String get branchCityIstanbul => 'Istanbul';
+
+  @override
+  String get branchCityLondon => 'London';
+
+  @override
+  String get branchCityRio => 'Rio de Janeiro';
+
+  @override
+  String get branchCityCairo => 'Cairo';
+
+  @override
+  String get branchCityMoon => 'The Moon';
+
+  @override
+  String branchCount(int n, int total) {
+    return '$n/$total branches open';
+  }
 
   @override
   String get raidTab => 'Raids';

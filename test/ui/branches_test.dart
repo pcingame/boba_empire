@@ -43,7 +43,7 @@ GameState _rich({int stage = 6, double money = 1e12}) {
 void main() {
   group('công thức', () {
     test('tỉ lệ tăng theo cấp và hệ số thành phố; cấp 0 = 0', () {
-      final c = branchCities[2];
+      final c = branchCityById('tokyo')!;
       expect(branchRate(c, 0), 0);
       expect(branchRate(c, 1), closeTo(branchRatePerLevel * c.rateMult, 1e-12));
       expect(branchRate(c, 10), closeTo(10 * branchRate(c, 1), 1e-12));
@@ -56,7 +56,16 @@ void main() {
       expect(branchCost(c, 1, 0), branchCostFloor);
       expect(branchCost(c, 1, double.nan), branchCostFloor);
       expect(branchCost(c, 10, double.infinity).isFinite, isTrue);
-      expect(branchCost(branchCities[7], 1, 1e70).isFinite, isTrue);
+      expect(branchCost(branchCityById('moon')!, 1, 1e70).isFinite, isTrue);
+    });
+
+    test('17 chi nhánh: id duy nhất, mỗi nơi có landmark + signature + màu riêng, mở từ GĐ2 tới GĐ18', () {
+      expect(branchCities.length, 17);
+      expect(branchCities.first.minStage, 2);
+      expect(branchCities.last.minStage, 18);
+      expect(branchCities.map((c) => c.emoji).toSet().length, 17, reason: 'landmark không trùng');
+      expect(branchCities.map((c) => c.signature).toSet().length, 17, reason: 'signature không trùng');
+      expect(branchCities.map((c) => c.color).toSet().length, 17, reason: 'màu không trùng');
     });
 
     test('thành phố sau mở khoá muộn hơn, đắt hơn, lời hơn', () {
@@ -93,7 +102,8 @@ void main() {
     test('chi nhánh kế tiếp có thể mở theo giai đoạn', () {
       expect(nextOpenableBranch({}, 1), isNull);
       expect(nextOpenableBranch({}, 2)!.id, 'saigon');
-      expect(nextOpenableBranch({'saigon': 1}, 4)!.id, 'hanoi');
+      expect(nextOpenableBranch({'saigon': 1}, 3)!.id, 'danang');
+      expect(nextOpenableBranch({'saigon': 1, 'danang': 1}, 4)!.id, 'hanoi');
     });
   });
 
@@ -240,6 +250,18 @@ void main() {
       await end(tester, c);
     });
 
+    testWidgets('thẻ có huy hiệu signature + chấm cấp; đầu trang đếm số chi nhánh đã mở', (tester) async {
+      final seed = _rich(stage: 6)
+        ..branchLevels['saigon'] = 3
+        ..branchSince['saigon'] = _t0;
+      final c = await open(tester, seed);
+      expect(find.byKey(const Key('branch-sig-saigon')), findsOneWidget);
+      expect(find.descendant(of: find.byKey(const Key('branch-sig-saigon')), matching: find.text('☕')), findsOneWidget);
+      expect(find.byKey(const Key('branch-pips-saigon')), findsOneWidget);
+      expect(find.text('Đã mở 1/17 chi nhánh'), findsOneWidget);
+      await end(tester, c);
+    });
+
     testWidgets('nút Thu về mờ khi chưa có gì; có doanh thu thì bấm được', (tester) async {
       final seed = _rich(stage: 6)
         ..branchLevels['saigon'] = 5
@@ -275,8 +297,8 @@ void main() {
         expect(find.byKey(const Key('branch-collect')), findsOneWidget);
         expect(tester.takeException(), isNull, reason: lang);
         expect(find.textContaining(RegExp(r'\{[a-z]+\}')), findsNothing, reason: lang);
-        // Cuộn hết danh sách để dựng cả 8 thẻ, không thẻ nào tràn.
-        for (var i = 0; i < 6; i++) {
+        // Cuộn hết danh sách để dựng cả 17 thẻ, không thẻ nào tràn.
+        for (var i = 0; i < 14; i++) {
           await tester.drag(find.byType(ListView), const Offset(0, -400));
           await tester.pump();
         }

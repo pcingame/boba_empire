@@ -3082,6 +3082,32 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get worldBossGuideTitle => '안내';
+
+  @override
+  String get worldBossGuideClose => '닫기';
+
+  @override
+  String get worldBossTabRewards => '보상';
+
+  @override
+  String worldBossGuideSources(
+    int tap,
+    int off,
+    int rec,
+    int ad,
+    int adMax,
+    int auto,
+  ) {
+    return '피해 획득처:\n👆 보스 또는 컵 터치: 터치당 $tap\n💤 오프라인 시간: $off초당 피해 1\n📖 레시피 점수: 점당 $rec\n📺 광고 시청: +$ad (하루 최대 $adMax회)\n⚡ 자동 공격: 시간당 +$auto';
+  }
+
+  @override
+  String worldBossGuideRules(int n) {
+    return '보상을 받으려면 최소 $n 피해가 필요해요. 모든 공격은 일일 보스와 주간 보스에 함께 적용되며, 주간 보스는 일요일(UTC)에만 열리고 일일 보스는 UTC 0시에 바뀌어요.';
+  }
+
+  @override
   String worldBossPhase(int pct) {
     return '체력 $pct% 달성';
   }
@@ -3294,6 +3320,38 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get branchCityDubai => '두바이';
+
+  @override
+  String get branchCityDanang => '다낭';
+
+  @override
+  String get branchCitySingapore => '싱가포르';
+
+  @override
+  String get branchCityHongkong => '홍콩';
+
+  @override
+  String get branchCitySydney => '시드니';
+
+  @override
+  String get branchCityIstanbul => '이스탄불';
+
+  @override
+  String get branchCityLondon => '런던';
+
+  @override
+  String get branchCityRio => '리우데자네이루';
+
+  @override
+  String get branchCityCairo => '카이로';
+
+  @override
+  String get branchCityMoon => '달';
+
+  @override
+  String branchCount(int n, int total) {
+    return '지점 $n/$total개 오픈';
+  }
 
   @override
   String get raidTab => '습격';

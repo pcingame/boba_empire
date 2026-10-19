@@ -348,6 +348,9 @@ class GameController extends Notifier<GameSnapshot> {
   }
 
   /// Tổng luỹ kế Phó bản tuần này (chạm / giây offline / điểm Công thức) để báo server.
+  /// Một lần chạm vào boss: cộng vào bộ đếm chạm tuần (đã thành sát thương khi báo server).
+  void bossTap() => addDungeon(_game, DungeonBar.tap, 1, _clock());
+
   ({int tap, int off, int rec}) dungeonProgress() => dungeonTotals(_game, _clock());
 
   /// Cấp 💎 + rương phụ kiện của ải Phó bản SAU KHI server đã xác nhận (Xu Hội server tự cộng).

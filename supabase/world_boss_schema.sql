@@ -1,10 +1,10 @@
 -- Boss Thế Giới: mỗi tuần MỘT boss (chỉ xuất hiện Chủ Nhật UTC) cho cả server cùng đánh (thanh máu chung). Sát thương đổi từ bộ đếm tuần của app
 -- (chạm / giây offline / điểm Công thức, cùng bộ đếm Phó bản). Thưởng theo 5 mốc cộng đồng (20/40/60/80/100% máu).
--- Máu tuần = max(150000, 1.1 × tổng sát thương tuần trước, nhưng không quá 3× máu tuần trước) → tự cân theo số người chơi.
+-- Máu tuần = max(225000, 1.1 × tổng sát thương tuần trước, nhưng không quá 3× máu tuần trước) → tự cân theo số người chơi.
 -- Hằng số khớp lib/core/world_boss.dart (test so khớp); mọi con số là ước lượng chưa playtest.
 -- Chạy SAU leaderboard_schema + guild_schema (dùng guild_current_week, tên từ leaderboard_entries). Idempotent.
 
-create or replace function wb_base_hp() returns bigint language sql immutable as $$ select 150000::bigint $$;
+create or replace function wb_base_hp() returns bigint language sql immutable as $$ select 225000::bigint $$;
 -- 1 sát thương / lần chạm · 1 / 30 giây offline · 40 / điểm Công thức.
 create or replace function wb_dmg_per_tap() returns integer language sql immutable as $$ select 1 $$;
 create or replace function wb_off_seconds_per_dmg() returns integer language sql immutable as $$ select 30 $$;
@@ -18,10 +18,10 @@ create or replace function wb_min_damage_to_claim() returns integer language sql
 create or replace function wb_auto_per_hour() returns integer language sql immutable as $$ select 25 $$;
 -- Xem quảng cáo → +120 sát thương, tối đa 5 lần/ngày (UTC). Server không thấy được quảng cáo có xem thật không nên chỉ giới hạn theo ngày.
 create or replace function wb_ad_damage() returns integer language sql immutable as $$ select 120 $$;
-create or replace function wb_ad_per_day() returns integer language sql immutable as $$ select 5 $$;
+create or replace function wb_ad_per_day() returns integer language sql immutable as $$ select 10 $$;
 -- Boss NGÀY (nhỏ, đổi mỗi ngày UTC): cùng nguồn sát thương với boss tuần (mỗi lần báo / xem quảng cáo / tự động đánh cộng cho cả hai).
--- Máu = max(20000, 1.1 × min(tổng ngày trước, 3 × máu ngày trước)). 5 mốc 20%; 💎 chỉ ở mốc cuối; Xu (giây thu nhập) do app cấp.
-create or replace function wb_day_base_hp() returns bigint language sql immutable as $$ select 20000::bigint $$;
+-- Máu = max(30000, 1.1 × min(tổng ngày trước, 3 × máu ngày trước)). 5 mốc 20%; 💎 chỉ ở mốc cuối; Xu (giây thu nhập) do app cấp.
+create or replace function wb_day_base_hp() returns bigint language sql immutable as $$ select 30000::bigint $$;
 create or replace function wb_day_min_damage_to_claim() returns integer language sql immutable as $$ select 30 $$;
 create or replace function wb_day_phase_gems(p_phase integer) returns integer
 language sql immutable as $$ select case p_phase when 5 then 10 else 0 end $$;

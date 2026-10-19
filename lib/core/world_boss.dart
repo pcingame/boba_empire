@@ -7,7 +7,7 @@ const int worldBossCount = 8;
 const List<String> worldBossEmoji = ['🐺', '🐺', '🐺', '🐺', '🐺', '🐺', '🐺', '🐺'];
 
 /// Máu tuần đầu / mức sàn các tuần sau.
-const int worldBossBaseHp = 150000;
+const int worldBossBaseHp = 225000;
 
 /// 1 sát thương / lần chạm · 1 / 30 giây offline · 40 / điểm Công thức.
 const int worldBossDmgPerTap = 1;
@@ -20,7 +20,7 @@ const int worldBossAutoGems = 100;
 
 /// Xem quảng cáo thưởng → sát thương cố định, tối đa mỗi ngày (UTC).
 const int worldBossAdDamage = 120;
-const int worldBossAdPerDay = 5;
+const int worldBossAdPerDay = 10;
 
 /// Sát thương tối thiểu để nhận quà mốc.
 const int worldBossMinDamageToClaim = 100;
@@ -37,7 +37,7 @@ int worldBossDamage({required int tap, required int off, required int rec}) =>
     tap * worldBossDmgPerTap + off ~/ worldBossOffSecondsPerDmg + rec * worldBossDmgPerRec;
 
 /// Boss NGÀY (nhỏ, đổi mỗi ngày UTC): cùng nguồn sát thương với boss tuần. Khớp SQL `wb_day_*`.
-const int worldBossDayBaseHp = 20000;
+const int worldBossDayBaseHp = 30000;
 const int worldBossDayMinDamageToClaim = 30;
 
 /// 5 mốc: thưởng Xu = số giây thu nhập quán chính (app cấp), 💎 chỉ mốc cuối (server).
