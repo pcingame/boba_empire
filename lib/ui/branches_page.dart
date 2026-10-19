@@ -80,60 +80,113 @@ class _BranchesPageState extends ConsumerState<BranchesPage> {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
+      showDragHandle: true,
       useSafeArea: true,
-      builder: (sheet) => Consumer(
-        builder: (ctx, ref, _) {
-          final l10n = AppLocalizations.of(ctx)!;
-          final s = ref.watch(gameControllerProvider);
-          final names = {
-            'asia': l10n.branchContAsia,
-            'europe': l10n.branchContEurope,
-            'africa': l10n.branchContAfrica,
-            'northamerica': l10n.branchContNorthAmerica,
-            'southamerica': l10n.branchContSouthAmerica,
-            'oceania': l10n.branchContOceania,
-            'space': branchCityName(l10n, 'moon'),
-            'all': l10n.branchSetAll,
-          };
-          return ListView(
-            key: const Key('branch-sets-sheet'),
-            padding: const EdgeInsets.fromLTRB(12, 8, 12, 20),
-            children: [
-              Text(l10n.branchSetsTitle, style: Theme.of(ctx).textTheme.titleMedium),
-              Text(l10n.branchSetsHint, style: Theme.of(ctx).textTheme.bodySmall),
-              for (final set in branchSets)
-                for (final tier in const [1, 2])
-                  Builder(builder: (_) {
-                    final key = branchSetKey(set, tier);
-                    final done = branchSetDone(s.branchLevels, set, tier);
-                    final complete = done == set.cityIds.length;
-                    final claimed = s.branchSetClaims.contains(key);
-                    final r = branchSetReward(set, tier);
-                    return ListTile(
-                      key: Key('branch-set-$key'),
-                      dense: true,
-                      title: Text(
-                          '${names[set.id]} · ${tier == 1 ? l10n.branchSetTier1 : l10n.branchSetTier2}'),
-                      subtitle: Text(
-                          '$done/${set.cityIds.length} · ${l10n.branchSetReward(r.gems, r.seconds ~/ 3600)}'),
-                      trailing: claimed
-                          ? const Text('✅')
-                          : FilledButton(
-                              key: Key('branch-set-claim-$key'),
-                              onPressed: complete
-                                  ? () {
-                                      if (ref.read(gameControllerProvider.notifier).claimBranchSet(key)) {
-                                        _snack(ctx, l10n.branchSetClaimed(r.gems));
-                                      }
-                                    }
-                                  : null,
-                              child: Text(l10n.branchSetClaim),
-                            ),
-                    );
-                  }),
-            ],
-          );
-        },
+      builder: (sheet) => DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.75,
+        minChildSize: 0.4,
+        maxChildSize: 0.95,
+        builder: (_, scroll) => Consumer(
+          builder: (ctx, ref, _) {
+            final l10n = AppLocalizations.of(ctx)!;
+            final theme = Theme.of(ctx);
+            final s = ref.watch(gameControllerProvider);
+            final names = {
+              'asia': l10n.branchContAsia,
+              'europe': l10n.branchContEurope,
+              'africa': l10n.branchContAfrica,
+              'northamerica': l10n.branchContNorthAmerica,
+              'southamerica': l10n.branchContSouthAmerica,
+              'oceania': l10n.branchContOceania,
+              'space': branchCityName(l10n, 'moon'),
+              'all': l10n.branchSetAll,
+            };
+            String hours(int sec) {
+              final h = sec / 3600;
+              return h == h.roundToDouble() ? '${h.round()}' : h.toStringAsFixed(1);
+            }
+
+            Widget tierRow(BranchSet set, int tier) {
+              final key = branchSetKey(set, tier);
+              final done = branchSetDone(s.branchLevels, set, tier);
+              final total = set.cityIds.length;
+              final claimed = s.branchSetClaims.contains(key);
+              final r = branchSetReward(set, tier);
+              return Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Row(
+                  key: Key('branch-set-$key'),
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${tier == 1 ? l10n.branchSetTier1 : l10n.branchSetTier2} · $done/$total',
+                            style: theme.textTheme.labelLarge,
+                          ),
+                          const SizedBox(height: 4),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(6),
+                            child: LinearProgressIndicator(value: done / total, minHeight: 6),
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            l10n.branchSetReward(r.gems, hours(r.seconds)),
+                            style: theme.textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    if (claimed)
+                      const Text('✅', style: TextStyle(fontSize: 22))
+                    else
+                      FilledButton(
+                        key: Key('branch-set-claim-$key'),
+                        onPressed: done == total
+                            ? () {
+                                if (ref.read(gameControllerProvider.notifier).claimBranchSet(key)) {
+                                  _snack(ctx, l10n.branchSetClaimed(r.gems));
+                                }
+                              }
+                            : null,
+                        child: Text(l10n.branchSetClaim),
+                      ),
+                  ],
+                ),
+              );
+            }
+
+            return ListView(
+              key: const Key('branch-sets-sheet'),
+              controller: scroll,
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 20),
+              children: [
+                Text('🏅 ${l10n.branchSetsTitle}', style: theme.textTheme.titleMedium),
+                const SizedBox(height: 2),
+                Text(l10n.branchSetsHint, style: theme.textTheme.bodySmall),
+                const SizedBox(height: 8),
+                for (final set in branchSets)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: ClayCard(
+                      padding: const EdgeInsets.all(12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(names[set.id]!, style: theme.textTheme.titleSmall),
+                          tierRow(set, 1),
+                          tierRow(set, 2),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -141,6 +194,7 @@ class _BranchesPageState extends ConsumerState<BranchesPage> {
   void _showManager(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
+      showDragHandle: true,
       useSafeArea: true,
       builder: (sheet) => Consumer(
         builder: (ctx, ref, _) {

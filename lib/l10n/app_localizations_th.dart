@@ -3304,7 +3304,7 @@ class AppLocalizationsTh extends AppLocalizations {
   String get branchSetTier2 => 'เลเวลสูงสุด';
 
   @override
-  String branchSetReward(int gems, int hours) {
+  String branchSetReward(int gems, String hours) {
     return '$gems 💎 + รายได้ $hours ชม.';
   }
 

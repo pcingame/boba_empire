@@ -1875,7 +1875,7 @@
   "branchSetTier1": "Mở đủ",
   "branchSetTier2": "Cấp tối đa",
   "branchSetReward": "{gems} 💎 + {hours}h thu nhập",
-  "@branchSetReward": {"placeholders": {"gems": {"type": "int"}, "hours": {"type": "int"}}},
+  "@branchSetReward": {"placeholders": {"gems": {"type": "int"}, "hours": {"type": "String"}}},
   "branchSetClaim": "Nhận",
   "branchSetClaimed": "Đã nhận {gems} 💎!",
   "@branchSetClaimed": {"placeholders": {"gems": {"type": "int"}}},

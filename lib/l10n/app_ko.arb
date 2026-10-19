@@ -1001,7 +1001,7 @@
   "branchSetTier1": "모두 오픈",
   "branchSetTier2": "최대 레벨",
   "branchSetReward": "{gems} 💎 + {hours}시간 수익",
-  "@branchSetReward": {"placeholders": {"gems": {"type": "int"}, "hours": {"type": "int"}}},
+  "@branchSetReward": {"placeholders": {"gems": {"type": "int"}, "hours": {"type": "String"}}},
   "branchSetClaim": "받기",
   "branchSetClaimed": "{gems} 💎 수령!",
   "@branchSetClaimed": {"placeholders": {"gems": {"type": "int"}}},

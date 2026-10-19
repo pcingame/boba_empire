@@ -5771,7 +5771,7 @@ abstract class AppLocalizations {
   ///
   /// In vi, this message translates to:
   /// **'{gems} 💎 + {hours}h thu nhập'**
-  String branchSetReward(int gems, int hours);
+  String branchSetReward(int gems, String hours);
 
   /// No description provided for @branchSetClaim.
   ///

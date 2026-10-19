@@ -1203,7 +1203,7 @@
   "branchSetTier1": "Todas abertas",
   "branchSetTier2": "Nível máx.",
   "branchSetReward": "{gems} 💎 + {hours}h de renda",
-  "@branchSetReward": {"placeholders": {"gems": {"type": "int"}, "hours": {"type": "int"}}},
+  "@branchSetReward": {"placeholders": {"gems": {"type": "int"}, "hours": {"type": "String"}}},
   "branchSetClaim": "Resgatar",
   "branchSetClaimed": "Resgatou {gems} 💎!",
   "@branchSetClaimed": {"placeholders": {"gems": {"type": "int"}}},

@@ -3267,7 +3267,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get branchSetTier2 => '최대 레벨';
 
   @override
-  String branchSetReward(int gems, int hours) {
+  String branchSetReward(int gems, String hours) {
     return '$gems 💎 + $hours시간 수익';
   }
 

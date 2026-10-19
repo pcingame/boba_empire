@@ -1203,7 +1203,7 @@
   "branchSetTier1": "All open",
   "branchSetTier2": "Max level",
   "branchSetReward": "{gems} 💎 + {hours}h income",
-  "@branchSetReward": {"placeholders": {"gems": {"type": "int"}, "hours": {"type": "int"}}},
+  "@branchSetReward": {"placeholders": {"gems": {"type": "int"}, "hours": {"type": "String"}}},
   "branchSetClaim": "Claim",
   "branchSetClaimed": "Claimed {gems} 💎!",
   "@branchSetClaimed": {"placeholders": {"gems": {"type": "int"}}},

@@ -3308,7 +3308,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get branchSetTier2 => 'Cấp tối đa';
 
   @override
-  String branchSetReward(int gems, int hours) {
+  String branchSetReward(int gems, String hours) {
     return '$gems 💎 + ${hours}h thu nhập';
   }
 
