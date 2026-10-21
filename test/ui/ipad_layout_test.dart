@@ -116,18 +116,18 @@ void _contentWidthTests() {
       addTearDown(() => tester.binding.setSurfaceSize(null));
       final c = await _pumpHome(tester);
 
-      // Thanh dưới là thứ lộ nhất: 5 mục dàn ngang.
+      // Thanh dưới là thứ lộ nhất: 4 mục dàn ngang.
       final bar = tester.getSize(find.byKey(const Key('match3-button')));
       final expectedMax = size.width <= kPhoneMaxWidth
-          ? size.width / 5
-          : kPhoneMaxWidth / 5;
+          ? size.width / 4
+          : kPhoneMaxWidth / 4;
       expect(bar.width, lessThanOrEqualTo(expectedMax + 1),
           reason: '$name: mỗi mục thanh dưới rộng ${bar.width}dp — '
               'nội dung đang giãn hết màn thay vì kẹp ở $kPhoneMaxWidth');
 
       // Trên điện thoại KHÔNG được kẹp: phải còn dùng gần hết bề ngang.
       if (size.width <= kPhoneMaxWidth) {
-        expect(bar.width, greaterThan(size.width / 5 - 12),
+        expect(bar.width, greaterThan(size.width / 4 - 12),
             reason: '$name: điện thoại mà nội dung bị thu hẹp — '
                 'PhoneWidth đang kẹp nhầm cả máy nhỏ');
       }

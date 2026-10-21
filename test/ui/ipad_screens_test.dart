@@ -52,7 +52,6 @@ void main() {
     for (final btn in const [
       'gem-shop-button',
       'prestige-button',
-      'achievements-button',
       'compete-button',
       'match3-button',
     ]) {

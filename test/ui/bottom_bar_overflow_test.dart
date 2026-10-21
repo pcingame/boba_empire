@@ -1,4 +1,4 @@
-// Thanh điều hướng có 5 mục: mỗi ô chỉ còn ~20% bề ngang. Máy hẹp + bản dịch
+// Thanh điều hướng có 4 mục: mỗi ô chỉ còn ~25% bề ngang. Máy hẹp + bản dịch
 // dài là công thức tràn RenderFlex quen thuộc của app này.
 import 'package:boba_empire/core/models.dart';
 import 'package:boba_empire/data/game_storage.dart';
@@ -14,7 +14,7 @@ void main() {
   _labelScaleTests();
   // Cỡ chữ hệ thống phóng to là lớp lỗi riêng: ô tab chỉ rộng ~20% màn hình.
   for (final scale in [1.0, 1.3, 2.0]) {
-    testWidgets('thanh dưới 5 mục không tràn ở 320px, cỡ chữ x$scale',
+    testWidgets('thanh dưới 4 mục không tràn ở 320px, cỡ chữ x$scale',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(320, 640));
       addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -44,7 +44,7 @@ void main() {
   }
 
   for (final locale in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
-    testWidgets('thanh dưới 5 mục không tràn ở 320px — $locale',
+    testWidgets('thanh dưới 4 mục không tràn ở 320px — $locale',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(320, 640));
       addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -80,7 +80,6 @@ void main() {
       for (final key in const [
         'gem-shop-button',
         'prestige-button',
-        'achievements-button',
         'compete-button',
         'match3-button',
       ]) {
@@ -140,7 +139,6 @@ void _labelScaleTests() {
       for (final key in const [
         'gem-shop-button',
         'prestige-button',
-        'achievements-button',
         'compete-button',
         'match3-button',
       ]) {

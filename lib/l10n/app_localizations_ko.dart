@@ -1059,6 +1059,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsWebsite => '웹사이트';
 
   @override
+  String get settingsLinks => '웹사이트 & SNS';
+
+  @override
   String get settingsWebGuide => '플레이 가이드(웹)';
 
   @override
@@ -4832,6 +4835,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get guildTitle => '길드';
+
+  @override
+  String get communityTitle => '커뮤니티';
 
   @override
   String get guildIntro => '길드를 만들거나 가입해 함께 주간 목표를 달성하고 보상을 받으세요.';

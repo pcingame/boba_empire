@@ -1085,6 +1085,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get settingsWebsite => 'Sitio web';
 
   @override
+  String get settingsLinks => 'Web y redes';
+
+  @override
   String get settingsWebGuide => 'Guía de juego (web)';
 
   @override
@@ -4934,6 +4937,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get guildTitle => 'Gremio';
+
+  @override
+  String get communityTitle => 'Comunidad';
 
   @override
   String get guildIntro =>

@@ -78,6 +78,9 @@ void main() {
     await tester.tap(find.text('open'));
     await tester.pumpAndSettle();
 
+    expect(find.byKey(const Key('settings-website')), findsNothing, reason: 'mặc định thu gọn');
+    await tester.tap(find.byKey(const Key('settings-links')));
+    await tester.pumpAndSettle();
     expect(find.text('Website'), findsOneWidget);
     expect(find.text('bobaempiregame.com'), findsOneWidget);
     expect(find.text('How-to guide (web)'), findsOneWidget);

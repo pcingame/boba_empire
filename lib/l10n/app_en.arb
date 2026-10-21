@@ -289,6 +289,7 @@
   "vipShopPrice": "{n} VIP Coins",
   "vipEntryHint": "Top up to unlock daily, weekly and monthly VIP gifts",
   "settingsWebsite": "Website",
+  "settingsLinks": "Website & social",
   "settingsWebGuide": "How-to guide (web)",
   "guideOnWeb": "Full guide on the website",
   "webOpenFailed": "Couldn't open the website. Check your connection and try again.",
@@ -1980,6 +1981,7 @@
     }
   },
   "guildTitle": "Guild",
+  "communityTitle": "Community",
   "guildIntro": "Create or join a guild to hit weekly goals together and earn rewards.",
   "guildCreate": "Create guild",
   "guildJoin": "Join",

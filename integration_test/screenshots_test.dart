@@ -213,7 +213,9 @@ void main() {
     await _closeDialog(tester);
 
     // 3. Thành tựu.
-    await tester.tap(find.byKey(const Key('achievements-button')));
+    await tester.tap(find.byKey(const Key('daily-quests-chip')));
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.tap(find.byKey(const Key('hub-tab-achievements')));
     await shoot('3_achievements');
     await _closeDialog(tester);
 

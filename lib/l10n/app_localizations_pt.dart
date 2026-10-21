@@ -1082,6 +1082,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get settingsWebsite => 'Site';
 
   @override
+  String get settingsLinks => 'Site e redes';
+
+  @override
   String get settingsWebGuide => 'Guia de jogo (web)';
 
   @override
@@ -4927,6 +4930,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get guildTitle => 'Guilda';
+
+  @override
+  String get communityTitle => 'Comunidade';
 
   @override
   String get guildIntro =>

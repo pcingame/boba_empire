@@ -113,11 +113,11 @@ void main() {
     expect(bad, isEmpty, reason: 'bảng xếp hạng lọt cổng email: $bad');
   });
 
-  testWidgets('hub Thi đấu: cả 4 mục đều bị chặn khi chưa liên kết', (tester) async {
+  testWidgets('hub Thi đấu: cả 3 mục đều bị chặn khi chưa liên kết', (tester) async {
     await _openHub(tester, linked: false);
     final tiles = find.descendant(of: find.byType(AlertDialog), matching: find.byType(ListTile));
     final n = tester.widgetList(tiles).length;
-    expect(n, 4);
+    expect(n, 3);
     for (var i = 0; i < n; i++) {
       await tester.tap(tiles.at(i));
       await tester.pumpAndSettle();

@@ -289,6 +289,7 @@
   "vipShopPrice": "{n} VIP 코인",
   "vipEntryHint": "충전하면 일일·주간·월간 VIP 선물이 열려요",
   "settingsWebsite": "웹사이트",
+  "settingsLinks": "웹사이트 & SNS",
   "settingsWebGuide": "플레이 가이드(웹)",
   "guideOnWeb": "웹사이트에서 전체 가이드 보기",
   "webOpenFailed": "웹사이트를 열 수 없어요. 연결을 확인하고 다시 시도해 주세요.",
@@ -1618,6 +1619,7 @@
     }
   },
   "guildTitle": "길드",
+  "communityTitle": "커뮤니티",
   "guildIntro": "길드를 만들거나 가입해 함께 주간 목표를 달성하고 보상을 받으세요.",
   "guildCreate": "길드 만들기",
   "guildJoin": "가입",

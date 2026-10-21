@@ -11,8 +11,6 @@ import 'language_dialog.dart';
 import 'redeem_dialog.dart';
 import 'invite_dialog.dart' show shareTextProvider;
 import '../leaderboard/player_avatar.dart';
-import '../friends/friends.dart' show friendsAlertProvider;
-import 'friends_page.dart';
 import 'my_profile_page.dart';
 import 'widgets/avatar_circle.dart';
 import 'web_links.dart';
@@ -88,19 +86,6 @@ class _SettingsDialog extends ConsumerWidget {
             },
           ),
           ListTile(
-            key: const Key('settings-friends'),
-            contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.group_outlined),
-            title: Text(l10n.friendsTitle),
-            trailing: (ref.watch(friendsAlertProvider).value ?? 0) > 0
-                ? Badge(key: const Key('settings-friends-badge'), label: Text('${ref.watch(friendsAlertProvider).value}'))
-                : const Icon(Icons.chevron_right),
-            onTap: () {
-              Navigator.of(context).pop();
-              showFriends(context);
-            },
-          ),
-          ListTile(
             key: const Key('how-to-play-button'),
             contentPadding: EdgeInsets.zero,
             leading: const Icon(Icons.help_outline),
@@ -108,67 +93,79 @@ class _SettingsDialog extends ConsumerWidget {
             trailing: const Icon(Icons.chevron_right),
             onTap: () => showHowToPlay(context),
           ),
-          ListTile(
-            key: const Key('settings-website'),
-            contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.public),
-            title: Text(l10n.settingsWebsite),
-            subtitle: const Text('bobaempiregame.com'),
-            trailing: const Icon(Icons.open_in_new, size: 18),
-            onTap: () => openWebLink(context, ref, webHomeUrl),
-          ),
-          // Chỉ khi đã đặt tên ở bảng xếp hạng (có tên mới có hạng để khoe).
-          if ((ref.read(sharedPreferencesProvider).getString('leaderboard_nickname') ?? '')
-              .isNotEmpty)
-            Builder(
-              builder: (tileContext) => ListTile(
-                key: const Key('settings-share-profile'),
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.emoji_events_outlined),
-                title: Text(l10n.settingsShareProfile),
-                trailing: const Icon(Icons.share, size: 18),
-                onTap: () {
-                  final name = ref
-                      .read(sharedPreferencesProvider)
-                      .getString('leaderboard_nickname')!;
-                  final box = tileContext.findRenderObject() as RenderBox?;
-                  final origin = box == null
-                      ? null
-                      : box.localToGlobal(Offset.zero) & box.size;
-                  ref.read(shareTextProvider)(
-                      l10n.profileShareText(name, webProfileUrl(name)), origin);
-                },
-              ),
-            ),
-          ListTile(
-            key: const Key('settings-web-guide'),
-            contentPadding: EdgeInsets.zero,
-            leading: const Icon(Icons.menu_book_outlined),
-            title: Text(l10n.settingsWebGuide),
-            trailing: const Icon(Icons.open_in_new, size: 18),
-            onTap: () => openWebLink(context, ref, webGuideUrl()),
-          ),
-          // Mạng xã hội gom một hàng icon (trước là 3 dòng riêng). Tooltip = tên mạng.
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // Website, hướng dẫn web, chia sẻ hồ sơ và mạng xã hội gom một dòng (mặc định thu gọn).
+          ExpansionTile(
+            key: const Key('settings-links'),
+            tilePadding: EdgeInsets.zero,
+            childrenPadding: EdgeInsets.zero,
+            shape: const Border(),
+            collapsedShape: const Border(),
+            leading: const Icon(Icons.link),
+            title: Text(l10n.settingsLinks),
             children: [
-              IconButton(
-                key: const Key('settings-facebook'),
-                tooltip: 'Facebook',
-                icon: const FaIcon(FontAwesomeIcons.facebook, color: Color(0xFF1877F2)),
-                onPressed: () => openWebLink(context, ref, facebookUrl),
+              ListTile(
+                key: const Key('settings-website'),
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.public),
+                title: Text(l10n.settingsWebsite),
+                subtitle: const Text('bobaempiregame.com'),
+                trailing: const Icon(Icons.open_in_new, size: 18),
+                onTap: () => openWebLink(context, ref, webHomeUrl),
               ),
-              IconButton(
-                key: const Key('settings-tiktok'),
-                tooltip: 'TikTok',
-                icon: const FaIcon(FontAwesomeIcons.tiktok),
-                onPressed: () => openWebLink(context, ref, tiktokUrl),
+              // Chỉ khi đã đặt tên ở bảng xếp hạng (có tên mới có hạng để khoe).
+              if ((ref.read(sharedPreferencesProvider).getString('leaderboard_nickname') ?? '')
+                  .isNotEmpty)
+                Builder(
+                  builder: (tileContext) => ListTile(
+                    key: const Key('settings-share-profile'),
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.emoji_events_outlined),
+                    title: Text(l10n.settingsShareProfile),
+                    trailing: const Icon(Icons.share, size: 18),
+                    onTap: () {
+                      final name = ref
+                          .read(sharedPreferencesProvider)
+                          .getString('leaderboard_nickname')!;
+                      final box = tileContext.findRenderObject() as RenderBox?;
+                      final origin = box == null
+                          ? null
+                          : box.localToGlobal(Offset.zero) & box.size;
+                      ref.read(shareTextProvider)(
+                          l10n.profileShareText(name, webProfileUrl(name)), origin);
+                    },
+                  ),
+                ),
+              ListTile(
+                key: const Key('settings-web-guide'),
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.menu_book_outlined),
+                title: Text(l10n.settingsWebGuide),
+                trailing: const Icon(Icons.open_in_new, size: 18),
+                onTap: () => openWebLink(context, ref, webGuideUrl()),
               ),
-              IconButton(
-                key: const Key('settings-youtube'),
-                tooltip: 'YouTube',
-                icon: const FaIcon(FontAwesomeIcons.youtube, color: Color(0xFFFF0000)),
-                onPressed: () => openWebLink(context, ref, youtubeUrl),
+              // Mạng xã hội gom một hàng icon (trước là 3 dòng riêng). Tooltip = tên mạng.
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    key: const Key('settings-facebook'),
+                    tooltip: 'Facebook',
+                    icon: const FaIcon(FontAwesomeIcons.facebook, color: Color(0xFF1877F2)),
+                    onPressed: () => openWebLink(context, ref, facebookUrl),
+                  ),
+                  IconButton(
+                    key: const Key('settings-tiktok'),
+                    tooltip: 'TikTok',
+                    icon: const FaIcon(FontAwesomeIcons.tiktok),
+                    onPressed: () => openWebLink(context, ref, tiktokUrl),
+                  ),
+                  IconButton(
+                    key: const Key('settings-youtube'),
+                    tooltip: 'YouTube',
+                    icon: const FaIcon(FontAwesomeIcons.youtube, color: Color(0xFFFF0000)),
+                    onPressed: () => openWebLink(context, ref, youtubeUrl),
+                  ),
+                ],
               ),
             ],
           ),

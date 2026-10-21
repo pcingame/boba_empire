@@ -1836,6 +1836,12 @@ abstract class AppLocalizations {
   /// **'Trang web'**
   String get settingsWebsite;
 
+  /// No description provided for @settingsLinks.
+  ///
+  /// In vi, this message translates to:
+  /// **'Website & mạng xã hội'**
+  String get settingsLinks;
+
   /// No description provided for @settingsWebGuide.
   ///
   /// In vi, this message translates to:
@@ -8274,6 +8280,12 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Hội'**
   String get guildTitle;
+
+  /// No description provided for @communityTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cộng đồng'**
+  String get communityTitle;
 
   /// No description provided for @guildIntro.
   ///

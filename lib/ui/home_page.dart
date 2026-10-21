@@ -45,9 +45,8 @@ import '../referral/referral_controller.dart';
 import 'accessory_inventory_page.dart';
 import 'accessory_market_page.dart';
 import 'email_gate.dart';
-import 'guild_page.dart' show showGuildPage;
+import 'community_hub_dialog.dart';
 import 'whats_new_dialog.dart';
-import 'achievements_dialog.dart';
 import 'cloud_remind_dialog.dart';
 import 'compete_hub_dialog.dart';
 import 'games_hub_dialog.dart';
@@ -592,10 +591,8 @@ class _BottomBar extends ConsumerWidget {
     final starsAvail = ref.watch(
       gameControllerProvider.select((s) => s.prestigeStarsAvailable),
     );
-    final newAch = ref.watch(
-      gameControllerProvider.select((s) => s.newAchievements.isNotEmpty),
-    );
-    final guildAlert = ref.watch(guildAlertProvider) || ref.watch(lbRewardAlertProvider);
+    // Hội đã sang chip Cộng đồng; Thi đấu chỉ còn báo thưởng top tuần.
+    final lbAlert = ref.watch(lbRewardAlertProvider);
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surface,
@@ -626,21 +623,10 @@ class _BottomBar extends ConsumerWidget {
                   label: l10n.navShop,
                   onTap: () => showGemShop(context)),
               _navItem(theme,
-                  buttonKey: const Key('achievements-button'),
-                  icon: Icons.emoji_events,
-                  label: l10n.navAchievements,
-                  badge: newAch,
-                  onTap: () {
-                    ref
-                        .read(gameControllerProvider.notifier)
-                        .acknowledgeAchievements();
-                    showAchievements(context);
-                  }),
-              _navItem(theme,
                   buttonKey: const Key('compete-button'),
                   icon: Icons.sports_kabaddi,
                   label: l10n.navCompete,
-                  badge: guildAlert,
+                  badge: lbAlert,
                   onTap: () => showCompeteHub(context)),
               _navItem(theme,
                   buttonKey: const Key('match3-button'),
@@ -891,7 +877,7 @@ class _MoneyHeader extends ConsumerWidget {
               const SizedBox(width: 8),
               const Expanded(child: _CollectionChip()),
               const SizedBox(width: 8),
-              const Expanded(child: _GuildChip()),
+              const Expanded(child: _CommunityChip()),
             ],
           ),
           // Icon xu là widget riêng (không nhét vào chuỗi số) để text tiền vẫn
@@ -977,12 +963,7 @@ class _MoneyHeader extends ConsumerWidget {
               const SizedBox(width: 4),
               IconButton(
                 key: const Key('settings-button'),
-                icon: Badge(
-                  key: const Key('settings-friends-dot'),
-                  isLabelVisible:
-                      (ref.watch(friendsAlertProvider).value ?? 0) > 0,
-                  child: const Icon(Icons.settings_outlined),
-                ),
+                icon: const Icon(Icons.settings_outlined),
                 tooltip: l10n.settingsTitle,
                 color: onContainer,
                 padding: EdgeInsets.zero,
@@ -2104,22 +2085,19 @@ class _FestivalBanner extends ConsumerWidget {
   }
 }
 
-/// Nút Hội cùng hàng với Nhiệm vụ / Sưu tập; chấm đỏ khi Hội có tin mới.
-class _GuildChip extends ConsumerWidget {
-  const _GuildChip();
+/// Nút Cộng đồng (Hội + Bạn bè) cùng hàng với Nhiệm vụ / Sưu tập; chấm đỏ khi Hội hoặc Bạn bè có tin mới.
+class _CommunityChip extends ConsumerWidget {
+  const _CommunityChip();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final alert = ref.watch(guildAlertProvider);
+    final alert = ref.watch(guildAlertProvider) ||
+        (ref.watch(friendsAlertProvider).value ?? 0) > 0;
     final theme = Theme.of(context);
     return InkWell(
-      key: const Key('guild-chip'),
+      key: const Key('community-chip'),
       borderRadius: BorderRadius.circular(24),
-      onTap: () async {
-        // Tính năng online: cần đã liên kết email (xem email_gate.dart).
-        if (!await ensureOnlineLinked(context) || !context.mounted) return;
-        showGuildPage(context);
-      },
+      onTap: () => showCommunityHub(context),
       child: Stack(
         clipBehavior: Clip.none,
         fit: StackFit.passthrough,
@@ -2129,7 +2107,7 @@ class _GuildChip extends ConsumerWidget {
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  '🛡️ ${AppLocalizations.of(context)!.guildTitle}',
+                  '👥 ${AppLocalizations.of(context)!.communityTitle}',
                   maxLines: 1,
                   softWrap: false,
                   style: theme.textTheme.labelLarge?.copyWith(
@@ -2146,7 +2124,7 @@ class _GuildChip extends ConsumerWidget {
               top: -2,
               child: PopIn(
                 child: Container(
-                  key: const Key('guild-chip-dot'),
+                  key: const Key('community-chip-dot'),
                   width: 10,
                   height: 10,
                   decoration: BoxDecoration(
@@ -2167,8 +2145,9 @@ class _DailyQuestsChip extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final count = ref
-        .watch(gameControllerProvider.select((s) => s.dailyClaimableCount));
+    // Thành tựu mới mở khoá nằm chung hộp này → cộng vào chấm đỏ.
+    final count = ref.watch(gameControllerProvider
+        .select((s) => s.dailyClaimableCount + s.newAchievements.length));
     final theme = Theme.of(context);
     return InkWell(
       key: const Key('daily-quests-chip'),

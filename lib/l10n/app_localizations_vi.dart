@@ -1075,6 +1075,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get settingsWebsite => 'Trang web';
 
   @override
+  String get settingsLinks => 'Website & mạng xã hội';
+
+  @override
   String get settingsWebGuide => 'Hướng dẫn chơi (trên web)';
 
   @override
@@ -4902,6 +4905,9 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get guildTitle => 'Hội';
+
+  @override
+  String get communityTitle => 'Cộng đồng';
 
   @override
   String get guildIntro =>

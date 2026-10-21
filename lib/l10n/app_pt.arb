@@ -289,6 +289,7 @@
   "vipShopPrice": "{n} Moedas VIP",
   "vipEntryHint": "Recarregue para liberar presentes VIP diários, semanais e mensais",
   "settingsWebsite": "Site",
+  "settingsLinks": "Site e redes",
   "settingsWebGuide": "Guia de jogo (web)",
   "guideOnWeb": "Guia completo no site",
   "webOpenFailed": "Não foi possível abrir o site. Verifique sua conexão e tente de novo.",
@@ -1980,6 +1981,7 @@
     }
   },
   "guildTitle": "Guilda",
+  "communityTitle": "Comunidade",
   "guildIntro": "Crie ou entre numa guilda para cumprir metas semanais juntos e ganhar recompensas.",
   "guildCreate": "Criar guilda",
   "guildJoin": "Entrar",

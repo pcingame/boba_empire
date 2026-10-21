@@ -1,18 +1,19 @@
-/// "Nhiệm vụ & Quà": một hộp thoại có 3 tab gom nhiệm vụ ngày (+ thử thách), nhiệm vụ tuần và "Kiếm thêm" (quảng cáo,
-/// vòng quay, mời bạn) — trước đây là 3 hộp riêng với 2 chip trên màn chính, nhiệm vụ tuần còn lồng trong nhiệm vụ ngày.
+/// "Nhiệm vụ & Quà": một hộp thoại có 4 tab gom nhiệm vụ ngày (+ thử thách), nhiệm vụ tuần, "Kiếm thêm" (quảng cáo,
+/// vòng quay, mời bạn) và Thành tựu — trước đây là 3 hộp riêng với 2 chip trên màn chính, nhiệm vụ tuần còn lồng trong nhiệm vụ ngày.
 /// Nội dung mỗi tab là chính các hộp cũ ở chế độ `embedded`.
 library;
 
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
+import 'achievements_dialog.dart';
 import 'daily_quests_dialog.dart';
 import 'rewards_dialog.dart';
 import 'weekly_quests_dialog.dart';
 import 'widgets/phone_width.dart';
 import 'widgets/app_dialog.dart';
 
-enum DailyHubTab { daily, weekly, rewards }
+enum DailyHubTab { daily, weekly, rewards, achievements }
 
 Future<void> showDailyHub(BuildContext context, [DailyHubTab tab = DailyHubTab.daily]) => showAppDialog<void>(
       context: context,
@@ -42,10 +43,13 @@ class DailyHubDialog extends StatelessWidget {
             child: Column(
               children: [
                 TabBar(
+                  // 4 tab trên hộp hẹp: bớt đệm hai bên để "Thành tựu" không bị cắt.
+                  labelPadding: const EdgeInsets.symmetric(horizontal: 4),
                   tabs: [
                     Tab(key: const Key('hub-tab-daily'), text: l10n.dailyHubTabDaily),
                     Tab(key: const Key('hub-tab-weekly'), text: l10n.dailyHubTabWeekly),
                     Tab(key: const Key('hub-tab-rewards'), text: l10n.dailyHubTabRewards),
+                    Tab(key: const Key('hub-tab-achievements'), text: l10n.achievementsTitle),
                   ],
                 ),
                 const SizedBox(height: 8),
@@ -54,6 +58,7 @@ class DailyHubDialog extends StatelessWidget {
                     DailyQuestsPanel(embedded: true),
                     WeeklyQuestsPanel(embedded: true),
                     RewardsPanel(embedded: true),
+                    AchievementsPanel(),
                   ]),
                 ),
               ],

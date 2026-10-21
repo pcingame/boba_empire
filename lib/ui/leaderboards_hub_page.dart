@@ -3,12 +3,15 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../leaderboard/lb_rewards.dart' show lbRewardAlertProvider;
 import '../l10n/app_localizations.dart';
 import 'accessory_leaderboard_page.dart';
 import 'arena_leaderboard_page.dart';
 import 'branch_leaderboard_page.dart';
 import 'email_gate.dart';
+import 'lb_rewards_dialog.dart';
 import 'leaderboard_page.dart';
 import 'm3_leaderboard_page.dart';
 import 'recipe_leaderboard_page.dart';
@@ -22,15 +25,15 @@ import 'widgets/stagger_in.dart';
 Future<void> showLeaderboardsHub(BuildContext context) =>
     Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => const LeaderboardsHubPage()));
 
-class LeaderboardsHubPage extends StatelessWidget {
+class LeaderboardsHubPage extends ConsumerWidget {
   const LeaderboardsHubPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
     // Tính năng online → mỗi dòng qua cổng liên kết email (xem email_gate.dart) rồi mở đúng trang bảng.
     var n = 0;
-    Widget tile(String id, IconData icon, String title, void Function() open, Color color) => StaggerIn(
+    Widget tile(String id, IconData icon, String title, void Function() open, Color color, {bool dot = false}) => StaggerIn(
           index: n++,
           child: ClayTile(
           key: Key('lbh-$id'),
@@ -54,6 +57,14 @@ class LeaderboardsHubPage extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             Expanded(child: Text(title, maxLines: 2, overflow: TextOverflow.ellipsis)),
+            if (dot)
+              Container(
+                key: Key('lbh-$id-dot'),
+                width: 8,
+                height: 8,
+                margin: const EdgeInsets.only(right: 4),
+                decoration: BoxDecoration(color: Theme.of(context).colorScheme.error, shape: BoxShape.circle),
+              ),
             const Icon(Icons.chevron_right),
           ]),
         ));
@@ -63,6 +74,9 @@ class LeaderboardsHubPage extends StatelessWidget {
         body: ListView(
           padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
           children: [
+            // Thưởng top tuần (trước ở hộp Thi đấu): đứng đầu vì có chấm đỏ cần nhận.
+            tile('rewards', Icons.emoji_events, l10n.lbrTitle, () => showLbRewards(context), const Color(0xFFFFB300),
+                dot: ref.watch(lbRewardAlertProvider)),
             tile('income', Icons.leaderboard, l10n.profileBoardIncome, () => showLeaderboardPage(context), const Color(0xFF42A5F5)),
             tile('pearls', Icons.bubble_chart, l10n.m3LbTitle, () => showM3Leaderboard(context), const Color(0xFFAB47BC)),
             tile('collection', Icons.collections_bookmark, l10n.accessoryLbTitle, () => showAccessoryLeaderboard(context), const Color(0xFFFF7043)),

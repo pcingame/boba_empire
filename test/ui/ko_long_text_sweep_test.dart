@@ -30,9 +30,8 @@ Future<Set<String>> _sweep(WidgetTester tester, String locale, double scale) asy
     'settings-button',
     'gem-shop-button',
     'prestige-button',
-    'achievements-button',
     'compete-button',
-    'guild-chip',
+    'community-chip',
     'daily-quests-chip',
     'collection-chip',
   ];

@@ -1078,6 +1078,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get settingsWebsite => 'Situs web';
 
   @override
+  String get settingsLinks => 'Situs & sosial';
+
+  @override
   String get settingsWebGuide => 'Panduan bermain (web)';
 
   @override
@@ -4910,6 +4913,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get guildTitle => 'Guild';
+
+  @override
+  String get communityTitle => 'Komunitas';
 
   @override
   String get guildIntro =>

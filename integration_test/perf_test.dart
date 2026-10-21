@@ -120,7 +120,6 @@ void main() {
     for (final (label, key) in const [
       ('4b_gem_shop', 'gem-shop-button'),
       ('4c_prestige', 'prestige-button'),
-      ('4d_achievements', 'achievements-button'),
       ('4e_compete_hub', 'compete-button'),
       ('4f_match3_journey', 'match3-button'),
     ]) {

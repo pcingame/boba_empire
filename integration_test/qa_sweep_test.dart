@@ -246,7 +246,9 @@ void main() {
     await tester.tap(find.byKey(const Key('prestige-button')));
     await shot(tester, 'A10_prestige');
     await closeDialog(tester);
-    await tester.tap(find.byKey(const Key('achievements-button')));
+    await tester.tap(find.byKey(const Key('daily-quests-chip')));
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.tap(find.byKey(const Key('hub-tab-achievements')));
     await shot(tester, 'A11_achievements');
     await closeDialog(tester);
     await tester.tap(find.byKey(const Key('gem-shop-button')));
@@ -261,7 +263,8 @@ void main() {
 
     // ===== B. Hội: danh sách → của mình → cửa hàng → BXH =====
     repo.mine = null;
-    await tester.tap(find.byKey(const Key('guild-chip')));
+    await tester.tap(find.byKey(const Key('community-chip')));
+    await tester.tap(find.byKey(const Key('community-guild')));
     await shot(tester, 'B02_guild_list');
     await tester.tap(find.byKey(const Key('guild-create-button')));
     await shot(tester, 'B03_guild_create');
@@ -369,7 +372,9 @@ void main() {
     await tester.tap(find.byKey(const Key('prestige-button')));
     await shot(tester, 'D03_whale_prestige');
     await closeDialog(tester);
-    await tester.tap(find.byKey(const Key('achievements-button')));
+    await tester.tap(find.byKey(const Key('daily-quests-chip')));
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.tap(find.byKey(const Key('hub-tab-achievements')));
     await shot(tester, 'D04_whale_achievements');
     await closeDialog(tester);
     await tester.tap(find.byKey(const Key('gem-shop-button')));

@@ -1076,6 +1076,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsWebsite => 'Website';
 
   @override
+  String get settingsLinks => 'Website & social';
+
+  @override
   String get settingsWebGuide => 'How-to guide (web)';
 
   @override
@@ -4915,6 +4918,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get guildTitle => 'Guild';
+
+  @override
+  String get communityTitle => 'Community';
 
   @override
   String get guildIntro =>

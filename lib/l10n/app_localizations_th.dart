@@ -1075,6 +1075,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get settingsWebsite => 'เว็บไซต์';
 
   @override
+  String get settingsLinks => 'เว็บไซต์และโซเชียล';
+
+  @override
   String get settingsWebGuide => 'คู่มือการเล่น (เว็บ)';
 
   @override
@@ -4889,6 +4892,9 @@ class AppLocalizationsTh extends AppLocalizations {
 
   @override
   String get guildTitle => 'กิลด์';
+
+  @override
+  String get communityTitle => 'ชุมชน';
 
   @override
   String get guildIntro =>

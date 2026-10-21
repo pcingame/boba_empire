@@ -9,49 +9,41 @@ import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
 import 'widgets/clay.dart';
-import 'widgets/app_dialog.dart';
 
-/// Bảng Thành tựu: liệt kê mốc, tô đã đạt (✓) hoặc khoá kèm tiến độ + thưởng.
-Future<void> showAchievements(BuildContext context) {
-  return showAppDialog<void>(
-    context: context,
-    builder: (_) => const _AchievementsDialog(),
-  );
+/// Thành tựu: liệt kê mốc, tô đã đạt (✓) hoặc khoá kèm tiến độ + thưởng. Là tab thứ 4 của hộp
+/// "Nhiệm vụ & Quà" (daily_hub_dialog.dart); mở tab = đã xem (xoá chấm đỏ).
+class AchievementsPanel extends ConsumerStatefulWidget {
+  const AchievementsPanel({super.key});
+
+  @override
+  ConsumerState<AchievementsPanel> createState() => _AchievementsPanelState();
 }
 
-class _AchievementsDialog extends StatelessWidget {
-  const _AchievementsDialog();
+class _AchievementsPanelState extends ConsumerState<AchievementsPanel> {
+  @override
+  void initState() {
+    super.initState();
+    // Không đổi state ngay trong initState (đang dựng cây) → đợi hết khung.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) ref.read(gameControllerProvider.notifier).acknowledgeAchievements();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-
-    return AlertDialog(
-      title: Text(l10n.achievementsTitle),
-      content: SizedBox(
-        width: double.maxFinite,
-        // Không đọc GameSnapshot ở tầng này — mỗi hàng tự theo dõi đúng chỉ
-        // số của nó (xem _AchievementRow) để tránh rebuild TOÀN BỘ danh sách
-        // mỗi giây (lifetimeEarnings đổi mỗi tick) trong khi phần lớn thành
-        // tựu (stage/levels/prestige, hoặc đã đạt) không đổi thường xuyên
-        // vậy — nguyên nhân giật khi mở bảng này lúc đang chơi.
-        // ListView.builder: không tạo sẵn 25 widget hàng mỗi lần dựng (phần tử vẫn chỉ
-        // tạo cho hàng hiển thị — ListView(children) cũng lười — nhưng đỡ cấp phát).
-        // Thủ phạm giật thật là Opacity/saveLayer ở _AchievementRow, xem bên dưới.
-        child: ListView.builder(
-          shrinkWrap: true,
-          itemCount: achievements.length,
-          itemBuilder: (context, i) => _AchievementRow(
-              achievement: achievements[i], l10n: l10n, theme: theme),
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(l10n.close),
-        ),
-      ],
+    // Không đọc GameSnapshot ở tầng này — mỗi hàng tự theo dõi đúng chỉ
+    // số của nó (xem _AchievementRow) để tránh rebuild TOÀN BỘ danh sách
+    // mỗi giây (lifetimeEarnings đổi mỗi tick) trong khi phần lớn thành
+    // tựu (stage/levels/prestige, hoặc đã đạt) không đổi thường xuyên
+    // vậy — nguyên nhân giật khi mở bảng này lúc đang chơi.
+    // ListView.builder: chỉ dựng hàng đang hiển thị. Thủ phạm giật thật là Opacity/saveLayer ở
+    // _AchievementRow, xem bên dưới.
+    return ListView.builder(
+      itemCount: achievements.length,
+      itemBuilder: (context, i) =>
+          _AchievementRow(achievement: achievements[i], l10n: l10n, theme: theme),
     );
   }
 }

@@ -665,6 +665,7 @@
   "vipShopPrice": "{n} Xu VIP",
   "vipEntryHint": "Nạp để mở khoá quà VIP hằng ngày, tuần, tháng",
   "settingsWebsite": "Trang web",
+  "settingsLinks": "Website & mạng xã hội",
   "settingsWebGuide": "Hướng dẫn chơi (trên web)",
   "guideOnWeb": "Xem hướng dẫn đầy đủ trên web",
   "webOpenFailed": "Không mở được trang web. Kiểm tra mạng rồi thử lại.",
@@ -2877,6 +2878,7 @@
     }
   },
   "guildTitle": "Hội",
+  "communityTitle": "Cộng đồng",
   "guildIntro": "Lập hội hoặc vào hội để cùng hoàn thành mục tiêu tuần và nhận thưởng.",
   "guildCreate": "Tạo hội",
   "guildJoin": "Vào",

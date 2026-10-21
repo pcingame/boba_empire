@@ -289,6 +289,7 @@
   "vipShopPrice": "{n} Koin VIP",
   "vipEntryHint": "Top up untuk membuka hadiah VIP harian, mingguan, dan bulanan",
   "settingsWebsite": "Situs web",
+  "settingsLinks": "Situs & sosial",
   "settingsWebGuide": "Panduan bermain (web)",
   "guideOnWeb": "Panduan lengkap di situs web",
   "webOpenFailed": "Tidak bisa membuka situs web. Periksa koneksi dan coba lagi.",
@@ -1980,6 +1981,7 @@
     }
   },
   "guildTitle": "Guild",
+  "communityTitle": "Komunitas",
   "guildIntro": "Buat atau gabung guild untuk mencapai target mingguan bersama dan dapat hadiah.",
   "guildCreate": "Buat guild",
   "guildJoin": "Gabung",

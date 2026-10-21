@@ -29,7 +29,9 @@ void main() {
     ));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const Key('achievements-button')));
+    await tester.tap(find.byKey(const Key('daily-quests-chip')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('hub-tab-achievements')));
     await tester.pumpAndSettle();
 
     final dialog = find.byType(AlertDialog);

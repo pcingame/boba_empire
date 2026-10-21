@@ -11,7 +11,6 @@ import '../l10n/app_localizations.dart';
 import 'email_gate.dart';
 import '../world_boss/world_boss.dart' show worldBossAlertProvider;
 import 'arena_page.dart';
-import 'lb_rewards_dialog.dart';
 import 'leaderboards_hub_page.dart';
 import 'world_boss_page.dart';
 import 'widgets/phone_width.dart';
@@ -91,15 +90,15 @@ class _CompeteHubDialog extends ConsumerWidget {
             contentPadding: EdgeInsets.zero,
             horizontalTitleGap: 12,
             minLeadingWidth: 28,
-            key: const Key('compete-lb-rewards'),
-            leading: const Icon(Icons.emoji_events),
+            key: const Key('compete-leaderboards'),
+            leading: const Icon(Icons.leaderboard),
             title: Row(children: [
-              // Cho xuống 2 dòng thay vì cắt "…" (từng hiện "Weekly top rew…" ở bản tiếng Anh).
-              Flexible(child: Text(l10n.lbrTitle, maxLines: 2, overflow: TextOverflow.ellipsis)),
+              Flexible(child: Text(l10n.leaderboardMenuTitle, maxLines: 2, overflow: TextOverflow.ellipsis)),
+              // Thưởng top tuần nằm trong trang Bảng xếp hạng → chấm đỏ báo ở dòng này.
               if (ref.watch(lbRewardAlertProvider)) ...[
                 const SizedBox(width: 8),
                 Container(
-                  key: const Key('compete-lb-rewards-dot'),
+                  key: const Key('compete-leaderboards-dot'),
                   width: 8,
                   height: 8,
                   decoration: BoxDecoration(
@@ -109,19 +108,6 @@ class _CompeteHubDialog extends ConsumerWidget {
                 ),
               ],
             ]),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () async {
-              if (!await ensureOnlineLinked(context) || !context.mounted) return;
-              showLbRewards(context);
-            },
-          ),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            horizontalTitleGap: 12,
-            minLeadingWidth: 28,
-            key: const Key('compete-leaderboards'),
-            leading: const Icon(Icons.leaderboard),
-            title: Text(l10n.leaderboardMenuTitle),
             trailing: const Icon(Icons.chevron_right),
             onTap: () async {
               // Tính năng online: cần đã liên kết email (xem email_gate.dart).

@@ -118,6 +118,9 @@ void main() {
     );
     await tester.tap(find.text('open'));
     await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byKey(const Key('settings-links')));
+    await tester.tap(find.byKey(const Key('settings-links')));
+    await tester.pumpAndSettle();
     return c;
   }
 
