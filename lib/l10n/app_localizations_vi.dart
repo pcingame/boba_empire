@@ -4910,6 +4910,46 @@ class AppLocalizationsVi extends AppLocalizations {
   String get communityTitle => 'Cộng đồng';
 
   @override
+  String get decorTitle => 'Trang trí quán';
+
+  @override
+  String get decorHint =>
+      'Chạm ô để đặt hoặc mua món. Mỗi món +0,5% thu nhập; 3 món cùng chủ đề +2%, đủ 5 món +6%.';
+
+  @override
+  String get decorBonus => 'thu nhập từ trang trí';
+
+  @override
+  String get decorTheme0 => 'Cổ điển';
+
+  @override
+  String get decorTheme1 => 'Zen Nhật';
+
+  @override
+  String get decorTheme2 => 'Nhiệt đới';
+
+  @override
+  String get decorTheme3 => 'Neon';
+
+  @override
+  String get decorSlotSign => 'Bảng hiệu';
+
+  @override
+  String get decorSlotWall => 'Tranh tường';
+
+  @override
+  String get decorSlotCounter => 'Quầy';
+
+  @override
+  String get decorSlotFloor => 'Sàn';
+
+  @override
+  String get decorPlace => 'Đặt';
+
+  @override
+  String get decorRemove => 'Gỡ món';
+
+  @override
   String get vipPerksTitle => 'Quyền lợi VIP';
 
   @override

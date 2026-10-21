@@ -4942,6 +4942,46 @@ class AppLocalizationsEs extends AppLocalizations {
   String get communityTitle => 'Comunidad';
 
   @override
+  String get decorTitle => 'Decoración';
+
+  @override
+  String get decorHint =>
+      'Toca un hueco para colocar o comprar. Cada objeto +0,5% de ingresos; 3 del mismo tema +2%, los 5 +6%.';
+
+  @override
+  String get decorBonus => 'de ingresos por decoración';
+
+  @override
+  String get decorTheme0 => 'Retro';
+
+  @override
+  String get decorTheme1 => 'Zen';
+
+  @override
+  String get decorTheme2 => 'Tropical';
+
+  @override
+  String get decorTheme3 => 'Neón';
+
+  @override
+  String get decorSlotSign => 'Letrero';
+
+  @override
+  String get decorSlotWall => 'Cuadro';
+
+  @override
+  String get decorSlotCounter => 'Mostrador';
+
+  @override
+  String get decorSlotFloor => 'Suelo';
+
+  @override
+  String get decorPlace => 'Colocar';
+
+  @override
+  String get decorRemove => 'Quitar';
+
+  @override
   String get vipPerksTitle => 'Ventajas VIP';
 
   @override

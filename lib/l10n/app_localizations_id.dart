@@ -4918,6 +4918,46 @@ class AppLocalizationsId extends AppLocalizations {
   String get communityTitle => 'Komunitas';
 
   @override
+  String get decorTitle => 'Dekorasi kedai';
+
+  @override
+  String get decorHint =>
+      'Ketuk slot untuk menaruh atau membeli. Tiap item +0,5% pendapatan; 3 satu tema +2%, lengkap 5 +6%.';
+
+  @override
+  String get decorBonus => 'pendapatan dari dekorasi';
+
+  @override
+  String get decorTheme0 => 'Retro';
+
+  @override
+  String get decorTheme1 => 'Zen';
+
+  @override
+  String get decorTheme2 => 'Tropis';
+
+  @override
+  String get decorTheme3 => 'Neon';
+
+  @override
+  String get decorSlotSign => 'Papan nama';
+
+  @override
+  String get decorSlotWall => 'Lukisan dinding';
+
+  @override
+  String get decorSlotCounter => 'Konter';
+
+  @override
+  String get decorSlotFloor => 'Lantai';
+
+  @override
+  String get decorPlace => 'Taruh';
+
+  @override
+  String get decorRemove => 'Lepas';
+
+  @override
   String get vipPerksTitle => 'Keuntungan VIP';
 
   @override

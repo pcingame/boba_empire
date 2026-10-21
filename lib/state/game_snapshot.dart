@@ -132,6 +132,8 @@ class GameSnapshot {
     required this.petLevel,
     required this.regularPoints,
     required this.regularDay,
+    required this.decorOwned,
+    required this.decorPlaced,
     required this.legacyIncomeLevel,
     required this.legacyTapLevel,
     required this.weatherSlotPicked,
@@ -355,6 +357,8 @@ class GameSnapshot {
   final int petLevel;
   final Map<String, int> regularPoints;
   final int regularDay;
+  final List<String> decorOwned;
+  final Map<String, String> decorPlaced;
   final int legacyIncomeLevel;
   final int legacyTapLevel;
   final int weatherSlotPicked;

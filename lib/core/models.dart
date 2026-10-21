@@ -4,6 +4,7 @@
 /// chạy được và test được mà không cần UI.
 library;
 
+import 'decor.dart' show decorById, decorSanitizePlaced;
 import 'legacy.dart' show legacyMaxLevel;
 import 'pet.dart' show petMaxLevel;
 import 'regulars.dart' show regularCount;
@@ -213,6 +214,8 @@ class GameState {
     Map<String, int>? staff,
     this.petLevel = 0,
     this.regularDay = 0,
+    List<String>? decorOwned,
+    Map<String, String>? decorPlaced,
     this.legacyIncomeLevel = 0,
     this.legacyTapLevel = 0,
     this.weatherSlotPicked = -1,
@@ -247,6 +250,8 @@ class GameState {
         branchSpecs = branchSpecs ?? {},
         branchStalls = branchStalls ?? {},
         staff = staff ?? {},
+        decorOwned = decorOwned ?? [],
+        decorPlaced = decorPlaced ?? {},
         regularServed = regularServed ?? [],
         regularPoints = regularPoints ?? {},
         branchRoutes = branchRoutes ?? {},
@@ -432,6 +437,10 @@ class GameState {
   /// Khách quen: điểm thân thiết theo chỉ số '0'..'11'; ngày + danh sách khách đã phục vụ hôm đó. Xem regulars.dart.
   final Map<String, int> regularPoints;
   int regularDay;
+
+  /// Trang trí quán (decor.dart): món đã sở hữu + bộ đặt (khoá ô → id món).
+  final List<String> decorOwned;
+  final Map<String, String> decorPlaced;
 
   /// Di sản (legacy.dart): cấp perk thu nhập / chạm, mua bằng ⏳ Điểm Kỷ Nguyên dư.
   int legacyIncomeLevel;
@@ -785,6 +794,8 @@ class GameState {
         'petLevel': petLevel,
         'regularPoints': regularPoints,
         'regularDay': regularDay,
+        'decorOwned': decorOwned,
+        'decorPlaced': decorPlaced,
         'legacyIncomeLevel': legacyIncomeLevel,
         'legacyTapLevel': legacyTapLevel,
         'weatherSlotPicked': weatherSlotPicked,
@@ -1012,6 +1023,8 @@ class GameState {
         },
         branchEventClaimedSlot: (json['branchEventClaimedSlot'] as num?)?.toInt() ?? -1,
         regularDay: (json['regularDay'] as num?)?.toInt() ?? 0,
+        decorOwned: _decorOwnedFrom(json['decorOwned']),
+        decorPlaced: decorSanitizePlaced(json['decorPlaced'], _decorOwnedFrom(json['decorOwned']).toSet()),
         legacyIncomeLevel: ((json['legacyIncomeLevel'] as num?)?.toInt() ?? 0).clamp(0, legacyMaxLevel),
         legacyTapLevel: ((json['legacyTapLevel'] as num?)?.toInt() ?? 0).clamp(0, legacyMaxLevel),
         weatherSlotPicked: (json['weatherSlotPicked'] as num?)?.toInt() ?? -1,
@@ -1214,3 +1227,10 @@ double _sanitizeMoney(num raw) {
 List<int> _tierList(Object? v) => v is List
     ? ({for (final e in v) if (e is num && e >= 1 && e <= 30) e.toInt()}.toList()..sort())
     : [];
+
+/// Danh sách món trang trí đọc từ save: chỉ id có trong danh mục, không trùng.
+List<String> _decorOwnedFrom(Object? raw) => [
+      if (raw is List)
+        for (final id in raw.whereType<String>().toSet())
+          if (decorById(id) != null) id,
+    ];

@@ -97,8 +97,8 @@ class _RewardsDialogState extends ConsumerState<RewardsPanel> {
             ),
             // Cùng dạng hàng + nút như các mục "Xem QC" bên dưới để nhìn ra đây là thứ bấm được.
             _OfferRow(
-              emoji: '',
-              name: l10n.refEntry,
+              emoji: '👥',
+              name: l10n.refEntry.replaceAll('👥', '').trim(),
               note: l10n.refEntryNote(referralInviterReward),
               busy: false,
               buttonKey: const Key('rewards-invite'),
@@ -193,8 +193,8 @@ class _WheelRow extends StatelessWidget {
     return ClayTile(
       child: Row(
         children: [
-          const Text('🎡', style: TextStyle(fontSize: 24)),
-          const SizedBox(width: 12),
+          const _Lead('🎡'),
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -264,10 +264,8 @@ class _OfferRow extends StatelessWidget {
     return ClayTile(
       child: Row(
         children: [
-          if (emoji.isNotEmpty) ...[
-            Text(emoji, style: const TextStyle(fontSize: 24)),
-            const SizedBox(width: 8),
-          ],
+          _Lead(emoji),
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -292,11 +290,14 @@ class _OfferRow extends StatelessWidget {
           const SizedBox(width: 6),
           // Flexible + FittedBox: nhãn dài (en/es/id/pt) co lại thay vì tràn ở màn hẹp.
           Flexible(
-            child: FilledButton.icon(
-              key: buttonKey,
-              onPressed: busy ? null : onWatch,
-              icon: Icon(buttonIcon, size: 20),
-              label: FittedBox(fit: BoxFit.scaleDown, child: Text(buttonLabel ?? l10n.watchAd)),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: 124),
+              child: FilledButton.icon(
+                key: buttonKey,
+                onPressed: busy ? null : onWatch,
+                icon: Icon(buttonIcon, size: 20),
+                label: FittedBox(fit: BoxFit.scaleDown, child: Text(buttonLabel ?? l10n.watchAd)),
+              ),
             ),
           ),
         ],
@@ -328,8 +329,8 @@ class _PiggyCard extends StatelessWidget {
     return ClayTile(
       child: Row(
         children: [
-          const Text('🐷', style: TextStyle(fontSize: 30)),
-          const SizedBox(width: 12),
+          const _Lead('🐷'),
+          const SizedBox(width: 8),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -354,14 +355,28 @@ class _PiggyCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          FilledButton(
-            onPressed: canBreak ? onBreak : null,
-            child: Text(
-              price != null ? '${l10n.piggyBreak} $price' : l10n.piggyBreak,
+          ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 124),
+            child: FilledButton(
+              onPressed: canBreak ? onBreak : null,
+              child: Text(
+                price != null ? '${l10n.piggyBreak} $price' : l10n.piggyBreak,
+              ),
             ),
           ),
         ],
       ),
     );
   }
+}
+
+/// Ô emoji đầu hàng: cùng bề rộng + cỡ chữ ở mọi hàng để các hàng thẳng cột.
+class _Lead extends StatelessWidget {
+  const _Lead(this.emoji);
+  final String emoji;
+  @override
+  Widget build(BuildContext context) => SizedBox(
+        width: 44,
+        child: Center(child: Text(emoji, style: const TextStyle(fontSize: 28))),
+      );
 }

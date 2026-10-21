@@ -4840,6 +4840,46 @@ class AppLocalizationsKo extends AppLocalizations {
   String get communityTitle => '커뮤니티';
 
   @override
+  String get decorTitle => '가게 꾸미기';
+
+  @override
+  String get decorHint =>
+      '칸을 눌러 배치하거나 구매하세요. 아이템당 수익 +0.5%, 같은 테마 3개 +2%, 5개 +6%.';
+
+  @override
+  String get decorBonus => '꾸미기 수익';
+
+  @override
+  String get decorTheme0 => '레트로';
+
+  @override
+  String get decorTheme1 => '젠';
+
+  @override
+  String get decorTheme2 => '열대';
+
+  @override
+  String get decorTheme3 => '네온';
+
+  @override
+  String get decorSlotSign => '간판';
+
+  @override
+  String get decorSlotWall => '벽 장식';
+
+  @override
+  String get decorSlotCounter => '카운터';
+
+  @override
+  String get decorSlotFloor => '바닥';
+
+  @override
+  String get decorPlace => '배치';
+
+  @override
+  String get decorRemove => '제거';
+
+  @override
   String get vipPerksTitle => 'VIP 혜택';
 
   @override

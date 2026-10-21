@@ -4,6 +4,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../l10n/app_localizations.dart';
+import 'decor_dialog.dart';
 import 'delivery_dialog.dart';
 import 'pet_dialog.dart';
 import 'regulars_dialog.dart';
@@ -64,6 +65,17 @@ class _MyShopHubDialog extends StatelessWidget {
           onTap: () {
             final nav = Navigator.of(context)..pop();
             showPet(nav.context);
+          },
+        ),
+        ListTile(
+          key: const Key('shop-decor'),
+          contentPadding: EdgeInsets.zero,
+          leading: const Icon(Icons.chair_rounded),
+          title: Text(l10n.decorTitle),
+          trailing: const Icon(Icons.chevron_right),
+          onTap: () {
+            final nav = Navigator.of(context)..pop();
+            showDecor(nav.context);
           },
         ),
       ])),

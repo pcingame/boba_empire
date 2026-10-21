@@ -4923,6 +4923,46 @@ class AppLocalizationsEn extends AppLocalizations {
   String get communityTitle => 'Community';
 
   @override
+  String get decorTitle => 'Shop decor';
+
+  @override
+  String get decorHint =>
+      'Tap a slot to place or buy items. Each item +0.5% income; 3 of a theme +2%, all 5 +6%.';
+
+  @override
+  String get decorBonus => 'income from decor';
+
+  @override
+  String get decorTheme0 => 'Retro';
+
+  @override
+  String get decorTheme1 => 'Zen';
+
+  @override
+  String get decorTheme2 => 'Tropical';
+
+  @override
+  String get decorTheme3 => 'Neon';
+
+  @override
+  String get decorSlotSign => 'Sign';
+
+  @override
+  String get decorSlotWall => 'Wall art';
+
+  @override
+  String get decorSlotCounter => 'Counter';
+
+  @override
+  String get decorSlotFloor => 'Floor';
+
+  @override
+  String get decorPlace => 'Place';
+
+  @override
+  String get decorRemove => 'Remove';
+
+  @override
   String get vipPerksTitle => 'VIP perks';
 
   @override

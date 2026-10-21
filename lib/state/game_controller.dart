@@ -15,6 +15,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../core/branches.dart';
 import '../core/pet.dart';
+import '../core/decor.dart';
 import '../core/legacy.dart';
 import '../core/regulars.dart';
 import '../core/stats.dart';
@@ -399,6 +400,47 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
     return cash;
   }
+
+  /// Mua món trang trí [id] (💎 nếu món hiếm, Xu nếu món thường). false nếu đã có/id lạ/thiếu tiền.
+  bool buyDecor(String id) {
+    final item = decorById(id);
+    if (item == null || _game.decorOwned.contains(id)) return false;
+    if (item.gems > 0) {
+      if (!(_game.gems >= item.gems)) return false;
+      _game.gems -= item.gems;
+    } else {
+      final cost = decorXuCost(_branchBaseIncome());
+      if (!cost.isFinite || !(_game.money >= cost)) return false;
+      _game.money -= cost;
+    }
+    _game.decorOwned.add(id);
+    logEvent('decor_buy', {'id': id});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
+  /// Đặt món [id] (đã sở hữu) vào ô [slotKey]; món đang ở ô khác thì dời sang. false nếu sai loại/chưa có.
+  bool placeDecor(String slotKey, String id) {
+    if (!_game.decorOwned.contains(id) || !decorFits(slotKey, id)) return false;
+    _game.decorPlaced.removeWhere((_, v) => v == id);
+    _game.decorPlaced[slotKey] = id;
+    logEvent('decor_place', {'slot': slotKey, 'id': id});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
+  /// Gỡ món khỏi ô [slotKey] (món vẫn thuộc kho).
+  bool clearDecor(String slotKey) {
+    if (_game.decorPlaced.remove(slotKey) == null) return false;
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
+  /// Giá Xu hiện tại của món thường (UI hiển thị).
+  double get decorXuPrice => decorXuCost(_branchBaseIncome());
 
   /// Thống kê cá nhân tại thời điểm gọi (màn Thống kê).
   PlayerStats playerStats() => PlayerStats.from(_game, _clock());
@@ -2820,6 +2862,8 @@ class GameController extends Notifier<GameSnapshot> {
       petLevel: _game.petLevel,
       regularPoints: Map.unmodifiable(Map.of(_game.regularPoints)),
       regularDay: _game.regularDay,
+      decorOwned: List.unmodifiable(_game.decorOwned),
+      decorPlaced: Map.unmodifiable(Map.of(_game.decorPlaced)),
       legacyIncomeLevel: _game.legacyIncomeLevel,
       legacyTapLevel: _game.legacyTapLevel,
       weatherSlotPicked: _game.weatherSlotPicked,

@@ -13,6 +13,7 @@ import 'balance.dart';
 import 'branches.dart' show branchIncomeMultiplier;
 import 'guild.dart' show guildVipBonusMultiplier;
 import 'models.dart';
+import 'decor.dart';
 import 'legacy.dart';
 import 'regulars.dart';
 import 'staff.dart';
@@ -394,6 +395,7 @@ double effectiveIncomePerSecond(
     (state.doubleIncomeOwned ? 2.0 : 1.0) *
     branchIncomeMultiplier(state.branchLevels) *
     regularIncomeMultiplier(state.regularPoints) *
+    decorIncomeMultiplier(state.decorPlaced) *
     legacyMultiplier(state.legacyIncomeLevel) *
     vipIncomeMultiplier(state.vipExp) *
     guildVipBonusMultiplier(joined: state.guildJoined, pct: state.guildVipBonusPct) *

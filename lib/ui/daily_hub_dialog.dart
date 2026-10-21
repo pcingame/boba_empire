@@ -43,6 +43,8 @@ class DailyHubDialog extends StatelessWidget {
             child: Column(
               children: [
                 TabBar(
+                  isScrollable: true,
+                  tabAlignment: TabAlignment.start,
                   // 4 tab trên hộp hẹp: bớt đệm hai bên để "Thành tựu" không bị cắt.
                   labelPadding: const EdgeInsets.symmetric(horizontal: 4),
                   tabs: [

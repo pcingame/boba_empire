@@ -8287,6 +8287,84 @@ abstract class AppLocalizations {
   /// **'Cộng đồng'**
   String get communityTitle;
 
+  /// No description provided for @decorTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trang trí quán'**
+  String get decorTitle;
+
+  /// No description provided for @decorHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chạm ô để đặt hoặc mua món. Mỗi món +0,5% thu nhập; 3 món cùng chủ đề +2%, đủ 5 món +6%.'**
+  String get decorHint;
+
+  /// No description provided for @decorBonus.
+  ///
+  /// In vi, this message translates to:
+  /// **'thu nhập từ trang trí'**
+  String get decorBonus;
+
+  /// No description provided for @decorTheme0.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cổ điển'**
+  String get decorTheme0;
+
+  /// No description provided for @decorTheme1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Zen Nhật'**
+  String get decorTheme1;
+
+  /// No description provided for @decorTheme2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiệt đới'**
+  String get decorTheme2;
+
+  /// No description provided for @decorTheme3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Neon'**
+  String get decorTheme3;
+
+  /// No description provided for @decorSlotSign.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bảng hiệu'**
+  String get decorSlotSign;
+
+  /// No description provided for @decorSlotWall.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tranh tường'**
+  String get decorSlotWall;
+
+  /// No description provided for @decorSlotCounter.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quầy'**
+  String get decorSlotCounter;
+
+  /// No description provided for @decorSlotFloor.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sàn'**
+  String get decorSlotFloor;
+
+  /// No description provided for @decorPlace.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt'**
+  String get decorPlace;
+
+  /// No description provided for @decorRemove.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gỡ món'**
+  String get decorRemove;
+
   /// No description provided for @vipPerksTitle.
   ///
   /// In vi, this message translates to:

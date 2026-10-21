@@ -4897,6 +4897,46 @@ class AppLocalizationsTh extends AppLocalizations {
   String get communityTitle => 'ชุมชน';
 
   @override
+  String get decorTitle => 'ตกแต่งร้าน';
+
+  @override
+  String get decorHint =>
+      'แตะช่องเพื่อวางหรือซื้อ แต่ละชิ้น +0.5% รายได้ ครบ 3 ชิ้นในธีมเดียวกัน +2% ครบ 5 ชิ้น +6%';
+
+  @override
+  String get decorBonus => 'รายได้จากการตกแต่ง';
+
+  @override
+  String get decorTheme0 => 'เรโทร';
+
+  @override
+  String get decorTheme1 => 'เซน';
+
+  @override
+  String get decorTheme2 => 'เขตร้อน';
+
+  @override
+  String get decorTheme3 => 'นีออน';
+
+  @override
+  String get decorSlotSign => 'ป้ายร้าน';
+
+  @override
+  String get decorSlotWall => 'ภาพแขวนผนัง';
+
+  @override
+  String get decorSlotCounter => 'เคาน์เตอร์';
+
+  @override
+  String get decorSlotFloor => 'พื้น';
+
+  @override
+  String get decorPlace => 'วาง';
+
+  @override
+  String get decorRemove => 'เอาออก';
+
+  @override
   String get vipPerksTitle => 'สิทธิ์ VIP';
 
   @override
