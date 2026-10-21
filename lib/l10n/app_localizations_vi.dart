@@ -4910,6 +4910,12 @@ class AppLocalizationsVi extends AppLocalizations {
   String get communityTitle => 'Cộng đồng';
 
   @override
+  String get myShopTitle => 'Quán của tôi';
+
+  @override
+  String get weeklyEventsTitle => 'Sự kiện tuần';
+
+  @override
   String get auctionTitle => 'Đấu giá cuối tuần';
 
   @override

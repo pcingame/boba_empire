@@ -8287,6 +8287,18 @@ abstract class AppLocalizations {
   /// **'Cộng đồng'**
   String get communityTitle;
 
+  /// No description provided for @myShopTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quán của tôi'**
+  String get myShopTitle;
+
+  /// No description provided for @weeklyEventsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sự kiện tuần'**
+  String get weeklyEventsTitle;
+
   /// No description provided for @auctionTitle.
   ///
   /// In vi, this message translates to:

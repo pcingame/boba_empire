@@ -2879,6 +2879,8 @@
   },
   "guildTitle": "Hội",
   "communityTitle": "Cộng đồng",
+  "myShopTitle": "Quán của tôi",
+  "weeklyEventsTitle": "Sự kiện tuần",
   "auctionTitle": "Đấu giá cuối tuần",
   "auctionIntro": "Mỗi tuần một món độc quyền. Đặt giá bằng 💎 từ thứ 6 đến hết Chủ nhật; ai cao nhất khi hết giờ nhận món. Bị vượt giá thì được hoàn 💎.",
   "auctionClosed": "Chưa mở — quay lại từ thứ 6",

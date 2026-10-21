@@ -14,8 +14,7 @@ import '../state/recipe_providers.dart';
 import 'branches_page.dart';
 import 'match3_journey_page.dart';
 import 'recipe_hub_page.dart';
-import 'pet_dialog.dart';
-import 'staff_dialog.dart';
+import 'my_shop_hub_dialog.dart';
 import 'widgets/app_dialog.dart';
 
 Future<void> showGamesHub(BuildContext context) =>
@@ -70,25 +69,14 @@ class _GamesHubDialog extends ConsumerWidget {
               },
             ),
             ListTile(
-              key: const Key('games-staff'),
+              key: const Key('games-shop'),
               contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.badge_rounded),
-              title: Text(l10n.staffTitle),
+              leading: const Icon(Icons.storefront_rounded),
+              title: Text(l10n.myShopTitle),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
-                Navigator.of(context).pop();
-                showStaff(context);
-              },
-            ),
-            ListTile(
-              key: const Key('games-pet'),
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.pets_rounded),
-              title: Text(l10n.petTitle),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                Navigator.of(context).pop();
-                showPet(context);
+                final nav = Navigator.of(context)..pop();
+                showMyShopHub(nav.context);
               },
             ),
             ListTile(

@@ -4918,6 +4918,12 @@ class AppLocalizationsId extends AppLocalizations {
   String get communityTitle => 'Komunitas';
 
   @override
+  String get myShopTitle => 'Kedaiku';
+
+  @override
+  String get weeklyEventsTitle => 'Acara mingguan';
+
+  @override
   String get auctionTitle => 'Lelang akhir pekan';
 
   @override

@@ -4897,6 +4897,12 @@ class AppLocalizationsTh extends AppLocalizations {
   String get communityTitle => 'ชุมชน';
 
   @override
+  String get myShopTitle => 'ร้านของฉัน';
+
+  @override
+  String get weeklyEventsTitle => 'กิจกรรมประจำสัปดาห์';
+
+  @override
   String get auctionTitle => 'ประมูลสุดสัปดาห์';
 
   @override

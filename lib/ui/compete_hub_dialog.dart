@@ -12,8 +12,7 @@ import 'email_gate.dart';
 import '../world_boss/world_boss.dart' show worldBossAlertProvider;
 import 'arena_page.dart';
 import 'leaderboards_hub_page.dart';
-import 'auction_dialog.dart';
-import 'world_boss_page.dart';
+import 'weekly_events_hub_dialog.dart';
 import 'widgets/phone_width.dart';
 import 'widgets/app_dialog.dart';
 
@@ -62,20 +61,17 @@ class _CompeteHubDialog extends ConsumerWidget {
             contentPadding: EdgeInsets.zero,
             horizontalTitleGap: 12,
             minLeadingWidth: 28,
-            key: const Key('compete-world-boss'),
-            leading: const Icon(Icons.whatshot),
+            key: const Key('compete-weekly'),
+            leading: const Icon(Icons.event_available),
             title: Row(children: [
-              Flexible(child: Text(l10n.worldBossTitle, maxLines: 2, overflow: TextOverflow.ellipsis)),
+              Flexible(child: Text(l10n.weeklyEventsTitle, maxLines: 2, overflow: TextOverflow.ellipsis)),
               if ((ref.watch(worldBossAlertProvider).value ?? 0) > 0) ...[
                 const SizedBox(width: 8),
                 Container(
-                  key: const Key('compete-world-boss-dot'),
+                  key: const Key('compete-weekly-dot'),
                   width: 8,
                   height: 8,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.error,
-                    shape: BoxShape.circle,
-                  ),
+                  decoration: BoxDecoration(color: Theme.of(context).colorScheme.error, shape: BoxShape.circle),
                 ),
               ],
             ]),
@@ -84,21 +80,7 @@ class _CompeteHubDialog extends ConsumerWidget {
               // Tính năng online: cần đã liên kết email (xem email_gate.dart).
               if (!await ensureOnlineLinked(context) || !context.mounted) return;
               Navigator.of(context).pop();
-              showWorldBoss(context);
-            },
-          ),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            horizontalTitleGap: 12,
-            minLeadingWidth: 28,
-            key: const Key('compete-auction'),
-            leading: const Icon(Icons.gavel),
-            title: Text(l10n.auctionTitle, maxLines: 2, overflow: TextOverflow.ellipsis),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () async {
-              if (!await ensureOnlineLinked(context) || !context.mounted) return;
-              Navigator.of(context).pop();
-              showAuction(context);
+              showWeeklyEventsHub(context);
             },
           ),
           ListTile(

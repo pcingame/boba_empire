@@ -1620,6 +1620,8 @@
   },
   "guildTitle": "길드",
   "communityTitle": "커뮤니티",
+  "myShopTitle": "내 가게",
+  "weeklyEventsTitle": "주간 이벤트",
   "auctionTitle": "주말 경매",
   "auctionIntro": "매주 한정 아이템 1개. 금요일부터 일요일까지 💎로 입찰하며, 종료 시 최고가 입찰자가 획득합니다. 추월당하면 💎를 돌려받습니다.",
   "auctionClosed": "아직 열리지 않음 — 금요일에 다시 오세요",

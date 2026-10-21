@@ -4923,6 +4923,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get communityTitle => 'Community';
 
   @override
+  String get myShopTitle => 'My shop';
+
+  @override
+  String get weeklyEventsTitle => 'Weekly events';
+
+  @override
   String get auctionTitle => 'Weekend auction';
 
   @override

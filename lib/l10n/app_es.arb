@@ -1982,6 +1982,8 @@
   },
   "guildTitle": "Gremio",
   "communityTitle": "Comunidad",
+  "myShopTitle": "Mi tienda",
+  "weeklyEventsTitle": "Eventos semanales",
   "auctionTitle": "Subasta de fin de semana",
   "auctionIntro": "Un objeto exclusivo cada semana. Puja con 💎 de viernes a domingo; gana la puja más alta al terminar. Si te superan, recuperas tus 💎.",
   "auctionClosed": "Aún cerrada: vuelve el viernes",

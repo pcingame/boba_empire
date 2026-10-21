@@ -4840,6 +4840,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get communityTitle => '커뮤니티';
 
   @override
+  String get myShopTitle => '내 가게';
+
+  @override
+  String get weeklyEventsTitle => '주간 이벤트';
+
+  @override
   String get auctionTitle => '주말 경매';
 
   @override

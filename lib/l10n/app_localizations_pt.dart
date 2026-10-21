@@ -4935,6 +4935,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get communityTitle => 'Comunidade';
 
   @override
+  String get myShopTitle => 'Minha loja';
+
+  @override
+  String get weeklyEventsTitle => 'Eventos semanais';
+
+  @override
   String get auctionTitle => 'Leilão de fim de semana';
 
   @override

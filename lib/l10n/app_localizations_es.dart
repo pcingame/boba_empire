@@ -4942,6 +4942,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get communityTitle => 'Comunidad';
 
   @override
+  String get myShopTitle => 'Mi tienda';
+
+  @override
+  String get weeklyEventsTitle => 'Eventos semanales';
+
+  @override
   String get auctionTitle => 'Subasta de fin de semana';
 
   @override

@@ -1982,6 +1982,8 @@
   },
   "guildTitle": "Guild",
   "communityTitle": "Komunitas",
+  "myShopTitle": "Kedaiku",
+  "weeklyEventsTitle": "Acara mingguan",
   "auctionTitle": "Lelang akhir pekan",
   "auctionIntro": "Satu item eksklusif tiap minggu. Tawar dengan 💎 dari Jumat hingga Minggu; penawar tertinggi saat berakhir menang. Jika terlampaui, 💎 dikembalikan.",
   "auctionClosed": "Belum dibuka — kembali hari Jumat",

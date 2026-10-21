@@ -1982,6 +1982,8 @@
   },
   "guildTitle": "Guild",
   "communityTitle": "Community",
+  "myShopTitle": "My shop",
+  "weeklyEventsTitle": "Weekly events",
   "auctionTitle": "Weekend auction",
   "auctionIntro": "One exclusive item each week. Bid 💎 from Friday through Sunday; the top bidder at the end wins. If you're outbid, your 💎 are refunded.",
   "auctionClosed": "Not open yet — come back Friday",
