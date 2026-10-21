@@ -4918,6 +4918,64 @@ class AppLocalizationsId extends AppLocalizations {
   String get communityTitle => 'Komunitas';
 
   @override
+  String get vipPerksTitle => 'Keuntungan VIP';
+
+  @override
+  String get vipPerksOpen => 'Lihat keuntungan tiap level VIP';
+
+  @override
+  String vipPerksNext(String exp, String name) {
+    return '$exp EXP lagi menuju $name';
+  }
+
+  @override
+  String get vipPerksMax => 'Kamu sudah mencapai level VIP tertinggi 👑';
+
+  @override
+  String get vipPerksUnlocks => 'Membuka';
+
+  @override
+  String get vipPerksTitleTag => 'Gelar di papan peringkat';
+
+  @override
+  String get statsTitle => 'Statistikku';
+
+  @override
+  String get statsOpen => 'Statistik & gambar pamer';
+
+  @override
+  String get statsDays => 'Hari bermain';
+
+  @override
+  String get statsLifetime => 'Total koin diperoleh';
+
+  @override
+  String get statsTaps => 'Ketukan';
+
+  @override
+  String get statsBuys => 'Peningkatan dibeli';
+
+  @override
+  String get statsAscensions => 'Kenaikan';
+
+  @override
+  String get statsChapter => 'Bab cerita';
+
+  @override
+  String get statsItems => 'Aksesori terkumpul';
+
+  @override
+  String get statsVip => 'Level VIP';
+
+  @override
+  String get statsBestStreak => 'Rentetan resep terpanjang';
+
+  @override
+  String statsShareText(int days, String lifetime) {
+    return 'Aku sudah main Boba Empire $days hari dan mendapat total $lifetime koin! 🧋';
+  }
+
+  @override
   String get legacyTitle => 'Warisan';
 
   @override

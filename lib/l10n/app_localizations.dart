@@ -8287,6 +8287,114 @@ abstract class AppLocalizations {
   /// **'Cộng đồng'**
   String get communityTitle;
 
+  /// No description provided for @vipPerksTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quyền lợi VIP'**
+  String get vipPerksTitle;
+
+  /// No description provided for @vipPerksOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem quyền lợi các cấp VIP'**
+  String get vipPerksOpen;
+
+  /// No description provided for @vipPerksNext.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn {exp} EXP để lên {name}'**
+  String vipPerksNext(String exp, String name);
+
+  /// No description provided for @vipPerksMax.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã đạt cấp VIP cao nhất 👑'**
+  String get vipPerksMax;
+
+  /// No description provided for @vipPerksUnlocks.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở khoá'**
+  String get vipPerksUnlocks;
+
+  /// No description provided for @vipPerksTitleTag.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh hiệu ở bảng xếp hạng'**
+  String get vipPerksTitleTag;
+
+  /// No description provided for @statsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thống kê của tôi'**
+  String get statsTitle;
+
+  /// No description provided for @statsOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thống kê & ảnh khoe'**
+  String get statsOpen;
+
+  /// No description provided for @statsDays.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngày chơi'**
+  String get statsDays;
+
+  /// No description provided for @statsLifetime.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng Xu kiếm được'**
+  String get statsLifetime;
+
+  /// No description provided for @statsTaps.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lượt chạm'**
+  String get statsTaps;
+
+  /// No description provided for @statsBuys.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lượt nâng cấp'**
+  String get statsBuys;
+
+  /// No description provided for @statsAscensions.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số Kỷ Nguyên'**
+  String get statsAscensions;
+
+  /// No description provided for @statsChapter.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chương truyện'**
+  String get statsChapter;
+
+  /// No description provided for @statsItems.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phụ kiện sưu tập'**
+  String get statsItems;
+
+  /// No description provided for @statsVip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cấp VIP'**
+  String get statsVip;
+
+  /// No description provided for @statsBestStreak.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuỗi ôn công thức dài nhất'**
+  String get statsBestStreak;
+
+  /// No description provided for @statsShareText.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mình đã chơi Boba Empire {days} ngày và kiếm tổng cộng {lifetime} Xu! 🧋'**
+  String statsShareText(int days, String lifetime);
+
   /// No description provided for @legacyTitle.
   ///
   /// In vi, this message translates to:

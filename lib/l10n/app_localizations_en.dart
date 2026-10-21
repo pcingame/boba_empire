@@ -4923,6 +4923,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String get communityTitle => 'Community';
 
   @override
+  String get vipPerksTitle => 'VIP perks';
+
+  @override
+  String get vipPerksOpen => 'See perks of every VIP level';
+
+  @override
+  String vipPerksNext(String exp, String name) {
+    return '$exp EXP to reach $name';
+  }
+
+  @override
+  String get vipPerksMax => 'You\'ve reached the top VIP level 👑';
+
+  @override
+  String get vipPerksUnlocks => 'Unlocks';
+
+  @override
+  String get vipPerksTitleTag => 'Leaderboard title';
+
+  @override
+  String get statsTitle => 'My stats';
+
+  @override
+  String get statsOpen => 'Stats & share image';
+
+  @override
+  String get statsDays => 'Days played';
+
+  @override
+  String get statsLifetime => 'Total coins earned';
+
+  @override
+  String get statsTaps => 'Taps';
+
+  @override
+  String get statsBuys => 'Upgrades bought';
+
+  @override
+  String get statsAscensions => 'Ascensions';
+
+  @override
+  String get statsChapter => 'Story chapter';
+
+  @override
+  String get statsItems => 'Accessories collected';
+
+  @override
+  String get statsVip => 'VIP level';
+
+  @override
+  String get statsBestStreak => 'Longest recipe streak';
+
+  @override
+  String statsShareText(int days, String lifetime) {
+    return 'I\'ve played Boba Empire for $days days and earned $lifetime coins in total! 🧋';
+  }
+
+  @override
   String get legacyTitle => 'Legacy';
 
   @override

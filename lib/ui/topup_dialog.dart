@@ -10,6 +10,7 @@ import '../leaderboard/flair.dart';
 import '../state/game_controller.dart';
 import '../state/game_providers.dart';
 import 'vip_how_to_dialog.dart';
+import 'vip_perks_page.dart';
 import 'widgets/vip_shine.dart';
 import 'vip_shop_dialog.dart';
 import 'email_gate.dart';
@@ -144,6 +145,15 @@ class _TopupDialogState extends ConsumerState<_TopupDialog> {
                   key: const Key('vip-exp-capped'),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TextButton.icon(
+                  key: const Key('vip-perks-open'),
+                  onPressed: () => showVipPerks(context),
+                  icon: const Icon(Icons.workspace_premium),
+                  label: Text(l10n.vipPerksOpen),
+                ),
+              ),
               Align(
                 alignment: Alignment.centerLeft,
                 child: TextButton(

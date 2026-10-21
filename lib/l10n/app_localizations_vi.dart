@@ -4910,6 +4910,64 @@ class AppLocalizationsVi extends AppLocalizations {
   String get communityTitle => 'Cộng đồng';
 
   @override
+  String get vipPerksTitle => 'Quyền lợi VIP';
+
+  @override
+  String get vipPerksOpen => 'Xem quyền lợi các cấp VIP';
+
+  @override
+  String vipPerksNext(String exp, String name) {
+    return 'Còn $exp EXP để lên $name';
+  }
+
+  @override
+  String get vipPerksMax => 'Bạn đã đạt cấp VIP cao nhất 👑';
+
+  @override
+  String get vipPerksUnlocks => 'Mở khoá';
+
+  @override
+  String get vipPerksTitleTag => 'Danh hiệu ở bảng xếp hạng';
+
+  @override
+  String get statsTitle => 'Thống kê của tôi';
+
+  @override
+  String get statsOpen => 'Thống kê & ảnh khoe';
+
+  @override
+  String get statsDays => 'Ngày chơi';
+
+  @override
+  String get statsLifetime => 'Tổng Xu kiếm được';
+
+  @override
+  String get statsTaps => 'Lượt chạm';
+
+  @override
+  String get statsBuys => 'Lượt nâng cấp';
+
+  @override
+  String get statsAscensions => 'Số Kỷ Nguyên';
+
+  @override
+  String get statsChapter => 'Chương truyện';
+
+  @override
+  String get statsItems => 'Phụ kiện sưu tập';
+
+  @override
+  String get statsVip => 'Cấp VIP';
+
+  @override
+  String get statsBestStreak => 'Chuỗi ôn công thức dài nhất';
+
+  @override
+  String statsShareText(int days, String lifetime) {
+    return 'Mình đã chơi Boba Empire $days ngày và kiếm tổng cộng $lifetime Xu! 🧋';
+  }
+
+  @override
   String get legacyTitle => 'Di sản';
 
   @override

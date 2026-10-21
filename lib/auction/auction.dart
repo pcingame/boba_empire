@@ -4,6 +4,8 @@ library;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+int _int(Object? o, int fallback) => o is num && o.isFinite ? o.toInt() : fallback;
+
 class AuctionInfo {
   const AuctionInfo({
     required this.itemId,
@@ -21,12 +23,12 @@ class AuctionInfo {
         itemId: j['item_id'] as String? ?? '',
         endsAt: DateTime.tryParse('${j['ends_at']}') ?? DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
         open: j['open'] == true,
-        topBid: (j['top_bid'] as num?)?.toInt() ?? 0,
-        bidCount: (j['bid_count'] as num?)?.toInt() ?? 0,
+        topBid: _int(j['top_bid'], 0),
+        bidCount: _int(j['bid_count'], 0),
         topIsMe: j['top_is_me'] == true,
         topNick: j['top_nick'] as String?,
-        nextMin: (j['next_min'] as num?)?.toInt() ?? 100,
-        maxBid: (j['max_bid'] as num?)?.toInt() ?? 20000,
+        nextMin: _int(j['next_min'], 100),
+        maxBid: _int(j['max_bid'], 20000),
       );
 
   final String itemId;
@@ -49,7 +51,7 @@ class AuctionPickups {
     final w = [for (final e in (j['won'] as List? ?? const [])) e as Map<String, dynamic>];
     return AuctionPickups(
       refundIds: [for (final e in r) e['id'] as String],
-      refundGems: r.fold(0, (a, e) => a + ((e['gems'] as num?)?.toInt() ?? 0)),
+      refundGems: r.fold(0, (a, e) => a + _int(e['gems'], 0)),
       wonWeeks: [for (final e in w) e['week'] as String],
       wonItems: [for (final e in w) e['item_id'] as String],
     );

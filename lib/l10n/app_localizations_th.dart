@@ -4897,6 +4897,64 @@ class AppLocalizationsTh extends AppLocalizations {
   String get communityTitle => 'ชุมชน';
 
   @override
+  String get vipPerksTitle => 'สิทธิ์ VIP';
+
+  @override
+  String get vipPerksOpen => 'ดูสิทธิ์ของแต่ละระดับ VIP';
+
+  @override
+  String vipPerksNext(String exp, String name) {
+    return 'อีก $exp EXP ถึง $name';
+  }
+
+  @override
+  String get vipPerksMax => 'คุณถึงระดับ VIP สูงสุดแล้ว 👑';
+
+  @override
+  String get vipPerksUnlocks => 'ปลดล็อก';
+
+  @override
+  String get vipPerksTitleTag => 'ฉายาบนกระดานอันดับ';
+
+  @override
+  String get statsTitle => 'สถิติของฉัน';
+
+  @override
+  String get statsOpen => 'สถิติและภาพอวด';
+
+  @override
+  String get statsDays => 'จำนวนวันที่เล่น';
+
+  @override
+  String get statsLifetime => 'เหรียญที่หาได้ทั้งหมด';
+
+  @override
+  String get statsTaps => 'จำนวนการแตะ';
+
+  @override
+  String get statsBuys => 'การอัปเกรดที่ซื้อ';
+
+  @override
+  String get statsAscensions => 'จำนวนการเลื่อนขั้น';
+
+  @override
+  String get statsChapter => 'ตอนของเรื่อง';
+
+  @override
+  String get statsItems => 'ของสะสมที่มี';
+
+  @override
+  String get statsVip => 'ระดับ VIP';
+
+  @override
+  String get statsBestStreak => 'สถิติทบทวนสูตรต่อเนื่องสูงสุด';
+
+  @override
+  String statsShareText(int days, String lifetime) {
+    return 'ฉันเล่น Boba Empire มา $days วัน หาเหรียญได้รวม $lifetime เหรียญ! 🧋';
+  }
+
+  @override
   String get legacyTitle => 'มรดก';
 
   @override

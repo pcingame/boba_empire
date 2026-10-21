@@ -4840,6 +4840,64 @@ class AppLocalizationsKo extends AppLocalizations {
   String get communityTitle => '커뮤니티';
 
   @override
+  String get vipPerksTitle => 'VIP 혜택';
+
+  @override
+  String get vipPerksOpen => 'VIP 단계별 혜택 보기';
+
+  @override
+  String vipPerksNext(String exp, String name) {
+    return '$name까지 $exp EXP 남음';
+  }
+
+  @override
+  String get vipPerksMax => '최고 VIP 단계에 도달했습니다 👑';
+
+  @override
+  String get vipPerksUnlocks => '해금';
+
+  @override
+  String get vipPerksTitleTag => '순위표 칭호';
+
+  @override
+  String get statsTitle => '내 통계';
+
+  @override
+  String get statsOpen => '통계 & 자랑 이미지';
+
+  @override
+  String get statsDays => '플레이 일수';
+
+  @override
+  String get statsLifetime => '총 획득 코인';
+
+  @override
+  String get statsTaps => '터치 횟수';
+
+  @override
+  String get statsBuys => '구매한 업그레이드';
+
+  @override
+  String get statsAscensions => '승천 횟수';
+
+  @override
+  String get statsChapter => '스토리 챕터';
+
+  @override
+  String get statsItems => '수집한 액세서리';
+
+  @override
+  String get statsVip => 'VIP 단계';
+
+  @override
+  String get statsBestStreak => '최장 레시피 연속 기록';
+
+  @override
+  String statsShareText(int days, String lifetime) {
+    return 'Boba Empire를 $days일 플레이하고 총 $lifetime 코인을 벌었어요! 🧋';
+  }
+
+  @override
   String get legacyTitle => '유산';
 
   @override

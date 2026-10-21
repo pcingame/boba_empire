@@ -4935,6 +4935,64 @@ class AppLocalizationsPt extends AppLocalizations {
   String get communityTitle => 'Comunidade';
 
   @override
+  String get vipPerksTitle => 'Vantagens VIP';
+
+  @override
+  String get vipPerksOpen => 'Ver as vantagens de cada nível VIP';
+
+  @override
+  String vipPerksNext(String exp, String name) {
+    return 'Faltam $exp EXP para $name';
+  }
+
+  @override
+  String get vipPerksMax => 'Você chegou ao nível VIP máximo 👑';
+
+  @override
+  String get vipPerksUnlocks => 'Desbloqueia';
+
+  @override
+  String get vipPerksTitleTag => 'Título no ranking';
+
+  @override
+  String get statsTitle => 'Minhas estatísticas';
+
+  @override
+  String get statsOpen => 'Estatísticas e imagem';
+
+  @override
+  String get statsDays => 'Dias jogados';
+
+  @override
+  String get statsLifetime => 'Total de moedas ganhas';
+
+  @override
+  String get statsTaps => 'Toques';
+
+  @override
+  String get statsBuys => 'Melhorias compradas';
+
+  @override
+  String get statsAscensions => 'Ascensões';
+
+  @override
+  String get statsChapter => 'Capítulo da história';
+
+  @override
+  String get statsItems => 'Acessórios colecionados';
+
+  @override
+  String get statsVip => 'Nível VIP';
+
+  @override
+  String get statsBestStreak => 'Maior sequência de receitas';
+
+  @override
+  String statsShareText(int days, String lifetime) {
+    return 'Joguei Boba Empire por $days dias e ganhei $lifetime moedas no total! 🧋';
+  }
+
+  @override
   String get legacyTitle => 'Legado';
 
   @override

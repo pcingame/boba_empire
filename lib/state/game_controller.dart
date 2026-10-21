@@ -17,6 +17,7 @@ import '../core/branches.dart';
 import '../core/pet.dart';
 import '../core/legacy.dart';
 import '../core/regulars.dart';
+import '../core/stats.dart';
 import '../core/weather_delivery.dart';
 import '../core/staff.dart';
 import '../core/raid.dart';
@@ -398,6 +399,9 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
     return cash;
   }
+
+  /// Thống kê cá nhân tại thời điểm gọi (màn Thống kê).
+  PlayerStats playerStats() => PlayerStats.from(_game, _clock());
 
   /// Chọn menu [menu] (0..3) cho khung giờ thời tiết hiện tại. Trả Xu thưởng (0 nếu đã chọn khung này/sai chỉ số).
   double pickWeatherMenu(int menu) {
