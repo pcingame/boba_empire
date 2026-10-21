@@ -2340,6 +2340,12 @@ abstract class AppLocalizations {
   /// **'Nhiệm vụ & Quà'**
   String get dailyHubTitle;
 
+  /// No description provided for @dailyChip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhiệm vụ'**
+  String get dailyChip;
+
   /// No description provided for @dailyHubTabDaily.
   ///
   /// In vi, this message translates to:

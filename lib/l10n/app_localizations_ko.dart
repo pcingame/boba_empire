@@ -1332,6 +1332,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get dailyHubTitle => '퀘스트 & 보상';
 
   @override
+  String get dailyChip => '퀘스트';
+
+  @override
   String get dailyHubTabDaily => '일일';
 
   @override

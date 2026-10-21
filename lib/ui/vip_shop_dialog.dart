@@ -13,6 +13,7 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
 import 'widgets/app_dialog.dart';
+import 'widgets/vip_shine.dart';
 
 Future<void> showVipShop(BuildContext context) {
   trackEvent(context, 'open_vip_shop');
@@ -71,7 +72,13 @@ class _VipShopDialog extends ConsumerWidget {
     return ListTile(
       key: Key('vip-shop-item-${item.id}'),
       contentPadding: EdgeInsets.zero,
-      leading: Text(item.accessory.emoji, style: const TextStyle(fontSize: 30)),
+      leading: owned
+          ? VipShine(
+              circle: true,
+              sweep: false,
+              child: Text(item.accessory.emoji, style: const TextStyle(fontSize: 30)),
+            )
+          : Text(item.accessory.emoji, style: const TextStyle(fontSize: 30)),
       title: Text(accessoryName(l10n, item.id)),
       subtitle: Text(
         owned
@@ -88,6 +95,7 @@ class _VipShopDialog extends ConsumerWidget {
                   ? null
                   : () {
                       final r = ref.read(gameControllerProvider.notifier).buyVipShopItem(item.id);
+                      if (r == VipShopResult.ok) showVipBurst(context, label: item.accessory.emoji);
                       ScaffoldMessenger.of(context)..clearSnackBars()..showSnackBar(SnackBar(
                         content: Text(r == VipShopResult.ok
                             ? l10n.vipShopBoughtSnack(accessoryName(l10n, item.id))

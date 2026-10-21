@@ -15,6 +15,7 @@ import '../core/topup.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
+import '../ui/widgets/vip_shine.dart';
 
 /// userId -> emoji ('' = không có huy hiệu / chưa tải được).
 final flairCacheProvider = NotifierProvider<FlairCache, Map<String, String>>(
@@ -262,7 +263,7 @@ class VipTag extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = vipTagColors[(level - 1).clamp(0, vipTagColors.length - 1)];
     final fg = vipOnColor(colors);
-    return Container(
+    final tag = Container(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
       decoration: BoxDecoration(
         gradient: LinearGradient(colors: colors),
@@ -278,6 +279,8 @@ class VipTag extends StatelessWidget {
         ),
       ),
     );
+    // Từ VIP 5 trở lên: vệt sáng + quầng vàng (bảng xếp hạng có nhiều dòng nên VIP thấp để tĩnh).
+    return level >= 5 ? VipShine(radius: 6, child: tag) : tag;
   }
 }
 

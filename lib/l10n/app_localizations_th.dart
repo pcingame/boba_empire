@@ -1353,6 +1353,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get dailyHubTitle => 'ภารกิจและของรางวัล';
 
   @override
+  String get dailyChip => 'ภารกิจ';
+
+  @override
   String get dailyHubTabDaily => 'รายวัน';
 
   @override

@@ -1354,6 +1354,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get dailyHubTitle => 'Nhiệm vụ & Quà';
 
   @override
+  String get dailyChip => 'Nhiệm vụ';
+
+  @override
   String get dailyHubTabDaily => 'Ngày';
 
   @override

@@ -261,9 +261,7 @@ void main() {
 
     // ===== B. Hội: danh sách → của mình → cửa hàng → BXH =====
     repo.mine = null;
-    await tester.tap(find.byKey(const Key('compete-button')));
-    await shot(tester, 'B01_compete_hub');
-    await tester.tap(find.byKey(const Key('compete-guild')));
+    await tester.tap(find.byKey(const Key('guild-chip')));
     await shot(tester, 'B02_guild_list');
     await tester.tap(find.byKey(const Key('guild-create-button')));
     await shot(tester, 'B03_guild_create');

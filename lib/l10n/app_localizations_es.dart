@@ -1364,6 +1364,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dailyHubTitle => 'Misiones y Premios';
 
   @override
+  String get dailyChip => 'Misiones';
+
+  @override
   String get dailyHubTabDaily => 'Diarias';
 
   @override

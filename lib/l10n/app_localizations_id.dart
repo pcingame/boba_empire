@@ -1356,6 +1356,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get dailyHubTitle => 'Misi & Hadiah';
 
   @override
+  String get dailyChip => 'Misi';
+
+  @override
   String get dailyHubTabDaily => 'Harian';
 
   @override

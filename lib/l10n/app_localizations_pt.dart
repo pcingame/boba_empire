@@ -1360,6 +1360,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get dailyHubTitle => 'Missões e Prêmios';
 
   @override
+  String get dailyChip => 'Missões';
+
+  @override
   String get dailyHubTabDaily => 'Diárias';
 
   @override

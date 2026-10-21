@@ -45,6 +45,7 @@ import '../referral/referral_controller.dart';
 import 'accessory_inventory_page.dart';
 import 'accessory_market_page.dart';
 import 'email_gate.dart';
+import 'guild_page.dart' show showGuildPage;
 import 'whats_new_dialog.dart';
 import 'achievements_dialog.dart';
 import 'cloud_remind_dialog.dart';
@@ -77,6 +78,7 @@ import 'widgets/phone_width.dart';
 import 'widgets/stage_ambience.dart';
 import 'widgets/stage_walkers.dart';
 import 'widgets/trailing_box.dart';
+import 'widgets/vip_shine.dart';
 
 /// Cho phép tự hiện "Cách chơi" ở lần chơi đầu. App luôn bật; test tắt qua
 /// flutter_test_config để dialog modal không che thao tác, và test hướng dẫn
@@ -612,17 +614,17 @@ class _BottomBar extends ConsumerWidget {
           child: Row(
             children: [
               _navItem(theme,
-                  buttonKey: const Key('gem-shop-button'),
-                  icon: Icons.storefront,
-                  label: l10n.navShop,
-                  onTap: () => showGemShop(context)),
-              _navItem(theme,
                   buttonKey: const Key('prestige-button'),
                   icon: Icons.star_rounded,
                   label: l10n.navPrestige,
                   badgeValue: stars > 0 ? stars : null,
                   highlight: starsAvail > 0,
                   onTap: () => showPrestigeDialog(context)),
+              _navItem(theme,
+                  buttonKey: const Key('gem-shop-button'),
+                  icon: Icons.storefront,
+                  label: l10n.navShop,
+                  onTap: () => showGemShop(context)),
               _navItem(theme,
                   buttonKey: const Key('achievements-button'),
                   icon: Icons.emoji_events,
@@ -888,6 +890,8 @@ class _MoneyHeader extends ConsumerWidget {
               const Expanded(child: _DailyQuestsChip()),
               const SizedBox(width: 8),
               const Expanded(child: _CollectionChip()),
+              const SizedBox(width: 8),
+              const Expanded(child: _GuildChip()),
             ],
           ),
           // Icon xu là widget riêng (không nhét vào chuỗi số) để text tiền vẫn
@@ -937,16 +941,19 @@ class _MoneyHeader extends ConsumerWidget {
               _capForBigText(context, rowBox.maxWidth * 0.4, [
               // 💎 (và VIP) cạnh nút cài đặt: trước đây nằm hàng trên làm chật 3 nút.
               if (vip) ...[
-                ClayChip(
-                  color: Colors.amber.shade200,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Text(
-                    '👑 VIP',
-                    semanticsLabel: 'VIP',
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.brown.shade800,
+                VipShine(
+                  radius: 14,
+                  child: ClayChip(
+                    color: Colors.amber.shade200,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Text(
+                      '👑 VIP',
+                      semanticsLabel: 'VIP',
+                      style: theme.textTheme.labelMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.brown.shade800,
+                      ),
                     ),
                   ),
                 ),
@@ -2097,6 +2104,64 @@ class _FestivalBanner extends ConsumerWidget {
   }
 }
 
+/// Nút Hội cùng hàng với Nhiệm vụ / Sưu tập; chấm đỏ khi Hội có tin mới.
+class _GuildChip extends ConsumerWidget {
+  const _GuildChip();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final alert = ref.watch(guildAlertProvider);
+    final theme = Theme.of(context);
+    return InkWell(
+      key: const Key('guild-chip'),
+      borderRadius: BorderRadius.circular(24),
+      onTap: () async {
+        // Tính năng online: cần đã liên kết email (xem email_gate.dart).
+        if (!await ensureOnlineLinked(context) || !context.mounted) return;
+        showGuildPage(context);
+      },
+      child: Stack(
+        clipBehavior: Clip.none,
+        fit: StackFit.passthrough,
+        children: [
+          ClayChip(
+            child: Center(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  '🛡️ ${AppLocalizations.of(context)!.guildTitle}',
+                  maxLines: 1,
+                  softWrap: false,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.onPrimaryContainer,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          if (alert)
+            Positioned(
+              right: -2,
+              top: -2,
+              child: PopIn(
+                child: Container(
+                  key: const Key('guild-chip-dot'),
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.error,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
 class _DailyQuestsChip extends ConsumerWidget {
   const _DailyQuestsChip();
 
@@ -2118,7 +2183,7 @@ class _DailyQuestsChip extends ConsumerWidget {
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  '🎯 ${AppLocalizations.of(context)!.dailyHubTitle}',
+                  '🎯 ${AppLocalizations.of(context)!.dailyChip}',
                   maxLines: 1,
                   softWrap: false,
                   style: theme.textTheme.labelLarge?.copyWith(
@@ -2712,6 +2777,7 @@ class _VipCustomer extends ConsumerWidget {
           if (reward.gems > 0) {
             HapticFeedback.mediumImpact();
             ref.read(audioServiceProvider).play(Sfx.vip);
+            showVipBurst(context, label: '+${reward.gems} 💎');
             messenger..clearSnackBars()..showSnackBar(
               SnackBar(
                 content: Text(
@@ -2722,21 +2788,28 @@ class _VipCustomer extends ConsumerWidget {
             );
           }
         },
-        child: _Pulse(
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.deepPurple,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.deepPurpleAccent,
-                  blurRadius: 24,
-                  spreadRadius: 4,
+        // Xe lao vào từ trái (một lần), rồi nhịp thở + quầng vàng.
+        child: TweenAnimationBuilder<double>(
+          tween: Tween(begin: reduceMotion ? 1.0 : 0.0, end: 1.0),
+          duration: const Duration(milliseconds: 700),
+          curve: Curves.easeOutBack,
+          builder: (_, v, child) => Transform.translate(
+            offset: Offset(-160 * (1 - v), 0),
+            child: Opacity(opacity: v.clamp(0.0, 1.0), child: child),
+          ),
+          child: _Pulse(
+            child: VipShine(
+              circle: true,
+              sweep: false,
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.deepPurple,
                 ),
-              ],
+                child: const Mascot(asset: AnimAssets.car, emoji: '🚗', size: 56),
+              ),
             ),
-            child: const Mascot(asset: AnimAssets.car, emoji: '🚗', size: 56),
           ),
         ),
       ),

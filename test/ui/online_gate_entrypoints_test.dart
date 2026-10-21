@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:boba_empire/data/cloud_save_controller.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
 import 'package:boba_empire/ui/compete_hub_dialog.dart';
-import 'package:boba_empire/ui/guild_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -114,19 +113,11 @@ void main() {
     expect(bad, isEmpty, reason: 'bảng xếp hạng lọt cổng email: $bad');
   });
 
-  testWidgets('hub Thi đấu: chưa liên kết → bấm Hội bị chặn, không mở trang', (tester) async {
-    await _openHub(tester, linked: false);
-    await tester.tap(find.byKey(const Key('compete-guild')));
-    await tester.pumpAndSettle();
-    expect(find.byKey(const Key('online-gate-dialog')), findsOneWidget);
-    expect(find.byType(GuildPage), findsNothing);
-  });
-
-  testWidgets('hub Thi đấu: cả 5 mục đều bị chặn khi chưa liên kết', (tester) async {
+  testWidgets('hub Thi đấu: cả 4 mục đều bị chặn khi chưa liên kết', (tester) async {
     await _openHub(tester, linked: false);
     final tiles = find.descendant(of: find.byType(AlertDialog), matching: find.byType(ListTile));
     final n = tester.widgetList(tiles).length;
-    expect(n, 5);
+    expect(n, 4);
     for (var i = 0; i < n; i++) {
       await tester.tap(tiles.at(i));
       await tester.pumpAndSettle();
@@ -135,13 +126,5 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byKey(const Key('online-gate-dialog')), findsNothing);
     }
-  });
-
-  testWidgets('hub Thi đấu: đã liên kết → mở trang Hội bình thường (không hiện cổng)', (tester) async {
-    await _openHub(tester, linked: true);
-    await tester.tap(find.byKey(const Key('compete-guild')));
-    await tester.pumpAndSettle();
-    expect(find.byKey(const Key('online-gate-dialog')), findsNothing);
-    expect(find.byType(GuildPage), findsOneWidget);
   });
 }

@@ -1354,6 +1354,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dailyHubTitle => 'Quests & Rewards';
 
   @override
+  String get dailyChip => 'Quests';
+
+  @override
   String get dailyHubTabDaily => 'Daily';
 
   @override

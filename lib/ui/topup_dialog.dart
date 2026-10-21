@@ -10,6 +10,7 @@ import '../leaderboard/flair.dart';
 import '../state/game_controller.dart';
 import '../state/game_providers.dart';
 import 'vip_how_to_dialog.dart';
+import 'widgets/vip_shine.dart';
 import 'vip_shop_dialog.dart';
 import 'email_gate.dart';
 import 'vip_leaderboard_page.dart';
@@ -72,7 +73,7 @@ class _TopupDialogState extends ConsumerState<_TopupDialog> {
             children: [
               Row(
                 children: [
-                  if (level > 0) VipTag(level: level) else const Text('—'),
+                  if (level > 0) VipShine(radius: 6, child: VipTag(level: level)) else const Text('—'),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
@@ -115,6 +116,7 @@ class _TopupDialogState extends ConsumerState<_TopupDialog> {
                   onPressed: canBuy
                       ? () {
                           if (controller.buyVipExp()) {
+                            showVipBurst(context);
                             ref
                                 .read(flairCacheProvider.notifier)
                                 .reportVip(

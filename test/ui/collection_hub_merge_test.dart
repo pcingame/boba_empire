@@ -66,8 +66,8 @@ void main() {
     await tester.tap(find.text('open'));
     await tester.pumpAndSettle();
     expect(find.byType(ListTile),
-        findsNWidgets(5)); // Đấu trường, Boss Thế Giới, Hội, Thưởng top tuần, Bảng xếp hạng (gom mọi bảng)
-    expect(find.byKey(const Key('compete-guild')), findsOneWidget);
+        findsNWidgets(4)); // Đấu trường, Boss Thế Giới, Thưởng top tuần, Bảng xếp hạng (gom mọi bảng); Hội đã tách ra thanh dưới
+    expect(find.byKey(const Key('compete-guild')), findsNothing);
     expect(find.byIcon(Icons.auto_awesome), findsNothing);
     expect(find.byIcon(Icons.storefront), findsNothing);
     c.dispose();
