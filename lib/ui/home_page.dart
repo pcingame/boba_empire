@@ -63,7 +63,6 @@ import '../friends/friends.dart' show friendsAlertProvider, friendsRepositoryPro
 import 'settings_dialog.dart';
 import 'story_dialog.dart';
 import 'tutorial_overlay.dart';
-import 'story_log_dialog.dart';
 import 'widgets/marquee_text.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/animated_count.dart';
@@ -887,15 +886,6 @@ class _MoneyHeader extends ConsumerWidget {
           // header theo.
           LayoutBuilder(builder: (context, rowBox) => Row(
             children: [
-              IconButton(
-                key: const Key('story-log-button'),
-                icon: const Icon(Icons.auto_stories_outlined),
-                tooltip: l10n.storyLogTitle,
-                color: onContainer,
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(minWidth: 40, minHeight: 40),
-                onPressed: () => showStoryLog(context),
-              ),
               Expanded(
                 child: Center(
                   child: RepaintBoundary(

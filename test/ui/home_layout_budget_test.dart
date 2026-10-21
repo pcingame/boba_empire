@@ -80,19 +80,16 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
-  testWidgets('📖 ⚙ hai bên số Coins, bấm được và chừa thanh trạng thái',
+  testWidgets('⚙ bên phải số Coins, bấm được và chừa thanh trạng thái',
       (tester) async {
     await pump(tester, w: 360, h: 780, topInset: 28);
-    final story = find.byKey(const Key('story-log-button'));
     final settings = find.byKey(const Key('settings-button'));
-    expect(tester.getTopLeft(story).dy, greaterThanOrEqualTo(28)); // dưới status bar
-    // Cùng hàng với số Coins, 📖 bên trái, ⚙ bên phải.
+    expect(tester.getTopLeft(settings).dy, greaterThanOrEqualTo(28)); // dưới status bar
+    // Cùng hàng với số Coins, ⚙ bên phải.
     final coins = tester.getCenter(find.byType(AnimatedCount));
-    expect(tester.getCenter(story).dx, lessThan(coins.dx));
     expect(tester.getCenter(settings).dx, greaterThan(coins.dx));
-    expect((tester.getCenter(story).dy - coins.dy).abs(), lessThan(24));
+    expect((tester.getCenter(settings).dy - coins.dy).abs(), lessThan(24));
     // Vùng chạm đủ lớn (≥ 40dp) dù đã thu gọn để nhường chỗ.
-    expect(tester.getSize(story).width, greaterThanOrEqualTo(40));
     expect(tester.getSize(settings).height, greaterThanOrEqualTo(40));
     await tester.pumpWidget(const SizedBox());
   });

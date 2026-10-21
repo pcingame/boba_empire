@@ -156,7 +156,10 @@ non-consumable, ~$2.99), `boba_piggy` (đập heo, **consumable**, ~$1.99),
 - [ ] 🔴 Bật **Play App Signing** khi tạo app (Google giữ khóa ký cuối; bạn giữ
   upload key).
 - [x] 🔴 Build bundle: `flutter build appbundle --release` → `.aab` (ký release
-  OK; rebuild lại khi bump version/đổi asset).
+  OK; rebuild lại khi bump version/đổi asset). Từ 2026-10-21 `IAP_VERIFY_ENDPOINT` mặc định đã trỏ server
+  production (`lib/iap/iap_config.dart`) nên không cần truyền tham số nữa. ⚠️ Android CHỈ thật sự được xác thực
+  khi Cloud Run có `PLAY_SERVICE_ACCOUNT_JSON` + `ANDROID_PACKAGE_NAME` (xem mục "Còn lại" bên dưới) — thiếu thì
+  server trả 500 và app vẫn trao thưởng (fail-open).
 - [ ] 🟢 (iOS) `flutter build ipa` (cần macOS + Xcode + chứng chỉ).
   - **Lệnh chuẩn (từ 1.0.8):** `flutter build ipa --release --export-options-plist=ios/ExportOptions.plist --dart-define=IAP_VERIFY_ENDPOINT=https://boba-receipt-server-411559711815.asia-southeast1.run.app/verify`
     — `ios/ExportOptions.plist` tắt `uploadSymbols` + `manageAppVersionAndBuildNumber` để ipa "trơn".

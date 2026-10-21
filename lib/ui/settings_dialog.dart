@@ -9,6 +9,7 @@ import 'cloud_save_dialog.dart';
 import 'how_to_play_dialog.dart';
 import 'language_dialog.dart';
 import 'redeem_dialog.dart';
+import 'story_log_dialog.dart';
 import 'invite_dialog.dart' show shareTextProvider;
 import '../leaderboard/player_avatar.dart';
 import 'my_profile_page.dart';
@@ -83,6 +84,18 @@ class _SettingsDialog extends ConsumerWidget {
             onTap: () {
               Navigator.of(context).pop();
               showMyProfile(context);
+            },
+          ),
+          // Nhật ký truyện (trước là icon 📖 trên hàng Xu — ít bấm mà chiếm chỗ đắt).
+          ListTile(
+            key: const Key('settings-story-log'),
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.auto_stories_outlined),
+            title: Text(l10n.storyLogTitle),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              final nav = Navigator.of(context)..pop();
+              showStoryLog(nav.context);
             },
           ),
           ListTile(

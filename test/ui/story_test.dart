@@ -1,4 +1,5 @@
 import 'package:boba_empire/core/models.dart';
+import 'package:boba_empire/data/cloud_save_controller.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/main.dart';
 import 'package:boba_empire/state/game_providers.dart';
@@ -7,6 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+class _FakeCloud extends CloudSaveController {
+  @override
+  CloudSaveViewState build() => const CloudSaveUnlinked();
+}
 
 Future<ProviderContainer> _pump(WidgetTester tester, {GameState? seed, String? locale}) async {
   await tester.binding.setSurfaceSize(const Size(400, 800));
@@ -19,12 +25,22 @@ Future<ProviderContainer> _pump(WidgetTester tester, {GameState? seed, String? l
       overrides: [
         sharedPreferencesProvider.overrideWithValue(prefs),
         clockProvider.overrideWithValue(() => 0),
+        // Cài đặt đọc trạng thái liên kết email; bản thật cần Supabase.
+        cloudSaveControllerProvider.overrideWith(_FakeCloud.new),
       ],
       child: const BobaEmpireApp(),
     ),
   );
   await tester.pumpAndSettle();
   return ProviderScope.containerOf(tester.element(find.byType(HomePage)));
+}
+
+/// Nhật ký truyện nằm trong Cài đặt (trước là icon 📖 trên hàng Xu).
+Future<void> _openStoryLog(WidgetTester tester) async {
+  await tester.tap(find.byKey(const Key('settings-button')));
+  await tester.pumpAndSettle();
+  await tester.ensureVisible(find.byKey(const Key('settings-story-log')));
+  await tester.tap(find.byKey(const Key('settings-story-log')));
 }
 
 void main() {
@@ -70,10 +86,10 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
-  testWidgets('nút 📖 mở Cốt truyện và đóng được', (tester) async {
+  testWidgets('Cài đặt → Nhật ký truyện mở Cốt truyện và đóng được', (tester) async {
     await _pump(tester); // debugAutoShowStory = false
 
-    await tester.tap(find.byKey(const Key('story-log-button')));
+    await _openStoryLog(tester);
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('story-log-close')), findsOneWidget);
 
@@ -93,7 +109,7 @@ void main() {
         ..storyChapter = 1
         ..stage = 1,
     );
-    await tester.tap(find.byKey(const Key('story-log-button')));
+    await _openStoryLog(tester);
     await tester.pumpAndSettle();
 
     // Chương 2 là chương kế tiếp: điều kiện + tiến độ 1/2.
@@ -119,7 +135,7 @@ void main() {
         ..storyChapter = 1
         ..stage = 6, // vượt ngưỡng chương 3, nhưng chương 2 chưa xem
     );
-    await tester.tap(find.byKey(const Key('story-log-button')));
+    await _openStoryLog(tester);
     await tester.pumpAndSettle();
 
     expect(find.text('Mở sau Chương 2'), findsOneWidget); // chương 3
@@ -139,7 +155,7 @@ void main() {
         ..stage = 18,
     );
     expect(tester.takeException(), isNull, reason: 'màn chính (trước khi mở Nhật ký)');
-    await tester.tap(find.byKey(const Key('story-log-button')));
+    await _openStoryLog(tester);
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull, reason: 'Nhật ký');
     expect(find.textContaining('Mở khi:'), findsWidgets);
@@ -154,7 +170,7 @@ void main() {
         ..storyChoiceG = 'open'
         ..recipeProgress.addAll({'1': [3, 0, 3], '2': [3, 0, 3]}),
     );
-    await tester.tap(find.byKey(const Key('story-log-button')));
+    await _openStoryLog(tester);
     await tester.pumpAndSettle();
     final list = find.byType(Scrollable).last;
     // Chương 37 (kế tiếp): Thạo 5 món ở Công thức, đã có 2.
@@ -184,7 +200,7 @@ void main() {
           ..storyChapter = 36
           ..storyChoiceG = 'open',
       );
-      await tester.tap(find.byKey(const Key('story-log-button')));
+      await _openStoryLog(tester);
       await tester.pumpAndSettle();
       final list = find.byType(Scrollable).last;
       for (var i = 0; i < 12; i++) {

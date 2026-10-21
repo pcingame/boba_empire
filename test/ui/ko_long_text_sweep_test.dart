@@ -26,7 +26,6 @@ final _site = RegExp(r'lib/[a-z_/]+\.dart:\d+');
 
 Future<Set<String>> _sweep(WidgetTester tester, String locale, double scale) async {
   const keys = [
-    'story-log-button',
     'settings-button',
     'gem-shop-button',
     'prestige-button',
