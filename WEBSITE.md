@@ -1,7 +1,7 @@
 # WEBSITE — landing page bobaempiregame.com
 
 Ghi lại cách trang web hoạt động để sửa/mở rộng mà không phải đọc lại từ đầu.
-Cập nhật lần cuối: 2026-10-04 (mini-game, đếm ngược, tour, video hero, hiệu ứng nút/trứng phục sinh).
+Cập nhật lần cuối: 2026-10-21 (đồng bộ bản 1.0.12: thẻ Bạn bè/Boss Thế Giới/Chi nhánh, tab BXH Chi nhánh).
 
 ## Hạ tầng
 - Host: **GitHub Pages**, nguồn là thư mục `docs/` của nhánh `main`. Push là tự cập nhật
@@ -21,8 +21,8 @@ Cập nhật lần cuối: 2026-10-04 (mini-game, đếm ngược, tour, video h
 | Nút tải **App Store** (chính) + **Google Play "sắp có"** | hero và mục CTA | App Store id `6808940339`. Khi Android lên Play: đổi `<span class="btn soon">` thành `<a class="btn primary" href="…play.google.com/store/apps/details?id=com.pcingame.bobaempire">`, sửa câu FAQ `q4/a4` và `ctaLead` trong `i18n/<lang>.js` |
 | **7 ngôn ngữ** vi / en / es / id / pt / th / ko | `docs/assets/i18n/<lang>.js` + `site.js` | Chọn bằng ô thả xuống; tự đoán theo `navigator.language`, nhớ trong `localStorage`; ép bằng `?lang=ko`. Đổi cả `<title>`/meta description. Thêm khoá mới = thêm vào CẢ 7 ngôn ngữ |
 | Khung điện thoại + **ảnh chụp theo ngôn ngữ** | hero, mục "Xem game" | Ảnh ở `docs/assets/<lang>/*.webp`; `ko` dùng bộ `en` (chưa có ảnh store tiếng Hàn) |
-| **18 thẻ tính năng** (f1–f18), dải số liệu (18 giai đoạn / 46 chương / 160+ phụ kiện / 7 ngôn ngữ) | `index.html` + `i18n/<lang>.js` (`f1t…f18d`, `st*`) | Số liệu phải khớp game — cập nhật khi đổi |
-| **Bảng xếp hạng trực tiếp** (9 tab, top 20) | mục `#board` | Xem mục "Bảng xếp hạng" dưới đây |
+| **21 thẻ tính năng** (f1–f21; f19–f21 = Bạn bè / Boss Thế Giới / Chi nhánh, bản 1.0.12), dải số liệu (18 giai đoạn / 46 chương / 160+ phụ kiện / 7 ngôn ngữ) | `index.html` + `i18n/<lang>.js` (`f1t…f21d`, `st*`) | Số liệu phải khớp game — cập nhật khi đổi |
+| **Bảng xếp hạng trực tiếp** (10 tab, top 20) | mục `#board` | Xem mục "Bảng xếp hạng" dưới đây |
 | **Lịch sự kiện lễ** (7 dịp) tự gắn nhãn ĐANG DIỄN RA / SẮP TỚI theo ngày | mục `#events`, mảng `EVENTS` trong script | PHẢI khớp `festivals` trong `lib/core/accessories.dart` (đổi một nơi thì đổi cả hai) |
 | **Mini-game "Thử chạm"** | mục `#play`, `extras.js` (`play()`) | Chạm ly kiếm Xu, 3 nâng cấp (+chạm / +mỗi giây), tiền tự chạy; vòng lặp `requestAnimationFrame` chỉ chạy khi mục đang thấy và tab mở. Đủ 250 Xu hoặc chơi 25 giây thì hiện thẻ "Mới chỉ là một phần nhỏ" + nút App Store. Chuỗi: `play*` trong i18n |
 | **Tour cuộn** (điện thoại dính bên trái, ảnh đổi theo bước) | mục `#screens`, `extras.js` (`tour()`) | 8 bước dùng lại chuỗi `f*`/`s*`; điện thoại ẩn ở <860px, mỗi bước tự kèm ảnh. Thay cho thanh trượt ảnh cũ |
@@ -41,7 +41,7 @@ Gọi trực tiếp REST của Supabase từ trình duyệt (CORS mở `*`), **c
 mục** (IntersectionObserver), cache 60 giây mỗi tab, hiển thị bằng `textContent` (tên người
 chơi KHÔNG bao giờ được chèn dưới dạng HTML).
 
-Liên kết sâu: `/?board=<income|pearls|collection|speed|guild|vip|season|recipes|arena>#board` mở sẵn đúng tab (app dùng cho nút
+Liên kết sâu: `/?board=<income|pearls|collection|speed|guild|vip|season|recipes|arena|branches>#board` mở sẵn đúng tab (app dùng cho nút
 "Xem/Chia sẻ trên web" ở các màn BXH — `webBoardUrl` trong `lib/ui/web_links.dart`). Thêm tab mới thì
 thêm cả vào enum `WebBoard`; test `web_board_actions_test.dart` sẽ báo nếu hai bên lệch nhau.
 
@@ -57,6 +57,7 @@ thì thẻ im lặng không hiện). Ứng dụng tạo liên kết ở Cài đ�
 | Sưu tập | `rpc/accessory_leaderboard_top` | `owned_count` |
 | Phá đảo (Hồi 1) | `rpc/story_speedrun_top` | `complete_seconds` |
 | VIP (độc lập) | `rpc/vip_leaderboard_top` | `nickname`, `vip_exp`, `level` — bảng `vip_leaderboard_entries`, app đẩy EXP qua `submit_vip_exp` (chỉ người ĐÃ đặt biệt danh, client tự khai) |
+| Chi nhánh | `rpc/branch_leaderboard_top` | `nickname`, `total_levels` (tổng cấp), `opened` (số thành phố) — cần `grant execute … to anon` (cuối `branch_leaderboard_schema.sql`, đã có) |
 | Hội (điểm tuần) | `rpc/guild_leaderboard` | `name`, `tag`, `emoji`, `member_count`, `week_total` — cần `grant execute … to anon` (cuối `guild_schema.sql`) |
 | Thẻ Mùa | `rpc/season_leaderboard_top` | `nickname`, `xp` (mùa hiện tại) |
 | Công thức | `rpc/recipe_leaderboard_top` | `nickname`, `mastered` |

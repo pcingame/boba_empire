@@ -42,6 +42,7 @@ void main() {
       'lib/ui/season_leaderboard_page.dart': 'season',
       'lib/ui/recipe_leaderboard_page.dart': 'recipes',
       'lib/ui/arena_leaderboard_page.dart': 'arena',
+      'lib/ui/branch_leaderboard_page.dart': 'branches',
     };
     pages.forEach((file, board) {
       expect(File(file).readAsStringSync(), contains('WebBoardActions(WebBoard.$board)'),

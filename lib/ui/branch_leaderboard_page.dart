@@ -8,6 +8,7 @@ import '../core/branches.dart';
 import '../l10n/app_localizations.dart';
 import '../leaderboard/branch_leaderboard.dart';
 import 'player_profile_dialog.dart';
+import 'web_links.dart' show WebBoard, WebBoardActions;
 import 'widgets/clay.dart';
 import 'widgets/phone_width.dart';
 import 'widgets/stagger_in.dart';
@@ -45,7 +46,7 @@ class _State extends ConsumerState<BranchLeaderboardPage> {
     final view = ref.watch(branchLbControllerProvider);
     return PhoneWidth(
       child: Scaffold(
-        appBar: AppBar(title: Text(l10n.branchLbTitle)),
+        appBar: AppBar(title: Text(l10n.branchLbTitle), actions: const [WebBoardActions(WebBoard.branches)]),
         body: switch (view) {
           BranchLbLoading() => const Center(child: CircularProgressIndicator()),
           BranchLbNeedsNickname() => Center(
