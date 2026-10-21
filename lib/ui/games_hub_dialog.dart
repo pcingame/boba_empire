@@ -1,4 +1,4 @@
-/// Dialog gộp các trò chơi nhỏ (Trân Châu Rơi + Công thức pha chế) thành MỘT điểm vào ở thanh điều
+/// Dialog gộp các trò chơi nhỏ (Chi nhánh, Trân Châu Rơi, Pha chế — Pha chế đã gồm Công thức, Pha theo đơn, Thử thách ngày) thành MỘT điểm vào ở thanh điều
 /// hướng chính — cùng kiểu với [showCompeteHub], đỡ chật thanh dưới khi thêm trò mới.
 library;
 
@@ -14,7 +14,8 @@ import '../state/recipe_providers.dart';
 import 'branches_page.dart';
 import 'match3_journey_page.dart';
 import 'recipe_hub_page.dart';
-import 'recipe_order_page.dart';
+import 'pet_dialog.dart';
+import 'staff_dialog.dart';
 import 'widgets/app_dialog.dart';
 
 Future<void> showGamesHub(BuildContext context) =>
@@ -30,9 +31,6 @@ class _GamesHubDialog extends ConsumerWidget {
     final catalog = ref.watch(recipeCatalogProvider).asData?.value;
     final progress = ref.watch(gameControllerProvider.select((s) => s.recipeProgress));
     final today = dayIndex(ref.watch(clockProvider)());
-    // Điểm thử thách hôm nay (-1 = chưa làm hôm nay).
-    final dailyScore = ref.watch(
-        gameControllerProvider.select((s) => s.recipeDailyDay == today ? s.recipeDailyScore : -1));
     final due = catalog == null
         ? 0
         : unlockedRecipes(catalog, (id) => progress[id]?.best ?? 0)
@@ -72,6 +70,28 @@ class _GamesHubDialog extends ConsumerWidget {
               },
             ),
             ListTile(
+              key: const Key('games-staff'),
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.badge_rounded),
+              title: Text(l10n.staffTitle),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.of(context).pop();
+                showStaff(context);
+              },
+            ),
+            ListTile(
+              key: const Key('games-pet'),
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.pets_rounded),
+              title: Text(l10n.petTitle),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () {
+                Navigator.of(context).pop();
+                showPet(context);
+              },
+            ),
+            ListTile(
               key: const Key('games-match3'),
               contentPadding: EdgeInsets.zero,
               leading: const Icon(Icons.grid_view_rounded),
@@ -92,32 +112,6 @@ class _GamesHubDialog extends ConsumerWidget {
               onTap: () {
                 Navigator.of(context).pop();
                 showRecipeHub(context);
-              },
-            ),
-            ListTile(
-              key: const Key('games-orders'),
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.local_cafe_rounded),
-              title: Text(l10n.recipeOrderOrders),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                Navigator.of(context).pop();
-                showRecipeOrders(context);
-              },
-            ),
-            ListTile(
-              key: const Key('games-daily'),
-              contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.calendar_today_rounded),
-              title: Text(l10n.recipeDailyTitle),
-              subtitle: Text(
-                dailyScore >= 0 ? l10n.recipeDailyDone(dailyScore) : l10n.recipeDailyOpen,
-                key: const Key('games-daily-sub'),
-              ),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () {
-                Navigator.of(context).pop();
-                showRecipeDaily(context);
               },
             ),
           ],

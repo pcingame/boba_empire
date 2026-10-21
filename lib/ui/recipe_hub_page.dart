@@ -12,6 +12,7 @@ import '../state/recipe_providers.dart';
 import 'mastery_page.dart' show EssenceAppBarButton;
 import 'recipe_leaderboard_page.dart';
 import 'email_gate.dart';
+import 'recipe_order_page.dart' show showRecipeDaily, showRecipeOrders;
 import 'recipe_quiz_page.dart';
 import 'widgets/anim_assets.dart';
 import 'widgets/clay.dart';
@@ -99,6 +100,9 @@ class _Body extends ConsumerWidget {
     final restorable = streak.restorable(today);
     final mastered = recipes.where((r) => p(r).box == recipeMaxBox).length;
     final due = recipes.where((r) => p(r).isDue(today)).length;
+    // Điểm thử thách hôm nay (-1 = chưa làm hôm nay).
+    final dailyScore = ref.watch(
+        gameControllerProvider.select((s) => s.recipeDailyDay == today ? s.recipeDailyScore : -1));
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
@@ -167,6 +171,28 @@ class _Body extends ConsumerWidget {
         ),
         // Thẻ cứu chuỗi nảy hai nhịp khi hiện ra để gây chú ý (hữu hạn, không lặp vô hạn).
         if (restorable) PulseOnMount(child: _RescueCard(days: streak.days)),
+        // Hai chế độ chơi khác của họ Pha chế (trước là hai dòng riêng ở hộp Trò chơi).
+        // IntrinsicHeight: ListView không giới hạn chiều cao, mà `stretch` cần chiều cao có biên.
+        IntrinsicHeight(child: Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Expanded(
+            child: _ModeTile(
+              key: const Key('recipe-orders'),
+              icon: Icons.local_cafe_rounded,
+              title: l10n.recipeOrderOrders,
+              onTap: () => showRecipeOrders(context),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: _ModeTile(
+              key: const Key('recipe-daily'),
+              icon: Icons.calendar_today_rounded,
+              title: l10n.recipeDailyTitle,
+              subtitle: dailyScore >= 0 ? l10n.recipeDailyDone(dailyScore) : l10n.recipeDailyOpen,
+              onTap: () => showRecipeDaily(context),
+            ),
+          ),
+        ])),
         const SizedBox(height: 6),
         Text(l10n.recipeDisclaimer, style: theme.textTheme.bodySmall),
         const SizedBox(height: 10),
@@ -190,6 +216,29 @@ class _Body extends ConsumerWidget {
                   : null,
             ),
       ],
+    );
+  }
+}
+
+class _ModeTile extends StatelessWidget {
+  const _ModeTile({super.key, required this.icon, required this.title, this.subtitle, required this.onTap});
+  final IconData icon;
+  final String title;
+  final String? subtitle;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return ClayTile(
+      onTap: onTap,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Icon(icon, color: theme.colorScheme.primary),
+        const SizedBox(height: 4),
+        Text(title, maxLines: 2, overflow: TextOverflow.ellipsis, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800)),
+        if (subtitle != null)
+          Text(subtitle!, maxLines: 3, overflow: TextOverflow.ellipsis, style: theme.textTheme.bodySmall),
+      ]),
     );
   }
 }

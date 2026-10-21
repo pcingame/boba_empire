@@ -4942,6 +4942,99 @@ class AppLocalizationsEs extends AppLocalizations {
   String get communityTitle => 'Comunidad';
 
   @override
+  String get auctionTitle => 'Subasta de fin de semana';
+
+  @override
+  String get auctionIntro =>
+      'Un objeto exclusivo cada semana. Puja con 💎 de viernes a domingo; gana la puja más alta al terminar. Si te superan, recuperas tus 💎.';
+
+  @override
+  String get auctionClosed => 'Aún cerrada: vuelve el viernes';
+
+  @override
+  String auctionTop(int bid) {
+    return 'Puja más alta: $bid 💎';
+  }
+
+  @override
+  String get auctionNoBids => 'Aún sin pujas';
+
+  @override
+  String get auctionLeadYou => 'Vas ganando';
+
+  @override
+  String auctionLead(String nick) {
+    return 'Gana: $nick';
+  }
+
+  @override
+  String auctionBid(int gems) {
+    return 'Pujar · $gems 💎';
+  }
+
+  @override
+  String auctionEnds(String time) {
+    return 'Termina en $time';
+  }
+
+  @override
+  String get auctionLow => 'La puja debe superar el precio actual';
+
+  @override
+  String get auctionNeedGems => 'No tienes suficientes 💎';
+
+  @override
+  String get auctionError => 'No se pudo pujar, inténtalo luego';
+
+  @override
+  String get petTitle => 'Mascota';
+
+  @override
+  String get petIntro =>
+      'Adopta una mascota que reúne monedas por ti. Vuelve a recogerlas (hasta 2 horas).';
+
+  @override
+  String petAdopt(int gems) {
+    return 'Adoptar · $gems 💎';
+  }
+
+  @override
+  String petCollect(String xu) {
+    return 'Recoger $xu 🪙';
+  }
+
+  @override
+  String get staffTitle => 'Personal';
+
+  @override
+  String get staffRole0 => 'Barista (Et. 1-3)';
+
+  @override
+  String get staffRole1 => 'Mezclador (Et. 4-6)';
+
+  @override
+  String get staffRole2 => 'Cajero (Et. 7-9)';
+
+  @override
+  String get staffRole3 => 'Jefe de turno (Et. 10-12)';
+
+  @override
+  String get staffRole4 => 'Supervisor (Et. 13-15)';
+
+  @override
+  String get staffRole5 => 'Chef (Et. 16-18)';
+
+  @override
+  String staffDesc(int pct) {
+    return '+$pct% de ingresos de sus fuentes';
+  }
+
+  @override
+  String staffHire(int gems) {
+    return 'Contratar · $gems 💎';
+  }
+
+  @override
   String get guildIntro =>
       'Crea o únete a un gremio para cumplir metas semanales juntos y ganar recompensas.';
 

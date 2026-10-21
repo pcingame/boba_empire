@@ -64,7 +64,7 @@ void main() {
     expect(prefs.getString(whatsNewSeenKey), '1.0.12');
     await tester.tap(find.byKey(const Key('whats-new-open')));
     await tester.pumpAndSettle();
-    expect(find.byKey(const Key('games-orders')), findsOneWidget, reason: 'nút "Chơi thử" mở hộp Trò chơi');
+    expect(find.byKey(const Key('games-recipes')), findsOneWidget, reason: 'nút "Chơi thử" mở hộp Trò chơi');
     await tester.pumpWidget(const SizedBox());
     c.dispose();
   });

@@ -4918,6 +4918,99 @@ class AppLocalizationsId extends AppLocalizations {
   String get communityTitle => 'Komunitas';
 
   @override
+  String get auctionTitle => 'Lelang akhir pekan';
+
+  @override
+  String get auctionIntro =>
+      'Satu item eksklusif tiap minggu. Tawar dengan 💎 dari Jumat hingga Minggu; penawar tertinggi saat berakhir menang. Jika terlampaui, 💎 dikembalikan.';
+
+  @override
+  String get auctionClosed => 'Belum dibuka — kembali hari Jumat';
+
+  @override
+  String auctionTop(int bid) {
+    return 'Tawaran tertinggi: $bid 💎';
+  }
+
+  @override
+  String get auctionNoBids => 'Belum ada tawaran';
+
+  @override
+  String get auctionLeadYou => 'Kamu memimpin';
+
+  @override
+  String auctionLead(String nick) {
+    return 'Memimpin: $nick';
+  }
+
+  @override
+  String auctionBid(int gems) {
+    return 'Tawar · $gems 💎';
+  }
+
+  @override
+  String auctionEnds(String time) {
+    return 'Berakhir dalam $time';
+  }
+
+  @override
+  String get auctionLow => 'Tawaran harus melebihi harga saat ini';
+
+  @override
+  String get auctionNeedGems => '💎 tidak cukup';
+
+  @override
+  String get auctionError => 'Gagal menawar, coba lagi nanti';
+
+  @override
+  String get petTitle => 'Maskot';
+
+  @override
+  String get petIntro =>
+      'Adopsi maskot yang mengumpulkan koin untukmu. Kembali untuk mengambil (hingga 2 jam).';
+
+  @override
+  String petAdopt(int gems) {
+    return 'Adopsi · $gems 💎';
+  }
+
+  @override
+  String petCollect(String xu) {
+    return 'Ambil $xu 🪙';
+  }
+
+  @override
+  String get staffTitle => 'Staf';
+
+  @override
+  String get staffRole0 => 'Barista (Tah. 1-3)';
+
+  @override
+  String get staffRole1 => 'Peracik (Tah. 4-6)';
+
+  @override
+  String get staffRole2 => 'Kasir (Tah. 7-9)';
+
+  @override
+  String get staffRole3 => 'Kepala shift (Tah. 10-12)';
+
+  @override
+  String get staffRole4 => 'Supervisor (Tah. 13-15)';
+
+  @override
+  String get staffRole5 => 'Kepala koki (Tah. 16-18)';
+
+  @override
+  String staffDesc(int pct) {
+    return '+$pct% pendapatan dari sumbernya';
+  }
+
+  @override
+  String staffHire(int gems) {
+    return 'Rekrut · $gems 💎';
+  }
+
+  @override
   String get guildIntro =>
       'Buat atau gabung guild untuk mencapai target mingguan bersama dan dapat hadiah.';
 

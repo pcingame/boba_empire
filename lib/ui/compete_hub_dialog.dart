@@ -12,6 +12,7 @@ import 'email_gate.dart';
 import '../world_boss/world_boss.dart' show worldBossAlertProvider;
 import 'arena_page.dart';
 import 'leaderboards_hub_page.dart';
+import 'auction_dialog.dart';
 import 'world_boss_page.dart';
 import 'widgets/phone_width.dart';
 import 'widgets/app_dialog.dart';
@@ -84,6 +85,20 @@ class _CompeteHubDialog extends ConsumerWidget {
               if (!await ensureOnlineLinked(context) || !context.mounted) return;
               Navigator.of(context).pop();
               showWorldBoss(context);
+            },
+          ),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            horizontalTitleGap: 12,
+            minLeadingWidth: 28,
+            key: const Key('compete-auction'),
+            leading: const Icon(Icons.gavel),
+            title: Text(l10n.auctionTitle, maxLines: 2, overflow: TextOverflow.ellipsis),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () async {
+              if (!await ensureOnlineLinked(context) || !context.mounted) return;
+              Navigator.of(context).pop();
+              showAuction(context);
             },
           ),
           ListTile(

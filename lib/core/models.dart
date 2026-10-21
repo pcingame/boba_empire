@@ -4,6 +4,8 @@
 /// chạy được và test được mà không cần UI.
 library;
 
+import 'pet.dart' show petMaxLevel;
+import 'staff.dart' show staffMaxLevel;
 import 'branches.dart' show branchRouteMaxLevel, branchStallMaxLevel, isBranchRouteKey, isBranchSetKey, isBranchStallKey;
 
 /// Cấu hình bất biến của một nguồn thu tự động (một món / quầy pha chế).
@@ -206,6 +208,9 @@ class GameState {
     List<int>? branchQuestProgress,
     this.branchQuestClaimed = 0,
     Map<String, int>? branchStalls,
+    Map<String, int>? staff,
+    this.petLevel = 0,
+    this.petSince = 0,
     Map<String, int>? branchRoutes,
     List<String>? equippedAccessories,
     List<int>? collectionMilestonesClaimed,
@@ -229,6 +234,7 @@ class GameState {
         branchSetClaims = branchSetClaims ?? [],
         branchSpecs = branchSpecs ?? {},
         branchStalls = branchStalls ?? {},
+        staff = staff ?? {},
         branchRoutes = branchRoutes ?? {},
         branchQuestProgress = branchQuestProgress ?? [0, 0, 0, 0],
         equippedAccessories = equippedAccessories ?? [],
@@ -402,6 +408,13 @@ class GameState {
 
   /// Cấp các quầy riêng của chi nhánh ('saigon:0' → cấp).
   final Map<String, int> branchStalls;
+
+  /// Cấp nhân viên '0'..'5' (0 = chưa thuê). Xem staff.dart.
+  final Map<String, int> staff;
+
+  /// Linh vật: cấp (0 = chưa nhận nuôi) và mốc thời gian (ms) lần nhặt Xu gần nhất. Xem pet.dart.
+  int petLevel;
+  int petSince;
 
   /// Tuyến thương mại 'a|b' → cấp (xem [branchRouteKey]).
   final Map<String, int> branchRoutes;
@@ -738,6 +751,9 @@ class GameState {
         'branchQuestProgress': branchQuestProgress,
         'branchQuestClaimed': branchQuestClaimed,
         'branchStalls': branchStalls,
+        'staff': staff,
+        'petLevel': petLevel,
+        'petSince': petSince,
         'branchRoutes': branchRoutes,
         'essenceDay': essenceDay,
         'essenceOrdersToday': essenceOrdersToday,
@@ -955,6 +971,14 @@ class GameState {
               if (e.value is num && (e.value == 1 || e.value == 2)) '${e.key}': (e.value as num).toInt(),
         },
         branchEventClaimedSlot: (json['branchEventClaimedSlot'] as num?)?.toInt() ?? -1,
+        petLevel: ((json['petLevel'] as num?)?.toInt() ?? 0).clamp(0, petMaxLevel),
+        petSince: (json['petSince'] as num?)?.toInt() ?? 0,
+        staff: {
+          if (json['staff'] is Map)
+            for (final e in (json['staff'] as Map).entries)
+              if (e.value is num && int.tryParse('${e.key}') != null)
+                '${e.key}': (e.value as num).toInt().clamp(0, staffMaxLevel),
+        },
         branchStalls: {
           if (json['branchStalls'] is Map)
             for (final e in (json['branchStalls'] as Map).entries)

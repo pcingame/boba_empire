@@ -8287,6 +8287,156 @@ abstract class AppLocalizations {
   /// **'Cộng đồng'**
   String get communityTitle;
 
+  /// No description provided for @auctionTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đấu giá cuối tuần'**
+  String get auctionTitle;
+
+  /// No description provided for @auctionIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi tuần một món độc quyền. Đặt giá bằng 💎 từ thứ 6 đến hết Chủ nhật; ai cao nhất khi hết giờ nhận món. Bị vượt giá thì được hoàn 💎.'**
+  String get auctionIntro;
+
+  /// No description provided for @auctionClosed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa mở — quay lại từ thứ 6'**
+  String get auctionClosed;
+
+  /// No description provided for @auctionTop.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá cao nhất: {bid} 💎'**
+  String auctionTop(int bid);
+
+  /// No description provided for @auctionNoBids.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa ai đặt giá'**
+  String get auctionNoBids;
+
+  /// No description provided for @auctionLeadYou.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang dẫn đầu'**
+  String get auctionLeadYou;
+
+  /// No description provided for @auctionLead.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dẫn đầu: {nick}'**
+  String auctionLead(String nick);
+
+  /// No description provided for @auctionBid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt giá · {gems} 💎'**
+  String auctionBid(int gems);
+
+  /// No description provided for @auctionEnds.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hết giờ sau {time}'**
+  String auctionEnds(String time);
+
+  /// No description provided for @auctionLow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giá phải cao hơn giá hiện tại'**
+  String get auctionLow;
+
+  /// No description provided for @auctionNeedGems.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đủ 💎'**
+  String get auctionNeedGems;
+
+  /// No description provided for @auctionError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đặt giá được, thử lại sau'**
+  String get auctionError;
+
+  /// No description provided for @petTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Linh vật'**
+  String get petTitle;
+
+  /// No description provided for @petIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận nuôi linh vật để nó nhặt Xu giúp bạn. Quay lại thu Xu (tối đa 2 giờ).'**
+  String get petIntro;
+
+  /// No description provided for @petAdopt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận nuôi · {gems} 💎'**
+  String petAdopt(int gems);
+
+  /// No description provided for @petCollect.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhặt {xu} 🪙'**
+  String petCollect(String xu);
+
+  /// No description provided for @staffTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhân viên'**
+  String get staffTitle;
+
+  /// No description provided for @staffRole0.
+  ///
+  /// In vi, this message translates to:
+  /// **'Barista (GĐ 1-3)'**
+  String get staffRole0;
+
+  /// No description provided for @staffRole1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Pha chế (GĐ 4-6)'**
+  String get staffRole1;
+
+  /// No description provided for @staffRole2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu ngân (GĐ 7-9)'**
+  String get staffRole2;
+
+  /// No description provided for @staffRole3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quản lý ca (GĐ 10-12)'**
+  String get staffRole3;
+
+  /// No description provided for @staffRole4.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giám sát (GĐ 13-15)'**
+  String get staffRole4;
+
+  /// No description provided for @staffRole5.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bếp trưởng (GĐ 16-18)'**
+  String get staffRole5;
+
+  /// No description provided for @staffDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tăng +{pct}% thu nhập các nguồn thu phụ trách'**
+  String staffDesc(int pct);
+
+  /// No description provided for @staffHire.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thuê · {gems} 💎'**
+  String staffHire(int gems);
+
   /// No description provided for @guildIntro.
   ///
   /// In vi, this message translates to:

@@ -4910,6 +4910,99 @@ class AppLocalizationsVi extends AppLocalizations {
   String get communityTitle => 'Cộng đồng';
 
   @override
+  String get auctionTitle => 'Đấu giá cuối tuần';
+
+  @override
+  String get auctionIntro =>
+      'Mỗi tuần một món độc quyền. Đặt giá bằng 💎 từ thứ 6 đến hết Chủ nhật; ai cao nhất khi hết giờ nhận món. Bị vượt giá thì được hoàn 💎.';
+
+  @override
+  String get auctionClosed => 'Chưa mở — quay lại từ thứ 6';
+
+  @override
+  String auctionTop(int bid) {
+    return 'Giá cao nhất: $bid 💎';
+  }
+
+  @override
+  String get auctionNoBids => 'Chưa ai đặt giá';
+
+  @override
+  String get auctionLeadYou => 'Bạn đang dẫn đầu';
+
+  @override
+  String auctionLead(String nick) {
+    return 'Dẫn đầu: $nick';
+  }
+
+  @override
+  String auctionBid(int gems) {
+    return 'Đặt giá · $gems 💎';
+  }
+
+  @override
+  String auctionEnds(String time) {
+    return 'Hết giờ sau $time';
+  }
+
+  @override
+  String get auctionLow => 'Giá phải cao hơn giá hiện tại';
+
+  @override
+  String get auctionNeedGems => 'Không đủ 💎';
+
+  @override
+  String get auctionError => 'Không đặt giá được, thử lại sau';
+
+  @override
+  String get petTitle => 'Linh vật';
+
+  @override
+  String get petIntro =>
+      'Nhận nuôi linh vật để nó nhặt Xu giúp bạn. Quay lại thu Xu (tối đa 2 giờ).';
+
+  @override
+  String petAdopt(int gems) {
+    return 'Nhận nuôi · $gems 💎';
+  }
+
+  @override
+  String petCollect(String xu) {
+    return 'Nhặt $xu 🪙';
+  }
+
+  @override
+  String get staffTitle => 'Nhân viên';
+
+  @override
+  String get staffRole0 => 'Barista (GĐ 1-3)';
+
+  @override
+  String get staffRole1 => 'Pha chế (GĐ 4-6)';
+
+  @override
+  String get staffRole2 => 'Thu ngân (GĐ 7-9)';
+
+  @override
+  String get staffRole3 => 'Quản lý ca (GĐ 10-12)';
+
+  @override
+  String get staffRole4 => 'Giám sát (GĐ 13-15)';
+
+  @override
+  String get staffRole5 => 'Bếp trưởng (GĐ 16-18)';
+
+  @override
+  String staffDesc(int pct) {
+    return 'Tăng +$pct% thu nhập các nguồn thu phụ trách';
+  }
+
+  @override
+  String staffHire(int gems) {
+    return 'Thuê · $gems 💎';
+  }
+
+  @override
   String get guildIntro =>
       'Lập hội hoặc vào hội để cùng hoàn thành mục tiêu tuần và nhận thưởng.';
 

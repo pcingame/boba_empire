@@ -4840,6 +4840,98 @@ class AppLocalizationsKo extends AppLocalizations {
   String get communityTitle => '커뮤니티';
 
   @override
+  String get auctionTitle => '주말 경매';
+
+  @override
+  String get auctionIntro =>
+      '매주 한정 아이템 1개. 금요일부터 일요일까지 💎로 입찰하며, 종료 시 최고가 입찰자가 획득합니다. 추월당하면 💎를 돌려받습니다.';
+
+  @override
+  String get auctionClosed => '아직 열리지 않음 — 금요일에 다시 오세요';
+
+  @override
+  String auctionTop(int bid) {
+    return '최고가: $bid 💎';
+  }
+
+  @override
+  String get auctionNoBids => '아직 입찰 없음';
+
+  @override
+  String get auctionLeadYou => '현재 1위입니다';
+
+  @override
+  String auctionLead(String nick) {
+    return '1위: $nick';
+  }
+
+  @override
+  String auctionBid(int gems) {
+    return '입찰 · $gems 💎';
+  }
+
+  @override
+  String auctionEnds(String time) {
+    return '$time 후 종료';
+  }
+
+  @override
+  String get auctionLow => '현재 가격보다 높아야 합니다';
+
+  @override
+  String get auctionNeedGems => '💎가 부족합니다';
+
+  @override
+  String get auctionError => '입찰하지 못했습니다. 나중에 다시 시도하세요';
+
+  @override
+  String get petTitle => '마스코트';
+
+  @override
+  String get petIntro => '마스코트를 입양하면 코인을 모아 줍니다. 돌아와서 수령하세요 (최대 2시간).';
+
+  @override
+  String petAdopt(int gems) {
+    return '입양 · $gems 💎';
+  }
+
+  @override
+  String petCollect(String xu) {
+    return '$xu 🪙 수령';
+  }
+
+  @override
+  String get staffTitle => '직원';
+
+  @override
+  String get staffRole0 => '바리스타 (단계 1-3)';
+
+  @override
+  String get staffRole1 => '믹솔로지스트 (단계 4-6)';
+
+  @override
+  String get staffRole2 => '캐셔 (단계 7-9)';
+
+  @override
+  String get staffRole3 => '교대 책임자 (단계 10-12)';
+
+  @override
+  String get staffRole4 => '슈퍼바이저 (단계 13-15)';
+
+  @override
+  String get staffRole5 => '수석 셰프 (단계 16-18)';
+
+  @override
+  String staffDesc(int pct) {
+    return '담당 수입원 수입 +$pct%';
+  }
+
+  @override
+  String staffHire(int gems) {
+    return '고용 · $gems 💎';
+  }
+
+  @override
   String get guildIntro => '길드를 만들거나 가입해 함께 주간 목표를 달성하고 보상을 받으세요.';
 
   @override

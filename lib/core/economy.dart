@@ -13,6 +13,7 @@ import 'balance.dart';
 import 'branches.dart' show branchIncomeMultiplier;
 import 'guild.dart' show guildVipBonusMultiplier;
 import 'models.dart';
+import 'staff.dart';
 import 'topup.dart';
 
 /// Giá để nâng nguồn thu từ [currentLevel] lên cấp kế tiếp.
@@ -364,7 +365,8 @@ double baseIncomePerSecond(GameState state, List<GeneratorConfig> configs) {
     total += config.incomePerLevelPerSecond *
         level *
         generatorMilestoneMultiplier(level) *
-        masteryMultiplier(state.masteryTiers, config.stage);
+        masteryMultiplier(state.masteryTiers, config.stage) *
+        staffMultiplier(state.staff, config.stage);
   }
   return total;
 }

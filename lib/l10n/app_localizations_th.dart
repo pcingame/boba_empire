@@ -4897,6 +4897,99 @@ class AppLocalizationsTh extends AppLocalizations {
   String get communityTitle => 'ชุมชน';
 
   @override
+  String get auctionTitle => 'ประมูลสุดสัปดาห์';
+
+  @override
+  String get auctionIntro =>
+      'ไอเทมสุดพิเศษสัปดาห์ละชิ้น ประมูลด้วย 💎 ตั้งแต่วันศุกร์ถึงอาทิตย์ ผู้ให้ราคาสูงสุดเมื่อหมดเวลาเป็นผู้ชนะ ถ้าถูกแซง จะได้รับ 💎 คืน';
+
+  @override
+  String get auctionClosed => 'ยังไม่เปิด — กลับมาวันศุกร์';
+
+  @override
+  String auctionTop(int bid) {
+    return 'ราคาสูงสุด: $bid 💎';
+  }
+
+  @override
+  String get auctionNoBids => 'ยังไม่มีผู้ประมูล';
+
+  @override
+  String get auctionLeadYou => 'คุณนำอยู่';
+
+  @override
+  String auctionLead(String nick) {
+    return 'นำอยู่: $nick';
+  }
+
+  @override
+  String auctionBid(int gems) {
+    return 'ประมูล · $gems 💎';
+  }
+
+  @override
+  String auctionEnds(String time) {
+    return 'หมดเวลาใน $time';
+  }
+
+  @override
+  String get auctionLow => 'ราคาต้องสูงกว่าปัจจุบัน';
+
+  @override
+  String get auctionNeedGems => '💎 ไม่พอ';
+
+  @override
+  String get auctionError => 'ประมูลไม่สำเร็จ ลองใหม่ภายหลัง';
+
+  @override
+  String get petTitle => 'มาสคอต';
+
+  @override
+  String get petIntro =>
+      'รับมาสคอตมาช่วยเก็บเหรียญ กลับมาเก็บได้ (สูงสุด 2 ชั่วโมง)';
+
+  @override
+  String petAdopt(int gems) {
+    return 'รับเลี้ยง · $gems 💎';
+  }
+
+  @override
+  String petCollect(String xu) {
+    return 'เก็บ $xu 🪙';
+  }
+
+  @override
+  String get staffTitle => 'พนักงาน';
+
+  @override
+  String get staffRole0 => 'บาริสต้า (ช่วง 1-3)';
+
+  @override
+  String get staffRole1 => 'ผู้ชงเครื่องดื่ม (ช่วง 4-6)';
+
+  @override
+  String get staffRole2 => 'แคชเชียร์ (ช่วง 7-9)';
+
+  @override
+  String get staffRole3 => 'หัวหน้ากะ (ช่วง 10-12)';
+
+  @override
+  String get staffRole4 => 'ซูเปอร์ไวเซอร์ (ช่วง 13-15)';
+
+  @override
+  String get staffRole5 => 'หัวหน้าเชฟ (ช่วง 16-18)';
+
+  @override
+  String staffDesc(int pct) {
+    return '+$pct% รายได้จากแหล่งที่รับผิดชอบ';
+  }
+
+  @override
+  String staffHire(int gems) {
+    return 'จ้าง · $gems 💎';
+  }
+
+  @override
   String get guildIntro =>
       'สร้างหรือเข้าร่วมกิลด์เพื่อทำเป้าหมายรายสัปดาห์ร่วมกันและรับรางวัล';
 

@@ -14,6 +14,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../core/branches.dart';
+import '../core/pet.dart';
+import '../core/staff.dart';
 import '../core/raid.dart';
 import '../core/accessories.dart';
 import '../core/achievements.dart';
@@ -392,6 +394,72 @@ class GameController extends Notifier<GameSnapshot> {
     unawaited(saveNow());
     state = _snapshot();
     return cash;
+  }
+
+  /// Thu nhập/giây hiện tại (để UI linh vật tính Xu chờ nhặt).
+  double get petIncome => _branchBaseIncome();
+
+  /// Áp khoản máy phải nhận từ Đấu giá (💎 hoàn + món thắng, chỉ món độc quyền hợp lệ). Gọi TRƯỚC khi báo ack.
+  void applyAuctionPickups({required int refundGems, required Iterable<String> itemIds}) {
+    if (refundGems > 0) grantGems(_game, refundGems.toDouble());
+    final valid = limitedAccessories.map((a) => a.id).toSet();
+    for (final id in itemIds) {
+      if (valid.contains(id) && !_game.ownedLimited.contains(id)) _game.ownedLimited.add(id);
+    }
+    logEvent('auction_pickup', {'gems': refundGems, 'items': itemIds.length});
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
+  /// Nhận nuôi linh vật (💎) hoặc nâng cấp (Xu). false nếu thiếu tiền/đã tối đa.
+  bool upgradePet() {
+    final lvl = _game.petLevel;
+    if (lvl >= petMaxLevel) return false;
+    if (lvl == 0) {
+      if (!spendGems(petAdoptGems)) return false;
+      _game.petSince = _clock();
+    } else {
+      final cost = petLevelCost(lvl, _branchBaseIncome());
+      if (!cost.isFinite || !(_game.money >= cost)) return false;
+      _game.money -= cost;
+    }
+    _game.petLevel = lvl + 1;
+    logEvent('pet_up', {'level': lvl + 1});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
+  /// Nhặt Xu linh vật tích luỹ. Trả số Xu (0 nếu chưa có linh vật/chưa có gì).
+  double collectPet() {
+    final now = _clock();
+    final xu = petPendingXu(_game.petLevel, _game.petSince, now, _branchBaseIncome());
+    if (xu <= 0) return 0;
+    grantBonus(_game, xu);
+    _game.petSince = now;
+    logEvent('pet_collect', {});
+    unawaited(saveNow());
+    state = _snapshot();
+    return xu;
+  }
+
+  /// Thuê (cấp 0→1, bằng 💎) hoặc nâng (bằng Xu) nhân viên [i]. false nếu thiếu tiền/đã tối đa.
+  bool upgradeStaff(int i) {
+    if (i < 0 || i >= staffCount) return false;
+    final lvl = staffLevel(_game.staff, i);
+    if (lvl >= staffMaxLevel) return false;
+    if (lvl == 0) {
+      if (!spendGems(staffHireGems(i))) return false;
+    } else {
+      final cost = staffUpgradeCost(i, lvl, Balance.generators);
+      if (!cost.isFinite || !(_game.money >= cost)) return false;
+      _game.money -= cost;
+    }
+    _game.staff['$i'] = lvl + 1;
+    logEvent('staff_up', {'i': i, 'level': lvl + 1});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
   }
 
   /// Nâng quầy [i] (0..2) của chi nhánh [id] bằng Xu. false nếu chưa mở khoá/đã tối đa/thiếu Xu.
@@ -2650,6 +2718,9 @@ class GameController extends Notifier<GameSnapshot> {
       branchQuestProgress: List.unmodifiable(_game.branchQuestProgress),
       branchQuestClaimed: _game.branchQuestClaimed,
       branchStalls: Map.unmodifiable(Map.of(_game.branchStalls)),
+      staff: Map.unmodifiable(Map.of(_game.staff)),
+      petLevel: _game.petLevel,
+      petSince: _game.petSince,
       branchRoutes: Map.unmodifiable(Map.of(_game.branchRoutes)),
       collectionMilestonesClaimed:
           List.unmodifiable(_game.collectionMilestonesClaimed),

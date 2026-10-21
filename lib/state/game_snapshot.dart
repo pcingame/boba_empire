@@ -128,6 +128,9 @@ class GameSnapshot {
     required this.branchQuestProgress,
     required this.branchQuestClaimed,
     required this.branchStalls,
+    required this.staff,
+    required this.petLevel,
+    required this.petSince,
     required this.branchRoutes,
     required this.collectionMilestonesClaimed,
     required this.collectionSetsClaimed,
@@ -339,6 +342,9 @@ class GameSnapshot {
   final List<int> branchQuestProgress;
   final int branchQuestClaimed;
   final Map<String, int> branchStalls;
+  final Map<String, int> staff;
+  final int petLevel;
+  final int petSince;
   final Map<String, int> branchRoutes;
 
   /// Mốc sưu tập đã nhận (xem GameState.collectionMilestonesClaimed).

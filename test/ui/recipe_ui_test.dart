@@ -280,7 +280,7 @@ void main() {
     await _teardown(tester);
   });
 
-  testWidgets('hộp Trò chơi: "Pha theo đơn" là trò riêng, mở thẳng màn đơn hàng; màn công thức không còn nút đó', (tester) async {
+  testWidgets('hộp Trò chơi → Pha chế → "Pha theo đơn" mở màn đơn hàng; hộp Trò chơi không còn dòng riêng', (tester) async {
     tester.view.physicalSize = const Size(390 * 3, 844 * 3);
     tester.view.devicePixelRatio = 3;
     addTearDown(tester.view.reset);
@@ -298,13 +298,16 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('match3-button')));
     await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('games-orders')));
+    expect(find.byKey(const Key('games-orders')), findsNothing, reason: 'đã gộp vào màn Pha chế');
+    await tester.tap(find.byKey(const Key('games-recipes')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('recipe-orders')));
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('order-prompt')), findsOneWidget);
     await _teardown(tester);
   });
 
-  testWidgets('hộp Trò chơi: "Thử thách hôm nay" hiện trạng thái (chưa làm / điểm hôm nay) và mở đúng chế độ', (tester) async {
+  testWidgets('màn Pha chế: "Thử thách hôm nay" hiện trạng thái (chưa làm / điểm hôm nay) và mở đúng chế độ', (tester) async {
     tester.view.physicalSize = const Size(390 * 3, 844 * 3);
     tester.view.devicePixelRatio = 3;
     addTearDown(tester.view.reset);
@@ -327,8 +330,12 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.byKey(const Key('match3-button')));
       await tester.pumpAndSettle();
+      expect(find.byKey(const Key('games-daily')), findsNothing, reason: 'đã gộp vào màn Pha chế');
+      await tester.tap(find.byKey(const Key('games-recipes')));
+      await tester.pumpAndSettle();
       expect(find.text(done ? 'Hôm nay bạn được 222/300 điểm' : '3 đơn khó, không gợi ý — mỗi ngày một lần'), findsOneWidget);
-      await tester.tap(find.byKey(const Key('games-daily')));
+      await tester.ensureVisible(find.byKey(const Key('recipe-daily')));
+      await tester.tap(find.byKey(const Key('recipe-daily')));
       await tester.pumpAndSettle();
       expect(find.byKey(Key(done ? 'daily-already' : 'daily-intro')), findsOneWidget);
       await _teardown(tester);
