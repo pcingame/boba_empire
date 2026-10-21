@@ -2246,6 +2246,8 @@
   "guildChatTitle": "แชทกิลด์",
   "guildChatEmpty": "ยังไม่มีข้อความ เป็นคนแรกที่พูดเลย!",
   "guildChatHint": "ส่งข้อความถึงกิลด์…",
+  "guildChatAttach": "ส่งรูปภาพ",
+  "guildChatImageTooBig": "รูปใหญ่เกินไป (สูงสุด 350KB หลังบีบอัด) เลือกรูปอื่น",
   "guildChatSend": "ส่ง",
   "guildChatPinned": "ประกาศ",
   "guildChatPin": "ปักหมุด",

@@ -2246,6 +2246,8 @@
   "guildChatTitle": "Guild chat",
   "guildChatEmpty": "No messages yet. Be the first to say something!",
   "guildChatHint": "Message your guild…",
+  "guildChatAttach": "Send a photo",
+  "guildChatImageTooBig": "Photo too large (max 350KB after compression). Pick another.",
   "guildChatSend": "Send",
   "guildChatPinned": "Announcement",
   "guildChatPin": "Pin",

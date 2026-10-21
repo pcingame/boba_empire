@@ -1884,6 +1884,8 @@
   "guildChatTitle": "길드 채팅",
   "guildChatEmpty": "아직 메시지가 없어요. 첫 마디를 남겨 보세요!",
   "guildChatHint": "길드에 메시지 보내기…",
+  "guildChatAttach": "사진 보내기",
+  "guildChatImageTooBig": "사진이 너무 큽니다 (압축 후 최대 350KB). 다른 사진을 선택하세요.",
   "guildChatSend": "보내기",
   "guildChatPinned": "공지",
   "guildChatPin": "고정",

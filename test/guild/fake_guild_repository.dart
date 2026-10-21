@@ -1,5 +1,7 @@
 // Bản giả của GuildRepository cho test controller/UI: ghi lại lệnh gọi, cho phép
 // ép lỗi theo tên phương thức, và có trạng thái đủ để refresh() đọc lại.
+import 'dart:typed_data';
+
 import 'package:boba_empire/core/guild_shop.dart';
 import 'package:boba_empire/core/guild.dart';
 import 'package:boba_empire/guild/guild_repository.dart';
@@ -233,6 +235,22 @@ class FakeGuildRepository implements GuildRepository {
   }
 
   @override
+  Future<void> chatPostImage(Uint8List bytes, String body) async {
+    _hit('chatPostImage');
+    chatMessages.insert(
+        0,
+        GuildMessage(
+            id: _nextMsgId++,
+            userId: me,
+            nickname: 'Alice',
+            body: body.trim().isEmpty ? '📷' : body.trim(),
+            imageKey: 'img-${bytes.length}'));
+  }
+
+  @override
+  String chatImageUrl(String key) => 'https://example.invalid/$key.jpg';
+
+  @override
   Future<void> chatDelete(int id) async {
     _hit('chatDelete');
     chatMessages.removeWhere((m) => m.id == id);
@@ -268,7 +286,7 @@ class FakeGuildRepository implements GuildRepository {
       rs[j] = GuildReaction(emoji: emoji, count: rs[j].count + 1, mine: true);
     }
     chatMessages[i] = GuildMessage(
-        id: m.id, userId: m.userId, nickname: m.nickname, body: m.body, reactions: rs);
+        id: m.id, userId: m.userId, nickname: m.nickname, body: m.body, reactions: rs, imageKey: m.imageKey);
   }
 
   @override

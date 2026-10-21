@@ -5544,6 +5544,13 @@ class AppLocalizationsPt extends AppLocalizations {
   String get guildChatHint => 'Mensagem para a guilda…';
 
   @override
+  String get guildChatAttach => 'Enviar foto';
+
+  @override
+  String get guildChatImageTooBig =>
+      'Foto grande demais (máx. 350KB após compressão). Escolha outra.';
+
+  @override
   String get guildChatSend => 'Enviar';
 
   @override

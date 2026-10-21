@@ -249,7 +249,8 @@ void main() {
         'guild_buy_item(text)',
         'guild_buy_buff()',
         'guild_buff_seconds()',
-        'guild_chat_post(text)',
+        'guild_chat_post(text,uuid)',
+        'guild_image_new_key()',
         'guild_chat_list(integer)',
         'guild_chat_delete(bigint)',
         'guild_chat_pin(bigint)',
@@ -277,6 +278,7 @@ void main() {
         'guild_purchases',
         'guild_messages',
         'guild_message_reports',
+        'guild_image_keys',
         'guild_fund_claims',
       ]) {
         expect(sql.contains(RegExp('alter table $t\\s+enable row level security')), isTrue,

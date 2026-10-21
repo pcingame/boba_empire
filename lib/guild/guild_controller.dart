@@ -3,6 +3,7 @@
 library;
 
 import 'dart:developer' as developer;
+import 'dart:typed_data';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -344,6 +345,8 @@ class GuildController extends Notifier<GuildViewState> {
   }
 
   Future<GuildOutcome> chatPost(String body) => _chatAct(() => _repo.chatPost(body));
+  Future<GuildOutcome> chatPostImage(Uint8List bytes, String body) =>
+      _chatAct(() => _repo.chatPostImage(bytes, body));
   Future<GuildOutcome> chatDelete(int id) => _chatAct(() => _repo.chatDelete(id));
   Future<GuildOutcome> chatReport(int id) => _chatAct(() => _repo.chatReport(id));
   Future<GuildOutcome> chatPin(int? id) => _chatAct(() => _repo.chatPin(id));

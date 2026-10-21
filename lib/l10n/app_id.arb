@@ -2246,6 +2246,8 @@
   "guildChatTitle": "Obrolan guild",
   "guildChatEmpty": "Belum ada pesan. Jadilah yang pertama bicara!",
   "guildChatHint": "Kirim pesan ke guild…",
+  "guildChatAttach": "Kirim foto",
+  "guildChatImageTooBig": "Foto terlalu besar (maks 350KB setelah dikompres). Pilih yang lain.",
   "guildChatSend": "Kirim",
   "guildChatPinned": "Pengumuman",
   "guildChatPin": "Sematkan",

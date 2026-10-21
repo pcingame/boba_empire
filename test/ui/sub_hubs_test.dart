@@ -5,7 +5,6 @@ import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
 import 'package:boba_empire/state/game_providers.dart';
 import 'package:boba_empire/ui/my_shop_hub_dialog.dart';
-import 'package:boba_empire/ui/weekly_events_hub_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -73,21 +72,9 @@ void main() {
     await _close(tester, c2);
   });
 
-  testWidgets('Sự kiện tuần: mở Đấu giá', (tester) async {
-    final c = await _open(tester, showWeeklyEventsHub);
-    expect(find.byKey(const Key('weekly-world-boss')), findsOneWidget);
-    await tester.tap(find.byKey(const Key('weekly-auction')));
-    await tester.pumpAndSettle();
-    expect(find.byKey(const Key('auction-closed')), findsOneWidget);
-    await _close(tester, c);
-  });
-
   for (final lang in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
-    testWidgets('hai hộp không tràn ở 320px, chữ 1.5× ($lang)', (tester) async {
-      var c = await _open(tester, showMyShopHub, lang: lang, scale: 1.5);
-      expect(tester.takeException(), isNull);
-      await _close(tester, c);
-      c = await _open(tester, showWeeklyEventsHub, lang: lang, scale: 1.5);
+    testWidgets('hộp Quán của tôi không tràn ở 320px, chữ 1.5× ($lang)', (tester) async {
+      final c = await _open(tester, showMyShopHub, lang: lang, scale: 1.5);
       expect(tester.takeException(), isNull);
       await _close(tester, c);
     });

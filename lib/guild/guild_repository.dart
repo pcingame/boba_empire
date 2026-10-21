@@ -5,6 +5,8 @@
 /// này không có mock SupabaseClient).
 library;
 
+import 'dart:typed_data';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -184,6 +186,7 @@ class GuildMessage {
     required this.nickname,
     required this.body,
     this.reactions = const [],
+    this.imageKey,
   });
 
   factory GuildMessage.fromJson(Map<String, dynamic> j) => GuildMessage(
@@ -191,6 +194,7 @@ class GuildMessage {
         userId: j['user_id'] as String,
         nickname: j['nickname'] as String,
         body: j['body'] as String,
+        imageKey: j['image_key'] as String?,
         // Server cũ chưa có reaction → không có khoá này.
         reactions: [
           for (final r in (j['reactions'] as List?) ?? const [])
@@ -203,6 +207,9 @@ class GuildMessage {
   final String nickname;
   final String body;
   final List<GuildReaction> reactions;
+
+  /// Khoá ảnh đính kèm (bucket 'guild-images'); null = tin chữ.
+  final String? imageKey;
 }
 
 /// Chat hội: tin ghim (nếu có) + các tin mới nhất, MỚI NHẤT Ở ĐẦU.
@@ -579,6 +586,12 @@ abstract class GuildRepository {
 
   Future<GuildChat> chat();
   Future<void> chatPost(String body);
+
+  /// Gửi ảnh JPEG [bytes] (đã nén) kèm chữ [body] (có thể rỗng).
+  Future<void> chatPostImage(Uint8List bytes, String body);
+
+  /// URL công khai của ảnh chat có khoá [key].
+  String chatImageUrl(String key);
   Future<void> chatDelete(int id);
 
   /// Báo cáo tin của người khác; đủ 3 báo cáo thì server ẩn tin.
@@ -797,6 +810,18 @@ class SupabaseGuildRepository implements GuildRepository {
 
   @override
   Future<void> chatPost(String body) => _rpc('guild_chat_post', {'p_body': body});
+
+  @override
+  Future<void> chatPostImage(Uint8List bytes, String body) async {
+    final key = await _rpc('guild_image_new_key', {}) as String;
+    await _client.storage
+        .from('guild-images')
+        .uploadBinary('$key.jpg', bytes, fileOptions: const FileOptions(contentType: 'image/jpeg'));
+    await _rpc('guild_chat_post', {'p_body': body, 'p_image_key': key});
+  }
+
+  @override
+  String chatImageUrl(String key) => _client.storage.from('guild-images').getPublicUrl('$key.jpg');
 
   @override
   Future<void> chatDelete(int id) => _rpc('guild_chat_delete', {'p_id': id});

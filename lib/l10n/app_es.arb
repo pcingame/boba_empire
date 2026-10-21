@@ -2246,6 +2246,8 @@
   "guildChatTitle": "Chat del gremio",
   "guildChatEmpty": "Aún no hay mensajes. ¡Sé el primero en hablar!",
   "guildChatHint": "Escribe a tu gremio…",
+  "guildChatAttach": "Enviar foto",
+  "guildChatImageTooBig": "Foto demasiado grande (máx. 350KB tras comprimir). Elige otra.",
   "guildChatSend": "Enviar",
   "guildChatPinned": "Aviso",
   "guildChatPin": "Fijar",

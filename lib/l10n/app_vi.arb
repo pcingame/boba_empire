@@ -3200,6 +3200,8 @@
   "guildChatTitle": "Chat hội",
   "guildChatEmpty": "Chưa có tin nào. Hãy là người nói câu đầu tiên!",
   "guildChatHint": "Nhắn cho cả hội…",
+  "guildChatAttach": "Gửi ảnh",
+  "guildChatImageTooBig": "Ảnh quá lớn (tối đa 350KB sau khi nén), hãy chọn ảnh khác.",
   "guildChatSend": "Gửi",
   "guildChatPinned": "Thông báo",
   "guildChatPin": "Ghim",

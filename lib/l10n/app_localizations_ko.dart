@@ -5437,6 +5437,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get guildChatHint => '길드에 메시지 보내기…';
 
   @override
+  String get guildChatAttach => '사진 보내기';
+
+  @override
+  String get guildChatImageTooBig =>
+      '사진이 너무 큽니다 (압축 후 최대 350KB). 다른 사진을 선택하세요.';
+
+  @override
   String get guildChatSend => '보내기';
 
   @override

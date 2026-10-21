@@ -3,11 +3,13 @@
 library;
 
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/guild.dart' show guildReactionEmojis;
+import '../guild/chat_image.dart';
 import '../guild/chat_optimistic.dart';
 import '../guild/guild_chat_unread.dart';
 import '../guild/guild_controller.dart';
@@ -42,9 +44,10 @@ final guildChatCacheProvider =
 
 /// Tin đang gửi (chưa được server xác nhận) — hiện ngay ở cuối danh sách.
 class _Pending {
-  _Pending(this.id, this.body);
+  _Pending(this.id, this.body, {this.image});
   final int id;
   final String body;
+  final Uint8List? image;
 }
 
 class GuildChatPage extends ConsumerStatefulWidget {
@@ -147,6 +150,37 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> with WidgetsBindi
       ScaffoldMessenger.of(context)
           ..clearSnackBars()
           ..showSnackBar(SnackBar(content: Text(guildFailureText(l10n, out.failure!))));
+    }
+  }
+
+  /// Chọn ảnh → gửi kèm chữ đang gõ (nếu có). Ảnh quá lớn thì báo, không gửi.
+  Future<void> _sendImage() async {
+    if (_sending) return;
+    final l10n = AppLocalizations.of(context)!;
+    final bytes = await ref.read(guildChatImagePickerProvider)();
+    if (bytes == null || !mounted) return;
+    void toast(String t) => ScaffoldMessenger.of(context)
+      ..clearSnackBars()
+      ..showSnackBar(SnackBar(content: Text(t)));
+    if (bytes.length > guildChatImageMaxBytes) return toast(l10n.guildChatImageTooBig);
+    final text = _input.text.trim();
+    final p = _Pending(++_pendingSeq, text, image: bytes);
+    setState(() {
+      _sending = true;
+      _pending.add(p);
+    });
+    _input.clear();
+    final out = await ref.read(guildControllerProvider.notifier).chatPostImage(bytes, text);
+    if (!mounted) return;
+    if (out.ok) await _refetch();
+    if (!mounted) return;
+    setState(() {
+      _sending = false;
+      _pending.remove(p);
+    });
+    if (!out.ok) {
+      if (_input.text.isEmpty) _input.text = text;
+      toast(guildFailureText(l10n, out.failure!));
     }
   }
 
@@ -301,6 +335,12 @@ class _GuildChatPageState extends ConsumerState<GuildChatPage> with WidgetsBindi
                 padding: const EdgeInsets.fromLTRB(12, 4, 8, 8),
                 child: Row(
                   children: [
+                    IconButton(
+                      key: const Key('guild-chat-attach'),
+                      tooltip: l10n.guildChatAttach,
+                      onPressed: _sending ? null : _sendImage,
+                      icon: const Icon(Icons.image_outlined),
+                    ),
                     Expanded(
                       child: TextField(
                         key: const Key('guild-chat-input'),
@@ -422,7 +462,13 @@ class _List extends StatelessWidget {
                               color: theme.colorScheme.primaryContainer,
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: Text(p.body),
+                            child: Column(crossAxisAlignment: CrossAxisAlignment.end, mainAxisSize: MainAxisSize.min, children: [
+                              if (p.image != null)
+                                ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.memory(p.image!, height: 160, fit: BoxFit.cover)),
+                              if (p.body.isNotEmpty) Text(p.body),
+                            ]),
                           ),
                         ),
                       );
@@ -533,9 +579,15 @@ class _Bubble extends ConsumerWidget {
                       size: 14,
                       color: theme.colorScheme.tertiary),
                 ),
-              Flexible(child: _MentionText(body: m.body, names: names, myNick: myNick, theme: theme)),
+              if (m.imageKey == null || m.body != '📷')
+                Flexible(child: _MentionText(body: m.body, names: names, myNick: myNick, theme: theme)),
             ],
           ),
+          if (m.imageKey != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: _ChatImage(url: ref.read(guildRepositoryProvider).chatImageUrl(m.imageKey!), id: m.id),
+            ),
           if (m.reactions.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 4),
@@ -568,6 +620,43 @@ class _Bubble extends ConsumerWidget {
               ),
             ),
         ],
+      ),
+    );
+  }
+}
+
+/// Ảnh trong bong bóng: thu nhỏ, chạm để xem to; lỗi tải thì hiện biểu tượng ảnh hỏng (không làm vỡ danh sách).
+class _ChatImage extends StatelessWidget {
+  const _ChatImage({required this.url, required this.id});
+  final String url;
+  final int id;
+
+  @override
+  Widget build(BuildContext context) {
+    final broken = const SizedBox(height: 80, child: Center(child: Icon(Icons.broken_image_outlined)));
+    return GestureDetector(
+      key: Key('guild-chat-image-$id'),
+      onTap: () => showDialog<void>(
+        context: context,
+        builder: (_) => Dialog(
+          insetPadding: const EdgeInsets.all(12),
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: InteractiveViewer(
+                child: Image.network(url, fit: BoxFit.contain, errorBuilder: (_, _, _) => broken)),
+          ),
+        ),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxHeight: 220),
+          child: Image.network(url,
+              fit: BoxFit.cover,
+              loadingBuilder: (_, child, p) =>
+                  p == null ? child : const SizedBox(height: 80, child: Center(child: CircularProgressIndicator(strokeWidth: 2))),
+              errorBuilder: (_, _, _) => broken),
+        ),
       ),
     );
   }

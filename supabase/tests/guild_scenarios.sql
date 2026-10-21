@@ -527,6 +527,22 @@ select (guild_chat_list(10)->'messages'->0->>'id')::bigint as mid \gset
 select t_as(u(60));
 select guild_chat_post('thông báo của chủ');
 select (guild_chat_list(10)->'messages'->0->>'id')::bigint as oid \gset
+-- Ảnh trong chat: xin khoá → gắn vào tin; khoá không phải của mình / đã dùng / bịa → từ chối.
+select guild_image_new_key() as ik \gset
+select t_err($$select guild_chat_post('x', gen_random_uuid())$$, 'invalid input');
+select guild_chat_post('', :'ik'::uuid);
+select t_eq('tin ảnh: nội dung thay thế 📷', guild_chat_list(10)->'messages'->0->>'body', '📷');
+select t_eq('tin ảnh: có image_key', guild_chat_list(10)->'messages'->0->>'image_key', :'ik');
+select t_eq('tin thường: image_key null', guild_chat_list(10)->'messages'->1->'image_key', 'null'::jsonb);
+select t_err(format($$select guild_chat_post('lại', %L::uuid)$$, :'ik'), 'invalid input');
+select t_as(u(61));
+select guild_image_new_key() as ik2 \gset
+select t_as(u(60));
+select t_err(format($$select guild_chat_post('mượn khoá', %L::uuid)$$, :'ik2'), 'invalid input');
+select t_as(u(62));
+select t_err($$select guild_image_new_key()$$, 'not found');
+select t_as(u(60));
+select guild_chat_delete((guild_chat_list(10)->'messages'->0->>'id')::bigint); -- dọn tin ảnh để các phép đếm sau không đổi
 select t_as(u(61));
 select t_err(format($$select guild_chat_delete(%s)$$, :'oid'), 'not found');
 select t_err(format($$select guild_chat_pin(%s)$$, :'oid'), 'not owner');

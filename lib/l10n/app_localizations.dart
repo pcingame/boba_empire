@@ -9313,6 +9313,18 @@ abstract class AppLocalizations {
   /// **'Nhắn cho cả hội…'**
   String get guildChatHint;
 
+  /// No description provided for @guildChatAttach.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi ảnh'**
+  String get guildChatAttach;
+
+  /// No description provided for @guildChatImageTooBig.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh quá lớn (tối đa 350KB sau khi nén), hãy chọn ảnh khác.'**
+  String get guildChatImageTooBig;
+
   /// No description provided for @guildChatSend.
   ///
   /// In vi, this message translates to:

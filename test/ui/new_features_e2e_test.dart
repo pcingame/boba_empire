@@ -106,11 +106,10 @@ void main() {
     await _end(tester, c);
   });
 
-  testWidgets('Thi đấu → Sự kiện tuần → Đấu giá và Boss Thế Giới mở được (đã liên kết email)', (tester) async {
+  testWidgets('Thi đấu → Đấu giá mở được (đã liên kết email)', (tester) async {
     final c = await _app(tester);
     await _tap(tester, 'compete-button');
-    await _tap(tester, 'compete-weekly');
-    await _tap(tester, 'weekly-auction');
+    await _tap(tester, 'compete-auction');
     expect(find.byKey(const Key('auction-bid')), findsOneWidget);
     await _closeDialog(tester);
     await _end(tester, c);
@@ -125,24 +124,21 @@ void main() {
     await _end(tester, c);
   });
 
-  test('cổng email: Sự kiện tuần chỉ mở được qua Thi đấu (sau ensureOnlineLinked); Đấu giá/Boss chỉ gọi từ Sự kiện tuần', () {
+  test('cổng email: Đấu giá/Boss chỉ gọi từ hộp Thi đấu, ngay sau ensureOnlineLinked', () {
     final callers = <String, List<String>>{};
     for (final f in Directory('lib').listSync(recursive: true).whereType<File>()) {
       if (!f.path.endsWith('.dart') || f.path.contains('/l10n/')) continue;
       final lines = f.readAsLinesSync();
       for (var i = 0; i < lines.length; i++) {
-        for (final name in ['showWeeklyEventsHub', 'showAuction', 'showWorldBoss']) {
+        for (final name in ['showAuction', 'showWorldBoss']) {
           if (!lines[i].contains('$name(') || lines[i].contains('Future<void> $name')) continue;
           callers.putIfAbsent(name, () => []).add(f.path);
-          if (name == 'showWeeklyEventsHub') {
-            final window = lines.sublist(i < 6 ? 0 : i - 6, i + 1).join('\n');
-            expect(window, contains('ensureOnlineLinked'), reason: '${f.path}:${i + 1}');
-          }
+          final window = lines.sublist(i < 6 ? 0 : i - 6, i + 1).join('\n');
+          expect(window, contains('ensureOnlineLinked'), reason: '${f.path}:${i + 1}');
         }
       }
     }
-    expect(callers['showWeeklyEventsHub'], ['lib/ui/compete_hub_dialog.dart']);
-    expect(callers['showAuction'], ['lib/ui/weekly_events_hub_dialog.dart']);
-    expect(callers['showWorldBoss'], ['lib/ui/weekly_events_hub_dialog.dart']);
+    expect(callers['showAuction'], ['lib/ui/compete_hub_dialog.dart']);
+    expect(callers['showWorldBoss'], ['lib/ui/compete_hub_dialog.dart']);
   });
 }

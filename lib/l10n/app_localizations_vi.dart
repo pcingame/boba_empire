@@ -5516,6 +5516,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get guildChatHint => 'Nhắn cho cả hội…';
 
   @override
+  String get guildChatAttach => 'Gửi ảnh';
+
+  @override
+  String get guildChatImageTooBig =>
+      'Ảnh quá lớn (tối đa 350KB sau khi nén), hãy chọn ảnh khác.';
+
+  @override
   String get guildChatSend => 'Gửi';
 
   @override

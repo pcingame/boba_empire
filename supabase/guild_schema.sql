@@ -178,6 +178,16 @@ create table if not exists guild_messages (
 );
 -- Bản đã deploy trước đó chưa có cột này: tin bị ≥3 thành viên báo cáo thì ẩn.
 alter table guild_messages add column if not exists hidden boolean not null default false;
+-- Ảnh trong chat: khoá file ở bucket công khai 'guild-images' (xem guild_image_new_key bên dưới).
+alter table guild_messages add column if not exists image_key uuid;
+-- Khoá ảnh đã cấp: ai xin, thuộc hội nào, đã gắn vào tin chưa (mỗi khoá chỉ dùng cho 1 tin).
+create table if not exists guild_image_keys (
+  key        uuid primary key,
+  user_id    uuid not null,
+  used       boolean not null default false,
+  created_at timestamptz not null default now()
+);
+alter table guild_image_keys enable row level security; -- không policy: chỉ RPC
 create table if not exists guild_message_reports (
   message_id  bigint not null references guild_messages(id) on delete cascade,
   reporter_id uuid not null,
@@ -1181,7 +1191,8 @@ $$;
 
 -- Chat hội. Chỉ thành viên đọc/ghi. Chống spam: tối đa 3 tin/10 giây/người; lọc từ cấm
 -- như tên hội. ponytail: không realtime — client kéo-để-tải + tải lại sau khi gửi.
-create or replace function guild_chat_post(p_body text) returns void
+drop function if exists guild_chat_post(text);
+create or replace function guild_chat_post(p_body text, p_image_key uuid default null) returns void
 language plpgsql security definer set search_path = public as $$
 declare
   v_uid uuid := auth.uid();
@@ -1194,17 +1205,43 @@ begin
   if v_uid is null then raise exception 'not authenticated'; end if;
   select guild_id, nickname into v_gid, v_nick from guild_members where user_id = v_uid;
   if v_gid is null then raise exception 'not found'; end if;
+  -- Tin ảnh không cần chữ: dùng 📷 làm nội dung thay thế.
+  if p_image_key is not null and v_body = '' then v_body := '📷'; end if;
   if char_length(v_body) not between 1 and 200 then raise exception 'invalid input'; end if;
   if not guild_text_ok(v_body) then raise exception 'text blocked'; end if;
+  if p_image_key is not null then
+    -- Khoá phải do CHÍNH người này xin và chưa gắn vào tin nào.
+    update guild_image_keys set used = true
+     where key = p_image_key and user_id = v_uid and not used;
+    if not found then raise exception 'invalid input'; end if;
+  end if;
   if (select count(*) from guild_messages
         where user_id = v_uid and created_at > now() - interval '10 seconds') >= 3 then
     raise exception 'chat rate limited';
   end if;
-  insert into guild_messages (guild_id, user_id, nickname, body)
-  values (v_gid, v_uid, v_nick, v_body);
+  insert into guild_messages (guild_id, user_id, nickname, body, image_key)
+  values (v_gid, v_uid, v_nick, v_body, p_image_key);
   delete from guild_messages where guild_id = v_gid and id <=
     (select id from guild_messages where guild_id = v_gid
        order by id desc offset 200 limit 1);
+end;
+$$;
+
+-- Xin khoá để tải ảnh chat lên. Chỉ thành viên hội; tối đa 5 khoá/phút/người (chặn tải ảnh dồn dập).
+create or replace function guild_image_new_key() returns uuid
+language plpgsql security definer set search_path = public as $$
+declare v_uid uuid := auth.uid(); v_key uuid := gen_random_uuid();
+begin
+  if v_uid is null then raise exception 'not authenticated'; end if;
+  if not exists (select 1 from guild_members where user_id = v_uid) then raise exception 'not found'; end if;
+  if (select count(*) from guild_image_keys
+        where user_id = v_uid and created_at > now() - interval '1 minute') >= 5 then
+    raise exception 'chat rate limited';
+  end if;
+  insert into guild_image_keys (key, user_id) values (v_key, v_uid);
+  -- Dọn khoá cũ chưa dùng (tải lỗi giữa chừng).
+  delete from guild_image_keys where not used and created_at < now() - interval '1 day';
+  return v_key;
 end;
 $$;
 
@@ -1249,11 +1286,12 @@ begin
   )
   select jsonb_build_object(
     'pinned', (select jsonb_build_object('id', p.id, 'user_id', p.user_id, 'nickname', p.nickname,
-                      'body', p.body, 'created_at', p.created_at,
+                      'body', p.body, 'created_at', p.created_at, 'image_key', p.image_key,
                       'reactions', coalesce(rx.j, '[]'::jsonb))
                  from pin p left join rx on rx.message_id = p.id),
     'messages', coalesce((select jsonb_agg(jsonb_build_object('id', r.id, 'user_id', r.user_id,
                       'nickname', r.nickname, 'body', r.body, 'created_at', r.created_at,
+                      'image_key', r.image_key,
                       'reactions', coalesce(rx.j, '[]'::jsonb)) order by r.id desc)
                  from recent r left join rx on rx.message_id = r.id), '[]'::jsonb))
     into v_out;
@@ -1615,7 +1653,7 @@ begin
     'guild_leaderboard_avg(integer)', 'guild_leaderboard_streak(integer)',
     'guild_donate(integer)', 'guild_claim_quest(integer)',
     'guild_buy_item(text)', 'guild_buy_buff()', 'guild_buff_seconds()',
-    'guild_chat_post(text)', 'guild_chat_list(integer)',
+    'guild_chat_post(text,uuid)', 'guild_image_new_key()', 'guild_chat_list(integer)',
     'guild_chat_delete(bigint)', 'guild_chat_pin(bigint)',
     'guild_chat_report(bigint)', 'guild_set_officer(uuid,boolean)',
     'guild_transfer_owner(uuid)', 'guild_activity(integer)',
