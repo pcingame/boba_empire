@@ -4,7 +4,9 @@
 /// chạy được và test được mà không cần UI.
 library;
 
+import 'legacy.dart' show legacyMaxLevel;
 import 'pet.dart' show petMaxLevel;
+import 'regulars.dart' show regularCount;
 import 'staff.dart' show staffMaxLevel;
 import 'branches.dart' show branchRouteMaxLevel, branchStallMaxLevel, isBranchRouteKey, isBranchSetKey, isBranchStallKey;
 
@@ -210,6 +212,16 @@ class GameState {
     Map<String, int>? branchStalls,
     Map<String, int>? staff,
     this.petLevel = 0,
+    this.regularDay = 0,
+    this.legacyIncomeLevel = 0,
+    this.legacyTapLevel = 0,
+    this.weatherSlotPicked = -1,
+    this.contractTier = -1,
+    this.contractEnd = 0,
+    this.contractStake = 0,
+    this.contractSeed = 0,
+    List<int>? regularServed,
+    Map<String, int>? regularPoints,
     this.petSince = 0,
     Map<String, int>? branchRoutes,
     List<String>? equippedAccessories,
@@ -235,6 +247,8 @@ class GameState {
         branchSpecs = branchSpecs ?? {},
         branchStalls = branchStalls ?? {},
         staff = staff ?? {},
+        regularServed = regularServed ?? [],
+        regularPoints = regularPoints ?? {},
         branchRoutes = branchRoutes ?? {},
         branchQuestProgress = branchQuestProgress ?? [0, 0, 0, 0],
         equippedAccessories = equippedAccessories ?? [],
@@ -414,6 +428,22 @@ class GameState {
 
   /// Linh vật: cấp (0 = chưa nhận nuôi) và mốc thời gian (ms) lần nhặt Xu gần nhất. Xem pet.dart.
   int petLevel;
+
+  /// Khách quen: điểm thân thiết theo chỉ số '0'..'11'; ngày + danh sách khách đã phục vụ hôm đó. Xem regulars.dart.
+  final Map<String, int> regularPoints;
+  int regularDay;
+
+  /// Di sản (legacy.dart): cấp perk thu nhập / chạm, mua bằng ⏳ Điểm Kỷ Nguyên dư.
+  int legacyIncomeLevel;
+  int legacyTapLevel;
+
+  /// Thời tiết & Giao hàng (weather_delivery.dart): khung giờ đã chọn menu (-1 chưa); hợp đồng đang chạy (tier -1 = không).
+  int weatherSlotPicked;
+  int contractTier;
+  int contractEnd;
+  double contractStake;
+  int contractSeed;
+  final List<int> regularServed;
   int petSince;
 
   /// Tuyến thương mại 'a|b' → cấp (xem [branchRouteKey]).
@@ -753,6 +783,16 @@ class GameState {
         'branchStalls': branchStalls,
         'staff': staff,
         'petLevel': petLevel,
+        'regularPoints': regularPoints,
+        'regularDay': regularDay,
+        'legacyIncomeLevel': legacyIncomeLevel,
+        'legacyTapLevel': legacyTapLevel,
+        'weatherSlotPicked': weatherSlotPicked,
+        'contractTier': contractTier,
+        'contractEnd': contractEnd,
+        'contractStake': contractStake,
+        'contractSeed': contractSeed,
+        'regularServed': regularServed,
         'petSince': petSince,
         'branchRoutes': branchRoutes,
         'essenceDay': essenceDay,
@@ -971,6 +1011,28 @@ class GameState {
               if (e.value is num && (e.value == 1 || e.value == 2)) '${e.key}': (e.value as num).toInt(),
         },
         branchEventClaimedSlot: (json['branchEventClaimedSlot'] as num?)?.toInt() ?? -1,
+        regularDay: (json['regularDay'] as num?)?.toInt() ?? 0,
+        legacyIncomeLevel: ((json['legacyIncomeLevel'] as num?)?.toInt() ?? 0).clamp(0, legacyMaxLevel),
+        legacyTapLevel: ((json['legacyTapLevel'] as num?)?.toInt() ?? 0).clamp(0, legacyMaxLevel),
+        weatherSlotPicked: (json['weatherSlotPicked'] as num?)?.toInt() ?? -1,
+        contractTier: ((json['contractTier'] as num?)?.toInt() ?? -1).clamp(-1, 2),
+        contractEnd: (json['contractEnd'] as num?)?.toInt() ?? 0,
+        contractStake: (() {
+          final v = (json['contractStake'] as num?)?.toDouble() ?? 0;
+          return v.isFinite && v > 0 ? v : 0.0;
+        })(),
+        contractSeed: (json['contractSeed'] as num?)?.toInt() ?? 0,
+        regularServed: [
+          if (json['regularServed'] is List)
+            for (final e in json['regularServed'] as List)
+              if (e is num && e >= 0 && e < regularCount) e.toInt(),
+        ],
+        regularPoints: {
+          if (json['regularPoints'] is Map)
+            for (final e in (json['regularPoints'] as Map).entries)
+              if (e.value is num && (int.tryParse('${e.key}') ?? -1) >= 0 && int.parse('${e.key}') < regularCount)
+                '${e.key}': (e.value as num).toInt().clamp(0, 1 << 20),
+        },
         petLevel: ((json['petLevel'] as num?)?.toInt() ?? 0).clamp(0, petMaxLevel),
         petSince: (json['petSince'] as num?)?.toInt() ?? 0,
         staff: {

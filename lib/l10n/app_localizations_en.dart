@@ -4923,6 +4923,149 @@ class AppLocalizationsEn extends AppLocalizations {
   String get communityTitle => 'Community';
 
   @override
+  String get legacyTitle => 'Legacy';
+
+  @override
+  String get legacyLocked => 'Unlocks after your 4th Ascension';
+
+  @override
+  String get legacyIncomeName => 'Income legacy';
+
+  @override
+  String legacyIncomeDesc(int pct) {
+    return '+$pct% income per level, practically unlimited';
+  }
+
+  @override
+  String get legacyTapName => 'Tap legacy';
+
+  @override
+  String legacyTapDesc(int pct) {
+    return '+$pct% coins per tap per level';
+  }
+
+  @override
+  String get deliveryTitle => 'Weather & Delivery';
+
+  @override
+  String get weatherName0 => 'Hot';
+
+  @override
+  String get weatherName1 => 'Rainy';
+
+  @override
+  String get weatherName2 => 'Cold';
+
+  @override
+  String get weatherName3 => 'Mild';
+
+  @override
+  String get weatherMenu0 => 'Iced tea';
+
+  @override
+  String get weatherMenu1 => 'Hot tea';
+
+  @override
+  String get weatherMenu2 => 'Hot milk';
+
+  @override
+  String get weatherMenu3 => 'Fruit tea';
+
+  @override
+  String get weatherHint =>
+      'Pick the menu that fits the weather for a bigger reward (one pick per 3-hour window).';
+
+  @override
+  String weatherChanges(String time) {
+    return 'Changes in $time';
+  }
+
+  @override
+  String get weatherPicked => 'Already picked this window';
+
+  @override
+  String weatherRight(String xu) {
+    return 'Perfect match! +$xu 🪙';
+  }
+
+  @override
+  String weatherWrong(String xu) {
+    return 'Still sold, +$xu 🪙';
+  }
+
+  @override
+  String get deliveryHint =>
+      'Take a delivery order: stake coins, finishes in a few hours. Success pays back more; failure loses the stake.';
+
+  @override
+  String deliveryTierHours(int hours) {
+    return '$hours h';
+  }
+
+  @override
+  String deliveryStart(String stake) {
+    return 'Accept · stake $stake 🪙';
+  }
+
+  @override
+  String deliveryRunning(String time) {
+    return 'Delivering… $time left';
+  }
+
+  @override
+  String get deliveryReady => 'Delivered! Tap to see the result';
+
+  @override
+  String deliveryWin(String xu) {
+    return 'Delivery succeeded! +$xu 🪙';
+  }
+
+  @override
+  String get deliveryLose => 'Delivery failed, stake lost';
+
+  @override
+  String get regularsTitle => 'Regulars';
+
+  @override
+  String get regularsIntro =>
+      'Regulars drop by every day. Serve them their favourite drink to grow closer — each level boosts income and awards 💎.';
+
+  @override
+  String get regularsVisiting => 'Visiting today';
+
+  @override
+  String get regularsServed => 'Served';
+
+  @override
+  String regularsWants(String drink) {
+    return 'Likes: $drink';
+  }
+
+  @override
+  String get regularsUnknown => 'Favourite unknown yet';
+
+  @override
+  String regularsGain(int points) {
+    return '+$points bond';
+  }
+
+  @override
+  String get regularsFav => 'Their favourite! ✨';
+
+  @override
+  String regularsLevelUp(int level) {
+    return 'Level $level! 🎉';
+  }
+
+  @override
+  String regularsPick(String cost, String name) {
+    return 'Pick a drink for $name · $cost 🪙';
+  }
+
+  @override
+  String get regularsNoMoney => 'Not enough coins';
+
+  @override
   String get myShopTitle => 'My shop';
 
   @override

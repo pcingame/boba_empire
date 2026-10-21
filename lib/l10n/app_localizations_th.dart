@@ -4897,6 +4897,149 @@ class AppLocalizationsTh extends AppLocalizations {
   String get communityTitle => 'ชุมชน';
 
   @override
+  String get legacyTitle => 'มรดก';
+
+  @override
+  String get legacyLocked => 'ปลดล็อกหลังการเลื่อนขั้นครั้งที่ 4';
+
+  @override
+  String get legacyIncomeName => 'มรดกรายได้';
+
+  @override
+  String legacyIncomeDesc(int pct) {
+    return '+$pct% รายได้ต่อเลเวล แทบไม่จำกัด';
+  }
+
+  @override
+  String get legacyTapName => 'มรดกการแตะ';
+
+  @override
+  String legacyTapDesc(int pct) {
+    return '+$pct% เหรียญต่อการแตะต่อเลเวล';
+  }
+
+  @override
+  String get deliveryTitle => 'สภาพอากาศและการส่งของ';
+
+  @override
+  String get weatherName0 => 'ร้อน';
+
+  @override
+  String get weatherName1 => 'ฝนตก';
+
+  @override
+  String get weatherName2 => 'หนาว';
+
+  @override
+  String get weatherName3 => 'เย็นสบาย';
+
+  @override
+  String get weatherMenu0 => 'ชาเย็น';
+
+  @override
+  String get weatherMenu1 => 'ชาร้อน';
+
+  @override
+  String get weatherMenu2 => 'นมร้อน';
+
+  @override
+  String get weatherMenu3 => 'ชาผลไม้';
+
+  @override
+  String get weatherHint =>
+      'เลือกเมนูให้เข้ากับอากาศเพื่อรับรางวัลมากขึ้น (เลือกได้หนึ่งครั้งต่อ 3 ชั่วโมง)';
+
+  @override
+  String weatherChanges(String time) {
+    return 'เปลี่ยนใน $time';
+  }
+
+  @override
+  String get weatherPicked => 'เลือกแล้วในช่วงนี้';
+
+  @override
+  String weatherRight(String xu) {
+    return 'เข้ากันเป๊ะ! +$xu 🪙';
+  }
+
+  @override
+  String weatherWrong(String xu) {
+    return 'ขายได้อยู่ +$xu 🪙';
+  }
+
+  @override
+  String get deliveryHint =>
+      'รับออเดอร์ส่งของ: วางเหรียญ เสร็จในไม่กี่ชั่วโมง สำเร็จได้คืนมากขึ้น ล้มเหลวเสียเงินที่วาง';
+
+  @override
+  String deliveryTierHours(int hours) {
+    return '$hours ชม.';
+  }
+
+  @override
+  String deliveryStart(String stake) {
+    return 'รับ · วาง $stake 🪙';
+  }
+
+  @override
+  String deliveryRunning(String time) {
+    return 'กำลังส่ง… เหลือ $time';
+  }
+
+  @override
+  String get deliveryReady => 'ส่งเสร็จ! แตะเพื่อดูผล';
+
+  @override
+  String deliveryWin(String xu) {
+    return 'ส่งสำเร็จ! +$xu 🪙';
+  }
+
+  @override
+  String get deliveryLose => 'ส่งไม่สำเร็จ เสียเงินที่วาง';
+
+  @override
+  String get regularsTitle => 'ลูกค้าประจำ';
+
+  @override
+  String get regularsIntro =>
+      'ลูกค้าประจำแวะมาทุกวัน เสิร์ฟเครื่องดื่มโปรดเพื่อสนิทกันมากขึ้น ทุกเลเวลเพิ่มรายได้และให้ 💎';
+
+  @override
+  String get regularsVisiting => 'มาวันนี้';
+
+  @override
+  String get regularsServed => 'เสิร์ฟแล้ว';
+
+  @override
+  String regularsWants(String drink) {
+    return 'ชอบ: $drink';
+  }
+
+  @override
+  String get regularsUnknown => 'ยังไม่รู้ว่าชอบอะไร';
+
+  @override
+  String regularsGain(int points) {
+    return '+$points ความสนิท';
+  }
+
+  @override
+  String get regularsFav => 'ตรงใจเลย! ✨';
+
+  @override
+  String regularsLevelUp(int level) {
+    return 'เลเวล $level! 🎉';
+  }
+
+  @override
+  String regularsPick(String cost, String name) {
+    return 'เลือกเครื่องดื่มให้ $name · $cost 🪙';
+  }
+
+  @override
+  String get regularsNoMoney => 'เหรียญไม่พอ';
+
+  @override
   String get myShopTitle => 'ร้านของฉัน';
 
   @override

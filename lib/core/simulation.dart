@@ -12,6 +12,7 @@ import 'balance.dart';
 import 'daily.dart';
 import 'daily_quests.dart';
 import 'economy.dart';
+import 'legacy.dart';
 import 'models.dart';
 
 /// Xu của MỘT lần chạm (chưa cộng vào ví). [boostMultiplier] là hệ số Mưa vàng đang có.
@@ -23,6 +24,7 @@ double tapGain(GameState state, {double boostMultiplier = 1.0}) =>
             ascensionStarBonusFactor(state.ascensionStarBonusLevel)) *
     permanentMultiplier(state.gemBoostLevel) *
     prestigeTapMultiplier(state.prestigeTapLevel) *
+    legacyMultiplier(state.legacyTapLevel) *
     storyChoiceTapMultiplier(state) *
     loadoutBuffs(state.equippedAccessories, refine: state.refineLevels).tapMultiplier *
     boostMultiplier;

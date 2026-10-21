@@ -4942,6 +4942,149 @@ class AppLocalizationsEs extends AppLocalizations {
   String get communityTitle => 'Comunidad';
 
   @override
+  String get legacyTitle => 'Legado';
+
+  @override
+  String get legacyLocked => 'Se desbloquea tras tu 4.ª Ascensión';
+
+  @override
+  String get legacyIncomeName => 'Legado de ingresos';
+
+  @override
+  String legacyIncomeDesc(int pct) {
+    return '+$pct% de ingresos por nivel, prácticamente ilimitado';
+  }
+
+  @override
+  String get legacyTapName => 'Legado de toques';
+
+  @override
+  String legacyTapDesc(int pct) {
+    return '+$pct% de monedas por toque por nivel';
+  }
+
+  @override
+  String get deliveryTitle => 'Clima y entregas';
+
+  @override
+  String get weatherName0 => 'Calor';
+
+  @override
+  String get weatherName1 => 'Lluvia';
+
+  @override
+  String get weatherName2 => 'Frío';
+
+  @override
+  String get weatherName3 => 'Templado';
+
+  @override
+  String get weatherMenu0 => 'Té helado';
+
+  @override
+  String get weatherMenu1 => 'Té caliente';
+
+  @override
+  String get weatherMenu2 => 'Leche caliente';
+
+  @override
+  String get weatherMenu3 => 'Té de frutas';
+
+  @override
+  String get weatherHint =>
+      'Elige el menú que encaje con el clima para ganar más (una elección por franja de 3 horas).';
+
+  @override
+  String weatherChanges(String time) {
+    return 'Cambia en $time';
+  }
+
+  @override
+  String get weatherPicked => 'Ya elegiste en esta franja';
+
+  @override
+  String weatherRight(String xu) {
+    return '¡Combinación perfecta! +$xu 🪙';
+  }
+
+  @override
+  String weatherWrong(String xu) {
+    return 'Se vendió igual, +$xu 🪙';
+  }
+
+  @override
+  String get deliveryHint =>
+      'Acepta un pedido: apuesta monedas, termina en unas horas. Si sale bien ganas más; si falla pierdes la apuesta.';
+
+  @override
+  String deliveryTierHours(int hours) {
+    return '$hours h';
+  }
+
+  @override
+  String deliveryStart(String stake) {
+    return 'Aceptar · apuesta $stake 🪙';
+  }
+
+  @override
+  String deliveryRunning(String time) {
+    return 'Entregando… faltan $time';
+  }
+
+  @override
+  String get deliveryReady => '¡Entregado! Toca para ver el resultado';
+
+  @override
+  String deliveryWin(String xu) {
+    return '¡Entrega exitosa! +$xu 🪙';
+  }
+
+  @override
+  String get deliveryLose => 'Entrega fallida, apuesta perdida';
+
+  @override
+  String get regularsTitle => 'Clientes habituales';
+
+  @override
+  String get regularsIntro =>
+      'Los habituales pasan cada día. Sírveles su bebida favorita para acercaros: cada nivel sube los ingresos y da 💎.';
+
+  @override
+  String get regularsVisiting => 'Hoy de visita';
+
+  @override
+  String get regularsServed => 'Atendido';
+
+  @override
+  String regularsWants(String drink) {
+    return 'Le gusta: $drink';
+  }
+
+  @override
+  String get regularsUnknown => 'Favorita aún desconocida';
+
+  @override
+  String regularsGain(int points) {
+    return '+$points afinidad';
+  }
+
+  @override
+  String get regularsFav => '¡Su favorita! ✨';
+
+  @override
+  String regularsLevelUp(int level) {
+    return '¡Nivel $level! 🎉';
+  }
+
+  @override
+  String regularsPick(String cost, String name) {
+    return 'Elige una bebida para $name · $cost 🪙';
+  }
+
+  @override
+  String get regularsNoMoney => 'Monedas insuficientes';
+
+  @override
   String get myShopTitle => 'Mi tienda';
 
   @override

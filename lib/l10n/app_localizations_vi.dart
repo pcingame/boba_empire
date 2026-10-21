@@ -4910,6 +4910,149 @@ class AppLocalizationsVi extends AppLocalizations {
   String get communityTitle => 'Cộng đồng';
 
   @override
+  String get legacyTitle => 'Di sản';
+
+  @override
+  String get legacyLocked => 'Mở sau khi Kỷ Nguyên hoá lần thứ 4';
+
+  @override
+  String get legacyIncomeName => 'Di sản thu nhập';
+
+  @override
+  String legacyIncomeDesc(int pct) {
+    return '+$pct% thu nhập mỗi cấp, không giới hạn thực tế';
+  }
+
+  @override
+  String get legacyTapName => 'Di sản chạm';
+
+  @override
+  String legacyTapDesc(int pct) {
+    return '+$pct% Xu mỗi lần chạm mỗi cấp';
+  }
+
+  @override
+  String get deliveryTitle => 'Thời tiết & Giao hàng';
+
+  @override
+  String get weatherName0 => 'Nắng nóng';
+
+  @override
+  String get weatherName1 => 'Trời mưa';
+
+  @override
+  String get weatherName2 => 'Trời lạnh';
+
+  @override
+  String get weatherName3 => 'Dịu mát';
+
+  @override
+  String get weatherMenu0 => 'Trà đá';
+
+  @override
+  String get weatherMenu1 => 'Trà nóng';
+
+  @override
+  String get weatherMenu2 => 'Sữa nóng';
+
+  @override
+  String get weatherMenu3 => 'Trà trái cây';
+
+  @override
+  String get weatherHint =>
+      'Chọn menu hợp thời tiết để nhận thưởng lớn hơn (mỗi khung 3 giờ chọn một lần).';
+
+  @override
+  String weatherChanges(String time) {
+    return 'Đổi sau $time';
+  }
+
+  @override
+  String get weatherPicked => 'Đã chọn cho khung giờ này';
+
+  @override
+  String weatherRight(String xu) {
+    return 'Hợp thời tiết! +$xu 🪙';
+  }
+
+  @override
+  String weatherWrong(String xu) {
+    return 'Vẫn bán được, +$xu 🪙';
+  }
+
+  @override
+  String get deliveryHint =>
+      'Nhận đơn giao hàng: cược Xu, giao xong sau vài giờ. Thành công thì nhận lại nhiều hơn, thất bại mất tiền cược.';
+
+  @override
+  String deliveryTierHours(int hours) {
+    return '$hours giờ';
+  }
+
+  @override
+  String deliveryStart(String stake) {
+    return 'Nhận · cược $stake 🪙';
+  }
+
+  @override
+  String deliveryRunning(String time) {
+    return 'Đang giao… còn $time';
+  }
+
+  @override
+  String get deliveryReady => 'Giao xong! Bấm để nhận kết quả';
+
+  @override
+  String deliveryWin(String xu) {
+    return 'Giao thành công! +$xu 🪙';
+  }
+
+  @override
+  String get deliveryLose => 'Giao thất bại, mất tiền cược';
+
+  @override
+  String get regularsTitle => 'Khách quen';
+
+  @override
+  String get regularsIntro =>
+      'Khách quen ghé quán mỗi ngày. Mời họ đúng món họ thích để thân thiết hơn — mỗi cấp tăng thu nhập và thưởng 💎.';
+
+  @override
+  String get regularsVisiting => 'Ghé hôm nay';
+
+  @override
+  String get regularsServed => 'Đã phục vụ';
+
+  @override
+  String regularsWants(String drink) {
+    return 'Thích: $drink';
+  }
+
+  @override
+  String get regularsUnknown => 'Chưa biết món họ thích';
+
+  @override
+  String regularsGain(int points) {
+    return '+$points thân thiết';
+  }
+
+  @override
+  String get regularsFav => 'Đúng món họ thích! ✨';
+
+  @override
+  String regularsLevelUp(int level) {
+    return 'Lên cấp $level! 🎉';
+  }
+
+  @override
+  String regularsPick(String cost, String name) {
+    return 'Chọn đồ uống cho $name · $cost 🪙';
+  }
+
+  @override
+  String get regularsNoMoney => 'Không đủ Xu';
+
+  @override
   String get myShopTitle => 'Quán của tôi';
 
   @override

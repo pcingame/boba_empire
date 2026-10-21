@@ -4840,6 +4840,148 @@ class AppLocalizationsKo extends AppLocalizations {
   String get communityTitle => '커뮤니티';
 
   @override
+  String get legacyTitle => '유산';
+
+  @override
+  String get legacyLocked => '4번째 승천 후 해금';
+
+  @override
+  String get legacyIncomeName => '수입 유산';
+
+  @override
+  String legacyIncomeDesc(int pct) {
+    return '레벨당 수입 +$pct%, 사실상 무제한';
+  }
+
+  @override
+  String get legacyTapName => '터치 유산';
+
+  @override
+  String legacyTapDesc(int pct) {
+    return '레벨당 터치 코인 +$pct%';
+  }
+
+  @override
+  String get deliveryTitle => '날씨 & 배달';
+
+  @override
+  String get weatherName0 => '더움';
+
+  @override
+  String get weatherName1 => '비';
+
+  @override
+  String get weatherName2 => '추움';
+
+  @override
+  String get weatherName3 => '선선함';
+
+  @override
+  String get weatherMenu0 => '아이스티';
+
+  @override
+  String get weatherMenu1 => '따뜻한 차';
+
+  @override
+  String get weatherMenu2 => '따뜻한 우유';
+
+  @override
+  String get weatherMenu3 => '과일차';
+
+  @override
+  String get weatherHint => '날씨에 맞는 메뉴를 고르면 더 큰 보상! (3시간마다 한 번)';
+
+  @override
+  String weatherChanges(String time) {
+    return '$time 후 변경';
+  }
+
+  @override
+  String get weatherPicked => '이번 시간대는 이미 선택함';
+
+  @override
+  String weatherRight(String xu) {
+    return '완벽한 궁합! +$xu 🪙';
+  }
+
+  @override
+  String weatherWrong(String xu) {
+    return '그래도 팔렸어요, +$xu 🪙';
+  }
+
+  @override
+  String get deliveryHint =>
+      '배달 주문을 받으세요: 코인을 걸고 몇 시간 후 완료됩니다. 성공하면 더 많이 받고, 실패하면 건 코인을 잃습니다.';
+
+  @override
+  String deliveryTierHours(int hours) {
+    return '$hours시간';
+  }
+
+  @override
+  String deliveryStart(String stake) {
+    return '수락 · 베팅 $stake 🪙';
+  }
+
+  @override
+  String deliveryRunning(String time) {
+    return '배달 중… $time 남음';
+  }
+
+  @override
+  String get deliveryReady => '배달 완료! 눌러서 결과 확인';
+
+  @override
+  String deliveryWin(String xu) {
+    return '배달 성공! +$xu 🪙';
+  }
+
+  @override
+  String get deliveryLose => '배달 실패, 베팅 손실';
+
+  @override
+  String get regularsTitle => '단골손님';
+
+  @override
+  String get regularsIntro =>
+      '단골손님이 매일 찾아옵니다. 좋아하는 음료를 대접하면 친밀도가 올라가고, 레벨마다 수입이 늘고 💎를 받습니다.';
+
+  @override
+  String get regularsVisiting => '오늘 방문';
+
+  @override
+  String get regularsServed => '대접 완료';
+
+  @override
+  String regularsWants(String drink) {
+    return '좋아함: $drink';
+  }
+
+  @override
+  String get regularsUnknown => '좋아하는 음료 아직 모름';
+
+  @override
+  String regularsGain(int points) {
+    return '+$points 친밀도';
+  }
+
+  @override
+  String get regularsFav => '취향 저격! ✨';
+
+  @override
+  String regularsLevelUp(int level) {
+    return '레벨 $level! 🎉';
+  }
+
+  @override
+  String regularsPick(String cost, String name) {
+    return '$name에게 줄 음료 선택 · $cost 🪙';
+  }
+
+  @override
+  String get regularsNoMoney => '코인이 부족합니다';
+
+  @override
   String get myShopTitle => '내 가게';
 
   @override

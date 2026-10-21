@@ -130,6 +130,15 @@ class GameSnapshot {
     required this.branchStalls,
     required this.staff,
     required this.petLevel,
+    required this.regularPoints,
+    required this.regularDay,
+    required this.legacyIncomeLevel,
+    required this.legacyTapLevel,
+    required this.weatherSlotPicked,
+    required this.contractTier,
+    required this.contractEnd,
+    required this.contractStake,
+    required this.regularServed,
     required this.petSince,
     required this.branchRoutes,
     required this.collectionMilestonesClaimed,
@@ -344,6 +353,15 @@ class GameSnapshot {
   final Map<String, int> branchStalls;
   final Map<String, int> staff;
   final int petLevel;
+  final Map<String, int> regularPoints;
+  final int regularDay;
+  final int legacyIncomeLevel;
+  final int legacyTapLevel;
+  final int weatherSlotPicked;
+  final int contractTier;
+  final int contractEnd;
+  final double contractStake;
+  final List<int> regularServed;
   final int petSince;
   final Map<String, int> branchRoutes;
 

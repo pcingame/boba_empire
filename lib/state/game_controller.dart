@@ -15,6 +15,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../core/branches.dart';
 import '../core/pet.dart';
+import '../core/legacy.dart';
+import '../core/regulars.dart';
+import '../core/weather_delivery.dart';
 import '../core/staff.dart';
 import '../core/raid.dart';
 import '../core/accessories.dart';
@@ -394,6 +397,79 @@ class GameController extends Notifier<GameSnapshot> {
     unawaited(saveNow());
     state = _snapshot();
     return cash;
+  }
+
+  /// Chọn menu [menu] (0..3) cho khung giờ thời tiết hiện tại. Trả Xu thưởng (0 nếu đã chọn khung này/sai chỉ số).
+  double pickWeatherMenu(int menu) {
+    final now = _clock();
+    final slot = weatherSlot(now);
+    if (menu < 0 || menu >= weatherKinds || _game.weatherSlotPicked == slot) return 0;
+    final cash = weatherReward(menu == weatherBestMenu(weatherOf(slot)), _branchBaseIncome());
+    _game.weatherSlotPicked = slot;
+    grantBonus(_game, cash);
+    logEvent('weather_pick', {'right': menu == weatherBestMenu(weatherOf(slot))});
+    unawaited(saveNow());
+    state = _snapshot();
+    return cash;
+  }
+
+  /// Nhận hợp đồng giao hàng [tier] (cược Xu). false nếu đang có hợp đồng/thiếu Xu.
+  bool startDelivery(int tier) {
+    if (tier < 0 || tier >= deliveryTiers.length || _game.contractTier >= 0) return false;
+    final stake = deliveryStake(tier, _branchBaseIncome());
+    if (!stake.isFinite || !(_game.money >= stake)) return false;
+    final now = _clock();
+    _game.money -= stake;
+    _game.contractTier = tier;
+    _game.contractStake = stake;
+    _game.contractEnd = now + deliveryDurationMillis(tier);
+    _game.contractSeed = now ^ (stake.toInt() * 2654435761);
+    logEvent('delivery_start', {'tier': tier});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
+  /// Chốt hợp đồng đã đến hạn: thắng thì +cược×hệ số. Trả Xu nhận (>0 thắng, 0 thua), null nếu chưa xong/không có.
+  double? finishDelivery() {
+    final tier = _game.contractTier;
+    if (tier < 0 || _clock() < _game.contractEnd) return null;
+    final win = deliveryWins(tier, _game.contractSeed);
+    final gain = win ? _game.contractStake * deliveryTiers[tier].payout : 0.0;
+    _game.contractTier = -1;
+    _game.contractStake = 0;
+    if (gain > 0) grantBonus(_game, gain);
+    logEvent('delivery_done', {'tier': tier, 'win': win});
+    unawaited(saveNow());
+    state = _snapshot();
+    return gain;
+  }
+
+  /// Phục vụ khách quen [i] bằng đồ uống [drink] (chỉ số trong [regularDrinks]). Trả điểm nhận được
+  /// (0 nếu khách không ghé hôm nay/đã phục vụ/thiếu Xu). Lên cấp thì thưởng 💎.
+  int serveRegular(int i, int drink) {
+    final today = dayIndex(_clock());
+    if (_game.regularDay != today) {
+      _game.regularDay = today;
+      _game.regularServed.clear();
+    }
+    if (i < 0 || i >= regularCount || drink < 0 || drink >= regularDrinks.length) return 0;
+    if (!regularsVisiting(today).contains(i) || _game.regularServed.contains(i)) return 0;
+    final cost = regularServeCost(_branchBaseIncome());
+    if (!cost.isFinite || !(_game.money >= cost)) return 0;
+    _game.money -= cost;
+    final before = regularLevel(_game.regularPoints, i);
+    final gain = regularPointsFor(i, drink);
+    _game.regularPoints['$i'] = regularPoints(_game.regularPoints, i) + gain;
+    _game.regularServed.add(i);
+    final after = regularLevel(_game.regularPoints, i);
+    for (var lv = before + 1; lv <= after; lv++) {
+      grantGems(_game, regularLevelGems(lv).toDouble());
+    }
+    logEvent('regular_serve', {'i': i, 'gain': gain, 'level': after});
+    unawaited(saveNow());
+    state = _snapshot();
+    return gain;
   }
 
   /// Thu nhập/giây hiện tại (để UI linh vật tính Xu chờ nhặt).
@@ -1804,6 +1880,24 @@ class GameController extends Notifier<GameSnapshot> {
     return gained;
   }
 
+  /// Nâng perk Di sản (thu nhập hoặc chạm) bằng ⏳ dư. false nếu chưa mở/thiếu ⏳/tối đa.
+  bool buyLegacy({required bool tap}) {
+    if (!legacyUnlocked(_game.ascensionCount)) return false;
+    final lvl = tap ? _game.legacyTapLevel : _game.legacyIncomeLevel;
+    if (lvl >= legacyMaxLevel) return false;
+    final cost = legacyCost(lvl);
+    if (ascensionPointsSpendable(_game) < cost) return false;
+    if (tap) {
+      _game.legacyTapLevel = lvl + 1;
+    } else {
+      _game.legacyIncomeLevel = lvl + 1;
+    }
+    logEvent('legacy_buy', {'tap': tap, 'level': lvl + 1});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
   bool buyAscensionIncomeUpgrade() => _buyPerk(() => buyAscensionIncome(_game));
   bool buyAscensionStarBonusUpgrade() =>
       _buyPerk(() => buyAscensionStarBonus(_game));
@@ -2720,6 +2814,15 @@ class GameController extends Notifier<GameSnapshot> {
       branchStalls: Map.unmodifiable(Map.of(_game.branchStalls)),
       staff: Map.unmodifiable(Map.of(_game.staff)),
       petLevel: _game.petLevel,
+      regularPoints: Map.unmodifiable(Map.of(_game.regularPoints)),
+      regularDay: _game.regularDay,
+      legacyIncomeLevel: _game.legacyIncomeLevel,
+      legacyTapLevel: _game.legacyTapLevel,
+      weatherSlotPicked: _game.weatherSlotPicked,
+      contractTier: _game.contractTier,
+      contractEnd: _game.contractEnd,
+      contractStake: _game.contractStake,
+      regularServed: List.unmodifiable(_game.regularServed),
       petSince: _game.petSince,
       branchRoutes: Map.unmodifiable(Map.of(_game.branchRoutes)),
       collectionMilestonesClaimed:

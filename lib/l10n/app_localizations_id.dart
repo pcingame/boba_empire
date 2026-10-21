@@ -4918,6 +4918,149 @@ class AppLocalizationsId extends AppLocalizations {
   String get communityTitle => 'Komunitas';
 
   @override
+  String get legacyTitle => 'Warisan';
+
+  @override
+  String get legacyLocked => 'Terbuka setelah Kenaikan ke-4';
+
+  @override
+  String get legacyIncomeName => 'Warisan pendapatan';
+
+  @override
+  String legacyIncomeDesc(int pct) {
+    return '+$pct% pendapatan per level, praktis tanpa batas';
+  }
+
+  @override
+  String get legacyTapName => 'Warisan ketukan';
+
+  @override
+  String legacyTapDesc(int pct) {
+    return '+$pct% koin per ketukan per level';
+  }
+
+  @override
+  String get deliveryTitle => 'Cuaca & Pengiriman';
+
+  @override
+  String get weatherName0 => 'Panas';
+
+  @override
+  String get weatherName1 => 'Hujan';
+
+  @override
+  String get weatherName2 => 'Dingin';
+
+  @override
+  String get weatherName3 => 'Sejuk';
+
+  @override
+  String get weatherMenu0 => 'Teh es';
+
+  @override
+  String get weatherMenu1 => 'Teh panas';
+
+  @override
+  String get weatherMenu2 => 'Susu panas';
+
+  @override
+  String get weatherMenu3 => 'Teh buah';
+
+  @override
+  String get weatherHint =>
+      'Pilih menu sesuai cuaca untuk hadiah lebih besar (sekali per 3 jam).';
+
+  @override
+  String weatherChanges(String time) {
+    return 'Berganti dalam $time';
+  }
+
+  @override
+  String get weatherPicked => 'Sudah memilih di periode ini';
+
+  @override
+  String weatherRight(String xu) {
+    return 'Cocok sekali! +$xu 🪙';
+  }
+
+  @override
+  String weatherWrong(String xu) {
+    return 'Tetap terjual, +$xu 🪙';
+  }
+
+  @override
+  String get deliveryHint =>
+      'Ambil pesanan antar: taruhan koin, selesai dalam beberapa jam. Berhasil dapat lebih banyak; gagal taruhan hilang.';
+
+  @override
+  String deliveryTierHours(int hours) {
+    return '$hours jam';
+  }
+
+  @override
+  String deliveryStart(String stake) {
+    return 'Ambil · taruhan $stake 🪙';
+  }
+
+  @override
+  String deliveryRunning(String time) {
+    return 'Mengantar… sisa $time';
+  }
+
+  @override
+  String get deliveryReady => 'Terkirim! Ketuk untuk lihat hasil';
+
+  @override
+  String deliveryWin(String xu) {
+    return 'Pengiriman berhasil! +$xu 🪙';
+  }
+
+  @override
+  String get deliveryLose => 'Pengiriman gagal, taruhan hilang';
+
+  @override
+  String get regularsTitle => 'Pelanggan tetap';
+
+  @override
+  String get regularsIntro =>
+      'Pelanggan tetap datang tiap hari. Sajikan minuman favorit mereka agar makin akrab — tiap level menambah pendapatan dan memberi 💎.';
+
+  @override
+  String get regularsVisiting => 'Datang hari ini';
+
+  @override
+  String get regularsServed => 'Sudah dilayani';
+
+  @override
+  String regularsWants(String drink) {
+    return 'Suka: $drink';
+  }
+
+  @override
+  String get regularsUnknown => 'Favorit belum diketahui';
+
+  @override
+  String regularsGain(int points) {
+    return '+$points kedekatan';
+  }
+
+  @override
+  String get regularsFav => 'Minuman favoritnya! ✨';
+
+  @override
+  String regularsLevelUp(int level) {
+    return 'Level $level! 🎉';
+  }
+
+  @override
+  String regularsPick(String cost, String name) {
+    return 'Pilih minuman untuk $name · $cost 🪙';
+  }
+
+  @override
+  String get regularsNoMoney => 'Koin tidak cukup';
+
+  @override
   String get myShopTitle => 'Kedaiku';
 
   @override

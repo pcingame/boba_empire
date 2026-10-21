@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../audio/audio_service.dart';
 import '../core/balance.dart';
+import '../core/legacy.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../state/game_providers.dart';
@@ -179,6 +180,9 @@ class _AscensionShop extends ConsumerWidget {
         gameControllerProvider.select((s) => s.ascensionStarBonusLevel));
     final gainLv = ref.watch(
         gameControllerProvider.select((s) => s.ascensionStarGainLevel));
+    final ascensions = ref.watch(gameControllerProvider.select((s) => s.ascensionCount));
+    final legacyIncomeLv = ref.watch(gameControllerProvider.select((s) => s.legacyIncomeLevel));
+    final legacyTapLv = ref.watch(gameControllerProvider.select((s) => s.legacyTapLevel));
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final controller = ref.read(gameControllerProvider.notifier);
@@ -228,6 +232,32 @@ class _AscensionShop extends ConsumerWidget {
           spendable: spendable,
           onBuy: () => buy(controller.buyAscensionStarGainUpgrade),
         ),
+        const Divider(),
+        Text('⚜️ ${l10n.legacyTitle}', style: theme.textTheme.titleMedium),
+        if (!legacyUnlocked(ascensions))
+          Text(l10n.legacyLocked, key: const Key('legacy-locked'), style: theme.textTheme.bodySmall)
+        else ...[
+          _PerkRow(
+            key: const Key('legacy-income'),
+            name: l10n.legacyIncomeName,
+            level: legacyIncomeLv,
+            maxLevel: legacyMaxLevel,
+            desc: l10n.legacyIncomeDesc((legacyPerLevel * 100).round()),
+            cost: legacyCost(legacyIncomeLv),
+            spendable: spendable,
+            onBuy: () => buy(() => controller.buyLegacy(tap: false)),
+          ),
+          _PerkRow(
+            key: const Key('legacy-tap'),
+            name: l10n.legacyTapName,
+            level: legacyTapLv,
+            maxLevel: legacyMaxLevel,
+            desc: l10n.legacyTapDesc((legacyPerLevel * 100).round()),
+            cost: legacyCost(legacyTapLv),
+            spendable: spendable,
+            onBuy: () => buy(() => controller.buyLegacy(tap: true)),
+          ),
+        ],
       ],
     );
   }
@@ -235,6 +265,7 @@ class _AscensionShop extends ConsumerWidget {
 
 class _PerkRow extends StatelessWidget {
   const _PerkRow({
+    super.key,
     required this.name,
     required this.level,
     required this.maxLevel,

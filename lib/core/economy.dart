@@ -13,6 +13,8 @@ import 'balance.dart';
 import 'branches.dart' show branchIncomeMultiplier;
 import 'guild.dart' show guildVipBonusMultiplier;
 import 'models.dart';
+import 'legacy.dart';
+import 'regulars.dart';
 import 'staff.dart';
 import 'topup.dart';
 
@@ -233,7 +235,9 @@ int ascensionPointsSpent(GameState s) =>
     _ascensionSpentFor(
         Balance.ascensionStarBonusBaseCost, s.ascensionStarBonusLevel) +
     _ascensionSpentFor(
-        Balance.ascensionStarGainBaseCost, s.ascensionStarGainLevel);
+        Balance.ascensionStarGainBaseCost, s.ascensionStarGainLevel) +
+    legacySpent(s.legacyIncomeLevel) +
+    legacySpent(s.legacyTapLevel);
 
 /// Điểm còn có thể tiêu.
 int ascensionPointsSpendable(GameState s) =>
@@ -389,6 +393,8 @@ double effectiveIncomePerSecond(
     storyChoiceIncomeMultiplier(state) *
     (state.doubleIncomeOwned ? 2.0 : 1.0) *
     branchIncomeMultiplier(state.branchLevels) *
+    regularIncomeMultiplier(state.regularPoints) *
+    legacyMultiplier(state.legacyIncomeLevel) *
     vipIncomeMultiplier(state.vipExp) *
     guildVipBonusMultiplier(joined: state.guildJoined, pct: state.guildVipBonusPct) *
     loadoutBuffs(state.equippedAccessories, refine: state.refineLevels).incomeMultiplier *

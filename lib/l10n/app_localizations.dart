@@ -8287,6 +8287,234 @@ abstract class AppLocalizations {
   /// **'Cộng đồng'**
   String get communityTitle;
 
+  /// No description provided for @legacyTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Di sản'**
+  String get legacyTitle;
+
+  /// No description provided for @legacyLocked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở sau khi Kỷ Nguyên hoá lần thứ 4'**
+  String get legacyLocked;
+
+  /// No description provided for @legacyIncomeName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Di sản thu nhập'**
+  String get legacyIncomeName;
+
+  /// No description provided for @legacyIncomeDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{pct}% thu nhập mỗi cấp, không giới hạn thực tế'**
+  String legacyIncomeDesc(int pct);
+
+  /// No description provided for @legacyTapName.
+  ///
+  /// In vi, this message translates to:
+  /// **'Di sản chạm'**
+  String get legacyTapName;
+
+  /// No description provided for @legacyTapDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{pct}% Xu mỗi lần chạm mỗi cấp'**
+  String legacyTapDesc(int pct);
+
+  /// No description provided for @deliveryTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thời tiết & Giao hàng'**
+  String get deliveryTitle;
+
+  /// No description provided for @weatherName0.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nắng nóng'**
+  String get weatherName0;
+
+  /// No description provided for @weatherName1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trời mưa'**
+  String get weatherName1;
+
+  /// No description provided for @weatherName2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trời lạnh'**
+  String get weatherName2;
+
+  /// No description provided for @weatherName3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dịu mát'**
+  String get weatherName3;
+
+  /// No description provided for @weatherMenu0.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà đá'**
+  String get weatherMenu0;
+
+  /// No description provided for @weatherMenu1.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà nóng'**
+  String get weatherMenu1;
+
+  /// No description provided for @weatherMenu2.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sữa nóng'**
+  String get weatherMenu2;
+
+  /// No description provided for @weatherMenu3.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trà trái cây'**
+  String get weatherMenu3;
+
+  /// No description provided for @weatherHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn menu hợp thời tiết để nhận thưởng lớn hơn (mỗi khung 3 giờ chọn một lần).'**
+  String get weatherHint;
+
+  /// No description provided for @weatherChanges.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi sau {time}'**
+  String weatherChanges(String time);
+
+  /// No description provided for @weatherPicked.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã chọn cho khung giờ này'**
+  String get weatherPicked;
+
+  /// No description provided for @weatherRight.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hợp thời tiết! +{xu} 🪙'**
+  String weatherRight(String xu);
+
+  /// No description provided for @weatherWrong.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vẫn bán được, +{xu} 🪙'**
+  String weatherWrong(String xu);
+
+  /// No description provided for @deliveryHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận đơn giao hàng: cược Xu, giao xong sau vài giờ. Thành công thì nhận lại nhiều hơn, thất bại mất tiền cược.'**
+  String get deliveryHint;
+
+  /// No description provided for @deliveryTierHours.
+  ///
+  /// In vi, this message translates to:
+  /// **'{hours} giờ'**
+  String deliveryTierHours(int hours);
+
+  /// No description provided for @deliveryStart.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhận · cược {stake} 🪙'**
+  String deliveryStart(String stake);
+
+  /// No description provided for @deliveryRunning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang giao… còn {time}'**
+  String deliveryRunning(String time);
+
+  /// No description provided for @deliveryReady.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao xong! Bấm để nhận kết quả'**
+  String get deliveryReady;
+
+  /// No description provided for @deliveryWin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao thành công! +{xu} 🪙'**
+  String deliveryWin(String xu);
+
+  /// No description provided for @deliveryLose.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giao thất bại, mất tiền cược'**
+  String get deliveryLose;
+
+  /// No description provided for @regularsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khách quen'**
+  String get regularsTitle;
+
+  /// No description provided for @regularsIntro.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khách quen ghé quán mỗi ngày. Mời họ đúng món họ thích để thân thiết hơn — mỗi cấp tăng thu nhập và thưởng 💎.'**
+  String get regularsIntro;
+
+  /// No description provided for @regularsVisiting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghé hôm nay'**
+  String get regularsVisiting;
+
+  /// No description provided for @regularsServed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã phục vụ'**
+  String get regularsServed;
+
+  /// No description provided for @regularsWants.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thích: {drink}'**
+  String regularsWants(String drink);
+
+  /// No description provided for @regularsUnknown.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa biết món họ thích'**
+  String get regularsUnknown;
+
+  /// No description provided for @regularsGain.
+  ///
+  /// In vi, this message translates to:
+  /// **'+{points} thân thiết'**
+  String regularsGain(int points);
+
+  /// No description provided for @regularsFav.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đúng món họ thích! ✨'**
+  String get regularsFav;
+
+  /// No description provided for @regularsLevelUp.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lên cấp {level}! 🎉'**
+  String regularsLevelUp(int level);
+
+  /// No description provided for @regularsPick.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn đồ uống cho {name} · {cost} 🪙'**
+  String regularsPick(String cost, String name);
+
+  /// No description provided for @regularsNoMoney.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đủ Xu'**
+  String get regularsNoMoney;
+
   /// No description provided for @myShopTitle.
   ///
   /// In vi, this message translates to:
