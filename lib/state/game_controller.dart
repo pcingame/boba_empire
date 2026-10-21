@@ -413,6 +413,21 @@ class GameController extends Notifier<GameSnapshot> {
     return true;
   }
 
+  /// Mở tuyến thương mại [a]-[b] (cấp 1) hoặc nâng tuyến đã có, bằng Xu. false nếu không hợp lệ/đã tối đa/thiếu Xu.
+  bool upgradeBranchRoute(String a, String b) {
+    final lvl = branchRouteLevel(_game.branchRoutes, a, b);
+    if (lvl >= branchRouteMaxLevel) return false;
+    if (lvl == 0 && !branchRouteCanOpen(_game.branchLevels, _game.branchRoutes, a, b)) return false;
+    final cost = branchRouteCost(a, b, lvl, _branchBaseIncome(), discount: branchPerk(_game.branchLevels, BranchPerk.discount));
+    if (!cost.isFinite || !(_game.money >= cost)) return false;
+    _game.money -= cost;
+    _game.branchRoutes[branchRouteKey(a, b)] = lvl + 1;
+    logEvent('branch_route', {'key': branchRouteKey(a, b), 'level': lvl + 1});
+    unawaited(saveNow());
+    state = _snapshot();
+    return true;
+  }
+
   void setBranchMapSkin(int skin) {
     if (skin < 0 || skin >= branchMapSkinCount || skin == _game.branchMapSkin) return;
     _game.branchMapSkin = skin;
@@ -447,7 +462,7 @@ class GameController extends Notifier<GameSnapshot> {
       if (sec <= 0) continue;
       final spec = _game.branchSpecs[c.id] ?? 0;
       var gain = income.isFinite
-          ? sec * income * (collectBonus + (spec == 1 ? branchSpecCollectBonus : 0)) * branchStallMultiplier(_game.branchStalls, c.id)
+          ? sec * income * (collectBonus + (spec == 1 ? branchSpecCollectBonus : 0)) * branchStallMultiplier(_game.branchStalls, c.id) * branchRouteMultiplier(_game.branchRoutes, _game.branchLevels, c.id)
           : 0.0;
       if (_random.nextDouble() < rushChance + (spec == 2 ? branchSpecRushBonus : 0)) {
         gain *= branchRushMult;
@@ -2635,6 +2650,7 @@ class GameController extends Notifier<GameSnapshot> {
       branchQuestProgress: List.unmodifiable(_game.branchQuestProgress),
       branchQuestClaimed: _game.branchQuestClaimed,
       branchStalls: Map.unmodifiable(Map.of(_game.branchStalls)),
+      branchRoutes: Map.unmodifiable(Map.of(_game.branchRoutes)),
       collectionMilestonesClaimed:
           List.unmodifiable(_game.collectionMilestonesClaimed),
       collectionSetsClaimed: List.unmodifiable(_game.collectionSetsClaimed),

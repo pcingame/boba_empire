@@ -3471,6 +3471,52 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String branchRouteBtn(int n) {
+    return 'Tuyến ($n)';
+  }
+
+  @override
+  String get branchRouteTitle => 'Tuyến thương mại';
+
+  @override
+  String branchRouteDesc(int same, int cross, int max) {
+    return 'Nối 2 chi nhánh đã mở: doanh thu thu về của cả hai tăng +$same% mỗi cấp (khác châu lục +$cross%, giá gấp đôi). Mỗi chi nhánh tối đa $max tuyến.';
+  }
+
+  @override
+  String get branchRouteNone => 'Chưa có tuyến nào.';
+
+  @override
+  String branchRouteLevel(int level, int max, int pct) {
+    return 'Cấp $level/$max · +$pct% doanh thu cả hai nơi';
+  }
+
+  @override
+  String get branchRouteNewTitle => 'Mở tuyến mới';
+
+  @override
+  String get branchRoutePickA => 'Từ';
+
+  @override
+  String get branchRoutePickB => 'Đến';
+
+  @override
+  String branchRouteOpen(String cost) {
+    return 'Mở tuyến · $cost Xu';
+  }
+
+  @override
+  String branchRouteUpgrade(String cost) {
+    return 'Nâng cấp · $cost Xu';
+  }
+
+  @override
+  String get branchRouteMax => 'Tối đa';
+
+  @override
+  String get branchRouteFail => 'Không đủ Xu hoặc không nối được.';
+
+  @override
   String get branchNothing => 'Chưa có gì để thu.';
 
   @override

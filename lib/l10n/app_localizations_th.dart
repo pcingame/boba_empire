@@ -3466,6 +3466,52 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String branchRouteBtn(int n) {
+    return 'เส้นทาง ($n)';
+  }
+
+  @override
+  String get branchRouteTitle => 'เส้นทางการค้า';
+
+  @override
+  String branchRouteDesc(int same, int cross, int max) {
+    return 'เชื่อม 2 สาขาที่เปิดแล้ว: ทั้งสองได้รายได้ +$same% ต่อเลเวล (ข้ามทวีป +$cross% ราคาสองเท่า) แต่ละสาขามีได้สูงสุด $max เส้นทาง';
+  }
+
+  @override
+  String get branchRouteNone => 'ยังไม่มีเส้นทาง';
+
+  @override
+  String branchRouteLevel(int level, int max, int pct) {
+    return 'เลเวล $level/$max · รายได้ทั้งสองฝั่ง +$pct%';
+  }
+
+  @override
+  String get branchRouteNewTitle => 'เปิดเส้นทางใหม่';
+
+  @override
+  String get branchRoutePickA => 'จาก';
+
+  @override
+  String get branchRoutePickB => 'ถึง';
+
+  @override
+  String branchRouteOpen(String cost) {
+    return 'เปิดเส้นทาง · $cost เหรียญ';
+  }
+
+  @override
+  String branchRouteUpgrade(String cost) {
+    return 'อัปเกรด · $cost เหรียญ';
+  }
+
+  @override
+  String get branchRouteMax => 'สูงสุด';
+
+  @override
+  String get branchRouteFail => 'เหรียญไม่พอหรือเชื่อมไม่ได้';
+
+  @override
   String get branchNothing => 'ยังไม่มีอะไรให้เก็บ';
 
   @override

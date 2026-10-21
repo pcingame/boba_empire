@@ -388,3 +388,69 @@ double branchStallMultiplier(Map<String, int> stalls, String cityId) {
 /// Giá nâng quầy [i] từ cấp [stallLevel] lên +1.
 double branchStallCost(BranchCity c, int stallLevel, int i, double incomePerSecond, {double discount = 0}) =>
     branchCost(c, stallLevel + 1 + 2 * i, incomePerSecond, discount: discount) * 0.5;
+
+// ---- Tuyến thương mại giữa các chi nhánh ----
+/// Nối 2 chi nhánh ĐÃ MỞ bằng một tuyến (tối đa [branchRouteMaxLevel] cấp, mua bằng Xu): doanh thu thu về của CẢ HAI nơi
+/// tăng [branchRouteBonusSame] mỗi cấp (cùng châu lục) hoặc [branchRouteBonusCross] (khác châu lục — giá gấp đôi).
+/// Mỗi chi nhánh chỉ nối tối đa [branchRouteMaxPerCity] tuyến để bonus không chồng vô hạn. Mặt trăng không có tuyến.
+/// Lưu 'a|b' (id xếp theo chữ cái) → cấp. Mọi con số là ước lượng chưa playtest.
+const int branchRouteMaxLevel = 3;
+const int branchRouteMaxPerCity = 2;
+const double branchRouteBonusSame = 0.04;
+const double branchRouteBonusCross = 0.08;
+
+String branchRouteKey(String a, String b) => a.compareTo(b) <= 0 ? '$a|$b' : '$b|$a';
+
+/// Khoá hợp lệ (2 thành phố khác nhau trên bản đồ, đã xếp chữ cái) — chống save hỏng/lạ.
+bool isBranchRouteKey(String k) {
+  final p = k.split('|');
+  if (p.length != 2 || p[0] == p[1] || p[0].compareTo(p[1]) > 0) return false;
+  return p.every((id) => id != 'moon' && branchCityById(id) != null);
+}
+
+String _branchContinent(String id) =>
+    branchSets.firstWhere((s) => s.id != 'all' && s.cityIds.contains(id)).id;
+
+bool branchRouteCross(String a, String b) => _branchContinent(a) != _branchContinent(b);
+
+double branchRouteBonusPerLevel(String a, String b) =>
+    branchRouteCross(a, b) ? branchRouteBonusCross : branchRouteBonusSame;
+
+int branchRouteLevel(Map<String, int> routes, String a, String b) => routes[branchRouteKey(a, b)] ?? 0;
+
+/// Số tuyến đang nối vào [cityId].
+int branchRouteCount(Map<String, int> routes, String cityId) =>
+    routes.keys.where((k) => k.split('|').contains(cityId)).length;
+
+/// Có thể mở TUYẾN MỚI giữa [a] và [b] không (đã mở cả hai, chưa có tuyến, chưa quá số tuyến/nơi).
+bool branchRouteCanOpen(Map<String, int> levels, Map<String, int> routes, String a, String b) =>
+    a != b &&
+    a != 'moon' &&
+    b != 'moon' &&
+    branchLevel(levels, a) > 0 &&
+    branchLevel(levels, b) > 0 &&
+    branchRouteLevel(routes, a, b) == 0 &&
+    branchRouteCount(routes, a) < branchRouteMaxPerCity &&
+    branchRouteCount(routes, b) < branchRouteMaxPerCity;
+
+/// Hệ số doanh thu thu về của [cityId] nhờ các tuyến (chỉ tính tuyến mà đầu kia còn mở).
+double branchRouteMultiplier(Map<String, int> routes, Map<String, int> levels, String cityId) {
+  var bonus = 0.0;
+  for (final e in routes.entries) {
+    final p = e.key.split('|');
+    if (p.length != 2 || !p.contains(cityId)) continue;
+    if (p.any((id) => branchLevel(levels, id) <= 0)) continue;
+    bonus += e.value * branchRouteBonusPerLevel(p[0], p[1]);
+  }
+  return 1 + bonus;
+}
+
+/// Giá nâng tuyến [a]-[b] từ cấp [routeLevel] lên +1: trung bình giá nâng hai chi nhánh ở cấp tương đương, gấp đôi nếu khác châu lục.
+double branchRouteCost(String a, String b, int routeLevel, double incomePerSecond, {double discount = 0}) {
+  final ca = branchCityById(a)!, cb = branchCityById(b)!;
+  final lvl = routeLevel + 3;
+  final v = (branchCost(ca, lvl, incomePerSecond, discount: discount) + branchCost(cb, lvl, incomePerSecond, discount: discount)) /
+      2 *
+      (branchRouteCross(a, b) ? 2 : 1);
+  return v.isFinite ? v : double.maxFinite;
+}

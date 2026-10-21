@@ -6019,6 +6019,78 @@ abstract class AppLocalizations {
   /// **'{lvl} cấp · {open}/{total} nơi'**
   String branchLbRow(int lvl, int open, int total);
 
+  /// No description provided for @branchRouteBtn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tuyến ({n})'**
+  String branchRouteBtn(int n);
+
+  /// No description provided for @branchRouteTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tuyến thương mại'**
+  String get branchRouteTitle;
+
+  /// No description provided for @branchRouteDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nối 2 chi nhánh đã mở: doanh thu thu về của cả hai tăng +{same}% mỗi cấp (khác châu lục +{cross}%, giá gấp đôi). Mỗi chi nhánh tối đa {max} tuyến.'**
+  String branchRouteDesc(int same, int cross, int max);
+
+  /// No description provided for @branchRouteNone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có tuyến nào.'**
+  String get branchRouteNone;
+
+  /// No description provided for @branchRouteLevel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cấp {level}/{max} · +{pct}% doanh thu cả hai nơi'**
+  String branchRouteLevel(int level, int max, int pct);
+
+  /// No description provided for @branchRouteNewTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở tuyến mới'**
+  String get branchRouteNewTitle;
+
+  /// No description provided for @branchRoutePickA.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ'**
+  String get branchRoutePickA;
+
+  /// No description provided for @branchRoutePickB.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đến'**
+  String get branchRoutePickB;
+
+  /// No description provided for @branchRouteOpen.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở tuyến · {cost} Xu'**
+  String branchRouteOpen(String cost);
+
+  /// No description provided for @branchRouteUpgrade.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nâng cấp · {cost} Xu'**
+  String branchRouteUpgrade(String cost);
+
+  /// No description provided for @branchRouteMax.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối đa'**
+  String get branchRouteMax;
+
+  /// No description provided for @branchRouteFail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không đủ Xu hoặc không nối được.'**
+  String get branchRouteFail;
+
   /// No description provided for @branchNothing.
   ///
   /// In vi, this message translates to:

@@ -3478,6 +3478,52 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String branchRouteBtn(int n) {
+    return 'Rute ($n)';
+  }
+
+  @override
+  String get branchRouteTitle => 'Rute dagang';
+
+  @override
+  String branchRouteDesc(int same, int cross, int max) {
+    return 'Hubungkan 2 cabang yang terbuka: keduanya mendapat +$same% pendapatan per level (+$cross% beda benua, harga dua kali lipat). Tiap cabang maks. $max rute.';
+  }
+
+  @override
+  String get branchRouteNone => 'Belum ada rute.';
+
+  @override
+  String branchRouteLevel(int level, int max, int pct) {
+    return 'Level $level/$max · +$pct% pendapatan di kedua cabang';
+  }
+
+  @override
+  String get branchRouteNewTitle => 'Buka rute baru';
+
+  @override
+  String get branchRoutePickA => 'Dari';
+
+  @override
+  String get branchRoutePickB => 'Ke';
+
+  @override
+  String branchRouteOpen(String cost) {
+    return 'Buka rute · $cost koin';
+  }
+
+  @override
+  String branchRouteUpgrade(String cost) {
+    return 'Tingkatkan · $cost koin';
+  }
+
+  @override
+  String get branchRouteMax => 'Maks.';
+
+  @override
+  String get branchRouteFail => 'Koin kurang atau tidak bisa terhubung.';
+
+  @override
   String get branchNothing => 'Belum ada yang bisa diambil.';
 
   @override

@@ -3494,6 +3494,52 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String branchRouteBtn(int n) {
+    return 'Rutas ($n)';
+  }
+
+  @override
+  String get branchRouteTitle => 'Rutas comerciales';
+
+  @override
+  String branchRouteDesc(int same, int cross, int max) {
+    return 'Une 2 sucursales abiertas: ambas recaudan +$same% por nivel (+$cross% entre continentes, precio doble). Cada sucursal tiene máx. $max rutas.';
+  }
+
+  @override
+  String get branchRouteNone => 'Aún no hay rutas.';
+
+  @override
+  String branchRouteLevel(int level, int max, int pct) {
+    return 'Nivel $level/$max · +$pct% de ingresos en ambas';
+  }
+
+  @override
+  String get branchRouteNewTitle => 'Abrir una ruta nueva';
+
+  @override
+  String get branchRoutePickA => 'Desde';
+
+  @override
+  String get branchRoutePickB => 'Hasta';
+
+  @override
+  String branchRouteOpen(String cost) {
+    return 'Abrir ruta · $cost monedas';
+  }
+
+  @override
+  String branchRouteUpgrade(String cost) {
+    return 'Mejorar · $cost monedas';
+  }
+
+  @override
+  String get branchRouteMax => 'Máx.';
+
+  @override
+  String get branchRouteFail => 'Faltan monedas o no se puede unir.';
+
+  @override
   String get branchNothing => 'Aún no hay nada que cobrar.';
 
   @override

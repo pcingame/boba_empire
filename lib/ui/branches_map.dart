@@ -674,6 +674,7 @@ class BranchesMap extends StatefulWidget {
     required this.now,
     this.manager = false,
     this.skin = 0,
+    this.routes = const {},
     this.eventCityId,
     this.eventType = 0,
     required this.nameOf,
@@ -689,6 +690,9 @@ class BranchesMap extends StatefulWidget {
 
   /// Skin bản đồ (0 cổ điển, 1 mùa đông, 2 Tết, 3 hoa anh đào) và sự kiện đang chờ nhận (huy hiệu trên pin).
   final int skin;
+
+  /// Tuyến thương mại 'a|b' → cấp: vẽ đường nối vàng + tàu chạy dọc tuyến.
+  final Map<String, int> routes;
   final String? eventCityId;
   final int eventType;
   final String Function(String id) nameOf;
@@ -719,6 +723,14 @@ class _BranchesMapState extends State<BranchesMap>
     for (final c in branchCities)
       if (branchLevel(widget.levels, c.id) > 0) c.id,
   };
+
+  /// Các tuyến thương mại (đầu mút trên bản đồ, cấp) mà cả hai thành phố đều đã mở.
+  List<(Offset, Offset, int)> _routeSegs() => [
+    for (final e in widget.routes.entries)
+      if (e.key.split('|') case [final a, final b] when branchMapPos[a] != null && branchMapPos[b] != null &&
+          branchLevel(widget.levels, a) > 0 && branchLevel(widget.levels, b) > 0)
+        (branchMapPos[a]!, branchMapPos[b]!, e.value),
+  ];
 
   bool get _fxOn => widget.animations ?? !reduceMotion;
 
@@ -1076,6 +1088,22 @@ class _BranchesMapState extends State<BranchesMap>
                               ),
                             ),
                           ),
+                        if (_routeSegs().isNotEmpty) ...[
+                          Positioned.fill(
+                            child: IgnorePointer(
+                              child: CustomPaint(
+                                key: const Key('branch-routes'),
+                                painter: _RoutesPainter(_routeSegs()),
+                              ),
+                            ),
+                          ),
+                          if (_flight != null)
+                            Positioned.fill(
+                              child: IgnorePointer(
+                                child: _Ships(anim: _flight!, segs: _routeSegs()),
+                              ),
+                            ),
+                        ],
                         for (final c in branchCities)
                           if (branchMapPos[c.id] != null)
                             Positioned(
@@ -1484,6 +1512,69 @@ class BranchesMapPainter extends CustomPainter {
 }
 
 /// Các máy bay ✈️ bay chậm dọc đường nối (chia đều trên tối đa [count] đoạn), mờ dần ở hai đầu, lặp theo [anim].
+/// Đường tuyến thương mại: cung vàng, dày theo cấp.
+class _RoutesPainter extends CustomPainter {
+  const _RoutesPainter(this.segs);
+  final List<(Offset, Offset, int)> segs;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    for (final (a, b, lvl) in segs) {
+      final c = branchCurveControl(a, b);
+      final path = Path()
+        ..moveTo(a.dx, a.dy)
+        ..quadraticBezierTo(c.dx, c.dy, b.dx, b.dy);
+      canvas.drawPath(
+        path,
+        Paint()
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 2.0 + lvl
+          ..strokeCap = StrokeCap.round
+          ..color = const Color(0xFFFFC107).withValues(alpha: 0.75),
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(_RoutesPainter old) => old.segs.length != segs.length || !_sameLv(old.segs);
+
+  bool _sameLv(List<(Offset, Offset, int)> o) {
+    for (var i = 0; i < segs.length; i++) {
+      if (o[i] != segs[i]) return false;
+    }
+    return true;
+  }
+}
+
+/// Tàu 🚢 chạy qua lại dọc mỗi tuyến (vòng lặp chậm dùng chung với máy bay).
+class _Ships extends StatelessWidget {
+  const _Ships({required this.anim, required this.segs});
+  final Animation<double> anim;
+  final List<(Offset, Offset, int)> segs;
+
+  @override
+  Widget build(BuildContext context) => AnimatedBuilder(
+    animation: anim,
+    builder: (_, _) => Stack(
+      children: [
+        for (var i = 0; i < segs.length; i++)
+          () {
+            final t = (anim.value * 2 + i * 0.37) % 1.0;
+            final (pos, _) = branchCurveAt(segs[i].$1, segs[i].$2, t);
+            return Positioned(
+              left: pos.dx - 12,
+              top: pos.dy - 12,
+              child: Opacity(
+                opacity: math.sqrt(math.sin(t * math.pi)).clamp(0.0, 1.0),
+                child: const Text('🚢', style: TextStyle(fontSize: 20)),
+              ),
+            );
+          }(),
+      ],
+    ),
+  );
+}
+
 class _Planes extends StatelessWidget {
   const _Planes({
     super.key,

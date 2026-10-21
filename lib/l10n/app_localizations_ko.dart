@@ -3428,6 +3428,52 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String branchRouteBtn(int n) {
+    return '무역로 ($n)';
+  }
+
+  @override
+  String get branchRouteTitle => '무역로';
+
+  @override
+  String branchRouteDesc(int same, int cross, int max) {
+    return '열린 지점 2곳을 연결하면 둘 다 레벨당 수익 +$same% (대륙이 다르면 +$cross%, 가격 2배). 지점당 최대 $max개 노선.';
+  }
+
+  @override
+  String get branchRouteNone => '아직 노선이 없어요.';
+
+  @override
+  String branchRouteLevel(int level, int max, int pct) {
+    return '레벨 $level/$max · 양쪽 수익 +$pct%';
+  }
+
+  @override
+  String get branchRouteNewTitle => '새 노선 열기';
+
+  @override
+  String get branchRoutePickA => '출발';
+
+  @override
+  String get branchRoutePickB => '도착';
+
+  @override
+  String branchRouteOpen(String cost) {
+    return '노선 열기 · $cost 코인';
+  }
+
+  @override
+  String branchRouteUpgrade(String cost) {
+    return '강화 · $cost 코인';
+  }
+
+  @override
+  String get branchRouteMax => '최대';
+
+  @override
+  String get branchRouteFail => '코인이 부족하거나 연결할 수 없어요.';
+
+  @override
   String get branchNothing => '아직 수령할 게 없어요.';
 
   @override

@@ -3480,6 +3480,52 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String branchRouteBtn(int n) {
+    return 'Routes ($n)';
+  }
+
+  @override
+  String get branchRouteTitle => 'Trade routes';
+
+  @override
+  String branchRouteDesc(int same, int cross, int max) {
+    return 'Link 2 open branches: both collect +$same% revenue per level (+$cross% across continents, double price). Each branch has at most $max routes.';
+  }
+
+  @override
+  String get branchRouteNone => 'No routes yet.';
+
+  @override
+  String branchRouteLevel(int level, int max, int pct) {
+    return 'Level $level/$max · +$pct% revenue at both ends';
+  }
+
+  @override
+  String get branchRouteNewTitle => 'Open a new route';
+
+  @override
+  String get branchRoutePickA => 'From';
+
+  @override
+  String get branchRoutePickB => 'To';
+
+  @override
+  String branchRouteOpen(String cost) {
+    return 'Open route · $cost coins';
+  }
+
+  @override
+  String branchRouteUpgrade(String cost) {
+    return 'Upgrade · $cost coins';
+  }
+
+  @override
+  String get branchRouteMax => 'Max';
+
+  @override
+  String get branchRouteFail => 'Not enough coins, or can\'t link.';
+
+  @override
   String get branchNothing => 'Nothing to collect yet.';
 
   @override

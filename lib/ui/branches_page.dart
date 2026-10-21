@@ -539,6 +539,137 @@ class _BranchesPageState extends ConsumerState<BranchesPage> {
     );
   }
 
+  void _showRoutes(BuildContext context) {
+    String? from, to;
+    _sheet(
+      context,
+      tall: true,
+      builder: (ctx, ref) {
+        final l10n = AppLocalizations.of(ctx)!;
+        final theme = Theme.of(ctx);
+        final s = ref.watch(gameControllerProvider);
+        final income = ref.read(gameControllerProvider.notifier).branchIncome;
+        final discount = branchPerk(s.branchLevels, BranchPerk.discount);
+        final routes = s.branchRoutes;
+        final keys = routes.keys.toList()..sort();
+        final open = [
+          for (final c in branchCities)
+            if (c.id != 'moon' && branchLevel(s.branchLevels, c.id) > 0) c,
+        ];
+        String name(String id) => branchCityName(l10n, id);
+        String pct(String a, String b, int lvl) => (lvl * branchRouteBonusPerLevel(a, b) * 100).round().toString();
+        return StatefulBuilder(
+          builder: (ctx, setSt) {
+            final canNew = from != null && to != null && branchRouteCanOpen(s.branchLevels, routes, from!, to!);
+            Widget picker(String label, String? sel, void Function(String) on) => Wrap(
+              spacing: 6,
+              runSpacing: 4,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                Text(label, style: theme.textTheme.labelMedium),
+                for (final c in open)
+                  ChoiceChip(
+                    key: Key('route-$label-${c.id}'),
+                    label: Text('${c.emoji} ${name(c.id)}', maxLines: 1, overflow: TextOverflow.ellipsis),
+                    selected: sel == c.id,
+                    onSelected: (_) => setSt(() => on(c.id)),
+                  ),
+              ],
+            );
+            return SingleChildScrollView(
+              key: const Key('branch-routes-sheet'),
+              controller: PrimaryScrollController.of(ctx),
+              padding: const EdgeInsets.fromLTRB(14, 0, 14, 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _sheetHead(
+                    ctx,
+                    '🚢',
+                    l10n.branchRouteTitle,
+                    const Color(0xFFFFB300),
+                    hint: l10n.branchRouteDesc(
+                      (branchRouteBonusSame * 100).round(),
+                      (branchRouteBonusCross * 100).round(),
+                      branchRouteMaxPerCity,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  if (keys.isEmpty) Text(l10n.branchRouteNone, key: const Key('route-none')),
+                  for (var i = 0; i < keys.length; i++)
+                    () {
+                      final p = keys[i].split('|');
+                      final lvl = routes[keys[i]]!;
+                      final maxed = lvl >= branchRouteMaxLevel;
+                      final cost = branchRouteCost(p[0], p[1], lvl, income, discount: discount);
+                      return StaggerIn(
+                        index: i + 1,
+                        child: Card(
+                          key: Key('route-${keys[i]}'),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('${name(p[0])} ⇄ ${name(p[1])}', style: theme.textTheme.titleSmall),
+                                Text(l10n.branchRouteLevel(lvl, branchRouteMaxLevel, int.parse(pct(p[0], p[1], lvl))),
+                                    style: theme.textTheme.bodySmall),
+                                const SizedBox(height: 6),
+                                FilledButton.tonal(
+                                  key: Key('route-up-${keys[i]}'),
+                                  onPressed: maxed
+                                      ? null
+                                      : () {
+                                          if (!ref.read(gameControllerProvider.notifier).upgradeBranchRoute(p[0], p[1])) {
+                                            _snack(ctx, l10n.branchRouteFail);
+                                          }
+                                        },
+                                  child: Text(maxed ? l10n.branchRouteMax : l10n.branchRouteUpgrade(formatNumber(cost))),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }(),
+                  const SizedBox(height: 12),
+                  Text(l10n.branchRouteNewTitle, style: theme.textTheme.titleSmall),
+                  const SizedBox(height: 6),
+                  picker(l10n.branchRoutePickA, from, (v) => from = v),
+                  const SizedBox(height: 6),
+                  picker(l10n.branchRoutePickB, to, (v) => to = v),
+                  const SizedBox(height: 8),
+                  FilledButton(
+                    key: const Key('route-open'),
+                    onPressed: !canNew
+                        ? null
+                        : () {
+                            if (ref.read(gameControllerProvider.notifier).upgradeBranchRoute(from!, to!)) {
+                              setSt(() {
+                                from = null;
+                                to = null;
+                              });
+                            } else {
+                              _snack(ctx, l10n.branchRouteFail);
+                            }
+                          },
+                    child: Text(
+                      canNew
+                          ? l10n.branchRouteOpen(
+                              formatNumber(branchRouteCost(from!, to!, 0, income, discount: discount)),
+                            )
+                          : l10n.branchRouteNewTitle,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   void _showManager(BuildContext context) {
     _sheet(
       context,
@@ -818,6 +949,19 @@ class _BranchesPageState extends ConsumerState<BranchesPage> {
                               style: theme.textTheme.bodySmall,
                             ),
                           ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: TextButton(
+                              key: const Key('branch-routes-btn'),
+                              style: TextButton.styleFrom(visualDensity: VisualDensity.compact, tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                              onPressed: () => _showRoutes(context),
+                              child: Text(
+                                '🚢 ${l10n.branchRouteBtn(s.branchRoutes.length)}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
                           const SizedBox(height: 4),
                           Expanded(
                             child: BranchesMap(
@@ -827,6 +971,7 @@ class _BranchesPageState extends ConsumerState<BranchesPage> {
                               now: now,
                               manager: manager,
                               skin: s.branchMapSkin,
+                              routes: s.branchRoutes,
                               eventCityId: ev?.cityId,
                               eventType: ev?.type ?? 0,
                               nameOf: (id) => branchCityName(l10n, id),

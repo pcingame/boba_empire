@@ -4,7 +4,7 @@
 /// chạy được và test được mà không cần UI.
 library;
 
-import 'branches.dart' show branchStallMaxLevel, isBranchSetKey, isBranchStallKey;
+import 'branches.dart' show branchRouteMaxLevel, branchStallMaxLevel, isBranchRouteKey, isBranchSetKey, isBranchStallKey;
 
 /// Cấu hình bất biến của một nguồn thu tự động (một món / quầy pha chế).
 ///
@@ -206,6 +206,7 @@ class GameState {
     List<int>? branchQuestProgress,
     this.branchQuestClaimed = 0,
     Map<String, int>? branchStalls,
+    Map<String, int>? branchRoutes,
     List<String>? equippedAccessories,
     List<int>? collectionMilestonesClaimed,
     List<String>? collectionSetsClaimed,
@@ -228,6 +229,7 @@ class GameState {
         branchSetClaims = branchSetClaims ?? [],
         branchSpecs = branchSpecs ?? {},
         branchStalls = branchStalls ?? {},
+        branchRoutes = branchRoutes ?? {},
         branchQuestProgress = branchQuestProgress ?? [0, 0, 0, 0],
         equippedAccessories = equippedAccessories ?? [],
         collectionMilestonesClaimed = collectionMilestonesClaimed ?? [],
@@ -400,6 +402,9 @@ class GameState {
 
   /// Cấp các quầy riêng của chi nhánh ('saigon:0' → cấp).
   final Map<String, int> branchStalls;
+
+  /// Tuyến thương mại 'a|b' → cấp (xem [branchRouteKey]).
+  final Map<String, int> branchRoutes;
 
   /// Bộ đếm Tinh chất nguồn lặp lại trong ngày [essenceDay] (dayIndex UTC): riêng đơn Pha theo đơn, và chung.
   int essenceDay;
@@ -733,6 +738,7 @@ class GameState {
         'branchQuestProgress': branchQuestProgress,
         'branchQuestClaimed': branchQuestClaimed,
         'branchStalls': branchStalls,
+        'branchRoutes': branchRoutes,
         'essenceDay': essenceDay,
         'essenceOrdersToday': essenceOrdersToday,
         'essenceRepeatableToday': essenceRepeatableToday,
@@ -954,6 +960,12 @@ class GameState {
             for (final e in (json['branchStalls'] as Map).entries)
               if (e.value is num && isBranchStallKey('${e.key}'))
                 '${e.key}': (e.value as num).toInt().clamp(0, branchStallMaxLevel),
+        },
+        branchRoutes: {
+          if (json['branchRoutes'] is Map)
+            for (final e in (json['branchRoutes'] as Map).entries)
+              if (e.value is num && isBranchRouteKey('${e.key}') && (e.value as num) >= 1)
+                '${e.key}': (e.value as num).toInt().clamp(1, branchRouteMaxLevel),
         },
         branchQuestDayKey: (json['branchQuestDayKey'] as num?)?.toInt() ?? -1,
         branchQuestProgress: [
