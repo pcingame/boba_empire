@@ -3923,24 +3923,23 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get whatsNewFriends =>
-      '👥 Amigos: busca por apodo, regalos diarios, visita y asalta las tiendas de tus amigos';
+  String get whatsNewStaff =>
+      '🧑‍🍳 Personal y mascotas en \"Mi tienda\", y subastas de fin de semana';
 
   @override
-  String get whatsNewBoss =>
-      '🐺 Jefe Mundial cada domingo y jefe diario: toca para hacer daño, 5 niveles de premios';
+  String get whatsNewRegulars =>
+      '🌦️ Clientes habituales, clima, repartos y Legado para el final del juego';
 
   @override
-  String get whatsNewBranch =>
-      '🌏 Sucursales: 17 ciudades en un mapa mundial con eventos, misiones, puestos y ranking';
+  String get whatsNewDecor =>
+      '🏮 Decoración: 20 objetos, 8 huecos, 4 temas y bonus por conjunto';
 
   @override
-  String get whatsNewIncome =>
-      '📈 Los niveles de sucursal aumentan los ingresos de la tienda principal y se conservan al franquiciar';
+  String get whatsNewVip =>
+      '📊 Página de beneficios VIP, estadísticas e imagen para presumir';
 
   @override
-  String get whatsNewPolish =>
-      '✨ Efectos más fluidos: popups con rebote y premios animados; golpes al jefe más suaves';
+  String get whatsNewChat => '📷 Envía fotos en el chat del gremio';
 
   @override
   String get whatsNewLater => 'Después';

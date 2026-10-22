@@ -3903,24 +3903,23 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get whatsNewFriends =>
-      '👥 Teman: cari lewat nama panggilan, hadiah harian, kunjungi dan serbu toko teman';
+  String get whatsNewStaff =>
+      '🧑‍🍳 Staf & Maskot di \"Toko Saya\", plus lelang akhir pekan';
 
   @override
-  String get whatsNewBoss =>
-      '🐺 Boss Dunia tiap Minggu plus boss harian: ketuk untuk memberi damage, 5 tingkat hadiah';
+  String get whatsNewRegulars =>
+      '🌦️ Pelanggan tetap, cuaca, pengiriman, dan Warisan untuk akhir game';
 
   @override
-  String get whatsNewBranch =>
-      '🌏 Cabang Kota: 17 kota di peta dunia dengan acara, misi, kios, dan papan peringkat';
+  String get whatsNewDecor =>
+      '🏮 Dekorasi toko: 20 item, 8 slot, 4 tema, bonus set lengkap';
 
   @override
-  String get whatsNewIncome =>
-      '📈 Level cabang menambah pendapatan toko utama dan tetap ada saat Waralaba';
+  String get whatsNewVip =>
+      '📊 Halaman Keuntungan VIP, Statistik, dan gambar untuk pamer';
 
   @override
-  String get whatsNewPolish =>
-      '✨ Visual lebih mulus: popup memantul dan efek hadiah; pukulan boss lebih lembut';
+  String get whatsNewChat => '📷 Kirim foto di chat Guild';
 
   @override
   String get whatsNewLater => 'Nanti';

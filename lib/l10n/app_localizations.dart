@@ -6697,35 +6697,35 @@ abstract class AppLocalizations {
   /// **'Có gì mới ở {version}'**
   String whatsNewTitle(String version);
 
-  /// No description provided for @whatsNewFriends.
+  /// No description provided for @whatsNewStaff.
   ///
   /// In vi, this message translates to:
-  /// **'👥 Bạn bè: tìm theo biệt danh, tặng quà mỗi ngày, ghé thăm và đột kích quán bạn'**
-  String get whatsNewFriends;
+  /// **'🧑‍🍳 Nhân viên & Linh vật trong \"Quán của tôi\", đấu giá cuối tuần'**
+  String get whatsNewStaff;
 
-  /// No description provided for @whatsNewBoss.
+  /// No description provided for @whatsNewRegulars.
   ///
   /// In vi, this message translates to:
-  /// **'🐺 Boss Thế Giới mỗi Chủ Nhật cùng boss ngày: chạm để gây sát thương, 5 mốc thưởng'**
-  String get whatsNewBoss;
+  /// **'🌦️ Khách quen, thời tiết, giao hàng và Di sản cho giai đoạn cuối game'**
+  String get whatsNewRegulars;
 
-  /// No description provided for @whatsNewBranch.
+  /// No description provided for @whatsNewDecor.
   ///
   /// In vi, this message translates to:
-  /// **'🌏 Chi nhánh 17 thành phố trên bản đồ thế giới: sự kiện, nhiệm vụ, quầy riêng, bảng xếp hạng'**
-  String get whatsNewBranch;
+  /// **'🏮 Trang trí quán: 20 món, 8 ô, 4 chủ đề, thưởng khi đủ bộ'**
+  String get whatsNewDecor;
 
-  /// No description provided for @whatsNewIncome.
+  /// No description provided for @whatsNewVip.
   ///
   /// In vi, this message translates to:
-  /// **'📈 Cấp chi nhánh cộng thu nhập quán chính và được giữ khi Nhượng quyền'**
-  String get whatsNewIncome;
+  /// **'📊 Trang Quyền lợi VIP, Thống kê và ảnh khoe thành tích'**
+  String get whatsNewVip;
 
-  /// No description provided for @whatsNewPolish.
+  /// No description provided for @whatsNewChat.
   ///
   /// In vi, this message translates to:
-  /// **'✨ Hiệu ứng mượt hơn: popup nảy, thưởng bung đẹp mắt; boss nhún nhẹ, đỡ rung mắt'**
-  String get whatsNewPolish;
+  /// **'📷 Gửi ảnh trong chat Hội'**
+  String get whatsNewChat;
 
   /// No description provided for @whatsNewLater.
   ///

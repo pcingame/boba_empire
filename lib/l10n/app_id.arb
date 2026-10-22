@@ -1449,11 +1449,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewFriends": "👥 Teman: cari lewat nama panggilan, hadiah harian, kunjungi dan serbu toko teman",
-  "whatsNewBoss": "🐺 Boss Dunia tiap Minggu plus boss harian: ketuk untuk memberi damage, 5 tingkat hadiah",
-  "whatsNewBranch": "🌏 Cabang Kota: 17 kota di peta dunia dengan acara, misi, kios, dan papan peringkat",
-  "whatsNewIncome": "📈 Level cabang menambah pendapatan toko utama dan tetap ada saat Waralaba",
-  "whatsNewPolish": "✨ Visual lebih mulus: popup memantul dan efek hadiah; pukulan boss lebih lembut",
+  "whatsNewStaff": "🧑‍🍳 Staf & Maskot di \"Toko Saya\", plus lelang akhir pekan",
+  "whatsNewRegulars": "🌦️ Pelanggan tetap, cuaca, pengiriman, dan Warisan untuk akhir game",
+  "whatsNewDecor": "🏮 Dekorasi toko: 20 item, 8 slot, 4 tema, bonus set lengkap",
+  "whatsNewVip": "📊 Halaman Keuntungan VIP, Statistik, dan gambar untuk pamer",
+  "whatsNewChat": "📷 Kirim foto di chat Guild",
   "whatsNewLater": "Nanti",
   "whatsNewOpen": "Coba",
   "marketWallet": "{n} Koin Pasar",

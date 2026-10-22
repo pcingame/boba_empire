@@ -1449,11 +1449,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewFriends": "👥 Friends: find by nickname, daily gifts, visit and raid your friends' shops",
-  "whatsNewBoss": "🐺 World Boss every Sunday plus a daily boss: tap to deal damage, 5 reward tiers",
-  "whatsNewBranch": "🌏 City Branches: 17 cities on a world map with events, quests, stalls and a leaderboard",
-  "whatsNewIncome": "📈 Branch levels boost your main shop income and are kept through Franchise",
-  "whatsNewPolish": "✨ Smoother visuals: bouncy popups and reward effects; gentler boss hits",
+  "whatsNewStaff": "🧑‍🍳 Staff & Mascots in \"My Shop\", plus weekend auctions",
+  "whatsNewRegulars": "🌦️ Regular customers, weather, deliveries and Legacy for the late game",
+  "whatsNewDecor": "🏮 Shop decor: 20 items, 8 slots, 4 themes, set bonuses",
+  "whatsNewVip": "📊 VIP Benefits page, Stats and a shareable brag image",
+  "whatsNewChat": "📷 Send photos in Guild chat",
   "whatsNewLater": "Later",
   "whatsNewOpen": "Try it",
   "marketWallet": "{n} Market Coins",

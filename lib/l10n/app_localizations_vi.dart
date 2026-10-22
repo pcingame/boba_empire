@@ -3898,24 +3898,23 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get whatsNewFriends =>
-      '👥 Bạn bè: tìm theo biệt danh, tặng quà mỗi ngày, ghé thăm và đột kích quán bạn';
+  String get whatsNewStaff =>
+      '🧑‍🍳 Nhân viên & Linh vật trong \"Quán của tôi\", đấu giá cuối tuần';
 
   @override
-  String get whatsNewBoss =>
-      '🐺 Boss Thế Giới mỗi Chủ Nhật cùng boss ngày: chạm để gây sát thương, 5 mốc thưởng';
+  String get whatsNewRegulars =>
+      '🌦️ Khách quen, thời tiết, giao hàng và Di sản cho giai đoạn cuối game';
 
   @override
-  String get whatsNewBranch =>
-      '🌏 Chi nhánh 17 thành phố trên bản đồ thế giới: sự kiện, nhiệm vụ, quầy riêng, bảng xếp hạng';
+  String get whatsNewDecor =>
+      '🏮 Trang trí quán: 20 món, 8 ô, 4 chủ đề, thưởng khi đủ bộ';
 
   @override
-  String get whatsNewIncome =>
-      '📈 Cấp chi nhánh cộng thu nhập quán chính và được giữ khi Nhượng quyền';
+  String get whatsNewVip =>
+      '📊 Trang Quyền lợi VIP, Thống kê và ảnh khoe thành tích';
 
   @override
-  String get whatsNewPolish =>
-      '✨ Hiệu ứng mượt hơn: popup nảy, thưởng bung đẹp mắt; boss nhún nhẹ, đỡ rung mắt';
+  String get whatsNewChat => '📷 Gửi ảnh trong chat Hội';
 
   @override
   String get whatsNewLater => 'Để sau';

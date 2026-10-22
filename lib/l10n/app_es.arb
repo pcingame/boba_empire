@@ -1449,11 +1449,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewFriends": "👥 Amigos: busca por apodo, regalos diarios, visita y asalta las tiendas de tus amigos",
-  "whatsNewBoss": "🐺 Jefe Mundial cada domingo y jefe diario: toca para hacer daño, 5 niveles de premios",
-  "whatsNewBranch": "🌏 Sucursales: 17 ciudades en un mapa mundial con eventos, misiones, puestos y ranking",
-  "whatsNewIncome": "📈 Los niveles de sucursal aumentan los ingresos de la tienda principal y se conservan al franquiciar",
-  "whatsNewPolish": "✨ Efectos más fluidos: popups con rebote y premios animados; golpes al jefe más suaves",
+  "whatsNewStaff": "🧑‍🍳 Personal y mascotas en \"Mi tienda\", y subastas de fin de semana",
+  "whatsNewRegulars": "🌦️ Clientes habituales, clima, repartos y Legado para el final del juego",
+  "whatsNewDecor": "🏮 Decoración: 20 objetos, 8 huecos, 4 temas y bonus por conjunto",
+  "whatsNewVip": "📊 Página de beneficios VIP, estadísticas e imagen para presumir",
+  "whatsNewChat": "📷 Envía fotos en el chat del gremio",
   "whatsNewLater": "Después",
   "whatsNewOpen": "Probar",
   "marketWallet": "{n} Monedas de Mercado",

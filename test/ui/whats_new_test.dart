@@ -1,4 +1,4 @@
-/// Hộp "Có gì mới": chỉ hiện đúng một lần cho người vừa cập nhật lên 1.0.12;
+/// Hộp "Có gì mới": chỉ hiện đúng một lần cho người vừa cập nhật lên 1.0.13;
 /// cài mới và bản khác không hiện.
 library;
 
@@ -42,26 +42,26 @@ Future<(ProviderContainer, SharedPreferences)> _launch(
 void main() {
   group('shouldShowWhatsNew', () {
     test('cập nhật từ bản có ghi nhận / chưa ghi nhận nhưng có save → hiện', () {
-      expect(shouldShowWhatsNew(seen: '1.0.5', current: '1.0.12', hasSave: true),
+      expect(shouldShowWhatsNew(seen: '1.0.5', current: '1.0.13', hasSave: true),
           isTrue);
-      expect(shouldShowWhatsNew(seen: null, current: '1.0.12', hasSave: true),
+      expect(shouldShowWhatsNew(seen: null, current: '1.0.13', hasSave: true),
           isTrue);
     });
     test('cài mới (không save), đã xem, hoặc bản khác → không hiện', () {
-      expect(shouldShowWhatsNew(seen: null, current: '1.0.12', hasSave: false),
+      expect(shouldShowWhatsNew(seen: null, current: '1.0.13', hasSave: false),
           isFalse);
-      expect(shouldShowWhatsNew(seen: '1.0.12', current: '1.0.12', hasSave: true),
+      expect(shouldShowWhatsNew(seen: '1.0.13', current: '1.0.13', hasSave: true),
           isFalse);
-      expect(shouldShowWhatsNew(seen: '1.0.12', current: '1.0.12', hasSave: true),
+      expect(shouldShowWhatsNew(seen: '1.0.13', current: '1.0.13', hasSave: true),
           isFalse);
     });
   });
 
-  testWidgets('vừa cập nhật lên 1.0.12: hiện hộp, ghi nhớ, mở hộp Trò chơi từ nút',
+  testWidgets('vừa cập nhật lên 1.0.13: hiện hộp, ghi nhớ, mở hộp Trò chơi từ nút',
       (tester) async {
-    final (c, prefs) = await _launch(tester, version: '1.0.12', seen: '1.0.5');
+    final (c, prefs) = await _launch(tester, version: '1.0.13', seen: '1.0.5');
     expect(find.byKey(const Key('whats-new')), findsOneWidget);
-    expect(prefs.getString(whatsNewSeenKey), '1.0.12');
+    expect(prefs.getString(whatsNewSeenKey), '1.0.13');
     await tester.tap(find.byKey(const Key('whats-new-open')));
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('games-recipes')), findsOneWidget, reason: 'nút "Chơi thử" mở hộp Trò chơi');
@@ -71,14 +71,14 @@ void main() {
 
   testWidgets('người dùng bản 1.0.5 chưa từng ghi nhận (seen=null, có save) → hiện',
       (tester) async {
-    final (c, _) = await _launch(tester, version: '1.0.12');
+    final (c, _) = await _launch(tester, version: '1.0.13');
     expect(find.byKey(const Key('whats-new')), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
     c.dispose();
   });
 
-  testWidgets('đã xem 1.0.12 rồi → không hiện lại', (tester) async {
-    final (c, _) = await _launch(tester, version: '1.0.12', seen: '1.0.12');
+  testWidgets('đã xem 1.0.13 rồi → không hiện lại', (tester) async {
+    final (c, _) = await _launch(tester, version: '1.0.13', seen: '1.0.13');
     expect(find.byKey(const Key('whats-new')), findsNothing);
     await tester.pumpWidget(const SizedBox());
     c.dispose();
@@ -86,15 +86,15 @@ void main() {
 
   testWidgets('cài mới (chưa có save): không hiện, nhưng vẫn ghi nhớ phiên bản',
       (tester) async {
-    final (c, prefs) = await _launch(tester, version: '1.0.12', hasSave: false);
+    final (c, prefs) = await _launch(tester, version: '1.0.13', hasSave: false);
     expect(find.byKey(const Key('whats-new')), findsNothing);
-    expect(prefs.getString(whatsNewSeenKey), '1.0.12');
+    expect(prefs.getString(whatsNewSeenKey), '1.0.13');
     await tester.pumpWidget(const SizedBox());
     c.dispose();
   });
 
-  testWidgets('bản khác 1.0.12 (chưa có nội dung): không hiện', (tester) async {
-    final (c, _) = await _launch(tester, version: '1.0.12', seen: '1.0.12');
+  testWidgets('bản khác 1.0.13 (chưa có nội dung): không hiện', (tester) async {
+    final (c, _) = await _launch(tester, version: '1.0.13', seen: '1.0.13');
     expect(find.byKey(const Key('whats-new')), findsNothing);
     await tester.pumpWidget(const SizedBox());
     c.dispose();
@@ -125,13 +125,13 @@ void main() {
     final savedTutorial = debugAutoShowTutorial;
     debugAutoShowTutorial = true;
     addTearDown(() => debugAutoShowTutorial = savedTutorial);
-    final (c, prefs) = await _launch(tester, version: '1.0.12', hasSave: false);
+    final (c, prefs) = await _launch(tester, version: '1.0.13', hasSave: false);
     expect(find.byKey(const Key('ftue-bubble')), findsOneWidget,
         reason: 'người mới thấy hướng dẫn tương tác');
     expect(find.byKey(const Key('whats-new')), findsNothing);
     // Phiên bản được ghi nhớ NGAY (dù chưa hiện gì) → lần mở sau người mới không bị
     // nhầm là "vừa cập nhật" khi ván đã được lưu.
-    expect(prefs.getString(whatsNewSeenKey), '1.0.12');
+    expect(prefs.getString(whatsNewSeenKey), '1.0.13');
     await tester.tap(find.byKey(const Key('ftue-skip')));
     await tester.pumpAndSettle();
     expect(find.byKey(const Key('whats-new')), findsNothing);
@@ -153,7 +153,7 @@ void main() {
     final c = ProviderContainer(overrides: [
       sharedPreferencesProvider.overrideWithValue(prefs),
       clockProvider.overrideWithValue(() => 0),
-      appVersionProvider.overrideWithValue(() async => '1.0.12'),
+      appVersionProvider.overrideWithValue(() async => '1.0.13'),
     ]);
     await tester.pumpWidget(
         UncontrolledProviderScope(container: c, child: const BobaEmpireApp()));
@@ -167,7 +167,7 @@ void main() {
   });
 
   for (final lang in ['vi', 'en', 'es', 'id', 'pt', 'th', 'ko']) {
-    testWidgets('hộp Có gì mới 1.0.12 không tràn ở 320px, đủ chuỗi ($lang)', (tester) async {
+    testWidgets('hộp Có gì mới 1.0.13 không tràn ở 320px, đủ chuỗi ($lang)', (tester) async {
       await tester.binding.setSurfaceSize(const Size(320, 560));
       addTearDown(() => tester.binding.setSurfaceSize(null));
       await tester.pumpWidget(MaterialApp(
@@ -177,7 +177,7 @@ void main() {
         home: Scaffold(
           body: Builder(
             builder: (c) => TextButton(
-                onPressed: () => showWhatsNew(c, '1.0.12'), child: const Text('open')),
+                onPressed: () => showWhatsNew(c, '1.0.13'), child: const Text('open')),
           ),
         ),
       ));
@@ -186,8 +186,8 @@ void main() {
       expect(find.byKey(const Key('whats-new')), findsOneWidget);
       expect(tester.takeException(), isNull, reason: lang);
       expect(find.textContaining(RegExp(r'\{[a-z]+\}')), findsNothing, reason: lang);
-      // Đủ 5 gạch đầu dòng của 1.0.12 (mỗi dòng một biểu tượng).
-      for (final e in ['👥', '🐺', '🌏', '📈', '✨']) {
+      // Đủ 5 gạch đầu dòng của 1.0.13 (mỗi dòng một biểu tượng).
+      for (final e in ['🧑‍🍳', '🌦️', '🏮', '📊', '📷']) {
         expect(find.textContaining(e), findsOneWidget, reason: '$lang $e');
       }
       // Và không còn nội dung của 1.0.9 (VIP / Hội / nhiệm vụ tuần).

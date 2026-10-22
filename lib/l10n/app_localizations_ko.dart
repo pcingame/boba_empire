@@ -3851,19 +3851,19 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get whatsNewFriends => '👥 친구: 닉네임으로 찾기, 매일 선물, 친구 가게 방문과 습격';
+  String get whatsNewStaff => '🧑‍🍳 \"내 가게\"에서 직원·마스코트 관리, 주말 경매';
 
   @override
-  String get whatsNewBoss => '🐺 매주 일요일 월드 보스와 일일 보스: 탭으로 데미지, 보상 5단계';
+  String get whatsNewRegulars => '🌦️ 단골 손님, 날씨, 배달, 유산 시스템 (후반부 콘텐츠)';
 
   @override
-  String get whatsNewBranch => '🌏 도시 지점: 세계 지도의 17개 도시, 이벤트·퀘스트·가판대·순위표';
+  String get whatsNewDecor => '🏮 가게 꾸미기: 20종, 8칸, 4가지 테마, 세트 보너스';
 
   @override
-  String get whatsNewIncome => '📈 지점 레벨은 본점 수익을 올려 주고 프랜차이즈 후에도 유지돼요';
+  String get whatsNewVip => '📊 VIP 혜택 페이지, 통계, 자랑용 이미지';
 
   @override
-  String get whatsNewPolish => '✨ 더 부드러운 연출: 튀어오르는 팝업과 보상 효과, 보스 타격 효과 완화';
+  String get whatsNewChat => '📷 길드 채팅에서 사진 전송';
 
   @override
   String get whatsNewLater => '나중에';

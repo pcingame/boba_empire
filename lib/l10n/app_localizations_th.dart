@@ -3891,24 +3891,22 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
-  String get whatsNewFriends =>
-      '👥 เพื่อน: ค้นหาด้วยชื่อเล่น ของขวัญรายวัน เยี่ยมและบุกร้านเพื่อน';
+  String get whatsNewStaff =>
+      '🧑‍🍳 พนักงานและมาสคอตใน \"ร้านของฉัน\" พร้อมประมูลสุดสัปดาห์';
 
   @override
-  String get whatsNewBoss =>
-      '🐺 บอสโลกทุกวันอาทิตย์และบอสรายวัน: แตะเพื่อสร้างความเสียหาย รางวัล 5 ขั้น';
+  String get whatsNewRegulars =>
+      '🌦️ ลูกค้าประจำ สภาพอากาศ การจัดส่ง และมรดก สำหรับช่วงท้ายเกม';
 
   @override
-  String get whatsNewBranch =>
-      '🌏 สาขาเมือง: 17 เมืองบนแผนที่โลก มีอีเวนต์ ภารกิจ แผงย่อย และอันดับ';
+  String get whatsNewDecor =>
+      '🏮 ตกแต่งร้าน 20 ชิ้น 8 ช่อง 4 ธีม พร้อมโบนัสครบชุด';
 
   @override
-  String get whatsNewIncome =>
-      '📈 เลเวลสาขาเพิ่มรายได้ร้านหลักและคงอยู่หลังแฟรนไชส์';
+  String get whatsNewVip => '📊 หน้าสิทธิพิเศษ VIP สถิติ และภาพโชว์ผลงาน';
 
   @override
-  String get whatsNewPolish =>
-      '✨ ภาพลื่นขึ้น: ป๊อปอัปเด้ง เอฟเฟกต์รางวัล และบอสโดนตีนุ่มนวลขึ้น';
+  String get whatsNewChat => '📷 ส่งรูปในแชทกิลด์';
 
   @override
   String get whatsNewLater => 'ไว้ทีหลัง';

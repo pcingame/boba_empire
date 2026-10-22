@@ -1449,11 +1449,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewFriends": "👥 Amigos: busque por apelido, presentes diários, visite e invada as lojas dos amigos",
-  "whatsNewBoss": "🐺 Chefe Mundial todo domingo e chefe diário: toque para causar dano, 5 níveis de prêmios",
-  "whatsNewBranch": "🌏 Filiais: 17 cidades num mapa-múndi com eventos, missões, barracas e ranking",
-  "whatsNewIncome": "📈 Os níveis das filiais aumentam a renda da loja principal e são mantidos ao franquear",
-  "whatsNewPolish": "✨ Visuais mais suaves: popups com salto e efeitos de prêmio; golpes no chefe mais leves",
+  "whatsNewStaff": "🧑‍🍳 Equipe e mascotes em \"Minha loja\", e leilões de fim de semana",
+  "whatsNewRegulars": "🌦️ Clientes fiéis, clima, entregas e Legado para o fim do jogo",
+  "whatsNewDecor": "🏮 Decoração: 20 itens, 8 espaços, 4 temas e bônus por conjunto",
+  "whatsNewVip": "📊 Página de benefícios VIP, estatísticas e imagem para compartilhar",
+  "whatsNewChat": "📷 Envie fotos no chat da guilda",
   "whatsNewLater": "Depois",
   "whatsNewOpen": "Experimentar",
   "marketWallet": "{n} Moedas de Mercado",

@@ -3907,24 +3907,23 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get whatsNewFriends =>
-      '👥 Friends: find by nickname, daily gifts, visit and raid your friends\' shops';
+  String get whatsNewStaff =>
+      '🧑‍🍳 Staff & Mascots in \"My Shop\", plus weekend auctions';
 
   @override
-  String get whatsNewBoss =>
-      '🐺 World Boss every Sunday plus a daily boss: tap to deal damage, 5 reward tiers';
+  String get whatsNewRegulars =>
+      '🌦️ Regular customers, weather, deliveries and Legacy for the late game';
 
   @override
-  String get whatsNewBranch =>
-      '🌏 City Branches: 17 cities on a world map with events, quests, stalls and a leaderboard';
+  String get whatsNewDecor =>
+      '🏮 Shop decor: 20 items, 8 slots, 4 themes, set bonuses';
 
   @override
-  String get whatsNewIncome =>
-      '📈 Branch levels boost your main shop income and are kept through Franchise';
+  String get whatsNewVip =>
+      '📊 VIP Benefits page, Stats and a shareable brag image';
 
   @override
-  String get whatsNewPolish =>
-      '✨ Smoother visuals: bouncy popups and reward effects; gentler boss hits';
+  String get whatsNewChat => '📷 Send photos in Guild chat';
 
   @override
   String get whatsNewLater => 'Later';
