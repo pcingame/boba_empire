@@ -9,6 +9,120 @@ người bản ngữ soát.
 
 ---
 
+## 1.0.13 (+27) — 2026-10-22
+
+**Bản trước:** 1.0.12 (+26) đã live trên store.
+
+**Nội dung:**
+- **Nhân viên, Linh vật, Đấu giá cuối tuần** (trong "Quán của tôi"; Pha theo đơn + Thử thách ngày gộp vào trang Công thức).
+- **Khách quen, Thời tiết & Giao hàng, Di sản** (endgame sau Kỷ Nguyên 4).
+- **Trang trí quán:** 20 món, 8 ô, 4 chủ đề, thưởng bộ (client-only).
+- **Trang Quyền lợi VIP, Thống kê & ảnh khoe;** gửi ảnh trong chat Hội; Boss Thế Giới + Đấu giá chuyển vào hộp Thi đấu.
+- **Sửa lỗi:** văng khi rời màn Boss Thế Giới lúc đang refresh; Android nay gửi biên nhận lên server xác thực (trước đây không xác thực); sửa tràn số giá linh vật.
+
+Soạn sẵn: `assets/store/whatsnew_1.0.13/`. CHƯA làm: hộp "Có gì mới" trong app (`whatsNewVersion` vẫn `1.0.12`), mô tả store, review notes.
+
+**BẮT BUỘC trước khi nộp:** chạy các SQL mới của Đấu giá (`auction_schema.sql`) và chat Hội có ảnh nếu chưa chạy; Play Console cần service account cho server xác thực IAP.
+
+**Lệnh build:** iOS `flutter build ipa --release --export-options-plist=ios/ExportOptions.plist --dart-define=IAP_VERIFY_ENDPOINT=https://boba-receipt-server-411559711815.asia-southeast1.run.app/verify` → Xcode Organizer. Android `flutter build appbundle --release` (versionCode +27).
+
+⚠️ Số liệu cân bằng (nhân viên, linh vật, đấu giá, trang trí) là ước lượng, chưa playtest. Bản dịch máy chưa có người bản ngữ duyệt.
+
+### Có gì mới (dán vào console)
+
+#### 🇻🇳 Tiếng Việt (vi)
+
+```
+Mới: NHÂN VIÊN, LINH VẬT, KHÁCH QUEN & TRANG TRÍ QUÁN!
+
+• Nhân viên & Linh vật trong "Quán của tôi", đấu giá cuối tuần
+• Khách quen, thời tiết, giao hàng và Di sản cho giai đoạn cuối game
+• Trang trí quán: 20 món, 8 ô, 4 chủ đề, thưởng khi đủ bộ
+• Trang Quyền lợi VIP, Thống kê và ảnh khoe thành tích
+• Gửi ảnh trong chat Hội
+• Sửa lỗi văng ở Boss Thế Giới, xác thực giao dịch Android
+```
+
+#### 🇬🇧 English (en)
+
+```
+New: STAFF, PETS, REGULARS & SHOP DECOR!
+
+• Staff & Mascots in "My Shop", plus weekend auctions
+• Regular customers, weather, deliveries and Legacy for the late game
+• Shop decor: 20 items, 8 slots, 4 themes, set bonuses
+• VIP Benefits page, Stats and a shareable brag image
+• Send photos in Guild chat
+• Fixed a World Boss crash and Android purchase verification
+```
+
+#### 🇪🇸 Español (es)
+
+```
+Novedad: PERSONAL, MASCOTAS, HABITUALES Y DECORACIÓN
+
+• Personal y mascotas en "Mi tienda", y subastas de fin de semana
+• Clientes habituales, clima, repartos y Legado para el final del juego
+• Decoración: 20 objetos, 8 huecos, 4 temas y bonus por conjunto
+• Página de beneficios VIP, estadísticas e imagen para presumir
+• Envía fotos en el chat del gremio
+• Corregido un cierre en el Jefe Mundial y la verificación de compras en Android
+```
+
+#### 🇧🇷 Português (pt)
+
+```
+Novidade: EQUIPE, MASCOTES, CLIENTES FIÉIS E DECORAÇÃO!
+
+• Equipe e mascotes em "Minha loja", e leilões de fim de semana
+• Clientes fiéis, clima, entregas e Legado para o fim do jogo
+• Decoração: 20 itens, 8 espaços, 4 temas e bônus por conjunto
+• Página de benefícios VIP, estatísticas e imagem para compartilhar
+• Envie fotos no chat da guilda
+• Corrigido um travamento no Chefe Mundial e a verificação de compras no Android
+```
+
+#### 🇮🇩 Indonesia (id)
+
+```
+Baru: STAF, MASKOT, LANGGANAN & DEKORASI TOKO!
+
+• Staf & Maskot di "Toko Saya", plus lelang akhir pekan
+• Pelanggan tetap, cuaca, pengiriman, dan Warisan untuk akhir game
+• Dekorasi toko: 20 item, 8 slot, 4 tema, bonus set lengkap
+• Halaman Keuntungan VIP, Statistik, dan gambar untuk pamer
+• Kirim foto di chat Guild
+• Perbaikan crash Boss Dunia dan verifikasi pembelian Android
+```
+
+#### 🇰🇷 한국어 (ko)
+
+```
+신규: 직원, 마스코트, 단골 & 가게 꾸미기!
+
+• "내 가게"에서 직원·마스코트 관리, 주말 경매
+• 단골 손님, 날씨, 배달, 유산 시스템 (후반부 콘텐츠)
+• 가게 꾸미기: 20종, 8칸, 4가지 테마, 세트 보너스
+• VIP 혜택 페이지, 통계, 자랑용 이미지
+• 길드 채팅에서 사진 전송
+• 월드 보스 강제 종료 및 Android 결제 검증 수정
+```
+
+#### 🇹🇭 ไทย (th)
+
+```
+ใหม่: พนักงาน มาสคอต ลูกค้าประจำ และตกแต่งร้าน!
+
+• พนักงานและมาสคอตใน "ร้านของฉัน" พร้อมประมูลสุดสัปดาห์
+• ลูกค้าประจำ สภาพอากาศ การจัดส่ง และมรดก สำหรับช่วงท้ายเกม
+• ตกแต่งร้าน 20 ชิ้น 8 ช่อง 4 ธีม พร้อมโบนัสครบชุด
+• หน้าสิทธิพิเศษ VIP สถิติ และภาพโชว์ผลงาน
+• ส่งรูปในแชทกิลด์
+• แก้แอปปิดเองที่บอสโลก และการตรวจสอบการซื้อบน Android
+```
+
+---
+
 ## 1.0.12 (+26) — 2026-10-20
 
 **Bản trước:** 1.0.11 (+25) đã live trên iOS (2026-10-20); Play 1.0.11 đang/đã duyệt.

@@ -1,0 +1,8 @@
+New: STAFF, PETS, REGULARS & SHOP DECOR!
+
+• Staff & Mascots in "My Shop", plus weekend auctions
+• Regular customers, weather, deliveries and Legacy for the late game
+• Shop decor: 20 items, 8 slots, 4 themes, set bonuses
+• VIP Benefits page, Stats and a shareable brag image
+• Send photos in Guild chat
+• Fixed a World Boss crash and Android purchase verification
