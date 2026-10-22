@@ -3086,6 +3086,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get friendShopDisplayEmpty => 'Chưa trưng bày món nào.';
 
   @override
+  String get friendShopDecor => 'Trang trí quán';
+
+  @override
   String get friendShopCollection => 'Bộ sưu tập';
 
   @override

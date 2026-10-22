@@ -118,6 +118,12 @@ select chk('trưng bày đủ 2 món', (select count(*) from jsonb_array_element
 select as_u(2);
 select chk('id sai dạng bị chặn', err_of($$select set_shop_display(array['Bad Id'])$$) like '%bad display%');
 select chk('quá 6 món bị chặn', err_of($$select set_shop_display(array['a','b','c','d','e','f','g'])$$) like '%bad display%');
+select set_shop_display(array['boba_a'], 10, '{"sign#0":"d_sign","floor#2":"d_rug"}'::jsonb);
+select chk('khoá ô sai dạng bị chặn', err_of($$select set_shop_display('{}', 0, '{"Bad Key":"x"}'::jsonb)$$) like '%bad display%');
+select chk('quá 8 ô bị chặn', err_of($$select set_shop_display('{}', 0, '{"a#0":"x","a#1":"x","a#2":"x","a#3":"x","a#4":"x","a#5":"x","a#6":"x","a#7":"x","a#8":"x"}'::jsonb)$$) like '%bad display%');
+select as_u(1);
+select chk('bạn thấy trang trí', friend_shop(uid_of(2))->'decor' = '{"sign#0":"d_sign","floor#2":"d_rug"}'::jsonb);
+select as_u(2);
 select set_shop_display('{}');
 select as_u(1);
 select chk('gỡ hết trưng bày → rỗng', jsonb_array_length(friend_shop(uid_of(2))->'equipped') = 0);

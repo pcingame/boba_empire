@@ -1125,6 +1125,7 @@
   "@friendShopTitle": {"placeholders": {"name": {"type": "String"}}},
   "friendShopDisplay": "กำลังจัดแสดง",
   "friendShopDisplayEmpty": "ยังไม่มีไอเทมจัดแสดง",
+  "friendShopDecor": "ตกแต่งร้าน",
   "friendShopCollection": "คอลเลกชัน",
   "friendShopProfile": "โปรไฟล์",
   "worldBossTitle": "บอสโลก",

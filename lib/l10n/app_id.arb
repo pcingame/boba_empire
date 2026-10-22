@@ -1125,6 +1125,7 @@
   "@friendShopTitle": {"placeholders": {"name": {"type": "String"}}},
   "friendShopDisplay": "Sedang dipajang",
   "friendShopDisplayEmpty": "Belum ada yang dipajang.",
+  "friendShopDecor": "Dekorasi toko",
   "friendShopCollection": "Koleksi",
   "friendShopProfile": "Profil",
   "worldBossTitle": "Bos Dunia",

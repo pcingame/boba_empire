@@ -1797,6 +1797,7 @@
   "@friendShopTitle": {"placeholders": {"name": {"type": "String"}}},
   "friendShopDisplay": "Đang trưng bày",
   "friendShopDisplayEmpty": "Chưa trưng bày món nào.",
+  "friendShopDecor": "Trang trí quán",
   "friendShopCollection": "Bộ sưu tập",
   "friendShopProfile": "Hồ sơ",
   "worldBossTitle": "Boss Thế Giới",

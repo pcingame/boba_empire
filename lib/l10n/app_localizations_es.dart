@@ -3109,6 +3109,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get friendShopDisplayEmpty => 'Aún no exhibe nada.';
 
   @override
+  String get friendShopDecor => 'Decoración';
+
+  @override
   String get friendShopCollection => 'Colección';
 
   @override

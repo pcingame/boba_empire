@@ -3092,6 +3092,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get friendShopDisplayEmpty => 'Belum ada yang dipajang.';
 
   @override
+  String get friendShopDecor => 'Dekorasi toko';
+
+  @override
   String get friendShopCollection => 'Koleksi';
 
   @override

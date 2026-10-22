@@ -209,21 +209,29 @@ create table if not exists shop_displays (
   updated_at timestamptz not null default now()
 );
 alter table shop_displays add column if not exists power integer not null default 0 check (power between 0 and 1000);
+alter table shop_displays add column if not exists decor jsonb not null default '{}'::jsonb;
 alter table shop_displays enable row level security;
 -- Không policy: chỉ RPC security definer.
 
 -- p_power: "sức mạnh quán" do app tính từ món trưng bày + giai đoạn (dùng cho Đột kích); server chỉ kẹp 0..1000.
 drop function if exists set_shop_display(text[]);
-create or replace function set_shop_display(p_equipped text[], p_power integer default 0) returns void
+drop function if exists set_shop_display(text[], integer, jsonb);
+-- p_decor: Trang trí quán {"wall#0": "id"}; server chỉ kiểm dạng khoá/id (tối đa 8 ô).
+create or replace function set_shop_display(p_equipped text[], p_power integer default 0, p_decor jsonb default '{}'::jsonb) returns void
 language plpgsql security definer set search_path = public as $$
-declare me uuid := friend_require_linked(); e text;
+declare me uuid := friend_require_linked(); e text; k text; v text;
 begin
   if p_equipped is null or coalesce(array_length(p_equipped, 1), 0) > 6 then raise exception 'bad display'; end if;
   foreach e in array p_equipped loop
     if e is null or e !~ '^[a-z0-9_]{1,40}$' then raise exception 'bad display'; end if;
   end loop;
-  insert into shop_displays (user_id, equipped, power) values (me, p_equipped, least(greatest(coalesce(p_power, 0), 0), 1000))
-  on conflict (user_id) do update set equipped = excluded.equipped, power = excluded.power, updated_at = now();
+  p_decor := coalesce(p_decor, '{}'::jsonb);
+  if jsonb_typeof(p_decor) <> 'object' or (select count(*) from jsonb_object_keys(p_decor)) > 8 then raise exception 'bad display'; end if;
+  for k, v in select key, value #>> '{}' from jsonb_each(p_decor) loop
+    if k !~ '^[a-z]{1,10}#[0-9]$' or v is null or v !~ '^[a-z0-9_]{1,40}$' then raise exception 'bad display'; end if;
+  end loop;
+  insert into shop_displays (user_id, equipped, power, decor) values (me, p_equipped, least(greatest(coalesce(p_power, 0), 0), 1000), p_decor)
+  on conflict (user_id) do update set equipped = excluded.equipped, power = excluded.power, decor = excluded.decor, updated_at = now();
 end;
 $$;
 
@@ -240,7 +248,8 @@ begin
     'season_xp', coalesce((select s.xp from season_leaderboard_entries s where s.user_id = p_friend and s.season_id = v_season), 0),
     'orders', coalesce((select r.perfected from recipe_order_leaderboard_entries r where r.user_id = p_friend), 0),
     'equipped', to_jsonb(coalesce((select d.equipped from shop_displays d where d.user_id = p_friend), '{}'::text[])),
-    'power', coalesce((select d.power from shop_displays d where d.user_id = p_friend), 0));
+    'power', coalesce((select d.power from shop_displays d where d.user_id = p_friend), 0),
+    'decor', coalesce((select d.decor from shop_displays d where d.user_id = p_friend), '{}'::jsonb));
 end;
 $$;
 
@@ -317,6 +326,6 @@ $$;
 revoke all on function friend_require_linked(), friend_count(uuid), friend_are(uuid, uuid), friend_nick(uuid),
   friend_raid_do(uuid, uuid, double precision) from public, anon, authenticated;
 revoke all on function friend_search(text), friend_request(uuid), friend_respond(uuid, boolean), friend_remove(uuid),
-  friend_overview(), friend_gift_send(uuid), friend_gift_claim(), set_shop_display(text[], integer), friend_shop(uuid), friend_raid(uuid), friend_raid_claim() from public, anon;
+  friend_overview(), friend_gift_send(uuid), friend_gift_claim(), set_shop_display(text[], integer, jsonb), friend_shop(uuid), friend_raid(uuid), friend_raid_claim() from public, anon;
 grant execute on function friend_search(text), friend_request(uuid), friend_respond(uuid, boolean), friend_remove(uuid),
-  friend_overview(), friend_gift_send(uuid), friend_gift_claim(), set_shop_display(text[], integer), friend_shop(uuid), friend_raid(uuid), friend_raid_claim() to authenticated;
+  friend_overview(), friend_gift_send(uuid), friend_gift_claim(), set_shop_display(text[], integer, jsonb), friend_shop(uuid), friend_raid(uuid), friend_raid_claim() to authenticated;

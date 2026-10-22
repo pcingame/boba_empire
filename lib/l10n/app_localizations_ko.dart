@@ -3045,6 +3045,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get friendShopDisplayEmpty => '아직 전시한 아이템이 없어요.';
 
   @override
+  String get friendShopDecor => '가게 꾸미기';
+
+  @override
   String get friendShopCollection => '컬렉션';
 
   @override

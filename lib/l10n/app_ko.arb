@@ -923,6 +923,7 @@
   "@friendShopTitle": {"placeholders": {"name": {"type": "String"}}},
   "friendShopDisplay": "전시 중",
   "friendShopDisplayEmpty": "아직 전시한 아이템이 없어요.",
+  "friendShopDecor": "가게 꾸미기",
   "friendShopCollection": "컬렉션",
   "friendShopProfile": "프로필",
   "worldBossTitle": "월드 보스",

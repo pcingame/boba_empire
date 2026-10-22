@@ -168,6 +168,7 @@ class FriendShop {
     this.orders = 0,
     this.equipped = const [],
     this.power = 0,
+    this.decor = const {},
   });
   factory FriendShop.fromJson(Map<String, dynamic> j) => FriendShop(
         nickname: j['nickname'] as String,
@@ -177,6 +178,7 @@ class FriendShop {
         orders: ((j['orders'] ?? 0) as num).toInt(),
         equipped: [for (final e in (j['equipped'] as List?) ?? const []) e as String],
         power: ((j['power'] ?? 0) as num).toInt(),
+        decor: {for (final e in ((j['decor'] as Map?) ?? const {}).entries) '${e.key}': '${e.value}'},
       );
   final String nickname;
   final int stage;
@@ -187,6 +189,9 @@ class FriendShop {
 
   /// Sức mạnh quán (core/raid.dart) — dùng tính xác suất đột kích.
   final int power;
+
+  /// Trang trí quán: khoá ô → id món (id lạ từ bản mới hơn bị bỏ qua khi vẽ).
+  final Map<String, String> decor;
 }
 
 /// Tách để test thay bằng bản giả.
@@ -194,7 +199,7 @@ abstract class FriendsRepository {
   Future<FriendShop> shop(String userId);
 
   /// Đẩy món đang trưng bày của mình lên để bạn bè thấy.
-  Future<void> setDisplay(List<String> ids, int power);
+  Future<void> setDisplay(List<String> ids, int power, Map<String, String> decor);
 
   /// Đột kích quán bạn (server quyết định thắng/thua).
   Future<RaidResult> raid(String userId);
@@ -259,8 +264,8 @@ class SupabaseFriendsRepository implements FriendsRepository {
       FriendShop.fromJson(Map<String, dynamic>.from(await _c.rpc('friend_shop', params: {'p_friend': userId}) as Map)));
 
   @override
-  Future<void> setDisplay(List<String> ids, int power) =>
-      _guard(() => _c.rpc('set_shop_display', params: {'p_equipped': ids, 'p_power': power}));
+  Future<void> setDisplay(List<String> ids, int power, Map<String, String> decor) =>
+      _guard(() => _c.rpc('set_shop_display', params: {'p_equipped': ids, 'p_power': power, 'p_decor': decor}));
 
   @override
   Future<RaidResult> raid(String userId) => _guard(() async {
@@ -273,9 +278,9 @@ class SupabaseFriendsRepository implements FriendsRepository {
 }
 
 /// Đẩy trưng bày lên server; là phần thêm nên mọi lỗi (mạng, chưa liên kết, chưa chạy SQL) bị nuốt.
-Future<void> pushShopDisplay(FriendsRepository repo, List<String> ids, int power) async {
+Future<void> pushShopDisplay(FriendsRepository repo, List<String> ids, int power, Map<String, String> decor) async {
   try {
-    await repo.setDisplay(ids, power);
+    await repo.setDisplay(ids, power, decor);
   } catch (_) {}
 }
 
@@ -290,7 +295,8 @@ class FriendsController extends AsyncNotifier<FriendsOverview> {
   Future<FriendsOverview> build() {
     final g = ref.read(gameControllerProvider);
     unawaited(pushShopDisplay(ref.read(friendsRepositoryProvider), g.equippedAccessories,
-        raidPower(equipped: g.equippedAccessories, refineLevels: g.refineLevels, stage: g.stage)));
+        raidPower(equipped: g.equippedAccessories, refineLevels: g.refineLevels, stage: g.stage),
+        g.decorPlaced));
     return ref.read(friendsRepositoryProvider).overview();
   }
 

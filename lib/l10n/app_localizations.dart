@@ -5418,6 +5418,12 @@ abstract class AppLocalizations {
   /// **'Chưa trưng bày món nào.'**
   String get friendShopDisplayEmpty;
 
+  /// No description provided for @friendShopDecor.
+  ///
+  /// In vi, this message translates to:
+  /// **'Trang trí quán'**
+  String get friendShopDecor;
+
   /// No description provided for @friendShopCollection.
   ///
   /// In vi, this message translates to:

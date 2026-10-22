@@ -28,7 +28,7 @@ class _UnlinkedCloud extends CloudSaveController {
 
 class _ThrowRepo extends _Repo {
   @override
-  Future<void> setDisplay(List<String> ids, int power) async => throw const FriendException(FriendError.network);
+  Future<void> setDisplay(List<String> ids, int power, Map<String, String> decor) async => throw const FriendException(FriendError.network);
 }
 
 class _Repo implements FriendsRepository {
@@ -84,7 +84,7 @@ class _Repo implements FriendsRepository {
   }
 
   @override
-  Future<void> setDisplay(List<String> ids, int power) async {
+  Future<void> setDisplay(List<String> ids, int power, Map<String, String> decor) async {
     pushed = ids;
     pushedPower = power;
   }
@@ -271,6 +271,22 @@ void main() {
     c.dispose();
   });
 
+  testWidgets('quán bạn hiện trang trí hợp lệ, bỏ món lạ/sai ô', (tester) async {
+    final repo = _Repo()
+      ..data = FriendsOverview(friends: [_f('u1', 'Mai')])
+      ..shopData = const FriendShop(
+          nickname: 'Mai', decor: {'sign#0': 'retro_sign', 'wall#0': 'retro_counter', 'floor#0': 'lạ_x'});
+    final (c, _) = await _open(tester, repo);
+    await tester.tap(find.byKey(const Key('friend-u1')));
+    await tester.pumpAndSettle();
+    final box = find.byKey(const Key('friend-shop-decor'));
+    expect(box, findsOneWidget);
+    expect(find.descendant(of: box, matching: find.text('🪧')), findsOneWidget);
+    expect(find.descendant(of: box, matching: find.text('☕')), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+    c.dispose();
+  });
+
   for (final lang in ['vi', 'en', 'es', 'id', 'ko', 'pt', 'th']) {
     testWidgets('quán bạn không tràn ở 320px, chữ 1.5× ($lang)', (tester) async {
       final repo = _Repo()
@@ -291,7 +307,7 @@ void main() {
 
   test('pushShopDisplay nuốt lỗi', () async {
     final repo = _ThrowRepo();
-    await pushShopDisplay(repo, ['kraken'], 10);
+    await pushShopDisplay(repo, ['kraken'], 10, const {});
   });
 
   test('chấm đỏ: lời mời + quà chờ, 0 khi chưa liên kết', () async {

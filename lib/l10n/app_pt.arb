@@ -1125,6 +1125,7 @@
   "@friendShopTitle": {"placeholders": {"name": {"type": "String"}}},
   "friendShopDisplay": "Em exibição",
   "friendShopDisplayEmpty": "Nada em exibição ainda.",
+  "friendShopDecor": "Decoração",
   "friendShopCollection": "Coleção",
   "friendShopProfile": "Perfil",
   "worldBossTitle": "Chefão Mundial",

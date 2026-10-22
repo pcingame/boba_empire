@@ -3103,6 +3103,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get friendShopDisplayEmpty => 'Nada em exibição ainda.';
 
   @override
+  String get friendShopDecor => 'Decoração';
+
+  @override
   String get friendShopCollection => 'Coleção';
 
   @override

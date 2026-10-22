@@ -3082,6 +3082,9 @@ class AppLocalizationsTh extends AppLocalizations {
   String get friendShopDisplayEmpty => 'ยังไม่มีไอเทมจัดแสดง';
 
   @override
+  String get friendShopDecor => 'ตกแต่งร้าน';
+
+  @override
   String get friendShopCollection => 'คอลเลกชัน';
 
   @override

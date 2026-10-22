@@ -482,12 +482,13 @@ class _HomePageState extends ConsumerState<HomePage>
 
     // Đổi món trưng bày → cập nhật quán của mình cho bạn bè xem (chỉ khi đã liên kết email).
     ref.listen(
-      gameControllerProvider.select((s) => s.equippedAccessories.join(',')),
+      gameControllerProvider.select((s) => '${s.equippedAccessories.join(',')}|${s.decorPlaced}'),
       (previous, next) {
         if (!ref.read(cloudLinkedProvider)) return;
         final g = ref.read(gameControllerProvider);
         unawaited(pushShopDisplay(ref.read(friendsRepositoryProvider), g.equippedAccessories,
-            raidPower(equipped: g.equippedAccessories, refineLevels: g.refineLevels, stage: g.stage)));
+            raidPower(equipped: g.equippedAccessories, refineLevels: g.refineLevels, stage: g.stage),
+            g.decorPlaced));
       },
     );
 

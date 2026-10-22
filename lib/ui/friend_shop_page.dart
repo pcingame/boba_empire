@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../core/accessories.dart';
+import '../core/decor.dart';
 import '../core/format.dart';
 import '../core/raid.dart';
 import '../friends/friends.dart';
@@ -86,6 +87,11 @@ class _Body extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final items = [for (final id in shop.equipped) ?accessoryOrNull(id)];
+    // Chỉ vẽ món còn hợp lệ (id lạ / sai ô từ bản khác bị bỏ qua).
+    final decor = [
+      for (final e in shop.decor.entries)
+        if (decorFits(e.key, e.value)) decorById(e.value)!,
+    ];
     final n = shop.stage.clamp(1, 18);
     Widget stat(String label, String value) => Padding(
           padding: const EdgeInsets.symmetric(vertical: 4),
@@ -138,6 +144,21 @@ class _Body extends ConsumerWidget {
               ]),
             ),
         ]),
+      if (decor.isNotEmpty) ...[
+        const SizedBox(height: 16),
+        Text(l10n.friendShopDecor, style: theme.textTheme.titleMedium),
+        const SizedBox(height: 8),
+        Wrap(key: const Key('friend-shop-decor'), spacing: 10, runSpacing: 10, children: [
+          for (final d in decor)
+            Container(
+              width: 48,
+              height: 48,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(color: const Color(0xFFFAE9D4), borderRadius: BorderRadius.circular(12)),
+              child: Text(d.emoji, style: const TextStyle(fontSize: 26)),
+            ),
+        ]),
+      ],
       const SizedBox(height: 16),
       Builder(builder: (context) {
         final g = ref.watch(gameControllerProvider);

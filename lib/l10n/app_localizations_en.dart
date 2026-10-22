@@ -3095,6 +3095,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get friendShopDisplayEmpty => 'Nothing on display yet.';
 
   @override
+  String get friendShopDecor => 'Shop decor';
+
+  @override
   String get friendShopCollection => 'Collection';
 
   @override
