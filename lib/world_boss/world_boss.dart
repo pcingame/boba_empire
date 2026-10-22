@@ -171,7 +171,9 @@ class WorldBossController extends AsyncNotifier<WorldBossState> {
   /// [silent] giữ dữ liệu cũ trên màn trong lúc tải (poll nền).
   Future<void> refresh({bool silent = false}) async {
     if (!silent) state = const AsyncLoading<WorldBossState>();
-    state = await AsyncValue.guard(_load);
+    final next = await AsyncValue.guard(_load);
+    if (!ref.mounted) return; // provider autoDispose khi rời màn trong lúc chờ mạng
+    state = next;
   }
 
   /// Xem quảng cáo thưởng rồi +sát thương (người đã gỡ quảng cáo thì bỏ qua bước xem). Trả: null = người chơi đóng

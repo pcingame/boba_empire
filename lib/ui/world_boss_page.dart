@@ -133,6 +133,7 @@ class _State extends ConsumerState<WorldBossPage>
     if (!reduceMotion) _shake.forward(from: 0);
     _flush?.cancel();
     _flush = Timer(const Duration(milliseconds: 700), () async {
+      if (!mounted) return;
       await ref
           .read(worldBossControllerProvider.notifier)
           .refresh(silent: true);
