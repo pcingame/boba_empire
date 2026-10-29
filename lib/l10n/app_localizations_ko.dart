@@ -4673,6 +4673,16 @@ class AppLocalizationsKo extends AppLocalizations {
   String get notifyD3Body => '3일이 지났어요 — 코인 창고는 진작 가득 찼어요. 와서 받아 가세요.';
 
   @override
+  String notifyD3GiftBody(int gems) {
+    return '돌아오면 +$gems 💎 환영 선물이 기다려요 — 코인과 함께 받아 가세요.';
+  }
+
+  @override
+  String notifyD7GiftBody(int gems) {
+    return '+$gems 💎 환영 선물, 승천, 새로운 콘텐츠가 기다리고 있어요.';
+  }
+
+  @override
   String get notifyD7Title => '벌써 일주일이에요! 🧋';
 
   @override

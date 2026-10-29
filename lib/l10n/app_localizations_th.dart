@@ -4726,6 +4726,16 @@ class AppLocalizationsTh extends AppLocalizations {
   String get notifyD3Body => 'คลังเหรียญเต็มมานานแล้ว กลับมาเก็บกันเถอะ';
 
   @override
+  String notifyD3GiftBody(int gems) {
+    return 'ของขวัญต้อนรับกลับ +$gems 💎 รอคุณอยู่ มารับพร้อมเหรียญได้เลย';
+  }
+
+  @override
+  String notifyD7GiftBody(int gems) {
+    return 'ของขวัญ +$gems 💎 การเลื่อนขั้น และของใหม่มากมายรอคุณอยู่';
+  }
+
+  @override
   String get notifyD7Title => 'ผ่านไปหนึ่งสัปดาห์แล้ว! 🧋';
 
   @override

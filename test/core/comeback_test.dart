@@ -27,6 +27,15 @@ void main() {
     expect(s.gems, 260);
   });
 
+  test('đủ điều kiện nhận quà lúc nào (để thông báo chỉ hứa khi đúng)', () {
+    final s = GameState.newGame(nowMillis: _now)..lifetimeEarnings = 1;
+    expect(comebackEligibleAt(s, _now), isTrue);
+    s.lastComebackMillis = _now;
+    expect(comebackEligibleAt(s, _now + 3 * _day), isFalse, reason: 'vừa nhận quà, còn thời gian chờ');
+    expect(comebackEligibleAt(s, _now + 7 * _day), isTrue);
+    expect(comebackEligibleAt(GameState.newGame(nowMillis: _now), _now), isFalse, reason: 'người mới');
+  });
+
   test('save chưa kiếm được Xu nào (người mới) không có quà', () {
     final s = GameState.newGame(nowMillis: _now);
     expect(claimComeback(s, _now, 30 * _day), 0);

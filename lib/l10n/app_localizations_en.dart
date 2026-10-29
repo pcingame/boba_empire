@@ -4750,6 +4750,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'It\'s been 3 days — the coin stash filled up ages ago, come collect it.';
 
   @override
+  String notifyD3GiftBody(int gems) {
+    return 'A welcome-back gift of +$gems 💎 is waiting — come collect it and your coins.';
+  }
+
+  @override
+  String notifyD7GiftBody(int gems) {
+    return 'A welcome-back gift of +$gems 💎, Ascension and lots of new stuff are waiting.';
+  }
+
+  @override
   String get notifyD7Title => 'It\'s been a week! 🧋';
 
   @override

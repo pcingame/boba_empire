@@ -8029,6 +8029,18 @@ abstract class AppLocalizations {
   /// **'Kho Xu đã đầy từ lâu, đơn hàng vẫn đang chờ — ghé qua thu dọn nhé.'**
   String get notifyD3Body;
 
+  /// No description provided for @notifyD3GiftBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quà chào mừng trở lại +{gems} 💎 đang chờ — ghé qua nhận và thu Xu nhé.'**
+  String notifyD3GiftBody(int gems);
+
+  /// No description provided for @notifyD7GiftBody.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quà chào mừng trở lại +{gems} 💎, Kỷ Nguyên và bao nhiêu thứ mới đang chờ bạn.'**
+  String notifyD7GiftBody(int gems);
+
   /// No description provided for @notifyD7Title.
   ///
   /// In vi, this message translates to:

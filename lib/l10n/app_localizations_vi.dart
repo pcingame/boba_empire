@@ -4738,6 +4738,16 @@ class AppLocalizationsVi extends AppLocalizations {
       'Kho Xu đã đầy từ lâu, đơn hàng vẫn đang chờ — ghé qua thu dọn nhé.';
 
   @override
+  String notifyD3GiftBody(int gems) {
+    return 'Quà chào mừng trở lại +$gems 💎 đang chờ — ghé qua nhận và thu Xu nhé.';
+  }
+
+  @override
+  String notifyD7GiftBody(int gems) {
+    return 'Quà chào mừng trở lại +$gems 💎, Kỷ Nguyên và bao nhiêu thứ mới đang chờ bạn.';
+  }
+
+  @override
   String get notifyD7Title => 'Đã 1 tuần rồi đó! 🧋';
 
   @override

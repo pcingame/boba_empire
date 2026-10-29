@@ -2307,6 +2307,9 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
+  /// Lúc [atMillis] có nhận được quà trở lại không (xem comeback.dart) — thông báo nhắc chỉ hứa quà khi đúng.
+  bool comebackEligibleAtMillis(int atMillis) => comebackEligibleAt(_game, atMillis);
+
   /// UI gọi khi app trở lại foreground: bù tiền cho khoảng vừa ở nền.
   void handleResume() {
     _rollDaily();

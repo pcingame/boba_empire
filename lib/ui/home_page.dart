@@ -35,6 +35,7 @@ import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../market/market_highlight.dart';
 import '../notify/recipe_reminder.dart';
+import '../core/comeback.dart';
 import '../notify/reminders.dart';
 import '../state/game_providers.dart';
 import '../state/game_snapshot.dart';
@@ -348,17 +349,22 @@ class _HomePageState extends ConsumerState<HomePage>
   /// vắng 7 ngày). No-op nếu người chơi chưa cho quyền thông báo.
   void _scheduleReminders(int offlineCapSeconds) {
     final l10n = AppLocalizations.of(context)!;
+    final now = DateTime.now();
+    final ctrl = ref.read(gameControllerProvider.notifier);
+    // Chỉ hứa quà trở lại trong thông báo khi lúc nhắc người chơi thật sự sẽ nhận được (qua thời gian chờ).
+    final d3Gift = ctrl.comebackEligibleAtMillis(d3ReminderAt(now).millisecondsSinceEpoch);
+    final d7Gift = ctrl.comebackEligibleAtMillis(d7ReminderAt(now).millisecondsSinceEpoch);
     Reminders.schedule(
-      now: DateTime.now(),
+      now: now,
       offlineCapSeconds: offlineCapSeconds,
       offlineTitle: l10n.notifyOfflineFullTitle,
       offlineBody: l10n.notifyOfflineFullBody,
       dailyTitle: l10n.notifyDailyTitle,
       dailyBody: l10n.notifyDailyBody,
       d3Title: l10n.notifyD3Title,
-      d3Body: l10n.notifyD3Body,
+      d3Body: d3Gift ? l10n.notifyD3GiftBody(comebackGems(3 * 86400000)) : l10n.notifyD3Body,
       d7Title: l10n.notifyD7Title,
-      d7Body: l10n.notifyD7Body,
+      d7Body: d7Gift ? l10n.notifyD7GiftBody(comebackGems(7 * 86400000)) : l10n.notifyD7Body,
       // Người có VIP: nhắc cả quà VIP (null → giữ nguyên lịch nhắc cũ).
       vip: topupVipLevel(ref.read(gameControllerProvider).vipExp) >= 1
           ? VipReminderTexts(

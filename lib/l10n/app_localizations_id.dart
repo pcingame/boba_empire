@@ -4744,6 +4744,16 @@ class AppLocalizationsId extends AppLocalizations {
       'Sudah 3 hari — kas Koin sudah penuh sejak lama, ayo ambil.';
 
   @override
+  String notifyD3GiftBody(int gems) {
+    return 'Hadiah selamat datang kembali +$gems 💎 menunggumu — ayo ambil bersama koinmu.';
+  }
+
+  @override
+  String notifyD7GiftBody(int gems) {
+    return 'Hadiah +$gems 💎, Ascension, dan banyak hal baru menunggumu.';
+  }
+
+  @override
   String get notifyD7Title => 'Sudah seminggu! 🧋';
 
   @override
