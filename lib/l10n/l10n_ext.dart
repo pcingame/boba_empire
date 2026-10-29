@@ -142,6 +142,22 @@ String achievementDesc(AppLocalizations l10n, Achievement a) =>
       AchievementMetric.ascension => l10n.achAscend,
     };
 
+/// Tên huy hiệu Phòng truyền thống (xem core/trophies.dart).
+String trophyName(AppLocalizations l10n, String id) => switch (id) {
+      'firstBranch' => l10n.trophyFirstBranch,
+      'allBranches' => l10n.trophyAllBranches,
+      'maxBranch' => l10n.trophyMaxBranch,
+      'moon' => l10n.trophyMoon,
+      'ascend' => l10n.trophyAscend,
+      'ascend4' => l10n.trophyAscend4,
+      'collector' => l10n.trophyCollector,
+      'fullCollection' => l10n.trophyFullCollection,
+      'achievements' => l10n.trophyAchievements,
+      'story' => l10n.trophyStory,
+      'vip' => l10n.trophyVip,
+      _ => id,
+    };
+
 /// Tên / điều kiện mở khoá của danh hiệu hồ sơ (xem core/titles.dart).
 String playerTitleName(AppLocalizations l10n, String id) => switch (id) {
       'tycoon' => l10n.playerTitleTycoon,

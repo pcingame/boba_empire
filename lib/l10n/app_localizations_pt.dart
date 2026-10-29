@@ -1178,6 +1178,45 @@ class AppLocalizationsPt extends AppLocalizations {
   String get myProfileStatAchievements => 'Conquistas';
 
   @override
+  String get trophyRoomTitle => 'Salão da fama';
+
+  @override
+  String get trophyFirstBranch => 'Primeira filial';
+
+  @override
+  String get trophyAllBranches => 'Todas as cidades';
+
+  @override
+  String get trophyMaxBranch => 'Filial no nível máximo';
+
+  @override
+  String get trophyMoon => 'Lenda da Lua';
+
+  @override
+  String get trophyAscend => 'Primeira Era';
+
+  @override
+  String get trophyAscend4 => 'Quatro Eras superadas';
+
+  @override
+  String get trophyCollector => 'Colecionador';
+
+  @override
+  String get trophyFullCollection => 'Coleção completa';
+
+  @override
+  String get trophyAchievements => 'Todas as conquistas';
+
+  @override
+  String get trophyStory => 'História concluída';
+
+  @override
+  String get trophyVip => 'VIP supremo';
+
+  @override
+  String get trophyEarned => 'Conquistado';
+
+  @override
   String get myProfileRanks => 'Ver meus rankings';
 
   @override

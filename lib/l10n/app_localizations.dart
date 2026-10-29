@@ -2010,6 +2010,84 @@ abstract class AppLocalizations {
   /// **'Thành tựu'**
   String get myProfileStatAchievements;
 
+  /// No description provided for @trophyRoomTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phòng truyền thống'**
+  String get trophyRoomTitle;
+
+  /// No description provided for @trophyFirstBranch.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi nhánh đầu tiên'**
+  String get trophyFirstBranch;
+
+  /// No description provided for @trophyAllBranches.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phủ sóng mọi thành phố'**
+  String get trophyAllBranches;
+
+  /// No description provided for @trophyMaxBranch.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi nhánh cấp tối đa'**
+  String get trophyMaxBranch;
+
+  /// No description provided for @trophyMoon.
+  ///
+  /// In vi, this message translates to:
+  /// **'Huyền thoại Mặt Trăng'**
+  String get trophyMoon;
+
+  /// No description provided for @trophyAscend.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kỷ Nguyên đầu tiên'**
+  String get trophyAscend;
+
+  /// No description provided for @trophyAscend4.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vượt bốn Kỷ Nguyên'**
+  String get trophyAscend4;
+
+  /// No description provided for @trophyCollector.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhà sưu tập'**
+  String get trophyCollector;
+
+  /// No description provided for @trophyFullCollection.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bộ sưu tập trọn vẹn'**
+  String get trophyFullCollection;
+
+  /// No description provided for @trophyAchievements.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cả làng thành tựu'**
+  String get trophyAchievements;
+
+  /// No description provided for @trophyStory.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn tất cốt truyện'**
+  String get trophyStory;
+
+  /// No description provided for @trophyVip.
+  ///
+  /// In vi, this message translates to:
+  /// **'VIP tối thượng'**
+  String get trophyVip;
+
+  /// No description provided for @trophyEarned.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã đạt'**
+  String get trophyEarned;
+
   /// No description provided for @myProfileRanks.
   ///
   /// In vi, this message translates to:

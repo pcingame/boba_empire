@@ -1152,6 +1152,45 @@ class AppLocalizationsKo extends AppLocalizations {
   String get myProfileStatAchievements => '업적';
 
   @override
+  String get trophyRoomTitle => '명예의 전당';
+
+  @override
+  String get trophyFirstBranch => '첫 지점';
+
+  @override
+  String get trophyAllBranches => '모든 도시 정복';
+
+  @override
+  String get trophyMaxBranch => '최고 레벨 지점';
+
+  @override
+  String get trophyMoon => '달의 전설';
+
+  @override
+  String get trophyAscend => '첫 번째 시대';
+
+  @override
+  String get trophyAscend4 => '네 시대 정복';
+
+  @override
+  String get trophyCollector => '수집가';
+
+  @override
+  String get trophyFullCollection => '컬렉션 완성';
+
+  @override
+  String get trophyAchievements => '모든 업적';
+
+  @override
+  String get trophyStory => '스토리 완료';
+
+  @override
+  String get trophyVip => '최고 VIP';
+
+  @override
+  String get trophyEarned => '달성';
+
+  @override
   String get myProfileRanks => '내 순위 보기';
 
   @override

@@ -9,6 +9,7 @@ import '../core/accessories.dart';
 import '../core/achievements.dart';
 import '../core/format.dart';
 import '../core/titles.dart';
+import '../core/trophies.dart';
 import '../core/topup.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
@@ -65,6 +66,15 @@ class _State extends ConsumerState<MyProfilePage> {
     final title = playerTitleById(titleId);
     final gender = ref.watch(selectedGenderProvider);
     final nickname = ref.read(sharedPreferencesProvider).getString('leaderboard_nickname') ?? '';
+    final ts = TrophyStats(
+      branchLevels: g.branchLevels,
+      stage: g.stage,
+      ascension: g.ascensionCount,
+      owned: g.ownedAccessories.length,
+      achievements: g.achievementsClaimed.length,
+      storyChapter: g.storyChapter,
+      vipExp: g.vipExp,
+    );
     final stats = <(String, String)>[
       (l10n.myProfileStatStage, stageName(l10n, g.stage)),
       (l10n.myProfileStatEarned, formatNumber(g.lifetimeEarnings)),
@@ -156,6 +166,37 @@ class _State extends ConsumerState<MyProfilePage> {
                   ),
                 ]),
               ),
+            const SizedBox(height: 8),
+            ClayCard(
+              padding: const EdgeInsets.all(12),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text('${l10n.trophyRoomTitle} · ${trophies.where((t) => t.earned(ts)).length}/${trophies.length}',
+                    key: const Key('trophy-room-title'),
+                    style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+                const SizedBox(height: 8),
+                Wrap(spacing: 10, runSpacing: 10, children: [
+                  for (final t in trophies)
+                    Semantics(
+                      label: '${trophyName(l10n, t.id)}${t.earned(ts) ? ' · ${l10n.trophyEarned}' : ''}',
+                      child: Tooltip(
+                        message: trophyName(l10n, t.id),
+                        child: InkWell(
+                          key: Key('trophy-${t.id}'),
+                          borderRadius: BorderRadius.circular(12),
+                          onTap: () => _snack('${t.earned(ts) ? t.emoji : '🔒'} ${trophyName(l10n, t.id)}'),
+                          child: Opacity(
+                            opacity: t.earned(ts) ? 1 : 0.3,
+                            child: Padding(
+                              padding: const EdgeInsets.all(4),
+                              child: Text(t.earned(ts) ? t.emoji : '🔒', style: const TextStyle(fontSize: 32)),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                ]),
+              ]),
+            ),
             if (nickname.isNotEmpty) ...[
               const SizedBox(height: 8),
               FilledButton.tonal(

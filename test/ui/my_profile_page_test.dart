@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:boba_empire/core/models.dart';
+import 'package:boba_empire/core/trophies.dart';
 import 'package:boba_empire/data/cloud_save_controller.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
@@ -107,10 +108,22 @@ void main() {
     await _end(tester, c);
   });
 
+  testWidgets('Phòng truyền thống: đếm huy hiệu đã đạt, chạm huy hiệu khoá hiện 🔒 + tên', (tester) async {
+    final (c, _, _) = await _open(tester); // stage 5, chưa có chi nhánh/Kỷ Nguyên
+    expect(find.byKey(const Key('trophy-room-title')), findsOneWidget);
+    expect(find.textContaining('0/${trophies.length}'), findsOneWidget);
+    await tester.ensureVisible(find.byKey(const Key('trophy-moon')));
+    await tester.tap(find.byKey(const Key('trophy-moon')));
+    await tester.pump();
+    expect(find.textContaining('🔒'), findsWidgets);
+    await _end(tester, c);
+  });
+
   testWidgets('hiện biệt danh, thống kê, nút hạng/chia sẻ', (tester) async {
     final (c, _, _) = await _open(tester);
     expect(find.text('Tôi'), findsOneWidget);
     expect(find.text('0/${160}'), findsOneWidget);
+    await tester.scrollUntilVisible(find.byKey(const Key('my-ranks')), 200);
     expect(find.byKey(const Key('my-ranks')), findsOneWidget);
     expect(find.byKey(const Key('my-avatar-remove')), findsNothing);
     await _end(tester, c);

@@ -1172,6 +1172,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myProfileStatAchievements => 'Achievements';
 
   @override
+  String get trophyRoomTitle => 'Hall of fame';
+
+  @override
+  String get trophyFirstBranch => 'First branch';
+
+  @override
+  String get trophyAllBranches => 'Every city covered';
+
+  @override
+  String get trophyMaxBranch => 'Max-level branch';
+
+  @override
+  String get trophyMoon => 'Moon legend';
+
+  @override
+  String get trophyAscend => 'First Era';
+
+  @override
+  String get trophyAscend4 => 'Four Eras conquered';
+
+  @override
+  String get trophyCollector => 'Collector';
+
+  @override
+  String get trophyFullCollection => 'Complete collection';
+
+  @override
+  String get trophyAchievements => 'All achievements';
+
+  @override
+  String get trophyStory => 'Story complete';
+
+  @override
+  String get trophyVip => 'Supreme VIP';
+
+  @override
+  String get trophyEarned => 'Earned';
+
+  @override
   String get myProfileRanks => 'See my ranks';
 
   @override

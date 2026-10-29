@@ -1174,6 +1174,45 @@ class AppLocalizationsId extends AppLocalizations {
   String get myProfileStatAchievements => 'Pencapaian';
 
   @override
+  String get trophyRoomTitle => 'Hall of fame';
+
+  @override
+  String get trophyFirstBranch => 'Cabang pertama';
+
+  @override
+  String get trophyAllBranches => 'Semua kota terjangkau';
+
+  @override
+  String get trophyMaxBranch => 'Cabang level maksimal';
+
+  @override
+  String get trophyMoon => 'Legenda Bulan';
+
+  @override
+  String get trophyAscend => 'Era pertama';
+
+  @override
+  String get trophyAscend4 => 'Empat Era ditaklukkan';
+
+  @override
+  String get trophyCollector => 'Kolektor';
+
+  @override
+  String get trophyFullCollection => 'Koleksi lengkap';
+
+  @override
+  String get trophyAchievements => 'Semua pencapaian';
+
+  @override
+  String get trophyStory => 'Cerita tamat';
+
+  @override
+  String get trophyVip => 'VIP tertinggi';
+
+  @override
+  String get trophyEarned => 'Diraih';
+
+  @override
   String get myProfileRanks => 'Lihat peringkat saya';
 
   @override

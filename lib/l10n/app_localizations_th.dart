@@ -1171,6 +1171,45 @@ class AppLocalizationsTh extends AppLocalizations {
   String get myProfileStatAchievements => 'ความสำเร็จ';
 
   @override
+  String get trophyRoomTitle => 'หอเกียรติยศ';
+
+  @override
+  String get trophyFirstBranch => 'สาขาแรก';
+
+  @override
+  String get trophyAllBranches => 'ครบทุกเมือง';
+
+  @override
+  String get trophyMaxBranch => 'สาขาระดับสูงสุด';
+
+  @override
+  String get trophyMoon => 'ตำนานแห่งดวงจันทร์';
+
+  @override
+  String get trophyAscend => 'ยุคแรก';
+
+  @override
+  String get trophyAscend4 => 'พิชิตสี่ยุค';
+
+  @override
+  String get trophyCollector => 'นักสะสม';
+
+  @override
+  String get trophyFullCollection => 'คอลเลกชันครบ';
+
+  @override
+  String get trophyAchievements => 'ความสำเร็จครบทุกอย่าง';
+
+  @override
+  String get trophyStory => 'จบเนื้อเรื่อง';
+
+  @override
+  String get trophyVip => 'VIP สูงสุด';
+
+  @override
+  String get trophyEarned => 'ได้รับแล้ว';
+
+  @override
   String get myProfileRanks => 'ดูอันดับของฉัน';
 
   @override

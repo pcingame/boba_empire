@@ -1171,6 +1171,45 @@ class AppLocalizationsVi extends AppLocalizations {
   String get myProfileStatAchievements => 'Thành tựu';
 
   @override
+  String get trophyRoomTitle => 'Phòng truyền thống';
+
+  @override
+  String get trophyFirstBranch => 'Chi nhánh đầu tiên';
+
+  @override
+  String get trophyAllBranches => 'Phủ sóng mọi thành phố';
+
+  @override
+  String get trophyMaxBranch => 'Chi nhánh cấp tối đa';
+
+  @override
+  String get trophyMoon => 'Huyền thoại Mặt Trăng';
+
+  @override
+  String get trophyAscend => 'Kỷ Nguyên đầu tiên';
+
+  @override
+  String get trophyAscend4 => 'Vượt bốn Kỷ Nguyên';
+
+  @override
+  String get trophyCollector => 'Nhà sưu tập';
+
+  @override
+  String get trophyFullCollection => 'Bộ sưu tập trọn vẹn';
+
+  @override
+  String get trophyAchievements => 'Cả làng thành tựu';
+
+  @override
+  String get trophyStory => 'Hoàn tất cốt truyện';
+
+  @override
+  String get trophyVip => 'VIP tối thượng';
+
+  @override
+  String get trophyEarned => 'Đã đạt';
+
+  @override
   String get myProfileRanks => 'Xem hạng của tôi';
 
   @override
