@@ -6151,6 +6151,12 @@ abstract class AppLocalizations {
   /// **'Nâng cấp · {cost}'**
   String branchUpgrade(String cost);
 
+  /// No description provided for @branchPayback.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn vốn ~{time}'**
+  String branchPayback(String time);
+
   /// No description provided for @branchMaxed.
   ///
   /// In vi, this message translates to:

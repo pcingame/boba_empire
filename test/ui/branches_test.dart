@@ -45,6 +45,12 @@ GameState _rich({int stage = 6, double money = 1e12, double gems = 100000}) {
 
 void main() {
   group('công thức', () {
+    test('hoàn vốn = giá nâng cấp / thu nhập tăng thêm; vô hạn khi không có thu nhập', () {
+      final c = branchCityById('tokyo')!;
+      expect(branchPaybackSeconds(c, 3, 1000), closeTo(branchCost(c, 4, 1000) / (1000 * branchRatePerLevel * c.rateMult), 1e-6));
+      expect(branchPaybackSeconds(c, 3, 0), double.infinity);
+    });
+
     test('tỉ lệ tăng theo cấp và hệ số thành phố; cấp 0 = 0', () {
       final c = branchCityById('tokyo')!;
       expect(branchRate(c, 0), 0);

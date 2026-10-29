@@ -3514,6 +3514,11 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String branchPayback(String time) {
+    return '투자 회수 ~$time';
+  }
+
+  @override
   String get branchMaxed => '최대';
 
   @override

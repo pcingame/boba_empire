@@ -1965,6 +1965,8 @@
   "@branchOpen": {"placeholders": {"cost": {"type": "String"}}},
   "branchUpgrade": "Nâng cấp · {cost}",
   "@branchUpgrade": {"placeholders": {"cost": {"type": "String"}}},
+  "branchPayback": "Hoàn vốn ~{time}",
+  "@branchPayback": {"placeholders": {"time": {"type": "String"}}},
   "branchMaxed": "Tối đa",
   "branchNeedStage": "Cần đạt giai đoạn {stage}",
   "@branchNeedStage": {"placeholders": {"stage": {"type": "int"}}},

@@ -1293,6 +1293,8 @@
   "@branchOpen": {"placeholders": {"cost": {"type": "String"}}},
   "branchUpgrade": "อัปเกรด · {cost}",
   "@branchUpgrade": {"placeholders": {"cost": {"type": "String"}}},
+  "branchPayback": "คืนทุน ~{time}",
+  "@branchPayback": {"placeholders": {"time": {"type": "String"}}},
   "branchMaxed": "สูงสุด",
   "branchNeedStage": "ต้องถึงด่านที่ {stage}",
   "@branchNeedStage": {"placeholders": {"stage": {"type": "int"}}},

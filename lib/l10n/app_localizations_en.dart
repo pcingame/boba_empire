@@ -3566,6 +3566,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String branchPayback(String time) {
+    return 'Payback ~$time';
+  }
+
+  @override
   String get branchMaxed => 'Maxed';
 
   @override

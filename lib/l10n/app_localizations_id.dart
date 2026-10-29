@@ -3564,6 +3564,11 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String branchPayback(String time) {
+    return 'Balik modal ~$time';
+  }
+
+  @override
   String get branchMaxed => 'Maksimum';
 
   @override

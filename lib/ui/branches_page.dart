@@ -1330,6 +1330,11 @@ class _Card extends StatelessWidget {
   final double income;
   final VoidCallback onAct;
 
+  String _payback(double cost, int lvl) {
+    final sec = branchPaybackSeconds(c, lvl, income, discount: branchPerk(s.branchLevels, BranchPerk.discount));
+    return sec.isFinite ? formatDuration(sec.round()) : '∞';
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -1527,6 +1532,15 @@ class _Card extends StatelessWidget {
             if (!locked && lvl > 0) _CityExtras(c: c, s: s, now: now),
             if (!locked && !maxed) ...[
               const SizedBox(height: 6),
+              if (lvl > 0)
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    l10n.branchPayback(_payback(cost, lvl)),
+                    key: Key('branch-payback-${c.id}'),
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ),
               Align(
                 alignment: Alignment.centerRight,
                 child: FittedBox(

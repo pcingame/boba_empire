@@ -189,6 +189,13 @@ double branchCost(
   return v.isFinite ? v : double.maxFinite;
 }
 
+/// Số giây để thu hồi giá nâng [c] từ cấp [level] lên [level]+1 bằng phần thu nhập tăng thêm (chưa tính trần kho/giờ cao điểm).
+double branchPaybackSeconds(BranchCity c, int level, double incomePerSecond, {double discount = 0}) {
+  final gain = (branchRate(c, level + 1) - branchRate(c, level)) * incomePerSecond;
+  if (!(gain > 0) || !gain.isFinite) return double.infinity;
+  return branchCost(c, level + 1, incomePerSecond, discount: discount) / gain;
+}
+
 /// Số giây đã tích (đã kẹp trần) của chi nhánh [c], nhân tỉ lệ → "giây thu nhập quán chính" chờ thu.
 double branchPendingIncomeSeconds(
   Map<String, int> levels,

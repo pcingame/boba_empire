@@ -3557,6 +3557,11 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String branchPayback(String time) {
+    return 'Hoàn vốn ~$time';
+  }
+
+  @override
   String get branchMaxed => 'Tối đa';
 
   @override

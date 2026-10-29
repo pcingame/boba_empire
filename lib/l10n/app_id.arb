@@ -1293,6 +1293,8 @@
   "@branchOpen": {"placeholders": {"cost": {"type": "String"}}},
   "branchUpgrade": "Tingkatkan · {cost}",
   "@branchUpgrade": {"placeholders": {"cost": {"type": "String"}}},
+  "branchPayback": "Balik modal ~{time}",
+  "@branchPayback": {"placeholders": {"time": {"type": "String"}}},
   "branchMaxed": "Maksimum",
   "branchNeedStage": "Capai tahap {stage} untuk membuka",
   "@branchNeedStage": {"placeholders": {"stage": {"type": "int"}}},

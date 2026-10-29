@@ -3552,6 +3552,11 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String branchPayback(String time) {
+    return 'คืนทุน ~$time';
+  }
+
+  @override
   String get branchMaxed => 'สูงสุด';
 
   @override

@@ -1293,6 +1293,8 @@
   "@branchOpen": {"placeholders": {"cost": {"type": "String"}}},
   "branchUpgrade": "Upgrade · {cost}",
   "@branchUpgrade": {"placeholders": {"cost": {"type": "String"}}},
+  "branchPayback": "Payback ~{time}",
+  "@branchPayback": {"placeholders": {"time": {"type": "String"}}},
   "branchMaxed": "Maxed",
   "branchNeedStage": "Reach stage {stage} to open",
   "@branchNeedStage": {"placeholders": {"stage": {"type": "int"}}},

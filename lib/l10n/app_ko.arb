@@ -1091,6 +1091,8 @@
   "@branchOpen": {"placeholders": {"cost": {"type": "String"}}},
   "branchUpgrade": "업그레이드 · {cost}",
   "@branchUpgrade": {"placeholders": {"cost": {"type": "String"}}},
+  "branchPayback": "투자 회수 ~{time}",
+  "@branchPayback": {"placeholders": {"time": {"type": "String"}}},
   "branchMaxed": "최대",
   "branchNeedStage": "{stage}단계 달성 시 개점",
   "@branchNeedStage": {"placeholders": {"stage": {"type": "int"}}},
