@@ -52,6 +52,7 @@ import '../core/story.dart';
 import '../core/topup.dart';
 import '../core/comeback.dart';
 import '../core/monthly_challenge.dart';
+import '../core/recap.dart';
 import '../core/weekly_quests.dart';
 import '../core/vip.dart';
 import '../core/vip_shop.dart';
@@ -1192,6 +1193,7 @@ class GameController extends Notifier<GameSnapshot> {
         _game, DateTime.fromMillisecondsSinceEpoch(_clock(), isUtc: true));
     rollWeeklyQuests(_game, _clock());
     rollMonthlyChallenge(_game, _clock());
+    rollRecap(_game, _clock());
     rollDailyQuests(
       _game,
       _clock(),
@@ -2325,6 +2327,14 @@ class GameController extends Notifier<GameSnapshot> {
     state = _snapshot();
   }
 
+  /// UI gọi sau khi đã hiện popup tổng kết tuần: không hiện lại.
+  void dismissRecap() {
+    if (!_game.recapPending) return;
+    _game.recapPending = false;
+    unawaited(saveNow());
+    state = _snapshot();
+  }
+
   /// UI gọi sau khi đã hiện popup tiền offline.
   void acknowledgeOffline() {
     if (_offlineEarned == 0 && _comebackGems == 0) return;
@@ -2853,6 +2863,8 @@ class GameController extends Notifier<GameSnapshot> {
               _offlineAwayMs >= Balance.offlineDialogMinSeconds * 1000) ||
           _comebackGems > 0,
       comebackGems: _comebackGems,
+      recapPending: _game.recapPending,
+      recapData: Map.unmodifiable(_game.recapData),
       catVisible: _catVisible,
       boostRemainingSeconds: remainingMs > 0 ? remainingMs / 1000.0 : 0,
       vipVisible: _vipVisible,

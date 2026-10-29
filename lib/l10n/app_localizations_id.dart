@@ -258,6 +258,27 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
+  String get recapTitle => 'Rekap minggu ini';
+
+  @override
+  String get recapEarned => 'Koin didapat';
+
+  @override
+  String get recapTaps => 'Ketukan gelas';
+
+  @override
+  String get recapBuys => 'Peningkatan dibeli';
+
+  @override
+  String get recapItems => 'Aksesori baru';
+
+  @override
+  String get recapAchievements => 'Pencapaian baru';
+
+  @override
+  String get recapClose => 'Keren!';
+
+  @override
   String offlineBody(String amount) {
     return 'Toko tetap berjualan saat kamu pergi.\nKamu mendapat $amount Koin.';
   }

@@ -100,6 +100,10 @@ class GameState {
     List<String>? weeklyClaimed,
     this.monthlyMonth = 0,
     this.lastComebackMillis = 0,
+    this.recapWeek = 0,
+    this.recapPending = false,
+    Map<String, double>? recapBase,
+    Map<String, double>? recapData,
     this.monthlyChestClaimed = false,
     Map<String, double>? monthlyBase,
     List<String>? monthlyClaimed,
@@ -272,6 +276,8 @@ class GameState {
         weeklyProgress = weeklyProgress ?? {},
         weeklyClaimed = weeklyClaimed ?? [],
         monthlyBase = monthlyBase ?? {},
+        recapBase = recapBase ?? {},
+        recapData = recapData ?? {},
         monthlyClaimed = monthlyClaimed ?? [],
         recipeProgress = recipeProgress ?? {},
         recipeMilestonesClaimed = recipeMilestonesClaimed ?? [],
@@ -542,6 +548,12 @@ class GameState {
 
   /// Lần cuối nhận quà trở lại (xem comeback.dart), chống nhận lặp trong thời gian chờ.
   int lastComebackMillis;
+
+  /// Tổng kết tuần (xem recap.dart): tuần của mốc đang giữ, mốc bộ đếm đầu tuần, số liệu tuần vừa chốt, và đang chờ hiện.
+  int recapWeek;
+  bool recapPending;
+  final Map<String, double> recapBase;
+  final Map<String, double> recapData;
   bool monthlyChestClaimed;
   final Map<String, double> monthlyBase;
   final List<String> monthlyClaimed;
@@ -853,6 +865,10 @@ class GameState {
         'weeklyClaimed': weeklyClaimed,
         'monthlyMonth': monthlyMonth,
         'lastComebackMillis': lastComebackMillis,
+        'recapWeek': recapWeek,
+        'recapPending': recapPending,
+        'recapBase': recapBase,
+        'recapData': recapData,
         'monthlyChestClaimed': monthlyChestClaimed,
         'monthlyBase': monthlyBase,
         'monthlyClaimed': monthlyClaimed,
@@ -1133,6 +1149,10 @@ class GameState {
         weeklyClaimed: (json['weeklyClaimed'] as List?)?.cast<String>().toList(),
         monthlyMonth: (json['monthlyMonth'] as num?)?.toInt() ?? 0,
         lastComebackMillis: (json['lastComebackMillis'] as num?)?.toInt() ?? 0,
+        recapWeek: (json['recapWeek'] as num?)?.toInt() ?? 0,
+        recapPending: json['recapPending'] == true,
+        recapBase: (json['recapBase'] as Map?)?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),
+        recapData: (json['recapData'] as Map?)?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),
         monthlyChestClaimed: json['monthlyChestClaimed'] == true,
         monthlyBase: (json['monthlyBase'] as Map?)
             ?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),

@@ -492,6 +492,48 @@ abstract class AppLocalizations {
   /// **'🎁 Quà chào mừng trở lại: +{gems} 💎'**
   String offlineComeback(int gems);
 
+  /// No description provided for @recapTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng kết tuần qua'**
+  String get recapTitle;
+
+  /// No description provided for @recapEarned.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xu kiếm được'**
+  String get recapEarned;
+
+  /// No description provided for @recapTaps.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lần chạm ly'**
+  String get recapTaps;
+
+  /// No description provided for @recapBuys.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lần nâng cấp'**
+  String get recapBuys;
+
+  /// No description provided for @recapItems.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phụ kiện mới'**
+  String get recapItems;
+
+  /// No description provided for @recapAchievements.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thành tựu mới'**
+  String get recapAchievements;
+
+  /// No description provided for @recapClose.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tuyệt!'**
+  String get recapClose;
+
   /// No description provided for @offlineBody.
   ///
   /// In vi, this message translates to:

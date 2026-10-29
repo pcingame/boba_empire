@@ -257,6 +257,27 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
+  String get recapTitle => 'สรุปสัปดาห์ที่ผ่านมา';
+
+  @override
+  String get recapEarned => 'เหรียญที่ได้รับ';
+
+  @override
+  String get recapTaps => 'จำนวนครั้งที่แตะแก้ว';
+
+  @override
+  String get recapBuys => 'อัปเกรดที่ซื้อ';
+
+  @override
+  String get recapItems => 'อุปกรณ์เสริมใหม่';
+
+  @override
+  String get recapAchievements => 'ความสำเร็จใหม่';
+
+  @override
+  String get recapClose => 'เยี่ยม!';
+
+  @override
   String offlineBody(String amount) {
     return 'ร้านยังขายต่อขณะที่คุณไม่อยู่\nคุณได้รับ $amount เหรียญ';
   }

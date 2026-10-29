@@ -256,6 +256,27 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String get recapTitle => '지난주 요약';
+
+  @override
+  String get recapEarned => '획득한 코인';
+
+  @override
+  String get recapTaps => '컵 탭 횟수';
+
+  @override
+  String get recapBuys => '구매한 업그레이드';
+
+  @override
+  String get recapItems => '새 액세서리';
+
+  @override
+  String get recapAchievements => '새 업적';
+
+  @override
+  String get recapClose => '좋아요!';
+
+  @override
   String offlineBody(String amount) {
     return '자리를 비운 동안에도 가게는 계속 팔렸어요.\n$amount 코인을 벌었어요.';
   }

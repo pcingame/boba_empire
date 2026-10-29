@@ -93,6 +93,8 @@ class GameSnapshot {
     required this.offlineEarned,
     this.offlineDialogDue = false,
     this.comebackGems = 0,
+    this.recapPending = false,
+    this.recapData = const {},
     required this.catVisible,
     required this.boostRemainingSeconds,
     required this.vipVisible,
@@ -262,6 +264,10 @@ class GameSnapshot {
 
   /// 💎 quà chào mừng trở lại vừa nhận lúc mở app (0 nếu không); hiện trong popup offline.
   final int comebackGems;
+
+  /// Tổng kết tuần vừa chốt chờ hiện (xem recap.dart): cờ + số liệu theo khoá [recapKeys].
+  final bool recapPending;
+  final Map<String, double> recapData;
 
   /// Thu nhập tự động mỗi giây (đã tính bonus prestige) — để hiển thị "+X/s".
   final double incomePerSecond;

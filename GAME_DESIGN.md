@@ -1347,3 +1347,9 @@ Không có điểm hook: tiến độ = bộ đếm tích lũy có sẵn (`tapCo
 Vắng ≥3 ngày → tặng 💎 (3 ngày 50, 7 ngày 100, 14+ ngày 200) lúc mở app/trở lại foreground, hiện ở dòng riêng trong popup tiền offline
 (popup bật cả khi không có Xu offline). Tối đa 1 lần/7 ngày (`lastComebackMillis`) để tua đồng hồ máy không nhận liên tục. `lib/core/comeback.dart`.
 Chỉ client. Ceiling: người chơi tự tua đồng hồ tiến vẫn nhận được 200💎 mỗi 7 ngày; cần server-time nếu thành vấn đề.
+
+### 28d. Tổng kết tuần (2026-10-29, chưa playtest)
+Sang tuần mới (UTC, như nhiệm vụ tuần) chốt số liệu tuần vừa qua — Xu kiếm được, lần chạm, lần nâng cấp, phụ kiện mới, thành tựu mới — và hiện MỘT popup khi mở app
+(ưu tiên sau tiền offline, trước "Có gì mới"; chưa hiện thì giữ chờ lần sau). Số liệu = bộ đếm tích lũy trừ mốc chụp đầu tuần (`recapBase`), không thêm hook.
+Mục bằng 0 ẩn (trừ Xu); tuần không làm gì thì không bật popup. `lib/core/recap.dart`, `lib/ui/recap_dialog.dart`. Ceiling: Xu kiếm được lấy từ
+`lifetimeEarnings` (double), người chơi số rất lớn có thể mất độ chính xác ở số nhỏ; chưa có nút chia sẻ và chưa có tổng kết tháng.

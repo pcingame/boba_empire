@@ -259,6 +259,27 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
+  String get recapTitle => 'Resumo da sua semana';
+
+  @override
+  String get recapEarned => 'Moedas ganhas';
+
+  @override
+  String get recapTaps => 'Toques no copo';
+
+  @override
+  String get recapBuys => 'Melhorias compradas';
+
+  @override
+  String get recapItems => 'Novos acessórios';
+
+  @override
+  String get recapAchievements => 'Novas conquistas';
+
+  @override
+  String get recapClose => 'Ótimo!';
+
+  @override
   String offlineBody(String amount) {
     return 'A loja continuou vendendo enquanto você estava fora.\nVocê ganhou $amount Moedas.';
   }

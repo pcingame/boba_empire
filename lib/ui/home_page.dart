@@ -56,6 +56,7 @@ import 'daily_dialog.dart';
 import 'event_dialog.dart';
 import 'gem_shop.dart';
 import 'offline_dialog.dart';
+import 'recap_dialog.dart';
 import 'prestige_dialog.dart';
 import 'recipe_order_page.dart' show showRecipeOrderFor;
 import 'rival_event_dialog.dart';
@@ -160,7 +161,7 @@ class _HomePageState extends ConsumerState<HomePage>
         return;
       }
       // MỘT popup mỗi lần mở app, theo ưu tiên: điểm danh (mỗi ngày 1 lần, không
-      // được bỏ lỡ kẻo đứt chuỗi) > cốt truyện > tiền offline (chỉ khi vắng đủ lâu)
+      // được bỏ lỡ kẻo đứt chuỗi) > cốt truyện > tiền offline (chỉ khi vắng đủ lâu) > tổng kết tuần
       // > "Có gì mới" > nhắc liên kết email. Cái nào không được hiện thì chờ lần mở
       // sau — mọi trạng thái đều giữ nguyên (điểm danh/cốt truyện còn chờ, "Có gì
       // mới" chưa ghi nhớ, nhắc email chưa tính lượt).
@@ -174,6 +175,11 @@ class _HomePageState extends ConsumerState<HomePage>
       }
       if (state.offlineDialogDue) {
         await _showOfflineDialog(state.offlineEarned);
+        return;
+      }
+      if (state.recapPending) {
+        await showRecapDialog(context, state.recapData);
+        if (mounted) ref.read(gameControllerProvider.notifier).dismissRecap();
         return;
       }
       // KHÔNG await: hỏi phiên bản qua kênh nền tảng, không được chặn chuỗi popup.

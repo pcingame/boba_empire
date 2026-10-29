@@ -258,6 +258,27 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get recapTitle => 'Tổng kết tuần qua';
+
+  @override
+  String get recapEarned => 'Xu kiếm được';
+
+  @override
+  String get recapTaps => 'Lần chạm ly';
+
+  @override
+  String get recapBuys => 'Lần nâng cấp';
+
+  @override
+  String get recapItems => 'Phụ kiện mới';
+
+  @override
+  String get recapAchievements => 'Thành tựu mới';
+
+  @override
+  String get recapClose => 'Tuyệt!';
+
+  @override
   String offlineBody(String amount) {
     return 'Quán vẫn bán trong lúc bạn vắng mặt.\nBạn kiếm được $amount Xu.';
   }

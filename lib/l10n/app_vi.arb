@@ -259,6 +259,13 @@
   "offlineTitle": "Chào mừng trở lại! 🧋",
   "offlineComeback": "🎁 Quà chào mừng trở lại: +{gems} 💎",
   "@offlineComeback": {"placeholders": {"gems": {"type": "int"}}},
+  "recapTitle": "Tổng kết tuần qua",
+  "recapEarned": "Xu kiếm được",
+  "recapTaps": "Lần chạm ly",
+  "recapBuys": "Lần nâng cấp",
+  "recapItems": "Phụ kiện mới",
+  "recapAchievements": "Thành tựu mới",
+  "recapClose": "Tuyệt!",
   "offlineBody": "Quán vẫn bán trong lúc bạn vắng mặt.\nBạn kiếm được {amount} Xu.",
   "@offlineBody": {
     "placeholders": {

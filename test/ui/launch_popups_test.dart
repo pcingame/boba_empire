@@ -1,8 +1,9 @@
 // Mở app chỉ hiện TỐI ĐA MỘT popup, theo ưu tiên:
-// điểm danh > cốt truyện > tiền offline (vắng ≥ 2 phút) > "Có gì mới" > nhắc liên kết email.
+// điểm danh > cốt truyện > tiền offline (vắng ≥ 2 phút) > tổng kết tuần > "Có gì mới" > nhắc liên kết email.
 // Popup không được hiện thì giữ nguyên trạng thái để lần mở sau còn thấy.
 import 'package:boba_empire/core/cloud_remind.dart';
 import 'package:boba_empire/core/models.dart';
+import 'package:boba_empire/core/weekly_quests.dart' show weekIndex;
 import 'package:boba_empire/core/whats_new.dart';
 import 'package:boba_empire/data/cloud_save_controller.dart';
 import 'package:boba_empire/data/game_storage.dart';
@@ -28,6 +29,7 @@ const _story = Key('story-choice-0');
 const _offline = Key('offline-double');
 const _whatsNew = Key('whats-new');
 const _remind = Key('cloud-remind-link');
+const _recap = Key('recap-close');
 
 /// [awayMs] = vắng bao lâu; [dailyDone] = đã nhận điểm danh hôm nay; [story] = đang
 /// chờ cutscene; [whatsNewDue] = vừa cập nhật; [remindDue] = đủ lượt nhắc email.
@@ -38,6 +40,7 @@ Future<ProviderContainer> _launch(
   bool story = false,
   bool whatsNewDue = false,
   bool remindDue = false,
+  bool recapDue = false,
   bool tutorialSeen = true,
 }) async {
   await tester.binding.setSurfaceSize(const Size(400, 800));
@@ -54,6 +57,13 @@ Future<ProviderContainer> _launch(
     // Ván mới mặc định đang chờ chương 1: cho qua chương 1 để cốt truyện chỉ hiện
     // khi ca test chủ động yêu cầu.
     ..storyChapter = 1;
+  if (recapDue) {
+    // Mốc tuần trước + đã chạm thêm 40 lần: sang tuần mới lúc nạp thì chốt tổng kết.
+    seed
+      ..recapWeek = weekIndex(_now) - 1
+      ..recapBase.addAll({'taps': 0})
+      ..tapCount = 40;
+  }
   if (story) {
     seed
       ..storyChapter = 5
@@ -73,7 +83,7 @@ Future<ProviderContainer> _launch(
   return c;
 }
 
-int _shown(WidgetTester tester) => [_daily, _story, _offline, _whatsNew, _remind]
+int _shown(WidgetTester tester) => [_daily, _story, _offline, _whatsNew, _remind, _recap]
     .where((k) => find.byKey(k).evaluate().isNotEmpty)
     .length;
 
@@ -125,6 +135,27 @@ void main() {
     final prefs = c.read(sharedPreferencesProvider);
     expect(prefs.getString(whatsNewSeenKey), '0.0.1');
     expect(prefs.getInt(cloudRemindCountKey) ?? 0, 0);
+    await _end(tester, c);
+  });
+
+  testWidgets('tổng kết tuần: hiện khi hết việc ưu tiên hơn, đóng rồi không hiện lại; đứng trước "Có gì mới"',
+      (tester) async {
+    final c = await _launch(tester, dailyDone: true, awayMs: 30000, whatsNewDue: true, recapDue: true);
+    expect(find.byKey(_recap), findsOneWidget);
+    expect(find.textContaining('40'), findsWidgets);
+    expect(_shown(tester), 1);
+    expect(c.read(sharedPreferencesProvider).getString(whatsNewSeenKey), '0.0.1');
+    await tester.tap(find.byKey(_recap));
+    await tester.pumpAndSettle();
+    expect(c.read(gameControllerProvider).recapPending, isFalse);
+    await _end(tester, c);
+  });
+
+  testWidgets('có tiền offline: tổng kết tuần nhường, giữ nguyên chờ lần sau', (tester) async {
+    final c = await _launch(tester, dailyDone: true, recapDue: true);
+    expect(find.byKey(_offline), findsOneWidget);
+    expect(find.byKey(_recap), findsNothing);
+    expect(c.read(gameControllerProvider).recapPending, isTrue);
     await _end(tester, c);
   });
 
