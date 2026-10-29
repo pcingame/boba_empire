@@ -56,9 +56,21 @@ class _OfflineDialogState extends ConsumerState<_OfflineDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final comeback = ref.watch(gameControllerProvider.select((s) => s.comebackGems));
     return AlertDialog(
       title: Text(l10n.offlineTitle),
-      content: Text(l10n.offlineBody(formatNumber(widget.earned))),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(l10n.offlineBody(formatNumber(widget.earned))),
+          if (comeback > 0) ...[
+            const SizedBox(height: 10),
+            Text(l10n.offlineComeback(comeback),
+                key: const Key('offline-comeback'), style: const TextStyle(fontWeight: FontWeight.w700)),
+          ],
+        ],
+      ),
       actions: [
         TextButton(
           onPressed: _watchingAd

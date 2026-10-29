@@ -257,6 +257,8 @@
     }
   },
   "offlineTitle": "Chào mừng trở lại! 🧋",
+  "offlineComeback": "🎁 Quà chào mừng trở lại: +{gems} 💎",
+  "@offlineComeback": {"placeholders": {"gems": {"type": "int"}}},
   "offlineBody": "Quán vẫn bán trong lúc bạn vắng mặt.\nBạn kiếm được {amount} Xu.",
   "@offlineBody": {
     "placeholders": {

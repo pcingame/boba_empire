@@ -486,6 +486,12 @@ abstract class AppLocalizations {
   /// **'Chào mừng trở lại! 🧋'**
   String get offlineTitle;
 
+  /// No description provided for @offlineComeback.
+  ///
+  /// In vi, this message translates to:
+  /// **'🎁 Quà chào mừng trở lại: +{gems} 💎'**
+  String offlineComeback(int gems);
+
   /// No description provided for @offlineBody.
   ///
   /// In vi, this message translates to:

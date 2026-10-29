@@ -253,6 +253,11 @@ class AppLocalizationsVi extends AppLocalizations {
   String get offlineTitle => 'Chào mừng trở lại! 🧋';
 
   @override
+  String offlineComeback(int gems) {
+    return '🎁 Quà chào mừng trở lại: +$gems 💎';
+  }
+
+  @override
   String offlineBody(String amount) {
     return 'Quán vẫn bán trong lúc bạn vắng mặt.\nBạn kiếm được $amount Xu.';
   }

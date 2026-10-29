@@ -252,6 +252,11 @@ class AppLocalizationsTh extends AppLocalizations {
   String get offlineTitle => 'ยินดีต้อนรับกลับ! 🧋';
 
   @override
+  String offlineComeback(int gems) {
+    return '🎁 ของขวัญต้อนรับกลับ: +$gems 💎';
+  }
+
+  @override
   String offlineBody(String amount) {
     return 'ร้านยังขายต่อขณะที่คุณไม่อยู่\nคุณได้รับ $amount เหรียญ';
   }

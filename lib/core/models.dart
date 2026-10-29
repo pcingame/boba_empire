@@ -99,6 +99,7 @@ class GameState {
     Map<String, double>? weeklyProgress,
     List<String>? weeklyClaimed,
     this.monthlyMonth = 0,
+    this.lastComebackMillis = 0,
     this.monthlyChestClaimed = false,
     Map<String, double>? monthlyBase,
     List<String>? monthlyClaimed,
@@ -538,6 +539,9 @@ class GameState {
   /// Thử thách tháng (xem monthly_challenge.dart): tháng của bộ đang có, mốc bộ đếm lúc sang tháng (khoá =
   /// MonthlyKind.name), mục đã nhận, và đã mở rương chưa. Giữ qua Nhượng quyền/Kỷ Nguyên.
   int monthlyMonth;
+
+  /// Lần cuối nhận quà trở lại (xem comeback.dart), chống nhận lặp trong thời gian chờ.
+  int lastComebackMillis;
   bool monthlyChestClaimed;
   final Map<String, double> monthlyBase;
   final List<String> monthlyClaimed;
@@ -848,6 +852,7 @@ class GameState {
         'weeklyProgress': weeklyProgress,
         'weeklyClaimed': weeklyClaimed,
         'monthlyMonth': monthlyMonth,
+        'lastComebackMillis': lastComebackMillis,
         'monthlyChestClaimed': monthlyChestClaimed,
         'monthlyBase': monthlyBase,
         'monthlyClaimed': monthlyClaimed,
@@ -1127,6 +1132,7 @@ class GameState {
             ?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),
         weeklyClaimed: (json['weeklyClaimed'] as List?)?.cast<String>().toList(),
         monthlyMonth: (json['monthlyMonth'] as num?)?.toInt() ?? 0,
+        lastComebackMillis: (json['lastComebackMillis'] as num?)?.toInt() ?? 0,
         monthlyChestClaimed: json['monthlyChestClaimed'] == true,
         monthlyBase: (json['monthlyBase'] as Map?)
             ?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),

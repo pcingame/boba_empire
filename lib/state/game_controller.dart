@@ -50,6 +50,7 @@ import '../core/simulation.dart';
 import '../core/starter_pack.dart' as market_starter;
 import '../core/story.dart';
 import '../core/topup.dart';
+import '../core/comeback.dart';
 import '../core/monthly_challenge.dart';
 import '../core/weekly_quests.dart';
 import '../core/vip.dart';
@@ -93,6 +94,7 @@ class GameController extends Notifier<GameSnapshot> {
 
   /// Số ms vắng mặt của lần tính offline gần nhất (để quyết định có bật popup).
   int _offlineAwayMs = 0;
+  int _comebackGems = 0;
 
   /// Thành tựu vừa mở khoá, chờ UI hiển thị (xoá qua acknowledgeAchievements).
   List<Achievement> _newAchievements = const [];
@@ -157,6 +159,7 @@ class GameController extends Notifier<GameSnapshot> {
       _clock(),
       maxOfflineSeconds: _offlineCap(),
     );
+    _comebackGems = claimComeback(_game, _clock(), _offlineAwayMs);
     _countOfflineDungeon();
     claimVipDailyGems(_game, _clock()); // Kim Cương VIP nếu sang ngày mới
     _scheduleNextCat(_clock());
@@ -2313,6 +2316,7 @@ class GameController extends Notifier<GameSnapshot> {
       _clock(),
       maxOfflineSeconds: _offlineCap(),
     );
+    _comebackGems = claimComeback(_game, _clock(), _offlineAwayMs);
     _countOfflineDungeon();
     claimVipDailyGems(_game, _clock());
     state = _snapshot();
@@ -2320,8 +2324,9 @@ class GameController extends Notifier<GameSnapshot> {
 
   /// UI gọi sau khi đã hiện popup tiền offline.
   void acknowledgeOffline() {
-    if (_offlineEarned == 0) return;
+    if (_offlineEarned == 0 && _comebackGems == 0) return;
     _offlineEarned = 0;
+    _comebackGems = 0;
     state = _snapshot();
   }
 
@@ -2841,8 +2846,10 @@ class GameController extends Notifier<GameSnapshot> {
       prestigeStars: _game.prestigeStars,
       prestigeStarsAvailable: prestigeStarsAvailable(_game),
       offlineEarned: _offlineEarned,
-      offlineDialogDue: _offlineEarned > 0 &&
-          _offlineAwayMs >= Balance.offlineDialogMinSeconds * 1000,
+      offlineDialogDue: (_offlineEarned > 0 &&
+              _offlineAwayMs >= Balance.offlineDialogMinSeconds * 1000) ||
+          _comebackGems > 0,
+      comebackGems: _comebackGems,
       catVisible: _catVisible,
       boostRemainingSeconds: remainingMs > 0 ? remainingMs / 1000.0 : 0,
       vipVisible: _vipVisible,

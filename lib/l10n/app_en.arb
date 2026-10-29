@@ -63,6 +63,8 @@
   "prestigeAdConfirm": "Watch ad: bonus starting Coins",
   "prestigeSuccess": "Franchise successful! +{stars} ⭐",
   "offlineTitle": "Welcome back! 🧋",
+  "offlineComeback": "🎁 Welcome-back gift: +{gems} 💎",
+  "@offlineComeback": {"placeholders": {"gems": {"type": "int"}}},
   "offlineBody": "The shop kept selling while you were away.\nYou earned {amount} Coins.",
   "offlineClaim": "Claim",
   "offlineDoubleButton": "Watch ad ×2",

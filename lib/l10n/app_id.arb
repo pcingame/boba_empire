@@ -63,6 +63,8 @@
   "prestigeAdConfirm": "Tonton iklan: bonus Koin awal",
   "prestigeSuccess": "Waralaba berhasil! +{stars} ⭐",
   "offlineTitle": "Selamat datang kembali! 🧋",
+  "offlineComeback": "🎁 Hadiah selamat datang kembali: +{gems} 💎",
+  "@offlineComeback": {"placeholders": {"gems": {"type": "int"}}},
   "offlineBody": "Toko tetap berjualan saat kamu pergi.\nKamu mendapat {amount} Koin.",
   "offlineClaim": "Ambil",
   "offlineDoubleButton": "Tonton iklan ×2",

@@ -63,6 +63,8 @@
   "prestigeAdConfirm": "Assistir anúncio: moedas iniciais extras",
   "prestigeSuccess": "Franquia bem-sucedida! +{stars} ⭐",
   "offlineTitle": "Bem-vindo de volta! 🧋",
+  "offlineComeback": "🎁 Presente de boas-vindas: +{gems} 💎",
+  "@offlineComeback": {"placeholders": {"gems": {"type": "int"}}},
   "offlineBody": "A loja continuou vendendo enquanto você estava fora.\nVocê ganhou {amount} Moedas.",
   "offlineClaim": "Receber",
   "offlineDoubleButton": "Ver anúncio ×2",

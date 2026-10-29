@@ -253,6 +253,11 @@ class AppLocalizationsId extends AppLocalizations {
   String get offlineTitle => 'Selamat datang kembali! 🧋';
 
   @override
+  String offlineComeback(int gems) {
+    return '🎁 Hadiah selamat datang kembali: +$gems 💎';
+  }
+
+  @override
   String offlineBody(String amount) {
     return 'Toko tetap berjualan saat kamu pergi.\nKamu mendapat $amount Koin.';
   }

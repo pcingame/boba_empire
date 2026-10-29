@@ -63,6 +63,8 @@
   "prestigeAdConfirm": "광고 시청: 시작 코인 보너스",
   "prestigeSuccess": "프랜차이즈 성공! +{stars} ⭐",
   "offlineTitle": "다시 오신 걸 환영해요! 🧋",
+  "offlineComeback": "🎁 돌아온 것을 환영합니다: +{gems} 💎",
+  "@offlineComeback": {"placeholders": {"gems": {"type": "int"}}},
   "offlineBody": "자리를 비운 동안에도 가게는 계속 팔렸어요.\n{amount} 코인을 벌었어요.",
   "offlineClaim": "받기",
   "offlineDoubleButton": "광고 보고 ×2",

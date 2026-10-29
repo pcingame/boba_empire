@@ -1342,3 +1342,8 @@ Tầng nhiệm vụ dài hơi nằm dưới nhiệm vụ tuần (tab "Tuần"): 
 sưu tập thêm 4 phụ kiện — mỗi mục 150💎, xong cả 3 mở rương tháng 500💎 + 1 phụ kiện Sử thi trở lên. `lib/core/monthly_challenge.dart`.
 Không có điểm hook: tiến độ = bộ đếm tích lũy có sẵn (`tapCount`, `buyCount`, số phụ kiện đã có) trừ mốc chụp lúc sang tháng
 (`monthlyBase`), nên chỉ cần `rollMonthlyChallenge` trong `_rollDaily`. Tự động chạm không tính. Chỉ client, không SQL. Mọi con số là ước lượng.
+
+### 28c. Quà chào mừng trở lại (2026-10-29, chưa playtest)
+Vắng ≥3 ngày → tặng 💎 (3 ngày 50, 7 ngày 100, 14+ ngày 200) lúc mở app/trở lại foreground, hiện ở dòng riêng trong popup tiền offline
+(popup bật cả khi không có Xu offline). Tối đa 1 lần/7 ngày (`lastComebackMillis`) để tua đồng hồ máy không nhận liên tục. `lib/core/comeback.dart`.
+Chỉ client. Ceiling: người chơi tự tua đồng hồ tiến vẫn nhận được 200💎 mỗi 7 ngày; cần server-time nếu thành vấn đề.

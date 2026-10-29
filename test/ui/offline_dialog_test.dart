@@ -52,6 +52,19 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
+  testWidgets('vắng 15 ngày: popup có dòng quà trở lại +200💎 và 💎 đã vào ví', (tester) async {
+    await _pumpWithOffline(tester, const _InstantAds(RewardOutcome.earned), awayMs: 15 * 24 * 3600 * 1000);
+    expect(find.byKey(const Key('offline-comeback')), findsOneWidget);
+    expect(find.textContaining('+200'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets('vắng ngắn: popup KHÔNG có dòng quà trở lại', (tester) async {
+    await _pumpWithOffline(tester, const _InstantAds(RewardOutcome.earned));
+    expect(find.byKey(const Key('offline-comeback')), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+  });
+
   testWidgets('đúng ngưỡng 2 phút: bật popup', (tester) async {
     await _pumpWithOffline(tester, const _InstantAds(RewardOutcome.earned),
         awayMs: 120000);

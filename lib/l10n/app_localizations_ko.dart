@@ -251,6 +251,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get offlineTitle => '다시 오신 걸 환영해요! 🧋';
 
   @override
+  String offlineComeback(int gems) {
+    return '🎁 돌아온 것을 환영합니다: +$gems 💎';
+  }
+
+  @override
   String offlineBody(String amount) {
     return '자리를 비운 동안에도 가게는 계속 팔렸어요.\n$amount 코인을 벌었어요.';
   }
