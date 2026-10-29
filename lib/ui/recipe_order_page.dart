@@ -197,6 +197,11 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
   bool _sealing = false; // đang đậy nắp + lắc ly trước khi chấm
   bool _rush = false; // "Giờ cao điểm": mỗi đơn có đồng hồ kiên nhẫn
   bool _sheetOpen = false; // bảng đặt lượng mở ⇒ tạm dừng đồng hồ
+
+  /// Người chơi chưa từng chạm/kéo nguyên liệu ⇒ món đầu khay nhấp nháy, cho biết chạm được (không cần kéo).
+  static const _tapNudgeKey = 'recipe_order_tap_nudged';
+  late bool _nudge =
+      widget.pk == null && !(ref.read(sharedPreferencesProvider).getBool(_tapNudgeKey) ?? false);
   int _leftMs = 0;
   Timer? _ticker;
 
@@ -284,6 +289,10 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
 
   Future<void> _edit(TrayItem item) async {
     if (_checked || _sealing) return;
+    if (_nudge) {
+      setState(() => _nudge = false);
+      ref.read(sharedPreferencesProvider).setBool(_tapNudgeKey, true);
+    }
     final at = _poured.indexWhere((p) => p.item.name == item.name);
     final current = at < 0 ? null : _poured[at].value;
     // Vạch gợi ý theo bậc: Mới (hoặc đã xem công thức mẫu) có thước + vạch mốc đúng; Quen chỉ có thước; còn lại ẩn.
@@ -724,7 +733,9 @@ class _RecipeOrderPageState extends ConsumerState<_RecipeOrderGame> {
               data: t,
               feedback: _chip(context, t, used: false, dragging: true),
               childWhenDragging: Opacity(opacity: 0.35, child: chip),
-              child: GestureDetector(onTap: () => _edit(t), child: chip),
+              child: GestureDetector(
+                  onTap: () => _edit(t),
+                  child: _nudge && t == o.tray.first ? PulseOnMount(cycles: 8, peak: 1.15, child: chip) : chip),
             );
           }),
       ],

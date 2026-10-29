@@ -18,6 +18,7 @@ import 'package:boba_empire/state/recipe_providers.dart';
 import 'package:boba_empire/ui/collection_share_dialog.dart' show shareImageProvider;
 import 'package:boba_empire/ui/recipe_order_page.dart';
 import 'package:boba_empire/ui/widgets/chibi_customer.dart' show ChibiCustomer;
+import 'package:boba_empire/ui/widgets/motion.dart' show PulseOnMount;
 import 'package:boba_empire/ui/widgets/order_visuals.dart';
 import 'package:flutter/foundation.dart' show Uint8List;
 import 'package:flutter/material.dart';
@@ -169,6 +170,17 @@ void main() {
     final saved = c.read(gameControllerProvider).recipeProgress[o.recipe.id];
     expect(saved, isNotNull);
     expect(saved!.box, 1);
+    await _teardown(tester);
+  });
+
+  testWidgets('chưa từng chạm nguyên liệu: món đầu khay nhấp nháy; chạm lần đầu là tắt hẳn', (tester) async {
+    final c = await _pump(tester, size: const Size(400, 900));
+    final o = _expected(1).first;
+    expect(find.byType(PulseOnMount), findsOneWidget);
+    final i = o.recipe.ingredients.first;
+    await _pour(tester, i.name, i.unit, i.qty);
+    expect(find.byType(PulseOnMount), findsNothing);
+    expect(c.read(sharedPreferencesProvider).getBool('recipe_order_tap_nudged'), isTrue);
     await _teardown(tester);
   });
 
