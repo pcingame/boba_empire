@@ -1533,10 +1533,10 @@ class _Card extends StatelessWidget {
                   fit: BoxFit.scaleDown,
                   child: FilledButton.tonal(
                     key: Key('branch-act-${c.id}'),
-                    onPressed: money >= cost ? onAct : null,
+                    onPressed: (lvl == 0 ? s.gems >= branchOpenGems(c) : money >= cost) ? onAct : null,
                     child: Text(
                       lvl == 0
-                          ? l10n.branchOpen(formatNumber(cost))
+                          ? l10n.branchOpen('💎 ${branchOpenGems(c)}')
                           : l10n.branchUpgrade(formatNumber(cost)),
                     ),
                   ),

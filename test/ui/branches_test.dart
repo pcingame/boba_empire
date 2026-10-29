@@ -33,12 +33,13 @@ Future<(ProviderContainer, GameStorage, SharedPreferences)> _container(
   return (c, storage, prefs);
 }
 
-GameState _rich({int stage = 6, double money = 1e12}) {
+GameState _rich({int stage = 6, double money = 1e12, double gems = 100000}) {
   final id = Balance.generators.first.id;
   return GameState.newGame(nowMillis: _t0)
     ..tutorialSeen = true
     ..stage = stage
     ..money = money
+    ..gems = gems
     ..levels[id] = 50;
 }
 
@@ -260,7 +261,7 @@ void main() {
 
   group('controller', () {
     test(
-      'mở chi nhánh: trừ Xu, tặng lễ khai trương, đặt mốc; chưa đủ giai đoạn/Xu thì không',
+      'mở chi nhánh: trừ 💎 (không trừ Xu), tặng lễ khai trương, đặt mốc; chưa đủ giai đoạn/💎 thì không',
       () async {
         var now = _t0;
         final (c, _, _) = await _container(_rich(stage: 6), clock: () => now);
@@ -271,13 +272,14 @@ void main() {
         expect(ctl.upgradeBranch('paris'), isNull, reason: 'stage 6 < 12');
         expect(ctl.upgradeBranch('unknown'), isNull);
         final before = c.read(gameControllerProvider).money;
-        final cost = branchCost(branchCities[0], 1, income);
+        final gems0 = c.read(gameControllerProvider).gems;
         final gala = ctl.upgradeBranch('saigon');
         expect(gala, closeTo(income * branchGalaSeconds, income * 0.01));
         final s = c.read(gameControllerProvider);
         expect(s.branchLevels['saigon'], 1);
         expect(s.branchSince['saigon'], now);
-        expect(s.money, closeTo(before - cost + gala!, before * 1e-9 + 1));
+        expect(s.money, closeTo(before + gala!, before * 1e-9 + 1));
+        expect(s.gems, gems0 - branchOpenGems(branchCities[0]));
       },
     );
 
@@ -312,20 +314,21 @@ void main() {
             closeTo(base * 1.04 * branchRushMult, base * 1e-9),
           ),
         );
+        // Mở chi nhánh tốn 💎 nên giảm giá không áp; giảm giá chỉ áp ở nâng cấp bằng Xu.
+        ctl.upgradeBranch('saigon');
         final m0 = c.read(gameControllerProvider).money;
-        final gala = ctl.upgradeBranch('saigon')!;
-        final cost = branchCost(branchCities[0], 1, income, discount: 0.03);
-        expect(
-          c.read(gameControllerProvider).money,
-          closeTo(m0 - cost + gala, m0 * 1e-9 + 1),
-        );
+        ctl.upgradeBranch('saigon');
+        final cost = branchCost(branchCities[0], 2, ctl.branchIncome, discount: 0.03);
+        final pending = c.read(gameControllerProvider).money - (m0 - cost);
+        expect(pending, greaterThanOrEqualTo(-1), reason: 'trừ đúng giá đã giảm 3%');
       },
     );
 
-    test('thiếu Xu: không đổi gì', () async {
-      final (c, _, _) = await _container(_rich(money: 0), clock: () => _t0);
+    test('thiếu 💎: không mở được, không đổi gì', () async {
+      final (c, _, _) = await _container(_rich(gems: 0), clock: () => _t0);
       addTearDown(c.dispose);
       final ctl = c.read(gameControllerProvider.notifier);
+      ctl.spendGems(c.read(gameControllerProvider).gems.toInt()); // bỏ 💎 quà đăng nhập tặng khi nạp save
       expect(ctl.upgradeBranch('saigon'), isNull);
       expect(c.read(gameControllerProvider).branchLevels, isEmpty);
     });

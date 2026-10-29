@@ -110,8 +110,8 @@ const int branchMaxLevel = 10;
 /// Doanh thu tích tối đa (giây) — như trần offline: quên thu vài ngày cũng chỉ mất phần vượt 8 giờ.
 const int branchCapSeconds = 8 * 3600;
 
-/// Mỗi cấp thêm 1.2% thu nhập quán chính mỗi giây (× hệ số thành phố).
-const double branchRatePerLevel = 0.012;
+/// Mỗi cấp thêm 1.5% thu nhập quán chính mỗi giây (× hệ số thành phố).
+const double branchRatePerLevel = 0.015; // 0.012 → 0.015 (+25%) bù việc mở chi nhánh tốn 💎
 
 /// Giá cấp 1 = 0.5 giờ thu nhập; mỗi cấp sau ×1.4 (× hệ số thành phố). Sàn cho người mới thu nhập rất nhỏ.
 const double branchCostHours = 0.5;
@@ -121,6 +121,11 @@ const double branchCostFloor = 1000;
 /// Giờ cao điểm: xác suất mỗi lần thu một chi nhánh, và hệ số.
 const double branchRushChance = 0.15;
 const int branchRushMult = 3;
+
+/// Mở chi nhánh (cấp 0 → 1) tốn 💎, không tốn Xu: [branchOpenGemsPerStage] × (giai đoạn mở − 1). Nâng cấp vẫn bằng Xu.
+/// Chi nhánh đã mở trước khi có luật này giữ nguyên. Con số là ước lượng chưa playtest.
+const int branchOpenGemsPerStage = 30;
+int branchOpenGems(BranchCity c) => branchOpenGemsPerStage * (c.minStage - 1);
 
 /// Lễ khai trương (mở chi nhánh lần đầu): tặng ngay ngần này giây thu nhập.
 const int branchGalaSeconds = 1800;

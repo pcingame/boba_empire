@@ -297,7 +297,7 @@ class GameController extends Notifier<GameSnapshot> {
   /// Nền tính giá/doanh thu chi nhánh (để màn hình hiện đúng con số sẽ bị trừ/nhận).
   double get branchIncome => _branchBaseIncome();
 
-  /// Mở (cấp 0 → 1) hoặc nâng cấp chi nhánh [id] bằng Xu. Trả null nếu không làm được (thiếu Xu, chưa đủ giai đoạn,
+  /// Mở (cấp 0 → 1, tốn 💎) hoặc nâng cấp (tốn Xu) chi nhánh [id]. Trả null nếu không làm được (thiếu Xu/💎, chưa đủ giai đoạn,
   /// đã tối đa, id lạ); ngược lại trả số Xu lễ khai trương đã tặng (>0 chỉ lần mở đầu tiên).
   double? upgradeBranch(String id) {
     final c = branchCityById(id);
@@ -307,8 +307,13 @@ class GameController extends Notifier<GameSnapshot> {
     if (lvl == 0 && _game.stage < c.minStage) return null;
     final income = _branchBaseIncome();
     final cost = branchCost(c, lvl + 1, income, discount: branchPerk(_game.branchLevels, BranchPerk.discount));
-    if (!cost.isFinite || !(_game.money >= cost)) return null;
-    _game.money -= cost;
+    final gems = lvl == 0 ? branchOpenGems(c) : 0;
+    if (lvl == 0 ? !(_game.gems >= gems) : !cost.isFinite || !(_game.money >= cost)) return null;
+    if (lvl == 0) {
+      _game.gems -= gems;
+    } else {
+      _game.money -= cost;
+    }
     var gala = 0.0;
     if (lvl == 0) {
       _game.branchSince[id] = _clock();

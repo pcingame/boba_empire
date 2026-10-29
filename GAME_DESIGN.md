@@ -1276,7 +1276,7 @@ Chip dịp lễ trong header và banner buff sự kiện gộp thành MỘT dả
 - Kỹ thuật: `lib/core/world_boss.dart`, `lib/world_boss/world_boss.dart`, `lib/ui/world_boss_page.dart`, `supabase/world_boss_schema.sql` (PHẢI chạy), `scripts/test_world_boss_sql.sh`, `test/ui/world_boss_test.dart`. Số liệu chưa playtest.
 
 ## 53. Chi nhánh thành phố (2026-10-19)
-- 17 thành phố (Sài Gòn → Mặt Trăng), mỗi giai đoạn mở một nơi từ GĐ2 tới GĐ18 (Sài Gòn 2, Đà Nẵng 3, Hà Nội 4, Singapore 5, Tokyo 6, Hồng Kông 7, Seoul 8, Sydney 9, Bangkok 10, Istanbul 11, Paris 12, London 13, New York 14, Rio 15, Dubai 16, Cairo 17, Mặt Trăng 18), vào từ nút Trò chơi → "Chi nhánh". Mỗi chi nhánh cấp 1–10; mỗi cấp thêm 1.2% thu nhập quán chính/giây × hệ số thành phố (1.0 → 2.2).
+- 17 thành phố (Sài Gòn → Mặt Trăng), mỗi giai đoạn mở một nơi từ GĐ2 tới GĐ18 (Sài Gòn 2, Đà Nẵng 3, Hà Nội 4, Singapore 5, Tokyo 6, Hồng Kông 7, Seoul 8, Sydney 9, Bangkok 10, Istanbul 11, Paris 12, London 13, New York 14, Rio 15, Dubai 16, Cairo 17, Mặt Trăng 18), vào từ nút Trò chơi → "Chi nhánh". Mỗi chi nhánh cấp 1–10; mỗi cấp thêm 1.5% thu nhập quán chính/giây × hệ số thành phố (1.0 → 2.2).
 - **Nhận diện:** mỗi chi nhánh có landmark (emoji lớn trong vòng màu), huy hiệu **signature** (món đặc trưng của vùng, vd Sài Gòn 🛵+☕, Tokyo 🗼+🍡), màu riêng cho thẻ/thanh tiến độ, 10 chấm cấp; đầu trang có dải landmark (mờ = chưa mở) và đếm "Đã mở n/17". Mỗi signature kèm **hiệu ứng riêng** (mạnh dần theo cấp, đủ ở cấp 10, cộng dồn giữa các nơi cùng loại; thẻ hiện dòng hiệu ứng, chưa mở thì hiện mức tối đa):
   - Kho chứa +1 giờ/nơi (trần 8h): Đà Nẵng, Sydney, London, Cairo (tối đa +4h).
   - Cơ hội giờ cao điểm +3%/nơi (nền 15%): Sài Gòn, Hồng Kông, Bangkok, New York.
