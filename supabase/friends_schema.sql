@@ -215,6 +215,7 @@ alter table shop_displays enable row level security;
 
 -- p_power: "sức mạnh quán" do app tính từ món trưng bày + giai đoạn (dùng cho Đột kích); server chỉ kẹp 0..1000.
 drop function if exists set_shop_display(text[]);
+drop function if exists set_shop_display(text[], integer);
 drop function if exists set_shop_display(text[], integer, jsonb);
 -- p_decor: Trang trí quán {"wall#0": "id"}; server chỉ kiểm dạng khoá/id (tối đa 8 ô).
 create or replace function set_shop_display(p_equipped text[], p_power integer default 0, p_decor jsonb default '{}'::jsonb) returns void
