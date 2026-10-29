@@ -98,6 +98,10 @@ class GameState {
     this.weeklyBonusClaimed = false,
     Map<String, double>? weeklyProgress,
     List<String>? weeklyClaimed,
+    this.monthlyMonth = 0,
+    this.monthlyChestClaimed = false,
+    Map<String, double>? monthlyBase,
+    List<String>? monthlyClaimed,
     Map<String, List<int>>? recipeProgress,
     List<int>? recipeMilestonesClaimed,
     List<int>? recipeOrderPerfect,
@@ -266,6 +270,8 @@ class GameState {
         dailyClaimed = dailyClaimed ?? [],
         weeklyProgress = weeklyProgress ?? {},
         weeklyClaimed = weeklyClaimed ?? [],
+        monthlyBase = monthlyBase ?? {},
+        monthlyClaimed = monthlyClaimed ?? [],
         recipeProgress = recipeProgress ?? {},
         recipeMilestonesClaimed = recipeMilestonesClaimed ?? [],
         recipeOrderPerfect = recipeOrderPerfect ?? [],
@@ -528,6 +534,13 @@ class GameState {
   bool weeklyBonusClaimed;
   final Map<String, double> weeklyProgress;
   final List<String> weeklyClaimed;
+
+  /// Thử thách tháng (xem monthly_challenge.dart): tháng của bộ đang có, mốc bộ đếm lúc sang tháng (khoá =
+  /// MonthlyKind.name), mục đã nhận, và đã mở rương chưa. Giữ qua Nhượng quyền/Kỷ Nguyên.
+  int monthlyMonth;
+  bool monthlyChestClaimed;
+  final Map<String, double> monthlyBase;
+  final List<String> monthlyClaimed;
 
   /// Bậc thuộc công thức pha chế (xem recipe_mastery.dart): id món → `[box, dueDay, best]`.
   final Map<String, List<int>> recipeProgress;
@@ -834,6 +847,10 @@ class GameState {
         'weeklyBonusClaimed': weeklyBonusClaimed,
         'weeklyProgress': weeklyProgress,
         'weeklyClaimed': weeklyClaimed,
+        'monthlyMonth': monthlyMonth,
+        'monthlyChestClaimed': monthlyChestClaimed,
+        'monthlyBase': monthlyBase,
+        'monthlyClaimed': monthlyClaimed,
         'recipeProgress': recipeProgress,
         'recipeMilestonesClaimed': recipeMilestonesClaimed,
         'recipeOrderPerfect': recipeOrderPerfect,
@@ -1109,6 +1126,11 @@ class GameState {
         weeklyProgress: (json['weeklyProgress'] as Map?)
             ?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),
         weeklyClaimed: (json['weeklyClaimed'] as List?)?.cast<String>().toList(),
+        monthlyMonth: (json['monthlyMonth'] as num?)?.toInt() ?? 0,
+        monthlyChestClaimed: json['monthlyChestClaimed'] == true,
+        monthlyBase: (json['monthlyBase'] as Map?)
+            ?.map((k, v) => MapEntry(k as String, (v as num).toDouble())),
+        monthlyClaimed: (json['monthlyClaimed'] as List?)?.cast<String>().toList(),
         recipeProgress: {
           // Bỏ mục hỏng thay vì ném (save cũ / cloud lạ): mất bậc một món tốt hơn mất cả save.
           for (final e in ((json['recipeProgress'] as Map?) ?? const {}).entries)

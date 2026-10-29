@@ -4669,6 +4669,28 @@ class AppLocalizationsPt extends AppLocalizations {
       'Baú semanal: conclua as 3 → +1 acessório Raro ou melhor';
 
   @override
+  String get monthlyTitle => 'Desafio mensal';
+
+  @override
+  String mcTap(int target) {
+    return 'Toque no copo $target vezes';
+  }
+
+  @override
+  String mcBuy(int target) {
+    return 'Compre $target melhorias';
+  }
+
+  @override
+  String mcCollect(int target) {
+    return 'Colete mais $target acessórios';
+  }
+
+  @override
+  String get monthlyChestLabel =>
+      'Baú mensal: conclua os 3 → +1 acessório Épico ou superior';
+
+  @override
   String weeklyResetsIn(String time) {
     return 'Reinicia em $time';
   }

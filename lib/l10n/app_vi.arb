@@ -2682,6 +2682,14 @@
     }
   },
   "weeklyChestLabel": "Rương tuần: xong cả 3 → +1 phụ kiện Hiếm trở lên",
+  "monthlyTitle": "Thử thách tháng",
+  "mcTap": "Chạm ly {target} lần",
+  "@mcTap": {"placeholders": {"target": {"type": "int"}}},
+  "mcBuy": "Nâng cấp {target} lần",
+  "@mcBuy": {"placeholders": {"target": {"type": "int"}}},
+  "mcCollect": "Sưu tập thêm {target} phụ kiện",
+  "@mcCollect": {"placeholders": {"target": {"type": "int"}}},
+  "monthlyChestLabel": "Rương tháng: xong cả 3 → +1 phụ kiện Sử thi trở lên",
   "weeklyResetsIn": "Làm mới sau {time}",
   "@weeklyResetsIn": {
     "placeholders": {

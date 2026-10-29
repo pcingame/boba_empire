@@ -7873,6 +7873,36 @@ abstract class AppLocalizations {
   /// **'Rương tuần: xong cả 3 → +1 phụ kiện Hiếm trở lên'**
   String get weeklyChestLabel;
 
+  /// No description provided for @monthlyTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử thách tháng'**
+  String get monthlyTitle;
+
+  /// No description provided for @mcTap.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chạm ly {target} lần'**
+  String mcTap(int target);
+
+  /// No description provided for @mcBuy.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nâng cấp {target} lần'**
+  String mcBuy(int target);
+
+  /// No description provided for @mcCollect.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sưu tập thêm {target} phụ kiện'**
+  String mcCollect(int target);
+
+  /// No description provided for @monthlyChestLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rương tháng: xong cả 3 → +1 phụ kiện Sử thi trở lên'**
+  String get monthlyChestLabel;
+
   /// No description provided for @weeklyResetsIn.
   ///
   /// In vi, this message translates to:

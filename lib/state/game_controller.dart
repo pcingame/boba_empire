@@ -50,6 +50,7 @@ import '../core/simulation.dart';
 import '../core/starter_pack.dart' as market_starter;
 import '../core/story.dart';
 import '../core/topup.dart';
+import '../core/monthly_challenge.dart';
 import '../core/weekly_quests.dart';
 import '../core/vip.dart';
 import '../core/vip_shop.dart';
@@ -1187,6 +1188,7 @@ class GameController extends Notifier<GameSnapshot> {
     rollEvent(
         _game, DateTime.fromMillisecondsSinceEpoch(_clock(), isUtc: true));
     rollWeeklyQuests(_game, _clock());
+    rollMonthlyChallenge(_game, _clock());
     rollDailyQuests(
       _game,
       _clock(),
@@ -1399,6 +1401,28 @@ class GameController extends Notifier<GameSnapshot> {
     final gems = claimWeeklyQuest(_game, index);
     if (gems > 0) {
       seasonEarn(_game, SeasonSource.weeklyQuest, _clock());
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return gems;
+  }
+
+  /// Nhận thưởng mục Thử thách tháng [k]. Trả về 💎 nhận (0 nếu chưa xong/đã nhận).
+  int claimMonthlyReward(MonthlyKind k) {
+    final gems = claimMonthly(_game, k);
+    if (gems > 0) {
+      unawaited(saveNow());
+      state = _snapshot();
+    }
+    return gems;
+  }
+
+  /// Mở rương tháng: 💎 + 1 phụ kiện Sử thi trở lên (xem [lastAccessoryDrop]). 0 nếu chưa đủ điều kiện.
+  int claimMonthlyChestReward() {
+    lastAccessoryDrop = null;
+    final gems = claimMonthlyChest(_game);
+    if (gems > 0) {
+      _dropAccessory(source: 'monthly_challenge', minRarity: AccessoryRarity.epic);
       unawaited(saveNow());
       state = _snapshot();
     }
@@ -2967,6 +2991,7 @@ class GameController extends Notifier<GameSnapshot> {
       starterPackReady: market_starter.starterPackEligible(_game),
       dailyClaimableCount: dailyClaimableCount(_game) +
           weeklyClaimableCount(_game) +
+          monthlyClaimableCount(_game) +
           challengeClaimableCount(_game),
       challenges: [
         for (final c in currentChallenges(_game))
@@ -2990,6 +3015,17 @@ class GameController extends Notifier<GameSnapshot> {
             claimed: weeklyQuestClaimed(_game, q),
           ),
       ],
+      monthly: [
+        for (final k in MonthlyKind.values)
+          MonthlyView(
+            kind: k,
+            target: monthlyTargets[k]!,
+            progress: monthlyProgress(_game, k),
+            claimed: monthlyClaimed(_game, k),
+          ),
+      ],
+      monthlyChestAvailable: monthlyChestAvailable(_game),
+      monthlyChestClaimed: _game.monthlyChestClaimed,
       recipeStreak: _recipeStreak,
       recipeOrderPerfect: List.unmodifiable(_game.recipeOrderPerfect),
       recipeDailyDay: _game.recipeDailyDay,

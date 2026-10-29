@@ -4646,6 +4646,28 @@ class AppLocalizationsVi extends AppLocalizations {
       'Rương tuần: xong cả 3 → +1 phụ kiện Hiếm trở lên';
 
   @override
+  String get monthlyTitle => 'Thử thách tháng';
+
+  @override
+  String mcTap(int target) {
+    return 'Chạm ly $target lần';
+  }
+
+  @override
+  String mcBuy(int target) {
+    return 'Nâng cấp $target lần';
+  }
+
+  @override
+  String mcCollect(int target) {
+    return 'Sưu tập thêm $target phụ kiện';
+  }
+
+  @override
+  String get monthlyChestLabel =>
+      'Rương tháng: xong cả 3 → +1 phụ kiện Sử thi trở lên';
+
+  @override
   String weeklyResetsIn(String time) {
     return 'Làm mới sau $time';
   }

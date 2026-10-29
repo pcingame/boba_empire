@@ -4652,6 +4652,28 @@ class AppLocalizationsId extends AppLocalizations {
       'Peti mingguan: selesaikan 3 → +1 aksesori Langka ke atas';
 
   @override
+  String get monthlyTitle => 'Tantangan bulanan';
+
+  @override
+  String mcTap(int target) {
+    return 'Ketuk gelas $target kali';
+  }
+
+  @override
+  String mcBuy(int target) {
+    return 'Beli $target peningkatan';
+  }
+
+  @override
+  String mcCollect(int target) {
+    return 'Kumpulkan $target aksesori lagi';
+  }
+
+  @override
+  String get monthlyChestLabel =>
+      'Peti bulanan: selesaikan ketiganya → +1 aksesori Epik ke atas';
+
+  @override
   String weeklyResetsIn(String time) {
     return 'Reset dalam $time';
   }

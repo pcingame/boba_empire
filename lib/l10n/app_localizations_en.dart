@@ -4658,6 +4658,28 @@ class AppLocalizationsEn extends AppLocalizations {
       'Weekly chest: finish all 3 → +1 Rare+ accessory';
 
   @override
+  String get monthlyTitle => 'Monthly challenge';
+
+  @override
+  String mcTap(int target) {
+    return 'Tap the cup $target times';
+  }
+
+  @override
+  String mcBuy(int target) {
+    return 'Buy $target upgrades';
+  }
+
+  @override
+  String mcCollect(int target) {
+    return 'Collect $target more accessories';
+  }
+
+  @override
+  String get monthlyChestLabel =>
+      'Monthly chest: finish all 3 → +1 Epic+ accessory';
+
+  @override
   String weeklyResetsIn(String time) {
     return 'Resets in $time';
   }

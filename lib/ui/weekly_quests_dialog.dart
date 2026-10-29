@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../audio/audio_service.dart';
 import '../core/accessories.dart';
 import '../core/format.dart';
+import '../core/monthly_challenge.dart';
 import '../core/weekly_quests.dart';
 import '../l10n/app_localizations.dart';
 import '../state/game_providers.dart';
@@ -29,6 +30,12 @@ String _title(AppLocalizations l10n, WeeklyQuestView q) => switch (q.kind) {
       WeeklyQuestKind.buy => l10n.wqBuy(q.target),
       WeeklyQuestKind.recipeSessions => l10n.wqRecipeSessions(q.target),
       WeeklyQuestKind.recipeLevels => l10n.wqRecipeLevels(q.target),
+    };
+
+String _monthlyTitle(AppLocalizations l10n, MonthlyView m) => switch (m.kind) {
+      MonthlyKind.tap => l10n.mcTap(m.target),
+      MonthlyKind.buy => l10n.mcBuy(m.target),
+      MonthlyKind.collect => l10n.mcCollect(m.target),
     };
 
 class WeeklyQuestsPanel extends ConsumerStatefulWidget {
@@ -60,10 +67,23 @@ class _WeeklyQuestsDialogState extends ConsumerState<WeeklyQuestsPanel> {
     playAccessoryReveal(context, drop);
   }
 
+  void _openMonthlyChest() {
+    final controller = ref.read(gameControllerProvider.notifier);
+    if (controller.claimMonthlyChestReward() <= 0) return;
+    _reward();
+    final drop = controller.lastAccessoryDrop;
+    if (drop == null) return;
+    setState(() => _revealed = drop);
+    playAccessoryReveal(context, drop);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
+    final monthly = ref.watch(gameControllerProvider.select((s) => s.monthly));
+    final monthlyChestAvailable = ref.watch(gameControllerProvider.select((s) => s.monthlyChestAvailable));
+    final monthlyChestClaimed = ref.watch(gameControllerProvider.select((s) => s.monthlyChestClaimed));
     final quests = ref.watch(gameControllerProvider.select((s) => s.weeklyQuests));
     final chestAvailable =
         ref.watch(gameControllerProvider.select((s) => s.weeklyChestAvailable));
@@ -80,8 +100,13 @@ class _WeeklyQuestsDialogState extends ConsumerState<WeeklyQuestsPanel> {
             for (var i = 0; i < quests.length; i++)
               _Row(
                 index: i,
+                keyPrefix: 'weekly',
                 title: _title(l10n, quests[i]),
-                view: quests[i],
+                progress: quests[i].progress,
+                target: quests[i].target,
+                done: quests[i].done,
+                claimed: quests[i].claimed,
+                rewardGems: quests[i].rewardGems,
                 onClaim: () {
                   if (controller.claimWeeklyQuestReward(i) > 0) _reward();
                 },
@@ -121,6 +146,56 @@ class _WeeklyQuestsDialogState extends ConsumerState<WeeklyQuestsPanel> {
               key: const Key('weekly-resets-in'),
               style: theme.textTheme.bodySmall,
             ),
+            const SizedBox(height: 12),
+            Text(l10n.monthlyTitle, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+            const SizedBox(height: 4),
+            for (final m in monthly)
+              _Row(
+                index: m.kind.index,
+                keyPrefix: 'monthly',
+                title: _monthlyTitle(l10n, m),
+                progress: m.progress,
+                target: m.target,
+                done: m.done,
+                claimed: m.claimed,
+                rewardGems: monthlyQuestRewardGems,
+                onClaim: () {
+                  if (controller.claimMonthlyReward(m.kind) > 0) _reward();
+                },
+              ),
+            ClayTile(
+              child: Row(
+                children: [
+                  const Text('🎁', style: TextStyle(fontSize: 24)),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      l10n.monthlyChestLabel,
+                      style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Flexible(
+                    child: FilledButton(
+                      key: const Key('monthly-chest'),
+                      onPressed: monthlyChestAvailable ? _openMonthlyChest : null,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(monthlyChestClaimed
+                            ? l10n.dailyQuestClaimed
+                            : l10n.dailyReward('$monthlyChestGems')),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              l10n.weeklyResetsIn(formatDuration(monthlySecondsLeft(now))),
+              key: const Key('monthly-resets-in'),
+              style: theme.textTheme.bodySmall,
+            ),
           ],
         ),
       );
@@ -141,21 +216,31 @@ class _WeeklyQuestsDialogState extends ConsumerState<WeeklyQuestsPanel> {
 class _Row extends StatelessWidget {
   const _Row({
     required this.index,
+    required this.keyPrefix,
     required this.title,
-    required this.view,
+    required this.progress,
+    required this.target,
+    required this.done,
+    required this.claimed,
+    required this.rewardGems,
     required this.onClaim,
   });
 
   final int index;
+  final String keyPrefix;
   final String title;
-  final WeeklyQuestView view;
+  final int progress;
+  final int target;
+  final bool done;
+  final bool claimed;
+  final int rewardGems;
   final VoidCallback onClaim;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
-    final ratio = (view.progress / view.target).clamp(0.0, 1.0).toDouble();
+    final ratio = (progress / target).clamp(0.0, 1.0).toDouble();
     return ClayTile(
       child: Row(
         children: [
@@ -174,8 +259,8 @@ class _Row extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  '${view.progress.clamp(0, view.target)} / ${view.target}',
-                  key: Key('weekly-quest-progress-$index'),
+                  '${progress.clamp(0, target)} / $target',
+                  key: Key('$keyPrefix-quest-progress-$index'),
                   style: theme.textTheme.bodySmall,
                 ),
               ],
@@ -184,13 +269,13 @@ class _Row extends StatelessWidget {
           const SizedBox(width: 10),
           Flexible(
             child: FilledButton(
-              key: Key('weekly-quest-claim-$index'),
-              onPressed: (view.done && !view.claimed) ? onClaim : null,
+              key: Key('$keyPrefix-quest-claim-$index'),
+              onPressed: (done && !claimed) ? onClaim : null,
               child: FittedBox(
                 fit: BoxFit.scaleDown,
-                child: Text(view.claimed
+                child: Text(claimed
                     ? l10n.dailyQuestClaimed
-                    : l10n.dailyReward('${view.rewardGems}')),
+                    : l10n.dailyReward('$rewardGems')),
               ),
             ),
           ),

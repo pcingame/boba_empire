@@ -4585,6 +4585,27 @@ class AppLocalizationsKo extends AppLocalizations {
   String get weeklyChestLabel => '주간 상자: 3개 모두 완료 → 레어 이상 액세서리 +1';
 
   @override
+  String get monthlyTitle => '월간 도전';
+
+  @override
+  String mcTap(int target) {
+    return '컵을 $target번 탭하세요';
+  }
+
+  @override
+  String mcBuy(int target) {
+    return '업그레이드 $target번 구매';
+  }
+
+  @override
+  String mcCollect(int target) {
+    return '액세서리 $target개 더 모으기';
+  }
+
+  @override
+  String get monthlyChestLabel => '월간 상자: 3개 모두 완료 → 에픽 이상 액세서리 +1';
+
+  @override
   String weeklyResetsIn(String time) {
     return '$time 후 초기화';
   }

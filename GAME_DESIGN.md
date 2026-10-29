@@ -1336,3 +1336,9 @@ Khung chung `_sheet` (thanh kéo, góc bo 28, tiêu đề huy hiệu emoji tô m
 
 ### 53l. Tuyến thương mại giữa chi nhánh (2026-10-20)
 Nối 2 chi nhánh ĐÃ MỞ bằng một tuyến (nút "🚢 Tuyến (n)" dưới dòng bonus đế chế): doanh thu thu về của CẢ HAI nơi +4%/cấp (cùng châu lục) hoặc +8%/cấp (khác châu, giá gấp đôi); tối đa 3 cấp/tuyến, 2 tuyến/chi nhánh (trần +48% một nơi), Mặt trăng không nối. Giá cấp k = trung bình giá nâng hai chi nhánh ở cấp k+3 (Xu, có giảm giá perk). Lưu `branchRoutes` {'a|b' (id xếp chữ cái): cấp}, nạp save loại khoá/cấp lạ. Nhân vào `collectBranches` cùng quầy/chuyên ngành (số "chờ thu" trên UI vẫn chưa gồm các bonus này). Bản đồ vẽ cung vàng dày theo cấp + 🚢 chạy dọc tuyến (dùng vòng lặp máy bay; tắt theo mức hiệu ứng/giảm chuyển động). Client-only, không SQL. Số liệu là ước lượng chưa playtest. Test: `test/ui/branches_routes_test.dart`.
+
+### 28b. Thử thách tháng (2026-10-29, chưa playtest)
+Tầng nhiệm vụ dài hơi nằm dưới nhiệm vụ tuần (tab "Tuần"): 3 mục tiêu cho cả tháng UTC — chạm ly 3000 lần, nâng cấp 1000 lần,
+sưu tập thêm 4 phụ kiện — mỗi mục 150💎, xong cả 3 mở rương tháng 500💎 + 1 phụ kiện Sử thi trở lên. `lib/core/monthly_challenge.dart`.
+Không có điểm hook: tiến độ = bộ đếm tích lũy có sẵn (`tapCount`, `buyCount`, số phụ kiện đã có) trừ mốc chụp lúc sang tháng
+(`monthlyBase`), nên chỉ cần `rollMonthlyChallenge` trong `_rollDaily`. Tự động chạm không tính. Chỉ client, không SQL. Mọi con số là ước lượng.

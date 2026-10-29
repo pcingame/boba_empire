@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 
 import 'package:boba_empire/core/models.dart';
+import 'package:boba_empire/core/monthly_challenge.dart';
 import 'package:boba_empire/core/weekly_quests.dart';
 import 'package:boba_empire/data/game_storage.dart';
 import 'package:boba_empire/l10n/app_localizations.dart';
@@ -75,6 +76,19 @@ Future<void> _done(WidgetTester tester, ProviderContainer c) async {
 }
 
 void main() {
+  testWidgets('Thử thách tháng nằm dưới nhiệm vụ tuần: 3 mục, nhận được mục đã xong', (tester) async {
+    final c = await _open(tester, week: 2950);
+    final ctrl = c.read(gameControllerProvider.notifier);
+    for (final k in MonthlyKind.values) {
+      await tester.ensureVisible(find.byKey(Key('monthly-quest-claim-${k.index}')));
+      expect(find.text('0 / ${monthlyTargets[k]}'), findsWidgets);
+      expect(tester.widget<FilledButton>(find.byKey(Key('monthly-quest-claim-${k.index}'))).onPressed, isNull);
+    }
+    expect(find.byKey(const Key('monthly-resets-in')), findsOneWidget);
+    expect(ctrl.claimMonthlyReward(MonthlyKind.tap), 0);
+    await _done(tester, c);
+  });
+
   testWidgets(
     'hiện đúng 3 nhiệm vụ của tuần, tiến độ 0, nút nhận mờ, có đếm ngược',
     (tester) async {

@@ -10,6 +10,7 @@ import '../core/daily_quests.dart';
 import '../core/challenges.dart' show ChallengeKind;
 import '../core/quests.dart';
 import '../core/recipe_mastery.dart';
+import '../core/monthly_challenge.dart';
 import '../core/weekly_quests.dart';
 import '../core/rival.dart';
 
@@ -65,6 +66,18 @@ class WeeklyQuestView {
   final int target;
   final int progress;
   final int rewardGems;
+  final bool claimed;
+
+  bool get done => progress >= target;
+}
+
+/// Ảnh chụp một mục Thử thách tháng cho UI.
+class MonthlyView {
+  const MonthlyView({required this.kind, required this.target, required this.progress, required this.claimed});
+
+  final MonthlyKind kind;
+  final int target;
+  final int progress;
   final bool claimed;
 
   bool get done => progress >= target;
@@ -212,6 +225,9 @@ class GameSnapshot {
     required this.challengeBonusAvailable,
     required this.challengeBonusClaimed,
     required this.weeklyQuests,
+    required this.monthly,
+    required this.monthlyChestAvailable,
+    required this.monthlyChestClaimed,
     this.recipeProgress = const {},
     this.recipeOrderPerfect = const [],
     this.recipeDailyDay = -1,
@@ -508,6 +524,9 @@ class GameSnapshot {
   final bool challengeBonusAvailable;
   final bool challengeBonusClaimed;
   final List<WeeklyQuestView> weeklyQuests;
+  final List<MonthlyView> monthly;
+  final bool monthlyChestAvailable;
+  final bool monthlyChestClaimed;
 
   /// Bậc thuộc công thức theo id món (bản sao — không chia sẻ Map với GameState).
   final Map<int, RecipeProgress> recipeProgress;

@@ -4635,6 +4635,28 @@ class AppLocalizationsTh extends AppLocalizations {
       'หีบประจำสัปดาห์: ทำครบ 3 → ได้ของตกแต่งระดับหายากขึ้นไป 1 ชิ้น';
 
   @override
+  String get monthlyTitle => 'ภารกิจประจำเดือน';
+
+  @override
+  String mcTap(int target) {
+    return 'แตะแก้ว $target ครั้ง';
+  }
+
+  @override
+  String mcBuy(int target) {
+    return 'ซื้ออัปเกรด $target ครั้ง';
+  }
+
+  @override
+  String mcCollect(int target) {
+    return 'สะสมอุปกรณ์เสริมเพิ่ม $target ชิ้น';
+  }
+
+  @override
+  String get monthlyChestLabel =>
+      'หีบประจำเดือน: ทำครบทั้ง 3 → รับอุปกรณ์เสริมระดับ Epic ขึ้นไป +1';
+
+  @override
   String weeklyResetsIn(String time) {
     return 'รีเซ็ตใน $time';
   }
