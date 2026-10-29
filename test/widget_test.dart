@@ -13,7 +13,11 @@ Future<void> _pumpApp(WidgetTester tester) async {
   final prefs = await SharedPreferences.getInstance();
   await tester.pumpWidget(
     ProviderScope(
-      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        // Đồng hồ cố định ngoài mọi dịp lễ: lễ hội nhân thu nhập (×1.25) làm một lần chạm không còn đúng 1 Xu.
+        clockProvider.overrideWithValue(() => DateTime.utc(2026, 6, 15).millisecondsSinceEpoch),
+      ],
       child: const BobaEmpireApp(),
     ),
   );
