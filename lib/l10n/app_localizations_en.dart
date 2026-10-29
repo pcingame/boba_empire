@@ -3980,23 +3980,23 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get whatsNewStaff =>
-      '🧑‍🍳 Staff & Mascots in \"My Shop\", plus weekend auctions';
+  String get whatsNewMonthly =>
+      '🗓️ Monthly challenge: 3 big goals + a monthly chest with 500💎 and an Epic accessory';
 
   @override
-  String get whatsNewRegulars =>
-      '🌦️ Regular customers, weather, deliveries and Legacy for the late game';
+  String get whatsNewTrophy =>
+      '🏛️ Hall of fame: 11 milestone badges on My Profile';
 
   @override
-  String get whatsNewDecor =>
-      '🏮 Shop decor: 20 items, 8 slots, 4 themes, set bonuses';
+  String get whatsNewComeback =>
+      '🎁 Welcome-back gift for players away 3+ days';
 
   @override
-  String get whatsNewVip =>
-      '📊 VIP Benefits page, Stats and a shareable brag image';
+  String get whatsNewRecap => '🧾 Weekly recap when a new week starts';
 
   @override
-  String get whatsNewChat => '📷 Send photos in Guild chat';
+  String get whatsNewBranchGems =>
+      '🌏 Branches: open with 💎, +25% income per level, payback time shown';
 
   @override
   String get whatsNewLater => 'Later';

@@ -6835,35 +6835,35 @@ abstract class AppLocalizations {
   /// **'Có gì mới ở {version}'**
   String whatsNewTitle(String version);
 
-  /// No description provided for @whatsNewStaff.
+  /// No description provided for @whatsNewMonthly.
   ///
   /// In vi, this message translates to:
-  /// **'🧑‍🍳 Nhân viên & Linh vật trong \"Quán của tôi\", đấu giá cuối tuần'**
-  String get whatsNewStaff;
+  /// **'🗓️ Thử thách tháng: 3 mục tiêu lớn + rương tháng 500💎 và phụ kiện Sử thi'**
+  String get whatsNewMonthly;
 
-  /// No description provided for @whatsNewRegulars.
+  /// No description provided for @whatsNewTrophy.
   ///
   /// In vi, this message translates to:
-  /// **'🌦️ Khách quen, thời tiết, giao hàng và Di sản cho giai đoạn cuối game'**
-  String get whatsNewRegulars;
+  /// **'🏛️ Phòng truyền thống: 11 huy hiệu cột mốc trên Hồ sơ của tôi'**
+  String get whatsNewTrophy;
 
-  /// No description provided for @whatsNewDecor.
+  /// No description provided for @whatsNewComeback.
   ///
   /// In vi, this message translates to:
-  /// **'🏮 Trang trí quán: 20 món, 8 ô, 4 chủ đề, thưởng khi đủ bộ'**
-  String get whatsNewDecor;
+  /// **'🎁 Quà chào mừng trở lại cho người vắng từ 3 ngày'**
+  String get whatsNewComeback;
 
-  /// No description provided for @whatsNewVip.
+  /// No description provided for @whatsNewRecap.
   ///
   /// In vi, this message translates to:
-  /// **'📊 Trang Quyền lợi VIP, Thống kê và ảnh khoe thành tích'**
-  String get whatsNewVip;
+  /// **'🧾 Tổng kết tuần mỗi khi sang tuần mới'**
+  String get whatsNewRecap;
 
-  /// No description provided for @whatsNewChat.
+  /// No description provided for @whatsNewBranchGems.
   ///
   /// In vi, this message translates to:
-  /// **'📷 Gửi ảnh trong chat Hội'**
-  String get whatsNewChat;
+  /// **'🌏 Chi nhánh: mở bằng 💎, +25% thu nhập mỗi cấp, hiện thời gian hoàn vốn'**
+  String get whatsNewBranchGems;
 
   /// No description provided for @whatsNewLater.
   ///

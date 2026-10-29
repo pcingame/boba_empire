@@ -2146,11 +2146,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewStaff": "🧑‍🍳 Nhân viên & Linh vật trong \"Quán của tôi\", đấu giá cuối tuần",
-  "whatsNewRegulars": "🌦️ Khách quen, thời tiết, giao hàng và Di sản cho giai đoạn cuối game",
-  "whatsNewDecor": "🏮 Trang trí quán: 20 món, 8 ô, 4 chủ đề, thưởng khi đủ bộ",
-  "whatsNewVip": "📊 Trang Quyền lợi VIP, Thống kê và ảnh khoe thành tích",
-  "whatsNewChat": "📷 Gửi ảnh trong chat Hội",
+  "whatsNewMonthly": "🗓️ Thử thách tháng: 3 mục tiêu lớn + rương tháng 500💎 và phụ kiện Sử thi",
+  "whatsNewTrophy": "🏛️ Phòng truyền thống: 11 huy hiệu cột mốc trên Hồ sơ của tôi",
+  "whatsNewComeback": "🎁 Quà chào mừng trở lại cho người vắng từ 3 ngày",
+  "whatsNewRecap": "🧾 Tổng kết tuần mỗi khi sang tuần mới",
+  "whatsNewBranchGems": "🌏 Chi nhánh: mở bằng 💎, +25% thu nhập mỗi cấp, hiện thời gian hoàn vốn",
   "whatsNewLater": "Để sau",
   "whatsNewOpen": "Chơi thử",
   "marketWallet": "{n} Xu Chợ",

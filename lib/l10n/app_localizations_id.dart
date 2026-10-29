@@ -3976,23 +3976,23 @@ class AppLocalizationsId extends AppLocalizations {
   }
 
   @override
-  String get whatsNewStaff =>
-      '🧑‍🍳 Staf & Maskot di \"Toko Saya\", plus lelang akhir pekan';
+  String get whatsNewMonthly =>
+      '🗓️ Tantangan bulanan: 3 target besar + peti bulanan berisi 500💎 dan aksesori Epik';
 
   @override
-  String get whatsNewRegulars =>
-      '🌦️ Pelanggan tetap, cuaca, pengiriman, dan Warisan untuk akhir game';
+  String get whatsNewTrophy =>
+      '🏛️ Hall of fame: 11 lencana pencapaian di Profil Saya';
 
   @override
-  String get whatsNewDecor =>
-      '🏮 Dekorasi toko: 20 item, 8 slot, 4 tema, bonus set lengkap';
+  String get whatsNewComeback =>
+      '🎁 Hadiah selamat datang kembali untuk yang absen 3+ hari';
 
   @override
-  String get whatsNewVip =>
-      '📊 Halaman Keuntungan VIP, Statistik, dan gambar untuk pamer';
+  String get whatsNewRecap => '🧾 Rekap mingguan saat minggu baru dimulai';
 
   @override
-  String get whatsNewChat => '📷 Kirim foto di chat Guild';
+  String get whatsNewBranchGems =>
+      '🌏 Cabang: dibuka dengan 💎, +25% pendapatan per level, waktu balik modal ditampilkan';
 
   @override
   String get whatsNewLater => 'Nanti';

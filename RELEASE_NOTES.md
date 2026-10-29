@@ -9,6 +9,24 @@ người bản ngữ soát.
 
 ---
 
+## 1.0.14 (+29) — 2026-10-29
+
+**Bản trước:** 1.0.13 (+28) đã live trên store.
+
+**Nội dung:**
+- **Thử thách tháng** (tab Tuần của hub Nhiệm vụ & Quà): 3 mục tiêu cho cả tháng, 150💎 mỗi mục, rương tháng 500💎 + phụ kiện Sử thi trở lên.
+- **Phòng truyền thống:** 11 huy hiệu cột mốc trên Hồ sơ của tôi (chỉ bản thân xem được).
+- **Quà chào mừng trở lại:** vắng ≥3 ngày tặng 50/100/200💎 (tối đa 1 lần/7 ngày), hiện trong popup offline; thông báo nhắc vắng 3/7 ngày hứa quà khi đủ điều kiện.
+- **Tổng kết tuần:** popup số liệu tuần vừa qua khi mở app (xếp sau tiền offline, trước "Có gì mới").
+- **Chi nhánh:** MỞ chi nhánh bằng 💎 (30 × (giai đoạn mở − 1); nâng cấp vẫn bằng Xu, chi nhánh đã mở giữ nguyên), thu nhập mỗi cấp 1.2% → 1.5%, thẻ hiện thời gian hoàn vốn.
+- **Sửa test** hỏng trong dịp lễ hội (không ảnh hưởng người chơi).
+
+Soạn sẵn: `assets/store/whatsnew_1.0.14/`; hộp "Có gì mới" trong app đã cập nhật (`whatsNewVersion` = 1.0.14). KHÔNG cần chạy SQL mới (mọi thứ trong bản này chỉ ở client). Chưa làm: mô tả store, review notes.
+
+**Lệnh build:** iOS `flutter build ipa --release --export-options-plist=ios/ExportOptions.plist --dart-define=IAP_VERIFY_ENDPOINT=https://boba-receipt-server-411559711815.asia-southeast1.run.app/verify` → Xcode Organizer. Android `flutter build appbundle --release` (versionCode +29).
+
+⚠️ Mọi con số mới (giá 💎 chi nhánh, thưởng Thử thách tháng, mức quà trở lại) là ước lượng chưa playtest. Bản dịch máy chưa có người bản ngữ duyệt. Giá mở chi nhánh bằng 💎 là thay đổi kinh tế đáng chú ý với người chơi mới.
+
 ## 1.0.13 (+27) — 2026-10-22
 
 **Bản trước:** 1.0.12 (+26) đã live trên store.

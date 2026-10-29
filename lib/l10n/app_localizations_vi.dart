@@ -3971,23 +3971,23 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
-  String get whatsNewStaff =>
-      '🧑‍🍳 Nhân viên & Linh vật trong \"Quán của tôi\", đấu giá cuối tuần';
+  String get whatsNewMonthly =>
+      '🗓️ Thử thách tháng: 3 mục tiêu lớn + rương tháng 500💎 và phụ kiện Sử thi';
 
   @override
-  String get whatsNewRegulars =>
-      '🌦️ Khách quen, thời tiết, giao hàng và Di sản cho giai đoạn cuối game';
+  String get whatsNewTrophy =>
+      '🏛️ Phòng truyền thống: 11 huy hiệu cột mốc trên Hồ sơ của tôi';
 
   @override
-  String get whatsNewDecor =>
-      '🏮 Trang trí quán: 20 món, 8 ô, 4 chủ đề, thưởng khi đủ bộ';
+  String get whatsNewComeback =>
+      '🎁 Quà chào mừng trở lại cho người vắng từ 3 ngày';
 
   @override
-  String get whatsNewVip =>
-      '📊 Trang Quyền lợi VIP, Thống kê và ảnh khoe thành tích';
+  String get whatsNewRecap => '🧾 Tổng kết tuần mỗi khi sang tuần mới';
 
   @override
-  String get whatsNewChat => '📷 Gửi ảnh trong chat Hội';
+  String get whatsNewBranchGems =>
+      '🌏 Chi nhánh: mở bằng 💎, +25% thu nhập mỗi cấp, hiện thời gian hoàn vốn';
 
   @override
   String get whatsNewLater => 'Để sau';

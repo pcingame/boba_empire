@@ -1474,11 +1474,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewStaff": "🧑‍🍳 Staf & Maskot di \"Toko Saya\", plus lelang akhir pekan",
-  "whatsNewRegulars": "🌦️ Pelanggan tetap, cuaca, pengiriman, dan Warisan untuk akhir game",
-  "whatsNewDecor": "🏮 Dekorasi toko: 20 item, 8 slot, 4 tema, bonus set lengkap",
-  "whatsNewVip": "📊 Halaman Keuntungan VIP, Statistik, dan gambar untuk pamer",
-  "whatsNewChat": "📷 Kirim foto di chat Guild",
+  "whatsNewMonthly": "🗓️ Tantangan bulanan: 3 target besar + peti bulanan berisi 500💎 dan aksesori Epik",
+  "whatsNewTrophy": "🏛️ Hall of fame: 11 lencana pencapaian di Profil Saya",
+  "whatsNewComeback": "🎁 Hadiah selamat datang kembali untuk yang absen 3+ hari",
+  "whatsNewRecap": "🧾 Rekap mingguan saat minggu baru dimulai",
+  "whatsNewBranchGems": "🌏 Cabang: dibuka dengan 💎, +25% pendapatan per level, waktu balik modal ditampilkan",
   "whatsNewLater": "Nanti",
   "whatsNewOpen": "Coba",
   "marketWallet": "{n} Koin Pasar",

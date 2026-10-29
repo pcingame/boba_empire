@@ -3996,23 +3996,23 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get whatsNewStaff =>
-      '🧑‍🍳 Personal y mascotas en \"Mi tienda\", y subastas de fin de semana';
+  String get whatsNewMonthly =>
+      '🗓️ Desafío mensual: 3 grandes metas + cofre mensual con 500💎 y un accesorio Épico';
 
   @override
-  String get whatsNewRegulars =>
-      '🌦️ Clientes habituales, clima, repartos y Legado para el final del juego';
+  String get whatsNewTrophy =>
+      '🏛️ Salón de la fama: 11 insignias de hitos en Mi perfil';
 
   @override
-  String get whatsNewDecor =>
-      '🏮 Decoración: 20 objetos, 8 huecos, 4 temas y bonus por conjunto';
+  String get whatsNewComeback =>
+      '🎁 Regalo de bienvenida para quien vuelve tras 3+ días';
 
   @override
-  String get whatsNewVip =>
-      '📊 Página de beneficios VIP, estadísticas e imagen para presumir';
+  String get whatsNewRecap => '🧾 Resumen semanal al empezar una nueva semana';
 
   @override
-  String get whatsNewChat => '📷 Envía fotos en el chat del gremio';
+  String get whatsNewBranchGems =>
+      '🌏 Sucursales: se abren con 💎, +25% de ingresos por nivel, con tiempo de retorno';
 
   @override
   String get whatsNewLater => 'Después';

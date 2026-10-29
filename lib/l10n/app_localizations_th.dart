@@ -3964,22 +3964,23 @@ class AppLocalizationsTh extends AppLocalizations {
   }
 
   @override
-  String get whatsNewStaff =>
-      '🧑‍🍳 พนักงานและมาสคอตใน \"ร้านของฉัน\" พร้อมประมูลสุดสัปดาห์';
+  String get whatsNewMonthly =>
+      '🗓️ ภารกิจประจำเดือน: เป้าหมายใหญ่ 3 ข้อ + หีบประจำเดือน 500💎 และอุปกรณ์เสริมระดับ Epic';
 
   @override
-  String get whatsNewRegulars =>
-      '🌦️ ลูกค้าประจำ สภาพอากาศ การจัดส่ง และมรดก สำหรับช่วงท้ายเกม';
+  String get whatsNewTrophy =>
+      '🏛️ หอเกียรติยศ: เหรียญเกียรติยศ 11 ชิ้นในโปรไฟล์ของฉัน';
 
   @override
-  String get whatsNewDecor =>
-      '🏮 ตกแต่งร้าน 20 ชิ้น 8 ช่อง 4 ธีม พร้อมโบนัสครบชุด';
+  String get whatsNewComeback =>
+      '🎁 ของขวัญต้อนรับกลับสำหรับผู้ที่หายไป 3 วันขึ้นไป';
 
   @override
-  String get whatsNewVip => '📊 หน้าสิทธิพิเศษ VIP สถิติ และภาพโชว์ผลงาน';
+  String get whatsNewRecap => '🧾 สรุปประจำสัปดาห์เมื่อขึ้นสัปดาห์ใหม่';
 
   @override
-  String get whatsNewChat => '📷 ส่งรูปในแชทกิลด์';
+  String get whatsNewBranchGems =>
+      '🌏 สาขา: เปิดด้วย 💎 รายได้ +25% ต่อเลเวล แสดงเวลาคืนทุน';
 
   @override
   String get whatsNewLater => 'ไว้ทีหลัง';

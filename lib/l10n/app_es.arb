@@ -1474,11 +1474,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewStaff": "🧑‍🍳 Personal y mascotas en \"Mi tienda\", y subastas de fin de semana",
-  "whatsNewRegulars": "🌦️ Clientes habituales, clima, repartos y Legado para el final del juego",
-  "whatsNewDecor": "🏮 Decoración: 20 objetos, 8 huecos, 4 temas y bonus por conjunto",
-  "whatsNewVip": "📊 Página de beneficios VIP, estadísticas e imagen para presumir",
-  "whatsNewChat": "📷 Envía fotos en el chat del gremio",
+  "whatsNewMonthly": "🗓️ Desafío mensual: 3 grandes metas + cofre mensual con 500💎 y un accesorio Épico",
+  "whatsNewTrophy": "🏛️ Salón de la fama: 11 insignias de hitos en Mi perfil",
+  "whatsNewComeback": "🎁 Regalo de bienvenida para quien vuelve tras 3+ días",
+  "whatsNewRecap": "🧾 Resumen semanal al empezar una nueva semana",
+  "whatsNewBranchGems": "🌏 Sucursales: se abren con 💎, +25% de ingresos por nivel, con tiempo de retorno",
   "whatsNewLater": "Después",
   "whatsNewOpen": "Probar",
   "marketWallet": "{n} Monedas de Mercado",

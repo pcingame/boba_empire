@@ -3924,19 +3924,19 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get whatsNewStaff => '🧑‍🍳 \"내 가게\"에서 직원·마스코트 관리, 주말 경매';
+  String get whatsNewMonthly => '🗓️ 월간 도전: 큰 목표 3개 + 500💎와 에픽 액세서리가 든 월간 상자';
 
   @override
-  String get whatsNewRegulars => '🌦️ 단골 손님, 날씨, 배달, 유산 시스템 (후반부 콘텐츠)';
+  String get whatsNewTrophy => '🏛️ 명예의 전당: 내 프로필의 마일스톤 배지 11개';
 
   @override
-  String get whatsNewDecor => '🏮 가게 꾸미기: 20종, 8칸, 4가지 테마, 세트 보너스';
+  String get whatsNewComeback => '🎁 3일 이상 쉬었다 돌아온 분께 환영 선물';
 
   @override
-  String get whatsNewVip => '📊 VIP 혜택 페이지, 통계, 자랑용 이미지';
+  String get whatsNewRecap => '🧾 새로운 주가 시작될 때 주간 요약';
 
   @override
-  String get whatsNewChat => '📷 길드 채팅에서 사진 전송';
+  String get whatsNewBranchGems => '🌏 지점: 💎로 개설, 레벨당 수입 +25%, 투자 회수 시간 표시';
 
   @override
   String get whatsNewLater => '나중에';

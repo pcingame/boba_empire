@@ -1474,11 +1474,11 @@
       "version": {"type": "String"}
     }
   },
-  "whatsNewStaff": "🧑‍🍳 Staff & Mascots in \"My Shop\", plus weekend auctions",
-  "whatsNewRegulars": "🌦️ Regular customers, weather, deliveries and Legacy for the late game",
-  "whatsNewDecor": "🏮 Shop decor: 20 items, 8 slots, 4 themes, set bonuses",
-  "whatsNewVip": "📊 VIP Benefits page, Stats and a shareable brag image",
-  "whatsNewChat": "📷 Send photos in Guild chat",
+  "whatsNewMonthly": "🗓️ Monthly challenge: 3 big goals + a monthly chest with 500💎 and an Epic accessory",
+  "whatsNewTrophy": "🏛️ Hall of fame: 11 milestone badges on My Profile",
+  "whatsNewComeback": "🎁 Welcome-back gift for players away 3+ days",
+  "whatsNewRecap": "🧾 Weekly recap when a new week starts",
+  "whatsNewBranchGems": "🌏 Branches: open with 💎, +25% income per level, payback time shown",
   "whatsNewLater": "Later",
   "whatsNewOpen": "Try it",
   "marketWallet": "{n} Market Coins",
