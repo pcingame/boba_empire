@@ -13,6 +13,8 @@ người bản ngữ soát.
 
 **Bản trước:** 1.0.13 (+27) đã live trên store.
 
+**Lưu ý ASC:** Description và What's New KHÔNG nhận emoji (lỗi "invalid characters") — dùng chữ ("Kim Cương"/gems…), đã thay hết 💎 trong `description_1.0.14` và `whatsnew_1.0.14`.
+
 **Nội dung:**
 - **Thử thách tháng** (tab Tuần của hub Nhiệm vụ & Quà): 3 mục tiêu cho cả tháng, 150💎 mỗi mục, rương tháng 500💎 + phụ kiện Sử thi trở lên.
 - **Phòng truyền thống:** 11 huy hiệu cột mốc trên Hồ sơ của tôi (chỉ bản thân xem được).
@@ -21,7 +23,9 @@ người bản ngữ soát.
 - **Chi nhánh:** MỞ chi nhánh bằng 💎 (30 × (giai đoạn mở − 1); nâng cấp vẫn bằng Xu, chi nhánh đã mở giữ nguyên), thu nhập mỗi cấp 1.2% → 1.5%, thẻ hiện thời gian hoàn vốn.
 - **Sửa test** hỏng trong dịp lễ hội (không ảnh hưởng người chơi).
 
-Soạn sẵn: `assets/store/whatsnew_1.0.14/`; hộp "Có gì mới" trong app đã cập nhật (`whatsNewVersion` = 1.0.14). KHÔNG cần chạy SQL mới (mọi thứ trong bản này chỉ ở client). Chưa làm: mô tả store, review notes.
+Soạn sẵn: `assets/store/whatsnew_1.0.14/`; hộp "Có gì mới" trong app đã cập nhật (`whatsNewVersion` = 1.0.14). KHÔNG cần chạy SQL mới (mọi thứ trong bản này chỉ ở client). Mô tả store: `assets/store/description_1.0.14/`; review notes: `APP_REVIEW_NOTES_1.0.14.md`.
+
+**Bẫy ASC:** Description và What's New KHÔNG nhận emoji (lỗi "This field contains one or more invalid characters") — dùng chữ ("Kim Cương", "gems"…) thay 💎. Đã thay hết trong `description_1.0.14` và `whatsnew_1.0.14`.
 
 **Lệnh build:** iOS `flutter build ipa --release --export-options-plist=ios/ExportOptions.plist --dart-define=IAP_VERIFY_ENDPOINT=https://boba-receipt-server-411559711815.asia-southeast1.run.app/verify` → Xcode Organizer. Android `flutter build appbundle --release` (versionCode +29).
 
@@ -34,11 +38,11 @@ Soạn sẵn: `assets/store/whatsnew_1.0.14/`; hộp "Có gì mới" trong app �
 ```
 Mới: THỬ THÁCH THÁNG, PHÒNG TRUYỀN THỐNG & QUÀ TRỞ LẠI!
 
-• Thử thách tháng: 3 mục tiêu lớn, rương tháng 500💎 + phụ kiện Sử thi
+• Thử thách tháng: 3 mục tiêu lớn, rương tháng 500 Kim Cương + phụ kiện Sử thi
 • Phòng truyền thống: 11 huy hiệu cột mốc trên Hồ sơ
 • Quà chào mừng trở lại cho người vắng từ 3 ngày
 • Tổng kết tuần mỗi khi sang tuần mới
-• Chi nhánh: mở bằng 💎, thu nhập mỗi cấp +25%, hiện thời gian hoàn vốn
+• Chi nhánh: mở bằng Kim Cương, thu nhập mỗi cấp +25%, hiện thời gian hoàn vốn
 ```
 
 #### 🇬🇧 English (en)
@@ -46,11 +50,11 @@ Mới: THỬ THÁCH THÁNG, PHÒNG TRUYỀN THỐNG & QUÀ TRỞ LẠI!
 ```
 New: MONTHLY CHALLENGE, HALL OF FAME & WELCOME-BACK GIFT!
 
-• Monthly challenge: 3 big goals, monthly chest with 500💎 + an Epic accessory
+• Monthly challenge: 3 big goals, monthly chest with 500 gems + an Epic accessory
 • Hall of fame: 11 milestone badges on your profile
 • Welcome-back gift for players away 3+ days
 • Weekly recap when a new week starts
-• Branches: open with 💎, +25% income per level, payback time shown
+• Branches: open with gems, +25% income per level, payback time shown
 ```
 
 #### 🇪🇸 Español (es)
@@ -58,11 +62,11 @@ New: MONTHLY CHALLENGE, HALL OF FAME & WELCOME-BACK GIFT!
 ```
 Nuevo: ¡DESAFÍO MENSUAL, SALÓN DE LA FAMA Y REGALO DE BIENVENIDA!
 
-• Desafío mensual: 3 grandes metas, cofre mensual con 500💎 + un accesorio Épico
+• Desafío mensual: 3 grandes metas, cofre mensual con 500 gemas + un accesorio Épico
 • Salón de la fama: 11 insignias de hitos en tu perfil
 • Regalo de bienvenida para quien vuelve tras 3+ días
 • Resumen semanal al empezar una nueva semana
-• Sucursales: se abren con 💎, +25% de ingresos por nivel, con tiempo de retorno
+• Sucursales: se abren con gemas, +25% de ingresos por nivel, con tiempo de retorno
 ```
 
 #### 🇧🇷 Português (pt)
@@ -70,11 +74,11 @@ Nuevo: ¡DESAFÍO MENSUAL, SALÓN DE LA FAMA Y REGALO DE BIENVENIDA!
 ```
 Novo: DESAFIO MENSAL, SALÃO DA FAMA E PRESENTE DE BOAS-VINDAS!
 
-• Desafio mensal: 3 grandes metas, baú mensal com 500💎 + um acessório Épico
+• Desafio mensal: 3 grandes metas, baú mensal com 500 gemas + um acessório Épico
 • Salão da fama: 11 insígnias de marcos no seu perfil
 • Presente de boas-vindas para quem volta após 3+ dias
 • Resumo semanal quando começa uma nova semana
-• Filiais: abertas com 💎, +25% de renda por nível, com tempo de retorno
+• Filiais: abertas com gemas, +25% de renda por nível, com tempo de retorno
 ```
 
 #### 🇮🇩 Indonesia (id)
@@ -82,11 +86,11 @@ Novo: DESAFIO MENSAL, SALÃO DA FAMA E PRESENTE DE BOAS-VINDAS!
 ```
 Baru: TANTANGAN BULANAN, HALL OF FAME & HADIAH KEMBALI!
 
-• Tantangan bulanan: 3 target besar, peti bulanan 500💎 + aksesori Epik
+• Tantangan bulanan: 3 target besar, peti bulanan 500 permata + aksesori Epik
 • Hall of fame: 11 lencana pencapaian di profilmu
 • Hadiah selamat datang kembali untuk yang absen 3+ hari
 • Rekap mingguan saat minggu baru dimulai
-• Cabang: dibuka dengan 💎, +25% pendapatan per level, waktu balik modal ditampilkan
+• Cabang: dibuka dengan permata, +25% pendapatan per level, waktu balik modal ditampilkan
 ```
 
 #### 🇰🇷 한국어 (ko)
@@ -94,11 +98,11 @@ Baru: TANTANGAN BULANAN, HALL OF FAME & HADIAH KEMBALI!
 ```
 신규: 월간 도전, 명예의 전당, 복귀 환영 선물!
 
-• 월간 도전: 큰 목표 3개, 500💎와 에픽 액세서리가 든 월간 상자
+• 월간 도전: 큰 목표 3개, 500 보석와 에픽 액세서리가 든 월간 상자
 • 명예의 전당: 프로필에 마일스톤 배지 11개
 • 3일 이상 쉬었다 돌아온 분께 환영 선물
 • 새로운 주가 시작될 때 주간 요약
-• 지점: 💎로 개설, 레벨당 수입 +25%, 투자 회수 시간 표시
+• 지점: 보석로 개설, 레벨당 수입 +25%, 투자 회수 시간 표시
 ```
 
 #### 🇹🇭 ไทย (th)
@@ -106,11 +110,11 @@ Baru: TANTANGAN BULANAN, HALL OF FAME & HADIAH KEMBALI!
 ```
 ใหม่: ภารกิจประจำเดือน หอเกียรติยศ และของขวัญต้อนรับกลับ!
 
-• ภารกิจประจำเดือน: เป้าหมายใหญ่ 3 ข้อ หีบประจำเดือน 500💎 + อุปกรณ์เสริม Epic
+• ภารกิจประจำเดือน: เป้าหมายใหญ่ 3 ข้อ หีบประจำเดือน 500 เพชร + อุปกรณ์เสริม Epic
 • หอเกียรติยศ: เหรียญเกียรติยศ 11 ชิ้นในโปรไฟล์
 • ของขวัญต้อนรับกลับสำหรับผู้ที่หายไป 3 วันขึ้นไป
 • สรุปประจำสัปดาห์เมื่อขึ้นสัปดาห์ใหม่
-• สาขา: เปิดด้วย 💎 รายได้ +25% ต่อเลเวล แสดงเวลาคืนทุน
+• สาขา: เปิดด้วย เพชร รายได้ +25% ต่อเลเวล แสดงเวลาคืนทุน
 ```
 
 ---
