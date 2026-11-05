@@ -75,4 +75,19 @@ class AdConfig {
     }
     return Platform.isIOS ? _iosBannerTest : _androidBannerTest;
   }
+
+  /// Android dùng AppLovin MAX khi có SDK key (điền qua `--dart-define=MAX_SDK_KEY=`
+  /// hoặc sửa mặc định ở đây); rỗng thì Android vẫn chạy AdMob như cũ — công tắc
+  /// an toàn để chưa lỡ phát hành bản không có quảng cáo.
+  static const String maxSdkKey =
+      String.fromEnvironment('MAX_SDK_KEY');
+  static const String maxRewardedUnitId =
+      String.fromEnvironment('MAX_REWARDED_UNIT');
+  static const String maxBannerUnitId =
+      String.fromEnvironment('MAX_BANNER_UNIT');
+
+  static bool get useMax =>
+      Platform.isAndroid &&
+      maxSdkKey.isNotEmpty &&
+      maxRewardedUnitId.isNotEmpty;
 }

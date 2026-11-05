@@ -31,6 +31,7 @@ import '../guild/guild_controller.dart' show guildControllerProvider;
 import '../core/rival.dart';
 import '../iap/iap_products.dart';
 import '../iap/iap_service.dart';
+import 'bank_order_dialog.dart';
 import '../l10n/app_localizations.dart';
 import '../l10n/l10n_ext.dart';
 import '../market/market_highlight.dart';
@@ -126,6 +127,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage>
     with WidgetsBindingObserver {
   StreamSubscription<IapProduct>? _iapSub;
+  StreamSubscription<BankOrder>? _bankOrderSub;
   Timer? _vipPingTimer;
 
   @override
@@ -134,6 +136,11 @@ class _HomePageState extends ConsumerState<HomePage>
     WidgetsBinding.instance.addObserver(this);
     // Nghe kết quả mua hàng để trao thưởng (stub phát rỗng → an toàn).
     _iapSub = ref.read(iapServiceProvider).purchases.listen(_onPurchase);
+    _bankOrderSub = ref
+        .read(bankOrdersProvider)
+        .listen((order) {
+      if (mounted) showBankOrderDialog(context, order);
+    });
     // Tiền offline lúc mở app lạnh: ref.listen chỉ bắt thay đổi nên xử lý
     // giá trị ban đầu ở đây, sau frame đầu.
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -224,6 +231,7 @@ class _HomePageState extends ConsumerState<HomePage>
   @override
   void dispose() {
     _iapSub?.cancel();
+    _bankOrderSub?.cancel();
     _vipPingTimer?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();

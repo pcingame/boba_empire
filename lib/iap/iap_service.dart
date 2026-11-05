@@ -9,6 +9,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'iap_products.dart';
 
+/// Đơn chuyển khoản vừa tạo, chờ người chơi trả tiền (chỉ bản Android tải APK).
+class BankOrder {
+  const BankOrder(this.product, this.code, this.amount);
+  final IapProduct product;
+
+  /// Mã đơn — chính là nội dung chuyển khoản.
+  final String code;
+  final int amount;
+}
+
 abstract interface class IapService {
   /// Giá hiển thị theo locale cho từng sản phẩm (rỗng nếu store chưa sẵn).
   Future<Map<IapProduct, String>> loadPrices();
@@ -55,3 +65,8 @@ class StubIapService implements IapService {
 /// Mặc định stub; override trong `main()` bằng RealIapService.
 final iapServiceProvider =
     Provider<IapService>((ref) => const StubIapService());
+
+/// Đơn chuyển khoản mới tạo để UI hiện mã QR. Rỗng với Play/App Store (store tự hiện màn thanh toán);
+/// `main()` override bằng [BankIapService.bankOrders] trên Android.
+final bankOrdersProvider =
+    Provider<Stream<BankOrder>>((ref) => const Stream.empty());

@@ -20,10 +20,13 @@ import 'l10n/app_localizations.dart';
 import 'l10n/locale_provider.dart';
 
 import 'ads/ad_bootstrap.dart';
+import 'ads/ad_config.dart';
 import 'ads/ad_service.dart';
+import 'ads/max_ad_service.dart';
 import 'ads/real_ad_service.dart';
 import 'audio/audio_service.dart';
 import 'audio/flame_audio_service.dart';
+import 'iap/bank_iap_service.dart';
 import 'iap/http_receipt_verifier.dart';
 import 'iap/iap_config.dart';
 import 'iap/iap_service.dart';
@@ -83,29 +86,41 @@ Future<void> main() async {
     // KHÔNG await: init AdMob gồm form đồng ý UMP (hiện dialog, chờ người bấm)
     // và gọi mạng — await ở đây là màn hình trắng vài giây trước frame đầu.
     // Chạy song song, chỉ RealAdService chờ nó xong mới nạp quảng cáo.
-    final adsReady = AdBootstrap.ready = AdBootstrap.initialize();
+    final useMax = AdConfig.useMax;
+    final adsReady = AdBootstrap.ready =
+        useMax ? initMaxAds() : AdBootstrap.initialize();
+    void onAdUnavailable() {
+      // currentContext của key chính là context CỦA ScaffoldMessenger, nên
+      // ScaffoldMessenger.of(ctx) tìm tổ tiên và ném FlutterError (crash).
+      final l10n = _l10n;
+      if (l10n == null) return;
+      _messengerKey.currentState
+          ?..clearSnackBars()
+          ..showSnackBar(SnackBar(content: Text(l10n.adNotReady)));
+    }
+
     overrides.add(
-      adServiceProvider.overrideWithValue(RealAdService(
-        ready: adsReady,
-        onUnavailable: () {
-          // currentContext của key chính là context CỦA ScaffoldMessenger, nên
-          // ScaffoldMessenger.of(ctx) tìm tổ tiên và ném FlutterError (crash).
-          final l10n = _l10n;
-          if (l10n == null) return;
-          _messengerKey.currentState
-              ?..clearSnackBars()
-              ..showSnackBar(SnackBar(content: Text(l10n.adNotReady)));
-        },
-      )),
+      adServiceProvider.overrideWithValue(
+        useMax
+            ? MaxAdService(ready: adsReady, onUnavailable: onAdUnavailable)
+            : RealAdService(ready: adsReady, onUnavailable: onAdUnavailable),
+      ),
     );
-    // Có cấu hình endpoint (qua --dart-define IAP_VERIFY_ENDPOINT) thì xác thực
-    // biên nhận phía server trước khi trao; rỗng thì giữ client-only.
-    final ReceiptVerifier verifier = IapConfig.receiptVerifyEndpoint.isEmpty
-        ? const NoopReceiptVerifier()
-        : HttpReceiptVerifier(Uri.parse(IapConfig.receiptVerifyEndpoint));
-    overrides.add(
-      iapServiceProvider.overrideWithValue(RealIapService(verifier: verifier)),
-    );
+    if (Platform.isAndroid) {
+      // Android phát hành bằng APK tự tải (không có Google Play Billing): nạp bằng chuyển khoản.
+      final bank = BankIapService();
+      overrides.add(iapServiceProvider.overrideWithValue(bank));
+      overrides.add(bankOrdersProvider.overrideWithValue(bank.bankOrders));
+    } else {
+      // Có cấu hình endpoint (qua --dart-define IAP_VERIFY_ENDPOINT) thì xác thực
+      // biên nhận phía server trước khi trao; rỗng thì giữ client-only.
+      final ReceiptVerifier verifier = IapConfig.receiptVerifyEndpoint.isEmpty
+          ? const NoopReceiptVerifier()
+          : HttpReceiptVerifier(Uri.parse(IapConfig.receiptVerifyEndpoint));
+      overrides.add(
+        iapServiceProvider.overrideWithValue(RealIapService(verifier: verifier)),
+      );
+    }
   }
 
   runApp(

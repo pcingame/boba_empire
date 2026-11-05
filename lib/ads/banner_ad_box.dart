@@ -11,6 +11,7 @@ library;
 import 'dart:developer' as developer;
 import 'dart:io' show Platform;
 
+import 'package:applovin_max/applovin_max.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -102,15 +103,50 @@ class _BannerAdBoxState extends ConsumerState<BannerAdBox> {
   @override
   Widget build(BuildContext context) {
     final adFree = ref.watch(gameControllerProvider.select((s) => s.adFree));
-    if (!_supported || adFree || AdConfig.bannerUnitId.isEmpty) {
-      return const SizedBox.shrink();
+    if (!_supported || adFree) return const SizedBox.shrink();
+    if (AdConfig.useMax) {
+      return AdConfig.maxBannerUnitId.isEmpty
+          ? const SizedBox.shrink()
+          : _maxBanner();
     }
+    if (AdConfig.bannerUnitId.isEmpty) return const SizedBox.shrink();
     return LayoutBuilder(
       builder: (context, box) {
         _load(box.maxWidth);
         final ad = _ad;
         if (!_loaded || ad == null) return const SizedBox.shrink();
         return _box(ad);
+      },
+    );
+  }
+
+  Widget _maxBanner() {
+    return FutureBuilder<void>(
+      future: AdBootstrap.ready,
+      builder: (context, snap) {
+        if (snap.connectionState != ConnectionState.done) {
+          return const SizedBox.shrink();
+        }
+        return SafeArea(
+          top: false,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: MaxAdView(
+              adUnitId: AdConfig.maxBannerUnitId,
+              adFormat: AdFormat.banner,
+              listener: AdViewAdListener(
+                onAdLoadedCallback: (_) {},
+                onAdLoadFailedCallback: (id, error) => developer.log(
+                  'Banner failed to load: ${error.message}',
+                  name: 'AdService',
+                ),
+                onAdClickedCallback: (_) {},
+                onAdExpandedCallback: (_) {},
+                onAdCollapsedCallback: (_) {},
+              ),
+            ),
+          ),
+        );
       },
     );
   }
