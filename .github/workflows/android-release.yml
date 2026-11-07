@@ -36,7 +36,7 @@ jobs:
       EXPECTED_CERT_SHA256: c450f919949722bf1de43b0eab4b366b600198513c4ce98680c80f3e7f71e8c7
       IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/android-v') }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -52,7 +52,7 @@ jobs:
           fi
           echo "VERSION=$PUB_VERSION" >> "$GITHUB_ENV"
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'

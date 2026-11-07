@@ -49,12 +49,8 @@ Future<Upgrader> _upgrader(
       client: client,
       countryCode: 'VN',
       languageCode: 'vi',
-      // Máy chạy test là macOS: ép mọi nền tảng về nhánh App Store.
-      storeController: UpgraderStoreController(
-        onAndroid: () => UpgraderAppStore(),
-        oniOS: () => UpgraderAppStore(),
-        onMacOS: () => UpgraderAppStore(),
-      ),
+      // Giả lập iOS (nhánh App Store) để test không phụ thuộc máy chạy (macOS cục bộ, Linux trên CI).
+      upgraderOS: MockUpgraderOS(os: 'ios', ios: true),
     );
     u.installPackageInfo(packageInfo: _installed(installed));
     await u.initialize();
