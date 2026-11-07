@@ -11,11 +11,11 @@ library;
 import 'dart:developer' as developer;
 import 'dart:io' show Platform;
 
-import 'package:applovin_max/applovin_max.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:unity_ads_plugin/unity_ads_plugin.dart';
 
 import '../state/game_providers.dart';
 import 'ad_bootstrap.dart';
@@ -104,11 +104,7 @@ class _BannerAdBoxState extends ConsumerState<BannerAdBox> {
   Widget build(BuildContext context) {
     final adFree = ref.watch(gameControllerProvider.select((s) => s.adFree));
     if (!_supported || adFree) return const SizedBox.shrink();
-    if (AdConfig.useMax) {
-      return AdConfig.maxBannerUnitId.isEmpty
-          ? const SizedBox.shrink()
-          : _maxBanner();
-    }
+    if (AdConfig.useUnity) return _unityBanner();
     if (AdConfig.bannerUnitId.isEmpty) return const SizedBox.shrink();
     return LayoutBuilder(
       builder: (context, box) {
@@ -120,7 +116,7 @@ class _BannerAdBoxState extends ConsumerState<BannerAdBox> {
     );
   }
 
-  Widget _maxBanner() {
+  Widget _unityBanner() {
     return FutureBuilder<void>(
       future: AdBootstrap.ready,
       builder: (context, snap) {
@@ -131,18 +127,11 @@ class _BannerAdBoxState extends ConsumerState<BannerAdBox> {
           top: false,
           child: Padding(
             padding: const EdgeInsets.only(top: 8),
-            child: MaxAdView(
-              adUnitId: AdConfig.maxBannerUnitId,
-              adFormat: AdFormat.banner,
-              listener: AdViewAdListener(
-                onAdLoadedCallback: (_) {},
-                onAdLoadFailedCallback: (id, error) => developer.log(
-                  'Banner failed to load: ${error.message}',
-                  name: 'AdService',
-                ),
-                onAdClickedCallback: (_) {},
-                onAdExpandedCallback: (_) {},
-                onAdCollapsedCallback: (_) {},
+            child: UnityBannerAd(
+              placementId: AdConfig.unityBannerId,
+              onFailed: (_, error, message) => developer.log(
+                'Banner failed to load: $error $message',
+                name: 'AdService',
               ),
             ),
           ),

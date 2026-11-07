@@ -22,7 +22,7 @@ import 'l10n/locale_provider.dart';
 import 'ads/ad_bootstrap.dart';
 import 'ads/ad_config.dart';
 import 'ads/ad_service.dart';
-import 'ads/max_ad_service.dart';
+import 'ads/unity_ad_service.dart';
 import 'ads/real_ad_service.dart';
 import 'audio/audio_service.dart';
 import 'audio/flame_audio_service.dart';
@@ -86,9 +86,9 @@ Future<void> main() async {
     // KHÔNG await: init AdMob gồm form đồng ý UMP (hiện dialog, chờ người bấm)
     // và gọi mạng — await ở đây là màn hình trắng vài giây trước frame đầu.
     // Chạy song song, chỉ RealAdService chờ nó xong mới nạp quảng cáo.
-    final useMax = AdConfig.useMax;
+    final useUnity = AdConfig.useUnity;
     final adsReady = AdBootstrap.ready =
-        useMax ? initMaxAds() : AdBootstrap.initialize();
+        useUnity ? initUnityAds() : AdBootstrap.initialize();
     void onAdUnavailable() {
       // currentContext của key chính là context CỦA ScaffoldMessenger, nên
       // ScaffoldMessenger.of(ctx) tìm tổ tiên và ném FlutterError (crash).
@@ -101,8 +101,8 @@ Future<void> main() async {
 
     overrides.add(
       adServiceProvider.overrideWithValue(
-        useMax
-            ? MaxAdService(ready: adsReady, onUnavailable: onAdUnavailable)
+        useUnity
+            ? UnityAdService(ready: adsReady, onUnavailable: onAdUnavailable)
             : RealAdService(ready: adsReady, onUnavailable: onAdUnavailable),
       ),
     );

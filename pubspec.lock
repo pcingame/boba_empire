@@ -57,14 +57,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  applovin_max:
-    dependency: "direct main"
-    description:
-      name: applovin_max
-      sha256: d179b33535589ce72dbc30c1fd0a3f0d249f5d1d547645b7837f8456c6a1df93
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.6.4"
   archive:
     dependency: transitive
     description:
@@ -1361,6 +1353,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.4.0"
+  unity_ads_plugin:
+    dependency: "direct main"
+    description:
+      name: unity_ads_plugin
+      sha256: "850192b0a696efdc03e7edd907770fa3bb722fa0c3649f5ed1d6e500577e10a8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.5.0"
   upgrader:
     dependency: "direct main"
     description:
