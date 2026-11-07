@@ -12,7 +12,10 @@
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
 Deno.serve(async (req) => {
-  if (req.headers.get("authorization") !== `Apikey ${Deno.env.get("SEPAY_API_KEY")}`) {
+  // Thiếu secret thì chuỗi so sánh thành "Apikey undefined" — ai gửi đúng chuỗi đó cũng qua. Chặn hẳn.
+  const key = Deno.env.get("SEPAY_API_KEY");
+  if (!key) return new Response("not configured", { status: 500 });
+  if (req.headers.get("authorization") !== `Apikey ${key}`) {
     return new Response("unauthorized", { status: 401 });
   }
   const body = await req.json();
