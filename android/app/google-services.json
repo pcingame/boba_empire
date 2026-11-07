@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:411559711815:android:57aa8a233130cdd0a20d62",
+        "android_client_info": {
+          "package_name": "com.game.pc.boba"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPzDIQwhtqfaxxlz55nhBMaVkh2hjp0Tc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:411559711815:android:98592d0b4bca3852a20d62",
         "android_client_info": {
           "package_name": "com.pcingame.bobaempire"

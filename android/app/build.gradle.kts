@@ -21,7 +21,7 @@ if (hasReleaseKeystore) {
 }
 
 android {
-    namespace = "com.pcingame.bobaempire"
+    namespace = "com.game.pc.boba"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -38,7 +38,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.pcingame.bobaempire"
+        applicationId = "com.game.pc.boba"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion

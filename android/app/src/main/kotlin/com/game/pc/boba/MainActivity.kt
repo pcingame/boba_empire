@@ -1,4 +1,4 @@
-package com.pcingame.bobaempire
+package com.game.pc.boba
 
 import io.flutter.embedding.android.FlutterActivity
 

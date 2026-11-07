@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAPzDIQwhtqfaxxlz55nhBMaVkh2hjp0Tc',
-    appId: '1:411559711815:android:98592d0b4bca3852a20d62',
+    appId: '1:411559711815:android:57aa8a233130cdd0a20d62',
     messagingSenderId: '411559711815',
     projectId: 'bobaempire-1f372',
     storageBucket: 'bobaempire-1f372.firebasestorage.app',
