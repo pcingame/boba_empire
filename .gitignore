@@ -55,3 +55,6 @@ app.*.map.json
 assets/store/screenshots_ios/6.9in/
 assets/store/screenshots_ios/6.5in_from_6.9/
 assets/store/screenshots/iphone/
+
+# Cấu hình build Android (tài khoản nhận tiền SePay) — dùng: flutter build apk --dart-define-from-file=dart_defines.android.json
+dart_defines.android.json
