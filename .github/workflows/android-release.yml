@@ -1,0 +1,148 @@
+# Phát hành bản Android (APK tự phát hành, package com.game.pc.boba).
+#
+# Phát hành thật:  nâng `version` trong pubspec.yaml → commit → push → rồi
+#                  git tag android-v<version> && git push origin android-v<version>
+#   → test → build APK ký bằng keystore boba-apk → tạo GitHub Release kèm boba-empire.apk
+#   → SAU CÙNG cập nhật docs/appcast.xml trên main (người chơi mới thấy hộp "Có bản mới").
+#   Nội dung tag có chú thích (git tag -a ... -m "ghi chú") thành ghi chú bản mới trong game.
+#
+# Chạy thử:        Actions → Android release → Run workflow. Chỉ build + cho tải APK (Artifacts),
+#                  KHÔNG tạo Release, KHÔNG sửa appcast. Dùng để kiểm tra secrets.
+#
+# Secrets cần có (Settings → Secrets and variables → Actions):
+#   ANDROID_KEYSTORE_BASE64    base64 của android/keys/boba-apk.jks
+#   ANDROID_KEYSTORE_PASSWORD  mật khẩu keystore (store = key, xem android/key.properties)
+#   ANDROID_DART_DEFINES       nội dung dart_defines.android.json (tài khoản nhận tiền SePay)
+name: Android release
+
+on:
+  push:
+    tags: ['android-v*']
+  workflow_dispatch:
+
+concurrency:
+  group: android-release
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      # SHA-256 chứng chỉ ký (khớp docs/android.html). Đổi keystore phải sửa cả hai.
+      EXPECTED_CERT_SHA256: c450f919949722bf1de43b0eab4b366b600198513c4ce98680c80f3e7f71e8c7
+      IS_RELEASE: ${{ startsWith(github.ref, 'refs/tags/android-v') }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Tag khớp version trong pubspec
+        if: env.IS_RELEASE == 'true'
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#android-v}"
+          PUB_VERSION="$(grep -E '^version:' pubspec.yaml | sed -E 's/version: *([^+ ]+).*/\1/')"
+          echo "tag=$TAG_VERSION pubspec=$PUB_VERSION"
+          if [ "$TAG_VERSION" != "$PUB_VERSION" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME không khớp version $PUB_VERSION trong pubspec.yaml"
+            exit 1
+          fi
+          echo "VERSION=$PUB_VERSION" >> "$GITHUB_ENV"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.2'
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      - run: flutter test
+
+      - name: Ghi keystore + cấu hình build từ secrets
+        env:
+          KEYSTORE_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          DART_DEFINES: ${{ secrets.ANDROID_DART_DEFINES }}
+        run: |
+          for v in KEYSTORE_B64 KEYSTORE_PASSWORD DART_DEFINES; do
+            if [ -z "${!v}" ]; then echo "::error::Thiếu secret cho $v"; exit 1; fi
+          done
+          mkdir -p android/keys
+          printf '%s' "$KEYSTORE_B64" | base64 -d > android/keys/boba-apk.jks
+          printf 'storePassword=%s\nkeyPassword=%s\nkeyAlias=boba-apk\nstoreFile=../keys/boba-apk.jks\n' \
+            "$KEYSTORE_PASSWORD" "$KEYSTORE_PASSWORD" > android/key.properties
+          printf '%s' "$DART_DEFINES" > dart_defines.android.json
+          # Thiếu tài khoản ngân hàng thì Shop ẩn nút mua — chặn ngay ở đây.
+          python3 -c "import json; d=json.load(open('dart_defines.android.json')); assert all(d.get(k) for k in ('BANK_ID','BANK_ACCOUNT','BANK_NAME')), 'thiếu BANK_*'"
+
+      - run: flutter build apk --release --dart-define-from-file=dart_defines.android.json
+
+      - name: Kiểm tra chữ ký APK đúng keystore
+        run: |
+          APKSIGNER="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)apksigner"
+          GOT="$("$APKSIGNER" verify --print-certs build/app/outputs/flutter-apk/app-release.apk \
+            | grep -m1 'SHA-256 digest' | awk '{print $NF}')"
+          echo "cert=$GOT"
+          if [ "$GOT" != "$EXPECTED_CERT_SHA256" ]; then
+            echo "::error::APK ký sai keystore (người chơi sẽ không cài đè được)"
+            exit 1
+          fi
+          cp build/app/outputs/flutter-apk/app-release.apk boba-empire.apk
+
+      - name: Chạy thử — cho tải APK
+        if: env.IS_RELEASE != 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: boba-empire-apk
+          path: boba-empire.apk
+          retention-days: 7
+
+      - name: Tạo GitHub Release
+        if: env.IS_RELEASE == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # checkout có thể biến tag có chú thích thành tag thường → tải lại tag. Chỉ lấy ghi chú của
+          # tag có chú thích; tag thường thì %(contents) là commit message — không đưa cho người chơi.
+          git fetch --force origin "refs/tags/$GITHUB_REF_NAME:refs/tags/$GITHUB_REF_NAME"
+          NOTES=""
+          if [ "$(git cat-file -t "$GITHUB_REF_NAME")" = tag ]; then
+            NOTES="$(git tag -l --format='%(contents)' "$GITHUB_REF_NAME")"
+          fi
+          [ -n "$NOTES" ] || NOTES="Bản $VERSION"
+          printf '%s' "$NOTES" > notes.txt
+          gh release create "$GITHUB_REF_NAME" boba-empire.apk \
+            --title "Boba Empire Android $VERSION" --notes-file notes.txt --latest
+
+      - name: Cập nhật appcast (sau cùng, khi file APK đã sẵn sàng)
+        if: env.IS_RELEASE == 'true'
+        run: |
+          git reset --hard -q   # bỏ thay đổi do build (pubspec.lock...), giữ file chưa theo dõi
+          git fetch origin main
+          git checkout -B main origin/main
+          python3 - <<'PY'
+          import os, re, html, email.utils
+          v = os.environ['VERSION']
+          notes = open('notes.txt', encoding='utf-8').read().strip()
+          p = 'docs/appcast.xml'
+          s = open(p, encoding='utf-8').read()
+          s = re.sub(r'sparkle:version="[^"]*"', f'sparkle:version="{v}"', s, count=1)
+          s = re.sub(r'(<item>\s*<title>)[^<]*(</title>)', rf'\g<1>{v}\g<2>', s, count=1)
+          s = re.sub(r'<description>[^<]*</description>', lambda _: f'<description>{html.escape(notes)}</description>', s, count=1)
+          s = re.sub(r'<pubDate>[^<]*</pubDate>', f'<pubDate>{email.utils.formatdate(usegmt=True)}</pubDate>', s, count=1)
+          open(p, 'w', encoding='utf-8').write(s)
+          PY
+          git diff --stat
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "chore(web): appcast Android $VERSION"
+          git push origin main
