@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Bản Android mới nhất (APK tự phát hành) — game đọc file này qua gói `upgrader` (lib/main.dart) để hiện
+  hộp "Có bản mới". iOS KHÔNG dùng file này (vẫn hỏi App Store).
+  Ra bản mới: tạo GitHub Release (asset boba-empire.apk) TRƯỚC, rồi mới sửa sparkle:version ở đây.
+  Bắt buộc cập nhật (ẩn nút "Để sau"): thêm <sparkle:tags><sparkle:criticalUpdate/></sparkle:tags> vào item.
+-->
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+  <channel>
+    <title>Boba Empire Android</title>
+    <item>
+      <title>1.0.14</title>
+      <description>Bản Android đầu tiên: quảng cáo Unity, nạp Kim Cương bằng chuyển khoản QR.</description>
+      <pubDate>Sat, 07 Nov 2026 12:00:00 +0700</pubDate>
+      <enclosure url="https://bobaempiregame.com/android.html" sparkle:version="1.0.14" sparkle:os="android" />
+    </item>
+  </channel>
+</rss>
