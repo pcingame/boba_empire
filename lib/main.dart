@@ -13,6 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:upgrader/upgrader.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'arena/arena_config.dart';
 import 'firebase_options.dart';
@@ -42,6 +43,30 @@ final _messengerKey = GlobalKey<ScaffoldMessengerState>();
 // builder của MaterialApp nằm DƯỚI Localizations; _messengerKey.currentContext
 // thì nằm TRÊN nó nên không tra được l10n.
 AppLocalizations? _l10n;
+
+/// Một instance cho cả phiên (home được dựng lại khi đổi theme). Android là APK tự phát hành
+/// (không có trên Play): đọc bản mới nhất từ appcast trên web, nút Cập nhật mở trang tải.
+/// iOS giữ mặc định (App Store).
+final _upgrader = Upgrader(
+  storeController: UpgraderStoreController(
+    onAndroid: () => UpgraderAppcastStore(appcastURL: androidAppcastUrl),
+  ),
+);
+const androidAppcastUrl = 'https://bobaempiregame.com/appcast.xml';
+
+/// Nút "Cập nhật". Trên Android, upgrader mở link bằng chế độ "app KHÔNG phải trình duyệt" (dành cho
+/// app Play Store) nên trang tải android.html không mở được — lỗi im lặng. Tự mở bằng trình duyệt
+/// rồi trả false để upgrader bỏ qua bước mở của nó. iOS trả true: upgrader mở App Store như cũ.
+bool handleUpdateTap(Upgrader upgrader,
+    {bool? android, void Function(Uri uri)? open}) {
+  if (!(android ?? Platform.isAndroid)) return true;
+  final url = upgrader.currentAppStoreListingURL;
+  if (url != null) (open ?? _openInBrowser)(Uri.parse(url));
+  return false;
+}
+
+void _openInBrowser(Uri uri) =>
+    launchUrl(uri, mode: LaunchMode.externalApplication).catchError((_) => false);
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -196,7 +221,11 @@ class BobaEmpireApp extends ConsumerWidget {
       },
       // Chỉ bản release: debug/test không gọi mạng hỏi store.
       home: kReleaseMode
-          ? UpgradeAlert(child: const HomePage())
+          ? UpgradeAlert(
+              upgrader: _upgrader,
+              onUpdate: () => handleUpdateTap(_upgrader),
+              child: const HomePage(),
+            )
           : const HomePage(),
     );
   }
