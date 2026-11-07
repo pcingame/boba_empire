@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--
+  Trang tải bản Android (APK tự phát hành, package com.game.pc.boba). File APK nằm ở GitHub Releases
+  của repo pcingame/boba_empire, tên asset CỐ ĐỊNH `boba-empire.apk` để link "latest" luôn trỏ bản mới.
+  Đổi keystore thì phải cập nhật dấu vân tay SHA-256 ở mục "An toàn".
+-->
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tải Boba Empire cho Android (APK)</title>
+<meta name="description" content="Tải Boba Empire — Đế Chế Trà Sữa cho Android. Miễn phí, file APK chính thức từ nhà phát triển, kèm hướng dẫn cài từng bước.">
+<meta name="theme-color" content="#fdf3dc" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1b1511" media="(prefers-color-scheme: dark)">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://bobaempiregame.com/android.html">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Boba Empire">
+<meta property="og:title" content="Tải Boba Empire cho Android">
+<meta property="og:description" content="Game idle tycoon trà sữa — tải file APK chính thức, miễn phí.">
+<meta property="og:url" content="https://bobaempiregame.com/android.html">
+<meta property="og:image" content="https://bobaempiregame.com/assets/og.jpg">
+<style>
+  :root {
+    --bg: #fdf3dc; --bg2: #fff9ec; --card: #ffffff; --ink: #2d211a; --muted: #7d6a5a;
+    --brand: #8d5524; --brand-ink: #ffffff; --accent: #e8b968; --line: #ecdcc0;
+    --warn-bg: #fff4d6; --warn-line: #f0d48a;
+    --shadow: 0 10px 30px rgba(120, 80, 30, .16); --radius: 22px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1b1511; --bg2: #231b16; --card: #2a211b; --ink: #f1e8dd; --muted: #b9a999;
+      --brand: #e0a868; --brand-ink: #24160a; --accent: #8d5524; --line: #3b2f26;
+      --warn-bg: #33281a; --warn-line: #5a4527;
+      --shadow: 0 10px 30px rgba(0, 0, 0, .45);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--ink); background: var(--bg);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--brand); }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+  nav { border-bottom: 1px solid var(--line); }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 58px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; text-decoration: none; color: var(--ink); }
+  .brand img { width: 32px; height: 32px; border-radius: 8px; }
+  nav .back { color: var(--muted); font-weight: 600; text-decoration: none; font-size: .95rem; }
+
+  .hero { text-align: center; padding: 44px 0 28px; background:
+    radial-gradient(700px 320px at 50% -20%, color-mix(in srgb, var(--accent) 40%, transparent), transparent 70%); }
+  .hero .icon { width: 96px; height: 96px; border-radius: 24px; box-shadow: var(--shadow); margin: 0 auto; display: block; }
+  h1 { font-size: clamp(1.8rem, 6vw, 2.6rem); line-height: 1.2; margin: 18px 0 8px; letter-spacing: -.02em; }
+  h1 em { font-style: normal; color: var(--brand); }
+  .sub { color: var(--muted); margin: 0 auto 24px; max-width: 520px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 12px; padding: 16px 28px; border-radius: 16px;
+    font-weight: 800; font-size: 1.1rem; text-decoration: none; background: var(--brand); color: var(--brand-ink);
+    box-shadow: 0 8px 20px rgba(141, 85, 36, .35); transition: transform .15s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn svg { width: 24px; height: 24px; fill: currentColor; flex: none; }
+  .meta { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; margin-top: 16px; color: var(--muted); font-size: .9rem; }
+  .ios { margin-top: 14px; font-size: .92rem; color: var(--muted); }
+
+  section { padding: 28px 0; }
+  h2 { font-size: 1.4rem; margin: 0 0 14px; }
+  .steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .steps li {
+    counter-increment: s; position: relative; background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 16px 18px 16px 62px;
+  }
+  .steps li::before {
+    content: counter(s); position: absolute; left: 16px; top: 16px; width: 32px; height: 32px; border-radius: 50%;
+    background: var(--brand); color: var(--brand-ink); font-weight: 800; display: grid; place-items: center;
+  }
+  .steps b { display: block; margin-bottom: 2px; }
+  .steps p { margin: 0; color: var(--muted); font-size: .96rem; }
+  .q { font-weight: 700; color: var(--ink); }
+  .box { background: var(--warn-bg); border: 1px solid var(--warn-line); border-radius: var(--radius); padding: 16px 18px; }
+  .box p { margin: 6px 0 0; }
+  details { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 18px; margin-bottom: 10px; }
+  summary { font-weight: 700; cursor: pointer; }
+  details p { margin: 10px 0 0; color: var(--muted); }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .82rem; overflow-wrap: anywhere; }
+  footer { border-top: 1px solid var(--line); margin-top: 24px; padding: 24px 0 40px; color: var(--muted); font-size: .9rem; text-align: center; }
+  footer a { color: var(--muted); margin: 0 6px; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap">
+    <a class="brand" href="./"><img src="assets/icon-256.png" alt="" width="32" height="32">Boba Empire</a>
+    <a class="back" href="./">← Trang chủ</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <img class="icon" src="assets/icon-256.png" alt="Biểu tượng Boba Empire" width="96" height="96">
+    <h1>Boba Empire cho <em>Android</em></h1>
+    <p class="sub">Xây đế chế trà sữa từ một chiếc xe đẩy. Miễn phí, tải trực tiếp từ nhà phát triển.</p>
+    <a class="btn" id="dl" href="https://github.com/pcingame/boba_empire/releases/latest/download/boba-empire.apk" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16 6.5 10.5l1.4-1.4 3.1 3.1V3h2v9.2l3.1-3.1 1.4 1.4L12 16Zm-7 4v-2h14v2H5Z"/></svg>
+      Tải file APK
+    </a>
+    <div class="meta"><span>📱 Android 7.0 trở lên</span><span>💾 khoảng 86 MB</span><span>🆓 Miễn phí</span></div>
+    <p class="ios">Dùng iPhone/iPad? <a href="https://apps.apple.com/app/id6808940339" rel="noopener">Tải trên App Store</a></p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section>
+    <h2>Cài đặt trong 4 bước</h2>
+    <p style="color:var(--muted);margin-top:-6px">Game không có trên Google Play nên Android sẽ hỏi vài lần — đó là thông báo bình thường với mọi app tải ngoài cửa hàng.</p>
+    <ol class="steps">
+      <li><b>Bấm “Tải file APK”</b>
+        <p>Nếu trình duyệt báo <span class="q">“File này có thể gây hại”</span>, chọn <span class="q">Vẫn tải xuống</span>.</p></li>
+      <li><b>Mở file vừa tải</b>
+        <p>Bấm vào thông báo tải xong, hoặc mở ứng dụng <span class="q">Tệp / Quản lý tệp</span> → thư mục <span class="q">Download</span> → <span class="q">boba-empire.apk</span>.</p></li>
+      <li><b>Cho phép cài ứng dụng</b>
+        <p>Lần đầu, máy hỏi có cho trình duyệt (hoặc Quản lý tệp) cài ứng dụng không. Bấm <span class="q">Cài đặt</span> → bật <span class="q">Cho phép từ nguồn này</span> → quay lại.</p></li>
+      <li><b>Cài và chơi</b>
+        <p>Bấm <span class="q">Cài đặt</span>. Nếu Google Play Protect cảnh báo ứng dụng lạ, chọn <span class="q">Thêm chi tiết</span> → <span class="q">Vẫn cài đặt</span>. Xong là mở game được ngay.</p></li>
+    </ol>
+  </section>
+
+  <section>
+    <div class="box">
+      <b>📱 Máy Xiaomi / Redmi / POCO</b>
+      <p>Máy có thể quét bảo mật hoặc đếm ngược vài giây trước khi cho cài — đợi hết rồi bấm <span class="q">Tiếp tục</span> / <span class="q">Cài đặt</span>.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Câu hỏi thường gặp</h2>
+    <details>
+      <summary>Cập nhật bản mới thế nào?</summary>
+      <p>Quay lại trang này, tải file APK mới và cài <b>đè</b> lên bản cũ — tiến trình chơi được giữ nguyên. <b>Đừng gỡ game trước khi cài</b>: gỡ sẽ xoá dữ liệu trên máy (trừ khi bạn đã liên kết email để lưu đám mây).</p>
+    </details>
+    <details>
+      <summary>Nạp Kim Cương thế nào?</summary>
+      <p>Trong Cửa hàng, chọn gói → game hiện mã QR. Quét bằng app ngân hàng bất kỳ và <b>giữ nguyên nội dung chuyển khoản</b> — hệ thống tự nhận và cộng quà sau vài giây.</p>
+    </details>
+    <details>
+      <summary>Đổi điện thoại có mất tiến trình không?</summary>
+      <p>Không, nếu bạn liên kết email trong phần Cài đặt của game. Cài game trên máy mới và đăng nhập cùng email để tải tiến trình về.</p>
+    </details>
+    <details>
+      <summary>File APK có an toàn không?</summary>
+      <p>Chỉ tải từ trang này: file được lưu trên GitHub của nhà phát triển (pcingame) và ký bằng chứng chỉ riêng. Android sẽ từ chối cài đè nếu ai đó sửa file. Dấu vân tay chứng chỉ (SHA-256) để kiểm tra:<br>
+      <code>C4:50:F9:19:94:97:22:BF:1D:E4:3B:0E:AB:4B:36:6B:60:01:98:51:3C:4C:E9:86:80:C8:0F:3E:7F:71:E8:C7</code></p>
+    </details>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="./">Trang chủ</a>·<a href="guide.html">Hướng dẫn chơi</a>·<a href="privacy-policy.html">Chính sách quyền riêng tư</a>
+    <p>© pcingame</p>
+  </div>
+</footer>
+</body>
+</html>
