@@ -41,7 +41,10 @@ class WorldBossState {
   factory WorldBossState.fromJson(Map<String, dynamic> j, {bool isDaily = false}) => WorldBossState(
         minDamage: isDaily ? worldBossDayMinDamageToClaim : worldBossMinDamageToClaim,
         daily: !isDaily && j['daily'] is Map
-            ? WorldBossState.fromJson(Map<String, dynamic>.from(j['daily'] as Map), isDaily: true)
+            // Lượt quảng cáo dùng chung cho cả 2 tab, server chỉ gửi ở cấp ngoài.
+            ? WorldBossState.fromJson(
+                Map<String, dynamic>.from(j['daily'] as Map)..putIfAbsent('ad_left', () => j['ad_left']),
+                isDaily: true)
             : null,
         open: j['open'] != false,
         startsAtSeconds: (j['starts_at'] as num?)?.toInt() ?? 0,

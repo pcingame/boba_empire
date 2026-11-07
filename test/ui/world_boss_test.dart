@@ -396,6 +396,11 @@ void main() {
           boss: 0, hp: 20000, damage: dayDamage, mine: dayMine, rank: 1, players: 5, endsAtSeconds: 1000 + 86400,
           claimed: dayClaimed, board: const [], minDamage: worldBossDayMinDamageToClaim));
 
+  test('tab boss ngày dùng chung lượt quảng cáo của cấp ngoài', () {
+    final s = WorldBossState.fromJson({'hp': 100, 'ad_left': 7, 'daily': {'hp': 50}});
+    expect(s.daily!.adLeft, 7);
+  });
+
   test('boss ngày: mốc và mức tối thiểu riêng; chấm đỏ cộng cả hai', () {
     final s = withDaily();
     expect(s.daily!.phaseReached(3), isTrue);
